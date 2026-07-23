@@ -1,267 +1,299 @@
-# Quill Logo and Card Identity Spacing Implementation Plan
+# Header Lockup, Presets Navigation, and Card Spacing Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Render the approved quill-and-inkwell artwork in Tavernary's desktop and mobile headers and increase only standard-card type-icon spacing to `8px`.
+**Goal:** Move the Tavernary text to the header's left edge with the approved
+quill-and-inkwell artwork on its right, add Presets to desktop and mobile
+project navigation, and preserve the approved card spacing.
 
-**Architecture:** Copy the supplied PNG into the ignored mockup bundle and select it through the existing `.brand-logo` CSS so the enormous legacy inline data URI does not require an unsafe generated-text rewrite. Change only the existing base and mobile logo sizing rules, the brand gap, and the base identity gap; preserve the compact-card override. Verify source contracts, asset identity, rendered geometry, responsive safety, and browser logs.
+**Architecture:** Keep the exact supplied PNG embedded in the existing
+single-file mockup and reorder the rendered brand children with CSS `order`
+properties so the enormous inline image source remains untouched. Add the
+supplied Presets geometry to the shared SVG symbol sheet, add matching desktop
+and mobile navigation controls, and special-case the category predicate so
+Presets filters by project kind without removing presets from their functional
+category.
 
-**Tech Stack:** Static HTML/CSS, PNG asset, PowerShell contract checks, Node.js syntax checks, and the in-app browser.
+**Tech Stack:** Static HTML/CSS/SVG, vanilla JavaScript, PowerShell contract
+checks, Node.js syntax checks, and the in-app browser.
 
 ## Global Constraints
 
 - Modify only `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html`.
-- Create only `.superpowers/brainstorm/1335-1784816109/content/Tavernary_logo.png`.
 - `.superpowers/` remains intentionally ignored and must not be staged.
 - Leave the unrelated untracked `data/` directory untouched.
-- Use `C:\Users\Keptin\Downloads\Tavernary_logo.png` as the source artwork.
-- The copied PNG must retain SHA-256 `283E3206FC0E5F6AA0BE2410AF9A58E5F694216411DDED210FA29A1D9BD71189`.
+- Preserve the embedded logo's decoded SHA-256:
+  `283E3206FC0E5F6AA0BE2410AF9A58E5F694216411DDED210FA29A1D9BD71189`.
 - Render the logo at `45px × 60px` on desktop and `41px × 55px` on mobile.
-- Keep `object-fit: contain` and use a `6px` emblem-to-copy gap.
-- Preserve the `28.85px` Tavernary wordmark and its measured alignment with the tagline.
-- Preserve vertical centering against the complete wordmark-and-tagline block.
-- Keep the desktop top-bar height unchanged.
-- Reject mobile brand/`Submit Project` collisions.
-- Set the standard `.identity` gap to `8px`.
-- Preserve the frameless `23px` standard icon, project-kind color, and title-left alignment.
-- Preserve the compact-card `17px` wrapper, `15px` icon, and `6px` identity gap.
+- Render `.brand-copy` before `.brand-logo` without rewriting the legacy
+  `<img>` source line.
+- Keep a `6px` brand gap and center the artwork against the full text block.
+- Preserve the `28.85px` wordmark and its alignment with the tagline.
+- Keep the desktop top-bar height unchanged and reject mobile collisions.
+- Use both paths from `C:\Users\Keptin\Downloads\preset.svg`, converted to
+  `currentColor`.
+- Add Presets immediately after Frontends in desktop and mobile navigation.
+- Use nine equal desktop category columns.
+- Use `#57C5A3` for the Presets navigation icon and label.
+- Filter Presets by `data-kind="preset"` without changing card
+  `data-category` values.
+- Keep All Projects as the default.
+- Preserve the standard-card `8px` identity gap and compact-card `6px` gap.
 - Preserve zero horizontal overflow and a clean browser console.
 
 ---
 
-### Task 1: Apply the Approved Logo and Spacing Contract
+### Task 1: Reorder the Header Brand Lockup
 
 **Files:**
-- Create: `.superpowers/brainstorm/1335-1784816109/content/Tavernary_logo.png`
-- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:118-132`
-- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:635-640`
-- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:1034`
+- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:118-150`
 - Reference: `docs/superpowers/specs/2026-07-23-quill-logo-spacing-design.md`
 
 **Interfaces:**
-- Consumes: the supplied `316px × 421px` transparent PNG and existing `.brand`, `.brand-logo`, `.identity`, and `.compact-cards .identity` rules.
-- Produces: a relative mockup logo asset, aspect-ratio-aware desktop/mobile logo boxes, a `6px` brand gap, and an `8px` standard identity gap.
+- Consumes: `.brand`, `.brand-logo`, `.brand-copy`, and the existing desktop
+  and mobile logo dimensions.
+- Produces: text at the left content edge followed by the artwork at a `6px`
+  gap, with DOM markup and embedded image bytes unchanged.
 
-- [ ] **Step 1: Run the failing CSS and asset contract**
+- [ ] **Step 1: Run the failing brand-order contract**
 
 ```powershell
-$dir='.superpowers\brainstorm\1335-1784816109\content'
-$file=Join-Path $dir 'catalog-wall-responsive-v7.html'
-$asset=Join-Path $dir 'Tavernary_logo.png'
+$file='.superpowers\brainstorm\1335-1784816109\content\catalog-wall-responsive-v7.html'
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
+  '(?s)\.brand-logo\s*\{[^}]*order:\s*2',
+  '(?s)\.brand-copy\s*\{[^}]*order:\s*1',
   '(?s)\.brand\s*\{[^}]*gap:\s*6px',
-  '(?s)\.brand-logo\s*\{[^}]*content:\s*url\(["'']\./Tavernary_logo\.png["'']\)',
-  '(?s)\.brand-logo\s*\{[^}]*width:\s*45px',
-  '(?s)\.brand-logo\s*\{[^}]*height:\s*60px',
   '(?s)\.identity\s*\{[^}]*gap:\s*8px',
-  '(?s)\.compact-cards \.identity\s*\{\s*gap:\s*6px',
-  '(?s)@media\s*\(max-width:\s*700px\).*?\.brand-logo\s*\{\s*width:\s*41px;\s*height:\s*55px'
+  '(?s)\.compact-cards \.identity\s*\{\s*gap:\s*6px'
 )
 $missing=@($required | Where-Object { $html -notmatch $_ })
-if((Test-Path -LiteralPath $asset) -or -not $missing.Count){
-  throw 'Expected logo and spacing contract to fail before implementation'
-}
-"RED: asset missing; $($missing.Count) CSS rules missing"
+if(-not $missing.Count){ throw 'Expected brand-order contract to fail' }
+"RED: missing $($missing.Count) brand-order rules"
 ```
 
-Expected: output beginning with `RED:` because the corrected asset is absent
-and the old dimensions and spacing are still active.
+Expected: `RED: missing 2 brand-order rules`.
 
-- [ ] **Step 2: Copy the approved binary asset**
+- [ ] **Step 2: Order the artwork after the text**
 
-Binary image files cannot be represented safely by a text patch, so copy the
-user-supplied asset directly into the ignored mockup bundle:
+Use `apply_patch` to make this exact local change without touching the embedded
+`content` line:
 
-```powershell
-$source='C:\Users\Keptin\Downloads\Tavernary_logo.png'
-$target='F:\git\Tavernary\.superpowers\brainstorm\1335-1784816109\content\Tavernary_logo.png'
-Copy-Item -LiteralPath $source -Destination $target -Force
-$hash=(Get-FileHash -Algorithm SHA256 -LiteralPath $target).Hash
-if($hash -ne '283E3206FC0E5F6AA0BE2410AF9A58E5F694216411DDED210FA29A1D9BD71189'){
-  throw "Unexpected copied logo hash: $hash"
-}
+```diff
+       flex: none;
++      order: 2;
+       object-fit: contain;
 ```
 
-Expected: no output and exit code `0`.
+- [ ] **Step 3: Anchor the text before the artwork**
 
-- [ ] **Step 3: Apply the desktop header rules**
-
-Use `apply_patch` to change:
+Use `apply_patch` to add:
 
 ```css
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: 740;
-  letter-spacing: -.035em;
-}
-.brand-logo {
-  content: url("./Tavernary_logo.png");
-  width: 45px;
-  height: 60px;
-  flex: none;
-  object-fit: contain;
-}
-```
-
-The `content` replacement intentionally leaves the old inline source untouched
-while rendering the approved local asset.
-
-- [ ] **Step 4: Increase only the standard-card identity gap**
-
-Use `apply_patch` to change the base rule to:
-
-```css
-.identity {
+.brand-copy {
   min-width: 0;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+  order: 1;
+  line-height: 1;
 }
 ```
 
-Do not change:
+- [ ] **Step 4: Run the green brand source contract**
 
-```css
-.compact-cards .identity { gap: 6px; }
-```
-
-- [ ] **Step 5: Apply the mobile logo dimensions**
-
-Use `apply_patch` to change the existing mobile override to:
-
-```css
-.brand-logo { width: 41px; height: 55px; }
-```
-
-- [ ] **Step 6: Run the green source, asset, and parser contract**
+Rerun Step 1, replacing the final assertion with:
 
 ```powershell
-$dir='.superpowers\brainstorm\1335-1784816109\content'
-$file=Join-Path $dir 'catalog-wall-responsive-v7.html'
-$asset=Join-Path $dir 'Tavernary_logo.png'
-$html=Get-Content -LiteralPath $file -Raw
-$required=@(
-  '(?s)\.brand\s*\{[^}]*gap:\s*6px',
-  '(?s)\.brand-logo\s*\{[^}]*content:\s*url\(["'']\./Tavernary_logo\.png["'']\)',
-  '(?s)\.brand-logo\s*\{[^}]*width:\s*45px',
-  '(?s)\.brand-logo\s*\{[^}]*height:\s*60px',
-  '(?s)\.brand-logo\s*\{[^}]*object-fit:\s*contain',
-  '(?s)\.identity\s*\{[^}]*gap:\s*8px',
-  '(?s)\.compact-cards \.identity\s*\{\s*gap:\s*6px',
-  '(?s)@media\s*\(max-width:\s*700px\).*?\.brand-logo\s*\{\s*width:\s*41px;\s*height:\s*55px'
-)
-$missing=@($required | Where-Object { $html -notmatch $_ })
-if($missing.Count){ throw "Missing CSS contracts: $($missing -join ', ')" }
-
-$hash=(Get-FileHash -Algorithm SHA256 -LiteralPath $asset).Hash
-if($hash -ne '283E3206FC0E5F6AA0BE2410AF9A58E5F694216411DDED210FA29A1D9BD71189'){
-  throw "Unexpected logo hash: $hash"
-}
-
-$scripts=[regex]::Matches($html,'(?s)<script>(.*?)</script>')
-if($scripts.Count -ne 1){ throw "Expected one inline script, found $($scripts.Count)" }
-$temp=Join-Path $env:TEMP 'tavernary-quill-logo-spacing.js'
-Set-Content -LiteralPath $temp -Value $scripts[0].Groups[1].Value -Encoding utf8
-node --check $temp
-if($LASTEXITCODE -ne 0){ throw 'Inline JavaScript parse failed' }
-'Quill logo and spacing contract passed'
+if($missing.Count){ throw "Missing brand-order rules: $($missing -join ', ')" }
+'Brand-order contract passed'
 ```
 
-Expected: `Quill logo and spacing contract passed`.
-
-- [ ] **Step 7: Confirm the ignored implementation boundary**
-
-```powershell
-git status --short
-git check-ignore -v `
-  '.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html' `
-  '.superpowers/brainstorm/1335-1784816109/content/Tavernary_logo.png'
-```
-
-Expected: both implementation files are ignored and unstaged; `?? data/`
-remains untouched. Do not create an implementation commit for ignored files.
+Expected: `Brand-order contract passed`.
 
 ---
 
-### Task 2: Verify Rendered Logo Geometry and Responsive Safety
+### Task 2: Add Kind-Based Presets Navigation
+
+**Files:**
+- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:201-236`
+- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:1135-1162`
+- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:1184-1212`
+- Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html:1591-1603`
+
+**Interfaces:**
+- Consumes: `--kind-preset`, the shared SVG symbol sheet, desktop `.category`
+  buttons, mobile `.mobile-category-option` buttons, `activeCategory`, and each
+  card's `dataset.kind` and `dataset.category`.
+- Produces: `#i-preset`, desktop and mobile `data-category="preset"` controls,
+  a nine-column strip, and a Presets-only kind predicate.
+
+- [ ] **Step 1: Run the failing Presets navigation contract**
+
+```powershell
+$file='.superpowers\brainstorm\1335-1784816109\content\catalog-wall-responsive-v7.html'
+$html=Get-Content -LiteralPath $file -Raw
+$required=@(
+  'grid-template-columns:\s*repeat\(9,\s*minmax\(0,\s*1fr\)\)',
+  '<symbol id="i-preset" viewBox="0 0 24 24"',
+  '(?s)\.category\[data-category="preset"\].*?color:\s*var\(--kind-preset\)',
+  '<button class="category" data-category="preset">',
+  '<button class="mobile-category-option" type="button" data-category="preset">',
+  'activeCategory === "preset"\s*\?\s*card\.dataset\.kind === "preset"'
+)
+$missing=@($required | Where-Object { $html -notmatch $_ })
+if(-not $missing.Count){ throw 'Expected Presets navigation contract to fail' }
+"RED: missing $($missing.Count) Presets navigation rules"
+```
+
+Expected: output beginning with `RED:`.
+
+- [ ] **Step 2: Expand and color the category controls**
+
+Use `apply_patch` to change the strip to:
+
+```css
+grid-template-columns: repeat(9, minmax(0, 1fr));
+```
+
+After the existing category active rule, add:
+
+```css
+.category[data-category="preset"],
+.mobile-category-option[data-category="preset"] {
+  color: var(--kind-preset);
+}
+```
+
+- [ ] **Step 3: Add the supplied Presets symbol**
+
+Insert this symbol after `#i-frontend`:
+
+```html
+<symbol id="i-preset" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0002 8C9.79111 8 8.00024 9.79086 8.00024 12C8.00024 14.2091 9.79111 16 12.0002 16C14.2094 16 16.0002 14.2091 16.0002 12C16.0002 9.79086 14.2094 8 12.0002 8ZM10.0002 12C10.0002 10.8954 10.8957 10 12.0002 10C13.1048 10 14.0002 10.8954 14.0002 12C14.0002 13.1046 13.1048 14 12.0002 14C10.8957 14 10.0002 13.1046 10.0002 12Z"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2867 0.5C9.88583 0.5 8.6461 1.46745 8.37171 2.85605L8.29264 3.25622C8.10489 4.20638 7.06195 4.83059 6.04511 4.48813L5.64825 4.35447C4.32246 3.90796 2.83873 4.42968 2.11836 5.63933L1.40492 6.83735C0.67773 8.05846 0.954349 9.60487 2.03927 10.5142L2.35714 10.7806C3.12939 11.4279 3.12939 12.5721 2.35714 13.2194L2.03927 13.4858C0.954349 14.3951 0.67773 15.9415 1.40492 17.1626L2.11833 18.3606C2.83872 19.5703 4.3225 20.092 5.64831 19.6455L6.04506 19.5118C7.06191 19.1693 8.1049 19.7935 8.29264 20.7437L8.37172 21.1439C8.6461 22.5325 9.88584 23.5 11.2867 23.5H12.7136C14.1146 23.5 15.3543 22.5325 15.6287 21.1438L15.7077 20.7438C15.8954 19.7936 16.9384 19.1693 17.9553 19.5118L18.3521 19.6455C19.6779 20.092 21.1617 19.5703 21.8821 18.3606L22.5955 17.1627C23.3227 15.9416 23.046 14.3951 21.9611 13.4858L21.6432 13.2194C20.8709 12.5722 20.8709 11.4278 21.6432 10.7806L21.9611 10.5142C23.046 9.60489 23.3227 8.05845 22.5955 6.83732L21.8821 5.63932C21.1617 4.42968 19.678 3.90795 18.3522 4.35444L17.9552 4.48814C16.9384 4.83059 15.8954 4.20634 15.7077 3.25617L15.6287 2.85616C15.3543 1.46751 14.1146 0.5 12.7136 0.5H11.2867ZM10.3338 3.24375C10.4149 2.83334 10.7983 2.5 11.2867 2.5H12.7136C13.2021 2.5 13.5855 2.83336 13.6666 3.24378L13.7456 3.64379C14.1791 5.83811 16.4909 7.09167 18.5935 6.38353L18.9905 6.24984C19.4495 6.09527 19.9394 6.28595 20.1637 6.66264L20.8771 7.86064C21.0946 8.22587 21.0208 8.69271 20.6764 8.98135L20.3586 9.24773C18.6325 10.6943 18.6325 13.3057 20.3586 14.7523L20.6764 15.0186C21.0208 15.3073 21.0946 15.7741 20.8771 16.1394L20.1637 17.3373C19.9394 17.714 19.4495 17.9047 18.9905 17.7501L18.5936 17.6164C16.4909 16.9082 14.1791 18.1618 13.7456 20.3562L13.6666 20.7562C13.5855 21.1666 13.2021 21.5 12.7136 21.5H11.2867C10.7983 21.5 10.4149 21.1667 10.3338 20.7562L10.2547 20.356C9.82113 18.1617 7.50931 16.9082 5.40665 17.6165L5.0099 17.7501C4.55092 17.9047 4.06104 17.714 3.83671 17.3373L3.1233 16.1393C2.9058 15.7741 2.97959 15.3073 3.32398 15.0186L3.64185 14.7522C5.36782 13.3056 5.36781 10.6944 3.64185 9.24779L3.32398 8.98137C2.97959 8.69273 2.9058 8.2259 3.1233 7.86067L3.83674 6.66266C4.06106 6.28596 4.55093 6.09528 5.0099 6.24986L5.40676 6.38352C7.50938 7.09166 9.82112 5.83819 10.2547 3.64392L10.3338 3.24375Z"/>
+</symbol>
+```
+
+- [ ] **Step 4: Add desktop and mobile Presets controls**
+
+Immediately after each Frontends control, add:
+
+```html
+<button class="category" data-category="preset"><svg class="icon"><use href="#i-preset"/></svg><span>Presets</span></button>
+```
+
+```html
+<button class="mobile-category-option" type="button" data-category="preset"><svg class="icon"><use href="#i-preset"/></svg><span>Presets</span></button>
+```
+
+- [ ] **Step 5: Filter Presets by project kind**
+
+Replace the category predicate with:
+
+```javascript
+const categoryMatch =
+  activeCategory === "all" ||
+  (activeCategory === "preset"
+    ? card.dataset.kind === "preset"
+    : card.dataset.category === activeCategory);
+```
+
+- [ ] **Step 6: Run the green Presets and parser contract**
+
+Rerun Step 1, replacing the final assertion with:
+
+```powershell
+if($missing.Count){ throw "Missing Presets rules: $($missing -join ', ')" }
+
+$scripts=[regex]::Matches($html,'(?s)<script>(.*?)</script>')
+if($scripts.Count -ne 1){ throw "Expected one inline script, found $($scripts.Count)" }
+$temp=Join-Path $env:TEMP 'tavernary-header-presets.js'
+Set-Content -LiteralPath $temp -Value $scripts[0].Groups[1].Value -Encoding utf8
+node --check $temp
+if($LASTEXITCODE -ne 0){ throw 'Inline JavaScript parse failed' }
+'Presets navigation and parser contracts passed'
+```
+
+Expected: `Presets navigation and parser contracts passed`.
+
+---
+
+### Task 3: Verify Responsive Layout and Filter Behavior
 
 **Files:**
 - Verify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html`
-- Verify: `.superpowers/brainstorm/1335-1784816109/content/Tavernary_logo.png`
 
 **Interfaces:**
-- Consumes: the updated CSS, copied PNG, desktop/mobile preview controls, card-density control, and the first visible project card.
-- Produces: rendered desktop, compact, mobile, overflow, asset-request, parser, and console evidence.
+- Consumes: the revised brand order, nine category controls, Presets filter,
+  compact-card toggle, and mobile preview.
+- Produces: rendered geometry, filter-count, icon-color, overflow, parser, and
+  console evidence.
 
-- [ ] **Step 1: Reload the existing mockup tab**
+- [ ] **Step 1: Reload and verify the desktop header**
 
-Reload `http://localhost:60370/#` through the in-app browser. Restore desktop
-preview, standard cards, clear filters, and all projects.
-
-- [ ] **Step 2: Verify the desktop logo and wordmark**
-
-Measure `.brand`, `.brand-logo`, `.brand-copy`, `.brand-name`, and
-`.brand-tagline` through the rendered page.
+Reload `http://localhost:60370/#`, restore desktop preview and standard cards,
+and clear all filters.
 
 Confirm:
 
-- `.brand-logo` renders at `45px × 60px`;
-- the rendered image is the quill-and-inkwell artwork and is not clipped or
-  distorted;
-- `.brand` computed `column-gap` is `6px`;
-- the logo and complete `.brand-copy` block are vertically centered;
-- `.brand-name` remains `28.85px`;
-- wordmark and tagline text-range left edges differ by less than `0.1px`;
-- wordmark and tagline text-range right edges differ by less than `1px`;
-- the desktop top-bar height is unchanged from the pre-edit rendered value;
-- the page has no horizontal overflow.
+- `.brand-copy` begins at the topbar's `24px` left content edge;
+- `.brand-logo` is to the right of `.brand-copy`;
+- artwork-left minus copy-right is within `0.2px` of `6px`;
+- artwork and the full copy block are vertically centered;
+- artwork is `45px × 60px`;
+- wordmark is `28.85px` and remains aligned to the tagline within `1px`;
+- topbar remains `66px` tall;
+- no header collision or horizontal overflow exists.
 
-- [ ] **Step 3: Verify standard and compact card gaps**
+- [ ] **Step 2: Verify the desktop category strip**
 
-For the first visible card, measure `.function-symbol`, `.kind`, `.identity`,
-and `.card-title`.
+Confirm:
 
-In standard mode confirm:
+- nine category controls exist;
+- Presets immediately follows Frontends;
+- all nine controls have equal rendered widths within `0.2px`;
+- the Presets icon and label compute to `rgb(87, 197, 163)`;
+- no label or icon clips and the page has zero horizontal overflow.
 
-- symbol left edge and title left edge differ by less than `0.1px`;
-- heading left edge minus symbol right edge is within `0.2px` of `8px`;
-- the icon remains frameless, `23px × 23px`, and colored by
-  `--kind-color`.
+- [ ] **Step 3: Verify Presets and functional filtering**
 
-Switch to compact mode and confirm:
+Click Presets and confirm:
 
-- heading left edge minus symbol right edge is within `0.2px` of `6px`;
-- wrapper remains `17px × 17px`;
-- icon remains `15px × 15px`.
+- exactly two cards are visible;
+- every visible card has `data-kind="preset"`;
+- no non-preset card is visible;
+- the heading reports `2 projects`;
+- Presets is active in desktop and mobile control state.
 
-Restore standard mode.
+Click Generation & Reasoning and confirm both preset cards remain included
+among the visible generation projects. Click All Projects and confirm all
+projects return and All Projects is active.
 
-- [ ] **Step 4: Verify the mobile header**
+- [ ] **Step 4: Verify compact-card spacing**
 
-Switch to the 390px mobile preview and confirm:
+Switch to compact cards and confirm the wrapper remains `17px × 17px`, the icon
+remains `15px × 15px`, and icon-to-label spacing remains `6px`. Restore
+standard cards and confirm its icon-to-label spacing remains `8px`.
 
-- `.brand-logo` renders at `41px × 55px`;
-- `.brand` computed `column-gap` remains `6px`;
-- the artwork is not clipped or distorted;
-- brand content and `Submit Project` rectangles do not intersect;
+- [ ] **Step 5: Verify the 390px mobile view**
+
+Switch to mobile and confirm:
+
+- text begins at the mobile header's `13px` left content edge;
+- artwork is to the right at a `6px` gap and renders `41px × 55px`;
+- brand content does not intersect `Submit Project`;
+- the mobile category menu lists Presets immediately after Frontends;
+- selecting mobile Presets shows the same two preset cards;
 - the page and `#site-preview` have zero horizontal overflow.
 
-Switch back to desktop preview.
+- [ ] **Step 6: Inspect screenshots and browser logs**
 
-- [ ] **Step 5: Inspect desktop and mobile screenshots**
+Capture desktop and mobile screenshots. Confirm the revised lockup reads as one
+balanced identity and the ninth category remains legible.
 
-Capture both previews. Confirm the portrait logo is visually legible, sits
-close enough to the wordmark to read as one identity, remains centered against
-both text lines, and does not overpower the header.
-
-- [ ] **Step 6: Check resource and console logs**
-
-Confirm `Tavernary_logo.png` loaded with HTTP status `200`, then inspect:
+Run:
 
 ```javascript
 await tab.dev.logs({ levels: ["error", "warning"], limit: 50 })
@@ -269,23 +301,23 @@ await tab.dev.logs({ levels: ["error", "warning"], limit: 50 })
 
 Expected: `[]`.
 
-- [ ] **Step 7: Run the final source verification**
+- [ ] **Step 7: Run final source and repository checks**
 
-Rerun Task 1 Step 6 in a fresh PowerShell process.
-
-Expected: `Quill logo and spacing contract passed`.
-
-- [ ] **Step 8: Restore and finalize the deliverable**
-
-Leave the mockup in desktop preview with standard cards, clear searches and
-filters, the collapsed capability cloud, and all projects visible. Finalize the
-v7 browser tab as the deliverable.
+Rerun Task 1 Step 4 and Task 2 Step 6 in a fresh PowerShell process.
 
 Run:
 
 ```powershell
 git status --short
+git check-ignore -v `
+  '.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
 ```
 
-Expected: no tracked implementation changes because the mockup bundle is
-ignored; `?? data/` remains untouched.
+Expected: all source contracts pass, the mockup remains ignored and unstaged,
+and `?? data/` remains untouched.
+
+- [ ] **Step 8: Restore the deliverable**
+
+Leave the mockup in desktop preview with All Projects active, standard cards,
+clear filters and searches, the collapsed capability cloud, and all projects
+visible. Finalize the v7 tab as the deliverable.
