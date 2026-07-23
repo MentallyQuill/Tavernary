@@ -17,10 +17,10 @@ compact mode is an optional density setting.
 - Size the logo at `48px × 48px` on desktop and `44px × 44px` in the 390 px
   mobile layout. Keep the desktop top bar at `66px`; the logo must not increase
   its height.
-- Set the Tavernary tagline to “Where AI roleplay tools gather.” Place it
+- Set the Tavernary tagline to `Where AI roleplay tools gather`. Place it
   directly beneath the orange wordmark in small muted text on desktop and hide
   it in the 390 px mobile layout.
-- Capitalize the submission link as “Submit Repository.” Color its text and
+- Capitalize the submission link as `Submit Repository`. Color its text and
   border accent `#E18A24`, matching the Tavernary wordmark.
 - Remove the sentence “Development activity reflects meaningful source work,
   never stars or reviews.”
