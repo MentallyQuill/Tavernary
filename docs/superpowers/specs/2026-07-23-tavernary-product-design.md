@@ -108,17 +108,39 @@ Instead, the grid is the structural language of the entire interface.
 
 ### 4.2 Palette
 
-- Near-black charcoal background
-- Blue-gray technical grid
-- Slightly lighter charcoal panels
-- Warm off-white primary text
-- Muted gray secondary text and controls
-- SillyTavern-like amber-orange for active states and key emphasis
-- Violet, cyan, coral, and acid-green as limited project-type or illustration
-  accents
+Tavernary uses a deep-teal foundation rather than a collection of unrelated
+project colors.
 
-Orange must not communicate every state. Activity, warnings, selection, and
-announcements need distinct combinations of color, icon, label, and shape.
+| Foundation role | Color |
+| --- | --- |
+| Page background | `#07181D` |
+| Primary surface | `#0B2229` |
+| Card surface | `#102B33` |
+| Raised or active surface | `#173740` |
+| Border | `#284A52` |
+| Strong border | `#3B6068` |
+| Primary text | `#F3F1E8` |
+| Secondary text | `#CBD6D3` |
+| Missing, unavailable, or muted text | `#6F7E82` |
+
+The accent palette is deliberately small:
+
+| Accent role | Color |
+| --- | --- |
+| Extension and Tavernary heritage orange | `#E18A24` |
+| Frontend | `#D62839` |
+| Preset and fresh activity | `#57C5A3` |
+| Missing or proprietary license | `#6F7E82` |
+
+Project-kind colors appear only as compact, positional accents such as type
+symbols and Project Kind checkbox outlines. They do not tint whole cards or
+large navigation surfaces. Functional categories remain neutral and use the
+deep-teal raised surface and border system for hover and selection.
+
+Color never carries meaning by itself. Labels, symbols, position, and tooltips
+distinguish project kind, activity, and license state. In particular,
+`#D62839` identifies Frontends rather than errors, while Missing and
+Proprietary licenses share a muted color but retain explicit labels.
 
 ### 4.3 Graphic Character
 
@@ -156,14 +178,19 @@ independent layers.
 ### 5.1 Project Kind
 
 - Frontend
-- Extension or plugin
-- Agent package
-- Suite or bundle
-- Library or dependency
+- Extension
 - Preset
-- Prompt package
-- External service or companion backend
-- Development tool
+
+These kinds describe delivery form rather than project size:
+
+- a **Frontend** is a host application where roleplay happens;
+- an **Extension** is installable code that adds to or supports a frontend;
+- a **Preset** is configuration or prompt content loaded into a frontend,
+  whether its canonical source is GitHub, Discord, or another website.
+
+Agent frameworks, suites, shared libraries, dependencies, developer tools, and
+companion services are filterable metadata characteristics rather than
+mutually exclusive project kinds. Prompt packages are Presets.
 
 ### 5.2 Primary Function
 
@@ -292,9 +319,9 @@ Reference:
 
 - [Marinara Agents](https://github.com/Pasta-Devs/Marinara-Agents)
 
-This establishes “Agent package” as a distinct project kind. It also requires
-mode compatibility, package integrity, permissions, and host-major version
-fields.
+Agent packages use the Extension project kind and an `Agent framework` or other
+specific capability tag. Tavernary also tracks mode compatibility, package
+integrity, permissions, and host-major version fields.
 
 ## 7. Entity and Relationship Model
 
@@ -542,6 +569,15 @@ Filters appear in a compact PCPartPicker-like rail. Active filters are visible
 as removable query chips. The URL encodes the query so a filtered catalog can
 be bookmarked or shared.
 
+Metadata chips use a maintained vocabulary and appear as selectable options in
+the filter rail. Multiple selections within one filter group use OR logic.
+Selections from different groups combine with AND logic. With no selected
+filters, the complete catalog remains visible.
+
+Examples such as `Suite`, `Agent framework`, `Shared library`, `Dependency`,
+and `Multi-feature` preserve useful distinctions without expanding Project
+Kind. Freeform repository topics do not automatically become filters.
+
 ### 12.3 Sort Modes
 
 - Relevance
@@ -658,9 +694,11 @@ requiring an administrative backend.
 
 License is one distribution-and-trust field. Tavernary checks for a root
 `LICENSE*` file. A recognized OSI-approved license displays its SPDX identifier
-in mint. No root license displays Missing in muted gray. A present but custom,
-unrecognized, source-available, or restrictive license displays Proprietary in
-pastel red. Package metadata never overrides contradictory root license text.
+in secondary text. No root license displays Missing in muted gray. A present
+but custom, unrecognized, source-available, or restrictive license displays
+Proprietary in the same muted gray. The explicit label and tooltip distinguish
+Missing from Proprietary. Package metadata never overrides contradictory root
+license text.
 
 ## 16. Accessibility and Performance
 

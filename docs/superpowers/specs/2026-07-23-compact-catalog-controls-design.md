@@ -36,21 +36,57 @@ compact mode is an optional density setting.
   `M23 26l-7-7-7 7M9 6l7 7 7-7`. Render its stroke with `currentColor` so it
   follows the existing hover and pressed states.
 
-## Functional Category Colors
+## Palette and Category Treatment
 
-Apply color to both the icon and label of every functional-category button.
-Keep button backgrounds, hover treatments, active borders, and the All Projects
-button neutral.
+Use the approved deep-teal foundation throughout the catalog:
 
-| Category | Color |
+| Foundation role | Color |
 | --- | --- |
-| Frontends | Teal, `#0A7C6E` |
-| Memory & Retrieval | Mint, `#2DD4BF` |
-| Generation & Reasoning | Purple, `#8B5CF6` |
-| Character & World Authoring | Lime, `#84CC16` |
-| RPG Systems & Suites | Amber, `#F59E0B` |
-| Interface & Workflow | Cyan, `#06B6D4` |
-| Developer Infrastructure | Blue, `#3B82F6` |
+| Page background | `#07181D` |
+| Primary surface | `#0B2229` |
+| Card surface | `#102B33` |
+| Raised or active surface | `#173740` |
+| Border | `#284A52` |
+| Strong border | `#3B6068` |
+| Primary text | `#F3F1E8` |
+| Secondary text | `#CBD6D3` |
+| Missing, unavailable, or muted text | `#6F7E82` |
+
+Use only three project-kind accents:
+
+| Project kind | Color |
+| --- | --- |
+| Extension | `#E18A24` |
+| Frontend | `#D62839` |
+| Preset | `#57C5A3` |
+
+The Tavernary wordmark and submission action continue to use heritage orange
+`#E18A24`. Fresh activity also uses mint `#57C5A3`. Missing and Proprietary
+licenses both use muted gray `#6F7E82`; their text and tooltips distinguish the
+states.
+
+Project-kind colors are limited to the type symbol and Project Kind checkbox
+outline. Keep type labels legible against the card surface instead of relying
+on small colored text. Functional-category icons and labels are neutral.
+Functional-category hover and selected states use raised teal surfaces, strong
+borders, and primary text rather than additional accent colors.
+
+## Project-Kind and Metadata Filters
+
+The initial catalog uses only three project kinds:
+
+- Frontend
+- Extension
+- Preset
+
+Suite, Agent framework, Shared library, Dependency, Multi-feature, and similar
+terms are normalized metadata characteristics. They are filterable in the
+filter panel but are not project kinds. Prompt packages use the Preset kind.
+
+Multiple selections inside one filter group use OR logic. Selections in
+different groups combine with AND logic. No selected filters means every
+project remains visible. Card chips remain informational in the initial
+release because the whole card opens its canonical source.
 
 ## Mobile Controls
 
