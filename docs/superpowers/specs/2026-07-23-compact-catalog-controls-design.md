@@ -63,6 +63,40 @@ Compact mode changes only card presentation:
 Standard mode retains summaries, two metadata-chip rows, aggregate community
 score, repository size, and the existing larger type symbol.
 
+## Metadata Tag Vocabulary
+
+- Every compatible frontend appears first. Cross-compatible projects show every
+  frontend as a leading chip.
+- Standard cards show up to two rows and six total chips.
+- Compact cards retain one clipped row.
+- Prefer specific capability nouns over vague labels such as “Controls,”
+  “Features,” or “Extensions.”
+- Do not repeat the visible project kind as a chip unless it communicates a
+  separate capability.
+- Status and content labels such as `Deprecated` and `Adult` follow capability
+  tags.
+- Mockup tags reflect the existing mock summaries. Production tags require
+  verification against project metadata or maintained catalog records.
+
+Use these tags in the mock catalog:
+
+| Project | Tags, in display order |
+| --- | --- |
+| Lumiverse | `Lumiverse`, `Extension runtime`, `Full-stack`, `Permissions`, `Versioned manifests` |
+| Marinara Engine | `Marinara`, `Agents`, `Writer`, `State tracking`, `Compatibility lanes` |
+| Memory Books | `SillyTavern`, `Long-term memory`, `Lorebooks`, `Automatic`, `Reviewable` |
+| Recursion | `SillyTavern`, `Structured planning`, `Multi-provider`, `Review`, `Validation` |
+| Directive | `SillyTavern`, `Campaigns`, `State tracking`, `Timekeeping`, `Simulation` |
+| CarrotKernel | `SillyTavern`, `Character metadata`, `Worldbuilding`, `Structured tags`, `Authoring` |
+| VectFox | `SillyTavern`, `Lumiverse`, `Vector RAG`, `Long-term memory`, `External service` |
+| Chat Top Bar | `SillyTavern`, `Navigation`, `Chat controls`, `Quick actions` |
+| LALib | `SillyTavern`, `Shared utilities`, `Dependency`, `Developer tools` |
+| Polyceph | `SillyTavern`, `Multi-model`, `Orchestration`, `Provider routing` |
+| Smart Memory | `SillyTavern`, `Long-term memory`, `Cross-chat`, `Group chat`, `Reviewable` |
+| RPG Companion | `SillyTavern`, `Marinara`, `Deprecated`, `State tracking`, `Campaign assistance` |
+| Celia V5.4 | `SillyTavern`, `Chat Completion`, `Prompt ordering`, `Regex`, `POV controls`, `302 prompt blocks` |
+| Marinara’s Essentials | `SillyTavern`, `Chat Completion`, `Character roleplay`, `Regex`, `Logit bias`, `Adult` |
+
 ## Interaction and State
 
 - The density toggle applies to all visible and subsequently filtered cards.
