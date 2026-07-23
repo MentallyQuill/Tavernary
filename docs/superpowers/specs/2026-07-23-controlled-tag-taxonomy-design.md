@@ -67,7 +67,8 @@ assignments will be curated from verified project information.
 
 The capability cloud initially occupies approximately four wrapped chip rows.
 The implementation measures the rendered cloud rather than assuming a fixed
-number of chips per row.
+number of chips per row. If selected tags alone require more than four rows,
+keeping every selected tag visible takes priority over the height target.
 
 Collapsed ordering is:
 
@@ -126,7 +127,8 @@ Static and browser verification must confirm:
 - all non-frontend card chips belong to the 18-tag vocabulary;
 - every filter tag exactly matches a card tag;
 - old project-specific labels are absent;
-- collapsed desktop and mobile clouds occupy no more than four wrapped rows;
+- collapsed desktop and mobile clouds occupy no more than four wrapped rows
+  unless selected tags alone require additional rows;
 - the toggle reports the exact number of hidden tags;
 - expanding and collapsing preserve selections;
 - selected tags remain visible when collapsed;
