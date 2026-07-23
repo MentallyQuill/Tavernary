@@ -19,7 +19,7 @@
 - Set the standard `.identity` gap to `4px`.
 - Keep the identity and card-title left edges aligned.
 - Preserve compact-card `17px` wrapper, `15px` icon, frameless treatment, and `6px` gap.
-- Set `.brand-name` to `29.5px`.
+- Set `.brand-name` to `28.85px`.
 - Preserve emblem sizes, the `7px` brand gap, tagline styling, header structure, and submission action.
 - Keep the desktop top bar at `66px`.
 - Reject mobile brand/`Submit Project` collisions at 390px.
@@ -35,7 +35,7 @@
 
 **Interfaces:**
 - Consumes: `.brand-name`, `.identity`, `.function-symbol`, `.function-symbol .icon`, and the existing `.compact-cards` overrides.
-- Produces: a `29.5px` wordmark, frameless `23px` standard icons, and a `4px` standard identity gap without changing compact cards.
+- Produces: a `28.85px` wordmark, frameless `23px` standard icons, and a `4px` standard identity gap without changing compact cards.
 
 - [ ] **Step 1: Run the failing CSS contract**
 
@@ -43,7 +43,7 @@
 $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
-  '(?s)\.brand-name\s*\{[^}]*font-size:\s*29\.5px',
+  '(?s)\.brand-name\s*\{[^}]*font-size:\s*28\.85px',
   '(?s)\.identity\s*\{[^}]*gap:\s*4px',
   '(?s)\.function-symbol\s*\{[^}]*width:\s*23px',
   '(?s)\.function-symbol\s*\{[^}]*height:\s*23px',
@@ -72,7 +72,7 @@ with:
 ```css
 .brand-name {
   color: #E18A24;
-  font-size: 29.5px;
+  font-size: 28.85px;
 }
 ```
 
@@ -124,7 +124,7 @@ Do not alter the compact wrapper or icon declarations.
 $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
-  '(?s)\.brand-name\s*\{[^}]*font-size:\s*29\.5px',
+  '(?s)\.brand-name\s*\{[^}]*font-size:\s*28\.85px',
   '(?s)\.identity\s*\{[^}]*gap:\s*4px',
   '(?s)\.function-symbol\s*\{[^}]*width:\s*23px',
   '(?s)\.function-symbol\s*\{[^}]*height:\s*23px',
@@ -201,7 +201,7 @@ the flex-item bounds.
 
 Confirm:
 
-- `.brand-name` computed font size is `29.5px`;
+- `.brand-name` computed font size is `28.85px`;
 - wordmark and tagline left edges differ by less than `0.1px`;
 - wordmark and tagline right edges differ by less than `1px`;
 - desktop `.topbar` height remains within `0.1px` of `66px`;
@@ -223,7 +223,7 @@ Restore standard cards.
 
 Switch to mobile preview and confirm:
 
-- `.brand-name` remains `29.5px`;
+- `.brand-name` remains `28.85px`;
 - brand content and `Submit Project` rectangles do not intersect;
 - emblem remains `55px × 55px`;
 - the page and `#site-preview` have zero horizontal overflow.

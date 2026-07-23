@@ -29,7 +29,7 @@ rules.
 
 ## Header Wordmark
 
-Increase `.brand-name` from the inherited `20px` size to `29.5px`.
+Increase `.brand-name` from the inherited `20px` size to `28.85px`.
 
 Current live measurements are:
 
@@ -37,8 +37,11 @@ Current live measurements are:
 - tagline glyph width: approximately `133.9px`;
 - required proportional scale: approximately `1.473`.
 
-At `29.5px`, the Tavernary wordmark's glyph edges align with the tagline's
-measured left and right edges. Both remain left-aligned inside `.brand-copy`.
+The initial proportional estimate of `29.5px` rendered about `3.19px` too
+wide because inherited letter spacing does not scale with the child font size.
+At the browser-measured `28.85px`, the Tavernary wordmark's glyph edges align
+with the tagline's measured left and right edges. Both remain left-aligned
+inside `.brand-copy`.
 
 Keep unchanged:
 
@@ -53,7 +56,7 @@ sets its current maximum width.
 
 ## Responsive Behavior
 
-Apply the `29.5px` wordmark on desktop and mobile. The full copy block remains
+Apply the `28.85px` wordmark on desktop and mobile. The full copy block remains
 shorter than the emblem at both sizes, so vertical centering continues to use
 the emblem as the dominant height.
 
