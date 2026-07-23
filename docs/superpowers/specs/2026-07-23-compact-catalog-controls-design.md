@@ -14,12 +14,16 @@ compact mode is an optional density setting.
 - Replace the square `T` mark with the supplied transparent
   `Tavernary-logo.png` bottle illustration. Render it without a border,
   background, or enclosing tile, using `object-fit: contain`.
-- Size the logo at `48px × 48px` on desktop and `44px × 44px` in the 390 px
-  mobile layout. Keep the desktop top bar at `66px`; the logo must not increase
-  its height.
+- Size the logo at `60px × 60px` on desktop and `55px × 55px` in the 390 px
+  mobile layout, a 25% increase from the previous treatment. Keep the desktop
+  top bar at `66px`; the larger logo must not increase its height.
+- Reduce the space between the logo and wordmark from `10px` to `7px`.
+  Vertically center the logo against the complete wordmark-and-tagline text
+  block rather than the `Tavernary` line alone.
 - Set the Tavernary tagline to `Where AI roleplay tools gather`. Place it
-  directly beneath the orange wordmark in small muted text on desktop and hide
-  it in the 390 px mobile layout.
+  directly beneath the orange wordmark on desktop and mobile. Render it in
+  `var(--text-2)` (`#CBD6D3`) to increase contrast while remaining subordinate
+  to the primary wordmark.
 - Set the submission link to `Submit Project`. Color its text and
   border accent `#E18A24`, matching the Tavernary wordmark.
 - Remove the `How Activity Works` link. Keep `About`.
@@ -203,6 +207,10 @@ The mockup must demonstrate:
 
 - no boxed catalog-refresh row;
 - no horizontal overflow in desktop or 390 px mobile preview;
+- `60px` desktop and `55px` mobile logos with a `7px` wordmark gap;
+- logo alignment centered against the complete wordmark-and-tagline block;
+- the shared `Where AI roleplay tools gather` tagline visible in
+  `var(--text-2)` on desktop and mobile;
 - mobile control ordering and icon-only Filters button;
 - density toggle accessible name and pressed state;
 - standard cards retaining all current information;
