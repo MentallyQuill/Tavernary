@@ -1,0 +1,2370 @@
+﻿[
+    {
+        "id":  "coneja-chibi-tunnelvision",
+        "name":  "TunnelVision",
+        "repository":  {
+                           "owner":  "Coneja-Chibi",
+                           "name":  "TunnelVision",
+                           "url":  "https://github.com/Coneja-Chibi/TunnelVision"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "aikohanasaki-sillytavern-memorybooks",
+        "name":  "SillyTavern MemoryBooks",
+        "repository":  {
+                           "owner":  "aikohanasaki",
+                           "name":  "SillyTavern-MemoryBooks",
+                           "url":  "https://github.com/aikohanasaki/SillyTavern-MemoryBooks"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "multihogaurelius-sillytavern-multihogdndframework",
+        "name":  "SillyTavern Multihog DnD Framework",
+        "repository":  {
+                           "owner":  "MultihogAurelius",
+                           "name":  "SillyTavern-MultihogDnDFramework",
+                           "url":  "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "vectricity-st-aspect-evolutia",
+        "name":  "ST Aspect Evolutia",
+        "repository":  {
+                           "owner":  "Vectricity",
+                           "name":  "st-aspect-evolutia",
+                           "url":  "https://github.com/Vectricity/st-aspect-evolutia"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "platberlitz-sillytavern-image-gen",
+        "name":  "SillyTavern Image Gen",
+        "repository":  {
+                           "owner":  "platberlitz",
+                           "name":  "sillytavern-image-gen",
+                           "url":  "https://github.com/platberlitz/sillytavern-image-gen"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern",
+                          "Marinara Engine"
+                      ]
+    },
+    {
+        "id":  "closuretxt-recast-post-processing",
+        "name":  "Recast Post-Processing",
+        "repository":  {
+                           "owner":  "closuretxt",
+                           "name":  "recast-post-processing",
+                           "url":  "https://github.com/closuretxt/recast-post-processing"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sigmareaver-rooms",
+        "name":  "Rooms",
+        "repository":  {
+                           "owner":  "sigmareaver",
+                           "name":  "rooms",
+                           "url":  "https://github.com/sigmareaver/rooms"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "qvink-sillytavern-messagesummarize",
+        "name":  "SillyTavern Message Summarize",
+        "repository":  {
+                           "owner":  "qvink",
+                           "name":  "SillyTavern-MessageSummarize",
+                           "url":  "https://github.com/qvink/SillyTavern-MessageSummarize"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "thexyzzyone-stfastuserswitching",
+        "name":  "ST Fast User Switching",
+        "repository":  {
+                           "owner":  "thexyzzyone",
+                           "name":  "STFastUserSwitching",
+                           "url":  "https://github.com/thexyzzyone/STFastUserSwitching"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "thexyzzyone-stgroupresponderselector",
+        "name":  "ST Group Responder Selector",
+        "repository":  {
+                           "owner":  "thexyzzyone",
+                           "name":  "STGroupResponderSelector",
+                           "url":  "https://github.com/thexyzzyone/STGroupResponderSelector"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "senjinthedragon-smart-memory",
+        "name":  "Smart Memory",
+        "repository":  {
+                           "owner":  "senjinthedragon",
+                           "name":  "Smart-Memory",
+                           "url":  "https://github.com/senjinthedragon/Smart-Memory"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sillyanonymous-sillytavern-characterlibrary",
+        "name":  "SillyTavern Character Library",
+        "repository":  {
+                           "owner":  "Sillyanonymous",
+                           "name":  "SillyTavern-CharacterLibrary",
+                           "url":  "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "icefog72-sillytavern-probablytoomanytabs",
+        "name":  "SillyTavern Probably Too Many Tabs",
+        "repository":  {
+                           "owner":  "IceFog72",
+                           "name":  "SillyTavern-ProbablyTooManyTabs",
+                           "url":  "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "soyo5800-rpg-tracker-for-sillytavern",
+        "name":  "RPG Tracker for SillyTavern",
+        "repository":  {
+                           "owner":  "Soyo5800",
+                           "name":  "rpg-tracker-for-sillytavern",
+                           "url":  "https://github.com/Soyo5800/rpg-tracker-for-sillytavern"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "kristyku-inlinesummary",
+        "name":  "InlineSummary",
+        "repository":  {
+                           "owner":  "Kristyku",
+                           "name":  "InlineSummary",
+                           "url":  "https://github.com/Kristyku/InlineSummary"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "senjinthedragon-sillytavern-discord-connector",
+        "name":  "SillyTavern Discord Connector",
+        "repository":  {
+                           "owner":  "senjinthedragon",
+                           "name":  "SillyTavern-Discord-Connector",
+                           "url":  "https://github.com/senjinthedragon/SillyTavern-Discord-Connector"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "mentallyquill-recursion",
+        "name":  "Recursion",
+        "repository":  {
+                           "owner":  "MentallyQuill",
+                           "name":  "Recursion",
+                           "url":  "https://github.com/MentallyQuill/Recursion"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "mentallyquill-directive",
+        "name":  "Directive",
+        "repository":  {
+                           "owner":  "MentallyQuill",
+                           "name":  "Directive",
+                           "url":  "https://github.com/MentallyQuill/Directive"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "platberlitz-sillytavern-character-colors",
+        "name":  "SillyTavern Character Colors",
+        "repository":  {
+                           "owner":  "platberlitz",
+                           "name":  "sillytavern-character-colors",
+                           "url":  "https://github.com/platberlitz/sillytavern-character-colors"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "samueras-guidedgenerations-extension",
+        "name":  "Guided Generations Extension",
+        "repository":  {
+                           "owner":  "Samueras",
+                           "name":  "GuidedGenerations-Extension",
+                           "url":  "https://github.com/Samueras/GuidedGenerations-Extension/"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "dangerdaza-dooms-enhancement-suite",
+        "name":  "Doom\u0027s Enhancement Suite",
+        "repository":  {
+                           "owner":  "DangerDaza",
+                           "name":  "Dooms-Enhancement-Suite",
+                           "url":  "https://github.com/DangerDaza/Dooms-Enhancement-Suite"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "supker-st-copilot",
+        "name":  "ST-Copilot",
+        "repository":  {
+                           "owner":  "Supker",
+                           "name":  "ST-Copilot",
+                           "url":  "https://github.com/Supker/ST-Copilot"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "datacat-run-datacat-sillytavern-browser",
+        "name":  "datacat SillyTavern Browser",
+        "repository":  {
+                           "owner":  "datacat-run",
+                           "name":  "datacat-sillytavern-browser",
+                           "url":  "https://github.com/datacat-run/datacat-sillytavern-browser"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sillytavern-extension-mermaid",
+        "name":  "SillyTavern Extension Mermaid",
+        "repository":  {
+                           "owner":  "SillyTavern",
+                           "name":  "Extension-Mermaid",
+                           "url":  "https://github.com/SillyTavern/Extension-Mermaid"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "arif-salah-megumin-suite",
+        "name":  "Megumin Suite",
+        "repository":  {
+                           "owner":  "Arif-salah",
+                           "name":  "Megumin-Suite",
+                           "url":  "https://github.com/Arif-salah/Megumin-Suite"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "kikyoicecream-next-choices",
+        "name":  "Next Choices",
+        "repository":  {
+                           "owner":  "kikyoicecream",
+                           "name":  "next-choices",
+                           "url":  "https://github.com/kikyoicecream/next-choices"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "retrovioletred-sillytavern-pictureprompt",
+        "name":  "SillyTavern PicturePrompt",
+        "repository":  {
+                           "owner":  "RetroVioletRed",
+                           "name":  "SillyTavern-PicturePrompt",
+                           "url":  "https://github.com/RetroVioletRed/SillyTavern-PicturePrompt"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "ghostd93-bettersimtracker",
+        "name":  "BetterSimTracker",
+        "repository":  {
+                           "owner":  "ghostd93",
+                           "name":  "BetterSimTracker",
+                           "url":  "https://github.com/ghostd93/BetterSimTracker"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lithiumwaves-danganronpa-sillytavern",
+        "name":  "Danganronpa SillyTavern",
+        "repository":  {
+                           "owner":  "LithiumWaves",
+                           "name":  "danganronpa-sillytavern",
+                           "url":  "https://github.com/LithiumWaves/danganronpa-sillytavern"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "mentallyquill-saga",
+        "name":  "Saga",
+        "repository":  {
+                           "owner":  "MentallyQuill",
+                           "name":  "Saga",
+                           "url":  "https://github.com/MentallyQuill/Saga"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "nattaphat010447-nutho-autocloser",
+        "name":  "Nutho Autocloser",
+        "repository":  {
+                           "owner":  "nattaphat010447",
+                           "name":  "nutho_autocloser",
+                           "url":  "https://github.com/nattaphat010447/nutho_autocloser"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sillyanonymous-sillytavern-ui-shortcuts",
+        "name":  "SillyTavern UI Shortcuts",
+        "repository":  {
+                           "owner":  "Sillyanonymous",
+                           "name":  "SillyTavern-UIShortcuts",
+                           "url":  "https://github.com/Sillyanonymous/SillyTavern-UIShortcuts"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sammcheese-sillytavern-discordia",
+        "name":  "SillyTavern Discordia",
+        "repository":  {
+                           "owner":  "SammCheese",
+                           "name":  "SillyTavern-Discordia",
+                           "url":  "https://github.com/SammCheese/SillyTavern-Discordia"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "leandrojofre-sillytavern-presence",
+        "name":  "SillyTavern Presence",
+        "repository":  {
+                           "owner":  "leandrojofre",
+                           "name":  "SillyTavern-Presence",
+                           "url":  "https://github.com/leandrojofre/SillyTavern-Presence"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "tavern-rpg-suite",
+        "name":  "Tavern RPG Suite",
+        "repository":  {
+                           "owner":  "tavern-rpg-suite",
+                           "name":  null,
+                           "url":  "https://github.com/tavern-rpg-suite"
+                       },
+        "source_type":  "organization",
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "rivelledays-sillytavern-moonlitechoestheme",
+        "name":  "SillyTavern Moonlit Echoes Theme",
+        "repository":  {
+                           "owner":  "RivelleDays",
+                           "name":  "SillyTavern-MoonlitEchoesTheme",
+                           "url":  "https://github.com/RivelleDays/SillyTavern-MoonlitEchoesTheme"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "selinawynters-ops-st-threadkeeper",
+        "name":  "ST ThreadKeeper",
+        "repository":  {
+                           "owner":  "selinawynters-ops",
+                           "name":  "ST---ThreadKeeper",
+                           "url":  "https://github.com/selinawynters-ops/ST---ThreadKeeper"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "zapoverde-sillytavern-canonize",
+        "name":  "SillyTavern Canonize",
+        "repository":  {
+                           "owner":  "ZapoVerde",
+                           "name":  "SillyTavern-Canonize",
+                           "url":  "https://github.com/ZapoVerde/SillyTavern-Canonize"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "coneja-chibi-vecthare",
+        "name":  "VectHare",
+        "repository":  {
+                           "owner":  "Coneja-Chibi",
+                           "name":  "VectHare",
+                           "url":  "https://github.com/Coneja-Chibi/VectHare"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "getfroggyhoe-universal-immersion-engine",
+        "name":  "Universal Immersion Engine",
+        "repository":  {
+                           "owner":  "GetfroggyHoe",
+                           "name":  "universal-immersion-engine",
+                           "url":  "https://github.com/GetfroggyHoe/universal-immersion-engine"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "enerccio-sillytavern-sidequery",
+        "name":  "SillyTavern SideQuery",
+        "repository":  {
+                           "owner":  "Enerccio",
+                           "name":  "SillyTavern-SideQuery",
+                           "url":  "https://github.com/Enerccio/SillyTavern-SideQuery"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "helpfultoolscompany-lorevault-extension",
+        "name":  "Lorevault Extension",
+        "repository":  {
+                           "owner":  "HelpfulToolsCompany",
+                           "name":  "lorevault-extension",
+                           "url":  "https://github.com/HelpfulToolsCompany/lorevault-extension"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "ikarusv-ikarusautoimage",
+        "name":  "IkarusAutoImage",
+        "repository":  {
+                           "owner":  "IkarusV",
+                           "name":  "IkarusAutoImage",
+                           "url":  "https://github.com/IkarusV/IkarusAutoImage"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "vectricity-st-aspect-vocalia",
+        "name":  "ST Aspect Vocalia",
+        "repository":  {
+                           "owner":  "Vectricity",
+                           "name":  "st-aspect-vocalia",
+                           "url":  "https://github.com/Vectricity/st-aspect-vocalia"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "spicymarinara-sillytavern-spotify-music-extension",
+        "name":  "SillyTavern Spotify Music Extension",
+        "repository":  {
+                           "owner":  "SpicyMarinara",
+                           "name":  "SillyTavern-Spotify-Music-Extension",
+                           "url":  "https://github.com/SpicyMarinara/SillyTavern-Spotify-Music-Extension"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lenanderson-sillytavern-worldinfoinfo",
+        "name":  "SillyTavern WorldInfoInfo",
+        "repository":  {
+                           "owner":  "LenAnderson",
+                           "name":  "SillyTavern-WorldInfoInfo",
+                           "url":  "https://github.com/LenAnderson/SillyTavern-WorldInfoInfo"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "aikohanasaki-sillytavern-worldinfoinfo",
+        "name":  "SillyTavern WorldInfoInfo",
+        "repository":  {
+                           "owner":  "aikohanasaki",
+                           "name":  "SillyTavern-WorldInfoInfo",
+                           "url":  "https://github.com/aikohanasaki/SillyTavern-WorldInfoInfo"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "nemovonnirgend-nemopresetext",
+        "name":  "NemoPresetExt",
+        "repository":  {
+                           "owner":  "NemoVonNirgend",
+                           "name":  "NemoPresetExt",
+                           "url":  "https://github.com/NemoVonNirgend/NemoPresetExt"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "mekineer-com-openalma",
+        "name":  "OpenAlma",
+        "repository":  {
+                           "owner":  "mekineer-com",
+                           "name":  "OpenAlma",
+                           "url":  "https://github.com/mekineer-com/OpenAlma"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "maiky93-image-generation-suite",
+        "name":  "Image Generation Suite",
+        "repository":  {
+                           "owner":  "maiky93",
+                           "name":  "image-generation-suite",
+                           "url":  "https://github.com/maiky93/image-generation-suite"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "zdost-story-engine",
+        "name":  "Story Engine",
+        "repository":  {
+                           "owner":  "ZDOSt",
+                           "name":  "Story-Engine",
+                           "url":  "https://github.com/ZDOSt/Story-Engine"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lenanderson-sillytavern-videobackgrounds",
+        "name":  "SillyTavern Video Backgrounds",
+        "repository":  {
+                           "owner":  "LenAnderson",
+                           "name":  "SillyTavern-VideoBackgrounds",
+                           "url":  "https://github.com/LenAnderson/SillyTavern-VideoBackgrounds/"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lukasstraub2-sillytavern-imagepdf",
+        "name":  "SillyTavern ImagePdf",
+        "repository":  {
+                           "owner":  "lukasstraub2",
+                           "name":  "SillyTavern-ImagePdf",
+                           "url":  "https://github.com/lukasstraub2/SillyTavern-ImagePdf"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "archkr-st-basicspotify",
+        "name":  "ST BasicSpotify",
+        "repository":  {
+                           "owner":  "Archkr",
+                           "name":  "ST-BasicSpotify",
+                           "url":  "https://github.com/Archkr/ST-BasicSpotify"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "phampyk-sillytavern-avatarbanner",
+        "name":  "SillyTavern AvatarBanner",
+        "repository":  {
+                           "owner":  "phampyk",
+                           "name":  "SillyTavern-AvatarBanner",
+                           "url":  "https://github.com/phampyk/SillyTavern-AvatarBanner"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "ayvencore-sillytavern-another-character-library",
+        "name":  "SillyTavern Another Character Library",
+        "repository":  {
+                           "owner":  "ayvencore",
+                           "name":  "Sillytavern-Another-Character-Library",
+                           "url":  "https://github.com/ayvencore/Sillytavern-Another-Character-Library"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "bmen25124-sillytavern-character-creator",
+        "name":  "SillyTavern Character Creator",
+        "repository":  {
+                           "owner":  "bmen25124",
+                           "name":  "SillyTavern-Character-Creator",
+                           "url":  "https://github.com/bmen25124/SillyTavern-Character-Creator"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "hibanan-css-default-scoped",
+        "name":  "CSS Default Scoped",
+        "repository":  {
+                           "owner":  "Hibanan",
+                           "name":  "css-default-scoped",
+                           "url":  "https://github.com/Hibanan/css-default-scoped"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "giglio256-sillytavern-gigliomachine",
+        "name":  "SillyTavern GiglioMachine",
+        "repository":  {
+                           "owner":  "Giglio256",
+                           "name":  "SillyTavern-GiglioMachine",
+                           "url":  "https://github.com/Giglio256/SillyTavern-GiglioMachine"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "bal-spec-sillytavern-character-memory",
+        "name":  "SillyTavern Character Memory",
+        "repository":  {
+                           "owner":  "bal-spec",
+                           "name":  "sillytavern-character-memory",
+                           "url":  "https://github.com/bal-spec/sillytavern-character-memory"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "hibanan-disable-global-lore",
+        "name":  "Disable Global Lore",
+        "repository":  {
+                           "owner":  "Hibanan",
+                           "name":  "disable-global-lore",
+                           "url":  "https://github.com/Hibanan/disable-global-lore"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "enerccio-sillytavern-persistentitemizedprompts",
+        "name":  "SillyTavern Persistent Itemized Prompts",
+        "repository":  {
+                           "owner":  "Enerccio",
+                           "name":  "SillyTavern-PersistentItemizedPrompts",
+                           "url":  "https://github.com/Enerccio/SillyTavern-PersistentItemizedPrompts"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "virgilianshailer-automusic",
+        "name":  "AutoMusic",
+        "repository":  {
+                           "owner":  "virgilianshailer",
+                           "name":  "AutoMusic",
+                           "url":  "https://github.com/virgilianshailer/AutoMusic"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lukathehero-sillytavern-personatools",
+        "name":  "SillyTavern PersonaTools",
+        "repository":  {
+                           "owner":  "LukaTheHero",
+                           "name":  "SillyTavern-PersonaTools",
+                           "url":  "https://github.com/LukaTheHero/SillyTavern-PersonaTools"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "zapoverde-sillytavern-mobilyze",
+        "name":  "SillyTavern Mobilyze",
+        "repository":  {
+                           "owner":  "ZapoVerde",
+                           "name":  "SillyTavern-mobilyze",
+                           "url":  "https://github.com/ZapoVerde/SillyTavern-mobilyze"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "leandrojofre-sillytavern-stat-us-maximus",
+        "name":  "SillyTavern Stat-us Maximus",
+        "repository":  {
+                           "owner":  "leandrojofre",
+                           "name":  "SillyTavern-Stat-us-Maximus",
+                           "url":  "https://github.com/leandrojofre/SillyTavern-Stat-us-Maximus"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "lukathehero-sillytavern-claudesubscription",
+        "name":  "SillyTavern Claude Subscription",
+        "repository":  {
+                           "owner":  "LukaTheHero",
+                           "name":  "SillyTavern-ClaudeSubscription",
+                           "url":  "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "tyranomaster-expressions-plus",
+        "name":  "Expressions Plus",
+        "repository":  {
+                           "owner":  "Tyranomaster",
+                           "name":  "expressions-plus",
+                           "url":  "https://github.com/Tyranomaster/expressions-plus"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "cierru-st-stepped-thinking",
+        "name":  "ST Stepped Thinking",
+        "repository":  {
+                           "owner":  "cierru",
+                           "name":  "st-stepped-thinking",
+                           "url":  "https://github.com/cierru/st-stepped-thinking"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "zapoverde-sillytavern-triggeryze",
+        "name":  "SillyTavern Triggeryze",
+        "repository":  {
+                           "owner":  "ZapoVerde",
+                           "name":  "SillyTavern-Triggeryze",
+                           "url":  "https://github.com/ZapoVerde/SillyTavern-Triggeryze"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "paradox460-st-messagesplit",
+        "name":  "ST MessageSplit",
+        "repository":  {
+                           "owner":  "paradox460",
+                           "name":  "ST-MessageSplit",
+                           "url":  "https://github.com/paradox460/ST-MessageSplit"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "bronya-rand-guinevere-ui-extension",
+        "name":  "Guinevere UI Extension",
+        "repository":  {
+                           "owner":  "Bronya-Rand",
+                           "name":  "Guinevere-UI-Extension",
+                           "url":  "https://github.com/Bronya-Rand/Guinevere-UI-Extension"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "thejackals-sillytavern-summaryn-resizechat",
+        "name":  "SillyTavern SummaryN ResizeChat",
+        "repository":  {
+                           "owner":  "THEJACKALS",
+                           "name":  "SillyTavern-SummaryN-ResizeChat",
+                           "url":  "https://github.com/THEJACKALS/SillyTavern-SummaryN-ResizeChat"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "bbw3000-simplesummary",
+        "name":  "SimpleSummary",
+        "repository":  {
+                           "owner":  "bbw3000",
+                           "name":  "SimpleSummary",
+                           "url":  "https://github.com/bbw3000/SimpleSummary"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "zapoverde-sillytavern-vistalyze",
+        "name":  "SillyTavern Vistalyze",
+        "repository":  {
+                           "owner":  "ZapoVerde",
+                           "name":  "SillyTavern-Vistalyze",
+                           "url":  "https://github.com/ZapoVerde/SillyTavern-Vistalyze"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "flaxify-st-hands-free-voice",
+        "name":  "ST Hands-Free Voice",
+        "repository":  {
+                           "owner":  "Flaxify",
+                           "name":  "ST-Hands-Free-Voice",
+                           "url":  "https://github.com/Flaxify/ST-Hands-Free-Voice"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "noathouard-sillytavern-extension-npc-portait-switcher",
+        "name":  "SillyTavern NPC Portait Switcher",
+        "repository":  {
+                           "owner":  "NoaThouard",
+                           "name":  "SillyTavern-Extension-NPC-Portait-Switcher",
+                           "url":  "https://github.com/NoaThouard/SillyTavern-Extension-NPC-Portait-Switcher"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "luisbrandao-sillytavern-tracker",
+        "name":  "SillyTavern Tracker",
+        "repository":  {
+                           "owner":  "luisbrandao",
+                           "name":  "SillyTavern-Tracker",
+                           "url":  "https://github.com/luisbrandao/SillyTavern-Tracker"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "bmen25124-sillytavern-wtracker",
+        "name":  "SillyTavern WTracker",
+        "repository":  {
+                           "owner":  "bmen25124",
+                           "name":  "SillyTavern-WTracker",
+                           "url":  "https://github.com/bmen25124/SillyTavern-WTracker"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "mokimoko-sillytavern-dynamicaudioredux",
+        "name":  "SillyTavern DynamicAudioRedux",
+        "repository":  {
+                           "owner":  "mokimoko",
+                           "name":  "SillyTavern-DynamicAudioRedux",
+                           "url":  "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "ayvencore-sillytavern-lorebook-manager",
+        "name":  "SillyTavern Lorebook Manager",
+        "repository":  {
+                           "owner":  "ayvencore",
+                           "name":  "SillyTavern-Lorebook-Manager",
+                           "url":  "https://github.com/ayvencore/SillyTavern-Lorebook-Manager"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "nialyn-mid-polyceph",
+        "name":  "Polyceph",
+        "repository":  {
+                           "owner":  "nialyn-mid",
+                           "name":  "polyceph",
+                           "url":  "https://github.com/nialyn-mid/polyceph"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "enclave0775-intiface-central-sillytavern-plugin",
+        "name":  "Intiface Central SillyTavern Plugin",
+        "repository":  {
+                           "owner":  "Enclave0775",
+                           "name":  "Intiface_Central-Sillytavern-plugin",
+                           "url":  "https://github.com/Enclave0775/Intiface_Central-Sillytavern-plugin"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "enerccio-sillytavern-stickynote",
+        "name":  "SillyTavern StickyNote",
+        "repository":  {
+                           "owner":  "Enerccio",
+                           "name":  "SillyTavern-StickyNote",
+                           "url":  "https://github.com/Enerccio/SillyTavern-StickyNote"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "kurohomeless-sillytavern-token-and-cost-statistics",
+        "name":  "SillyTavern Token and Cost Statistics",
+        "repository":  {
+                           "owner":  "kurohomeless",
+                           "name":  "SillyTavern-Token-and-Cost-Statistics",
+                           "url":  "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "virgilianshailer-lorebook-creator",
+        "name":  "Lorebook Creator",
+        "repository":  {
+                           "owner":  "virgilianshailer",
+                           "name":  "lorebook-creator",
+                           "url":  "https://github.com/virgilianshailer/lorebook-creator"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "virgilianshailer-autobackgound",
+        "name":  "AutoBackgound",
+        "repository":  {
+                           "owner":  "virgilianshailer",
+                           "name":  "AutoBackgound",
+                           "url":  "https://github.com/virgilianshailer/AutoBackgound"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "virgilianshailer-llm-tools",
+        "name":  "LLM Tools",
+        "repository":  {
+                           "owner":  "virgilianshailer",
+                           "name":  "llm-tools",
+                           "url":  "https://github.com/virgilianshailer/llm-tools"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "sillytavern-sillytavern-pronouns",
+        "name":  "SillyTavern Pronouns",
+        "repository":  {
+                           "owner":  "SillyTavern",
+                           "name":  "SillyTavern-Pronouns",
+                           "url":  "https://github.com/SillyTavern/SillyTavern-Pronouns"
+                       },
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23",
+        "frontends":  [
+                          "SillyTavern"
+                      ]
+    },
+    {
+        "id":  "japolino-inlay-illustrator",
+        "name":  "Inlay Illustrator",
+        "repository":  {
+                           "owner":  "japolino",
+                           "name":  "inlay-illustrator",
+                           "url":  "https://github.com/japolino/inlay-illustrator"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "amousepad-lumibooks",
+        "name":  "LumiBooks",
+        "repository":  {
+                           "owner":  "AMousePad",
+                           "name":  "LumiBooks",
+                           "url":  "https://github.com/AMousePad/LumiBooks"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "mindbound-lumiscript",
+        "name":  "Lumiscript",
+        "repository":  {
+                           "owner":  "mindbound",
+                           "name":  "lumiscript",
+                           "url":  "https://github.com/mindbound/lumiscript"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "cfigure-lumiverse-prompt-viewer",
+        "name":  "Lumiverse Prompt Viewer",
+        "repository":  {
+                           "owner":  "cfigure",
+                           "name":  "Lumiverse-prompt-viewer",
+                           "url":  "https://github.com/cfigure/Lumiverse-prompt-viewer"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "archkr-lumiverse-lumimind",
+        "name":  "Lumiverse LumiMind",
+        "repository":  {
+                           "owner":  "Archkr",
+                           "name":  "Lumiverse-LumiMind",
+                           "url":  "https://github.com/Archkr/Lumiverse-LumiMind"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "valdoix-vellum-engine",
+        "name":  "Vellum Engine",
+        "repository":  {
+                           "owner":  "valdoix",
+                           "name":  "vellum-engine",
+                           "url":  "https://github.com/valdoix/vellum-engine/"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "amousepad-lumirealm",
+        "name":  "LumiRealm",
+        "repository":  {
+                           "owner":  "AMousePad",
+                           "name":  "LumiRealm",
+                           "url":  "https://github.com/AMousePad/LumiRealm/"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "archkr-lumiverse-lumiweather",
+        "name":  "Lumiverse LumiWeather",
+        "repository":  {
+                           "owner":  "Archkr",
+                           "name":  "Lumiverse-LumiWeather",
+                           "url":  "https://github.com/Archkr/Lumiverse-LumiWeather"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "archkr-lumiverse-lumiworld",
+        "name":  "Lumiverse LumiWorld",
+        "repository":  {
+                           "owner":  "Archkr",
+                           "name":  "Lumiverse-LumiWorld",
+                           "url":  "https://github.com/Archkr/Lumiverse-LumiWorld"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "amousepad-lumiagent",
+        "name":  "LumiAgent",
+        "repository":  {
+                           "owner":  "AMousePad",
+                           "name":  "LumiAgent",
+                           "url":  "https://github.com/AMousePad/LumiAgent"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "hans123m12m1-lumiverse-notehaven",
+        "name":  "Lumiverse NoteHaven",
+        "repository":  {
+                           "owner":  "hans123m12m1",
+                           "name":  "lumiverse-notehaven",
+                           "url":  "https://github.com/hans123m12m1/lumiverse-notehaven"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "starlitcode-lumiverse-auto-retry",
+        "name":  "Lumiverse Auto-Retry",
+        "repository":  {
+                           "owner":  "starlitcode",
+                           "name":  "Lumiverse-Auto-Retry",
+                           "url":  "https://github.com/starlitcode/Lumiverse-Auto-Retry"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "j-dandelion-lumiverse-canvas",
+        "name":  "Lumiverse Canvas",
+        "repository":  {
+                           "owner":  "j-dandelion",
+                           "name":  "Lumiverse-Canvas",
+                           "url":  "https://github.com/j-dandelion/Lumiverse-Canvas/"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "prolix-oc-lumiverse-xtimeline",
+        "name":  "Lumiverse XTimeline",
+        "repository":  {
+                           "owner":  "prolix-oc",
+                           "name":  "Lumiverse-XTimeline",
+                           "url":  "https://github.com/prolix-oc/Lumiverse-XTimeline"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "prolix-oc-lumiverse-chatroom",
+        "name":  "Lumiverse ChatRoom",
+        "repository":  {
+                           "owner":  "prolix-oc",
+                           "name":  "Lumiverse-ChatRoom",
+                           "url":  "https://github.com/prolix-oc/Lumiverse-ChatRoom"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "prolix-oc-lumiverse-spotifycontrols",
+        "name":  "Lumiverse SpotifyControls",
+        "repository":  {
+                           "owner":  "prolix-oc",
+                           "name":  "Lumiverse-SpotifyControls",
+                           "url":  "https://github.com/prolix-oc/Lumiverse-SpotifyControls"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "sca255-lumiverse-autoimg",
+        "name":  "Lumiverse AutoImg",
+        "repository":  {
+                           "owner":  "sca255",
+                           "name":  "lumiverse-autoimg",
+                           "url":  "https://github.com/sca255/lumiverse-autoimg"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "amousepad-hone",
+        "name":  "Hone",
+        "repository":  {
+                           "owner":  "AMousePad",
+                           "name":  "Hone",
+                           "url":  "https://github.com/AMousePad/Hone"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "prolix-oc-lumiverse-simtracker",
+        "name":  "Lumiverse SimTracker",
+        "repository":  {
+                           "owner":  "prolix-oc",
+                           "name":  "Lumiverse-SimTracker",
+                           "url":  "https://github.com/prolix-oc/Lumiverse-SimTracker"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "beeopo-lumiverse-rewrite",
+        "name":  "Lumiverse Rewrite",
+        "repository":  {
+                           "owner":  "Beeopo",
+                           "name":  "Lumiverse-Rewrite",
+                           "url":  "https://github.com/Beeopo/Lumiverse-Rewrite"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "archkr-lumiverse-lumistate",
+        "name":  "Lumiverse LumiState",
+        "repository":  {
+                           "owner":  "Archkr",
+                           "name":  "Lumiverse-LumiState",
+                           "url":  "https://github.com/Archkr/Lumiverse-LumiState"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "archkr-lumiverse-lorerecall",
+        "name":  "Lumiverse LoreRecall",
+        "repository":  {
+                           "owner":  "archkr",
+                           "name":  "Lumiverse-LoreRecall",
+                           "url":  "https://github.com/archkr/Lumiverse-LoreRecall"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "cfigure-lumiverse-shutter",
+        "name":  "Lumiverse Shutter",
+        "repository":  {
+                           "owner":  "cfigure",
+                           "name":  "Lumiverse-Shutter",
+                           "url":  "https://github.com/cfigure/Lumiverse-Shutter"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "taezn-creator-notes-html-renderer",
+        "name":  "Creator Notes HTML Renderer",
+        "repository":  {
+                           "owner":  "Taezn",
+                           "name":  "creator-notes-html-renderer",
+                           "url":  "https://github.com/Taezn/creator-notes-html-renderer"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id":  "wanderingmonk8-lummate",
+        "name":  "Lummate",
+        "repository":  {
+                           "owner":  "WanderingMonk8",
+                           "name":  "lummate",
+                           "url":  "https://github.com/WanderingMonk8/lummate"
+                       },
+        "frontends":  [
+                          "Lumiverse"
+                      ],
+        "status":  "candidate",
+        "submission":  "user-submitted",
+        "submitted_at":  "2026-07-23"
+    },
+    {
+        "id": "shadowtheimpure-sillytavern-character-card-generator",
+        "name": "SillyTavern Character Card Generator",
+        "repository": {
+            "owner": "shadowtheimpure",
+            "name": "SillyTavern-Character-Card-Generator",
+            "url": "https://github.com/shadowtheimpure/SillyTavern-Character-Card-Generator"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3pb6s/sillytavern_ai_character_card_generator/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "maxime-fleury-st-card-editor",
+        "name": "ST Card Editor",
+        "repository": {
+            "owner": "maxime-fleury",
+            "name": "ST-cardEditor",
+            "url": "https://github.com/maxime-fleury/ST-cardEditor"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3cpq5/st_card_editor_web_tool_for_editing_cards_adding/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "manjove1-forged-by-primus-portfolio",
+        "name": "Forged by Primus",
+        "repository": {
+            "owner": "Manjove1",
+            "name": "forged-by-primus-portfolio",
+            "url": "https://github.com/Manjove1/forged-by-primus-portfolio"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v37jyy/forged_by_primus_transformers_rpg/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "jeka201216-silly-map",
+        "name": "Silly Map",
+        "repository": {
+            "owner": "Jeka201216",
+            "name": "Silly-Map",
+            "url": "https://github.com/Jeka201216/Silly-Map"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v25r88/release_the_interactive_map_extension_i_teased_is/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "nickchegg-game-engine",
+        "name": "NickChegg Game Engine",
+        "repository": {
+            "owner": "NickChegg",
+            "name": "game-engine",
+            "url": "https://github.com/NickChegg/game-engine"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v25l40/i_made_a_new_thing_id_like_people_to_give/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "aimicrocot-scenarios-extension",
+        "name": "Scenarios Extension",
+        "repository": {
+            "owner": "aimicrocot",
+            "name": "Scenarios-Extension",
+            "url": "https://github.com/aimicrocot/Scenarios-Extension"
+        },
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1tvr66y/scenarios_extention_for_sillytavern_reupload/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "le-emotionalism-1-1-5-prompt",
+        "name": "LE_EMOTIONALISM 1.1.5",
+        "source_url": "https://www.mediafire.com/file/okz25rrg98i8hdx/%25E2%2580%25BC%25EF%25B8%258F%25F0%259F%2592%25A5_LE_EMOTIONALISM%2521_Version_1.1.5%25F0%259F%2592%25A5%25E2%2580%25BC%25EF%25B8%258F.json/file",
+        "tags": ["Prompts"],
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v46vqe/le_emotionalism_version_115_emotionalbased_preset/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "village-maker-google-drive-prompt",
+        "name": "Village Maker",
+        "source_url": "https://drive.google.com/file/d/1Q6-tNRgEsp3jwDmrZeSVyPbbsf_xckp5/view?usp=sharing",
+        "tags": ["Prompts"],
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "village-maker-thornbeck-prompt",
+        "name": "Village Maker — Thornbeck",
+        "source_url": "https://botbooru.com/character/68693",
+        "tags": ["Prompts"],
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "village-maker-harrow-hundred-prompt",
+        "name": "Village Maker — Harrow Hundred",
+        "source_url": "https://botbooru.com/character/68657",
+        "tags": ["Prompts"],
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "village-maker-anonpaste-prompt",
+        "name": "Village Maker — Supplementary Paste",
+        "source_url": "https://anonpaste.org/?2608a3f2908984b1#E9ugSnHiWnu8b81dgKBQs7BYs26QXFu7n9QgBWeRHRiV",
+        "tags": ["Prompts"],
+        "frontends": ["SillyTavern"],
+        "status": "candidate",
+        "submission": "reddit",
+        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
+        "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mangkoodkung-another-universe",
+        "name": "Another Universe",
+        "repository": {"owner": "mangkoodkung", "name": "another-universe", "url": "https://github.com/mangkoodkung/another-universe"},
+        "frontends": ["SillyTavern", "Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mokimoko-sillytavern-scenariocrafter",
+        "name": "SillyTavern ScenarioCrafter",
+        "repository": {"owner": "mokimoko", "name": "SillyTavern-ScenarioCrafter", "url": "https://github.com/mokimoko/SillyTavern-ScenarioCrafter"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "thejackals-sillytavern-mapregionslocator",
+        "name": "SillyTavern Map Regions Locator",
+        "repository": {"owner": "THEJACKALS", "name": "SillyTavern-MapRegionsLocator", "url": "https://github.com/THEJACKALS/SillyTavern-MapRegionsLocator"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "icefog72-sillytavern-everytextlineeditor",
+        "name": "SillyTavern Every Text Line Editor",
+        "repository": {"owner": "IceFog72", "name": "SillyTavern-EveryTextLineEditor", "url": "https://github.com/IceFog72/SillyTavern-EveryTextLineEditor"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "prolix-oc-sillytavern-simtracker",
+        "name": "SillyTavern SimTracker",
+        "repository": {"owner": "prolix-oc", "name": "SillyTavern-SimTracker", "url": "https://github.com/prolix-oc/SillyTavern-SimTracker"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "aikohanasaki-sillytavern-characterlocks",
+        "name": "SillyTavern Character Locks",
+        "repository": {"owner": "aikohanasaki", "name": "SillyTavern-CharacterLocks", "url": "https://github.com/aikohanasaki/SillyTavern-CharacterLocks"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "aikohanasaki-sillytavern-modelinjection",
+        "name": "SillyTavern Model Injection",
+        "repository": {"owner": "aikohanasaki", "name": "SillyTavern-ModelInjection", "url": "https://github.com/aikohanasaki/SillyTavern-ModelInjection"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "bmen25124-sillytavern-roadway",
+        "name": "SillyTavern Roadway",
+        "repository": {"owner": "bmen25124", "name": "SillyTavern-Roadway", "url": "https://github.com/bmen25124/SillyTavern-Roadway"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sillytavern-sillytavern-greetingtools",
+        "name": "SillyTavern Greeting Tools",
+        "repository": {"owner": "SillyTavern", "name": "SillyTavern-GreetingTools", "url": "https://github.com/SillyTavern/SillyTavern-GreetingTools"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "forgottenglory-st-superobjective",
+        "name": "ST SuperObjective",
+        "repository": {"owner": "ForgottenGlory", "name": "ST-SuperObjective", "url": "https://github.com/ForgottenGlory/ST-SuperObjective"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sillytavern-sillytavern-nicknames",
+        "name": "SillyTavern Nicknames",
+        "repository": {"owner": "SillyTavern", "name": "SillyTavern-Nicknames", "url": "https://github.com/SillyTavern/SillyTavern-Nicknames"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "bmen25124-sillytavern-flowchart",
+        "name": "SillyTavern Flowchart",
+        "repository": {"owner": "bmen25124", "name": "SillyTavern-Flowchart", "url": "https://github.com/bmen25124/SillyTavern-Flowchart"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "furitaocanon-sillytavern-personas",
+        "name": "SillyTavern Personas",
+        "repository": {"owner": "Furitaocanon", "name": "SillyTavern-Personas", "url": "https://github.com/Furitaocanon/SillyTavern-Personas"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "bronya-rand-prome-vn-extension",
+        "name": "Prome VN Extension",
+        "repository": {"owner": "Bronya-Rand", "name": "Prome-VN-Extension", "url": "https://github.com/Bronya-Rand/Prome-VN-Extension"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "cgstever-statefullore",
+        "name": "StatefulLore",
+        "repository": {"owner": "cgstever", "name": "StatefulLore", "url": "https://github.com/cgstever/StatefulLore"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "hibanan-extension-quietprofileselector",
+        "name": "Quiet Profile Selector",
+        "repository": {"owner": "Hibanan", "name": "Extension-QuietProfileSelector", "url": "https://github.com/Hibanan/Extension-QuietProfileSelector"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mechamarmot-sillytavern-localimage",
+        "name": "SillyTavern LocalImage",
+        "repository": {"owner": "mechamarmot", "name": "SillyTavern-LocalImage", "url": "https://github.com/mechamarmot/SillyTavern-LocalImage/"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sillytavern-extension-topinfobar",
+        "name": "SillyTavern Extension TopInfoBar",
+        "repository": {"owner": "SillyTavern", "name": "Extension-TopInfoBar", "url": "https://github.com/SillyTavern/Extension-TopInfoBar"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "gu-gu-gu-gu-gu-weather-calendar-assistant",
+        "name": "Weather Calendar Assistant",
+        "repository": {"owner": "Gu-gu-gu-gu-gu", "name": "Weather-Calendar-Assistant", "url": "https://github.com/Gu-gu-gu-gu-gu/Weather-Calendar-Assistant"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "twitter-twemoji",
+        "name": "Twemoji",
+        "repository": {"owner": "twitter", "name": "twemoji", "url": "https://github.com/twitter/twemoji"},
+        "source_type": "dependency",
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "gentleburr-sillytavern-smartimport",
+        "name": "SillyTavern SmartImport",
+        "repository": {"owner": "GentleBurr", "name": "SillyTavern-SmartImport", "url": "https://github.com/GentleBurr/SillyTavern-SmartImport"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mkrrussell0411-star-character-stats-extension",
+        "name": "Character Stats Extension",
+        "repository": {"owner": "mkrrussell0411-star", "name": "Character-stats-extension", "url": "https://github.com/mkrrussell0411-star/Character-stats-extension"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "carlosnahuelcoy-sillytavern-player2",
+        "name": "SillyTavern Player2",
+        "repository": {"owner": "CarlosNahuelcoy", "name": "SillyTavern-Player2", "url": "https://github.com/CarlosNahuelcoy/SillyTavern-Player2"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "rossascends-st-samplerkillswitches",
+        "name": "ST Sampler Kill Switches",
+        "repository": {"owner": "RossAscends", "name": "ST-SamplerKillSwitches", "url": "https://github.com/RossAscends/ST-SamplerKillSwitches"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mechamarmot-sillytavern-mazemaster",
+        "name": "SillyTavern MazeMaster",
+        "repository": {"owner": "mechamarmot", "name": "SillyTavern-MazeMaster", "url": "https://github.com/mechamarmot/SillyTavern-MazeMaster"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "morgoookru-st-chat-finder",
+        "name": "ST Chat Finder",
+        "repository": {"owner": "MorgoookRU", "name": "st-chat-finder", "url": "https://github.com/MorgoookRU/st-chat-finder"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "carmentagit-carmy-infoboard",
+        "name": "Carmy InfoBoard",
+        "repository": {"owner": "CarmentaGit", "name": "Carmy-InfoBoard", "url": "https://github.com/CarmentaGit/Carmy-InfoBoard"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "coneja-chibi-rabbit-response-team",
+        "name": "Rabbit Response Team",
+        "repository": {"owner": "Coneja-Chibi", "name": "Rabbit-Response-Team", "url": "https://github.com/Coneja-Chibi/Rabbit-Response-Team"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "nbrown725-sillytavern-alternatedescriptions",
+        "name": "SillyTavern Alternate Descriptions",
+        "repository": {"owner": "nbrown725", "name": "SillyTavern-AlternateDescriptions", "url": "https://github.com/nbrown725/SillyTavern-AlternateDescriptions"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "rivelledays-sillytavern-chatcompletiontabs",
+        "name": "SillyTavern ChatCompletionTabs",
+        "repository": {"owner": "RivelleDays", "name": "SillyTavern-ChatCompletionTabs", "url": "https://github.com/RivelleDays/SillyTavern-ChatCompletionTabs"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "prompt-and-circumstance-storymode",
+        "name": "StoryMode",
+        "repository": {"owner": "Prompt-And-Circumstance", "name": "StoryMode", "url": "https://github.com/Prompt-And-Circumstance/StoryMode"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "archkr-sillytavern-charactervisuals",
+        "name": "SillyTavern Character Visuals",
+        "repository": {"owner": "archkr", "name": "SillyTavern-CharacterVisuals", "url": "https://github.com/archkr/SillyTavern-CharacterVisuals"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "zhenyapav-sillytavern-namegen",
+        "name": "SillyTavern Namegen",
+        "repository": {"owner": "ZhenyaPav", "name": "SillyTavern-Namegen", "url": "https://github.com/ZhenyaPav/SillyTavern-Namegen"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sillytavern-sillytavern-pushnotifications",
+        "name": "SillyTavern Push Notifications",
+        "repository": {"owner": "SillyTavern", "name": "SillyTavern-PushNotifications", "url": "https://github.com/SillyTavern/SillyTavern-PushNotifications"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "dfaker-st-char-powersearch",
+        "name": "ST Character PowerSearch",
+        "repository": {"owner": "dfaker", "name": "st-char-powersearch", "url": "https://github.com/dfaker/st-char-powersearch"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "subzero5544-preset-search",
+        "name": "Preset Search",
+        "repository": {"owner": "subzero5544", "name": "preset-search", "url": "https://github.com/subzero5544/preset-search"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "subzero5544-favorites-carousel",
+        "name": "Favorites Carousel",
+        "repository": {"owner": "subzero5544", "name": "favorites-carousel", "url": "https://github.com/subzero5544/favorites-carousel"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "coneja-chibi-carrotkernel",
+        "name": "CarrotKernel",
+        "repository": {"owner": "Coneja-Chibi", "name": "CarrotKernel", "url": "https://github.com/Coneja-Chibi/CarrotKernel"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "coneja-chibi-bunnymo",
+        "name": "BunnyMo",
+        "repository": {"owner": "Coneja-Chibi", "name": "BunnyMo", "url": "https://github.com/Coneja-Chibi/BunnyMo"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "heikouidou-chara-color-filter",
+        "name": "Chara Color Filter",
+        "repository": {"owner": "heikouidou", "name": "chara-color-filter", "url": "https://github.com/heikouidou/chara-color-filter"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "p-e-w-sorcery",
+        "name": "Sorcery",
+        "repository": {"owner": "p-e-w", "name": "sorcery", "url": "https://github.com/p-e-w/sorcery"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "loggo-presets-typingindicatorplus",
+        "name": "TypingIndicatorPlus",
+        "repository": {"owner": "Loggo-presets", "name": "TypingIndicatorPlus", "url": "https://github.com/Loggo-presets/TypingIndicatorPlus"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "archkr-sillytavern-outfitswitch",
+        "name": "SillyTavern OutfitSwitch",
+        "repository": {"owner": "Archkr", "name": "SillyTavern-OutfitSwitch", "url": "https://github.com/Archkr/SillyTavern-OutfitSwitch"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "loggo-presets-sillytavern-spellbook",
+        "name": "SillyTavern SpellBook",
+        "repository": {"owner": "Loggo-presets", "name": "SillyTavern-SpellBook", "url": "https://github.com/Loggo-presets/SillyTavern-SpellBook"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sillytavern-extension-promptinspector",
+        "name": "SillyTavern Extension PromptInspector",
+        "repository": {"owner": "SillyTavern", "name": "Extension-PromptInspector", "url": "https://github.com/SillyTavern/Extension-PromptInspector"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "maxipawlowski-story-orchestrator",
+        "name": "Story Orchestrator",
+        "repository": {"owner": "MaxiPawlowski", "name": "story-orchestrator", "url": "https://github.com/MaxiPawlowski/story-orchestrator"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "tydorius-st-characterpreview",
+        "name": "ST CharacterPreview",
+        "repository": {"owner": "Tydorius", "name": "ST-CharacterPreview", "url": "https://github.com/Tydorius/ST-CharacterPreview"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "hexicy-st-characterpreview",
+        "name": "ST CharacterPreview",
+        "repository": {"owner": "Hexicy", "name": "ST-CharacterPreview", "url": "https://github.com/Hexicy/ST-CharacterPreview"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "bf-gith-bf-ooc-injection",
+        "name": "BF OOC Injection",
+        "repository": {"owner": "BF-GitH", "name": "bf-ooc-injection", "url": "https://github.com/BF-GitH/bf-ooc-injection"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "quackified-floating-viewer",
+        "name": "Floating Viewer",
+        "repository": {"owner": "Quackified", "name": "Floating-Viewer", "url": "https://github.com/Quackified/Floating-Viewer"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "vibecoder9000-extension-tokenusage",
+        "name": "Extension TokenUsage",
+        "repository": {"owner": "Vibecoder9000", "name": "Extension-TokenUsage", "url": "https://github.com/Vibecoder9000/Extension-TokenUsage"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "fawn1e-st-plot-driver",
+        "name": "ST Plot Driver",
+        "repository": {"owner": "fawn1e", "name": "st-plot-driver", "url": "https://github.com/fawn1e/st-plot-driver"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "inspectorcaracal-sillytavern-rememory",
+        "name": "SillyTavern ReMemory",
+        "repository": {"owner": "InspectorCaracal", "name": "SillyTavern-ReMemory", "url": "https://github.com/InspectorCaracal/SillyTavern-ReMemory"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "splitclover-rewrite-extension",
+        "name": "Rewrite Extension",
+        "repository": {"owner": "splitclover", "name": "rewrite-extension", "url": "https://github.com/splitclover/rewrite-extension"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "japkozjad-st-action-pickers",
+        "name": "ST Action Pickers",
+        "repository": {"owner": "japkozjad", "name": "st-action-pickers", "url": "https://github.com/japkozjad/st-action-pickers"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "multihogaurelius-context-injection-rng-for-dnd",
+        "name": "Context Injection RNG for DnD",
+        "repository": {"owner": "MultihogAurelius", "name": "Context-Injection-RNG-for-DnD", "url": "https://github.com/MultihogAurelius/Context-Injection-RNG-for-DnD"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "spicymarinara-sillytavern-lovense",
+        "name": "SillyTavern Lovense",
+        "repository": {"owner": "SpicyMarinara", "name": "SillyTavern-Lovense", "url": "https://github.com/SpicyMarinara/SillyTavern-Lovense"},
+        "frontends": ["SillyTavern", "Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "b4bysw0rld-sillytavern-typefacer",
+        "name": "SillyTavern TypefaceR",
+        "repository": {"owner": "b4bysw0rld", "name": "SillyTavern-TypefaceR", "url": "https://github.com/b4bysw0rld/SillyTavern-TypefaceR"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "chesswoodspixel-sillytavern-lorebookstickysort",
+        "name": "SillyTavern Lorebook Sticky Sort",
+        "repository": {"owner": "chesswoodspixel", "name": "SillyTavern-LorebookStickySort", "url": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "qvink-sillytavern-rightclickmessagemenu",
+        "name": "SillyTavern Right-Click Message Menu",
+        "repository": {"owner": "qvink", "name": "SillyTavern-RightClickMessageMenu", "url": "https://github.com/qvink/SillyTavern-RightClickMessageMenu"},
+        "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "tclowe1982-marinara-extender",
+        "name": "Marinara Extender",
+        "repository": {"owner": "TCLowe1982", "name": "Marinara-Extender", "url": "https://github.com/TCLowe1982/Marinara-Extender"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "beeopo-marinara-rewrite",
+        "name": "Marinara Rewrite",
+        "repository": {"owner": "Beeopo", "name": "Marinara-Rewrite", "url": "https://github.com/Beeopo/Marinara-Rewrite"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sulphuratum-marinara-neural-memory",
+        "name": "Marinara Neural Memory",
+        "repository": {"owner": "Sulphuratum", "name": "marinara-neural-memory", "url": "https://github.com/Sulphuratum/marinara-neural-memory"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mitaska-weathertweaker",
+        "name": "WeatherTweaker",
+        "repository": {"owner": "Mitaska", "name": "WeatherTweaker", "url": "https://github.com/Mitaska/WeatherTweaker"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "jake9000-me-nord",
+        "name": "ME Nord",
+        "repository": {"owner": "jake9000", "name": "me-nord", "url": "https://github.com/jake9000/me-nord"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "kenhito-marinara-rpg-extension",
+        "name": "Marinara RPG Extension",
+        "repository": {"owner": "Kenhito", "name": "Marinara-RPG-Extension", "url": "https://github.com/Kenhito/Marinara-RPG-Extension"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "eum27-nai-inlay-illustrator",
+        "name": "NAI Inlay Illustrator",
+        "repository": {"owner": "EUM27", "name": "nai-inlay-illustrator", "url": "https://github.com/EUM27/nai-inlay-illustrator"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "sulphuratum-go-llamaswap-comfy-proxy",
+        "name": "go-llamaswap Comfy Proxy",
+        "repository": {"owner": "Sulphuratum", "name": "go-llamaswap-comfy-proxy", "url": "https://github.com/Sulphuratum/go-llamaswap-comfy-proxy"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "alatheus1-marinara-engine-game-sessions",
+        "name": "Marinara Engine Game Sessions",
+        "repository": {"owner": "Alatheus1", "name": "marinara-engine-game-sessions", "url": "https://github.com/Alatheus1/marinara-engine-game-sessions"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "cha1latte-marinara-custom-conversation-bg",
+        "name": "Marinara Custom Conversation Background",
+        "repository": {"owner": "cha1latte", "name": "marinara-custom-conversation-bg", "url": "https://github.com/cha1latte/marinara-custom-conversation-bg"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "cha1latte-marinara-theme-maker",
+        "name": "Marinara Theme Maker",
+        "repository": {"owner": "cha1latte", "name": "marinara-theme-maker", "url": "https://github.com/cha1latte/marinara-theme-maker"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "iaminvisibru-marinara-janitorai",
+        "name": "Marinara JanitorAI",
+        "repository": {"owner": "Iaminvisibru", "name": "MarinaraJanitorAI", "url": "https://github.com/Iaminvisibru/MarinaraJanitorAI"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "cha1latte-marinara-avatar-background",
+        "name": "Marinara Avatar Background",
+        "repository": {"owner": "cha1latte", "name": "marinara-avatar-background", "url": "https://github.com/cha1latte/marinara-avatar-background"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "cha1latte-win95-theme-marinara",
+        "name": "Win95 Theme Marinara",
+        "repository": {"owner": "cha1latte", "name": "win95-theme-marinara", "url": "https://github.com/cha1latte/win95-theme-marinara"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "decidetto-me-accent-color-changer",
+        "name": "ME Accent Color Changer",
+        "repository": {"owner": "Decidetto", "name": "ME-accent-color-changer", "url": "https://github.com/Decidetto/ME-accent-color-changer"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "revivalist-dev-guidedgenerations-extension",
+        "name": "Guided Generations Extension",
+        "repository": {"owner": "Revivalist-Dev", "name": "GuidedGenerations-Extension", "url": "https://github.com/Revivalist-Dev/GuidedGenerations-Extension"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "promansis-summary-sharder",
+        "name": "Summary Sharder",
+        "repository": {"owner": "Promansis", "name": "summary-sharder", "url": "https://github.com/Promansis/summary-sharder"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "platberlitz-sd-proxy",
+        "name": "SD Proxy",
+        "repository": {"owner": "platberlitz", "name": "sd-proxy", "url": "https://github.com/platberlitz/sd-proxy"},
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "n0819-sonder-engine",
+        "name": "Sonder Engine",
+        "repository": {"owner": "N0819", "name": "Sonder_Engine", "url": "https://github.com/N0819/Sonder_Engine"},
+        "frontends": ["Sonder Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "puras-director-v15",
+        "name": "Pura's Director v15.0",
+        "source_url": "https://platberlitz.github.io/",
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "daddytorgo-hash-frankengarage",
+        "name": "FrankenGarage",
+        "repository": {"owner": "daddytorgo-hash", "name": "FrankenGarage", "url": "https://github.com/daddytorgo-hash/FrankenGarage"},
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "purrfect-logic-4-max-mini",
+        "name": "Purrfect Logic 4 Max Mini",
+        "source_url": "https://old.reddit.com/r/SillyTavernAI/comments/1twlef0/purrfect_logic_4_max_mini_update_token_cleanup/",
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "realistic-frankenstein-preset",
+        "name": "Realistic Frankenstein",
+        "source_url": "https://old.reddit.com/r/SillyTavernAI/comments/1tyuh6h/realistic_frankenstein_my_new_family_of_freaky/",
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "writers-block-4",
+        "name": "Writer's Block 4",
+        "source_url": "https://old.reddit.com/r/SillyTavernAI/comments/1tnsxh6/update_writers_block_4_the_quest_for_tokens_a/",
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "zorgonatis-stabs-edh",
+        "name": "Stab's Directives",
+        "repository": {"owner": "Zorgonatis", "name": "Stabs-EDH", "url": "https://github.com/Zorgonatis/Stabs-EDH"},
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "mentallyquill-st-wandlight",
+        "name": "Wandlight",
+        "repository": {"owner": "MentallyQuill", "name": "ST-Wandlight", "url": "https://github.com/MentallyQuill/ST-Wandlight"},
+        "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    }
+]
