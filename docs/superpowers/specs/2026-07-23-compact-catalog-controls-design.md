@@ -20,6 +20,10 @@ compact mode is an optional density setting.
 - Put a compact density toggle beside the project count. It is an icon button
   with an accessible label, pressed state, and tooltip that switches between
   “Use compact cards” and “Use standard cards.”
+- Use the supplied collapse icon for the density toggle: two vertically opposed
+  chevrons pointing inward, with `viewBox="0 0 32 32"` and the path
+  `M23 26l-7-7-7 7M9 6l7 7 7-7`. Render its stroke with `currentColor` so it
+  follows the existing hover and pressed states.
 
 ## Mobile Controls
 
@@ -32,6 +36,11 @@ The primary mobile control row is ordered:
 The Filters button retains the active-filter count badge. Its icon and accessible
 label make the control identifiable without visible text. Controls must fit
 without horizontal scrolling at a 390 px preview width.
+
+On mobile, cap the sort dropdown at `120px`. Give the reclaimed width to the
+segmented status control and render its All, Active, New, and Released labels at
+`10px` with tighter horizontal padding. Preserve every full label; do not
+abbreviate or clip “Released.”
 
 ## Compact Card Contract
 
