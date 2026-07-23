@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the scrolling metadata checkbox list with a searchable OR-filter chip cloud, install the four approved function icons, and reduce only the desktop function-navigation height while applying the approved header and category copy.
+**Goal:** Replace the scrolling metadata checkbox list with a searchable OR-filter chip cloud, install the four approved function icons, show the existing tagline on mobile, and reduce only the desktop function-navigation height while applying the approved header and category copy.
 
-**Architecture:** Preserve the existing single-file v7 Companion mockup and its current card, search, query-chip, mobile-drawer, and metadata filtering logic. Replace the four existing inline function-symbol definitions with normalized geometry from the supplied SVGs so every existing desktop, mobile, and card `<use>` updates together. Change only the generated metadata option markup and presentation, then compact the desktop-only navigation strip through scoped CSS so the mobile Browse selector retains its current dimensions.
+**Architecture:** Preserve the existing single-file v7 Companion mockup and its current card, search, query-chip, mobile-drawer, and metadata filtering logic. Reuse the existing shared brand markup on mobile by removing only the mobile tagline-hiding rule; do not duplicate the tagline. Replace the four existing inline function-symbol definitions with normalized geometry from the supplied SVGs so every existing desktop, mobile, and card `<use>` updates together. Change only the generated metadata option markup and presentation, then compact the desktop-only navigation strip through scoped CSS so the mobile Browse selector retains its current dimensions.
 
 **Tech Stack:** Static HTML, CSS container queries, vanilla JavaScript, PowerShell contract checks, Node.js syntax checks, and the in-app browser.
 
@@ -13,6 +13,9 @@
 - `.superpowers/` remains intentionally ignored and must not be staged.
 - The submission action reads exactly `Submit Project`.
 - Remove `How Activity Works`; keep `About`.
+- Show the existing `Where AI roleplay tools gather` tagline beneath the
+  Tavernary wordmark on mobile as well as desktop.
+- Keep one shared `.brand-tagline` element; do not duplicate mobile-only copy.
 - Rename `Character & World Authoring` to `Character & Worldbuilding` on desktop and mobile.
 - Replace the four inline function icons with the supplied mappings:
   - Memory & Retrieval: `C:\Users\Keptin\Downloads\memory.svg`
@@ -46,8 +49,8 @@
 - Source: `C:\Users\Keptin\Downloads\d20.svg`
 
 **Interfaces:**
-- Consumes: `.top-actions`, `.category-strip`, `.category`, `.category .icon`, `.all-symbol`, the `i-memory`, `i-generation`, `i-authoring`, and `i-rpg` symbols, and matching desktop/mobile category labels.
-- Produces: the approved header copy, the four supplied function icons across all existing `<use>` sites, and a desktop-only `50px` category strip with `34px` buttons and `18px` symbols.
+- Consumes: `.top-actions`, `.brand-copy`, `.brand-tagline`, the mobile `@container site (max-width: 760px)` rules, `.category-strip`, `.category`, `.category .icon`, `.all-symbol`, the `i-memory`, `i-generation`, `i-authoring`, and `i-rpg` symbols, and matching desktop/mobile category labels.
+- Produces: the approved header copy, the shared tagline on desktop and mobile, the four supplied function icons across all existing `<use>` sites, and a desktop-only `50px` category strip with `34px` buttons and `18px` symbols.
 
 - [ ] **Step 1: Run the failing copy and navigation contract**
 
@@ -56,6 +59,7 @@ $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
   '>Submit Project</a>',
+  '<span class="brand-tagline">Where AI roleplay tools gather</span>',
   'min-height: 50px;',
   'height: 34px;',
   '.category .icon { width: 18px; height: 18px;',
@@ -74,7 +78,11 @@ foreach($item in $required){
   if(-not $html.Contains($item)){throw "Missing $item"}
 }
 if($html.Contains('How activity works')){throw 'How Activity Works still present'}
+if($html.Contains('.brand-tagline { display: none; }')){throw 'Mobile tagline still hidden'}
 if($html.Contains('Character & World Authoring')){throw 'Old category label still present'}
+if(([regex]::Matches($html,'class="brand-tagline"')).Count -ne 1){
+  throw 'Tagline must use one shared element'
+}
 if(([regex]::Matches($html,'<span>Character &amp; Worldbuilding</span>')).Count -ne 2){
   throw 'Worldbuilding label must appear in desktop and mobile navigation'
 }
@@ -93,7 +101,29 @@ Replace the top actions with:
 </nav>
 ```
 
-- [ ] **Step 3: Rename the category in both navigation surfaces**
+- [ ] **Step 3: Show the shared tagline on mobile**
+
+Keep the existing shared brand markup unchanged:
+
+```html
+<span class="brand-copy">
+  <span class="brand-name">Tavernary</span>
+  <span class="brand-tagline">Where AI roleplay tools gather</span>
+</span>
+```
+
+Inside `@container site (max-width: 760px)`, remove:
+
+```css
+.brand-tagline { display: none; }
+```
+
+Do not add a replacement mobile-only tagline rule or a second tagline element.
+The inherited `.brand-copy` column layout and `.brand-tagline` styling already
+place the tagline beneath the Tavernary wordmark. Keep `.topbar { height: auto; }`
+so the shared copy can use its natural height.
+
+- [ ] **Step 4: Rename the category in both navigation surfaces**
 
 Replace the visible desktop and mobile labels with:
 
@@ -104,7 +134,7 @@ Replace the visible desktop and mobile labels with:
 Keep `data-category="authoring"` and the existing `#i-authoring` reference
 unchanged so existing filtering continues to work.
 
-- [ ] **Step 4: Replace the four shared inline symbols**
+- [ ] **Step 5: Replace the four shared inline symbols**
 
 Use the supplied SVG geometry to replace only these existing definitions:
 
@@ -146,7 +176,7 @@ Replace the four definitions with this normalized markup:
 </symbol>
 ```
 
-- [ ] **Step 5: Compact only the desktop category strip**
+- [ ] **Step 6: Compact only the desktop category strip**
 
 Replace the desktop category rules with:
 
@@ -191,7 +221,7 @@ Do not change the global `.all-symbol` dimensions or any rules inside
 `@container site (max-width: 760px)`. This keeps the mobile Browse selector and
 menu options at their current sizes.
 
-- [ ] **Step 6: Run copy, icon, navigation, and JavaScript contracts**
+- [ ] **Step 7: Run copy, tagline, icon, navigation, and JavaScript contracts**
 
 Run Step 1, then:
 
@@ -398,6 +428,7 @@ Expected: both commands exit 0.
 In Desktop Standard mode, verify:
 
 - only `About` and `Submit Project` remain in the top actions;
+- `Where AI roleplay tools gather` remains beneath the Tavernary wordmark;
 - `Character & Worldbuilding` appears in the desktop strip;
 - the strip measures approximately `50px`;
 - each category button measures approximately `34px`;
@@ -441,6 +472,10 @@ Verify:
 
 Switch to Mobile and verify:
 
+- `Where AI roleplay tools gather` appears beneath the Tavernary wordmark;
+- the tagline uses the same copy and muted styling as desktop;
+- the brand remains vertically centered with the logo and does not collide with
+  `Submit Project`;
 - the `Browse: All Projects` selector retains its previous height;
 - `Character & Worldbuilding` appears in the mobile menu;
 - the filter drawer shows the full chip cloud without an inner metadata
@@ -457,6 +492,7 @@ $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
   '>Submit Project</a>',
+  '<span class="brand-tagline">Where AI roleplay tools gather</span>',
   '<span>Character &amp; Worldbuilding</span>',
   'min-height: 50px;',
   'height: 34px;',
@@ -478,12 +514,16 @@ foreach($item in $required){
 }
 $forbidden=@(
   'How activity works',
+  '.brand-tagline { display: none; }',
   'Character & World Authoring',
   'max-height: 190px;',
   'scrollbar-color: var(--line-strong) var(--surface);'
 )
 foreach($item in $forbidden){
   if($html.Contains($item)){throw "Forbidden $item"}
+}
+if(([regex]::Matches($html,'class="brand-tagline"')).Count -ne 1){
+  throw 'Tagline must use one shared element'
 }
 if(([regex]::Matches($html,'<span>Character &amp; Worldbuilding</span>')).Count -ne 2){
   throw 'Worldbuilding label must appear twice'
