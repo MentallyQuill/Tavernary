@@ -196,16 +196,17 @@ $expected=@{
   'Smart Memory'=@('Memory & Retrieval','Review & Validation','Multi-user')
   'RPG Companion'=@('Campaigns & RPG','State & Simulation','Deprecated')
   'Celia V5.4'=@('Prompt Engineering','Text Processing','Character & Worldbuilding')
-  'Marinara’s Essentials'=@('Prompt Engineering','Text Processing','Character & Worldbuilding','Adult Content')
+  'Marinara Essentials'=@('Prompt Engineering','Text Processing','Character & Worldbuilding','Adult Content')
 }
 foreach($card in $cards){
   $name=[regex]::Match($card.Value,'<a class="card-title"[^>]*>([^<]+)</a>').Groups[1].Value
   $name=[System.Net.WebUtility]::HtmlDecode($name)
+  $lookupName=if($name -match '^Marinara.*Essentials$'){'Marinara Essentials'}else{$name}
   $tags=@(
     [regex]::Matches($card.Value,'<span class="chip(?! frontend)[^"]*">([^<]+)</span>') |
       ForEach-Object { [System.Net.WebUtility]::HtmlDecode($_.Groups[1].Value.Trim()) }
   )
-  if(($tags -join '|') -ne ($expected[$name] -join '|')){
+  if(($tags -join '|') -ne ($expected[$lookupName] -join '|')){
     throw "$name tags differ: $($tags -join ', ')"
   }
 }
