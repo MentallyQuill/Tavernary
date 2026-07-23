@@ -11,6 +11,12 @@ compact mode is an optional density setting.
 - Render the “Tavernary” wordmark in `#E18A24`, sampled from the orange
   SillyTavern dialogue text in the supplied reference. Keep the square `T` mark
   neutral so the wordmark remains the sole orange brand accent in the top bar.
+- Replace the square `T` mark with the supplied transparent
+  `Tavernary-logo.png` bottle illustration. Render it without a border,
+  background, or enclosing tile, using `object-fit: contain`.
+- Size the logo at `48px × 48px` on desktop and `44px × 44px` in the 390 px
+  mobile layout. Keep the desktop top bar at `66px`; the logo must not increase
+  its height.
 - Remove the sentence “Development activity reflects meaningful source work,
   never stars or reviews.”
 - Move “Catalog refreshed 43 min ago” beneath the project count as plain subtitle
