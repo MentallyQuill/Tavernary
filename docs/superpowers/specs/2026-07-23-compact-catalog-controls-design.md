@@ -8,6 +8,9 @@ compact mode is an optional density setting.
 
 ## Catalog Header
 
+- Render the “Tavernary” wordmark in `#E18A24`, sampled from the orange
+  SillyTavern dialogue text in the supplied reference. Keep the square `T` mark
+  neutral so the wordmark remains the sole orange brand accent in the top bar.
 - Remove the sentence “Development activity reflects meaningful source work,
   never stars or reviews.”
 - Move “Catalog refreshed 43 min ago” beneath the project count as plain subtitle
