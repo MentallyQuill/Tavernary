@@ -20,8 +20,9 @@ compact mode is an optional density setting.
 - Set the Tavernary tagline to `Where AI roleplay tools gather`. Place it
   directly beneath the orange wordmark in small muted text on desktop and hide
   it in the 390 px mobile layout.
-- Capitalize the submission link as `Submit Repository`. Color its text and
+- Set the submission link to `Submit Project`. Color its text and
   border accent `#E18A24`, matching the Tavernary wordmark.
+- Remove the `How Activity Works` link. Keep `About`.
 - Remove the sentence “Development activity reflects meaningful source work,
   never stars or reviews.”
 - Move “Catalog refreshed 43 min ago” beneath the project count as plain subtitle
@@ -87,6 +88,33 @@ Multiple selections inside one filter group use OR logic. Selections in
 different groups combine with AND logic. No selected filters means every
 project remains visible. Card chips remain informational in the initial
 release because the whole card opens its canonical source.
+
+Render metadata options as one naturally wrapping chip cloud beneath the
+metadata search field. Do not place the options inside an independently
+scrolling region. Each chip shows its normalized label and a small result
+count. An unselected chip uses the primary surface, standard border, and
+secondary text. A selected chip uses the raised surface, strong border,
+primary text, and a visible checkmark so selection does not depend on color.
+
+Searching metadata hides nonmatching unselected chips without changing catalog
+results. Selected chips remain visible and move to the beginning of the cloud
+while searching. Clicking a chip toggles its filter and stays synchronized with
+the removable query chips above the catalog.
+
+## Desktop Function Navigation
+
+Reduce only the desktop function-navigation strip by approximately 30 percent:
+
+- strip height decreases from approximately `72px` to `50px`;
+- category button height decreases from approximately `48px` to `34px`;
+- category icons decrease from `22px` to approximately `18px`;
+- vertical padding and internal gaps tighten proportionally;
+- all eight categories remain equal-width and fully visible without horizontal
+  scrolling.
+
+Rename `Character & World Authoring` to `Character & Worldbuilding` everywhere.
+Do not reduce the height of the mobile `Browse: All Projects` selector or its
+menu options.
 
 ## Mobile Controls
 

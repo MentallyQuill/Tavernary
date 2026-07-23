@@ -55,7 +55,8 @@ The header contains:
 
 - the Tavernary identity;
 - a prominent universal search field;
-- compact links for activity methodology, About, and repository submission.
+- a compact About link;
+- a `Submit Project` action.
 
 ### 3.2 Function Navigation
 
@@ -65,14 +66,15 @@ An equal-width category strip sits below the header:
 - Frontends;
 - Memory & Retrieval;
 - Generation & Reasoning;
-- Character & World Authoring;
+- Character & Worldbuilding;
 - RPG Systems & Suites;
 - Interface & Workflow;
 - Developer Infrastructure.
 
 These labels use title case and equal spacing. On desktop and tablet all eight
-fit without a native horizontal scrollbar. Mobile replaces the strip with one
-compact category selector.
+fit without a native horizontal scrollbar. The desktop strip is approximately
+`50px` high with approximately `34px` buttons and `18px` icons. Mobile replaces
+the strip with one compact category selector and retains its existing height.
 
 ### 3.3 Searchable Catalog
 
@@ -198,7 +200,7 @@ Each project receives one primary function for organization:
 
 - Memory and retrieval
 - Generation and reasoning
-- Character and world authoring
+- Character and worldbuilding
 - RPG and simulation systems
 - Interface and workflow
 - Developer infrastructure
@@ -267,7 +269,7 @@ This group requires an **operation stage** field. A project may guide the user,
 run before the main generation, intercept prompt construction, orchestrate
 several models, run auxiliary calls, or rewrite a completed response.
 
-### 6.3 Character and World Authoring
+### 6.3 Character and Worldbuilding
 
 - CarrotKernel
 - SillyTavern Character Creator
@@ -573,6 +575,13 @@ Metadata chips use a maintained vocabulary and appear as selectable options in
 the filter rail. Multiple selections within one filter group use OR logic.
 Selections from different groups combine with AND logic. With no selected
 filters, the complete catalog remains visible.
+
+Metadata options appear as one wrapping, non-scrolling chip cloud beneath a
+metadata search field. Each chip includes its label and result count. Selected
+chips use a raised surface, strong border, primary text, and checkmark.
+Metadata search hides nonmatching unselected chips but keeps selected chips
+visible and ordered first. Search changes the option cloud only; it does not
+filter catalog results until a chip is selected.
 
 Examples such as `Suite`, `Agent framework`, `Shared library`, `Dependency`,
 and `Multi-feature` preserve useful distinctions without expanding Project
