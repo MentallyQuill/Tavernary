@@ -196,7 +196,7 @@ $expected=@{
   'Smart Memory'=@('Memory & Retrieval','Review & Validation','Multi-user')
   'RPG Companion'=@('Campaigns & RPG','State & Simulation','Deprecated')
   'Celia V5.4'=@('Prompt Engineering','Text Processing','Character & Worldbuilding')
-  "Marinara's Essentials"=@('Prompt Engineering','Text Processing','Character & Worldbuilding','Adult Content')
+  'Marinara’s Essentials'=@('Prompt Engineering','Text Processing','Character & Worldbuilding','Adult Content')
 }
 foreach($card in $cards){
   $name=[regex]::Match($card.Value,'<a class="card-title"[^>]*>([^<]+)</a>').Groups[1].Value
