@@ -28,8 +28,7 @@
 ### Task 1: Header Logo and Identity
 
 **Files:**
-- Copy: `C:\Users\Keptin\Downloads\Tavernary-logo.png`
-- Create: `.superpowers/brainstorm/1335-1784816109/content/assets/Tavernary-logo.png`
+- Read: `C:\Users\Keptin\Downloads\Tavernary-logo.png`
 - Modify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html`
 
 **Interfaces:**
@@ -40,32 +39,21 @@
 
 ```powershell
 $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
-$asset='.superpowers/brainstorm/1335-1784816109/content/assets/Tavernary-logo.png'
 $html=Get-Content -LiteralPath $file -Raw
-if(-not (Test-Path -LiteralPath $asset)){throw 'Missing Tavernary logo asset'}
-@('class="brand-logo"','assets/Tavernary-logo.png',
+@('class="brand-logo"','src="data:image/png;base64,',
   'Where AI roleplay tools gather','>Submit Repository</a>') |
   ForEach-Object { if(-not $html.Contains($_)){throw "Missing $_"} }
 ```
 
-Expected: FAIL with `Missing Tavernary logo asset`.
+Expected: FAIL with `Missing src="data:image/png;base64,`.
 
-- [ ] **Step 2: Copy the supplied transparent logo**
-
-```powershell
-$source='C:\Users\Keptin\Downloads\Tavernary-logo.png'
-$assetDir='.superpowers/brainstorm/1335-1784816109/content/assets'
-New-Item -ItemType Directory -Path $assetDir -Force | Out-Null
-Copy-Item -LiteralPath $source -Destination (Join-Path $assetDir 'Tavernary-logo.png') -Force
-```
-
-- [ ] **Step 3: Replace the boxed `T` brand markup**
+- [ ] **Step 2: Replace the boxed `T` brand markup**
 
 Use:
 
 ```html
 <a class="brand" href="#" aria-label="Tavernary home">
-  <img class="brand-logo" src="assets/Tavernary-logo.png" alt="">
+  <img class="brand-logo" src="LOGO_DATA_URL" alt="">
   <span class="brand-copy">
     <span class="brand-name">Tavernary</span>
     <span class="brand-tagline">Where AI roleplay tools gather</span>
@@ -78,6 +66,26 @@ Change the submission link text to:
 ```html
 <a class="submit" href="#">Submit Repository</a>
 ```
+
+- [ ] **Step 3: Embed the supplied transparent logo**
+
+```powershell
+$source='C:\Users\Keptin\Downloads\Tavernary-logo.png'
+$file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
+$data='data:image/png;base64,'+[Convert]::ToBase64String(
+  [IO.File]::ReadAllBytes((Resolve-Path -LiteralPath $source))
+)
+$html=Get-Content -LiteralPath $file -Raw
+$html=$html.Replace('LOGO_DATA_URL',$data)
+[IO.File]::WriteAllText(
+  (Resolve-Path -LiteralPath $file),
+  $html,
+  [Text.UTF8Encoding]::new($false)
+)
+```
+
+The Companion server returns HTTP 403 for relative asset routes. Keep the
+mockup self-contained by embedding the PNG; do not add an `assets/` request.
 
 - [ ] **Step 4: Add the responsive brand styles**
 
@@ -512,7 +520,6 @@ Expected: both commands exit 0.
 
 **Files:**
 - Verify: `.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html`
-- Verify: `.superpowers/brainstorm/1335-1784816109/content/assets/Tavernary-logo.png`
 
 **Interfaces:**
 - Consumes: the completed v7 Companion mockup.
@@ -573,16 +580,15 @@ Switch to Mobile and check:
 
 ```powershell
 $file='.superpowers/brainstorm/1335-1784816109/content/catalog-wall-responsive-v7.html'
-$asset='.superpowers/brainstorm/1335-1784816109/content/assets/Tavernary-logo.png'
 $html=Get-Content -LiteralPath $file -Raw
 $required=@(
-  'Where AI roleplay tools gather','>Submit Repository</a>',
+  'src="data:image/png;base64,','Where AI roleplay tools gather',
+  '>Submit Repository</a>',
   '--bg: #07181D','--kind-extension: #E18A24',
   '--kind-frontend: #D62839','--kind-preset: #57C5A3',
   'id="metadata-options"','function buildMetadataFilters()','metadataMatch'
 )
 foreach($item in $required){if(-not $html.Contains($item)){throw "Missing $item"}}
-if(-not (Test-Path -LiteralPath $asset)){throw 'Missing Tavernary logo asset'}
 if(([regex]::Matches($html,'class="filter-option kind-option"')).Count -ne 3){
   throw 'Project Kind filter must contain exactly three options'
 }
