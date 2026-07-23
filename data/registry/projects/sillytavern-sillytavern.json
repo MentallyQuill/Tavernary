@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "sillytavern-sillytavern",
+  "name": "SillyTavern",
+  "kind": "frontend",
+  "summary": "A locally installed interface for text generation, character chat, and AI-assisted roleplay.",
+  "source": {
+    "type": "github",
+    "repository": "SillyTavern/SillyTavern",
+    "repository_id": 599524116
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "frontend",
+  "capabilities": [
+    "character-worldbuilding",
+    "extension-development",
+    "prompt-engineering"
+  ],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

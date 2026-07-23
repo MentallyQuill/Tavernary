@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/project.schema.json",
+  "title": "Tavernary curated project",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "kind",
+    "summary",
+    "source",
+    "frontends",
+    "primary_function",
+    "capabilities",
+    "cataloged_at",
+    "catalog_cohort",
+    "visibility",
+    "refresh_policy"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["frontend", "extension", "preset"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "source": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "repository", "repository_id"],
+          "properties": {
+            "type": { "const": "github" },
+            "repository": {
+              "type": "string",
+              "pattern": "^[^/\\s]+/[^/\\s]+$"
+            },
+            "repository_id": { "type": "integer", "minimum": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "url",
+            "published_at",
+            "version",
+            "artifact_size_bytes",
+            "license_status",
+            "license_spdx_id"
+          ],
+          "properties": {
+            "type": { "const": "url" },
+            "url": { "type": "string", "format": "uri" },
+            "published_at": {
+              "anyOf": [
+                { "type": "string", "format": "date-time" },
+                { "type": "null" }
+              ]
+            },
+            "version": {
+              "anyOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "null" }
+              ]
+            },
+            "artifact_size_bytes": {
+              "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
+            },
+            "license_status": {
+              "enum": ["osi-approved", "proprietary", "missing"]
+            },
+            "license_spdx_id": {
+              "anyOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "null" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "frontends": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "primary_function": {
+      "enum": [
+        "frontend",
+        "memory-retrieval",
+        "generation-reasoning",
+        "character-worldbuilding",
+        "rpg-systems",
+        "interface-workflow",
+        "developer-infrastructure"
+      ]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "cataloged_at": { "type": "string", "format": "date-time" },
+    "catalog_cohort": { "enum": ["seed", "standard"] },
+    "visibility": { "enum": ["published", "quarantined", "disabled"] },
+    "refresh_policy": { "enum": ["automatic", "paused"] }
+  }
+}

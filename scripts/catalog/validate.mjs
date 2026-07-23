@@ -1,0 +1,166 @@
+import { readdir, readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import Ajv from "ajv";
+
+const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+
+async function readJson(path) {
+  return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));
+}
+
+async function loadRecords() {
+  const directory = resolve(rootDirectory, "data/registry/projects");
+  const files = (await readdir(directory))
+    .filter((file) => file.endsWith(".json"))
+    .sort();
+  return Promise.all(
+    files.map((file) => readJson(`data/registry/projects/${file}`)),
+  );
+}
+
+function vocabularyIds(vocabulary, property) {
+  return new Set(vocabulary[property].map(({ id }) => id));
+}
+
+function sourceKey(source) {
+  if (source.type === "github") {
+    return `github:${source.repository.toLowerCase()}`;
+  }
+
+  try {
+    const url = new URL(source.url);
+    url.hash = "";
+    return `url:${url.href}`;
+  } catch {
+    return `url:${source.url}`;
+  }
+}
+
+function schemaError(record, error) {
+  const location = error.instancePath || "/";
+  return `${record.id ?? "<unknown>"}: schema ${location} ${error.message}`;
+}
+
+export async function validateCatalog(options = {}) {
+  const [schema, frontendVocabulary, functionVocabulary, capabilityVocabulary] =
+    await Promise.all([
+      readJson("data/schemas/project.schema.json"),
+      readJson("data/vocabularies/frontends.json"),
+      readJson("data/vocabularies/primary-functions.json"),
+      readJson("data/vocabularies/capabilities.json"),
+    ]);
+
+  const ajv = new Ajv({ allErrors: true, strict: false });
+  ajv.addFormat("uri", {
+    type: "string",
+    validate(value) {
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+  });
+  ajv.addFormat(
+    "date-time",
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/,
+  );
+
+  const validateRecord = ajv.compile(schema);
+  const records = options.records ?? (await loadRecords());
+  const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
+  const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
+  const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
+  const ids = new Set();
+  const sources = new Set();
+  const errors = [];
+
+  for (const record of records) {
+    if (!validateRecord(record)) {
+      errors.push(
+        ...validateRecord.errors.map((error) => schemaError(record, error)),
+      );
+    }
+
+    const id = record.id ?? "<unknown>";
+    if (ids.has(id)) {
+      errors.push(`${id}: duplicate project id`);
+    }
+    ids.add(id);
+
+    if (record.source?.type === "github") {
+      if (
+        !Number.isInteger(record.source.repository_id) ||
+        record.source.repository_id <= 0
+      ) {
+        errors.push(`${id}: GitHub source requires permanent repository_id`);
+      }
+    } else if (record.source?.type === "url") {
+      let protocol;
+      try {
+        protocol = new URL(record.source.url).protocol;
+      } catch {
+        protocol = null;
+      }
+      if (protocol !== "https:") {
+        errors.push(`${id}: URL source requires https protocol`);
+      }
+      if (record.kind !== "preset") {
+        errors.push(`${id}: only presets may use source.type url`);
+      }
+    }
+
+    if (
+      (record.kind === "frontend" || record.kind === "extension") &&
+      record.source?.type !== "github"
+    ) {
+      errors.push(`${id}: ${record.kind} requires source.type github`);
+    }
+
+    if (record.source) {
+      const canonicalSource = sourceKey(record.source);
+      if (sources.has(canonicalSource)) {
+        errors.push(`${id}: duplicate canonical source`);
+      }
+      sources.add(canonicalSource);
+    }
+
+    for (const frontend of record.frontends ?? []) {
+      if (!frontendIds.has(frontend)) {
+        errors.push(`${id}: unknown frontend ${frontend}`);
+      }
+    }
+    if (record.primary_function && !functionIds.has(record.primary_function)) {
+      errors.push(`${id}: unknown primary function ${record.primary_function}`);
+    }
+    for (const capability of record.capabilities ?? []) {
+      if (!capabilityIds.has(capability)) {
+        errors.push(`${id}: unknown capability ${capability}`);
+      }
+    }
+  }
+
+  return { projectCount: records.length, errors };
+}
+
+async function main() {
+  const result = await validateCatalog();
+  if (result.errors.length > 0) {
+    for (const error of result.errors) {
+      console.error(error);
+    }
+    process.exitCode = 1;
+    return;
+  }
+  console.log(`Validated ${result.projectCount} projects`);
+}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  await main();
+}

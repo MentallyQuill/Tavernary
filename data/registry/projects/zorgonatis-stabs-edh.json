@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "zorgonatis-stabs-edh",
+  "name": "Stab's Directives",
+  "kind": "preset",
+  "summary": "A SillyTavern system-preset project for directing model behavior during roleplay.",
+  "source": {
+    "type": "github",
+    "repository": "Zorgonatis/Stabs-EDH",
+    "repository_id": 1100996755
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "capabilities": ["prompt-engineering", "instruction-control"],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

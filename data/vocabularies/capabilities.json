@@ -1,0 +1,14 @@
+{
+  "capabilities": [
+    { "id": "automation", "label": "Automation" },
+    { "id": "character-worldbuilding", "label": "Character and worldbuilding" },
+    { "id": "extension-development", "label": "Extension development" },
+    { "id": "image-generation", "label": "Image generation" },
+    { "id": "instruction-control", "label": "Instruction control" },
+    { "id": "model-routing", "label": "Model routing" },
+    { "id": "multi-frontend", "label": "Multiple frontends" },
+    { "id": "planning-reasoning", "label": "Planning and reasoning" },
+    { "id": "prompt-engineering", "label": "Prompt engineering" },
+    { "id": "review-validation", "label": "Review and validation" }
+  ]
+}
