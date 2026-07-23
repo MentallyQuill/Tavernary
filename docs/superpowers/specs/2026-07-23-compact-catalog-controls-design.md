@@ -17,6 +17,11 @@ compact mode is an optional density setting.
 - Size the logo at `48px × 48px` on desktop and `44px × 44px` in the 390 px
   mobile layout. Keep the desktop top bar at `66px`; the logo must not increase
   its height.
+- Set the Tavernary tagline to “Where AI roleplay tools gather.” Place it
+  directly beneath the orange wordmark in small muted text on desktop and hide
+  it in the 390 px mobile layout.
+- Capitalize the submission link as “Submit Repository.” Color its text and
+  border accent `#E18A24`, matching the Tavernary wordmark.
 - Remove the sentence “Development activity reflects meaningful source work,
   never stars or reviews.”
 - Move “Catalog refreshed 43 min ago” beneath the project count as plain subtitle
@@ -30,6 +35,22 @@ compact mode is an optional density setting.
   chevrons pointing inward, with `viewBox="0 0 32 32"` and the path
   `M23 26l-7-7-7 7M9 6l7 7 7-7`. Render its stroke with `currentColor` so it
   follows the existing hover and pressed states.
+
+## Functional Category Colors
+
+Apply color to both the icon and label of every functional-category button.
+Keep button backgrounds, hover treatments, active borders, and the All Projects
+button neutral.
+
+| Category | Color |
+| --- | --- |
+| Frontends | Teal, `#0A7C6E` |
+| Memory & Retrieval | Mint, `#2DD4BF` |
+| Generation & Reasoning | Purple, `#8B5CF6` |
+| Character & World Authoring | Lime, `#84CC16` |
+| RPG Systems & Suites | Amber, `#F59E0B` |
+| Interface & Workflow | Cyan, `#06B6D4` |
+| Developer Infrastructure | Blue, `#3B82F6` |
 
 ## Mobile Controls
 
