@@ -1,0 +1,3 @@
+# Immutable visual acceptance fixtures must retain their approved source bytes.
+/docs/reference/mockups/catalog-wall-responsive-v7.html -text
+/docs/reference/assets/icons/*.svg -text
