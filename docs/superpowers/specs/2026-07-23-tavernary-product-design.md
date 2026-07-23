@@ -18,9 +18,10 @@ primary job is to help people discover:
 - what has been announced, released, or actively developed recently.
 
 Tavernary is not a storefront, review site, social network, or popularity
-contest. It does not rank projects by stars, likes, ratings, reviews, or sales.
-It organizes projects by purpose, compatibility, lineage, lifecycle, and
-transparent development signals.
+contest. It organizes projects by purpose, compatibility, lineage, lifecycle,
+and transparent development signals. An optional Popularity sort is available
+because users expect it, but it is never the default and is not presented as a
+quality judgment.
 
 The initial catalog is centered on SillyTavern while being explicitly designed
 to accommodate Lumiverse, Marinara Engine, and future AI roleplay frontends.
@@ -29,8 +30,9 @@ to accommodate Lumiverse, Marinara Engine, and future AI roleplay frontends.
 
 1. **Search before spectacle.** The site may be visually expressive, but users
    should immediately understand that it is a discovery tool.
-2. **Activity, not popularity.** Development signals are evidence of ongoing
-   work, not a declaration that one project is better than another.
+2. **Activity by default; popularity by request.** Development signals are
+   evidence of ongoing work, not a declaration that one project is better than
+   another. Popularity is an optional, plainly explained sort mode.
 3. **Compatibility is evidence-based.** Tavernary must distinguish verified,
    reported, experimental, planned, broken, and unknown compatibility.
 4. **Relationships matter.** Forks, ports, successors, rewrites, bundles, and
@@ -44,53 +46,45 @@ to accommodate Lumiverse, Marinara Engine, and future AI roleplay frontends.
 
 ## 3. Homepage Information Architecture
 
-The homepage has three major blocks.
+The homepage is the directory. It opens directly into search, filters, sort
+controls, and the project grid without a splash page or promotional hero.
 
-### 3.1 Search Hero
+### 3.1 Global Header
 
-The opening view answers one question: “What are you looking for?”
+The header contains:
 
-It contains:
-
-- the Tavernary identity and one-sentence purpose;
+- the Tavernary identity;
 - a prominent universal search field;
-- quick filters for project kind and compatible frontend;
-- a compact catalog freshness indicator.
+- compact links for activity methodology, About, and repository submission.
 
-Suggested headline:
+### 3.2 Function Navigation
 
-> Find what is being built for AI roleplay.
+An equal-width category strip sits below the header:
 
-The hero is compact. It establishes personality without delaying access to the
-catalog.
+- All Projects;
+- Frontends;
+- Memory & Retrieval;
+- Generation & Reasoning;
+- Character & World Authoring;
+- RPG Systems & Suites;
+- Interface & Workflow;
+- Developer Infrastructure.
 
-### 3.2 Development Signals
+These labels use title case and equal spacing. On desktop and tablet all eight
+fit without a native horizontal scrollbar. Mobile replaces the strip with one
+compact category selector.
 
-One grid presents current ecosystem movement through three tabs:
+### 3.3 Searchable Catalog
 
-- **New** — newly discovered projects and sourced announcements;
-- **Active** — projects with recent meaningful source development;
-- **Released** — recent tagged releases.
+The catalog begins immediately with:
 
-These are alternate views of one component, not three stacked homepage
-sections. Cards explain why they appear, such as “four active weeks in the last
-90 days” or “new release two days ago.”
+- a PCPartPicker-like filter rail;
+- result count and catalog freshness;
+- All, Active, New, and Released views;
+- an optional sort control;
+- standardized project tiles.
 
-### 3.3 Ecosystem Directory
-
-The complete searchable catalog follows the signal grid. Frontends, functions,
-compatibility, lifecycle, and technical characteristics appear as filters,
-rather than separate homepage sections.
-
-The page rhythm is:
-
-```text
-Search
-  ↓
-What is happening
-  ↓
-Browse everything
-```
+The default state shows every project until the user searches or adds filters.
 
 ## 4. Visual Direction
 
@@ -147,7 +141,7 @@ Motion communicates state and discovery:
 - search results reorganize smoothly;
 - filter chips snap into the active query rail;
 - activity traces animate once when revealed;
-- cards expand into dossiers without losing scroll position;
+- sort changes reorder cards without losing the current filters;
 - announcements enter through restrained framed transitions;
 - background grid movement is subtle and never continuous enough to distract.
 
@@ -166,7 +160,8 @@ independent layers.
 - Agent package
 - Suite or bundle
 - Library or dependency
-- Preset or prompt package
+- Preset
+- Prompt package
 - External service or companion backend
 - Development tool
 
@@ -453,8 +448,9 @@ The default “Active development” ordering uses a transparent index:
 - 25% normalized source change volume;
 - 15% release recency.
 
-The component values are visible in the project dossier. Stars, forks,
-downloads, ratings, and reviews do not affect the index.
+The component values remain auditable through the activity-methodology view
+and generated catalog data. Stars, forks, downloads, ratings, and reviews do
+not affect the index.
 
 Activity is normalized within three cohorts:
 
@@ -462,10 +458,10 @@ Activity is normalized within three cohorts:
 - extensions, plugins, agents, and suites;
 - libraries, services, and development tools.
 
-The homepage signal grid draws from all three cohorts and limits frontends to
-one-third of visible Active slots. Unused cohort slots flow to the next
-highest-scoring eligible project. This prevents large frontend monorepos from
-dominating the page without hiding their activity.
+The Active view draws from all three cohorts and limits frontends to one-third
+of visible slots. Unused cohort slots flow to the next highest-scoring eligible
+project. This prevents large frontend monorepos from dominating the view
+without hiding their activity.
 
 ### 10.4 Lifecycle Is Independent
 
@@ -480,6 +476,23 @@ Activity does not override lifecycle. A project can be:
 
 A deprecated project with a recent maintenance commit remains labeled
 deprecated.
+
+### 10.5 Community Aggregate
+
+GitHub-hosted projects expose a compact community aggregate:
+
+```text
+stargazers_count + forks_count + subscribers_count
+```
+
+`subscribers_count` is used for watchers because GitHub's `watchers_count`
+duplicates the star count. The aggregate is accompanied by a tooltip that
+shows the three source values independently.
+
+The aggregate supports the optional Popularity sort. It does not affect the
+default activity ordering. Projects without GitHub community data are treated
+as unscored and appear after scored projects when Popularity is selected,
+rather than being assigned a misleading zero.
 
 ## 11. Announcements
 
@@ -536,51 +549,58 @@ be bookmarked or shared.
 - Recently announced
 - Recently released
 - Recently updated
+- Popularity
 - Alphabetical
 
-No popularity sort is included.
+Popularity orders descending by the GitHub community aggregate. Ties preserve
+the prior stable ordering. Recently active remains the default.
 
 ## 13. Pages and Components
 
 ### 13.1 Home
 
-- search hero;
-- tabbed development-signal grid;
-- embedded ecosystem directory using the same search and filter state as the
-  dedicated directory page;
-- initial result batch with client-side continuation rather than a separate
-  promotional preview.
+- global search and navigation;
+- equal-width function categories;
+- filter rail and active query chips;
+- sort and lifecycle-view controls;
+- complete responsive project grid.
 
-### 13.2 Directory
+### 13.2 Project Tile
 
-- universal search;
-- filter rail;
-- sort controls;
-- grid and compact-list views;
-- result count and data freshness;
-- shareable query URL.
+Every tile contains:
 
-### 13.3 Project Dossier
+- function symbol and project kind;
+- last update and development activity;
+- GitHub community aggregate and repository size when available;
+- title and up to four lines of summary;
+- up to two visible rows of metadata chips, with every compatible frontend
+  listed first;
+- OSI-approved license identifier, Proprietary, or Missing.
 
-- identity, description, kind, and function;
-- compatibility matrix;
-- implementations and repositories;
-- activity evidence;
-- releases and announcements;
-- lifecycle;
-- requirements and permissions;
-- installation and documentation links;
-- lineage and related projects;
-- distribution, source, and license information.
+The whole tile opens its canonical external source. Tavernary does not require
+an internal details page in the initial release.
 
-### 13.4 Frontend Profile
+### 13.3 Responsive Behavior
 
-- frontend description and lifecycle;
-- installation and documentation;
-- extension or package system;
-- compatibility conventions;
-- compatible catalog projects;
-- recent frontend releases and announcements.
+Desktop and tablet keep all function categories visible in eight equal,
+shrinkable columns. Native horizontal scrollbars are not used for primary
+navigation.
+
+At the mobile breakpoint:
+
+- the search field occupies a full row;
+- the category strip becomes a compact `Browse: All Projects` selector;
+- the filter rail becomes a full-width slide-over opened by a Filters button
+  with an active-filter count;
+- project tiles use one column and retain the same information hierarchy;
+- sort and lifecycle controls remain horizontally compact and keyboard
+  accessible.
+
+### 13.4 Mockup Preview Control
+
+The design mockup includes a clearly separated `Desktop | Mobile` preview
+toggle. Mobile preview constrains the mockup to a 390-pixel viewport. This
+control exists only for design testing and is not part of the production site.
 
 ## 14. Static Technical Architecture
 
@@ -636,13 +656,15 @@ requiring an administrative backend.
 - Compatibility is never inferred solely from similar code or naming.
 - Announcement excerpts remain short and link to the original source.
 
-License is one distribution-and-trust field. Standard SPDX licenses are shown
-normally; missing, conflicting, custom, or source-available licenses receive a
-compact warning with a plain-language explanation in the dossier.
+License is one distribution-and-trust field. Tavernary checks for a root
+`LICENSE*` file. A recognized OSI-approved license displays its SPDX identifier
+in mint. No root license displays Missing in muted gray. A present but custom,
+unrecognized, source-available, or restrictive license displays Proprietary in
+pastel red. Package metadata never overrides contradictory root license text.
 
 ## 16. Accessibility and Performance
 
-- Keyboard-accessible search, filters, tabs, cards, and dossiers
+- Keyboard-accessible search, filters, tabs, cards, and external source links
 - Visible focus states
 - Semantic headings and landmarks
 - Text and icons accompany color-coded state
@@ -652,6 +674,7 @@ compact warning with a plain-language explanation in the dossier.
 - Minimal animation work before first interaction
 - Usable catalog when JavaScript animation is disabled
 - Mobile filter drawer with persistent active-filter summary
+- Compact mobile category selector with no native horizontal scrollbar
 
 ## 17. Verification Strategy
 
@@ -671,6 +694,7 @@ compact warning with a plain-language explanation in the dossier.
 - static export and GitHub Pages base-path behavior;
 - search relevance;
 - every filter and sort mode;
+- Popularity ordering, stable ties, and unscored projects placed last;
 - shareable query restoration;
 - responsive directory layouts;
 - keyboard navigation;
@@ -692,10 +716,9 @@ compact warning with a plain-language explanation in the dossier.
 
 The first release includes:
 
-- the three-block homepage;
-- complete directory;
-- project dossiers;
-- frontend profiles;
+- the search-first homepage and complete directory;
+- responsive desktop, tablet, and mobile layouts;
+- optional Popularity sort;
 - the 21 reviewed SillyTavern extensions;
 - SillyTavern, Lumiverse, and Marinara Engine;
 - compatibility, relationships, lifecycle, requirements, releases,
@@ -707,7 +730,8 @@ The first release does not include:
 
 - reviews, ratings, comments, or voting;
 - accounts or saved personal lists;
-- popularity ranking;
+- popularity as the default ordering or as a quality claim;
+- internal project dossier or details pages;
 - automated scraping of private communities;
 - direct installation from Tavernary;
 - a hosted application database;
