@@ -16,6 +16,13 @@
 - Show the existing `Where AI roleplay tools gather` tagline beneath the
   Tavernary wordmark on mobile as well as desktop.
 - Keep one shared `.brand-tagline` element; do not duplicate mobile-only copy.
+- Size `.brand-logo` at `60px × 60px` on desktop and `55px × 55px` in the
+  390 px mobile layout.
+- Set the logo-to-wordmark `.brand` gap to `7px`.
+- Vertically center the emblem against the complete `.brand-copy` block.
+- Render the tagline in `var(--text-2)` (`#CBD6D3`).
+- Keep the desktop top bar at `66px` and reject logo, tagline, or submission
+  control collisions at desktop and 390 px mobile widths.
 - Rename `Character & World Authoring` to `Character & Worldbuilding` on desktop and mobile.
 - Replace the four inline function icons with the supplied mappings:
   - Memory & Retrieval: `C:\Users\Keptin\Downloads\memory.svg`
@@ -49,8 +56,8 @@
 - Source: `C:\Users\Keptin\Downloads\d20.svg`
 
 **Interfaces:**
-- Consumes: `.top-actions`, `.brand-copy`, `.brand-tagline`, the mobile `@container site (max-width: 760px)` rules, `.category-strip`, `.category`, `.category .icon`, `.all-symbol`, the `i-memory`, `i-generation`, `i-authoring`, and `i-rpg` symbols, and matching desktop/mobile category labels.
-- Produces: the approved header copy, the shared tagline on desktop and mobile, the four supplied function icons across all existing `<use>` sites, and a desktop-only `50px` category strip with `34px` buttons and `18px` symbols.
+- Consumes: `.top-actions`, `.brand`, `.brand-logo`, `.brand-copy`, `.brand-tagline`, the mobile `@container site (max-width: 760px)` rules, `.category-strip`, `.category`, `.category .icon`, `.all-symbol`, the `i-memory`, `i-generation`, `i-authoring`, and `i-rpg` symbols, and matching desktop/mobile category labels.
+- Produces: the approved header copy, a `60px` desktop and `55px` mobile emblem centered against the shared wordmark-and-tagline block, a `7px` brand gap, a `var(--text-2)` tagline on desktop and mobile, the four supplied function icons across all existing `<use>` sites, and a desktop-only `50px` category strip with `34px` buttons and `18px` symbols.
 
 - [ ] **Step 1: Run the failing copy and navigation contract**
 
@@ -80,6 +87,21 @@ foreach($item in $required){
 if($html.Contains('How activity works')){throw 'How Activity Works still present'}
 if($html.Contains('.brand-tagline { display: none; }')){throw 'Mobile tagline still hidden'}
 if($html.Contains('Character & World Authoring')){throw 'Old category label still present'}
+if(-not [regex]::IsMatch($html,'(?s)\.brand\s*\{.*?align-items:\s*center;.*?gap:\s*7px;')){
+  throw 'Brand must center the full text block with a 7px gap'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.brand-logo\s*\{.*?width:\s*60px;.*?height:\s*60px;')){
+  throw 'Desktop logo must be 60px square'
+}
+if(-not $html.Contains('.brand-logo { width: 55px; height: 55px; }')){
+  throw 'Mobile logo must be 55px square'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.brand-tagline\s*\{.*?color:\s*var\(--text-2\);')){
+  throw 'Tagline must use the higher-contrast secondary text color'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.topbar\s*\{.*?height:\s*66px;')){
+  throw 'Desktop top bar must remain 66px high'
+}
 if(([regex]::Matches($html,'class="brand-tagline"')).Count -ne 1){
   throw 'Tagline must use one shared element'
 }
@@ -101,7 +123,7 @@ Replace the top actions with:
 </nav>
 ```
 
-- [ ] **Step 3: Show the shared tagline on mobile**
+- [ ] **Step 3: Refine the shared brand and show its tagline on mobile**
 
 Keep the existing shared brand markup unchanged:
 
@@ -112,16 +134,63 @@ Keep the existing shared brand markup unchanged:
 </span>
 ```
 
+Replace the base brand rules with:
+
+```css
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 740;
+  letter-spacing: -.035em;
+}
+.brand-logo {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  object-fit: contain;
+}
+.brand-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+.brand-name { color: #E18A24; }
+.brand-tagline {
+  margin-top: 5px;
+  color: var(--text-2);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+```
+
+`align-items: center` centers the emblem against `.brand-copy`, which contains
+both the wordmark and tagline. Do not position the emblem relative to
+`.brand-name`.
+
 Inside `@container site (max-width: 760px)`, remove:
 
 ```css
 .brand-tagline { display: none; }
 ```
 
+Replace the existing mobile logo override with:
+
+```css
+.brand-logo { width: 55px; height: 55px; }
+```
+
 Do not add a replacement mobile-only tagline rule or a second tagline element.
 The inherited `.brand-copy` column layout and `.brand-tagline` styling already
 place the tagline beneath the Tavernary wordmark. Keep `.topbar { height: auto; }`
-so the shared copy can use its natural height.
+so the shared copy can use its natural height. Keep the desktop `.topbar` at
+`66px`.
 
 - [ ] **Step 4: Rename the category in both navigation surfaces**
 
@@ -429,6 +498,12 @@ In Desktop Standard mode, verify:
 
 - only `About` and `Submit Project` remain in the top actions;
 - `Where AI roleplay tools gather` remains beneath the Tavernary wordmark;
+- the emblem measures `60px × 60px`;
+- the logo-to-wordmark gap measures `7px`;
+- the emblem is vertically centered against the full wordmark-and-tagline
+  block;
+- the tagline resolves to `#CBD6D3`;
+- the top bar remains `66px` high without clipping or collisions;
 - `Character & Worldbuilding` appears in the desktop strip;
 - the strip measures approximately `50px`;
 - each category button measures approximately `34px`;
@@ -473,7 +548,9 @@ Verify:
 Switch to Mobile and verify:
 
 - `Where AI roleplay tools gather` appears beneath the Tavernary wordmark;
-- the tagline uses the same copy and muted styling as desktop;
+- the emblem measures `55px × 55px`;
+- the logo-to-wordmark gap remains `7px`;
+- the tagline uses the same copy and `#CBD6D3` color as desktop;
 - the brand remains vertically centered with the logo and does not collide with
   `Submit Project`;
 - the `Browse: All Projects` selector retains its previous height;
@@ -521,6 +598,21 @@ $forbidden=@(
 )
 foreach($item in $forbidden){
   if($html.Contains($item)){throw "Forbidden $item"}
+}
+if(-not [regex]::IsMatch($html,'(?s)\.brand\s*\{.*?align-items:\s*center;.*?gap:\s*7px;')){
+  throw 'Brand must center the full text block with a 7px gap'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.brand-logo\s*\{.*?width:\s*60px;.*?height:\s*60px;')){
+  throw 'Desktop logo must be 60px square'
+}
+if(-not $html.Contains('.brand-logo { width: 55px; height: 55px; }')){
+  throw 'Mobile logo must be 55px square'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.brand-tagline\s*\{.*?color:\s*var\(--text-2\);')){
+  throw 'Tagline must use the higher-contrast secondary text color'
+}
+if(-not [regex]::IsMatch($html,'(?s)\.topbar\s*\{.*?height:\s*66px;')){
+  throw 'Desktop top bar must remain 66px high'
 }
 if(([regex]::Matches($html,'class="brand-tagline"')).Count -ne 1){
   throw 'Tagline must use one shared element'
