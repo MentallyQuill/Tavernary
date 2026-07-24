@@ -1,0 +1,17 @@
+{
+  "primary_functions": [
+    { "id": "frontend", "label": "Frontend" },
+    { "id": "memory-retrieval", "label": "Memory and retrieval" },
+    { "id": "generation-reasoning", "label": "Generation and reasoning" },
+    {
+      "id": "character-worldbuilding",
+      "label": "Character and worldbuilding"
+    },
+    { "id": "rpg-systems", "label": "RPG systems and suites" },
+    { "id": "interface-workflow", "label": "Interface and workflow" },
+    {
+      "id": "developer-infrastructure",
+      "label": "Developer infrastructure"
+    }
+  ]
+}

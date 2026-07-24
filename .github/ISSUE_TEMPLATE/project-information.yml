@@ -1,0 +1,28 @@
+name: Report project information
+description: Correct an inaccurate, outdated, unsafe, or inappropriate catalog entry.
+title: "[Project information]: "
+labels:
+  - project-information
+body:
+  - type: input
+    id: project
+    attributes:
+      label: Project
+      description: Link to the Tavernary entry or its canonical source.
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: What should be reviewed?
+      description: Describe the inaccurate, outdated, unsafe, or inappropriate information.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: Link to public source material that supports the correction when possible.
+    validations:
+      required: false

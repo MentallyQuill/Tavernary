@@ -1,0 +1,8 @@
+{
+  "frontends": [
+    { "id": "sillytavern", "label": "SillyTavern" },
+    { "id": "lumiverse", "label": "Lumiverse" },
+    { "id": "marinara-engine", "label": "Marinara Engine" },
+    { "id": "sonder-engine", "label": "Sonder Engine" }
+  ]
+}

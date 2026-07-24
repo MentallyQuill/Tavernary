@@ -1,0 +1,27 @@
+name: Report a website bug
+description: Report a problem with Tavernary's search, filters, layout, links, or behavior.
+title: "[Website bug]: "
+labels:
+  - website-bug
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Explain what you expected and what Tavernary did instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include the page, search, filters, view, or project involved.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Firefox 128 on Windows 11
+    validations:
+      required: false

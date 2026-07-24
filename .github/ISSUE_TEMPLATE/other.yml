@@ -1,0 +1,20 @@
+name: Other
+description: Contact Tavernary about something not covered by the other forms.
+title: "[Other]: "
+labels:
+  - other
+body:
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+      description: Give this report a short, specific subject.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain what you want the Tavernary maintainers to know.
+    validations:
+      required: true

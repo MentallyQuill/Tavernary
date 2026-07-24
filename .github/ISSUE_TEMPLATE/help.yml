@@ -1,0 +1,20 @@
+name: Request help
+description: Ask for help using Tavernary or choosing the correct contribution path.
+title: "[Help]: "
+labels:
+  - help
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: How can we help?
+      description: Tell us what you are trying to do and where you got stuck.
+    validations:
+      required: true
+  - type: input
+    id: related-page
+    attributes:
+      label: Related page or project
+      description: Add a link if your question concerns a specific page or project.
+    validations:
+      required: false
