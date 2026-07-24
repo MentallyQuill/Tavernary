@@ -4,6 +4,58 @@
 
 Improve the catalog’s filter discoverability and visual status language while fixing tile tooltips so they cannot be clipped by card or page boundaries.
 
+## Exact site palette
+
+Site-authored CSS and SVG declarations may use only these exact colors:
+
+| Role | Color |
+|---|---|
+| Page background | `#07181D` |
+| Primary surface | `#0B2229` |
+| Card surface | `#102B33` |
+| Raised/active surface | `#173740` |
+| Border | `#284A52` |
+| Strong border | `#3B6068` |
+| Primary text | `#F3F1E8` |
+| Secondary text | `#CBD6D3` |
+| Muted text | `#849A9E` |
+| Frontend crimson | `#D62839` |
+| Preset/activity mint | `#57C5A3` |
+| Extension/brand orange | `#E18A24` |
+
+The muted token changes from the mockup’s older `#6F7E82` to the approved `#849A9E`.
+
+Raster artwork is exempt because it contains its own authored colors. Browser font antialiasing is not treated as a site-authored color. `transparent`, `currentColor`, and `inherit` are allowed because they introduce no independent visible color. The commit-age `color-mix` described below is the only approved generated color range.
+
+No other hex, named color, `rgb()`, `rgba()`, `hsl()`, `hsla()`, semi-transparent fill, or color-mix declaration may remain in site CSS, inline styles, or authored SVGs. Shadows, focus rings, overlays, hover backgrounds, tooltip surfaces, chips, and controls must use exact palette tokens rather than black, white, or alpha-blended variants.
+
+### Semantic assignments
+
+- Top navigation labels remain primary near-white, matching the mockup.
+- Top navigation icons use crimson for Frontends, mint for System Presets, and orange for extension categories.
+- Card/project titles use primary near-white.
+- Frontend card type identities and frontend compatibility chips use crimson.
+- Preset card type identities, fresh commit ages, activity bars, and OSI-approved license labels use mint.
+- Extension card type identities, the Tavernary wordmark, and the Submit Project control use orange.
+- Capability/characteristic chips use strong-border outlines with secondary text.
+- General explanatory text uses secondary or muted text according to hierarchy.
+- Proprietary and missing-license labels use muted text.
+
+The audit will replace currently off-palette declarations such as alternate grays, desaturated chip colors, dark tooltip fills, activity green variants, translucent white fills, and black alpha shadows.
+
+### Automated palette audit
+
+A repository script scans production CSS and TSX under `src/` plus production SVG assets under `public/` for literal color values. Documentation mockups, test snapshots, generated browser screenshots, and raster files are outside the scan. The script normalizes hex case and fails when a literal is outside the approved set or an unapproved functional/named color is present.
+
+The script has narrow allowances for:
+
+- `transparent`, `currentColor`, and `inherit`;
+- the single commit-age `color-mix` rule using mint and muted tokens;
+- zero/one opacity used only to show or hide tooltips;
+- raster image files, which are not scanned.
+
+The audit runs inside `npm run check`. Unit coverage proves every approved color passes, representative off-palette hex/RGB/alpha declarations fail, and an unauthorized second `color-mix` fails.
+
 ## Compatible frontend filter
 
 The frontend filter uses the canonical entries and order in `data/vocabularies/frontends.json`, not only the frontends represented by currently visible projects. Known frontends therefore remain available with a count of `0`.
@@ -96,6 +148,8 @@ Test-first coverage will include:
 - kind-specific checkbox borders and checked colors;
 - freshness values at 0, 15, 30, and more than 30 days;
 - teal OSI-approved and muted proprietary/missing licenses;
+- exact semantic palette assignments and zero unauthorized authored colors;
+- rejection of off-palette CSS, inline TSX colors, and authored SVG colors;
 - desktop and mobile inkwell geometry;
 - portal tooltips for leftmost, rightmost, top-row, and bottom-row anchors;
 - every visible tooltip rectangle staying inside 8px viewport margins;
