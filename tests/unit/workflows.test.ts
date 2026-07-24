@@ -101,7 +101,23 @@ test("refreshes snapshots daily without granting production-record writes", asyn
     group: "catalog-refresh",
     "cancel-in-progress": false,
   });
+  const inputs = (
+    refresh.on as {
+      workflow_dispatch: {
+        inputs: Record<string, { options?: string[]; default?: unknown }>;
+      };
+    }
+  ).workflow_dispatch.inputs;
+  expect(inputs.mode.options).toEqual([
+    "incremental",
+    "baseline",
+    "project",
+    "forensic",
+  ]);
+  expect(inputs.batch_size.default).toBe(12);
+  expect(inputs).not.toHaveProperty("start_index");
   expect(source).toContain("data/snapshots/github/*.json");
+  expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
   expect(source).toContain("workflow run deploy-pages.yml");
 });
