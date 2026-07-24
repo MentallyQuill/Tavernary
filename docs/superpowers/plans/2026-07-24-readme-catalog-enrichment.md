@@ -271,6 +271,11 @@ export async function enrichRecord(
 
 Use a fake provider to assert that the loader receives the short description and README, the provider receives only the allowed vocabulary entries, curated records are skipped by default, the fallback is produced when both sources are unavailable, and provider failures leave the source record unchanged.
 
+Include an explicit categorization assertion: every successfully enriched
+GitHub-backed extension must replace the provisional `uncategorized` function
+with one controlled `primary_function` ID and controlled capability IDs. Keep
+non-GitHub records out of this pass.
+
 - [ ] **Step 2: Run focused tests and verify failure**
 
 ```powershell
@@ -282,6 +287,10 @@ Expected: FAIL because the enrichment modules do not exist.
 - [ ] **Step 3: Implement the provider contract**
 
 Create a provider adapter with a strict structured-output request. The prompt must require one factual sentence, 12-24 words, 140 characters maximum, no markdown, no unsupported claims, one controlled primary-function ID, and zero or more controlled capability IDs. Include the exact fallback rule for missing source text. Keep provider configuration outside registry files and inject it through the CLI/runtime.
+
+The enrichment result must therefore replace `uncategorized` on GitHub-backed
+extensions whenever the provider returns a valid controlled category; the
+deterministic validator rejects unknown or missing category IDs.
 
 - [ ] **Step 4: Implement record selection and enrichment**
 
