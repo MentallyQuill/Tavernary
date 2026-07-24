@@ -38,6 +38,18 @@ Playwright's first local run may also require:
 npx playwright install chromium
 ```
 
+The Kit fixture proof is isolated from production catalog data:
+
+```powershell
+npm run build:test-kits
+npm run test:kits-e2e
+npm run test:kits-visual
+```
+
+The fixture builder leaves the deterministic Kit export in `out/` for the two
+browser suites and restores `src/generated/catalog.json` from the production
+registry before it exits.
+
 ## Catalog data
 
 Tavernary keeps four distinct layers:
@@ -126,7 +138,7 @@ A repository-ID mismatch sets `source_health: identity-change` and removes the
 entry from the public build. Confirmed deleted or private repositories also
 stay out of the public build. Transient unavailable or rate-limited refreshes
 preserve the last known good facts and record staleness instead of unpublishing
-the project. Curators can also set `refresh_policy: paused` to stop automatic
+the project. Maintainers can also set `refresh_policy: paused` to stop automatic
 processing or change `visibility` to hide or disable a record.
 
 Before clearing a quarantine:

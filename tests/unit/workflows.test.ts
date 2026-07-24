@@ -102,6 +102,9 @@ test("keeps CI read-only and runs every local gate", async () => {
   expect(commands).toContain("playwright install --with-deps chromium");
   expect(commands).toContain("npm run test:e2e");
   expect(commands).toContain("npm run test:visual");
+  expect(commands).toContain("npm run build:test-kits");
+  expect(commands).toContain("npm run test:kits-e2e");
+  expect(commands).toContain("npm run test:kits-visual");
 });
 
 test("deploys only a verified static export to the Pages environment", async () => {

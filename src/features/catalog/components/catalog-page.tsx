@@ -13,7 +13,7 @@ import { KitGrid } from "@/features/kits/components/kit-grid";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { addProject } from "@/features/kits/project-stack-order";
-import { copyKitLink } from "@/features/kits/share-kit";
+import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import {
   openKitSubmission,
   serializeKitManifest,
@@ -235,6 +235,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     );
     url.searchParams.set("template", "06-kit-report.yml");
     url.searchParams.set("kit-id", kitId);
+    url.searchParams.set("share-url", kitShareUrl(kitId));
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

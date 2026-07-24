@@ -157,7 +157,7 @@ function toRecord(record) {
   const { source, normalizedChange } = normalizeSource(record);
   return {
     record: {
-      schema_version: 2,
+      schema_version: 3,
       id: assertString(record.id, "id"),
       name: assertString(record.name, "name"),
       kind,
@@ -170,6 +170,7 @@ function toRecord(record) {
       cataloged_at: `${assertString(record.submitted_at, "submitted_at")}T00:00:00Z`,
       catalog_cohort: "seed",
       visibility: "published",
+      visibility_reason: null,
       refresh_policy:
         record.source_url || record.source_type === "organization"
           ? "paused"

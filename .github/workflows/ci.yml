@@ -34,3 +34,9 @@ jobs:
         run: npm run test:e2e
       - name: Run visual regression tests
         run: npm run test:visual
+      - name: Build deterministic Kit fixture export
+        run: npm run build:test-kits
+      - name: Run Kit fixture browser tests
+        run: npm run test:kits-e2e
+      - name: Run Kit fixture visual regression tests
+        run: npm run test:kits-visual

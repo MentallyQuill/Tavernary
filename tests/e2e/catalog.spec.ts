@@ -78,14 +78,14 @@ test("uses the approved category strip", async ({ page }) => {
   expect(metrics).toEqual({
     display: "grid",
     height: 50,
-    tracks: 10,
+    tracks: 11,
     activeBorder: "1px",
     afterContent: "none",
     justifyContent: "center",
     textAlign: "center",
   });
 
-  await expect(page.locator(".category-navigation button")).toHaveCount(10);
+  await expect(page.locator(".category-navigation button")).toHaveCount(11);
   expect(
     await page
       .locator(".category-navigation button")
@@ -93,6 +93,7 @@ test("uses the approved category strip", async ({ page }) => {
         buttons.map((button) => button.textContent?.trim()),
       ),
   ).toEqual([
+    "Kits",
     "All Projects",
     "Frontends",
     "System Presets",
@@ -439,7 +440,7 @@ test("matches the approved card anatomy", async ({ page }) => {
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       gap: getComputedStyle(grid).gap,
     })),
-  ).toEqual({ columns: 4, gap: "12px" });
+  ).toEqual({ columns: 3, gap: "12px" });
   expect(
     await card.evaluate((element) => {
       return getComputedStyle(element, "::before").content;

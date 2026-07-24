@@ -1,0 +1,106 @@
+[
+  {
+    "schema_version": 1,
+    "kit_id": "alpha-kit-101",
+    "source_issue_number": 101,
+    "refreshed_at": "2026-07-24T12:00:00.000Z",
+    "stale_since": null,
+    "supporters": [
+      {
+        "github_user_id": 201,
+        "login": "one",
+        "first_reacted_at": "2026-07-24T11:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 202,
+        "login": "two",
+        "first_reacted_at": "2026-07-24T10:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 203,
+        "login": "three",
+        "first_reacted_at": "2026-07-24T09:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 204,
+        "login": "four",
+        "first_reacted_at": "2026-07-24T08:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 205,
+        "login": "five",
+        "first_reacted_at": "2026-07-24T07:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 999,
+        "login": "blocked",
+        "first_reacted_at": "2026-07-24T06:00:00.000Z",
+        "active": true
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "kit_id": "five-line-kit-102",
+    "source_issue_number": 102,
+    "refreshed_at": "2026-07-18T00:00:00.000Z",
+    "stale_since": "2026-07-19T00:00:00.000Z",
+    "supporters": [
+      {
+        "github_user_id": 206,
+        "login": "six",
+        "first_reacted_at": "2026-07-10T00:00:00.000Z",
+        "active": true
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "kit_id": "broad-stack-104",
+    "source_issue_number": 104,
+    "refreshed_at": "2026-07-24T12:00:00.000Z",
+    "stale_since": null,
+    "supporters": [
+      {
+        "github_user_id": 207,
+        "login": "seven",
+        "first_reacted_at": "2026-07-20T00:00:00.000Z",
+        "active": true
+      },
+      {
+        "github_user_id": 208,
+        "login": "eight",
+        "first_reacted_at": "2026-07-21T00:00:00.000Z",
+        "active": true
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "kit_id": "updated-kit-107",
+    "source_issue_number": 107,
+    "refreshed_at": "2026-07-24T12:00:00.000Z",
+    "stale_since": null,
+    "supporters": []
+  },
+  {
+    "schema_version": 1,
+    "kit_id": "flagged-stack-108",
+    "source_issue_number": 108,
+    "refreshed_at": "2026-07-24T12:00:00.000Z",
+    "stale_since": null,
+    "supporters": [
+      {
+        "github_user_id": 209,
+        "login": "nine",
+        "first_reacted_at": "2026-07-23T00:00:00.000Z",
+        "active": true
+      }
+    ]
+  }
+]

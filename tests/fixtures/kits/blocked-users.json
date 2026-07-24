@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "blocked": [
+    {
+      "github_user_id": 999,
+      "login": "blocked",
+      "reason": "Fixture blocked identity"
+    }
+  ]
+}

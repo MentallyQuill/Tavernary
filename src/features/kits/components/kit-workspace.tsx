@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
@@ -11,7 +11,7 @@ import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
 
 function issueUrl(template: string, kit: CatalogKit) {
-  const url = new URL("https://github.com/tavernary/tavernary/issues/new");
+  const url = new URL("https://github.com/MentallyQuill/Tavernary/issues/new");
   url.searchParams.set("template", template);
   url.searchParams.set("kit-id", kit.id);
   url.searchParams.set("share-url", kitShareUrl(kit.id));
@@ -51,6 +51,16 @@ export function KitWorkspace({
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const returnFocus = useCallback(() => {
+    window.setTimeout(() => {
+      const opener = openerRef.current;
+      if (opener?.isConnected && opener.getClientRects().length > 0) {
+        opener.focus();
+      } else {
+        workspaceRef.current?.querySelector("button")?.focus();
+      }
+    }, 0);
+  }, []);
 
   useEffect(() => {
     if (fallbackUrl) fallbackRef.current?.select();
@@ -68,7 +78,10 @@ export function KitWorkspace({
   useEffect(() => {
     if (!mobile || !active || state.collapsed) return;
     if (!workspaceRef.current?.contains(document.activeElement)) {
-      openerRef.current = document.activeElement as HTMLElement;
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement !== document.body) {
+        openerRef.current = activeElement;
+      }
     }
     document.body.classList.add("sheet-open");
     headingRef.current?.focus();
@@ -76,7 +89,7 @@ export function KitWorkspace({
       if (event.key === "Escape") {
         event.preventDefault();
         onCollapse();
-        window.setTimeout(() => openerRef.current?.focus(), 0);
+        returnFocus();
         return;
       }
       if (event.key !== "Tab" || !workspaceRef.current) return;
@@ -88,7 +101,11 @@ export function KitWorkspace({
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable.at(-1)!;
-      if (event.shiftKey && document.activeElement === first) {
+      if (
+        event.shiftKey &&
+        (document.activeElement === first ||
+          document.activeElement === headingRef.current)
+      ) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -101,16 +118,7 @@ export function KitWorkspace({
       window.removeEventListener("keydown", trapFocus);
       document.body.classList.remove("sheet-open");
     };
-  }, [active, mobile, onCollapse, state.collapsed]);
-
-  useEffect(() => {
-    if (mobile && state.collapsed) {
-      window.setTimeout(
-        () => workspaceRef.current?.querySelector("button")?.focus(),
-        0,
-      );
-    }
-  }, [mobile, state.collapsed]);
+  }, [active, mobile, onCollapse, returnFocus, state.collapsed]);
 
   if (mobile && !active) return null;
 
@@ -122,7 +130,13 @@ export function KitWorkspace({
         className="kit-workspace collapsed"
         aria-label="Kit workspace"
       >
-        <button type="button" onClick={onCollapse}>
+        <button
+          type="button"
+          onClick={(event) => {
+            openerRef.current = event.currentTarget;
+            onCollapse();
+          }}
+        >
           Expand Kit workspace
         </button>
       </aside>
@@ -148,7 +162,7 @@ export function KitWorkspace({
           onClick={() => {
             onCollapse();
             if (mobile) {
-              window.setTimeout(() => openerRef.current?.focus(), 0);
+              returnFocus();
             }
           }}
         >

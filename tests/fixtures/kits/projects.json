@@ -1,0 +1,304 @@
+[
+  {
+    "id": "fixture-frontend",
+    "name": "Fixture Frontend",
+    "kind": "frontend",
+    "primary_function": "frontend"
+  },
+  {
+    "id": "fixture-tool-02",
+    "name": "Fixture Tool 02",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-03",
+    "name": "Fixture Tool 03",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-04",
+    "name": "Fixture Tool 04",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-05",
+    "name": "Fixture Tool 05",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-06",
+    "name": "Fixture Tool 06",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-07",
+    "name": "Fixture Tool 07",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-08",
+    "name": "Fixture Tool 08",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-09",
+    "name": "Fixture Tool 09",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-10",
+    "name": "Fixture Tool 10",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-11",
+    "name": "Fixture Tool 11",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-12",
+    "name": "Fixture Tool 12",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-13",
+    "name": "Fixture Tool 13",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-14",
+    "name": "Fixture Tool 14",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-15",
+    "name": "Fixture Tool 15",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-16",
+    "name": "Fixture Tool 16",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-17",
+    "name": "Fixture Tool 17",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-18",
+    "name": "Fixture Tool 18",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-19",
+    "name": "Fixture Tool 19",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-20",
+    "name": "Fixture Tool 20",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-21",
+    "name": "Fixture Tool 21",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-22",
+    "name": "Fixture Tool 22",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-23",
+    "name": "Fixture Tool 23",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-24",
+    "name": "Fixture Tool 24",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-25",
+    "name": "Fixture Tool 25",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-26",
+    "name": "Fixture Tool 26",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-27",
+    "name": "Fixture Tool 27",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-28",
+    "name": "Fixture Tool 28",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-29",
+    "name": "Fixture Tool 29",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-30",
+    "name": "Fixture Tool 30",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-31",
+    "name": "Fixture Tool 31",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-32",
+    "name": "Fixture Tool 32",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-33",
+    "name": "Fixture Tool 33",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-34",
+    "name": "Fixture Tool 34",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-35",
+    "name": "Fixture Tool 35",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-36",
+    "name": "Fixture Tool 36",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-37",
+    "name": "Fixture Tool 37",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-38",
+    "name": "Fixture Tool 38",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-39",
+    "name": "Fixture Tool 39",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-40",
+    "name": "Fixture Tool 40",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-41",
+    "name": "Fixture Tool 41",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-42",
+    "name": "Fixture Tool 42",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-43",
+    "name": "Fixture Tool 43",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-44",
+    "name": "Fixture Tool 44",
+    "kind": "extension",
+    "primary_function": "memory-retrieval"
+  },
+  {
+    "id": "fixture-tool-45",
+    "name": "Fixture Tool 45",
+    "kind": "extension",
+    "primary_function": "generation-reasoning"
+  },
+  {
+    "id": "fixture-tool-46",
+    "name": "Fixture Tool 46",
+    "kind": "extension",
+    "primary_function": "character-worldbuilding"
+  },
+  {
+    "id": "fixture-tool-47",
+    "name": "Fixture Tool 47",
+    "kind": "extension",
+    "primary_function": "rpg-systems"
+  },
+  {
+    "id": "fixture-tool-48",
+    "name": "Fixture Tool 48",
+    "kind": "extension",
+    "primary_function": "interface-workflow"
+  },
+  {
+    "id": "fixture-tool-49",
+    "name": "Fixture Tool 49",
+    "kind": "extension",
+    "primary_function": "developer-infrastructure"
+  },
+  {
+    "id": "fixture-tool-50",
+    "name": "Fixture Flagged Tool",
+    "kind": "extension",
+    "primary_function": "memory-retrieval",
+    "visibility": "flagged",
+    "visibility_reason": "unsafe-source"
+  }
+]

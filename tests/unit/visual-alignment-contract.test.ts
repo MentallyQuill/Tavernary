@@ -39,7 +39,7 @@ describe("catalog visual alignment", () => {
     const globals = read("src/app/globals.css");
 
     expect(css).toMatch(
-      /\.category-navigation\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(10,\s*minmax\(0,\s*1fr\)\)/s,
+      /\.category-navigation\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*repeat\(11,\s*minmax\(0,\s*1fr\)\)/s,
     );
     expect(css).not.toContain(".category-navigation button::after");
     expect(css).toMatch(

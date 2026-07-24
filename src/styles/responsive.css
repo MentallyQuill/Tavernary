@@ -111,7 +111,7 @@
     border-radius: 7px;
     padding: 0 12px;
     color: var(--color-text-primary);
-    background: var(--color-surface-high);
+    background: var(--color-surface-raised);
     text-align: left;
   }
 
@@ -187,7 +187,7 @@
   .mobile-category-menu button.active,
   .mobile-category-menu button:hover {
     color: var(--color-text-primary);
-    background: var(--color-surface-high);
+    background: var(--color-surface-raised);
   }
 
   .catalog-layout {
@@ -244,6 +244,29 @@
 
   .kit-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kit-workspace {
+    position: fixed;
+    z-index: 80;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    padding: 18px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-left: 0;
+    background: var(--color-surface-primary);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .kit-workspace.collapsed {
+    position: fixed;
+    inset: auto 12px 12px auto;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    padding: 8px;
   }
 
   .project-grid {

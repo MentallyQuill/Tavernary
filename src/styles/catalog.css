@@ -147,7 +147,7 @@
   position: relative;
   z-index: 15;
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(11, minmax(0, 1fr));
   align-items: center;
   gap: 6px;
   min-height: 50px;
@@ -186,7 +186,7 @@
 .category-navigation button.active {
   border-color: var(--color-border-strong);
   color: var(--color-text-primary);
-  background: var(--color-surface-high);
+  background: var(--color-surface-raised);
 }
 
 .category-navigation svg {
@@ -1401,7 +1401,8 @@
 }
 
 .kit-project-stack > li.flagged {
-  opacity: 0.72;
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-primary);
 }
 
 .kit-project-details {
@@ -1514,7 +1515,9 @@
 }
 
 .kit-builder-row.dragging {
-  opacity: 0.45;
+  border-color: var(--color-border-strong);
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
 }
 
 .kit-builder-row.drag-before {

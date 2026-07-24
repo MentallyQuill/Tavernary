@@ -32,16 +32,18 @@ export function useKitWorkspace({
 
   useEffect(() => {
     if (!selectedKitId) return;
-    const timeout = window.setTimeout(
-      () =>
-        setState((current) => ({
-          mode: "inspect",
-          collapsed: current.collapsed,
-          kitId: selectedKitId,
-        })),
-      0,
-    );
-    return () => window.clearTimeout(timeout);
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setState((current) => ({
+        mode: "inspect",
+        collapsed: current.collapsed,
+        kitId: selectedKitId,
+      }));
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [selectedKitId]);
 
   const selectKit = useCallback(
