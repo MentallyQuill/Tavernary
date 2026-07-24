@@ -50,3 +50,13 @@ export function enrichRecord(
     ) => Promise<ReadmeSource>;
   },
 ): Promise<EnrichmentOutput | null>;
+
+export function writeEnrichedRecord(
+  path: string,
+  record: RegistryRecord,
+  output: EnrichmentOutput,
+  vocabularies?: {
+    primaryFunctions: readonly (string | VocabularyEntry)[];
+    capabilities: readonly (string | VocabularyEntry)[];
+  },
+): Promise<void>;

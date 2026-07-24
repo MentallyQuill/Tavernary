@@ -1,5 +1,7 @@
 import { loadReadmeSource } from "./readme-source.mjs";
 import { validateEnrichmentOutput } from "./enrichment-contract.mjs";
+import { randomUUID } from "node:crypto";
+import { readFile, rename, rm, writeFile } from "node:fs/promises";
 
 function entriesToSet(entries) {
   return new Set(
@@ -75,4 +77,56 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     );
   }
   return output;
+}
+
+export async function writeEnrichedRecord(
+  path,
+  record,
+  output,
+  vocabularies = {
+    primaryFunctions: [
+      "frontend",
+      "memory-retrieval",
+      "generation-reasoning",
+      "character-worldbuilding",
+      "rpg-systems",
+      "interface-workflow",
+      "developer-infrastructure",
+      "uncategorized",
+    ],
+    capabilities: [
+      "automation",
+      "character-worldbuilding",
+      "extension-development",
+      "image-generation",
+      "instruction-control",
+      "model-routing",
+      "multi-frontend",
+      "planning-reasoning",
+      "prompt-engineering",
+      "review-validation",
+    ],
+  },
+) {
+  const validation = validateEnrichmentOutput(output, {
+    primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
+    capabilities: entriesToSet(vocabularies.capabilities),
+  });
+  if (!validation.valid) throw new Error(validation.errors.join("; "));
+  const current = JSON.parse(await readFile(path, "utf8"));
+  const updated = {
+    ...current,
+    summary: output.summary,
+    metadata_status: output.metadata_status,
+    primary_function: output.primary_function,
+    capabilities: output.capabilities,
+  };
+  const temporaryPath = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporaryPath, `${JSON.stringify(updated, null, 2)}\n`);
+    await rename(temporaryPath, path);
+  } catch (error) {
+    await rm(temporaryPath, { force: true });
+    throw error;
+  }
 }
