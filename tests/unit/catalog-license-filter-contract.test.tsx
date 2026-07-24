@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { DEFAULT_QUERY } from "@/features/catalog/catalog-query";
 import { selectProjects } from "@/features/catalog/catalog-selectors";
+import { ActiveQuery } from "@/features/catalog/components/active-query";
 import { FilterPanel } from "@/features/catalog/components/filter-panel";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 
@@ -51,7 +52,7 @@ describe("catalog license filter contract", () => {
     cleanup();
   });
 
-  test("missing license filter includes pending licenses in both selection and facet count", () => {
+  test("pending and missing license filters stay distinct in selection and facet counts", () => {
     const projects = [
       project("pending-license", {
         license: {
@@ -73,10 +74,18 @@ describe("catalog license filter contract", () => {
     expect(
       selectProjects(
         projects,
+        { ...DEFAULT_QUERY, licenses: ["pending"] },
+        { now: "2026-07-23T00:00:00Z" },
+      ).map(({ id }) => id),
+    ).toEqual(["pending-license"]);
+
+    expect(
+      selectProjects(
+        projects,
         { ...DEFAULT_QUERY, licenses: ["missing"] },
         { now: "2026-07-23T00:00:00Z" },
       ).map(({ id }) => id),
-    ).toEqual(["missing-license", "pending-license"]);
+    ).toEqual(["missing-license"]);
 
     render(
       <FilterPanel
@@ -90,9 +99,30 @@ describe("catalog license filter contract", () => {
 
     expect(
       screen
+        .getByRole("checkbox", { name: "Pending verification" })
+        .closest("label"),
+    ).toHaveTextContent("Pending verification1");
+
+    expect(
+      screen
         .getByRole("checkbox", { name: "Missing license" })
         .closest("label"),
-    ).toHaveTextContent("Missing license2");
+    ).toHaveTextContent("Missing license1");
+  });
+
+  test("active query uses the pending verification label", () => {
+    render(
+      <ActiveQuery
+        query={{ ...DEFAULT_QUERY, licenses: ["pending"] }}
+        projects={[project("pending-license")]}
+        onRemove={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Remove Pending verification" }),
+    ).toBeInTheDocument();
   });
 
   test("development facet counts match selector semantics", () => {

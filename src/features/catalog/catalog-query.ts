@@ -3,7 +3,11 @@ export type CatalogSort = "recent" | "strength" | "popularity" | "alphabetical";
 export type CatalogDensity = "standard" | "compact";
 export type CatalogKind = "frontend" | "extension" | "preset";
 export type DevelopmentFilter = "active-month" | "new-release" | "dormant";
-export type LicenseFilter = "open-source" | "proprietary" | "missing";
+export type LicenseFilter =
+  | "open-source"
+  | "proprietary"
+  | "missing"
+  | "pending";
 
 export interface CatalogQuery {
   search: string;
@@ -123,6 +127,7 @@ const validLicenses = new Set<LicenseFilter>([
   "open-source",
   "proprietary",
   "missing",
+  "pending",
 ]);
 
 function oneOf<T extends string>(

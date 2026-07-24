@@ -248,17 +248,18 @@ export function migrateIntake(input) {
     throw new Error(`Provisional drift: ${record.id}`);
   }
 
+  const finalUnionRecords = [...curatedExistingRecords, ...expectedRecords];
   const byKind = {
     frontend: 0,
     extension: 0,
     preset: 0,
-    ...countBy(expectedRecords, "kind"),
+    ...countBy(finalUnionRecords, "kind"),
   };
   const bySource = {
     github: 0,
     "github-organization": 0,
     url: 0,
-    ...countBy(expectedRecords, "source.type"),
+    ...countBy(finalUnionRecords, "source.type"),
   };
 
   return {
@@ -271,7 +272,7 @@ export function migrateIntake(input) {
       writes_required: recordsToWrite.length,
       provisional_matches: provisionalMatches,
       provisional_drift: [],
-      final_union_records: curatedExistingRecords.length + expectedRecords.length,
+      final_union_records: finalUnionRecords.length,
       by_kind: byKind,
       by_source: bySource,
       provisional_summaries: expectedRecords.length,

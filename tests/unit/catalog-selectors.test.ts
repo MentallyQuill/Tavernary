@@ -252,6 +252,14 @@ describe("catalog selectors", () => {
   });
 
   test("applies development and license groups", () => {
+    const pendingProject = project("pending", {
+      license: {
+        status: "pending",
+        label: "Pending review",
+        tooltip: "License review is pending for this source.",
+      },
+    });
+
     expect(
       selectProjects(
         projects,
@@ -261,7 +269,14 @@ describe("catalog selectors", () => {
     ).toEqual(["dormant"]);
     expect(
       selectProjects(
-        projects,
+        [...projects, pendingProject],
+        { ...DEFAULT_QUERY, licenses: ["pending"] },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["pending"]);
+    expect(
+      selectProjects(
+        [...projects, pendingProject],
         { ...DEFAULT_QUERY, licenses: ["missing"] },
         context,
       ).map(({ id }) => id),
@@ -344,5 +359,19 @@ describe("catalog query URLs", () => {
         category: "uncategorized",
       }),
     ).toBe("category=uncategorized");
+  });
+
+  test("round-trips pending license query state", () => {
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        licenses: ["pending"],
+      }),
+    ).toBe("license=pending");
+
+    expect(parseCatalogQuery("?license=pending")).toEqual({
+      ...DEFAULT_QUERY,
+      licenses: ["pending"],
+    });
   });
 });

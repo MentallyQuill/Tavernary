@@ -213,6 +213,16 @@ describe("intake migration", () => {
     expect(result.report.provisional_matches).toBe(1);
     expect(result.report.writes_required).toBe(0);
     expect(result.report.final_union_records).toBe(2);
+    expect(result.report.by_kind).toEqual({
+      frontend: 0,
+      extension: 2,
+      preset: 0,
+    });
+    expect(result.report.by_source).toEqual({
+      github: 2,
+      "github-organization": 0,
+      url: 0,
+    });
   });
 
   test("fails when an existing provisional record drifts from the deterministic output", () => {

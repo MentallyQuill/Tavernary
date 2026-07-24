@@ -32,6 +32,7 @@ const developmentOptions: Array<{
 const licenseOptions: Array<{ id: LicenseFilter; label: string }> = [
   { id: "open-source", label: "Open source" },
   { id: "proprietary", label: "Proprietary" },
+  { id: "pending", label: "Pending verification" },
   { id: "missing", label: "Missing license" },
 ];
 
@@ -72,7 +73,8 @@ function countFor(
     if (value === "open-source")
       return project.license.status === "osi-approved";
     if (value === "proprietary") return project.license.status === "proprietary";
-    return licenseFilter(project) === "missing";
+    if (value === "pending") return project.license.status === "pending";
+    return project.license.status === "missing";
   }).length;
 }
 

@@ -213,7 +213,7 @@ test("uses canonical external URLs for project cards", async ({ page }) => {
   await expect(recursion).toHaveAttribute("rel", /noopener/);
 });
 
-test("supports uncategorized and missing-license catalog filters at full scale", async ({
+test("supports uncategorized, pending-license, and missing-license catalog filters at full scale", async ({
   page,
 }) => {
   await page
@@ -222,12 +222,21 @@ test("supports uncategorized and missing-license catalog filters at full scale",
   await expect(page.getByRole("heading", { name: "209 projects" })).toBeVisible();
   await expect(page).toHaveURL(/category=uncategorized/);
 
-  await page.getByLabel("Missing license", { exact: true }).check();
+  await page.getByLabel("Pending verification", { exact: true }).check();
   await expect(page.getByRole("heading", { name: "209 projects" })).toBeVisible();
-  await expect(page).toHaveURL(/license=missing/);
+  await expect(page).toHaveURL(/license=pending/);
   await expect(
     page.locator(".project-card").filter({ hasText: "Pending" }),
   ).toHaveCount(209);
+
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  await page.getByRole("button", { name: "Remove Pending verification" }).click();
+  await expect(page.getByRole("heading", { name: "214 projects" })).toBeVisible();
+  await expect(page).not.toHaveURL(/license=/);
+
+  await page.getByLabel("Missing license", { exact: true }).check();
+  await expect(page.getByRole("heading", { name: "2 projects" })).toBeVisible();
+  await expect(page).toHaveURL(/license=missing/);
 });
 
 test("matches the approved card anatomy", async ({ page }) => {

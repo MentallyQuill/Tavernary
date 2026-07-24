@@ -770,16 +770,18 @@ Define these scripts in `package.json`:
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check .",
+    "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test tests/e2e",
-    "test:visual": "playwright test tests/visual",
-    "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
+    "test:e2e": "node scripts/run-playwright.mjs tests/e2e",
+    "test:visual": "node scripts/run-playwright.mjs tests/visual",
     "catalog:validate": "node scripts/catalog/validate.mjs",
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
+    "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
+    "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run catalog:validate && npm test && npm run build && npm run verify:export"
+    "check": "npm run format:check && npm run lint && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export"
   }
 }
 ```
