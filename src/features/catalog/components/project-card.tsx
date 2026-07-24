@@ -9,6 +9,47 @@ const kindLabels = {
   preset: "System Preset",
 };
 
+function sourceStatusLabel(project: CatalogProject) {
+  if (project.sourceStatus === "manual") return "Manual source";
+  if (project.sourceStatus === "pending") return "Source pending";
+  if (project.sourceStatus === "stale") return "Source stale";
+  return null;
+}
+
+function detailItems(project: CatalogProject) {
+  const items: string[] = [];
+  const shouldExplainUnknownFacts =
+    project.metadataStatus === "provisional" || project.sourceStatus !== "healthy";
+  if (project.metadataStatus === "provisional") {
+    items.push("Provisional details");
+  }
+  const sourceLabel = sourceStatusLabel(project);
+  if (sourceLabel) {
+    items.push(sourceLabel);
+  }
+  if (
+    shouldExplainUnknownFacts &&
+    project.kind === "preset" &&
+    (project.activity.activeWeeks12 === null || !project.activity.twoWeekBars)
+  ) {
+    items.push("Activity unavailable");
+  }
+  if (
+    shouldExplainUnknownFacts &&
+    !project.latestReleaseAt &&
+    !project.preset?.publishedAt
+  ) {
+    items.push("Release unavailable");
+  }
+  if (shouldExplainUnknownFacts && project.community === null) {
+    items.push("Popularity unavailable");
+  }
+  if (shouldExplainUnknownFacts && project.repositorySizeKb === null) {
+    items.push("Repository size unavailable");
+  }
+  return items;
+}
+
 function relativeTime(timestamp: string | null, now: string) {
   if (!timestamp) return "No activity";
   const days = Math.max(
@@ -56,6 +97,13 @@ export function ProjectCard({
   const activityId = `${project.id}-activity`;
   const communityId = `${project.id}-community`;
   const licenseId = `${project.id}-license`;
+  const details = detailItems(project);
+  const { activeWeeks12, latestMeaningfulCommitAt, twoWeekBars } =
+    project.activity;
+  const hasActivityMetrics =
+    activeWeeks12 !== null &&
+    twoWeekBars !== null &&
+    latestMeaningfulCommitAt !== null;
 
   return (
     <a
@@ -71,21 +119,37 @@ export function ProjectCard({
           </span>
           <span>{kindLabels[project.kind]}</span>
         </span>
-        {project.activity.activeWeeks12 !== null &&
-        project.activity.twoWeekBars ? (
+        {project.kind === "preset" ? (
+          <span className="development preset-development">
+            {project.preset?.version ? (
+              <b>{formatVersion(project.preset.version)}</b>
+            ) : (
+              <b>Preset</b>
+            )}
+            <span>
+              {project.preset?.publishedAt
+                ? `Published ${relativeTime(project.preset.publishedAt, now)}`
+                : "Release unavailable"}
+            </span>
+            <span>
+              {formatBytes(project.preset?.artifactSizeBytes ?? null) ??
+                "File size unavailable"}
+            </span>
+          </span>
+        ) : hasActivityMetrics ? (
           <span className="development">
             <Tooltip
               id={activityId}
-              label={`Active ${project.activity.activeWeeks12} of the last 12 weeks`}
+              label={`Active ${activeWeeks12} of the last 12 weeks`}
               className="activity-score"
             >
-              <b>{project.activity.activeWeeks12}/12</b>
-              <ActivitySparkline bars={project.activity.twoWeekBars} />
+              <b>{activeWeeks12}/12</b>
+              <ActivitySparkline bars={twoWeekBars} />
             </Tooltip>
             <span
               className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
             >
-              {relativeTime(project.activity.latestMeaningfulCommitAt, now)}
+              {relativeTime(latestMeaningfulCommitAt, now)}
             </span>
             {project.community ? (
               <Tooltip
@@ -102,25 +166,22 @@ export function ProjectCard({
             </span>
           </span>
         ) : (
-          <span className="development preset-development">
-            {project.preset?.version ? (
-              <b>{formatVersion(project.preset.version)}</b>
-            ) : (
-              <b>Preset</b>
-            )}
-            <span>
-              {project.preset?.publishedAt
-                ? `Published ${relativeTime(project.preset.publishedAt, now)}`
-                : "Source linked"}
-            </span>
-            <span>
-              {formatBytes(project.preset?.artifactSizeBytes ?? null)}
-            </span>
+          <span className="development development-unavailable">
+            <span>Activity unavailable</span>
           </span>
         )}
       </div>
 
       <h2>{project.name}</h2>
+      {details.length > 0 ? (
+        <ul className="card-state-list" aria-label="Project details">
+          {details.map((detail) => (
+            <li className="card-state-note" key={detail}>
+              {detail}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <p className="card-summary">{project.summary}</p>
 
       <div className="card-bottom">

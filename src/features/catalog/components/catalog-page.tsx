@@ -149,6 +149,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         <FilterPanel
           query={query}
           projects={catalog.projects}
+          now={catalog.generatedAt}
           onToggle={toggleFilter}
           onClear={clearFilters}
         />
@@ -183,6 +184,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           mobile
           query={query}
           projects={catalog.projects}
+          now={catalog.generatedAt}
           onToggle={toggleFilter}
           onClear={clearFilters}
           onClose={closeFilters}

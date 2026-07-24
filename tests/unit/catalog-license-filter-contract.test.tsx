@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 
 import { DEFAULT_QUERY } from "@/features/catalog/catalog-query";
@@ -47,6 +47,10 @@ function project(
 }
 
 describe("catalog license filter contract", () => {
+  test.afterEach(() => {
+    cleanup();
+  });
+
   test("missing license filter includes pending licenses in both selection and facet count", () => {
     const projects = [
       project("pending-license", {
@@ -88,5 +92,80 @@ describe("catalog license filter contract", () => {
         .getByRole("checkbox", { name: "Missing license" })
         .closest("label"),
     ).toHaveTextContent("Missing license2");
+  });
+
+  test("development facet counts match selector semantics", () => {
+    const projects = [
+      project("recent-commit", {
+        activity: {
+          ...project("base").activity,
+          latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
+        },
+      }),
+      project("old-commit", {
+        activity: {
+          ...project("base").activity,
+          latestMeaningfulCommitAt: "2026-05-01T00:00:00Z",
+        },
+      }),
+      project("recent-release", {
+        activity: {
+          ...project("base").activity,
+          latestMeaningfulCommitAt: null,
+          activeWeeks12: null,
+          twoWeekBars: null,
+          strength: null,
+        },
+        latestReleaseAt: "2026-07-10T00:00:00Z",
+      }),
+      project("old-release", {
+        activity: {
+          ...project("base").activity,
+          latestMeaningfulCommitAt: null,
+          activeWeeks12: null,
+          twoWeekBars: null,
+          strength: null,
+        },
+        latestReleaseAt: "2026-03-01T00:00:00Z",
+      }),
+    ];
+
+    expect(
+      selectProjects(
+        projects,
+        { ...DEFAULT_QUERY, development: ["active-month"] },
+        { now: "2026-07-23T00:00:00Z" },
+      ).map(({ id }) => id),
+    ).toEqual(["recent-commit"]);
+
+    expect(
+      selectProjects(
+        projects,
+        { ...DEFAULT_QUERY, development: ["new-release"] },
+        { now: "2026-07-23T00:00:00Z" },
+      ).map(({ id }) => id),
+    ).toEqual(["recent-release"]);
+
+    render(
+      <FilterPanel
+        query={DEFAULT_QUERY}
+        projects={projects}
+        now="2026-07-23T00:00:00Z"
+        onToggle={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    expect(
+      screen
+        .getByRole("checkbox", { name: "Active this month" })
+        .closest("label"),
+    ).toHaveTextContent("Active this month1");
+
+    expect(
+      screen
+        .getByRole("checkbox", { name: "Recently released" })
+        .closest("label"),
+    ).toHaveTextContent("Recently released1");
   });
 });

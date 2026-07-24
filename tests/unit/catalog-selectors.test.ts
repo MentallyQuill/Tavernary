@@ -277,6 +277,31 @@ describe("catalog selectors", () => {
       ).map(({ id }) => id),
     ).toEqual(["preset"]);
   });
+
+  test("keeps uncategorized results visible with deterministic alphabetical ties", () => {
+    const uncategorizedProjects = [
+      project("zeta", {
+        name: "Shared Name",
+        primaryFunction: "uncategorized",
+      }),
+      project("alpha", {
+        name: "Shared Name",
+        primaryFunction: "uncategorized",
+      }),
+      project("beta", {
+        name: "Another Name",
+        primaryFunction: "uncategorized",
+      }),
+    ];
+
+    expect(
+      selectProjects(
+        uncategorizedProjects,
+        { ...DEFAULT_QUERY, category: "uncategorized", sort: "alphabetical" },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["beta", "alpha", "zeta"]);
+  });
 });
 
 describe("catalog query URLs", () => {
@@ -306,5 +331,18 @@ describe("catalog query URLs", () => {
         "?view=broken&sort=nope&density=huge&kind=port&frontend=unknown&license=free",
       ),
     ).toEqual(DEFAULT_QUERY);
+  });
+
+  test("accepts uncategorized as a valid category", () => {
+    expect(parseCatalogQuery("?category=uncategorized")).toEqual({
+      ...DEFAULT_QUERY,
+      category: "uncategorized",
+    });
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        category: "uncategorized",
+      }),
+    ).toBe("category=uncategorized");
   });
 });

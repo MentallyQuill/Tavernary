@@ -54,7 +54,11 @@ function fallbackOrder(left: CatalogProject, right: CatalogProject) {
   const dateOrder =
     new Date(right.catalogedAt).getTime() -
     new Date(left.catalogedAt).getTime();
-  return dateOrder || collator.compare(left.name, right.name);
+  return (
+    dateOrder ||
+    collator.compare(left.name, right.name) ||
+    collator.compare(left.id, right.id)
+  );
 }
 
 function nullableDescending(
@@ -72,13 +76,20 @@ function nullableDescending(
   if (right === null) {
     return -1;
   }
-  return right - left || collator.compare(leftProject.name, rightProject.name);
+  return (
+    right - left ||
+    collator.compare(leftProject.name, rightProject.name) ||
+    collator.compare(leftProject.id, rightProject.id)
+  );
 }
 
 function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
   return projects.sort((left, right) => {
     if (sort === "alphabetical") {
-      return collator.compare(left.name, right.name);
+      return (
+        collator.compare(left.name, right.name) ||
+        collator.compare(left.id, right.id)
+      );
     }
     if (sort === "strength") {
       return nullableDescending(

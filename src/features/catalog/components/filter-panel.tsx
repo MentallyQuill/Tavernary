@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import { licenseFilter } from "../catalog-license";
 import type {
   CatalogKind,
@@ -53,6 +54,7 @@ function countFor(
   projects: CatalogProject[],
   group: FilterArray,
   value: string,
+  now: string,
 ) {
   return projects.filter((project) => {
     if (group === "frontends" || group === "capabilities") {
@@ -64,10 +66,8 @@ function countFor(
     if (group === "development") {
       if (value === "dormant") return project.activity.dormant;
       if (value === "active-month")
-        return project.activity.latestMeaningfulCommitAt !== null;
-      return (
-        project.latestReleaseAt !== null || project.preset?.publishedAt !== null
-      );
+        return isWithinDays(project.activity.latestMeaningfulCommitAt, now, 30);
+      return isWithinDays(releaseTimestamp(project), now, 30);
     }
     if (value === "open-source")
       return project.license.status === "osi-approved";
@@ -87,6 +87,7 @@ function FilterGroup({
   onSearch,
   searchLabel,
   presentation = "list",
+  now,
 }: {
   title: string;
   group: FilterArray;
@@ -98,6 +99,7 @@ function FilterGroup({
   onSearch?: (value: string) => void;
   searchLabel?: string;
   presentation?: "list" | "chips";
+  now: string;
 }) {
   const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
   const visibleOptions = normalizedSearch
@@ -144,7 +146,7 @@ function FilterGroup({
                   </span>
                   <span>{option.label}</span>
                   <b className="metadata-count">
-                    {countFor(projects, group, option.id)}
+                    {countFor(projects, group, option.id, now)}
                   </b>
                 </span>
               </label>
@@ -161,7 +163,7 @@ function FilterGroup({
               onChange={() => onToggle(group, option.id)}
             />
             <span>{option.label}</span>
-            <b>{countFor(projects, group, option.id)}</b>
+            <b>{countFor(projects, group, option.id, now)}</b>
           </label>
         ))
       )}
@@ -176,6 +178,7 @@ export function FilterPanel({
   onClear,
   mobile = false,
   onClose,
+  now,
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
@@ -183,6 +186,7 @@ export function FilterPanel({
   onClear: () => void;
   mobile?: boolean;
   onClose?: () => void;
+  now: string;
 }) {
   const [frontendSearch, setFrontendSearch] = useState("");
   const [capabilitySearch, setCapabilitySearch] = useState("");
@@ -216,6 +220,7 @@ export function FilterPanel({
         search={frontendSearch}
         onSearch={setFrontendSearch}
         searchLabel="Search compatible frontends"
+        now={now}
       />
       <FilterGroup
         title="Project kind"
@@ -224,6 +229,7 @@ export function FilterPanel({
         selected={query.kinds}
         projects={projects}
         onToggle={onToggle}
+        now={now}
       />
       <FilterGroup
         title="Capabilities & characteristics"
@@ -236,6 +242,7 @@ export function FilterPanel({
         onSearch={setCapabilitySearch}
         searchLabel="Search capabilities and characteristics"
         presentation="chips"
+        now={now}
       />
       <FilterGroup
         title="Development"
@@ -244,6 +251,7 @@ export function FilterPanel({
         selected={query.development}
         projects={projects}
         onToggle={onToggle}
+        now={now}
       />
       <FilterGroup
         title="License"
@@ -252,6 +260,7 @@ export function FilterPanel({
         selected={query.licenses}
         projects={projects}
         onToggle={onToggle}
+        now={now}
       />
     </>
   );

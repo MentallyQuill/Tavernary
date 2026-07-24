@@ -69,6 +69,11 @@ export const CATEGORY_OPTIONS = [
     label: "Developer Infrastructure",
     shortLabel: "Developer Infrastructure",
   },
+  {
+    id: "uncategorized",
+    label: "Uncategorized",
+    shortLabel: "Uncategorized",
+  },
 ] as const;
 
 const validCategories = new Set([
@@ -80,6 +85,7 @@ const validCategories = new Set([
   "rpg-systems",
   "interface-workflow",
   "developer-infrastructure",
+  "uncategorized",
 ]);
 const validFrontends = new Set([
   "sillytavern",
