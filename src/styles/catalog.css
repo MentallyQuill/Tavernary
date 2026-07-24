@@ -124,8 +124,8 @@
 }
 
 .header-actions .submit-link {
-  border: 1px solid var(--color-kind-frontend);
-  color: var(--color-kind-frontend);
+  border: 1px solid var(--color-kind-extension);
+  color: var(--color-kind-extension);
   background: var(--color-surface-card);
   white-space: nowrap;
 }

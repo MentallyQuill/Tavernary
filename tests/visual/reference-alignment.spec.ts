@@ -11,6 +11,14 @@ type VisualProfile = {
     fontWeight: string;
     usesInter: boolean;
   };
+  submit: {
+    backgroundColor: string;
+    borderColor: string;
+    borderRadius: string;
+    color: string;
+    fontSize: string;
+    padding: string;
+  };
   card: {
     backgroundColor: string;
     borderColor: string;
@@ -48,6 +56,7 @@ async function readProfile(
   selectors: {
     card: string;
     license: string;
+    submit: string;
     title: string;
   },
 ): Promise<VisualProfile> {
@@ -61,6 +70,7 @@ async function readProfile(
     };
 
     const brand = style(".brand-name");
+    const submit = style(profileSelectors.submit);
     const card = style(profileSelectors.card);
     const title = style(profileSelectors.title);
     const footer = style(".card-bottom");
@@ -72,6 +82,14 @@ async function readProfile(
         fontSize: brand.fontSize,
         fontWeight: brand.fontWeight,
         usesInter: brand.fontFamily.includes("Inter"),
+      },
+      submit: {
+        backgroundColor: submit.backgroundColor,
+        borderColor: submit.borderColor,
+        borderRadius: submit.borderRadius,
+        color: submit.color,
+        fontSize: submit.fontSize,
+        padding: submit.padding,
       },
       card: {
         backgroundColor: card.backgroundColor,
@@ -222,6 +240,7 @@ test("production preserves the approved mockup visual profile", async ({
   const reference = await readProfile(page, {
     card: ".repo-card",
     license: ".license.missing",
+    submit: ".submit",
     title: ".card-title",
   });
 
@@ -229,6 +248,7 @@ test("production preserves the approved mockup visual profile", async ({
   const production = await readProfile(page, {
     card: ".project-card",
     license: ".license-missing",
+    submit: ".submit-link",
     title: ".project-card h2",
   });
 
