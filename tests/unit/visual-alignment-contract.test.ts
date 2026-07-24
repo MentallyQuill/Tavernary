@@ -72,6 +72,9 @@ describe("catalog visual alignment", () => {
 
   test("uses reference card anatomy and sans typography", () => {
     const css = read("src/styles/catalog.css");
+    const card = read(
+      "src/features/catalog/components/project-card.tsx",
+    );
 
     expect(css).not.toContain('font-family: Georgia, "Times New Roman", serif');
     expect(css).not.toContain(".project-card::before");
@@ -86,6 +89,14 @@ describe("catalog visual alignment", () => {
     );
     expect(css).toMatch(
       /\.function-symbol svg\s*\{[^}]*width:\s*23px[^}]*height:\s*23px/s,
+    );
+    expect(card).not.toContain("two-week commit totals");
+    expect(card).not.toContain("This icon shows");
+    expect(css).toMatch(
+      /\.compact-cards \.project-card\s*\{[^}]*height:\s*auto[^}]*min-height:\s*0[^}]*padding:\s*11px 12px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.community,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*display:\s*none/s,
     );
   });
 

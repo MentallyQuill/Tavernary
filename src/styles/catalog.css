@@ -1062,20 +1062,65 @@
   width: 18px;
 }
 
-.compact-cards .project-card {
-  min-height: 174px;
-  padding-top: 13px;
+.compact-cards .project-grid {
+  align-items: start;
 }
 
+.compact-cards .project-card {
+  height: auto;
+  min-height: 0;
+  padding: 11px 12px;
+}
+
+.compact-cards .card-top {
+  min-height: 20px;
+  align-items: center;
+}
+
+.compact-cards .card-identity {
+  gap: 6px;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.compact-cards .function-symbol {
+  width: 17px;
+  height: 17px;
+}
+
+.compact-cards .function-symbol svg {
+  width: 15px;
+  height: 15px;
+}
+
+.compact-cards .development {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.compact-cards .community,
+.compact-cards .repository-size,
+.compact-cards .preset-size,
+.compact-cards .card-state-list,
 .compact-cards .card-summary {
-  -webkit-line-clamp: 2;
-  margin-bottom: 11px;
+  display: none;
 }
 
 .compact-cards .project-card h2 {
-  margin-top: 9px;
+  margin: 8px 0 10px;
+  font-size: 15px;
+}
+
+.compact-cards .card-bottom {
+  margin-top: 0;
+  padding-top: 8px;
+  align-items: center;
 }
 
 .compact-cards .card-chips {
-  max-height: 22px;
+  min-height: 18px;
+  max-height: 18px;
+  flex-wrap: nowrap;
+  align-items: center;
 }

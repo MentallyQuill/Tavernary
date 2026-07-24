@@ -478,13 +478,19 @@ test("explains every card fact with hover help", async ({ page }) => {
   await expect(repositoryCard).toHaveCSS("overflow", "hidden");
   await expect(
     page.getByRole("tooltip", {
-      name: /six bars show two-week commit totals/i,
+      name: /^Active in \d+ of the last 12 weeks$/,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".card-identity").hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Generation & Reasoning Extension",
     }),
   ).toBeVisible();
   await repositoryCard.locator(".commit-age").hover();
   await expect(
     page.getByRole("tooltip", {
-      name: /last meaningful commit/i,
+      name: /^Last commit .+ \(.+\)$/,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".chip").first().hover();
@@ -493,6 +499,30 @@ test("explains every card fact with hover help", async ({ page }) => {
       name: /works with the sillytavern roleplay frontend/i,
     }),
   ).toBeVisible();
+});
+
+test("substantially reduces cards in compact mode", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const repositoryCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion", exact: true }),
+  });
+  const presetCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+  });
+
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+
+  await expect(repositoryCard.locator(".card-summary")).toBeHidden();
+  await expect(repositoryCard.locator(".community")).toBeHidden();
+  await expect(repositoryCard.locator(".repository-size")).toBeHidden();
+  await expect(repositoryCard.locator(".activity-score")).toBeVisible();
+  await expect(repositoryCard.locator(".commit-age")).toBeVisible();
+  await expect(presetCard.locator(".preset-size")).toBeHidden();
+  await expect(repositoryCard.locator(".card-chips")).toHaveCSS(
+    "max-height",
+    "18px",
+  );
+  expect((await repositoryCard.boundingBox())!.height).toBeLessThan(174);
 });
 
 test("keeps tile tooltips inside the viewport portal", async ({ page }) => {
