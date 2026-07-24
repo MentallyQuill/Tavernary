@@ -334,6 +334,13 @@ export function FilterPanel({
         onToggle={onToggle}
         now={now}
       />
+      <div className="filter-legal">
+        <span>Tavernary</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/MentallyQuill/Tavernary/blob/main/LICENSE">
+          AGPL-3.0-only
+        </a>
+      </div>
     </>
   );
 

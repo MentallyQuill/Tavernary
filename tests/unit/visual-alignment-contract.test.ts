@@ -143,6 +143,21 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("adds the compact legal footer to the shared filter surface", () => {
+    const filters = read("src/features/catalog/components/filter-panel.tsx");
+    const css = read("src/styles/catalog.css");
+
+    expect(filters).toContain('className="filter-legal"');
+    expect(filters).toContain("Tavernary");
+    expect(filters).toContain("AGPL-3.0-only");
+    expect(filters).toContain(
+      "https://github.com/MentallyQuill/Tavernary/blob/main/LICENSE",
+    );
+    expect(css).toMatch(
+      /\.filter-legal\s*\{[^}]*color:\s*var\(--color-muted\)[^}]*white-space:\s*nowrap/s,
+    );
+  });
+
   test("uses the approved semantic colors", () => {
     const tokens = read("src/styles/tokens.css");
     const css = read("src/styles/catalog.css");
