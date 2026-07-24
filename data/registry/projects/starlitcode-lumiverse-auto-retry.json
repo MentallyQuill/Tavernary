@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "id": "starlitcode-lumiverse-auto-retry",
+  "name": "Lumiverse Auto-Retry",
+  "kind": "extension",
+  "summary": "An extension for Lumiverse.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "starlitcode/Lumiverse-Auto-Retry",
+    "repository_id": null
+  },
+  "frontends": ["lumiverse"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

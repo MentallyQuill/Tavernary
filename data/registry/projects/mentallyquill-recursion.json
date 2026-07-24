@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "mentallyquill-recursion",
   "name": "Recursion",
   "kind": "extension",
   "summary": "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "MentallyQuill/Recursion",

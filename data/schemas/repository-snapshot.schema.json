@@ -45,7 +45,13 @@
       }
     },
     "source_health": {
-      "enum": ["healthy", "unavailable", "identity-change"]
+      "enum": [
+        "healthy",
+        "unavailable",
+        "identity-change",
+        "deleted",
+        "private"
+      ]
     },
     "activity": {
       "type": "object",

@@ -5,6 +5,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv from "ajv";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const approvedOrganizationRecord = {
+  id: "tavern-rpg-suite",
+  organization: "tavern-rpg-suite",
+  url: "https://github.com/tavern-rpg-suite",
+};
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));
@@ -45,6 +50,9 @@ function vocabularyIds(vocabulary, property) {
 function sourceKey(source) {
   if (source.type === "github") {
     return `github:${source.repository.toLowerCase()}`;
+  }
+  if (source.type === "github-organization") {
+    return `github-organization:${source.organization.toLowerCase()}`;
   }
 
   try {
@@ -96,7 +104,8 @@ export async function validateCatalog(options = {}) {
   const validateRecord = ajv.compile(schema);
   const validateSnapshot = ajv.compile(snapshotSchema);
   const records = options.records ?? (await loadRecords());
-  const snapshots = options.records ? [] : await loadSnapshots();
+  const snapshots =
+    options.snapshots ?? (options.records ? [] : await loadSnapshots());
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
@@ -118,11 +127,46 @@ export async function validateCatalog(options = {}) {
     ids.add(id);
 
     if (record.source?.type === "github") {
+      const repositoryId = record.source.repository_id;
       if (
-        !Number.isInteger(record.source.repository_id) ||
-        record.source.repository_id <= 0
+        record.metadata_status === "curated" &&
+        (!Number.isInteger(repositoryId) || repositoryId <= 0)
       ) {
-        errors.push(`${id}: GitHub source requires permanent repository_id`);
+        errors.push(
+          `${id}: curated GitHub source requires permanent repository_id`,
+        );
+      } else if (
+        repositoryId !== null &&
+        (!Number.isInteger(repositoryId) || repositoryId <= 0)
+      ) {
+        errors.push(`${id}: GitHub repository_id must be null or positive`);
+      }
+    } else if (record.source?.type === "github-organization") {
+      if (id !== approvedOrganizationRecord.id) {
+        errors.push(
+          `${id}: github-organization is reserved for tavern-rpg-suite`,
+        );
+      }
+      if (
+        record.source.organization !== approvedOrganizationRecord.organization
+      ) {
+        errors.push(
+          `${id}: github-organization organization must be ${approvedOrganizationRecord.organization}`,
+        );
+      }
+      if (record.source.url !== approvedOrganizationRecord.url) {
+        errors.push(
+          `${id}: github-organization url must be ${approvedOrganizationRecord.url}`,
+        );
+      }
+      if (
+        record.kind !== "extension" ||
+        record.metadata_status !== "provisional" ||
+        record.refresh_policy !== "paused"
+      ) {
+        errors.push(
+          `${id}: github-organization requires provisional paused extension`,
+        );
       }
     } else if (record.source?.type === "url") {
       let protocol;
@@ -139,11 +183,16 @@ export async function validateCatalog(options = {}) {
       }
     }
 
+    const repositoryBacked =
+      record.source?.type === "github" ||
+      (record.id === approvedOrganizationRecord.id &&
+        record.source?.type === "github-organization");
+
     if (
       (record.kind === "frontend" || record.kind === "extension") &&
-      record.source?.type !== "github"
+      !repositoryBacked
     ) {
-      errors.push(`${id}: ${record.kind} requires source.type github`);
+      errors.push(`${id}: ${record.kind} requires a GitHub source`);
     }
 
     if (record.source) {
@@ -185,6 +234,7 @@ export async function validateCatalog(options = {}) {
       errors.push(`${snapshot.project_id}: URL source cannot have a snapshot`);
     } else if (
       snapshot.source_health !== "identity-change" &&
+      record.source.repository_id !== null &&
       snapshot.repository?.id !== record.source.repository_id
     ) {
       errors.push(

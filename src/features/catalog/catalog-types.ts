@@ -1,5 +1,8 @@
 export type ProjectKind = "frontend" | "extension" | "preset";
-export type LicenseStatus = "osi-approved" | "proprietary" | "missing";
+export type MetadataStatus = "provisional" | "curated";
+export type SourceStatus = "pending" | "healthy" | "stale" | "manual";
+export type LicenseStatus =
+  "osi-approved" | "proprietary" | "missing" | "pending";
 
 export interface CatalogLabel {
   id: string;
@@ -11,6 +14,8 @@ export interface CatalogProject {
   id: string;
   name: string;
   kind: ProjectKind;
+  metadataStatus: MetadataStatus;
+  sourceStatus: SourceStatus;
   primaryFunction: string;
   summary: string;
   canonicalUrl: string;

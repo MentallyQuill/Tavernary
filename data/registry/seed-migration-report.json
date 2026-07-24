@@ -1,0 +1,44 @@
+{
+  "intake_records": 213,
+  "curated_overlaps": 4,
+  "generated_records": 209,
+  "writes_required": 209,
+  "provisional_matches": 0,
+  "provisional_drift": [],
+  "final_union_records": 214,
+  "by_kind": {
+    "frontend": 4,
+    "extension": 198,
+    "preset": 12
+  },
+  "by_source": {
+    "github": 204,
+    "github-organization": 1,
+    "url": 9
+  },
+  "provisional_summaries": 209,
+  "uncategorized_records": 209,
+  "null_repository_ids": 200,
+  "normalized_source_changes": [
+    {
+      "id": "puras-director-v15",
+      "before": "https://platberlitz.github.io/",
+      "after": "https://platberlitz.github.io"
+    },
+    {
+      "id": "purrfect-logic-4-max-mini",
+      "before": "https://old.reddit.com/r/SillyTavernAI/comments/1twlef0/purrfect_logic_4_max_mini_update_token_cleanup/",
+      "after": "https://old.reddit.com/r/SillyTavernAI/comments/1twlef0/purrfect_logic_4_max_mini_update_token_cleanup"
+    },
+    {
+      "id": "realistic-frankenstein-preset",
+      "before": "https://old.reddit.com/r/SillyTavernAI/comments/1tyuh6h/realistic_frankenstein_my_new_family_of_freaky/",
+      "after": "https://old.reddit.com/r/SillyTavernAI/comments/1tyuh6h/realistic_frankenstein_my_new_family_of_freaky"
+    },
+    {
+      "id": "writers-block-4",
+      "before": "https://old.reddit.com/r/SillyTavernAI/comments/1tnsxh6/update_writers_block_4_the_quest_for_tokens_a/",
+      "after": "https://old.reddit.com/r/SillyTavernAI/comments/1tnsxh6/update_writers_block_4_the_quest_for_tokens_a"
+    }
+  ]
+}

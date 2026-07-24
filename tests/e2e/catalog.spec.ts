@@ -52,12 +52,32 @@ test("uses the approved category strip", async ({ page }) => {
   expect(metrics).toEqual({
     display: "grid",
     height: 50,
-    tracks: 9,
+    tracks: 10,
     activeBorder: "1px",
     afterContent: "none",
     justifyContent: "center",
     textAlign: "center",
   });
+
+  await expect(page.locator(".category-navigation button")).toHaveCount(10);
+  expect(
+    await page
+      .locator(".category-navigation button")
+      .evaluateAll((buttons) =>
+        buttons.map((button) => button.textContent?.trim()),
+      ),
+  ).toEqual([
+    "All Projects",
+    "Frontends",
+    "System Presets",
+    "Memory & Retrieval",
+    "Generation & Reasoning",
+    "Character & Worldbuilding",
+    "RPG Systems & Suites",
+    "Interface & Workflow",
+    "Developer Infrastructure",
+    "Uncategorized",
+  ]);
 });
 
 test("uses the approved desktop workspace and matched toolbar controls", async ({
@@ -156,7 +176,7 @@ test("keeps canonical frontends ordered and expands the remainder", async ({
     labels.slice(0, 3).map((label) => label.replace(/\d+$/, "").trim()),
   ).toEqual(["SillyTavern", "Lumiverse", "Marinara Engine"]);
   await expect(group.getByLabel("Lumiverse")).toBeVisible();
-  await expect(group.getByLabel("Lumiverse").locator("..")).toContainText("0");
+  await expect(group.getByLabel("Lumiverse").locator("..")).toContainText("26");
   await expect(group.getByLabel("Sonder Engine")).toBeHidden();
   await group.getByRole("button", { name: "Show 1 more" }).click();
   await expect(group.getByLabel("Sonder Engine")).toBeVisible();
@@ -196,7 +216,10 @@ test("themes project-kind checkbox outlines", async ({ page }) => {
 test("searches, changes density, and shows an empty New view", async ({
   page,
 }) => {
-  await expect(page.getByRole("heading", { name: "5 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "214 projects" }),
+  ).toBeVisible();
+  await expect(page.locator(".project-card")).toHaveCount(214);
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
@@ -225,7 +248,9 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     .getByRole("button", { name: "Clear all" })
     .click();
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("heading", { name: "5 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "214 projects" }),
+  ).toBeVisible();
 });
 
 test("supports every sort and restores query state after reload", async ({
@@ -247,6 +272,22 @@ test("supports every sort and restores query state after reload", async ({
   await expect(page.getByRole("heading", { name: "1 project" })).toBeVisible();
 });
 
+test("shows the full launch catalog without default-query hidden records", async ({
+  page,
+}) => {
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator(".project-card")).toHaveCount(214);
+  await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
+    214,
+  );
+  await expect(
+    page.locator(".project-card").filter({ hasText: "Provisional details" }),
+  ).toHaveCount(209);
+  await expect(
+    page.locator(".project-card").filter({ hasText: "Source pending" }),
+  ).toHaveCount(200);
+});
+
 test("uses canonical external URLs for project cards", async ({ page }) => {
   const recursion = page.getByRole("link", { name: "Recursion", exact: true });
   await expect(recursion).toHaveAttribute(
@@ -257,11 +298,45 @@ test("uses canonical external URLs for project cards", async ({ page }) => {
   await expect(recursion).toHaveAttribute("rel", /noopener/);
 });
 
+test("supports uncategorized, pending-license, and missing-license catalog filters at full scale", async ({
+  page,
+}) => {
+  await page
+    .getByRole("button", { name: "Uncategorized", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "209 projects" }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/category=uncategorized/);
+
+  await page.getByLabel("Pending verification", { exact: true }).check();
+  await expect(
+    page.getByRole("heading", { name: "209 projects" }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/license=pending/);
+  await expect(
+    page.locator(".project-card").filter({ hasText: "Pending" }),
+  ).toHaveCount(209);
+
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Remove Pending verification" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "214 projects" }),
+  ).toBeVisible();
+  await expect(page).not.toHaveURL(/license=/);
+
+  await page.getByLabel("Missing license", { exact: true }).check();
+  await expect(page.getByRole("heading", { name: "2 projects" })).toBeVisible();
+  await expect(page).toHaveURL(/license=missing/);
+});
+
 test("matches the approved card anatomy", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const card = page.locator(".project-card").first();
 
-  await expect(page.locator(".project-card")).toHaveCount(5);
+  await expect(page.locator(".project-card")).toHaveCount(214);
   await expect(card.locator("h2")).toHaveCSS("font-family", /Inter/);
   await expect(card.locator(".card-bottom")).toHaveCSS(
     "border-top-style",
@@ -378,10 +453,13 @@ test("keeps tile tooltips inside the viewport portal", async ({ page }) => {
   const preset = page.locator(".project-card").filter({
     has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
   });
+  const recursion = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion", exact: true }),
+  });
   const triggers = [
     page.locator(".project-card").first().locator(".card-identity"),
     sillyTavern.locator(".community"),
-    page.locator(".project-card").nth(3).locator(".repository-size"),
+    recursion.locator(".repository-size"),
     preset.locator(".license"),
   ];
 

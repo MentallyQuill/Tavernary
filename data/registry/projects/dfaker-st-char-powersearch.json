@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "id": "dfaker-st-char-powersearch",
+  "name": "ST Character PowerSearch",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "dfaker/st-char-powersearch",
+    "repository_id": null
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

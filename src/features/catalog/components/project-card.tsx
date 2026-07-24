@@ -13,6 +13,48 @@ const kindLabels = {
   preset: "System Preset",
 };
 
+function sourceStatusLabel(project: CatalogProject) {
+  if (project.sourceStatus === "manual") return "Manual source";
+  if (project.sourceStatus === "pending") return "Source pending";
+  if (project.sourceStatus === "stale") return "Source stale";
+  return null;
+}
+
+function detailItems(project: CatalogProject) {
+  const items: string[] = [];
+  const shouldExplainUnknownFacts =
+    project.metadataStatus === "provisional" ||
+    project.sourceStatus !== "healthy";
+  if (project.metadataStatus === "provisional") {
+    items.push("Provisional details");
+  }
+  const sourceLabel = sourceStatusLabel(project);
+  if (sourceLabel) {
+    items.push(sourceLabel);
+  }
+  if (
+    shouldExplainUnknownFacts &&
+    project.kind === "preset" &&
+    (project.activity.activeWeeks12 === null || !project.activity.twoWeekBars)
+  ) {
+    items.push("Activity unavailable");
+  }
+  if (
+    shouldExplainUnknownFacts &&
+    !project.latestReleaseAt &&
+    !project.preset?.publishedAt
+  ) {
+    items.push("Release unavailable");
+  }
+  if (shouldExplainUnknownFacts && project.community === null) {
+    items.push("Popularity unavailable");
+  }
+  if (shouldExplainUnknownFacts && project.repositorySizeKb === null) {
+    items.push("Repository size unavailable");
+  }
+  return items;
+}
+
 function relativeTime(timestamp: string | null, now: string) {
   if (!timestamp) return "No activity";
   const days = daysSince(timestamp, now) ?? 0;
@@ -89,8 +131,16 @@ export function ProjectCard({
     ? `Published ${relativeTime(project.preset.publishedAt, now)}`
     : "Source linked";
   const presetSize = formatBytes(project.preset?.artifactSizeBytes ?? null);
+  const details = detailItems(project);
+  const { activeWeeks12, latestMeaningfulCommitAt, twoWeekBars } =
+    project.activity;
+  const hasActivityMetrics =
+    activeWeeks12 !== null &&
+    twoWeekBars !== null &&
+    latestMeaningfulCommitAt !== null;
   const cardDescription = [
     `${kindLabels[project.kind]} project. Primary category: ${primaryFunction}.`,
+    ...details.map((detail) => `${detail}.`),
     project.activity.activeWeeks12 !== null
       ? `Active in ${project.activity.activeWeeks12} of the last 12 weeks.`
       : null,
@@ -133,52 +183,7 @@ export function ProjectCard({
           </span>
           <span>{kindLabels[project.kind]}</span>
         </Tooltip>
-        {project.activity.activeWeeks12 !== null &&
-        project.activity.twoWeekBars ? (
-          <span className="development">
-            <Tooltip
-              id={activityId}
-              label={`Active in ${project.activity.activeWeeks12} of the last 12 weeks. The six bars show two-week commit totals.`}
-              className="activity-score"
-            >
-              <b>{project.activity.activeWeeks12}/12</b>
-              <ActivitySparkline bars={project.activity.twoWeekBars} />
-            </Tooltip>
-            <Tooltip
-              id={commitId}
-              label={
-                project.activity.latestMeaningfulCommitAt
-                  ? `Last meaningful commit: ${formatDate(project.activity.latestMeaningfulCommitAt)} (${commitAge}).`
-                  : "No meaningful commit date is available."
-              }
-              className="commit-age"
-              style={commitAgeStyle}
-            >
-              {commitAge}
-            </Tooltip>
-            {project.community ? (
-              <Tooltip
-                id={communityId}
-                label={`Community score: ${project.community.aggregate} total — ${project.community.stars} stars, ${project.community.forks} forks, and ${project.community.subscribers} subscribers.`}
-                className="community"
-              >
-                <CategoryIcon name="community" />
-                <b>{project.community.aggregate}</b>
-              </Tooltip>
-            ) : null}
-            <Tooltip
-              id={repositorySizeId}
-              label={
-                repositorySize
-                  ? `Repository size reported by GitHub: ${repositorySize.replace(" repo", "")}.`
-                  : "GitHub did not report a repository size."
-              }
-              className="repository-size"
-            >
-              {repositorySize}
-            </Tooltip>
-          </span>
-        ) : (
+        {project.kind === "preset" ? (
           <span className="development preset-development">
             <Tooltip
               id={`${project.id}-preset-version`}
@@ -210,6 +215,52 @@ export function ProjectCard({
               {presetSize}
             </Tooltip>
           </span>
+        ) : (
+          <span className="development">
+            {hasActivityMetrics ? (
+              <>
+                <Tooltip
+                  id={activityId}
+                  label={`Active in ${activeWeeks12} of the last 12 weeks. The six bars show two-week commit totals.`}
+                  className="activity-score"
+                >
+                  <b>{activeWeeks12}/12</b>
+                  <ActivitySparkline bars={twoWeekBars} />
+                </Tooltip>
+                <Tooltip
+                  id={commitId}
+                  label={`Last meaningful commit: ${formatDate(latestMeaningfulCommitAt)} (${commitAge}).`}
+                  className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
+                  style={commitAgeStyle}
+                >
+                  {commitAge}
+                </Tooltip>
+              </>
+            ) : (
+              <span className="development-unavailable">
+                Activity unavailable
+              </span>
+            )}
+            {project.community ? (
+              <Tooltip
+                id={communityId}
+                label={`Community score: ${project.community.aggregate} total — ${project.community.stars} stars, ${project.community.forks} forks, and ${project.community.subscribers} subscribers.`}
+                className="community"
+              >
+                <CategoryIcon name="community" />
+                <b>{project.community.aggregate}</b>
+              </Tooltip>
+            ) : null}
+            {repositorySize ? (
+              <Tooltip
+                id={repositorySizeId}
+                label={`Repository size reported by GitHub: ${repositorySize.replace(" repo", "")}.`}
+                className="repository-size"
+              >
+                {repositorySize}
+              </Tooltip>
+            ) : null}
+          </span>
         )}
       </div>
 
@@ -222,6 +273,15 @@ export function ProjectCard({
           {project.name}
         </Tooltip>
       </h2>
+      {details.length > 0 ? (
+        <ul className="card-state-list" aria-label="Project details">
+          {details.map((detail) => (
+            <li className="card-state-note" key={detail}>
+              {detail}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <p className="card-summary">
         <Tooltip
           id={summaryId}

@@ -44,6 +44,16 @@ function twoWeekBars(weeks) {
   ];
 }
 
+function emptyActivity() {
+  return {
+    latestMeaningfulCommitAt: null,
+    activeWeeks12: null,
+    twoWeekBars: null,
+    strength: null,
+    dormant: false,
+  };
+}
+
 function licenseDisplay(status, spdxId, sourceType = "github") {
   if (status === "osi-approved") {
     return {
@@ -63,6 +73,16 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
         sourceType === "github"
           ? "The published root license is not OSI-approved."
           : "The source is marked proprietary.",
+    };
+  }
+  if (status === "pending") {
+    return {
+      status,
+      label: "Pending",
+      tooltip:
+        sourceType === "github"
+          ? "Repository facts are pending the first successful snapshot."
+          : "License review is pending for this source.",
     };
   }
   return {
@@ -99,33 +119,48 @@ function githubProject(record, snapshot, vocabularies) {
     id: record.id,
     name: record.name,
     kind: record.kind,
+    metadataStatus: record.metadata_status,
+    sourceStatus: snapshot
+      ? snapshot.stale_since || snapshot.source_health === "unavailable"
+        ? "stale"
+        : "healthy"
+      : "pending",
     primaryFunction: primaryFunction.id,
     summary: record.summary,
-    canonicalUrl: snapshot.repository.url,
+    canonicalUrl:
+      snapshot?.repository?.url ??
+      `https://github.com/${record.source.repository}`,
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
     capabilities,
     searchableText,
-    activity: {
-      latestMeaningfulCommitAt: snapshot.activity.latest_meaningful_commit_at,
-      activeWeeks12: snapshot.activity.active_weeks_12,
-      twoWeekBars: twoWeekBars(snapshot.activity.weekly_meaningful_commits),
-      strength: snapshot.activity.strength,
-      dormant: snapshot.activity.dormant,
-    },
-    latestReleaseAt: snapshot.activity.latest_release_at,
-    community: {
-      stars: snapshot.community.stargazers_count,
-      forks: snapshot.community.forks_count,
-      subscribers: snapshot.community.subscribers_count,
-      aggregate:
-        snapshot.community.stargazers_count +
-        snapshot.community.forks_count +
-        snapshot.community.subscribers_count,
-    },
-    repositorySizeKb: snapshot.repository.size_kb,
-    license: licenseDisplay(snapshot.license.status, snapshot.license.spdx_id),
+    activity: snapshot
+      ? {
+          latestMeaningfulCommitAt:
+            snapshot.activity.latest_meaningful_commit_at,
+          activeWeeks12: snapshot.activity.active_weeks_12,
+          twoWeekBars: twoWeekBars(snapshot.activity.weekly_meaningful_commits),
+          strength: snapshot.activity.strength,
+          dormant: snapshot.activity.dormant,
+        }
+      : emptyActivity(),
+    latestReleaseAt: snapshot?.activity?.latest_release_at ?? null,
+    community: snapshot
+      ? {
+          stars: snapshot.community.stargazers_count,
+          forks: snapshot.community.forks_count,
+          subscribers: snapshot.community.subscribers_count,
+          aggregate:
+            snapshot.community.stargazers_count +
+            snapshot.community.forks_count +
+            snapshot.community.subscribers_count,
+        }
+      : null,
+    repositorySizeKb: snapshot?.repository?.size_kb ?? null,
+    license: snapshot
+      ? licenseDisplay(snapshot.license.status, snapshot.license.spdx_id)
+      : licenseDisplay("pending", null),
     preset:
       record.kind === "preset"
         ? {
@@ -134,8 +169,8 @@ function githubProject(record, snapshot, vocabularies) {
             artifactSizeBytes: null,
           }
         : null,
-    refreshedAt: snapshot.refreshed_at,
-    staleSince: snapshot.stale_since,
+    refreshedAt: snapshot?.refreshed_at ?? null,
+    staleSince: snapshot?.stale_since ?? null,
   };
 }
 
@@ -158,6 +193,8 @@ function urlPreset(record, vocabularies) {
     id: record.id,
     name: record.name,
     kind: record.kind,
+    metadataStatus: record.metadata_status,
+    sourceStatus: "manual",
     primaryFunction: primaryFunction.id,
     summary: record.summary,
     canonicalUrl: record.source.url,
@@ -175,13 +212,7 @@ function urlPreset(record, vocabularies) {
     ]
       .join(" ")
       .toLowerCase(),
-    activity: {
-      latestMeaningfulCommitAt: null,
-      activeWeeks12: null,
-      twoWeekBars: null,
-      strength: null,
-      dormant: false,
-    },
+    activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
     repositorySizeKb: null,
@@ -191,6 +222,50 @@ function urlPreset(record, vocabularies) {
       publishedAt: record.source.published_at,
       artifactSizeBytes: record.source.artifact_size_bytes,
     },
+    refreshedAt: null,
+    staleSince: null,
+  };
+}
+
+function manualProject(record, vocabularies) {
+  const frontends = labeled(record.frontends, vocabularies.frontends);
+  const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const primaryFunction = {
+    id: record.primary_function,
+    label:
+      vocabularies.primaryFunctions.get(record.primary_function) ??
+      record.primary_function,
+  };
+
+  return {
+    id: record.id,
+    name: record.name,
+    kind: record.kind,
+    metadataStatus: record.metadata_status,
+    sourceStatus: "manual",
+    primaryFunction: primaryFunction.id,
+    summary: record.summary,
+    canonicalUrl: record.source.url,
+    catalogedAt: record.cataloged_at,
+    catalogCohort: record.catalog_cohort,
+    frontends,
+    capabilities,
+    searchableText: [
+      record.name,
+      record.kind,
+      record.summary,
+      primaryFunction.label,
+      ...frontends.map(({ label }) => label),
+      ...capabilities.map(({ label }) => label),
+    ]
+      .join(" ")
+      .toLowerCase(),
+    activity: emptyActivity(),
+    latestReleaseAt: null,
+    community: null,
+    repositorySizeKb: null,
+    license: licenseDisplay("pending", null, "url"),
+    preset: null,
     refreshedAt: null,
     staleSince: null,
   };
@@ -222,13 +297,14 @@ export async function buildCatalog(options = {}) {
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
   );
   const projects = [];
+  const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
   for (const record of records) {
     if (record.visibility !== "published") {
       continue;
     }
     const snapshot = snapshotsByProject.get(record.id);
-    if (snapshot && snapshot.source_health !== "healthy") {
+    if (snapshot && hiddenSourceStates.has(snapshot.source_health)) {
       continue;
     }
     if (record.source.type === "url") {
@@ -237,8 +313,13 @@ export async function buildCatalog(options = {}) {
       }
       continue;
     }
+    if (record.source.type === "github-organization") {
+      projects.push(manualProject(record, vocabularies));
+      continue;
+    }
 
-    if (!snapshot || snapshot.source_health !== "healthy") {
+    if (!snapshot) {
+      projects.push(githubProject(record, null, vocabularies));
       continue;
     }
     projects.push(githubProject(record, snapshot, vocabularies));

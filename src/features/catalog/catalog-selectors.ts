@@ -1,5 +1,6 @@
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
-import type { CatalogQuery, LicenseFilter } from "./catalog-query";
+import type { CatalogQuery } from "./catalog-query";
+import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
@@ -8,13 +9,6 @@ function matchesAny(selected: string[], values: string[]) {
   return (
     selected.length === 0 || selected.some((value) => values.includes(value))
   );
-}
-
-function licenseFilter(project: CatalogProject): LicenseFilter {
-  if (project.license.status === "osi-approved") {
-    return "open-source";
-  }
-  return project.license.status;
 }
 
 function matchesDevelopment(
@@ -60,7 +54,11 @@ function fallbackOrder(left: CatalogProject, right: CatalogProject) {
   const dateOrder =
     new Date(right.catalogedAt).getTime() -
     new Date(left.catalogedAt).getTime();
-  return dateOrder || collator.compare(left.name, right.name);
+  return (
+    dateOrder ||
+    collator.compare(left.name, right.name) ||
+    collator.compare(left.id, right.id)
+  );
 }
 
 function nullableDescending(
@@ -78,13 +76,20 @@ function nullableDescending(
   if (right === null) {
     return -1;
   }
-  return right - left || collator.compare(leftProject.name, rightProject.name);
+  return (
+    right - left ||
+    collator.compare(leftProject.name, rightProject.name) ||
+    collator.compare(leftProject.id, rightProject.id)
+  );
 }
 
 function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
   return projects.sort((left, right) => {
     if (sort === "alphabetical") {
-      return collator.compare(left.name, right.name);
+      return (
+        collator.compare(left.name, right.name) ||
+        collator.compare(left.id, right.id)
+      );
     }
     if (sort === "strength") {
       return nullableDescending(

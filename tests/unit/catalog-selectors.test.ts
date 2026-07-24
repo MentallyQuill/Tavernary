@@ -16,6 +16,8 @@ function project(
     id,
     name: id,
     kind: "extension",
+    metadataStatus: "curated",
+    sourceStatus: "healthy",
     primaryFunction: "generation-reasoning",
     summary: `${id} summary`,
     canonicalUrl: `https://example.com/${id}`,
@@ -270,6 +272,14 @@ describe("catalog selectors", () => {
   });
 
   test("applies development and license groups", () => {
+    const pendingProject = project("pending", {
+      license: {
+        status: "pending",
+        label: "Pending review",
+        tooltip: "License review is pending for this source.",
+      },
+    });
+
     expect(
       selectProjects(
         projects,
@@ -279,7 +289,14 @@ describe("catalog selectors", () => {
     ).toEqual(["dormant"]);
     expect(
       selectProjects(
-        projects,
+        [...projects, pendingProject],
+        { ...DEFAULT_QUERY, licenses: ["pending"] },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["pending"]);
+    expect(
+      selectProjects(
+        [...projects, pendingProject],
         { ...DEFAULT_QUERY, licenses: ["missing"] },
         context,
       ).map(({ id }) => id),
@@ -294,6 +311,31 @@ describe("catalog selectors", () => {
         context,
       ).map(({ id }) => id),
     ).toEqual(["preset"]);
+  });
+
+  test("keeps uncategorized results visible with deterministic alphabetical ties", () => {
+    const uncategorizedProjects = [
+      project("zeta", {
+        name: "Shared Name",
+        primaryFunction: "uncategorized",
+      }),
+      project("alpha", {
+        name: "Shared Name",
+        primaryFunction: "uncategorized",
+      }),
+      project("beta", {
+        name: "Another Name",
+        primaryFunction: "uncategorized",
+      }),
+    ];
+
+    expect(
+      selectProjects(
+        uncategorizedProjects,
+        { ...DEFAULT_QUERY, category: "uncategorized", sort: "alphabetical" },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["beta", "alpha", "zeta"]);
   });
 });
 
@@ -324,5 +366,32 @@ describe("catalog query URLs", () => {
         "?view=broken&sort=nope&density=huge&kind=port&frontend=unknown&license=free",
       ),
     ).toEqual(DEFAULT_QUERY);
+  });
+
+  test("accepts uncategorized as a valid category", () => {
+    expect(parseCatalogQuery("?category=uncategorized")).toEqual({
+      ...DEFAULT_QUERY,
+      category: "uncategorized",
+    });
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        category: "uncategorized",
+      }),
+    ).toBe("category=uncategorized");
+  });
+
+  test("round-trips pending license query state", () => {
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        licenses: ["pending"],
+      }),
+    ).toBe("license=pending");
+
+    expect(parseCatalogQuery("?license=pending")).toEqual({
+      ...DEFAULT_QUERY,
+      licenses: ["pending"],
+    });
   });
 });

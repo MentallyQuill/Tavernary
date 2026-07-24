@@ -22,6 +22,7 @@ const staticLabels: Record<string, string> = {
   dormant: "Dormant",
   "open-source": "Open source",
   proprietary: "Proprietary",
+  pending: "Pending verification",
   missing: "Missing license",
 };
 

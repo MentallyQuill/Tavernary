@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "id": "realistic-frankenstein-preset",
+  "name": "Realistic Frankenstein",
+  "kind": "preset",
+  "summary": "A System Preset for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "url",
+    "url": "https://old.reddit.com/r/SillyTavernAI/comments/1tyuh6h/realistic_frankenstein_my_new_family_of_freaky",
+    "published_at": null,
+    "version": null,
+    "artifact_size_bytes": null,
+    "license_status": "pending",
+    "license_spdx_id": null
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "paused"
+}

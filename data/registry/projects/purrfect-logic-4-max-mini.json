@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "purrfect-logic-4-max-mini",
   "name": "Purrfect Logic 4 Max Mini",
   "kind": "preset",
   "summary": "A SillyTavern system preset published for roleplay with the Claude Max and Mini model families.",
+  "metadata_status": "curated",
   "source": {
     "type": "url",
     "url": "https://old.reddit.com/r/SillyTavernAI/comments/1twlef0/purrfect_logic_4_max_mini_update_token_cleanup/",

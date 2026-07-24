@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "id": "carlosnahuelcoy-sillytavern-player2",
+  "name": "SillyTavern Player2",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "CarlosNahuelcoy/SillyTavern-Player2",
+    "repository_id": null
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}
