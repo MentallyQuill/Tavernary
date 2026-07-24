@@ -7,6 +7,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("uses the approved desktop filter controls", async ({ page }) => {
+  await expect(
+    page.getByRole("button", { name: "System Presets 2" }),
+  ).toBeVisible();
   await expect(page.getByText("Filters", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("searchbox", { name: "Search compatible frontends" }),

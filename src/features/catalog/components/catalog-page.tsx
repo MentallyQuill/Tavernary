@@ -119,10 +119,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const categoryCounts = useMemo(() => {
     const counts = new Map<string, number>([["", catalog.projects.length]]);
     for (const project of catalog.projects) {
-      counts.set(
-        project.primaryFunction,
-        (counts.get(project.primaryFunction) ?? 0) + 1,
-      );
+      const category =
+        project.kind === "preset" ? "preset" : project.primaryFunction;
+      counts.set(category, (counts.get(category) ?? 0) + 1);
     }
     return counts;
   }, [catalog.projects]);
