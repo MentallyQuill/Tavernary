@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "zorgonatis-stabs-edh",
+  "repository": {
+    "id": 1100996755,
+    "owner": "Zorgonatis",
+    "name": "Stabs-EDH",
+    "url": "https://github.com/Zorgonatis/Stabs-EDH",
+    "default_branch": "main",
+    "head_sha": "1d4bf8eebb60f5bc11222983cb0d7fccf6843b97",
+    "archived": false,
+    "created_at": "2025-11-21T03:38:52Z",
+    "size_kb": 20536
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-05-21T19:07:33.000Z",
+    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 3],
+    "active_weeks_12": 3,
+    "strength": 609,
+    "dormant": false,
+    "latest_release_at": null
+  },
+  "community": {
+    "stargazers_count": 168,
+    "forks_count": 9,
+    "subscribers_count": 12,
+    "aggregate": 189
+  },
+  "license": {
+    "status": "missing",
+    "spdx_id": null,
+    "source_path": null
+  },
+  "refreshed_at": "2026-07-24T00:03:16.931Z",
+  "stale_since": null
+}

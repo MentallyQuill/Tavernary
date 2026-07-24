@@ -1,5 +1,6 @@
 export interface ValidationResult {
   projectCount: number;
+  snapshotCount: number;
   errors: string[];
 }
 

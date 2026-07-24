@@ -20,6 +20,24 @@ async function loadRecords() {
   );
 }
 
+async function loadSnapshots() {
+  const directory = resolve(rootDirectory, "data/snapshots/github");
+  let files;
+  try {
+    files = (await readdir(directory))
+      .filter((file) => file.endsWith(".json"))
+      .sort();
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+  return Promise.all(
+    files.map((file) => readJson(`data/snapshots/github/${file}`)),
+  );
+}
+
 function vocabularyIds(vocabulary, property) {
   return new Set(vocabulary[property].map(({ id }) => id));
 }
@@ -44,13 +62,19 @@ function schemaError(record, error) {
 }
 
 export async function validateCatalog(options = {}) {
-  const [schema, frontendVocabulary, functionVocabulary, capabilityVocabulary] =
-    await Promise.all([
-      readJson("data/schemas/project.schema.json"),
-      readJson("data/vocabularies/frontends.json"),
-      readJson("data/vocabularies/primary-functions.json"),
-      readJson("data/vocabularies/capabilities.json"),
-    ]);
+  const [
+    schema,
+    snapshotSchema,
+    frontendVocabulary,
+    functionVocabulary,
+    capabilityVocabulary,
+  ] = await Promise.all([
+    readJson("data/schemas/project.schema.json"),
+    readJson("data/schemas/repository-snapshot.schema.json"),
+    readJson("data/vocabularies/frontends.json"),
+    readJson("data/vocabularies/primary-functions.json"),
+    readJson("data/vocabularies/capabilities.json"),
+  ]);
 
   const ajv = new Ajv({ allErrors: true, strict: false });
   ajv.addFormat("uri", {
@@ -70,7 +94,9 @@ export async function validateCatalog(options = {}) {
   );
 
   const validateRecord = ajv.compile(schema);
+  const validateSnapshot = ajv.compile(snapshotSchema);
   const records = options.records ?? (await loadRecords());
+  const snapshots = options.records ? [] : await loadSnapshots();
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
@@ -143,7 +169,35 @@ export async function validateCatalog(options = {}) {
     }
   }
 
-  return { projectCount: records.length, errors };
+  const recordsById = new Map(records.map((record) => [record.id, record]));
+  for (const snapshot of snapshots) {
+    if (!validateSnapshot(snapshot)) {
+      errors.push(
+        ...validateSnapshot.errors.map((error) =>
+          schemaError({ id: snapshot.project_id }, error),
+        ),
+      );
+    }
+    const record = recordsById.get(snapshot.project_id);
+    if (!record) {
+      errors.push(`${snapshot.project_id}: snapshot has no curated record`);
+    } else if (record.source.type !== "github") {
+      errors.push(`${snapshot.project_id}: URL source cannot have a snapshot`);
+    } else if (
+      snapshot.source_health !== "identity-change" &&
+      snapshot.repository?.id !== record.source.repository_id
+    ) {
+      errors.push(
+        `${snapshot.project_id}: snapshot repository id does not match curated identity`,
+      );
+    }
+  }
+
+  return {
+    projectCount: records.length,
+    snapshotCount: snapshots.length,
+    errors,
+  };
 }
 
 async function main() {

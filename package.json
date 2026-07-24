@@ -2,6 +2,7 @@
   "name": "tavernary",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=24 <25"
   },
@@ -17,6 +18,7 @@
     "test:e2e": "node scripts/run-playwright.mjs tests/e2e",
     "test:visual": "node scripts/run-playwright.mjs tests/visual",
     "catalog:validate": "node scripts/catalog/validate.mjs",
+    "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run catalog:validate && npm test && npm run build && npm run verify:export"
   },
