@@ -1128,24 +1128,20 @@
 .compact-cards .repository-size,
 .compact-cards .preset-size,
 .compact-cards .card-state-list,
-.compact-cards .card-summary {
+.compact-cards .card-summary,
+.compact-cards .card-bottom {
   display: none;
 }
 
 .compact-cards .project-card h2 {
-  margin: 8px 0 10px;
+  min-width: 0;
+  margin: 8px 0 0;
   font-size: 15px;
 }
 
-.compact-cards .card-bottom {
-  margin-top: 0;
-  padding-top: 8px;
-  align-items: center;
-}
-
-.compact-cards .card-chips {
-  min-height: 18px;
-  max-height: 18px;
-  flex-wrap: nowrap;
-  align-items: center;
+.compact-cards .card-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

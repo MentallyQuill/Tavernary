@@ -557,16 +557,35 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
   await page.getByRole("button", { name: "Use compact cards" }).click();
 
   await expect(repositoryCard.locator(".card-summary")).toBeHidden();
+  await expect(repositoryCard.locator(".card-state-list")).toBeHidden();
   await expect(repositoryCard.locator(".community")).toBeHidden();
   await expect(repositoryCard.locator(".repository-size")).toBeHidden();
+  await expect(repositoryCard.locator(".card-chips")).toBeHidden();
+  await expect(repositoryCard.locator(".license")).toBeHidden();
   await expect(repositoryCard.locator(".activity-score")).toBeVisible();
   await expect(repositoryCard.locator(".commit-age")).toBeVisible();
+  await expect(repositoryCard.locator(".card-identity")).toBeVisible();
+  await expect(repositoryCard.locator(".card-title")).toBeVisible();
   await expect(presetCard.locator(".preset-size")).toBeHidden();
-  await expect(repositoryCard.locator(".card-chips")).toHaveCSS(
-    "max-height",
-    "18px",
+  await expect(repositoryCard.locator(".card-title")).toHaveCSS(
+    "white-space",
+    "nowrap",
   );
-  expect((await repositoryCard.boundingBox())!.height).toBeLessThan(174);
+  await expect(repositoryCard.locator(".card-title")).toHaveCSS(
+    "text-overflow",
+    "ellipsis",
+  );
+  await expect(repositoryCard.locator(".card-title")).toHaveCSS(
+    "overflow",
+    "hidden",
+  );
+  expect((await repositoryCard.boundingBox())!.height).toBeLessThan(90);
+  await repositoryCard.locator(".card-title").hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+    }),
+  ).toBeVisible();
 });
 
 test("keeps tile tooltips inside the viewport portal", async ({ page }) => {
