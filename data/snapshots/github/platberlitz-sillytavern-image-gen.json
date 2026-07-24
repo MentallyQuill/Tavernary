@@ -7,17 +7,17 @@
     "name": "sillytavern-image-gen",
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "default_branch": "main",
-    "head_sha": "e87d977c671a72446ec7788ec21f0c70577573fa",
+    "head_sha": "eb4c484eaed99270739d7077bda1fc81eec9c3cd",
     "archived": false,
     "created_at": "2026-01-12T06:21:59Z",
     "size_kb": 2370
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-23T05:27:13.000Z",
-    "weekly_meaningful_commits": [17, 0, 3, 0, 1, 4, 1, 2, 0, 3, 4, 5],
+    "latest_meaningful_commit_at": "2026-07-24T09:18:59.000Z",
+    "weekly_meaningful_commits": [19, 0, 3, 0, 1, 3, 2, 2, 0, 3, 4, 4],
     "active_weeks_12": 9,
-    "strength": 5428,
+    "strength": 5427,
     "dormant": false,
     "latest_release_at": null
   },
@@ -32,6 +32,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T03:27:41.981Z",
+  "refreshed_at": "2026-07-24T09:38:12.974Z",
   "stale_since": null
 }
