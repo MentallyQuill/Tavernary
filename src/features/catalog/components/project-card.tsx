@@ -129,7 +129,6 @@ export function ProjectCard({
   const repositorySizeId = `${project.id}-repository-size`;
   const typeId = `${project.id}-type`;
   const titleId = `${project.id}-title`;
-  const summaryId = `${project.id}-summary`;
   const licenseId = `${project.id}-license`;
   const cardDescriptionId = `${project.id}-card-description`;
   const primaryFunction =
@@ -286,8 +285,9 @@ export function ProjectCard({
       <h2>
         <Tooltip
           id={titleId}
-          label={`Open ${project.name}`}
+          label={project.summary}
           className="card-title"
+          showOnAncestorFocus
         >
           {project.name}
         </Tooltip>
@@ -301,15 +301,7 @@ export function ProjectCard({
           ))}
         </ul>
       ) : null}
-      <p className="card-summary">
-        <Tooltip
-          id={summaryId}
-          label={project.summary}
-          className="card-summary-tooltip"
-        >
-          {project.summary}
-        </Tooltip>
-      </p>
+      <p className="card-summary">{project.summary}</p>
 
       <div className="card-bottom">
         <span className="card-chips">

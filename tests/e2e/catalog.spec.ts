@@ -464,7 +464,6 @@ test("explains every card fact with hover help", async ({ page }) => {
     ".community",
     ".repository-size",
     ".card-title",
-    ".card-summary-tooltip",
     ".license",
   ]) {
     await expect(repositoryCard.locator(selector)).toHaveAttribute(
@@ -519,6 +518,23 @@ test("explains every card fact with hover help", async ({ page }) => {
   await expect(
     page.getByRole("tooltip", {
       name: /^Last commit .+ \(.+\)$/,
+    }),
+  ).toBeVisible();
+  await expect(repositoryCard.locator(".card-summary-tooltip")).toHaveCount(0);
+  await repositoryCard.locator(".card-title").hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("tooltip", { name: "Open Recursion" }),
+  ).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await repositoryCard.focus();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
     }),
   ).toBeVisible();
   await repositoryCard.locator(".chip").first().hover();

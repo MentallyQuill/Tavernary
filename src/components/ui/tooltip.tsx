@@ -41,12 +41,14 @@ export function Tooltip({
   children,
   className = "",
   style,
+  showOnAncestorFocus = false,
 }: {
   id: string;
   label: string;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
+  showOnAncestorFocus?: boolean;
 }) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const tooltipRef = useRef<HTMLSpanElement>(null);
@@ -62,6 +64,19 @@ export function Tooltip({
     if (window.matchMedia("(max-width: 760px)").matches) return;
     setOpen(true);
   }, []);
+
+  useEffect(() => {
+    if (!showOnAncestorFocus) return;
+    const focusTarget = triggerRef.current?.closest("a, button");
+    if (!focusTarget) return;
+
+    focusTarget.addEventListener("focus", show);
+    focusTarget.addEventListener("blur", hide);
+    return () => {
+      focusTarget.removeEventListener("focus", show);
+      focusTarget.removeEventListener("blur", hide);
+    };
+  }, [hide, show, showOnAncestorFocus]);
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !tooltipRef.current) return;
