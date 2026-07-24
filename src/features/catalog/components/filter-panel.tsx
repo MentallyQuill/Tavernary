@@ -86,6 +86,7 @@ function FilterGroup({
   search,
   onSearch,
   searchLabel,
+  presentation = "list",
 }: {
   title: string;
   group: FilterArray;
@@ -96,6 +97,7 @@ function FilterGroup({
   search?: string;
   onSearch?: (value: string) => void;
   searchLabel?: string;
+  presentation?: "list" | "chips";
 }) {
   const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
   const visibleOptions = normalizedSearch
@@ -109,7 +111,11 @@ function FilterGroup({
       <legend>{title}</legend>
       {onSearch && searchLabel ? (
         <input
-          className="filter-search"
+          className={
+            presentation === "chips"
+              ? "filter-search metadata-search"
+              : "filter-search"
+          }
           type="search"
           value={search}
           onChange={(event) => onSearch(event.target.value)}
@@ -117,18 +123,48 @@ function FilterGroup({
           aria-label={searchLabel}
         />
       ) : null}
-      {visibleOptions.map((option) => (
-        <label key={option.id}>
-          <input
-            type="checkbox"
-            aria-label={option.label}
-            checked={selected.includes(option.id)}
-            onChange={() => onToggle(group, option.id)}
-          />
-          <span>{option.label}</span>
-          <b>{countFor(projects, group, option.id)}</b>
-        </label>
-      ))}
+      {presentation === "chips" ? (
+        <div className="metadata-options">
+          {visibleOptions.map((option) => {
+            const isSelected = selected.includes(option.id);
+            return (
+              <label
+                className={`metadata-option${isSelected ? " selected" : ""}`}
+                key={option.id}
+              >
+                <span className="metadata-filter-chip">
+                  <input
+                    type="checkbox"
+                    aria-label={option.label}
+                    checked={isSelected}
+                    onChange={() => onToggle(group, option.id)}
+                  />
+                  <span className="metadata-check" aria-hidden="true">
+                    ✓
+                  </span>
+                  <span>{option.label}</span>
+                  <b className="metadata-count">
+                    {countFor(projects, group, option.id)}
+                  </b>
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      ) : (
+        visibleOptions.map((option) => (
+          <label key={option.id}>
+            <input
+              type="checkbox"
+              aria-label={option.label}
+              checked={selected.includes(option.id)}
+              onChange={() => onToggle(group, option.id)}
+            />
+            <span>{option.label}</span>
+            <b>{countFor(projects, group, option.id)}</b>
+          </label>
+        ))
+      )}
     </fieldset>
   );
 }
@@ -199,6 +235,7 @@ export function FilterPanel({
         search={capabilitySearch}
         onSearch={setCapabilitySearch}
         searchLabel="Search capabilities and characteristics"
+        presentation="chips"
       />
       <FilterGroup
         title="Development"

@@ -44,14 +44,13 @@ export function SiteHeader({
         />
         <kbd>/</kbd>
       </label>
-      <nav
-        className="header-secondary-actions"
-        aria-label="Secondary site actions"
-      >
-        <a href="./about/">About</a>
-        <a href={helpUrl}>Help</a>
-      </nav>
-      <nav className="header-primary-actions" aria-label="Primary site actions">
+      <nav className="header-actions" aria-label="Site actions">
+        <a className="top-link" href="./about/">
+          About
+        </a>
+        <a className="top-link" href={helpUrl}>
+          Help
+        </a>
         <a className="submit-link" href={submissionUrl}>
           Submit Project
         </a>

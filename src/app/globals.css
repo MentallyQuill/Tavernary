@@ -23,6 +23,7 @@ body {
   color: var(--color-text-primary);
   background: var(--color-page);
   font-family: "Inter Variable", Inter, system-ui, sans-serif;
+  font-size: 14px;
   text-rendering: optimizeLegibility;
 }
 

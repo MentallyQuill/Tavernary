@@ -116,15 +116,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       density: current.density,
     }));
 
-  const categoryCounts = useMemo(() => {
-    const counts = new Map<string, number>([["", catalog.projects.length]]);
-    for (const project of catalog.projects) {
-      const category =
-        project.kind === "preset" ? "preset" : project.primaryFunction;
-      counts.set(category, (counts.get(category) ?? 0) + 1);
-    }
-    return counts;
-  }, [catalog.projects]);
   const filterCount =
     query.frontends.length +
     query.kinds.length +
@@ -153,7 +144,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       <CategoryNavigation
         selected={query.category}
         onSelect={(category) => update("category", category)}
-        counts={categoryCounts}
       />
       <div className="catalog-layout">
         <FilterPanel

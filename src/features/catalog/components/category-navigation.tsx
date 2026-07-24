@@ -5,14 +5,29 @@ import { useState } from "react";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { CATEGORY_OPTIONS } from "../catalog-query";
 
+function CategoryMark({ id }: { id: string }) {
+  if (!id) {
+    return (
+      <span className="all-symbol" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+    );
+  }
+
+  return (
+    <CategoryIcon name={id as Parameters<typeof CategoryIcon>[0]["name"]} />
+  );
+}
+
 export function CategoryNavigation({
   selected,
   onSelect,
-  counts,
 }: {
   selected: string;
   onSelect: (id: string) => void;
-  counts: Map<string, number>;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const current =
@@ -24,20 +39,14 @@ export function CategoryNavigation({
         {CATEGORY_OPTIONS.map((category) => (
           <button
             className={selected === category.id ? "active" : ""}
+            data-category={category.id || "all"}
             key={category.id || "all"}
             type="button"
             aria-pressed={selected === category.id}
             onClick={() => onSelect(category.id)}
           >
-            <CategoryIcon
-              name={
-                (category.id || "all") as Parameters<
-                  typeof CategoryIcon
-                >[0]["name"]
-              }
-            />
+            <CategoryMark id={category.id} />
             <span>{category.shortLabel}</span>
-            <b>{counts.get(category.id) ?? 0}</b>
           </button>
         ))}
       </nav>
@@ -49,14 +58,9 @@ export function CategoryNavigation({
           aria-label="Browse categories"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
+          data-category={current.id || "all"}
         >
-          <CategoryIcon
-            name={
-              (current.id || "all") as Parameters<
-                typeof CategoryIcon
-              >[0]["name"]
-            }
-          />
+          <CategoryMark id={current.id} />
           <span>
             <small>Browse</small>
             {current.label}
@@ -70,20 +74,14 @@ export function CategoryNavigation({
                 key={category.id || "all"}
                 type="button"
                 className={selected === category.id ? "active" : ""}
+                data-category={category.id || "all"}
                 onClick={() => {
                   onSelect(category.id);
                   setMobileOpen(false);
                 }}
               >
-                <CategoryIcon
-                  name={
-                    (category.id || "all") as Parameters<
-                      typeof CategoryIcon
-                    >[0]["name"]
-                  }
-                />
+                <CategoryMark id={category.id} />
                 <span>{category.label}</span>
-                <b>{counts.get(category.id) ?? 0}</b>
               </button>
             ))}
           </div>

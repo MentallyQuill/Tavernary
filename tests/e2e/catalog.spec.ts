@@ -6,9 +6,74 @@ test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
 });
 
+test("uses the approved category strip", async ({ page }) => {
+  const metrics = await page.locator(".category-navigation").evaluate((nav) => {
+    const active = nav.querySelector("button.active");
+    if (!active) throw new Error("Missing active category");
+    const navStyle = getComputedStyle(nav);
+    const activeStyle = getComputedStyle(active);
+    const afterStyle = getComputedStyle(active, "::after");
+
+    return {
+      display: navStyle.display,
+      height: Math.round(nav.getBoundingClientRect().height),
+      tracks: navStyle.gridTemplateColumns.split(" ").length,
+      activeBorder: activeStyle.borderTopWidth,
+      afterContent: afterStyle.content,
+    };
+  });
+
+  expect(metrics).toEqual({
+    display: "grid",
+    height: 50,
+    tracks: 9,
+    activeBorder: "1px",
+    afterContent: "none",
+  });
+});
+
+test("uses the approved desktop workspace and matched toolbar controls", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const metrics = await page.evaluate(() => {
+    const layout = document.querySelector<HTMLElement>(".catalog-layout");
+    const filters = document.querySelector<HTMLElement>(".filter-panel");
+    const main = document.querySelector<HTMLElement>(".catalog-main");
+    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const sort = document.querySelector<HTMLElement>(".sort-projects");
+    if (!layout || !filters || !main || !tabs || !sort) {
+      throw new Error("Missing desktop catalog controls");
+    }
+
+    const layoutBox = layout.getBoundingClientRect();
+    const filterBox = filters.getBoundingClientRect();
+    const mainBox = main.getBoundingClientRect();
+    return {
+      layoutLeft: Math.round(layoutBox.left),
+      layoutWidth: Math.round(layoutBox.width),
+      filterWidth: Math.round(filterBox.width),
+      mainLeft: Math.round(mainBox.left),
+      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
+      sortHeight: Math.round(sort.getBoundingClientRect().height),
+      filterRadius: getComputedStyle(filters).borderRadius,
+    };
+  });
+
+  expect(metrics).toEqual({
+    layoutLeft: 0,
+    layoutWidth: 1440,
+    filterWidth: 238,
+    mainLeft: 238,
+    tabsHeight: 36,
+    sortHeight: 36,
+    filterRadius: "0px",
+  });
+});
+
 test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
-    page.getByRole("button", { name: "System Presets 2" }),
+    page.getByRole("button", { name: "System Presets", exact: true }),
   ).toBeVisible();
   await expect(page.getByText("Filters", { exact: true })).toBeVisible();
   await expect(
@@ -19,17 +84,24 @@ test("uses the approved desktop filter controls", async ({ page }) => {
       name: "Search capabilities and characteristics",
     }),
   ).toBeVisible();
-  for (const searchbox of await page
-    .locator(".filter-panel .filter-search")
-    .all()) {
-    const dimensions = await searchbox.boundingBox();
-    expect(dimensions?.width).toBeGreaterThan(100);
-    expect(dimensions?.height).toBe(32);
-  }
+  const frontendSearch = await page
+    .getByRole("searchbox", { name: "Search compatible frontends" })
+    .boundingBox();
+  const metadataSearch = await page
+    .getByRole("searchbox", {
+      name: "Search capabilities and characteristics",
+    })
+    .boundingBox();
+  expect(frontendSearch?.width).toBeGreaterThan(100);
+  expect(frontendSearch?.height).toBe(32);
+  expect(metadataSearch?.width).toBeGreaterThan(100);
+  expect(metadataSearch?.height).toBe(36);
   await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Capabilities & characteristics", { exact: true }),
   ).toBeVisible();
+  await expect(page.locator(".metadata-options")).toHaveCSS("display", "flex");
+  await expect(page.locator(".metadata-filter-chip")).toHaveCount(10);
 
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
@@ -103,6 +175,7 @@ test("uses canonical external URLs for project cards", async ({ page }) => {
 });
 
 test("matches the approved card anatomy", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   const card = page.locator(".project-card").first();
 
   await expect(page.locator(".project-card")).toHaveCount(5);
@@ -112,6 +185,25 @@ test("matches the approved card anatomy", async ({ page }) => {
     "solid",
   );
   await expect(card.locator(".license")).toHaveCSS("border-top-width", "0px");
+  await expect(card.locator(".function-symbol")).toHaveCSS("width", "23px");
+  await expect(card.locator(".function-symbol")).toHaveCSS("height", "23px");
+  await expect(card.locator(".function-symbol")).toHaveCSS(
+    "border-top-width",
+    "0px",
+  );
+  await expect(card.locator(".function-symbol")).toHaveCSS(
+    "border-radius",
+    "0px",
+  );
+  await expect(card.locator(".function-symbol svg")).toHaveCSS("width", "23px");
+  await expect(card.locator("h2")).toHaveCSS("font-size", "17px");
+  await expect(card.locator(".card-summary")).toHaveCSS("font-size", "11px");
+  expect(
+    await page.locator(".project-grid").evaluate((grid) => ({
+      columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
+      gap: getComputedStyle(grid).gap,
+    })),
+  ).toEqual({ columns: 4, gap: "12px" });
   expect(
     await card.evaluate((element) => {
       return getComputedStyle(element, "::before").content;
@@ -130,4 +222,60 @@ test("keeps repository activity facts visible on mobile cards", async ({
   await expect(card.locator(".community")).toBeVisible();
   await expect(card.locator(".repository-size")).toBeVisible();
   await expect(card.locator(".activity-bars")).toBeVisible();
+});
+
+test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.reload();
+  const tablet = await page.evaluate(() => {
+    const filters = document.querySelector<HTMLElement>(".filter-panel");
+    const main = document.querySelector<HTMLElement>(".catalog-main");
+    const grid = document.querySelector<HTMLElement>(".project-grid");
+    if (!filters || !main || !grid) throw new Error("Missing tablet layout");
+    return {
+      filterWidth: Math.round(filters.getBoundingClientRect().width),
+      mainLeft: Math.round(main.getBoundingClientRect().left),
+      columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
+      topLinkDisplay: getComputedStyle(
+        document.querySelector<HTMLElement>(".header-actions .top-link")!,
+      ).display,
+    };
+  });
+  expect(tablet).toEqual({
+    filterWidth: 210,
+    mainLeft: 210,
+    columns: 2,
+    topLinkDisplay: "none",
+  });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  const mobile = await page.evaluate(() => {
+    const main = document.querySelector<HTMLElement>(".catalog-main");
+    const trigger = document.querySelector<HTMLElement>(
+      ".mobile-category-trigger",
+    );
+    const controls = document.querySelector<HTMLElement>(".catalog-controls");
+    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const sort = document.querySelector<HTMLElement>(".sort-projects");
+    if (!main || !trigger || !controls || !tabs || !sort) {
+      throw new Error("Missing mobile layout");
+    }
+    return {
+      mainLeft: Math.round(main.getBoundingClientRect().left),
+      mainPaddingLeft: getComputedStyle(main).paddingLeft,
+      triggerHeight: Math.round(trigger.getBoundingClientRect().height),
+      controlColumns: getComputedStyle(controls).gridTemplateColumns,
+      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
+      sortHeight: Math.round(sort.getBoundingClientRect().height),
+    };
+  });
+  expect(mobile).toEqual({
+    mainLeft: 0,
+    mainPaddingLeft: "13px",
+    triggerHeight: 42,
+    controlColumns: "34px 198px 120px",
+    tabsHeight: 36,
+    sortHeight: 36,
+  });
 });

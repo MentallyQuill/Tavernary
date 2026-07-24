@@ -35,6 +35,14 @@ type VisualProfile = {
   };
 };
 
+type AlignmentProfile = {
+  category: Record<string, string | number>;
+  workspace: Record<string, string | number>;
+  toolbar: Record<string, string | number>;
+  metadata: Record<string, string | number>;
+  card: Record<string, string | number>;
+};
+
 async function readProfile(
   page: Page,
   selectors: {
@@ -91,6 +99,116 @@ async function readProfile(
   }, selectors);
 }
 
+async function readAlignmentProfile(
+  page: Page,
+  selectors: {
+    category: string;
+    categoryActive: string;
+    categoryText: string;
+    workspace: string;
+    filters: string;
+    catalog: string;
+    sort: string;
+    metadataSearch: string;
+    metadataOptions: string;
+    metadataChip: string;
+    grid: string;
+    cardTop: string;
+    symbol: string;
+    symbolIcon: string;
+    kind: string;
+  },
+): Promise<AlignmentProfile> {
+  return page.evaluate((profileSelectors) => {
+    const element = (selector: string) => {
+      const match = document.querySelector<HTMLElement>(selector);
+      if (!match) throw new Error(`Missing alignment selector: ${selector}`);
+      return match;
+    };
+    const profile = (selector: string) => {
+      const match = element(selector);
+      return { element: match, style: getComputedStyle(match) };
+    };
+
+    const category = profile(profileSelectors.category);
+    const categoryActive = profile(profileSelectors.categoryActive);
+    const categoryText = profile(profileSelectors.categoryText);
+    const workspace = profile(profileSelectors.workspace);
+    const filters = profile(profileSelectors.filters);
+    const catalog = profile(profileSelectors.catalog);
+    const toolbar = profile(".catalog-toolbar");
+    const tabs = profile(".view-tabs");
+    const sort = profile(profileSelectors.sort);
+    const metadataSearch = profile(profileSelectors.metadataSearch);
+    const metadataOptions = profile(profileSelectors.metadataOptions);
+    const metadataChip = profile(profileSelectors.metadataChip);
+    const grid = profile(profileSelectors.grid);
+    const cardTop = profile(profileSelectors.cardTop);
+    const symbol = profile(profileSelectors.symbol);
+    const symbolIcon = profile(profileSelectors.symbolIcon);
+    const kind = profile(profileSelectors.kind);
+
+    return {
+      category: {
+        display: category.style.display,
+        height: Math.round(category.element.getBoundingClientRect().height),
+        columns: category.style.gridTemplateColumns,
+        gap: category.style.gap,
+        padding: category.style.padding,
+        activeBorderWidth: categoryActive.style.borderTopWidth,
+        activeBorderRadius: categoryActive.style.borderRadius,
+        activeFontSize: categoryText.style.fontSize,
+        activeLineHeight: categoryText.style.lineHeight,
+      },
+      workspace: {
+        columns: workspace.style.gridTemplateColumns,
+        filterWidth: Math.round(filters.element.getBoundingClientRect().width),
+        filterPadding: filters.style.padding,
+        catalogPadding: catalog.style.padding,
+      },
+      toolbar: {
+        minHeight: toolbar.style.minHeight,
+        alignItems: toolbar.style.alignItems,
+        gap: toolbar.style.gap,
+        marginBottom: toolbar.style.marginBottom,
+        tabsHeight: Math.round(tabs.element.getBoundingClientRect().height),
+        tabsPadding: tabs.style.padding,
+        tabsRadius: tabs.style.borderRadius,
+        sortHeight: Math.round(sort.element.getBoundingClientRect().height),
+      },
+      metadata: {
+        searchHeight: Math.round(
+          metadataSearch.element.getBoundingClientRect().height,
+        ),
+        optionsDisplay: metadataOptions.style.display,
+        optionsGap: metadataOptions.style.gap,
+        chipHeight: Math.round(
+          metadataChip.element.getBoundingClientRect().height,
+        ),
+        chipPadding: metadataChip.style.padding,
+        chipRadius: metadataChip.style.borderRadius,
+        chipFontSize: metadataChip.style.fontSize,
+      },
+      card: {
+        columns: grid.style.gridTemplateColumns,
+        gap: grid.style.gap,
+        topMinHeight: cardTop.style.minHeight,
+        symbolWidth: Math.round(symbol.element.getBoundingClientRect().width),
+        symbolHeight: Math.round(symbol.element.getBoundingClientRect().height),
+        symbolBorderWidth: symbol.style.borderTopWidth,
+        symbolRadius: symbol.style.borderRadius,
+        symbolBackground: symbol.style.backgroundColor,
+        iconWidth: Math.round(symbolIcon.element.getBoundingClientRect().width),
+        iconHeight: Math.round(
+          symbolIcon.element.getBoundingClientRect().height,
+        ),
+        kindFontSize: kind.style.fontSize,
+        kindLineHeight: kind.style.lineHeight,
+      },
+    };
+  }, selectors);
+}
+
 test("production preserves the approved mockup visual profile", async ({
   page,
 }) => {
@@ -112,6 +230,56 @@ test("production preserves the approved mockup visual profile", async ({
     card: ".project-card",
     license: ".license-missing",
     title: ".project-card h2",
+  });
+
+  expect(production).toEqual(reference);
+});
+
+test("production preserves the approved mockup layout profile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(
+    pathToFileURL(
+      `${process.cwd()}/docs/reference/mockups/catalog-wall-responsive-v7.html`,
+    ).href,
+    { waitUntil: "domcontentloaded" },
+  );
+  const reference = await readAlignmentProfile(page, {
+    category: ".category-strip",
+    categoryActive: ".category.active",
+    categoryText: ".category.active span:last-child",
+    workspace: ".workspace",
+    filters: ".filters",
+    catalog: ".catalog",
+    sort: ".sort",
+    metadataSearch: ".metadata-search",
+    metadataOptions: ".metadata-options",
+    metadataChip: ".metadata-filter-chip",
+    grid: ".tile-grid",
+    cardTop: ".card-top",
+    symbol: ".function-symbol",
+    symbolIcon: ".function-symbol .icon",
+    kind: ".kind",
+  });
+
+  await page.goto(sitePath());
+  const production = await readAlignmentProfile(page, {
+    category: ".category-navigation",
+    categoryActive: ".category-navigation button.active",
+    categoryText: ".category-navigation button.active > span",
+    workspace: ".catalog-layout",
+    filters: ".filter-panel",
+    catalog: ".catalog-main",
+    sort: ".sort-projects",
+    metadataSearch: ".metadata-search",
+    metadataOptions: ".metadata-options",
+    metadataChip: ".metadata-filter-chip",
+    grid: ".project-grid",
+    cardTop: ".card-top",
+    symbol: ".function-symbol",
+    symbolIcon: ".function-symbol svg",
+    kind: ".card-identity",
   });
 
   expect(production).toEqual(reference);

@@ -41,29 +41,33 @@ export const CATEGORY_OPTIONS = [
   },
   {
     id: "memory-retrieval",
-    label: "Memory and retrieval",
-    shortLabel: "Memory",
+    label: "Memory & Retrieval",
+    shortLabel: "Memory & Retrieval",
   },
   {
     id: "generation-reasoning",
-    label: "Generation and reasoning",
-    shortLabel: "Generation",
+    label: "Generation & Reasoning",
+    shortLabel: "Generation & Reasoning",
   },
   {
     id: "character-worldbuilding",
     label: "Character & Worldbuilding",
     shortLabel: "Character & Worldbuilding",
   },
-  { id: "rpg-systems", label: "RPG systems and suites", shortLabel: "RPG" },
+  {
+    id: "rpg-systems",
+    label: "RPG Systems & Suites",
+    shortLabel: "RPG Systems & Suites",
+  },
   {
     id: "interface-workflow",
-    label: "Interface and workflow",
-    shortLabel: "Interface",
+    label: "Interface & Workflow",
+    shortLabel: "Interface & Workflow",
   },
   {
     id: "developer-infrastructure",
-    label: "Developer infrastructure",
-    shortLabel: "Developer",
+    label: "Developer Infrastructure",
+    shortLabel: "Developer Infrastructure",
   },
 ] as const;
 

@@ -16,13 +16,12 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
     "src",
     "./tavernary-logo.png",
   );
-  await expect(page.locator(".header-primary-actions")).toContainText(
-    "Submit Project",
-  );
-  await expect(page.locator(".header-secondary-actions")).toContainText(
-    "About",
-  );
-  await expect(page.locator(".header-secondary-actions")).toContainText("Help");
+  const actions = page.locator(".header-actions");
+  await expect(actions).toContainText("Submit Project");
+  await expect(actions).toContainText("About");
+  await expect(actions).toContainText("Help");
+  await expect(actions.getByRole("link", { name: "About" })).toBeHidden();
+  await expect(actions.getByRole("link", { name: "Help" })).toBeHidden();
 
   const browse = page.getByRole("button", { name: "Browse categories" });
   await expect(browse).toContainText("All Projects");
@@ -49,7 +48,7 @@ test("uses mobile browse and filter sheets without page overflow", async ({
 }) => {
   await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
-  await page.getByRole("button", { name: "Generation and reasoning" }).click();
+  await page.getByRole("button", { name: "Generation & Reasoning" }).click();
   await expect(
     page.getByRole("button", { name: /Browse categories/ }),
   ).toContainText("Generation");
