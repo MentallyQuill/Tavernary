@@ -16,6 +16,13 @@ test("uses the approved desktop filter controls", async ({ page }) => {
       name: "Search capabilities and characteristics",
     }),
   ).toBeVisible();
+  for (const searchbox of await page
+    .locator(".filter-panel .filter-search")
+    .all()) {
+    const dimensions = await searchbox.boundingBox();
+    expect(dimensions?.width).toBeGreaterThan(100);
+    expect(dimensions?.height).toBe(32);
+  }
   await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Capabilities & characteristics", { exact: true }),
@@ -90,4 +97,34 @@ test("uses canonical external URLs for project cards", async ({ page }) => {
   );
   await expect(recursion).toHaveAttribute("target", "_blank");
   await expect(recursion).toHaveAttribute("rel", /noopener/);
+});
+
+test("matches the approved card anatomy", async ({ page }) => {
+  const card = page.locator(".project-card").first();
+
+  await expect(page.locator(".project-card")).toHaveCount(5);
+  await expect(card.locator("h2")).toHaveCSS("font-family", /Inter/);
+  await expect(card.locator(".card-bottom")).toHaveCSS(
+    "border-top-style",
+    "solid",
+  );
+  await expect(card.locator(".license")).toHaveCSS("border-top-width", "0px");
+  expect(
+    await card.evaluate((element) => {
+      return getComputedStyle(element, "::before").content;
+    }),
+    "kind stripes were removed from the reference design",
+  ).toBe("none");
+});
+
+test("keeps repository activity facts visible on mobile cards", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+
+  const card = page.locator(".project-card").first();
+  await expect(card.locator(".community")).toBeVisible();
+  await expect(card.locator(".repository-size")).toBeVisible();
+  await expect(card.locator(".activity-bars")).toBeVisible();
 });

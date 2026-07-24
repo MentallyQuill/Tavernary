@@ -21,10 +21,6 @@
   .project-grid {
     grid-template-columns: 1fr;
   }
-
-  .repository-size {
-    display: none;
-  }
 }
 
 @media (max-width: 760px) {
@@ -232,17 +228,13 @@
   }
 
   .project-card {
-    min-height: 226px;
-    padding: 15px 15px 13px;
+    min-height: 248px;
+    padding: 15px;
   }
 
   .development {
-    gap: 6px;
-  }
-
-  .community,
-  .repository-size {
-    display: none;
+    column-gap: 8px;
+    row-gap: 4px;
   }
 
   .filter-overlay {
@@ -259,12 +251,8 @@
 }
 
 @media (max-width: 410px) {
-  .activity-bars {
-    display: none;
-  }
-
   .project-card h2 {
-    font-size: 19px;
+    font-size: 17px;
   }
 
   .card-summary {
