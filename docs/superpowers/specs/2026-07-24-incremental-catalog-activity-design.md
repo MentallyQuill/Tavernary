@@ -130,6 +130,10 @@ evidence that can be incrementally maintained.
 }
 ```
 
+`repository.head_committed_at` is required but may be `null` only while a
+migrated snapshot remains provisional. The first successful GraphQL observation
+replaces it with the default-branch head commit timestamp.
+
 ### Activity fields
 
 - `latest_source_activity_at` is a date-time or `null`.
@@ -141,7 +145,7 @@ evidence that can be incrementally maintained.
   - `interval` when a daily aggregate comparison proved that a source-bearing
     change occurred but could not associate paths with individual commits.
 - `provisional_weeks` is either `null` or a twelve-boolean migration summary
-  derived from a version 1 snapshot. It is allowed only while
+  ordered oldest to newest and derived from a version 1 snapshot. It is allowed only while
   `evidence_status` is `provisional` or `degraded`, and is removed after a
   successful baseline.
 - `evidence_status` is:
@@ -171,11 +175,12 @@ The migration preserves:
 - license facts;
 - health and staleness state.
 
-Each nonzero version 1 weekly count becomes `true` at the same relative index in
-`provisional_weeks`. The tile displays this as approximate evidence until the
-baseline completes. Version 1 counts do not become fixed-week
-`source_weeks`, because their sliding boundaries cannot be converted without
-false precision.
+Version 1 stores the current week first, so migration reverses the twelve
+positions and converts each nonzero count to `true`. The resulting
+`provisional_weeks` runs oldest to newest like the final tile graph. The tile
+displays this as approximate evidence until the baseline completes. Version 1
+counts do not become fixed-week `source_weeks`, because their sliding
+boundaries cannot be converted without false precision.
 
 Projects without a snapshot receive a provisional version 2 snapshot after
 their first successful metadata observation. They show activity as pending
@@ -337,10 +342,11 @@ The workflow supports:
 `baseline` accepts a bounded batch size with a default of 12 and a maximum of
 24. It does not accept a start index.
 
-After a successful baseline batch commits, the workflow checks current snapshot
-status and dispatches another baseline run only while provisional projects
-remain. The queue is derived from current records, so catalog additions,
-removals, and ordering changes cannot skip projects.
+After a successful baseline batch commits, the workflow reads the post-run
+`counts.provisional` value from `data/snapshots/github-refresh.json` and
+dispatches another baseline run only while that value is greater than zero.
+The queue is derived from current records, so catalog additions, removals, and
+ordering changes cannot skip projects.
 
 A failed baseline increments `baseline_attempts`. After three failed attempts,
 the project becomes degraded and the queue advances. `project` or `forensic`
