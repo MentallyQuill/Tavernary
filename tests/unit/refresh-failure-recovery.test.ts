@@ -1,3 +1,7 @@
+import { access, mkdtemp, mkdir, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test } from "vitest";
 
 import * as refreshModule from "../../scripts/catalog/refresh-github.mjs";
@@ -192,4 +196,22 @@ test("refresh batches continue after a per-record failure", async () => {
 
   expect(results).toEqual(["healthy: healthy at 2026-07-24T00:00:00.000Z"]);
   expect(errors).toEqual(["broken: boom"]);
+});
+
+test("cleans temporary clones with recursive removal retries", async () => {
+  const cleanup = refreshModule.cleanupTemporaryRoot;
+  expect(cleanup).toBeTypeOf("function");
+  if (!cleanup) return;
+
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "tavernary-refresh-test-"));
+  await mkdir(join(temporaryRoot, "repository", ".git", "objects"), {
+    recursive: true,
+  });
+  await writeFile(
+    join(temporaryRoot, "repository", ".git", "objects", "pack"),
+    "pack",
+  );
+
+  await cleanup(temporaryRoot);
+  await expect(access(temporaryRoot)).rejects.toMatchObject({ code: "ENOENT" });
 });

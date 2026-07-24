@@ -190,8 +190,17 @@ async function inspectRepositoryHistory(repository, defaultBranch, now) {
       license: classifyRootLicense(licenseFiles),
     };
   } finally {
-    await rm(temporaryRoot, { recursive: true, force: true });
+    await cleanupTemporaryRoot(temporaryRoot);
   }
+}
+
+export async function cleanupTemporaryRoot(temporaryRoot) {
+  await rm(temporaryRoot, {
+    recursive: true,
+    force: true,
+    maxRetries: 3,
+    retryDelay: 100,
+  });
 }
 
 async function resolveHeadSha(repository, defaultBranch) {

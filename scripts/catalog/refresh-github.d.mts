@@ -1,4 +1,5 @@
 export function formatSnapshot(snapshot: unknown): Promise<string>;
+export function cleanupTemporaryRoot(temporaryRoot: string): Promise<void>;
 export function snapshotForFailure<
   T extends { source_health: string; stale_since: string | null },
 >(prior: T, error: { status?: number; rateLimited?: boolean }, now: string): T;
