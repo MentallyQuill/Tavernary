@@ -4,10 +4,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   DEFAULT_QUERY,
+  serializeCatalogQuery,
   type CatalogQuery,
 } from "@/features/catalog/catalog-query";
 import { selectProjects } from "@/features/catalog/catalog-selectors";
 import { useCatalogQuery } from "@/features/catalog/use-catalog-query";
+import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
+import { KitGrid } from "@/features/kits/components/kit-grid";
+import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
+import { selectKits } from "@/features/kits/kit-selectors";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
@@ -36,15 +41,19 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
-  const selected = useMemo(
+  const selectedProjects = useMemo(
     () => selectProjects(catalog.projects, query, context),
     [catalog.projects, context, query],
+  );
+  const selectedKits = useMemo(
+    () => selectKits(catalog.kits, query.kits, query.search),
+    [catalog.kits, query.kits, query.search],
   );
 
   useEffect(() => {
     document.body.classList.toggle(
       "compact-cards",
-      query.density === "compact",
+      query.mode === "projects" && query.density === "compact",
     );
     return () => document.body.classList.remove("compact-cards");
   }, [query.density]);
@@ -80,6 +89,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     key: Key,
     value: CatalogQuery[Key],
   ) => setQuery((current) => ({ ...current, [key]: value }));
+  const updateKits = (kits: KitQuery) =>
+    setQuery((current) => ({ ...current, kits }));
 
   const toggleFilter = (group: FilterArray, value: string) => {
     setQuery((current) => {
@@ -109,19 +120,69 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     });
   };
 
+  const removeKitFilter = (key: keyof KitQuery, value?: string) => {
+    setQuery((current) => {
+      const kits = current.kits;
+      if (key === "frontends" || key === "purposes") {
+        return {
+          ...current,
+          kits: {
+            ...kits,
+            [key]: value ? kits[key].filter((item) => item !== value) : [],
+          },
+        };
+      }
+      if (key === "includesProjectId") {
+        return { ...current, kits: { ...kits, includesProjectId: "" } };
+      }
+      if (key === "tavernaryPickOnly") {
+        return { ...current, kits: { ...kits, tavernaryPickOnly: false } };
+      }
+      if (key === "minProjects" || key === "maxProjects") {
+        return {
+          ...current,
+          kits: {
+            ...kits,
+            minProjects: DEFAULT_KIT_QUERY.minProjects,
+            maxProjects: DEFAULT_KIT_QUERY.maxProjects,
+          },
+        };
+      }
+      return current;
+    });
+  };
+
   const clearFilters = () =>
-    setQuery((current) => ({
-      ...DEFAULT_QUERY,
-      sort: current.sort,
-      density: current.density,
-    }));
+    setQuery((current) =>
+      current.mode === "kits"
+        ? {
+            ...current,
+            search: "",
+            selectedKitId: "",
+            kits: { ...DEFAULT_KIT_QUERY, sort: current.kits.sort },
+          }
+        : {
+            ...DEFAULT_QUERY,
+            sort: current.sort,
+            density: current.density,
+          },
+    );
 
   const filterCount =
-    query.frontends.length +
-    query.kinds.length +
-    query.capabilities.length +
-    query.development.length +
-    query.licenses.length;
+    query.mode === "kits"
+      ? query.kits.frontends.length +
+        query.kits.purposes.length +
+        Number(Boolean(query.kits.includesProjectId)) +
+        Number(
+          query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects ||
+            query.kits.maxProjects !== DEFAULT_KIT_QUERY.maxProjects,
+        ) +
+        Number(query.kits.tavernaryPickOnly)
+      : query.frontends.length +
+        query.kinds.length +
+        query.capabilities.length +
+        query.development.length +
+        query.licenses.length;
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -133,6 +194,37 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     setFiltersOpen(false);
     window.setTimeout(() => filterButtonRef.current?.focus(), 0);
   };
+  const selectProjectCategory = (category: string) =>
+    setQuery((current) => ({
+      ...current,
+      mode: "projects",
+      selectedKitId: "",
+      category,
+      kits: DEFAULT_KIT_QUERY,
+    }));
+  const selectKitMode = () =>
+    setQuery((current) => ({
+      ...DEFAULT_QUERY,
+      mode: "kits",
+      search: current.search,
+      density: current.density,
+      kits: current.kits,
+    }));
+  const copyKitLink = (kitId: string) => {
+    const url = new URL(window.location.href);
+    url.search = serializeCatalogQuery({
+      ...query,
+      mode: "kits",
+      selectedKitId: kitId,
+    });
+    void navigator.clipboard?.writeText(url.toString());
+  };
+  const reportKit = (kitId: string) => {
+    const url = new URL("https://github.com/tavernary/tavernary/issues/new");
+    url.searchParams.set("template", "06-kit-report.yml");
+    url.searchParams.set("kit-id", kitId);
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <div className="catalog-shell">
@@ -142,24 +234,41 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         searchRef={searchRef}
       />
       <CategoryNavigation
+        mode={query.mode}
         selected={query.category}
-        onSelect={(category) => update("category", category)}
+        onSelect={selectProjectCategory}
+        onSelectKits={selectKitMode}
       />
       <div className="catalog-layout">
-        <FilterPanel
-          query={query}
-          projects={catalog.projects}
-          now={catalog.generatedAt}
-          onToggle={toggleFilter}
-          onClear={clearFilters}
-        />
+        {query.mode === "kits" ? (
+          <KitFilterPanel
+            query={query.kits}
+            kits={catalog.kits}
+            projects={catalog.projects}
+            onChange={updateKits}
+            onClear={clearFilters}
+          />
+        ) : (
+          <FilterPanel
+            query={query}
+            projects={catalog.projects}
+            now={catalog.generatedAt}
+            onToggle={toggleFilter}
+            onClear={clearFilters}
+          />
+        )}
         <main className="catalog-main">
           <CatalogToolbar
-            count={selected.length}
+            count={
+              query.mode === "kits"
+                ? selectedKits.length
+                : selectedProjects.length
+            }
             query={query}
             refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
             filterCount={filterCount}
             onSort={(sort) => update("sort", sort)}
+            onKitSort={(sort) => updateKits({ ...query.kits, sort })}
             onDensity={() =>
               update(
                 "density",
@@ -172,22 +281,52 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           <ActiveQuery
             query={query}
             projects={catalog.projects}
+            kits={catalog.kits}
             onRemove={removeFilter}
+            onRemoveKit={removeKitFilter}
             onClear={clearFilters}
           />
-          <ProjectGrid projects={selected} now={catalog.generatedAt} />
+          {query.mode === "kits" ? (
+            <KitGrid
+              kits={selectedKits}
+              now={catalog.generatedAt}
+              selectedKitId={query.selectedKitId}
+              onSelect={(selectedKitId) =>
+                update("selectedKitId", selectedKitId)
+              }
+              onCopyLink={copyKitLink}
+              onReport={reportKit}
+            />
+          ) : (
+            <ProjectGrid
+              projects={selectedProjects}
+              now={catalog.generatedAt}
+            />
+          )}
         </main>
       </div>
       {filtersOpen ? (
-        <FilterPanel
-          mobile
-          query={query}
-          projects={catalog.projects}
-          now={catalog.generatedAt}
-          onToggle={toggleFilter}
-          onClear={clearFilters}
-          onClose={closeFilters}
-        />
+        query.mode === "kits" ? (
+          <KitFilterPanel
+            mobile
+            query={query.kits}
+            kits={catalog.kits}
+            projects={catalog.projects}
+            onChange={updateKits}
+            onClear={clearFilters}
+            onClose={closeFilters}
+          />
+        ) : (
+          <FilterPanel
+            mobile
+            query={query}
+            projects={catalog.projects}
+            now={catalog.generatedAt}
+            onToggle={toggleFilter}
+            onClear={clearFilters}
+            onClose={closeFilters}
+          />
+        )
       ) : null}
     </div>
   );

@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import type { KitSort } from "@/features/kits/kit-query";
 import type { CatalogQuery } from "../catalog-query";
 
 export function CatalogToolbar({
@@ -9,6 +10,7 @@ export function CatalogToolbar({
   refreshedLabel,
   filterCount,
   onSort,
+  onKitSort,
   onDensity,
   onOpenFilters,
   filterButtonRef,
@@ -18,6 +20,7 @@ export function CatalogToolbar({
   refreshedLabel: string;
   filterCount: number;
   onSort: (sort: CatalogQuery["sort"]) => void;
+  onKitSort: (sort: KitSort) => void;
   onDensity: () => void;
   onOpenFilters: () => void;
   filterButtonRef?: RefObject<HTMLButtonElement | null>;
@@ -27,34 +30,57 @@ export function CatalogToolbar({
       <div className="catalog-heading">
         <div className="catalog-primary-controls">
           <h1>
-            {count} {count === 1 ? "project" : "projects"}
+            {count}{" "}
+            {query.mode === "kits"
+              ? count === 1
+                ? "Kit"
+                : "Kits"
+              : count === 1
+                ? "project"
+                : "projects"}
           </h1>
-          <button
-            className="density-toggle"
-            type="button"
-            aria-label={
-              query.density === "standard"
-                ? "Use compact cards"
-                : "Use standard cards"
-            }
-            aria-pressed={query.density === "compact"}
-            onClick={onDensity}
-          >
-            <CategoryIcon name="collapse" />
-          </button>
-          <select
-            className="sort-projects"
-            aria-label="Sort projects"
-            value={query.sort}
-            onChange={(event) =>
-              onSort(event.target.value as CatalogQuery["sort"])
-            }
-          >
-            <option value="recent">Recent Activity</option>
-            <option value="strength">Activity Strength</option>
-            <option value="popularity">Popularity</option>
-            <option value="alphabetical">Alphabetical</option>
-          </select>
+          {query.mode === "kits" ? (
+            <select
+              className="sort-kits"
+              aria-label="Sort Kits"
+              value={query.kits.sort}
+              onChange={(event) => onKitSort(event.target.value as KitSort)}
+            >
+              <option value="trending">Trending</option>
+              <option value="newest">Newest</option>
+              <option value="updated">Updated</option>
+              <option value="alphabetical">Alphabetical</option>
+            </select>
+          ) : (
+            <>
+              <button
+                className="density-toggle"
+                type="button"
+                aria-label={
+                  query.density === "standard"
+                    ? "Use compact cards"
+                    : "Use standard cards"
+                }
+                aria-pressed={query.density === "compact"}
+                onClick={onDensity}
+              >
+                <CategoryIcon name="collapse" />
+              </button>
+              <select
+                className="sort-projects"
+                aria-label="Sort projects"
+                value={query.sort}
+                onChange={(event) =>
+                  onSort(event.target.value as CatalogQuery["sort"])
+                }
+              >
+                <option value="recent">Recent Activity</option>
+                <option value="strength">Activity Strength</option>
+                <option value="popularity">Popularity</option>
+                <option value="alphabetical">Alphabetical</option>
+              </select>
+            </>
+          )}
         </div>
         <p>Catalog refreshed {refreshedLabel}</p>
       </div>
