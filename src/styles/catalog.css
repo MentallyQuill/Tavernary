@@ -324,11 +324,6 @@
   color: var(--color-muted);
 }
 
-.metadata-search {
-  height: 36px;
-  padding: 0 10px;
-}
-
 .metadata-options {
   display: flex;
   flex-wrap: wrap;
@@ -336,6 +331,11 @@
   gap: 6px;
   margin-top: 10px;
   overflow: visible;
+}
+
+.metadata-options.collapsed {
+  max-height: calc(25px * 4 + 6px * 3);
+  overflow: hidden;
 }
 
 .metadata-options .metadata-option {
@@ -469,6 +469,10 @@
 
 .more-frontends:hover {
   color: var(--color-text-secondary);
+}
+
+.metadata-disclosure {
+  margin-top: 8px;
 }
 
 .filter-group b {

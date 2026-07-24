@@ -61,8 +61,27 @@ test("uses mobile browse and filter sheets without page overflow", async ({
 
   const filters = page.getByRole("button", { name: "Open filters" });
   await filters.click();
-  await expect(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
+  const dialog = page.getByRole("dialog", { name: "Filters" });
+  await expect(dialog).toBeVisible();
   await expect(page.locator("body")).toHaveClass(/sheet-open/);
+  await expect(
+    dialog.getByRole("searchbox", {
+      name: "Search capabilities and characteristics",
+    }),
+  ).toHaveCount(0);
+  const capabilityOptions = dialog
+    .getByRole("group", { name: "Capabilities & characteristics" })
+    .locator(".metadata-options");
+  expect(
+    await capabilityOptions.locator("label").evaluateAll(
+      (labels) =>
+        new Set(
+          labels.map((label) =>
+            Math.round(label.getBoundingClientRect().top),
+          ),
+        ).size,
+    ),
+  ).toBeLessThanOrEqual(4);
   await page.getByRole("button", { name: "Close filters" }).click();
   await expect(filters).toBeFocused();
   await expect(page.locator("body")).not.toHaveClass(/sheet-open/);

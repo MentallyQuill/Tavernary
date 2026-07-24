@@ -149,19 +149,12 @@ test("uses the approved desktop filter controls", async ({ page }) => {
     page.getByRole("searchbox", {
       name: "Search capabilities and characteristics",
     }),
-  ).toBeVisible();
+  ).toHaveCount(0);
   const frontendSearch = await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
     .boundingBox();
-  const metadataSearch = await page
-    .getByRole("searchbox", {
-      name: "Search capabilities and characteristics",
-    })
-    .boundingBox();
   expect(frontendSearch?.width).toBeGreaterThan(100);
   expect(frontendSearch?.height).toBe(32);
-  expect(metadataSearch?.width).toBeGreaterThan(100);
-  expect(metadataSearch?.height).toBe(36);
   await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Capabilities & characteristics", { exact: true }),
@@ -177,6 +170,37 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     frontendFilters.getByLabel("SillyTavern", { exact: true }),
   ).toBeHidden();
+});
+
+test("collapses capabilities to four rows and keeps selections visible", async ({
+  page,
+}) => {
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Capabilities & characteristics",
+  });
+  const options = group.locator(".metadata-options");
+  const disclosure = group.getByRole("button", { name: "Show more" });
+
+  await expect(disclosure).toBeVisible();
+  expect(
+    await options.evaluate(
+      (element) => element.scrollHeight > element.clientHeight,
+    ),
+  ).toBe(true);
+
+  await disclosure.click();
+  const selected = group.locator(".metadata-option").last();
+  await selected.click();
+  await expect(selected.getByRole("checkbox")).toBeChecked();
+  await group.getByRole("button", { name: "Show fewer" }).click();
+
+  expect(
+    await selected.evaluate(
+      (element) =>
+        element.getBoundingClientRect().bottom <=
+        element.parentElement!.getBoundingClientRect().bottom + 1,
+    ),
+  ).toBe(true);
 });
 
 test("keeps canonical frontends ordered and expands the remainder", async ({

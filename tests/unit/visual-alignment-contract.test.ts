@@ -120,14 +120,17 @@ describe("catalog visual alignment", () => {
     expect(filters).toContain("Capabilities & characteristics");
     expect(filters).toContain("Clear all");
     expect(filters).toContain("Search compatible frontends");
-    expect(filters).toContain("Search capabilities and characteristics");
-    expect(filters).toContain('className="metadata-options"');
+    expect(filters).not.toContain("Search capabilities and characteristics");
+    expect(filters).toContain("metadata-options");
     expect(filters).toContain("metadata-filter-chip");
     expect(filters).toContain("metadata-check");
+    expect(filters).toContain("metadata-disclosure");
     expect(css).toMatch(
       /\.metadata-filter-chip\s*\{[^}]*min-height:\s*25px[^}]*border-radius:\s*999px/s,
     );
-    expect(css).toMatch(/\.metadata-search\s*\{[^}]*height:\s*36px/s);
+    expect(css).toMatch(
+      /\.metadata-options\.collapsed\s*\{[^}]*max-height:\s*calc\(25px \* 4 \+ 6px \* 3\)[^}]*overflow:\s*hidden/s,
+    );
   });
 
   test("uses the approved semantic colors", () => {
