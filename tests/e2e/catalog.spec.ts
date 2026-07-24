@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
+import { sitePath } from "../helpers/site-path";
+
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await page.goto(sitePath());
 });
 
 test("searches, changes density, and shows an empty New view", async ({

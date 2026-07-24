@@ -1,11 +1,13 @@
 import { expect, test } from "@playwright/test";
 
+import { sitePath } from "../helpers/site-path";
+
 test.use({ viewport: { width: 390, height: 844 } });
 
 test("uses mobile browse and filter sheets without page overflow", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Generation and reasoning" }).click();
   await expect(

@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { sitePath } from "../helpers/site-path";
+
 for (const viewport of [
   { name: "desktop", width: 1440, height: 1000 },
   { name: "tablet", width: 1024, height: 900 },
@@ -7,7 +9,7 @@ for (const viewport of [
 ]) {
   test(`${viewport.name} catalog`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/");
+    await page.goto(sitePath());
     await expect(page).toHaveScreenshot(`catalog-${viewport.name}.png`, {
       fullPage: true,
       animations: "disabled",

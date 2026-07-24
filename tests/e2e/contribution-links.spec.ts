@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
+import { sitePath } from "../helpers/site-path";
+
 test("explains Tavernary and links to contribution flows", async ({ page }) => {
-  await page.goto("/");
+  await page.goto(sitePath());
 
   await expect(
     page.getByRole("link", { name: "Submit Project" }),
