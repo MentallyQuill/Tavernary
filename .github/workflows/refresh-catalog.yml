@@ -81,3 +81,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-pages.yml --ref main
+      - name: Advance backfill queue
+        if: ${{ success() && inputs.mode == 'backfill' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          START_INDEX: ${{ inputs.start_index || 0 }}
+          BATCH_SIZE: ${{ inputs.batch_size || 20 }}
+        shell: bash
+        run: |
+          next_index=$((START_INDEX + BATCH_SIZE))
+          if (( next_index < 200 )); then
+            gh workflow run refresh-catalog.yml \
+              --ref main \
+              -f mode=backfill \
+              -f start_index="$next_index" \
+              -f batch_size="$BATCH_SIZE"
+          else
+            echo "Backfill queue complete at index $next_index."
+          fi
