@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import frontendVocabulary from "../../../../data/vocabularies/frontends.json";
 import type {
   CatalogKind,
   CatalogQuery,
@@ -32,6 +33,10 @@ const licenseOptions: Array<{ id: LicenseFilter; label: string }> = [
   { id: "proprietary", label: "Proprietary" },
   { id: "missing", label: "Missing license" },
 ];
+const frontendOptions = frontendVocabulary.frontends.map(({ id, label }) => ({
+  id,
+  label,
+}));
 
 function uniqueLabels(
   projects: CatalogProject[],
@@ -87,6 +92,7 @@ function FilterGroup({
   onSearch,
   searchLabel,
   presentation = "list",
+  initialVisibleCount,
 }: {
   title: string;
   group: FilterArray;
@@ -98,13 +104,30 @@ function FilterGroup({
   onSearch?: (value: string) => void;
   searchLabel?: string;
   presentation?: "list" | "chips";
+  initialVisibleCount?: number;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
-  const visibleOptions = normalizedSearch
+  const collapseLimit = initialVisibleCount ?? options.length;
+  const pinned = options.slice(0, collapseLimit);
+  const selectedExtras = options.filter(
+    (option, index) => index >= collapseLimit && selected.includes(option.id),
+  );
+  const collapsedIds = new Set(
+    [...pinned, ...selectedExtras].map(({ id }) => id),
+  );
+  const collapsedOptions = options.filter(({ id }) => collapsedIds.has(id));
+  const searchedOptions = normalizedSearch
     ? options.filter(({ label }) =>
         label.toLocaleLowerCase().includes(normalizedSearch),
       )
     : options;
+  const visibleOptions = normalizedSearch
+    ? searchedOptions
+    : expanded
+      ? options
+      : collapsedOptions;
+  const hiddenCount = options.length - collapsedOptions.length;
 
   return (
     <fieldset className="filter-group">
@@ -158,6 +181,8 @@ function FilterGroup({
               type="checkbox"
               aria-label={option.label}
               checked={selected.includes(option.id)}
+              className={group === "kinds" ? "kind-checkbox" : undefined}
+              data-kind={group === "kinds" ? option.id : undefined}
               onChange={() => onToggle(group, option.id)}
             />
             <span>{option.label}</span>
@@ -165,6 +190,18 @@ function FilterGroup({
           </label>
         ))
       )}
+      {presentation === "list" &&
+      !normalizedSearch &&
+      (hiddenCount > 0 || expanded) ? (
+        <button
+          className="more-frontends"
+          type="button"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+        >
+          {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
+        </button>
+      ) : null}
     </fieldset>
   );
 }
@@ -209,13 +246,14 @@ export function FilterPanel({
       <FilterGroup
         title="Compatible frontend"
         group="frontends"
-        options={uniqueLabels(projects, "frontends")}
+        options={frontendOptions}
         selected={query.frontends}
         projects={projects}
         onToggle={onToggle}
         search={frontendSearch}
         onSearch={setFrontendSearch}
         searchLabel="Search compatible frontends"
+        initialVisibleCount={3}
       />
       <FilterGroup
         title="Project kind"

@@ -1,9 +1,7 @@
 .about-page {
   min-height: 100vh;
   padding: 28px clamp(20px, 6vw, 72px) 72px;
-  background:
-    radial-gradient(circle at 85% 0%, rgb(19 79 82 / 18%), transparent 28rem),
-    var(--color-page);
+  background: var(--color-page);
 }
 
 .about-nav {

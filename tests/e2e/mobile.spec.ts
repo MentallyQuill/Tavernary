@@ -16,6 +16,12 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
     "src",
     "./tavernary-logo.png",
   );
+  await expect(brand.locator("img")).toHaveCSS("width", "31px");
+  await expect(brand.locator("img")).toHaveCSS("height", "41px");
+  await expect(brand.locator("img")).toHaveCSS(
+    "transform",
+    "matrix(1, 0, 0, 1, -12, 0)",
+  );
   const actions = page.locator(".header-actions");
   await expect(actions).toContainText("Submit Project");
   await expect(actions).toContainText("About");
@@ -65,4 +71,24 @@ test("uses mobile browse and filter sheets without page overflow", async ({
     () => document.documentElement.scrollWidth - window.innerWidth,
   );
   expect(overflow).toBeLessThanOrEqual(0);
+});
+
+test("expands canonical mobile frontends", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.getByRole("button", { name: "Open filters" }).click();
+  const group = page
+    .getByRole("dialog", { name: "Filters" })
+    .getByRole("group", { name: "Compatible frontend" });
+  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
+  await expect(group.getByLabel("Lumiverse")).toBeVisible();
+  await expect(group.getByLabel("Marinara Engine")).toBeVisible();
+  await expect(group.getByLabel("Sonder Engine")).toBeHidden();
+  await group.getByRole("button", { name: "Show 1 more" }).click();
+  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+});
+
+test("does not render tile tooltips on mobile", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.locator(".project-card").first().locator(".card-identity").hover();
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
 });

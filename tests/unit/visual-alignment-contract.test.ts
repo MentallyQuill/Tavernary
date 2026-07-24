@@ -128,4 +128,50 @@ describe("catalog visual alignment", () => {
     );
     expect(css).toMatch(/\.metadata-search\s*\{[^}]*height:\s*36px/s);
   });
+
+  test("uses the approved semantic colors", () => {
+    const tokens = read("src/styles/tokens.css");
+    const css = read("src/styles/catalog.css");
+
+    expect(tokens).toContain("--color-muted: #849a9e");
+    expect(css).toMatch(
+      /\.category-navigation button\s*\{[^}]*color:\s*var\(--color-text-primary\)/s,
+    );
+    expect(css).toMatch(
+      /button\[data-category="frontend"\][\s\S]*?color:\s*var\(--color-kind-frontend\)/s,
+    );
+    expect(css).toMatch(
+      /\.card-identity\s*\{[^}]*color:\s*var\(--kind-color\)/s,
+    );
+    expect(css).toMatch(
+      /\.activity-bars i\s*\{[^}]*background:\s*var\(--color-kind-preset\)/s,
+    );
+    expect(css).toMatch(
+      /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-kind-preset\)/s,
+    );
+    expect(css).toMatch(
+      /\.frontend-chip\s*\{[^}]*border-color:\s*var\(--color-kind-frontend\)[^}]*color:\s*var\(--color-kind-frontend\)/s,
+    );
+    expect(css).toMatch(
+      /\.chip,[\s\S]*?\.license\s*\{[^}]*border:\s*1px solid var\(--color-border-strong\)[^}]*color:\s*var\(--color-text-secondary\)/s,
+    );
+    expect(css).toMatch(
+      /\.brand-name\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.submit-link\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
+    );
+  });
+
+  test("uses the approved inkwell geometry", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.brand-logo\s*\{[^}]*width:\s*34px[^}]*height:\s*45px[^}]*transform:\s*translateX\(-12px\)/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*31px[^}]*height:\s*41px[^}]*transform:\s*translateX\(-12px\)/,
+    );
+  });
 });

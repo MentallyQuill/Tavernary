@@ -13,7 +13,7 @@
   min-height: 66px;
   padding: 0 24px;
   border-bottom: 1px solid var(--color-border);
-  background: rgb(7 24 29 / 0.96);
+  background: var(--color-page);
 }
 
 .brand {
@@ -38,9 +38,10 @@
 }
 
 .brand-logo {
-  width: 45px;
-  height: 60px;
+  width: 34px;
+  height: 45px;
   object-fit: contain;
+  transform: translateX(-12px);
 }
 
 .brand-tagline {
@@ -61,7 +62,7 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0 13px;
-  background: #0d272e;
+  background: var(--color-surface-primary);
   transition:
     border-color 150ms ease,
     box-shadow 150ms ease;
@@ -69,7 +70,7 @@
 
 .site-search:focus-within {
   border-color: var(--color-kind-preset);
-  box-shadow: 0 0 0 3px rgb(87 197 163 / 0.13);
+  box-shadow: 0 0 0 3px var(--color-border-strong);
 }
 
 .site-search svg {
@@ -90,7 +91,7 @@
 }
 
 .site-search input::placeholder {
-  color: #829296;
+  color: var(--color-muted);
 }
 
 .site-search kbd {
@@ -98,7 +99,7 @@
   border-radius: 4px;
   padding: 3px 6px;
   color: var(--color-muted);
-  background: #07191e;
+  background: var(--color-page);
   font-family: inherit;
   font-size: 10px;
   line-height: 1.3;
@@ -282,7 +283,7 @@
 
 .filter-group legend {
   margin-bottom: 8px;
-  color: #809195;
+  color: var(--color-muted);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.11em;
@@ -304,7 +305,7 @@
 
 .filter-search:focus {
   border-color: var(--color-text-secondary);
-  box-shadow: 0 0 0 2px rgb(203 214 211 / 0.08);
+  box-shadow: 0 0 0 2px var(--color-border-strong);
 }
 
 .filter-search::placeholder {
@@ -377,7 +378,7 @@
 .metadata-option.selected .metadata-filter-chip {
   border-color: var(--color-border-strong);
   color: var(--color-text-primary);
-  background: var(--color-surface-high);
+  background: var(--color-surface-raised);
 }
 
 .metadata-option.selected .metadata-check {
@@ -385,7 +386,7 @@
 }
 
 .metadata-option:focus-within .metadata-filter-chip {
-  box-shadow: 0 0 0 2px rgb(203 214 211 / 0.18);
+  box-shadow: 0 0 0 2px var(--color-border-strong);
 }
 
 .filter-group label {
@@ -410,8 +411,56 @@
   accent-color: var(--color-kind-extension);
 }
 
+.filter-group input.kind-checkbox {
+  --checkbox-color: var(--color-kind-extension);
+  display: grid;
+  appearance: none;
+  border: 1px solid var(--checkbox-color);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  place-content: center;
+}
+
+.filter-group input.kind-checkbox[data-kind="frontend"] {
+  --checkbox-color: var(--color-kind-frontend);
+}
+
+.filter-group input.kind-checkbox[data-kind="preset"] {
+  --checkbox-color: var(--color-kind-preset);
+}
+
+.filter-group input.kind-checkbox:checked {
+  background: var(--checkbox-color);
+}
+
+.filter-group input.kind-checkbox:checked::before {
+  width: 6px;
+  height: 3px;
+  border-bottom: 2px solid var(--color-page);
+  border-left: 2px solid var(--color-page);
+  content: "";
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+.more-frontends {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  padding: 8px 0 0;
+  color: var(--color-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 10px;
+  text-align: left;
+}
+
+.more-frontends:hover {
+  color: var(--color-text-secondary);
+}
+
 .filter-group b {
-  color: #607277;
+  color: var(--color-muted);
   font-size: 10px;
   font-weight: 600;
 }
@@ -535,7 +584,7 @@
   border: 0;
   border-radius: 4px;
   padding: 7px 10px;
-  color: #8fa0a3;
+  color: var(--color-muted);
   background: transparent;
   cursor: pointer;
   font-family: inherit;
@@ -580,7 +629,7 @@
   border-radius: 999px;
   padding: 6px 9px;
   color: var(--color-text-secondary);
-  background: #102b33;
+  background: var(--color-surface-card);
   cursor: pointer;
   font-family: inherit;
   font-size: 10px;
@@ -600,7 +649,7 @@
 
 .active-query .clear-query {
   border-color: transparent;
-  color: #c68b4b;
+  color: var(--color-kind-extension);
   background: transparent;
 }
 
@@ -619,13 +668,13 @@
   min-width: 0;
   min-height: 248px;
   flex-direction: column;
-  overflow: clip;
+  overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 15px;
   color: var(--color-text-secondary);
   background: var(--color-surface-card);
-  box-shadow: 0 7px 18px rgb(0 0 0 / 0.08);
+  box-shadow: 0 7px 18px var(--color-page);
   text-decoration: none;
   transition:
     border-color 150ms ease,
@@ -644,8 +693,8 @@
 
 .project-card:hover,
 .project-card:focus-visible {
-  z-index: 10;
-  overflow: visible;
+  z-index: auto;
+  overflow: hidden;
   border-color: var(--color-border-strong);
   background: var(--color-surface-raised);
   outline: 0;
@@ -653,7 +702,7 @@
 }
 
 .project-card:focus-visible {
-  box-shadow: 0 0 0 3px rgb(87 197 163 / 0.24);
+  box-shadow: 0 0 0 3px var(--color-kind-preset);
 }
 
 .card-top {
@@ -669,7 +718,7 @@
   min-width: 0;
   align-items: center;
   gap: 8px;
-  color: #aebdba;
+  color: var(--kind-color);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -703,7 +752,7 @@
   justify-items: end;
   column-gap: 10px;
   row-gap: 5px;
-  color: #819195;
+  color: var(--color-muted);
   font-size: 10px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -718,7 +767,7 @@
 }
 
 .activity-score > b {
-  color: #aebcba;
+  color: var(--color-text-secondary);
   font-size: 10px;
 }
 
@@ -734,16 +783,17 @@
   width: 3px;
   min-height: 1px;
   border-radius: 1px 1px 0 0;
-  background: #54ad94;
-}
-
-.commit-age.dormant {
-  color: #a7766a;
+  background: var(--color-kind-preset);
 }
 
 .commit-age {
   grid-column: 2;
   grid-row: 1;
+  color: color-mix(
+    in srgb,
+    var(--color-kind-preset) var(--commit-freshness),
+    var(--color-muted)
+  );
   font-weight: 700;
 }
 
@@ -808,7 +858,7 @@
   overflow: hidden;
   min-height: 65px;
   margin: 0;
-  color: #b9c7c4;
+  color: var(--color-text-secondary);
   font-size: 11px;
   line-height: 1.48;
   -webkit-box-orient: vertical;
@@ -842,11 +892,11 @@
   display: inline-flex;
   align-items: center;
   min-height: 0;
-  border: 1px solid #31545c;
+  border: 1px solid var(--color-border-strong);
   border-radius: 4px;
   padding: 4px 6px;
-  color: #9fb0ad;
-  background: rgb(255 255 255 / 0.018);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-card);
   font-size: 8px;
   font-weight: 400;
   line-height: 1;
@@ -854,9 +904,9 @@
 }
 
 .frontend-chip {
-  border-color: #80505a;
-  color: #dfadb4;
-  background: rgb(214 40 57 / 0.08);
+  border-color: var(--color-kind-frontend);
+  color: var(--color-kind-frontend);
+  background: var(--color-surface-card);
 }
 
 .license {
@@ -873,7 +923,7 @@
 }
 
 .license-osi-approved {
-  color: var(--color-text-secondary);
+  color: var(--color-kind-preset);
 }
 
 .license-proprietary {
@@ -891,36 +941,23 @@
 }
 
 .tooltip-content {
-  position: absolute;
-  z-index: 50;
-  right: 0;
-  bottom: calc(100% + 8px);
+  position: fixed;
+  z-index: 200;
   width: max-content;
-  max-width: 240px;
+  max-width: min(240px, calc(100vw - 16px));
   border: 1px solid var(--color-border-strong);
   border-radius: 5px;
   padding: 7px 9px;
   color: var(--color-text-secondary);
-  background: #06171b;
+  background: var(--color-page);
   box-shadow: var(--shadow-raised);
   font-size: 9px;
   font-weight: 500;
   line-height: 1.4;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(3px);
-  white-space: normal;
-}
-
-.tooltip-align-left > .tooltip-content {
-  right: auto;
-  left: 0;
-}
-
-.tooltip-anchor:hover .tooltip-content,
-.tooltip-anchor:focus .tooltip-content {
   opacity: 1;
-  transform: translateY(0);
+  pointer-events: none;
+  transform: none;
+  white-space: normal;
 }
 
 .catalog-empty {
@@ -929,7 +966,7 @@
   border: 1px dashed var(--color-border);
   border-radius: var(--radius);
   color: var(--color-muted);
-  background: rgb(11 34 41 / 0.45);
+  background: var(--color-surface-primary);
   text-align: center;
   place-content: center;
 }
@@ -955,7 +992,7 @@
   align-items: flex-end;
   justify-content: center;
   padding: 18px;
-  background: rgb(1 10 13 / 0.75);
+  background: var(--color-page);
 }
 
 .filter-sheet {

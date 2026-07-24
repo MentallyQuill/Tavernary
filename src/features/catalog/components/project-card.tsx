@@ -1,7 +1,10 @@
+import type { CSSProperties } from "react";
+
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "../catalog-types";
 import { CATEGORY_OPTIONS } from "../catalog-query";
+import { commitFreshnessPercent, daysSince } from "../commit-freshness";
 import { ActivitySparkline } from "./activity-sparkline";
 
 const kindLabels = {
@@ -12,13 +15,7 @@ const kindLabels = {
 
 function relativeTime(timestamp: string | null, now: string) {
   if (!timestamp) return "No activity";
-  const days = Math.max(
-    0,
-    Math.floor(
-      (new Date(now).getTime() - new Date(timestamp).getTime()) /
-        (24 * 60 * 60 * 1000),
-    ),
-  );
+  const days = daysSince(timestamp, now) ?? 0;
   if (days === 0) return "Today";
   if (days === 1) return "1d ago";
   if (days < 30) return `${days}d ago`;
@@ -69,6 +66,7 @@ export function ProjectCard({
   const titleId = `${project.id}-title`;
   const summaryId = `${project.id}-summary`;
   const licenseId = `${project.id}-license`;
+  const cardDescriptionId = `${project.id}-card-description`;
   const primaryFunction =
     CATEGORY_OPTIONS.find(({ id }) => id === project.primaryFunction)?.label ??
     project.primaryFunction;
@@ -76,6 +74,13 @@ export function ProjectCard({
     project.activity.latestMeaningfulCommitAt,
     now,
   );
+  const commitFreshness = commitFreshnessPercent(
+    project.activity.latestMeaningfulCommitAt,
+    now,
+  );
+  const commitAgeStyle = {
+    "--commit-freshness": `${commitFreshness}%`,
+  } as CSSProperties;
   const repositorySize = formatSize(project.repositorySizeKb);
   const presetVersion = project.preset?.version
     ? formatVersion(project.preset.version)
@@ -84,6 +89,26 @@ export function ProjectCard({
     ? `Published ${relativeTime(project.preset.publishedAt, now)}`
     : "Source linked";
   const presetSize = formatBytes(project.preset?.artifactSizeBytes ?? null);
+  const cardDescription = [
+    `${kindLabels[project.kind]} project. Primary category: ${primaryFunction}.`,
+    project.activity.activeWeeks12 !== null
+      ? `Active in ${project.activity.activeWeeks12} of the last 12 weeks.`
+      : null,
+    `Last activity: ${commitAge}.`,
+    project.community
+      ? `Community score: ${project.community.aggregate}.`
+      : null,
+    repositorySize ? `Repository size: ${repositorySize}.` : null,
+    project.frontends.length
+      ? `Compatible frontends: ${project.frontends.map(({ label }) => label).join(", ")}.`
+      : null,
+    project.capabilities.length
+      ? `Capabilities: ${project.capabilities.map(({ label }) => label).join(", ")}.`
+      : null,
+    `License: ${project.license.label}.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <a
@@ -92,13 +117,16 @@ export function ProjectCard({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={project.name}
+      aria-describedby={cardDescriptionId}
     >
+      <span className="visually-hidden" id={cardDescriptionId}>
+        {cardDescription}
+      </span>
       <div className="card-top">
         <Tooltip
           id={typeId}
           label={`${kindLabels[project.kind]} — ${primaryFunction}. This icon shows the project's primary catalog category.`}
           className="card-identity"
-          align="left"
         >
           <span className="function-symbol">
             <CategoryIcon name={functionIcon} />
@@ -123,7 +151,8 @@ export function ProjectCard({
                   ? `Last meaningful commit: ${formatDate(project.activity.latestMeaningfulCommitAt)} (${commitAge}).`
                   : "No meaningful commit date is available."
               }
-              className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
+              className="commit-age"
+              style={commitAgeStyle}
             >
               {commitAge}
             </Tooltip>
@@ -132,7 +161,6 @@ export function ProjectCard({
                 id={communityId}
                 label={`Community score: ${project.community.aggregate} total — ${project.community.stars} stars, ${project.community.forks} forks, and ${project.community.subscribers} subscribers.`}
                 className="community"
-                align="left"
               >
                 <CategoryIcon name="community" />
                 <b>{project.community.aggregate}</b>
@@ -156,7 +184,6 @@ export function ProjectCard({
               id={`${project.id}-preset-version`}
               label={`Published preset version: ${presetVersion}.`}
               className="preset-version"
-              align="left"
             >
               {presetVersion}
             </Tooltip>
@@ -191,7 +218,6 @@ export function ProjectCard({
           id={titleId}
           label={`Open ${project.name} at its published source.`}
           className="card-title"
-          align="left"
         >
           {project.name}
         </Tooltip>
@@ -201,7 +227,6 @@ export function ProjectCard({
           id={summaryId}
           label={project.summary}
           className="card-summary-tooltip"
-          align="left"
         >
           {project.summary}
         </Tooltip>
@@ -214,7 +239,6 @@ export function ProjectCard({
               id={`${project.id}-frontend-${frontend.id}`}
               label={frontend.description}
               className="chip frontend-chip"
-              align="left"
               key={frontend.id}
             >
               {frontend.label}
@@ -225,7 +249,6 @@ export function ProjectCard({
               id={`${project.id}-capability-${capability.id}`}
               label={capability.description}
               className="chip"
-              align="left"
               key={capability.id}
             >
               {capability.label}
