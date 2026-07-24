@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "mentallyquill-recursion",
   "name": "Recursion",
   "kind": "extension",
@@ -10,7 +10,9 @@
     "repository": "MentallyQuill/Recursion",
     "repository_id": 1285208664
   },
-  "frontends": ["sillytavern"],
+  "frontends": [
+    "sillytavern"
+  ],
   "primary_function": "generation-reasoning",
   "capabilities": [
     "planning-reasoning",
@@ -21,5 +23,6 @@
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

@@ -12,7 +12,7 @@ function countBy<T>(items: T[], selector: (item: T) => string) {
 }
 
 const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
-  schema_version: 1,
+  schema_version: 3,
   id: "fixture",
   name: "Fixture",
   kind: "preset",
@@ -33,6 +33,7 @@ const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
   cataloged_at: "2026-07-23T00:00:00Z",
   catalog_cohort: "seed",
   visibility: "published",
+  visibility_reason: null,
   refresh_policy: "paused",
   ...overrides,
 });

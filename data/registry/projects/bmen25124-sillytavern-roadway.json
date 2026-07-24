@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "bmen25124-sillytavern-roadway",
   "name": "SillyTavern Roadway",
   "kind": "extension",
@@ -10,11 +10,14 @@
     "repository": "bmen25124/SillyTavern-Roadway",
     "repository_id": null
   },
-  "frontends": ["sillytavern"],
+  "frontends": [
+    "sillytavern"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

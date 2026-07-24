@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "realistic-frankenstein-preset",
   "name": "Realistic Frankenstein",
   "kind": "preset",
@@ -14,11 +14,14 @@
     "license_status": "pending",
     "license_spdx_id": null
   },
-  "frontends": ["sillytavern"],
+  "frontends": [
+    "sillytavern"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "paused"
+  "refresh_policy": "paused",
+  "visibility_reason": null
 }

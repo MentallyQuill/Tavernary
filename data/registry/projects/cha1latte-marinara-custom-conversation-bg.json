@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "cha1latte-marinara-custom-conversation-bg",
   "name": "Marinara Custom Conversation Background",
   "kind": "extension",
@@ -10,11 +10,14 @@
     "repository": "cha1latte/marinara-custom-conversation-bg",
     "repository_id": null
   },
-  "frontends": ["marinara-engine"],
+  "frontends": [
+    "marinara-engine"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

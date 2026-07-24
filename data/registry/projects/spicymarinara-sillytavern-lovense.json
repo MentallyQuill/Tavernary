@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "spicymarinara-sillytavern-lovense",
   "name": "SillyTavern Lovense",
   "kind": "extension",
@@ -10,11 +10,15 @@
     "repository": "SpicyMarinara/SillyTavern-Lovense",
     "repository_id": null
   },
-  "frontends": ["sillytavern", "marinara-engine"],
+  "frontends": [
+    "sillytavern",
+    "marinara-engine"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "sillytavern-sillytavern",
   "name": "SillyTavern",
   "kind": "frontend",
@@ -10,7 +10,9 @@
     "repository": "SillyTavern/SillyTavern",
     "repository_id": 599524116
   },
-  "frontends": ["sillytavern"],
+  "frontends": [
+    "sillytavern"
+  ],
   "primary_function": "frontend",
   "capabilities": [
     "character-worldbuilding",
@@ -20,5 +22,6 @@
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

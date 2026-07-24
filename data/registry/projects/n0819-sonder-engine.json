@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "n0819-sonder-engine",
   "name": "Sonder Engine",
   "kind": "frontend",
@@ -10,11 +10,14 @@
     "repository": "N0819/Sonder_Engine",
     "repository_id": null
   },
-  "frontends": ["sonder-engine"],
+  "frontends": [
+    "sonder-engine"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "automatic"
+  "refresh_policy": "automatic",
+  "visibility_reason": null
 }

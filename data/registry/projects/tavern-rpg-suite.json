@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "tavern-rpg-suite",
   "name": "Tavern RPG Suite",
   "kind": "extension",
@@ -10,11 +10,14 @@
     "organization": "tavern-rpg-suite",
     "url": "https://github.com/tavern-rpg-suite"
   },
-  "frontends": ["sillytavern"],
+  "frontends": [
+    "sillytavern"
+  ],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "paused"
+  "refresh_policy": "paused",
+  "visibility_reason": null
 }
