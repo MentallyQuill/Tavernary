@@ -28,6 +28,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: read
 
 concurrency:
   group: catalog-refresh
@@ -60,6 +61,10 @@ jobs:
             args+=(--project-id "$PROJECT_ID")
           fi
           npm run catalog:refresh -- "${args[@]}"
+      - name: Refresh Kit community support
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/kits/refresh-reactions.mjs
       - name: Validate refreshed catalog
         run: npm run check
       - name: Commit snapshot changes
@@ -67,6 +72,9 @@ jobs:
         shell: bash
         run: |
           git add data/snapshots/github/*.json
+          if compgen -G "data/snapshots/github/kits/*.json" > /dev/null; then
+            git add data/snapshots/github/kits/*.json
+          fi
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0

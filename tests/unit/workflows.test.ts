@@ -140,13 +140,17 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(refresh.permissions).toEqual({
     contents: "write",
     actions: "write",
+    issues: "read",
   });
   expect(refresh.concurrency).toEqual({
     group: "catalog-refresh",
     "cancel-in-progress": false,
   });
   expect(source).toContain("data/snapshots/github/*.json");
+  expect(source).toContain("data/snapshots/github/kits/*.json");
+  expect(source).toContain("refresh-reactions.mjs");
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
+  expect(source).not.toContain("git add src/generated/catalog.json");
   expect(source).toContain("workflow run deploy-pages.yml");
 });
 
