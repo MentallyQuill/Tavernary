@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
@@ -22,12 +23,12 @@ export function SiteHeader({
           <span className="brand-name">Tavernary</span>
           <span className="brand-tagline">Where AI roleplay tools gather</span>
         </span>
-        <img
+        <Image
           className="brand-logo"
           src="./tavernary-logo.png"
           alt=""
-          width="45"
-          height="60"
+          width={45}
+          height={60}
         />
       </Link>
       <label className="site-search">
