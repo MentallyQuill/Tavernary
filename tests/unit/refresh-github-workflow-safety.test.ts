@@ -2,8 +2,14 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { expect, test } from "vitest";
+import { parse } from "yaml";
 
 const refreshPath = resolve(".github/workflows/refresh-catalog.yml");
+const workflowDirectory = resolve(".github/workflows");
+
+async function workflowSource(name: string) {
+  return readFile(resolve(workflowDirectory, `${name}.yml`), "utf8");
+}
 
 test("uses status-driven refresh modes without indexed backfill", async () => {
   const source = await readFile(refreshPath, "utf8");
@@ -61,4 +67,32 @@ test("continues baselines only after successful publication", async () => {
   expect(source).toContain("counts.provisional");
   expect(source).toContain("if (( remaining > 0 ))");
   expect(source).toContain('-f batch_size="$BATCH_SIZE"');
+});
+
+test("enrichment stages only registry records and report after the command", async () => {
+  const text = await workflowSource("enrich-catalog");
+  const document = parse(text) as {
+    jobs: Record<string, { steps: Array<{ run?: string }> }>;
+    concurrency: { group: string };
+  };
+  const commands = Object.values(document.jobs).flatMap((job) =>
+    job.steps.flatMap((step) => (step.run ? [step.run] : [])),
+  );
+  expect(text).toContain("data/registry/projects/*.json");
+  expect(text).toContain("data/reports/enrichment-report.json");
+  expect(text).not.toMatch(/git add .*data\/snapshots/);
+  expect(text).not.toContain("format('--project-id");
+  expect(text).toContain('args+=(--project-id "$PROJECT_ID")');
+  expect(commands.join("\n")).toContain("npm run check");
+  expect(commands.join("\n").indexOf("npm run catalog:enrich")).toBeLessThan(
+    commands.join("\n").indexOf("git add data/registry/projects"),
+  );
+  expect(document.concurrency.group).toBe("catalog-refresh");
+  expect(
+    (
+      parse(await workflowSource("refresh-catalog")) as {
+        concurrency: { group: string };
+      }
+    ).concurrency.group,
+  ).toBe("catalog-refresh");
 });

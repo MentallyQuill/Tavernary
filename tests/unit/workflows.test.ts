@@ -32,6 +32,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "ci",
     "deploy-pages",
     "refresh-catalog",
+    "enrich-catalog",
     "triage-submission",
     "triage-kit-submission",
     "apply-kit-submission",

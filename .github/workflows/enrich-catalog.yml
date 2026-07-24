@@ -1,0 +1,100 @@
+name: Enrich catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Enrichment mode.
+        type: choice
+        options:
+          - backfill
+        default: backfill
+      start_index:
+        description: Zero-based first record for this batch.
+        type: number
+        default: 0
+      batch_size:
+        description: Number of records for this batch.
+        type: number
+        default: 20
+      project_id:
+        description: Optional single project ID.
+        type: string
+        required: false
+      force:
+        description: Re-enrich curated records.
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Enrich selected records
+        env:
+          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+          START_INDEX: ${{ inputs.start_index || 0 }}
+          BATCH_SIZE: ${{ inputs.batch_size || 20 }}
+          PROJECT_ID: ${{ inputs.project_id || '' }}
+          FORCE: ${{ inputs.force || false }}
+        shell: bash
+        run: |
+          args=(--mode backfill --start-index "$START_INDEX" --batch-size "$BATCH_SIZE")
+          if [[ -n "$PROJECT_ID" ]]; then
+            args+=(--project-id "$PROJECT_ID")
+          fi
+          if [[ "$FORCE" == "true" ]]; then
+            args+=(--force)
+          fi
+          npm run catalog:enrich -- "${args[@]}"
+      - name: Validate enriched catalog
+        run: npm run check
+      - name: Commit registry enrichment
+        id: commit
+        shell: bash
+        run: |
+          git add data/registry/projects/*.json data/reports/enrichment-report.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(catalog): enrich project metadata"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main && git push; then
+              break
+            fi
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              echo "Enrichment push conflict after three retries; inspect registry/report files." >&2
+              exit 1
+            fi
+            sleep $((attempt * 2))
+          done
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Redeploy enriched catalog
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-pages.yml --ref main
