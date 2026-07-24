@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/blocked-github-users.schema.json",
+  "title": "Blocked GitHub identities",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "blocked"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "blocked": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["github_user_id", "login", "reason"],
+        "properties": {
+          "github_user_id": { "type": "integer", "minimum": 1 },
+          "login": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

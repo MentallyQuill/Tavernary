@@ -4,6 +4,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv from "ajv";
 
+import { validateKitData } from "../kits/validation.mjs";
+
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const approvedOrganizationRecord = {
   id: "tavern-rpg-suite",
@@ -41,6 +43,22 @@ async function loadSnapshots() {
   return Promise.all(
     files.map((file) => readJson(`data/snapshots/github/${file}`)),
   );
+}
+
+async function loadJsonDirectory(path) {
+  const directory = resolve(rootDirectory, path);
+  let files;
+  try {
+    files = (await readdir(directory))
+      .filter((file) => file.endsWith(".json"))
+      .sort();
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+  return Promise.all(files.map((file) => readJson(`${path}/${file}`)));
 }
 
 function vocabularyIds(vocabulary, property) {
@@ -106,6 +124,19 @@ export async function validateCatalog(options = {}) {
   const records = options.records ?? (await loadRecords());
   const snapshots =
     options.snapshots ?? (options.records ? [] : await loadSnapshots());
+  const kitRecords =
+    options.kitRecords ??
+    (options.records ? [] : await loadJsonDirectory("data/registry/kits"));
+  const supportSnapshots =
+    options.supportSnapshots ??
+    (options.records
+      ? []
+      : await loadJsonDirectory("data/snapshots/github/kits"));
+  const blockedUsers =
+    options.blockedUsers ??
+    (options.records
+      ? { schema_version: 1, blocked: [] }
+      : await readJson("data/moderation/blocked-github-users.json"));
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
@@ -243,9 +274,20 @@ export async function validateCatalog(options = {}) {
     }
   }
 
+  errors.push(
+    ...(await validateKitData({
+      kitRecords,
+      projectRecords: records,
+      supportSnapshots,
+      blockedUsers,
+    })),
+  );
+
   return {
     projectCount: records.length,
     snapshotCount: snapshots.length,
+    kitCount: kitRecords.length,
+    kitSnapshotCount: supportSnapshots.length,
     errors,
   };
 }
@@ -259,7 +301,9 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`Validated ${result.projectCount} projects`);
+  console.log(
+    `Validated ${result.projectCount} projects and ${result.kitCount} Kits`,
+  );
 }
 
 if (

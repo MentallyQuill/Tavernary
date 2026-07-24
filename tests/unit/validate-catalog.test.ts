@@ -29,6 +29,8 @@ describe("catalog validation", () => {
     const result = await validateCatalog();
     expect(result.errors).toEqual([]);
     expect(result.projectCount).toBe(214);
+    expect(result.kitCount).toBe(0);
+    expect(result.kitSnapshotCount).toBe(0);
   });
 
   test("rejects a non-GitHub extension", async () => {
