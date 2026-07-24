@@ -42,7 +42,7 @@
     "eslint-config-next": "^16.2.11",
     "jsdom": "^29.1.1",
     "prettier": "^3.9.6",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10",
     "yaml": "^2.9.0"
   }
