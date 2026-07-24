@@ -70,6 +70,44 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
   ...overrides,
 });
 
+const fixtureKit = (overrides: Record<string, unknown> = {}) => ({
+  schema_version: 1,
+  id: "story-kit-41",
+  status: "published",
+  title: "Story Kit",
+  description: "A compact story stack.",
+  author: { github_user_id: 123, login: "author" },
+  source_issue_number: 41,
+  project_ids: ["frontend", "memory", "preset"],
+  published_at: "2026-07-24T00:00:00.000Z",
+  updated_at: "2026-07-24T00:00:00.000Z",
+  tavernary_pick: false,
+  ...overrides,
+});
+
+const fixtureKitSnapshot = (overrides: Record<string, unknown> = {}) => ({
+  schema_version: 1,
+  kit_id: "story-kit-41",
+  source_issue_number: 41,
+  refreshed_at: "2026-07-25T00:00:00.000Z",
+  stale_since: null,
+  supporters: [
+    {
+      github_user_id: 123,
+      login: "author",
+      first_reacted_at: "2026-07-23T00:00:00.000Z",
+      active: true,
+    },
+    {
+      github_user_id: 456,
+      login: "supporter",
+      first_reacted_at: "2026-07-25T00:00:00.000Z",
+      active: true,
+    },
+  ],
+  ...overrides,
+});
+
 test("publishes snapshotless github records with pending source facts", async () => {
   const catalog = await buildCatalog({
     write: false,
@@ -319,6 +357,108 @@ test("excludes curator and source quarantine states", async () => {
     ],
   });
   expect(catalog.projects).toEqual([]);
+});
+
+test("builds Kits from complete project records and nullable support", async () => {
+  const records = [
+    fixtureProject({
+      id: "frontend",
+      name: "Frontend",
+      kind: "frontend",
+      frontends: ["sillytavern"],
+      primary_function: "frontend",
+    }),
+    fixtureProject({
+      id: "memory",
+      name: "Memory",
+      kind: "extension",
+      primary_function: "memory-retrieval",
+      source: {
+        type: "github",
+        repository: "example/memory",
+        repository_id: 2,
+      },
+    }),
+    fixtureProject({
+      id: "preset",
+      name: "Preset",
+      kind: "preset",
+      primary_function: "generation-reasoning",
+    }),
+    fixtureProject({
+      id: "flagged",
+      name: "Flagged",
+      kind: "extension",
+      visibility: "quarantined",
+      visibility_reason: "safety-review",
+      source: {
+        type: "github",
+        repository: "example/flagged",
+        repository_id: 3,
+      },
+    }),
+  ];
+  const catalog = await buildCatalog({
+    write: false,
+    now: "2026-07-25T00:00:00.000Z",
+    records,
+    snapshots: [],
+    kitRecords: [
+      fixtureKit(),
+      fixtureKit({
+        id: "flagged-kit-42",
+        source_issue_number: 42,
+        project_ids: ["frontend", "memory", "flagged"],
+      }),
+      fixtureKit({
+        id: "withdrawn-kit-43",
+        status: "withdrawn",
+        source_issue_number: 43,
+        withdrawn_at: "2026-07-25T00:00:00.000Z",
+      }),
+    ],
+    kitSnapshots: [fixtureKitSnapshot()],
+    blockedUsers: { schema_version: 1, blocked: [] },
+  });
+
+  expect(catalog).toMatchObject({
+    schemaVersion: 2,
+    kits: [
+      {
+        id: "flagged-kit-42",
+        components: [
+          expect.objectContaining({ projectId: "frontend" }),
+          expect.objectContaining({ projectId: "memory" }),
+          expect.objectContaining({
+            projectId: "flagged",
+            name: "Flagged",
+            kind: "extension",
+            availability: "flagged",
+            unavailableReason: "safety-review",
+            canonicalUrl: null,
+          }),
+        ],
+        supporterCount: null,
+        trendingScore: null,
+      },
+      {
+        id: "story-kit-41",
+        frontends: [expect.objectContaining({ id: "sillytavern" })],
+        purposes: [
+          expect.objectContaining({ id: "memory-retrieval" }),
+          expect.objectContaining({ id: "generation-reasoning" }),
+        ],
+        supporterCount: 2,
+        supportStale: false,
+      },
+    ],
+  });
+  expect(catalog.kits[1]?.components[0]).toMatchObject({
+    projectId: "frontend",
+    availability: "available",
+  });
+  expect(catalog.projects.map(({ id }) => id)).not.toContain("flagged");
+  expect(catalog.kits.map(({ id }) => id)).not.toContain("withdrawn-kit-43");
 });
 
 test("uses source timestamps for deterministic generated output", async () => {

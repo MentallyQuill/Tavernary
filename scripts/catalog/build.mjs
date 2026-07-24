@@ -2,6 +2,8 @@ import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
+
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const outputPath = resolve(rootDirectory, "src/generated/catalog.json");
 
@@ -31,6 +33,10 @@ function labeled(ids, entries) {
         entry?.description ?? `Catalog metadata: ${entry?.label ?? id}.`,
     };
   });
+}
+
+function unique(items) {
+  return [...new Set(items)];
 }
 
 function twoWeekBars(weeks) {
@@ -275,12 +281,23 @@ export async function buildCatalog(options = {}) {
   const [
     records,
     snapshots,
+    kitRecords,
+    kitSnapshots,
+    blockedUsers,
     frontendVocabulary,
     primaryFunctionVocabulary,
     capabilityVocabulary,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
     options.snapshots ?? readJsonDirectory("data/snapshots/github"),
+    options.kitRecords ??
+      (options.records ? [] : readJsonDirectory("data/registry/kits")),
+    options.kitSnapshots ??
+      (options.records ? [] : readJsonDirectory("data/snapshots/github/kits")),
+    options.blockedUsers ??
+      (options.records
+        ? { schema_version: 1, blocked: [] }
+        : readJson("data/moderation/blocked-github-users.json")),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
@@ -295,6 +312,9 @@ export async function buildCatalog(options = {}) {
   };
   const snapshotsByProject = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+  );
+  const recordsByProject = new Map(
+    records.map((record) => [record.id, record]),
   );
   const projects = [];
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
@@ -329,6 +349,8 @@ export async function buildCatalog(options = {}) {
   const sourceTimestamps = [
     ...records.map((record) => record.cataloged_at),
     ...snapshots.map((snapshot) => snapshot.refreshed_at),
+    ...kitRecords.flatMap((kit) => [kit.published_at, kit.updated_at]),
+    ...kitSnapshots.map((snapshot) => snapshot.refreshed_at),
   ].filter(Boolean);
   const generatedAt =
     options.now ??
@@ -337,10 +359,120 @@ export async function buildCatalog(options = {}) {
       .filter(Number.isFinite)
       .sort((left, right) => right - left)[0] ??
     0;
+  const generatedAtIso = new Date(generatedAt).toISOString();
+  const publicProjectsById = new Map(
+    projects.map((project) => [project.id, project]),
+  );
+  const kitSnapshotsById = new Map(
+    kitSnapshots.map((snapshot) => [snapshot.kit_id, snapshot]),
+  );
+  const blockedIds = new Set(
+    (blockedUsers.blocked ?? []).map(({ github_user_id }) => github_user_id),
+  );
+  const kits = kitRecords
+    .filter((kit) => kit.status === "published")
+    .map((kit) => {
+      const components = kit.project_ids.map((projectId) => {
+        const record = recordsByProject.get(projectId);
+        const snapshot = snapshotsByProject.get(projectId);
+        const sourceHealth = snapshot?.source_health;
+        const sourceFlagged = hiddenSourceStates.has(sourceHealth);
+        const registryFlagged = record?.visibility !== "published";
+        const availability =
+          !record || sourceFlagged || registryFlagged ? "flagged" : "available";
+        const unavailableReason = registryFlagged
+          ? record.visibility_reason
+          : sourceHealth === "identity-change"
+            ? "identity-change"
+            : sourceFlagged
+              ? "source-unavailable"
+              : null;
+        const publicProject = publicProjectsById.get(projectId) ?? null;
+
+        return {
+          projectId,
+          name: record?.name ?? projectId,
+          kind: record?.kind ?? "extension",
+          primaryFunction: record?.primary_function ?? "uncategorized",
+          availability,
+          unavailableReason,
+          canonicalUrl:
+            availability === "available"
+              ? (publicProject?.canonicalUrl ?? null)
+              : null,
+          project: availability === "available" ? publicProject : null,
+        };
+      });
+      const frontends = labeled(
+        unique(
+          components.flatMap((component) => {
+            const record = recordsByProject.get(component.projectId);
+            return component.kind === "frontend"
+              ? (record?.frontends ?? [])
+              : [];
+          }),
+        ),
+        vocabularies.frontends,
+      );
+      const purposes = labeled(
+        unique(
+          components
+            .filter(({ kind }) => kind !== "frontend")
+            .map(({ primaryFunction }) => primaryFunction),
+        ),
+        vocabularies.primaryFunctions,
+      );
+      const support = kitSnapshotsById.get(kit.id);
+      const activeSupporters = (support?.supporters ?? []).filter(
+        (supporter) =>
+          supporter.active && !blockedIds.has(supporter.github_user_id),
+      );
+      const votes = activeSupporters.map((supporter) =>
+        effectiveVoteAt(supporter.first_reacted_at, kit.published_at),
+      );
+      const flaggedProjectCount = components.filter(
+        ({ availability }) => availability === "flagged",
+      ).length;
+      const searchableText = [
+        kit.title,
+        kit.description,
+        kit.author.login,
+        ...components.map(({ name }) => name),
+        ...frontends.map(({ label }) => label),
+        ...purposes.map(({ label }) => label),
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return {
+        id: kit.id,
+        title: kit.title,
+        description: kit.description,
+        author: {
+          githubUserId: kit.author.github_user_id,
+          login: kit.author.login,
+        },
+        sourceIssueNumber: kit.source_issue_number,
+        publishedAt: kit.published_at,
+        updatedAt: kit.updated_at,
+        tavernaryPick: kit.tavernary_pick,
+        frontends,
+        purposes,
+        components,
+        supporterCount: support ? activeSupporters.length : null,
+        trendingScore: support ? trendingScore(votes, generatedAtIso) : null,
+        supportRefreshedAt: support?.refreshed_at ?? null,
+        supportStale: Boolean(support?.stale_since),
+        flaggedProjectCount,
+        searchableText,
+      };
+    })
+    .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 1,
-    generatedAt: new Date(generatedAt).toISOString(),
+    schemaVersion: 2,
+    generatedAt: generatedAtIso,
     projects,
+    kits,
   };
 
   if (options.write !== false) {
@@ -355,7 +487,9 @@ export async function buildCatalog(options = {}) {
 
 async function main() {
   const catalog = await buildCatalog();
-  console.log(`Built ${catalog.projects.length} projects`);
+  console.log(
+    `Built ${catalog.projects.length} projects and ${catalog.kits.length} Kits`,
+  );
 }
 
 if (

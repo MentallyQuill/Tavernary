@@ -16,6 +16,7 @@ export interface CatalogKitComponent {
   primaryFunction: string;
   availability: "available" | "flagged";
   unavailableReason: string | null;
+  canonicalUrl: string | null;
   project: CatalogProject | null;
 }
 
