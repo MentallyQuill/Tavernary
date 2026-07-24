@@ -3,6 +3,21 @@ export type MetadataStatus = "provisional" | "curated";
 export type SourceStatus = "pending" | "healthy" | "stale" | "manual";
 export type LicenseStatus =
   "osi-approved" | "proprietary" | "missing" | "pending";
+export type ActivityEvidenceStatus = "provisional" | "complete" | "degraded";
+export type WeeklyActivity = [
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+];
 
 export interface CatalogLabel {
   id: string;
@@ -25,10 +40,10 @@ export interface CatalogProject {
   capabilities: CatalogLabel[];
   searchableText: string;
   activity: {
-    latestMeaningfulCommitAt: string | null;
+    latestSourceActivityAt: string | null;
     activeWeeks12: number | null;
-    twoWeekBars: [number, number, number, number, number, number] | null;
-    strength: number | null;
+    weeklyActivity: WeeklyActivity | null;
+    evidenceStatus: ActivityEvidenceStatus | null;
     dormant: boolean;
   };
   latestReleaseAt: string | null;
@@ -54,7 +69,7 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 1;
+  schemaVersion: 2;
   generatedAt: string;
   projects: CatalogProject[];
 }

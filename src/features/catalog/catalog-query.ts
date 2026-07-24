@@ -1,5 +1,6 @@
 export type CatalogView = "all" | "active" | "new" | "released";
-export type CatalogSort = "recent" | "strength" | "popularity" | "alphabetical";
+export type CatalogSort =
+  "recent" | "sustained" | "popularity" | "alphabetical";
 export type CatalogDensity = "standard" | "compact";
 export type CatalogKind = "frontend" | "extension" | "preset";
 export type DevelopmentFilter = "active-month" | "new-release" | "dormant";
@@ -109,7 +110,7 @@ const validCapabilities = new Set([
 const validViews = new Set<CatalogView>(["all", "active", "new", "released"]);
 const validSorts = new Set<CatalogSort>([
   "recent",
-  "strength",
+  "sustained",
   "popularity",
   "alphabetical",
 ]);

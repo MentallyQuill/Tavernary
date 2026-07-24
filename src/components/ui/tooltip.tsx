@@ -41,6 +41,7 @@ export function Tooltip({
   children,
   className = "",
   style,
+  ariaLabel,
   showOnAncestorFocus = false,
 }: {
   id: string;
@@ -48,6 +49,7 @@ export function Tooltip({
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
+  ariaLabel?: string;
   showOnAncestorFocus?: boolean;
 }) {
   const triggerRef = useRef<HTMLSpanElement>(null);
@@ -123,6 +125,7 @@ export function Tooltip({
         ref={triggerRef}
         className={`tooltip-anchor ${className}`}
         style={style}
+        aria-label={ariaLabel}
         aria-describedby={id}
         onPointerEnter={show}
         onPointerLeave={hide}

@@ -71,7 +71,7 @@ function countFor(
     if (group === "development") {
       if (value === "dormant") return project.activity.dormant;
       if (value === "active-month")
-        return isWithinDays(project.activity.latestMeaningfulCommitAt, now, 30);
+        return isWithinDays(project.activity.latestSourceActivityAt, now, 30);
       return isWithinDays(releaseTimestamp(project), now, 30);
     }
     if (value === "open-source")

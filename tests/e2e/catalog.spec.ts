@@ -333,7 +333,7 @@ test("supports every sort and restores query state after reload", async ({
   page,
 }) => {
   const sort = page.getByRole("combobox", { name: "Sort projects" });
-  for (const value of ["recent", "strength", "popularity", "alphabetical"]) {
+  for (const value of ["recent", "sustained", "popularity", "alphabetical"]) {
     await sort.selectOption(value);
     await expect(sort).toHaveValue(value);
   }
@@ -505,7 +505,7 @@ test("explains every card fact with hover help", async ({ page }) => {
   await expect(repositoryCard).toHaveCSS("overflow", "hidden");
   await expect(
     page.getByRole("tooltip", {
-      name: /^Active in \d+ of the last 12 weeks$/,
+      name: /^Approximate activity in \d+ of the last 12 weeks; baseline pending$/,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".card-identity").hover();
@@ -517,7 +517,7 @@ test("explains every card fact with hover help", async ({ page }) => {
   await repositoryCard.locator(".commit-age").hover();
   await expect(
     page.getByRole("tooltip", {
-      name: /^Last commit .+ \(.+\)$/,
+      name: /^Last source activity .+ \(.+\)$/,
     }),
   ).toBeVisible();
   await expect(repositoryCard.locator(".card-summary-tooltip")).toHaveCount(0);
@@ -650,10 +650,12 @@ test("keeps repository activity facts visible on mobile cards", async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
 
-  const card = page.locator(".project-card").first();
+  const card = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion" }),
+  });
   await expect(card.locator(".community")).toBeVisible();
   await expect(card.locator(".repository-size")).toBeVisible();
-  await expect(card.locator(".activity-bars")).toBeVisible();
+  await expect(card.locator(".activity-weeks")).toBeVisible();
 });
 
 test("matches the approved tablet and mobile breakpoints", async ({ page }) => {

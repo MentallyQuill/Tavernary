@@ -125,10 +125,23 @@ test("derives temporary browser activity from version two evidence", async () =>
   });
 
   expect(catalog.projects[0].activity).toEqual({
-    latestMeaningfulCommitAt: "2026-07-23T00:00:00.000Z",
+    latestSourceActivityAt: "2026-07-23T00:00:00.000Z",
     activeWeeks12: 4,
-    twoWeekBars: [1, 1, 0, 0, 1, 1],
-    strength: 4,
+    weeklyActivity: [
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true,
+    ],
+    evidenceStatus: "provisional",
     dormant: false,
   });
 });
@@ -174,10 +187,23 @@ test("derives complete browser activity from fixed source weeks", async () => {
   });
 
   expect(catalog.projects[0].activity).toEqual({
-    latestMeaningfulCommitAt: "2026-07-23T00:00:00.000Z",
+    latestSourceActivityAt: "2026-07-23T00:00:00.000Z",
     activeWeeks12: 2,
-    twoWeekBars: [0, 0, 0, 0, 1, 1],
-    strength: 2,
+    weeklyActivity: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+    ],
+    evidenceStatus: "complete",
     dormant: false,
   });
 });
@@ -206,10 +232,10 @@ test("publishes snapshotless github records with pending source facts", async ()
       metadataStatus: "provisional",
       sourceStatus: "pending",
       activity: {
-        latestMeaningfulCommitAt: null,
+        latestSourceActivityAt: null,
         activeWeeks12: null,
-        twoWeekBars: null,
-        strength: null,
+        weeklyActivity: null,
+        evidenceStatus: null,
         dormant: false,
       },
       latestReleaseAt: null,
@@ -294,10 +320,10 @@ test("publishes github organizations as manual-source public projects", async ()
       metadataStatus: "provisional",
       sourceStatus: "manual",
       activity: {
-        latestMeaningfulCommitAt: null,
+        latestSourceActivityAt: null,
         activeWeeks12: null,
-        twoWeekBars: null,
-        strength: null,
+        weeklyActivity: null,
+        evidenceStatus: null,
         dormant: false,
       },
       latestReleaseAt: null,
@@ -385,7 +411,11 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(recursion?.activity.twoWeekBars).toHaveLength(6);
+  expect(catalog.schemaVersion).toBe(2);
+  expect(recursion?.activity.weeklyActivity).toHaveLength(12);
+  expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
+    recursion?.activity.activeWeeks12 ?? 0,
+  );
   expect(recursion?.community?.aggregate).toBe(
     (recursion?.community?.stars ?? 0) +
       (recursion?.community?.forks ?? 0) +

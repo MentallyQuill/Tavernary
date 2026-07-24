@@ -35,23 +35,12 @@ function labeled(ids, entries) {
   });
 }
 
-function twoWeekBars(weeks) {
-  return [
-    Number(weeks[0]) + Number(weeks[1]),
-    Number(weeks[2]) + Number(weeks[3]),
-    Number(weeks[4]) + Number(weeks[5]),
-    Number(weeks[6]) + Number(weeks[7]),
-    Number(weeks[8]) + Number(weeks[9]),
-    Number(weeks[10]) + Number(weeks[11]),
-  ];
-}
-
 function emptyActivity() {
   return {
-    latestMeaningfulCommitAt: null,
+    latestSourceActivityAt: null,
     activeWeeks12: null,
-    twoWeekBars: null,
-    strength: null,
+    weeklyActivity: null,
+    evidenceStatus: null,
     dormant: false,
   };
 }
@@ -121,10 +110,9 @@ function githubProject(record, snapshot, vocabularies, now) {
     ? derivePublicActivity(snapshot.activity, now)
     : null;
   const weeklyActivity = snapshot
-    ? snapshot.activity.evidence_status === "complete"
-      ? derivedActivity.weeklyActivity
-      : (snapshot.activity.provisional_weeks ??
-        Array.from({ length: 12 }, () => false))
+    ? snapshot.activity.evidence_status === "provisional"
+      ? snapshot.activity.provisional_weeks
+      : (snapshot.activity.provisional_weeks ?? derivedActivity.weeklyActivity)
     : null;
   const activeWeeks12 = weeklyActivity?.filter(Boolean).length ?? null;
 
@@ -150,10 +138,10 @@ function githubProject(record, snapshot, vocabularies, now) {
     searchableText,
     activity: snapshot
       ? {
-          latestMeaningfulCommitAt: snapshot.activity.latest_source_activity_at,
+          latestSourceActivityAt: snapshot.activity.latest_source_activity_at,
           activeWeeks12,
-          twoWeekBars: twoWeekBars(weeklyActivity),
-          strength: activeWeeks12,
+          weeklyActivity,
+          evidenceStatus: snapshot.activity.evidence_status,
           dormant: derivedActivity.dormant,
         }
       : emptyActivity(),
@@ -353,7 +341,7 @@ export async function buildCatalog(options = {}) {
 
   projects.sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedAt: generatedAtIso,
     projects,
   };

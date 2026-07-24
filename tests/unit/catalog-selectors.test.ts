@@ -31,10 +31,23 @@ function project(
     ],
     searchableText: `${id} extension automation`,
     activity: {
-      latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
+      latestSourceActivityAt: "2026-07-20T00:00:00Z",
       activeWeeks12: 4,
-      twoWeekBars: [1, 1, 1, 1, 0, 0],
-      strength: 1000,
+      weeklyActivity: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+      ],
+      evidenceStatus: "complete",
       dormant: false,
     },
     latestReleaseAt: null,
@@ -85,10 +98,23 @@ const projects = [
   }),
   project("dormant", {
     activity: {
-      latestMeaningfulCommitAt: "2026-01-01T00:00:00Z",
+      latestSourceActivityAt: "2026-01-01T00:00:00Z",
       activeWeeks12: 0,
-      twoWeekBars: [0, 0, 0, 0, 0, 0],
-      strength: 0,
+      weeklyActivity: Array.from({ length: 12 }, () => false) as [
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+      ],
+      evidenceStatus: "complete",
       dormant: true,
     },
   }),
@@ -97,10 +123,10 @@ const projects = [
     catalogCohort: "seed",
     catalogedAt: "2026-07-23T00:00:00Z",
     activity: {
-      latestMeaningfulCommitAt: null,
+      latestSourceActivityAt: null,
       activeWeeks12: null,
-      twoWeekBars: null,
-      strength: null,
+      weeklyActivity: null,
+      evidenceStatus: null,
       dormant: false,
     },
     latestReleaseAt: "2026-07-10T00:00:00Z",
@@ -163,15 +189,15 @@ describe("catalog selectors", () => {
     ).toContainEqual(expect.objectContaining({ id: "preset" }));
   });
 
-  test("sorts by recent activity, strength, popularity, and name", () => {
+  test("sorts by recent activity, sustained activity, popularity, and name", () => {
     const sortable = [
       project("weak", {
         name: "Zulu",
         catalogedAt: "2026-07-02T00:00:00Z",
         activity: {
           ...project("base").activity,
-          latestMeaningfulCommitAt: "2026-07-21T00:00:00Z",
-          strength: 5,
+          latestSourceActivityAt: "2026-07-21T00:00:00Z",
+          activeWeeks12: 1,
         },
         community: { stars: 1, forks: 0, subscribers: 0, aggregate: 1 },
       }),
@@ -179,8 +205,8 @@ describe("catalog selectors", () => {
         name: "alpha",
         activity: {
           ...project("base").activity,
-          latestMeaningfulCommitAt: "2026-07-19T00:00:00Z",
-          strength: 20,
+          latestSourceActivityAt: "2026-07-19T00:00:00Z",
+          activeWeeks12: 6,
         },
         community: { stars: 20, forks: 0, subscribers: 0, aggregate: 20 },
       }),
@@ -189,10 +215,10 @@ describe("catalog selectors", () => {
         kind: "preset",
         catalogedAt: "2026-07-03T00:00:00Z",
         activity: {
-          latestMeaningfulCommitAt: null,
+          latestSourceActivityAt: null,
           activeWeeks12: null,
-          twoWeekBars: null,
-          strength: null,
+          weeklyActivity: null,
+          evidenceStatus: null,
           dormant: false,
         },
         community: null,
@@ -209,7 +235,7 @@ describe("catalog selectors", () => {
     expect(
       selectProjects(
         sortable,
-        { ...DEFAULT_QUERY, sort: "strength" },
+        { ...DEFAULT_QUERY, sort: "sustained" },
         context,
       ).map(({ id }) => id),
     ).toEqual(["strong", "weak", "manual"]);
@@ -229,16 +255,81 @@ describe("catalog selectors", () => {
     ).toEqual(["strong", "manual", "weak"]);
   });
 
+  test("recent activity uses the newer source or release timestamp", () => {
+    const sortable = [
+      project("released", {
+        activity: {
+          latestSourceActivityAt: "2026-07-01T00:00:00Z",
+          activeWeeks12: 1,
+          weeklyActivity: [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+          ],
+          evidenceStatus: "complete",
+          dormant: false,
+        } as never,
+        latestReleaseAt: "2026-07-22T00:00:00Z",
+      }),
+      project("source", {
+        activity: {
+          latestSourceActivityAt: "2026-07-20T00:00:00Z",
+          activeWeeks12: 2,
+          weeklyActivity: [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+          ],
+          evidenceStatus: "complete",
+          dormant: false,
+        } as never,
+      }),
+    ];
+
+    expect(
+      selectProjects(
+        sortable,
+        { ...DEFAULT_QUERY, sort: "recent" },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["released", "source"]);
+    expect(
+      selectProjects(
+        sortable,
+        { ...DEFAULT_QUERY, sort: "sustained" } as never,
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["source", "released"]);
+  });
+
   test("orders unscored activity ties by catalog date and then name", () => {
     const unscored = [
       project("older", {
         name: "Zulu",
         catalogedAt: "2026-07-01T00:00:00Z",
         activity: {
-          latestMeaningfulCommitAt: null,
+          latestSourceActivityAt: null,
           activeWeeks12: null,
-          twoWeekBars: null,
-          strength: null,
+          weeklyActivity: null,
+          evidenceStatus: null,
           dormant: false,
         },
       }),
@@ -246,10 +337,10 @@ describe("catalog selectors", () => {
         name: "Alpha",
         catalogedAt: "2026-07-02T00:00:00Z",
         activity: {
-          latestMeaningfulCommitAt: null,
+          latestSourceActivityAt: null,
           activeWeeks12: null,
-          twoWeekBars: null,
-          strength: null,
+          weeklyActivity: null,
+          evidenceStatus: null,
           dormant: false,
         },
       }),
@@ -257,10 +348,10 @@ describe("catalog selectors", () => {
         name: "Beta",
         catalogedAt: "2026-07-02T00:00:00Z",
         activity: {
-          latestMeaningfulCommitAt: null,
+          latestSourceActivityAt: null,
           activeWeeks12: null,
-          twoWeekBars: null,
-          strength: null,
+          weeklyActivity: null,
+          evidenceStatus: null,
           dormant: false,
         },
       }),
@@ -344,17 +435,17 @@ describe("catalog query URLs", () => {
     const serialized = serializeCatalogQuery({
       ...DEFAULT_QUERY,
       search: "memory",
-      sort: "strength",
+      sort: "sustained",
       frontends: ["sillytavern", "marinara-engine"],
       kinds: ["preset", "extension"],
     });
     expect(serialized).toBe(
-      "q=memory&sort=strength&frontend=marinara-engine&frontend=sillytavern&kind=extension&kind=preset",
+      "q=memory&sort=sustained&frontend=marinara-engine&frontend=sillytavern&kind=extension&kind=preset",
     );
     expect(parseCatalogQuery(`?${serialized}`)).toEqual({
       ...DEFAULT_QUERY,
       search: "memory",
-      sort: "strength",
+      sort: "sustained",
       frontends: ["marinara-engine", "sillytavern"],
       kinds: ["extension", "preset"],
     });
