@@ -53,6 +53,9 @@ describe("catalog visual alignment", () => {
 
   test("uses the mockup desktop workspace and toolbar geometry", () => {
     const css = read("src/styles/catalog.css");
+    const toolbar = read(
+      "src/features/catalog/components/catalog-toolbar.tsx",
+    );
 
     expect(css).toMatch(
       /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*238px minmax\(0,\s*1fr\)[^}]*padding:\s*0/s,
@@ -61,9 +64,9 @@ describe("catalog visual alignment", () => {
       /\.filter-panel\s*\{[^}]*padding:\s*20px 18px 50px[^}]*border-right:/s,
     );
     expect(css).toMatch(/\.catalog-main\s*\{[^}]*padding:\s*20px 22px 60px/s);
-    expect(css).toMatch(
-      /\.view-tabs\s*\{[^}]*border-radius:\s*7px[^}]*padding:\s*3px/s,
-    );
+    expect(toolbar).not.toContain("view-tabs");
+    expect(toolbar).not.toContain("onView");
+    expect(toolbar).toContain("catalog-primary-controls");
     expect(css).toMatch(/\.sort-projects\s*\{[^}]*height:\s*36px/s);
   });
 
@@ -107,7 +110,7 @@ describe("catalog visual alignment", () => {
       /@media \(max-width:\s*760px\)[\s\S]*?\.catalog-main\s*\{[^}]*padding:\s*16px 13px 50px/,
     );
     expect(responsive).toMatch(
-      /\.catalog-controls\s*\{[^}]*grid-template-columns:\s*34px minmax\(0,\s*1fr\) 120px/s,
+      /\.catalog-primary-controls\s*\{[^}]*min-width:\s*0/s,
     );
   });
 

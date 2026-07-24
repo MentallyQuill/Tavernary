@@ -88,9 +88,9 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     const layout = document.querySelector<HTMLElement>(".catalog-layout");
     const filters = document.querySelector<HTMLElement>(".filter-panel");
     const main = document.querySelector<HTMLElement>(".catalog-main");
-    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const toolbar = document.querySelector<HTMLElement>(".catalog-toolbar");
     const sort = document.querySelector<HTMLElement>(".sort-projects");
-    if (!layout || !filters || !main || !tabs || !sort) {
+    if (!layout || !filters || !main || !toolbar || !sort) {
       throw new Error("Missing desktop catalog controls");
     }
 
@@ -102,9 +102,17 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
       layoutWidth: Math.round(layoutBox.width),
       filterWidth: Math.round(filterBox.width),
       mainLeft: Math.round(mainBox.left),
-      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
       sortHeight: Math.round(sort.getBoundingClientRect().height),
       filterRadius: getComputedStyle(filters).borderRadius,
+      controlOrder: Array.from(
+        toolbar.querySelectorAll("h1, .density-toggle, .sort-projects"),
+      ).map((element) =>
+        element.matches("h1")
+          ? "count"
+          : element.classList.contains("density-toggle")
+            ? "density"
+            : "sort",
+      ),
     };
   });
 
@@ -113,10 +121,11 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     layoutWidth: 1440,
     filterWidth: 238,
     mainLeft: 238,
-    tabsHeight: 36,
     sortHeight: 36,
     filterRadius: "0px",
+    controlOrder: ["count", "density", "sort"],
   });
+  await expect(page.locator(".view-tabs")).toHaveCount(0);
   const logo = page.locator(".brand-logo");
   await expect(logo).toHaveCSS("width", "52px");
   await expect(logo).toHaveCSS("height", "47px");
@@ -251,7 +260,7 @@ test("themes project-kind checkbox outlines", async ({ page }) => {
   }
 });
 
-test("searches, changes density, and shows an empty New view", async ({
+test("searches, changes density, and accepts legacy view URLs", async ({
   page,
 }) => {
   await expect(
@@ -264,7 +273,10 @@ test("searches, changes density, and shows an empty New view", async ({
   await expect(page.getByRole("heading", { name: "1 project" })).toBeVisible();
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
-  await page.getByRole("button", { name: "New" }).click();
+  await expect(
+    page.getByRole("button", { name: "New", exact: true }),
+  ).toHaveCount(0);
+  await page.goto(`${sitePath()}?view=new&search=Recursion`);
   await expect(page.getByText("No projects match this view")).toBeVisible();
 });
 
@@ -576,18 +588,18 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     const trigger = document.querySelector<HTMLElement>(
       ".mobile-category-trigger",
     );
-    const controls = document.querySelector<HTMLElement>(".catalog-controls");
-    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const controls = document.querySelector<HTMLElement>(
+      ".catalog-primary-controls",
+    );
     const sort = document.querySelector<HTMLElement>(".sort-projects");
-    if (!main || !trigger || !controls || !tabs || !sort) {
+    if (!main || !trigger || !controls || !sort) {
       throw new Error("Missing mobile layout");
     }
     return {
       mainLeft: Math.round(main.getBoundingClientRect().left),
       mainPaddingLeft: getComputedStyle(main).paddingLeft,
       triggerHeight: Math.round(trigger.getBoundingClientRect().height),
-      controlColumns: getComputedStyle(controls).gridTemplateColumns,
-      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
+      controlDisplay: getComputedStyle(controls).display,
       sortHeight: Math.round(sort.getBoundingClientRect().height),
     };
   });
@@ -595,8 +607,14 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     mainLeft: 0,
     mainPaddingLeft: "13px",
     triggerHeight: 42,
-    controlColumns: "34px 198px 120px",
-    tabsHeight: 36,
+    controlDisplay: "flex",
     sortHeight: 36,
   });
+  await expect(page.locator(".view-tabs")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Open filters" })).toBeVisible();
+  expect(
+    await page.locator(".catalog-toolbar").evaluate(
+      (element) => element.scrollWidth - element.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 });

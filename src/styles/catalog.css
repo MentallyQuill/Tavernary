@@ -510,8 +510,9 @@
   margin-bottom: 14px;
 }
 
-.catalog-heading > div {
+.catalog-primary-controls {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 10px;
 }
@@ -556,12 +557,6 @@
   color: var(--color-text-primary);
 }
 
-.catalog-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .filter-toggle {
   position: relative;
   display: none;
@@ -585,37 +580,8 @@
   place-items: center;
 }
 
-.view-tabs {
-  display: flex;
-  height: 36px;
-  align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: 7px;
-  padding: 3px;
-  background: var(--color-surface-primary);
-}
-
-.view-tabs button {
-  height: 28px;
-  border: 0;
-  border-radius: 4px;
-  padding: 7px 10px;
-  color: var(--color-muted);
-  background: transparent;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.view-tabs button:hover,
-.view-tabs button.active {
-  color: var(--color-text-primary);
-  background: var(--color-surface-raised);
-}
-
 .sort-projects {
+  width: 150px;
   height: 36px;
   border: 1px solid var(--color-border);
   border-radius: 7px;

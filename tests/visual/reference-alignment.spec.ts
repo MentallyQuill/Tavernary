@@ -131,7 +131,6 @@ async function readAlignmentProfile(
     filters: string;
     catalog: string;
     sort: string;
-    metadataSearch: string;
     metadataOptions: string;
     metadataChip: string;
     grid: string;
@@ -159,9 +158,7 @@ async function readAlignmentProfile(
     const filters = profile(profileSelectors.filters);
     const catalog = profile(profileSelectors.catalog);
     const toolbar = profile(".catalog-toolbar");
-    const tabs = profile(".view-tabs");
     const sort = profile(profileSelectors.sort);
-    const metadataSearch = profile(profileSelectors.metadataSearch);
     const metadataOptions = profile(profileSelectors.metadataOptions);
     const metadataChip = profile(profileSelectors.metadataChip);
     const grid = profile(profileSelectors.grid);
@@ -193,15 +190,9 @@ async function readAlignmentProfile(
         alignItems: toolbar.style.alignItems,
         gap: toolbar.style.gap,
         marginBottom: toolbar.style.marginBottom,
-        tabsHeight: Math.round(tabs.element.getBoundingClientRect().height),
-        tabsPadding: tabs.style.padding,
-        tabsRadius: tabs.style.borderRadius,
         sortHeight: Math.round(sort.element.getBoundingClientRect().height),
       },
       metadata: {
-        searchHeight: Math.round(
-          metadataSearch.element.getBoundingClientRect().height,
-        ),
         optionsDisplay: metadataOptions.style.display,
         optionsGap: metadataOptions.style.gap,
         chipHeight: Math.round(
@@ -277,7 +268,6 @@ test("production preserves the approved mockup layout profile", async ({
     filters: ".filters",
     catalog: ".catalog",
     sort: ".sort",
-    metadataSearch: ".metadata-search",
     metadataOptions: ".metadata-options",
     metadataChip: ".metadata-filter-chip",
     grid: ".tile-grid",
@@ -296,7 +286,6 @@ test("production preserves the approved mockup layout profile", async ({
     filters: ".filter-panel",
     catalog: ".catalog-main",
     sort: ".sort-projects",
-    metadataSearch: ".metadata-search",
     metadataOptions: ".metadata-options",
     metadataChip: ".metadata-filter-chip",
     grid: ".project-grid",

@@ -159,7 +159,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
             filterCount={filterCount}
-            onView={(view) => update("view", view)}
             onSort={(sort) => update("sort", sort)}
             onDensity={() =>
               update(

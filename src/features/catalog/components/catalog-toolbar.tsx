@@ -8,7 +8,6 @@ export function CatalogToolbar({
   query,
   refreshedLabel,
   filterCount,
-  onView,
   onSort,
   onDensity,
   onOpenFilters,
@@ -18,7 +17,6 @@ export function CatalogToolbar({
   query: CatalogQuery;
   refreshedLabel: string;
   filterCount: number;
-  onView: (view: CatalogQuery["view"]) => void;
   onSort: (sort: CatalogQuery["sort"]) => void;
   onDensity: () => void;
   onOpenFilters: () => void;
@@ -27,7 +25,7 @@ export function CatalogToolbar({
   return (
     <div className="catalog-toolbar">
       <div className="catalog-heading">
-        <div>
+        <div className="catalog-primary-controls">
           <h1>
             {count} {count === 1 ? "project" : "projects"}
           </h1>
@@ -44,47 +42,32 @@ export function CatalogToolbar({
           >
             <CategoryIcon name="collapse" />
           </button>
+          <select
+            className="sort-projects"
+            aria-label="Sort projects"
+            value={query.sort}
+            onChange={(event) =>
+              onSort(event.target.value as CatalogQuery["sort"])
+            }
+          >
+            <option value="recent">Recent Activity</option>
+            <option value="strength">Activity Strength</option>
+            <option value="popularity">Popularity</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
         </div>
         <p>Catalog refreshed {refreshedLabel}</p>
       </div>
-      <div className="catalog-controls">
-        <button
-          ref={filterButtonRef}
-          className="filter-toggle"
-          type="button"
-          aria-label="Open filters"
-          onClick={onOpenFilters}
-        >
-          <CategoryIcon name="filter-lines" />
-          {filterCount > 0 ? <b>{filterCount}</b> : null}
-        </button>
-        <div className="view-tabs" aria-label="Catalog view">
-          {(["all", "active", "new", "released"] as const).map((view) => (
-            <button
-              key={view}
-              className={query.view === view ? "active" : ""}
-              type="button"
-              aria-pressed={query.view === view}
-              onClick={() => onView(view)}
-            >
-              {view[0].toUpperCase() + view.slice(1)}
-            </button>
-          ))}
-        </div>
-        <select
-          className="sort-projects"
-          aria-label="Sort projects"
-          value={query.sort}
-          onChange={(event) =>
-            onSort(event.target.value as CatalogQuery["sort"])
-          }
-        >
-          <option value="recent">Recent Activity</option>
-          <option value="strength">Activity Strength</option>
-          <option value="popularity">Popularity</option>
-          <option value="alphabetical">Alphabetical</option>
-        </select>
-      </div>
+      <button
+        ref={filterButtonRef}
+        className="filter-toggle"
+        type="button"
+        aria-label="Open filters"
+        onClick={onOpenFilters}
+      >
+        <CategoryIcon name="filter-lines" />
+        {filterCount > 0 ? <b>{filterCount}</b> : null}
+      </button>
     </div>
   );
 }
