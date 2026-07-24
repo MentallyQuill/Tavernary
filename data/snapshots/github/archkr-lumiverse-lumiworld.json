@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lumiworld",
+  "repository": {
+    "id": 1285750198,
+    "owner": "Archkr",
+    "name": "Lumiverse-LumiWorld",
+    "url": "https://github.com/Archkr/Lumiverse-LumiWorld",
+    "default_branch": "main",
+    "head_sha": "b2d012adaf4eaadbde6b63661a16f26fda60a99c",
+    "archived": false,
+    "created_at": "2026-07-01T05:38:22Z",
+    "size_kb": 463
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-07-17T01:23:21.000Z",
+    "weekly_meaningful_commits": [0, 4, 75, 21, 0, 0, 0, 0, 0, 0, 0, 0],
+    "active_weeks_12": 3,
+    "strength": 3014,
+    "dormant": false,
+    "latest_release_at": "2026-07-10T00:16:12Z"
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-24T18:56:40.276Z",
+  "stale_since": null
+}

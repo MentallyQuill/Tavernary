@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-memorybooks",
+  "repository": {
+    "id": 1001051404,
+    "owner": "aikohanasaki",
+    "name": "SillyTavern-MemoryBooks",
+    "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
+    "default_branch": "main",
+    "head_sha": "617cfbf99b2e934d5e61c7f197621c2995e6695a",
+    "archived": false,
+    "created_at": "2025-06-12T18:30:31Z",
+    "size_kb": 17293
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-07-18T06:33:53.000Z",
+    "weekly_meaningful_commits": [1, 7, 11, 5, 0, 10, 10, 14, 10, 24, 0, 22],
+    "active_weeks_12": 10,
+    "strength": 6846,
+    "dormant": false,
+    "latest_release_at": null
+  },
+  "community": {
+    "stargazers_count": 263,
+    "forks_count": 36,
+    "subscribers_count": 2,
+    "aggregate": 301
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-24T18:14:03.861Z",
+  "stale_since": null
+}

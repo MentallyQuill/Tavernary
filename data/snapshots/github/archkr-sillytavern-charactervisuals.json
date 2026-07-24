@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-sillytavern-charactervisuals",
+  "repository": {
+    "id": 1035690744,
+    "owner": "Archkr",
+    "name": "SillyTavern-CharacterVisuals",
+    "url": "https://github.com/Archkr/SillyTavern-CharacterVisuals",
+    "default_branch": "main",
+    "head_sha": "6b390a294af977451d75877a6781d142023ba321",
+    "archived": false,
+    "created_at": "2025-08-10T23:48:12Z",
+    "size_kb": 965
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-01-16T00:27:26.000Z",
+    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "active_weeks_12": 0,
+    "strength": 0,
+    "dormant": true,
+    "latest_release_at": "2026-01-14T09:48:01Z"
+  },
+  "community": {
+    "stargazers_count": 10,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-24T18:57:53.940Z",
+  "stale_since": null
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "archkr-lumiverse-lumimind",
+  "repository": {
+    "id": 1303183395,
+    "owner": "Archkr",
+    "name": "Lumiverse-LumiMind",
+    "url": "https://github.com/Archkr/Lumiverse-LumiMind",
+    "default_branch": "main",
+    "head_sha": "dd7865bd5c3b29ae983271a3c73879475038dd84",
+    "archived": false,
+    "created_at": "2026-07-16T19:45:15Z",
+    "size_kb": 294
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-07-22T23:27:32.000Z",
+    "weekly_meaningful_commits": [17, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "active_weeks_12": 2,
+    "strength": 2310,
+    "dormant": false,
+    "latest_release_at": null
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-24T18:53:53.022Z",
+  "stale_since": null
+}
