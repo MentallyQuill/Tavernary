@@ -255,14 +255,42 @@ async function preserveFailure(record, prior, error, now) {
   if (!prior) {
     throw error;
   }
-  const unavailable = error.status === 404;
-  const snapshot = {
-    ...prior,
-    source_health: unavailable ? "unavailable" : prior.source_health,
-    stale_since: prior.stale_since ?? now,
-  };
+  const snapshot = snapshotForFailure(prior, error, now);
   await writeSnapshot(record.id, snapshot);
   return snapshot;
+}
+
+export function snapshotForFailure(prior, error, now) {
+  return {
+    ...prior,
+    source_health: error.status === 404 ? "unavailable" : prior.source_health,
+    stale_since: prior.stale_since ?? now,
+  };
+}
+
+export function identityChangeSnapshot({ record, repository, previous, now }) {
+  return {
+    schema_version: 1,
+    project_id: record.id,
+    repository: repositoryFacts(
+      repository,
+      previous?.repository.head_sha ?? "0".repeat(40),
+    ),
+    source_health: "identity-change",
+    activity: previous?.activity ?? emptyActivity(),
+    community: calculateCommunity({
+      stargazersCount: repository.stargazers_count,
+      forksCount: repository.forks_count,
+      subscribersCount: repository.subscribers_count,
+    }),
+    license: previous?.license ?? {
+      status: "missing",
+      spdx_id: null,
+      source_path: null,
+    },
+    refreshed_at: now,
+    stale_since: previous?.stale_since ?? now,
+  };
 }
 
 export async function refreshProject(record, options = {}) {
@@ -279,28 +307,12 @@ export async function refreshProject(record, options = {}) {
   try {
     const repository = await github(`/repos/${record.source.repository}`);
     if (repository.id !== record.source.repository_id) {
-      const snapshot = {
-        schema_version: 1,
-        project_id: record.id,
-        repository: repositoryFacts(
-          repository,
-          prior?.repository.head_sha ?? "0".repeat(40),
-        ),
-        source_health: "identity-change",
-        activity: prior?.activity ?? emptyActivity(),
-        community: calculateCommunity({
-          stargazersCount: repository.stargazers_count,
-          forksCount: repository.forks_count,
-          subscribersCount: repository.subscribers_count,
-        }),
-        license: prior?.license ?? {
-          status: "missing",
-          spdx_id: null,
-          source_path: null,
-        },
-        refreshed_at: now,
-        stale_since: prior?.stale_since ?? now,
-      };
+      const snapshot = identityChangeSnapshot({
+        record,
+        repository,
+        previous: prior,
+        now,
+      });
       await writeSnapshot(record.id, snapshot);
       return snapshot;
     }
