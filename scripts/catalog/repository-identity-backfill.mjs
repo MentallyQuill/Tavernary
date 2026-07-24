@@ -47,6 +47,8 @@ export function backfillRepositoryIdentities(records, snapshots) {
         expected: record.source.repository_id,
         received: repositoryId,
       });
+    } else {
+      skipped += 1;
     }
   }
 

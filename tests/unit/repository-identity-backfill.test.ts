@@ -134,6 +134,40 @@ test("reports deterministic changed skipped and conflict counts", () => {
   });
 });
 
+test("counts healthy matching snapshots with matching non-null IDs in deterministic totals", () => {
+  const records = [
+    {
+      id: "stable",
+      source: {
+        type: "github",
+        repository: "Example/Stable",
+        repository_id: 42,
+      },
+    },
+  ];
+  const snapshots = [
+    {
+      project_id: "stable",
+      source_health: "healthy",
+      repository: {
+        id: 42,
+        owner: "Example",
+        name: "Stable",
+      },
+    },
+  ];
+
+  const result = backfillRepositoryIdentities(records, snapshots);
+
+  expect(result.updated).toEqual([]);
+  expect(result.conflicts).toEqual([]);
+  expect(result.summary).toEqual({
+    changed: 0,
+    skipped: 1,
+    conflicts: 0,
+  });
+});
+
 test("plans a validated backfill projection before writing", async () => {
   const records = [
     {
