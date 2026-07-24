@@ -1,6 +1,32 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { expect, test } from "@playwright/test";
 
 import { sitePath } from "../helpers/site-path";
+
+const catalog = JSON.parse(
+  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
+) as {
+  projects: Array<{
+    metadataStatus: string;
+    sourceStatus: string;
+    license: { status: string };
+  }>;
+};
+
+const provisionalCount = catalog.projects.filter(
+  ({ metadataStatus }) => metadataStatus === "provisional",
+).length;
+const sourcePendingCount = catalog.projects.filter(
+  ({ sourceStatus }) => sourceStatus === "pending",
+).length;
+const pendingLicenseCount = catalog.projects.filter(
+  ({ license }) => license.status === "pending",
+).length;
+const missingLicenseCount = catalog.projects.filter(
+  ({ license }) => license.status === "missing",
+).length;
 
 test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
@@ -332,10 +358,10 @@ test("shows the full launch catalog without default-query hidden records", async
   );
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
-  ).toHaveCount(209);
+  ).toHaveCount(provisionalCount);
   await expect(
     page.locator(".project-card").filter({ hasText: "Source pending" }),
-  ).toHaveCount(200);
+  ).toHaveCount(sourcePendingCount);
 });
 
 test("uses canonical external URLs for project cards", async ({ page }) => {
@@ -361,12 +387,12 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
 
   await page.getByLabel("Pending verification", { exact: true }).check();
   await expect(
-    page.getByRole("heading", { name: "209 projects" }),
+    page.getByRole("heading", { name: `${pendingLicenseCount} projects` }),
   ).toBeVisible();
   await expect(page).toHaveURL(/license=pending/);
   await expect(
     page.locator(".project-card").filter({ hasText: "Pending" }),
-  ).toHaveCount(209);
+  ).toHaveCount(pendingLicenseCount);
 
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await page
@@ -378,7 +404,9 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
   await expect(page).not.toHaveURL(/license=/);
 
   await page.getByLabel("Missing license", { exact: true }).check();
-  await expect(page.getByRole("heading", { name: "2 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: `${missingLicenseCount} projects` }),
+  ).toBeVisible();
   await expect(page).toHaveURL(/license=missing/);
 });
 
