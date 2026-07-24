@@ -21,6 +21,11 @@
     box-shadow: var(--shadow-raised);
   }
 
+  .kit-drag-handle,
+  .kit-drag-ghost {
+    display: none;
+  }
+
   .kit-workspace.collapsed {
     position: fixed;
     top: auto;

@@ -339,6 +339,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           onStartCreate={workspace.startCreate}
           onUpdateDraft={workspace.updateDraft}
           onSubmitDraft={() => undefined}
+          active={query.mode === "kits" || workspace.state.mode !== "intro"}
         />
       </div>
       {filtersOpen ? (

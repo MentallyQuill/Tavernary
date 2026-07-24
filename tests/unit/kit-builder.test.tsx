@@ -1,6 +1,7 @@
 import {
   act,
   cleanup,
+  fireEvent,
   render,
   renderHook,
   screen,
@@ -225,5 +226,75 @@ describe("Kit builder controls", () => {
     ).toHaveLength(2);
     await user.click(add);
     expect(onAdd).toHaveBeenCalledWith("frontend");
+  });
+
+  test("captures pointer drag from handles, cancels with Escape, and commits once", () => {
+    const onUpdate = vi.fn();
+    const setPointerCapture = vi.fn();
+    const releasePointerCapture = vi.fn();
+    Object.defineProperties(HTMLElement.prototype, {
+      setPointerCapture: {
+        configurable: true,
+        value: setPointerCapture,
+      },
+      releasePointerCapture: {
+        configurable: true,
+        value: releasePointerCapture,
+      },
+    });
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={onUpdate}
+        onSubmit={() => undefined}
+      />,
+    );
+    const memoryHandle = screen.getByRole("button", {
+      name: "Drag memory",
+    });
+    const presetRow = screen
+      .getAllByText("preset")[0]
+      .closest("[data-project-id]") as HTMLElement;
+    Object.defineProperty(document, "elementFromPoint", {
+      configurable: true,
+      value: vi.fn().mockReturnValue(presetRow),
+    });
+    vi.spyOn(presetRow, "getBoundingClientRect").mockReturnValue({
+      x: 0,
+      y: 100,
+      top: 100,
+      left: 0,
+      right: 100,
+      bottom: 140,
+      width: 100,
+      height: 40,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.pointerDown(memoryHandle, { pointerId: 7, clientY: 110 });
+    expect(setPointerCapture).toHaveBeenCalledWith(7);
+    fireEvent.pointerMove(window, {
+      pointerId: 7,
+      clientX: 5,
+      clientY: 130,
+    });
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onUpdate).not.toHaveBeenCalled();
+
+    fireEvent.pointerDown(memoryHandle, { pointerId: 8, clientY: 110 });
+    fireEvent.pointerMove(window, {
+      pointerId: 8,
+      clientX: 5,
+      clientY: 130,
+    });
+    fireEvent.pointerUp(window, { pointerId: 8 });
+    fireEvent.pointerUp(window, { pointerId: 8 });
+    expect(onUpdate).toHaveBeenCalledTimes(1);
+    expect(onUpdate).toHaveBeenCalledWith({
+      projectIds: ["frontend", "preset", "memory"],
+    });
+    expect(releasePointerCapture).toHaveBeenCalled();
   });
 });

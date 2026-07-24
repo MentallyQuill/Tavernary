@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import {
   countWords,
@@ -11,6 +13,7 @@ import {
   removeProject,
 } from "@/features/kits/project-stack-order";
 import type { KitDraft } from "@/features/kits/kit-types";
+import { useProjectStackDrag } from "@/features/kits/use-project-stack-drag";
 import { KitBuilderRow } from "./kit-builder-row";
 
 export function KitBuilder({
@@ -26,6 +29,12 @@ export function KitBuilder({
   onUpdate: (patch: Partial<KitDraft>) => void;
   onSubmit: () => void;
 }) {
+  const stackRef = useRef<HTMLOListElement>(null);
+  const drag = useProjectStackDrag({
+    projectIds: draft.projectIds,
+    onReorder: (projectIds) => onUpdate({ projectIds }),
+    scrollContainerRef: stackRef,
+  });
   const projectsById = new Map(
     projects.map((project) => [project.id, project]),
   );
@@ -66,7 +75,7 @@ export function KitBuilder({
         />
         <small>{countWords(draft.description)}/100 words</small>
       </label>
-      <ol className="kit-builder-stack">
+      <ol ref={stackRef} className="kit-builder-stack">
         {draft.projectIds.map((projectId, index) => {
           const project = projectsById.get(projectId);
           return project ? (
@@ -85,10 +94,22 @@ export function KitBuilder({
                   projectIds: removeProject(draft.projectIds, id),
                 })
               }
+              onDragStart={(event) => drag.begin(projectId, event)}
+              dragging={drag.dragState?.projectId === projectId}
+              placement={
+                drag.dragState?.overProjectId === projectId
+                  ? drag.dragState.placement
+                  : null
+              }
             />
           ) : null;
         })}
       </ol>
+      {drag.dragState ? (
+        <div className="kit-drag-ghost" aria-hidden="true">
+          {projectsById.get(drag.dragState.projectId)?.name}
+        </div>
+      ) : null}
       {errors.length > 0 ? (
         <ul className="kit-builder-errors" aria-label="Kit validation">
           {errors.map((error) => (

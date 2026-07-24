@@ -29,6 +29,7 @@ export function KitWorkspace({
   onStartCreate,
   onUpdateDraft,
   onSubmitDraft,
+  active = true,
 }: {
   state: KitWorkspaceState;
   kit: CatalogKit | null;
@@ -42,17 +43,81 @@ export function KitWorkspace({
     patch: Partial<import("@/features/kits/kit-types").KitDraft>,
   ) => void;
   onSubmitDraft?: () => void;
+  active?: boolean;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
+  const [mobile, setMobile] = useState(false);
   const fallbackRef = useRef<HTMLInputElement>(null);
+  const workspaceRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (fallbackUrl) fallbackRef.current?.select();
   }, [fallbackUrl]);
 
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    const query = window.matchMedia("(max-width: 760px)");
+    const update = () => setMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (!mobile || !active || state.collapsed) return;
+    if (!workspaceRef.current?.contains(document.activeElement)) {
+      openerRef.current = document.activeElement as HTMLElement;
+    }
+    document.body.classList.add("sheet-open");
+    headingRef.current?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCollapse();
+        window.setTimeout(() => openerRef.current?.focus(), 0);
+        return;
+      }
+      if (event.key !== "Tab" || !workspaceRef.current) return;
+      const focusable = Array.from(
+        workspaceRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable.at(-1)!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", trapFocus);
+    return () => {
+      window.removeEventListener("keydown", trapFocus);
+      document.body.classList.remove("sheet-open");
+    };
+  }, [active, mobile, onCollapse, state.collapsed]);
+
+  useEffect(() => {
+    if (mobile && state.collapsed) {
+      window.setTimeout(
+        () => workspaceRef.current?.querySelector("button")?.focus(),
+        0,
+      );
+    }
+  }, [mobile, state.collapsed]);
+
+  if (mobile && !active) return null;
+
   if (state.collapsed) {
     return (
       <aside
+        ref={workspaceRef}
         id="kit-workspace"
         className="kit-workspace collapsed"
         aria-label="Kit workspace"
@@ -66,16 +131,26 @@ export function KitWorkspace({
 
   return (
     <aside
+      ref={workspaceRef}
       id="kit-workspace"
       className="kit-workspace"
       aria-label="Kit workspace"
+      role={mobile ? "dialog" : "complementary"}
+      aria-modal={mobile ? true : undefined}
     >
       <header className="kit-workspace-header">
-        <span>Kit workspace</span>
+        <h2 ref={headingRef} tabIndex={-1}>
+          Kit workspace
+        </h2>
         <button
           type="button"
-          aria-label="Collapse workspace"
-          onClick={onCollapse}
+          aria-label={mobile ? "Close Kit workspace" : "Collapse workspace"}
+          onClick={() => {
+            onCollapse();
+            if (mobile) {
+              window.setTimeout(() => openerRef.current?.focus(), 0);
+            }
+          }}
         >
           <CategoryIcon name="collapse" />
         </button>

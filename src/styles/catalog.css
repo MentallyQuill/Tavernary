@@ -1504,6 +1504,42 @@
   color: var(--color-muted);
 }
 
+.kit-drag-handle {
+  padding: 0;
+  border: 0;
+  color: var(--color-muted);
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.kit-builder-row.dragging {
+  opacity: 0.45;
+}
+
+.kit-builder-row.drag-before {
+  transform: translateY(4px);
+  border-top-color: var(--color-kind-preset);
+}
+
+.kit-builder-row.drag-after {
+  transform: translateY(-4px);
+  border-bottom-color: var(--color-kind-preset);
+}
+
+.kit-drag-ghost {
+  position: fixed;
+  z-index: 50;
+  right: 24px;
+  bottom: 24px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-kind-preset);
+  border-radius: 7px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-raised);
+  pointer-events: none;
+}
+
 .kit-builder-errors {
   margin: 0;
   padding-left: 18px;

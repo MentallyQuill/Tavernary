@@ -1,5 +1,6 @@
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import type { PointerEventHandler } from "react";
 
 export function KitBuilderRow({
   project,
@@ -7,18 +8,32 @@ export function KitBuilderRow({
   count,
   onMove,
   onRemove,
+  onDragStart,
+  dragging,
+  placement,
 }: {
   project: CatalogProject;
   index: number;
   count: number;
   onMove: (index: number, delta: number) => void;
   onRemove: (projectId: string) => void;
+  onDragStart: PointerEventHandler<HTMLButtonElement>;
+  dragging: boolean;
+  placement: "before" | "after" | null;
 }) {
   return (
-    <li className="kit-builder-row" data-project-id={project.id}>
-      <span className="kit-drag-handle" aria-hidden="true">
+    <li
+      className={`kit-builder-row${dragging ? " dragging" : ""}${placement ? ` drag-${placement}` : ""}`}
+      data-project-id={project.id}
+    >
+      <button
+        type="button"
+        className="kit-drag-handle"
+        aria-label={`Drag ${project.name}`}
+        onPointerDown={onDragStart}
+      >
         <CategoryIcon name="drag-handle" />
-      </span>
+      </button>
       <span>
         <strong>{project.name}</strong>
         <small>{project.kind}</small>
