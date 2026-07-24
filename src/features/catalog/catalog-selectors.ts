@@ -121,7 +121,10 @@ export function selectProjects(
   const selected = projects.filter(
     (project) =>
       (!search || project.searchableText.includes(search)) &&
-      (!query.category || project.primaryFunction === query.category) &&
+      (!query.category ||
+        (query.category === "preset"
+          ? project.kind === "preset"
+          : project.primaryFunction === query.category)) &&
       matchesAny(
         query.frontends,
         project.frontends.map(({ id }) => id),

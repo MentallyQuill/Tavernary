@@ -12,7 +12,9 @@ type IconName =
   | "filter"
   | "community"
   | "search"
-  | "feather"
+  | "chevron"
+  | "filter-lines"
+  | "collapse"
   | "close";
 
 export function CategoryIcon({
@@ -107,10 +109,24 @@ export function CategoryIcon({
       </svg>
     );
   }
-  if (name === "feather") {
+  if (name === "chevron") {
     return (
-      <svg {...common} {...props}>
-        <path d="M20 3C12 3 5 7 5 15v4m0-4 8-7m-6 5h6m-3-3h6M3 21l2-2" />
+      <svg {...common} {...props} data-icon="chevron">
+        <path d="m7 9 5 5 5-5" />
+      </svg>
+    );
+  }
+  if (name === "filter-lines") {
+    return (
+      <svg {...common} {...props} data-icon="filter-lines">
+        <path d="M5 7h14M8 12h8m-5 5h2" />
+      </svg>
+    );
+  }
+  if (name === "collapse") {
+    return (
+      <svg {...common} {...props} data-icon="collapse">
+        <path d="m8 3-5 5m0-5 5 5m8-5 5 5m0-5-5 5M8 21l-5-5m0 5 5-5m8 5 5-5m0 5-5-5" />
       </svg>
     );
   }

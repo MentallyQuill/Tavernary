@@ -18,13 +18,17 @@ export function SiteHeader({
   return (
     <header className="site-header">
       <Link className="brand" href="/" aria-label="Tavernary home">
-        <span className="brand-mark" aria-hidden="true">
-          <CategoryIcon name="feather" />
-        </span>
         <span className="brand-copy">
           <span className="brand-name">Tavernary</span>
           <span className="brand-tagline">Where AI roleplay tools gather</span>
         </span>
+        <img
+          className="brand-logo"
+          src="./tavernary-logo.png"
+          alt=""
+          width="45"
+          height="60"
+        />
       </Link>
       <label className="site-search">
         <CategoryIcon name="search" />
@@ -34,14 +38,19 @@ export function SiteHeader({
           type="search"
           value={search}
           onChange={(event) => onSearch(event.target.value)}
-          placeholder="Search projects"
+          placeholder="Search projects, capabilities, frontends, or maintainers…"
           aria-label="Search projects"
         />
         <kbd>/</kbd>
       </label>
-      <nav className="header-links" aria-label="Site links">
+      <nav
+        className="header-secondary-actions"
+        aria-label="Secondary site actions"
+      >
         <a href="./about/">About</a>
         <a href={helpUrl}>Help</a>
+      </nav>
+      <nav className="header-primary-actions" aria-label="Primary site actions">
         <a className="submit-link" href={submissionUrl}>
           Submit Project
         </a>

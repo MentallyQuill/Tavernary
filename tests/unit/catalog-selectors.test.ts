@@ -265,6 +265,16 @@ describe("catalog selectors", () => {
       ).map(({ id }) => id),
     ).toEqual(["preset"]);
   });
+
+  test("treats System Presets as a primary category", () => {
+    expect(
+      selectProjects(
+        projects,
+        { ...DEFAULT_QUERY, category: "preset" },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["preset"]);
+  });
 });
 
 describe("catalog query URLs", () => {

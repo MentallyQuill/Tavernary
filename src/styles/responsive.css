@@ -1,18 +1,15 @@
 @media (max-width: 1180px) {
   .site-header {
-    grid-template-columns: auto minmax(240px, 1fr) auto;
+    grid-template-columns: 205px minmax(240px, 1fr) auto auto;
     gap: 18px;
   }
 
-  .brand-tagline {
-    display: none;
+  .header-secondary-actions,
+  .header-primary-actions {
+    gap: 12px;
   }
 
-  .header-links {
-    gap: 13px;
-  }
-
-  .header-links a:not(.submit-link) {
+  .header-secondary-actions a {
     font-size: 12px;
   }
 
@@ -32,46 +29,60 @@
 
 @media (max-width: 760px) {
   :root {
-    --header-height: 126px;
+    --header-height: auto;
   }
 
   .site-header {
+    grid-template-areas:
+      "brand primary"
+      "search search"
+      "secondary secondary";
     grid-template-columns: 1fr auto;
-    gap: 10px 12px;
-    padding: 12px 16px;
+    gap: 8px 12px;
+    padding: 10px 14px 9px;
   }
 
-  .brand-mark {
-    width: 32px;
-    height: 40px;
+  .brand {
+    grid-area: brand;
   }
 
-  .brand-mark svg {
-    width: 31px;
-    height: 38px;
+  .brand-logo {
+    width: 39px;
+    height: 52px;
   }
 
   .brand-name {
-    font-size: 23px;
+    font-size: 27px;
   }
 
-  .header-links {
-    gap: 8px;
-  }
-
-  .header-links a {
+  .brand-tagline {
     display: block;
-    font-size: 9px;
+    font-size: 8px;
   }
 
-  .header-links .submit-link {
-    padding: 8px;
+  .header-primary-actions {
+    grid-area: primary;
+  }
+
+  .header-primary-actions .submit-link {
+    padding: 8px 10px;
     font-size: 10px;
   }
 
+  .header-secondary-actions {
+    grid-area: secondary;
+    justify-content: flex-end;
+    gap: 14px;
+    padding-right: 2px;
+  }
+
+  .header-secondary-actions a {
+    font-size: 9px;
+  }
+
   .site-search {
+    grid-area: search;
     grid-column: 1 / -1;
-    grid-row: 2;
     width: 100%;
   }
 
@@ -130,6 +141,11 @@
   .mobile-category-menu b {
     color: var(--color-muted);
     font-size: 10px;
+  }
+
+  .mobile-category-trigger > svg:last-child {
+    width: 16px;
+    color: var(--color-muted);
   }
 
   .mobile-category-menu {

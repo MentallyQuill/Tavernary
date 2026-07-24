@@ -32,8 +32,13 @@ export const DEFAULT_QUERY: CatalogQuery = {
 };
 
 export const CATEGORY_OPTIONS = [
-  { id: "", label: "All projects", shortLabel: "All" },
+  { id: "", label: "All Projects", shortLabel: "All Projects" },
   { id: "frontend", label: "Frontends", shortLabel: "Frontends" },
+  {
+    id: "preset",
+    label: "System Presets",
+    shortLabel: "System Presets",
+  },
   {
     id: "memory-retrieval",
     label: "Memory and retrieval",
@@ -46,8 +51,8 @@ export const CATEGORY_OPTIONS = [
   },
   {
     id: "character-worldbuilding",
-    label: "Character and worldbuilding",
-    shortLabel: "Authoring",
+    label: "Character & Worldbuilding",
+    shortLabel: "Character & Worldbuilding",
   },
   { id: "rpg-systems", label: "RPG systems and suites", shortLabel: "RPG" },
   {
@@ -64,6 +69,7 @@ export const CATEGORY_OPTIONS = [
 
 const validCategories = new Set([
   "frontend",
+  "preset",
   "memory-retrieval",
   "generation-reasoning",
   "character-worldbuilding",

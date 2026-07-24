@@ -61,7 +61,7 @@ export function CategoryNavigation({
             <small>Browse</small>
             {current.label}
           </span>
-          <b>{counts.get(current.id) ?? 0}</b>
+          <CategoryIcon name="chevron" />
         </button>
         {mobileOpen ? (
           <div className="mobile-category-menu">

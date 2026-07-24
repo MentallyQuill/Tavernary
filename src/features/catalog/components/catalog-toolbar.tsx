@@ -42,9 +42,7 @@ export function CatalogToolbar({
             aria-pressed={query.density === "compact"}
             onClick={onDensity}
           >
-            <span />
-            <span />
-            <span />
+            <CategoryIcon name="collapse" />
           </button>
         </div>
         <p>Catalog refreshed {refreshedLabel}</p>
@@ -57,7 +55,7 @@ export function CatalogToolbar({
           aria-label="Open filters"
           onClick={onOpenFilters}
         >
-          <CategoryIcon name="filter" />
+          <CategoryIcon name="filter-lines" />
           {filterCount > 0 ? <b>{filterCount}</b> : null}
         </button>
         <div className="view-tabs" aria-label="Catalog view">
