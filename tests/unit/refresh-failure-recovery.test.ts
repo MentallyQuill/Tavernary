@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 
 import * as refreshModule from "../../scripts/catalog/refresh-github.mjs";
+import { repositoryIdentityChanged } from "../../scripts/catalog/refresh-github.mjs";
 
 const prior = {
   schema_version: 1,
@@ -68,6 +69,14 @@ function recoveryFunctions() {
       previous: typeof prior;
       now: string;
     }) => typeof prior;
+    refreshSelectedProjects?: (
+      records: Array<{ id: string }>,
+      refresh: (record: { id: string }) => Promise<{
+        source_health: string;
+        refreshed_at: string;
+      } | null>,
+      logger: { log(message: string): void; error(message: string): void },
+    ) => Promise<void>;
   };
 }
 
@@ -138,4 +147,49 @@ test("a repository ID mismatch quarantines the source without mutating curated i
   expect(quarantined.license).toEqual(prior.license);
   expect(quarantined.stale_since).toBe("2026-07-24T00:00:00.000Z");
   expect(record).toEqual(recordBefore);
+});
+
+test("does not classify the first provisional refresh as identity change", () => {
+  const provisionalRecord = {
+    id: "pending",
+    source: { repository_id: null },
+  };
+  const repository = { id: 42 };
+
+  expect(repositoryIdentityChanged(provisionalRecord, repository)).toBe(false);
+  expect(
+    repositoryIdentityChanged(
+      { id: "verified", source: { repository_id: 7 } },
+      repository,
+    ),
+  ).toBe(true);
+});
+
+test("refresh batches continue after a per-record failure", async () => {
+  const results = [];
+  const errors = [];
+
+  const refreshSelectedProjects = recoveryFunctions().refreshSelectedProjects;
+  expect(refreshSelectedProjects).toBeTypeOf("function");
+  if (!refreshSelectedProjects) return;
+
+  await refreshSelectedProjects(
+    [{ id: "broken" }, { id: "healthy" }],
+    async (record) => {
+      if (record.id === "broken") {
+        throw new Error("boom");
+      }
+      return {
+        source_health: "healthy",
+        refreshed_at: "2026-07-24T00:00:00.000Z",
+      };
+    },
+    {
+      log: (message) => results.push(message),
+      error: (message) => errors.push(message),
+    },
+  );
+
+  expect(results).toEqual(["healthy: healthy at 2026-07-24T00:00:00.000Z"]);
+  expect(errors).toEqual(["broken: boom"]);
 });

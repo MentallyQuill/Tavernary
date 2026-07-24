@@ -19,6 +19,7 @@
     "test:visual": "node scripts/run-playwright.mjs tests/visual",
     "catalog:validate": "node scripts/catalog/validate.mjs",
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
+    "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",

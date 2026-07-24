@@ -293,6 +293,13 @@ export function identityChangeSnapshot({ record, repository, previous, now }) {
   };
 }
 
+export function repositoryIdentityChanged(record, repository) {
+  return (
+    record.source.repository_id !== null &&
+    repository.id !== record.source.repository_id
+  );
+}
+
 export async function refreshProject(record, options = {}) {
   if (record.source.type !== "github") {
     throw new Error(`${record.id}: refresh requires a GitHub source`);
@@ -306,7 +313,7 @@ export async function refreshProject(record, options = {}) {
 
   try {
     const repository = await github(`/repos/${record.source.repository}`);
-    if (repository.id !== record.source.repository_id) {
+    if (repositoryIdentityChanged(record, repository)) {
       const snapshot = identityChangeSnapshot({
         record,
         repository,
@@ -366,6 +373,26 @@ export async function refreshProject(record, options = {}) {
   }
 }
 
+export async function refreshSelectedProjects(
+  records,
+  refresh = refreshProject,
+  logger = console,
+) {
+  for (const record of records) {
+    try {
+      const snapshot = await refresh(record);
+      if (snapshot) {
+        logger.log(
+          `${record.id}: ${snapshot.source_health} at ${snapshot.refreshed_at}`,
+        );
+      }
+    } catch (error) {
+      process.exitCode = 1;
+      logger.error(`${record.id}: ${error.message}`);
+    }
+  }
+}
+
 function argument(name, fallback = null) {
   const index = process.argv.indexOf(name);
   return index < 0 ? fallback : process.argv[index + 1];
@@ -395,14 +422,7 @@ async function main() {
     throw new Error(`Unknown refresh mode: ${mode}`);
   }
 
-  for (const record of selected) {
-    const snapshot = await refreshProject(record);
-    if (snapshot) {
-      console.log(
-        `${record.id}: ${snapshot.source_health} at ${snapshot.refreshed_at}`,
-      );
-    }
-  }
+  await refreshSelectedProjects(selected);
 }
 
 if (
