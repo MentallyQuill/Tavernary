@@ -14,13 +14,13 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   );
   await expect(brand.locator("img")).toHaveAttribute(
     "src",
-    "./tavernary-logo.png",
+    "./tavernary-gems.png",
   );
-  await expect(brand.locator("img")).toHaveCSS("width", "31px");
-  await expect(brand.locator("img")).toHaveCSS("height", "41px");
+  await expect(brand.locator("img")).toHaveCSS("width", "48px");
+  await expect(brand.locator("img")).toHaveCSS("height", "43px");
   await expect(brand.locator("img")).toHaveCSS(
     "transform",
-    "matrix(1, 0, 0, 1, -12, 0)",
+    "none",
   );
   const actions = page.locator(".header-actions");
   await expect(actions).toContainText("Submit Project");

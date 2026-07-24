@@ -118,9 +118,23 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     filterRadius: "0px",
   });
   const logo = page.locator(".brand-logo");
-  await expect(logo).toHaveCSS("width", "34px");
-  await expect(logo).toHaveCSS("height", "45px");
-  await expect(logo).toHaveCSS("transform", "matrix(1, 0, 0, 1, -12, 0)");
+  await expect(logo).toHaveCSS("width", "52px");
+  await expect(logo).toHaveCSS("height", "47px");
+  await expect(logo).toHaveCSS("transform", "none");
+});
+
+test("uses one focus boundary for the main search", async ({ page }) => {
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+
+  await search.focus();
+
+  await expect(search).toHaveCSS("appearance", "none");
+  await expect(search).toHaveCSS("outline-style", "none");
+  await expect(search).toHaveCSS("box-shadow", "none");
+  await expect(page.locator(".site-search")).toHaveCSS(
+    "border-top-color",
+    "rgb(87, 197, 163)",
+  );
 });
 
 test("uses the approved desktop filter controls", async ({ page }) => {

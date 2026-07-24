@@ -35,9 +35,9 @@
   }
 
   .brand-logo {
-    width: 31px;
-    height: 41px;
-    transform: translateX(-12px);
+    width: 48px;
+    height: 43px;
+    transform: none;
   }
 
   .header-actions {

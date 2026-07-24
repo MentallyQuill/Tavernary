@@ -38,10 +38,10 @@
 }
 
 .brand-logo {
-  width: 34px;
-  height: 45px;
+  width: 52px;
+  height: 47px;
   object-fit: contain;
-  transform: translateX(-12px);
+  transform: none;
 }
 
 .brand-tagline {
@@ -80,14 +80,20 @@
 }
 
 .site-search input {
+  appearance: none;
   min-width: 0;
   flex: 1;
   border: 0;
   outline: 0;
+  box-shadow: none;
   padding: 0;
   color: var(--color-text-primary);
   background: transparent;
   font: inherit;
+}
+
+.site-search input:focus-visible {
+  outline: 0;
 }
 
 .site-search input::placeholder {
@@ -126,9 +132,15 @@
 
 .header-actions .submit-link {
   border: 1px solid var(--color-kind-extension);
-  color: var(--color-kind-extension);
-  background: var(--color-surface-card);
+  color: var(--color-page);
+  background: var(--color-kind-extension);
   white-space: nowrap;
+}
+
+.header-actions .submit-link:hover,
+.header-actions .submit-link:focus-visible {
+  color: var(--color-page);
+  background: var(--color-kind-extension);
 }
 
 .category-navigation {
