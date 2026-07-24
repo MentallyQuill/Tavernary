@@ -161,6 +161,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           query={query}
           projects={catalog.projects}
           onToggle={toggleFilter}
+          onClear={clearFilters}
         />
         <main className="catalog-main">
           <CatalogToolbar
@@ -194,6 +195,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           query={query}
           projects={catalog.projects}
           onToggle={toggleFilter}
+          onClear={clearFilters}
           onClose={closeFilters}
         />
       ) : null}

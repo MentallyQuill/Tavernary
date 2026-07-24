@@ -6,6 +6,28 @@ test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
 });
 
+test("uses the approved desktop filter controls", async ({ page }) => {
+  await expect(page.getByText("Filters", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("searchbox", { name: "Search compatible frontends" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("searchbox", {
+      name: "Search capabilities and characteristics",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Capabilities & characteristics", { exact: true }),
+  ).toBeVisible();
+
+  await page
+    .getByRole("searchbox", { name: "Search compatible frontends" })
+    .fill("Marinara");
+  await expect(page.getByLabel("Marinara Engine")).toBeVisible();
+  await expect(page.getByLabel("SillyTavern")).toBeHidden();
+});
+
 test("searches, changes density, and shows an empty New view", async ({
   page,
 }) => {
@@ -33,7 +55,10 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     page.getByRole("button", { name: "Remove Extension" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Remove Extension" }).click();
-  await page.getByRole("button", { name: "Clear all" }).click();
+  await page
+    .getByLabel("Active filters")
+    .getByRole("button", { name: "Clear all" })
+    .click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("heading", { name: "5 projects" })).toBeVisible();
 });

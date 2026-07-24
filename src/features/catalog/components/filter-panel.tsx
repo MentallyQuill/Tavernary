@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type {
   CatalogKind,
@@ -81,6 +83,9 @@ function FilterGroup({
   selected,
   projects,
   onToggle,
+  search,
+  onSearch,
+  searchLabel,
 }: {
   title: string;
   group: FilterArray;
@@ -88,11 +93,31 @@ function FilterGroup({
   selected: string[];
   projects: CatalogProject[];
   onToggle: (group: FilterArray, value: string) => void;
+  search?: string;
+  onSearch?: (value: string) => void;
+  searchLabel?: string;
 }) {
+  const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
+  const visibleOptions = normalizedSearch
+    ? options.filter(({ label }) =>
+        label.toLocaleLowerCase().includes(normalizedSearch),
+      )
+    : options;
+
   return (
     <fieldset className="filter-group">
       <legend>{title}</legend>
-      {options.map((option) => (
+      {onSearch && searchLabel ? (
+        <input
+          className="filter-search"
+          type="search"
+          value={search}
+          onChange={(event) => onSearch(event.target.value)}
+          placeholder="Search…"
+          aria-label={searchLabel}
+        />
+      ) : null}
+      {visibleOptions.map((option) => (
         <label key={option.id}>
           <input
             type="checkbox"
@@ -112,15 +137,19 @@ export function FilterPanel({
   query,
   projects,
   onToggle,
+  onClear,
   mobile = false,
   onClose,
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
   onToggle: (group: FilterArray, value: string) => void;
+  onClear: () => void;
   mobile?: boolean;
   onClose?: () => void;
 }) {
+  const [frontendSearch, setFrontendSearch] = useState("");
+  const [capabilitySearch, setCapabilitySearch] = useState("");
   const content = (
     <>
       {mobile ? (
@@ -135,20 +164,25 @@ export function FilterPanel({
         </div>
       ) : (
         <div className="filter-panel-title">
-          <CategoryIcon name="filter" />
-          <span>Filter projects</span>
+          <span>Filters</span>
+          <button type="button" onClick={onClear}>
+            Clear all
+          </button>
         </div>
       )}
       <FilterGroup
-        title="Frontends"
+        title="Compatible frontend"
         group="frontends"
         options={uniqueLabels(projects, "frontends")}
         selected={query.frontends}
         projects={projects}
         onToggle={onToggle}
+        search={frontendSearch}
+        onSearch={setFrontendSearch}
+        searchLabel="Search compatible frontends"
       />
       <FilterGroup
-        title="Project type"
+        title="Project kind"
         group="kinds"
         options={kindOptions}
         selected={query.kinds}
@@ -156,12 +190,15 @@ export function FilterPanel({
         onToggle={onToggle}
       />
       <FilterGroup
-        title="Capabilities"
+        title="Capabilities & characteristics"
         group="capabilities"
         options={uniqueLabels(projects, "capabilities")}
         selected={query.capabilities}
         projects={projects}
         onToggle={onToggle}
+        search={capabilitySearch}
+        onSearch={setCapabilitySearch}
+        searchLabel="Search capabilities and characteristics"
       />
       <FilterGroup
         title="Development"
