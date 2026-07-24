@@ -2323,6 +2323,7 @@
         "id": "n0819-sonder-engine",
         "name": "Sonder Engine",
         "repository": {"owner": "N0819", "name": "Sonder_Engine", "url": "https://github.com/N0819/Sonder_Engine"},
+        "kind": "frontend",
         "frontends": ["Sonder Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
     },
     {
@@ -2366,5 +2367,19 @@
         "name": "Wandlight",
         "repository": {"owner": "MentallyQuill", "name": "ST-Wandlight", "url": "https://github.com/MentallyQuill/ST-Wandlight"},
         "tags": ["Presets"], "frontends": ["SillyTavern"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "prolix-oc-lumiverse",
+        "name": "Lumiverse",
+        "repository": {"owner": "prolix-oc", "name": "Lumiverse", "url": "https://github.com/prolix-oc/Lumiverse"},
+        "kind": "frontend",
+        "frontends": ["Lumiverse"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
+    },
+    {
+        "id": "pasta-devs-marinara-engine",
+        "name": "Marinara Engine",
+        "repository": {"owner": "Pasta-Devs", "name": "Marinara-Engine", "url": "https://github.com/Pasta-Devs/Marinara-Engine"},
+        "kind": "frontend",
+        "frontends": ["Marinara Engine"], "status": "candidate", "submission": "user-submitted", "submitted_at": "2026-07-23"
     }
 ]
