@@ -32,6 +32,17 @@ test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
 });
 
+test("keeps summaries clamped at standard and compact card widths", async ({
+  page,
+}) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const summary = page.locator(".project-card .card-summary").first();
+    await expect(summary).toHaveCSS("-webkit-line-clamp", "4");
+    await expect(summary).toHaveCSS("overflow", "hidden");
+  }
+});
+
 async function expectTooltipInsideViewport(
   page: import("@playwright/test").Page,
   trigger: import("@playwright/test").Locator,

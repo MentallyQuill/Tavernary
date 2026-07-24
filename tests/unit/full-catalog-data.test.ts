@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
 
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
+import { validateEnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 
 interface CatalogRecord {
   id: string;
@@ -12,6 +13,7 @@ interface CatalogRecord {
   metadata_status: string;
   primary_function: string;
   capabilities: string[];
+  summary: string;
   visibility?: string;
   source: {
     type: string;
@@ -122,5 +124,41 @@ describe("full catalog data", () => {
     const catalog = await buildCatalog({ write: false });
     expect(catalog.schemaVersion).toBe(2);
     expect(catalog.kits).toEqual([]);
+  });
+
+  test("keeps every summary within the card presentation contract", async () => {
+    const records = await loadRegistryRecords();
+    for (const record of records as Array<{ id: string; summary: string }>) {
+      expect(record.summary, record.id).toBeTypeOf("string");
+      expect(record.summary.trim().length, record.id).toBeGreaterThan(0);
+      expect(record.summary.length, record.id).toBeLessThanOrEqual(140);
+      expect(record.summary, record.id).not.toMatch(/[\r\n\u2028\u2029]/u);
+    }
+  });
+
+  test("validates the contract used by generated curated summaries", async () => {
+    const primaryFunctions = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/primary-functions.json"),
+        "utf8",
+      ),
+    ).primary_functions;
+    const capabilities = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/capabilities.json"),
+        "utf8",
+      ),
+    ).capabilities;
+    const result = validateEnrichmentOutput(
+      {
+        summary:
+          "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+        metadata_status: "curated",
+        primary_function: "developer-infrastructure",
+        capabilities: ["automation"],
+      },
+      { primaryFunctions, capabilities },
+    );
+    expect(result).toEqual({ valid: true });
   });
 });
