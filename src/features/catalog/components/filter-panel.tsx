@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { licenseFilter } from "../catalog-license";
 import type {
   CatalogKind,
   CatalogQuery,
@@ -70,9 +71,8 @@ function countFor(
     }
     if (value === "open-source")
       return project.license.status === "osi-approved";
-    if (value === "proprietary")
-      return project.license.status === "proprietary";
-    return project.license.status === "missing";
+    if (value === "proprietary") return project.license.status === "proprietary";
+    return licenseFilter(project) === "missing";
   }).length;
 }
 

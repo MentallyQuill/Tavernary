@@ -1,5 +1,6 @@
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
-import type { CatalogQuery, LicenseFilter } from "./catalog-query";
+import type { CatalogQuery } from "./catalog-query";
+import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
@@ -8,16 +9,6 @@ function matchesAny(selected: string[], values: string[]) {
   return (
     selected.length === 0 || selected.some((value) => values.includes(value))
   );
-}
-
-function licenseFilter(project: CatalogProject): LicenseFilter {
-  if (project.license.status === "osi-approved") {
-    return "open-source";
-  }
-  if (project.license.status === "pending") {
-    return "missing";
-  }
-  return project.license.status;
 }
 
 function matchesDevelopment(
