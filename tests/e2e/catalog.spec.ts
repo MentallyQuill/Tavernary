@@ -531,6 +531,12 @@ test("explains every card fact with hover help", async ({ page }) => {
     page.getByRole("tooltip", { name: "Open Recursion" }),
   ).toHaveCount(0);
   await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+    }),
+  ).toBeHidden();
+  await page.mouse.move(0, 0);
   await repositoryCard.focus();
   await expect(
     page.getByRole("tooltip", {
