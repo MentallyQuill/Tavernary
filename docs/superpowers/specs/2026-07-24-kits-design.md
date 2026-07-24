@@ -1,7 +1,7 @@
 # Tavernary Kits
 
 **Date:** 2026-07-24
-**Status:** Approved design, pending written-spec review
+**Status:** Approved
 
 ## Purpose
 
@@ -602,8 +602,10 @@ export interface CatalogKit {
   publishedAt: string;
   updatedAt: string;
   tavernaryPick: boolean;
-  supporterCount: number;
-  trendingScore: number;
+  supporterCount: number | null;
+  trendingScore: number | null;
+  supportRefreshedAt: string | null;
+  supportStale: boolean;
   hasFlaggedProjects: boolean;
   flaggedProjectCount: number;
   searchableText: string;
@@ -763,7 +765,9 @@ canonical Kit author ID. Login comparison alone is insufficient.
 
 Approved edits:
 
-- preserve `id`, `author`, `sourceIssueNumber`, and `publishedAt`;
+- preserve `id`, author numeric GitHub ID, `sourceIssueNumber`, and
+  `publishedAt`;
+- refresh the display login from the matching GitHub issue actor;
 - replace title, description, and ordered project IDs;
 - advance `updatedAt`;
 - preserve the support ledger and Trending history;
