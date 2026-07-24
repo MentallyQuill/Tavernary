@@ -5,6 +5,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv from "ajv";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const approvedOrganizationRecord = {
+  id: "tavern-rpg-suite",
+  organization: "tavern-rpg-suite",
+  url: "https://github.com/tavern-rpg-suite",
+};
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));
@@ -137,9 +142,19 @@ export async function validateCatalog(options = {}) {
         errors.push(`${id}: GitHub repository_id must be null or positive`);
       }
     } else if (record.source?.type === "github-organization") {
-      if (id !== "tavern-rpg-suite") {
+      if (id !== approvedOrganizationRecord.id) {
         errors.push(
           `${id}: github-organization is reserved for tavern-rpg-suite`,
+        );
+      }
+      if (record.source.organization !== approvedOrganizationRecord.organization) {
+        errors.push(
+          `${id}: github-organization organization must be ${approvedOrganizationRecord.organization}`,
+        );
+      }
+      if (record.source.url !== approvedOrganizationRecord.url) {
+        errors.push(
+          `${id}: github-organization url must be ${approvedOrganizationRecord.url}`,
         );
       }
       if (
@@ -168,7 +183,7 @@ export async function validateCatalog(options = {}) {
 
     const repositoryBacked =
       record.source?.type === "github" ||
-      (record.id === "tavern-rpg-suite" &&
+      (record.id === approvedOrganizationRecord.id &&
         record.source?.type === "github-organization");
 
     if (

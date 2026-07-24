@@ -158,8 +158,8 @@ describe("catalog validation", () => {
           refresh_policy: "paused",
           source: {
             type: "github-organization",
-            organization: "tavern-rpg",
-            url: "https://github.com/tavern-rpg",
+            organization: "tavern-rpg-suite",
+            url: "https://github.com/tavern-rpg-suite",
           },
         },
       ],
@@ -167,6 +167,32 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toEqual([]);
+  });
+
+  test("rejects the reserved organization when the exact pair does not match", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "tavern-rpg-suite",
+          name: "Tavern RPG Suite",
+          kind: "extension",
+          metadata_status: "provisional",
+          primary_function: "uncategorized",
+          refresh_policy: "paused",
+          source: {
+            type: "github-organization",
+            organization: "tavern-rpg-suite",
+            url: "https://github.com/tavern-rpg-suite-wrong",
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toContain(
+      "tavern-rpg-suite: github-organization url must be https://github.com/tavern-rpg-suite",
+    );
   });
 
   test("rejects other github organizations", async () => {
