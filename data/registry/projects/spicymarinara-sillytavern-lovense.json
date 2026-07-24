@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "id": "spicymarinara-sillytavern-lovense",
+  "name": "SillyTavern Lovense",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern and Marinara Engine.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "SpicyMarinara/SillyTavern-Lovense",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern",
+    "marinara-engine"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

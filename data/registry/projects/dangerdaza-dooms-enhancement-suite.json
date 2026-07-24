@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "dangerdaza-dooms-enhancement-suite",
+  "name": "Doom's Enhancement Suite",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "DangerDaza/Dooms-Enhancement-Suite",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

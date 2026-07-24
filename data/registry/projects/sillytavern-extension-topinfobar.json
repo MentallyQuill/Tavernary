@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "sillytavern-extension-topinfobar",
+  "name": "SillyTavern Extension TopInfoBar",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "SillyTavern/Extension-TopInfoBar",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

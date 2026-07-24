@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "n0819-sonder-engine",
+  "name": "Sonder Engine",
+  "kind": "frontend",
+  "summary": "A frontend for Sonder Engine.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "N0819/Sonder_Engine",
+    "repository_id": null
+  },
+  "frontends": [
+    "sonder-engine"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

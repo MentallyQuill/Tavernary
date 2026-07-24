@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "id": "writers-block-4",
+  "name": "Writer's Block 4",
+  "kind": "preset",
+  "summary": "A System Preset for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "url",
+    "url": "https://old.reddit.com/r/SillyTavernAI/comments/1tnsxh6/update_writers_block_4_the_quest_for_tokens_a",
+    "published_at": null,
+    "version": null,
+    "artifact_size_bytes": null,
+    "license_status": "pending",
+    "license_spdx_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "paused"
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "vibecoder9000-extension-tokenusage",
+  "name": "Extension TokenUsage",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "Vibecoder9000/Extension-TokenUsage",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

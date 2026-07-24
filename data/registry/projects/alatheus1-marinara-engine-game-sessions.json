@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "alatheus1-marinara-engine-game-sessions",
+  "name": "Marinara Engine Game Sessions",
+  "kind": "extension",
+  "summary": "An extension for Marinara Engine.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "Alatheus1/marinara-engine-game-sessions",
+    "repository_id": null
+  },
+  "frontends": [
+    "marinara-engine"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

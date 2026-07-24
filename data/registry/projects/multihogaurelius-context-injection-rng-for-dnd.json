@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "multihogaurelius-context-injection-rng-for-dnd",
+  "name": "Context Injection RNG for DnD",
+  "kind": "extension",
+  "summary": "An extension for SillyTavern.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "MultihogAurelius/Context-Injection-RNG-for-DnD",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

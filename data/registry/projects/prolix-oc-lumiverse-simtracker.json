@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "prolix-oc-lumiverse-simtracker",
+  "name": "Lumiverse SimTracker",
+  "kind": "extension",
+  "summary": "An extension for Lumiverse.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "prolix-oc/Lumiverse-SimTracker",
+    "repository_id": null
+  },
+  "frontends": [
+    "lumiverse"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}

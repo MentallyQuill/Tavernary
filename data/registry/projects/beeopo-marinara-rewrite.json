@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "id": "beeopo-marinara-rewrite",
+  "name": "Marinara Rewrite",
+  "kind": "extension",
+  "summary": "An extension for Marinara Engine.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "Beeopo/Marinara-Rewrite",
+    "repository_id": null
+  },
+  "frontends": [
+    "marinara-engine"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-23T00:00:00Z",
+  "catalog_cohort": "seed",
+  "visibility": "published",
+  "refresh_policy": "automatic"
+}
