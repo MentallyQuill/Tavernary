@@ -45,7 +45,7 @@ describe("catalog visual alignment", () => {
       /\.category-navigation button\.active\s*\{[^}]*border-color:[^}]*background:/s,
     );
     expect(css).toMatch(
-      /\.category-navigation button\s*\{[^}]*font-size:\s*10px[^}]*line-height:\s*1\.15/s,
+      /\.category-navigation button\s*\{[^}]*justify-content:\s*center[^}]*font-size:\s*10px[^}]*line-height:\s*1\.15[^}]*text-align:\s*center/s,
     );
     expect(globals).toMatch(/body\s*\{[^}]*font-size:\s*14px/s);
   });

@@ -51,6 +51,15 @@ test("builds five public cards without leaking intake metadata", async () => {
       (recursion?.community?.forks ?? 0) +
       (recursion?.community?.subscribers ?? 0),
   );
+  const labels = catalog.projects.flatMap((project) => [
+    ...project.frontends,
+    ...project.capabilities,
+  ]);
+  expect(labels.length).toBeGreaterThan(0);
+  expect(labels.every(({ description }) => description.length > 0)).toBe(true);
+  expect(labels.find(({ id }) => id === "sillytavern")?.description).toBe(
+    "Works with the SillyTavern roleplay frontend.",
+  );
   expect(JSON.stringify(catalog)).not.toContain("submitted_at");
   expect(JSON.stringify(catalog)).not.toContain("submission");
 });

@@ -29,16 +29,13 @@ test("publishes valid, uniquely named issue forms", async () => {
   }
 });
 
-test("configures the exact five Help choices and disables blank issues", async () => {
+test("orders the repository forms and leaves security reporting to GitHub", async () => {
   const config = parse(
     await readFile(resolve(templateDirectory, "config.yml"), "utf8"),
   );
-  const formFiles = [
-    "project-information.yml",
-    "website-bug.yml",
-    "help.yml",
-    "other.yml",
-  ];
+  const formFiles = (await readdir(templateDirectory))
+    .filter((file) => file.endsWith(".yml") && file !== "config.yml")
+    .sort();
   const formNames = await Promise.all(
     formFiles.map(async (file) => {
       const form = parse(
@@ -47,26 +44,28 @@ test("configures the exact five Help choices and disables blank issues", async (
       return form.name;
     }),
   );
-  const chooserNames = [
-    ...formNames.slice(0, 3),
-    ...config.contact_links.map((link: { name: string }) => link.name),
-    formNames[3],
-  ];
 
   expect(config.blank_issues_enabled).toBe(false);
-  expect(chooserNames).toEqual([
+  expect(config.contact_links ?? []).toEqual([]);
+  expect(formFiles).toEqual([
+    "01-project-submission.yml",
+    "02-project-information.yml",
+    "03-website-bug.yml",
+    "04-other.yml",
+  ]);
+  expect(formNames).toEqual([
+    "Submit a project",
     "Report project information",
     "Report a website bug",
-    "Request help",
-    "Report a security vulnerability",
     "Other",
   ]);
-  expect(config.contact_links[0].url).toMatch(/\/security\/policy$/);
+  expect(formNames).not.toContain("Request help");
+  expect(formNames).not.toContain("Report a security vulnerability");
 });
 
 test("project submissions state the source rules and required acknowledgements", async () => {
   const source = await readFile(
-    resolve(templateDirectory, "project-submission.yml"),
+    resolve(templateDirectory, "01-project-submission.yml"),
     "utf8",
   );
   const form = parse(source);

@@ -21,8 +21,12 @@ function project(
     canonicalUrl: `https://example.com/${id}`,
     catalogedAt: "2026-07-01T00:00:00Z",
     catalogCohort: "standard",
-    frontends: [{ id: "sillytavern", label: "SillyTavern" }],
-    capabilities: [{ id: "automation", label: "Automation" }],
+    frontends: [
+      { id: "sillytavern", label: "SillyTavern", description: "Frontend." },
+    ],
+    capabilities: [
+      { id: "automation", label: "Automation", description: "Capability." },
+    ],
     searchableText: `${id} extension automation`,
     activity: {
       latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
@@ -48,10 +52,20 @@ function project(
 
 const multiFrontendProject = project("image-gen", {
   frontends: [
-    { id: "sillytavern", label: "SillyTavern" },
-    { id: "marinara-engine", label: "Marinara Engine" },
+    { id: "sillytavern", label: "SillyTavern", description: "Frontend." },
+    {
+      id: "marinara-engine",
+      label: "Marinara Engine",
+      description: "Frontend.",
+    },
   ],
-  capabilities: [{ id: "image-generation", label: "Image generation" }],
+  capabilities: [
+    {
+      id: "image-generation",
+      label: "Image generation",
+      description: "Capability.",
+    },
+  ],
 });
 const projects = [
   project("recursion", { name: "Recursion", searchableText: "recursion" }),
@@ -59,7 +73,13 @@ const projects = [
   project("frontend", {
     kind: "frontend",
     primaryFunction: "frontend",
-    capabilities: [{ id: "extension-development", label: "Extensions" }],
+    capabilities: [
+      {
+        id: "extension-development",
+        label: "Extensions",
+        description: "Capability.",
+      },
+    ],
   }),
   project("dormant", {
     activity: {

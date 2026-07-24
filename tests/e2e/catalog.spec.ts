@@ -20,6 +20,8 @@ test("uses the approved category strip", async ({ page }) => {
       tracks: navStyle.gridTemplateColumns.split(" ").length,
       activeBorder: activeStyle.borderTopWidth,
       afterContent: afterStyle.content,
+      justifyContent: activeStyle.justifyContent,
+      textAlign: activeStyle.textAlign,
     };
   });
 
@@ -29,6 +31,8 @@ test("uses the approved category strip", async ({ page }) => {
     tracks: 9,
     activeBorder: "1px",
     afterContent: "none",
+    justifyContent: "center",
+    textAlign: "center",
   });
 });
 
@@ -106,8 +110,11 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
     .fill("Marinara");
-  await expect(page.getByLabel("Marinara Engine")).toBeVisible();
-  await expect(page.getByLabel("SillyTavern")).toBeHidden();
+  const frontendFilters = page.locator(".filter-panel");
+  await expect(frontendFilters.getByLabel("Marinara Engine")).toBeVisible();
+  await expect(
+    frontendFilters.getByLabel("SillyTavern", { exact: true }),
+  ).toBeHidden();
 });
 
 test("searches, changes density, and shows an empty New view", async ({
@@ -165,7 +172,7 @@ test("supports every sort and restores query state after reload", async ({
 });
 
 test("uses canonical external URLs for project cards", async ({ page }) => {
-  const recursion = page.getByRole("link", { name: /Recursion/ });
+  const recursion = page.getByRole("link", { name: "Recursion", exact: true });
   await expect(recursion).toHaveAttribute(
     "href",
     "https://github.com/MentallyQuill/Recursion",
@@ -210,6 +217,75 @@ test("matches the approved card anatomy", async ({ page }) => {
     }),
     "kind stripes were removed from the reference design",
   ).toBe("none");
+});
+
+test("explains every card fact with hover help", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const repositoryCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion" }),
+  });
+  const presetCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+  });
+
+  for (const selector of [
+    ".card-identity",
+    ".activity-score",
+    ".commit-age",
+    ".community",
+    ".repository-size",
+    ".card-title",
+    ".card-summary-tooltip",
+    ".license",
+  ]) {
+    await expect(repositoryCard.locator(selector)).toHaveAttribute(
+      "aria-describedby",
+      /.+/,
+    );
+  }
+  expect(await repositoryCard.locator(".chip").count()).toBeGreaterThan(0);
+  for (const chip of await repositoryCard.locator(".chip").all()) {
+    await expect(chip).toHaveAttribute("aria-describedby", /.+/);
+  }
+  expect(
+    Number.parseInt(
+      await repositoryCard
+        .locator(".commit-age")
+        .evaluate((element) => getComputedStyle(element).fontWeight),
+      10,
+    ),
+  ).toBeGreaterThanOrEqual(700);
+
+  for (const selector of [
+    ".preset-version",
+    ".preset-publication",
+    ".preset-size",
+  ]) {
+    await expect(presetCard.locator(selector)).toHaveAttribute(
+      "aria-describedby",
+      /.+/,
+    );
+  }
+
+  await repositoryCard.locator(".activity-score").hover();
+  await expect(repositoryCard).toHaveCSS("overflow", "visible");
+  await expect(
+    repositoryCard.getByRole("tooltip", {
+      name: /six bars show two-week commit totals/i,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".commit-age").hover();
+  await expect(
+    repositoryCard.getByRole("tooltip", {
+      name: /last meaningful commit/i,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".chip").first().hover();
+  await expect(
+    repositoryCard.getByRole("tooltip", {
+      name: /works with the sillytavern roleplay frontend/i,
+    }),
+  ).toBeVisible();
 });
 
 test("keeps repository activity facts visible on mobile cards", async ({

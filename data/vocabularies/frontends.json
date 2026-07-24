@@ -1,8 +1,24 @@
 {
   "frontends": [
-    { "id": "sillytavern", "label": "SillyTavern" },
-    { "id": "lumiverse", "label": "Lumiverse" },
-    { "id": "marinara-engine", "label": "Marinara Engine" },
-    { "id": "sonder-engine", "label": "Sonder Engine" }
+    {
+      "id": "sillytavern",
+      "label": "SillyTavern",
+      "description": "Works with the SillyTavern roleplay frontend."
+    },
+    {
+      "id": "lumiverse",
+      "label": "Lumiverse",
+      "description": "Works with the Lumiverse roleplay frontend."
+    },
+    {
+      "id": "marinara-engine",
+      "label": "Marinara Engine",
+      "description": "Works with the Marinara Engine roleplay frontend."
+    },
+    {
+      "id": "sonder-engine",
+      "label": "Sonder Engine",
+      "description": "Works with the Sonder Engine roleplay frontend."
+    }
   ]
 }

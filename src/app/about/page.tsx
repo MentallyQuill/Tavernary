@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
 const submissionUrl =
-  "https://github.com/MentallyQuill/Tavernary/issues/new?template=project-submission.yml";
+  "https://github.com/MentallyQuill/Tavernary/issues/new?template=01-project-submission.yml";
 
 export const metadata = {
   title: "About Tavernary",

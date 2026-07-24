@@ -9,9 +9,11 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
     page.getByRole("link", { name: "Submit Project" }),
   ).toHaveAttribute(
     "href",
-    /github\.com\/MentallyQuill\/Tavernary\/issues\/new\?template=project-submission\.yml/,
+    /github\.com\/MentallyQuill\/Tavernary\/issues\/new\?template=01-project-submission\.yml/,
   );
-  await expect(page.getByRole("link", { name: "Help" })).toHaveAttribute(
+  await expect(
+    page.getByRole("link", { name: "Help", exact: true }),
+  ).toHaveAttribute(
     "href",
     /github\.com\/MentallyQuill\/Tavernary\/issues\/new\/choose/,
   );
@@ -25,7 +27,7 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Submit a project" }),
-  ).toHaveAttribute("href", /issues\/new\?template=project-submission\.yml/);
+  ).toHaveAttribute("href", /issues\/new\?template=01-project-submission\.yml/);
   await expect(page.getByRole("link", { name: "Get help" })).toHaveAttribute(
     "href",
     /issues\/new\/choose/,
