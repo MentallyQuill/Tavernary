@@ -51,6 +51,10 @@ type AlignmentProfile = {
   card: Record<string, string | number>;
 };
 
+function normalizeColumns(value: string | number): string {
+  return typeof value === "string" ? value : String(value);
+}
+
 async function readProfile(
   page: Page,
   selectors: {
@@ -302,7 +306,9 @@ test("production preserves the approved mockup layout profile", async ({
     kind: ".card-identity",
   });
 
-  expect(production.category.columns.split(" ")).toHaveLength(10);
-  reference.category.columns = production.category.columns;
+  const productionCategoryColumns = normalizeColumns(production.category.columns);
+
+  expect(productionCategoryColumns.split(" ")).toHaveLength(10);
+  reference.category.columns = productionCategoryColumns;
   expect(production).toEqual(reference);
 });
