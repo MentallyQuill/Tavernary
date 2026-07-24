@@ -7,8 +7,8 @@
     "node": ">=24 <25"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run catalog:build && next dev",
+    "build": "npm run catalog:build && next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check .",
@@ -19,6 +19,7 @@
     "test:visual": "node scripts/run-playwright.mjs tests/visual",
     "catalog:validate": "node scripts/catalog/validate.mjs",
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
+    "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run catalog:validate && npm test && npm run build && npm run verify:export"
   },
