@@ -2,6 +2,10 @@ import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 
+const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
+const submissionUrl =
+  "https://github.com/MentallyQuill/Tavernary/issues/new?template=project-submission.yml";
+
 export function SiteHeader({
   search,
   onSearch,
@@ -36,9 +40,9 @@ export function SiteHeader({
         <kbd>/</kbd>
       </label>
       <nav className="header-links" aria-label="Site links">
-        <Link href="/about/">About</Link>
-        <a href="#help">Help</a>
-        <a className="submit-link" href="#submit">
+        <a href="./about/">About</a>
+        <a href={helpUrl}>Help</a>
+        <a className="submit-link" href={submissionUrl}>
           Submit Project
         </a>
       </nav>

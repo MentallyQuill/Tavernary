@@ -2,6 +2,7 @@
 @import "../styles/catalog.css";
 @import "../styles/responsive.css";
 @import "../styles/motion.css";
+@import "../styles/about.css";
 
 * {
   box-sizing: border-box;
