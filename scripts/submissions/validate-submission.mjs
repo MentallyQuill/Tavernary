@@ -47,7 +47,7 @@ export function validateSubmission({ kind, sourceUrl, existingSources }) {
   }
 
   return {
-    labels: [errors.length ? "needs-information" : "needs-curator-review"],
+    labels: [errors.length ? "needs-information" : "needs-maintainer-review"],
     errors,
   };
 }

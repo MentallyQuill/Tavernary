@@ -33,6 +33,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "deploy-pages",
     "refresh-catalog",
     "triage-submission",
+    "triage-kit-submission",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -112,4 +113,16 @@ test("triage can label issues but cannot write repository content", async () => 
     contents: "read",
     issues: "write",
   });
+  const kitTriage = await workflow("triage-kit-submission");
+  expect(kitTriage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+  });
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-kit-submission.yml"),
+    "utf8",
+  );
+  expect(source).toContain("opened");
+  expect(source).toContain("edited");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });

@@ -70,7 +70,7 @@ tiebreaker. More than 12 weeks without a meaningful commit is dormant.
 
 Snapshotless published GitHub records stay visible. The site renders them as
 pending enrichment rather than as zero activity or verified missing metadata.
-Imported seed records also remain visibly `uncategorized` until a curator
+Imported seed records also remain visibly `uncategorized` until a maintainer
 replaces the provisional editorial metadata.
 
 ## Refresh operations
@@ -144,10 +144,18 @@ Before clearing a quarantine:
 
 The **Submit Project** link opens a structured GitHub issue. Automation checks
 source eligibility and obvious duplicates, but never creates or edits a
-production record. A curator must vet and add every accepted entry.
+production record. A maintainer must vet and add every accepted entry.
+
+Kits are community-authored, ordered collections of 3â€“50 catalog projects.
+The browser builder keeps drafts only in memory and hands a stable JSON
+manifest to GitHub. New Kits and edits are validated automatically, but a
+maintainer publishes them only after review. Support is derived from eligible
+`+1` reactions on the Kit's source issue; it is catalog evidence rather than
+a user-rating system. Tavernary remains a static, build-time catalog with no
+accounts, database service, or runtime API.
 
 The Help chooser provides project-information reports, website bug reports,
-help requests, a private security path, and an Other form. Curators can pause
+help requests, a private security path, and an Other form. Maintainers can pause
 refreshes, hide entries, or remove them when a source becomes unsafe or
 abusive.
 

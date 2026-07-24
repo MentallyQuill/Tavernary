@@ -52,15 +52,67 @@ test("orders the repository forms and leaves security reporting to GitHub", asyn
     "02-project-information.yml",
     "03-website-bug.yml",
     "04-other.yml",
+    "05-kit-submission.yml",
+    "06-kit-report.yml",
+    "07-kit-withdrawal.yml",
   ]);
   expect(formNames).toEqual([
     "Submit a project",
     "Report project information",
     "Report a website bug",
     "Other",
+    "Submit or edit a Kit",
+    "Report a Kit",
+    "Withdraw a Kit",
   ]);
   expect(formNames).not.toContain("Request help");
   expect(formNames).not.toContain("Report a security vulnerability");
+});
+
+test("Kit forms contain the approved fields and contribution terms", async () => {
+  const submissionSource = await readFile(
+    resolve(templateDirectory, "05-kit-submission.yml"),
+    "utf8",
+  );
+  const submission = parse(submissionSource);
+  const ids = submission.body
+    .map((field: { id?: string }) => field.id)
+    .filter(Boolean);
+  expect(ids).toEqual(
+    expect.arrayContaining([
+      "operation",
+      "kit-id",
+      "title",
+      "description",
+      "manifest",
+      "contribution-terms",
+    ]),
+  );
+  expect(submissionSource).toContain(
+    "I created or am authorized to submit this Kit title and description, and I agree they may be published under DbCL 1.0 as part of Tavernary's ODbL 1.0 catalog.",
+  );
+
+  const report = parse(
+    await readFile(resolve(templateDirectory, "06-kit-report.yml"), "utf8"),
+  );
+  const categories = report.body.find(
+    (field: { id?: string }) => field.id === "category",
+  );
+  expect(categories.attributes.options).toEqual([
+    "Compatibility problem",
+    "Unsafe or malicious project",
+    "Abusive or vulgar content",
+    "Broken or removed project",
+    "Misleading description",
+    "Duplicate Kit",
+    "Other",
+  ]);
+  for (const file of ["06-kit-report.yml", "07-kit-withdrawal.yml"]) {
+    const source = await readFile(resolve(templateDirectory, file), "utf8");
+    expect(source).toContain("id: kit-id");
+    expect(source).toContain("id: share-url");
+    expect(source).toMatch(/required: true/g);
+  }
 });
 
 test("project submissions state the source rules and required acknowledgements", async () => {

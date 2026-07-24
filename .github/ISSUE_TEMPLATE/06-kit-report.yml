@@ -1,0 +1,39 @@
+name: Report a Kit
+description: Report a compatibility, safety, accuracy, or duplicate concern.
+title: "[Kit report]: "
+labels:
+  - kit-report
+body:
+  - type: input
+    id: kit-id
+    attributes:
+      label: Kit ID
+    validations:
+      required: true
+  - type: input
+    id: share-url
+    attributes:
+      label: Kit share URL
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Report category
+      options:
+        - Compatibility problem
+        - Unsafe or malicious project
+        - Abusive or vulgar content
+        - Broken or removed project
+        - Misleading description
+        - Duplicate Kit
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Explain the concern and include relevant evidence.
+    validations:
+      required: true

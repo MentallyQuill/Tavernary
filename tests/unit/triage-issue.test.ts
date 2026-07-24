@@ -4,6 +4,10 @@ import {
   buildValidationComment,
   parseIssueFields,
 } from "../../scripts/submissions/triage-issue.mjs";
+import {
+  buildKitValidationComment,
+  parseKitIssueFields,
+} from "../../scripts/submissions/triage-kit-issue.mjs";
 
 test("parses the issue-form fields used by automated triage", () => {
   expect(
@@ -31,11 +35,32 @@ test("builds a stable marker comment for validation failures", () => {
   ).toBe(
     [
       "<!-- tavernary-submission-validation -->",
-      "Tavernary could not send this submission to curator review:",
+      "Tavernary could not send this submission to maintainer review:",
       "",
       "- Frontends and Extensions require a public GitHub repository.",
       "",
       "Edit the issue fields above and automated validation will run again.",
     ].join("\n"),
+  );
+});
+
+test("parses Kit manifests and builds a stable success comment", () => {
+  expect(
+    parseKitIssueFields(`
+### Kit manifest
+
+{"operation":"create"}
+`),
+  ).toEqual({ manifest: '{"operation":"create"}' });
+  expect(
+    buildKitValidationComment({
+      valid: true,
+      manifest: null,
+      labels: ["needs-maintainer-review"],
+      errors: [],
+      warnings: [],
+    }),
+  ).toContain(
+    "Automated validation now passes. This Kit is ready for maintainer review.",
   );
 });

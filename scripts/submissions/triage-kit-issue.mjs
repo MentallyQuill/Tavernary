@@ -2,29 +2,27 @@ import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { validateSubmission } from "./validate-submission.mjs";
+import { validateKitSubmission } from "./validate-kit-submission.mjs";
 
-const validationMarker = "<!-- tavernary-submission-validation -->";
+const validationMarker = "<!-- tavernary-kit-submission-validation -->";
 const triageLabels = {
   "needs-maintainer-review": {
     color: "0e8a16",
-    description: "Submission passed automation and awaits maintainer review.",
+    description: "Kit passed automation and awaits maintainer review.",
   },
   "needs-information": {
     color: "d93f0b",
-    description:
-      "Submission is missing or violates required source information.",
+    description: "Kit submission needs corrected objective information.",
   },
   "duplicate-candidate": {
     color: "fbca04",
-    description: "The submitted source may already exist in Tavernary.",
+    description: "Kit duplicates or closely overlaps an existing Kit.",
   },
 };
 
-export function parseIssueFields(body) {
+export function parseKitIssueFields(body) {
   const fields = new Map();
-  const sections = body.split(/^### /m).slice(1);
-  for (const section of sections) {
+  for (const section of body.split(/^### /m).slice(1)) {
     const [heading, ...content] = section.split(/\r?\n/);
     fields.set(
       heading.trim(),
@@ -34,22 +32,22 @@ export function parseIssueFields(body) {
         .replace(/^_No response_$/i, ""),
     );
   }
-  return {
-    kind: fields.get("Project kind") ?? "",
-    sourceUrl: fields.get("Canonical source URL") ?? "",
-  };
+  return { manifest: fields.get("Kit manifest") ?? "" };
 }
 
-export function buildValidationComment(validation) {
+export function buildKitValidationComment(validation) {
   if (validation.errors.length === 0) {
     return [
       validationMarker,
-      "Automated validation now passes. This submission is ready for maintainer review.",
+      "Automated validation now passes. This Kit is ready for maintainer review.",
+      ...(validation.warnings.length
+        ? ["", ...validation.warnings.map((warning) => `- ${warning}`)]
+        : []),
     ].join("\n");
   }
   return [
     validationMarker,
-    "Tavernary could not send this submission to maintainer review:",
+    "Tavernary could not send this Kit to maintainer review:",
     "",
     ...validation.errors.map((error) => `- ${error}`),
     "",
@@ -57,20 +55,15 @@ export function buildValidationComment(validation) {
   ].join("\n");
 }
 
-async function existingSources() {
-  const directory = resolve("data/registry/projects");
+async function readJsonDirectory(path) {
+  const directory = resolve(path);
   const files = (await readdir(directory))
     .filter((file) => file.endsWith(".json"))
     .sort();
-  const records = await Promise.all(
+  return Promise.all(
     files.map(async (file) =>
       JSON.parse(await readFile(resolve(directory, file), "utf8")),
     ),
-  );
-  return records.map((record) =>
-    record.source.type === "github"
-      ? `https://github.com/${record.source.repository}`
-      : record.source.url,
   );
 }
 
@@ -81,7 +74,7 @@ async function github(path, options = {}) {
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
       "Content-Type": "application/json",
-      "User-Agent": "Tavernary-submission-triage",
+      "User-Agent": "Tavernary-kit-triage",
       "X-GitHub-Api-Version": "2022-11-28",
       ...options.headers,
     },
@@ -109,7 +102,7 @@ async function ensureLabels(repository) {
   }
 }
 
-async function synchronizeLabels(repository, issueNumber, validation) {
+async function synchronize(repository, issueNumber, validation) {
   const issue = await github(`/repos/${repository}/issues/${issueNumber}`);
   const current = new Set(
     issue.labels.map((label) =>
@@ -128,18 +121,14 @@ async function synchronizeLabels(repository, issueNumber, validation) {
     method: "POST",
     body: JSON.stringify({ labels: validation.labels }),
   });
-}
 
-async function synchronizeComment(repository, issueNumber, validation) {
   const comments = await github(
     `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
   );
   const existing = comments.find((comment) =>
     comment.body?.includes(validationMarker),
   );
-  if (validation.errors.length === 0 && !existing) return;
-
-  const body = buildValidationComment(validation);
+  const body = buildKitValidationComment(validation);
   if (existing) {
     if (existing.body !== body) {
       await github(`/repos/${repository}/issues/comments/${existing.id}`, {
@@ -147,35 +136,35 @@ async function synchronizeComment(repository, issueNumber, validation) {
         body: JSON.stringify({ body }),
       });
     }
-    return;
+  } else {
+    await github(`/repos/${repository}/issues/${issueNumber}/comments`, {
+      method: "POST",
+      body: JSON.stringify({ body }),
+    });
   }
-  await github(`/repos/${repository}/issues/${issueNumber}/comments`, {
-    method: "POST",
-    body: JSON.stringify({ body }),
-  });
 }
 
 async function main() {
   const event = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
   );
-  if (!event.issue?.title?.startsWith("[Project submission]")) return;
-
-  const validation = validateSubmission({
-    ...parseIssueFields(event.issue.body ?? ""),
-    existingSources: await existingSources(),
+  if (!event.issue?.title?.startsWith("[Kit submission]")) return;
+  const [projects, kits, blockedUsers] = await Promise.all([
+    readJsonDirectory("data/registry/projects"),
+    readJsonDirectory("data/registry/kits"),
+    readFile("data/moderation/blocked-github-users.json", "utf8").then(
+      JSON.parse,
+    ),
+  ]);
+  const validation = validateKitSubmission({
+    ...parseKitIssueFields(event.issue.body ?? ""),
+    actor: { id: event.issue.user.id, login: event.issue.user.login },
+    projects,
+    kits,
+    blockedUsers,
   });
   await ensureLabels(event.repository.full_name);
-  await synchronizeLabels(
-    event.repository.full_name,
-    event.issue.number,
-    validation,
-  );
-  await synchronizeComment(
-    event.repository.full_name,
-    event.issue.number,
-    validation,
-  );
+  await synchronize(event.repository.full_name, event.issue.number, validation);
 }
 
 if (

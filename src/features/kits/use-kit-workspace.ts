@@ -32,11 +32,16 @@ export function useKitWorkspace({
 
   useEffect(() => {
     if (!selectedKitId) return;
-    setState((current) => ({
-      mode: "inspect",
-      collapsed: current.collapsed,
-      kitId: selectedKitId,
-    }));
+    const timeout = window.setTimeout(
+      () =>
+        setState((current) => ({
+          mode: "inspect",
+          collapsed: current.collapsed,
+          kitId: selectedKitId,
+        })),
+      0,
+    );
+    return () => window.clearTimeout(timeout);
   }, [selectedKitId]);
 
   const selectKit = useCallback(

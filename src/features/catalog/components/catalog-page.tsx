@@ -14,6 +14,10 @@ import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { addProject } from "@/features/kits/project-stack-order";
 import { copyKitLink } from "@/features/kits/share-kit";
+import {
+  openKitSubmission,
+  serializeKitManifest,
+} from "@/features/kits/submission-transport";
 import { KitWorkspace } from "@/features/kits/components/kit-workspace";
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
 import type { Catalog } from "../catalog-types";
@@ -71,7 +75,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       query.mode === "projects" && query.density === "compact",
     );
     return () => document.body.classList.remove("compact-cards");
-  }, [query.density]);
+  }, [query.density, query.mode]);
 
   useEffect(() => {
     document.body.classList.toggle("sheet-open", filtersOpen);
@@ -226,7 +230,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       kits: current.kits,
     }));
   const reportKit = (kitId: string) => {
-    const url = new URL("https://github.com/tavernary/tavernary/issues/new");
+    const url = new URL(
+      "https://github.com/MentallyQuill/Tavernary/issues/new",
+    );
     url.searchParams.set("template", "06-kit-report.yml");
     url.searchParams.set("kit-id", kitId);
     window.open(url, "_blank", "noopener,noreferrer");
@@ -338,7 +344,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           }
           onStartCreate={workspace.startCreate}
           onUpdateDraft={workspace.updateDraft}
-          onSubmitDraft={() => undefined}
+          onSubmitDraft={
+            buildState
+              ? () =>
+                  void openKitSubmission(
+                    "https://github.com/MentallyQuill/Tavernary/issues/new?template=05-kit-submission.yml",
+                    serializeKitManifest(buildState.draft),
+                  )
+              : undefined
+          }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}
         />
       </div>
