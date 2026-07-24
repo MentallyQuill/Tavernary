@@ -228,11 +228,7 @@ export function ProjectCard({
             </Tooltip>
             <Tooltip
               id={`${project.id}-preset-size`}
-              label={
-                presetSize
-                  ? presetSize
-                  : "File size unavailable"
-              }
+              label={presetSize ? presetSize : "File size unavailable"}
               className="preset-size"
             >
               {presetSize}

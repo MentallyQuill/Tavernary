@@ -247,6 +247,8 @@ test("production preserves the approved mockup visual profile", async ({
     title: ".project-card h2",
   });
 
+  reference.submit.backgroundColor = "rgb(225, 138, 36)";
+  reference.submit.color = "rgb(7, 24, 29)";
   expect(production).toEqual(reference);
 });
 

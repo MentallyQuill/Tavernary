@@ -641,10 +641,12 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     sortHeight: 36,
   });
   await expect(page.locator(".view-tabs")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Open filters" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open filters" }),
+  ).toBeVisible();
   expect(
-    await page.locator(".catalog-toolbar").evaluate(
-      (element) => element.scrollWidth - element.clientWidth,
-    ),
+    await page
+      .locator(".catalog-toolbar")
+      .evaluate((element) => element.scrollWidth - element.clientWidth),
   ).toBeLessThanOrEqual(0);
 });

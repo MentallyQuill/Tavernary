@@ -18,10 +18,7 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   );
   await expect(brand.locator("img")).toHaveCSS("width", "48px");
   await expect(brand.locator("img")).toHaveCSS("height", "43px");
-  await expect(brand.locator("img")).toHaveCSS(
-    "transform",
-    "none",
-  );
+  await expect(brand.locator("img")).toHaveCSS("transform", "none");
   const actions = page.locator(".header-actions");
   await expect(actions).toContainText("Submit Project");
   await expect(actions).toContainText("About");
@@ -73,14 +70,16 @@ test("uses mobile browse and filter sheets without page overflow", async ({
     .getByRole("group", { name: "Capabilities & characteristics" })
     .locator(".metadata-options");
   expect(
-    await capabilityOptions.locator("label").evaluateAll(
-      (labels) =>
-        new Set(
-          labels.map((label) =>
-            Math.round(label.getBoundingClientRect().top),
-          ),
-        ).size,
-    ),
+    await capabilityOptions
+      .locator("label")
+      .evaluateAll(
+        (labels) =>
+          new Set(
+            labels.map((label) =>
+              Math.round(label.getBoundingClientRect().top),
+            ),
+          ).size,
+      ),
   ).toBeLessThanOrEqual(4);
   await page.getByRole("button", { name: "Close filters" }).click();
   await expect(filters).toBeFocused();

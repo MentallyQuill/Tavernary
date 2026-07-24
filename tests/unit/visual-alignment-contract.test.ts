@@ -53,9 +53,7 @@ describe("catalog visual alignment", () => {
 
   test("uses the mockup desktop workspace and toolbar geometry", () => {
     const css = read("src/styles/catalog.css");
-    const toolbar = read(
-      "src/features/catalog/components/catalog-toolbar.tsx",
-    );
+    const toolbar = read("src/features/catalog/components/catalog-toolbar.tsx");
 
     expect(css).toMatch(
       /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*238px minmax\(0,\s*1fr\)[^}]*padding:\s*0/s,
@@ -72,9 +70,7 @@ describe("catalog visual alignment", () => {
 
   test("uses reference card anatomy and sans typography", () => {
     const css = read("src/styles/catalog.css");
-    const card = read(
-      "src/features/catalog/components/project-card.tsx",
-    );
+    const card = read("src/features/catalog/components/project-card.tsx");
 
     expect(css).not.toContain('font-family: Georgia, "Times New Roman", serif');
     expect(css).not.toContain(".project-card::before");
