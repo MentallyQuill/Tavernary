@@ -12,6 +12,7 @@ import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { KitGrid } from "@/features/kits/components/kit-grid";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
+import { addProject } from "@/features/kits/project-stack-order";
 import { copyKitLink } from "@/features/kits/share-kit";
 import { KitWorkspace } from "@/features/kits/components/kit-workspace";
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
@@ -62,6 +63,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
+  const buildState = workspace.state.mode === "build" ? workspace.state : null;
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -303,6 +305,18 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             <ProjectGrid
               projects={selectedProjects}
               now={catalog.generatedAt}
+              draftProjectIds={buildState?.draft.projectIds}
+              onAddToKit={
+                buildState
+                  ? (projectId) =>
+                      workspace.updateDraft({
+                        projectIds: addProject(
+                          buildState.draft.projectIds,
+                          projectId,
+                        ),
+                      })
+                  : undefined
+              }
             />
           )}
         </main>
@@ -314,6 +328,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               : null
           }
           onCollapse={workspace.toggleCollapsed}
+          onDuplicate={workspace.startDuplicate}
+          onEdit={workspace.startEdit}
+          projects={catalog.projects}
+          originalProjectIds={
+            workspace.draftOrigin === "duplicate"
+              ? workspace.originalProjectIds
+              : []
+          }
+          onStartCreate={workspace.startCreate}
+          onUpdateDraft={workspace.updateDraft}
+          onSubmitDraft={() => undefined}
         />
       </div>
       {filtersOpen ? (

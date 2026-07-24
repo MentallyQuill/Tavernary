@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
 import { KitProjectStack } from "./kit-project-stack";
+import { KitBuilder } from "./kit-builder";
 
 function issueUrl(template: string, kit: CatalogKit) {
   const url = new URL("https://github.com/tavernary/tavernary/issues/new");
@@ -22,12 +24,24 @@ export function KitWorkspace({
   onCollapse,
   onDuplicate,
   onEdit,
+  projects = [],
+  originalProjectIds = [],
+  onStartCreate,
+  onUpdateDraft,
+  onSubmitDraft,
 }: {
   state: KitWorkspaceState;
   kit: CatalogKit | null;
   onCollapse: () => void;
   onDuplicate?: (kit: CatalogKit) => void;
   onEdit?: (kit: CatalogKit) => void;
+  projects?: CatalogProject[];
+  originalProjectIds?: string[];
+  onStartCreate?: () => void;
+  onUpdateDraft?: (
+    patch: Partial<import("@/features/kits/kit-types").KitDraft>,
+  ) => void;
+  onSubmitDraft?: () => void;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
   const fallbackRef = useRef<HTMLInputElement>(null);
@@ -73,6 +87,9 @@ export function KitWorkspace({
             Select a Kit to inspect its ordered stack, or create a transient
             draft.
           </p>
+          <button type="button" onClick={onStartCreate}>
+            Create new Kit
+          </button>
         </div>
       ) : state.mode === "inspect" && !kit ? (
         <div className="kit-workspace-intro">
@@ -125,10 +142,21 @@ export function KitWorkspace({
           ) : null}
           <KitProjectStack components={kit.components} />
         </div>
-      ) : (
-        <div className="kit-workspace-intro">
-          <h2>Kit draft</h2>
+      ) : state.mode === "build" ? (
+        <div className="kit-workspace-build">
+          <h2>
+            {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
+          </h2>
+          <KitBuilder
+            draft={state.draft}
+            projects={projects}
+            originalProjectIds={originalProjectIds}
+            onUpdate={(patch) => onUpdateDraft?.(patch)}
+            onSubmit={() => onSubmitDraft?.()}
+          />
         </div>
+      ) : (
+        <div />
       )}
     </aside>
   );
