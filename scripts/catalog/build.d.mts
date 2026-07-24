@@ -1,8 +1,10 @@
 import type { Catalog } from "../../src/features/catalog/catalog-types.ts";
 
-export function buildCatalog(options?: {
+export interface BuildCatalogOptions {
   write?: boolean;
   now?: string;
   records?: unknown[];
   snapshots?: unknown[];
-}): Promise<Catalog>;
+}
+
+export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;

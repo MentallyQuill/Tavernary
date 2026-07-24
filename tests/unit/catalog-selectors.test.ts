@@ -16,6 +16,8 @@ function project(
     id,
     name: id,
     kind: "extension",
+    metadataStatus: "curated",
+    sourceStatus: "healthy",
     primaryFunction: "generation-reasoning",
     summary: `${id} summary`,
     canonicalUrl: `https://example.com/${id}`,
