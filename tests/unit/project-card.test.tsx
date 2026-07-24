@@ -97,6 +97,63 @@ describe("project card", () => {
     expect(screen.queryByText("No activity")).not.toBeInTheDocument();
   });
 
+  test("keeps known community and repository size facts visible when only activity is missing", () => {
+    render(
+      <ProjectCard
+        project={project("mixed-metrics-card", {
+          metadataStatus: "provisional",
+          sourceStatus: "manual",
+          activity: {
+            latestMeaningfulCommitAt: null,
+            activeWeeks12: null,
+            twoWeekBars: null,
+            strength: null,
+            dormant: false,
+          },
+          community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
+          repositorySizeKb: 100,
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("Manual source")).toBeInTheDocument();
+    expect(screen.getByText("Activity unavailable")).toBeInTheDocument();
+    expect(screen.queryByText("Popularity unavailable")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Repository size unavailable"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("13")).toBeInTheDocument();
+    expect(screen.getByText("100 KB repo")).toBeInTheDocument();
+  });
+
+  test("renders source pending state directly without fabricating other missing facts", () => {
+    render(
+      <ProjectCard
+        project={project("pending-source-card", {
+          sourceStatus: "pending",
+          activity: {
+            latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
+            activeWeeks12: 4,
+            twoWeekBars: [1, 1, 1, 1, 0, 0],
+            strength: 1000,
+            dormant: false,
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("Source pending")).toBeInTheDocument();
+    expect(screen.getByText("4/12")).toBeInTheDocument();
+    expect(screen.getByText("13")).toBeInTheDocument();
+    expect(screen.getByText("100 KB repo")).toBeInTheDocument();
+    expect(screen.queryByText("Popularity unavailable")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Repository size unavailable"),
+    ).not.toBeInTheDocument();
+  });
+
   test("surfaces stale source status without hiding last known good facts", () => {
     render(
       <ProjectCard

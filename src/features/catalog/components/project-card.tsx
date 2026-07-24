@@ -104,6 +104,7 @@ export function ProjectCard({
     activeWeeks12 !== null &&
     twoWeekBars !== null &&
     latestMeaningfulCommitAt !== null;
+  const repositorySizeLabel = formatSize(project.repositorySizeKb);
 
   return (
     <a
@@ -136,21 +137,27 @@ export function ProjectCard({
                 "File size unavailable"}
             </span>
           </span>
-        ) : hasActivityMetrics ? (
+        ) : (
           <span className="development">
-            <Tooltip
-              id={activityId}
-              label={`Active ${activeWeeks12} of the last 12 weeks`}
-              className="activity-score"
-            >
-              <b>{activeWeeks12}/12</b>
-              <ActivitySparkline bars={twoWeekBars} />
-            </Tooltip>
-            <span
-              className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
-            >
-              {relativeTime(latestMeaningfulCommitAt, now)}
-            </span>
+            {hasActivityMetrics ? (
+              <>
+                <Tooltip
+                  id={activityId}
+                  label={`Active ${activeWeeks12} of the last 12 weeks`}
+                  className="activity-score"
+                >
+                  <b>{activeWeeks12}/12</b>
+                  <ActivitySparkline bars={twoWeekBars} />
+                </Tooltip>
+                <span
+                  className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
+                >
+                  {relativeTime(latestMeaningfulCommitAt, now)}
+                </span>
+              </>
+            ) : (
+              <span className="development-unavailable">Activity unavailable</span>
+            )}
             {project.community ? (
               <Tooltip
                 id={communityId}
@@ -161,13 +168,9 @@ export function ProjectCard({
                 <b>{project.community.aggregate}</b>
               </Tooltip>
             ) : null}
-            <span className="repository-size">
-              {formatSize(project.repositorySizeKb)}
-            </span>
-          </span>
-        ) : (
-          <span className="development development-unavailable">
-            <span>Activity unavailable</span>
+            {repositorySizeLabel ? (
+              <span className="repository-size">{repositorySizeLabel}</span>
+            ) : null}
           </span>
         )}
       </div>
