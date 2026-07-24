@@ -203,7 +203,9 @@ test("cleans temporary clones with recursive removal retries", async () => {
   expect(cleanup).toBeTypeOf("function");
   if (!cleanup) return;
 
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "tavernary-refresh-test-"));
+  const temporaryRoot = await mkdtemp(
+    join(tmpdir(), "tavernary-refresh-test-"),
+  );
   await mkdir(join(temporaryRoot, "repository", ".git", "objects"), {
     recursive: true,
   });
