@@ -95,7 +95,13 @@ function normalizeSource(record) {
         organization: assertString(record.repository?.owner, "repository.owner"),
         url,
       },
-      normalizedChanged: url !== rawUrl,
+      normalizedChange:
+        url !== rawUrl
+          ? {
+              before: rawUrl,
+              after: url,
+            }
+          : null,
     };
   }
   if (typeof record.source_url === "string") {
@@ -110,7 +116,13 @@ function normalizeSource(record) {
         license_status: "pending",
         license_spdx_id: null,
       },
-      normalizedChanged: url !== record.source_url,
+      normalizedChange:
+        url !== record.source_url
+          ? {
+              before: record.source_url,
+              after: url,
+            }
+          : null,
     };
   }
   return {
@@ -119,7 +131,7 @@ function normalizeSource(record) {
       repository: normalizeRepository(record.repository),
       repository_id: null,
     },
-    normalizedChanged: false,
+    normalizedChange: null,
   };
 }
 
@@ -139,7 +151,7 @@ function toRecord(record) {
       ? "extension"
       : inferKind(record);
   const frontends = normalizeFrontends(record.frontends);
-  const { source, normalizedChanged } = normalizeSource(record);
+  const { source, normalizedChange } = normalizeSource(record);
   return {
     record: {
       schema_version: 2,
@@ -160,7 +172,12 @@ function toRecord(record) {
           ? "paused"
           : "automatic",
     },
-    normalizedChanged,
+    normalizedSourceChange: normalizedChange
+      ? {
+          id: assertString(record.id, "id"),
+          ...normalizedChange,
+        }
+      : null,
   };
 }
 
@@ -182,13 +199,16 @@ export function migrateIntake(input) {
   const intake = input?.intake ?? [];
   const existingRecords = input?.existingRecords ?? [];
   const existingById = new Map(existingRecords.map((record) => [record.id, record]));
+  const curatedExistingRecords = existingRecords.filter(
+    (record) => record.metadata_status === "curated",
+  );
   const intakeIds = new Set();
   const intakeSources = new Set();
   const expectedRecords = [];
   const recordsToWrite = [];
   let curatedOverlaps = 0;
   let provisionalMatches = 0;
-  let normalizedSourceChanges = 0;
+  const normalizedSourceChanges = [];
 
   for (const entry of intake) {
     const migrated = toRecord(entry);
@@ -204,7 +224,9 @@ export function migrateIntake(input) {
       throw new Error(`Duplicate intake canonical source: ${canonicalSource}`);
     }
     intakeSources.add(canonicalSource);
-    normalizedSourceChanges += migrated.normalizedChanged ? 1 : 0;
+    if (migrated.normalizedSourceChange) {
+      normalizedSourceChanges.push(migrated.normalizedSourceChange);
+    }
 
     const existing = existingById.get(record.id);
     if (existing?.metadata_status === "curated") {
@@ -249,7 +271,7 @@ export function migrateIntake(input) {
       writes_required: recordsToWrite.length,
       provisional_matches: provisionalMatches,
       provisional_drift: [],
-      final_union_records: existingRecords.length + recordsToWrite.length,
+      final_union_records: curatedExistingRecords.length + expectedRecords.length,
       by_kind: byKind,
       by_source: bySource,
       provisional_summaries: expectedRecords.length,

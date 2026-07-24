@@ -128,7 +128,13 @@ describe("intake migration", () => {
       "github-organization": 0,
       url: 1,
     });
-    expect(result.report.normalized_source_changes).toBe(1);
+    expect(result.report.normalized_source_changes).toEqual([
+      {
+        id: "puras-director-v15",
+        before: "https://platberlitz.github.io/",
+        after: "https://platberlitz.github.io",
+      },
+    ]);
   });
 
   test("treats curated records as authoritative and reuses matching provisional records", () => {
@@ -371,6 +377,208 @@ describe("intake migration", () => {
     await expect(
       readFile(resolve(rootDirectory, "data/registry/seed-migration-report.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  test("enforces the full-dataset audit counts when requested", async () => {
+    const rootDirectory = await mkdtemp(join(tmpdir(), "tavernary-migrate-"));
+    temporaryDirectories.push(rootDirectory);
+    await mkdir(resolve(rootDirectory, "data/catalog"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/registry/projects"), {
+      recursive: true,
+    });
+    await mkdir(resolve(rootDirectory, "data/schemas"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/vocabularies"), {
+      recursive: true,
+    });
+    await writeFile(
+      resolve(rootDirectory, "data/catalog/projects.json"),
+      `${JSON.stringify([
+        {
+          id: "samueras-guidedgenerations-extension",
+          name: "Guided Generations Extension",
+          repository: {
+            owner: "Samueras",
+            name: "GuidedGenerations-Extension",
+            url: "https://github.com/Samueras/GuidedGenerations-Extension/",
+          },
+          frontends: ["SillyTavern"],
+          submitted_at: "2026-07-23",
+        },
+      ])}\n`,
+    );
+
+    const workspaceRoot = resolve(process.cwd());
+    for (const relativePath of [
+      "data/schemas/project.schema.json",
+      "data/schemas/repository-snapshot.schema.json",
+      "data/vocabularies/frontends.json",
+      "data/vocabularies/primary-functions.json",
+      "data/vocabularies/capabilities.json",
+    ]) {
+      await writeFile(
+        resolve(rootDirectory, relativePath),
+        await readFile(resolve(workspaceRoot, relativePath), "utf8"),
+      );
+    }
+
+    await expect(
+      runIntakeMigration({
+        rootDirectory,
+        write: false,
+        enforceExpectedAudit: true,
+      }),
+    ).rejects.toThrow(
+      "Migration audit mismatch for intake_records: expected 213, received 1",
+    );
+  });
+
+  test("validates projected registry from curated records plus expected records", async () => {
+    const rootDirectory = await mkdtemp(join(tmpdir(), "tavernary-migrate-"));
+    temporaryDirectories.push(rootDirectory);
+    await mkdir(resolve(rootDirectory, "data/catalog"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/registry/projects"), {
+      recursive: true,
+    });
+    await mkdir(resolve(rootDirectory, "data/schemas"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/vocabularies"), {
+      recursive: true,
+    });
+    await writeFile(
+      resolve(rootDirectory, "data/catalog/projects.json"),
+      `${JSON.stringify([
+        {
+          id: "samueras-guidedgenerations-extension",
+          name: "Guided Generations Extension",
+          repository: {
+            owner: "Samueras",
+            name: "GuidedGenerations-Extension",
+            url: "https://github.com/Samueras/GuidedGenerations-Extension/",
+          },
+          frontends: ["SillyTavern"],
+          submitted_at: "2026-07-23",
+        },
+      ])}\n`,
+    );
+    await writeFile(
+      resolve(rootDirectory, "data/registry/projects/stale-provisional.json"),
+      `${JSON.stringify({
+        schema_version: 2,
+        id: "stale-provisional",
+        name: "Stale Provisional",
+        kind: "extension",
+        summary: "An extension for SillyTavern.",
+        metadata_status: "provisional",
+        source: {
+          type: "github",
+          repository: "Stale/Provisional",
+          repository_id: null,
+        },
+        frontends: ["sillytavern"],
+        primary_function: "uncategorized",
+        capabilities: [],
+        cataloged_at: "2026-07-23T00:00:00Z",
+        catalog_cohort: "seed",
+        visibility: "published",
+        refresh_policy: "automatic",
+      }, null, 2)}\n`,
+    );
+
+    const workspaceRoot = resolve(process.cwd());
+    for (const relativePath of [
+      "data/schemas/project.schema.json",
+      "data/schemas/repository-snapshot.schema.json",
+      "data/vocabularies/frontends.json",
+      "data/vocabularies/primary-functions.json",
+      "data/vocabularies/capabilities.json",
+    ]) {
+      await writeFile(
+        resolve(rootDirectory, relativePath),
+        await readFile(resolve(workspaceRoot, relativePath), "utf8"),
+      );
+    }
+
+    const result = await runIntakeMigration({
+      rootDirectory,
+      write: false,
+    });
+
+    expect(result.validation.projectCount).toBe(1);
+  });
+
+  test("stages each run in a unique .tmp directory", async () => {
+    const rootDirectory = await mkdtemp(join(tmpdir(), "tavernary-migrate-"));
+    temporaryDirectories.push(rootDirectory);
+    await mkdir(resolve(rootDirectory, "data/catalog"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/registry/projects"), {
+      recursive: true,
+    });
+    await mkdir(resolve(rootDirectory, "data/schemas"), { recursive: true });
+    await mkdir(resolve(rootDirectory, "data/vocabularies"), {
+      recursive: true,
+    });
+    await writeFile(
+      resolve(rootDirectory, "data/catalog/projects.json"),
+      `${JSON.stringify([
+        {
+          id: "samueras-guidedgenerations-extension",
+          name: "Guided Generations Extension",
+          repository: {
+            owner: "Samueras",
+            name: "GuidedGenerations-Extension",
+            url: "https://github.com/Samueras/GuidedGenerations-Extension/",
+          },
+          frontends: ["SillyTavern"],
+          submitted_at: "2026-07-23",
+        },
+      ])}\n`,
+    );
+
+    const workspaceRoot = resolve(process.cwd());
+    for (const relativePath of [
+      "data/schemas/project.schema.json",
+      "data/schemas/repository-snapshot.schema.json",
+      "data/vocabularies/frontends.json",
+      "data/vocabularies/primary-functions.json",
+      "data/vocabularies/capabilities.json",
+    ]) {
+      await writeFile(
+        resolve(rootDirectory, relativePath),
+        await readFile(resolve(workspaceRoot, relativePath), "utf8"),
+      );
+    }
+
+    await runIntakeMigration({
+      rootDirectory,
+      write: false,
+      cleanup: false,
+    });
+    await runIntakeMigration({
+      rootDirectory,
+      write: false,
+      cleanup: false,
+    });
+
+    const stagedDirectories = (
+      await readdir(resolve(rootDirectory, ".tmp"), { withFileTypes: true })
+    )
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+
+    expect(stagedDirectories).toHaveLength(2);
+    for (const directory of stagedDirectories) {
+      await expect(
+        readFile(
+          resolve(
+            rootDirectory,
+            ".tmp",
+            directory,
+            "data/registry/seed-migration-report.json",
+          ),
+          "utf8",
+        ),
+      ).resolves.toContain("\"writes_required\": 1");
+    }
   });
 
   test("write mode is rerun-safe after the first migration", async () => {

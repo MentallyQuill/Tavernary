@@ -2,6 +2,7 @@ import {
   copyFile,
   cp,
   mkdir,
+  mkdtemp,
   readFile,
   readdir,
   rename,
@@ -44,9 +45,10 @@ async function readExistingRecords(rootDirectory) {
 }
 
 async function stageProjectFiles(rootDirectory, records) {
-  const stageRoot = resolve(rootDirectory, ".tmp/catalog-migrate");
+  const tempRoot = resolve(rootDirectory, ".tmp");
+  await mkdir(tempRoot, { recursive: true });
+  const stageRoot = await mkdtemp(resolve(tempRoot, "catalog-migrate-"));
   const stagedProjectsDirectory = resolve(stageRoot, "data/registry/projects");
-  await rm(stageRoot, { recursive: true, force: true });
   await mkdir(stagedProjectsDirectory, { recursive: true });
 
   for (const record of records) {
@@ -63,6 +65,30 @@ async function stageProjectFiles(rootDirectory, records) {
   };
 }
 
+function projectedRegistryRecords(existingRecords, expectedRecords) {
+  return [
+    ...existingRecords.filter((record) => record.metadata_status === "curated"),
+    ...expectedRecords,
+  ].sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function assertExpectedAudit(report) {
+  const expected = {
+    intake_records: 213,
+    curated_overlaps: 4,
+    generated_records: 209,
+    final_union_records: 214,
+  };
+
+  for (const [field, value] of Object.entries(expected)) {
+    if (report[field] !== value) {
+      throw new Error(
+        `Migration audit mismatch for ${field}: expected ${value}, received ${report[field]}`,
+      );
+    }
+  }
+}
+
 async function writeStageReport(stagedReportPath, report) {
   await mkdir(dirname(stagedReportPath), { recursive: true });
   await writeFile(stagedReportPath, `${JSON.stringify(report, null, 2)}\n`);
@@ -71,14 +97,25 @@ async function writeStageReport(stagedReportPath, report) {
 export async function runIntakeMigration(options = {}) {
   const rootDirectory = options.rootDirectory ?? defaultRootDirectory;
   const write = options.write === true;
+  const enforceExpectedAudit =
+    options.enforceExpectedAudit ?? rootDirectory === defaultRootDirectory;
   const intakePath = resolve(rootDirectory, "data/catalog/projects.json");
   const projectsDirectory = resolve(rootDirectory, "data/registry/projects");
   const reportPath = resolve(rootDirectory, "data/registry/seed-migration-report.json");
   const intake = await readJsonWithBom(intakePath);
   const { records: existingRecords } = await readExistingRecords(rootDirectory);
   const result = migrateIntake({ intake, existingRecords });
-  const finalRecords = [...existingRecords, ...result.recordsToWrite].sort((left, right) =>
-    left.id.localeCompare(right.id),
+  if (result.report.provisional_drift.length > 0) {
+    throw new Error(
+      `Provisional drift detected: ${result.report.provisional_drift.join(", ")}`,
+    );
+  }
+  if (enforceExpectedAudit) {
+    assertExpectedAudit(result.report);
+  }
+  const finalRecords = projectedRegistryRecords(
+    existingRecords,
+    result.expectedRecords,
   );
   const validation = await validateCatalog({ records: finalRecords });
   if (validation.errors.length > 0) {
@@ -100,7 +137,10 @@ export async function runIntakeMigration(options = {}) {
       );
     }
 
-    const temporaryReportPath = `${reportPath}.tmp`;
+    const temporaryReportPath = resolve(
+      stage.stageRoot,
+      "data/registry/seed-migration-report.write.json",
+    );
     await cp(stage.stagedReportPath, temporaryReportPath, { force: true });
     await rename(temporaryReportPath, reportPath);
   }
