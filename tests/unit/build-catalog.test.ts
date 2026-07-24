@@ -2,6 +2,15 @@ import { expect, test } from "vitest";
 
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
 
+function countBy<T>(items: T[], selector: (item: T) => string) {
+  const counts = new Map<string, number>();
+  for (const item of items) {
+    const key = selector(item);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return Object.fromEntries(counts);
+}
+
 const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
   schema_version: 1,
   id: "fixture",
@@ -240,6 +249,19 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   expect(catalog.projects.map(({ id }) => id)).toEqual(
     [...catalog.projects.map(({ id }) => id)].sort(),
   );
+  expect(countBy(catalog.projects, (project) => project.sourceStatus)).toEqual({
+    pending: 200,
+    manual: 10,
+    healthy: 4,
+  });
+  expect(
+    countBy(catalog.projects, (project) => project.primaryFunction),
+  ).toEqual({
+    uncategorized: 209,
+    "generation-reasoning": 3,
+    "interface-workflow": 1,
+    frontend: 1,
+  });
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
@@ -252,6 +274,7 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   expect(JSON.stringify(catalog)).not.toContain("submitted_at");
   expect(JSON.stringify(catalog)).not.toContain("submission");
   expect(JSON.stringify(catalog)).not.toContain('"status":"candidate"');
+  expect(JSON.stringify(catalog)).not.toContain("catalog_intake");
 });
 
 test("excludes curator and source quarantine states", async () => {

@@ -82,6 +82,7 @@ describe("catalog license filter contract", () => {
       <FilterPanel
         query={DEFAULT_QUERY}
         projects={projects}
+        now="2026-07-23T00:00:00Z"
         onToggle={() => {}}
         onClear={() => {}}
       />,

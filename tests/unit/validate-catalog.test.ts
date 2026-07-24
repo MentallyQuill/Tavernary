@@ -24,10 +24,10 @@ const validRecord = {
 };
 
 describe("catalog validation", () => {
-  test("accepts the five production records", async () => {
+  test("accepts the 214-project launch catalog", async () => {
     const result = await validateCatalog();
     expect(result.errors).toEqual([]);
-    expect(result.projectCount).toBe(5);
+    expect(result.projectCount).toBe(214);
   });
 
   test("rejects a non-GitHub extension", async () => {

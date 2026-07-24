@@ -4,9 +4,23 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, test } from "vitest";
 
+interface CatalogRecord {
+  id: string;
+  kind: string;
+  metadata_status: string;
+  primary_function: string;
+  capabilities: string[];
+  visibility?: string;
+  source: {
+    type: string;
+    repository_id?: number | null;
+    license_status?: string | null;
+  };
+}
+
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
-async function loadRegistryRecords() {
+async function loadRegistryRecords(): Promise<CatalogRecord[]> {
   const directory = resolve(rootDirectory, "data/registry/projects");
   const files = (await readdir(directory))
     .filter((file) => file.endsWith(".json"))
@@ -18,8 +32,8 @@ async function loadRegistryRecords() {
   );
 }
 
-function countBy(records, selector) {
-  const counts = new Map();
+function countBy<T>(records: T[], selector: (record: T) => string) {
+  const counts = new Map<string, number>();
   for (const record of records) {
     const key = selector(record);
     counts.set(key, (counts.get(key) ?? 0) + 1);
@@ -52,6 +66,26 @@ describe("full catalog data", () => {
       "github-organization": 1,
       url: 9,
     });
+    expect(countBy(records, (record) => record.primary_function)).toEqual({
+      uncategorized: 209,
+      "generation-reasoning": 3,
+      "interface-workflow": 1,
+      frontend: 1,
+    });
+    expect(
+      records.filter(
+        (record) =>
+          record.source.type === "url" &&
+          record.source.license_status === "pending",
+      ),
+    ).toHaveLength(8);
+    expect(
+      records.filter(
+        (record) =>
+          record.source.type === "url" &&
+          record.source.license_status === "missing",
+      ),
+    ).toHaveLength(1);
 
     for (const record of provisionalRecords) {
       expect(record.primary_function).toBe("uncategorized");

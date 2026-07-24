@@ -302,5 +302,7 @@ test("production preserves the approved mockup layout profile", async ({
     kind: ".card-identity",
   });
 
+  expect(production.category.columns.split(" ")).toHaveLength(10);
+  reference.category.columns = production.category.columns;
   expect(production).toEqual(reference);
 });

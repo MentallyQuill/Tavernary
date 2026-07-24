@@ -20,8 +20,13 @@ export function verifyStaticExport(html, basePath = "") {
     .replace(/\s+/g, " ")
     .trim();
 
-  if (!renderedText.includes("5 projects")) {
+  if (!/\b\d+\s+projects?\b/.test(renderedText)) {
     throw new Error("Static export does not contain the catalog heading");
+  }
+  if (
+    /submitted_at|catalog_intake|"status"\s*:\s*"candidate"/i.test(html)
+  ) {
+    throw new Error("Static export leaks intake-only metadata");
   }
 
   if (!basePath) {
