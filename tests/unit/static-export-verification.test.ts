@@ -23,6 +23,19 @@ describe("verifyStaticExport", () => {
     ).not.toThrow();
   });
 
+  test("rejects repository-prefixed Next assets for a root deployment", () => {
+    expect(() =>
+      verifyStaticExport(
+        `${heading}<script src=\"/Tavernary/_next/static/app.js\"></script>`,
+        "",
+      ),
+    ).toThrow("root-relative Next.js asset URLs");
+
+    expect(() => verifyStaticExport(heading, "")).toThrow(
+      "root-relative Next.js asset URLs",
+    );
+  });
+
   test("requires prefixed Next assets and rejects root-only assets for a project page", () => {
     expect(() =>
       verifyStaticExport(

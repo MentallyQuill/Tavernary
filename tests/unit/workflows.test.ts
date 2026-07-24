@@ -62,6 +62,9 @@ test("keeps CI read-only and runs every local gate", async () => {
 
 test("deploys only a verified static export to the Pages environment", async () => {
   const deploy = await workflow("deploy-pages");
+  const build = deploy.jobs.build as {
+    env?: Record<string, string>;
+  };
   const steps = allSteps(deploy);
   const commands = steps
     .map((step) => step.run)
@@ -77,6 +80,7 @@ test("deploys only a verified static export to the Pages environment", async () 
     group: "pages",
     "cancel-in-progress": false,
   });
+  expect(build.env?.TAVERNARY_BASE_PATH).toBe("");
   expect(commands).toContain("npm run check");
   expect(commands).toContain("npm run verify:export");
   expect(JSON.stringify(deploy.jobs)).toContain("github-pages");
