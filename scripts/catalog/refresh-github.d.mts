@@ -1,29 +1,52 @@
+import type {
+  GitHubRefreshManifest,
+  RefreshMode,
+} from "./github-refresh-manifest.mjs";
+
 export function formatSnapshot(snapshot: unknown): Promise<string>;
-export function cleanupTemporaryRoot(temporaryRoot: string): Promise<void>;
-export function snapshotForFailure<
-  T extends { source_health: string; stale_since: string | null },
->(prior: T, error: { status?: number; rateLimited?: boolean }, now: string): T;
-export function repositoryIdentityChanged(
-  record: { id: string; source: { repository_id: number | null } },
-  repository: { id: number },
-): boolean;
-export function identityChangeSnapshot(input: {
-  record: { id: string; source: { repository_id: number | null } };
-  repository: Record<string, unknown>;
-  previous: Record<string, unknown> | null;
-  now: string;
-}): {
-  source_health: string;
-  repository: { id: number; [key: string]: unknown };
-  activity: unknown;
-  license: unknown;
-  stale_since: string | null;
-  [key: string]: unknown;
-};
-export function refreshSelectedProjects(
-  records: Array<{ id: string }>,
-  refresh?: (record: {
+export function selectRefreshRecords(
+  records: Array<{
     id: string;
-  }) => Promise<{ source_health: string; refreshed_at: string } | null>,
-  logger?: { log(message: string): void; error(message: string): void },
-): Promise<void>;
+    source: { type: string };
+    refresh_policy: string;
+  }>,
+  snapshots: Array<{
+    project_id: string;
+    activity?: { evidence_status?: string };
+  }>,
+  options: {
+    mode: RefreshMode;
+    batchSize?: number;
+    projectId?: string | null;
+  },
+): Array<{ id: string; [key: string]: unknown }>;
+export function snapshotForFailure<T>(
+  previous: T | null,
+  error: { status?: number },
+  now: string,
+  options?: { baselineAttempt?: boolean },
+): T | null;
+export function repositoryIdentityChanged(
+  record: { source: { repository_id: number | null } },
+  observation: { repository: { id: number } },
+): boolean;
+export function runRefresh(options?: Record<string, unknown>): Promise<{
+  selected: Array<{ id: string; [key: string]: unknown }>;
+  snapshots: Array<{
+    repository: { head_sha: string; [key: string]: unknown };
+    activity: {
+      source_weeks: Array<{
+        week_start: string;
+        latest_at: string;
+        precision: "exact" | "interval";
+      }>;
+      evidence_status: "provisional" | "complete" | "degraded";
+      baseline_attempts: number;
+      [key: string]: unknown;
+    };
+    stale_since: string | null;
+    [key: string]: unknown;
+  }>;
+  changedSnapshots: unknown[];
+  manifest: GitHubRefreshManifest;
+}>;

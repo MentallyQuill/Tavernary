@@ -5,6 +5,7 @@ export interface BuildCatalogOptions {
   now?: string;
   records?: unknown[];
   snapshots?: unknown[];
+  refreshManifest?: unknown;
 }
 
 export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;

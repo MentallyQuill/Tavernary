@@ -43,6 +43,10 @@ async function loadSnapshots() {
   );
 }
 
+async function loadRefreshManifest() {
+  return readJson("data/snapshots/github-refresh.json");
+}
+
 function vocabularyIds(vocabulary, property) {
   return new Set(vocabulary[property].map(({ id }) => id));
 }
@@ -143,12 +147,14 @@ export async function validateCatalog(options = {}) {
   const [
     schema,
     snapshotSchema,
+    refreshManifestSchema,
     frontendVocabulary,
     functionVocabulary,
     capabilityVocabulary,
   ] = await Promise.all([
     readJson("data/schemas/project.schema.json"),
     readJson("data/schemas/repository-snapshot.schema.json"),
+    readJson("data/schemas/github-refresh.schema.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
@@ -173,15 +179,26 @@ export async function validateCatalog(options = {}) {
 
   const validateRecord = ajv.compile(schema);
   const validateSnapshot = ajv.compile(snapshotSchema);
+  const validateRefreshManifest = ajv.compile(refreshManifestSchema);
   const records = options.records ?? (await loadRecords());
   const snapshots =
     options.snapshots ?? (options.records ? [] : await loadSnapshots());
+  const refreshManifest =
+    options.refreshManifest ?? (await loadRefreshManifest());
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
   const ids = new Set();
   const sources = new Set();
   const errors = [];
+
+  if (!validateRefreshManifest(refreshManifest)) {
+    errors.push(
+      ...validateRefreshManifest.errors.map((error) =>
+        schemaError({ id: "github-refresh" }, error),
+      ),
+    );
+  }
 
   for (const record of records) {
     if (!validateRecord(record)) {

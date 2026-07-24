@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "mode": "incremental",
+  "started_at": "2026-07-24T19:18:28.999Z",
+  "completed_at": "2026-07-24T19:18:28.999Z",
+  "counts": {
+    "total": 44,
+    "checked": 44,
+    "changed": 44,
+    "unchanged": 0,
+    "provisional": 44,
+    "degraded": 0,
+    "unavailable": 0,
+    "failed": 0,
+    "compared": 0,
+    "baseline": 44,
+    "fallback": 0
+  },
+  "api": {
+    "graphql_requests": 0,
+    "graphql_points": 0,
+    "graphql_remaining": null,
+    "rest_requests": 0
+  },
+  "duration_ms": 0,
+  "project_timings": [],
+  "snapshot_changes": true,
+  "deployment_requested": false
+}

@@ -76,6 +76,18 @@ describe("catalog validation", () => {
     expect(result.projectCount).toBe(214);
   });
 
+  test("rejects an invalid global refresh manifest", async () => {
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [validSnapshotV2],
+      refreshManifest: {},
+    });
+
+    expect(result.errors).toContain(
+      "github-refresh: schema / must have required property 'schema_version'",
+    );
+  });
+
   test("rejects a non-GitHub extension", async () => {
     const result = await validateCatalog({
       records: [

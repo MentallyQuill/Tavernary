@@ -275,12 +275,14 @@ export async function buildCatalog(options = {}) {
   const [
     records,
     snapshots,
+    refreshManifest,
     frontendVocabulary,
     primaryFunctionVocabulary,
     capabilityVocabulary,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
     options.snapshots ?? readJsonDirectory("data/snapshots/github"),
+    options.refreshManifest ?? readJson("data/snapshots/github-refresh.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
@@ -296,17 +298,7 @@ export async function buildCatalog(options = {}) {
   const snapshotsByProject = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
   );
-  const sourceTimestamps = [
-    ...records.map((record) => record.cataloged_at),
-    ...snapshots.map((snapshot) => snapshot.refreshed_at),
-  ].filter(Boolean);
-  const generatedAt =
-    options.now ??
-    sourceTimestamps
-      .map((timestamp) => new Date(timestamp).getTime())
-      .filter(Number.isFinite)
-      .sort((left, right) => right - left)[0] ??
-    0;
+  const generatedAt = options.now ?? refreshManifest.completed_at;
   const generatedAtIso = new Date(generatedAt).toISOString();
   const projects = [];
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);

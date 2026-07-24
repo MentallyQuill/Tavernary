@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/github-refresh.schema.json",
+  "title": "Tavernary GitHub refresh manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mode",
+    "started_at",
+    "completed_at",
+    "counts",
+    "api",
+    "duration_ms",
+    "project_timings",
+    "snapshot_changes",
+    "deployment_requested"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "mode": {
+      "enum": ["incremental", "baseline", "project", "forensic"]
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "checked",
+        "changed",
+        "unchanged",
+        "provisional",
+        "degraded",
+        "unavailable",
+        "failed",
+        "compared",
+        "baseline",
+        "fallback"
+      ],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "checked": { "type": "integer", "minimum": 0 },
+        "changed": { "type": "integer", "minimum": 0 },
+        "unchanged": { "type": "integer", "minimum": 0 },
+        "provisional": { "type": "integer", "minimum": 0 },
+        "degraded": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "compared": { "type": "integer", "minimum": 0 },
+        "baseline": { "type": "integer", "minimum": 0 },
+        "fallback": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graphql_requests",
+        "graphql_points",
+        "graphql_remaining",
+        "rest_requests"
+      ],
+      "properties": {
+        "graphql_requests": { "type": "integer", "minimum": 0 },
+        "graphql_points": { "type": "integer", "minimum": 0 },
+        "graphql_remaining": {
+          "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
+        },
+        "rest_requests": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "project_timings": {
+      "type": "array",
+      "maxItems": 250,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["project_id", "outcome", "duration_ms", "error_code"],
+        "properties": {
+          "project_id": { "type": "string", "minLength": 1 },
+          "outcome": {
+            "enum": [
+              "unchanged",
+              "compare-source",
+              "compare-excluded",
+              "baseline",
+              "fallback",
+              "unavailable",
+              "identity-change",
+              "failed"
+            ]
+          },
+          "duration_ms": { "type": "integer", "minimum": 0 },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z0-9_-]{1,64}$"
+              },
+              { "type": "null" }
+            ]
+          }
+        }
+      }
+    },
+    "snapshot_changes": { "type": "boolean" },
+    "deployment_requested": { "type": "boolean" }
+  }
+}

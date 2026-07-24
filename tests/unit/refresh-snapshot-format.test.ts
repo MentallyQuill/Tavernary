@@ -14,12 +14,16 @@ test("serializes refreshed snapshots in repository Prettier format", async () =>
 
   const serialized = await formatSnapshot({
     activity: {
-      weekly_meaningful_commits: [65, 58, 77, 122, 0, 0, 0, 0, 0, 0, 0, 0],
+      source_weeks: [
+        {
+          week_start: "2026-07-20",
+          latest_at: "2026-07-24T00:00:00.000Z",
+          precision: "interval",
+        },
+      ],
     },
   });
 
-  expect(serialized).toContain(
-    '"weekly_meaningful_commits": [65, 58, 77, 122, 0, 0, 0, 0, 0, 0, 0, 0]',
-  );
+  expect(serialized).toContain('"week_start": "2026-07-20"');
   expect(serialized.endsWith("\n")).toBe(true);
 });
