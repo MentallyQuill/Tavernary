@@ -7,13 +7,15 @@
 
 **Goal:** Turn the approved Tavernary catalog mockup into a production-quality,
 static Next.js application hosted on GitHub Pages, driven by a validated,
-GitHub-refreshed project registry.
+registry-plus-snapshot catalog pipeline.
 
 **Architecture:** Tavernary is a static catalog, not a hosted application
-backend. Human-curated project records and generated repository snapshots live
-in version control; GitHub Actions validates and enriches them before Next.js
-builds a static export. The browser receives normalized catalog data and handles
-search, filters, sorting, responsive layout, and URL query state locally.
+backend. Canonical project records live in `data/registry/projects/`, the
+historical intake remains in `data/catalog/projects.json`, generated GitHub
+snapshots live in `data/snapshots/github/`, and `scripts/catalog/build.mjs`
+joins those layers into `src/generated/catalog.json` before Next.js builds a
+static export. The browser receives normalized catalog data and handles search,
+filters, sorting, responsive layout, and URL query state locally.
 
 **Tech Stack:** Node.js 24 LTS, npm, Next.js App Router with static export,
 React, TypeScript, plain CSS, JSON Schema with Ajv, Vitest, Testing Library,
@@ -52,6 +54,28 @@ Playwright, GitHub Actions, and GitHub Pages.
   design system and can be reproduced with CSS and small React state helpers.
 
 ---
+
+## Current launch baseline (authoritative on July 24, 2026)
+
+The repository is no longer at the five-project production-vertical-slice
+stage. The current launch baseline is:
+
+- 214 canonical registry records in `data/registry/projects/`;
+- 5 curated records and 209 provisional records;
+- 204 GitHub repositories, 1 GitHub organization exception, and 9 URL-backed
+  presets;
+- schema-version-2 project records with `metadata_status`;
+- snapshotless publication for valid published GitHub records whose first
+  refresh has not succeeded yet; and
+- a deterministic identity-backfill step
+  (`npm run catalog:backfill-identities -- --write`) after healthy refreshes.
+
+Treat `data/catalog/projects.json` as historical intake only. It exists for the
+deterministic migration audit (`npm run catalog:migrate`) and does not become a
+runtime input.
+
+When this document's older implementation-task wording conflicts with the
+current launched architecture above, the launched architecture wins.
 
 ## 1. Authority Order and Existing Source Files
 
@@ -139,34 +163,26 @@ The current file is not in the repository root. Its actual committed path is:
 data/catalog/projects.json
 ```
 
-Current shape as of 2026-07-23:
+Current shape as of July 24, 2026:
 
-- 211 candidate records;
-- 202 GitHub repositories;
-- 9 non-GitHub canonical sources;
-- frontend coverage: SillyTavern 167, Lumiverse 25, Marinara Engine 21, and
-  Sonder Engine 1;
-- fields present on every record: `id`, `name`, `frontends`, `status`,
+- 213 historical intake rows;
+- fields present on every row: `id`, `name`, `frontends`, `status`,
   `submission`, and `submitted_at`;
-- optional fields: `repository`, `source_url`, `source_type`, `source_post`,
-  and `tags`.
+- optional intake-only fields: `repository`, `source_url`, `source_type`,
+  `source_post`, and `tags`; and
+- a deterministic migration audit that preserves the file in place.
 
-This is an intake list, not a complete production view model. Move it without
-changing its contents to:
-
-```text
-data/intake/projects.json
-```
-
-Then migrate accepted records into one canonical file per project:
+This is an intake list, not the production runtime model. It remains at
+`data/catalog/projects.json` for provenance and deterministic reruns of
+`npm run catalog:migrate`. The canonical production records live one per file
+at:
 
 ```text
 data/registry/projects/<project-id>.json
 ```
 
 Keeping one record per file avoids merge conflicts, produces readable pull
-requests, and gives project submissions a stable review boundary. The original
-211-record intake file remains preserved for provenance and conversion status.
+requests, and gives project submissions a stable review boundary.
 
 ## 2. Locked Visual and Functional Contract
 
@@ -481,8 +497,8 @@ top-level directories:
 `src/generated/catalog.json` is produced by `npm run catalog:build` and ignored
 by Git. Keep `src/generated/.gitkeep` tracked so the destination exists in a
 fresh checkout. `data/snapshots/github/*.json` is committed because it
-preserves the last known successful upstream values and makes a deployed
-catalog reproducible.
+preserves the last known successful upstream values, records staleness, and
+makes a deployed catalog reproducible.
 
 Do not add a nested `site/` directory. Tavernary is one application, so placing
 the Next.js project at the repository root avoids a second package root and
@@ -516,11 +532,14 @@ keeps GitHub Actions, dependency updates, and local commands straightforward.
 ### 5.1 Curated project record
 
 `data/registry/projects/<id>.json` is human-authored and validated by
-`data/schemas/project.schema.json`. Its required conceptual fields are:
+`data/schemas/project.schema.json`. The current launched contract is schema
+version 2, not the earlier richer draft record model.
+
+At minimum, each canonical record carries:
 
 ```ts
 type ProjectKind = "frontend" | "extension" | "preset";
-
+type MetadataStatus = "provisional" | "curated";
 type PrimaryFunction =
   | "frontend"
   | "memory-retrieval"
@@ -528,144 +547,62 @@ type PrimaryFunction =
   | "character-worldbuilding"
   | "rpg-systems"
   | "interface-workflow"
-  | "developer-infrastructure";
+  | "developer-infrastructure"
+  | "uncategorized";
 
 type CanonicalSource =
-  | { kind: "github"; owner: string; repository: string; url: string }
-  | { kind: "website" | "discord" | "community"; url: string };
+  | {
+      type: "github";
+      repository: string;
+      repository_id: number | null;
+    }
+  | {
+      type: "github-organization";
+      organization: string;
+      url: string;
+    }
+  | {
+      type: "url";
+      url: string;
+      published_at: string | null;
+      version: string | null;
+      artifact_size_bytes: number | null;
+      license_status: "osi-approved" | "proprietary" | "missing" | "pending";
+      license_spdx_id: string | null;
+    };
 
 interface ProjectRecord {
-  schema_version: 1;
+  schema_version: 2;
+  metadata_status: MetadataStatus;
   id: string;
   name: string;
-  aliases: string[];
   kind: ProjectKind;
-  primary_function: PrimaryFunction;
   summary: string;
-  canonical_source: CanonicalSource;
+  source: CanonicalSource;
   frontends: string[];
+  primary_function: PrimaryFunction;
   capabilities: string[];
-  compatibility: CompatibilityRecord[];
-  relationships: ProjectRelationship[];
-  maintainers: Maintainer[];
-  requirements: TechnicalRequirements;
-  announcements: Announcement[];
-  lifecycle:
-    | "experimental"
-    | "active"
-    | "maintenance-only"
-    | "deprecated"
-    | "superseded"
-    | "archived";
-  accepted_at: string;
-  submitted_at: string;
-  submission_source?: string;
-}
-
-interface CompatibilityRecord {
-  frontend_id: string;
-  implementation:
-    | "native"
-    | "ported"
-    | "forked"
-    | "cross-platform";
-  status:
-    | "verified"
-    | "maintainer-reported"
-    | "community-reported"
-    | "experimental"
-    | "planned"
-    | "broken"
-    | "unknown";
-  minimum_version: string | null;
-  maximum_version: string | null;
-  evidence_url: string | null;
-  checked_at: string | null;
-  modes: string[];
-  runtime: "browser" | "server" | "full-stack" | "external";
-}
-
-interface ProjectRelationship {
-  type:
-    | "fork-of"
-    | "port-of"
-    | "based-on"
-    | "successor-to"
-    | "superseded-by"
-    | "rewrite-of"
-    | "bundles"
-    | "requires"
-    | "optional-integration";
-  target_project_id: string;
-  evidence_url: string;
-}
-
-interface Maintainer {
-  name: string;
-  url: string | null;
-}
-
-interface TechnicalRequirements {
-  automatic_model_calls: boolean | null;
-  external_providers: string[];
-  local_companion_server: boolean | null;
-  runtimes: string[];
-  installation_method: string | null;
-  supported_languages: string[];
-}
-
-interface Announcement {
-  title: string;
-  source_url: string;
-  published_at: string;
-  discovered_at: string;
+  cataloged_at: string;
+  catalog_cohort: "seed";
+  visibility: "published" | "quarantined" | "disabled";
+  refresh_policy: "automatic" | "paused";
 }
 ```
 
-Compatibility and relationship evidence is part of the canonical record, but
-repository measurements are not. Do not collapse canonical source,
-compatibility, and GitHub snapshot data into one ambiguous object.
+The launched model intentionally separates editorial truth from generated
+repository facts. Imported records may stay public as `metadata_status:
+"provisional"` with `primary_function: "uncategorized"` and
+`source.repository_id: null` until enrichment and curator review complete.
 
 ### 5.2 Generated repository snapshot
 
-`data/snapshots/github/<id>.json` is machine-authored:
+`data/snapshots/github/<id>.json` is machine-authored. It carries repository,
+activity, community, license, and refresh state, including:
 
-```ts
-interface RepositorySnapshot {
-  schema_version: 1;
-  project_id: string;
-  repository: {
-    owner: string;
-    name: string;
-    url: string;
-    default_branch: string;
-    archived: boolean;
-    size_kb: number;
-  };
-  activity: {
-    last_meaningful_commit_at: string | null;
-    active_weeks_12: number;
-    meaningful_commits_30d: number;
-    meaningful_commits_90d: number;
-    additions_90d: number;
-    deletions_90d: number;
-    release_at: string | null;
-  };
-  community: {
-    stargazers_count: number;
-    forks_count: number;
-    subscribers_count: number;
-    aggregate: number;
-  };
-  license: {
-    status: "osi-approved" | "proprietary" | "missing";
-    spdx_id: string | null;
-    source_path: string | null;
-  };
-  refreshed_at: string;
-  stale_since: string | null;
-}
-```
+- `source_health: "healthy" | "unavailable" | "identity-change" | "deleted" | "private"`;
+- `repository.id`, the immutable GitHub repository ID used for backfill;
+- `refreshed_at`; and
+- `stale_since`.
 
 Meaningful activity excludes documentation-only, lockfile-only, generated,
 vendored, formatting-only, and merge-only changes. The refresh script records
@@ -689,7 +626,9 @@ The browser-ready card record has already-computed display facts, including:
 - relative-time timestamp source;
 - community aggregate;
 - repository or artifact size;
-- catalog refresh timestamp.
+- catalog refresh timestamp;
+- `metadataStatus`; and
+- source state derived as healthy, stale, pending, or manual.
 
 Use this stable boundary between the build pipeline and React:
 
@@ -698,20 +637,24 @@ interface CatalogProject {
   id: string;
   name: string;
   kind: ProjectKind;
+  metadataStatus: MetadataStatus;
   primaryFunction: PrimaryFunction;
   summary: string;
   canonicalUrl: string;
-  acceptedAt: string;
-  lifecycle: ProjectRecord["lifecycle"];
+  catalogedAt: string;
+  catalogCohort: "seed";
   frontends: Array<{ id: string; label: string }>;
   capabilities: Array<{ id: string; label: string }>;
   searchableText: string;
+  sourceStatus: "healthy" | "stale" | "pending" | "manual";
   activity: {
-    lastMeaningfulCommitAt: string | null;
+    latestMeaningfulCommitAt: string | null;
     activeWeeks12: number | null;
-    sparklineBars: [number, number, number, number, number, number] | null;
-    latestReleaseAt: string | null;
+    twoWeekBars: [number, number, number, number, number, number] | null;
+    strength: number | null;
+    dormant: boolean;
   };
+  latestReleaseAt: string | null;
   community: {
     stars: number;
     forks: number;
@@ -729,7 +672,7 @@ interface CatalogProject {
     publishedAt: string | null;
     artifactSizeBytes: number | null;
   } | null;
-  refreshedAt: string;
+  refreshedAt: string | null;
   staleSince: string | null;
 }
 ```
@@ -1057,7 +1000,6 @@ separate group so framework changes receive deliberate review.
 
 **Files:**
 
-- Move: `data/catalog/projects.json` to `data/intake/projects.json`
 - Create: `data/schemas/project.schema.json`
 - Create: `data/schemas/repository-snapshot.schema.json`
 - Create: `data/vocabularies/frontends.json`
@@ -1071,7 +1013,7 @@ separate group so framework changes receive deliberate review.
 
 **Interfaces:**
 
-- Consumes: candidate records from `data/intake/projects.json`.
+- Consumes: historical intake records from `data/catalog/projects.json`.
 - Produces: validated per-project registry records and the generated browser
   catalog consumed by `src/app/page.tsx`.
 
@@ -1080,10 +1022,10 @@ separate group so framework changes receive deliberate review.
   canonical URLs.
 - [ ] Run the tests and confirm the candidate intake cannot yet masquerade as
   complete canonical records.
-- [ ] Implement the one-time migration command so it creates deterministic,
-  sorted `<id>.json` files without deleting the intake source.
-- [ ] Convert only records that satisfy the canonical schema; leave unresolved
-  candidates in intake with their original status.
+- [ ] Implement the deterministic migration audit so it creates or verifies the
+  sorted `<id>.json` registry records without deleting the intake source.
+- [ ] Preserve `data/catalog/projects.json` as historical intake; do not make it
+  the runtime source of truth.
 - [ ] Implement cross-record checks for duplicate IDs, duplicate canonical
   sources, unknown frontend IDs, and invalid relationship targets.
 - [ ] Implement `catalog:build` to join curated records and snapshots, sort
