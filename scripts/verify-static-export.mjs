@@ -25,6 +25,16 @@ export function verifyStaticExport(html, basePath = "") {
   }
 
   if (!basePath) {
+    const rootAsset =
+      html.includes('href="/_next/') || html.includes('src="/_next/');
+    const prefixedAsset = /(?:href|src)="\/(?!_next\/)[^"]+\/_next\//.test(
+      html,
+    );
+    if (!rootAsset || prefixedAsset) {
+      throw new Error(
+        "Static export does not contain root-relative Next.js asset URLs",
+      );
+    }
     return;
   }
 

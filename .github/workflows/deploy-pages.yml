@@ -17,6 +17,8 @@ concurrency:
 
 jobs:
   build:
+    env:
+      TAVERNARY_BASE_PATH: ""
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
