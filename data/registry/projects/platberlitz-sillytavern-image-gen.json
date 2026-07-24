@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "platberlitz-sillytavern-image-gen",
   "name": "SillyTavern Image Gen",
   "kind": "extension",
   "summary": "Adds configurable image generation workflows to supported AI roleplay frontends.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "platberlitz/sillytavern-image-gen",

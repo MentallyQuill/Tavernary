@@ -10,6 +10,7 @@
     "name",
     "kind",
     "summary",
+    "metadata_status",
     "source",
     "frontends",
     "primary_function",
@@ -20,11 +21,12 @@
     "refresh_policy"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "const": 2 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
     "summary": { "type": "string", "minLength": 1 },
+    "metadata_status": { "enum": ["provisional", "curated"] },
     "source": {
       "oneOf": [
         {
@@ -37,7 +39,25 @@
               "type": "string",
               "pattern": "^[^/\\s]+/[^/\\s]+$"
             },
-            "repository_id": { "type": "integer", "minimum": 1 }
+            "repository_id": {
+              "anyOf": [
+                { "type": "integer", "minimum": 1 },
+                { "type": "null" }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "organization", "url"],
+          "properties": {
+            "type": { "const": "github-organization" },
+            "organization": {
+              "type": "string",
+              "pattern": "^[^/\\s]+$"
+            },
+            "url": { "type": "string", "format": "uri" }
           }
         },
         {
@@ -71,7 +91,7 @@
               "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
             },
             "license_status": {
-              "enum": ["osi-approved", "proprietary", "missing"]
+              "enum": ["osi-approved", "proprietary", "missing", "pending"]
             },
             "license_spdx_id": {
               "anyOf": [
@@ -96,7 +116,8 @@
         "character-worldbuilding",
         "rpg-systems",
         "interface-workflow",
-        "developer-infrastructure"
+        "developer-infrastructure",
+        "uncategorized"
       ]
     },
     "capabilities": {

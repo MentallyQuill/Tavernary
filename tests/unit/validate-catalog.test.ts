@@ -3,11 +3,12 @@ import { describe, expect, test } from "vitest";
 import { validateCatalog } from "../../scripts/catalog/validate.mjs";
 
 const validRecord = {
-  schema_version: 1,
+  schema_version: 2,
   id: "valid-preset",
   name: "Valid Preset",
   kind: "preset",
   summary: "A valid test fixture.",
+  metadata_status: "curated",
   source: {
     type: "github",
     repository: "example/valid-preset",
@@ -33,11 +34,12 @@ describe("catalog validation", () => {
     const result = await validateCatalog({
       records: [
         {
-          schema_version: 1,
+          schema_version: 2,
           id: "bad-extension",
           name: "Bad Extension",
           kind: "extension",
           summary: "Invalid source fixture.",
+          metadata_status: "curated",
           source: { type: "url", url: "https://example.com/tool" },
           frontends: ["sillytavern"],
           primary_function: "generation-reasoning",
@@ -50,9 +52,7 @@ describe("catalog validation", () => {
       ],
     });
 
-    expect(result.errors).toContain(
-      "bad-extension: extension requires source.type github",
-    );
+    expect(result.errors).toContain("bad-extension: extension requires a GitHub source");
   });
 
   test("rejects duplicate identities and canonical sources", async () => {
@@ -92,7 +92,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "bad-vocabulary: GitHub source requires permanent repository_id",
+      "bad-vocabulary: curated GitHub source requires permanent repository_id",
     );
     expect(result.errors).toContain(
       "bad-vocabulary: unknown frontend unknown-frontend",
@@ -102,6 +102,96 @@ describe("catalog validation", () => {
     );
     expect(result.errors).toContain(
       "bad-vocabulary: unknown capability unknown-capability",
+    );
+  });
+
+  test("accepts provisional GitHub null identity and uncategorized metadata", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "provisional-github",
+          metadata_status: "provisional",
+          primary_function: "uncategorized",
+          source: {
+            type: "github",
+            repository: "example/provisional-github",
+            repository_id: null,
+          },
+        },
+      ],
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.snapshotCount).toBe(0);
+  });
+
+  test("rejects curated GitHub null identity", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          source: {
+            type: "github",
+            repository: "example/valid-preset",
+            repository_id: null,
+          },
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: curated GitHub source requires permanent repository_id",
+    );
+  });
+
+  test("accepts the paused provisional Tavern RPG Suite organization", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "tavern-rpg-suite",
+          name: "Tavern RPG Suite",
+          kind: "extension",
+          metadata_status: "provisional",
+          primary_function: "uncategorized",
+          refresh_policy: "paused",
+          source: {
+            type: "github-organization",
+            organization: "tavern-rpg",
+            url: "https://github.com/tavern-rpg",
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
+  test("rejects other github organizations", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "another-organization",
+          name: "Another Organization",
+          kind: "extension",
+          metadata_status: "provisional",
+          primary_function: "uncategorized",
+          refresh_policy: "paused",
+          source: {
+            type: "github-organization",
+            organization: "someone-else",
+            url: "https://github.com/someone-else",
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toContain(
+      "another-organization: github-organization is reserved for tavern-rpg-suite",
     );
   });
 

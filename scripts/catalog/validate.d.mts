@@ -6,4 +6,5 @@ export interface ValidationResult {
 
 export function validateCatalog(options?: {
   records?: unknown[];
+  snapshots?: unknown[];
 }): Promise<ValidationResult>;
