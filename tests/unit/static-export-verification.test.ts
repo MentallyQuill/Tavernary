@@ -5,6 +5,15 @@ import { verifyStaticExport } from "../../scripts/verify-static-export.mjs";
 const heading = "<h1>5 projects</h1>";
 
 describe("verifyStaticExport", () => {
+  test("accepts a catalog heading split by React server-rendering comments", () => {
+    expect(() =>
+      verifyStaticExport(
+        '<h1>5<!-- --> <!-- -->projects</h1><script src="/_next/static/app.js"></script>',
+        "",
+      ),
+    ).not.toThrow();
+  });
+
   test("accepts root Next assets when no base path is configured", () => {
     expect(() =>
       verifyStaticExport(

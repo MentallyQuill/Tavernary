@@ -14,7 +14,13 @@ export function configuredBasePath(environment = process.env) {
 }
 
 export function verifyStaticExport(html, basePath = "") {
-  if (!html.includes("5 projects")) {
+  const renderedText = html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!renderedText.includes("5 projects")) {
     throw new Error("Static export does not contain the catalog heading");
   }
 

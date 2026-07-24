@@ -1,0 +1,204 @@
+"use client";
+
+import { CategoryIcon } from "@/components/icons/category-icon";
+import type {
+  CatalogKind,
+  CatalogQuery,
+  DevelopmentFilter,
+  LicenseFilter,
+} from "../catalog-query";
+import type { CatalogProject } from "../catalog-types";
+
+type FilterArray =
+  "frontends" | "kinds" | "capabilities" | "development" | "licenses";
+
+const kindOptions: Array<{ id: CatalogKind; label: string }> = [
+  { id: "frontend", label: "Frontend" },
+  { id: "extension", label: "Extension" },
+  { id: "preset", label: "System Preset" },
+];
+const developmentOptions: Array<{
+  id: DevelopmentFilter;
+  label: string;
+}> = [
+  { id: "active-month", label: "Active this month" },
+  { id: "new-release", label: "Recently released" },
+  { id: "dormant", label: "Dormant" },
+];
+const licenseOptions: Array<{ id: LicenseFilter; label: string }> = [
+  { id: "open-source", label: "Open source" },
+  { id: "proprietary", label: "Proprietary" },
+  { id: "missing", label: "Missing license" },
+];
+
+function uniqueLabels(
+  projects: CatalogProject[],
+  property: "frontends" | "capabilities",
+) {
+  const values = new Map<string, string>();
+  for (const project of projects) {
+    for (const item of project[property]) {
+      values.set(item.id, item.label);
+    }
+  }
+  return [...values]
+    .map(([id, label]) => ({ id, label }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function countFor(
+  projects: CatalogProject[],
+  group: FilterArray,
+  value: string,
+) {
+  return projects.filter((project) => {
+    if (group === "frontends" || group === "capabilities") {
+      return project[group].some(({ id }) => id === value);
+    }
+    if (group === "kinds") {
+      return project.kind === value;
+    }
+    if (group === "development") {
+      if (value === "dormant") return project.activity.dormant;
+      if (value === "active-month")
+        return project.activity.latestMeaningfulCommitAt !== null;
+      return (
+        project.latestReleaseAt !== null || project.preset?.publishedAt !== null
+      );
+    }
+    if (value === "open-source")
+      return project.license.status === "osi-approved";
+    if (value === "proprietary")
+      return project.license.status === "proprietary";
+    return project.license.status === "missing";
+  }).length;
+}
+
+function FilterGroup({
+  title,
+  group,
+  options,
+  selected,
+  projects,
+  onToggle,
+}: {
+  title: string;
+  group: FilterArray;
+  options: Array<{ id: string; label: string }>;
+  selected: string[];
+  projects: CatalogProject[];
+  onToggle: (group: FilterArray, value: string) => void;
+}) {
+  return (
+    <fieldset className="filter-group">
+      <legend>{title}</legend>
+      {options.map((option) => (
+        <label key={option.id}>
+          <input
+            type="checkbox"
+            aria-label={option.label}
+            checked={selected.includes(option.id)}
+            onChange={() => onToggle(group, option.id)}
+          />
+          <span>{option.label}</span>
+          <b>{countFor(projects, group, option.id)}</b>
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+
+export function FilterPanel({
+  query,
+  projects,
+  onToggle,
+  mobile = false,
+  onClose,
+}: {
+  query: CatalogQuery;
+  projects: CatalogProject[];
+  onToggle: (group: FilterArray, value: string) => void;
+  mobile?: boolean;
+  onClose?: () => void;
+}) {
+  const content = (
+    <>
+      {mobile ? (
+        <div className="filter-sheet-heading">
+          <div>
+            <small>Refine catalog</small>
+            <h2>Filters</h2>
+          </div>
+          <button type="button" aria-label="Close filters" onClick={onClose}>
+            <CategoryIcon name="close" />
+          </button>
+        </div>
+      ) : (
+        <div className="filter-panel-title">
+          <CategoryIcon name="filter" />
+          <span>Filter projects</span>
+        </div>
+      )}
+      <FilterGroup
+        title="Frontends"
+        group="frontends"
+        options={uniqueLabels(projects, "frontends")}
+        selected={query.frontends}
+        projects={projects}
+        onToggle={onToggle}
+      />
+      <FilterGroup
+        title="Project type"
+        group="kinds"
+        options={kindOptions}
+        selected={query.kinds}
+        projects={projects}
+        onToggle={onToggle}
+      />
+      <FilterGroup
+        title="Capabilities"
+        group="capabilities"
+        options={uniqueLabels(projects, "capabilities")}
+        selected={query.capabilities}
+        projects={projects}
+        onToggle={onToggle}
+      />
+      <FilterGroup
+        title="Development"
+        group="development"
+        options={developmentOptions}
+        selected={query.development}
+        projects={projects}
+        onToggle={onToggle}
+      />
+      <FilterGroup
+        title="License"
+        group="licenses"
+        options={licenseOptions}
+        selected={query.licenses}
+        projects={projects}
+        onToggle={onToggle}
+      />
+    </>
+  );
+
+  if (mobile) {
+    return (
+      <div className="filter-overlay" onMouseDown={onClose}>
+        <section
+          className="filter-sheet"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Filters"
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {content}
+        </section>
+      </div>
+    );
+  }
+
+  return <aside className="filter-panel">{content}</aside>;
+}
+
+export type { FilterArray };

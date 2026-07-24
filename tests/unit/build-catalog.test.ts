@@ -71,3 +71,13 @@ test("excludes curator and source quarantine states", async () => {
   });
   expect(catalog.projects).toEqual([]);
 });
+
+test("uses source timestamps for deterministic generated output", async () => {
+  const catalog = await buildCatalog({
+    write: false,
+    records: [fixtureProject()],
+    snapshots: [],
+  });
+
+  expect(catalog.generatedAt).toBe("2026-07-23T00:00:00.000Z");
+});

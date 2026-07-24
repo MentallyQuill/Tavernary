@@ -1,0 +1,257 @@
+@media (max-width: 1180px) {
+  .site-header {
+    grid-template-columns: auto minmax(240px, 1fr) auto;
+    gap: 18px;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .header-links {
+    gap: 13px;
+  }
+
+  .header-links a:not(.submit-link) {
+    font-size: 12px;
+  }
+
+  .catalog-layout {
+    grid-template-columns: 205px minmax(0, 1fr);
+    gap: 19px;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repository-size {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --header-height: 126px;
+  }
+
+  .site-header {
+    grid-template-columns: 1fr auto;
+    gap: 10px 12px;
+    padding: 12px 16px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 40px;
+  }
+
+  .brand-mark svg {
+    width: 31px;
+    height: 38px;
+  }
+
+  .brand-name {
+    font-size: 23px;
+  }
+
+  .header-links {
+    gap: 8px;
+  }
+
+  .header-links a {
+    display: block;
+    font-size: 9px;
+  }
+
+  .header-links .submit-link {
+    padding: 8px;
+    font-size: 10px;
+  }
+
+  .site-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+  }
+
+  .site-search kbd {
+    display: none;
+  }
+
+  .category-navigation {
+    display: none;
+  }
+
+  .mobile-category {
+    position: relative;
+    z-index: 18;
+    display: block;
+    border-bottom: 1px solid var(--color-border);
+    padding: 10px 16px;
+    background: var(--color-surface-primary);
+  }
+
+  .mobile-category-trigger,
+  .mobile-category-menu button {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    padding: 9px 11px;
+    color: var(--color-text-primary);
+    background: #0e282f;
+    text-align: left;
+  }
+
+  .mobile-category-trigger svg,
+  .mobile-category-menu svg {
+    width: 19px;
+  }
+
+  .mobile-category-trigger span {
+    display: grid;
+    gap: 2px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .mobile-category-trigger small {
+    color: var(--color-muted);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .mobile-category-trigger b,
+  .mobile-category-menu b {
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+
+  .mobile-category-menu {
+    position: absolute;
+    top: calc(100% - 5px);
+    right: 16px;
+    left: 16px;
+    display: grid;
+    gap: 4px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 8px;
+    padding: 7px;
+    background: #0a2026;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .mobile-category-menu button {
+    border-color: transparent;
+    padding: 9px;
+    cursor: pointer;
+    font-size: 11px;
+  }
+
+  .mobile-category-menu button.active,
+  .mobile-category-menu button:hover {
+    border-color: var(--color-border);
+    background: var(--color-surface-raised);
+  }
+
+  .catalog-layout {
+    display: block;
+    padding: 15px 14px 50px;
+  }
+
+  .filter-panel {
+    display: none;
+  }
+
+  .catalog-toolbar {
+    min-height: 87px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-bottom: 9px;
+  }
+
+  .catalog-heading h1 {
+    font-size: 21px;
+  }
+
+  .catalog-controls {
+    width: 100%;
+    gap: 7px;
+    order: 3;
+  }
+
+  .filter-toggle {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .view-tabs {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .view-tabs button {
+    min-width: 0;
+    flex: 1;
+    padding: 10px 5px;
+    font-size: 9px;
+  }
+
+  .sort-projects {
+    width: 96px;
+    padding-right: 22px;
+    font-size: 9px;
+  }
+
+  .project-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .project-card {
+    min-height: 226px;
+    padding: 15px 15px 13px;
+  }
+
+  .development {
+    gap: 6px;
+  }
+
+  .community,
+  .repository-size {
+    display: none;
+  }
+
+  .filter-overlay {
+    display: flex;
+  }
+
+  .sheet-open {
+    overflow: hidden;
+  }
+
+  .tooltip-content {
+    display: none;
+  }
+}
+
+@media (max-width: 410px) {
+  .activity-bars {
+    display: none;
+  }
+
+  .project-card h2 {
+    font-size: 19px;
+  }
+
+  .card-summary {
+    font-size: 11px;
+  }
+}

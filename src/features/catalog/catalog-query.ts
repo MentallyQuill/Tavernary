@@ -31,6 +31,37 @@ export const DEFAULT_QUERY: CatalogQuery = {
   licenses: [],
 };
 
+export const CATEGORY_OPTIONS = [
+  { id: "", label: "All projects", shortLabel: "All" },
+  { id: "frontend", label: "Frontends", shortLabel: "Frontends" },
+  {
+    id: "memory-retrieval",
+    label: "Memory and retrieval",
+    shortLabel: "Memory",
+  },
+  {
+    id: "generation-reasoning",
+    label: "Generation and reasoning",
+    shortLabel: "Generation",
+  },
+  {
+    id: "character-worldbuilding",
+    label: "Character and worldbuilding",
+    shortLabel: "Authoring",
+  },
+  { id: "rpg-systems", label: "RPG systems and suites", shortLabel: "RPG" },
+  {
+    id: "interface-workflow",
+    label: "Interface and workflow",
+    shortLabel: "Interface",
+  },
+  {
+    id: "developer-infrastructure",
+    label: "Developer infrastructure",
+    shortLabel: "Developer",
+  },
+] as const;
+
 const validCategories = new Set([
   "frontend",
   "memory-retrieval",

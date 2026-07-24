@@ -237,9 +237,20 @@ export async function buildCatalog(options = {}) {
   }
 
   projects.sort((left, right) => left.id.localeCompare(right.id));
+  const sourceTimestamps = [
+    ...records.map((record) => record.cataloged_at),
+    ...snapshots.map((snapshot) => snapshot.refreshed_at),
+  ].filter(Boolean);
+  const generatedAt =
+    options.now ??
+    sourceTimestamps
+      .map((timestamp) => new Date(timestamp).getTime())
+      .filter(Number.isFinite)
+      .sort((left, right) => right - left)[0] ??
+    0;
   const catalog = {
     schemaVersion: 1,
-    generatedAt: new Date(options.now ?? Date.now()).toISOString(),
+    generatedAt: new Date(generatedAt).toISOString(),
     projects,
   };
 
