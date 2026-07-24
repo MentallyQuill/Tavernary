@@ -1,0 +1,58 @@
+name: Apply approved Kit submission
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Approved Kit submission issue number
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: kit-registry
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Re-fetch, revalidate, and apply approved issue
+        run: node scripts/kits/apply-submission.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+      - name: Validate publication
+        run: |
+          npm run catalog:validate
+          npm run catalog:build
+          npm test
+      - name: Commit canonical Kit
+        run: |
+          git add data/registry/kits
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "feat(kits): publish issue #${{ inputs.issue_number }}"
+          git push
+      - name: Mark issue published
+        run: gh issue edit "${{ inputs.issue_number }}" --add-label kit-published
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy updated catalog
+        run: gh workflow run deploy-pages.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

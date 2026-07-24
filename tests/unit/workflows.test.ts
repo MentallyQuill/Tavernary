@@ -34,6 +34,8 @@ test("pins every first-party action to its resolved commit", async () => {
     "refresh-catalog",
     "triage-submission",
     "triage-kit-submission",
+    "apply-kit-submission",
+    "apply-kit-withdrawal",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -42,6 +44,47 @@ test("pins every first-party action to its resolved commit", async () => {
       expect(sha).toMatch(/^[a-f0-9]{40}$/);
     }
   }
+});
+
+test("publishes Kits only by manual dispatch and serializes registry writes", async () => {
+  const publication = await workflow("apply-kit-submission");
+  const withdrawal = await workflow("apply-kit-withdrawal");
+  const publicationSource = await readFile(
+    resolve(workflowDirectory, "apply-kit-submission.yml"),
+    "utf8",
+  );
+  const withdrawalSource = await readFile(
+    resolve(workflowDirectory, "apply-kit-withdrawal.yml"),
+    "utf8",
+  );
+  expect(publication.on.workflow_dispatch.inputs.issue_number.required).toBe(
+    true,
+  );
+  expect(publication.on.issues).toBeUndefined();
+  expect(withdrawal.on.issues.types).toEqual(["opened", "edited"]);
+  for (const document of [publication, withdrawal]) {
+    expect(document.permissions).toEqual({
+      contents: "write",
+      issues: "write",
+      actions: "write",
+    });
+    expect(document.concurrency).toEqual({
+      group: "kit-registry",
+      "cancel-in-progress": false,
+    });
+  }
+  expect(publicationSource.indexOf("catalog:validate")).toBeLessThan(
+    publicationSource.indexOf("git add"),
+  );
+  expect(withdrawalSource.indexOf("catalog:validate")).toBeLessThan(
+    withdrawalSource.indexOf("git add"),
+  );
+  expect(publicationSource).toContain("kit-published");
+  expect(publicationSource).toContain("workflow run deploy-pages.yml");
+  expect(withdrawalSource).toContain("github.event.issue.user.id");
+  expect(withdrawalSource).not.toMatch(
+    /github\.event\.issue\.user\.login\s*==/,
+  );
 });
 
 test("keeps CI read-only and runs every local gate", async () => {
