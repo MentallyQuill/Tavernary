@@ -30,7 +30,7 @@ const output = {
   metadata_status: "curated",
   primary_function: "developer-infrastructure",
   capabilities: ["automation"],
-};
+} as const;
 
 test("atomically merges only editorial enrichment fields", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
@@ -58,7 +58,7 @@ test("refuses invalid output without changing the record", async () => {
     writeEnrichedRecord(path, record, {
       ...output,
       metadata_status: "provisional",
-    }),
+    } as never),
   ).rejects.toThrow();
   expect(await readFile(path, "utf8")).toBe(original);
 });

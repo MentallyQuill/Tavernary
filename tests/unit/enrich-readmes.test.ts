@@ -55,6 +55,8 @@ test("passes both source fields and only allowed vocabulary entries to provider"
     },
   );
 
+  expect(output).not.toBeNull();
+  if (!output) return;
   expect(output.metadata_status).toBe("curated");
   expect(output.primary_function).toBe("developer-infrastructure");
   expect(generate).toHaveBeenCalledWith(
