@@ -13,6 +13,8 @@ import { dirname, resolve } from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { format } from "prettier";
+
 import {
   calculateActivity,
   classifyCommit,
@@ -59,8 +61,15 @@ async function writeSnapshot(projectId, snapshot) {
   });
   const path = snapshotPath(projectId);
   const temporaryPath = `${path}.tmp`;
-  await writeFile(temporaryPath, `${JSON.stringify(snapshot, null, 2)}\n`);
+  await writeFile(temporaryPath, await formatSnapshot(snapshot));
   await rename(temporaryPath, path);
+}
+
+export async function formatSnapshot(snapshot) {
+  return format(JSON.stringify(snapshot), {
+    parser: "json",
+    filepath: "snapshot.json",
+  });
 }
 
 function githubHeaders() {
