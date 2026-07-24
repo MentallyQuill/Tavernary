@@ -10,9 +10,7 @@
     "repository": "MentallyQuill/Recursion",
     "repository_id": 1285208664
   },
-  "frontends": [
-    "sillytavern"
-  ],
+  "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
   "capabilities": [
     "planning-reasoning",

@@ -14,9 +14,7 @@
     "license_status": "pending",
     "license_spdx_id": null
   },
-  "frontends": [
-    "sillytavern"
-  ],
+  "frontends": ["sillytavern"],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",

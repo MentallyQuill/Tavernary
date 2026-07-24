@@ -10,10 +10,7 @@
     "repository": "mangkoodkung/another-universe",
     "repository_id": null
   },
-  "frontends": [
-    "sillytavern",
-    "marinara-engine"
-  ],
+  "frontends": ["sillytavern", "marinara-engine"],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",

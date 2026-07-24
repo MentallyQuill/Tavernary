@@ -10,16 +10,9 @@
     "repository": "platberlitz/sillytavern-image-gen",
     "repository_id": 1132564534
   },
-  "frontends": [
-    "sillytavern",
-    "marinara-engine"
-  ],
+  "frontends": ["sillytavern", "marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "image-generation",
-    "multi-frontend",
-    "automation"
-  ],
+  "capabilities": ["image-generation", "multi-frontend", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

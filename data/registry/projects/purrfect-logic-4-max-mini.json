@@ -14,14 +14,9 @@
     "license_status": "missing",
     "license_spdx_id": null
   },
-  "frontends": [
-    "sillytavern"
-  ],
+  "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "capabilities": [
-    "prompt-engineering",
-    "instruction-control"
-  ],
+  "capabilities": ["prompt-engineering", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -10,9 +10,7 @@
     "repository": "N0819/Sonder_Engine",
     "repository_id": null
   },
-  "frontends": [
-    "sonder-engine"
-  ],
+  "frontends": ["sonder-engine"],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",

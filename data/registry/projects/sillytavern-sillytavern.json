@@ -10,9 +10,7 @@
     "repository": "SillyTavern/SillyTavern",
     "repository_id": 599524116
   },
-  "frontends": [
-    "sillytavern"
-  ],
+  "frontends": ["sillytavern"],
   "primary_function": "frontend",
   "capabilities": [
     "character-worldbuilding",

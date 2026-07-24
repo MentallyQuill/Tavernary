@@ -10,9 +10,7 @@
     "repository": "Mitaska/WeatherTweaker",
     "repository_id": null
   },
-  "frontends": [
-    "marinara-engine"
-  ],
+  "frontends": ["marinara-engine"],
   "primary_function": "uncategorized",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
