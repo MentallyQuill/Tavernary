@@ -27,11 +27,7 @@
     "subscribers_count": 12,
     "aggregate": 189
   },
-  "license": {
-    "status": "missing",
-    "spdx_id": null,
-    "source_path": null
-  },
-  "refreshed_at": "2026-07-24T00:03:16.931Z",
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-24T03:27:43.434Z",
   "stale_since": null
 }
