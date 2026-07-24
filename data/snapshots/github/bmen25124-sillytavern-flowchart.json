@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-flowchart",
+  "repository": {
+    "id": 1073040696,
+    "owner": "bmen25124",
+    "name": "SillyTavern-Flowchart",
+    "url": "https://github.com/bmen25124/SillyTavern-Flowchart",
+    "default_branch": "main",
+    "head_sha": "b7c091b0ba227df5913453c311bdf264d7c454be",
+    "archived": false,
+    "created_at": "2025-10-09T14:41:10Z",
+    "size_kb": 8945
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_meaningful_commit_at": "2026-06-09T01:32:07.000Z",
+    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+    "active_weeks_12": 1,
+    "strength": 602,
+    "dormant": false,
+    "latest_release_at": null
+  },
+  "community": {
+    "stargazers_count": 42,
+    "forks_count": 1,
+    "subscribers_count": 3,
+    "aggregate": 46
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-24T19:05:59.128Z",
+  "stale_since": null
+}
