@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   DEFAULT_QUERY,
-  serializeCatalogQuery,
   type CatalogQuery,
 } from "@/features/catalog/catalog-query";
 import { selectProjects } from "@/features/catalog/catalog-selectors";
@@ -13,6 +12,9 @@ import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { KitGrid } from "@/features/kits/components/kit-grid";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
+import { copyKitLink } from "@/features/kits/share-kit";
+import { KitWorkspace } from "@/features/kits/components/kit-workspace";
+import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
@@ -41,6 +43,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
+  const workspace = useKitWorkspace({
+    selectedKitId: query.selectedKitId,
+    onSelectKit: (selectedKitId) =>
+      setQuery((current) => ({
+        ...current,
+        mode: "kits",
+        selectedKitId,
+      })),
+  });
   const selectedProjects = useMemo(
     () => selectProjects(catalog.projects, query, context),
     [catalog.projects, context, query],
@@ -49,6 +60,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     () => selectKits(catalog.kits, query.kits, query.search),
     [catalog.kits, query.kits, query.search],
   );
+  const inspectedKitId =
+    workspace.state.mode === "inspect" ? workspace.state.kitId : null;
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -210,15 +223,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       density: current.density,
       kits: current.kits,
     }));
-  const copyKitLink = (kitId: string) => {
-    const url = new URL(window.location.href);
-    url.search = serializeCatalogQuery({
-      ...query,
-      mode: "kits",
-      selectedKitId: kitId,
-    });
-    void navigator.clipboard?.writeText(url.toString());
-  };
   const reportKit = (kitId: string) => {
     const url = new URL("https://github.com/tavernary/tavernary/issues/new");
     url.searchParams.set("template", "06-kit-report.yml");
@@ -291,10 +295,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               kits={selectedKits}
               now={catalog.generatedAt}
               selectedKitId={query.selectedKitId}
-              onSelect={(selectedKitId) =>
-                update("selectedKitId", selectedKitId)
-              }
-              onCopyLink={copyKitLink}
+              onSelect={workspace.selectKit}
+              onCopyLink={(kitId) => void copyKitLink(kitId)}
               onReport={reportKit}
             />
           ) : (
@@ -304,6 +306,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             />
           )}
         </main>
+        <KitWorkspace
+          state={workspace.state}
+          kit={
+            inspectedKitId
+              ? (catalog.kits.find(({ id }) => id === inspectedKitId) ?? null)
+              : null
+          }
+          onCollapse={workspace.toggleCollapsed}
+        />
       </div>
       {filtersOpen ? (
         query.mode === "kits" ? (

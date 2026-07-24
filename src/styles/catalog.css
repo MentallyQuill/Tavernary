@@ -244,9 +244,13 @@
 
 .catalog-layout {
   display: grid;
-  grid-template-columns: 238px minmax(0, 1fr);
+  grid-template-columns: 238px minmax(0, 1fr) minmax(280px, 340px);
   min-height: calc(100vh - 116px);
   padding: 0;
+}
+
+.catalog-layout:has(> .kit-workspace.collapsed) {
+  grid-template-columns: 238px minmax(0, 1fr) 48px;
 }
 
 .filter-panel {
@@ -1287,4 +1291,120 @@
   border-radius: 6px;
   color: var(--color-text-primary);
   background: var(--color-surface-primary);
+}
+
+.kit-workspace {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  min-width: 0;
+  height: calc(100vh - 116px);
+  padding: 18px;
+  overflow: auto;
+  border-left: 1px solid var(--color-border);
+  background: var(--color-surface-primary);
+}
+
+.kit-workspace.collapsed {
+  display: grid;
+  width: 48px;
+  min-width: 48px;
+  padding: 8px;
+  place-items: start center;
+}
+
+.kit-workspace.collapsed button {
+  writing-mode: vertical-rl;
+}
+
+.kit-workspace-header,
+.kit-workspace-actions,
+.kit-project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kit-workspace-header {
+  margin-bottom: 18px;
+  color: var(--color-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.kit-workspace-header button,
+.kit-workspace-actions button,
+.kit-workspace-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-card);
+  text-decoration: none;
+}
+
+.kit-workspace-header svg,
+.kit-workspace-actions svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kit-workspace h2 {
+  color: var(--color-text-primary);
+}
+
+.kit-workspace p {
+  color: var(--color-text-secondary);
+}
+
+.kit-workspace-actions {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 14px 0;
+}
+
+.kit-project-stack {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-project-stack > li {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-card);
+}
+
+.kit-project-row {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  color: var(--color-text-primary);
+  text-align: left;
+  background: transparent;
+}
+
+.kit-project-row > span:first-child {
+  display: grid;
+}
+
+.kit-project-row small,
+.kit-project-row em {
+  color: var(--color-muted);
+  font-size: 10px;
+}
+
+.kit-project-stack > li.flagged {
+  opacity: 0.72;
+}
+
+.kit-project-details {
+  padding: 0 10px 10px;
+  border-top: 1px solid var(--color-border);
 }
