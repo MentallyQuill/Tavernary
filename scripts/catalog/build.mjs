@@ -17,12 +17,20 @@ async function readJsonDirectory(path) {
   return Promise.all(files.map((file) => readJson(`${path}/${file}`)));
 }
 
-function labelsById(vocabulary, property) {
-  return new Map(vocabulary[property].map((item) => [item.id, item.label]));
+function entriesById(vocabulary, property) {
+  return new Map(vocabulary[property].map((item) => [item.id, item]));
 }
 
-function labeled(ids, labels) {
-  return ids.map((id) => ({ id, label: labels.get(id) ?? id }));
+function labeled(ids, entries) {
+  return ids.map((id) => {
+    const entry = entries.get(id);
+    return {
+      id,
+      label: entry?.label ?? id,
+      description:
+        entry?.description ?? `Catalog metadata: ${entry?.label ?? id}.`,
+    };
+  });
 }
 
 function twoWeekBars(weeks) {
@@ -73,7 +81,7 @@ function githubProject(record, snapshot, vocabularies) {
   const primaryFunction = {
     id: record.primary_function,
     label:
-      vocabularies.primaryFunctions.get(record.primary_function) ??
+      vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
   const searchableText = [
@@ -137,7 +145,7 @@ function urlPreset(record, vocabularies) {
   const primaryFunction = {
     id: record.primary_function,
     label:
-      vocabularies.primaryFunctions.get(record.primary_function) ??
+      vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
   const license = licenseDisplay(
@@ -203,12 +211,12 @@ export async function buildCatalog(options = {}) {
     readJson("data/vocabularies/capabilities.json"),
   ]);
   const vocabularies = {
-    frontends: labelsById(frontendVocabulary, "frontends"),
-    primaryFunctions: labelsById(
+    frontends: entriesById(frontendVocabulary, "frontends"),
+    primaryFunctions: entriesById(
       primaryFunctionVocabulary,
       "primary_functions",
     ),
-    capabilities: labelsById(capabilityVocabulary, "capabilities"),
+    capabilities: entriesById(capabilityVocabulary, "capabilities"),
   };
   const snapshotsByProject = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),

@@ -35,8 +35,9 @@
   }
 
   .brand-logo {
-    width: 41px;
-    height: 55px;
+    width: 31px;
+    height: 41px;
+    transform: translateX(-12px);
   }
 
   .header-actions {
@@ -241,10 +242,6 @@
 
   .sheet-open {
     overflow: hidden;
-  }
-
-  .tooltip-content {
-    display: none;
   }
 }
 

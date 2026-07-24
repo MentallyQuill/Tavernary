@@ -1,0 +1,74 @@
+import { expect, test } from "vitest";
+
+import {
+  APPROVED_HEX,
+  auditProductionPalette,
+  auditSource,
+} from "../../scripts/audit-palette.mjs";
+
+test("accepts the exact production palette and neutral keywords", () => {
+  const source = [
+    ...APPROVED_HEX.map((color) => `.x{color:${color}}`),
+    ".x{color:transparent;fill:currentColor;border-color:inherit}",
+    ".commit-age{color:color-mix(in srgb,var(--color-kind-preset) var(--commit-freshness),var(--color-muted))}",
+    ".tooltip{opacity:0}.tooltip.visible{opacity:1}",
+  ].join("\n");
+
+  expect(auditSource("src/styles/example.css", source)).toEqual([]);
+});
+
+test("ignores color names in prose, selectors, and comments", () => {
+  const source = [
+    'const label = "red tan white";',
+    ".red-card { content: 'white'; }",
+    "/* blue is a project label, not a color declaration */",
+  ].join("\n");
+
+  expect(auditSource("src/components/example.tsx", source)).toEqual([]);
+});
+
+test("ignores color syntax in comments and asset URLs", () => {
+  const source = [
+    "/* #fff rgb(0 0 0) opacity:.5 */",
+    '.hero{background:url("/assets/red-banner.png")}',
+  ].join("\n");
+
+  expect(auditSource("src/styles/example.css", source)).toEqual([]);
+  expect(
+    auditSource(
+      "src/components/example.tsx",
+      "// color: red; #fff rgb(0 0 0) opacity:.5",
+    ),
+  ).toEqual([]);
+});
+
+test("does not mistake an unquoted CSS URL for a line comment", () => {
+  const source = ".x{background:url(https://example.test/a.png) #fff}";
+
+  expect(auditSource("src/styles/example.css", source)).not.toEqual([]);
+});
+
+test.each([
+  ["off-palette hex", ".x{color:#54AD94}"],
+  ["rgb", ".x{color:rgb(7 24 29 / .96)}"],
+  ["rgba", ".x{box-shadow:0 0 2px rgba(0,0,0,.4)}"],
+  ["named color", ".x{color:white}"],
+  ["extra color mix", ".x{color:color-mix(in srgb,red 50%,blue)}"],
+  ["partial opacity", ".x{opacity:.5}"],
+  ["SVG partial opacity", '<path opacity=".5" />'],
+  ["filter opacity", ".x{filter:opacity(.5)}"],
+  ["SVG fill opacity", '<path fillOpacity=".5" />'],
+  ["SVG stroke opacity", '<path stroke-opacity=".5" />'],
+  ["hwb", ".x{color:hwb(0 0% 0%)}"],
+  ["lab", ".x{color:lab(50% 20 30)}"],
+  ["lch", ".x{color:lch(50% 20 30)}"],
+  ["oklab", ".x{color:oklab(50% .1 .1)}"],
+  ["oklch", ".x{color:oklch(50% .1 30)}"],
+  ["color function", ".x{color:color(display-p3 1 0 0)}"],
+])("rejects %s", (_name, source) => {
+  expect(auditSource("src/styles/example.css", source)).not.toEqual([]);
+});
+
+test("finds no unauthorized colors in production sources", async () => {
+  expect(await auditProductionPalette()).toEqual([]);
+});

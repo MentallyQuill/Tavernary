@@ -1,14 +1,54 @@
 {
   "capabilities": [
-    { "id": "automation", "label": "Automation" },
-    { "id": "character-worldbuilding", "label": "Character and worldbuilding" },
-    { "id": "extension-development", "label": "Extension development" },
-    { "id": "image-generation", "label": "Image generation" },
-    { "id": "instruction-control", "label": "Instruction control" },
-    { "id": "model-routing", "label": "Model routing" },
-    { "id": "multi-frontend", "label": "Multiple frontends" },
-    { "id": "planning-reasoning", "label": "Planning and reasoning" },
-    { "id": "prompt-engineering", "label": "Prompt engineering" },
-    { "id": "review-validation", "label": "Review and validation" }
+    {
+      "id": "automation",
+      "label": "Automation",
+      "description": "Automates repeated setup, maintenance, or roleplay tasks."
+    },
+    {
+      "id": "character-worldbuilding",
+      "label": "Character and worldbuilding",
+      "description": "Helps create or manage characters, lore, and fictional worlds."
+    },
+    {
+      "id": "extension-development",
+      "label": "Extension development",
+      "description": "Provides tools or examples for building frontend extensions."
+    },
+    {
+      "id": "image-generation",
+      "label": "Image generation",
+      "description": "Creates or manages images as part of the roleplay experience."
+    },
+    {
+      "id": "instruction-control",
+      "label": "Instruction control",
+      "description": "Controls the instructions and context sent to language models."
+    },
+    {
+      "id": "model-routing",
+      "label": "Model routing",
+      "description": "Routes different tasks or prompts to selected AI models."
+    },
+    {
+      "id": "multi-frontend",
+      "label": "Multiple frontends",
+      "description": "Supports more than one roleplay frontend."
+    },
+    {
+      "id": "planning-reasoning",
+      "label": "Planning and reasoning",
+      "description": "Adds structured planning or reasoning to generated responses."
+    },
+    {
+      "id": "prompt-engineering",
+      "label": "Prompt engineering",
+      "description": "Builds, transforms, or manages prompts sent to AI models."
+    },
+    {
+      "id": "review-validation",
+      "label": "Review and validation",
+      "description": "Reviews generated content or data for quality and consistency."
+    }
   ]
 }

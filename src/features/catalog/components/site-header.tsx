@@ -5,7 +5,7 @@ import { CategoryIcon } from "@/components/icons/category-icon";
 
 const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
 const submissionUrl =
-  "https://github.com/MentallyQuill/Tavernary/issues/new?template=project-submission.yml";
+  "https://github.com/MentallyQuill/Tavernary/issues/new?template=01-project-submission.yml";
 
 export function SiteHeader({
   search,

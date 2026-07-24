@@ -6,6 +6,30 @@ test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
 });
 
+async function expectTooltipInsideViewport(
+  page: import("@playwright/test").Page,
+  trigger: import("@playwright/test").Locator,
+) {
+  await trigger.hover();
+  const id = await trigger.getAttribute("aria-describedby");
+  if (!id) throw new Error("Missing tooltip id");
+  const tooltip = page.locator(`#${id}`);
+  await expect(tooltip).toBeVisible();
+  expect(
+    await tooltip.evaluate(
+      (element) => element.parentElement === document.body,
+    ),
+  ).toBe(true);
+  const box = await tooltip.boundingBox();
+  if (!box) throw new Error("Missing tooltip bounds");
+  const viewport = page.viewportSize();
+  if (!viewport) throw new Error("Missing viewport");
+  expect(box.x).toBeGreaterThanOrEqual(8);
+  expect(box.y).toBeGreaterThanOrEqual(8);
+  expect(box.x + box.width).toBeLessThanOrEqual(viewport.width - 8);
+  expect(box.y + box.height).toBeLessThanOrEqual(viewport.height - 8);
+}
+
 test("uses the approved category strip", async ({ page }) => {
   const metrics = await page.locator(".category-navigation").evaluate((nav) => {
     const active = nav.querySelector("button.active");
@@ -20,6 +44,8 @@ test("uses the approved category strip", async ({ page }) => {
       tracks: navStyle.gridTemplateColumns.split(" ").length,
       activeBorder: activeStyle.borderTopWidth,
       afterContent: afterStyle.content,
+      justifyContent: activeStyle.justifyContent,
+      textAlign: activeStyle.textAlign,
     };
   });
 
@@ -29,6 +55,8 @@ test("uses the approved category strip", async ({ page }) => {
     tracks: 9,
     activeBorder: "1px",
     afterContent: "none",
+    justifyContent: "center",
+    textAlign: "center",
   });
 });
 
@@ -69,6 +97,10 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     sortHeight: 36,
     filterRadius: "0px",
   });
+  const logo = page.locator(".brand-logo");
+  await expect(logo).toHaveCSS("width", "34px");
+  await expect(logo).toHaveCSS("height", "45px");
+  await expect(logo).toHaveCSS("transform", "matrix(1, 0, 0, 1, -12, 0)");
 });
 
 test("uses the approved desktop filter controls", async ({ page }) => {
@@ -106,8 +138,59 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
     .fill("Marinara");
-  await expect(page.getByLabel("Marinara Engine")).toBeVisible();
-  await expect(page.getByLabel("SillyTavern")).toBeHidden();
+  const frontendFilters = page.locator(".filter-panel");
+  await expect(frontendFilters.getByLabel("Marinara Engine")).toBeVisible();
+  await expect(
+    frontendFilters.getByLabel("SillyTavern", { exact: true }),
+  ).toBeHidden();
+});
+
+test("keeps canonical frontends ordered and expands the remainder", async ({
+  page,
+}) => {
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Compatible frontend",
+  });
+  const labels = await group.locator("label").allTextContents();
+  expect(
+    labels.slice(0, 3).map((label) => label.replace(/\d+$/, "").trim()),
+  ).toEqual(["SillyTavern", "Lumiverse", "Marinara Engine"]);
+  await expect(group.getByLabel("Lumiverse")).toBeVisible();
+  await expect(group.getByLabel("Lumiverse").locator("..")).toContainText("0");
+  await expect(group.getByLabel("Sonder Engine")).toBeHidden();
+  await group.getByRole("button", { name: "Show 1 more" }).click();
+  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+  await expect(group.getByRole("button", { name: "Show fewer" })).toBeVisible();
+});
+
+test("search and selected extras bypass frontend collapse", async ({
+  page,
+}) => {
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Compatible frontend",
+  });
+  const search = group.getByRole("searchbox");
+  await search.fill("Sonder");
+  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+  await group.getByLabel("Sonder Engine").check();
+  await search.fill("");
+  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+});
+
+test("themes project-kind checkbox outlines", async ({ page }) => {
+  const expected = {
+    Frontend: "rgb(214, 40, 57)",
+    Extension: "rgb(225, 138, 36)",
+    "System Preset": "rgb(87, 197, 163)",
+  };
+  for (const [name, color] of Object.entries(expected)) {
+    const input = page
+      .locator(".filter-panel")
+      .getByLabel(name, { exact: true });
+    await expect(input).toHaveCSS("border-top-color", color);
+    await input.check();
+    await expect(input).toHaveCSS("background-color", color);
+  }
 });
 
 test("searches, changes density, and shows an empty New view", async ({
@@ -165,7 +248,7 @@ test("supports every sort and restores query state after reload", async ({
 });
 
 test("uses canonical external URLs for project cards", async ({ page }) => {
-  const recursion = page.getByRole("link", { name: /Recursion/ });
+  const recursion = page.getByRole("link", { name: "Recursion", exact: true });
   await expect(recursion).toHaveAttribute(
     "href",
     "https://github.com/MentallyQuill/Recursion",
@@ -210,6 +293,128 @@ test("matches the approved card anatomy", async ({ page }) => {
     }),
     "kind stripes were removed from the reference design",
   ).toBe("none");
+});
+
+test("explains every card fact with hover help", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const repositoryCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion" }),
+  });
+  const presetCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+  });
+
+  for (const selector of [
+    ".card-identity",
+    ".activity-score",
+    ".commit-age",
+    ".community",
+    ".repository-size",
+    ".card-title",
+    ".card-summary-tooltip",
+    ".license",
+  ]) {
+    await expect(repositoryCard.locator(selector)).toHaveAttribute(
+      "aria-describedby",
+      /.+/,
+    );
+  }
+  const cardDescriptionId =
+    await repositoryCard.getAttribute("aria-describedby");
+  expect(cardDescriptionId).toBeTruthy();
+  await expect(page.locator(`#${cardDescriptionId}`)).toContainText(
+    /Community score:/,
+  );
+  expect(await repositoryCard.locator(".chip").count()).toBeGreaterThan(0);
+  for (const chip of await repositoryCard.locator(".chip").all()) {
+    await expect(chip).toHaveAttribute("aria-describedby", /.+/);
+  }
+  expect(
+    Number.parseInt(
+      await repositoryCard
+        .locator(".commit-age")
+        .evaluate((element) => getComputedStyle(element).fontWeight),
+      10,
+    ),
+  ).toBeGreaterThanOrEqual(700);
+
+  for (const selector of [
+    ".preset-version",
+    ".preset-publication",
+    ".preset-size",
+  ]) {
+    await expect(presetCard.locator(selector)).toHaveAttribute(
+      "aria-describedby",
+      /.+/,
+    );
+  }
+
+  await repositoryCard.locator(".activity-score").hover();
+  await expect(repositoryCard).toHaveCSS("overflow", "hidden");
+  await expect(
+    page.getByRole("tooltip", {
+      name: /six bars show two-week commit totals/i,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".commit-age").hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: /last meaningful commit/i,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".chip").first().hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: /works with the sillytavern roleplay frontend/i,
+    }),
+  ).toBeVisible();
+});
+
+test("keeps tile tooltips inside the viewport portal", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const sillyTavern = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "SillyTavern", exact: true }),
+  });
+  const preset = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+  });
+  const triggers = [
+    page.locator(".project-card").first().locator(".card-identity"),
+    sillyTavern.locator(".community"),
+    page.locator(".project-card").nth(3).locator(".repository-size"),
+    preset.locator(".license"),
+  ];
+
+  for (const trigger of triggers) {
+    await expectTooltipInsideViewport(page, trigger);
+  }
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+});
+
+test("dismisses tile tooltips with Escape and on mobile transition", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const trigger = page
+    .locator(".project-card")
+    .first()
+    .locator(".card-identity");
+
+  await trigger.hover();
+  await expect(page.getByRole("tooltip")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+
+  await page.mouse.move(0, 0);
+  await trigger.hover();
+  await expect(page.getByRole("tooltip")).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
 });
 
 test("keeps repository activity facts visible on mobile cards", async ({

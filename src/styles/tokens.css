@@ -7,7 +7,7 @@
   --color-border-strong: #3b6068;
   --color-text-primary: #f3f1e8;
   --color-text-secondary: #cbd6d3;
-  --color-muted: #6f7e82;
+  --color-muted: #849a9e;
   --color-kind-extension: #e18a24;
   --color-kind-frontend: #d62839;
   --color-kind-preset: #57c5a3;
@@ -15,5 +15,5 @@
   --header-height: 78px;
   --category-height: 62px;
   --content-max: 1520px;
-  --shadow-raised: 0 18px 50px rgb(0 0 0 / 0.28);
+  --shadow-raised: 0 18px 50px var(--color-page);
 }

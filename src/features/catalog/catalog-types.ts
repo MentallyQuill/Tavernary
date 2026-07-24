@@ -4,6 +4,7 @@ export type LicenseStatus = "osi-approved" | "proprietary" | "missing";
 export interface CatalogLabel {
   id: string;
   label: string;
+  description: string;
 }
 
 export interface CatalogProject {
