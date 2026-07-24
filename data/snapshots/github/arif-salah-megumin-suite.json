@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "arif-salah-megumin-suite",
   "repository": {
     "id": 1189674883,
@@ -10,16 +10,31 @@
     "head_sha": "ecc9be90be0feffd3b73571a5c18397cd34f2b79",
     "archived": false,
     "created_at": "2026-03-23T14:58:37Z",
-    "size_kb": 23430
+    "size_kb": 23430,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-22T18:09:10.000Z",
-    "weekly_meaningful_commits": [6, 0, 1, 0, 0, 4, 0, 0, 0, 3, 0, 0],
-    "active_weeks_12": 4,
-    "strength": 3213,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-22T18:09:10.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      false,
+      true
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 209,

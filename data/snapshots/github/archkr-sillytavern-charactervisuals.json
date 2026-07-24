@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "archkr-sillytavern-charactervisuals",
   "repository": {
     "id": 1035690744,
@@ -10,16 +10,31 @@
     "head_sha": "6b390a294af977451d75877a6781d142023ba321",
     "archived": false,
     "created_at": "2025-08-10T23:48:12Z",
-    "size_kb": 965
+    "size_kb": 965,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-01-16T00:27:26.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 0,
-    "strength": 0,
-    "dormant": true,
-    "latest_release_at": "2026-01-14T09:48:01Z"
+    "latest_source_activity_at": "2026-01-16T00:27:26.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-01-14T09:48:01Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 10,

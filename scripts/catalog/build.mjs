@@ -2,6 +2,8 @@ import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { derivePublicActivity } from "./activity-evidence.mjs";
+
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const outputPath = resolve(rootDirectory, "src/generated/catalog.json");
 
@@ -35,12 +37,12 @@ function labeled(ids, entries) {
 
 function twoWeekBars(weeks) {
   return [
-    weeks[0] + weeks[1],
-    weeks[2] + weeks[3],
-    weeks[4] + weeks[5],
-    weeks[6] + weeks[7],
-    weeks[8] + weeks[9],
-    weeks[10] + weeks[11],
+    Number(weeks[0]) + Number(weeks[1]),
+    Number(weeks[2]) + Number(weeks[3]),
+    Number(weeks[4]) + Number(weeks[5]),
+    Number(weeks[6]) + Number(weeks[7]),
+    Number(weeks[8]) + Number(weeks[9]),
+    Number(weeks[10]) + Number(weeks[11]),
   ];
 }
 
@@ -95,7 +97,7 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
   };
 }
 
-function githubProject(record, snapshot, vocabularies) {
+function githubProject(record, snapshot, vocabularies, now) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const capabilities = labeled(record.capabilities, vocabularies.capabilities);
   const primaryFunction = {
@@ -114,6 +116,17 @@ function githubProject(record, snapshot, vocabularies) {
   ]
     .join(" ")
     .toLowerCase();
+
+  const derivedActivity = snapshot
+    ? derivePublicActivity(snapshot.activity, now)
+    : null;
+  const weeklyActivity = snapshot
+    ? snapshot.activity.evidence_status === "complete"
+      ? derivedActivity.weeklyActivity
+      : (snapshot.activity.provisional_weeks ??
+        Array.from({ length: 12 }, () => false))
+    : null;
+  const activeWeeks12 = weeklyActivity?.filter(Boolean).length ?? null;
 
   return {
     id: record.id,
@@ -137,12 +150,11 @@ function githubProject(record, snapshot, vocabularies) {
     searchableText,
     activity: snapshot
       ? {
-          latestMeaningfulCommitAt:
-            snapshot.activity.latest_meaningful_commit_at,
-          activeWeeks12: snapshot.activity.active_weeks_12,
-          twoWeekBars: twoWeekBars(snapshot.activity.weekly_meaningful_commits),
-          strength: snapshot.activity.strength,
-          dormant: snapshot.activity.dormant,
+          latestMeaningfulCommitAt: snapshot.activity.latest_source_activity_at,
+          activeWeeks12,
+          twoWeekBars: twoWeekBars(weeklyActivity),
+          strength: activeWeeks12,
+          dormant: derivedActivity.dormant,
         }
       : emptyActivity(),
     latestReleaseAt: snapshot?.activity?.latest_release_at ?? null,
@@ -296,6 +308,18 @@ export async function buildCatalog(options = {}) {
   const snapshotsByProject = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
   );
+  const sourceTimestamps = [
+    ...records.map((record) => record.cataloged_at),
+    ...snapshots.map((snapshot) => snapshot.refreshed_at),
+  ].filter(Boolean);
+  const generatedAt =
+    options.now ??
+    sourceTimestamps
+      .map((timestamp) => new Date(timestamp).getTime())
+      .filter(Number.isFinite)
+      .sort((left, right) => right - left)[0] ??
+    0;
+  const generatedAtIso = new Date(generatedAt).toISOString();
   const projects = [];
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
@@ -319,27 +343,18 @@ export async function buildCatalog(options = {}) {
     }
 
     if (!snapshot) {
-      projects.push(githubProject(record, null, vocabularies));
+      projects.push(githubProject(record, null, vocabularies, generatedAtIso));
       continue;
     }
-    projects.push(githubProject(record, snapshot, vocabularies));
+    projects.push(
+      githubProject(record, snapshot, vocabularies, generatedAtIso),
+    );
   }
 
   projects.sort((left, right) => left.id.localeCompare(right.id));
-  const sourceTimestamps = [
-    ...records.map((record) => record.cataloged_at),
-    ...snapshots.map((snapshot) => snapshot.refreshed_at),
-  ].filter(Boolean);
-  const generatedAt =
-    options.now ??
-    sourceTimestamps
-      .map((timestamp) => new Date(timestamp).getTime())
-      .filter(Number.isFinite)
-      .sort((left, right) => right - left)[0] ??
-    0;
   const catalog = {
     schemaVersion: 1,
-    generatedAt: new Date(generatedAt).toISOString(),
+    generatedAt: generatedAtIso,
     projects,
   };
 

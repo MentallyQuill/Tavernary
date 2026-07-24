@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "archkr-lumiverse-lumimind",
   "repository": {
     "id": 1303183395,
@@ -10,16 +10,31 @@
     "head_sha": "dd7865bd5c3b29ae983271a3c73879475038dd84",
     "archived": false,
     "created_at": "2026-07-16T19:45:15Z",
-    "size_kb": 294
+    "size_kb": 294,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-22T23:27:32.000Z",
-    "weekly_meaningful_commits": [17, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 2,
-    "strength": 2310,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-22T23:27:32.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 2,

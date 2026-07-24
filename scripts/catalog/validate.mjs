@@ -69,6 +69,76 @@ function schemaError(record, error) {
   return `${record.id ?? "<unknown>"}: schema ${location} ${error.message}`;
 }
 
+function validateSnapshotEvidence(snapshot) {
+  const id = snapshot.project_id;
+  const { activity, repository } = snapshot;
+  const errors = [];
+
+  if (
+    repository.head_committed_at === null &&
+    activity.evidence_status !== "provisional"
+  ) {
+    errors.push(
+      `${id}: null head_committed_at is allowed only for provisional evidence`,
+    );
+  }
+
+  if (activity.evidence_status === "complete") {
+    if (activity.provisional_weeks !== null) {
+      errors.push(`${id}: complete evidence cannot retain provisional_weeks`);
+    }
+    if (activity.baseline_completed_at === null) {
+      errors.push(`${id}: complete evidence requires baseline_completed_at`);
+    }
+  }
+
+  if (
+    activity.evidence_status === "provisional" &&
+    activity.baseline_completed_at !== null
+  ) {
+    errors.push(
+      `${id}: provisional evidence cannot have baseline_completed_at`,
+    );
+  }
+
+  if (
+    activity.provisional_weeks !== null &&
+    !["provisional", "degraded"].includes(activity.evidence_status)
+  ) {
+    errors.push(
+      `${id}: provisional_weeks requires provisional or degraded evidence`,
+    );
+  }
+
+  const weekStarts = activity.source_weeks.map(({ week_start }) => week_start);
+  const seen = new Set();
+  for (const weekStart of weekStarts) {
+    const date = new Date(`${weekStart}T00:00:00.000Z`);
+    if (
+      !Number.isFinite(date.getTime()) ||
+      date.toISOString().slice(0, 10) !== weekStart ||
+      date.getUTCDay() !== 1
+    ) {
+      errors.push(`${id}: source week ${weekStart} is not a Monday UTC`);
+    }
+    if (seen.has(weekStart)) {
+      errors.push(`${id}: duplicate source week ${weekStart}`);
+    }
+    seen.add(weekStart);
+  }
+
+  const sortedWeekStarts = [...weekStarts].sort((left, right) =>
+    right.localeCompare(left),
+  );
+  if (
+    weekStarts.some((weekStart, index) => weekStart !== sortedWeekStarts[index])
+  ) {
+    errors.push(`${id}: source_weeks must be sorted newest to oldest`);
+  }
+
+  return errors;
+}
+
 export async function validateCatalog(options = {}) {
   const [
     schema,
@@ -220,12 +290,15 @@ export async function validateCatalog(options = {}) {
 
   const recordsById = new Map(records.map((record) => [record.id, record]));
   for (const snapshot of snapshots) {
-    if (!validateSnapshot(snapshot)) {
+    const validSnapshotShape = validateSnapshot(snapshot);
+    if (!validSnapshotShape) {
       errors.push(
         ...validateSnapshot.errors.map((error) =>
           schemaError({ id: snapshot.project_id }, error),
         ),
       );
+    } else {
+      errors.push(...validateSnapshotEvidence(snapshot));
     }
     const record = recordsById.get(snapshot.project_id);
     if (!record) {

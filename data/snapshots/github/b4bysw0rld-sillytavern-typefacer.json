@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "b4bysw0rld-sillytavern-typefacer",
   "repository": {
     "id": 1105308117,
@@ -10,16 +10,31 @@
     "head_sha": "2876e81f1230681922841377597e7b2f1f68b42d",
     "archived": false,
     "created_at": "2025-11-27T12:26:17Z",
-    "size_kb": 45
+    "size_kb": 45,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2025-11-30T13:40:30.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 0,
-    "strength": 0,
-    "dormant": true,
-    "latest_release_at": null
+    "latest_source_activity_at": "2025-11-30T13:40:30.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 11,

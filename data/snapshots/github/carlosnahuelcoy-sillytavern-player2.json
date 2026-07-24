@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "carlosnahuelcoy-sillytavern-player2",
   "repository": {
     "id": 1179141243,
@@ -10,16 +10,31 @@
     "head_sha": "fae29f2137b330d60368344a5f68997af0a00dd7",
     "archived": false,
     "created_at": "2026-03-11T18:20:54Z",
-    "size_kb": 7
+    "size_kb": 7,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-06-02T18:59:21.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    "active_weeks_12": 1,
-    "strength": 501,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-06-02T18:59:21.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 1,
@@ -27,7 +42,11 @@
     "subscribers_count": 0,
     "aggregate": 1
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "license": {
+    "status": "missing",
+    "spdx_id": null,
+    "source_path": null
+  },
   "refreshed_at": "2026-07-24T19:17:09.764Z",
   "stale_since": null
 }

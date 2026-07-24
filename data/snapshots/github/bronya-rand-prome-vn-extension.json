@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "bronya-rand-prome-vn-extension",
   "repository": {
     "id": 839083006,
@@ -10,16 +10,31 @@
     "head_sha": "9cf09fb307e859f21bf507d781e5327b7acd89fa",
     "archived": false,
     "created_at": "2024-08-06T23:56:55Z",
-    "size_kb": 37675
+    "size_kb": 37675,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-02-08T21:45:41.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 0,
-    "strength": 0,
-    "dormant": true,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-02-08T21:45:41.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 53,

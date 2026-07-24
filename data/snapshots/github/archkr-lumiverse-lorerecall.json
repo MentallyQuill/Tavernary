@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "archkr-lumiverse-lorerecall",
   "repository": {
     "id": 1213004871,
@@ -10,16 +10,31 @@
     "head_sha": "61d93e73117f7328b3ceac9153ea4a7612b05326",
     "archived": false,
     "created_at": "2026-04-17T00:28:59Z",
-    "size_kb": 4768
+    "size_kb": 4768,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-06T17:40:15.000Z",
-    "weekly_meaningful_commits": [0, 0, 3, 0, 0, 0, 7, 0, 3, 20, 3, 3],
-    "active_weeks_12": 6,
-    "strength": 2622,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-06T17:40:15.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 5,

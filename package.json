@@ -22,6 +22,7 @@
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
+    "catalog:migrate-snapshots": "node scripts/catalog/migrate-repository-snapshots.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export"

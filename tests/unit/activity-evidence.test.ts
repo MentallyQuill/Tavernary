@@ -8,8 +8,9 @@ import {
   weekStartUtc,
   weekWindow,
 } from "../../scripts/catalog/activity-evidence.mjs";
+import type { ActivityEvidence } from "../../scripts/catalog/activity-evidence.mjs";
 
-function provisionalActivity() {
+function provisionalActivity(): ActivityEvidence {
   return {
     latest_source_activity_at: null,
     source_weeks: [],

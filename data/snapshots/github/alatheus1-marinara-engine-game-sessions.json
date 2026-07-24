@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "alatheus1-marinara-engine-game-sessions",
   "repository": {
     "id": 1237502934,
@@ -10,16 +10,31 @@
     "head_sha": "5ed60138b592b41d2b9d1944da2fe1c6ee0afc3f",
     "archived": false,
     "created_at": "2026-05-13T08:39:48Z",
-    "size_kb": 26
+    "size_kb": 26,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-06-10T01:57:00.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-    "active_weeks_12": 2,
-    "strength": 802,
-    "dormant": false,
-    "latest_release_at": "2026-06-10T01:57:25Z"
+    "latest_source_activity_at": "2026-06-10T01:57:00.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-06-10T01:57:25Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 2,

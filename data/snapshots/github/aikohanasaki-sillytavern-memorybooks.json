@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "aikohanasaki-sillytavern-memorybooks",
   "repository": {
     "id": 1001051404,
@@ -10,16 +10,31 @@
     "head_sha": "617cfbf99b2e934d5e61c7f197621c2995e6695a",
     "archived": false,
     "created_at": "2025-06-12T18:30:31Z",
-    "size_kb": 17293
+    "size_kb": 17293,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-18T06:33:53.000Z",
-    "weekly_meaningful_commits": [1, 7, 11, 5, 0, 10, 10, 14, 10, 24, 0, 22],
-    "active_weeks_12": 10,
-    "strength": 6846,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-18T06:33:53.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 263,
