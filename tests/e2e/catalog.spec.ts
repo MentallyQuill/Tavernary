@@ -88,9 +88,9 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     const layout = document.querySelector<HTMLElement>(".catalog-layout");
     const filters = document.querySelector<HTMLElement>(".filter-panel");
     const main = document.querySelector<HTMLElement>(".catalog-main");
-    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const toolbar = document.querySelector<HTMLElement>(".catalog-toolbar");
     const sort = document.querySelector<HTMLElement>(".sort-projects");
-    if (!layout || !filters || !main || !tabs || !sort) {
+    if (!layout || !filters || !main || !toolbar || !sort) {
       throw new Error("Missing desktop catalog controls");
     }
 
@@ -102,9 +102,17 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
       layoutWidth: Math.round(layoutBox.width),
       filterWidth: Math.round(filterBox.width),
       mainLeft: Math.round(mainBox.left),
-      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
       sortHeight: Math.round(sort.getBoundingClientRect().height),
       filterRadius: getComputedStyle(filters).borderRadius,
+      controlOrder: Array.from(
+        toolbar.querySelectorAll("h1, .density-toggle, .sort-projects"),
+      ).map((element) =>
+        element.matches("h1")
+          ? "count"
+          : element.classList.contains("density-toggle")
+            ? "density"
+            : "sort",
+      ),
     };
   });
 
@@ -113,14 +121,29 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
     layoutWidth: 1440,
     filterWidth: 238,
     mainLeft: 238,
-    tabsHeight: 36,
     sortHeight: 36,
     filterRadius: "0px",
+    controlOrder: ["count", "density", "sort"],
   });
+  await expect(page.locator(".view-tabs")).toHaveCount(0);
   const logo = page.locator(".brand-logo");
-  await expect(logo).toHaveCSS("width", "34px");
-  await expect(logo).toHaveCSS("height", "45px");
-  await expect(logo).toHaveCSS("transform", "matrix(1, 0, 0, 1, -12, 0)");
+  await expect(logo).toHaveCSS("width", "52px");
+  await expect(logo).toHaveCSS("height", "47px");
+  await expect(logo).toHaveCSS("transform", "none");
+});
+
+test("uses one focus boundary for the main search", async ({ page }) => {
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+
+  await search.focus();
+
+  await expect(search).toHaveCSS("appearance", "none");
+  await expect(search).toHaveCSS("outline-style", "none");
+  await expect(search).toHaveCSS("box-shadow", "none");
+  await expect(page.locator(".site-search")).toHaveCSS(
+    "border-top-color",
+    "rgb(87, 197, 163)",
+  );
 });
 
 test("uses the approved desktop filter controls", async ({ page }) => {
@@ -135,19 +158,12 @@ test("uses the approved desktop filter controls", async ({ page }) => {
     page.getByRole("searchbox", {
       name: "Search capabilities and characteristics",
     }),
-  ).toBeVisible();
+  ).toHaveCount(0);
   const frontendSearch = await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
     .boundingBox();
-  const metadataSearch = await page
-    .getByRole("searchbox", {
-      name: "Search capabilities and characteristics",
-    })
-    .boundingBox();
   expect(frontendSearch?.width).toBeGreaterThan(100);
   expect(frontendSearch?.height).toBe(32);
-  expect(metadataSearch?.width).toBeGreaterThan(100);
-  expect(metadataSearch?.height).toBe(36);
   await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Capabilities & characteristics", { exact: true }),
@@ -163,6 +179,37 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     frontendFilters.getByLabel("SillyTavern", { exact: true }),
   ).toBeHidden();
+});
+
+test("collapses capabilities to four rows and keeps selections visible", async ({
+  page,
+}) => {
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Capabilities & characteristics",
+  });
+  const options = group.locator(".metadata-options");
+  const disclosure = group.getByRole("button", { name: "Show more" });
+
+  await expect(disclosure).toBeVisible();
+  expect(
+    await options.evaluate(
+      (element) => element.scrollHeight > element.clientHeight,
+    ),
+  ).toBe(true);
+
+  await disclosure.click();
+  const selected = group.locator(".metadata-option").last();
+  await selected.click();
+  await expect(selected.getByRole("checkbox")).toBeChecked();
+  await group.getByRole("button", { name: "Show fewer" }).click();
+
+  expect(
+    await selected.evaluate(
+      (element) =>
+        element.getBoundingClientRect().bottom <=
+        element.parentElement!.getBoundingClientRect().bottom + 1,
+    ),
+  ).toBe(true);
 });
 
 test("keeps canonical frontends ordered and expands the remainder", async ({
@@ -213,7 +260,7 @@ test("themes project-kind checkbox outlines", async ({ page }) => {
   }
 });
 
-test("searches, changes density, and shows an empty New view", async ({
+test("searches, changes density, and accepts legacy view URLs", async ({
   page,
 }) => {
   await expect(
@@ -226,7 +273,10 @@ test("searches, changes density, and shows an empty New view", async ({
   await expect(page.getByRole("heading", { name: "1 project" })).toBeVisible();
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
-  await page.getByRole("button", { name: "New" }).click();
+  await expect(
+    page.getByRole("button", { name: "New", exact: true }),
+  ).toHaveCount(0);
+  await page.goto(`${sitePath()}?view=new&search=Recursion`);
   await expect(page.getByText("No projects match this view")).toBeVisible();
 });
 
@@ -428,13 +478,19 @@ test("explains every card fact with hover help", async ({ page }) => {
   await expect(repositoryCard).toHaveCSS("overflow", "hidden");
   await expect(
     page.getByRole("tooltip", {
-      name: /six bars show two-week commit totals/i,
+      name: /^Active in \d+ of the last 12 weeks$/,
+    }),
+  ).toBeVisible();
+  await repositoryCard.locator(".card-identity").hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Generation & Reasoning Extension",
     }),
   ).toBeVisible();
   await repositoryCard.locator(".commit-age").hover();
   await expect(
     page.getByRole("tooltip", {
-      name: /last meaningful commit/i,
+      name: /^Last commit .+ \(.+\)$/,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".chip").first().hover();
@@ -443,6 +499,30 @@ test("explains every card fact with hover help", async ({ page }) => {
       name: /works with the sillytavern roleplay frontend/i,
     }),
   ).toBeVisible();
+});
+
+test("substantially reduces cards in compact mode", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const repositoryCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion", exact: true }),
+  });
+  const presetCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+  });
+
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+
+  await expect(repositoryCard.locator(".card-summary")).toBeHidden();
+  await expect(repositoryCard.locator(".community")).toBeHidden();
+  await expect(repositoryCard.locator(".repository-size")).toBeHidden();
+  await expect(repositoryCard.locator(".activity-score")).toBeVisible();
+  await expect(repositoryCard.locator(".commit-age")).toBeVisible();
+  await expect(presetCard.locator(".preset-size")).toBeHidden();
+  await expect(repositoryCard.locator(".card-chips")).toHaveCSS(
+    "max-height",
+    "18px",
+  );
+  expect((await repositoryCard.boundingBox())!.height).toBeLessThan(174);
 });
 
 test("keeps tile tooltips inside the viewport portal", async ({ page }) => {
@@ -538,18 +618,18 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     const trigger = document.querySelector<HTMLElement>(
       ".mobile-category-trigger",
     );
-    const controls = document.querySelector<HTMLElement>(".catalog-controls");
-    const tabs = document.querySelector<HTMLElement>(".view-tabs");
+    const controls = document.querySelector<HTMLElement>(
+      ".catalog-primary-controls",
+    );
     const sort = document.querySelector<HTMLElement>(".sort-projects");
-    if (!main || !trigger || !controls || !tabs || !sort) {
+    if (!main || !trigger || !controls || !sort) {
       throw new Error("Missing mobile layout");
     }
     return {
       mainLeft: Math.round(main.getBoundingClientRect().left),
       mainPaddingLeft: getComputedStyle(main).paddingLeft,
       triggerHeight: Math.round(trigger.getBoundingClientRect().height),
-      controlColumns: getComputedStyle(controls).gridTemplateColumns,
-      tabsHeight: Math.round(tabs.getBoundingClientRect().height),
+      controlDisplay: getComputedStyle(controls).display,
       sortHeight: Math.round(sort.getBoundingClientRect().height),
     };
   });
@@ -557,8 +637,16 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     mainLeft: 0,
     mainPaddingLeft: "13px",
     triggerHeight: 42,
-    controlColumns: "34px 198px 120px",
-    tabsHeight: 36,
+    controlDisplay: "flex",
     sortHeight: 36,
   });
+  await expect(page.locator(".view-tabs")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Open filters" }),
+  ).toBeVisible();
+  expect(
+    await page
+      .locator(".catalog-toolbar")
+      .evaluate((element) => element.scrollWidth - element.clientWidth),
+  ).toBeLessThanOrEqual(0);
 });

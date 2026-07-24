@@ -28,4 +28,19 @@ for (const viewport of [
       },
     );
   });
+
+  if (viewport.name !== "tablet") {
+    test(`${viewport.name} compact catalog surface`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto(sitePath());
+      await page.getByRole("button", { name: "Use compact cards" }).click();
+      await expect(page).toHaveScreenshot(
+        `catalog-${viewport.name}-compact.png`,
+        {
+          fullPage: false,
+          animations: "disabled",
+        },
+      );
+    });
+  }
 }

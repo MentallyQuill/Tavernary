@@ -35,9 +35,9 @@
   }
 
   .brand-logo {
-    width: 31px;
-    height: 41px;
-    transform: translateX(-12px);
+    width: 48px;
+    height: 43px;
+    transform: none;
   }
 
   .header-actions {
@@ -181,16 +181,19 @@
   }
 
   .catalog-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34px;
     align-items: flex-start;
-    flex-direction: column;
+    gap: 8px;
   }
 
-  .catalog-controls {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 34px minmax(0, 1fr) 120px;
+  .catalog-heading {
+    min-width: 0;
+  }
+
+  .catalog-primary-controls {
+    min-width: 0;
     gap: 6px;
-    overflow: visible;
   }
 
   .filter-toggle {
@@ -200,19 +203,6 @@
     height: 36px;
     padding: 0;
     place-items: center;
-  }
-
-  .view-tabs {
-    width: 100%;
-    min-width: 0;
-    justify-content: stretch;
-  }
-
-  .view-tabs button {
-    min-width: 0;
-    flex: 1;
-    padding-inline: 4px;
-    font-size: 10px;
   }
 
   .sort-projects {

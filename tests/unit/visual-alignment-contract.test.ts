@@ -10,7 +10,8 @@ describe("catalog visual alignment", () => {
   test("uses the supplied deployable logo in mockup order", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 
-    expect(header).toContain('src="./tavernary-logo.png"');
+    expect(header).toContain('src="./tavernary-gems.png"');
+    expect(header).not.toContain('src="./tavernary-logo.png"');
     expect(header.indexOf("brand-copy")).toBeLessThan(
       header.indexOf("brand-logo"),
     );
@@ -52,6 +53,7 @@ describe("catalog visual alignment", () => {
 
   test("uses the mockup desktop workspace and toolbar geometry", () => {
     const css = read("src/styles/catalog.css");
+    const toolbar = read("src/features/catalog/components/catalog-toolbar.tsx");
 
     expect(css).toMatch(
       /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*238px minmax\(0,\s*1fr\)[^}]*padding:\s*0/s,
@@ -60,14 +62,15 @@ describe("catalog visual alignment", () => {
       /\.filter-panel\s*\{[^}]*padding:\s*20px 18px 50px[^}]*border-right:/s,
     );
     expect(css).toMatch(/\.catalog-main\s*\{[^}]*padding:\s*20px 22px 60px/s);
-    expect(css).toMatch(
-      /\.view-tabs\s*\{[^}]*border-radius:\s*7px[^}]*padding:\s*3px/s,
-    );
+    expect(toolbar).not.toContain("view-tabs");
+    expect(toolbar).not.toContain("onView");
+    expect(toolbar).toContain("catalog-primary-controls");
     expect(css).toMatch(/\.sort-projects\s*\{[^}]*height:\s*36px/s);
   });
 
   test("uses reference card anatomy and sans typography", () => {
     const css = read("src/styles/catalog.css");
+    const card = read("src/features/catalog/components/project-card.tsx");
 
     expect(css).not.toContain('font-family: Georgia, "Times New Roman", serif');
     expect(css).not.toContain(".project-card::before");
@@ -82,6 +85,14 @@ describe("catalog visual alignment", () => {
     );
     expect(css).toMatch(
       /\.function-symbol svg\s*\{[^}]*width:\s*23px[^}]*height:\s*23px/s,
+    );
+    expect(card).not.toContain("two-week commit totals");
+    expect(card).not.toContain("This icon shows");
+    expect(css).toMatch(
+      /\.compact-cards \.project-card\s*\{[^}]*height:\s*auto[^}]*min-height:\s*0[^}]*padding:\s*11px 12px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.community,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*display:\s*none/s,
     );
   });
 
@@ -106,7 +117,7 @@ describe("catalog visual alignment", () => {
       /@media \(max-width:\s*760px\)[\s\S]*?\.catalog-main\s*\{[^}]*padding:\s*16px 13px 50px/,
     );
     expect(responsive).toMatch(
-      /\.catalog-controls\s*\{[^}]*grid-template-columns:\s*34px minmax\(0,\s*1fr\) 120px/s,
+      /\.catalog-primary-controls\s*\{[^}]*min-width:\s*0/s,
     );
   });
 
@@ -119,14 +130,17 @@ describe("catalog visual alignment", () => {
     expect(filters).toContain("Capabilities & characteristics");
     expect(filters).toContain("Clear all");
     expect(filters).toContain("Search compatible frontends");
-    expect(filters).toContain("Search capabilities and characteristics");
-    expect(filters).toContain('className="metadata-options"');
+    expect(filters).not.toContain("Search capabilities and characteristics");
+    expect(filters).toContain("metadata-options");
     expect(filters).toContain("metadata-filter-chip");
     expect(filters).toContain("metadata-check");
+    expect(filters).toContain("metadata-disclosure");
     expect(css).toMatch(
       /\.metadata-filter-chip\s*\{[^}]*min-height:\s*25px[^}]*border-radius:\s*999px/s,
     );
-    expect(css).toMatch(/\.metadata-search\s*\{[^}]*height:\s*36px/s);
+    expect(css).toMatch(
+      /\.metadata-options\.collapsed\s*\{[^}]*max-height:\s*calc\(25px \* 4 \+ 6px \* 3\)[^}]*overflow:\s*hidden/s,
+    );
   });
 
   test("uses the approved semantic colors", () => {
@@ -159,19 +173,22 @@ describe("catalog visual alignment", () => {
       /\.brand-name\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
-      /\.submit-link\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
+      /\.submit-link\s*\{[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.site-search input\s*\{[^}]*appearance:\s*none[^}]*outline:\s*0[^}]*box-shadow:\s*none/s,
     );
   });
 
-  test("uses the approved inkwell geometry", () => {
+  test("uses the approved gem geometry", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
 
     expect(css).toMatch(
-      /\.brand-logo\s*\{[^}]*width:\s*34px[^}]*height:\s*45px[^}]*transform:\s*translateX\(-12px\)/s,
+      /\.brand-logo\s*\{[^}]*width:\s*52px[^}]*height:\s*47px[^}]*transform:\s*none/s,
     );
     expect(responsive).toMatch(
-      /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*31px[^}]*height:\s*41px[^}]*transform:\s*translateX\(-12px\)/,
+      /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*48px[^}]*height:\s*43px[^}]*transform:\s*none/,
     );
   });
 });

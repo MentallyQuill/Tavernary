@@ -13,6 +13,29 @@ const kindLabels = {
   preset: "System Preset",
 };
 
+function typeTooltip(primaryFunction: string, kind: CatalogProject["kind"]) {
+  if (
+    kind === "frontend" &&
+    primaryFunction.toLocaleLowerCase().startsWith("frontend")
+  ) {
+    return "Frontend";
+  }
+  return `${primaryFunction} ${kindLabels[kind]}`;
+}
+
+function licenseTooltip(project: CatalogProject) {
+  if (project.license.status === "osi-approved") {
+    return `${project.license.label} is OSI-approved`;
+  }
+  if (project.license.status === "proprietary") {
+    return "Proprietary license";
+  }
+  if (project.license.status === "pending") {
+    return "License pending verification";
+  }
+  return "No license detected";
+}
+
 function sourceStatusLabel(project: CatalogProject) {
   if (project.sourceStatus === "manual") return "Manual source";
   if (project.sourceStatus === "pending") return "Source pending";
@@ -175,7 +198,7 @@ export function ProjectCard({
       <div className="card-top">
         <Tooltip
           id={typeId}
-          label={`${kindLabels[project.kind]} — ${primaryFunction}. This icon shows the project's primary catalog category.`}
+          label={typeTooltip(primaryFunction, project.kind)}
           className="card-identity"
         >
           <span className="function-symbol">
@@ -187,7 +210,7 @@ export function ProjectCard({
           <span className="development preset-development">
             <Tooltip
               id={`${project.id}-preset-version`}
-              label={`Published preset version: ${presetVersion}.`}
+              label={`Preset version ${presetVersion}`}
               className="preset-version"
             >
               {presetVersion}
@@ -196,8 +219,8 @@ export function ProjectCard({
               id={`${project.id}-preset-publication`}
               label={
                 project.preset?.publishedAt
-                  ? `Source publication date: ${formatDate(project.preset.publishedAt)}.`
-                  : "The preset links directly to its published source."
+                  ? `Published ${formatDate(project.preset.publishedAt)}`
+                  : "Published source"
               }
               className="preset-publication"
             >
@@ -205,11 +228,7 @@ export function ProjectCard({
             </Tooltip>
             <Tooltip
               id={`${project.id}-preset-size`}
-              label={
-                presetSize
-                  ? `Published preset file size: ${presetSize.replace(" file", "")}.`
-                  : "The published source does not report a preset file size."
-              }
+              label={presetSize ? presetSize : "File size unavailable"}
               className="preset-size"
             >
               {presetSize}
@@ -221,7 +240,7 @@ export function ProjectCard({
               <>
                 <Tooltip
                   id={activityId}
-                  label={`Active in ${activeWeeks12} of the last 12 weeks. The six bars show two-week commit totals.`}
+                  label={`Active in ${activeWeeks12} of the last 12 weeks`}
                   className="activity-score"
                 >
                   <b>{activeWeeks12}/12</b>
@@ -229,7 +248,7 @@ export function ProjectCard({
                 </Tooltip>
                 <Tooltip
                   id={commitId}
-                  label={`Last meaningful commit: ${formatDate(latestMeaningfulCommitAt)} (${commitAge}).`}
+                  label={`Last commit ${formatDate(latestMeaningfulCommitAt)} (${commitAge})`}
                   className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
                   style={commitAgeStyle}
                 >
@@ -244,7 +263,7 @@ export function ProjectCard({
             {project.community ? (
               <Tooltip
                 id={communityId}
-                label={`Community score: ${project.community.aggregate} total — ${project.community.stars} stars, ${project.community.forks} forks, and ${project.community.subscribers} subscribers.`}
+                label={`${project.community.aggregate} total: ${project.community.stars} stars, ${project.community.forks} forks, ${project.community.subscribers} subscribers`}
                 className="community"
               >
                 <CategoryIcon name="community" />
@@ -254,7 +273,7 @@ export function ProjectCard({
             {repositorySize ? (
               <Tooltip
                 id={repositorySizeId}
-                label={`Repository size reported by GitHub: ${repositorySize.replace(" repo", "")}.`}
+                label={`${repositorySize.replace(" repo", "")} repository`}
                 className="repository-size"
               >
                 {repositorySize}
@@ -267,7 +286,7 @@ export function ProjectCard({
       <h2>
         <Tooltip
           id={titleId}
-          label={`Open ${project.name} at its published source.`}
+          label={`Open ${project.name}`}
           className="card-title"
         >
           {project.name}
@@ -317,7 +336,7 @@ export function ProjectCard({
         </span>
         <Tooltip
           id={licenseId}
-          label={project.license.tooltip}
+          label={licenseTooltip(project)}
           className={`license license-${project.license.status}`}
         >
           {project.license.label}

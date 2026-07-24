@@ -12,7 +12,7 @@ test("serves the catalog from the configured base path", async ({ page }) => {
 });
 
 test("exports the supplied Tavernary artwork", async ({ page }) => {
-  const response = await page.request.get(`${sitePath()}tavernary-logo.png`);
+  const response = await page.request.get(`${sitePath()}tavernary-gems.png`);
 
   expect(response.ok()).toBe(true);
   expect(response.headers()["content-type"]).toBe("image/png");

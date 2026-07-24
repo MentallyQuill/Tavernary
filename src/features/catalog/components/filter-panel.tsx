@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
@@ -111,6 +111,8 @@ function FilterGroup({
   now: string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [chipsOverflow, setChipsOverflow] = useState(false);
+  const chipListRef = useRef<HTMLDivElement>(null);
   const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
   const collapseLimit = initialVisibleCount ?? options.length;
   const pinned = options.slice(0, collapseLimit);
@@ -133,6 +135,27 @@ function FilterGroup({
       : collapsedOptions;
   const hiddenCount = options.length - collapsedOptions.length;
 
+  useLayoutEffect(() => {
+    if (presentation !== "chips" || !chipListRef.current) return;
+    const list = chipListRef.current;
+    const measure = () => {
+      const rowCount = new Set(
+        Array.from(list.children).map((child) =>
+          Math.round((child as HTMLElement).offsetTop),
+        ),
+      ).size;
+      setChipsOverflow(rowCount > 4);
+    };
+    if (typeof ResizeObserver === "undefined") {
+      measure();
+      return;
+    }
+    const observer = new ResizeObserver(measure);
+    observer.observe(list);
+    measure();
+    return () => observer.disconnect();
+  }, [expanded, options, presentation, selected]);
+
   return (
     <fieldset className="filter-group">
       <legend>{title}</legend>
@@ -151,7 +174,10 @@ function FilterGroup({
         />
       ) : null}
       {presentation === "chips" ? (
-        <div className="metadata-options">
+        <div
+          ref={chipListRef}
+          className={`metadata-options${expanded ? "" : " collapsed"}`}
+        >
           {visibleOptions.map((option) => {
             const isSelected = selected.includes(option.id);
             return (
@@ -206,6 +232,16 @@ function FilterGroup({
           {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
         </button>
       ) : null}
+      {presentation === "chips" && (chipsOverflow || expanded) ? (
+        <button
+          className="more-frontends metadata-disclosure"
+          type="button"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+        >
+          {expanded ? "Show fewer" : "Show more"}
+        </button>
+      ) : null}
     </fieldset>
   );
 }
@@ -228,7 +264,6 @@ export function FilterPanel({
   now: string;
 }) {
   const [frontendSearch, setFrontendSearch] = useState("");
-  const [capabilitySearch, setCapabilitySearch] = useState("");
   const content = (
     <>
       {mobile ? (
@@ -278,9 +313,6 @@ export function FilterPanel({
         selected={query.capabilities}
         projects={projects}
         onToggle={onToggle}
-        search={capabilitySearch}
-        onSearch={setCapabilitySearch}
-        searchLabel="Search capabilities and characteristics"
         presentation="chips"
         now={now}
       />

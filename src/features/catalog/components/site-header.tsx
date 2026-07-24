@@ -25,10 +25,10 @@ export function SiteHeader({
         </span>
         <Image
           className="brand-logo"
-          src="./tavernary-logo.png"
+          src="./tavernary-gems.png"
           alt=""
-          width={45}
-          height={60}
+          width={573}
+          height={515}
         />
       </Link>
       <label className="site-search">
