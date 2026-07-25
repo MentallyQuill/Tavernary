@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "amousepad-hone",
   "repository": {
     "id": 1205995441,
@@ -10,16 +10,31 @@
     "head_sha": "0538b853ad4a388455dc8df55296cee047e4f5c0",
     "archived": false,
     "created_at": "2026-04-09T13:26:34Z",
-    "size_kb": 3016
+    "size_kb": 3016,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-19T04:24:05.000Z",
-    "weekly_meaningful_commits": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
-    "active_weeks_12": 3,
-    "strength": 2506,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-19T04:24:05.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 6,

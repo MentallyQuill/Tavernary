@@ -38,6 +38,7 @@ const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
 });
 
 const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
+  schema_version: 2,
   project_id: "fixture",
   source_health: "healthy",
   repository: {
@@ -45,15 +46,34 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
     owner: "example",
     name: "fixture",
     url: "https://github.com/example/fixture",
+    default_branch: "main",
+    head_sha: "a".repeat(40),
+    head_committed_at: null,
+    archived: false,
+    created_at: "2026-01-01T00:00:00.000Z",
     size_kb: 456,
   },
   activity: {
-    latest_meaningful_commit_at: "2026-07-23T00:00:00.000Z",
-    weekly_meaningful_commits: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    active_weeks_12: 12,
-    strength: 12,
-    dormant: false,
+    latest_source_activity_at: "2026-07-23T00:00:00.000Z",
+    source_weeks: [],
+    provisional_weeks: [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+    ],
     latest_release_at: "2026-07-23T00:00:00.000Z",
+    evidence_status: "provisional",
+    baseline_completed_at: null,
+    baseline_attempts: 0,
   },
   community: {
     stargazers_count: 1,
@@ -67,6 +87,125 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
   refreshed_at: "2026-07-24T00:00:00.000Z",
   stale_since: null,
   ...overrides,
+});
+
+test("derives temporary browser activity from version two evidence", async () => {
+  const record = fixtureProject({
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/fixture",
+      repository_id: 123,
+    },
+  });
+  const provisional = fixtureSnapshot({
+    activity: {
+      ...fixtureSnapshot().activity,
+      provisional_weeks: [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+      ],
+    },
+  });
+  const catalog = await buildCatalog({
+    write: false,
+    now: "2026-07-24T00:00:00.000Z",
+    records: [record],
+    snapshots: [provisional],
+  });
+
+  expect(catalog.projects[0].activity).toEqual({
+    latestSourceActivityAt: "2026-07-23T00:00:00.000Z",
+    activeWeeks12: 4,
+    weeklyActivity: [
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true,
+    ],
+    evidenceStatus: "provisional",
+    dormant: false,
+  });
+});
+
+test("derives complete browser activity from fixed source weeks", async () => {
+  const record = fixtureProject({
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/fixture",
+      repository_id: 123,
+    },
+  });
+  const complete = fixtureSnapshot({
+    repository: {
+      ...fixtureSnapshot().repository,
+      head_committed_at: "2026-07-23T00:00:00.000Z",
+    },
+    activity: {
+      ...fixtureSnapshot().activity,
+      source_weeks: [
+        {
+          week_start: "2026-07-20",
+          latest_at: "2026-07-23T00:00:00.000Z",
+          precision: "exact",
+        },
+        {
+          week_start: "2026-06-29",
+          latest_at: "2026-07-01T00:00:00.000Z",
+          precision: "exact",
+        },
+      ],
+      provisional_weeks: null,
+      evidence_status: "complete",
+      baseline_completed_at: "2026-07-24T00:00:00.000Z",
+    },
+  });
+  const catalog = await buildCatalog({
+    write: false,
+    now: "2026-07-24T00:00:00.000Z",
+    records: [record],
+    snapshots: [complete],
+  });
+
+  expect(catalog.projects[0].activity).toEqual({
+    latestSourceActivityAt: "2026-07-23T00:00:00.000Z",
+    activeWeeks12: 2,
+    weeklyActivity: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+    ],
+    evidenceStatus: "complete",
+    dormant: false,
+  });
 });
 
 test("publishes snapshotless github records with pending source facts", async () => {
@@ -93,10 +232,10 @@ test("publishes snapshotless github records with pending source facts", async ()
       metadataStatus: "provisional",
       sourceStatus: "pending",
       activity: {
-        latestMeaningfulCommitAt: null,
+        latestSourceActivityAt: null,
         activeWeeks12: null,
-        twoWeekBars: null,
-        strength: null,
+        weeklyActivity: null,
+        evidenceStatus: null,
         dormant: false,
       },
       latestReleaseAt: null,
@@ -181,10 +320,10 @@ test("publishes github organizations as manual-source public projects", async ()
       metadataStatus: "provisional",
       sourceStatus: "manual",
       activity: {
-        latestMeaningfulCommitAt: null,
+        latestSourceActivityAt: null,
         activeWeeks12: null,
-        twoWeekBars: null,
-        strength: null,
+        weeklyActivity: null,
+        evidenceStatus: null,
         dormant: false,
       },
       latestReleaseAt: null,
@@ -272,7 +411,11 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(recursion?.activity.twoWeekBars).toHaveLength(6);
+  expect(catalog.schemaVersion).toBe(2);
+  expect(recursion?.activity.weeklyActivity).toHaveLength(12);
+  expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
+    recursion?.activity.activeWeeks12 ?? 0,
+  );
   expect(recursion?.community?.aggregate).toBe(
     (recursion?.community?.stars ?? 0) +
       (recursion?.community?.forks ?? 0) +
@@ -320,12 +463,15 @@ test("excludes curator and source quarantine states", async () => {
   expect(catalog.projects).toEqual([]);
 });
 
-test("uses source timestamps for deterministic generated output", async () => {
+test("uses the refresh manifest for deterministic generated output", async () => {
   const catalog = await buildCatalog({
     write: false,
     records: [fixtureProject()],
     snapshots: [],
+    refreshManifest: {
+      completed_at: "2026-07-24T08:30:00.000Z",
+    },
   });
 
-  expect(catalog.generatedAt).toBe("2026-07-23T00:00:00.000Z");
+  expect(catalog.generatedAt).toBe("2026-07-24T08:30:00.000Z");
 });

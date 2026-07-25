@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "archkr-lumiverse-lumiworld",
   "repository": {
     "id": 1285750198,
@@ -10,16 +10,31 @@
     "head_sha": "b2d012adaf4eaadbde6b63661a16f26fda60a99c",
     "archived": false,
     "created_at": "2026-07-01T05:38:22Z",
-    "size_kb": 463
+    "size_kb": 463,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-17T01:23:21.000Z",
-    "weekly_meaningful_commits": [0, 4, 75, 21, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 3,
-    "strength": 3014,
-    "dormant": false,
-    "latest_release_at": "2026-07-10T00:16:12Z"
+    "latest_source_activity_at": "2026-07-17T01:23:21.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false
+    ],
+    "latest_release_at": "2026-07-10T00:16:12Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 2,

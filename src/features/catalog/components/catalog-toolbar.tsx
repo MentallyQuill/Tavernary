@@ -51,7 +51,7 @@ export function CatalogToolbar({
             }
           >
             <option value="recent">Recent Activity</option>
-            <option value="strength">Activity Strength</option>
+            <option value="sustained">Sustained Activity</option>
             <option value="popularity">Popularity</option>
             <option value="alphabetical">Alphabetical</option>
           </select>

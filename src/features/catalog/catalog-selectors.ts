@@ -20,7 +20,7 @@ function matchesDevelopment(
     selected.length === 0 ||
     selected.some((filter) => {
       if (filter === "active-month") {
-        return isWithinDays(project.activity.latestMeaningfulCommitAt, now, 30);
+        return isWithinDays(project.activity.latestSourceActivityAt, now, 30);
       }
       if (filter === "new-release") {
         return isWithinDays(releaseTimestamp(project), now, 30);
@@ -36,7 +36,7 @@ function matchesView(
   now: string,
 ) {
   if (view === "active") {
-    return isWithinDays(project.activity.latestMeaningfulCommitAt, now, 30);
+    return isWithinDays(project.activity.latestSourceActivityAt, now, 30);
   }
   if (view === "new") {
     return (
@@ -83,6 +83,18 @@ function nullableDescending(
   );
 }
 
+function activityRecency(project: CatalogProject) {
+  const sourceTime = project.activity.latestSourceActivityAt
+    ? new Date(project.activity.latestSourceActivityAt).getTime()
+    : Number.NEGATIVE_INFINITY;
+  const releasedAt = releaseTimestamp(project);
+  const releaseTime = releasedAt
+    ? new Date(releasedAt).getTime()
+    : Number.NEGATIVE_INFINITY;
+  const recency = Math.max(sourceTime, releaseTime);
+  return Number.isFinite(recency) ? recency : null;
+}
+
 function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
   return projects.sort((left, right) => {
     if (sort === "alphabetical") {
@@ -91,12 +103,33 @@ function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
         collator.compare(left.id, right.id)
       );
     }
-    if (sort === "strength") {
-      return nullableDescending(
-        left.activity.strength,
-        right.activity.strength,
-        left,
-        right,
+    if (sort === "sustained") {
+      const leftWeeks = left.activity.activeWeeks12;
+      const rightWeeks = right.activity.activeWeeks12;
+      if (leftWeeks === null && rightWeeks !== null) return 1;
+      if (leftWeeks !== null && rightWeeks === null) return -1;
+      if (
+        leftWeeks !== null &&
+        rightWeeks !== null &&
+        leftWeeks !== rightWeeks
+      ) {
+        return rightWeeks - leftWeeks;
+      }
+
+      const leftRecency = activityRecency(left);
+      const rightRecency = activityRecency(right);
+      if (leftRecency === null && rightRecency !== null) return 1;
+      if (leftRecency !== null && rightRecency === null) return -1;
+      if (
+        leftRecency !== null &&
+        rightRecency !== null &&
+        leftRecency !== rightRecency
+      ) {
+        return rightRecency - leftRecency;
+      }
+      return (
+        collator.compare(left.name, right.name) ||
+        collator.compare(left.id, right.id)
       );
     }
     if (sort === "popularity") {
@@ -107,13 +140,12 @@ function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
         right,
       );
     }
-    const leftTime = left.activity.latestMeaningfulCommitAt
-      ? new Date(left.activity.latestMeaningfulCommitAt).getTime()
-      : null;
-    const rightTime = right.activity.latestMeaningfulCommitAt
-      ? new Date(right.activity.latestMeaningfulCommitAt).getTime()
-      : null;
-    return nullableDescending(leftTime, rightTime, left, right);
+    return nullableDescending(
+      activityRecency(left),
+      activityRecency(right),
+      left,
+      right,
+    );
   });
 }
 

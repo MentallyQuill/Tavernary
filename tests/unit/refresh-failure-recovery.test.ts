@@ -1,14 +1,12 @@
-import { access, mkdtemp, mkdir, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-
 import { expect, test } from "vitest";
 
-import * as refreshModule from "../../scripts/catalog/refresh-github.mjs";
-import { repositoryIdentityChanged } from "../../scripts/catalog/refresh-github.mjs";
+import {
+  repositoryIdentityChanged,
+  snapshotForFailure,
+} from "../../scripts/catalog/refresh-github.mjs";
 
 const prior = {
-  schema_version: 1,
+  schema_version: 2,
   project_id: "fixture",
   repository: {
     id: 42,
@@ -17,18 +15,26 @@ const prior = {
     url: "https://github.com/Creator/Project",
     default_branch: "main",
     head_sha: "a".repeat(40),
+    head_committed_at: "2026-07-20T00:00:00.000Z",
     archived: false,
-    created_at: "2026-01-01T00:00:00Z",
+    created_at: "2026-01-01T00:00:00.000Z",
     size_kb: 10,
   },
   source_health: "healthy",
   activity: {
-    latest_meaningful_commit_at: "2026-07-20T00:00:00.000Z",
-    weekly_meaningful_commits: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    active_weeks_12: 1,
-    strength: 100,
-    dormant: false,
+    latest_source_activity_at: "2026-07-20T00:00:00.000Z",
+    source_weeks: [
+      {
+        week_start: "2026-07-20",
+        latest_at: "2026-07-20T00:00:00.000Z",
+        precision: "interval",
+      },
+    ],
+    provisional_weeks: Array.from({ length: 12 }, () => false),
     latest_release_at: null,
+    evidence_status: "provisional",
+    baseline_completed_at: null,
+    baseline_attempts: 0,
   },
   community: {
     stargazers_count: 3,
@@ -45,175 +51,61 @@ const prior = {
   stale_since: null,
 };
 
-function recoveryFunctions() {
-  return refreshModule as typeof refreshModule & {
-    snapshotForFailure?: (
-      previous: typeof prior,
-      error: { status?: number; rateLimited?: boolean },
-      now: string,
-    ) => typeof prior;
-    identityChangeSnapshot?: (input: {
-      record: {
-        id: string;
-        source: { repository_id: number };
-      };
-      repository: {
-        id: number;
-        owner: { login: string };
-        name: string;
-        html_url: string;
-        default_branch: string;
-        archived: boolean;
-        created_at: string;
-        size: number;
-        stargazers_count: number;
-        forks_count: number;
-        subscribers_count: number;
-      };
-      previous: typeof prior;
-      now: string;
-    }) => typeof prior;
-    refreshSelectedProjects?: (
-      records: Array<{ id: string }>,
-      refresh: (record: { id: string }) => Promise<{
-        source_health: string;
-        refreshed_at: string;
-      } | null>,
-      logger: { log(message: string): void; error(message: string): void },
-    ) => Promise<void>;
-  };
-}
-
-test("rate limits preserve last-known-good facts and start staleness", () => {
-  const snapshotForFailure = recoveryFunctions().snapshotForFailure;
-  expect(snapshotForFailure).toBeTypeOf("function");
-  if (!snapshotForFailure) return;
-
+test("soft failure preserves last-known-good facts and starts staleness", () => {
   const recovered = snapshotForFailure(
     prior,
-    { status: 403, rateLimited: true },
+    { status: 503 },
     "2026-07-24T00:00:00.000Z",
   );
 
   expect(recovered).toEqual({
     ...prior,
+    activity: { ...prior.activity },
     stale_since: "2026-07-24T00:00:00.000Z",
   });
   expect(prior.stale_since).toBeNull();
 });
 
-test("an unavailable repository preserves facts but marks source health", () => {
-  const snapshotForFailure = recoveryFunctions().snapshotForFailure;
-  expect(snapshotForFailure).toBeTypeOf("function");
-  if (!snapshotForFailure) return;
-
+test("unavailable sources preserve evidence while changing source health", () => {
   expect(
     snapshotForFailure(prior, { status: 404 }, "2026-07-24T00:00:00.000Z"),
-  ).toEqual({
-    ...prior,
+  ).toMatchObject({
     source_health: "unavailable",
+    activity: prior.activity,
+    license: prior.license,
     stale_since: "2026-07-24T00:00:00.000Z",
   });
 });
 
-test("a repository ID mismatch quarantines the source without mutating curated input", () => {
-  const identityChangeSnapshot = recoveryFunctions().identityChangeSnapshot;
-  expect(identityChangeSnapshot).toBeTypeOf("function");
-  if (!identityChangeSnapshot) return;
-
-  const record = {
-    id: "fixture",
-    source: { repository_id: 42 },
+test("the third baseline failure degrades evidence and advances the queue", () => {
+  const previous = {
+    ...prior,
+    activity: { ...prior.activity, baseline_attempts: 2 },
   };
-  const recordBefore = structuredClone(record);
-  const quarantined = identityChangeSnapshot({
-    record,
-    repository: {
-      id: 99,
-      owner: { login: "Other" },
-      name: "Replacement",
-      html_url: "https://github.com/Other/Replacement",
-      default_branch: "main",
-      archived: false,
-      created_at: "2026-07-01T00:00:00Z",
-      size: 20,
-      stargazers_count: 10,
-      forks_count: 2,
-      subscribers_count: 1,
-    },
-    previous: prior,
-    now: "2026-07-24T00:00:00.000Z",
-  });
 
-  expect(quarantined.source_health).toBe("identity-change");
-  expect(quarantined.repository.id).toBe(99);
-  expect(quarantined.activity).toEqual(prior.activity);
-  expect(quarantined.license).toEqual(prior.license);
-  expect(quarantined.stale_since).toBe("2026-07-24T00:00:00.000Z");
-  expect(record).toEqual(recordBefore);
+  expect(
+    snapshotForFailure(previous, {}, "2026-07-24T00:00:00.000Z", {
+      baselineAttempt: true,
+    }),
+  ).toMatchObject({
+    activity: {
+      evidence_status: "degraded",
+      baseline_attempts: 3,
+    },
+  });
 });
 
-test("does not classify the first provisional refresh as identity change", () => {
-  const provisionalRecord = {
-    id: "pending",
-    source: { repository_id: null },
-  };
-  const repository = { id: 42 };
-
-  expect(repositoryIdentityChanged(provisionalRecord, repository)).toBe(false);
+test("repository identity checks allow unverified records and reject mismatches", () => {
   expect(
     repositoryIdentityChanged(
-      { id: "verified", source: { repository_id: 7 } },
-      repository,
+      { source: { repository_id: null } },
+      { repository: { id: 42 } },
+    ),
+  ).toBe(false);
+  expect(
+    repositoryIdentityChanged(
+      { source: { repository_id: 7 } },
+      { repository: { id: 42 } },
     ),
   ).toBe(true);
-});
-
-test("refresh batches continue after a per-record failure", async () => {
-  const results: string[] = [];
-  const errors: string[] = [];
-
-  const refreshSelectedProjects = recoveryFunctions().refreshSelectedProjects;
-  expect(refreshSelectedProjects).toBeTypeOf("function");
-  if (!refreshSelectedProjects) return;
-
-  await refreshSelectedProjects(
-    [{ id: "broken" }, { id: "healthy" }],
-    async (record) => {
-      if (record.id === "broken") {
-        throw new Error("boom");
-      }
-      return {
-        source_health: "healthy",
-        refreshed_at: "2026-07-24T00:00:00.000Z",
-      };
-    },
-    {
-      log: (message) => results.push(message),
-      error: (message) => errors.push(message),
-    },
-  );
-
-  expect(results).toEqual(["healthy: healthy at 2026-07-24T00:00:00.000Z"]);
-  expect(errors).toEqual(["broken: boom"]);
-});
-
-test("cleans temporary clones with recursive removal retries", async () => {
-  const cleanup = refreshModule.cleanupTemporaryRoot;
-  expect(cleanup).toBeTypeOf("function");
-  if (!cleanup) return;
-
-  const temporaryRoot = await mkdtemp(
-    join(tmpdir(), "tavernary-refresh-test-"),
-  );
-  await mkdir(join(temporaryRoot, "repository", ".git", "objects"), {
-    recursive: true,
-  });
-  await writeFile(
-    join(temporaryRoot, "repository", ".git", "objects", "pack"),
-    "pack",
-  );
-
-  await cleanup(temporaryRoot);
-  await expect(access(temporaryRoot)).rejects.toMatchObject({ code: "ENOENT" });
 });

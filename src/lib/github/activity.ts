@@ -1,7 +1,3 @@
-const DAY_MS = 24 * 60 * 60 * 1000;
-const WEEK_MS = 7 * DAY_MS;
-const DORMANT_AFTER_MS = 84 * DAY_MS;
-
 const documentationExtensions = new Set([
   ".adoc",
   ".markdown",
@@ -27,27 +23,6 @@ export interface CommitFixture {
   files: string[];
   mergeOnly?: boolean;
   patch?: string | null;
-}
-
-export interface ActivityResult {
-  latestMeaningfulCommitAt: string | null;
-  weeklyMeaningfulCommits: [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ];
-  activeWeeks12: number;
-  strength: number;
-  dormant: boolean;
 }
 
 function extension(path: string) {
@@ -98,61 +73,4 @@ export function classifyCommit(
   return files.some((file) => !isExcludedPath(file))
     ? "meaningful"
     : "excluded";
-}
-
-export function calculateActivity(input: {
-  now: string;
-  commits: CommitFixture[];
-}): ActivityResult {
-  const now = new Date(input.now).getTime();
-  if (!Number.isFinite(now)) {
-    throw new Error(`Invalid activity timestamp: ${input.now}`);
-  }
-
-  const meaningful = input.commits
-    .filter(
-      (commit) =>
-        classifyCommit(commit.files, commit) === "meaningful" &&
-        Number.isFinite(new Date(commit.committedAt).getTime()),
-    )
-    .sort(
-      (left, right) =>
-        new Date(right.committedAt).getTime() -
-        new Date(left.committedAt).getTime(),
-    );
-
-  const weeklyMeaningfulCommits = Array.from(
-    { length: 12 },
-    () => 0,
-  ) as ActivityResult["weeklyMeaningfulCommits"];
-
-  for (const commit of meaningful) {
-    const age = now - new Date(commit.committedAt).getTime();
-    const weekNumber = Math.floor(age / WEEK_MS);
-    if (weekNumber >= 0 && weekNumber < weeklyMeaningfulCommits.length) {
-      weeklyMeaningfulCommits[weekNumber] += 1;
-    }
-  }
-
-  const strength = weeklyMeaningfulCommits.reduce(
-    (total, commitCount, weekNumber) =>
-      total +
-      (commitCount > 0 ? (12 - weekNumber) * 100 : 0) +
-      Math.min(commitCount, 5),
-    0,
-  );
-  const latestMeaningfulCommitAt = meaningful[0]
-    ? new Date(meaningful[0].committedAt).toISOString()
-    : null;
-  const latestAge = latestMeaningfulCommitAt
-    ? now - new Date(latestMeaningfulCommitAt).getTime()
-    : Number.POSITIVE_INFINITY;
-
-  return {
-    latestMeaningfulCommitAt,
-    weeklyMeaningfulCommits,
-    activeWeeks12: weeklyMeaningfulCommits.filter((count) => count > 0).length,
-    strength,
-    dormant: latestAge > DORMANT_AFTER_MS,
-  };
 }

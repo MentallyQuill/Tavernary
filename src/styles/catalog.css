@@ -778,19 +778,33 @@
   font-size: 10px;
 }
 
-.activity-bars {
-  display: flex;
-  width: 31px;
-  height: 17px;
-  align-items: flex-end;
-  gap: 2px;
+.activity-weeks {
+  display: grid;
+  width: 43px;
+  height: 8px;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: center;
+  gap: 1px;
 }
 
-.activity-bars i {
-  width: 3px;
-  min-height: 1px;
-  border-radius: 1px 1px 0 0;
+.activity-weeks i {
+  width: 100%;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--color-border);
+}
+
+.activity-weeks i.active {
   background: var(--color-kind-preset);
+}
+
+.evidence-provisional .activity-weeks i.active {
+  background: var(--color-border-strong);
+}
+
+.evidence-degraded .activity-weeks {
+  outline: 1px solid var(--color-muted);
+  outline-offset: 2px;
 }
 
 .commit-age {
@@ -802,6 +816,12 @@
     var(--color-muted)
   );
   font-weight: 700;
+}
+
+.no-source-activity {
+  max-width: 112px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .community {

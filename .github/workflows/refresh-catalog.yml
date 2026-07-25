@@ -6,22 +6,20 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Refresh every automatic source or one backfill batch.
+        description: Select incremental observation, baseline queue, or one project.
         type: choice
         options:
           - incremental
-          - backfill
+          - baseline
+          - project
+          - forensic
         default: incremental
-      start_index:
-        description: Zero-based first record for backfill mode.
-        type: number
-        default: 0
       batch_size:
-        description: Number of records for backfill mode.
+        description: Number of provisional projects for baseline mode (1-24).
         type: number
-        default: 20
+        default: 12
       project_id:
-        description: Optional single production project ID.
+        description: Required project ID for project or forensic mode.
         type: string
         required: false
 
@@ -35,10 +33,13 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -51,11 +52,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MODE: ${{ inputs.mode || 'incremental' }}
-          START_INDEX: ${{ inputs.start_index || 0 }}
-          BATCH_SIZE: ${{ inputs.batch_size || 20 }}
+          BATCH_SIZE: ${{ inputs.batch_size || 12 }}
           PROJECT_ID: ${{ inputs.project_id || '' }}
         run: |
-          args=(--mode "$MODE" --start-index "$START_INDEX" --batch-size "$BATCH_SIZE")
+          args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
           if [[ -n "$PROJECT_ID" ]]; then
             args+=(--project-id "$PROJECT_ID")
           fi
@@ -66,7 +66,7 @@ jobs:
         id: commit
         shell: bash
         run: |
-          git add data/snapshots/github/*.json
+          git add data/snapshots/github/*.json data/snapshots/github-refresh.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
@@ -74,28 +74,46 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(catalog): refresh GitHub snapshots"
-          git push
+          for attempt in 1 2 3; do
+            if git fetch origin main &&
+              git rebase origin/main; then
+              if npm run check &&
+                git push origin HEAD:main; then
+                break
+              fi
+            fi
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            if [[ -n "$conflicts" ]]; then
+              echo "Snapshot publication conflict:"
+              echo "$conflicts"
+            fi
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              exit 1
+            fi
+          done
           echo "changed=true" >> "$GITHUB_OUTPUT"
       - name: Redeploy refreshed catalog
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-pages.yml --ref main
-      - name: Advance backfill queue
-        if: ${{ success() && inputs.mode == 'backfill' }}
+      - name: Continue baseline queue
+        if: ${{ success() && inputs.mode == 'baseline' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          START_INDEX: ${{ inputs.start_index || 0 }}
-          BATCH_SIZE: ${{ inputs.batch_size || 20 }}
+          BATCH_SIZE: ${{ inputs.batch_size || 12 }}
         shell: bash
         run: |
-          next_index=$((START_INDEX + BATCH_SIZE))
-          if (( next_index < 200 )); then
+          # counts.provisional is derived from current snapshot evidence_status values.
+          remaining="$(
+            node -e "const fs=require('fs');const value=JSON.parse(fs.readFileSync('data/snapshots/github-refresh.json','utf8')).counts.provisional;process.stdout.write(String(value))"
+          )"
+          if (( remaining > 0 )); then
             gh workflow run refresh-catalog.yml \
               --ref main \
-              -f mode=backfill \
-              -f start_index="$next_index" \
+              -f mode=baseline \
               -f batch_size="$BATCH_SIZE"
           else
-            echo "Backfill queue complete at index $next_index."
+            echo "Baseline queue complete."
           fi

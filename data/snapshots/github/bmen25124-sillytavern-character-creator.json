@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "bmen25124-sillytavern-character-creator",
   "repository": {
     "id": 956654271,
@@ -10,16 +10,31 @@
     "head_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
     "archived": false,
     "created_at": "2025-03-28T16:13:29Z",
-    "size_kb": 1634
+    "size_kb": 1634,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-06-09T02:36:29.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0],
-    "active_weeks_12": 1,
-    "strength": 605,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-06-09T02:36:29.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 160,

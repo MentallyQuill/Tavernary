@@ -53,6 +53,8 @@ runtime input. Canonical catalog records live in `data/registry/projects/`, and
 source refreshes never edit those files. GitHub-derived facts live in
 `data/snapshots/github/`, and `npm run catalog:build` joins registry records,
 snapshots, and controlled vocabularies into `src/generated/catalog.json`.
+`data/snapshots/github-refresh.json` records sanitized counts, API usage,
+timings, and the catalog-wide refresh timestamp for the latest completed run.
 
 Registry records use schema version 2. Every record carries
 `metadata_status: "curated"` or `"provisional"`. Provisional GitHub records may
@@ -64,9 +66,12 @@ System Presets may use another stable public HTTPS page. Non-GitHub presets are
 manually processed once and use `refresh_policy: paused`. Tavern RPG Suite is
 the sole `github-organization` exception and also uses `refresh_policy: paused`.
 
-Recent Activity sorts by the latest meaningful commit. Activity Strength is the
-number of active weeks in the last 12 weeks, with commit recency used as the
-tiebreaker. More than 12 weeks without a meaningful commit is dormant.
+Recent Activity sorts by the latest qualifying source change or release.
+Sustained Activity sorts by the number of fixed UTC weeks with qualifying
+source activity, then recency. `N/12` means activity occurred in N of the
+current twelve Monday-based UTC weeks; it does not count or weight commits.
+The twelve graph ticks run oldest to newest. A complete baseline with no
+qualifying change reports no source activity in the last twelve weeks.
 
 Snapshotless published GitHub records stay visible. The site renders them as
 pending enrichment rather than as zero activity or verified missing metadata.
@@ -90,16 +95,23 @@ Refresh every automatic GitHub source:
 npm run catalog:refresh -- --mode incremental
 ```
 
-Refresh one source:
+Refresh one exact source, using its current evidence to decide whether a
+baseline is needed:
 
 ```powershell
-npm run catalog:refresh -- --project-id mentallyquill-recursion
+npm run catalog:refresh -- --mode project --project-id mentallyquill-recursion
 ```
 
-Process a bounded backfill batch:
+Process the next dynamically selected provisional baseline batch:
 
 ```powershell
-npm run catalog:refresh -- --mode backfill --start-index 0 --batch-size 20
+npm run catalog:refresh -- --mode baseline --batch-size 12
+```
+
+Force one bounded Git inspection for diagnosis:
+
+```powershell
+npm run catalog:refresh -- --mode forensic --project-id mentallyquill-recursion
 ```
 
 Backfill immutable repository IDs into provisional curated records after
@@ -115,10 +127,18 @@ Rebuild the browser catalog artifact explicitly:
 npm run catalog:build
 ```
 
-The scheduled GitHub workflow runs incremental refreshes once daily. Its manual
-dispatch supports the same mode, start index, batch size, and optional project
-ID inputs. It validates the complete site before committing only changed
-snapshot files, then explicitly dispatches the Pages deployment.
+The scheduled GitHub workflow runs incremental refreshes once daily. Normal
+incremental runs batch repository metadata, compare only changed heads, and
+clone only when a baseline or bounded fallback is required. Manual dispatch
+supports `incremental`, `baseline`, `project`, and `forensic`; `project_id` is
+required for the last two modes, while `batch_size` is bounded to 1–24.
+
+Every run validates the complete site before committing only
+`data/snapshots/github/*.json` and the global refresh manifest. The action log
+ends with outcome counts and bounded per-project timings, so fallback clone
+time is visible. A successful snapshot commit explicitly dispatches Pages.
+Baseline runs continue only while the manifest reports provisional evidence;
+there is no index or fixed catalog-size ceiling.
 
 ### Quarantine and recovery
 

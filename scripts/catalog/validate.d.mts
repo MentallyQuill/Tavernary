@@ -7,4 +7,5 @@ export interface ValidationResult {
 export function validateCatalog(options?: {
   records?: unknown[];
   snapshots?: unknown[];
+  refreshManifest?: unknown;
 }): Promise<ValidationResult>;

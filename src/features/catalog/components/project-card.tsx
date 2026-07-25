@@ -58,7 +58,8 @@ function detailItems(project: CatalogProject) {
   if (
     shouldExplainUnknownFacts &&
     project.kind === "preset" &&
-    (project.activity.activeWeeks12 === null || !project.activity.twoWeekBars)
+    (project.activity.activeWeeks12 === null ||
+      !project.activity.weeklyActivity)
   ) {
     items.push("Activity unavailable");
   }
@@ -134,16 +135,16 @@ export function ProjectCard({
   const primaryFunction =
     CATEGORY_OPTIONS.find(({ id }) => id === project.primaryFunction)?.label ??
     project.primaryFunction;
-  const commitAge = relativeTime(
-    project.activity.latestMeaningfulCommitAt,
+  const sourceActivityAge = relativeTime(
+    project.activity.latestSourceActivityAt,
     now,
   );
-  const commitFreshness = commitFreshnessPercent(
-    project.activity.latestMeaningfulCommitAt,
+  const sourceActivityFreshness = commitFreshnessPercent(
+    project.activity.latestSourceActivityAt,
     now,
   );
-  const commitAgeStyle = {
-    "--commit-freshness": `${commitFreshness}%`,
+  const sourceActivityAgeStyle = {
+    "--commit-freshness": `${sourceActivityFreshness}%`,
   } as CSSProperties;
   const repositorySize = formatSize(project.repositorySizeKb);
   const presetVersion = project.preset?.version
@@ -154,19 +155,33 @@ export function ProjectCard({
     : "Source linked";
   const presetSize = formatBytes(project.preset?.artifactSizeBytes ?? null);
   const details = detailItems(project);
-  const { activeWeeks12, latestMeaningfulCommitAt, twoWeekBars } =
-    project.activity;
-  const hasActivityMetrics =
-    activeWeeks12 !== null &&
-    twoWeekBars !== null &&
-    latestMeaningfulCommitAt !== null;
+  const {
+    activeWeeks12,
+    latestSourceActivityAt,
+    weeklyActivity,
+    evidenceStatus,
+  } = project.activity;
+  const hasActivityMetrics = activeWeeks12 !== null && weeklyActivity !== null;
+  const activitySummary =
+    activeWeeks12 === null
+      ? null
+      : evidenceStatus === "provisional"
+        ? `Approximate activity in ${activeWeeks12} of the last 12 weeks; baseline pending`
+        : `Source activity in ${activeWeeks12} of the last 12 weeks`;
+  const activityLabel =
+    activitySummary && evidenceStatus === "degraded"
+      ? `${activitySummary}; activity evidence is incomplete`
+      : activitySummary;
   const cardDescription = [
     `${kindLabels[project.kind]} project. Primary category: ${primaryFunction}.`,
     ...details.map((detail) => `${detail}.`),
-    project.activity.activeWeeks12 !== null
-      ? `Active in ${project.activity.activeWeeks12} of the last 12 weeks.`
-      : null,
-    `Last activity: ${commitAge}.`,
+    activitySummary ? `${activitySummary}.` : null,
+    evidenceStatus === "degraded" ? "Activity evidence is incomplete." : null,
+    latestSourceActivityAt
+      ? `Last source activity: ${sourceActivityAge}.`
+      : evidenceStatus === "complete"
+        ? "No source activity in the last 12 weeks."
+        : null,
     project.community
       ? `Community score: ${project.community.aggregate}.`
       : null,
@@ -239,20 +254,34 @@ export function ProjectCard({
               <>
                 <Tooltip
                   id={activityId}
-                  label={`Active in ${activeWeeks12} of the last 12 weeks`}
-                  className="activity-score"
+                  label={activityLabel ?? ""}
+                  ariaLabel={activityLabel ?? undefined}
+                  className={`activity-score evidence-${evidenceStatus}`}
                 >
-                  <b>{activeWeeks12}/12</b>
-                  <ActivitySparkline bars={twoWeekBars} />
+                  <b>
+                    {evidenceStatus === "provisional" ? "~" : ""}
+                    {activeWeeks12}/12
+                  </b>
+                  <ActivitySparkline weeks={weeklyActivity} />
                 </Tooltip>
-                <Tooltip
-                  id={commitId}
-                  label={`Last commit ${formatDate(latestMeaningfulCommitAt)} (${commitAge})`}
-                  className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
-                  style={commitAgeStyle}
-                >
-                  {commitAge}
-                </Tooltip>
+                {latestSourceActivityAt ? (
+                  <Tooltip
+                    id={commitId}
+                    label={`Last source activity ${formatDate(latestSourceActivityAt)} (${sourceActivityAge})`}
+                    className={`commit-age${project.activity.dormant ? " dormant" : ""}`}
+                    style={sourceActivityAgeStyle}
+                  >
+                    {sourceActivityAge}
+                  </Tooltip>
+                ) : (
+                  <span className="commit-age no-source-activity">
+                    {evidenceStatus === "complete"
+                      ? "No source activity in the last 12 weeks"
+                      : evidenceStatus === "provisional"
+                        ? "Source activity baseline pending"
+                        : "Source activity evidence incomplete"}
+                  </span>
+                )}
               </>
             ) : (
               <span className="development-unavailable">

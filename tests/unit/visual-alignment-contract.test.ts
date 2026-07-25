@@ -176,7 +176,7 @@ describe("catalog visual alignment", () => {
       /\.card-identity\s*\{[^}]*color:\s*var\(--kind-color\)/s,
     );
     expect(css).toMatch(
-      /\.activity-bars i\s*\{[^}]*background:\s*var\(--color-kind-preset\)/s,
+      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-kind-preset\)/s,
     );
     expect(css).toMatch(
       /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-kind-preset\)/s,

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "amousepad-lumirealm",
   "repository": {
     "id": 1226998015,
@@ -10,16 +10,31 @@
     "head_sha": "3576f02f252495119783c5dee51c52b6010c7097",
     "archived": false,
     "created_at": "2026-05-02T04:32:14Z",
-    "size_kb": 9511
+    "size_kb": 9511,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2026-07-19T06:50:12.000Z",
-    "weekly_meaningful_commits": [14, 0, 0, 0, 0, 0, 2, 11, 6, 13, 42, 61],
-    "active_weeks_12": 7,
-    "strength": 3332,
-    "dormant": false,
-    "latest_release_at": null
+    "latest_source_activity_at": "2026-07-19T06:50:12.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 5,

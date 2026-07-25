@@ -16,7 +16,7 @@
     "stale_since"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "const": 2 },
     "project_id": { "type": "string", "minLength": 1 },
     "repository": {
       "type": "object",
@@ -28,6 +28,7 @@
         "url",
         "default_branch",
         "head_sha",
+        "head_committed_at",
         "archived",
         "created_at",
         "size_kb"
@@ -39,6 +40,12 @@
         "url": { "type": "string", "format": "uri" },
         "default_branch": { "type": "string", "minLength": 1 },
         "head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "head_committed_at": {
+          "anyOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        },
         "archived": { "type": "boolean" },
         "created_at": { "type": "string", "format": "date-time" },
         "size_kb": { "type": "integer", "minimum": 0 }
@@ -57,35 +64,65 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "latest_meaningful_commit_at",
-        "weekly_meaningful_commits",
-        "active_weeks_12",
-        "strength",
-        "dormant",
-        "latest_release_at"
+        "latest_source_activity_at",
+        "source_weeks",
+        "provisional_weeks",
+        "latest_release_at",
+        "evidence_status",
+        "baseline_completed_at",
+        "baseline_attempts"
       ],
       "properties": {
-        "latest_meaningful_commit_at": {
+        "latest_source_activity_at": {
           "anyOf": [
             { "type": "string", "format": "date-time" },
             { "type": "null" }
           ]
         },
-        "weekly_meaningful_commits": {
+        "source_weeks": {
           "type": "array",
-          "items": { "type": "integer", "minimum": 0 },
-          "minItems": 12,
-          "maxItems": 12
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["week_start", "latest_at", "precision"],
+            "properties": {
+              "week_start": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "latest_at": { "type": "string", "format": "date-time" },
+              "precision": { "enum": ["exact", "interval"] }
+            }
+          }
         },
-        "active_weeks_12": { "type": "integer", "minimum": 0, "maximum": 12 },
-        "strength": { "type": "number", "minimum": 0 },
-        "dormant": { "type": "boolean" },
+        "provisional_weeks": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": { "type": "boolean" },
+              "minItems": 12,
+              "maxItems": 12
+            },
+            { "type": "null" }
+          ]
+        },
         "latest_release_at": {
           "anyOf": [
             { "type": "string", "format": "date-time" },
             { "type": "null" }
           ]
-        }
+        },
+        "evidence_status": {
+          "enum": ["provisional", "complete", "degraded"]
+        },
+        "baseline_completed_at": {
+          "anyOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        },
+        "baseline_attempts": { "type": "integer", "minimum": 0 }
       }
     },
     "community": {

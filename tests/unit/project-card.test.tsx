@@ -35,10 +35,23 @@ function project(
     ],
     searchableText: `${id} extension automation`,
     activity: {
-      latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
+      latestSourceActivityAt: "2026-07-20T00:00:00Z",
       activeWeeks12: 4,
-      twoWeekBars: [1, 1, 1, 1, 0, 0],
-      strength: 1000,
+      weeklyActivity: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+      ],
+      evidenceStatus: "complete",
       dormant: false,
     },
     latestReleaseAt: null,
@@ -74,6 +87,186 @@ describe("project card", () => {
     expect(screen.getByText("Provisional details")).toBeInTheDocument();
   });
 
+  test("renders twelve ticks matching the active-week total", () => {
+    render(
+      <ProjectCard
+        project={project("activity-card", {
+          activity: {
+            latestSourceActivityAt: "2026-07-20T00:00:00Z",
+            activeWeeks12: 5,
+            weeklyActivity: [
+              true,
+              false,
+              true,
+              false,
+              false,
+              true,
+              false,
+              false,
+              true,
+              false,
+              false,
+              true,
+            ],
+            evidenceStatus: "complete",
+            dormant: false,
+          },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("5/12")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Source activity in 5 of the last 12 weeks"),
+    ).toBeInTheDocument();
+    expect(document.querySelectorAll(".activity-weeks i")).toHaveLength(12);
+    expect(document.querySelectorAll(".activity-weeks i.active")).toHaveLength(
+      5,
+    );
+  });
+
+  test("labels provisional and degraded evidence honestly", () => {
+    const weeklyActivity = [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+    ] as CatalogProject["activity"]["weeklyActivity"];
+    const { rerender } = render(
+      <ProjectCard
+        project={project("provisional-activity", {
+          activity: {
+            latestSourceActivityAt: "2026-07-20T00:00:00Z",
+            activeWeeks12: 3,
+            weeklyActivity,
+            evidenceStatus: "provisional",
+            dormant: false,
+          },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("~3/12")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        "Approximate activity in 3 of the last 12 weeks; baseline pending",
+      ),
+    ).toBeInTheDocument();
+
+    rerender(
+      <ProjectCard
+        project={project("degraded-activity", {
+          activity: {
+            latestSourceActivityAt: "2026-07-20T00:00:00Z",
+            activeWeeks12: 3,
+            weeklyActivity,
+            evidenceStatus: "degraded",
+            dormant: false,
+          },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("3/12")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        "Source activity in 3 of the last 12 weeks; activity evidence is incomplete",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  test("shows an empty complete window without inventing a source timestamp", () => {
+    render(
+      <ProjectCard
+        project={project("inactive-window", {
+          activity: {
+            latestSourceActivityAt: null,
+            activeWeeks12: 0,
+            weeklyActivity: [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+            ],
+            evidenceStatus: "complete",
+            dormant: true,
+          },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("0/12")).toBeInTheDocument();
+    expect(
+      screen.getByText("No source activity in the last 12 weeks"),
+    ).toBeInTheDocument();
+  });
+
+  test("does not claim no activity before a baseline completes", () => {
+    const emptyActivity = {
+      latestSourceActivityAt: null,
+      activeWeeks12: 0,
+      weeklyActivity: Array.from({ length: 12 }, () => false) as [
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+      ],
+      evidenceStatus: "provisional" as const,
+      dormant: false,
+    };
+    const { rerender } = render(
+      <ProjectCard
+        project={project("provisional-empty", { activity: emptyActivity })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("Source activity baseline pending")).toBeVisible();
+    expect(
+      screen.queryByText("No source activity in the last 12 weeks"),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <ProjectCard
+        project={project("degraded-empty", {
+          activity: { ...emptyActivity, evidenceStatus: "degraded" },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+    expect(
+      screen.getByText("Source activity evidence incomplete"),
+    ).toBeVisible();
+  });
+
   test("renders pending manual-source facts as honest unavailable states", () => {
     render(
       <ProjectCard
@@ -81,10 +274,10 @@ describe("project card", () => {
           metadataStatus: "provisional",
           sourceStatus: "manual",
           activity: {
-            latestMeaningfulCommitAt: null,
+            latestSourceActivityAt: null,
             activeWeeks12: null,
-            twoWeekBars: null,
-            strength: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
             dormant: false,
           },
           latestReleaseAt: null,
@@ -116,10 +309,10 @@ describe("project card", () => {
           metadataStatus: "provisional",
           sourceStatus: "manual",
           activity: {
-            latestMeaningfulCommitAt: null,
+            latestSourceActivityAt: null,
             activeWeeks12: null,
-            twoWeekBars: null,
-            strength: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
             dormant: false,
           },
           community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
@@ -147,10 +340,23 @@ describe("project card", () => {
         project={project("pending-source-card", {
           sourceStatus: "pending",
           activity: {
-            latestMeaningfulCommitAt: "2026-07-20T00:00:00Z",
+            latestSourceActivityAt: "2026-07-20T00:00:00Z",
             activeWeeks12: 4,
-            twoWeekBars: [1, 1, 1, 1, 0, 0],
-            strength: 1000,
+            weeklyActivity: [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+            ],
+            evidenceStatus: "provisional",
             dormant: false,
           },
         })}
@@ -159,7 +365,7 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("Source pending")).toBeInTheDocument();
-    expect(screen.getByText("4/12")).toBeInTheDocument();
+    expect(screen.getByText("~4/12")).toBeInTheDocument();
     expect(screen.getByText("13")).toBeInTheDocument();
     expect(screen.getByText("100 KB repo")).toBeInTheDocument();
     expect(

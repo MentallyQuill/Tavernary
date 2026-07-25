@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "aikohanasaki-sillytavern-modelinjection",
   "repository": {
     "id": 1081424481,
@@ -10,16 +10,31 @@
     "head_sha": "4e4c3d0c6cf1bf2f4f5a3fa2c805221ddeccf197",
     "archived": false,
     "created_at": "2025-10-22T19:07:06Z",
-    "size_kb": 38
+    "size_kb": 38,
+    "head_committed_at": null
   },
   "source_health": "healthy",
   "activity": {
-    "latest_meaningful_commit_at": "2025-10-22T20:33:59.000Z",
-    "weekly_meaningful_commits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "active_weeks_12": 0,
-    "strength": 0,
-    "dormant": true,
-    "latest_release_at": null
+    "latest_source_activity_at": "2025-10-22T20:33:59.000Z",
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
   },
   "community": {
     "stargazers_count": 6,
