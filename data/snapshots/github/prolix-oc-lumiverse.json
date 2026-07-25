@@ -12,30 +12,74 @@
     "head_committed_at": "2026-07-19T01:49:32.000Z",
     "archived": false,
     "created_at": "2026-03-07T23:15:01.000Z",
-    "size_kb": 91861
+    "size_kb": 91963
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-19T01:17:42.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T01:17:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T20:43:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T22:24:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T23:15:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T23:54:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T14:26:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T18:57:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T16:25:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T21:53:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T22:31:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T23:49:25.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": "2026-07-19T01:52:36.000Z",
-    "evidence_status": "degraded",
-    "baseline_completed_at": null,
-    "baseline_attempts": 3
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69"
   },
   "community": {
     "stargazers_count": 150,
@@ -43,7 +87,12 @@
     "subscribers_count": 1,
     "aggregate": 195
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "stale_since": null,
+  "activity_scan": null
 }

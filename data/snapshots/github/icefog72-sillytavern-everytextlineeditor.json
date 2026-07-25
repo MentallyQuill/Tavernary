@@ -16,26 +16,25 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-05-24T00:39:59.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T00:39:59.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T19:25:08.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "degraded",
-    "baseline_completed_at": null,
-    "baseline_attempts": 3
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "290870688da47363a4705284ff404bb6d56c7e4d"
   },
   "community": {
     "stargazers_count": 19,
@@ -43,7 +42,12 @@
     "subscribers_count": 2,
     "aggregate": 21
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "stale_since": null,
+  "activity_scan": null
 }

@@ -16,26 +16,45 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-17T22:48:19.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T22:48:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-11T14:39:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T18:00:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T06:10:52.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T13:59:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T22:36:30.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "degraded",
-    "baseline_completed_at": null,
-    "baseline_attempts": 3
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "2294dd1ec61fee33e49eede297871ec0fcaa99e1"
   },
   "community": {
     "stargazers_count": 21,
@@ -43,7 +62,12 @@
     "subscribers_count": 0,
     "aggregate": 22
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "stale_since": null,
+  "activity_scan": null
 }
