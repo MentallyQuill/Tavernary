@@ -136,8 +136,7 @@ test("desktop Builder folds inward while its collapsed rail stays at the edge", 
           const openButton = document.querySelector<HTMLElement>(
             '[aria-label="Open Kit Builder"]',
           );
-          const rail =
-            document.querySelector<HTMLElement>(".kit-builder-rail");
+          const rail = document.querySelector<HTMLElement>(".kit-builder-rail");
           if (!closingPanel || !openButton || !rail) {
             reject(new Error("Kit Builder collapsed rail is missing"));
             return;
@@ -172,8 +171,6 @@ test("desktop Builder folds inward while its collapsed rail stays at the edge", 
   expect(closingFrame.railWidth).toBeCloseTo(71, 0);
   expect(closingFrame.panelRight).toBeCloseTo(closingFrame.viewportRight, 0);
   expect(
-    Math.abs(
-      closingFrame.buttonRight - (closingFrame.viewportRight - 18),
-    ),
+    Math.abs(closingFrame.buttonRight - (closingFrame.viewportRight - 18)),
   ).toBeLessThan(1);
 });
