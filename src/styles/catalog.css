@@ -1148,9 +1148,17 @@
 .compact-cards .repository-size,
 .compact-cards .preset-size,
 .compact-cards .card-state-list,
-.compact-cards .card-summary,
 .compact-cards .card-bottom {
   display: none;
+}
+
+.compact-cards .card-summary {
+  display: block;
+  min-height: 0;
+  margin: 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .compact-cards .project-card h2 {

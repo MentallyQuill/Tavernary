@@ -559,10 +559,19 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
   const presetCard = page.locator(".project-card").filter({
     has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
   });
+  const standardHeight = (await repositoryCard.boundingBox())!.height;
 
   await page.getByRole("button", { name: "Use compact cards" }).click();
 
-  await expect(repositoryCard.locator(".card-summary")).toBeHidden();
+  const summary = repositoryCard.locator(".card-summary");
+  await expect(summary).toBeVisible();
+  await expect(summary).toHaveText(
+    "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+  );
+  await expect(summary).toHaveCSS("white-space", "nowrap");
+  await expect(summary).toHaveCSS("text-overflow", "ellipsis");
+  await expect(summary).toHaveCSS("overflow", "hidden");
+  await expect(summary).toHaveCSS("color", "rgb(203, 214, 211)");
   await expect(repositoryCard.locator(".card-state-list")).toBeHidden();
   await expect(repositoryCard.locator(".community")).toBeHidden();
   await expect(repositoryCard.locator(".repository-size")).toBeHidden();
@@ -585,7 +594,8 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
     "overflow",
     "hidden",
   );
-  expect((await repositoryCard.boundingBox())!.height).toBeLessThan(90);
+  const compactHeight = (await repositoryCard.boundingBox())!.height;
+  expect(compactHeight).toBeLessThan(standardHeight * 0.5);
   await repositoryCard.locator(".card-title").hover();
   await expect(
     page.getByRole("tooltip", {

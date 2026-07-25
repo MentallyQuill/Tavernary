@@ -105,8 +105,25 @@ test("expands canonical mobile frontends", async ({ page }) => {
   await expect(group.getByLabel("Sonder Engine")).toBeVisible();
 });
 
-test("does not render tile tooltips on mobile", async ({ page }) => {
+test("shows compact summaries without rendering mobile tooltips", async ({
+  page,
+}) => {
   await page.goto(sitePath());
-  await page.locator(".project-card").first().locator(".card-identity").hover();
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+
+  const card = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Recursion", exact: true }),
+  });
+  const summary = card.locator(".card-summary");
+
+  await expect(summary).toBeVisible();
+  await expect(summary).toHaveText(
+    "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+  );
+  await expect(summary).toHaveCSS("white-space", "nowrap");
+  await expect(summary).toHaveCSS("text-overflow", "ellipsis");
+  await expect(summary).toHaveCSS("overflow", "hidden");
+
+  await card.locator(".card-title").hover();
   await expect(page.getByRole("tooltip")).toHaveCount(0);
 });

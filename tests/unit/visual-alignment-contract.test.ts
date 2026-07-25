@@ -92,7 +92,10 @@ describe("catalog visual alignment", () => {
       /\.compact-cards \.project-card\s*\{[^}]*height:\s*auto[^}]*min-height:\s*0[^}]*padding:\s*11px 12px/s,
     );
     expect(css).toMatch(
-      /\.compact-cards \.community,[\s\S]*?\.compact-cards \.card-summary,[\s\S]*?\.compact-cards \.card-bottom\s*\{[^}]*display:\s*none/s,
+      /\.compact-cards \.community,[\s\S]*?\.compact-cards \.card-state-list,[\s\S]*?\.compact-cards \.card-bottom\s*\{[^}]*display:\s*none/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.card-summary\s*\{[^}]*display:\s*block[^}]*min-height:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis[^}]*white-space:\s*nowrap/s,
     );
     expect(css).toMatch(
       /\.compact-cards \.card-title\s*\{[^}]*display:\s*block[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis[^}]*white-space:\s*nowrap/s,
