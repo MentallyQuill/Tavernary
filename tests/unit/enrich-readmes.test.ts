@@ -45,13 +45,22 @@ const vocabularies = {
   capabilities: [{ id: "automation", label: "Automation" }],
 };
 
+const providerMetadata = {
+  requestedModel: "MiniMax-M3" as const,
+  returnedModel: "MiniMax-M3",
+  latencyMs: 10,
+};
+
 test("passes both source fields and only allowed vocabulary entries to provider", async () => {
   const generate = vi.fn(async (input) => ({
-    summary:
-      "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
-    metadata_status: "curated" as const,
-    primary_function: input.allowedPrimaryFunctions[0].id,
-    capabilities: [input.allowedCapabilities[0].id],
+    output: {
+      summary:
+        "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+      metadata_status: "curated" as const,
+      primary_function: input.allowedPrimaryFunctions[0].id,
+      capabilities: [input.allowedCapabilities[0].id],
+    },
+    metadata: providerMetadata,
   }));
 
   const output = await enrichRecord(
@@ -181,11 +190,14 @@ test("rejects uncategorized output when source text exists", async () => {
       snapshot,
       {
         generate: async () => ({
-          summary:
-            "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
-          metadata_status: "curated",
-          primary_function: "uncategorized",
-          capabilities: [],
+          output: {
+            summary:
+              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+            metadata_status: "curated",
+            primary_function: "uncategorized",
+            capabilities: [],
+          },
+          metadata: providerMetadata,
         }),
       },
       { vocabularies },

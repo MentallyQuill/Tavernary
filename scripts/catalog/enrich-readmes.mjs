@@ -106,7 +106,8 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
       "enrichment provider configuration is required for source-backed records",
     );
   }
-  const output = await provider.generate(input);
+  const generated = await provider.generate(input);
+  const output = generated.output;
   const validation = validateEnrichmentOutput(output, {
     primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
     capabilities: entriesToSet(vocabularies.capabilities),

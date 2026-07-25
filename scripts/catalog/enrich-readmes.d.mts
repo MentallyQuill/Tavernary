@@ -36,7 +36,14 @@ export type RegistryRecord = {
 };
 export type GithubSnapshot = Record<string, unknown>;
 export type EnrichmentProvider = {
-  generate(input: EnrichmentInput): Promise<EnrichmentOutput>;
+  generate(input: EnrichmentInput): Promise<{
+    output: EnrichmentOutput;
+    metadata: {
+      requestedModel: "MiniMax-M3";
+      returnedModel: string | null;
+      latencyMs: number;
+    };
+  }>;
 };
 export type EnrichmentOptions = {
   startIndex?: number;
