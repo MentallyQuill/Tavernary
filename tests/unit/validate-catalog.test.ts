@@ -419,23 +419,12 @@ describe("catalog validation", () => {
   });
 
   test("rejects version one repository snapshots", async () => {
-    const { head_committed_at: _headCommittedAt, ...versionOneRepository } =
-      validSnapshotV2.repository;
     const result = await validateCatalog({
       records: [validRecord],
       snapshots: [
         {
           ...validSnapshotV2,
           schema_version: 1,
-          repository: versionOneRepository,
-          activity: {
-            latest_meaningful_commit_at: "2026-07-23T00:00:00.000Z",
-            weekly_meaningful_commits: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            active_weeks_12: 1,
-            strength: 101,
-            dormant: false,
-            latest_release_at: null,
-          },
         },
       ],
     });
