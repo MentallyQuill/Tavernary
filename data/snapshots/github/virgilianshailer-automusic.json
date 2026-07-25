@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "virgilianshailer-automusic",
+  "repository": {
+    "id": 1213286113,
+    "owner": "virgilianshailer",
+    "name": "AutoMusic",
+    "url": "https://github.com/virgilianshailer/AutoMusic",
+    "default_branch": "main",
+    "head_sha": "ab562b0326041424c41a035966bb8f48f5616632",
+    "head_committed_at": "2026-05-27T19:36:03.000Z",
+    "archived": false,
+    "created_at": "2026-04-17T08:18:00.000Z",
+    "size_kb": 250
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 5,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

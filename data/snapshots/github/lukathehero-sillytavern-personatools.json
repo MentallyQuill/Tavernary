@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "lukathehero-sillytavern-personatools",
+  "repository": {
+    "id": 1200034173,
+    "owner": "LukaTheHero",
+    "name": "SillyTavern-PersonaTools",
+    "url": "https://github.com/LukaTheHero/SillyTavern-PersonaTools",
+    "default_branch": "main",
+    "head_sha": "d392c4d32c786608419244deebf39ab51d00b813",
+    "head_committed_at": "2026-07-09T05:27:48.000Z",
+    "archived": false,
+    "created_at": "2026-04-03T01:03:02.000Z",
+    "size_kb": 86
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-09T05:28:46.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 7,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 7
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

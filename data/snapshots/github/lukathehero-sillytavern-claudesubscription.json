@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "lukathehero-sillytavern-claudesubscription",
+  "repository": {
+    "id": 1232282077,
+    "owner": "LukaTheHero",
+    "name": "SillyTavern-ClaudeSubscription",
+    "url": "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription",
+    "default_branch": "main",
+    "head_sha": "595daa7404bb280de3f1aaeb52fb69060895b843",
+    "head_committed_at": "2026-07-02T00:09:52.000Z",
+    "archived": false,
+    "created_at": "2026-05-07T19:19:36.000Z",
+    "size_kb": 96
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-01T23:13:29.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

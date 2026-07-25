@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "mitaska-weathertweaker",
+  "repository": {
+    "id": 1239088102,
+    "owner": "Mitaska",
+    "name": "WeatherTweaker",
+    "url": "https://github.com/Mitaska/WeatherTweaker",
+    "default_branch": "main",
+    "head_sha": "8c55914cdfce0bdafb495ad4ec7237bea5232bc1",
+    "head_committed_at": "2026-07-04T15:13:26.000Z",
+    "archived": false,
+    "created_at": "2026-05-14T18:46:04.000Z",
+    "size_kb": 5053
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-04T15:16:30.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

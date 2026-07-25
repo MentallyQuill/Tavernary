@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "nickchegg-game-engine",
+  "repository": {
+    "id": 1283421850,
+    "owner": "NickChegg",
+    "name": "game-engine",
+    "url": "https://github.com/NickChegg/game-engine",
+    "default_branch": "main",
+    "head_sha": "27f1ea12430bc8cfcd285c934353ac850cb01a6a",
+    "head_committed_at": "2026-07-21T04:53:13.000Z",
+    "archived": false,
+    "created_at": "2026-06-28T23:03:19.000Z",
+    "size_kb": 199194
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 0,
+    "subscribers_count": 1,
+    "aggregate": 10
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

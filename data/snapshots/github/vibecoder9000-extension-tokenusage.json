@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "vibecoder9000-extension-tokenusage",
+  "repository": {
+    "id": 1126135302,
+    "owner": "Vibecoder9000",
+    "name": "Extension-TokenUsage",
+    "url": "https://github.com/Vibecoder9000/Extension-TokenUsage",
+    "default_branch": "master",
+    "head_sha": "8d7aae32f6b84b845af22a6c9ba97d01866126d6",
+    "head_committed_at": "2026-07-20T08:12:27.000Z",
+    "archived": false,
+    "created_at": "2026-01-01T07:38:31.000Z",
+    "size_kb": 723
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 11,
+    "forks_count": 4,
+    "subscribers_count": 0,
+    "aggregate": 15
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

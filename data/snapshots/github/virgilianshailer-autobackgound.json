@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "virgilianshailer-autobackgound",
+  "repository": {
+    "id": 1213247381,
+    "owner": "virgilianshailer",
+    "name": "AutoBackgound",
+    "url": "https://github.com/virgilianshailer/AutoBackgound",
+    "default_branch": "main",
+    "head_sha": "a7d7456b50f8dba31ee787c7122cc4e5a15ac213",
+    "head_committed_at": "2026-05-23T06:46:38.000Z",
+    "archived": false,
+    "created_at": "2026-04-17T07:26:15.000Z",
+    "size_kb": 17
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

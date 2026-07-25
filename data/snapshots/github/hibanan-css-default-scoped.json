@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "hibanan-css-default-scoped",
+  "repository": {
+    "id": 1289162242,
+    "owner": "Hibanan",
+    "name": "css-default-scoped",
+    "url": "https://github.com/Hibanan/css-default-scoped",
+    "default_branch": "master",
+    "head_sha": "4f04c4f8868156ff49aa4df7419d50933d900a2e",
+    "head_committed_at": "2026-07-05T22:36:38.000Z",
+    "archived": false,
+    "created_at": "2026-07-04T11:58:31.000Z",
+    "size_kb": 6
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "supker-st-copilot",
+  "repository": {
+    "id": 1218157882,
+    "owner": "Supker",
+    "name": "ST-Copilot",
+    "url": "https://github.com/Supker/ST-Copilot",
+    "default_branch": "main",
+    "head_sha": "14809604817b632810903afcf44d0db07608fb12",
+    "head_committed_at": "2026-07-02T20:55:23.000Z",
+    "archived": false,
+    "created_at": "2026-04-22T15:35:05.000Z",
+    "size_kb": 40600
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-02T21:19:46.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 59,
+    "forks_count": 6,
+    "subscribers_count": 1,
+    "aggregate": 66
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

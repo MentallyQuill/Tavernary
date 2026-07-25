@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "quackified-floating-viewer",
+  "repository": {
+    "id": 1111979731,
+    "owner": "Quackified",
+    "name": "Floating-Viewer",
+    "url": "https://github.com/Quackified/Floating-Viewer",
+    "default_branch": "main",
+    "head_sha": "9fdceffac491322be469857d655ea74e27705e89",
+    "head_committed_at": "2025-12-27T06:21:05.000Z",
+    "archived": false,
+    "created_at": "2025-12-08T01:16:21.000Z",
+    "size_kb": 73
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 5,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

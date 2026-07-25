@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "gu-gu-gu-gu-gu-weather-calendar-assistant",
+  "repository": {
+    "id": 1184439628,
+    "owner": "Gu-gu-gu-gu-gu",
+    "name": "Weather-Calendar-Assistant",
+    "url": "https://github.com/Gu-gu-gu-gu-gu/Weather-Calendar-Assistant",
+    "default_branch": "main",
+    "head_sha": "9d81c16f8e24f05a71b4486b763e4275bcea3d42",
+    "head_committed_at": "2026-05-16T18:02:14.000Z",
+    "archived": false,
+    "created_at": "2026-03-17T15:34:04.000Z",
+    "size_kb": 4662
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-05-05T03:38:52.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 9
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "nbrown725-sillytavern-alternatedescriptions",
+  "repository": {
+    "id": 994448098,
+    "owner": "nbrown725",
+    "name": "SillyTavern-AlternateDescriptions",
+    "url": "https://github.com/nbrown725/SillyTavern-AlternateDescriptions",
+    "default_branch": "main",
+    "head_sha": "980f932cefb29c96dee075dae3edacbaccdb6874",
+    "head_committed_at": "2025-09-02T18:41:38.000Z",
+    "archived": false,
+    "created_at": "2025-06-02T00:13:52.000Z",
+    "size_kb": 274
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 44,
+    "forks_count": 3,
+    "subscribers_count": 0,
+    "aggregate": 47
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

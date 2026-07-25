@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "nattaphat010447-nutho-autocloser",
+  "repository": {
+    "id": 1275541730,
+    "owner": "nattaphat010447",
+    "name": "nutho_autocloser",
+    "url": "https://github.com/nattaphat010447/nutho_autocloser",
+    "default_branch": "main",
+    "head_sha": "1f54fc8aebbd4f3fb8665ca36ad355aee6226381",
+    "head_committed_at": "2026-07-14T01:51:11.000Z",
+    "archived": false,
+    "created_at": "2026-06-20T20:38:42.000Z",
+    "size_kb": 18
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 5,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 6
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

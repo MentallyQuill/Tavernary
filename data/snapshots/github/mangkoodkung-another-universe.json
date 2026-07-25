@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "mangkoodkung-another-universe",
+  "repository": {
+    "id": 1233011311,
+    "owner": "mangkoodkung",
+    "name": "another-universe",
+    "url": "https://github.com/mangkoodkung/another-universe",
+    "default_branch": "main",
+    "head_sha": "44239d3f71d5b3f3d9b0da29e5ed8c402bfa8c53",
+    "head_committed_at": "2026-05-20T17:05:36.000Z",
+    "archived": false,
+    "created_at": "2026-05-08T13:52:27.000Z",
+    "size_kb": 936
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 6,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 7
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

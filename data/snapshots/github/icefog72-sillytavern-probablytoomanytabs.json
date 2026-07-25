@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "icefog72-sillytavern-probablytoomanytabs",
+  "repository": {
+    "id": 1065878471,
+    "owner": "IceFog72",
+    "name": "SillyTavern-ProbablyTooManyTabs",
+    "url": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs",
+    "default_branch": "main",
+    "head_sha": "52a7461aedfce272a5ee93d57356f3cf3bb8bb61",
+    "head_committed_at": "2026-07-08T15:31:28.000Z",
+    "archived": false,
+    "created_at": "2025-09-28T15:59:05.000Z",
+    "size_kb": 1368
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 51,
+    "forks_count": 6,
+    "subscribers_count": 1,
+    "aggregate": 58
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

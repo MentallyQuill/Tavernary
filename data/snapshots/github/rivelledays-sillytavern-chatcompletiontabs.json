@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "rivelledays-sillytavern-chatcompletiontabs",
+  "repository": {
+    "id": 992749682,
+    "owner": "RivelleDays",
+    "name": "SillyTavern-ChatCompletionTabs",
+    "url": "https://github.com/RivelleDays/SillyTavern-ChatCompletionTabs",
+    "default_branch": "main",
+    "head_sha": "a427446a7625ca19606fedfdc39891e2e3f8f3d1",
+    "head_committed_at": "2025-10-09T21:35:03.000Z",
+    "archived": false,
+    "created_at": "2025-05-29T16:46:50.000Z",
+    "size_kb": 362
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 17,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 17
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

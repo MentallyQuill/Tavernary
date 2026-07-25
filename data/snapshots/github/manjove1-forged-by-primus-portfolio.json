@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "manjove1-forged-by-primus-portfolio",
+  "repository": {
+    "id": 1305418059,
+    "owner": "Manjove1",
+    "name": "forged-by-primus-portfolio",
+    "url": "https://github.com/Manjove1/forged-by-primus-portfolio",
+    "default_branch": "main",
+    "head_sha": "02ee2417cb554cdb6fb7e66ef358419d68747f0f",
+    "head_committed_at": "2026-07-23T19:42:36.000Z",
+    "archived": false,
+    "created_at": "2026-07-19T04:30:55.000Z",
+    "size_kb": 235
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-23T19:18:06.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 1,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

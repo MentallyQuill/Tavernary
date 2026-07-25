@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "starlitcode-lumiverse-auto-retry",
+  "repository": {
+    "id": 1263145747,
+    "owner": "starlitcode",
+    "name": "Lumiverse-Auto-Retry",
+    "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
+    "default_branch": "main",
+    "head_sha": "855a6ff543fe98cc91c2687a5d749572e9286dbf",
+    "head_committed_at": "2026-07-24T21:05:06.000Z",
+    "archived": false,
+    "created_at": "2026-06-08T17:04:25.000Z",
+    "size_kb": 701
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

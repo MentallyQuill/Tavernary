@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "pasta-devs-marinara-engine",
+  "repository": {
+    "id": 1172690270,
+    "owner": "Pasta-Devs",
+    "name": "Marinara-Engine",
+    "url": "https://github.com/Pasta-Devs/Marinara-Engine",
+    "default_branch": "main",
+    "head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29",
+    "head_committed_at": "2026-07-23T00:11:48.000Z",
+    "archived": false,
+    "created_at": "2026-03-04T15:37:29.000Z",
+    "size_kb": 225333
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-23T00:13:35.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 521,
+    "forks_count": 139,
+    "subscribers_count": 8,
+    "aggregate": 668
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

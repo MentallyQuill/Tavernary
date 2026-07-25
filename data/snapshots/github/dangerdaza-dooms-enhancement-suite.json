@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "dangerdaza-dooms-enhancement-suite",
+  "repository": {
+    "id": 1163555391,
+    "owner": "DangerDaza",
+    "name": "Dooms-Enhancement-Suite",
+    "url": "https://github.com/DangerDaza/Dooms-Enhancement-Suite",
+    "default_branch": "main",
+    "head_sha": "713f6b1981d36095ce801f9b5a88c133b5f3b58b",
+    "head_committed_at": "2026-07-19T01:11:57.000Z",
+    "archived": false,
+    "created_at": "2026-02-21T20:05:42.000Z",
+    "size_kb": 3989
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-06-11T17:11:22.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 46,
+    "forks_count": 9,
+    "subscribers_count": 3,
+    "aggregate": 58
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

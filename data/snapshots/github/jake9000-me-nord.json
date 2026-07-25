@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "jake9000-me-nord",
+  "repository": {
+    "id": 1223260183,
+    "owner": "jake9000",
+    "name": "me-nord",
+    "url": "https://github.com/jake9000/me-nord",
+    "default_branch": "master",
+    "head_sha": "a7a8616591e6da6c56a6cc0a3f986ae8673dd730",
+    "head_committed_at": "2026-07-23T01:22:44.000Z",
+    "archived": false,
+    "created_at": "2026-04-28T06:44:31.000Z",
+    "size_kb": 4004
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

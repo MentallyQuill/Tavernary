@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "lenanderson-sillytavern-videobackgrounds",
+  "repository": {
+    "id": 728214627,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-VideoBackgrounds",
+    "url": "https://github.com/LenAnderson/SillyTavern-VideoBackgrounds",
+    "default_branch": "master",
+    "head_sha": "6a7a607b56ae1d85460dbeb914d251c27a28a8ba",
+    "head_committed_at": "2025-10-23T21:21:53.000Z",
+    "archived": false,
+    "created_at": "2023-12-06T13:24:51.000Z",
+    "size_kb": 7
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 20,
+    "forks_count": 3,
+    "subscribers_count": 1,
+    "aggregate": 24
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

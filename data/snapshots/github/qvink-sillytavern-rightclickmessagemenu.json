@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "qvink-sillytavern-rightclickmessagemenu",
+  "repository": {
+    "id": 1069373058,
+    "owner": "qvink",
+    "name": "SillyTavern-RightClickMessageMenu",
+    "url": "https://github.com/qvink/SillyTavern-RightClickMessageMenu",
+    "default_branch": "master",
+    "head_sha": "c28b4f218478043fa1cbcdd53c84702148e09991",
+    "head_committed_at": "2025-10-21T22:34:03.000Z",
+    "archived": false,
+    "created_at": "2025-10-03T20:38:45.000Z",
+    "size_kb": 52
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 1,
+    "subscribers_count": 2,
+    "aggregate": 12
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

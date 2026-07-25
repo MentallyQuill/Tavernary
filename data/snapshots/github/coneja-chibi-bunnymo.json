@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "coneja-chibi-bunnymo",
+  "repository": {
+    "id": 1038188930,
+    "owner": "Coneja-Chibi",
+    "name": "BunnyMo",
+    "url": "https://github.com/Coneja-Chibi/BunnyMo",
+    "default_branch": "BunnyMo",
+    "head_sha": "7a61c9f0959bf46a76a4e1339e80ce1a3d6a5aa9",
+    "head_committed_at": "2026-03-02T00:05:38.000Z",
+    "archived": false,
+    "created_at": "2025-08-14T19:07:19.000Z",
+    "size_kb": 2262
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 96,
+    "forks_count": 6,
+    "subscribers_count": 6,
+    "aggregate": 108
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

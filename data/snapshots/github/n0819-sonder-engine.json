@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "n0819-sonder-engine",
+  "repository": {
+    "id": 1305919833,
+    "owner": "N0819",
+    "name": "Sonder_Engine",
+    "url": "https://github.com/N0819/Sonder_Engine",
+    "default_branch": "main",
+    "head_sha": "2727734e5601c20a503ee073e9189314b6a4aa11",
+    "head_committed_at": "2026-07-24T18:42:36.000Z",
+    "archived": false,
+    "created_at": "2026-07-19T17:55:36.000Z",
+    "size_kb": 8091
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-24T16:45:11.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 42,
+    "forks_count": 5,
+    "subscribers_count": 1,
+    "aggregate": 48
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

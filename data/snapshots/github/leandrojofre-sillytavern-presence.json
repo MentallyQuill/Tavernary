@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "leandrojofre-sillytavern-presence",
+  "repository": {
+    "id": 882467511,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-Presence",
+    "url": "https://github.com/leandrojofre/SillyTavern-Presence",
+    "default_branch": "main",
+    "head_sha": "c20af6d5a8dc110c84ecd44ce1e865eaaea23cf5",
+    "head_committed_at": "2026-07-13T03:31:04.000Z",
+    "archived": false,
+    "created_at": "2024-11-02T21:14:58.000Z",
+    "size_kb": 489
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-13T03:31:16.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 44,
+    "forks_count": 5,
+    "subscribers_count": 1,
+    "aggregate": 50
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "splitclover-rewrite-extension",
+  "repository": {
+    "id": 830588458,
+    "owner": "splitclover",
+    "name": "rewrite-extension",
+    "url": "https://github.com/splitclover/rewrite-extension",
+    "default_branch": "main",
+    "head_sha": "019f5f53a6feb3eb9b8015136d175254954ba7c9",
+    "head_committed_at": "2025-09-02T21:46:36.000Z",
+    "archived": false,
+    "created_at": "2024-07-18T14:59:25.000Z",
+    "size_kb": 28
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 49,
+    "forks_count": 11,
+    "subscribers_count": 3,
+    "aggregate": 63
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

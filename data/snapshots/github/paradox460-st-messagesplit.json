@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "paradox460-st-messagesplit",
+  "repository": {
+    "id": 1274936565,
+    "owner": "paradox460",
+    "name": "ST-MessageSplit",
+    "url": "https://github.com/paradox460/ST-MessageSplit",
+    "default_branch": "master",
+    "head_sha": "2daade16f6408ca832a4af9efba907007de555fd",
+    "head_committed_at": "2026-06-27T00:05:36.000Z",
+    "archived": false,
+    "created_at": "2026-06-20T03:59:32.000Z",
+    "size_kb": 64
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-06-27T00:05:40.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

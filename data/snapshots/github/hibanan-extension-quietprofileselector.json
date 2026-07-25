@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "hibanan-extension-quietprofileselector",
+  "repository": {
+    "id": 1194042343,
+    "owner": "Hibanan",
+    "name": "Extension-QuietProfileSelector",
+    "url": "https://github.com/Hibanan/Extension-QuietProfileSelector",
+    "default_branch": "main",
+    "head_sha": "aa017e07f92177616933e51c0c731b13c0432399",
+    "head_committed_at": "2026-06-13T04:04:41.000Z",
+    "archived": false,
+    "created_at": "2026-03-27T21:20:34.000Z",
+    "size_kb": 13
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

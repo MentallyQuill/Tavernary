@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "sillytavern-sillytavern-pronouns",
+  "repository": {
+    "id": 1068908642,
+    "owner": "SillyTavern",
+    "name": "SillyTavern-Pronouns",
+    "url": "https://github.com/SillyTavern/SillyTavern-Pronouns",
+    "default_branch": "main",
+    "head_sha": "c0dca691da8d36e2e8b06565b8497ca775e8cfbe",
+    "head_committed_at": "2026-04-16T22:50:42.000Z",
+    "archived": false,
+    "created_at": "2025-10-03T05:16:18.000Z",
+    "size_kb": 52
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-04-16T22:55:39.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 16,
+    "forks_count": 2,
+    "subscribers_count": 3,
+    "aggregate": 21
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

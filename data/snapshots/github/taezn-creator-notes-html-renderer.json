@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "taezn-creator-notes-html-renderer",
+  "repository": {
+    "id": 1264415646,
+    "owner": "Taezn",
+    "name": "creator-notes-html-renderer",
+    "url": "https://github.com/Taezn/creator-notes-html-renderer",
+    "default_branch": "main",
+    "head_sha": "bf99ff88b53b969b12bc0d6387d7f1805130f470",
+    "head_committed_at": "2026-06-10T04:18:44.000Z",
+    "archived": false,
+    "created_at": "2026-06-09T21:36:01.000Z",
+    "size_kb": 3516
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

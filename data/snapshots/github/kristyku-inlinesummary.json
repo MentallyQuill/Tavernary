@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "kristyku-inlinesummary",
+  "repository": {
+    "id": 1113293446,
+    "owner": "Kristyku",
+    "name": "InlineSummary",
+    "url": "https://github.com/Kristyku/InlineSummary",
+    "default_branch": "main",
+    "head_sha": "1d07e382f74dace80cf6a4ae1458d70ce5f2656a",
+    "head_committed_at": "2026-07-10T13:19:19.000Z",
+    "archived": false,
+    "created_at": "2025-12-09T19:24:55.000Z",
+    "size_kb": 310
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 52,
+    "forks_count": 9,
+    "subscribers_count": 2,
+    "aggregate": 63
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

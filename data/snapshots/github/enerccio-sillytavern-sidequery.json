@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "enerccio-sillytavern-sidequery",
+  "repository": {
+    "id": 1220910140,
+    "owner": "Enerccio",
+    "name": "SillyTavern-SideQuery",
+    "url": "https://github.com/Enerccio/SillyTavern-SideQuery",
+    "default_branch": "master",
+    "head_sha": "f4857597ad10c8564bc7c9f43cbf62a661a0e9da",
+    "head_committed_at": "2026-07-10T14:33:04.000Z",
+    "archived": false,
+    "created_at": "2026-04-25T13:55:53.000Z",
+    "size_kb": 741
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 4,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 4
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

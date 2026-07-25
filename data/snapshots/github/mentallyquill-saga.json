@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "mentallyquill-saga",
+  "repository": {
+    "id": 1258773435,
+    "owner": "MentallyQuill",
+    "name": "Saga",
+    "url": "https://github.com/MentallyQuill/Saga",
+    "default_branch": "main",
+    "head_sha": "2294dd1ec61fee33e49eede297871ec0fcaa99e1",
+    "head_committed_at": "2026-07-17T22:48:19.000Z",
+    "archived": false,
+    "created_at": "2026-06-03T22:53:51.000Z",
+    "size_kb": 182211
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 21,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 22
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

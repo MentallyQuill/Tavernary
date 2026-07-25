@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "leandrojofre-sillytavern-stat-us-maximus",
+  "repository": {
+    "id": 1005915564,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-Stat-us-Maximus",
+    "url": "https://github.com/leandrojofre/SillyTavern-Stat-us-Maximus",
+    "default_branch": "release",
+    "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
+    "head_committed_at": "2026-07-02T00:36:51.000Z",
+    "archived": false,
+    "created_at": "2025-06-21T04:43:25.000Z",
+    "size_kb": 1293
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-02T00:37:04.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 2,
+    "subscribers_count": 0,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

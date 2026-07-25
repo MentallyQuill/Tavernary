@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "subzero5544-preset-search",
+  "repository": {
+    "id": 999180993,
+    "owner": "subzero5544",
+    "name": "preset-search",
+    "url": "https://github.com/subzero5544/preset-search",
+    "default_branch": "main",
+    "head_sha": "7d67370c5df889ea46b24c711631d97701fe21e7",
+    "head_committed_at": "2025-06-13T07:02:45.000Z",
+    "archived": false,
+    "created_at": "2025-06-09T21:35:07.000Z",
+    "size_kb": 48
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

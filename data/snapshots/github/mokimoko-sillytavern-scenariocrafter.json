@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "mokimoko-sillytavern-scenariocrafter",
+  "repository": {
+    "id": 1244123455,
+    "owner": "mokimoko",
+    "name": "SillyTavern-ScenarioCrafter",
+    "url": "https://github.com/mokimoko/SillyTavern-ScenarioCrafter",
+    "default_branch": "main",
+    "head_sha": "1908d628e79f42adf1d3378ce656e0400fe10762",
+    "head_committed_at": "2026-07-07T01:34:23.000Z",
+    "archived": false,
+    "created_at": "2026-05-20T01:39:09.000Z",
+    "size_kb": 112
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 5,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}
