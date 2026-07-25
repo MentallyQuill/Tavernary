@@ -2,13 +2,13 @@
   "schema_version": 1,
   "run_id": "28986a71-32c3-4f8b-8471-3d91c0bc6eda",
   "mode": "canary",
-  "status": "awaiting-deployment",
+  "status": "passed",
   "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:03:57.694Z",
-  "updated_at": "2026-07-25T14:44:35.948Z",
+  "updated_at": "2026-07-25T14:48:36.692Z",
   "manifest": [
     "flaxify-st-hands-free-voice",
     "inspectorcaracal-sillytavern-rememory",
@@ -103,7 +103,11 @@
       "completed_at": "2026-07-25T14:03:57.694Z"
     }
   },
-  "deployment": null,
+  "deployment": {
+    "commit_sha": "e1973351f011aca29ed02099c78d1a6a39e8e308",
+    "run_id": 30162305874,
+    "verified_at": "2026-07-25T14:48:36.692Z"
+  },
   "aggregates": {
     "enriched": 4,
     "fallback": 0,
