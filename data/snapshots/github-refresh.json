@@ -1,171 +1,171 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T02:49:36.921Z",
-  "completed_at": "2026-07-25T02:54:51.914Z",
+  "started_at": "2026-07-25T02:56:16.026Z",
+  "completed_at": "2026-07-25T03:04:38.804Z",
   "counts": {
     "total": 24,
     "checked": 24,
     "changed": 24,
     "unchanged": 0,
-    "provisional": 136,
+    "provisional": 114,
     "degraded": 2,
     "unavailable": 0,
-    "failed": 0,
+    "failed": 2,
     "compared": 0,
-    "baseline": 24,
+    "baseline": 22,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4986,
+    "graphql_remaining": 4985,
     "rest_requests": 0
   },
-  "duration_ms": 314993,
+  "duration_ms": 502778,
   "project_timings": [
     {
-      "project_id": "cha1latte-marinara-theme-maker",
+      "project_id": "gentleburr-sillytavern-smartimport",
       "outcome": "baseline",
-      "duration_ms": 312882,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "cha1latte-win95-theme-marinara",
+      "project_id": "getfroggyhoe-universal-immersion-engine",
       "outcome": "baseline",
-      "duration_ms": 312882,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "chesswoodspixel-sillytavern-lorebookstickysort",
+      "project_id": "ghostd93-bettersimtracker",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "cierru-st-stepped-thinking",
+      "project_id": "giglio256-sillytavern-gigliomachine",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "closuretxt-recast-post-processing",
+      "project_id": "gu-gu-gu-gu-gu-weather-calendar-assistant",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "coneja-chibi-bunnymo",
+      "project_id": "hans123m12m1-lumiverse-notehaven",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500480,
       "error_code": null
     },
     {
-      "project_id": "coneja-chibi-carrotkernel",
+      "project_id": "heikouidou-chara-color-filter",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "coneja-chibi-rabbit-response-team",
+      "project_id": "helpfultoolscompany-lorevault-extension",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "coneja-chibi-tunnelvision",
+      "project_id": "hexicy-st-characterpreview",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "coneja-chibi-vecthare",
+      "project_id": "hibanan-css-default-scoped",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "daddytorgo-hash-frankengarage",
+      "project_id": "hibanan-disable-global-lore",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "dangerdaza-dooms-enhancement-suite",
+      "project_id": "hibanan-extension-quietprofileselector",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "datacat-run-datacat-sillytavern-browser",
+      "project_id": "iaminvisibru-marinara-janitorai",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "decidetto-me-accent-color-changer",
+      "project_id": "icefog72-sillytavern-everytextlineeditor",
+      "outcome": "failed",
+      "duration_ms": 500481,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "icefog72-sillytavern-probablytoomanytabs",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "dfaker-st-char-powersearch",
+      "project_id": "ikarusv-ikarusautoimage",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "enclave0775-intiface-central-sillytavern-plugin",
+      "project_id": "inspectorcaracal-sillytavern-rememory",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "enerccio-sillytavern-persistentitemizedprompts",
+      "project_id": "j-dandelion-lumiverse-canvas",
+      "outcome": "failed",
+      "duration_ms": 500481,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "jake9000-me-nord",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "enerccio-sillytavern-sidequery",
+      "project_id": "japkozjad-st-action-pickers",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "enerccio-sillytavern-stickynote",
+      "project_id": "japolino-inlay-illustrator",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "eum27-nai-inlay-illustrator",
+      "project_id": "jeka201216-silly-map",
       "outcome": "baseline",
-      "duration_ms": 312883,
+      "duration_ms": 500481,
       "error_code": null
     },
     {
-      "project_id": "fawn1e-st-plot-driver",
+      "project_id": "kenhito-marinara-rpg-extension",
       "outcome": "baseline",
-      "duration_ms": 312884,
+      "duration_ms": 500482,
       "error_code": null
     },
     {
-      "project_id": "flaxify-st-hands-free-voice",
+      "project_id": "kikyoicecream-next-choices",
       "outcome": "baseline",
-      "duration_ms": 312884,
-      "error_code": null
-    },
-    {
-      "project_id": "forgottenglory-st-superobjective",
-      "outcome": "baseline",
-      "duration_ms": 312884,
-      "error_code": null
-    },
-    {
-      "project_id": "furitaocanon-sillytavern-personas",
-      "outcome": "baseline",
-      "duration_ms": 312884,
+      "duration_ms": 500482,
       "error_code": null
     }
   ],
