@@ -55,6 +55,13 @@ export function ActiveQuery({
       value?: string;
       label: string;
     }> = [];
+    const creatorLabels = new Map(
+      kits.map((kit) => [kit.author.githubUserId, kit.author.login] as const),
+    );
+    const capabilityLabels = labelMaps(projects).capabilities;
+    const projectLabels = new Map(
+      projects.map((project) => [project.id, project.name] as const),
+    );
     if (query.search)
       tokens.push({ key: "search", label: `Search: ${query.search}` });
     for (const value of query.kits.frontends)
@@ -72,7 +79,40 @@ export function ActiveQuery({
     if (query.kits.includesProjectId)
       tokens.push({
         key: "includesProjectId",
-        label: `Includes: ${query.kits.includesProjectId}`,
+        label: `Includes: ${
+          projectLabels.get(query.kits.includesProjectId) ??
+          query.kits.includesProjectId
+        }`,
+      });
+    for (const value of query.kits.creatorIds)
+      tokens.push({
+        key: "creatorIds",
+        value: String(value),
+        label: creatorLabels.get(value) ?? String(value),
+      });
+    for (const value of query.kits.kinds)
+      tokens.push({
+        key: "kinds",
+        value,
+        label: staticLabels[value] ?? value,
+      });
+    for (const value of query.kits.capabilities)
+      tokens.push({
+        key: "capabilities",
+        value,
+        label: capabilityLabels.get(value) ?? value,
+      });
+    for (const value of query.kits.development)
+      tokens.push({
+        key: "development",
+        value,
+        label: staticLabels[value] ?? value,
+      });
+    for (const value of query.kits.licenses)
+      tokens.push({
+        key: "licenses",
+        value,
+        label: staticLabels[value] ?? value,
       });
     if (query.kits.minProjects !== 3 || query.kits.maxProjects !== 50)
       tokens.push({
@@ -81,6 +121,11 @@ export function ActiveQuery({
       });
     if (query.kits.tavernaryPickOnly)
       tokens.push({ key: "tavernaryPickOnly", label: "Tavernary Pick" });
+    if (query.kits.allComponentsAvailable)
+      tokens.push({
+        key: "allComponentsAvailable",
+        label: "All components available",
+      });
     if (tokens.length === 0) return null;
     return (
       <div className="active-query" aria-label="Active filters">

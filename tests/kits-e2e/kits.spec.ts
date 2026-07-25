@@ -362,18 +362,27 @@ test("applies every Kit filter and clears them", async ({ page }) => {
 
   await filter.getByLabel("SillyTavern").check();
   await expect(cards(page).first()).toBeVisible();
-  await filter.getByLabel("Memory").check();
+  await filter
+    .getByRole("searchbox", { name: "Search Kit purposes" })
+    .fill("Memory");
+  await filter.getByText("Memory and retrieval", { exact: true }).click();
   await expect(cards(page).first()).toBeVisible();
-  await filter.getByLabel("Includes project").fill("fixture-tool-04");
+  const projectFilter = filter.getByRole("group", {
+    name: "Includes project",
+  });
+  await projectFilter
+    .getByRole("searchbox", { name: "Search included projects" })
+    .fill("Fixture Tool 04");
+  await projectFilter.getByLabel("Fixture Tool 04", { exact: true }).check();
   await expect(cards(page).first()).toContainText("Alpha Kit");
   await filter.getByLabel("Minimum projects").fill("4");
   await expect(page.getByRole("article", { name: "Alpha Kit" })).toHaveCount(0);
   await filter.getByLabel("Minimum projects").fill("3");
   await filter.getByLabel("Maximum projects").fill("3");
   await expect(cards(page).first()).toContainText("Alpha Kit");
-  await filter.getByText("Tavernary Pick only").click();
+  await filter.getByLabel("Tavernary Pick").check();
   await expect(cards(page)).toHaveCount(1);
-  await filter.getByRole("button", { name: "Clear Kit filters" }).click();
+  await filter.getByRole("button", { name: "Clear all" }).click();
   await expect(cards(page)).toHaveCount(8);
 });
 
@@ -388,9 +397,9 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
 
   const filterButton = page.getByRole("button", { name: "Open filters" });
   await filterButton.click();
-  const kitFilters = page.getByRole("dialog", { name: "Kit filters" });
+  const kitFilters = page.getByRole("dialog", { name: "Filters" });
   await expect(kitFilters).toBeVisible();
-  await kitFilters.getByText("Tavernary Pick only").click();
+  await kitFilters.getByLabel("Tavernary Pick").check();
   await expect(filterButton.locator("b")).toHaveText("1");
   await kitFilters.getByRole("button", { name: "Close Kit filters" }).click();
   await expect(filterButton).toBeFocused();
@@ -403,9 +412,9 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await filterButton.click();
   await expect(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
-  await expect(page.getByRole("dialog", { name: "Kit filters" })).toHaveCount(
-    0,
-  );
+  await expect(
+    page.getByRole("button", { name: "Close Kit filters" }),
+  ).toHaveCount(0);
 });
 
 test("inspects stacks, preserves caution rows, and builds contribution URLs", async ({
@@ -816,14 +825,11 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   );
 
   await page.getByRole("button", { name: "Open filters" }).click();
-  const filters = page.getByRole("dialog", { name: "Kit filters" });
+  const filters = page.getByRole("dialog", { name: "Filters" });
   await expectMobileTarget(
     filters.getByRole("button", { name: "Close Kit filters" }),
   );
-  await expectMobileTarget(filters.getByText("Tavernary Pick only"));
-  await expectMobileTarget(
-    filters.getByRole("button", { name: "Clear Kit filters" }),
-  );
+  await expectMobileTarget(filters.getByLabel("Tavernary Pick").locator(".."));
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
@@ -859,10 +865,10 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
 
   const filterButton = page.getByRole("button", { name: "Open filters" });
   await filterButton.click();
-  const filters = page.getByRole("dialog", { name: "Kit filters" });
-  await filters.getByText("Tavernary Pick only").click();
+  const filters = page.getByRole("dialog", { name: "Filters" });
+  await filters.getByLabel("Tavernary Pick").check();
   await expect(cards(page)).toHaveCount(1);
-  await filters.getByRole("button", { name: "Clear Kit filters" }).click();
+  await filters.getByLabel("Tavernary Pick").uncheck();
   await expect(cards(page)).toHaveCount(8);
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
   await expect(filterButton).toBeFocused();

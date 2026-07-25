@@ -62,9 +62,7 @@ test("mobile Kit surfaces remain visible and bounded through navigation", async 
 }) => {
   await openKits(page, { width: 390, height: 844 });
   await page.getByRole("button", { name: "Open filters" }).click();
-  await expect(
-    page.getByRole("dialog", { name: "Kit filters" }),
-  ).toBeInViewport();
+  await expect(page.getByRole("dialog", { name: "Filters" })).toBeInViewport();
   await page.getByRole("button", { name: "Close Kit filters" }).click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();

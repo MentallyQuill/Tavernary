@@ -3,7 +3,8 @@ import { resolve } from "node:path";
 
 import { configuredBasePath } from "./verify-static-export.mjs";
 
-const serverUrl = "http://127.0.0.1:3000";
+const port = process.env.PORT ?? "3000";
+const serverUrl = `http://127.0.0.1:${port}`;
 const healthUrl = `${serverUrl}${configuredBasePath()}/`;
 const playwrightCli = resolve("node_modules/@playwright/test/cli.js");
 

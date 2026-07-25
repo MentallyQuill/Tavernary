@@ -342,18 +342,21 @@ describe("catalog visual alignment", () => {
 
   test("restores reference filter vocabulary and controls", () => {
     const filters = read("src/features/catalog/components/filter-panel.tsx");
+    const controls = read(
+      "src/features/catalog/components/filter-controls.tsx",
+    );
     const css = read("src/styles/catalog.css");
 
     expect(filters).toContain("Compatible frontend");
     expect(filters).toContain("Project kind");
     expect(filters).toContain("Capabilities & characteristics");
-    expect(filters).toContain("Clear all");
+    expect(controls).toContain("Clear all");
     expect(filters).toContain("Search compatible frontends");
     expect(filters).not.toContain("Search capabilities and characteristics");
-    expect(filters).toContain("metadata-options");
-    expect(filters).toContain("metadata-filter-chip");
-    expect(filters).toContain("metadata-check");
-    expect(filters).toContain("metadata-disclosure");
+    expect(controls).toContain("metadata-options");
+    expect(controls).toContain("metadata-filter-chip");
+    expect(controls).toContain("metadata-check");
+    expect(controls).toContain("metadata-disclosure");
     expect(css).toMatch(
       /\.metadata-filter-chip\s*\{[^}]*min-height:\s*25px[^}]*border-radius:\s*999px/s,
     );
@@ -363,7 +366,7 @@ describe("catalog visual alignment", () => {
   });
 
   test("adds the compact legal footer to the shared filter surface", () => {
-    const filters = read("src/features/catalog/components/filter-panel.tsx");
+    const filters = read("src/features/catalog/components/filter-controls.tsx");
     const css = read("src/styles/catalog.css");
 
     expect(filters).toContain('className="filter-legal"');

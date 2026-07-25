@@ -75,6 +75,30 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
+  test("exposes collapsed builder state directly on the catalog layout", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    const { container } = render(<CatalogPage catalog={catalog} />);
+    const layout = container.querySelector(".catalog-layout");
+
+    expect(layout).toHaveAttribute("data-kit-builder-collapsed", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
+
+    expect(layout).toHaveAttribute("data-kit-builder-collapsed", "false");
+  });
+
   test("keeps an open builder open when the final card selection is cancelled", () => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,

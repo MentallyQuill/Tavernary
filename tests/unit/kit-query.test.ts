@@ -25,6 +25,37 @@ test("round-trips Kit mode, selection, range, and sort", () => {
   expect(parseCatalogQuery(`?${serializeCatalogQuery(query)}`)).toEqual(query);
 });
 
+test("round-trips expanded Kit discovery filters in stable order", () => {
+  const query = parseCatalogQuery(
+    "?mode=kits&creator=42&creator=7&kind=preset&kind=extension&capability=model-routing&development=dormant&license=open-source&available=1",
+  );
+
+  expect(query.kits).toMatchObject({
+    creatorIds: [7, 42],
+    kinds: ["extension", "preset"],
+    capabilities: ["model-routing"],
+    development: ["dormant"],
+    licenses: ["open-source"],
+    allComponentsAvailable: true,
+  });
+  expect(serializeCatalogQuery(query)).toBe(
+    "mode=kits&creator=7&creator=42&kind=extension&kind=preset&capability=model-routing&development=dormant&license=open-source&available=1",
+  );
+});
+
+test("keeps Kit-only URL facets out of the project query", () => {
+  const query = parseCatalogQuery(
+    "?mode=kits&kind=extension&capability=model-routing&development=dormant&license=open-source",
+  );
+
+  expect(query).toMatchObject({
+    kinds: [],
+    capabilities: [],
+    development: [],
+    licenses: [],
+  });
+});
+
 test("a Kit selection implies Kits mode and invalid ranges reset", () => {
   expect(parseCatalogQuery("?kit=story-kit-41")).toMatchObject({
     mode: "kits",

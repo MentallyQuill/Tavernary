@@ -1,8 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
-
-import { CategoryIcon } from "@/components/icons/category-icon";
+import { useRef, useState } from "react";
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import frontendVocabulary from "../../../../data/vocabularies/frontends.json";
@@ -13,6 +11,13 @@ import type {
   LicenseFilter,
 } from "../catalog-query";
 import type { CatalogProject } from "../catalog-types";
+import {
+  FilterGroup,
+  FilterLegal,
+  FilterPanelTitle,
+  FilterSheetHeading,
+  type FilterOption,
+} from "./filter-controls";
 
 type FilterArray =
   "frontends" | "kinds" | "capabilities" | "development" | "licenses";
@@ -85,167 +90,16 @@ function countFor(
   }).length;
 }
 
-function FilterGroup({
-  title,
-  group,
-  options,
-  selected,
-  projects,
-  onToggle,
-  search,
-  onSearch,
-  searchLabel,
-  presentation = "list",
-  initialVisibleCount,
-  now,
-}: {
-  title: string;
-  group: FilterArray;
-  options: Array<{ id: string; label: string }>;
-  selected: string[];
-  projects: CatalogProject[];
-  onToggle: (group: FilterArray, value: string) => void;
-  search?: string;
-  onSearch?: (value: string) => void;
-  searchLabel?: string;
-  presentation?: "list" | "chips";
-  initialVisibleCount?: number;
-  now: string;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const [chipsOverflow, setChipsOverflow] = useState(false);
-  const chipListRef = useRef<HTMLDivElement>(null);
-  const normalizedSearch = search?.trim().toLocaleLowerCase() ?? "";
-  const collapseLimit = initialVisibleCount ?? options.length;
-  const pinned = options.slice(0, collapseLimit);
-  const selectedExtras = options.filter(
-    (option, index) => index >= collapseLimit && selected.includes(option.id),
-  );
-  const collapsedIds = new Set(
-    [...pinned, ...selectedExtras].map(({ id }) => id),
-  );
-  const collapsedOptions = options.filter(({ id }) => collapsedIds.has(id));
-  const searchedOptions = normalizedSearch
-    ? options.filter(({ label }) =>
-        label.toLocaleLowerCase().includes(normalizedSearch),
-      )
-    : options;
-  const visibleOptions = normalizedSearch
-    ? searchedOptions
-    : expanded
-      ? options
-      : collapsedOptions;
-  const hiddenCount = options.length - collapsedOptions.length;
-
-  useLayoutEffect(() => {
-    if (presentation !== "chips" || !chipListRef.current) return;
-    const list = chipListRef.current;
-    const measure = () => {
-      const rowCount = new Set(
-        Array.from(list.children).map((child) =>
-          Math.round((child as HTMLElement).offsetTop),
-        ),
-      ).size;
-      setChipsOverflow(rowCount > 4);
-    };
-    if (typeof ResizeObserver === "undefined") {
-      measure();
-      return;
-    }
-    const observer = new ResizeObserver(measure);
-    observer.observe(list);
-    measure();
-    return () => observer.disconnect();
-  }, [expanded, options, presentation, selected]);
-
-  return (
-    <fieldset className="filter-group">
-      <legend>{title}</legend>
-      {onSearch && searchLabel ? (
-        <input
-          className={
-            presentation === "chips"
-              ? "filter-search metadata-search"
-              : "filter-search"
-          }
-          type="search"
-          value={search}
-          onChange={(event) => onSearch(event.target.value)}
-          placeholder="Search…"
-          aria-label={searchLabel}
-        />
-      ) : null}
-      {presentation === "chips" ? (
-        <div
-          ref={chipListRef}
-          className={`metadata-options${expanded ? "" : " collapsed"}`}
-        >
-          {visibleOptions.map((option) => {
-            const isSelected = selected.includes(option.id);
-            return (
-              <label
-                className={`metadata-option${isSelected ? " selected" : ""}`}
-                key={option.id}
-              >
-                <span className="metadata-filter-chip">
-                  <input
-                    type="checkbox"
-                    aria-label={option.label}
-                    checked={isSelected}
-                    onChange={() => onToggle(group, option.id)}
-                  />
-                  <span className="metadata-check" aria-hidden="true">
-                    ✓
-                  </span>
-                  <span>{option.label}</span>
-                  <b className="metadata-count">
-                    {countFor(projects, group, option.id, now)}
-                  </b>
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      ) : (
-        visibleOptions.map((option) => (
-          <label key={option.id}>
-            <input
-              type="checkbox"
-              aria-label={option.label}
-              checked={selected.includes(option.id)}
-              className={group === "kinds" ? "kind-checkbox" : undefined}
-              data-kind={group === "kinds" ? option.id : undefined}
-              onChange={() => onToggle(group, option.id)}
-            />
-            <span>{option.label}</span>
-            <b>{countFor(projects, group, option.id, now)}</b>
-          </label>
-        ))
-      )}
-      {presentation === "list" &&
-      !normalizedSearch &&
-      (hiddenCount > 0 || expanded) ? (
-        <button
-          className="more-frontends"
-          type="button"
-          aria-expanded={expanded}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
-        </button>
-      ) : null}
-      {presentation === "chips" && (chipsOverflow || expanded) ? (
-        <button
-          className="more-frontends metadata-disclosure"
-          type="button"
-          aria-expanded={expanded}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          {expanded ? "Show fewer" : "Show more"}
-        </button>
-      ) : null}
-    </fieldset>
-  );
+function withCounts(
+  options: Array<{ id: string; label: string }>,
+  projects: CatalogProject[],
+  group: FilterArray,
+  now: string,
+): FilterOption[] {
+  return options.map((option) => ({
+    ...option,
+    count: countFor(projects, group, option.id, now),
+  }));
 }
 
 export function FilterPanel({
@@ -281,82 +135,57 @@ export function FilterPanel({
   const content = (
     <>
       {mobile ? (
-        <div className="filter-sheet-heading">
-          <div>
-            <small>Refine catalog</small>
-            <h2 ref={headingRef} id="project-filter-heading" tabIndex={-1}>
-              Filters
-            </h2>
-          </div>
-          <button type="button" aria-label="Close filters" onClick={onClose}>
-            <CategoryIcon name="close" />
-          </button>
-        </div>
+        <FilterSheetHeading
+          headingRef={headingRef}
+          headingId="project-filter-heading"
+          closeLabel="Close filters"
+          onClose={dismiss}
+        />
       ) : (
-        <div className="filter-panel-title">
-          <span>Filters</span>
-          <button type="button" onClick={onClear}>
-            Clear all
-          </button>
-        </div>
+        <FilterPanelTitle onClear={onClear} />
       )}
       <FilterGroup
         title="Compatible frontend"
-        group="frontends"
-        options={frontendOptions}
+        options={withCounts(frontendOptions, projects, "frontends", now)}
         selected={query.frontends}
-        projects={projects}
-        onToggle={onToggle}
+        onToggle={(value) => onToggle("frontends", value)}
         search={frontendSearch}
         onSearch={setFrontendSearch}
         searchLabel="Search compatible frontends"
         initialVisibleCount={3}
-        now={now}
       />
       <FilterGroup
         title="Project kind"
-        group="kinds"
-        options={kindOptions}
+        options={withCounts(kindOptions, projects, "kinds", now)}
         selected={query.kinds}
-        projects={projects}
-        onToggle={onToggle}
-        now={now}
+        onToggle={(value) => onToggle("kinds", value)}
+        kindColors
       />
       <FilterGroup
         title="Capabilities & characteristics"
-        group="capabilities"
-        options={uniqueLabels(projects, "capabilities")}
+        options={withCounts(
+          uniqueLabels(projects, "capabilities"),
+          projects,
+          "capabilities",
+          now,
+        )}
         selected={query.capabilities}
-        projects={projects}
-        onToggle={onToggle}
+        onToggle={(value) => onToggle("capabilities", value)}
         presentation="chips"
-        now={now}
       />
       <FilterGroup
         title="Development"
-        group="development"
-        options={developmentOptions}
+        options={withCounts(developmentOptions, projects, "development", now)}
         selected={query.development}
-        projects={projects}
-        onToggle={onToggle}
-        now={now}
+        onToggle={(value) => onToggle("development", value)}
       />
       <FilterGroup
         title="License"
-        group="licenses"
-        options={licenseOptions}
+        options={withCounts(licenseOptions, projects, "licenses", now)}
         selected={query.licenses}
-        projects={projects}
-        onToggle={onToggle}
-        now={now}
+        onToggle={(value) => onToggle("licenses", value)}
       />
-      <div className="filter-legal">
-        <span>Tavernary</span>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/MentallyQuill/Tavernary/blob/main/LICENSE">
-          AGPL-3.0-only
-        </a>
-      </div>
+      <FilterLegal />
     </>
   );
 

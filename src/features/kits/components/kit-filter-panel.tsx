@@ -1,21 +1,104 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { DualRange } from "@/components/ui/dual-range";
+import {
+  FilterGroup,
+  FilterLegal,
+  FilterPanelTitle,
+  FilterSheetHeading,
+  type FilterOption,
+} from "@/features/catalog/components/filter-controls";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import type { KitArrayFilter } from "@/features/kits/kit-selectors";
+import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
 import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
+const kindOptions = [
+  { id: "extension", label: "Extension" },
+  { id: "preset", label: "System Preset" },
+];
+const developmentOptions = [
+  { id: "active-month", label: "Active this month" },
+  { id: "new-release", label: "Recently released" },
+  { id: "dormant", label: "Dormant" },
+];
+const licenseOptions = [
+  { id: "open-source", label: "Open source" },
+  { id: "proprietary", label: "Proprietary" },
+  { id: "pending", label: "Pending verification" },
+  { id: "missing", label: "Missing license" },
+];
 
 function labels(kits: CatalogKit[], property: "frontends" | "purposes") {
   const values = new Map<string, string>();
   for (const kit of kits) {
     for (const item of kit[property]) values.set(item.id, item.label);
   }
-  return [...values].map(([id, label]) => ({ id, label }));
+  return [...values]
+    .map(([id, label]) => ({ id, label }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function componentCapabilities(kits: CatalogKit[]) {
+  const values = new Map<string, string>();
+  for (const kit of kits) {
+    for (const component of kit.components) {
+      for (const capability of component.project?.capabilities ?? []) {
+        values.set(capability.id, capability.label);
+      }
+    }
+  }
+  return [...values]
+    .map(([id, label]) => ({ id, label }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function creators(kits: CatalogKit[]) {
+  const values = new Map<number, string>();
+  for (const kit of kits) {
+    values.set(kit.author.githubUserId, kit.author.login);
+  }
+  return [...values]
+    .map(([id, label]) => ({ id: String(id), label }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function countedOptions(
+  options: Array<{ id: string; label: string }>,
+  kits: CatalogKit[],
+  query: KitQuery,
+  group: Exclude<KitArrayFilter, "creatorIds">,
+  search: string,
+  now: string,
+): FilterOption[] {
+  return options.map((option) => ({
+    ...option,
+    count: countKitsForFilter(kits, query, group, option.id, search, now),
+  }));
+}
+
+function countedCreators(
+  kits: CatalogKit[],
+  query: KitQuery,
+  search: string,
+  now: string,
+): FilterOption[] {
+  return creators(kits).map((option) => ({
+    ...option,
+    count: countKitsForFilter(
+      kits,
+      query,
+      "creatorIds",
+      Number(option.id),
+      search,
+      now,
+    ),
+  }));
 }
 
 export function KitFilterPanel({
@@ -24,6 +107,8 @@ export function KitFilterPanel({
   projects,
   onChange,
   onClear,
+  search = "",
+  now,
   mobile = false,
   onClose,
   motionPhase = "entered",
@@ -33,10 +118,35 @@ export function KitFilterPanel({
   projects: CatalogProject[];
   onChange: (query: KitQuery) => void;
   onClear: () => void;
+  search?: string;
+  now: string;
   mobile?: boolean;
   onClose?: () => void;
   motionPhase?: "entering" | "entered" | "exiting";
 }) {
+  const [frontendSearch, setFrontendSearch] = useState("");
+  const [purposeSearch, setPurposeSearch] = useState("");
+  const [projectSearch, setProjectSearch] = useState("");
+  const [creatorSearch, setCreatorSearch] = useState("");
+  const [capabilitySearch, setCapabilitySearch] = useState("");
+  const includedProjectIds = new Set(
+    kits.flatMap((kit) =>
+      kit.components.map((component) => component.projectId),
+    ),
+  );
+  const includedProjectOptions = projects
+    .filter((project) => includedProjectIds.has(project.id))
+    .map((project) => ({
+      id: project.id,
+      label: project.name,
+      count: selectKits(
+        kits,
+        { ...query, includesProjectId: project.id },
+        search,
+        now,
+      ).length,
+    }))
+    .sort((left, right) => left.label.localeCompare(right.label));
   const sheetRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const dismiss = onClose ?? (() => undefined);
@@ -47,8 +157,11 @@ export function KitFilterPanel({
     onDismiss: dismiss,
     inertSelectors: modalBackground,
   });
-  const updateArray = (property: "frontends" | "purposes", value: string) => {
-    const current = query[property];
+  const updateArray = (
+    property: Exclude<KitArrayFilter, "creatorIds">,
+    value: string,
+  ) => {
+    const current = query[property] as string[];
     onChange({
       ...query,
       [property]: current.includes(value)
@@ -56,70 +169,155 @@ export function KitFilterPanel({
         : [...current, value],
     });
   };
+  const updateCreator = (value: string) => {
+    const creatorId = Number(value);
+    onChange({
+      ...query,
+      creatorIds: query.creatorIds.includes(creatorId)
+        ? query.creatorIds.filter((item) => item !== creatorId)
+        : [...query.creatorIds, creatorId],
+    });
+  };
+  const statusBaseQuery = {
+    ...query,
+    tavernaryPickOnly: false,
+    allComponentsAvailable: false,
+  };
+  const availableCount = selectKits(
+    kits,
+    { ...statusBaseQuery, allComponentsAvailable: true },
+    search,
+    now,
+  ).length;
+  const pickCount = selectKits(
+    kits,
+    { ...statusBaseQuery, tavernaryPickOnly: true },
+    search,
+    now,
+  ).length;
+
   const content = (
     <>
       {mobile ? (
-        <div className="filter-sheet-heading">
-          <div>
-            <small>Refine catalog</small>
-            <h2 ref={headingRef} id="kit-filter-heading" tabIndex={-1}>
-              Kit filters
-            </h2>
-          </div>
-          <button
-            type="button"
-            aria-label="Close Kit filters"
-            onClick={dismiss}
-          >
-            Close
-          </button>
-        </div>
-      ) : null}
-      <fieldset className="filter-group">
-        <legend>Frontends</legend>
-        {labels(kits, "frontends").map((item) => (
-          <label key={item.id}>
-            <input
-              type="checkbox"
-              checked={query.frontends.includes(item.id)}
-              onChange={() => updateArray("frontends", item.id)}
-            />
-            <span>{item.label}</span>
-          </label>
-        ))}
-      </fieldset>
-      <fieldset className="filter-group">
-        <legend>Purposes</legend>
-        {labels(kits, "purposes").map((item) => (
-          <label key={item.id}>
-            <input
-              type="checkbox"
-              checked={query.purposes.includes(item.id)}
-              onChange={() => updateArray("purposes", item.id)}
-            />
-            <span>{item.label}</span>
-          </label>
-        ))}
-      </fieldset>
-      <fieldset className="filter-group">
-        <legend>Includes project</legend>
-        <input
-          type="search"
-          list="kit-project-options"
-          aria-label="Includes project"
-          value={query.includesProjectId}
-          onChange={(event) =>
-            onChange({ ...query, includesProjectId: event.target.value })
-          }
+        <FilterSheetHeading
+          headingRef={headingRef}
+          headingId="kit-filter-heading"
+          closeLabel="Close Kit filters"
+          onClose={dismiss}
         />
-        <datalist id="kit-project-options">
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </datalist>
-      </fieldset>
+      ) : (
+        <FilterPanelTitle onClear={onClear} />
+      )}
+      <FilterGroup
+        title="Compatible frontend"
+        options={countedOptions(
+          labels(kits, "frontends"),
+          kits,
+          query,
+          "frontends",
+          search,
+          now,
+        )}
+        selected={query.frontends}
+        onToggle={(value) => updateArray("frontends", value)}
+        search={frontendSearch}
+        onSearch={setFrontendSearch}
+        searchLabel="Search compatible frontends"
+        initialVisibleCount={3}
+      />
+      <FilterGroup
+        title="Purpose"
+        options={countedOptions(
+          labels(kits, "purposes"),
+          kits,
+          query,
+          "purposes",
+          search,
+          now,
+        )}
+        selected={query.purposes}
+        onToggle={(value) => updateArray("purposes", value)}
+        search={purposeSearch}
+        onSearch={setPurposeSearch}
+        searchLabel="Search Kit purposes"
+        presentation="chips"
+      />
+      <FilterGroup
+        title="Includes project"
+        options={includedProjectOptions}
+        selected={query.includesProjectId ? [query.includesProjectId] : []}
+        onToggle={(value) =>
+          onChange({
+            ...query,
+            includesProjectId: value,
+          })
+        }
+        search={projectSearch}
+        onSearch={setProjectSearch}
+        searchLabel="Search included projects"
+        selectionMode="single"
+        initialVisibleCount={5}
+      />
+      <FilterGroup
+        title="Kit creator"
+        options={countedCreators(kits, query, search, now)}
+        selected={query.creatorIds.map(String)}
+        onToggle={updateCreator}
+        search={creatorSearch}
+        onSearch={setCreatorSearch}
+        searchLabel="Search Kit creators"
+        initialVisibleCount={5}
+      />
+      <FilterGroup
+        title="Included project kind"
+        options={countedOptions(kindOptions, kits, query, "kinds", search, now)}
+        selected={query.kinds}
+        onToggle={(value) => updateArray("kinds", value)}
+        kindColors
+      />
+      <FilterGroup
+        title="Capabilities & characteristics"
+        options={countedOptions(
+          componentCapabilities(kits),
+          kits,
+          query,
+          "capabilities",
+          search,
+          now,
+        )}
+        selected={query.capabilities}
+        onToggle={(value) => updateArray("capabilities", value)}
+        search={capabilitySearch}
+        onSearch={setCapabilitySearch}
+        searchLabel="Search Kit capabilities and characteristics"
+        presentation="chips"
+      />
+      <FilterGroup
+        title="Development"
+        options={countedOptions(
+          developmentOptions,
+          kits,
+          query,
+          "development",
+          search,
+          now,
+        )}
+        selected={query.development}
+        onToggle={(value) => updateArray("development", value)}
+      />
+      <FilterGroup
+        title="Included project license"
+        options={countedOptions(
+          licenseOptions,
+          kits,
+          query,
+          "licenses",
+          search,
+          now,
+        )}
+        selected={query.licenses}
+        onToggle={(value) => updateArray("licenses", value)}
+      />
       <DualRange
         label="Kit size"
         minimumLabel="Minimum projects"
@@ -131,23 +329,40 @@ export function KitFilterPanel({
           onChange({ ...query, minProjects, maxProjects })
         }
       />
-      <label className="kit-pick-filter">
-        <input
-          type="checkbox"
-          checked={query.tavernaryPickOnly}
-          onChange={(event) =>
-            onChange({ ...query, tavernaryPickOnly: event.target.checked })
-          }
-        />
-        Tavernary Pick only
-      </label>
-      <button
-        type="button"
-        className="control-quiet clear-filters"
-        onClick={onClear}
-      >
-        Clear Kit filters
-      </button>
+      <fieldset className="filter-group">
+        <legend>Kit status</legend>
+        <label>
+          <input
+            type="checkbox"
+            aria-label="Tavernary Pick"
+            checked={query.tavernaryPickOnly}
+            onChange={(event) =>
+              onChange({
+                ...query,
+                tavernaryPickOnly: event.target.checked,
+              })
+            }
+          />
+          <span>Tavernary Pick</span>
+          <b>{pickCount}</b>
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            aria-label="All components available"
+            checked={query.allComponentsAvailable}
+            onChange={(event) =>
+              onChange({
+                ...query,
+                allComponentsAvailable: event.target.checked,
+              })
+            }
+          />
+          <span>All components available</span>
+          <b>{availableCount}</b>
+        </label>
+      </fieldset>
+      <FilterLegal />
     </>
   );
 

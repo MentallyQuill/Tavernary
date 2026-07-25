@@ -68,8 +68,9 @@ function shutdown() {
   setTimeout(() => process.exit(1), 5_000).unref();
 }
 
-server.listen(3000, "127.0.0.1", () => {
-  console.log("Static export server listening on http://127.0.0.1:3000");
+const port = Number(process.env.PORT ?? 3000);
+server.listen(port, "127.0.0.1", () => {
+  console.log(`Static export server listening on http://127.0.0.1:${port}`);
 });
 server.on("error", (error) => {
   console.error(error);

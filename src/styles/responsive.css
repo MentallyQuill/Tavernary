@@ -12,7 +12,7 @@
     grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
   }
 
-  .catalog-layout:has(> .kit-builder-panel.collapsed) {
+  .catalog-layout[data-kit-builder-collapsed="true"] {
     grid-template-columns: 210px minmax(0, 1fr) 72px;
   }
 

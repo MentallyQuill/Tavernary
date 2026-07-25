@@ -3,6 +3,6 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests/kits-e2e",
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: `http://127.0.0.1:${process.env.PORT ?? "3000"}`,
   },
 });
