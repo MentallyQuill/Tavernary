@@ -1,5 +1,14 @@
 name: Refresh catalog
 
+run-name: >-
+  ${{ github.event_name == 'schedule'
+    && 'Refresh catalog — scheduled incremental'
+    || inputs.mode == 'baseline'
+    && format('Baseline queue — up to {0} projects', inputs.batch_size)
+    || inputs.project_id
+    && format('Refresh catalog — {0}: {1}', inputs.mode, inputs.project_id)
+    || format('Refresh catalog — {0}', inputs.mode) }}
+
 on:
   schedule:
     - cron: "17 7 * * *"
@@ -48,6 +57,12 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Capture baseline queue state
+        id: baseline-start
+        if: inputs.mode == 'baseline'
+        run: >-
+          node scripts/catalog/baseline-queue.mjs capture
+          --manifest data/snapshots/github-refresh.json
       - name: Refresh selected sources
         shell: bash
         env:
@@ -106,22 +121,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-pages.yml --ref main
-      - name: Continue baseline queue
+      - name: Evaluate baseline queue progress
+        id: baseline-progress
         if: ${{ success() && inputs.mode == 'baseline' }}
+        env:
+          BEFORE: ${{ steps.baseline-start.outputs.provisional }}
+        shell: bash
+        run: |
+          node scripts/catalog/baseline-queue.mjs evaluate \
+            --before "$BEFORE" \
+            --manifest data/snapshots/github-refresh.json
+      - name: Dispatch next baseline batch
+        if: steps.baseline-progress.outputs.continue == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BATCH_SIZE: ${{ inputs.batch_size || 12 }}
+          REMAINING: ${{ steps.baseline-progress.outputs.remaining }}
         shell: bash
         run: |
-          # counts.provisional is derived from current snapshot evidence_status values.
-          remaining="$(
-            node -e "const fs=require('fs');const value=JSON.parse(fs.readFileSync('data/snapshots/github-refresh.json','utf8')).counts.provisional;process.stdout.write(String(value))"
-          )"
-          if (( remaining > 0 )); then
-            gh workflow run refresh-catalog.yml \
-              --ref main \
-              -f mode=baseline \
-              -f batch_size="$BATCH_SIZE"
-          else
-            echo "Baseline queue complete."
-          fi
+          gh workflow run refresh-catalog.yml \
+            --ref main \
+            -f mode=baseline \
+            -f batch_size="$BATCH_SIZE"
+          echo "Queued the next baseline batch with $REMAINING provisional project(s) remaining."

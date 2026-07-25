@@ -17,7 +17,6 @@ test("uses status-driven refresh modes without indexed backfill", async () => {
   expect(source).not.toContain("start_index");
   expect(source).not.toContain("next_index");
   expect(source).not.toContain("< 200");
-  expect(source).toContain("counts.provisional");
   expect(source).toContain("-f mode=baseline");
 });
 
@@ -60,13 +59,33 @@ test("rebases with bounded retries and never force-pushes", async () => {
   expect(postRebaseCheck).toBeLessThan(push);
 });
 
-test("continues baselines only after successful publication", async () => {
+test("continues baselines only after measurable progress", async () => {
+  const source = await readFile(refreshPath, "utf8");
+  const capture = source.indexOf("Capture baseline queue state");
+  const refresh = source.indexOf("Refresh selected sources");
+  const evaluate = source.indexOf("Evaluate baseline queue progress");
+  const dispatch = source.indexOf("Dispatch next baseline batch");
+
+  expect(capture).toBeGreaterThan(-1);
+  expect(capture).toBeLessThan(refresh);
+  expect(refresh).toBeLessThan(evaluate);
+  expect(evaluate).toBeLessThan(dispatch);
+  expect(source).toContain("baseline-queue.mjs capture");
+  expect(source).toContain("baseline-queue.mjs evaluate");
+  expect(source).toContain(
+    "steps.baseline-progress.outputs.continue == 'true'",
+  );
+  expect(source).toContain("steps.baseline-progress.outputs.remaining");
+  expect(source).not.toContain("if (( remaining > 0 ))");
+});
+
+test("names catalog runs by their actual operating mode", async () => {
   const source = await readFile(refreshPath, "utf8");
 
-  expect(source).toContain("success() && inputs.mode == 'baseline'");
-  expect(source).toContain("counts.provisional");
-  expect(source).toContain("if (( remaining > 0 ))");
-  expect(source).toContain('-f batch_size="$BATCH_SIZE"');
+  expect(source).toContain("run-name:");
+  expect(source).toContain("scheduled incremental");
+  expect(source).toContain("Baseline queue");
+  expect(source).toContain("inputs.batch_size");
 });
 
 test("enrichment prepares a random canary and limits batch publication", async () => {
