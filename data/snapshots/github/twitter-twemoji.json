@@ -18,24 +18,12 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": "2022-03-31T03:08:55.000Z",
-    "evidence_status": "degraded",
-    "baseline_completed_at": null,
-    "baseline_attempts": 3
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9"
   },
   "community": {
     "stargazers_count": 17707,
@@ -43,7 +31,12 @@
     "subscribers_count": 322,
     "aggregate": 19925
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "stale_since": null,
+  "activity_scan": null
 }

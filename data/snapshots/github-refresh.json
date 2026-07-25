@@ -1,36 +1,102 @@
 {
   "schema_version": 1,
-  "mode": "project",
-  "started_at": "2026-07-25T14:02:54.464Z",
-  "completed_at": "2026-07-25T14:02:55.539Z",
+  "mode": "baseline",
+  "started_at": "2026-07-25T14:40:11.455Z",
+  "completed_at": "2026-07-25T14:40:31.790Z",
   "counts": {
-    "total": 1,
-    "checked": 1,
-    "changed": 0,
-    "unchanged": 1,
+    "total": 12,
+    "checked": 12,
+    "changed": 12,
+    "unchanged": 0,
     "provisional": 0,
-    "degraded": 12,
+    "degraded": 0,
     "unavailable": 0,
     "failed": 0,
     "compared": 0,
-    "baseline": 0,
+    "baseline": 12,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4990,
-    "rest_requests": 0
+    "graphql_remaining": 4983,
+    "rest_requests": 206
   },
-  "duration_ms": 1075,
+  "duration_ms": 20335,
   "project_timings": [
     {
-      "project_id": "inspectorcaracal-sillytavern-rememory",
-      "outcome": "unchanged",
-      "duration_ms": 1,
+      "project_id": "aikohanasaki-sillytavern-memorybooks",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "icefog72-sillytavern-everytextlineeditor",
+      "outcome": "baseline",
+      "duration_ms": 19132,
+      "error_code": null
+    },
+    {
+      "project_id": "j-dandelion-lumiverse-canvas",
+      "outcome": "baseline",
+      "duration_ms": 19132,
+      "error_code": null
+    },
+    {
+      "project_id": "mentallyquill-directive",
+      "outcome": "baseline",
+      "duration_ms": 19132,
+      "error_code": null
+    },
+    {
+      "project_id": "mentallyquill-recursion",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "mentallyquill-saga",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "mindbound-lumiscript",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "multihogaurelius-sillytavern-multihogdndframework",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "pasta-devs-marinara-engine",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "prolix-oc-lumiverse",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "twitter-twemoji",
+      "outcome": "baseline",
+      "duration_ms": 19133,
+      "error_code": null
+    },
+    {
+      "project_id": "valdoix-vellum-engine",
+      "outcome": "baseline",
+      "duration_ms": 19133,
       "error_code": null
     }
   ],
-  "snapshot_changes": false,
+  "snapshot_changes": true,
   "deployment_requested": true
 }
