@@ -166,6 +166,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
     },
   ) => Promise<void>;
   reportPath?: string | null;
+  canaryReportPath?: string | null;
   writeReport?: (report: EnrichmentRunState) => Promise<void>;
 };
 

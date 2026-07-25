@@ -510,11 +510,15 @@ export async function runCli(options = {}) {
       : options.reportPath;
   const timestamp = new Date(options.now ?? Date.now()).toISOString();
   if (mode === "approve-canary") {
+    const approvalReportPath =
+      options.canaryReportPath === undefined
+        ? reportPath
+        : options.canaryReportPath;
     const previousReport =
       options.previousReport !== undefined
         ? options.previousReport
-        : reportPath
-          ? await readOptionalJson(reportPath)
+        : approvalReportPath
+          ? await readOptionalJson(approvalReportPath)
           : null;
     const state = approveCanaryDeployment(
       validateEnrichmentReport(previousReport),
@@ -526,7 +530,7 @@ export async function runCli(options = {}) {
     );
     const report = createEnrichmentReport(state);
     if (options.writeReport) await options.writeReport(report);
-    if (reportPath) await writeJsonAtomic(reportPath, report);
+    if (approvalReportPath) await writeJsonAtomic(approvalReportPath, report);
     return report;
   }
 
