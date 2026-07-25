@@ -23,11 +23,11 @@ test("desktop ordinary grid and selected workspace", async ({ page }) => {
   });
 });
 
-test("tablet collapsed workspace", async ({ page }) => {
+test("tablet draft pill", async ({ page }) => {
   await openKits(page, { width: 1024, height: 900 });
-  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  await page.getByRole("button", { name: "Create new Kit" }).click();
   await page.getByRole("button", { name: "Collapse workspace" }).click();
-  await expect(page).toHaveScreenshot("kits-tablet-collapsed.png", {
+  await expect(page).toHaveScreenshot("kits-tablet-draft-pill.png", {
     fullPage: true,
   });
 });
@@ -54,9 +54,50 @@ test("desktop flagged caution state", async ({ page }) => {
   });
 });
 
-test("mobile workspace sheet", async ({ page }) => {
+test("mobile browse, filters, draft, builder, long stack, and inspection", async ({
+  page,
+}) => {
   await openKits(page, { width: 390, height: 844 });
+  await expect(page).toHaveScreenshot("kits-mobile-browse.png");
+
+  await page.getByRole("button", { name: "Open filters" }).click();
+  await expect(page).toHaveScreenshot("kits-mobile-filters.png");
+  await page.getByRole("button", { name: "Close Kit filters" }).click();
+
+  await page.getByRole("button", { name: "Create Kit" }).click();
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  await expect(page).toHaveScreenshot("kits-mobile-draft-pill.png");
+
+  for (let count = 0; count < 3; count += 1) {
+    await page
+      .getByRole("button", { name: /Add .* to Kit/ })
+      .first()
+      .click();
+  }
+  await page
+    .getByRole("button", { name: "Open draft with 3 projects" })
+    .click();
+  await expect(page).toHaveScreenshot("kits-mobile-builder-three.png");
+
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await page.getByRole("button", { name: "Open Large Stack" }).click();
+  await page.getByRole("button", { name: "Duplicate" }).click();
+  await page.locator(".kit-workspace-body").evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(page).toHaveScreenshot("kits-mobile-builder-long-scrolled.png");
+
   await page.getByRole("button", { name: "Close Kit workspace" }).click();
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
-  await expect(page).toHaveScreenshot("kits-mobile-sheet.png");
+  await expect(
+    page.getByRole("heading", { name: "Kit workspace" }),
+  ).toBeInViewport();
+  await expect(
+    page.getByRole("button", { name: "Close Kit workspace" }),
+  ).toBeInViewport();
+  await expect(page).toHaveScreenshot("kits-mobile-inspect.png");
 });

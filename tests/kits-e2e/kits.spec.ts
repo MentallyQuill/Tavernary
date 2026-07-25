@@ -354,3 +354,84 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
     ),
   ).toBe(true);
 });
+
+test("complete mobile Kits workflow stays tap-first and recoverable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Kit workspace" })).toHaveCount(
+    0,
+  );
+
+  const filterButton = page.getByRole("button", { name: "Open filters" });
+  await filterButton.click();
+  const filters = page.getByRole("dialog", { name: "Kit filters" });
+  await filters.getByText("Tavernary Pick only").click();
+  await expect(cards(page)).toHaveCount(1);
+  await filters.getByRole("button", { name: "Clear Kit filters" }).click();
+  await expect(cards(page)).toHaveCount(8);
+  await filters.getByRole("button", { name: "Close Kit filters" }).click();
+  await expect(filterButton).toBeFocused();
+
+  await page.getByRole("button", { name: "Create Kit" }).click();
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open draft with 0 projects" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  for (let count = 1; count <= 3; count += 1) {
+    await page
+      .getByRole("button", { name: /Add .* to Kit/ })
+      .first()
+      .click();
+    await expect(
+      page.getByRole("button", {
+        name: `Open draft with ${count} projects`,
+      }),
+    ).toBeVisible();
+  }
+  await page
+    .getByRole("button", { name: "Open draft with 3 projects" })
+    .click();
+
+  const rows = page.locator(".kit-builder-row");
+  const secondProject = (await rows.nth(1).locator("strong").textContent())!;
+  await rows
+    .nth(1)
+    .getByRole("button", { name: `Move ${secondProject} up` })
+    .click();
+  await expect(rows.nth(0).locator("strong")).toHaveText(secondProject);
+  await rows
+    .nth(0)
+    .getByRole("button", { name: `Move ${secondProject} down` })
+    .click();
+  await expect(rows.nth(1).locator("strong")).toHaveText(secondProject);
+  await rows
+    .nth(1)
+    .getByRole("button", { name: `Remove ${secondProject}` })
+    .click();
+  await page
+    .getByRole("button", { name: `Undo remove ${secondProject}` })
+    .click();
+  await expect(rows.nth(1).locator("strong")).toHaveText(secondProject);
+
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open draft with 3 projects" }),
+  ).toBeFocused();
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  const alphaOpener = page.getByRole("button", { name: "Open Alpha Kit" });
+  await alphaOpener.click();
+  await expect(
+    page
+      .getByRole("dialog", { name: "Kit workspace" })
+      .getByRole("heading", { name: "Alpha Kit" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await expect(alphaOpener).toBeFocused();
+});
