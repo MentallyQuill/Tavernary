@@ -35,6 +35,14 @@ function entriesToSet(entries) {
   );
 }
 
+function sourceBackedPrimaryFunctions(entries) {
+  return entries.filter((entry) =>
+    typeof entry === "string"
+      ? entry !== "uncategorized"
+      : entry.id !== "uncategorized",
+  );
+}
+
 function isEligible(record, force = false) {
   if (record.visibility !== "published" || record.source?.type !== "github") {
     return false;
@@ -107,7 +115,9 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     repositoryDescription: source.repositoryDescription,
     readmeText: source.readmeText,
     frontends: record.frontends ?? [],
-    allowedPrimaryFunctions: vocabularies.primaryFunctions,
+    allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
+      vocabularies.primaryFunctions,
+    ),
     allowedCapabilities: vocabularies.capabilities,
   };
   if (!provider?.generate) {
@@ -298,7 +308,9 @@ async function processProject(input, id) {
       repositoryDescription: source.repositoryDescription,
       readmeText: source.readmeText,
       frontends: record.frontends ?? [],
-      allowedPrimaryFunctions: vocabularies.primaryFunctions,
+      allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
+        vocabularies.primaryFunctions,
+      ),
       allowedCapabilities: vocabularies.capabilities,
     };
     try {
