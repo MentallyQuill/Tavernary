@@ -376,11 +376,6 @@
   grid-template-columns: 238px minmax(0, 1fr);
 }
 
-.catalog-layout.catalog-drag-active {
-  grid-template-columns: 238px minmax(0, 1fr) clamp(280px, 22vw, 340px);
-  transition: none;
-}
-
 .filter-panel {
   padding: 20px 18px 50px;
   border: 0;
@@ -1780,13 +1775,18 @@
   box-shadow: var(--shadow-raised);
 }
 
+.project-card-shell.in-draft .project-card {
+  border-color: var(--color-kind-extension);
+  box-shadow: 0 0 0 1px var(--color-kind-extension);
+}
+
 .project-card-shell:focus-visible {
   outline: 2px solid var(--color-text-primary);
   outline-offset: 4px;
 }
 
-.project-selection-check,
 .project-in-draft {
+  position: absolute;
   z-index: 3;
   top: -7px;
   display: grid;
@@ -1796,18 +1796,7 @@
   pointer-events: none;
 }
 
-.project-selection-check {
-  position: absolute;
-  right: -7px;
-  width: 22px;
-  color: var(--color-page);
-  background: var(--color-kind-preset);
-  font-size: 12px;
-  font-weight: 900;
-}
-
 .project-in-draft {
-  position: absolute;
   left: 8px;
   border: 1px solid var(--color-border);
   padding: 0 7px;
@@ -1816,40 +1805,61 @@
   font-size: 9px;
 }
 
-.project-card-shell.drag-enabled .project-card {
-  border-radius: 10px 10px 0 0;
+.project-card-shell.has-kit-control .card-bottom {
+  padding-left: 40px;
 }
 
-.project-card-shell.drag-enabled {
-  grid-template-columns: 44px minmax(0, 1fr);
-}
-
-.project-card-shell.drag-enabled .project-card {
-  grid-column: 1 / -1;
-}
-
-.catalog-project-drag-handle {
+.project-kit-control-hit {
+  position: absolute;
+  z-index: 4;
+  bottom: 4px;
+  left: 4px;
   display: grid;
-  min-width: 44px;
-  min-height: 34px;
-  padding: 0;
+  width: 44px;
+  height: 44px;
   place-items: center;
-  border: 1px solid var(--color-border);
-  border-top: 0;
-  border-right: 0;
-  border-radius: 0 0 0 10px;
-  color: var(--color-muted);
-  background: var(--color-surface-primary);
-  cursor: grab;
-  touch-action: none;
+}
+
+.project-kit-control {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-kind-extension);
+  border-radius: 5px;
+  padding: 0;
+  color: var(--color-page);
+  background: var(--color-kind-extension);
+  box-shadow: 0 2px 0 var(--color-page);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  place-items: center;
   transition:
-    color var(--kit-motion-state) var(--kit-motion-ease),
-    background var(--kit-motion-state) var(--kit-motion-ease),
+    border-color var(--kit-motion-state) var(--kit-motion-ease),
+    box-shadow var(--kit-motion-state) var(--kit-motion-ease),
     transform var(--kit-motion-press) var(--kit-motion-ease);
 }
 
-.catalog-project-drag-handle svg {
-  width: 18px;
+.project-kit-control[aria-pressed="true"] {
+  box-shadow: inset 0 2px 3px var(--color-page);
+  transform: translateY(1px);
+}
+
+.project-kit-control:is(:hover, :focus-visible) {
+  border-color: var(--color-text-primary);
+}
+
+.project-kit-control:focus-visible {
+  outline: 2px solid var(--color-kind-preset);
+  outline-offset: 2px;
+}
+
+.project-kit-control:disabled {
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
+  cursor: not-allowed;
 }
 
 .project-selection-spacer {
@@ -2123,33 +2133,6 @@
   font-size: 11px;
 }
 
-.catalog-project-drag-ghost {
-  position: fixed;
-  z-index: 60;
-  top: 0;
-  left: 0;
-  display: grid;
-  gap: 3px;
-  min-width: 180px;
-  padding: 9px 12px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: 8px;
-  background: var(--color-surface-raised);
-  box-shadow: var(--shadow-raised);
-  pointer-events: none;
-  transition: none;
-  will-change: transform;
-}
-
-.catalog-project-drag-ghost[data-valid="false"] {
-  border-color: var(--color-kind-extension);
-}
-
-.catalog-project-drag-ghost span {
-  color: var(--color-text-secondary);
-  font-size: 11px;
-}
-
 .kit-builder-remove:is(:hover, :focus-visible) {
   color: var(--color-kind-extension);
   background: var(--color-surface-raised);
@@ -2160,7 +2143,7 @@
   transform: translateY(-2px);
 }
 
-.catalog-project-drag-handle:active,
+.project-kit-control:active,
 .kit-builder-remove:active,
 .kit-drag-handle:active,
 .kit-card-select:active,

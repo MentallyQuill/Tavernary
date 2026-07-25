@@ -1,5 +1,6 @@
 @media (prefers-reduced-motion: reduce) {
   .project-selection-dock,
+  .project-kit-control,
   .kit-draft-pill,
   .kit-builder-rail-status {
     transform: none !important;

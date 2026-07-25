@@ -55,18 +55,41 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("distinguishes selected, focused, and in-draft project cards", () => {
+  test("uses one persistent, responsive Kit control language on every card", () => {
     const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+    const motion = read("src/styles/motion.css");
 
     expect(css).toMatch(
       /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-kind-preset\)/s,
     );
     expect(css).toMatch(
-      /\.project-selection-check\s*\{[^}]*position:\s*absolute/s,
+      /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-left:\s*40px/s,
+    );
+    expect(css).toMatch(
+      /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*left:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
+    expect(css).toMatch(
+      /\.project-kit-control\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-kit-control\[aria-pressed="true"\]\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
       /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-muted\)/s,
     );
+    expect(responsive).toMatch(
+      /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control-hit\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
+    expect(motion).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.project-kit-control/s,
+    );
+    expect(css).not.toContain(".catalog-project-drag-handle");
+    expect(css).not.toContain(".catalog-project-drag-ghost");
+    expect(responsive).not.toContain(".catalog-layout.catalog-drag-active");
   });
 
   test("keeps the selection dock aligned, touch-safe, and clear of the final card", () => {
