@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:10:03.337Z",
+  "updated_at": "2026-07-25T15:13:18.915Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 140,
+  "primary_cursor": 160,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -349,7 +349,27 @@
     "promansis-summary-sharder": 1,
     "quackified-floating-viewer": 1,
     "qvink-sillytavern-messagesummarize": 1,
-    "qvink-sillytavern-rightclickmessagemenu": 1
+    "qvink-sillytavern-rightclickmessagemenu": 1,
+    "retrovioletred-sillytavern-pictureprompt": 1,
+    "revivalist-dev-guidedgenerations-extension": 1,
+    "rivelledays-sillytavern-chatcompletiontabs": 1,
+    "rivelledays-sillytavern-moonlitechoestheme": 1,
+    "rossascends-st-samplerkillswitches": 1,
+    "sammcheese-sillytavern-discordia": 1,
+    "samueras-guidedgenerations-extension": 1,
+    "sca255-lumiverse-autoimg": 1,
+    "selinawynters-ops-st-threadkeeper": 1,
+    "senjinthedragon-sillytavern-discord-connector": 1,
+    "senjinthedragon-smart-memory": 1,
+    "shadowtheimpure-sillytavern-character-card-generator": 1,
+    "sigmareaver-rooms": 1,
+    "sillyanonymous-sillytavern-characterlibrary": 1,
+    "sillyanonymous-sillytavern-ui-shortcuts": 1,
+    "sillytavern-extension-mermaid": 1,
+    "sillytavern-extension-promptinspector": 1,
+    "sillytavern-extension-topinfobar": 1,
+    "sillytavern-sillytavern-greetingtools": 1,
+    "sillytavern-sillytavern-nicknames": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -1641,13 +1661,193 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "retrovioletred-sillytavern-pictureprompt": {
+      "id": "retrovioletred-sillytavern-pictureprompt",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "revivalist-dev-guidedgenerations-extension": {
+      "id": "revivalist-dev-guidedgenerations-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "rivelledays-sillytavern-chatcompletiontabs": {
+      "id": "rivelledays-sillytavern-chatcompletiontabs",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "rivelledays-sillytavern-moonlitechoestheme": {
+      "id": "rivelledays-sillytavern-moonlitechoestheme",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "rossascends-st-samplerkillswitches": {
+      "id": "rossascends-st-samplerkillswitches",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sammcheese-sillytavern-discordia": {
+      "id": "sammcheese-sillytavern-discordia",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "samueras-guidedgenerations-extension": {
+      "id": "samueras-guidedgenerations-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sca255-lumiverse-autoimg": {
+      "id": "sca255-lumiverse-autoimg",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "selinawynters-ops-st-threadkeeper": {
+      "id": "selinawynters-ops-st-threadkeeper",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "senjinthedragon-sillytavern-discord-connector": {
+      "id": "senjinthedragon-sillytavern-discord-connector",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "senjinthedragon-smart-memory": {
+      "id": "senjinthedragon-smart-memory",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "shadowtheimpure-sillytavern-character-card-generator": {
+      "id": "shadowtheimpure-sillytavern-character-card-generator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sigmareaver-rooms": {
+      "id": "sigmareaver-rooms",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillyanonymous-sillytavern-characterlibrary": {
+      "id": "sillyanonymous-sillytavern-characterlibrary",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillyanonymous-sillytavern-ui-shortcuts": {
+      "id": "sillyanonymous-sillytavern-ui-shortcuts",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-extension-mermaid": {
+      "id": "sillytavern-extension-mermaid",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-extension-promptinspector": {
+      "id": "sillytavern-extension-promptinspector",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-extension-topinfobar": {
+      "id": "sillytavern-extension-topinfobar",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-sillytavern-greetingtools": {
+      "id": "sillytavern-sillytavern-greetingtools",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-sillytavern-nicknames": {
+      "id": "sillytavern-sillytavern-nicknames",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:13:18.915Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 5,
     "fallback": 0,
-    "source-not-ready": 135,
+    "source-not-ready": 155,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
