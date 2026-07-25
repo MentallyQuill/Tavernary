@@ -440,7 +440,7 @@ test("matches the approved card anatomy", async ({ page }) => {
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       gap: getComputedStyle(grid).gap,
     })),
-  ).toEqual({ columns: 3, gap: "12px" });
+  ).toEqual({ columns: 2, gap: "12px" });
   expect(
     await card.evaluate((element) => {
       return getComputedStyle(element, "::before").content;

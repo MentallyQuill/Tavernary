@@ -42,43 +42,39 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await page
     .getByRole("button", { name: "Open draft with 3 projects" })
     .click();
-  await expect(
-    page.getByRole("button", { name: /Move .* up/ }).nth(1),
-  ).toBeVisible();
-  await expectTouchTarget(
-    page.getByRole("button", { name: /Move .* up/ }).nth(1),
-  );
-  await expectTouchTarget(
-    page.getByRole("button", { name: /Move .* down/ }).nth(1),
-  );
-  await expect(page.getByRole("button", { name: /Drag / })).toHaveCount(0);
-  await page
-    .getByRole("button", { name: /Move .* up/ })
-    .nth(1)
-    .click();
   const rows = page.locator(".kit-builder-row");
-  const orderBeforeRemove = await rows.evaluateAll((elements) =>
-    elements.map((element) => element.getAttribute("data-project-id")),
-  );
-  const removedName = (await rows.nth(1).locator("strong").textContent())!;
-  await rows
-    .nth(1)
-    .getByRole("button", { name: `Remove ${removedName}` })
-    .click();
+  const movedName = (await rows.nth(1).locator("strong").textContent())!;
+  const handle = rows.nth(1).getByRole("button", {
+    name: `Drag ${movedName} to reorder`,
+  });
+  await expect(handle).toBeVisible();
+  await expectTouchTarget(handle);
   await expectTouchTarget(
-    page.getByRole("button", { name: `Undo remove ${removedName}` }),
+    rows.nth(1).getByRole("button", { name: `Remove ${movedName}` }),
   );
-  await page
-    .getByRole("button", { name: `Undo remove ${removedName}` })
+  const handleBox = (await handle.boundingBox())!;
+  const firstBox = (await rows.nth(0).boundingBox())!;
+  await page.mouse.move(
+    handleBox.x + handleBox.width / 2,
+    handleBox.y + handleBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(firstBox.x + firstBox.width / 2, firstBox.y + 2, {
+    steps: 4,
+  });
+  await page.mouse.up();
+  await expect(rows.nth(0).locator("strong")).toHaveText(movedName);
+  await rows
+    .nth(0)
+    .getByRole("button", { name: `Remove ${movedName}` })
     .click();
-  expect(
-    await rows.evaluateAll((elements) =>
-      elements.map((element) => element.getAttribute("data-project-id")),
-    ),
-  ).toEqual(orderBeforeRemove);
+  await expect(
+    page.getByRole("button", { name: `Remove ${movedName}` }),
+  ).toHaveCount(0);
+  await expect(page.getByText("Undo")).toHaveCount(0);
   await page.getByRole("button", { name: "Close Kit workspace" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 3 projects" }),
+    page.getByRole("button", { name: "Open draft with 2 projects" }),
   ).toBeFocused();
   expect(
     await page.evaluate(
