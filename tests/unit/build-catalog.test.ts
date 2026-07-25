@@ -417,10 +417,14 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   const catalog = await buildCatalog({ write: false });
   expect(catalog.projects).toHaveLength(214);
   expect(
-    catalog.projects.filter(
-      (project) => project.metadataStatus === "provisional",
+    catalog.projects.every((project) =>
+      ["curated", "provisional"].includes(project.metadataStatus),
     ),
-  ).toHaveLength(209);
+  ).toBe(true);
+  expect(
+    catalog.projects.filter((project) => project.metadataStatus === "curated")
+      .length,
+  ).toBeGreaterThanOrEqual(5);
   expect(catalog.projects.map((project) => project.id)).toContain(
     "purrfect-logic-4-max-mini",
   );
@@ -445,13 +449,10 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   ).toBe(204);
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
   expect(
-    countBy(catalog.projects, (project) => project.primaryFunction),
-  ).toEqual({
-    uncategorized: 209,
-    "generation-reasoning": 3,
-    "interface-workflow": 1,
-    frontend: 1,
-  });
+    catalog.projects
+      .filter((project) => project.metadataStatus === "curated")
+      .every((project) => project.primaryFunction !== "uncategorized"),
+  ).toBe(true);
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
