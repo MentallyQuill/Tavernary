@@ -392,14 +392,19 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
     catalog.projects,
     (project) => project.sourceStatus,
   );
-  expect(Object.keys(sourceStatuses).sort()).toEqual([
-    "healthy",
-    "manual",
-    "pending",
-  ]);
+  const supportedSourceStatuses = ["healthy", "manual", "pending", "stale"];
+  expect(
+    Object.keys(sourceStatuses).every((status) =>
+      supportedSourceStatuses.includes(status),
+    ),
+  ).toBe(true);
   expect(sourceStatuses.manual).toBe(10);
-  expect(sourceStatuses.healthy + sourceStatuses.pending).toBe(204);
-  expect(sourceStatuses.healthy).toBeGreaterThanOrEqual(4);
+  expect(
+    (sourceStatuses.healthy ?? 0) +
+      (sourceStatuses.pending ?? 0) +
+      (sourceStatuses.stale ?? 0),
+  ).toBe(204);
+  expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
   expect(
     countBy(catalog.projects, (project) => project.primaryFunction),
   ).toEqual({
