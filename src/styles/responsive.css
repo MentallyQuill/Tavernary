@@ -495,4 +495,43 @@
   .dual-range input[type="range"] {
     height: 44px;
   }
+
+  .dual-range input[type="range"]::-webkit-slider-thumb {
+    width: 44px;
+    height: 44px;
+    margin-top: -20px;
+    border: 0;
+    background: radial-gradient(
+      circle,
+      var(--color-kind-preset) 0 7px,
+      var(--color-page) 7px 9px,
+      transparent 9px
+    );
+    box-shadow: none;
+  }
+
+  .dual-range input[type="range"]::-moz-range-thumb {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: radial-gradient(
+      circle,
+      var(--color-kind-preset) 0 7px,
+      var(--color-page) 7px 9px,
+      transparent 9px
+    );
+    box-shadow: none;
+  }
+
+  .dual-range input[type="range"]:focus-visible::-webkit-slider-thumb,
+  .dual-range input[type="range"]:focus-visible::-moz-range-thumb {
+    background: radial-gradient(
+      circle,
+      var(--color-kind-preset) 0 7px,
+      var(--color-page) 7px 10px,
+      var(--color-kind-preset) 10px 12px,
+      transparent 12px
+    );
+    box-shadow: none;
+  }
 }

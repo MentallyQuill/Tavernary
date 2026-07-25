@@ -117,7 +117,7 @@ describe("project card", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("renders selected project cards as options with a visible check", () => {
+  test("exposes selection without hiding project link and handle semantics", () => {
     const bindings: ProjectSelectionBindings = {
       selected: true,
       inDraft: false,
@@ -136,10 +136,18 @@ describe("project card", () => {
           mode: true,
           bindingsFor: () => bindings,
         }}
+        onProjectDragStart={() => undefined}
       />,
     );
 
-    expect(screen.getByRole("option")).toHaveAttribute("aria-selected", "true");
+    expect(
+      screen.getByRole("group", { name: "Memory Tool, selected" }),
+    ).toHaveAttribute("aria-keyshortcuts", "Space Enter");
+    expect(screen.queryByRole("option")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Memory Tool" })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Drag Memory Tool into Kit" }),
+    ).toBeVisible();
     expect(screen.getByLabelText("Selected")).toBeVisible();
   });
 

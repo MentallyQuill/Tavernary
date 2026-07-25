@@ -40,6 +40,21 @@ describe("ProjectSelectionDock", () => {
     expect(screen.getByText("Kit limit reached · 50 projects")).toBeVisible();
   });
 
+  test("reports when the current selection cannot add anything", () => {
+    render(
+      <ProjectSelectionDock
+        selectedCount={1}
+        replacementFrontendName={null}
+        limitReached={false}
+        nothingCanBeAdded
+        onCancel={() => undefined}
+        onAdd={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("Nothing can be added")).toBeVisible();
+  });
+
   test("routes Cancel and Add to their corresponding handlers", async () => {
     const user = userEvent.setup();
     const onCancel = vi.fn();

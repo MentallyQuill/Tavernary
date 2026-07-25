@@ -2,7 +2,7 @@ import type { CatalogProject } from "../catalog-types";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 import type { PointerEventHandler } from "react";
-import { ProjectCard } from "./project-card";
+import { ProjectCard, projectDisplayName } from "./project-card";
 
 export function ProjectGrid({
   projects,
@@ -48,8 +48,18 @@ export function ProjectGrid({
               .filter(Boolean)
               .join(" ")}
             key={project.id}
-            role={selection?.mode ? "option" : undefined}
-            aria-selected={selection?.mode ? bindings?.selected : undefined}
+            role={selection?.mode ? "group" : undefined}
+            aria-roledescription={
+              selection?.mode ? "selectable project" : undefined
+            }
+            aria-label={
+              selection?.mode
+                ? `${projectDisplayName(project.name)}, ${
+                    bindings?.selected ? "selected" : "not selected"
+                  }`
+                : undefined
+            }
+            aria-keyshortcuts={selection?.mode ? "Space Enter" : undefined}
             tabIndex={selection?.mode ? 0 : undefined}
             onPointerDown={bindings?.onPointerDown}
             onPointerMove={bindings?.onPointerMove}

@@ -300,6 +300,61 @@ test("batches projects without interrupting browse state and preserves draft acc
   ).toBe(true);
 });
 
+test("desktop catalog drag preserves an active batch selection", async ({
+  page,
+}) => {
+  await openKits(page);
+  await page.getByRole("button", { name: "Create new Kit" }).click();
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+
+  const selectedShell = page.locator(".project-card-shell").filter({
+    has: page.getByRole("link", { name: "Fixture Tool 02", exact: true }),
+  });
+  await longPress(page, selectedShell);
+  await expect(
+    page.getByRole("region", { name: "1 projects selected" }),
+  ).toBeVisible();
+
+  const dragHandle = page.getByRole("button", {
+    name: "Drag Fixture Tool 03 into Kit",
+  });
+  await dragHandle.hover();
+  const sourceBox = (await dragHandle.boundingBox())!;
+  const stackTarget = page.locator('[data-kit-drop-target="stack"]');
+  const targetBox = (await stackTarget.boundingBox())!;
+  await page.mouse.move(
+    sourceBox.x + sourceBox.width / 2,
+    sourceBox.y + sourceBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+  );
+  await page.mouse.move(
+    targetBox.x + targetBox.width / 2,
+    targetBox.y + targetBox.height / 2,
+    { steps: 5 },
+  );
+  await page.mouse.up();
+
+  await expect(
+    page.getByRole("region", { name: "1 projects selected" }),
+  ).toBeVisible();
+  await expect(selectedShell).toHaveClass(/selected/);
+  await expect(
+    page
+      .locator(".project-card-shell")
+      .filter({
+        has: page.getByRole("link", {
+          name: "Fixture Tool 03",
+          exact: true,
+        }),
+      })
+      .getByText("In Kit"),
+  ).toBeVisible();
+});
+
 test("complete desktop direct-manipulation workflow keeps every card reachable", async ({
   page,
 }) => {

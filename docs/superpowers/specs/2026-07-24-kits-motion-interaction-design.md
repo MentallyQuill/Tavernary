@@ -341,7 +341,7 @@ The Kit Builder:
 - never overlays catalog cards;
 - remains clipped to its own grid area;
 - never hides a draggable project behind the editor;
-- contracts back to the 48-pixel rail when collapsed.
+- contracts back to the 72-pixel rail when collapsed.
 
 If a project drag begins during the 220-millisecond layout transition, the Kit
 Builder snaps to its final open geometry before the drag controller measures

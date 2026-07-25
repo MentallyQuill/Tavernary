@@ -451,6 +451,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           selectedCount={batchSelection.selectedCount}
           replacementFrontendName={batchSelection.replacementFrontendName}
           limitReached={batchSelection.limitReached}
+          nothingCanBeAdded={batchSelection.nothingCanBeAdded}
           onCancel={batchSelection.clear}
           onAdd={addSelectedProjects}
         />

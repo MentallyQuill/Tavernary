@@ -2,12 +2,14 @@ export function ProjectSelectionDock({
   selectedCount,
   replacementFrontendName,
   limitReached,
+  nothingCanBeAdded = false,
   onCancel,
   onAdd,
 }: {
   selectedCount: number;
   replacementFrontendName: string | null;
   limitReached: boolean;
+  nothingCanBeAdded?: boolean;
   onCancel: () => void;
   onAdd: () => void;
 }) {
@@ -32,12 +34,13 @@ export function ProjectSelectionDock({
           </span>
         </button>
       </div>
-      {replacementFrontendName || limitReached ? (
+      {replacementFrontendName || limitReached || nothingCanBeAdded ? (
         <small className="project-selection-guidance">
           {replacementFrontendName ? (
             <span>Frontend will replace {replacementFrontendName}</span>
           ) : null}
           {limitReached ? <span>Kit limit reached · 50 projects</span> : null}
+          {nothingCanBeAdded ? <span>Nothing can be added</span> : null}
         </small>
       ) : null}
     </section>

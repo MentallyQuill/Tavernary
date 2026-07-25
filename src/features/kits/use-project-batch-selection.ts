@@ -36,6 +36,13 @@ type PressSession = {
   timer: number;
 };
 
+function originatesFromProjectDragHandle(target: EventTarget | null) {
+  return (
+    target instanceof Element &&
+    target.closest("[data-project-drag-handle]") !== null
+  );
+}
+
 export function useProjectBatchSelection({
   projects,
   draftProjectIds,
@@ -49,6 +56,7 @@ export function useProjectBatchSelection({
 }) {
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [limitReached, setLimitReached] = useState(false);
+  const [nothingCanBeAdded, setNothingCanBeAdded] = useState(false);
   const pressRef = useRef<PressSession | null>(null);
   const suppressClickRef = useRef(false);
   const activeSelectedProjectIds = useMemo(
@@ -64,6 +72,7 @@ export function useProjectBatchSelection({
     cancelPress();
     setSelectedProjectIds([]);
     setLimitReached(false);
+    setNothingCanBeAdded(false);
   }, [cancelPress]);
   const toggleProject = useCallback(
     (projectId: string) => {
@@ -73,6 +82,7 @@ export function useProjectBatchSelection({
           current.filter((id) => id !== projectId),
         );
         setLimitReached(false);
+        setNothingCanBeAdded(false);
         return true;
       }
       const project = projects.find(({ id }) => id === projectId);
@@ -96,6 +106,7 @@ export function useProjectBatchSelection({
       }
       setSelectedProjectIds(candidate);
       setLimitReached(false);
+      setNothingCanBeAdded(false);
       return true;
     },
     [draftProjectIds, projects, selectedProjectIds],
@@ -133,10 +144,7 @@ export function useProjectBatchSelection({
         ) {
           return;
         }
-        if (
-          event.target instanceof Element &&
-          event.target.closest("[data-project-drag-handle]")
-        ) {
+        if (originatesFromProjectDragHandle(event.target)) {
           return;
         }
         cancelPress();
@@ -165,6 +173,7 @@ export function useProjectBatchSelection({
       onPointerUp: cancelPress,
       onPointerCancel: cancelPress,
       onClick: (event) => {
+        if (originatesFromProjectDragHandle(event.target)) return;
         if (suppressClickRef.current) {
           suppressClickRef.current = false;
           event.preventDefault();
@@ -177,6 +186,7 @@ export function useProjectBatchSelection({
         toggleProject(projectId);
       },
       onKeyDown: (event) => {
+        if (originatesFromProjectDragHandle(event.target)) return;
         if (
           !active ||
           (event.key !== " " &&
@@ -213,6 +223,11 @@ export function useProjectBatchSelection({
   const apply = useCallback(() => {
     if (activeSelectedProjectIds.length === 0) return null;
     const plan = onApply(activeSelectedProjectIds);
+    if (plan.addedProjectIds.length === 0) {
+      setNothingCanBeAdded(true);
+      setLimitReached(plan.limitReached);
+      return plan;
+    }
     clear();
     return plan;
   }, [activeSelectedProjectIds, clear, onApply]);
@@ -222,6 +237,7 @@ export function useProjectBatchSelection({
     selectedProjectIds: activeSelectedProjectIds,
     selectedCount: activeSelectedProjectIds.length,
     limitReached,
+    nothingCanBeAdded,
     replacementFrontendName,
     bindingsFor,
     clear,

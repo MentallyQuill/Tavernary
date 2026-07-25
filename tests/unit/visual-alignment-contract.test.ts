@@ -47,6 +47,12 @@ describe("catalog visual alignment", () => {
     expect(responsive).toMatch(
       /@media \(pointer:\s*coarse\)[\s\S]*?\.dual-range-track\s*\{[^}]*min-height:\s*44px/s,
     );
+    expect(responsive).toMatch(
+      /@media \(pointer:\s*coarse\)[\s\S]*?\.dual-range input\[type="range"\]::-webkit-slider-thumb\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(pointer:\s*coarse\)[\s\S]*?\.dual-range input\[type="range"\]::-moz-range-thumb\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
   });
 
   test("distinguishes selected, focused, and in-draft project cards", () => {

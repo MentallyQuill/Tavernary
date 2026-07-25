@@ -32,6 +32,10 @@ test("documents the current Kit Builder batch-selection behavior", async () => {
   const productSources = (
     await Promise.all(paths.map((path) => readFile(path, "utf8")))
   ).join("\n");
+  const motionSpec = await readFile(
+    "docs/superpowers/specs/2026-07-24-kits-motion-interaction-design.md",
+    "utf8",
+  );
 
   expect(productSources).not.toMatch(/Kit Workspace/i);
   expect(productSources).toContain("Kit Builder");
@@ -40,4 +44,6 @@ test("documents the current Kit Builder batch-selection behavior", async () => {
   expect(productSources).toContain("dual-thumb");
   expect(productSources).toMatch(/does not open the Kit Builder/i);
   expect(productSources).toMatch(/no undo/i);
+  expect(motionSpec).not.toMatch(/48-pixel rail/i);
+  expect(motionSpec).toMatch(/72-pixel rail/i);
 });

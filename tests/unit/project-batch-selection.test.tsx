@@ -92,6 +92,9 @@ function Harness({
       <output aria-label="Limit reached">
         {selection.limitReached ? "yes" : "no"}
       </output>
+      <output aria-label="Nothing can be added">
+        {selection.nothingCanBeAdded ? "yes" : "no"}
+      </output>
       <output aria-label="Replacement Frontend">
         {selection.replacementFrontendName ?? ""}
       </output>
@@ -178,6 +181,20 @@ test("does not start selection from a project drag handle", () => {
   act(() => vi.advanceTimersByTime(450));
 
   expect(card).toHaveAttribute("aria-selected", "false");
+});
+
+test("does not toggle active selection from a drag handle", () => {
+  render(<Harness />);
+  const memory = screen.getByTestId("memory");
+  const dragHandle = screen.getByRole("button", { name: "Drag" });
+
+  fireEvent.keyDown(screen.getByTestId("preset"), { key: " " });
+  fireEvent.click(dragHandle);
+  expect(memory).toHaveAttribute("aria-selected", "false");
+
+  fireEvent.keyDown(dragHandle, { key: " " });
+  expect(memory).toHaveAttribute("aria-selected", "false");
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
 });
 
 test("acknowledges activation and consumes the follow-up click", () => {
@@ -310,6 +327,18 @@ test("applies selected IDs once and clears transient selection", () => {
   expect(onApply).toHaveBeenCalledOnce();
   expect(onApply).toHaveBeenCalledWith(["memory"]);
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
+});
+
+test("retains selection and reports when an applied batch adds nothing", () => {
+  render(<Harness />);
+  fireEvent.keyDown(screen.getByTestId("memory"), { key: " " });
+
+  fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
+  expect(screen.getByLabelText("Nothing can be added")).toHaveTextContent(
+    "yes",
+  );
 });
 
 test("clears selection when All Projects becomes inactive", () => {
