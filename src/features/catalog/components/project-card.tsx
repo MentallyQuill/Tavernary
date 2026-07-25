@@ -114,6 +114,27 @@ function formatDate(timestamp: string) {
   }).format(new Date(timestamp));
 }
 
+function missingSourceActivityStatus(
+  evidenceStatus: CatalogProject["activity"]["evidenceStatus"],
+) {
+  if (evidenceStatus === "complete") {
+    return {
+      short: "Quiet",
+      full: "No source activity in the last 12 weeks",
+    };
+  }
+  if (evidenceStatus === "provisional") {
+    return {
+      short: "Pending",
+      full: "Source activity baseline pending",
+    };
+  }
+  return {
+    short: "Partial",
+    full: "Source activity evidence incomplete",
+  };
+}
+
 export function ProjectCard({
   project,
   now,
@@ -162,6 +183,10 @@ export function ProjectCard({
     evidenceStatus,
   } = project.activity;
   const hasActivityMetrics = activeWeeks12 !== null && weeklyActivity !== null;
+  const missingSourceActivity =
+    hasActivityMetrics && !latestSourceActivityAt
+      ? missingSourceActivityStatus(evidenceStatus)
+      : null;
   const activitySummary =
     activeWeeks12 === null
       ? null
@@ -273,20 +298,26 @@ export function ProjectCard({
                   >
                     {sourceActivityAge}
                   </Tooltip>
-                ) : (
-                  <span className="commit-age no-source-activity">
-                    {evidenceStatus === "complete"
-                      ? "No source activity in the last 12 weeks"
-                      : evidenceStatus === "provisional"
-                        ? "Source activity baseline pending"
-                        : "Source activity evidence incomplete"}
-                  </span>
-                )}
+                ) : missingSourceActivity ? (
+                  <Tooltip
+                    id={commitId}
+                    label={missingSourceActivity.full}
+                    ariaLabel={missingSourceActivity.full}
+                    className="commit-age no-source-activity"
+                  >
+                    {missingSourceActivity.short}
+                  </Tooltip>
+                ) : null}
               </>
             ) : (
-              <span className="development-unavailable">
-                Activity unavailable
-              </span>
+              <Tooltip
+                id={activityId}
+                label="Activity unavailable"
+                ariaLabel="Activity unavailable"
+                className="development-unavailable"
+              >
+                No data
+              </Tooltip>
             )}
             {project.community ? (
               <Tooltip
