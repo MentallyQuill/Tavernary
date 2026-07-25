@@ -38,7 +38,7 @@ export function KitBuilderRow({
           <CategoryIcon name="drag-handle" />
         </button>
       ) : null}
-      <span>
+      <span className="kit-builder-row-identity">
         <strong>{project.name}</strong>
         <small>{project.kind}</small>
       </span>

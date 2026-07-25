@@ -7,9 +7,18 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
+import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
+
+const workspaceBackground = [
+  ".site-header",
+  ".category-navigation",
+  ".mobile-category",
+  ".catalog-layout > .filter-panel",
+  ".catalog-main",
+];
 
 function issueUrl(template: string, kit: CatalogKit) {
   const url = new URL("https://github.com/MentallyQuill/Tavernary/issues/new");
@@ -67,50 +76,29 @@ export function KitWorkspace({
     if (fallbackUrl) fallbackRef.current?.select();
   }, [fallbackUrl]);
 
+  const modalOpen =
+    phone && active && !state.collapsed && state.mode !== "intro";
+
   useEffect(() => {
-    if (!phone || !active || state.collapsed || state.mode === "intro") return;
+    if (!modalOpen) return;
     if (!workspaceRef.current?.contains(document.activeElement)) {
       const activeElement = document.activeElement as HTMLElement;
       if (activeElement !== document.body) {
         openerRef.current = activeElement;
       }
     }
-    document.body.classList.add("sheet-open");
-    headingRef.current?.focus();
-    const trapFocus = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onCollapse();
-        returnFocus();
-        return;
-      }
-      if (event.key !== "Tab" || !workspaceRef.current) return;
-      const focusable = Array.from(
-        workspaceRef.current.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable.at(-1)!;
-      if (
-        event.shiftKey &&
-        (document.activeElement === first ||
-          document.activeElement === headingRef.current)
-      ) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener("keydown", trapFocus);
-    return () => {
-      window.removeEventListener("keydown", trapFocus);
-      document.body.classList.remove("sheet-open");
-    };
-  }, [active, onCollapse, phone, returnFocus, state.collapsed, state.mode]);
+  }, [modalOpen]);
+
+  useModalSurface({
+    active: modalOpen,
+    containerRef: workspaceRef,
+    initialFocusRef: headingRef,
+    inertSelectors: workspaceBackground,
+    onDismiss: () => {
+      onCollapse();
+      returnFocus();
+    },
+  });
 
   if (phone && (!active || state.mode === "intro")) return null;
 
@@ -185,84 +173,86 @@ export function KitWorkspace({
           <CategoryIcon name="collapse" />
         </button>
       </header>
-      {state.mode === "intro" ? (
-        <div className="kit-workspace-intro">
-          <h2>Build and inspect Kits</h2>
-          <p>
-            Select a Kit to inspect its ordered stack, or create a transient
-            draft.
-          </p>
-          <button type="button" onClick={onStartCreate}>
-            Create new Kit
-          </button>
-        </div>
-      ) : state.mode === "inspect" && !kit ? (
-        <div className="kit-workspace-intro">
-          <h2>Unknown Kit</h2>
-          <p>The selected Kit is no longer available in this catalog.</p>
-        </div>
-      ) : state.mode === "inspect" && kit ? (
-        <div className="kit-workspace-inspect">
-          <header>
-            <h2>{kit.title}</h2>
-            <p>@{kit.author.login}</p>
-          </header>
-          <p>{kit.description}</p>
-          <div className="kit-workspace-actions">
-            <button type="button" onClick={() => onDuplicate?.(kit)}>
-              <CategoryIcon name="duplicate" />
-              Duplicate
+      <div className="kit-workspace-body">
+        {state.mode === "intro" ? (
+          <div className="kit-workspace-intro">
+            <h2>Build and inspect Kits</h2>
+            <p>
+              Select a Kit to inspect its ordered stack, or create a transient
+              draft.
+            </p>
+            <button type="button" onClick={onStartCreate}>
+              Create new Kit
             </button>
-            <button type="button" onClick={() => onEdit?.(kit)}>
-              Edit
-            </button>
-            <button
-              type="button"
-              aria-label="Copy link"
-              onClick={async () => {
-                const result = await copyKitLink(kit.id);
-                setFallbackUrl(
-                  result === "fallback" ? kitShareUrl(kit.id) : "",
-                );
-              }}
-            >
-              <CategoryIcon name="copy-link" />
-              Copy link
-            </button>
-            <a href={issueUrl("06-kit-report.yml", kit)} target="_blank">
-              Report Kit
-            </a>
-            <a href={issueUrl("07-kit-withdrawal.yml", kit)} target="_blank">
-              Request withdrawal
-            </a>
           </div>
-          {fallbackUrl ? (
-            <input
-              ref={fallbackRef}
-              aria-label="Kit link"
-              readOnly
-              value={fallbackUrl}
-              onFocus={(event) => event.currentTarget.select()}
+        ) : state.mode === "inspect" && !kit ? (
+          <div className="kit-workspace-intro">
+            <h2>Unknown Kit</h2>
+            <p>The selected Kit is no longer available in this catalog.</p>
+          </div>
+        ) : state.mode === "inspect" && kit ? (
+          <div className="kit-workspace-inspect">
+            <header>
+              <h2>{kit.title}</h2>
+              <p>@{kit.author.login}</p>
+            </header>
+            <p>{kit.description}</p>
+            <div className="kit-workspace-actions">
+              <button type="button" onClick={() => onDuplicate?.(kit)}>
+                <CategoryIcon name="duplicate" />
+                Duplicate
+              </button>
+              <button type="button" onClick={() => onEdit?.(kit)}>
+                Edit
+              </button>
+              <button
+                type="button"
+                aria-label="Copy link"
+                onClick={async () => {
+                  const result = await copyKitLink(kit.id);
+                  setFallbackUrl(
+                    result === "fallback" ? kitShareUrl(kit.id) : "",
+                  );
+                }}
+              >
+                <CategoryIcon name="copy-link" />
+                Copy link
+              </button>
+              <a href={issueUrl("06-kit-report.yml", kit)} target="_blank">
+                Report Kit
+              </a>
+              <a href={issueUrl("07-kit-withdrawal.yml", kit)} target="_blank">
+                Request withdrawal
+              </a>
+            </div>
+            {fallbackUrl ? (
+              <input
+                ref={fallbackRef}
+                aria-label="Kit link"
+                readOnly
+                value={fallbackUrl}
+                onFocus={(event) => event.currentTarget.select()}
+              />
+            ) : null}
+            <KitProjectStack components={kit.components} />
+          </div>
+        ) : state.mode === "build" ? (
+          <div className="kit-workspace-build">
+            <h2>
+              {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
+            </h2>
+            <KitBuilder
+              draft={state.draft}
+              projects={projects}
+              originalProjectIds={originalProjectIds}
+              onUpdate={(patch) => onUpdateDraft?.(patch)}
+              onSubmit={() => onSubmitDraft?.()}
             />
-          ) : null}
-          <KitProjectStack components={kit.components} />
-        </div>
-      ) : state.mode === "build" ? (
-        <div className="kit-workspace-build">
-          <h2>
-            {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
-          </h2>
-          <KitBuilder
-            draft={state.draft}
-            projects={projects}
-            originalProjectIds={originalProjectIds}
-            onUpdate={(patch) => onUpdateDraft?.(patch)}
-            onSubmit={() => onSubmitDraft?.()}
-          />
-        </div>
-      ) : (
-        <div />
-      )}
+          </div>
+        ) : (
+          <div />
+        )}
+      </div>
     </aside>
   );
 }

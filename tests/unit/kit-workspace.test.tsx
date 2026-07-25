@@ -1,5 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { KitWorkspace } from "@/features/kits/components/kit-workspace";
@@ -200,6 +201,38 @@ describe("Kit workspace", () => {
     expect(
       screen.queryByRole("button", { name: "Expand Kit workspace" }),
     ).not.toBeInTheDocument();
+  });
+
+  test("makes the phone catalog inert only while inspection is open", async () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    const user = userEvent.setup();
+
+    function Harness() {
+      const [collapsed, setCollapsed] = useState(false);
+      return (
+        <>
+          <main className="catalog-main">
+            <button type="button">Catalog action</button>
+          </main>
+          <KitWorkspace
+            state={{
+              mode: "inspect",
+              collapsed,
+              kitId: "story-kit-41",
+            }}
+            kit={fixtureKit()}
+            onCollapse={() => setCollapsed(true)}
+          />
+        </>
+      );
+    }
+
+    render(<Harness />);
+    expect(screen.getByRole("main")).toHaveAttribute("inert");
+    await user.click(
+      screen.getByRole("button", { name: "Close Kit workspace" }),
+    );
+    expect(screen.getByRole("main")).not.toHaveAttribute("inert");
   });
 
   test("shows intro, collapse, and unknown Kit states", async () => {

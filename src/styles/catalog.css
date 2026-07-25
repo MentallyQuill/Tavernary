@@ -1306,13 +1306,23 @@
 .kit-workspace {
   position: sticky;
   top: 0;
+  display: flex;
+  flex-direction: column;
   align-self: start;
   min-width: 0;
   height: calc(100vh - 116px);
   padding: 18px;
-  overflow: auto;
+  overflow: hidden;
   border-left: 1px solid var(--color-border);
   background: var(--color-surface-primary);
+}
+
+.kit-workspace-body {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .kit-workspace.collapsed {
@@ -1527,8 +1537,9 @@
   background: var(--color-surface-card);
 }
 
-.kit-builder-row > span:nth-child(2) {
+.kit-builder-row-identity {
   display: grid;
+  min-width: 0;
 }
 
 .kit-builder-row-actions {

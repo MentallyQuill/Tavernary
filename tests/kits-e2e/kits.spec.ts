@@ -10,6 +10,13 @@ function cards(page: import("@playwright/test").Page) {
   return page.locator(".kit-card");
 }
 
+async function expectMobileTarget(locator: import("@playwright/test").Locator) {
+  const box = await locator.boundingBox();
+  expect(box, "mobile target must have a bounding box").not.toBeNull();
+  expect(box!.width, "mobile target width").toBeGreaterThanOrEqual(44);
+  expect(box!.height, "mobile target height").toBeGreaterThanOrEqual(44);
+}
+
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({
   page,
 }) => {
@@ -271,6 +278,79 @@ test("mobile workspace traps focus, returns it, and exposes explicit order contr
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test("mobile 50-project builder keeps sticky controls usable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await page.getByRole("button", { name: "Open Large Stack" }).click();
+  await page.getByRole("button", { name: "Duplicate" }).click();
+
+  const dialog = page.getByRole("dialog", { name: "Kit workspace" });
+  const body = dialog.locator(".kit-workspace-body");
+  const header = dialog.locator(".kit-workspace-header");
+  const footer = dialog.locator(".kit-builder-footer");
+  await body.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+
+  await expect(header).toBeInViewport();
+  await expect(footer).toBeInViewport();
+  await expect(page.getByRole("button", { name: "Submit Kit" })).toBeEnabled();
+  expect(
+    await body.evaluate((element) => element.scrollWidth),
+  ).toBeLessThanOrEqual(await body.evaluate((element) => element.clientWidth));
+});
+
+test("mobile Kit cards, filters, and inspection meet the touch contract", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+
+  const alphaCard = page.getByRole("article", { name: "Alpha Kit" });
+  await expectMobileTarget(
+    alphaCard.getByRole("button", { name: "Copy link" }),
+  );
+  await expectMobileTarget(
+    alphaCard.getByRole("button", { name: "Report Kit" }),
+  );
+
+  await page.getByRole("button", { name: "Open filters" }).click();
+  const filters = page.getByRole("dialog", { name: "Kit filters" });
+  await expectMobileTarget(
+    filters.getByRole("button", { name: "Close Kit filters" }),
+  );
+  await expectMobileTarget(filters.getByText("Tavernary Pick only"));
+  await expectMobileTarget(
+    filters.getByRole("button", { name: "Clear Kit filters" }),
+  );
+  await filters.getByRole("button", { name: "Close Kit filters" }).click();
+
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  const dialog = page.getByRole("dialog", { name: "Kit workspace" });
+  for (const action of ["Duplicate", "Edit", "Copy link"]) {
+    await expectMobileTarget(dialog.getByRole("button", { name: action }));
+  }
+  for (const action of ["Report Kit", "Request withdrawal"]) {
+    await expectMobileTarget(dialog.getByRole("link", { name: action }));
+  }
+  await expectMobileTarget(
+    dialog.getByRole("button", {
+      name: "Fixture Frontend project details",
+    }),
+  );
+  expect(
+    await dialog.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
     ),
   ).toBe(true);
 });
