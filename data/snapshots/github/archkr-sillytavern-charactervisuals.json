@@ -8,32 +8,19 @@
     "url": "https://github.com/Archkr/SillyTavern-CharacterVisuals",
     "default_branch": "main",
     "head_sha": "6b390a294af977451d75877a6781d142023ba321",
+    "head_committed_at": "2026-01-16T00:27:26.000Z",
     "archived": false,
-    "created_at": "2025-08-10T23:48:12Z",
-    "size_kb": 965,
-    "head_committed_at": null
+    "created_at": "2025-08-10T23:48:12.000Z",
+    "size_kb": 965
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-01-16T00:27:26.000Z",
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    "latest_release_at": "2026-01-14T09:48:01Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "provisional_weeks": null,
+    "latest_release_at": "2026-01-14T09:48:01.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:17:58.367Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +34,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T18:57:53.940Z",
+  "refreshed_at": "2026-07-25T01:17:58.367Z",
   "stale_since": null
 }

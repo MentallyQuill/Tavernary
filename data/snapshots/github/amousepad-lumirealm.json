@@ -8,32 +8,55 @@
     "url": "https://github.com/AMousePad/LumiRealm",
     "default_branch": "main",
     "head_sha": "3576f02f252495119783c5dee51c52b6010c7097",
+    "head_committed_at": "2026-07-19T06:50:12.000Z",
     "archived": false,
-    "created_at": "2026-05-02T04:32:14Z",
-    "size_kb": 9511,
-    "head_committed_at": null
+    "created_at": "2026-05-02T04:32:14.000Z",
+    "size_kb": 9511
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-19T06:50:12.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      true
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T06:50:12.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-08T13:02:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-05T07:46:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-26T17:17:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T22:21:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T00:52:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T23:41:03.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:17:58.367Z",
     "baseline_attempts": 1
   },
   "community": {
@@ -47,6 +70,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T18:45:19.629Z",
-  "stale_since": "2026-07-25T01:06:55.971Z"
+  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "stale_since": null
 }

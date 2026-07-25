@@ -8,32 +8,35 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiWorld",
     "default_branch": "main",
     "head_sha": "b2d012adaf4eaadbde6b63661a16f26fda60a99c",
+    "head_committed_at": "2026-07-17T01:23:21.000Z",
     "archived": false,
-    "created_at": "2026-07-01T05:38:22Z",
-    "size_kb": 463,
-    "head_committed_at": null
+    "created_at": "2026-07-01T05:38:22.000Z",
+    "size_kb": 463
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-17T01:23:21.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      true,
-      true,
-      true,
-      false
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T01:23:21.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-10T00:14:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T16:00:40.000Z",
+        "precision": "exact"
+      }
     ],
-    "latest_release_at": "2026-07-10T00:16:12Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-10T00:16:12.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:17:58.367Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +50,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-24T18:56:40.276Z",
+  "refreshed_at": "2026-07-25T01:17:58.367Z",
   "stale_since": null
 }
