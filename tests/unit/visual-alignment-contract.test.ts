@@ -145,7 +145,7 @@ describe("catalog visual alignment", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 
     expect(header).toContain('src="./tavernary-trihex.png"');
-    expect(header).toContain("Where SillyTavern tools gather");
+    expect(header).toContain("Where AI roleplay tools gather");
     expect(header.indexOf("brand-logo")).toBeLessThan(
       header.indexOf("brand-copy"),
     );
