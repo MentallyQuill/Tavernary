@@ -656,9 +656,17 @@ export async function runRefresh(options = {}) {
       );
       return;
     }
-    const recovered = snapshotForFailure(job.previous, result.reason, now, {
-      baselineAttempt: job.result === "baseline",
-    });
+    const recovered = snapshotForFailure(
+      {
+        ...job.candidate,
+        stale_since: job.previous?.stale_since ?? job.candidate.stale_since,
+      },
+      result.reason,
+      now,
+      {
+        baselineAttempt: job.result === "baseline",
+      },
+    );
     replaceSnapshot(snapshotsById, recovered);
     outcomes.push(
       outcome(

@@ -291,9 +291,20 @@ test("uses no more than three concurrent Git fallbacks", async () => {
   expect(result.manifest.counts.fallback).toBe(8);
 });
 
-test("soft failures preserve facts and degrade the third failed baseline", async () => {
-  const previous = snapshot(0, "provisional");
-  previous.activity.baseline_attempts = 2;
+test("soft failures preserve observed facts and degrade the third failed baseline", async () => {
+  const provisional = snapshot(0, "provisional");
+  const previous = {
+    ...provisional,
+    repository: {
+      ...provisional.repository,
+      head_committed_at: null,
+    },
+    activity: {
+      ...provisional.activity,
+      baseline_attempts: 2,
+    },
+    stale_since: "2026-07-22T08:00:00.000Z",
+  };
   const result = await runRefresh({
     mode: "baseline",
     now: "2026-07-24T08:00:00.000Z",
@@ -312,11 +323,14 @@ test("soft failures preserve facts and degrade the third failed baseline", async
   expect(result.snapshots[0].repository.head_sha).toBe(
     previous.repository.head_sha,
   );
+  expect(result.snapshots[0].repository.head_committed_at).toBe(
+    "2026-07-23T12:00:00.000Z",
+  );
   expect(result.snapshots[0].activity).toMatchObject({
     evidence_status: "degraded",
     baseline_attempts: 3,
   });
-  expect(result.snapshots[0].stale_since).toBe("2026-07-24T08:00:00.000Z");
+  expect(result.snapshots[0].stale_since).toBe("2026-07-22T08:00:00.000Z");
   expect(JSON.stringify(result.manifest)).not.toContain("C:\\tmp\\secret");
 });
 
