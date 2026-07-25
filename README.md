@@ -35,7 +35,9 @@ npm run test:visual
 
 `npm run check` validates formatting, lint, palette policy, curated records,
 generated catalog data, TypeScript, unit tests, the production build, and the
-static export.
+static export. The visual commands assert browser layout and geometry without
+committed screenshot baselines; locally generated Playwright snapshots are
+ignored.
 Playwright's first local run may also require:
 
 ```powershell

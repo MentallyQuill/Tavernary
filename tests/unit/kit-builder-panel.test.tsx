@@ -186,6 +186,10 @@ describe("Kit Builder", () => {
     expect(open).not.toHaveClass("kit-builder-rail");
     expect(open.closest(".kit-builder-rail")).toHaveTextContent("Kit Builder");
     expect(open.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
+    fireEvent.pointerEnter(open);
+    expect(
+      screen.getByRole("tooltip", { name: "Open Kit Builder" }),
+    ).toBeVisible();
   });
 
   test("calculates the visible desktop builder height from its current top edge", () => {
@@ -371,6 +375,7 @@ describe("Kit Builder", () => {
   });
 
   test("names the expanded surface Kit Builder", async () => {
+    mockMatchMedia({});
     const user = userEvent.setup();
     const onCollapse = vi.fn();
     render(
@@ -393,6 +398,10 @@ describe("Kit Builder", () => {
       "kit-builder-collapse",
     );
     expect(collapse.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
+    fireEvent.pointerEnter(collapse);
+    expect(
+      screen.getByRole("tooltip", { name: "Collapse Kit Builder" }),
+    ).toBeVisible();
     await user.click(collapse);
     expect(onCollapse).toHaveBeenCalled();
   });

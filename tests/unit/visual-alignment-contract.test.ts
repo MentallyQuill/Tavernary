@@ -59,7 +59,15 @@ describe("catalog visual alignment", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
     const motion = read("src/styles/motion.css");
+    const tokens = read("src/styles/tokens.css");
 
+    expect(tokens).toContain("--color-filled-control-text: #07181d;");
+    expect(css).toMatch(
+      /\.control-primary\s*\{[^}]*color:\s*var\(--color-filled-control-text\)/s,
+    );
+    expect(css).toMatch(
+      /\.header-actions \.submit-link\s*\{[^}]*color:\s*var\(--color-filled-control-text\)/s,
+    );
     expect(css).toMatch(
       /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-kind-preset\)/s,
     );
@@ -82,13 +90,13 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell:has\(\.project-card:active\),\s*\.project-card-shell:has\(\.project-kit-control:active\)\s*\{[^}]*transform:\s*scale\(0\.98\)/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*aspect-ratio:\s*1[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)[^}]*box-shadow:\s*none/s,
     );
     expect(css).toMatch(
       /\.project-kit-control\[aria-pressed="true"\] \.project-kit-control-face\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
       /\.kit-builder-remove\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
@@ -366,7 +374,7 @@ describe("catalog visual alignment", () => {
       /\.brand-name\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
-      /\.submit-link\s*\{[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.submit-link\s*\{[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
       /\.site-search input\s*\{[^}]*appearance:\s*none[^}]*outline:\s*0[^}]*box-shadow:\s*none/s,

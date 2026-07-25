@@ -6,5 +6,6 @@ out/
 coverage/
 playwright-report/
 test-results/
+/tests/**/*-snapshots/
 *.tsbuildinfo
 /src/generated/catalog.json

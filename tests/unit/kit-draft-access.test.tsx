@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
@@ -18,6 +18,14 @@ describe("KitDraftAccess", () => {
   test("gives the desktop rail a cumulative accessible name", async () => {
     const user = userEvent.setup();
     const onOpen = vi.fn();
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn(() => ({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    });
     render(
       <KitDraftAccess
         variant="rail"
@@ -33,6 +41,10 @@ describe("KitDraftAccess", () => {
     const rail = open.closest(".kit-builder-rail");
     expect(rail).toHaveTextContent("Kit Builder");
     expect(rail).toHaveTextContent("7 projects in draft");
+    fireEvent.pointerEnter(open);
+    expect(
+      screen.getByRole("tooltip", { name: "Open Kit Builder" }),
+    ).toBeVisible();
     await user.click(open);
     expect(onOpen).toHaveBeenCalledOnce();
   });
@@ -55,6 +67,8 @@ describe("KitDraftAccess", () => {
     expect(pill.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
     expect(pill).toHaveTextContent("Kit draft");
     expect(pill).toHaveTextContent("2 projects in draft");
+    fireEvent.pointerEnter(pill);
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     await user.click(pill);
     expect(onOpen).toHaveBeenCalledOnce();
   });

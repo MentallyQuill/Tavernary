@@ -1,0 +1,90 @@
+﻿2026-07-25T19:28:41.0243413Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-07-25T19:28:41.0244655Z with:
+2026-07-25T19:28:41.0245096Z   fetch-depth: 0
+2026-07-25T19:28:41.0245583Z   repository: MentallyQuill/Tavernary
+2026-07-25T19:28:41.0249626Z   token: ***
+2026-07-25T19:28:41.0250071Z   ssh-strict: true
+2026-07-25T19:28:41.0250524Z   ssh-user: git
+2026-07-25T19:28:41.0250988Z   persist-credentials: true
+2026-07-25T19:28:41.0251498Z   clean: true
+2026-07-25T19:28:41.0252268Z   sparse-checkout-cone-mode: true
+2026-07-25T19:28:41.0252853Z   fetch-tags: false
+2026-07-25T19:28:41.0253308Z   show-progress: true
+2026-07-25T19:28:41.0253759Z   lfs: false
+2026-07-25T19:28:41.0254694Z   submodules: false
+2026-07-25T19:28:41.0255219Z   set-safe-directory: true
+2026-07-25T19:28:41.0255743Z   allow-unsafe-pr-checkout: false
+2026-07-25T19:28:41.0256871Z ##[endgroup]
+2026-07-25T19:28:41.1387924Z Syncing repository: MentallyQuill/Tavernary
+2026-07-25T19:28:41.1390614Z ##[group]Getting Git version info
+2026-07-25T19:28:41.1391889Z Working directory is '/home/runner/work/Tavernary/Tavernary'
+2026-07-25T19:28:41.1393762Z [command]/usr/bin/git version
+2026-07-25T19:28:41.1503197Z git version 2.54.0
+2026-07-25T19:28:41.1537374Z ##[endgroup]
+2026-07-25T19:28:41.1545921Z Temporarily overriding HOME='/home/runner/work/_temp/d838615c-4839-41c2-87eb-09965e21105b' before making global git config changes
+2026-07-25T19:28:41.1548489Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-25T19:28:41.1550686Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Tavernary/Tavernary
+2026-07-25T19:28:41.1625602Z Deleting the contents of '/home/runner/work/Tavernary/Tavernary'
+2026-07-25T19:28:41.1627396Z ##[group]Determining repository object format
+2026-07-25T19:28:41.1628792Z ##[endgroup]
+2026-07-25T19:28:41.1629948Z ##[group]Initializing the repository
+2026-07-25T19:28:41.1631128Z [command]/usr/bin/git init /home/runner/work/Tavernary/Tavernary
+2026-07-25T19:28:41.1769097Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-25T19:28:41.1772495Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-07-25T19:28:41.1774972Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-07-25T19:28:41.1776593Z hint: call:
+2026-07-25T19:28:41.1777835Z hint:
+2026-07-25T19:28:41.1778862Z hint: 	git config --global init.defaultBranch <name>
+2026-07-25T19:28:41.1780141Z hint:
+2026-07-25T19:28:41.1781336Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-25T19:28:41.1783525Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-25T19:28:41.1784760Z hint:
+2026-07-25T19:28:41.1785417Z hint: 	git branch -m <name>
+2026-07-25T19:28:41.1786171Z hint:
+2026-07-25T19:28:41.1787170Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-07-25T19:28:41.1788882Z Initialized empty Git repository in /home/runner/work/Tavernary/Tavernary/.git/
+2026-07-25T19:28:41.1805442Z [command]/usr/bin/git remote add origin https://github.com/MentallyQuill/Tavernary
+2026-07-25T19:28:41.1893373Z ##[endgroup]
+2026-07-25T19:28:41.1894696Z ##[group]Disabling automatic garbage collection
+2026-07-25T19:28:41.1895774Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-25T19:28:41.1942981Z ##[endgroup]
+2026-07-25T19:28:41.1945083Z ##[group]Setting up auth
+2026-07-25T19:28:41.1946523Z Removing SSH command configuration
+2026-07-25T19:28:41.1950243Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-25T19:28:41.2008591Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-25T19:28:41.2486031Z Removing HTTP extra header
+2026-07-25T19:28:41.2491723Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-25T19:28:41.2537025Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-25T19:28:41.2765935Z Removing includeIf entries pointing to credentials config files
+2026-07-25T19:28:41.2770254Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-25T19:28:41.2808694Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-25T19:28:41.3123916Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8623be1c-53f9-41a3-994a-a36083639620.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-25T19:28:41.3193381Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Tavernary/Tavernary/.git.path /home/runner/work/_temp/git-credentials-8623be1c-53f9-41a3-994a-a36083639620.config
+2026-07-25T19:28:41.3260160Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Tavernary/Tavernary/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8623be1c-53f9-41a3-994a-a36083639620.config
+2026-07-25T19:28:41.3304993Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8623be1c-53f9-41a3-994a-a36083639620.config
+2026-07-25T19:28:41.3344828Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8623be1c-53f9-41a3-994a-a36083639620.config
+2026-07-25T19:28:41.3375461Z ##[endgroup]
+2026-07-25T19:28:41.3376733Z ##[group]Fetching the repository
+2026-07-25T19:28:41.3382400Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-07-25T19:28:42.8829177Z From https://github.com/MentallyQuill/Tavernary
+2026-07-25T19:28:42.8830699Z  * [new branch]      agent/dependency-actions -> origin/agent/dependency-actions
+2026-07-25T19:28:42.8831698Z  * [new branch]      agent/react-19-2-8 -> origin/agent/react-19-2-8
+2026-07-25T19:28:42.8832732Z  * [new branch]      dependabot/npm_and_yarn/playwright/test-1.62.0 -> origin/dependabot/npm_and_yarn/playwright/test-1.62.0
+2026-07-25T19:28:42.8833640Z  * [new branch]      feature/production-vertical-slice -> origin/feature/production-vertical-slice
+2026-07-25T19:28:42.8834271Z  * [new branch]      main               -> origin/main
+2026-07-25T19:28:42.8873696Z [command]/usr/bin/git branch --list --remote origin/main
+2026-07-25T19:28:42.8909886Z   origin/main
+2026-07-25T19:28:42.8918505Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-07-25T19:28:42.8945524Z e1f0a88fbe65a353283e48565c26fefb8e8df02c
+2026-07-25T19:28:42.8949845Z ##[endgroup]
+2026-07-25T19:28:42.8950654Z ##[group]Determining the checkout info
+2026-07-25T19:28:42.8951494Z ##[endgroup]
+2026-07-25T19:28:42.8955093Z [command]/usr/bin/git sparse-checkout disable
+2026-07-25T19:28:42.9003974Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-25T19:28:42.9040280Z ##[group]Checking out the ref
+2026-07-25T19:28:42.9041324Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-07-25T19:28:42.9838115Z Switched to a new branch 'main'
+2026-07-25T19:28:42.9839336Z branch 'main' set up to track 'origin/main'.
+2026-07-25T19:28:42.9852895Z ##[endgroup]
+2026-07-25T19:28:42.9905109Z [command]/usr/bin/git log -1 --format=%H
+2026-07-25T19:28:42.9938544Z e1f0a88fbe65a353283e48565c26fefb8e8df02c

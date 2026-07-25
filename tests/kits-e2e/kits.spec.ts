@@ -96,6 +96,60 @@ async function verifyUnifiedSelectionFlow(
   ).toBeVisible();
 }
 
+test("filled desktop actions use dark ink and card Kit glyphs are centered in a square", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const expectedInk = "rgb(7, 24, 29)";
+  const submitProject = page.getByRole("link", { name: "Submit Project" });
+  const createKit = page.getByRole("button", { name: "Create new Kit" });
+  const addProject = page.locator(".project-kit-control").first();
+  const face = addProject.locator(".project-kit-control-face");
+  const glyph = face.locator('[data-kit-glyph="add"]');
+
+  await expect(submitProject).toHaveCSS("color", expectedInk);
+  await expect(createKit).toHaveCSS("color", expectedInk);
+  await expect(face).toHaveCSS("color", expectedInk);
+
+  const geometry = await face.evaluate((element) => {
+    const glyphElement = element.querySelector<SVGElement>(
+      '[data-kit-glyph="add"]',
+    );
+    if (!glyphElement) throw new Error("Card Kit glyph is missing");
+    const faceBounds = element.getBoundingClientRect();
+    const glyphBounds = glyphElement.getBoundingClientRect();
+    return {
+      faceWidth: faceBounds.width,
+      faceHeight: faceBounds.height,
+      faceCenterX: faceBounds.left + faceBounds.width / 2,
+      faceCenterY: faceBounds.top + faceBounds.height / 2,
+      glyphCenterX: glyphBounds.left + glyphBounds.width / 2,
+      glyphCenterY: glyphBounds.top + glyphBounds.height / 2,
+      boxShadow: getComputedStyle(element).boxShadow,
+    };
+  });
+
+  expect(geometry.faceWidth).toBe(28);
+  expect(geometry.faceHeight).toBe(28);
+  expect(geometry.boxShadow).toBe("none");
+  expect(geometry.glyphCenterX).toBeCloseTo(geometry.faceCenterX, 5);
+  expect(geometry.glyphCenterY).toBeCloseTo(geometry.faceCenterY, 5);
+  await expect(glyph).toHaveAttribute("viewBox", "0 0 12 12");
+
+  await addProject.click();
+  const addSelection = page.getByRole("button", {
+    name: "Add 1 project to Kit",
+  });
+  await expect(addSelection).toHaveCSS("color", expectedInk);
+  await addSelection.click();
+  await expect(page.getByRole("button", { name: "Submit Kit" })).toHaveCSS(
+    "color",
+    expectedInk,
+  );
+});
+
 test("desktop Kit Builder open and close controls share one 36-pixel geometry", async ({
   page,
 }) => {

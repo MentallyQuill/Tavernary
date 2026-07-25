@@ -47,7 +47,7 @@ export function SiteHeader({
           type="search"
           value={search}
           onChange={(event) => onSearch(event.target.value)}
-          placeholder="Search projects, capabilities, frontends, or creators…"
+          placeholder="Search projects or creators…"
           aria-label="Search projects"
         />
         <kbd>/</kbd>

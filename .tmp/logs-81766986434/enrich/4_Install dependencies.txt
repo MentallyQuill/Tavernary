@@ -1,0 +1,24 @@
+﻿2026-07-25T19:28:49.1946210Z ##[group]Run npm ci
+2026-07-25T19:28:49.1946530Z [36;1mnpm ci[0m
+2026-07-25T19:28:49.2049500Z shell: /usr/bin/bash -e {0}
+2026-07-25T19:28:49.2049817Z ##[endgroup]
+2026-07-25T19:29:02.3680666Z 
+2026-07-25T19:29:02.3687857Z added 451 packages, and audited 452 packages in 13s
+2026-07-25T19:29:02.3688325Z 
+2026-07-25T19:29:02.3688617Z 169 packages are looking for funding
+2026-07-25T19:29:02.3689119Z   run `npm fund` for details
+2026-07-25T19:29:02.4372095Z 
+2026-07-25T19:29:02.4374154Z 12 high severity vulnerabilities
+2026-07-25T19:29:02.4374827Z 
+2026-07-25T19:29:02.4375322Z To address issues that do not require attention, run:
+2026-07-25T19:29:02.4376002Z   npm audit fix
+2026-07-25T19:29:02.4376270Z 
+2026-07-25T19:29:02.4377161Z To address all issues (including breaking changes), run:
+2026-07-25T19:29:02.4377858Z   npm audit fix --force
+2026-07-25T19:29:02.4378157Z 
+2026-07-25T19:29:02.4378398Z Run `npm audit` for details.
+2026-07-25T19:29:02.4384884Z npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+2026-07-25T19:29:02.4386185Z npm warn allow-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+2026-07-25T19:29:02.4387277Z npm warn allow-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+2026-07-25T19:29:02.4387983Z npm warn allow-scripts
+2026-07-25T19:29:02.4389091Z npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
