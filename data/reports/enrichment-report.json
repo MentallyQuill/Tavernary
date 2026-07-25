@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:13:18.915Z",
+  "updated_at": "2026-07-25T15:14:40.643Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 160,
+  "primary_cursor": 180,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -369,7 +369,27 @@
     "sillytavern-extension-promptinspector": 1,
     "sillytavern-extension-topinfobar": 1,
     "sillytavern-sillytavern-greetingtools": 1,
-    "sillytavern-sillytavern-nicknames": 1
+    "sillytavern-sillytavern-nicknames": 1,
+    "sillytavern-sillytavern-pronouns": 1,
+    "sillytavern-sillytavern-pushnotifications": 1,
+    "soyo5800-rpg-tracker-for-sillytavern": 1,
+    "spicymarinara-sillytavern-lovense": 1,
+    "spicymarinara-sillytavern-spotify-music-extension": 1,
+    "splitclover-rewrite-extension": 1,
+    "starlitcode-lumiverse-auto-retry": 1,
+    "subzero5544-favorites-carousel": 1,
+    "subzero5544-preset-search": 1,
+    "sulphuratum-go-llamaswap-comfy-proxy": 1,
+    "sulphuratum-marinara-neural-memory": 1,
+    "supker-st-copilot": 1,
+    "taezn-creator-notes-html-renderer": 1,
+    "tclowe1982-marinara-extender": 1,
+    "thejackals-sillytavern-summaryn-resizechat": 1,
+    "thexyzzyone-stfastuserswitching": 1,
+    "thexyzzyone-stgroupresponderselector": 1,
+    "twitter-twemoji": 1,
+    "tydorius-st-characterpreview": 1,
+    "tyranomaster-expressions-plus": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -1841,13 +1861,193 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:13:18.915Z"
+    },
+    "sillytavern-sillytavern-pronouns": {
+      "id": "sillytavern-sillytavern-pronouns",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "sillytavern-sillytavern-pushnotifications": {
+      "id": "sillytavern-sillytavern-pushnotifications",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "soyo5800-rpg-tracker-for-sillytavern": {
+      "id": "soyo5800-rpg-tracker-for-sillytavern",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "spicymarinara-sillytavern-lovense": {
+      "id": "spicymarinara-sillytavern-lovense",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "spicymarinara-sillytavern-spotify-music-extension": {
+      "id": "spicymarinara-sillytavern-spotify-music-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "splitclover-rewrite-extension": {
+      "id": "splitclover-rewrite-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "starlitcode-lumiverse-auto-retry": {
+      "id": "starlitcode-lumiverse-auto-retry",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "subzero5544-favorites-carousel": {
+      "id": "subzero5544-favorites-carousel",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "subzero5544-preset-search": {
+      "id": "subzero5544-preset-search",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "sulphuratum-go-llamaswap-comfy-proxy": {
+      "id": "sulphuratum-go-llamaswap-comfy-proxy",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "sulphuratum-marinara-neural-memory": {
+      "id": "sulphuratum-marinara-neural-memory",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "supker-st-copilot": {
+      "id": "supker-st-copilot",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "taezn-creator-notes-html-renderer": {
+      "id": "taezn-creator-notes-html-renderer",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "tclowe1982-marinara-extender": {
+      "id": "tclowe1982-marinara-extender",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "thejackals-sillytavern-summaryn-resizechat": {
+      "id": "thejackals-sillytavern-summaryn-resizechat",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "thexyzzyone-stfastuserswitching": {
+      "id": "thexyzzyone-stfastuserswitching",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "thexyzzyone-stgroupresponderselector": {
+      "id": "thexyzzyone-stgroupresponderselector",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "twitter-twemoji": {
+      "id": "twitter-twemoji",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "tydorius-st-characterpreview": {
+      "id": "tydorius-st-characterpreview",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "tyranomaster-expressions-plus": {
+      "id": "tyranomaster-expressions-plus",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:14:40.643Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 5,
     "fallback": 0,
-    "source-not-ready": 155,
+    "source-not-ready": 175,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
