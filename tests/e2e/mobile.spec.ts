@@ -140,3 +140,26 @@ test("shows compact summaries without rendering mobile tooltips", async ({
   await card.locator(".card-title").hover();
   await expect(page.getByRole("tooltip")).toHaveCount(0);
 });
+
+test("shows a noninteractive creator byline only on standard cards", async ({
+  page,
+}) => {
+  await page.goto(sitePath());
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("MentallyQuill");
+
+  const directive = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Directive", exact: true }),
+  });
+  const attribution = directive.locator(".card-attribution");
+  await expect(attribution).toHaveText("by MentallyQuill");
+  await expect(attribution).not.toHaveAttribute("tabindex");
+  await expect(attribution.locator("a, button")).toHaveCount(0);
+
+  await attribution.hover();
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+  await expect(attribution).toBeHidden();
+});

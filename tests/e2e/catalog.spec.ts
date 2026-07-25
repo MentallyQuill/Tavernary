@@ -11,6 +11,7 @@ const catalog = JSON.parse(
   projects: Array<{
     metadataStatus: string;
     sourceStatus: string;
+    primaryFunction: string;
     license: { status: string };
   }>;
 };
@@ -20,6 +21,9 @@ const provisionalCount = catalog.projects.filter(
 ).length;
 const sourcePendingCount = catalog.projects.filter(
   ({ sourceStatus }) => sourceStatus === "pending",
+).length;
+const uncategorizedCount = catalog.projects.filter(
+  ({ primaryFunction }) => primaryFunction === "uncategorized",
 ).length;
 const pendingLicenseCount = catalog.projects.filter(
   ({ license }) => license.status === "pending",
@@ -335,6 +339,31 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   await expect(page.getByText("No projects match this view")).toBeVisible();
 });
 
+test("searches by repository owner and discloses creator attribution", async ({
+  page,
+}) => {
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("MentallyQuill");
+
+  const directive = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Directive", exact: true }),
+  });
+  const attribution = directive.locator(".card-attribution");
+  await expect(directive).toBeVisible();
+  await expect(attribution).toHaveText("by MentallyQuill");
+
+  await attribution.hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Owner: MentallyQuill · Contributor data pending",
+    }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+  await expect(attribution).toBeHidden();
+});
+
 test("supports keyboard focus, composed filters, chip removal, and clear all", async ({
   page,
 }) => {
@@ -410,7 +439,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
     .getByRole("button", { name: "Uncategorized", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "209 projects" }),
+    page.getByRole("heading", { name: `${uncategorizedCount} projects` }),
   ).toBeVisible();
   await expect(page).toHaveURL(/category=uncategorized/);
 

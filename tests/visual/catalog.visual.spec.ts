@@ -66,10 +66,21 @@ for (const viewport of [
       await stabilizeRefreshLabel(page);
 
       const firstCard = page.locator(".project-card").first();
+      const directiveAttribution = page
+        .locator(".project-card")
+        .filter({
+          has: page.getByRole("heading", {
+            name: "Directive",
+            exact: true,
+          }),
+        })
+        .locator(".card-attribution");
+      await expect(directiveAttribution).toBeVisible();
       const standardHeight = (await firstCard.boundingBox())!.height;
       await page.getByRole("button", { name: "Use compact cards" }).click();
 
       await expect(page.locator("body")).toHaveClass(/compact-cards/);
+      await expect(directiveAttribution).toBeHidden();
       expect((await firstCard.boundingBox())!.height).toBeLessThan(
         standardHeight,
       );
