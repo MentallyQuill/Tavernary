@@ -3,16 +3,16 @@
   "id": "inspectorcaracal-sillytavern-rememory",
   "name": "SillyTavern ReMemory",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern ReMemory is a SillyTavern extension that provides memory management and context retrieval for roleplay conversations.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "InspectorCaracal/SillyTavern-ReMemory",
-    "repository_id": null
+    "repository_id": 983108844
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "memory-retrieval",
+  "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
