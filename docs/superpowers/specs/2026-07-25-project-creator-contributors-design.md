@@ -171,10 +171,11 @@ identities:
 Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude
 ```
 
-Empty groups are represented clearly rather than as blank labels. For example:
+For a confirmed solo creator, the tooltip repeats only the stable owner
+username:
 
 ```text
-Owner: MentallyQuill · No additional contributors reported by GitHub
+Owner: MentallyQuill
 ```
 
 When contributor data has not completed its first refresh, the tooltip states
