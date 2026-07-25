@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:05:15.344Z",
+  "updated_at": "2026-07-25T15:08:41.623Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 100,
+  "primary_cursor": 120,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -309,7 +309,27 @@
     "lukathehero-sillytavern-claudesubscription": 1,
     "lukathehero-sillytavern-personatools": 1,
     "maiky93-image-generation-suite": 1,
-    "mangkoodkung-another-universe": 1
+    "mangkoodkung-another-universe": 1,
+    "manjove1-forged-by-primus-portfolio": 1,
+    "maxime-fleury-st-card-editor": 1,
+    "maxipawlowski-story-orchestrator": 1,
+    "mechamarmot-sillytavern-localimage": 1,
+    "mechamarmot-sillytavern-mazemaster": 1,
+    "mekineer-com-openalma": 1,
+    "mentallyquill-directive": 1,
+    "mentallyquill-saga": 1,
+    "mentallyquill-st-wandlight": 1,
+    "mindbound-lumiscript": 1,
+    "mitaska-weathertweaker": 1,
+    "mkrrussell0411-star-character-stats-extension": 1,
+    "mokimoko-sillytavern-dynamicaudioredux": 1,
+    "mokimoko-sillytavern-scenariocrafter": 1,
+    "morgoookru-st-chat-finder": 1,
+    "multihogaurelius-context-injection-rng-for-dnd": 1,
+    "multihogaurelius-sillytavern-multihogdndframework": 1,
+    "n0819-sonder-engine": 1,
+    "nattaphat010447-nutho-autocloser": 1,
+    "nbrown725-sillytavern-alternatedescriptions": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -1235,13 +1255,193 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "manjove1-forged-by-primus-portfolio": {
+      "id": "manjove1-forged-by-primus-portfolio",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "maxime-fleury-st-card-editor": {
+      "id": "maxime-fleury-st-card-editor",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "maxipawlowski-story-orchestrator": {
+      "id": "maxipawlowski-story-orchestrator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mechamarmot-sillytavern-localimage": {
+      "id": "mechamarmot-sillytavern-localimage",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mechamarmot-sillytavern-mazemaster": {
+      "id": "mechamarmot-sillytavern-mazemaster",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mekineer-com-openalma": {
+      "id": "mekineer-com-openalma",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mentallyquill-directive": {
+      "id": "mentallyquill-directive",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mentallyquill-saga": {
+      "id": "mentallyquill-saga",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mentallyquill-st-wandlight": {
+      "id": "mentallyquill-st-wandlight",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mindbound-lumiscript": {
+      "id": "mindbound-lumiscript",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mitaska-weathertweaker": {
+      "id": "mitaska-weathertweaker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mkrrussell0411-star-character-stats-extension": {
+      "id": "mkrrussell0411-star-character-stats-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mokimoko-sillytavern-dynamicaudioredux": {
+      "id": "mokimoko-sillytavern-dynamicaudioredux",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "mokimoko-sillytavern-scenariocrafter": {
+      "id": "mokimoko-sillytavern-scenariocrafter",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "morgoookru-st-chat-finder": {
+      "id": "morgoookru-st-chat-finder",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "multihogaurelius-context-injection-rng-for-dnd": {
+      "id": "multihogaurelius-context-injection-rng-for-dnd",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "multihogaurelius-sillytavern-multihogdndframework": {
+      "id": "multihogaurelius-sillytavern-multihogdndframework",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "n0819-sonder-engine": {
+      "id": "n0819-sonder-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "nattaphat010447-nutho-autocloser": {
+      "id": "nattaphat010447-nutho-autocloser",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "nbrown725-sillytavern-alternatedescriptions": {
+      "id": "nbrown725-sillytavern-alternatedescriptions",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:08:41.623Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 4,
     "fallback": 0,
-    "source-not-ready": 96,
+    "source-not-ready": 116,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
