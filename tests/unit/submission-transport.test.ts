@@ -33,7 +33,7 @@ test("serializes a stable pretty manifest using submission field names", () => {
   );
 });
 
-test("prefills short manifests without invoking native share", async () => {
+test("prefills a readable create submission from the Kit draft", async () => {
   const open = vi.spyOn(window, "open").mockImplementation(() => null);
   const share = vi.fn();
   Object.defineProperty(navigator, "share", {
@@ -42,11 +42,20 @@ test("prefills short manifests without invoking native share", async () => {
   });
 
   await expect(
-    openKitSubmission("https://github.com/example/repo/issues/new", "short"),
+    openKitSubmission(
+      "https://github.com/example/repo/issues/new?template=05-kit-submission.yml",
+      draft,
+    ),
   ).resolves.toBe("prefilled");
 
   const opened = new URL(String(open.mock.calls[0]?.[0]));
-  expect(opened.searchParams.get("manifest")).toBe("short");
+  expect(opened.searchParams.get("template")).toBe("05-kit-submission.yml");
+  expect(opened.searchParams.get("title")).toBe("[Kit submission]: Story Kit");
+  expect(opened.searchParams.get("kit-title")).toBe("Story Kit");
+  expect(opened.searchParams.get("kit-description")).toBe(
+    "A complete roleplay stack.",
+  );
+  expect(opened.searchParams.get("manifest")).toBe(serializeKitManifest(draft));
   expect(open.mock.calls[0]?.slice(1)).toEqual([
     "_blank",
     "noopener,noreferrer",
@@ -54,21 +63,64 @@ test("prefills short manifests without invoking native share", async () => {
   expect(share).not.toHaveBeenCalled();
 });
 
-test("copies oversized manifests and opens paste instructions", async () => {
+test("prefills edit identity through the generated manifest", async () => {
+  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const editDraft = {
+    ...draft,
+    operation: "edit" as const,
+    kitId: "story-kit-41",
+    title: " Revised Story Kit ",
+    description: " Revised description. ",
+  };
+
+  await openKitSubmission(
+    "https://github.com/example/repo/issues/new",
+    editDraft,
+  );
+
+  const opened = new URL(String(open.mock.calls[0]?.[0]));
+  expect(opened.searchParams.get("title")).toBe(
+    "[Kit submission]: Revised Story Kit",
+  );
+  expect(opened.searchParams.get("kit-title")).toBe("Revised Story Kit");
+  expect(opened.searchParams.get("kit-description")).toBe(
+    "Revised description.",
+  );
+  expect(JSON.parse(opened.searchParams.get("manifest") ?? "")).toMatchObject({
+    operation: "edit",
+    kit_id: "story-kit-41",
+  });
+  expect(opened.searchParams.has("operation")).toBe(false);
+  expect(opened.searchParams.has("kit-id")).toBe(false);
+});
+
+test("copies oversized manifests while preserving readable prefills", async () => {
   const open = vi.spyOn(window, "open").mockImplementation(() => null);
   const writeText = vi.fn().mockResolvedValue(undefined);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
     value: { writeText },
   });
-  const manifest = "x".repeat(7_100);
+  const oversizedDraft = {
+    ...draft,
+    projectIds: ["x".repeat(7_100)],
+  };
+  const manifest = serializeKitManifest(oversizedDraft);
 
   await expect(
-    openKitSubmission("https://github.com/example/repo/issues/new", manifest),
+    openKitSubmission(
+      "https://github.com/example/repo/issues/new",
+      oversizedDraft,
+    ),
   ).resolves.toBe("clipboard");
 
   expect(writeText).toHaveBeenCalledWith(manifest);
   const opened = new URL(String(open.mock.calls[0]?.[0]));
+  expect(opened.searchParams.get("title")).toBe("[Kit submission]: Story Kit");
+  expect(opened.searchParams.get("kit-title")).toBe("Story Kit");
+  expect(opened.searchParams.get("kit-description")).toBe(
+    "A complete roleplay stack.",
+  );
   expect(opened.searchParams.get("manifest")).toBe(
     "Paste the Kit manifest copied by Tavernary here.",
   );
@@ -81,10 +133,17 @@ test("offers selectable text when clipboard access fails", async () => {
     configurable: true,
     value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
   });
-  const manifest = "x".repeat(7_100);
+  const oversizedDraft = {
+    ...draft,
+    projectIds: ["x".repeat(7_100)],
+  };
+  const manifest = serializeKitManifest(oversizedDraft);
 
   await expect(
-    openKitSubmission("https://github.com/example/repo/issues/new", manifest),
+    openKitSubmission(
+      "https://github.com/example/repo/issues/new",
+      oversizedDraft,
+    ),
   ).resolves.toBe("clipboard");
   expect(prompt).toHaveBeenCalledWith(
     "Copy this Kit manifest, then paste it into the GitHub form:",

@@ -69,28 +69,21 @@ test("orders the repository forms and leaves security reporting to GitHub", asyn
   expect(formNames).not.toContain("Report a security vulnerability");
 });
 
-test("Kit forms contain the approved fields and contribution terms", async () => {
-  const submissionSource = await readFile(
-    resolve(templateDirectory, "05-kit-submission.yml"),
-    "utf8",
+test("Kit submission is a readable review form without redundant machine fields", async () => {
+  const submission = parse(
+    await readFile(resolve(templateDirectory, "05-kit-submission.yml"), "utf8"),
   );
-  const submission = parse(submissionSource);
   const ids = submission.body
     .map((field: { id?: string }) => field.id)
     .filter(Boolean);
-  expect(ids).toEqual(
-    expect.arrayContaining([
-      "operation",
-      "kit-id",
-      "title",
-      "description",
-      "manifest",
-      "contribution-terms",
-    ]),
-  );
-  expect(submissionSource).toContain(
-    "I created or am authorized to submit this Kit title and description, and I agree they may be published under DbCL 1.0 as part of Tavernary's ODbL 1.0 catalog.",
-  );
+  expect(ids).toEqual(["kit-title", "kit-description", "manifest"]);
+  expect(
+    submission.body
+      .filter((field: { id?: string }) => field.id)
+      .map(
+        (field: { attributes: { label: string } }) => field.attributes.label,
+      ),
+  ).toEqual(["Kit title", "Kit description", "Kit manifest"]);
 
   const report = parse(
     await readFile(resolve(templateDirectory, "06-kit-report.yml"), "utf8"),

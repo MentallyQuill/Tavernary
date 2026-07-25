@@ -14,10 +14,7 @@ import { ProjectSelectionDock } from "@/features/kits/components/project-selecti
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
-import {
-  openKitSubmission,
-  serializeKitManifest,
-} from "@/features/kits/submission-transport";
+import { openKitSubmission } from "@/features/kits/submission-transport";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
@@ -457,7 +454,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               ? () =>
                   void openKitSubmission(
                     "https://github.com/MentallyQuill/Tavernary/issues/new?template=05-kit-submission.yml",
-                    serializeKitManifest(buildState.draft),
+                    buildState.draft,
                   )
               : undefined
           }

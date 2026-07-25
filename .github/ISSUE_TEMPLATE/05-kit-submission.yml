@@ -7,31 +7,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        Kit submissions are validated automatically and published only after maintainer review. The live Kit remains unchanged while an edit is reviewed.
-  - type: dropdown
-    id: operation
-    attributes:
-      label: Operation
-      options:
-        - Create
-        - Edit
-    validations:
-      required: true
+        Build a new Kit in Tavernary, or use **Edit Kit** on a published Kit, before submitting this form. Submissions are validated automatically and published only after maintainer review. The live Kit remains unchanged while an edit is reviewed.
   - type: input
-    id: kit-id
-    attributes:
-      label: Kit ID
-      description: Required for edits. Leave blank for a new Kit.
-    validations:
-      required: false
-  - type: input
-    id: title
+    id: kit-title
     attributes:
       label: Kit title
     validations:
       required: true
   - type: textarea
-    id: description
+    id: kit-description
     attributes:
       label: Kit description
     validations:
@@ -44,10 +28,3 @@ body:
       render: json
     validations:
       required: true
-  - type: checkboxes
-    id: contribution-terms
-    attributes:
-      label: Contribution terms
-      options:
-        - label: I created or am authorized to submit this Kit title and description, and I agree they may be published under DbCL 1.0 as part of Tavernary's ODbL 1.0 catalog.
-          required: true

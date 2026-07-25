@@ -19,9 +19,15 @@ export function serializeKitManifest(draft: KitDraft): string {
 
 export async function openKitSubmission(
   formUrl: string | URL,
-  manifest: string,
+  draft: KitDraft,
 ): Promise<"prefilled" | "clipboard"> {
   const target = new URL(formUrl.toString());
+  const title = draft.title.trim();
+  const description = draft.description.trim();
+  const manifest = serializeKitManifest(draft);
+  target.searchParams.set("title", `[Kit submission]: ${title}`);
+  target.searchParams.set("kit-title", title);
+  target.searchParams.set("kit-description", description);
   target.searchParams.set("manifest", manifest);
   if (target.toString().length <= MAX_PREFILL_URL_LENGTH) {
     window.open(target, "_blank", "noopener,noreferrer");
