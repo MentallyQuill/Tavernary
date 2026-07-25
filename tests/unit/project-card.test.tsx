@@ -133,6 +133,32 @@ describe("project card", () => {
     );
   });
 
+  test("associates a disabled Kit control with its constraint explanation", () => {
+    render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: true,
+            disabledReason: "A Kit can contain no more than 50 projects.",
+            onActivate: vi.fn(),
+          }),
+        }}
+      />,
+    );
+
+    const button = screen.getByRole("button", {
+      name: "Add Memory Tool to Kit",
+    });
+    const descriptionId = button.getAttribute("aria-describedby");
+    expect(descriptionId).toBeTruthy();
+    expect(document.getElementById(descriptionId!)).toHaveTextContent(
+      "A Kit can contain no more than 50 projects.",
+    );
+  });
+
   test("exposes pending selection without changing the GitHub link", () => {
     const bindings: ProjectSelectionBindings = {
       state: "selected",

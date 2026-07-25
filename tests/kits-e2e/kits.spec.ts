@@ -37,9 +37,9 @@ async function verifyUnifiedSelectionFlow(
   );
 
   await selectProject(page, "Fixture Frontend");
-  await expect(
-    page.getByRole("dialog", { name: "Kit Builder" }),
-  ).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
+    0,
+  );
   await expect(
     page.getByRole("region", { name: "1 project selected" }),
   ).toBeVisible();

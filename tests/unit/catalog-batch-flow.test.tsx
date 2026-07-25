@@ -73,7 +73,7 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
-  test("adds a long-pressed project without opening the builder, then settles its status", () => {
+  test("adds an explicitly selected project without opening the builder, then settles its status", () => {
     vi.useFakeTimers();
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
@@ -88,22 +88,15 @@ describe("catalog Kit batch flow", () => {
         dispatchEvent: vi.fn(),
       })),
     });
-    const { container } = render(<CatalogPage catalog={catalog} />);
-    const card = container.querySelector(".project-card-shell");
-    expect(card).not.toBeNull();
-
-    fireEvent.pointerDown(card!, {
-      button: 0,
-      pointerId: 1,
-      clientX: 20,
-      clientY: 20,
-    });
-    act(() => vi.advanceTimersByTime(450));
+    render(<CatalogPage catalog={catalog} />);
+    fireEvent.click(screen.getByRole("button", { name: "Add Memory to Kit" }));
     expect(
-      screen.getByRole("region", { name: "1 projects selected" }),
+      screen.getByRole("region", { name: "1 project selected" }),
     ).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "Add to Kit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Add 1 project to Kit" }),
+    );
 
     expect(
       screen.getByRole("complementary", { name: "Kit Builder" }),

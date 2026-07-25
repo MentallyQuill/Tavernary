@@ -76,10 +76,10 @@ describe("catalog visual alignment", () => {
       /\.project-kit-control\s*\{[^}]*width:\s*44px[^}]*height:\s*44px[^}]*background:\s*transparent/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
+      /\.project-kit-control\[aria-pressed="true"\] \.project-kit-control-face\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
       /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,

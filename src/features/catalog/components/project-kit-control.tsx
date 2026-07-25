@@ -2,6 +2,7 @@ import type {
   ProjectKitControlState,
   ProjectSelectionBindings,
 } from "@/features/kits/use-project-batch-selection";
+import { useId } from "react";
 
 export function ProjectKitControl({
   projectName,
@@ -10,6 +11,7 @@ export function ProjectKitControl({
   projectName: string;
   bindings: ProjectSelectionBindings;
 }) {
+  const descriptionId = useId();
   const action =
     bindings.state === "available"
       ? `Add ${projectName} to Kit`
@@ -28,11 +30,18 @@ export function ProjectKitControl({
       className="project-kit-control"
       aria-label={action}
       aria-pressed={bindings.state !== "available"}
-      aria-description={bindings.disabledReason ?? undefined}
+      aria-describedby={bindings.disabledReason ? descriptionId : undefined}
       disabled={bindings.disabled}
       onClick={bindings.onActivate}
     >
-      <span aria-hidden="true">{glyph[bindings.state]}</span>
+      <span className="project-kit-control-face" aria-hidden="true">
+        {glyph[bindings.state]}
+      </span>
+      {bindings.disabledReason ? (
+        <span className="visually-hidden" id={descriptionId}>
+          {bindings.disabledReason}
+        </span>
+      ) : null}
     </button>
   );
 }
