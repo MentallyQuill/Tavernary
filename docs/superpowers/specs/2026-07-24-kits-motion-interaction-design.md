@@ -7,6 +7,10 @@
 **Scope:** Kits motion, builder drag behavior, removal, and the pinned Frontend
 foundation on desktop, tablet, and mobile
 
+> **Superseded interaction:** Catalog project selection, catalog drag-in, long
+> press, and builder removal controls are superseded by
+> `docs/superpowers/specs/2026-07-25-unified-kit-selection-design.md`.
+
 ## Goal
 
 Kits motion must feel modern, clean, crisp, and practical. Animation exists to

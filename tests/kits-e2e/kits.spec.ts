@@ -17,18 +17,75 @@ async function expectMobileTarget(locator: import("@playwright/test").Locator) {
   expect(box!.height, "mobile target height").toBeGreaterThanOrEqual(44);
 }
 
-async function longPress(
+async function selectProject(
   page: import("@playwright/test").Page,
-  locator: import("@playwright/test").Locator,
-  duration = 500,
+  projectName: string,
 ) {
-  await locator.scrollIntoViewIfNeeded();
-  const box = await locator.boundingBox();
-  expect(box, "long-press target must have a bounding box").not.toBeNull();
-  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(duration);
-  await page.mouse.up();
+  await page.getByRole("button", { name: `Add ${projectName} to Kit` }).click();
+}
+
+async function verifyUnifiedSelectionFlow(
+  page: import("@playwright/test").Page,
+) {
+  const frontendLink = page.getByRole("link", {
+    name: "Fixture Frontend",
+    exact: true,
+  });
+  await expect(frontendLink).toHaveAttribute(
+    "href",
+    "https://github.com/fixture/fixture-frontend",
+  );
+
+  await selectProject(page, "Fixture Frontend");
+  await expect(
+    page.getByRole("dialog", { name: "Kit Builder" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("region", { name: "1 project selected" }),
+  ).toBeVisible();
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+
+  await expect(
+    page.getByRole("region", { name: "3 projects selected" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", {
+      name: "Remove Fixture Tool 03 from selection",
+    })
+    .click();
+  await expect(
+    page.getByRole("region", { name: "2 projects selected" }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Add 2 projects to Kit" }).click();
+  await expect(
+    page.getByRole("button", { name: "Remove Fixture Tool 02 from Kit" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .locator(".project-card-shell.in-draft")
+      .filter({ has: frontendLink })
+      .getByText("In Kit"),
+  ).toBeVisible();
+
+  await page
+    .getByRole("button", { name: "Remove Fixture Tool 02 from Kit" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Add Fixture Tool 02 to Kit" }),
+  ).toBeVisible();
+
+  await page
+    .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
+    .click();
+  await page
+    .getByRole("region", { name: "Frontend" })
+    .getByRole("button", { name: "Remove Fixture Frontend from Kit" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
+  ).toBeVisible();
 }
 
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({
@@ -244,26 +301,19 @@ test("batches projects without interrupting browse state and preserves draft acc
 }) => {
   await openKits(page);
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Add .* to Kit/ })).toHaveCount(
-    0,
-  );
+  await expect(
+    page.getByRole("button", { name: /Add .* to Kit/ }).first(),
+  ).toBeVisible();
   const startingUrl = page.url();
-  const frontendShell = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-frontend") })
-    .first();
-  const extensionShells = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-extension") });
-  await longPress(page, frontendShell);
-  await extensionShells.nth(0).click();
-  await extensionShells.nth(1).click();
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
 
   const dock = page.getByRole("region", { name: "3 projects selected" });
   await expect(dock).toBeVisible();
   await expect(dock.locator(".selection-count")).toHaveText("3");
   const scrollBeforeAdd = await page.evaluate(() => window.scrollY);
-  await dock.getByRole("button", { name: "Add to Kit" }).click();
+  await dock.getByRole("button", { name: "Add 3 projects to Kit" }).click();
 
   expect(page.url()).toBe(startingUrl);
   expect(await page.evaluate(() => window.scrollY)).toBe(scrollBeforeAdd);
@@ -282,8 +332,8 @@ test("batches projects without interrupting browse state and preserves draft acc
 
   const search = page.getByRole("searchbox", { name: "Search projects" });
   await search.fill("Fixture Tool 10");
-  await longPress(page, page.locator(".project-card-shell").first());
-  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await selectProject(page, "Fixture Tool 10");
+  await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
   await expect(search).toHaveValue("Fixture Tool 10");
   await expect(
     page.getByRole("button", {
@@ -325,60 +375,26 @@ test("batches projects without interrupting browse state and preserves draft acc
   ).toBe(true);
 });
 
-test("desktop catalog drag preserves an active batch selection", async ({
-  page,
-}) => {
-  await openKits(page);
-  await page.getByRole("button", { name: "Create new Kit" }).click();
-  await page.getByRole("button", { name: "All Projects", exact: true }).click();
-
-  const selectedShell = page.locator(".project-card-shell").filter({
-    has: page.getByRole("link", { name: "Fixture Tool 02", exact: true }),
+for (const viewport of [
+  { name: "desktop", width: 1440, height: 900 },
+  { name: "mobile", width: 390, height: 844 },
+]) {
+  test(`${viewport.name} uses the unified explicit Kit selection flow`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    if (viewport.width <= 760) {
+      await expectMobileTarget(
+        page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
+      );
+    }
+    await verifyUnifiedSelectionFlow(page);
+    await expect(
+      page.getByRole("button", { name: /Drag .* into Kit/ }),
+    ).toHaveCount(0);
   });
-  await longPress(page, selectedShell);
-  await expect(
-    page.getByRole("region", { name: "1 projects selected" }),
-  ).toBeVisible();
-
-  const dragHandle = page.getByRole("button", {
-    name: "Drag Fixture Tool 03 into Kit",
-  });
-  await dragHandle.hover();
-  const sourceBox = (await dragHandle.boundingBox())!;
-  const stackTarget = page.locator('[data-kit-drop-target="stack"]');
-  const targetBox = (await stackTarget.boundingBox())!;
-  await page.mouse.move(
-    sourceBox.x + sourceBox.width / 2,
-    sourceBox.y + sourceBox.height / 2,
-  );
-  await page.mouse.down();
-  await page.evaluate(
-    () =>
-      new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
-  );
-  await page.mouse.move(
-    targetBox.x + targetBox.width / 2,
-    targetBox.y + targetBox.height / 2,
-    { steps: 5 },
-  );
-  await page.mouse.up();
-
-  await expect(
-    page.getByRole("region", { name: "1 projects selected" }),
-  ).toBeVisible();
-  await expect(selectedShell).toHaveClass(/selected/);
-  await expect(
-    page
-      .locator(".project-card-shell")
-      .filter({
-        has: page.getByRole("link", {
-          name: "Fixture Tool 03",
-          exact: true,
-        }),
-      })
-      .getByText("In Kit"),
-  ).toBeVisible();
-});
+}
 
 test("complete desktop direct-manipulation workflow keeps every card reachable", async ({
   page,
@@ -415,24 +431,15 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
     if (release) await page.mouse.up();
   }
 
-  const frontendTarget = page.locator('[data-kit-drop-target="frontend"]');
-  const stackTarget = page.locator('[data-kit-drop-target="stack"]');
-  await dragTo(
-    page.getByRole("button", { name: "Drag Fixture Frontend into Kit" }),
-    frontendTarget,
-  );
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+  await page.getByRole("button", { name: "Add 3 projects to Kit" }).click();
   await expect(page.getByRole("region", { name: "Frontend" })).toContainText(
     "Fixture Frontend",
   );
 
   for (const name of ["Fixture Tool 02", "Fixture Tool 03"]) {
-    await dragTo(
-      page.getByRole("button", { name: `Drag ${name} into Kit` }),
-      stackTarget,
-      false,
-    );
-    await expect(page.getByText("Release to add")).toBeVisible();
-    await page.mouse.up();
     await expect(
       page
         .locator(".project-card-shell")
@@ -443,15 +450,8 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   const rows = page.locator(".kit-builder-row");
   await expect(rows).toHaveCount(2);
 
-  await dragTo(
-    page.getByRole("button", { name: "Drag Fixture Frontend B into Kit" }),
-    frontendTarget,
-    false,
-  );
-  await expect(
-    page.getByText("Release to replace Fixture Frontend"),
-  ).toBeVisible();
-  await page.mouse.up();
+  await selectProject(page, "Fixture Frontend B");
+  await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
   await expect(
     page.getByRole("region", { name: "Frontend" }).locator("strong"),
   ).toHaveText("Fixture Frontend B");
@@ -484,7 +484,9 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
       new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
   );
   await expect(
-    page.getByRole("button", { name: "Remove Fixture Tool 02" }),
+    page.locator(".kit-builder").getByRole("button", {
+      name: "Remove Fixture Tool 02 from Kit",
+    }),
   ).toBeVisible();
 
   const retryHandle = page.getByRole("button", {
@@ -505,7 +507,9 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   await expect(page.getByText("Release to remove")).toBeVisible();
   await page.mouse.up();
   await expect(
-    page.getByRole("button", { name: "Remove Fixture Tool 02" }),
+    page.locator(".kit-builder").getByRole("button", {
+      name: "Remove Fixture Tool 02 from Kit",
+    }),
   ).toHaveCount(0);
 
   const workspaceBox = (await page
@@ -676,27 +680,9 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  const extensionShells = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-extension") });
-  const firstCardBox = (await extensionShells.first().boundingBox())!;
-  await page.mouse.move(
-    firstCardBox.x + firstCardBox.width / 2,
-    firstCardBox.y + firstCardBox.height / 2,
-  );
-  await page.mouse.down();
-  await page.mouse.move(
-    firstCardBox.x + firstCardBox.width / 2,
-    firstCardBox.y + firstCardBox.height / 2 + 20,
-  );
-  await page.mouse.wheel(0, 160);
-  await page.waitForTimeout(500);
-  await page.mouse.up();
-  await expect(page.locator(".project-selection-dock")).toHaveCount(0);
-
-  await longPress(page, extensionShells.nth(0));
-  await extensionShells.nth(1).click();
-  await extensionShells.nth(2).click();
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+  await selectProject(page, "Fixture Tool 04");
   const selectionDock = page.getByRole("region", {
     name: "3 projects selected",
   });
@@ -705,9 +691,11 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
     selectionDock.getByRole("button", { name: "Cancel" }),
   );
   await expectMobileTarget(
-    selectionDock.getByRole("button", { name: "Add to Kit" }),
+    selectionDock.getByRole("button", { name: "Add 3 projects to Kit" }),
   );
-  await selectionDock.getByRole("button", { name: "Add to Kit" }).click();
+  await selectionDock
+    .getByRole("button", { name: "Add 3 projects to Kit" })
+    .click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
     0,
   );
@@ -717,16 +705,13 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
     }),
   ).toBeVisible();
   await page.waitForTimeout(1700);
-  await longPress(
-    page,
-    page.locator(".project-card-shell:not(.in-draft)").first(),
-  );
+  await selectProject(page, "Fixture Frontend");
   await expect(
     page.getByRole("button", {
       name: "Open Kit Builder, 3 projects in draft",
     }),
   ).toHaveCount(0);
-  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
   await expect(
     page.getByRole("button", {
       name: "Open Kit Builder, 4 projects in draft",
@@ -757,10 +742,12 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   await expect(rows.nth(0).locator("strong")).toHaveText(secondProject);
   await rows
     .nth(0)
-    .getByRole("button", { name: `Remove ${secondProject}` })
+    .getByRole("button", { name: `Remove ${secondProject} from Kit` })
     .click();
   await expect(
-    page.getByRole("button", { name: `Remove ${secondProject}` }),
+    page.getByRole("button", {
+      name: `Remove ${secondProject} from Kit`,
+    }),
   ).toHaveCount(0);
   await expect(page.getByText("Undo")).toHaveCount(0);
   await expect(page.getByText(/Drag here to remove/i)).toHaveCount(0);

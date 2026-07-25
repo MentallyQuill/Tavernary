@@ -3,6 +3,10 @@
 **Date:** 2026-07-24
 **Status:** Approved
 
+> **Superseded interaction:** Catalog project selection, catalog drag-in, long
+> press, and builder removal controls are superseded by
+> `docs/superpowers/specs/2026-07-25-unified-kit-selection-design.md`.
+
 ## Purpose
 
 Add community-authored **Kits** to Tavernary. A Kit is a named, ordered

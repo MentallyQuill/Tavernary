@@ -9,19 +9,6 @@ async function expectTouchTarget(locator: import("@playwright/test").Locator) {
   expect(box!.height, "touch target height").toBeGreaterThanOrEqual(44);
 }
 
-async function longPress(
-  page: import("@playwright/test").Page,
-  locator: import("@playwright/test").Locator,
-) {
-  await locator.scrollIntoViewIfNeeded();
-  const box = await locator.boundingBox();
-  expect(box).not.toBeNull();
-  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(500);
-  await page.mouse.up();
-}
-
 test("mobile Kits builder stays browse-first and retains its draft pill", async ({
   page,
 }) => {
@@ -41,16 +28,19 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   ).toBeVisible();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  const extensionShells = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-extension") });
-  await longPress(page, extensionShells.nth(0));
-  await extensionShells.nth(1).click();
-  await extensionShells.nth(2).click();
+  for (const name of [
+    "Fixture Tool 02",
+    "Fixture Tool 03",
+    "Fixture Tool 04",
+  ]) {
+    await page.getByRole("button", { name: `Add ${name} to Kit` }).click();
+  }
   const dock = page.getByRole("region", { name: "3 projects selected" });
   await expectTouchTarget(dock.getByRole("button", { name: "Cancel" }));
-  await expectTouchTarget(dock.getByRole("button", { name: "Add to Kit" }));
-  await dock.getByRole("button", { name: "Add to Kit" }).click();
+  await expectTouchTarget(
+    dock.getByRole("button", { name: "Add 3 projects to Kit" }),
+  );
+  await dock.getByRole("button", { name: "Add 3 projects to Kit" }).click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
     0,
   );
@@ -72,7 +62,7 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await expect(handle).toBeVisible();
   await expectTouchTarget(handle);
   await expectTouchTarget(
-    rows.nth(1).getByRole("button", { name: `Remove ${movedName}` }),
+    rows.nth(1).getByRole("button", { name: `Remove ${movedName} from Kit` }),
   );
   const handleBox = (await handle.boundingBox())!;
   const firstBox = (await rows.nth(0).boundingBox())!;
@@ -88,10 +78,10 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await expect(rows.nth(0).locator("strong")).toHaveText(movedName);
   await rows
     .nth(0)
-    .getByRole("button", { name: `Remove ${movedName}` })
+    .getByRole("button", { name: `Remove ${movedName} from Kit` })
     .click();
   await expect(
-    page.getByRole("button", { name: `Remove ${movedName}` }),
+    page.getByRole("button", { name: `Remove ${movedName} from Kit` }),
   ).toHaveCount(0);
   await expect(page.getByText("Undo")).toHaveCount(0);
   await page.getByRole("button", { name: "Close Kit Builder" }).click();

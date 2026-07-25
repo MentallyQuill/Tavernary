@@ -12,16 +12,11 @@ async function openKits(
   await page.getByRole("button", { name: "Kits", exact: true }).click();
 }
 
-async function longPress(
+async function selectProject(
   page: import("@playwright/test").Page,
-  locator: import("@playwright/test").Locator,
+  projectName: string,
 ) {
-  await locator.scrollIntoViewIfNeeded();
-  const box = (await locator.boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(500);
-  await page.mouse.up();
+  await page.getByRole("button", { name: `Add ${projectName} to Kit` }).click();
 }
 
 test("desktop ordinary grid and selected workspace", async ({ page }) => {
@@ -65,24 +60,34 @@ test("desktop selection dock and persistent builder count", async ({
   await expect(page).toHaveScreenshot("kits-desktop-builder-rail-empty.png", {
     fullPage: true,
   });
-  const frontendShell = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-frontend") })
-    .first();
-  const extensionShells = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-extension") });
-  await longPress(page, frontendShell);
-  await extensionShells.nth(0).click();
-  await extensionShells.nth(1).click();
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
   await expect(page).toHaveScreenshot("kits-desktop-selection-dock.png", {
     fullPage: true,
   });
-  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await page.getByRole("button", { name: "Add 3 projects to Kit" }).click();
   await page.waitForTimeout(1700);
   await expect(page).toHaveScreenshot("kits-desktop-builder-rail-count.png", {
     fullPage: true,
   });
+});
+
+test("reduced-motion card selection keeps explicit visual states", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await page.getByRole("button", { name: "Add 2 projects to Kit" }).click();
+  await page.waitForTimeout(1700);
+  await selectProject(page, "Fixture Tool 03");
+  await expect(page).toHaveScreenshot(
+    "kits-desktop-reduced-motion-card-states.png",
+    { fullPage: true },
+  );
 });
 
 test("desktop create and 50-project builder", async ({ page }) => {
@@ -123,14 +128,11 @@ test("mobile browse, filters, draft, builder, long stack, and inspection", async
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await expect(page).toHaveScreenshot("kits-mobile-draft-pill.png");
 
-  const mobileExtensionShells = page
-    .locator(".project-card-shell")
-    .filter({ has: page.locator(".project-card.kind-extension") });
-  await longPress(page, mobileExtensionShells.nth(0));
-  await mobileExtensionShells.nth(1).click();
-  await mobileExtensionShells.nth(2).click();
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+  await selectProject(page, "Fixture Tool 04");
   await expect(page).toHaveScreenshot("kits-mobile-selection-dock.png");
-  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await page.getByRole("button", { name: "Add 3 projects to Kit" }).click();
   await expect(
     page.locator(".kit-draft-access-status", {
       hasText: "3 projects added",
@@ -165,4 +167,12 @@ test("mobile browse, filters, draft, builder, long stack, and inspection", async
     page.getByRole("button", { name: "Close Kit Builder" }),
   ).toBeInViewport();
   await expect(page).toHaveScreenshot("kits-mobile-inspect.png");
+});
+
+test("320px mobile card footer keeps the Kit control, chips, and license clear", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.goto("/");
+  await expect(page).toHaveScreenshot("kits-mobile-320-card-footer.png");
 });

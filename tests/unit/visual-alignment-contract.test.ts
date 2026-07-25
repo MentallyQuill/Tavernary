@@ -73,16 +73,28 @@ describe("catalog visual alignment", () => {
       /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*left:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.project-kit-control\s*\{[^}]*width:\s*44px[^}]*height:\s*44px[^}]*background:\s*transparent/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control\[aria-pressed="true"\]\s*\{[^}]*box-shadow:\s*inset/s,
+      /\.project-kit-control > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-kit-control\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-remove\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
       /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-muted\)/s,
     );
     expect(responsive).toMatch(
       /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control-hit\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
     );
     expect(motion).toMatch(
       /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.project-kit-control/s,
