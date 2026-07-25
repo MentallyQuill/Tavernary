@@ -101,6 +101,29 @@ async function readOptionalJson(path) {
   }
 }
 
+function validateFullReportForPlanning(fullReport) {
+  if (fullReport === null) return null;
+  try {
+    return validateEnrichmentReport(fullReport);
+  } catch (error) {
+    const isPreHardeningTerminalLedger =
+      error?.message === "terminal full report accounting is invalid" &&
+      fullReport?.schema_version === 1 &&
+      fullReport.mode === "full" &&
+      fullReport.status === "complete" &&
+      fullReport.phase === "complete" &&
+      !Object.hasOwn(fullReport, "deferred_ids") &&
+      !Object.hasOwn(fullReport, "authorized_canary_run_id") &&
+      !Object.hasOwn(fullReport, "publication");
+    if (!isPreHardeningTerminalLedger) throw error;
+    validateEnrichmentReport({
+      ...fullReport,
+      status: "complete-with-errors",
+    });
+    return null;
+  }
+}
+
 export async function runPlannerCli(options = {}) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const model = options.model ?? process.env.TAVERNARY_ENRICHMENT_MODEL;
@@ -130,8 +153,7 @@ export async function runPlannerCli(options = {}) {
           options.canaryReportPath ??
             resolve(root, "data/reports/enrichment-canary.json"),
         );
-  const validatedFullReport =
-    fullReport === null ? null : validateEnrichmentReport(fullReport);
+  const validatedFullReport = validateFullReportForPlanning(fullReport);
   const validatedCanaryReport =
     canaryReport === null ? null : validateEnrichmentReport(canaryReport);
   return createEnrichmentRolloutPlan({
