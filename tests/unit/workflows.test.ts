@@ -159,7 +159,27 @@ test("deploys only a verified static export to the Pages environment", async () 
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {
-  const refresh = await workflow("refresh-catalog");
+  const refresh = (await workflow("refresh-catalog")) as {
+    "run-name": string;
+    permissions: Record<string, string>;
+    concurrency: Record<string, unknown>;
+    on: {
+      workflow_dispatch: {
+        inputs: Record<string, { options?: string[]; default?: unknown }>;
+      };
+    };
+    jobs: Record<
+      string,
+      {
+        steps: Array<{
+          id?: string;
+          name?: string;
+          if?: string;
+          run?: string;
+        }>;
+      }
+    >;
+  };
   const source = await readFile(
     resolve(workflowDirectory, "refresh-catalog.yml"),
     "utf8",
@@ -189,6 +209,22 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   ]);
   expect(inputs.batch_size.default).toBe(12);
   expect(inputs).not.toHaveProperty("start_index");
+  expect(refresh["run-name"]).toContain("Baseline queue");
+  const refreshSteps = refresh.jobs.refresh.steps;
+  expect(refreshSteps.map(({ name }) => name)).toEqual(
+    expect.arrayContaining([
+      "Capture baseline queue state",
+      "Evaluate baseline queue progress",
+      "Dispatch next baseline batch",
+    ]),
+  );
+  expect(
+    refreshSteps.find(({ id }) => id === "baseline-progress")?.run,
+  ).toContain("baseline-queue.mjs evaluate");
+  expect(
+    refreshSteps.find(({ name }) => name === "Dispatch next baseline batch")
+      ?.if,
+  ).toBe("steps.baseline-progress.outputs.continue == 'true'");
   expect(source).toContain("data/snapshots/github/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).toContain("data/snapshots/github/kits/*.json");
