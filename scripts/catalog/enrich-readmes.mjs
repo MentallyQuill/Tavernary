@@ -21,6 +21,7 @@ import {
 } from "./enrichment-report.mjs";
 import {
   applyAttemptResults,
+  approveCanaryDeployment,
   assertFullRolloutAllowed,
   createEnrichmentRunState,
   selectNextRunBatch,
@@ -484,9 +485,38 @@ function providerConfiguration(options) {
 
 export async function runCli(options = {}) {
   const mode = options.mode ?? "preflight";
-  if (!["preflight", "canary", "start", "resume"].includes(mode)) {
+  if (
+    !["preflight", "canary", "approve-canary", "start", "resume"].includes(mode)
+  ) {
     throw new Error(`unsupported enrichment mode: ${mode}`);
   }
+  const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+  const reportPath =
+    options.reportPath === undefined
+      ? resolve(root, "data/reports/enrichment-report.json")
+      : options.reportPath;
+  const timestamp = new Date(options.now ?? Date.now()).toISOString();
+  if (mode === "approve-canary") {
+    const previousReport =
+      options.previousReport !== undefined
+        ? options.previousReport
+        : reportPath
+          ? await readOptionalJson(reportPath)
+          : null;
+    const state = approveCanaryDeployment(
+      validateEnrichmentReport(previousReport),
+      {
+        commitSha: options.commitSha,
+        deploymentRunId: options.deploymentRunId,
+        now: timestamp,
+      },
+    );
+    const report = createEnrichmentReport(state);
+    if (options.writeReport) await options.writeReport(report);
+    if (reportPath) await writeJsonAtomic(reportPath, report);
+    return report;
+  }
+
   const configuration = providerConfiguration(options);
   const provider =
     options.provider ??
@@ -496,11 +526,6 @@ export async function runCli(options = {}) {
     });
   if (mode === "preflight") return runPreflight(provider);
 
-  const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-  const reportPath =
-    options.reportPath === undefined
-      ? resolve(root, "data/reports/enrichment-report.json")
-      : options.reportPath;
   const records =
     options.records ??
     (await Promise.all(
@@ -556,7 +581,6 @@ export async function runCli(options = {}) {
       if (mode !== "canary" || !options.projectIds?.length) throw error;
     }
   }
-  const timestamp = new Date(options.now ?? Date.now()).toISOString();
   let state;
 
   if (mode === "canary") {
@@ -645,6 +669,8 @@ export function cliOptions(argv) {
     batchSize: Number(value("--batch-size", 20)),
     concurrency: Number(value("--concurrency", 4)),
     projectIds: values("--project-id"),
+    commitSha: value("--commit-sha", undefined),
+    deploymentRunId: Number(value("--deployment-run-id", Number.NaN)),
   };
 }
 

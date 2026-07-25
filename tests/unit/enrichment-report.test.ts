@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 
 import {
   applyAttemptResults,
+  approveCanaryDeployment,
   createEnrichmentRunState,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
 import {
@@ -87,4 +88,33 @@ test("rejects malformed or contradictory durable reports", () => {
       manifest: ["a", "a"],
     }),
   ).toThrow("duplicate");
+
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ["a", "b", "c", "d", "e"],
+    runId: "canary",
+    now,
+  });
+  canary = applyAttemptResults(
+    canary,
+    ["a", "b", "c", "d", "e"].map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+  const awaiting = createEnrichmentReport(canary);
+  expect(() =>
+    validateEnrichmentReport({ ...awaiting, status: "passed" }),
+  ).toThrow("deployment");
+
+  const approved = createEnrichmentReport(
+    approveCanaryDeployment(canary, {
+      commitSha: "b".repeat(40),
+      deploymentRunId: 12345,
+      now,
+    }),
+  );
+  expect(validateEnrichmentReport(approved)).toEqual(approved);
 });

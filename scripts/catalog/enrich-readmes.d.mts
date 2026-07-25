@@ -50,7 +50,7 @@ export type EnrichmentProvider = {
   }>;
 };
 export type EnrichmentOptions = {
-  mode?: "preflight" | "canary" | "start" | "resume";
+  mode?: "preflight" | "canary" | "approve-canary" | "start" | "resume";
   batchSize?: number;
   concurrency?: number;
   projectIds?: string[];
@@ -150,6 +150,8 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   previousReport?: unknown;
   runId?: string;
   now?: string;
+  commitSha?: string;
+  deploymentRunId?: number;
   loadSource?: (
     record: RegistryRecord,
     snapshot: GithubSnapshot,
@@ -168,7 +170,9 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
 };
 
 export function runCli(
-  options: RunCliOptions & { mode: "canary" | "start" | "resume" },
+  options: RunCliOptions & {
+    mode: "canary" | "approve-canary" | "start" | "resume";
+  },
 ): Promise<EnrichmentRunState>;
 export function runCli(
   options?: RunCliOptions & { mode?: "preflight" },

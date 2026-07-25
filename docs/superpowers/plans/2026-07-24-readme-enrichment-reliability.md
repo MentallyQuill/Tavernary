@@ -58,7 +58,7 @@
 - `scripts/catalog/enrichment-report.mjs` and `.d.mts` — durable sanitized run-state serialization and workflow summary.
 - `scripts/catalog/backfill-repository-identities.mjs` — repeated project-ID filtering for canary preparation.
 - `scripts/catalog/repository-identity-backfill.mjs` and `.d.mts` — optional allowed-ID set.
-- `.github/workflows/enrich-catalog.yml` — preflight, canary, full initialization, resume, commit, deployment verification, and self-dispatch.
+- `.github/workflows/enrich-catalog.yml` — preflight, canary, full initialization, resume, per-batch commit/deployment verification, and same-job continuation.
 - `.github/workflows/refresh-catalog.yml` — preserve status-driven modes, dynamic baseline continuation, and snapshot-only publication.
 - `.github/workflows/deploy-pages.yml` — ignore report-only pushes while continuing to deploy registry and snapshot changes.
 - `tests/unit/readme-source.test.ts`
@@ -256,7 +256,12 @@ type EnrichmentRunState = {
   schema_version: 1;
   run_id: string;
   mode: "canary" | "full";
-  status: "running" | "passed" | "failed" | "complete";
+  status:
+    | "running"
+    | "awaiting-deployment"
+    | "passed"
+    | "failed"
+    | "complete";
   phase: "primary" | "retry" | "complete";
   expected_model: "MiniMax-M3";
   batch_size: number;
@@ -269,6 +274,11 @@ type EnrichmentRunState = {
   retry_cursor: number;
   attempts: Record<string, number>;
   entries: Record<string, EnrichmentRunEntry>;
+  deployment: {
+    commit_sha: string;
+    run_id: number;
+    verified_at: string;
+  } | null;
   aggregates: Record<AttemptOutcome, number>;
 };
 ```
@@ -733,7 +743,7 @@ Add tests for alphabetical deduplication, immutable manifest, primary cursor adv
 
 - [ ] **Step 2: Add canary state tests**
 
-Assert exactly five unique IDs are required, canary does not silently self-expand, all success produces `status: "passed"`, failed primary results move to retry, failed retry produces `status: "failed"`, and `assertFullRolloutAllowed()` accepts only a passed MiniMax M3 canary.
+Assert exactly five unique IDs are required, canary does not silently self-expand, all success produces `status: "awaiting-deployment"`, failed primary results move to retry, failed retry produces `status: "failed"`, and `assertFullRolloutAllowed()` accepts only a MiniMax M3 canary with a verified deployment record.
 
 - [ ] **Step 3: Run the state tests and verify failure**
 
@@ -752,7 +762,8 @@ Keep every function free of filesystem and network effects. `selectNextRunBatch(
 - appends a primary failure exactly once to `retry_queue`;
 - translates retry success to `retry-enriched`/`retry-fallback`;
 - translates retry failure to `final-failure`;
-- marks a successful canary `passed`;
+- marks a successful canary `awaiting-deployment`;
+- marks it `passed` only after recording the deployed commit and Actions run;
 - marks a canary with terminal failures `failed`;
 - marks a full run `complete` after retry exhaustion even when final failures remain.
 
@@ -936,7 +947,7 @@ Assert:
 - `preflight` performs exactly one synthetic provider call and invokes no source loader/writer;
 - `canary` requires exactly five unique explicit IDs;
 - canary can be manually resumed only for its retry queue;
-- `start` refuses unless the current report is a passed canary;
+- `start` refuses unless the current report is a deployed and explicitly approved canary;
 - `start` freezes the current eligible ID manifest once;
 - `resume` rejects absent, malformed, canary, failed, or completed full state;
 - `resume` selects the next fixed state batch;
@@ -992,11 +1003,11 @@ Validate the returned enrichment object and print one sanitized JSON summary wit
 
 On the first `canary` invocation, create state from the five explicit IDs and process primary attempts. If the same canary state is running in retry phase, process only its retry IDs. Never dispatch continuation from the CLI.
 
-Write passed/failed/running state atomically to `data/reports/enrichment-report.json`.
+Write awaiting-deployment/failed/running state atomically to `data/reports/enrichment-report.json`. The internal `approve-canary` mode records `passed` only after the workflow has watched a successful Pages deployment.
 
 - [ ] **Step 6: Implement full start and resume**
 
-`start` loads and validates the passed canary report, selects eligible GitHub records once, sorts IDs, creates a new full state, and processes its first primary batch. `resume` loads that full state and selects only `selectNextRunBatch(state).projectIds`.
+`start` loads and validates the deployed canary report, selects eligible GitHub records once, sorts IDs, creates a new full state, and processes its first primary batch. `resume` loads that full state and selects only `selectNextRunBatch(state).projectIds`.
 
 Remove `startIndex`, `batchSize` slicing, and the old `backfill` mode. Keep batch size and concurrency as validated initialization options with defaults 20 and four.
 
@@ -1138,7 +1149,7 @@ Assert:
 - registry changes are detected separately from report-only changes;
 - report-only pushes do not trigger Pages;
 - mixed-result full batches can commit and continue;
-- continuation dispatches only when mode is `start`/`resume` and report status is not complete;
+- continuation remains in one active workflow job while report status is running;
 - the full workflow shares `catalog-refresh`;
 - canary waits for the Pages run associated with its pushed commit and fails if deployment fails.
 
@@ -1165,9 +1176,9 @@ After the CLI returns:
 3. Stage only registry JSON files and `data/reports/enrichment-report.json`.
 4. Commit even when only state changed.
 5. Rebase/push with three bounded attempts.
-6. Let the push-triggered Pages workflow deploy registry changes.
+6. Explicitly dispatch `deploy-pages.yml` for registry-changing commits and watch the run associated with the pushed SHA.
 
-Do not dispatch `deploy-pages.yml` separately; the push already starts it.
+GitHub-token pushes do not trigger another push workflow, so explicit Pages dispatch is mandatory.
 
 - [ ] **Step 5: Avoid report-only deployments**
 
@@ -1185,27 +1196,28 @@ to `deploy-pages.yml`. A commit containing both registry and report files still 
 
 - [ ] **Step 6: Enforce the canary deployment gate**
 
-When canary registry files changed, capture the pushed SHA, poll `gh run list --workflow deploy-pages.yml --commit "$PUSHED_SHA"` for the corresponding run ID, then call:
+When canary registry files changed, capture the pushed SHA, explicitly dispatch Pages, poll `gh run list --workflow deploy-pages.yml --commit "$PUSHED_SHA"` for the corresponding run ID, then call:
 
 ```bash
 gh run watch "$DEPLOY_RUN_ID" --exit-status
 ```
 
-After deployment succeeds, read the report and fail the workflow unless `mode == "canary"` and `status == "passed"`. This preserves successful canary publication while preventing full rollout authorization after a partial/failed canary.
+Before deployment the successful canary report must be `awaiting-deployment`. After deployment succeeds, invoke the internal approval mode with the pushed SHA and deployment run ID, publish the report-only approval commit, and require `status == "passed"`. This prevents full-rollout authorization after a partial, failed, or undeployed canary.
 
-- [ ] **Step 7: Dispatch only the next full state batch**
+- [ ] **Step 7: Continue full state batches in the active job**
 
-After a successful push, inspect the committed report:
+After each successful publication, inspect the committed report:
 
 ```bash
 status=$(jq -r '.status' data/reports/enrichment-report.json)
 run_mode=$(jq -r '.mode' data/reports/enrichment-report.json)
-if [[ "$run_mode" == "full" && "$status" == "running" ]]; then
-  gh workflow run enrich-catalog.yml --ref main -f mode=resume
-fi
+while [[ "$run_mode" == "full" && "$status" == "running" ]]; do
+  npm run catalog:enrich -- --mode resume
+  # validate, commit, push, and deploy this batch before selecting another
+done
 ```
 
-The run-state module, not YAML arithmetic, controls whether the next invocation processes primary or retry IDs.
+The run-state module, not YAML arithmetic, controls whether the next iteration processes primary or retry IDs. A manual `resume` invocation is retained only for recovery from a canceled or infrastructure-failed job.
 
 - [ ] **Step 8: Write a sanitized workflow summary**
 

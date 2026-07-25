@@ -20,6 +20,8 @@ const safeMessages = {
   "identity-mismatch":
     "Repository snapshot identity does not match the record.",
   "readme-fetch-failed": "GitHub README request failed.",
+  "readme-authentication-failed":
+    "GitHub README authentication is unavailable.",
   "readme-rate-limited": "GitHub README request was rate limited.",
   "readme-server-error": "GitHub README service is unavailable.",
   "readme-unusable": "GitHub README content is unusable.",
@@ -108,6 +110,13 @@ export function createEnrichmentReport(state) {
       ),
     ),
     entries,
+    deployment: state.deployment
+      ? {
+          commit_sha: state.deployment.commit_sha,
+          run_id: state.deployment.run_id,
+          verified_at: state.deployment.verified_at,
+        }
+      : null,
     aggregates: aggregates(entries),
   };
 }
@@ -131,7 +140,15 @@ export function validateEnrichmentReport(value) {
   if (!["primary", "retry", "complete"].includes(value.phase)) {
     throw new Error("enrichment report phase is invalid");
   }
-  if (!["running", "passed", "failed", "complete"].includes(value.status)) {
+  if (
+    ![
+      "running",
+      "awaiting-deployment",
+      "passed",
+      "failed",
+      "complete",
+    ].includes(value.status)
+  ) {
     throw new Error("enrichment report status is invalid");
   }
   assertUnique(value.manifest, "manifest");
@@ -157,6 +174,25 @@ export function validateEnrichmentReport(value) {
   }
   if (value.phase === "complete" && value.status === "running") {
     throw new Error("completed enrichment report cannot be running");
+  }
+  if (
+    value.status === "awaiting-deployment" &&
+    (value.mode !== "canary" ||
+      value.phase !== "complete" ||
+      value.deployment !== null)
+  ) {
+    throw new Error("canary deployment state is invalid");
+  }
+  if (
+    value.status === "passed" &&
+    (value.mode !== "canary" ||
+      value.phase !== "complete" ||
+      !/^[0-9a-f]{40}$/u.test(value.deployment?.commit_sha ?? "") ||
+      !Number.isInteger(value.deployment?.run_id) ||
+      value.deployment.run_id < 1 ||
+      typeof value.deployment?.verified_at !== "string")
+  ) {
+    throw new Error("passed canary requires verified deployment");
   }
   return createEnrichmentReport(value);
 }

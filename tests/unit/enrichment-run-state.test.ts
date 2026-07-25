@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 
 import {
   applyAttemptResults,
+  approveCanaryDeployment,
   assertFullRolloutAllowed,
   createEnrichmentRunState,
   selectNextRunBatch,
@@ -164,16 +165,41 @@ test("requires exactly five unique canary IDs", () => {
   ).toThrow("five unique");
 });
 
-test("marks successful and terminally failed canaries explicitly", () => {
+test("requires verified deployment before a successful canary authorizes full rollout", () => {
   const manifest = ["a", "b", "c", "d", "e"];
-  let passed = createEnrichmentRunState({
+  let awaitingDeployment = createEnrichmentRunState({
     mode: "canary",
     manifest,
     runId: "canary-pass",
     now,
   });
-  passed = applyAttemptResults(passed, results(manifest, "primary"), later);
-  expect(passed).toMatchObject({ status: "passed", phase: "complete" });
+  awaitingDeployment = applyAttemptResults(
+    awaitingDeployment,
+    results(manifest, "primary"),
+    later,
+  );
+  expect(awaitingDeployment).toMatchObject({
+    status: "awaiting-deployment",
+    phase: "complete",
+    deployment: null,
+  });
+  expect(() => assertFullRolloutAllowed(awaitingDeployment)).toThrow(
+    "deployed canary",
+  );
+
+  const passed = approveCanaryDeployment(awaitingDeployment, {
+    commitSha: "b".repeat(40),
+    deploymentRunId: 12345,
+    now: "2026-07-24T00:02:00.000Z",
+  });
+  expect(passed).toMatchObject({
+    status: "passed",
+    deployment: {
+      commit_sha: "b".repeat(40),
+      run_id: 12345,
+      verified_at: "2026-07-24T00:02:00.000Z",
+    },
+  });
   expect(() => assertFullRolloutAllowed(passed)).not.toThrow();
 
   let failed = createEnrichmentRunState({
@@ -197,7 +223,43 @@ test("marks successful and terminally failed canaries explicitly", () => {
     later,
   );
   expect(failed).toMatchObject({ status: "failed", phase: "complete" });
-  expect(() => assertFullRolloutAllowed(failed)).toThrow("passed canary");
+  expect(() => assertFullRolloutAllowed(failed)).toThrow("deployed canary");
+});
+
+test("rejects invalid or premature canary deployment approval", () => {
+  const running = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ["a", "b", "c", "d", "e"],
+    runId: "canary",
+    now,
+  });
+  expect(() =>
+    approveCanaryDeployment(running, {
+      commitSha: "b".repeat(40),
+      deploymentRunId: 12345,
+      now: later,
+    }),
+  ).toThrow("awaiting deployment");
+
+  const awaiting = applyAttemptResults(
+    running,
+    results(["a", "b", "c", "d", "e"], "primary"),
+    later,
+  );
+  expect(() =>
+    approveCanaryDeployment(awaiting, {
+      commitSha: "not-a-sha",
+      deploymentRunId: 12345,
+      now: later,
+    }),
+  ).toThrow("commit SHA");
+  expect(() =>
+    approveCanaryDeployment(awaiting, {
+      commitSha: "b".repeat(40),
+      deploymentRunId: 0,
+      now: later,
+    }),
+  ).toThrow("deployment run ID");
 });
 
 test("source-not-ready blocks a canary without consuming a retry", () => {

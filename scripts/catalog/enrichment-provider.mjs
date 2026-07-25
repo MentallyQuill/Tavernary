@@ -36,8 +36,8 @@ export function validateProviderConfiguration({ apiUrl, apiKey, model }) {
   } catch {
     throw new Error("Enrichment provider URL is required and must be valid.");
   }
-  if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-    throw new Error("Enrichment provider URL must use HTTP or HTTPS.");
+  if (parsedUrl.protocol !== "https:") {
+    throw new Error("Enrichment provider URL must use HTTPS.");
   }
   if (typeof apiKey !== "string" || apiKey.length === 0) {
     throw new Error("Enrichment provider API key is required.");

@@ -51,7 +51,7 @@ function terminalState(state) {
       entry.outcome,
     ),
   )
-    ? "passed"
+    ? "awaiting-deployment"
     : "failed";
 }
 
@@ -113,6 +113,7 @@ export function createEnrichmentRunState(input) {
     retry_cursor: 0,
     attempts: {},
     entries: {},
+    deployment: null,
     aggregates: Object.fromEntries(outcomes.map((outcome) => [outcome, 0])),
   };
 }
@@ -230,8 +231,45 @@ export function assertFullRolloutAllowed(previous) {
     previous?.mode !== "canary" ||
     previous?.status !== "passed" ||
     previous?.phase !== "complete" ||
-    previous?.expected_model !== "MiniMax-M3"
+    previous?.expected_model !== "MiniMax-M3" ||
+    !/^[0-9a-f]{40}$/u.test(previous?.deployment?.commit_sha ?? "") ||
+    !Number.isInteger(previous?.deployment?.run_id) ||
+    previous.deployment.run_id < 1 ||
+    typeof previous?.deployment?.verified_at !== "string"
   ) {
-    throw new Error("full rollout requires a passed canary using MiniMax-M3");
+    throw new Error("full rollout requires a deployed canary using MiniMax-M3");
   }
+}
+
+export function approveCanaryDeployment(
+  state,
+  { commitSha, deploymentRunId, now },
+) {
+  if (
+    state?.mode !== "canary" ||
+    state?.status !== "awaiting-deployment" ||
+    state?.phase !== "complete"
+  ) {
+    throw new Error("canary must be awaiting deployment approval");
+  }
+  if (!/^[0-9a-f]{40}$/u.test(commitSha ?? "")) {
+    throw new Error("canary deployment commit SHA is invalid");
+  }
+  if (!Number.isInteger(deploymentRunId) || deploymentRunId < 1) {
+    throw new Error("canary deployment run ID is invalid");
+  }
+  if (typeof now !== "string" || now.length === 0) {
+    throw new Error("canary deployment verification time is required");
+  }
+
+  const next = structuredClone(state);
+  next.manifest = Object.freeze([...state.manifest]);
+  next.status = "passed";
+  next.updated_at = now;
+  next.deployment = {
+    commit_sha: commitSha,
+    run_id: deploymentRunId,
+    verified_at: now,
+  };
+  return next;
 }

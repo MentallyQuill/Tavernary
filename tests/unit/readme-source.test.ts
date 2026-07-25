@@ -1,4 +1,4 @@
-import { expect, test, vi } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 
 import {
   assessSourceReadiness,
@@ -36,6 +36,11 @@ const healthy = {
 
 const validateSnapshot = (value: unknown) =>
   (value as { schema_version?: number })?.schema_version === 2;
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
 
 test.each([
   ["missing snapshot", undefined, "missing-snapshot", record],
@@ -184,6 +189,24 @@ test("uses the exact fallback only for an authenticated README 404", async () =>
     readmePath: null,
     readmeRef: "a".repeat(40),
   });
+});
+
+test("fails closed before a README request when GitHub authentication is unavailable", async () => {
+  vi.stubEnv("GITHUB_TOKEN", "");
+  vi.stubEnv("GH_TOKEN", "");
+  const fetchImpl = vi.fn();
+  vi.stubGlobal("fetch", fetchImpl);
+
+  await expect(
+    loadReadmeSource(record, {
+      ...healthy,
+      repository: { ...healthy.repository, description: null },
+    }),
+  ).resolves.toMatchObject({
+    status: "failed",
+    reasonCode: "readme-authentication-failed",
+  });
+  expect(fetchImpl).not.toHaveBeenCalled();
 });
 
 test.each([

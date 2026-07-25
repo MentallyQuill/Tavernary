@@ -53,6 +53,14 @@ test.each([
   [{ apiUrl: "https://api.example.test", apiKey: "key", model: "" }, "model"],
   [
     {
+      apiUrl: "http://api.example.test",
+      apiKey: "key",
+      model: "MiniMax-M3",
+    },
+    "HTTPS",
+  ],
+  [
+    {
       apiUrl: "https://api.example.test",
       apiKey: "key",
       model: "MiniMax-M2",

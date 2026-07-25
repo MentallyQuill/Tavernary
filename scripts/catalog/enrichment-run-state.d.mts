@@ -39,7 +39,7 @@ export type EnrichmentRunState = {
   schema_version: 1;
   run_id: string;
   mode: "canary" | "full";
-  status: "running" | "passed" | "failed" | "complete";
+  status: "running" | "awaiting-deployment" | "passed" | "failed" | "complete";
   phase: "primary" | "retry" | "complete";
   expected_model: "MiniMax-M3";
   batch_size: number;
@@ -52,6 +52,11 @@ export type EnrichmentRunState = {
   retry_cursor: number;
   attempts: Record<string, number>;
   entries: Record<string, EnrichmentRunEntry>;
+  deployment: {
+    commit_sha: string;
+    run_id: number;
+    verified_at: string;
+  } | null;
   aggregates: Record<AttemptOutcome, number>;
 };
 
@@ -74,6 +79,15 @@ export function applyAttemptResults(
   state: EnrichmentRunState,
   results: ProjectAttemptResult[],
   now: string,
+): EnrichmentRunState;
+
+export function approveCanaryDeployment(
+  state: EnrichmentRunState,
+  input: {
+    commitSha: string;
+    deploymentRunId: number;
+    now: string;
+  },
 ): EnrichmentRunState;
 
 export function assertFullRolloutAllowed(previous: EnrichmentRunState): void;

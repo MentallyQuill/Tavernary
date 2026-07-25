@@ -10,7 +10,7 @@
 
 Verified after rebasing onto `origin/main` at `b6d0f48`:
 
-- `npm.cmd run check`: formatting, lint, palette audit, validation of 214 projects and 0 Kits, catalog build, typecheck, 62 test files / 387 tests, production build, and static-export verification all passed;
+- `npm.cmd run check`: formatting, lint, palette audit, validation of 214 projects and 0 Kits, catalog build, typecheck, 62 test files / 391 tests, production build, and static-export verification all passed;
 - `npm.cmd run test:e2e`: 34 browser tests passed, including exact summary text and four-line fit at desktop and mobile widths;
 - `npm.cmd run test:visual`: all 10 visual and reference-alignment checks passed.
 
@@ -36,6 +36,8 @@ This project is pre-alpha, so the existing batch-index and enrichment-report for
 - Up to four model calls may run concurrently.
 - Each model call has a 120-second timeout.
 - The configured model identifier must be exactly `MiniMax-M3`.
+- The provider endpoint must use HTTPS before an API key may be sent.
+- README requests must use GitHub authentication; an anonymous `404` can never produce the fallback.
 - A card receives at most two model calls: one primary attempt and one separate retry attempt.
 - Successfully validated cards are committed and deployed even when other cards in the batch fail.
 - Primary failures are collected and retried after all primary batches finish.
@@ -62,7 +64,7 @@ process primary batch of 20
           +--> append failed IDs to retry queue
           |
           v
-dispatch next primary batch
+continue with next primary batch in the same workflow job
           |
           v
 process retry batches of 20
@@ -113,7 +115,7 @@ After the provider preflight passes, source preparation is limited to five expli
 
 Only those five snapshots are refreshed with current schema-v2 repository facts, including GitHub's short description and the exact head SHA, and only those five repository identities are backfilled through the separate identity command. The canary then invokes the same loader, provider, validator, writer, report generator, catalog checks, commit path, and deploy path used by the full rollout. It is not a mock or a separate simplified implementation.
 
-Canary mode never self-dispatches another batch. Valid canary records may publish automatically under the already approved partial-success rule, but the canary is not considered passed unless all five reach an expected terminal success: enriched or confirmed fallback. Any source-not-ready, provider failure, invalid output, write failure, catalog-check failure, or deployment failure blocks the full rollout.
+Canary mode never self-dispatches another batch. Valid canary records may publish automatically under the already approved partial-success rule. All five must first reach an expected terminal success—enriched or confirmed fallback—which leaves the report in `awaiting-deployment`. The workflow explicitly dispatches Pages for the pushed commit, watches that exact deployment, and only then records the canary as `passed` with its commit SHA, deployment run ID, and verification time. Any source-not-ready, provider failure, invalid output, write failure, catalog-check failure, or deployment failure blocks the full rollout.
 
 After deployment, inspect the canary report and rendered tiles to verify:
 
@@ -267,7 +269,7 @@ After the workers settle, successful registry changes and the updated run state 
 
 ## Workflow chaining and publication
 
-The workflow supports `preflight`, `canary`, full-rollout initialization, automatic continuation, and explicit resume. Preflight and canary modes cannot initialize or advance the full-rollout manifest. The first full invocation creates the run state; subsequent invocations read it from `main` and process the next phase batch.
+The workflow supports `preflight`, `canary`, full-rollout initialization, automatic continuation, and explicit resume. Preflight and canary modes cannot initialize or advance the full-rollout manifest. The first full invocation creates the run state, then a single serialized workflow job processes and publishes each remaining phase batch. An explicitly dispatched `resume` restarts from committed state after cancellation or infrastructure failure.
 
 For every batch:
 
@@ -278,10 +280,10 @@ For every batch:
 5. Validate enrichment outputs and the resulting catalog.
 6. Stage only changed registry files and the enrichment run report.
 7. Commit and push with the existing bounded rebase/push conflict handling.
-8. Trigger Pages deployment only when registry files changed.
-9. Dispatch the next enrichment invocation when unfinished work remains.
+8. Explicitly dispatch and watch Pages only when registry files changed.
+9. Continue with the next state-selected batch in the same job when unfinished work remains.
 
-The workflow advances the cursor for every attempted manifest ID, including source-not-ready and failed IDs. Primary failures are appended once to the retry queue. Retry failures are terminal for that rollout, so no infinite dispatch loop is possible.
+The workflow advances the cursor for every attempted manifest ID, including source-not-ready and failed IDs. Primary failures are appended once to the retry queue. Retry failures are terminal for that rollout, so no infinite loop is possible. Keeping continuation inside the active job prevents GitHub Actions from replacing a queued resume run when another member of the shared concurrency group is submitted.
 
 A batch containing 18 successes and two failures therefore publishes the 18 successes, records the two failures, and continues. The two failed IDs are retried only after the primary phase is complete.
 
@@ -342,13 +344,13 @@ Implementation follows test-driven development. Required coverage includes:
 - exact `MiniMax-M3` request selection and rejection of every other configured model;
 - live-preflight result sanitization;
 - canary mode using the production execution path without continuation;
-- full-rollout initialization refusing to run without a passed canary;
+- full-rollout initialization refusing to run without a deployed and explicitly approved canary;
 - strict provider response-shape validation;
 - 120-second request cancellation;
 - worker-pool concurrency never exceeding four;
 - provider failure isolation between records;
 - report sanitization and aggregate counts;
-- workflow self-dispatch and completion guards;
+- same-job workflow continuation and completion guards;
 - shared refresh/enrichment concurrency;
 - registry and snapshot write-set isolation;
 - summary contract and rendered four-line card fit;

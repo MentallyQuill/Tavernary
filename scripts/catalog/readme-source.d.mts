@@ -8,6 +8,7 @@ export type SourceReasonCode =
   | "identity-mismatch"
   | "missing-permanent-identity"
   | "readme-fetch-failed"
+  | "readme-authentication-failed"
   | "readme-rate-limited"
   | "readme-server-error"
   | "readme-unusable";

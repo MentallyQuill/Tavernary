@@ -101,15 +101,31 @@ test("enrichment stages only registry records and report after the command", asy
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
   expect(text).toContain("npm run catalog:enrich -- --mode preflight");
   expect(text).toContain('"$MODE" == "canary"');
-  expect(text).toContain('[[ "$run_mode" == "full"');
-  expect(text).toContain("workflow run enrich-catalog.yml");
-  expect(text).not.toContain("workflow run deploy-pages.yml");
-  expect(text).toContain("registry_changed=true");
+  expect(text).toContain('test "$run_mode" = "full"');
+  expect(text).not.toContain("workflow run enrich-catalog.yml");
+  expect(text).toContain("workflow run deploy-pages.yml");
+  expect(text).toContain("--mode approve-canary");
+  expect(text).toContain('"$status" != "awaiting-deployment"');
+  expect(text).toContain('while [[ "$status" == "running" ]]');
+  expect(text).toContain("GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}");
+  expect(text).toContain("REGISTRY_CHANGED=true");
   expect(text).toContain("gh run watch");
+  const deploy = text.indexOf("gh workflow run deploy-pages.yml");
+  const watch = text.indexOf("gh run watch", deploy);
+  const approve = text.indexOf("--mode approve-canary", watch);
+  expect(deploy).toBeGreaterThan(-1);
+  expect(watch).toBeGreaterThan(deploy);
+  expect(approve).toBeGreaterThan(watch);
+  expect(text).toContain("timeout-minutes: 300");
   expect(commands.join("\n")).toContain("npm run check");
-  expect(commands.join("\n").indexOf("npm run catalog:enrich")).toBeLessThan(
-    commands.join("\n").indexOf("git add data/registry/projects"),
-  );
+  const runBatch = text.indexOf("run_batch()");
+  const enrich = text.indexOf("npm run catalog:enrich", runBatch);
+  const check = text.indexOf("npm run check", enrich);
+  const publish = text.indexOf('publish_changes "chore(catalog)', check);
+  expect(runBatch).toBeGreaterThan(-1);
+  expect(enrich).toBeGreaterThan(runBatch);
+  expect(check).toBeGreaterThan(enrich);
+  expect(publish).toBeGreaterThan(check);
   expect(document.concurrency.group).toBe("catalog-refresh");
   expect(
     (

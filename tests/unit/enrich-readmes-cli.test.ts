@@ -2,6 +2,7 @@ import { expect, test, vi } from "vitest";
 
 import {
   applyAttemptResults,
+  approveCanaryDeployment,
   createEnrichmentRunState,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
 import { runCli } from "../../scripts/catalog/enrich-readmes.mjs";
@@ -97,6 +98,29 @@ function executionOptions(ids: string[]) {
   };
 }
 
+function deployedCanary() {
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ["a", "b", "c", "d", "e"],
+    runId: "canary",
+    now,
+  });
+  canary = applyAttemptResults(
+    canary,
+    ["a", "b", "c", "d", "e"].map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+  return approveCanaryDeployment(canary, {
+    commitSha: "b".repeat(40),
+    deploymentRunId: 12345,
+    now,
+  });
+}
+
 test.each([
   [{ apiUrl: "", apiKey: "key", model: "MiniMax-M3" }, "URL"],
   [
@@ -174,7 +198,10 @@ test("an explicit canary replaces the obsolete pre-alpha report format", async (
         failed: [],
       },
     }),
-  ).resolves.toMatchObject({ mode: "canary", status: "passed" });
+  ).resolves.toMatchObject({
+    mode: "canary",
+    status: "awaiting-deployment",
+  });
 });
 
 test("a canary retry resumes only its failed IDs", async () => {
@@ -212,26 +239,20 @@ test("a canary retry resumes only its failed IDs", async () => {
 
   expect(options.writeRecord).toHaveBeenCalledOnce();
   expect(report).toMatchObject({
-    status: "passed",
+    status: "awaiting-deployment",
     phase: "complete",
     retry_cursor: 1,
   });
 });
 
-test("start requires a passed canary and freezes the complete eligible manifest", async () => {
-  const ids = Array.from({ length: 25 }, (_, index) => `project-${index}`);
-  await expect(
-    runCli({ ...executionOptions(ids), mode: "start", previousReport: null }),
-  ).rejects.toThrow("passed canary");
-
-  let canary = createEnrichmentRunState({
-    mode: "canary",
-    manifest: ["a", "b", "c", "d", "e"],
-    runId: "canary",
-    now,
-  });
-  canary = applyAttemptResults(
-    canary,
+test("canary approval records verified deployment without provider access", async () => {
+  const awaiting = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "canary",
+      manifest: ["a", "b", "c", "d", "e"],
+      runId: "canary",
+      now,
+    }),
     ["a", "b", "c", "d", "e"].map((id) => ({
       id,
       phase: "primary" as const,
@@ -240,9 +261,34 @@ test("start requires a passed canary and freezes the complete eligible manifest"
     now,
   );
   const report = await runCli({
+    mode: "approve-canary",
+    previousReport: awaiting,
+    reportPath: null,
+    commitSha: "c".repeat(40),
+    deploymentRunId: 67890,
+    now,
+  });
+
+  expect(report).toMatchObject({
+    status: "passed",
+    deployment: {
+      commit_sha: "c".repeat(40),
+      run_id: 67890,
+      verified_at: now,
+    },
+  });
+});
+
+test("start requires a deployed canary and freezes the complete eligible manifest", async () => {
+  const ids = Array.from({ length: 25 }, (_, index) => `project-${index}`);
+  await expect(
+    runCli({ ...executionOptions(ids), mode: "start", previousReport: null }),
+  ).rejects.toThrow("deployed canary");
+
+  const report = await runCli({
     ...executionOptions(ids),
     mode: "start",
-    previousReport: canary,
+    previousReport: deployedCanary(),
   });
 
   expect(report.manifest).toEqual([...ids].sort());
@@ -294,24 +340,7 @@ test("record failures advance durable state without rejecting the CLI", async ()
   const report = await runCli({
     ...executionOptions(ids),
     mode: "start",
-    previousReport: (() => {
-      let canary = createEnrichmentRunState({
-        mode: "canary",
-        manifest: ["a", "b", "c", "d", "e"],
-        runId: "canary",
-        now,
-      });
-      canary = applyAttemptResults(
-        canary,
-        ["a", "b", "c", "d", "e"].map((id) => ({
-          id,
-          phase: "primary" as const,
-          outcome: "enriched" as const,
-        })),
-        now,
-      );
-      return canary;
-    })(),
+    previousReport: deployedCanary(),
     provider: {
       generate: vi.fn().mockRejectedValue(
         Object.assign(

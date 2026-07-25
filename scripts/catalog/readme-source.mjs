@@ -24,7 +24,10 @@ class GithubRequestError extends Error {
 }
 
 async function defaultGithub(path, options = {}) {
-  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  if (!token) {
+    throw new GithubRequestError(401);
+  }
   const query = options.ref ? `?ref=${encodeURIComponent(options.ref)}` : "";
   const response = await fetch(`${githubApi}${path}${query}`, {
     headers: {
@@ -145,6 +148,13 @@ export function assessSourceReadiness(record, snapshot, validateSnapshot) {
 
 function readmeFailure(error) {
   const status = Number(error?.status);
+  if (status === 401 || status === 403) {
+    return {
+      status: "failed",
+      reasonCode: "readme-authentication-failed",
+      message: "GitHub README authentication is unavailable.",
+    };
+  }
   if (status === 429) {
     return {
       status: "failed",
