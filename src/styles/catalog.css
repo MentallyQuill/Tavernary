@@ -1728,11 +1728,7 @@
 
 .kit-builder[data-drag-intent="remove"] .dragging {
   border-color: var(--color-kind-extension);
-  background: color-mix(
-    in srgb,
-    var(--color-kind-extension) 10%,
-    var(--color-surface-card)
-  );
+  background: var(--color-surface-primary);
 }
 
 .kit-drag-ghost span {
@@ -1769,7 +1765,7 @@
 
 .kit-builder-remove:is(:hover, :focus-visible) {
   color: var(--color-kind-extension);
-  background: color-mix(in srgb, var(--color-kind-extension) 10%, transparent);
+  background: var(--color-surface-raised);
 }
 
 .kit-builder-row:has(.kit-drag-handle:is(:hover, :focus-visible)) {
