@@ -35,7 +35,7 @@
     "latest_release_at": null,
     "evidence_status": "provisional",
     "baseline_completed_at": null,
-    "baseline_attempts": 1
+    "baseline_attempts": 2
   },
   "community": {
     "stargazers_count": 4,
@@ -44,6 +44,6 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T06:13:32.026Z",
+  "refreshed_at": "2026-07-25T06:20:47.793Z",
   "stale_since": "2026-07-25T06:13:32.026Z"
 }

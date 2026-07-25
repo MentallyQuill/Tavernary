@@ -6,6 +6,7 @@
     "owner": "ZhenyaPav",
     "name": "SillyTavern-Namegen",
     "url": "https://github.com/ZhenyaPav/SillyTavern-Namegen",
+    "description": null,
     "default_branch": "master",
     "head_sha": "00c80b53b5a81ccd7d59d8935e605618f226ea28",
     "head_committed_at": "2025-09-14T09:38:03.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -43,6 +31,6 @@
     "aggregate": 6
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T06:20:47.793Z",
   "stale_since": null
 }
