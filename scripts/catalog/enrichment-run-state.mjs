@@ -45,14 +45,20 @@ function aggregateEntries(entries) {
 }
 
 function terminalState(state) {
-  if (state.mode === "full") return "complete";
-  return Object.values(state.entries).every((entry) =>
-    ["enriched", "fallback", "retry-enriched", "retry-fallback"].includes(
-      entry.outcome,
-    ),
-  )
-    ? "awaiting-deployment"
-    : "failed";
+  const successfulOutcomes = new Set([
+    "enriched",
+    "fallback",
+    "retry-enriched",
+    "retry-fallback",
+  ]);
+  const entryIds = Object.keys(state.entries);
+  const successful =
+    entryIds.length === state.manifest.length &&
+    state.manifest.every((id) =>
+      successfulOutcomes.has(state.entries[id]?.outcome),
+    );
+  if (!successful) return "failed";
+  return state.mode === "full" ? "complete" : "awaiting-deployment";
 }
 
 function entryForResult(result, attempt, outcome, now) {

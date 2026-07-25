@@ -196,6 +196,41 @@ jobs:
             publish_canary_preparation
           }
 
+          sync_main() {
+            for attempt in 1 2 3; do
+              if git fetch origin main &&
+                git rebase origin/main; then
+                return
+              fi
+              conflicts="$(git diff --name-only --diff-filter=U)"
+              if [[ -n "$conflicts" ]]; then
+                echo "Full rollout preparation conflict:"
+                echo "$conflicts"
+              fi
+              git rebase --abort || true
+              if (( attempt == 3 )); then
+                exit 1
+              fi
+            done
+          }
+
+          prepare_full_rollout() {
+            sync_main
+            for attempt in 1 2 3; do
+              npm run catalog:backfill-identities -- --write
+              npm run catalog:validate
+              if git diff --quiet -- data/registry/projects; then
+                return
+              fi
+              publish_changes "chore(catalog): prepare full enrichment rollout"
+            done
+            npm run catalog:backfill-identities -- --write
+            if ! git diff --quiet -- data/registry/projects; then
+              echo "Repository identities changed continuously during preparation." >&2
+              exit 1
+            fi
+          }
+
           deploy_registry_changes() {
             DEPLOY_RUN_ID=""
             if [[ "$REGISTRY_CHANGED" != "true" ]]; then
@@ -326,6 +361,7 @@ jobs:
           fi
 
           if [[ "$MODE" == "start" ]]; then
+            prepare_full_rollout
             run_batch start
             run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
             status="$(jq -r '.status' data/reports/enrichment-report.json)"

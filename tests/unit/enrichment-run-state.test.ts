@@ -162,7 +162,7 @@ test("queues primary failures once and retries only after primary completion", (
   });
 });
 
-test("maps retry outcomes, recomputes aggregates, and completes with failures", () => {
+test("maps retry outcomes, recomputes aggregates, and fails with exhausted retries", () => {
   let state = createEnrichmentRunState({
     mode: "full",
     manifest: ["a", "b"],
@@ -184,7 +184,7 @@ test("maps retry outcomes, recomputes aggregates, and completes with failures", 
   );
 
   expect(state).toMatchObject({
-    status: "complete",
+    status: "failed",
     phase: "complete",
     attempts: { a: 2, b: 2 },
     aggregates: {
@@ -193,6 +193,57 @@ test("maps retry outcomes, recomputes aggregates, and completes with failures", 
     },
   });
   expect(selectNextRunBatch(state).projectIds).toEqual([]);
+});
+
+test("fails a full rollout containing source-not-ready entries", () => {
+  const initial = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a", "b"],
+    runId: "run-1",
+    now,
+  });
+  const state = applyAttemptResults(
+    initial,
+    [
+      { id: "a", phase: "primary", outcome: "enriched" },
+      { id: "b", phase: "primary", outcome: "source-not-ready" },
+    ],
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "failed",
+    phase: "complete",
+    aggregates: { enriched: 1, "source-not-ready": 1 },
+  });
+});
+
+test("fails a full rollout whose terminal entries do not cover its manifest", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a", "b"],
+    runId: "run-1",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      { id: "a", phase: "primary", outcome: "failed" },
+      { id: "b", phase: "primary", outcome: "enriched" },
+    ],
+    later,
+  );
+  delete state.entries.b;
+  state = applyAttemptResults(
+    state,
+    [{ id: "a", phase: "retry", outcome: "enriched" }],
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "failed",
+    phase: "complete",
+  });
 });
 
 test("resumes from serialized cursor and never repeats completed IDs", () => {

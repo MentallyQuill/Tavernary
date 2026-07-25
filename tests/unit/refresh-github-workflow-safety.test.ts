@@ -231,6 +231,49 @@ test("fails an enrichment resume when its cursor state does not advance", async 
   expect(source.match(/\bresume_batch\b/gu)).toHaveLength(3);
 });
 
+test("prepares permanent repository identities before a full rollout starts", async () => {
+  const source = await workflowSource("enrich-catalog");
+  const synchronizationStart = source.indexOf("sync_main()");
+  const synchronizationEnd = source.indexOf(
+    "prepare_full_rollout()",
+    synchronizationStart,
+  );
+  const synchronization = source.slice(
+    synchronizationStart,
+    synchronizationEnd,
+  );
+  const preparationStart = source.indexOf("prepare_full_rollout()");
+  const preparationEnd = source.indexOf(
+    "deploy_registry_changes()",
+    preparationStart,
+  );
+  const preparation = source.slice(preparationStart, preparationEnd);
+  const startBranchStart = source.indexOf('if [[ "$MODE" == "start" ]]');
+  const startBranch = source.slice(
+    startBranchStart,
+    source.indexOf('while [[ "$status" == "running" ]]', startBranchStart),
+  );
+
+  expect(synchronizationStart).toBeGreaterThan(-1);
+  expect(synchronization).toContain("git fetch origin main");
+  expect(synchronization).toContain("git rebase origin/main");
+  expect(preparationStart).toBeGreaterThan(-1);
+  expect(preparation).toContain("sync_main");
+  expect(preparation).toContain("for attempt in 1 2 3");
+  expect(preparation).toContain(
+    "npm run catalog:backfill-identities -- --write",
+  );
+  expect(preparation).toContain("npm run catalog:validate");
+  expect(preparation).toContain("git diff --quiet -- data/registry/projects");
+  expect(preparation).toContain(
+    'publish_changes "chore(catalog): prepare full enrichment rollout"',
+  );
+  expect(startBranch.indexOf("prepare_full_rollout")).toBeGreaterThan(-1);
+  expect(startBranch.indexOf("prepare_full_rollout")).toBeLessThan(
+    startBranch.indexOf("run_batch start"),
+  );
+});
+
 test("identity backfill targets optional IDs and owns only repository identity writes", async () => {
   const text = await workflowSource("backfill-repository-identities");
   const document = parse(text) as {
