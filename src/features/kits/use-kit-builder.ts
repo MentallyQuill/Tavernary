@@ -16,7 +16,7 @@ import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
 const builderCollapsedStorageKey = "tavernary:kit-builder-collapsed";
 const builderCollapsedChangeEvent = "tavernary-kit-builder-collapsed-change";
-let volatileBuilderCollapsed = false;
+let volatileBuilderCollapsed = true;
 
 export type KitBuilderState =
   | { mode: "intro"; collapsed: boolean }
@@ -47,7 +47,7 @@ function normalizedKitProjectIds(kit: CatalogKit) {
 function storedBuilderCollapsed() {
   try {
     const stored = window.localStorage.getItem(builderCollapsedStorageKey);
-    return stored === null ? false : stored === "true";
+    return stored === null ? true : stored === "true";
   } catch {
     return volatileBuilderCollapsed;
   }

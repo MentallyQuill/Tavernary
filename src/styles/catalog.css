@@ -321,11 +321,26 @@
 }
 
 .category-navigation
-  button:not([data-category="all"]):not([data-category="frontend"]):not(
-    [data-category="preset"]
-  )
+  button:not([data-category="all"]):not([data-category="kits"]):not(
+    [data-category="frontend"]
+  ):not([data-category="preset"])
   svg {
   color: var(--color-kind-extension);
+}
+
+.category-navigation button:is([data-category="kits"], [data-category="all"]) {
+  color: var(--color-navigation-primary);
+}
+
+.category-navigation button[data-category="kits"] svg,
+.category-navigation button[data-category="all"] .all-symbol {
+  color: var(--color-navigation-primary);
+}
+
+.category-navigation button[data-category="kits"] svg,
+.category-navigation .all-symbol {
+  width: 18px;
+  height: 18px;
 }
 
 .category-navigation b {

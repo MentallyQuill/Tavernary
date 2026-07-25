@@ -165,6 +165,31 @@ describe("catalog visual alignment", () => {
     expect(navigation).toContain('className="all-symbol"');
   });
 
+  test("gives Kits and All Projects equally prominent white navigation marks", () => {
+    const icons = read("src/components/icons/category-icon.tsx");
+    const css = read("src/styles/catalog.css");
+    const tokens = read("src/styles/tokens.css");
+
+    expect(icons).toContain('data-icon="kit"');
+    expect(icons).toContain('viewBox="3 3 26 26"');
+    expect(icons).toContain(
+      "M29,5a2,2,0,0,0-2-2H5A2,2,0,0,0,3,5V27a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2ZM27,5V9H5V5Zm0,22H5V23H27Zm0-6H5V17H27Zm0-6H5V11H27Z",
+    );
+    expect(tokens).toContain("--color-navigation-primary: #ffffff;");
+    expect(css).toMatch(
+      /\.category-navigation button:is\(\[data-category="kits"\], \[data-category="all"\]\)\s*\{[^}]*color:\s*var\(--color-navigation-primary\)/s,
+    );
+    expect(css).toMatch(
+      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation button\[data-category="all"\] \.all-symbol\s*\{[^}]*color:\s*var\(--color-navigation-primary\)/s,
+    );
+    expect(css).toContain(
+      'button:not([data-category="all"]):not([data-category="kits"]):not(',
+    );
+    expect(css).toMatch(
+      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation \.all-symbol\s*\{[^}]*width:\s*18px[^}]*height:\s*18px/s,
+    );
+  });
+
   test("uses the mockup desktop category grid instead of an underline bar", () => {
     const css = read("src/styles/catalog.css");
     const globals = read("src/app/globals.css");

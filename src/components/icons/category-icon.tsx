@@ -58,8 +58,15 @@ export function CategoryIcon({
   }
   if (name === "kit") {
     return (
-      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
-        <path d="M4 7h16v12H4zM7 4h10v3M8 11h8M8 15h5" />
+      <svg
+        aria-hidden
+        data-icon="kit"
+        viewBox="3 3 26 26"
+        fill="currentColor"
+        stroke="none"
+        {...props}
+      >
+        <path d="M29,5a2,2,0,0,0-2-2H5A2,2,0,0,0,3,5V27a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2ZM27,5V9H5V5Zm0,22H5V23H27Zm0-6H5V17H27Zm0-6H5V11H27Z" />
       </svg>
     );
   }

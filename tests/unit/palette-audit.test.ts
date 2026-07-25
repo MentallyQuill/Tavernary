@@ -7,6 +7,8 @@ import {
 } from "../../scripts/audit-palette.mjs";
 
 test("accepts the exact production palette and neutral keywords", () => {
+  expect(APPROVED_HEX).toContain("#FFFFFF");
+
   const source = [
     ...APPROVED_HEX.map((color) => `.x{color:${color}}`),
     ".x{color:transparent;fill:currentColor;border-color:inherit}",

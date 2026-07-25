@@ -11,6 +11,7 @@ export const APPROVED_HEX = [
   "#173740",
   "#284A52",
   "#3B6068",
+  "#FFFFFF",
   "#F3F1E8",
   "#CBD6D3",
   "#849A9E",

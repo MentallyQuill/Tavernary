@@ -66,6 +66,7 @@ const catalog: Catalog = {
 
 afterEach(() => {
   cleanup();
+  window.localStorage.clear();
   vi.useRealTimers();
   Object.defineProperty(window, "matchMedia", {
     configurable: true,
@@ -92,6 +93,7 @@ describe("catalog Kit batch flow", () => {
     const builder = screen.getByRole("complementary", {
       name: "Kit Builder",
     });
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
 
     fireEvent.click(screen.getByRole("button", { name: "Add Memory to Kit" }));
     fireEvent.click(
@@ -123,6 +125,7 @@ describe("catalog Kit batch flow", () => {
     const builder = screen.getByRole("complementary", {
       name: "Kit Builder",
     });
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
     expect(builder).not.toHaveClass("collapsed");
 
     fireEvent.click(screen.getByRole("button", { name: "Add Memory to Kit" }));

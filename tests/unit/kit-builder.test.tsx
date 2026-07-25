@@ -118,26 +118,35 @@ afterEach(() => {
 });
 
 describe("Kit builder state", () => {
-  test("restores closed and reopened visibility across remounts", () => {
+  test("starts collapsed when no visibility preference has been saved", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    expect(result.current.state.collapsed).toBe(true);
+  });
+
+  test("restores opened and reclosed visibility across remounts", () => {
     const first = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
-    act(() => first.result.current.toggleCollapsed());
     expect(first.result.current.state.collapsed).toBe(true);
+    act(() => first.result.current.toggleCollapsed());
+    expect(first.result.current.state.collapsed).toBe(false);
     first.unmount();
-
-    const closedRefresh = renderHook(() =>
-      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
-    );
-    expect(closedRefresh.result.current.state.collapsed).toBe(true);
-    act(() => closedRefresh.result.current.toggleCollapsed());
-    expect(closedRefresh.result.current.state.collapsed).toBe(false);
-    closedRefresh.unmount();
 
     const openRefresh = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
     expect(openRefresh.result.current.state.collapsed).toBe(false);
+    act(() => openRefresh.result.current.toggleCollapsed());
+    expect(openRefresh.result.current.state.collapsed).toBe(true);
+    openRefresh.unmount();
+
+    const closedRefresh = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    expect(closedRefresh.result.current.state.collapsed).toBe(true);
   });
 
   test("starts create, duplicate, and edit drafts without mutating the live Kit", () => {
@@ -219,6 +228,7 @@ describe("Kit builder state", () => {
     const { result } = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
+    act(() => result.current.toggleCollapsed());
 
     let plan;
     act(() => {
@@ -249,6 +259,7 @@ describe("Kit builder state", () => {
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
 
+    act(() => result.current.toggleCollapsed());
     act(() => result.current.startSelectionDraft());
 
     expect(result.current.state).toMatchObject({
@@ -269,7 +280,6 @@ describe("Kit builder state", () => {
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
 
-    act(() => result.current.toggleCollapsed());
     act(() => result.current.startSelectionDraft());
 
     expect(result.current.state).toMatchObject({
@@ -298,6 +308,7 @@ describe("Kit builder state", () => {
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
 
+    act(() => result.current.toggleCollapsed());
     act(() => result.current.startSelectionDraft());
     act(() => result.current.discardUntouchedSelectionDraft());
     expect(result.current.state).toEqual({
@@ -382,7 +393,7 @@ describe("Kit builder state", () => {
 
     expect(result.current.state).toEqual({
       mode: "intro",
-      collapsed: false,
+      collapsed: true,
     });
     expect(result.current.draftOrigin).toBeNull();
   });
