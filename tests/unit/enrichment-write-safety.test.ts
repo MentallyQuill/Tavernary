@@ -43,9 +43,12 @@ test("atomically merges only editorial enrichment fields", async () => {
     output,
   );
 
-  const written = JSON.parse(await readFile(path, "utf8"));
+  const serialized = await readFile(path, "utf8");
+  const written = JSON.parse(serialized);
   expect(written).toEqual({ ...record, ...output });
   expect(written.source).toEqual(record.source);
+  expect(serialized).toContain('"frontends": ["sillytavern"]');
+  expect(serialized).toContain('"capabilities": ["automation"]');
 });
 
 test("refuses invalid output without changing the record", async () => {

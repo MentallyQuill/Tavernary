@@ -19,6 +19,7 @@ import {
   createEnrichmentReport,
   validateEnrichmentReport,
 } from "./enrichment-report.mjs";
+import { formatJson } from "./json-format.mjs";
 import {
   applyAttemptResults,
   approveCanaryDeployment,
@@ -173,7 +174,7 @@ export async function writeEnrichedRecord(
   };
   const temporaryPath = `${path}.${randomUUID()}.tmp`;
   try {
-    await writeFile(temporaryPath, `${JSON.stringify(updated, null, 2)}\n`);
+    await writeFile(temporaryPath, await formatJson(updated));
     await rename(temporaryPath, path);
   } catch (error) {
     await rm(temporaryPath, { force: true });
@@ -428,7 +429,7 @@ async function writeJsonAtomic(path, value) {
   await mkdir(dirname(path), { recursive: true });
   const temporaryPath = `${path}.${randomUUID()}.tmp`;
   try {
-    await writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}\n`);
+    await writeFile(temporaryPath, await formatJson(value));
     await rename(temporaryPath, path);
   } catch (error) {
     await rm(temporaryPath, { force: true });

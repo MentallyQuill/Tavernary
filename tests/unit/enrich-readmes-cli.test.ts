@@ -1,3 +1,7 @@
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test, vi } from "vitest";
 
 import {
@@ -281,6 +285,38 @@ test("canary approval records verified deployment without provider access", asyn
       verified_at: now,
     },
   });
+});
+
+test("writes enrichment reports in repository Prettier format", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-report-"));
+  const reportPath = join(directory, "enrichment-report.json");
+  const awaiting = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "canary",
+      manifest: ["a", "b", "c", "d", "e"],
+      runId: "canary",
+      now,
+      model,
+    }),
+    ["a", "b", "c", "d", "e"].map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+
+  await runCli({
+    mode: "approve-canary",
+    previousReport: awaiting,
+    reportPath,
+    commitSha: "c".repeat(40),
+    deploymentRunId: 67890,
+    now,
+  });
+
+  const serialized = await readFile(reportPath, "utf8");
+  expect(serialized).toContain('"manifest": ["a", "b", "c", "d", "e"]');
 });
 
 test("start requires a deployed canary and freezes the complete eligible manifest", async () => {

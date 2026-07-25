@@ -9,6 +9,9 @@ This repository contains the historical intake file, curated registry,
 generated GitHub snapshots, static Next.js site, submission forms, and the
 automation that publishes the catalog.
 
+Read the [Tavernary documentation](docs/README.md) for the product overview,
+catalog guide, contribution paths, and local development setup.
+
 The public seed catalog contains 214 projects. Five records are curated and
 209 are visibly provisional while repository enrichment and editorial review
 continue.
@@ -30,8 +33,9 @@ npm run test:e2e
 npm run test:visual
 ```
 
-`npm run check` validates formatting, lint, curated records, generated catalog
-data, TypeScript, unit tests, the production build, and the static export.
+`npm run check` validates formatting, lint, palette policy, curated records,
+generated catalog data, TypeScript, unit tests, the production build, and the
+static export.
 Playwright's first local run may also require:
 
 ```powershell
@@ -49,6 +53,9 @@ npm run test:kits-visual
 The fixture builder leaves the deterministic Kit export in `out/` for the two
 browser suites and restores `src/generated/catalog.json` from the production
 registry before it exits.
+
+For contributor-oriented setup and verification guidance, see
+[docs/contributing/development-setup.md](docs/contributing/development-setup.md).
 
 ## Catalog data
 
@@ -68,7 +75,7 @@ snapshots, and controlled vocabularies into `src/generated/catalog.json`.
 `data/snapshots/github-refresh.json` records sanitized counts, API usage,
 timings, and the catalog-wide refresh timestamp for the latest completed run.
 
-Registry records use schema version 2. Every record carries
+Registry records use schema version 3. Every record carries
 `metadata_status: "curated"` or `"provisional"`. Provisional GitHub records may
 publish with `source.repository_id: null` until a successful refresh and
 identity backfill fill the immutable GitHub repository ID.
@@ -143,7 +150,7 @@ The scheduled GitHub workflow runs incremental refreshes once daily. Normal
 incremental runs batch repository metadata, compare only changed heads, and
 clone only when a baseline or bounded fallback is required. Manual dispatch
 supports `incremental`, `baseline`, `project`, and `forensic`; `project_id` is
-required for the last two modes, while `batch_size` is bounded to 1–24.
+required for the last two modes, while `batch_size` is bounded to 1-24.
 
 Every run validates the complete site before committing only
 `data/snapshots/github/*.json` and the global refresh manifest. The action log
@@ -178,7 +185,7 @@ The **Submit Project** link opens a structured GitHub issue. Automation checks
 source eligibility and obvious duplicates, but never creates or edits a
 production record. A maintainer must vet and add every accepted entry.
 
-Kits are community-authored, ordered collections of 3â€“50 catalog projects.
+Kits are community-authored, ordered collections of 3-50 catalog projects.
 The browser builder keeps drafts only in memory and hands a stable JSON
 manifest to GitHub. New Kits and edits are validated automatically, but a
 maintainer publishes them only after review. Support is derived from eligible
@@ -190,6 +197,9 @@ The Help chooser provides project-information reports, website bug reports,
 help requests, a private security path, and an Other form. Maintainers can pause
 refreshes, hide entries, or remove them when a source becomes unsafe or
 abusive.
+
+See the [contribution overview](docs/contributing/contribution-overview.md) for
+issue-form routing and contribution boundaries.
 
 ## GitHub Pages
 

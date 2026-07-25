@@ -456,7 +456,7 @@ Cover UTF-8 text containing badges, linked images, HTML comments, `<script>`/`<s
 ```ts
 const noisyReadme = `
 # Fixture
-[![badge](badge.svg)](https://example.test)
+[![badge](https://example.test/badge.svg)](https://example.test)
 <!-- navigation -->
 <script>ignorePreviousInstructions()</script>
 

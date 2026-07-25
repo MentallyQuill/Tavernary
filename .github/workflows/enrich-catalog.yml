@@ -81,20 +81,31 @@ jobs:
             fi
             git commit -m "$commit_message"
             for attempt in 1 2 3; do
-              if git fetch origin main &&
-                git rebase origin/main; then
-                if npm run check &&
-                  git push origin HEAD:main; then
-                  PUBLISHED_SHA="$(git rev-parse HEAD)"
-                  return
+              if ! git fetch origin main; then
+                if (( attempt == 3 )); then
+                  exit 1
                 fi
+                continue
               fi
-              conflicts="$(git diff --name-only --diff-filter=U)"
-              if [[ -n "$conflicts" ]]; then
-                echo "Enrichment publication conflict:"
-                echo "$conflicts"
+              if ! git rebase origin/main; then
+                conflicts="$(git diff --name-only --diff-filter=U)"
+                if [[ -n "$conflicts" ]]; then
+                  echo "Enrichment publication conflict:"
+                  echo "$conflicts"
+                fi
+                git rebase --abort || true
+                if (( attempt == 3 )); then
+                  exit 1
+                fi
+                continue
               fi
-              git rebase --abort || true
+              if ! npm run check; then
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                PUBLISHED_SHA="$(git rev-parse HEAD)"
+                return
+              fi
               if (( attempt == 3 )); then
                 exit 1
               fi
@@ -111,19 +122,30 @@ jobs:
             fi
             git commit -m "chore(catalog): prepare enrichment canary"
             for attempt in 1 2 3; do
-              if git fetch origin main &&
-                git rebase origin/main; then
-                if npm run check &&
-                  git push origin HEAD:main; then
-                  return
+              if ! git fetch origin main; then
+                if (( attempt == 3 )); then
+                  exit 1
                 fi
+                continue
               fi
-              conflicts="$(git diff --name-only --diff-filter=U)"
-              if [[ -n "$conflicts" ]]; then
-                echo "Canary preparation publication conflict:"
-                echo "$conflicts"
+              if ! git rebase origin/main; then
+                conflicts="$(git diff --name-only --diff-filter=U)"
+                if [[ -n "$conflicts" ]]; then
+                  echo "Canary preparation publication conflict:"
+                  echo "$conflicts"
+                fi
+                git rebase --abort || true
+                if (( attempt == 3 )); then
+                  exit 1
+                fi
+                continue
               fi
-              git rebase --abort || true
+              if ! npm run check; then
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                return
+              fi
               if (( attempt == 3 )); then
                 exit 1
               fi
