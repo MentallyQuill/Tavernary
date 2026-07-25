@@ -9,6 +9,14 @@ import {
   useSyncExternalStore,
 } from "react";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import {
+  clearStoredKitDraft,
+  kitDraftStorageKey,
+  readStoredKitDraft,
+  writeStoredKitDraft,
+  type KitDraftOrigin,
+  type StoredKitDraft,
+} from "@/features/kits/kit-draft-storage";
 import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
 import { planKitProjectBatch } from "@/features/kits/project-batch";
 import { removeProject } from "@/features/kits/project-stack-order";
@@ -17,6 +25,7 @@ import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 const builderCollapsedStorageKey = "tavernary:kit-builder-collapsed";
 const builderCollapsedChangeEvent = "tavernary-kit-builder-collapsed-change";
 let volatileBuilderCollapsed = true;
+const noProjects: CatalogProject[] = [];
 
 export type KitBuilderState =
   | { mode: "intro"; collapsed: boolean }
@@ -82,9 +91,11 @@ function storeBuilderCollapsed(collapsed: boolean) {
 export function useKitBuilder({
   selectedKitId,
   onSelectKit,
+  projects = noProjects,
 }: {
   selectedKitId: string;
   onSelectKit: (kitId: string) => void;
+  projects?: CatalogProject[];
 }) {
   const [contentState, setContentState] = useState<KitBuilderContentState>(
     () =>
@@ -101,11 +112,73 @@ export function useKitBuilder({
     () => ({ ...contentState, collapsed }),
     [collapsed, contentState],
   );
-  const [draftOrigin, setDraftOrigin] = useState<
-    "create" | "duplicate" | "edit" | null
-  >(null);
+  const [draftOrigin, setDraftOrigin] = useState<KitDraftOrigin | null>(null);
   const [originalProjectIds, setOriginalProjectIds] = useState<string[]>([]);
+  const [omittedProjectCount, setOmittedProjectCount] = useState(0);
   const selectionStartedDraftRef = useRef(false);
+
+  const restoreStoredDraft = useCallback(
+    (stored: StoredKitDraft) => {
+      const knownProjectIds = new Set(projects.map(({ id }) => id));
+      const restoredProjectIds =
+        knownProjectIds.size > 0
+          ? stored.draft.projectIds.filter((id) => knownProjectIds.has(id))
+          : stored.draft.projectIds;
+      setDraftOrigin(stored.draftOrigin);
+      setOriginalProjectIds(stored.originalProjectIds);
+      setOmittedProjectCount(
+        stored.draft.projectIds.length - restoredProjectIds.length,
+      );
+      setContentState({
+        mode: "build",
+        dirty: true,
+        draft: {
+          ...stored.draft,
+          projectIds: restoredProjectIds,
+        },
+      });
+    },
+    [projects],
+  );
+
+  useEffect(() => {
+    if (selectedKitId) return;
+    const stored = readStoredKitDraft();
+    if (!stored) return;
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) restoreStoredDraft(stored);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [restoreStoredDraft, selectedKitId]);
+
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== kitDraftStorageKey) return;
+      if (event.newValue === null) {
+        setDraftOrigin(null);
+        setOriginalProjectIds([]);
+        setOmittedProjectCount(0);
+        setContentState(
+          selectedKitId
+            ? { mode: "inspect", kitId: selectedKitId }
+            : { mode: "intro" },
+        );
+        return;
+      }
+      const stored = readStoredKitDraft();
+      if (stored) restoreStoredDraft(stored);
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [restoreStoredDraft, selectedKitId]);
+
+  useEffect(() => {
+    if (contentState.mode !== "build" || !draftOrigin) return;
+    writeStoredKitDraft(draftOrigin, originalProjectIds, contentState.draft);
+  }, [contentState, draftOrigin, originalProjectIds]);
 
   useEffect(() => {
     if (!selectedKitId) return;
@@ -141,8 +214,19 @@ export function useKitBuilder({
     [collapsed],
   );
 
+  const discardDraft = useCallback(() => {
+    selectionStartedDraftRef.current = false;
+    setDraftOrigin(null);
+    setOriginalProjectIds([]);
+    setOmittedProjectCount(0);
+    setContentState({ mode: "intro" });
+    clearStoredKitDraft();
+    onSelectKit("");
+  }, [onSelectKit]);
+
   const startCreate = useCallback(() => {
     selectionStartedDraftRef.current = false;
+    setOmittedProjectCount(0);
     storeBuilderCollapsed(false);
     setDraftOrigin("create");
     setOriginalProjectIds([]);
@@ -161,6 +245,7 @@ export function useKitBuilder({
 
   const startDuplicate = useCallback((kit: CatalogKit) => {
     selectionStartedDraftRef.current = false;
+    setOmittedProjectCount(0);
     storeBuilderCollapsed(false);
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("duplicate");
@@ -180,6 +265,7 @@ export function useKitBuilder({
 
   const startEdit = useCallback((kit: CatalogKit) => {
     selectionStartedDraftRef.current = false;
+    setOmittedProjectCount(0);
     storeBuilderCollapsed(false);
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("edit");
@@ -232,21 +318,23 @@ export function useKitBuilder({
   );
 
   const discardUntouchedSelectionDraft = useCallback(() => {
-    if (!selectionStartedDraftRef.current) return;
-    setContentState((current) => {
-      if (
-        current.mode !== "build" ||
-        current.dirty ||
-        current.draft.title ||
-        current.draft.description ||
-        current.draft.projectIds.length > 0
-      ) {
-        return current;
-      }
-      selectionStartedDraftRef.current = false;
-      return { mode: "intro" };
-    });
-  }, []);
+    if (
+      !selectionStartedDraftRef.current ||
+      contentState.mode !== "build" ||
+      contentState.dirty ||
+      contentState.draft.title ||
+      contentState.draft.description ||
+      contentState.draft.projectIds.length > 0
+    ) {
+      return;
+    }
+    selectionStartedDraftRef.current = false;
+    setDraftOrigin(null);
+    setOriginalProjectIds([]);
+    setOmittedProjectCount(0);
+    setContentState({ mode: "intro" });
+    clearStoredKitDraft();
+  }, [contentState]);
 
   const removeProjectFromDraft = useCallback(
     (projectId: string) => {
@@ -329,6 +417,7 @@ export function useKitBuilder({
     state,
     selectKit,
     toggleCollapsed,
+    discardDraft,
     startCreate,
     startSelectionDraft,
     discardUntouchedSelectionDraft,
@@ -339,5 +428,6 @@ export function useKitBuilder({
     applyProjectBatch,
     draftOrigin,
     originalProjectIds,
+    omittedProjectCount,
   };
 }

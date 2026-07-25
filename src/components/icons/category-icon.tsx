@@ -25,7 +25,8 @@ type IconName =
   | "copy-link"
   | "report"
   | "drag-handle"
-  | "caution";
+  | "caution"
+  | "remove";
 
 const strokeProps = {
   "aria-hidden": true,
@@ -40,6 +41,22 @@ export function CategoryIcon({
   name,
   ...props
 }: SVGProps<SVGSVGElement> & { name: IconName }) {
+  if (name === "remove") {
+    return (
+      <svg
+        aria-hidden
+        data-icon="remove"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        {...props}
+      >
+        <path
+          fillRule="evenodd"
+          d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM7.293 7.293a1 1 0 0 1 1.414 0L12 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414L13.414 12l3.293 3.293a1 1 0 0 1-1.414 1.414L12 13.414l-3.293 3.293a1 1 0 0 1-1.414-1.414L10.586 12 7.293 8.707a1 1 0 0 1 0-1.414Z"
+        />
+      </svg>
+    );
+  }
   if (name === "kit-builder") {
     return (
       <svg

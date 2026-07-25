@@ -171,6 +171,77 @@ describe("Kit Builder", () => {
     );
   });
 
+  test("opens a discard confirmation from the Build-mode heading", async () => {
+    mockMatchMedia({});
+    const user = userEvent.setup();
+    render(
+      <KitBuilderPanel
+        state={{
+          mode: "build",
+          collapsed: false,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "Work in progress",
+            description: "",
+            projectIds: [],
+          },
+        }}
+        kit={null}
+        onCollapse={() => undefined}
+        onDiscardDraft={() => undefined}
+      />,
+    );
+
+    const discard = screen.getByRole("button", { name: "Discard draft" });
+    expect(discard.querySelector('[data-icon="remove"]')).not.toBeNull();
+    await user.click(discard);
+
+    const confirmation = screen.getByRole("dialog", {
+      name: "Discard unfinished Kit?",
+    });
+    expect(confirmation).toHaveTextContent(
+      "This removes your saved draft and cannot be undone.",
+    );
+    expect(screen.getByRole("button", { name: "Keep editing" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Discard Kit" })).toBeVisible();
+  });
+
+  test("Escape closes only the discard confirmation on phones", async () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    const onCollapse = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <KitBuilderPanel
+        state={{
+          mode: "build",
+          collapsed: false,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "Work in progress",
+            description: "",
+            projectIds: [],
+          },
+        }}
+        kit={null}
+        onCollapse={onCollapse}
+        onDiscardDraft={() => undefined}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Discard draft" }));
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(
+      screen.queryByRole("dialog", { name: "Discard unfinished Kit?" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Kit Builder" })).toBeVisible();
+    expect(onCollapse).not.toHaveBeenCalled();
+  });
+
   test("renders a readable desktop Kit Builder rail", () => {
     mockMatchMedia({});
     render(

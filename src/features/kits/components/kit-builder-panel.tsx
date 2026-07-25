@@ -20,6 +20,7 @@ import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
+import { KitDiscardDialog } from "./kit-discard-dialog";
 import { KitDraftAccess, type DraftAccessStatus } from "./kit-draft-access";
 
 const builderBackground = [
@@ -53,6 +54,8 @@ export function KitBuilderPanel({
   onStartCreate,
   onUpdateDraft,
   onSubmitDraft,
+  onDiscardDraft,
+  omittedProjectCount = 0,
   active = true,
   draftAccessStatus,
   hidePhoneDraftAccess = false,
@@ -69,15 +72,19 @@ export function KitBuilderPanel({
     patch: Partial<import("@/features/kits/kit-types").KitDraft>,
   ) => void;
   onSubmitDraft?: () => void;
+  onDiscardDraft?: () => void;
+  omittedProjectCount?: number;
   active?: boolean;
   draftAccessStatus?: DraftAccessStatus;
   hidePhoneDraftAccess?: boolean;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
+  const [discardOpen, setDiscardOpen] = useState(false);
   const { phone } = useResponsiveCapabilities();
   const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const discardRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
   const openerRef = useRef<HTMLElement | null>(null);
   const hadOpenPhoneSheetRef = useRef(false);
@@ -114,6 +121,10 @@ export function KitBuilderPanel({
     }
     onCollapse();
   };
+  const closeDiscard = useCallback(() => {
+    setDiscardOpen(false);
+    window.setTimeout(() => discardRef.current?.focus(), 0);
+  }, []);
 
   useEffect(() => {
     if (phoneSheetVisible) {
@@ -368,9 +379,35 @@ export function KitBuilderPanel({
           </div>
         ) : state.mode === "build" ? (
           <div className="kit-builder-panel-build">
-            <h2>
-              {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
-            </h2>
+            <div className="kit-builder-panel-build-heading">
+              <h2>
+                {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
+              </h2>
+              <Tooltip
+                id={`${tooltipId}-discard-draft-tooltip`}
+                label="Discard draft"
+                className="control-tooltip"
+              >
+                <button
+                  ref={discardRef}
+                  type="button"
+                  className="control-icon kit-discard-trigger"
+                  aria-label="Discard draft"
+                  onClick={() => setDiscardOpen(true)}
+                >
+                  <CategoryIcon name="remove" />
+                </button>
+              </Tooltip>
+            </div>
+            {omittedProjectCount > 0 ? (
+              <p className="kit-draft-restore-notice" role="status">
+                {omittedProjectCount} saved{" "}
+                {omittedProjectCount === 1 ? "project is" : "projects are"} no
+                longer available and{" "}
+                {omittedProjectCount === 1 ? "was" : "were"} removed from this
+                draft.
+              </p>
+            ) : null}
             <KitBuilder
               draft={state.draft}
               projects={projects}
@@ -383,6 +420,15 @@ export function KitBuilderPanel({
           <div />
         )}
       </div>
+      {discardOpen && state.mode === "build" ? (
+        <KitDiscardDialog
+          onKeepEditing={closeDiscard}
+          onDiscard={() => {
+            setDiscardOpen(false);
+            onDiscardDraft?.();
+          }}
+        />
+      ) : null}
     </aside>
   );
 }

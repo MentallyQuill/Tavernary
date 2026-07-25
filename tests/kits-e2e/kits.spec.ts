@@ -96,6 +96,90 @@ async function verifyUnifiedSelectionFlow(
   ).toBeVisible();
 }
 
+test("restores a browser-local draft and confirms before discarding it", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
+  await page.getByRole("button", { name: "Create new Kit" }).click();
+  await page.getByLabel("Title", { exact: true }).fill("Persistent Kit");
+  await page
+    .getByLabel("Description", { exact: true })
+    .fill("This draft survives a browser reload.");
+
+  await page.reload();
+
+  await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
+    "Persistent Kit",
+  );
+  await expect(page.getByLabel("Description", { exact: true })).toHaveValue(
+    "This draft survives a browser reload.",
+  );
+  const discard = page.getByRole("button", { name: "Discard draft" });
+  await expect(discard.locator('[data-icon="remove"]')).toBeVisible();
+  await discard.click();
+  await expect(
+    page.getByRole("dialog", { name: "Discard unfinished Kit?" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Discard Kit" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Build and inspect Kits" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveCount(0);
+});
+
+test("keeps discard confirmation actions inside the phone dialog", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await page.getByRole("button", { name: "Create Kit" }).click();
+  await page.getByRole("button", { name: "Discard draft" }).click();
+
+  const dialog = page.getByRole("dialog", {
+    name: "Discard unfinished Kit?",
+  });
+  await expect(dialog).toBeVisible();
+  const geometry = await dialog.evaluate((element) => {
+    const dialogBounds = element.getBoundingClientRect();
+    const actions = Array.from(element.querySelectorAll("button")).map(
+      (button) => {
+        const bounds = button.getBoundingClientRect();
+        return {
+          left: bounds.left,
+          right: bounds.right,
+          top: bounds.top,
+          bottom: bounds.bottom,
+        };
+      },
+    );
+    return {
+      dialogLeft: dialogBounds.left,
+      dialogRight: dialogBounds.right,
+      dialogClientWidth: element.clientWidth,
+      dialogScrollWidth: element.scrollWidth,
+      actions,
+    };
+  });
+
+  expect(geometry.dialogLeft).toBeGreaterThanOrEqual(0);
+  expect(geometry.dialogRight).toBeLessThanOrEqual(390);
+  expect(geometry.dialogScrollWidth).toBeLessThanOrEqual(
+    geometry.dialogClientWidth,
+  );
+  for (const action of geometry.actions) {
+    expect(action.left).toBeGreaterThanOrEqual(geometry.dialogLeft);
+    expect(action.right).toBeLessThanOrEqual(geometry.dialogRight);
+  }
+  expect(geometry.actions[1].top).toBeGreaterThanOrEqual(
+    geometry.actions[0].bottom,
+  );
+});
+
 test("filled desktop actions use dark ink and card Kit glyphs are centered in a square", async ({
   page,
 }) => {
@@ -199,6 +283,49 @@ test("desktop Kit Builder open and close controls share one 36-pixel geometry", 
   const openBox = await open.boundingBox();
   expect(openBox?.width).toBe(36);
   expect(openBox?.height).toBe(36);
+});
+
+test("desktop Kit Builder keeps form focus rings visible and text fonts consistent", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
+  await page.getByRole("button", { name: "Create new Kit" }).click();
+
+  const body = page.locator(".kit-builder-panel-body");
+  const title = page.getByLabel("Title", { exact: true });
+  const description = page.getByLabel("Description", { exact: true });
+  await title.focus();
+
+  const presentation = await body.evaluate((element) => {
+    const titleElement = element.querySelector<HTMLInputElement>(
+      '.kit-builder input[type="text"]',
+    );
+    const descriptionElement = element.querySelector<HTMLTextAreaElement>(
+      ".kit-builder textarea",
+    );
+    if (!titleElement || !descriptionElement) {
+      throw new Error("Kit Builder text controls are missing");
+    }
+
+    const bodyBounds = element.getBoundingClientRect();
+    const titleBounds = titleElement.getBoundingClientRect();
+    const titleStyle = getComputedStyle(titleElement);
+    const descriptionStyle = getComputedStyle(descriptionElement);
+    return {
+      leftClearance: titleBounds.left - bodyBounds.left,
+      rightClearance: bodyBounds.right - titleBounds.right,
+      titleFontFamily: titleStyle.fontFamily,
+      descriptionFontFamily: descriptionStyle.fontFamily,
+    };
+  });
+
+  expect(presentation.leftClearance).toBeGreaterThanOrEqual(4);
+  expect(presentation.rightClearance).toBeGreaterThanOrEqual(4);
+  expect(presentation.descriptionFontFamily).toBe(presentation.titleFontFamily);
+  await expect(title).toBeFocused();
+  await expect(description).toBeVisible();
 });
 
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({

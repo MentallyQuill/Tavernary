@@ -149,6 +149,212 @@ describe("Kit builder state", () => {
     expect(closedRefresh.result.current.state.collapsed).toBe(true);
   });
 
+  test("restores an unfinished Kit draft across remounts", async () => {
+    const first = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+
+    act(() => first.result.current.startCreate());
+    act(() =>
+      first.result.current.updateDraft({
+        title: "Saved Kit",
+        description: "Continue this later.",
+        projectIds: ["frontend", "memory"],
+      }),
+    );
+    first.unmount();
+
+    const restored = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+
+    await act(async () => undefined);
+    expect(restored.result.current.state).toMatchObject({
+      mode: "build",
+      dirty: true,
+      draft: {
+        operation: "create",
+        kitId: null,
+        title: "Saved Kit",
+        description: "Continue this later.",
+        projectIds: ["frontend", "memory"],
+      },
+    });
+    expect(restored.result.current.draftOrigin).toBe("create");
+  });
+
+  test("omits unavailable projects while restoring the rest of a draft", async () => {
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-25T00:00:00.000Z",
+        draftOrigin: "create",
+        originalProjectIds: [],
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "Partially available",
+          description: "",
+          projectIds: ["frontend", "removed-project", "memory"],
+        },
+      }),
+    );
+
+    const restored = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+
+    await act(async () => undefined);
+    expect(restored.result.current.state).toMatchObject({
+      mode: "build",
+      draft: { projectIds: ["frontend", "memory"] },
+    });
+    expect(restored.result.current.omittedProjectCount).toBe(1);
+  });
+
+  test("clears a malformed saved draft without breaking the workspace", async () => {
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-25T00:00:00.000Z",
+        draftOrigin: "edit",
+        originalProjectIds: [],
+        draft: {
+          operation: "edit",
+          kitId: null,
+          title: "Broken edit",
+          description: "",
+          projectIds: [],
+        },
+      }),
+    );
+
+    const restored = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+
+    await act(async () => undefined);
+    expect(restored.result.current.state).toMatchObject({ mode: "intro" });
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).toBeNull();
+  });
+
+  test("applies a draft update written by another browser tab", async () => {
+    const current = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+    await act(async () => undefined);
+
+    const externalDraft = JSON.stringify({
+      schemaVersion: 1,
+      savedAt: "2026-07-25T01:00:00.000Z",
+      draftOrigin: "create",
+      originalProjectIds: [],
+      draft: {
+        operation: "create",
+        kitId: null,
+        title: "Changed elsewhere",
+        description: "",
+        projectIds: ["frontend"],
+      },
+    });
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      externalDraft,
+    );
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "tavernary:kit-builder-draft:v1",
+          newValue: externalDraft,
+          storageArea: window.localStorage,
+        }),
+      );
+    });
+
+    expect(current.result.current.state).toMatchObject({
+      mode: "build",
+      dirty: true,
+      draft: {
+        title: "Changed elsewhere",
+        projectIds: ["frontend"],
+      },
+    });
+  });
+
+  test("discards the active draft from memory and browser storage", () => {
+    const onSelectKit = vi.fn();
+    const current = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit,
+        projects,
+      }),
+    );
+
+    act(() => current.result.current.startCreate());
+    act(() => current.result.current.updateDraft({ title: "Discard me" }));
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).not.toBeNull();
+
+    act(() => current.result.current.discardDraft());
+
+    expect(current.result.current.state).toMatchObject({ mode: "intro" });
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).toBeNull();
+    expect(onSelectKit).toHaveBeenCalledWith("");
+  });
+
+  test("returns to Intro when another browser tab discards the draft", () => {
+    const current = renderHook(() =>
+      useKitBuilder({
+        selectedKitId: "",
+        onSelectKit: vi.fn(),
+        projects,
+      }),
+    );
+    act(() => current.result.current.startCreate());
+    act(() => current.result.current.updateDraft({ title: "Shared draft" }));
+
+    window.localStorage.removeItem("tavernary:kit-builder-draft:v1");
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "tavernary:kit-builder-draft:v1",
+          newValue: null,
+          storageArea: window.localStorage,
+        }),
+      );
+    });
+
+    expect(current.result.current.state).toMatchObject({ mode: "intro" });
+  });
+
   test("starts create, duplicate, and edit drafts without mutating the live Kit", () => {
     const onSelectKit = vi.fn();
     const { result } = renderHook(() =>
@@ -328,6 +534,23 @@ describe("Kit builder state", () => {
     act(() => result.current.updateDraft({ title: "Keep me" }));
     act(() => result.current.discardUntouchedSelectionDraft());
     expect(result.current.state.mode).toBe("build");
+  });
+
+  test("removes a persisted empty draft when its only selection is cancelled", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.startSelectionDraft());
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).not.toBeNull();
+    act(() => result.current.discardUntouchedSelectionDraft());
+
+    expect(result.current.state).toMatchObject({ mode: "intro" });
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).toBeNull();
   });
 
   test("removes one draft project through the workspace", () => {

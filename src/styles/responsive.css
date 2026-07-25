@@ -278,7 +278,7 @@
     position: fixed;
     z-index: 80;
     inset: 0;
-    width: 100vw;
+    width: 100%;
     height: 100dvh;
     padding: 0;
     overflow: hidden;
@@ -305,6 +305,22 @@
     height: 44px;
     justify-content: center;
     padding: 0;
+  }
+
+  .kit-discard-trigger {
+    width: 44px;
+    height: 44px;
+  }
+
+  .kit-discard-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kit-discard-actions button {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
   }
 
   .kit-builder-panel-body {

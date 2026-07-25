@@ -67,6 +67,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
+    projects: catalog.projects,
     onSelectKit: (selectedKitId) =>
       setQuery((current) => ({
         ...current,
@@ -449,13 +450,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           }
           onStartCreate={workspace.startCreate}
           onUpdateDraft={workspace.updateDraft}
+          onDiscardDraft={workspace.discardDraft}
+          omittedProjectCount={workspace.omittedProjectCount}
           onSubmitDraft={
             buildState
-              ? () =>
-                  void openKitSubmission(
+              ? async () => {
+                  await openKitSubmission(
                     "https://github.com/MentallyQuill/Tavernary/issues/new?template=05-kit-submission.yml",
                     buildState.draft,
-                  )
+                  );
+                  workspace.discardDraft();
+                }
               : undefined
           }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}

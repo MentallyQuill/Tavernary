@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
 } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
@@ -19,8 +20,13 @@ vi.mock("next/image", () => ({
   }) => <span data-image-src={src} aria-label={alt || undefined} {...props} />,
 }));
 
+vi.mock("@/features/kits/submission-transport", () => ({
+  openKitSubmission: vi.fn(),
+}));
+
 import { CatalogPage } from "@/features/catalog/components/catalog-page";
 import type { Catalog, CatalogProject } from "@/features/catalog/catalog-types";
+import { openKitSubmission } from "@/features/kits/submission-transport";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -64,9 +70,35 @@ const catalog: Catalog = {
   kits: [],
 };
 
+const submissionCatalog: Catalog = {
+  ...catalog,
+  projects: [
+    {
+      ...project(),
+      id: "frontend",
+      name: "Frontend",
+      kind: "frontend",
+      primaryFunction: "frontend",
+      canonicalUrl: "https://example.com/frontend",
+      searchableText: "frontend",
+    },
+    project(),
+    {
+      ...project(),
+      id: "preset",
+      name: "Preset",
+      kind: "preset",
+      primaryFunction: "generation-reasoning",
+      canonicalUrl: "https://example.com/preset",
+      searchableText: "preset",
+    },
+  ],
+};
+
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
+  window.history.replaceState(null, "", "/");
   vi.useRealTimers();
   Object.defineProperty(window, "matchMedia", {
     configurable: true,
@@ -125,6 +157,133 @@ describe("catalog Kit batch flow", () => {
     );
 
     expect(builder).not.toHaveClass("collapsed");
+    expect(
+      screen.getByRole("heading", { name: "Build and inspect Kits" }),
+    ).toBeVisible();
+  });
+
+  test("returns to the introductory workspace after a confirmed draft discard", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    render(<CatalogPage catalog={catalog} />);
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create new Kit" }));
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).not.toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Discard draft" }));
+    fireEvent.click(screen.getByRole("button", { name: "Discard Kit" }));
+
+    expect(
+      screen.getByRole("heading", { name: "Build and inspect Kits" }),
+    ).toBeVisible();
+    expect(
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).toBeNull();
+  });
+
+  test("explains when a saved draft contains an unavailable project", async () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-25T00:00:00.000Z",
+        draftOrigin: "create",
+        originalProjectIds: [],
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "Saved Kit",
+          description: "",
+          projectIds: ["memory", "removed"],
+        },
+      }),
+    );
+
+    render(<CatalogPage catalog={catalog} />);
+    await act(async () => undefined);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Open Kit Builder, 1 project in draft",
+      }),
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "1 saved project is no longer available and was removed from this draft.",
+    );
+  });
+
+  test("clears a saved draft after a successful submission handoff", async () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    vi.mocked(openKitSubmission).mockResolvedValue("prefilled");
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-25T00:00:00.000Z",
+        draftOrigin: "create",
+        originalProjectIds: [],
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "Ready Kit",
+          description: "Ready to submit.",
+          projectIds: ["frontend", "memory", "preset"],
+        },
+      }),
+    );
+
+    render(<CatalogPage catalog={submissionCatalog} />);
+    await act(async () => undefined);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Open Kit Builder, 3 projects in draft",
+      }),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Submit Kit" }));
+
+    await waitFor(() =>
+      expect(
+        window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+      ).toBeNull(),
+    );
     expect(
       screen.getByRole("heading", { name: "Build and inspect Kits" }),
     ).toBeVisible();
