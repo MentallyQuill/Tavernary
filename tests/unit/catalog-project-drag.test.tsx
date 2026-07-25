@@ -30,6 +30,9 @@ test("activates at four pixels and drops only on a compatible Kit target", () =>
         </button>
         <div data-kit-drop-target="frontend">Frontend slot</div>
         <div data-kit-drop-target="stack">Stack</div>
+        <output data-testid="catalog-drag-pressed">
+          {String(drag.pressed)}
+        </output>
         {drag.dragState ? <output>{drag.dragState.actionLabel}</output> : null}
       </div>
     );
@@ -48,6 +51,7 @@ test("activates at four pixels and drops only on a compatible Kit target", () =>
     clientX: 10,
     clientY: 10,
   });
+  expect(screen.getByTestId("catalog-drag-pressed")).toHaveTextContent("true");
   fireEvent.pointerMove(window, {
     pointerId: 3,
     clientX: 13,

@@ -18,6 +18,14 @@ undo record without adding persistence.
 **Tech Stack:** Next.js 16, React 19, TypeScript 6, Vitest, Testing Library,
 Playwright, CSS media queries.
 
+> **Superseded interaction steps:** The tap-first ordering, Move up/down,
+> Remove text, and six-second Undo work described in Tasks 3–5 was replaced by
+> the approved direct-manipulation plan in
+> `docs/superpowers/plans/2026-07-24-kits-motion-interaction.md`. This document
+> remains the implementation record for browse-first entry, modal semantics,
+> safe areas, responsive layout, and mode-local filters. It is not the current
+> interaction contract.
+
 ## Global Constraints
 
 - Work only in the isolated `codex/kits` worktree.

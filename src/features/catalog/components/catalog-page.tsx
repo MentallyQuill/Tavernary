@@ -283,7 +283,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         onSelectKits={selectKitMode}
       />
       <div
-        className={`catalog-layout${catalogDrag.dragState ? " catalog-drag-active" : ""}`}
+        className={`catalog-layout${catalogDrag.pressed ? " catalog-drag-active" : ""}`}
         ref={catalogLayoutRef}
       >
         {query.mode === "kits" ? (

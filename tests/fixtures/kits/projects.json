@@ -6,6 +6,12 @@
     "primary_function": "frontend"
   },
   {
+    "id": "fixture-frontend-b",
+    "name": "Fixture Frontend B",
+    "kind": "frontend",
+    "primary_function": "frontend"
+  },
+  {
     "id": "fixture-tool-02",
     "name": "Fixture Tool 02",
     "kind": "extension",

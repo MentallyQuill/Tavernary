@@ -116,7 +116,13 @@ export function KitWorkspace({
     },
   });
 
-  if (phone && !phonePresence.present) return null;
+  if (
+    phone &&
+    !phonePresence.present &&
+    !(state.collapsed && state.mode === "build")
+  ) {
+    return null;
+  }
 
   if (state.collapsed && !(phone && phonePresence.present)) {
     if (touchLayout) {

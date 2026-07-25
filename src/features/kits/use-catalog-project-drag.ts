@@ -44,6 +44,7 @@ export function useCatalogProjectDrag({
   const [dragState, setDragState] = useState<CatalogProjectDragState | null>(
     null,
   );
+  const [pressed, setPressed] = useState(false);
   const sessionRef = useRef<Session | null>(null);
   const cleanupRef = useRef<() => void>(() => undefined);
 
@@ -68,6 +69,7 @@ export function useCatalogProjectDrag({
         handle: event.currentTarget,
         captured: false,
       };
+      setPressed(true);
 
       const cleanup = () => {
         const current = sessionRef.current;
@@ -85,6 +87,7 @@ export function useCatalogProjectDrag({
           }
         }
         setDragState(null);
+        setPressed(false);
       };
 
       const move = (pointerEvent: PointerEvent) => {
@@ -160,5 +163,5 @@ export function useCatalogProjectDrag({
 
   useEffect(() => () => cleanupRef.current(), []);
 
-  return { dragState, begin };
+  return { dragState, pressed, begin };
 }

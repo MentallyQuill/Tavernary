@@ -58,7 +58,7 @@ test("navigates, restores URLs, searches every indexed Kit field, and sorts", as
       .getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.locator(".project-card")).toHaveCount(49);
+  await expect(page.locator(".project-card")).toHaveCount(50);
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
     page
@@ -106,9 +106,12 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   await kitFilters.getByRole("button", { name: "Close Kit filters" }).click();
   await expect(filterButton).toBeFocused();
 
-  await page.getByRole("button", { name: "Browse categories" }).click();
-  await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(kitFilters).toHaveCount(0);
+  await filterButton.click();
+  await page.evaluate(() => {
+    window.history.pushState(null, "", window.location.pathname);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  });
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await filterButton.click();
   await expect(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
   await expect(page.getByRole("dialog", { name: "Kit filters" })).toHaveCount(
@@ -201,7 +204,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   await expect(flagged.locator("a")).toHaveCount(0);
 });
 
-test("supports create, duplicate, edit, add, order, and collapsed persistence", async ({
+test("supports create, duplicate, edit, handle order, and collapsed persistence", async ({
   page,
 }) => {
   await openKits(page);
@@ -215,10 +218,11 @@ test("supports create, duplicate, edit, add, order, and collapsed persistence", 
   await add.nth(2).click();
   const rows = page.locator(".kit-builder-row");
   const secondName = await rows.nth(1).locator("strong").textContent();
-  await rows
+  const secondHandle = rows
     .nth(1)
-    .getByRole("button", { name: /Move .* up/ })
-    .click();
+    .getByRole("button", { name: /Drag .* to reorder or remove/ });
+  await secondHandle.focus();
+  await page.keyboard.press("Alt+ArrowUp");
   await expect(rows.nth(0).locator("strong")).toHaveText(secondName!);
 
   await page.getByRole("button", { name: "Collapse workspace" }).click();
@@ -242,7 +246,138 @@ test("supports create, duplicate, edit, add, order, and collapsed persistence", 
   ).toBe(true);
 });
 
-test("mobile workspace traps focus, returns it, and exposes explicit order controls", async ({
+test("complete desktop direct-manipulation workflow keeps every card reachable", async ({
+  page,
+}) => {
+  await openKits(page);
+  await page.getByRole("button", { name: "Create new Kit" }).click();
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+
+  async function dragTo(
+    source: import("@playwright/test").Locator,
+    target: import("@playwright/test").Locator,
+    release = true,
+    targetYRatio = 0.5,
+  ) {
+    await target.evaluate((element) =>
+      element.scrollIntoView({ block: "center", inline: "nearest" }),
+    );
+    const sourceBox = (await source.boundingBox())!;
+    await page.mouse.move(
+      sourceBox.x + sourceBox.width / 2,
+      sourceBox.y + sourceBox.height / 2,
+    );
+    await page.mouse.down();
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+    );
+    const targetBox = (await target.boundingBox())!;
+    await page.mouse.move(
+      targetBox.x + targetBox.width / 2,
+      targetBox.y + targetBox.height * targetYRatio,
+      { steps: 5 },
+    );
+    if (release) await page.mouse.up();
+  }
+
+  const frontendTarget = page.locator('[data-kit-drop-target="frontend"]');
+  const stackTarget = page.locator('[data-kit-drop-target="stack"]');
+  await dragTo(
+    page.getByRole("button", { name: "Drag Fixture Frontend into Kit" }),
+    frontendTarget,
+  );
+  await expect(page.getByRole("region", { name: "Frontend" })).toContainText(
+    "Fixture Frontend",
+  );
+
+  for (const name of ["Fixture Tool 02", "Fixture Tool 03"]) {
+    await dragTo(
+      page.getByRole("button", { name: `Drag ${name} into Kit` }),
+      stackTarget,
+      false,
+    );
+    await expect(page.getByText("Release to add")).toBeVisible();
+    await page.mouse.up();
+    await expect(
+      page.getByRole("button", { name: `${name} added to Kit` }),
+    ).toBeDisabled();
+  }
+  const rows = page.locator(".kit-builder-row");
+  await expect(rows).toHaveCount(2);
+
+  await dragTo(
+    page.getByRole("button", { name: "Drag Fixture Frontend B into Kit" }),
+    frontendTarget,
+    false,
+  );
+  await expect(
+    page.getByText("Release to replace Fixture Frontend"),
+  ).toBeVisible();
+  await page.mouse.up();
+  await expect(
+    page.getByRole("region", { name: "Frontend" }).locator("strong"),
+  ).toHaveText("Fixture Frontend B");
+
+  const toolThreeHandle = page.getByRole("button", {
+    name: "Drag Fixture Tool 03 to reorder or remove",
+  });
+  await dragTo(toolThreeHandle, rows.nth(0), true, 0.25);
+  await expect(rows.nth(0)).toContainText("Fixture Tool 03");
+
+  const toolTwoHandle = page.getByRole("button", {
+    name: "Drag Fixture Tool 02 to reorder or remove",
+  });
+  const handleBox = (await toolTwoHandle.boundingBox())!;
+  const editor = page.locator(".kit-builder");
+  const editorBox = (await editor.boundingBox())!;
+  await page.mouse.move(
+    handleBox.x + handleBox.width / 2,
+    handleBox.y + handleBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(editorBox.x - 8, editorBox.y + 80, { steps: 4 });
+  await expect(page.getByText("Release to remove")).toBeVisible();
+  await page.mouse.move(editorBox.x + 40, editorBox.y + 80, { steps: 3 });
+  await expect(page.getByText("Release to remove")).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Remove Fixture Tool 02" }),
+  ).toBeVisible();
+
+  const retryHandle = page.getByRole("button", {
+    name: "Drag Fixture Tool 02 to reorder or remove",
+  });
+  const retryBox = (await retryHandle.boundingBox())!;
+  await page.mouse.move(
+    retryBox.x + retryBox.width / 2,
+    retryBox.y + retryBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(editorBox.x - 8, editorBox.y + 80, { steps: 4 });
+  await page.mouse.up();
+  await expect(
+    page.getByRole("button", { name: "Remove Fixture Tool 02" }),
+  ).toHaveCount(0);
+
+  const workspaceBox = (await page.locator(".kit-workspace").boundingBox())!;
+  const catalogMainBox = (await page.locator(".catalog-main").boundingBox())!;
+  expect(workspaceBox.x).toBeGreaterThanOrEqual(
+    catalogMainBox.x + catalogMainBox.width - 1,
+  );
+  expect(
+    await page.locator(".project-card").evaluateAll((projectCards) => {
+      const workspace = document
+        .querySelector(".kit-workspace")!
+        .getBoundingClientRect();
+      return projectCards.every(
+        (card) => card.getBoundingClientRect().right <= workspace.left + 1,
+      );
+    }),
+  ).toBe(true);
+});
+
+test("mobile workspace traps focus, returns it, and exposes touch handles", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -273,8 +408,14 @@ test("mobile workspace traps focus, returns it, and exposes explicit order contr
   await page.getByRole("button", { name: "Open Large Stack" }).click();
   await page.getByRole("button", { name: "Duplicate" }).click();
   await expect(
-    page.getByRole("button", { name: /Move .* up/ }).nth(1),
+    page.getByRole("button", { name: /Drag .* to reorder$/ }).first(),
   ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Move .* (?:up|down)/ }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: /Drag .* to remove$/ }),
+  ).toHaveCount(0);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -355,7 +496,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   ).toBe(true);
 });
 
-test("complete mobile Kits workflow stays tap-first and recoverable", async ({
+test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -400,28 +541,34 @@ test("complete mobile Kits workflow stays tap-first and recoverable", async ({
 
   const rows = page.locator(".kit-builder-row");
   const secondProject = (await rows.nth(1).locator("strong").textContent())!;
-  await rows
-    .nth(1)
-    .getByRole("button", { name: `Move ${secondProject} up` })
-    .click();
+  const secondHandle = rows.nth(1).getByRole("button", {
+    name: `Drag ${secondProject} to reorder`,
+  });
+  const handleBox = (await secondHandle.boundingBox())!;
+  const firstBox = (await rows.nth(0).boundingBox())!;
+  await page.mouse.move(
+    handleBox.x + handleBox.width / 2,
+    handleBox.y + handleBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(firstBox.x + firstBox.width / 2, firstBox.y + 2, {
+    steps: 4,
+  });
+  await page.mouse.up();
   await expect(rows.nth(0).locator("strong")).toHaveText(secondProject);
   await rows
     .nth(0)
-    .getByRole("button", { name: `Move ${secondProject} down` })
-    .click();
-  await expect(rows.nth(1).locator("strong")).toHaveText(secondProject);
-  await rows
-    .nth(1)
     .getByRole("button", { name: `Remove ${secondProject}` })
     .click();
-  await page
-    .getByRole("button", { name: `Undo remove ${secondProject}` })
-    .click();
-  await expect(rows.nth(1).locator("strong")).toHaveText(secondProject);
+  await expect(
+    page.getByRole("button", { name: `Remove ${secondProject}` }),
+  ).toHaveCount(0);
+  await expect(page.getByText("Undo")).toHaveCount(0);
+  await expect(page.getByText(/Drag here to remove/i)).toHaveCount(0);
 
   await page.getByRole("button", { name: "Close Kit workspace" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 3 projects" }),
+    page.getByRole("button", { name: "Open draft with 2 projects" }),
   ).toBeFocused();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();

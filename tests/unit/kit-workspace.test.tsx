@@ -210,6 +210,41 @@ describe("Kit workspace", () => {
     ).not.toBeInTheDocument();
   });
 
+  test("reveals the phone draft pill after the builder sheet exits", () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    vi.useFakeTimers();
+    const buildState = {
+      mode: "build" as const,
+      dirty: true,
+      draft: {
+        operation: "create" as const,
+        kitId: null,
+        title: "",
+        description: "",
+        projectIds: [],
+      },
+    };
+    const { rerender } = render(
+      <KitWorkspace
+        state={{ ...buildState, collapsed: false }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    rerender(
+      <KitWorkspace
+        state={{ ...buildState, collapsed: true }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+    act(() => vi.advanceTimersByTime(220));
+    expect(
+      screen.getByRole("button", { name: "Open draft with 0 projects" }),
+    ).toBeVisible();
+  });
+
   test("keeps the phone sheet and inert background through its exit", () => {
     mockMatchMedia({ phone: true, touchLayout: true });
     vi.useFakeTimers();

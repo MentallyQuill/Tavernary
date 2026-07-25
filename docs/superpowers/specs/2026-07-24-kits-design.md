@@ -21,8 +21,8 @@ manual-review discussion, reports, and community reactions.
 
 1. A Kit contains a title, a description of no more than 100 words, and an
    ordered list of canonical Tavernary project IDs.
-2. A Kit contains between 3 and 50 unique projects. It must contain at least
-   one Frontend and at least two non-Frontend projects.
+2. A Kit contains between 3 and 50 unique projects. It must contain exactly
+   one Frontend, pinned first, and at least two non-Frontend projects.
 3. Component order is presentation order only. Components do not have
    Required, Recommended, or Optional roles.
 4. Purpose and frontend support are derived from the selected projects rather
@@ -362,6 +362,8 @@ area:
 - Switching to project mode keeps the workspace available so project cards can
   be added to an active draft.
 - A collapsed workspace never overlays or intercepts the card grid.
+- The open workspace remains in normal grid flow and displaces/reflows catalog
+  cards. No project card may sit behind it or become unreachable.
 
 Recommended sizing:
 
@@ -431,14 +433,14 @@ The primary action says **Submit Kit** or **Submit changes**, never Save.
 
 ### Drag, Add, and Reorder
 
-On desktop, users can drag project cards from the catalog into the workspace
-stack and drag stack rows to reorder them. The interaction should adapt the
-established Saga Lower Deck behavior:
+On desktop, users can drag project cards from the catalog into the pinned
+Frontend slot or non-Frontend stack and drag stack rows to reorder them. The
+interaction adapts the established Saga Lower Deck behavior:
 
 - pointer capture during drag;
 - a clear drag ghost;
 - visible valid and invalid drop targets;
-- row displacement previews;
+- a card-sized physical gap with no insertion line;
 - edge autoscroll;
 - Escape cancellation;
 - deterministic cleanup after drop, cancel, or lost pointer capture.
@@ -446,12 +448,25 @@ established Saga Lower Deck behavior:
 Drag is never the only operation:
 
 - every project card exposes **Add to Kit** while a draft is active;
-- every builder row exposes accessible Move up, Move down, and Remove actions;
-- touch layouts use tap-to-add and explicit reorder controls;
+- every builder card exposes a corner × removal control with a 44-by-44 target;
+- non-Frontend cards expose grab handles for pointer and touch reordering;
+- Alt+Arrow Up and Alt+Arrow Down provide keyboard reordering;
 - duplicate additions are rejected with a concise inline message.
 
 The drag handle is a handle, not the entire row, so disclosure and project
-links remain usable.
+links remain usable. On desktop, dragging a builder card outside the editor
+arms a red **Release to remove** state; returning inside cancels it. On touch,
+dragging only reorders and × is the removal path. Removal is immediate and has
+no Undo, confirmation, or remove bar.
+
+The single Frontend is rendered as a hyper-compact pinned foundation above the
+ordered stack. It cannot be reordered. Desktop exposes its handle only for
+drag-off removal; touch omits that handle. Selecting another Frontend uses
+**Use instead** and atomically replaces the current Frontend.
+
+Motion follows
+`docs/superpowers/specs/2026-07-24-kits-motion-interaction-design.md`: modern,
+clean, tactile, and practical without ornamental animation.
 
 ### Draft Lifetime
 
@@ -480,8 +495,8 @@ card grid. It must provide:
 - focus containment while open;
 - Escape dismissal when a hardware keyboard is present;
 - focus return to the invoking card or action;
-- tap-to-add and Move up/Move down controls;
-- no pointer-drag dependency.
+- tap-to-add, **Use instead**, touch grab handles, and corner × controls;
+- whole-sheet bottom movement with no opacity fade.
 
 ## Composition and Validation
 
@@ -520,7 +535,10 @@ export function validateKitDraft(draft: KitDraft, projects: CatalogProject[]) {
       draft.projectIds.length >= 3 && draft.projectIds.length <= 50,
     unique: new Set(draft.projectIds).size === draft.projectIds.length,
     allResolve: resolved.every(Boolean),
-    compositionValid: frontendCount >= 1 && nonFrontendCount >= 2,
+    compositionValid:
+      frontendCount === 1 &&
+      resolved[0]?.kind === "frontend" &&
+      nonFrontendCount >= 2,
   };
 }
 ```
@@ -530,8 +548,8 @@ every objective check against the current canonical catalog.
 
 ### Compatibility
 
-Included Frontend projects establish the Kit’s frontend labels. Multiple
-Frontends are allowed.
+The single included Frontend establishes the Kit’s frontend label. It is
+always project index zero.
 
 Automation may warn when a selected project’s catalog metadata does not claim
 support for every represented Frontend, but it does not reject the Kit solely
@@ -542,7 +560,7 @@ judges whether the composition and description credibly explain any caveats.
 Objective failures still block approval:
 
 - fewer than 3 or more than 50 projects;
-- no Frontend;
+- anything other than exactly one leading Frontend;
 - fewer than two non-Frontend projects;
 - duplicate or missing project IDs;
 - a flagged project in a new or revised Kit;
@@ -1176,7 +1194,8 @@ existing `CatalogPage` to accumulate every Kit interaction.
 - drafts survive mode changes and workspace collapse.
 - refresh does not pretend to persist a draft.
 - add, drag, reorder, remove, and duplicate rejection pass.
-- keyboard and touch alternatives can perform every critical stack operation.
+- keyboard and touch alternatives can perform every critical stack operation;
+  touch removal uses × and touch drag never arms removal.
 - dirty-navigation warning fires only when needed.
 - one project detail is expanded at a time.
 - focus returns after mobile workspace dismissal.

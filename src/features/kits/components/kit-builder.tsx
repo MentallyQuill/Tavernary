@@ -274,6 +274,11 @@ export function KitBuilder({
             : "idle"
         }
       >
+        {stackProjectIds.length === 0 ? (
+          <li className="kit-builder-empty-drop" aria-hidden="true">
+            Drag non-Frontend projects here
+          </li>
+        ) : null}
         {stackProjectIds.map((projectId, index) => {
           const project = projectsById.get(projectId);
           return project ? (

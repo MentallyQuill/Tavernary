@@ -1587,10 +1587,21 @@
 
 .kit-builder-stack {
   display: grid;
+  min-height: 62px;
   gap: 7px;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.kit-builder-empty-drop {
+  display: grid;
+  min-height: 62px;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  color: var(--color-muted);
+  font-size: 11px;
+  place-items: center;
 }
 
 .kit-frontend-foundation {
