@@ -193,6 +193,37 @@ test("unchanged projects require zero compares and zero clones", async () => {
   });
 });
 
+test("an injected observer does not enable contributor requests from an ambient token", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      async () =>
+        new Response(JSON.stringify([]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+    ),
+  );
+  try {
+    const result = await runRefresh({
+      mode: "incremental",
+      now: "2026-07-24T08:00:00.000Z",
+      token: "actions-token",
+      records: [record(0)],
+      snapshots: [snapshot(0)],
+      observe: observer([observation(0)]),
+      inspectDelta: vi.fn(),
+      inspectGit: vi.fn(),
+      write: false,
+    });
+
+    expect(result.manifest.api.rest_requests).toBe(0);
+    expect(result.snapshots[0].contributors).toBeUndefined();
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});
+
 test("first observation creates provisional evidence without cloning", async () => {
   const inspectDelta = vi.fn();
   const inspectGit = vi.fn();

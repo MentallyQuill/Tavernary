@@ -500,10 +500,13 @@ export async function runRefresh(options = {}) {
     observed.failures.map((failure) => [failure.projectId, failure]),
   );
   const fetchContributors =
-    options.fetchContributors ??
-    (token
-      ? (repository) => fetchRepositoryContributors(repository, { token })
-      : null);
+    options.fetchContributors !== undefined
+      ? options.fetchContributors
+      : options.observe !== undefined
+        ? null
+        : token
+          ? (repository) => fetchRepositoryContributors(repository, { token })
+          : null;
   const contributorJobs = fetchContributors
     ? observed.observations.map((observation) => ({
         projectId: observation.projectId,
