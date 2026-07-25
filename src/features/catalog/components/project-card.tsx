@@ -5,6 +5,11 @@ import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "../catalog-types";
 import { CATEGORY_OPTIONS } from "../catalog-query";
 import { commitFreshnessPercent, daysSince } from "../commit-freshness";
+import {
+  attributionAccessibleText,
+  attributionByline,
+  attributionTooltip,
+} from "../project-attribution";
 import { ActivitySparkline } from "./activity-sparkline";
 
 const kindLabels = {
@@ -156,6 +161,7 @@ export function ProjectCard({
   const repositorySizeId = `${project.id}-repository-size`;
   const typeId = `${project.id}-type`;
   const titleId = `${project.id}-title`;
+  const attributionId = `${project.id}-attribution`;
   const licenseId = `${project.id}-license`;
   const cardDescriptionId = `${project.id}-card-description`;
   const displayName = projectDisplayName(project.name);
@@ -223,6 +229,7 @@ export function ProjectCard({
     project.capabilities.length
       ? `Capabilities: ${project.capabilities.map(({ label }) => label).join(", ")}.`
       : null,
+    project.attribution ? attributionAccessibleText(project.attribution) : null,
     `License: ${project.license.label}.`,
   ]
     .filter(Boolean)
@@ -358,6 +365,15 @@ export function ProjectCard({
           {displayName}
         </Tooltip>
       </h2>
+      {project.attribution ? (
+        <Tooltip
+          id={attributionId}
+          label={attributionTooltip(project.attribution)}
+          className="card-attribution"
+        >
+          {attributionByline(project.attribution)}
+        </Tooltip>
+      ) : null}
       {details.length > 0 ? (
         <ul className="card-state-list" aria-label="Project details">
           {details.map((detail) => (

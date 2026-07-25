@@ -105,6 +105,62 @@ describe("project card", () => {
     },
   );
 
+  test("shows creator attribution and discloses every contributor on hover", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn(() => ({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    });
+    render(
+      <ProjectCard
+        project={project("directive", {
+          name: "Directive",
+          attribution: {
+            owner: "MentallyQuill",
+            contributors: [
+              { login: "Alice", botOrAi: false },
+              { login: "Claude", botOrAi: true },
+            ],
+            humanContributorCount: 1,
+            status: "current",
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    const card = screen.getByRole("link", { name: "Directive" });
+    const attribution = card.querySelector(".card-attribution");
+    expect(attribution).toHaveTextContent(
+      "by MentallyQuill, plus 1 contributor",
+    );
+    expect(attribution).not.toHaveAttribute("tabindex");
+    expect(attribution?.querySelector("button, a")).toBeNull();
+
+    fireEvent.pointerEnter(attribution!);
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Owner: MentallyQuill · Contributors: Alice · Bots/AI: Claude",
+      }),
+    ).toBeVisible();
+
+    const descriptionId = card.getAttribute("aria-describedby");
+    expect(document.getElementById(descriptionId!)).toHaveTextContent(
+      "Repository owner: MentallyQuill. Contributors: Alice. Bots and AI contributors: Claude.",
+    );
+  });
+
+  test("omits creator attribution for sources without a repository owner", () => {
+    const { container } = render(
+      <ProjectCard project={project("preset")} now="2026-07-23T00:00:00Z" />,
+    );
+
+    expect(container.querySelector(".card-attribution")).toBeNull();
+  });
+
   test("keeps the Kit control outside the GitHub link", () => {
     const { container } = render(
       <ProjectGrid
