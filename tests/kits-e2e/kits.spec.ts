@@ -88,6 +88,50 @@ async function verifyUnifiedSelectionFlow(
   ).toBeVisible();
 }
 
+test("desktop Kit Builder uses the large yellow right-pointing collapse icon", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const collapse = page.getByRole("button", {
+    name: "Collapse Kit Builder",
+  });
+  const icon = collapse.locator('[data-icon="kit-builder"]');
+  await expect(icon).toBeVisible();
+
+  const styles = await collapse.evaluate((button) => {
+    const iconElement = button.querySelector('[data-icon="kit-builder"]');
+    if (!(iconElement instanceof SVGElement)) {
+      throw new Error("Kit Builder collapse icon is missing");
+    }
+
+    const buttonStyle = getComputedStyle(button);
+    const iconStyle = getComputedStyle(iconElement);
+    return {
+      buttonWidth: buttonStyle.width,
+      buttonHeight: buttonStyle.height,
+      buttonBackground: buttonStyle.backgroundColor,
+      buttonBorder: buttonStyle.borderTopColor,
+      iconWidth: iconStyle.width,
+      iconHeight: iconStyle.height,
+      iconColor: iconStyle.color,
+      iconTransform: iconStyle.transform,
+    };
+  });
+
+  expect(styles).toEqual({
+    buttonWidth: "36px",
+    buttonHeight: "36px",
+    buttonBackground: "rgba(0, 0, 0, 0)",
+    buttonBorder: "rgba(0, 0, 0, 0)",
+    iconWidth: "26px",
+    iconHeight: "26px",
+    iconColor: "rgb(225, 138, 36)",
+    iconTransform: "matrix(-1, 0, 0, 1, 0, 0)",
+  });
+});
+
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({
   page,
 }) => {

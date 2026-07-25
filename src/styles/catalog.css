@@ -1700,7 +1700,20 @@
   height: 16px;
 }
 
+.kit-builder-collapse,
+.kit-builder-collapse:hover,
+.kit-builder-collapse:focus-visible {
+  width: 36px;
+  height: 36px;
+  border-color: transparent;
+  padding: 0;
+  color: var(--color-kind-extension);
+  background: transparent;
+}
+
 .kit-builder-collapse svg {
+  width: 26px;
+  height: 26px;
   transform: scaleX(-1);
 }
 
