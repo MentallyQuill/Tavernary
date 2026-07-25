@@ -1624,20 +1624,21 @@
 
 .kit-builder-panel.collapsed {
   display: grid;
-  width: 72px;
+  width: 100%;
   min-width: 72px;
+  justify-items: end;
   padding: 0;
 }
 
 .kit-builder-rail {
   display: grid;
-  width: 100%;
+  width: calc(72px - 1px);
   height: 100%;
   min-height: 240px;
   grid-template-rows: auto auto 1fr;
   justify-items: center;
   gap: 10px;
-  padding: 16px 8px;
+  padding: 18px 8px;
   color: var(--color-text-secondary);
   text-align: center;
 }
@@ -1730,6 +1731,10 @@
   color: var(--color-muted);
   font-size: 11px;
   text-transform: uppercase;
+}
+
+.kit-builder-panel-header h2 {
+  margin: 0;
 }
 
 .kit-builder-panel-header button,
