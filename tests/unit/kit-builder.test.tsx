@@ -386,8 +386,12 @@ describe("Kit builder controls", () => {
       }),
     ).toBeVisible();
     expect(
-      screen.getByRole("button", { name: "Remove memory" }),
-    ).toHaveTextContent("×");
+      screen.getByRole("button", { name: "Remove memory from Kit" }),
+    ).toHaveTextContent("−");
+    expect(
+      screen.getByRole("button", { name: "Remove memory from Kit" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    expect(screen.queryByText("×")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Move memory up" }),
     ).not.toBeInTheDocument();
@@ -411,8 +415,11 @@ describe("Kit builder controls", () => {
       screen.getByRole("button", { name: "Drag frontend to remove" }),
     ).toBeVisible();
     expect(
-      screen.getByRole("button", { name: "Remove frontend" }),
-    ).toHaveTextContent("×");
+      screen.getByRole("button", { name: "Remove frontend from Kit" }),
+    ).toHaveTextContent("−");
+    expect(
+      screen.getByRole("button", { name: "Remove frontend from Kit" }),
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   test("uses stable labels and reveals validation only after interaction", async () => {
@@ -524,9 +531,11 @@ describe("Kit builder controls", () => {
     expect(
       screen.queryByRole("button", { name: "Drag frontend to remove" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Remove memory" })).toBeVisible();
     expect(
-      screen.getByRole("button", { name: "Remove frontend" }),
+      screen.getByRole("button", { name: "Remove memory from Kit" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Remove frontend from Kit" }),
     ).toBeVisible();
   });
 
@@ -552,7 +561,9 @@ describe("Kit builder controls", () => {
         container.querySelectorAll(".kit-builder-stack [data-project-id]"),
       ).map((row) => row.getAttribute("data-project-id"));
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Remove memory from Kit" }),
+    );
     expect(rowIds()).toEqual(["preset"]);
     expect(screen.queryByText("Undo")).not.toBeInTheDocument();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
@@ -577,8 +588,12 @@ describe("Kit builder controls", () => {
     }
 
     render(<Harness />);
-    await user.click(screen.getByRole("button", { name: "Remove memory" }));
-    expect(screen.getByRole("button", { name: "Remove preset" })).toHaveFocus();
+    await user.click(
+      screen.getByRole("button", { name: "Remove memory from Kit" }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Remove preset from Kit" }),
+    ).toHaveFocus();
   });
 
   test("activates a stack drag only after four pixels of movement", () => {

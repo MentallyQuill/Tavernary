@@ -36,10 +36,11 @@ export function KitFrontendSlot({
           <button
             type="button"
             className="kit-builder-remove"
-            aria-label={`Remove ${project.name}`}
+            aria-label={`Remove ${project.name} from Kit`}
+            aria-pressed="true"
             onClick={onRemove}
           >
-            ×
+            <span aria-hidden="true">−</span>
           </button>
         </>
       ) : (
