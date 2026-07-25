@@ -133,6 +133,19 @@ describe("project card", () => {
     );
   });
 
+  test("places the license before footer chips so the Kit control can occupy the right edge", () => {
+    const { container } = render(
+      <ProjectCard
+        project={project("memory-tool", { name: "Memory Tool" })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    const footer = container.querySelector(".card-bottom");
+    expect(footer?.children[0]).toHaveClass("license");
+    expect(footer?.children[1]).toHaveClass("card-chips");
+  });
+
   test("associates a disabled Kit control with its constraint explanation", () => {
     render(
       <ProjectGrid

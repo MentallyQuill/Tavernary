@@ -73,7 +73,37 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
-  test("adds an explicitly selected project without opening the builder, then settles its status", () => {
+  test("keeps an open builder open when the final card selection is cancelled", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    render(<CatalogPage catalog={catalog} />);
+    const builder = screen.getByRole("complementary", {
+      name: "Kit Builder",
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Add Memory to Kit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Remove Memory from selection" }),
+    );
+
+    expect(builder).not.toHaveClass("collapsed");
+    expect(
+      screen.getByRole("heading", { name: "Build and inspect Kits" }),
+    ).toBeVisible();
+  });
+
+  test("adds an explicitly selected project without changing builder visibility, then settles its status", () => {
     vi.useFakeTimers();
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
@@ -89,7 +119,14 @@ describe("catalog Kit batch flow", () => {
       })),
     });
     render(<CatalogPage catalog={catalog} />);
+    const builder = screen.getByRole("complementary", {
+      name: "Kit Builder",
+    });
+    expect(builder).not.toHaveClass("collapsed");
+
     fireEvent.click(screen.getByRole("button", { name: "Add Memory to Kit" }));
+    expect(builder).not.toHaveClass("collapsed");
+    expect(screen.getByRole("heading", { name: "Create Kit" })).toBeVisible();
     expect(
       screen.getByRole("region", { name: "1 project selected" }),
     ).toBeVisible();
@@ -98,19 +135,14 @@ describe("catalog Kit batch flow", () => {
       screen.getByRole("button", { name: "Add 1 project to Kit" }),
     );
 
-    expect(
-      screen.getByRole("complementary", { name: "Kit Builder" }),
-    ).toHaveClass("collapsed");
-    expect(
-      screen.queryByRole("heading", { name: "Create Kit" }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText("1 project added")).toBeVisible();
+    expect(builder).not.toHaveClass("collapsed");
+    expect(screen.getByRole("heading", { name: "Create Kit" })).toBeVisible();
+    expect(screen.getByText("1 projects")).toBeVisible();
     expect(
       screen.getByText("1 project added. 1 project in draft."),
     ).toHaveAttribute("aria-live", "polite");
 
     act(() => vi.advanceTimersByTime(1600));
-    expect(screen.getByText("1 project in draft")).toBeVisible();
-    expect(screen.queryByText("1 project added")).not.toBeInTheDocument();
+    expect(screen.getByText("1 projects")).toBeVisible();
   });
 });

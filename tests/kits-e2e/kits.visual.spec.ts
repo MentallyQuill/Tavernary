@@ -51,6 +51,17 @@ test("tablet collapsed builder rail", async ({ page }) => {
   });
 });
 
+test("desktop compact cards reserve the right-side Kit control gutter", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1200, height: 900 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+  await expect(page).toHaveScreenshot("kits-desktop-compact-cards.png", {
+    fullPage: true,
+  });
+});
+
 test("desktop selection dock and persistent builder count", async ({
   page,
 }) => {

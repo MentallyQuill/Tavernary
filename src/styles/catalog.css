@@ -823,7 +823,6 @@
   transition:
     border-color var(--kit-motion-card) var(--kit-motion-ease),
     background var(--kit-motion-card) var(--kit-motion-ease),
-    transform var(--kit-motion-card) var(--kit-motion-ease),
     box-shadow var(--kit-motion-card) var(--kit-motion-ease);
 }
 
@@ -841,7 +840,6 @@
   border-color: var(--color-border-strong);
   background: var(--color-surface-raised);
   outline: 0;
-  transform: translateY(-2px);
 }
 
 .project-card:focus-visible {
@@ -1061,7 +1059,7 @@
 .card-bottom {
   display: grid;
   min-width: 0;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: flex-end;
   gap: 10px;
   margin-top: auto;
@@ -1305,6 +1303,11 @@
   min-width: 0;
   margin: 8px 0 0;
   font-size: 15px;
+}
+
+.compact-cards .project-card h2,
+.compact-cards .card-summary {
+  padding-right: 44px;
 }
 
 .compact-cards .card-title {
@@ -1569,7 +1572,7 @@
   flex-direction: column;
   align-self: start;
   min-width: 0;
-  height: 100dvh;
+  height: var(--kit-builder-visible-height, calc(100dvh - 116px));
   padding: 18px;
   overflow: hidden;
   border-left: 1px solid var(--color-border);
@@ -1599,15 +1602,24 @@
   grid-template-rows: auto auto 1fr;
   justify-items: center;
   gap: 10px;
-  border: 0;
   padding: 16px 8px;
   color: var(--color-text-secondary);
-  background: transparent;
-  cursor: pointer;
   text-align: center;
 }
 
-.kit-builder-rail svg {
+.kit-builder-toggle {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  color: var(--color-kind-extension);
+  background: transparent;
+  cursor: pointer;
+  place-items: center;
+}
+
+.kit-builder-toggle svg {
   width: 26px;
   height: 26px;
   color: var(--color-kind-extension);
@@ -1779,6 +1791,7 @@
   position: relative;
   display: grid;
   min-width: 0;
+  transition: transform var(--kit-motion-card) var(--kit-motion-ease);
 }
 
 .project-card-shell.selected .project-card {
@@ -1819,14 +1832,14 @@
 }
 
 .project-card-shell.has-kit-control .card-bottom {
-  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .project-kit-control-hit {
   position: absolute;
   z-index: 4;
   bottom: 4px;
-  left: 4px;
+  right: 4px;
   display: grid;
   width: 44px;
   height: 44px;
@@ -2034,12 +2047,12 @@
   place-items: center;
 }
 
-.kit-frontend-foundation {
+.kit-composition-section {
   display: grid;
   gap: 6px;
 }
 
-.kit-frontend-foundation h3 {
+.kit-composition-section h3 {
   margin: 0;
   color: var(--color-text-secondary);
   font-size: 11px;
@@ -2061,6 +2074,10 @@
     border-color var(--kit-motion-state) var(--kit-motion-ease),
     background var(--kit-motion-state) var(--kit-motion-ease),
     transform var(--kit-motion-card) var(--kit-motion-ease);
+}
+
+.kit-frontend-slot {
+  border-color: var(--color-kind-frontend);
 }
 
 .kit-frontend-slot > span {
@@ -2156,9 +2173,10 @@
   left: 0;
   display: grid;
   box-sizing: border-box;
-  align-content: center;
-  gap: 4px;
-  padding: 8px 12px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px;
   border: 1px solid var(--color-kind-preset);
   border-radius: 7px;
   color: var(--color-text-primary);
@@ -2168,14 +2186,31 @@
   will-change: transform;
 }
 
+.kit-drag-ghost-handle {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  color: var(--color-muted);
+  place-items: center;
+}
+
+.kit-drag-ghost-handle svg {
+  width: 18px;
+}
+
+.kit-drag-ghost-identity {
+  display: grid;
+  min-width: 0;
+}
+
+.kit-drag-ghost-identity small {
+  color: var(--color-kind-extension);
+  font-size: 11px;
+}
+
 .kit-builder[data-drag-intent="remove"] .dragging {
   border-color: var(--color-kind-extension);
   background: var(--color-surface-primary);
-}
-
-.kit-drag-ghost span {
-  color: var(--color-kind-extension);
-  font-size: 11px;
 }
 
 .kit-builder-remove:is(:hover, :focus-visible) > span {
@@ -2197,8 +2232,13 @@
 }
 
 .kit-drag-handle:active,
-.kit-card-select:active,
-.project-card:active {
+.kit-card-select:active {
+  transform: scale(0.98);
+  transition-duration: var(--kit-motion-press);
+}
+
+.project-card-shell:has(.project-card:active),
+.project-card-shell:has(.project-kit-control:active) {
   transform: scale(0.98);
   transition-duration: var(--kit-motion-press);
 }
@@ -2210,13 +2250,17 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .project-card-shell:hover,
+  .project-card-shell:focus-within {
+    transform: translateY(-2px);
+  }
+
   .project-card:hover,
   .project-card:focus-visible,
   .kit-card:hover,
   .kit-card:focus-within {
     border-color: var(--color-border-strong);
     background: var(--color-surface-raised);
-    transform: translateY(-2px);
   }
 }
 

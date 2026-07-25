@@ -26,6 +26,7 @@ async function selectProject(
 
 async function verifyUnifiedSelectionFlow(
   page: import("@playwright/test").Page,
+  phone: boolean,
 ) {
   const frontendLink = page.getByRole("link", {
     name: "Fixture Frontend",
@@ -37,9 +38,15 @@ async function verifyUnifiedSelectionFlow(
   );
 
   await selectProject(page, "Fixture Frontend");
-  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
-    0,
-  );
+  if (phone) {
+    await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
+      0,
+    );
+  } else {
+    await expect(
+      page.getByRole("complementary", { name: "Kit Builder" }),
+    ).toBeVisible();
+  }
   await expect(
     page.getByRole("region", { name: "1 project selected" }),
   ).toBeVisible();
@@ -59,9 +66,10 @@ async function verifyUnifiedSelectionFlow(
   ).toBeVisible();
 
   await page.getByRole("button", { name: "Add 2 projects to Kit" }).click();
-  await expect(
-    page.getByRole("button", { name: "Remove Fixture Tool 02 from Kit" }),
-  ).toBeVisible();
+  const catalogToolControl = page
+    .getByRole("region", { name: "Project catalog" })
+    .getByRole("button", { name: "Remove Fixture Tool 02 from Kit" });
+  await expect(catalogToolControl).toBeVisible();
   await expect(
     page
       .locator(".project-card-shell.in-draft")
@@ -69,16 +77,16 @@ async function verifyUnifiedSelectionFlow(
       .getByText("In Kit"),
   ).toBeVisible();
 
-  await page
-    .getByRole("button", { name: "Remove Fixture Tool 02 from Kit" })
-    .click();
+  await catalogToolControl.click();
   await expect(
     page.getByRole("button", { name: "Add Fixture Tool 02 to Kit" }),
   ).toBeVisible();
 
-  await page
-    .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
-    .click();
+  if (phone) {
+    await page
+      .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
+      .click();
+  }
   await page
     .getByRole("region", { name: "Frontend" })
     .getByRole("button", { name: "Remove Fixture Frontend from Kit" })
@@ -88,7 +96,7 @@ async function verifyUnifiedSelectionFlow(
   ).toBeVisible();
 }
 
-test("desktop Kit Builder uses the large yellow right-pointing collapse icon", async ({
+test("desktop Kit Builder open and close controls share one 36-pixel geometry", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -130,6 +138,13 @@ test("desktop Kit Builder uses the large yellow right-pointing collapse icon", a
     iconColor: "rgb(225, 138, 36)",
     iconTransform: "matrix(-1, 0, 0, 1, 0, 0)",
   });
+
+  await collapse.click();
+  const open = page.getByRole("button", { name: "Open Kit Builder" });
+  await expect(open).toBeVisible();
+  const openBox = await open.boundingBox();
+  expect(openBox?.width).toBe(36);
+  expect(openBox?.height).toBe(36);
 });
 
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({
@@ -183,11 +198,29 @@ test("desktop Kit Builder stays flush with the viewport after the header scrolls
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openKits(page);
+
+  await expect
+    .poll(() =>
+      page.locator(".kit-builder-panel").evaluate((panel) => {
+        const bounds = panel.getBoundingClientRect();
+        return Math.round(window.innerHeight - bounds.bottom);
+      }),
+    )
+    .toBe(0);
+
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await page.evaluate(() => window.scrollTo(0, 300));
   await expect
     .poll(() => page.evaluate(() => window.scrollY))
     .toBeGreaterThan(116);
+  await expect
+    .poll(() =>
+      page.locator(".kit-builder-panel").evaluate((panel) => {
+        const bounds = panel.getBoundingClientRect();
+        return Math.round(window.innerHeight - bounds.bottom);
+      }),
+    )
+    .toBe(0);
 
   const panelEdges = await page
     .locator(".kit-builder-panel")
@@ -201,6 +234,72 @@ test("desktop Kit Builder stays flush with the viewport after the header scrolls
 
   expect(panelEdges.top).toBeCloseTo(0, 0);
   expect(panelEdges.bottomGap).toBeCloseTo(0, 0);
+});
+
+test("desktop long Kit stacks scroll through the final row and submit controls", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 700 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Large Stack" }).click();
+  await page.getByRole("button", { name: "Duplicate" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const body = panel.locator(".kit-builder-panel-body");
+  await body.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+
+  await expect(panel.locator(".kit-builder-row").last()).toBeInViewport();
+  await expect(panel.locator(".kit-builder-footer")).toBeInViewport();
+  await expect(panel.getByRole("button", { name: "Submit Kit" })).toBeVisible();
+});
+
+test("compact cards keep the Kit control right-aligned and reserve an ellipsis gutter", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 800 });
+  await page.goto("/");
+
+  const shell = page.locator(".project-card-shell").first();
+  const license = shell.locator(".license");
+  const control = shell.locator(".project-kit-control-hit");
+  const standardLicenseBox = await license.boundingBox();
+  const standardControlBox = await control.boundingBox();
+  expect(standardLicenseBox).not.toBeNull();
+  expect(standardControlBox).not.toBeNull();
+  expect(standardLicenseBox!.x).toBeLessThan(standardControlBox!.x);
+
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+  await expect(license).toBeHidden();
+
+  const compactStyles = await shell.evaluate((element) => {
+    const title = element.querySelector("h2");
+    const summary = element.querySelector(".card-summary");
+    const controlHit = element.querySelector(".project-kit-control-hit");
+    if (!title || !summary || !controlHit) {
+      throw new Error("Compact card anatomy is incomplete");
+    }
+    const titleStyle = getComputedStyle(title);
+    const summaryStyle = getComputedStyle(summary);
+    const shellBounds = element.getBoundingClientRect();
+    const controlBounds = controlHit.getBoundingClientRect();
+    return {
+      titlePaddingRight: titleStyle.paddingRight,
+      summaryPaddingRight: summaryStyle.paddingRight,
+      summaryOverflow: summaryStyle.overflow,
+      summaryTextOverflow: summaryStyle.textOverflow,
+      controlRightGap: Math.round(shellBounds.right - controlBounds.right),
+    };
+  });
+
+  expect(compactStyles).toEqual({
+    titlePaddingRight: "44px",
+    summaryPaddingRight: "44px",
+    summaryOverflow: "hidden",
+    summaryTextOverflow: "ellipsis",
+    controlRightGap: 4,
+  });
 });
 
 test("applies every Kit filter and clears them", async ({ page }) => {
@@ -368,27 +467,13 @@ test("batches projects without interrupting browse state and preserves draft acc
         ?.contains(document.activeElement),
     ),
   ).toBe(false);
-  await expect(
-    page.getByRole("button", {
-      name: "Open Kit Builder, 3 projects in draft",
-    }),
-  ).toBeVisible();
+  await expect(page.locator(".kit-project-count")).toHaveText("3 projects");
 
   const search = page.getByRole("searchbox", { name: "Search projects" });
   await search.fill("Fixture Tool 10");
   await selectProject(page, "Fixture Tool 10");
   await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
   await expect(search).toHaveValue("Fixture Tool 10");
-  await expect(
-    page.getByRole("button", {
-      name: "Open Kit Builder, 4 projects in draft",
-    }),
-  ).toBeVisible();
-  await page
-    .getByRole("button", {
-      name: "Open Kit Builder, 4 projects in draft",
-    })
-    .click();
   await expect(page.locator(".kit-project-count")).toHaveText("4 projects");
 
   await page.getByRole("button", { name: "Collapse Kit Builder" }).click();
@@ -433,7 +518,7 @@ for (const viewport of [
         page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
       );
     }
-    await verifyUnifiedSelectionFlow(page);
+    await verifyUnifiedSelectionFlow(page, viewport.width <= 760);
     await expect(
       page.getByRole("button", { name: /Drag .* into Kit/ }),
     ).toHaveCount(0);
@@ -517,8 +602,21 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
     handleBox.y + handleBox.height / 2,
   );
   await page.mouse.down();
-  await page.mouse.move(editorBox.x - 8, editorBox.y + 80, { steps: 4 });
+  const removePointer = { x: editorBox.x - 8, y: editorBox.y + 80 };
+  await page.mouse.move(removePointer.x, removePointer.y, { steps: 4 });
   await expect(page.getByText("Release to remove")).toBeVisible();
+  const ghostHandleBox = await page
+    .locator(".kit-drag-ghost-handle")
+    .boundingBox();
+  expect(ghostHandleBox).not.toBeNull();
+  expect(
+    ghostHandleBox!.x + ghostHandleBox!.width / 2,
+    "drag pointer remains centered on the ghost handle",
+  ).toBeCloseTo(removePointer.x, 0);
+  expect(
+    ghostHandleBox!.y + ghostHandleBox!.height / 2,
+    "drag pointer remains centered on the ghost handle",
+  ).toBeCloseTo(removePointer.y, 0);
   await page.mouse.move(editorBox.x + 40, editorBox.y + 80, { steps: 3 });
   await expect(page.getByText("Release to remove")).toHaveCount(0);
   await page.keyboard.press("Escape");

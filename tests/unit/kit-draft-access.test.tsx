@@ -26,13 +26,14 @@ describe("KitDraftAccess", () => {
       />,
     );
 
-    const rail = screen.getByRole("button", {
+    const open = screen.getByRole("button", {
       name: "Open Kit Builder, 7 projects in draft",
     });
-    expect(rail).toHaveClass("kit-builder-rail");
+    expect(open).toHaveClass("kit-builder-toggle");
+    const rail = open.closest(".kit-builder-rail");
     expect(rail).toHaveTextContent("Kit Builder");
     expect(rail).toHaveTextContent("7 projects in draft");
-    await user.click(rail);
+    await user.click(open);
     expect(onOpen).toHaveBeenCalledOnce();
   });
 

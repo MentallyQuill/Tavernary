@@ -191,7 +191,7 @@ describe("Kit builder state", () => {
     );
   });
 
-  test("applies a project batch into a silent collapsed draft", () => {
+  test("applies a project batch without changing an open builder", () => {
     const { result } = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
@@ -207,7 +207,7 @@ describe("Kit builder state", () => {
     });
     expect(result.current.state).toEqual({
       mode: "build",
-      collapsed: true,
+      collapsed: false,
       dirty: true,
       draft: {
         operation: "create",
@@ -220,7 +220,7 @@ describe("Kit builder state", () => {
     expect(result.current.draftOrigin).toBe("create");
   });
 
-  test("starts a collapsed untouched draft for card selection", () => {
+  test("starts an untouched card-selection draft without closing the builder", () => {
     const { result } = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
@@ -229,7 +229,7 @@ describe("Kit builder state", () => {
 
     expect(result.current.state).toMatchObject({
       mode: "build",
-      collapsed: true,
+      collapsed: false,
       dirty: false,
       draft: {
         operation: "create",
@@ -240,6 +240,35 @@ describe("Kit builder state", () => {
     });
   });
 
+  test("starts an untouched card-selection draft without opening a collapsed builder", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.toggleCollapsed());
+    act(() => result.current.startSelectionDraft());
+
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      collapsed: true,
+      dirty: false,
+    });
+  });
+
+  test("can preserve a visually hidden responsive builder on first selection", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.startSelectionDraft({ collapsed: true }));
+
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      collapsed: true,
+      dirty: false,
+    });
+  });
+
   test("discards only an untouched empty selection-started draft", () => {
     const { result } = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
@@ -247,7 +276,18 @@ describe("Kit builder state", () => {
 
     act(() => result.current.startSelectionDraft());
     act(() => result.current.discardUntouchedSelectionDraft());
-    expect(result.current.state.mode).toBe("intro");
+    expect(result.current.state).toEqual({
+      mode: "intro",
+      collapsed: false,
+    });
+
+    act(() => result.current.toggleCollapsed());
+    act(() => result.current.startSelectionDraft());
+    act(() => result.current.discardUntouchedSelectionDraft());
+    expect(result.current.state).toEqual({
+      mode: "intro",
+      collapsed: true,
+    });
 
     act(() => result.current.startSelectionDraft());
     act(() => result.current.updateDraft({ title: "Keep me" }));
@@ -367,6 +407,23 @@ describe("Kit builder controls", () => {
         '.kit-builder-stack [data-project-id="frontend"]',
       ),
     ).toBeNull();
+  });
+
+  test("labels Frontend and Extensions & Presets as separate composition sections", () => {
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole("region", { name: "Frontend" })).toBeVisible();
+    expect(
+      screen.getByRole("region", { name: "Extensions & Presets" }),
+    ).toBeVisible();
   });
 
   test("uses a grab handle and corner remove control for stack projects", () => {

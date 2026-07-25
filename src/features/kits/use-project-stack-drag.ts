@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import {
+  dragHandleAnchor,
   exceedsDragThreshold,
   isOutsideEditor,
   stackTargetIndex,
@@ -22,6 +23,7 @@ export type ProjectStackDragState = {
   projectId: string;
   pointerId: number;
   point: Point;
+  ghostAnchor: Point;
   sourceRect: DragRect | null;
   sourceIndex: number;
   targetIndex: number;
@@ -98,6 +100,7 @@ export function useProjectStackDrag({
         projectId,
         pointerId: event.pointerId,
         point,
+        ghostAnchor: { x: 0, y: 0 },
         sourceRect: null,
         sourceIndex,
         targetIndex: sourceIndex,
@@ -151,7 +154,11 @@ export function useProjectStackDrag({
           const source = current.handle.closest(
             "[data-project-id], .kit-frontend-slot",
           );
-          current.sourceRect = source ? rectOf(source) : null;
+          const sourceRect = source ? rectOf(source) : null;
+          current.sourceRect = sourceRect;
+          current.ghostAnchor = sourceRect
+            ? dragHandleAnchor(sourceRect, rectOf(current.handle))
+            : { x: 0, y: 0 };
         }
 
         const outside =

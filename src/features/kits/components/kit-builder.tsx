@@ -3,6 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import {
   countWords,
@@ -39,6 +40,7 @@ export function KitBuilder({
   const descriptionCountId = `${formId}-description-count`;
   const descriptionErrorId = `${formId}-description-error`;
   const frontendHeadingId = `${formId}-frontend-heading`;
+  const stackHeadingId = `${formId}-stack-heading`;
   const [touched, setTouched] = useState({
     title: false,
     description: false,
@@ -230,7 +232,7 @@ export function KitBuilder({
         ) : null}
       </div>
       <section
-        className="kit-frontend-foundation"
+        className="kit-composition-section kit-frontend-foundation"
         aria-labelledby={frontendHeadingId}
       >
         <h3 id={frontendHeadingId}>Frontend</h3>
@@ -251,51 +253,57 @@ export function KitBuilder({
           }}
         />
       </section>
-      <ol
-        ref={stackRef}
-        className="kit-builder-stack"
-        aria-label="Ordered Kit projects"
+      <section
+        className="kit-composition-section kit-stack-section"
+        aria-labelledby={stackHeadingId}
       >
-        {stackProjectIds.length === 0 ? (
-          <li className="kit-builder-empty-drop" aria-hidden="true">
-            Add projects from the catalog
-          </li>
-        ) : null}
-        {stackProjectIds.map((projectId, index) => {
-          const project = projectsById.get(projectId);
-          return project ? (
-            <KitBuilderRow
-              key={projectId}
-              project={project}
-              onRemove={removeImmediately}
-              onDragStart={(event) =>
-                drag.begin(projectId, event, { reorderable: true })
-              }
-              onDragKeyDown={(event) => {
-                if (
-                  !event.altKey ||
-                  (event.key !== "ArrowUp" && event.key !== "ArrowDown")
-                ) {
-                  return;
+        <h3 id={stackHeadingId}>Extensions &amp; Presets</h3>
+        <ol
+          ref={stackRef}
+          className="kit-builder-stack"
+          aria-label="Ordered Kit projects"
+        >
+          {stackProjectIds.length === 0 ? (
+            <li className="kit-builder-empty-drop" aria-hidden="true">
+              Add projects from the catalog
+            </li>
+          ) : null}
+          {stackProjectIds.map((projectId, index) => {
+            const project = projectsById.get(projectId);
+            return project ? (
+              <KitBuilderRow
+                key={projectId}
+                project={project}
+                onRemove={removeImmediately}
+                onDragStart={(event) =>
+                  drag.begin(projectId, event, { reorderable: true })
                 }
-                event.preventDefault();
-                reorderFromKeyboard(
-                  projectId,
-                  index,
-                  event.key === "ArrowUp" ? -1 : 1,
-                );
-              }}
-              dragging={
-                drag.dragState?.projectId === projectId &&
-                drag.dragState.phase !== "pressed"
-              }
-              placement={null}
-              touchLayout={touchLayout}
-              dragOffset={dragOffsetFor(index)}
-            />
-          ) : null;
-        })}
-      </ol>
+                onDragKeyDown={(event) => {
+                  if (
+                    !event.altKey ||
+                    (event.key !== "ArrowUp" && event.key !== "ArrowDown")
+                  ) {
+                    return;
+                  }
+                  event.preventDefault();
+                  reorderFromKeyboard(
+                    projectId,
+                    index,
+                    event.key === "ArrowUp" ? -1 : 1,
+                  );
+                }}
+                dragging={
+                  drag.dragState?.projectId === projectId &&
+                  drag.dragState.phase !== "pressed"
+                }
+                placement={null}
+                touchLayout={touchLayout}
+                dragOffset={dragOffsetFor(index)}
+              />
+            ) : null;
+          })}
+        </ol>
+      </section>
       {drag.dragState && drag.dragState.phase !== "pressed"
         ? createPortal(
             <div
@@ -304,13 +312,25 @@ export function KitBuilder({
               style={{
                 width: drag.dragState.sourceRect?.width,
                 height: drag.dragState.sourceRect?.height,
-                transform: `translate3d(${drag.dragState.point.x}px, ${drag.dragState.point.y}px, 0)`,
+                transform: `translate3d(${
+                  drag.dragState.point.x - drag.dragState.ghostAnchor.x
+                }px, ${
+                  drag.dragState.point.y - drag.dragState.ghostAnchor.y
+                }px, 0)`,
               }}
             >
-              {projectsById.get(drag.dragState.projectId)?.name}
-              {drag.dragState.phase === "remove" ? (
-                <span>Release to remove</span>
-              ) : null}
+              <span className="kit-drag-ghost-handle">
+                <CategoryIcon name="drag-handle" />
+              </span>
+              <span className="kit-drag-ghost-identity">
+                <strong>
+                  {projectsById.get(drag.dragState.projectId)?.name}
+                </strong>
+                {drag.dragState.phase === "remove" ? (
+                  <small>Release to remove</small>
+                ) : null}
+              </span>
+              <span aria-hidden="true" />
             </div>,
             document.body,
           )

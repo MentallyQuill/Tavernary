@@ -43,17 +43,19 @@ export function KitDraftAccess({
   }
 
   return (
-    <button
-      type="button"
-      className="kit-builder-rail"
-      aria-label={accessibleName}
-      onClick={onOpen}
-    >
-      <CategoryIcon name="kit-builder" />
+    <div className="kit-builder-rail">
+      <button
+        type="button"
+        className="kit-builder-toggle"
+        aria-label={accessibleName}
+        onClick={onOpen}
+      >
+        <CategoryIcon name="kit-builder" />
+      </button>
       <span>Kit Builder</span>
       <span className="kit-builder-rail-status" aria-hidden="true">
         {visibleStatus}
       </span>
-    </button>
+    </div>
   );
 }

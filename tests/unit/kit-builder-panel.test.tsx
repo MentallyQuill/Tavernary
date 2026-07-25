@@ -9,7 +9,10 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
+import {
+  availableBuilderHeight,
+  KitBuilderPanel,
+} from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
@@ -178,10 +181,17 @@ describe("Kit Builder", () => {
       />,
     );
 
-    const rail = screen.getByRole("button", { name: "Open Kit Builder" });
-    expect(rail).toHaveClass("kit-builder-rail");
-    expect(rail).toHaveTextContent("Kit Builder");
-    expect(rail.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
+    const open = screen.getByRole("button", { name: "Open Kit Builder" });
+    expect(open).toHaveClass("kit-builder-toggle");
+    expect(open).not.toHaveClass("kit-builder-rail");
+    expect(open.closest(".kit-builder-rail")).toHaveTextContent("Kit Builder");
+    expect(open.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
+  });
+
+  test("calculates the visible desktop builder height from its current top edge", () => {
+    expect(availableBuilderHeight(900, 116)).toBe(784);
+    expect(availableBuilderHeight(900, 0)).toBe(900);
+    expect(availableBuilderHeight(900, -80)).toBe(900);
   });
 
   test("uses a horizontal draft pill only for collapsed phone builds", async () => {
@@ -254,7 +264,7 @@ describe("Kit Builder", () => {
       screen.getByRole("button", {
         name: "Open Kit Builder, 2 projects in draft",
       }),
-    ).toHaveClass("kit-builder-rail");
+    ).toHaveClass("kit-builder-toggle");
   });
 
   test("can hide phone draft access while the selection dock is active", () => {
@@ -377,7 +387,11 @@ describe("Kit Builder", () => {
     const collapse = screen.getByRole("button", {
       name: "Collapse Kit Builder",
     });
-    expect(collapse).toHaveClass("control-icon", "kit-builder-collapse");
+    expect(collapse).toHaveClass(
+      "control-icon",
+      "kit-builder-toggle",
+      "kit-builder-collapse",
+    );
     expect(collapse.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
     await user.click(collapse);
     expect(onCollapse).toHaveBeenCalled();
