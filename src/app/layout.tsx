@@ -29,6 +29,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" style={{ backgroundColor: "#07181d" }}>
+      <head>
+        <meta name="darkreader-lock" />
+      </head>
       <body>{children}</body>
     </html>
   );

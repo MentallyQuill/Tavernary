@@ -1,11 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
 import { planKitProjectBatch } from "@/features/kits/project-batch";
 import { removeProject } from "@/features/kits/project-stack-order";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
+
+const builderCollapsedStorageKey = "tavernary:kit-builder-collapsed";
+const builderCollapsedChangeEvent = "tavernary-kit-builder-collapsed-change";
+let volatileBuilderCollapsed = false;
 
 export type KitBuilderState =
   | { mode: "intro"; collapsed: boolean }
@@ -17,11 +28,58 @@ export type KitBuilderState =
       dirty: boolean;
     };
 
+type KitBuilderContentState =
+  | { mode: "intro" }
+  | { mode: "inspect"; kitId: string }
+  | {
+      mode: "build";
+      draft: KitDraft;
+      dirty: boolean;
+    };
+
 function normalizedKitProjectIds(kit: CatalogKit) {
   return normalizeKitProjectIds(
     kit.components.map(({ projectId }) => projectId),
     kit.components.map(({ projectId, kind }) => ({ id: projectId, kind })),
   );
+}
+
+function storedBuilderCollapsed() {
+  try {
+    const stored = window.localStorage.getItem(builderCollapsedStorageKey);
+    return stored === null ? false : stored === "true";
+  } catch {
+    return volatileBuilderCollapsed;
+  }
+}
+
+function serverBuilderCollapsed() {
+  return true;
+}
+
+function subscribeBuilderCollapsed(listener: () => void) {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === builderCollapsedStorageKey) listener();
+  };
+  window.addEventListener(builderCollapsedChangeEvent, listener);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    window.removeEventListener(builderCollapsedChangeEvent, listener);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function storeBuilderCollapsed(collapsed: boolean) {
+  volatileBuilderCollapsed = collapsed;
+  try {
+    window.localStorage.setItem(
+      builderCollapsedStorageKey,
+      String(collapsed),
+    );
+  } catch {
+    // The in-memory state remains authoritative when storage is unavailable.
+  }
+  window.dispatchEvent(new Event(builderCollapsedChangeEvent));
 }
 
 export function useKitBuilder({
@@ -31,10 +89,19 @@ export function useKitBuilder({
   selectedKitId: string;
   onSelectKit: (kitId: string) => void;
 }) {
-  const [state, setState] = useState<KitBuilderState>(() =>
+  const [contentState, setContentState] = useState<KitBuilderContentState>(() =>
     selectedKitId
-      ? { mode: "inspect", collapsed: false, kitId: selectedKitId }
-      : { mode: "intro", collapsed: false },
+      ? { mode: "inspect", kitId: selectedKitId }
+      : { mode: "intro" },
+  );
+  const collapsed = useSyncExternalStore(
+    subscribeBuilderCollapsed,
+    storedBuilderCollapsed,
+    serverBuilderCollapsed,
+  );
+  const state = useMemo<KitBuilderState>(
+    () => ({ ...contentState, collapsed }),
+    [collapsed, contentState],
   );
   const [draftOrigin, setDraftOrigin] = useState<
     "create" | "duplicate" | "edit" | null
@@ -48,11 +115,10 @@ export function useKitBuilder({
     queueMicrotask(() => {
       if (cancelled) return;
       selectionStartedDraftRef.current = false;
-      setState((current) => ({
+      setContentState({
         mode: "inspect",
-        collapsed: current.collapsed,
         kitId: selectedKitId,
-      }));
+      });
     });
     return () => {
       cancelled = true;
@@ -62,32 +128,28 @@ export function useKitBuilder({
   const selectKit = useCallback(
     (kitId: string) => {
       selectionStartedDraftRef.current = false;
+      storeBuilderCollapsed(false);
       onSelectKit(kitId);
-      setState((current) => ({
+      setContentState({
         mode: "inspect",
-        collapsed: false,
         kitId,
-      }));
+      });
     },
     [onSelectKit],
   );
 
   const toggleCollapsed = useCallback(
-    () =>
-      setState((current) => ({
-        ...current,
-        collapsed: !current.collapsed,
-      })),
-    [],
+    () => storeBuilderCollapsed(!collapsed),
+    [collapsed],
   );
 
   const startCreate = useCallback(() => {
     selectionStartedDraftRef.current = false;
+    storeBuilderCollapsed(false);
     setDraftOrigin("create");
     setOriginalProjectIds([]);
-    setState({
+    setContentState({
       mode: "build",
-      collapsed: false,
       dirty: false,
       draft: {
         operation: "create",
@@ -101,12 +163,12 @@ export function useKitBuilder({
 
   const startDuplicate = useCallback((kit: CatalogKit) => {
     selectionStartedDraftRef.current = false;
+    storeBuilderCollapsed(false);
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("duplicate");
     setOriginalProjectIds(projectIds);
-    setState({
+    setContentState({
       mode: "build",
-      collapsed: false,
       dirty: false,
       draft: {
         operation: "create",
@@ -120,12 +182,12 @@ export function useKitBuilder({
 
   const startEdit = useCallback((kit: CatalogKit) => {
     selectionStartedDraftRef.current = false;
+    storeBuilderCollapsed(false);
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("edit");
     setOriginalProjectIds(projectIds);
-    setState({
+    setContentState({
       mode: "build",
-      collapsed: false,
       dirty: false,
       draft: {
         operation: "edit",
@@ -138,7 +200,7 @@ export function useKitBuilder({
   }, []);
 
   const updateDraft = useCallback((patch: Partial<KitDraft>) => {
-    setState((current) =>
+    setContentState((current) =>
       current.mode === "build"
         ? {
             ...current,
@@ -155,9 +217,9 @@ export function useKitBuilder({
       selectionStartedDraftRef.current = true;
       setDraftOrigin("create");
       setOriginalProjectIds([]);
-      setState({
+      storeBuilderCollapsed(options?.collapsed ?? collapsed);
+      setContentState({
         mode: "build",
-        collapsed: options?.collapsed ?? state.collapsed,
         dirty: false,
         draft: {
           operation: "create",
@@ -168,12 +230,12 @@ export function useKitBuilder({
         },
       });
     },
-    [state.collapsed, state.mode],
+    [collapsed, state.mode],
   );
 
   const discardUntouchedSelectionDraft = useCallback(() => {
     if (!selectionStartedDraftRef.current) return;
-    setState((current) => {
+    setContentState((current) => {
       if (
         current.mode !== "build" ||
         current.dirty ||
@@ -184,7 +246,7 @@ export function useKitBuilder({
         return current;
       }
       selectionStartedDraftRef.current = false;
-      return { mode: "intro", collapsed: current.collapsed };
+      return { mode: "intro" };
     });
   }, []);
 
@@ -193,7 +255,7 @@ export function useKitBuilder({
       const removed =
         state.mode === "build" && state.draft.projectIds.includes(projectId);
       if (!removed) return false;
-      setState((current) => {
+      setContentState((current) => {
         if (
           current.mode !== "build" ||
           !current.draft.projectIds.includes(projectId)
@@ -217,7 +279,7 @@ export function useKitBuilder({
   const applyProjectBatch = useCallback(
     (selectedProjectIds: string[], projects: CatalogProject[]) => {
       const draftProjectIds =
-        state.mode === "build" ? state.draft.projectIds : [];
+        contentState.mode === "build" ? contentState.draft.projectIds : [];
       const plan = planKitProjectBatch({
         draftProjectIds,
         selectedProjectIds,
@@ -226,21 +288,20 @@ export function useKitBuilder({
       if (plan.addedProjectIds.length === 0) return plan;
       selectionStartedDraftRef.current = false;
 
-      if (state.mode === "build") {
-        setState({
-          ...state,
+      if (contentState.mode === "build") {
+        setContentState({
+          ...contentState,
           dirty: true,
           draft: {
-            ...state.draft,
+            ...contentState.draft,
             projectIds: plan.projectIds,
           },
         });
       } else {
         setDraftOrigin("create");
         setOriginalProjectIds([]);
-        setState({
+        setContentState({
           mode: "build",
-          collapsed: state.collapsed,
           dirty: true,
           draft: {
             operation: "create",
@@ -254,7 +315,7 @@ export function useKitBuilder({
 
       return plan;
     },
-    [state],
+    [contentState],
   );
 
   useEffect(() => {
@@ -268,7 +329,6 @@ export function useKitBuilder({
 
   return {
     state,
-    setState,
     selectKit,
     toggleCollapsed,
     startCreate,

@@ -1,0 +1,22 @@
+﻿2026-07-25T20:14:50.3762444Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-07-25T20:14:50.3763830Z with:
+2026-07-25T20:14:50.3764409Z   node-version: 24
+2026-07-25T20:14:50.3765057Z   cache: npm
+2026-07-25T20:14:50.3765870Z   check-latest: false
+2026-07-25T20:14:50.3777118Z   token: ***
+2026-07-25T20:14:50.3777790Z   package-manager-cache: true
+2026-07-25T20:14:50.3778591Z ##[endgroup]
+2026-07-25T20:14:50.5159247Z Found in cache @ /opt/hostedtoolcache/node/24.18.0/x64
+2026-07-25T20:14:50.5163449Z ##[group]Environment details
+2026-07-25T20:14:50.8958991Z node: v24.18.0
+2026-07-25T20:14:50.8961629Z npm: 11.16.0
+2026-07-25T20:14:50.8962830Z yarn: 1.22.22
+2026-07-25T20:14:50.8965691Z ##[endgroup]
+2026-07-25T20:14:50.8980463Z [command]/opt/hostedtoolcache/node/24.18.0/x64/bin/npm config get cache
+2026-07-25T20:14:51.0355949Z /home/runner/.npm
+2026-07-25T20:14:51.1113831Z Cache hit for: node-cache-Linux-x64-npm-5e053b3f5b35ecd594280f33d781e25395153c267011b02da59a764181d6ca4f
+2026-07-25T20:14:51.8605494Z Received 145042061 of 145042061 (100.0%), 196.5 MBs/sec
+2026-07-25T20:14:51.8639066Z Cache Size: ~138 MB (145042061 B)
+2026-07-25T20:14:51.8699147Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2177b7a6-49ba-4b5f-a734-0bf027df9c00/cache.tzst -P -C /home/runner/work/Tavernary/Tavernary --use-compress-program unzstd
+2026-07-25T20:14:52.2310861Z Cache restored successfully
+2026-07-25T20:14:52.2386629Z Cache restored from key: node-cache-Linux-x64-npm-5e053b3f5b35ecd594280f33d781e25395153c267011b02da59a764181d6ca4f

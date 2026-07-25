@@ -1,0 +1,32 @@
+﻿2026-07-25T20:14:48.1610364Z Current runner version: '2.336.0'
+2026-07-25T20:14:48.1646137Z ##[group]Runner Image Provisioner
+2026-07-25T20:14:48.1647484Z Hosted Compute Agent
+2026-07-25T20:14:48.1648571Z Version: 20260707.563
+2026-07-25T20:14:48.1649780Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-07-25T20:14:48.1651187Z Build Date: 2026-07-07T19:33:50Z
+2026-07-25T20:14:48.1653033Z Worker ID: {6b6dd2c1-8616-4d35-9cde-2f8b0f237d88}
+2026-07-25T20:14:48.1654407Z Azure Region: eastus
+2026-07-25T20:14:48.1655691Z ##[endgroup]
+2026-07-25T20:14:48.1658422Z ##[group]Operating System
+2026-07-25T20:14:48.1659559Z Ubuntu
+2026-07-25T20:14:48.1660411Z 24.04.4
+2026-07-25T20:14:48.1661273Z LTS
+2026-07-25T20:14:48.1662346Z ##[endgroup]
+2026-07-25T20:14:48.1663376Z ##[group]Runner Image
+2026-07-25T20:14:48.1664407Z Image: ubuntu-24.04
+2026-07-25T20:14:48.1665694Z Version: 20260720.247.2
+2026-07-25T20:14:48.1667560Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-07-25T20:14:48.1670721Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-07-25T20:14:48.1672552Z ##[endgroup]
+2026-07-25T20:14:48.1674552Z ##[group]GITHUB_TOKEN Permissions
+2026-07-25T20:14:48.1677820Z Actions: write
+2026-07-25T20:14:48.1678866Z Contents: write
+2026-07-25T20:14:48.1679877Z Metadata: read
+2026-07-25T20:14:48.1680811Z ##[endgroup]
+2026-07-25T20:14:48.1683982Z Secret source: Actions
+2026-07-25T20:14:48.1686016Z Prepare workflow directory
+2026-07-25T20:14:48.2165546Z Prepare all required actions
+2026-07-25T20:14:48.2229134Z Getting action download info
+2026-07-25T20:14:48.4080358Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-07-25T20:14:48.6512132Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-07-25T20:14:48.9261507Z Complete job name: enrich

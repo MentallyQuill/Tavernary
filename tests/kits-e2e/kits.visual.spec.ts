@@ -74,19 +74,59 @@ test("mobile Kit surfaces remain visible and bounded through navigation", async 
   await expectNoHorizontalOverflow(page);
 });
 
-test("320px card footer keeps metadata clear of the Kit control", async ({
+test("320px card footer gives two metadata rows full width above utility actions", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 844 });
   await page.goto("/");
 
   const shell = page.locator(".project-card-shell").first();
+  const footer = shell.locator(".card-bottom");
+  const chips = shell.locator(".card-chips");
+  const utility = shell.locator(".card-utility");
   const license = shell.locator(".license");
   const control = shell.locator(".project-kit-control-hit");
+  await chips.evaluate((element) => {
+    const chip = element.querySelector(".chip");
+    if (!chip) throw new Error("Card metadata chip is missing");
+    for (let index = 0; index < 12; index += 1) {
+      const clone = chip.cloneNode(true) as HTMLElement;
+      clone.textContent = `Long metadata label ${index + 1}`;
+      element.append(clone);
+    }
+  });
+
   const shellBox = (await shell.boundingBox())!;
+  const footerBox = (await footer.boundingBox())!;
+  const chipsBox = (await chips.boundingBox())!;
+  const utilityBox = (await utility.boundingBox())!;
   const licenseBox = (await license.boundingBox())!;
   const controlBox = (await control.boundingBox())!;
+  const chipOverflow = await chips.evaluate((element) => {
+    const firstChip = element.querySelector(".chip");
+    if (!firstChip) throw new Error("Card metadata chip is missing");
+    const chipHeight = firstChip.getBoundingClientRect().height;
+    const style = getComputedStyle(element);
+    return {
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+      chipHeight,
+      rowGap: Number.parseFloat(style.rowGap),
+      overflow: style.overflow,
+    };
+  });
 
+  expect(Math.abs(chipsBox.x - footerBox.x)).toBeLessThanOrEqual(1);
+  expect(
+    Math.abs(chipsBox.x + chipsBox.width - (footerBox.x + footerBox.width)),
+  ).toBeLessThanOrEqual(1);
+  expect(utilityBox.y).toBeGreaterThanOrEqual(chipsBox.y + chipsBox.height);
+  expect(controlBox.y).toBeGreaterThanOrEqual(chipsBox.y + chipsBox.height);
+  expect(chipOverflow.clientHeight).toBeLessThanOrEqual(
+    chipOverflow.chipHeight * 2 + chipOverflow.rowGap + 1,
+  );
+  expect(chipOverflow.scrollHeight).toBeGreaterThan(chipOverflow.clientHeight);
+  expect(chipOverflow.overflow).toBe("hidden");
   expect(licenseBox.x + licenseBox.width).toBeLessThanOrEqual(controlBox.x);
   expect(controlBox.x + controlBox.width).toBeLessThanOrEqual(
     shellBox.x + shellBox.width + 1,

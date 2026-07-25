@@ -386,13 +386,6 @@ export function ProjectCard({
       <p className="card-summary">{project.summary}</p>
 
       <div className="card-bottom">
-        <Tooltip
-          id={licenseId}
-          label={licenseTooltip(project)}
-          className={`license license-${project.license.status}`}
-        >
-          {project.license.label}
-        </Tooltip>
         <span className="card-chips">
           {project.frontends.map((frontend) => (
             <Tooltip
@@ -415,6 +408,15 @@ export function ProjectCard({
             </Tooltip>
           ))}
         </span>
+        <div className="card-utility">
+          <Tooltip
+            id={licenseId}
+            label={licenseTooltip(project)}
+            className={`license license-${project.license.status}`}
+          >
+            {project.license.label}
+          </Tooltip>
+        </div>
       </div>
     </a>
   );

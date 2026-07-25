@@ -108,6 +108,7 @@ const kit: CatalogKit = {
 
 afterEach(() => {
   cleanup();
+  window.localStorage.clear();
   vi.restoreAllMocks();
   vi.useRealTimers();
   Object.defineProperty(window, "matchMedia", {
@@ -117,6 +118,28 @@ afterEach(() => {
 });
 
 describe("Kit builder state", () => {
+  test("restores closed and reopened visibility across remounts", () => {
+    const first = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    act(() => first.result.current.toggleCollapsed());
+    expect(first.result.current.state.collapsed).toBe(true);
+    first.unmount();
+
+    const closedRefresh = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    expect(closedRefresh.result.current.state.collapsed).toBe(true);
+    act(() => closedRefresh.result.current.toggleCollapsed());
+    expect(closedRefresh.result.current.state.collapsed).toBe(false);
+    closedRefresh.unmount();
+
+    const openRefresh = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    expect(openRefresh.result.current.state.collapsed).toBe(false);
+  });
+
   test("starts create, duplicate, and edit drafts without mutating the live Kit", () => {
     const onSelectKit = vi.fn();
     const { result } = renderHook(() =>

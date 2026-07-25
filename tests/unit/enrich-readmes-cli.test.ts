@@ -287,6 +287,42 @@ test("canary approval records verified deployment without provider access", asyn
   });
 });
 
+test("canary approval writes its durable ledger without replacing the full report", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-canary-ledger-"));
+  const canaryReportPath = join(directory, "enrichment-canary.json");
+  const reportPath = join(directory, "enrichment-report.json");
+  const awaiting = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "canary",
+      manifest: ["a", "b", "c", "d", "e"],
+      runId: "canary",
+      now,
+      model,
+    }),
+    ["a", "b", "c", "d", "e"].map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+
+  await runCli({
+    mode: "approve-canary",
+    previousReport: awaiting,
+    canaryReportPath,
+    reportPath,
+    commitSha: "c".repeat(40),
+    deploymentRunId: 67890,
+    now,
+  });
+
+  const canary = JSON.parse(await readFile(canaryReportPath, "utf8"));
+  const full = await readFile(reportPath, "utf8").catch(() => null);
+  expect(canary).toMatchObject({ mode: "canary", status: "passed" });
+  expect(full).toBeNull();
+});
+
 test("writes enrichment reports in repository Prettier format", async () => {
   const directory = await mkdtemp(join(tmpdir(), "tavernary-report-"));
   const reportPath = join(directory, "enrichment-report.json");

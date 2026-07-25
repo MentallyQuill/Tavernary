@@ -1,0 +1,896 @@
+﻿2026-07-25T20:14:48.1611641Z Current runner version: '2.336.0'
+2026-07-25T20:14:48.1646163Z ##[group]Runner Image Provisioner
+2026-07-25T20:14:48.1647498Z Hosted Compute Agent
+2026-07-25T20:14:48.1648591Z Version: 20260707.563
+2026-07-25T20:14:48.1649793Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-07-25T20:14:48.1651201Z Build Date: 2026-07-07T19:33:50Z
+2026-07-25T20:14:48.1653054Z Worker ID: {6b6dd2c1-8616-4d35-9cde-2f8b0f237d88}
+2026-07-25T20:14:48.1654424Z Azure Region: eastus
+2026-07-25T20:14:48.1655705Z ##[endgroup]
+2026-07-25T20:14:48.1658445Z ##[group]Operating System
+2026-07-25T20:14:48.1659566Z Ubuntu
+2026-07-25T20:14:48.1660419Z 24.04.4
+2026-07-25T20:14:48.1661286Z LTS
+2026-07-25T20:14:48.1662362Z ##[endgroup]
+2026-07-25T20:14:48.1663385Z ##[group]Runner Image
+2026-07-25T20:14:48.1664422Z Image: ubuntu-24.04
+2026-07-25T20:14:48.1665711Z Version: 20260720.247.2
+2026-07-25T20:14:48.1667980Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-07-25T20:14:48.1670734Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-07-25T20:14:48.1672569Z ##[endgroup]
+2026-07-25T20:14:48.1674569Z ##[group]GITHUB_TOKEN Permissions
+2026-07-25T20:14:48.1677842Z Actions: write
+2026-07-25T20:14:48.1678879Z Contents: write
+2026-07-25T20:14:48.1679882Z Metadata: read
+2026-07-25T20:14:48.1680822Z ##[endgroup]
+2026-07-25T20:14:48.1684006Z Secret source: Actions
+2026-07-25T20:14:48.1686036Z Prepare workflow directory
+2026-07-25T20:14:48.2165590Z Prepare all required actions
+2026-07-25T20:14:48.2229166Z Getting action download info
+2026-07-25T20:14:48.4080393Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-07-25T20:14:48.6512154Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-07-25T20:14:48.9261558Z Complete job name: enrich
+2026-07-25T20:14:49.0185898Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-07-25T20:14:49.0187094Z with:
+2026-07-25T20:14:49.0187560Z   fetch-depth: 0
+2026-07-25T20:14:49.0188076Z   repository: MentallyQuill/Tavernary
+2026-07-25T20:14:49.0193085Z   token: ***
+2026-07-25T20:14:49.0193582Z   ssh-strict: true
+2026-07-25T20:14:49.0194098Z   ssh-user: git
+2026-07-25T20:14:49.0194622Z   persist-credentials: true
+2026-07-25T20:14:49.0195358Z   clean: true
+2026-07-25T20:14:49.0195882Z   sparse-checkout-cone-mode: true
+2026-07-25T20:14:49.0196492Z   fetch-tags: false
+2026-07-25T20:14:49.0197006Z   show-progress: true
+2026-07-25T20:14:49.0197529Z   lfs: false
+2026-07-25T20:14:49.0198011Z   submodules: false
+2026-07-25T20:14:49.0198528Z   set-safe-directory: true
+2026-07-25T20:14:49.0199109Z   allow-unsafe-pr-checkout: false
+2026-07-25T20:14:49.0199958Z ##[endgroup]
+2026-07-25T20:14:49.1253256Z Syncing repository: MentallyQuill/Tavernary
+2026-07-25T20:14:49.1256318Z ##[group]Getting Git version info
+2026-07-25T20:14:49.1257683Z Working directory is '/home/runner/work/Tavernary/Tavernary'
+2026-07-25T20:14:49.1259643Z [command]/usr/bin/git version
+2026-07-25T20:14:49.1339777Z git version 2.54.0
+2026-07-25T20:14:49.1364220Z ##[endgroup]
+2026-07-25T20:14:49.1377271Z Temporarily overriding HOME='/home/runner/work/_temp/e2a54ee9-9c49-4874-8699-b4a005ac48e9' before making global git config changes
+2026-07-25T20:14:49.1379228Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-25T20:14:49.1383816Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Tavernary/Tavernary
+2026-07-25T20:14:49.1430860Z Deleting the contents of '/home/runner/work/Tavernary/Tavernary'
+2026-07-25T20:14:49.1435136Z ##[group]Determining repository object format
+2026-07-25T20:14:49.1437629Z ##[endgroup]
+2026-07-25T20:14:49.1438832Z ##[group]Initializing the repository
+2026-07-25T20:14:49.1442861Z [command]/usr/bin/git init /home/runner/work/Tavernary/Tavernary
+2026-07-25T20:14:49.1545532Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-25T20:14:49.1547577Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-07-25T20:14:49.1549106Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-07-25T20:14:49.1550308Z hint: call:
+2026-07-25T20:14:49.1550974Z hint:
+2026-07-25T20:14:49.1551811Z hint: 	git config --global init.defaultBranch <name>
+2026-07-25T20:14:49.1552964Z hint:
+2026-07-25T20:14:49.1554000Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-25T20:14:49.1555792Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-25T20:14:49.1557060Z hint:
+2026-07-25T20:14:49.1557765Z hint: 	git branch -m <name>
+2026-07-25T20:14:49.1558559Z hint:
+2026-07-25T20:14:49.1559680Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-07-25T20:14:49.1566953Z Initialized empty Git repository in /home/runner/work/Tavernary/Tavernary/.git/
+2026-07-25T20:14:49.1578786Z [command]/usr/bin/git remote add origin https://github.com/MentallyQuill/Tavernary
+2026-07-25T20:14:49.1640791Z ##[endgroup]
+2026-07-25T20:14:49.1642557Z ##[group]Disabling automatic garbage collection
+2026-07-25T20:14:49.1645703Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-25T20:14:49.1686602Z ##[endgroup]
+2026-07-25T20:14:49.1688296Z ##[group]Setting up auth
+2026-07-25T20:14:49.1689648Z Removing SSH command configuration
+2026-07-25T20:14:49.1694700Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-25T20:14:49.1740154Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-25T20:14:49.2234128Z Removing HTTP extra header
+2026-07-25T20:14:49.2236020Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-25T20:14:49.2269389Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-25T20:14:49.2565512Z Removing includeIf entries pointing to credentials config files
+2026-07-25T20:14:49.2567417Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-25T20:14:49.2606596Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-25T20:14:49.2854508Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-25T20:14:49.2896592Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Tavernary/Tavernary/.git.path /home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:14:49.2930665Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Tavernary/Tavernary/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:14:49.2967871Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:14:49.3003527Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:14:49.3033558Z ##[endgroup]
+2026-07-25T20:14:49.3034481Z ##[group]Fetching the repository
+2026-07-25T20:14:49.3040482Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-07-25T20:14:50.2511751Z From https://github.com/MentallyQuill/Tavernary
+2026-07-25T20:14:50.2514034Z  * [new branch]      agent/dependency-actions -> origin/agent/dependency-actions
+2026-07-25T20:14:50.2517528Z  * [new branch]      agent/react-19-2-8 -> origin/agent/react-19-2-8
+2026-07-25T20:14:50.2519033Z  * [new branch]      dependabot/npm_and_yarn/playwright/test-1.62.0 -> origin/dependabot/npm_and_yarn/playwright/test-1.62.0
+2026-07-25T20:14:50.2520623Z  * [new branch]      feature/production-vertical-slice -> origin/feature/production-vertical-slice
+2026-07-25T20:14:50.2521746Z  * [new branch]      main               -> origin/main
+2026-07-25T20:14:50.2565076Z [command]/usr/bin/git branch --list --remote origin/main
+2026-07-25T20:14:50.2608274Z   origin/main
+2026-07-25T20:14:50.2622599Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-07-25T20:14:50.2649954Z a9f59242d115e2e3b80c47e0e3792f22b85d3852
+2026-07-25T20:14:50.2655965Z ##[endgroup]
+2026-07-25T20:14:50.2657326Z ##[group]Determining the checkout info
+2026-07-25T20:14:50.2661364Z ##[endgroup]
+2026-07-25T20:14:50.2665887Z [command]/usr/bin/git sparse-checkout disable
+2026-07-25T20:14:50.2715551Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-25T20:14:50.2750537Z ##[group]Checking out the ref
+2026-07-25T20:14:50.2754085Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-07-25T20:14:50.3312794Z Switched to a new branch 'main'
+2026-07-25T20:14:50.3314813Z branch 'main' set up to track 'origin/main'.
+2026-07-25T20:14:50.3327385Z ##[endgroup]
+2026-07-25T20:14:50.3382671Z [command]/usr/bin/git log -1 --format=%H
+2026-07-25T20:14:50.3417821Z a9f59242d115e2e3b80c47e0e3792f22b85d3852
+2026-07-25T20:14:50.3762472Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-07-25T20:14:50.3763834Z with:
+2026-07-25T20:14:50.3764412Z   node-version: 24
+2026-07-25T20:14:50.3765060Z   cache: npm
+2026-07-25T20:14:50.3765875Z   check-latest: false
+2026-07-25T20:14:50.3777131Z   token: ***
+2026-07-25T20:14:50.3777793Z   package-manager-cache: true
+2026-07-25T20:14:50.3778594Z ##[endgroup]
+2026-07-25T20:14:50.5159316Z Found in cache @ /opt/hostedtoolcache/node/24.18.0/x64
+2026-07-25T20:14:50.5163475Z ##[group]Environment details
+2026-07-25T20:14:50.8959139Z node: v24.18.0
+2026-07-25T20:14:50.8961651Z npm: 11.16.0
+2026-07-25T20:14:50.8962846Z yarn: 1.22.22
+2026-07-25T20:14:50.8965728Z ##[endgroup]
+2026-07-25T20:14:50.8980487Z [command]/opt/hostedtoolcache/node/24.18.0/x64/bin/npm config get cache
+2026-07-25T20:14:51.0356007Z /home/runner/.npm
+2026-07-25T20:14:51.1113878Z Cache hit for: node-cache-Linux-x64-npm-5e053b3f5b35ecd594280f33d781e25395153c267011b02da59a764181d6ca4f
+2026-07-25T20:14:51.8605706Z Received 145042061 of 145042061 (100.0%), 196.5 MBs/sec
+2026-07-25T20:14:51.8639121Z Cache Size: ~138 MB (145042061 B)
+2026-07-25T20:14:51.8699205Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2177b7a6-49ba-4b5f-a734-0bf027df9c00/cache.tzst -P -C /home/runner/work/Tavernary/Tavernary --use-compress-program unzstd
+2026-07-25T20:14:52.2310933Z Cache restored successfully
+2026-07-25T20:14:52.2386687Z Cache restored from key: node-cache-Linux-x64-npm-5e053b3f5b35ecd594280f33d781e25395153c267011b02da59a764181d6ca4f
+2026-07-25T20:14:52.2628477Z ##[group]Run npm ci
+2026-07-25T20:14:52.2628868Z [36;1mnpm ci[0m
+2026-07-25T20:14:52.2685092Z shell: /usr/bin/bash -e {0}
+2026-07-25T20:14:52.2685817Z ##[endgroup]
+2026-07-25T20:15:04.9860752Z 
+2026-07-25T20:15:04.9869717Z added 451 packages, and audited 452 packages in 13s
+2026-07-25T20:15:04.9870865Z 
+2026-07-25T20:15:04.9871528Z 169 packages are looking for funding
+2026-07-25T20:15:04.9872186Z   run `npm fund` for details
+2026-07-25T20:15:05.0628958Z 
+2026-07-25T20:15:05.0629838Z 12 high severity vulnerabilities
+2026-07-25T20:15:05.0630389Z 
+2026-07-25T20:15:05.0630983Z To address issues that do not require attention, run:
+2026-07-25T20:15:05.0631868Z   npm audit fix
+2026-07-25T20:15:05.0632217Z 
+2026-07-25T20:15:05.0632818Z To address all issues (including breaking changes), run:
+2026-07-25T20:15:05.0633742Z   npm audit fix --force
+2026-07-25T20:15:05.0634684Z 
+2026-07-25T20:15:05.0635019Z Run `npm audit` for details.
+2026-07-25T20:15:05.0641989Z npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+2026-07-25T20:15:05.0643679Z npm warn allow-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+2026-07-25T20:15:05.0645113Z npm warn allow-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+2026-07-25T20:15:05.0646333Z npm warn allow-scripts
+2026-07-25T20:15:05.0647806Z npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+2026-07-25T20:15:05.1733485Z ##[group]Run set -euo pipefail
+2026-07-25T20:15:05.1734336Z [36;1mset -euo pipefail[0m
+2026-07-25T20:15:05.1734686Z [36;1m[0m
+2026-07-25T20:15:05.1735065Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-07-25T20:15:05.1736025Z [36;1mgit config user.email "41898282+github-actions[bot]@users.noreply.github.com"[0m
+2026-07-25T20:15:05.1736647Z [36;1m[0m
+2026-07-25T20:15:05.1736989Z [36;1mpublish_changes() {[0m
+2026-07-25T20:15:05.1737365Z [36;1m  local commit_message="$1"[0m
+2026-07-25T20:15:05.1737760Z [36;1m  REGISTRY_CHANGED=false[0m
+2026-07-25T20:15:05.1738147Z [36;1m  PUBLISHED_SHA=""[0m
+2026-07-25T20:15:05.1738604Z [36;1m  if ! git diff --quiet -- data/registry/projects; then[0m
+2026-07-25T20:15:05.1739116Z [36;1m    REGISTRY_CHANGED=true[0m
+2026-07-25T20:15:05.1739480Z [36;1m  fi[0m
+2026-07-25T20:15:05.1739984Z [36;1m  git add data/registry/projects/*.json data/reports/enrichment-report.json[0m
+2026-07-25T20:15:05.1740669Z [36;1m  if git diff --cached --quiet; then[0m
+2026-07-25T20:15:05.1741085Z [36;1m    return[0m
+2026-07-25T20:15:05.1741392Z [36;1m  fi[0m
+2026-07-25T20:15:05.1741722Z [36;1m  git commit -m "$commit_message"[0m
+2026-07-25T20:15:05.1742138Z [36;1m  for attempt in 1 2 3; do[0m
+2026-07-25T20:15:05.1742550Z [36;1m    if ! git fetch origin main; then[0m
+2026-07-25T20:15:05.1742987Z [36;1m      if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1743384Z [36;1m        exit 1[0m
+2026-07-25T20:15:05.1743699Z [36;1m      fi[0m
+2026-07-25T20:15:05.1744004Z [36;1m      continue[0m
+2026-07-25T20:15:05.1744325Z [36;1m    fi[0m
+2026-07-25T20:15:05.1744657Z [36;1m    if ! git rebase origin/main; then[0m
+2026-07-25T20:15:05.1745411Z [36;1m      conflicts="$(git diff --name-only --diff-filter=U)"[0m
+2026-07-25T20:15:05.1745949Z [36;1m      if [[ -n "$conflicts" ]]; then[0m
+2026-07-25T20:15:05.1746427Z [36;1m        echo "Enrichment publication conflict:"[0m
+2026-07-25T20:15:05.1746895Z [36;1m        echo "$conflicts"[0m
+2026-07-25T20:15:05.1747253Z [36;1m      fi[0m
+2026-07-25T20:15:05.1747573Z [36;1m      git rebase --abort || true[0m
+2026-07-25T20:15:05.1747992Z [36;1m      if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1748383Z [36;1m        exit 1[0m
+2026-07-25T20:15:05.1748696Z [36;1m      fi[0m
+2026-07-25T20:15:05.1748986Z [36;1m      continue[0m
+2026-07-25T20:15:05.1749303Z [36;1m    fi[0m
+2026-07-25T20:15:05.1749610Z [36;1m    if ! npm run check; then[0m
+2026-07-25T20:15:05.1749987Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1750294Z [36;1m    fi[0m
+2026-07-25T20:15:05.1750621Z [36;1m    if git push origin HEAD:main; then[0m
+2026-07-25T20:15:05.1751095Z [36;1m      PUBLISHED_SHA="$(git rev-parse HEAD)"[0m
+2026-07-25T20:15:05.1751530Z [36;1m      return[0m
+2026-07-25T20:15:05.1751831Z [36;1m    fi[0m
+2026-07-25T20:15:05.1752141Z [36;1m    if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1752520Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1752817Z [36;1m    fi[0m
+2026-07-25T20:15:05.1753101Z [36;1m  done[0m
+2026-07-25T20:15:05.1753377Z [36;1m}[0m
+2026-07-25T20:15:05.1753643Z [36;1m[0m
+2026-07-25T20:15:05.1753950Z [36;1mpublish_canary_preparation() {[0m
+2026-07-25T20:15:05.1754345Z [36;1m  git add \[0m
+2026-07-25T20:15:05.1754685Z [36;1m    data/snapshots/github/*.json \[0m
+2026-07-25T20:15:05.1755369Z [36;1m    data/snapshots/github-refresh.json \[0m
+2026-07-25T20:15:05.1756071Z [36;1m    data/registry/projects/*.json[0m
+2026-07-25T20:15:05.1756564Z [36;1m  if git diff --cached --quiet; then[0m
+2026-07-25T20:15:05.1756987Z [36;1m    return[0m
+2026-07-25T20:15:05.1757287Z [36;1m  fi[0m
+2026-07-25T20:15:05.1757711Z [36;1m  git commit -m "chore(catalog): prepare enrichment canary"[0m
+2026-07-25T20:15:05.1758257Z [36;1m  for attempt in 1 2 3; do[0m
+2026-07-25T20:15:05.1758670Z [36;1m    if ! git fetch origin main; then[0m
+2026-07-25T20:15:05.1759112Z [36;1m      if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1759506Z [36;1m        exit 1[0m
+2026-07-25T20:15:05.1759991Z [36;1m      fi[0m
+2026-07-25T20:15:05.1760303Z [36;1m      continue[0m
+2026-07-25T20:15:05.1760635Z [36;1m    fi[0m
+2026-07-25T20:15:05.1761007Z [36;1m    if ! git rebase origin/main; then[0m
+2026-07-25T20:15:05.1761529Z [36;1m      conflicts="$(git diff --name-only --diff-filter=U)"[0m
+2026-07-25T20:15:05.1762051Z [36;1m      if [[ -n "$conflicts" ]]; then[0m
+2026-07-25T20:15:05.1762556Z [36;1m        echo "Canary preparation publication conflict:"[0m
+2026-07-25T20:15:05.1763053Z [36;1m        echo "$conflicts"[0m
+2026-07-25T20:15:05.1763418Z [36;1m      fi[0m
+2026-07-25T20:15:05.1763733Z [36;1m      git rebase --abort || true[0m
+2026-07-25T20:15:05.1764152Z [36;1m      if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1764539Z [36;1m        exit 1[0m
+2026-07-25T20:15:05.1764849Z [36;1m      fi[0m
+2026-07-25T20:15:05.1765391Z [36;1m      continue[0m
+2026-07-25T20:15:05.1765717Z [36;1m    fi[0m
+2026-07-25T20:15:05.1766030Z [36;1m    if ! npm run check; then[0m
+2026-07-25T20:15:05.1766415Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1766725Z [36;1m    fi[0m
+2026-07-25T20:15:05.1767052Z [36;1m    if git push origin HEAD:main; then[0m
+2026-07-25T20:15:05.1767474Z [36;1m      return[0m
+2026-07-25T20:15:05.1767775Z [36;1m    fi[0m
+2026-07-25T20:15:05.1768073Z [36;1m    if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1768459Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1768761Z [36;1m    fi[0m
+2026-07-25T20:15:05.1769047Z [36;1m  done[0m
+2026-07-25T20:15:05.1769326Z [36;1m}[0m
+2026-07-25T20:15:05.1769593Z [36;1m[0m
+2026-07-25T20:15:05.1769890Z [36;1mchoose_canary_projects() {[0m
+2026-07-25T20:15:05.1770457Z [36;1m  if [[ "$existing_mode" == "canary" && "$existing_status" == "running" ]]; then[0m
+2026-07-25T20:15:05.1771225Z [36;1m    PROJECT_IDS="$(jq -r '.manifest[]' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1771907Z [36;1m  elif [[ -z "${PROJECT_IDS//[[:space:]]/}" ]]; then[0m
+2026-07-25T20:15:05.1772499Z [36;1m    PROJECT_IDS="$(npm run --silent catalog:select-canary)"[0m
+2026-07-25T20:15:05.1773005Z [36;1m  fi[0m
+2026-07-25T20:15:05.1773278Z [36;1m[0m
+2026-07-25T20:15:05.1773578Z [36;1m  mapfile -t canary_ids < <([0m
+2026-07-25T20:15:05.1774067Z [36;1m    printf '%s\n' "$PROJECT_IDS" | sed '/^[[:space:]]*$/d'[0m
+2026-07-25T20:15:05.1774552Z [36;1m  )[0m
+2026-07-25T20:15:05.1774879Z [36;1m  if [[ "${#canary_ids[@]}" -ne 5 ]]; then[0m
+2026-07-25T20:15:05.1775702Z [36;1m    echo "Canary requires exactly five project IDs." >&2[0m
+2026-07-25T20:15:05.1776243Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1776536Z [36;1m  fi[0m
+2026-07-25T20:15:05.1776823Z [36;1m  unique_count="$([0m
+2026-07-25T20:15:05.1777319Z [36;1m    printf '%s\n' "${canary_ids[@]}" | sort -u | wc -l | tr -d '[:space:]'[0m
+2026-07-25T20:15:05.1777855Z [36;1m  )"[0m
+2026-07-25T20:15:05.1778173Z [36;1m  if [[ "$unique_count" -ne 5 ]]; then[0m
+2026-07-25T20:15:05.1778668Z [36;1m    echo "Canary project IDs must be unique." >&2[0m
+2026-07-25T20:15:05.1779095Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1779362Z [36;1m  fi[0m
+2026-07-25T20:15:05.1779691Z [36;1m  PROJECT_IDS="$(printf '%s\n' "${canary_ids[@]}")"[0m
+2026-07-25T20:15:05.1780143Z [36;1m  echo "Selected canary projects:"[0m
+2026-07-25T20:15:05.1780549Z [36;1m  printf '  %s\n' "${canary_ids[@]}"[0m
+2026-07-25T20:15:05.1780911Z [36;1m}[0m
+2026-07-25T20:15:05.1781303Z [36;1m[0m
+2026-07-25T20:15:05.1781570Z [36;1mprepare_canary_projects() {[0m
+2026-07-25T20:15:05.1781954Z [36;1m  while IFS= read -r project_id; do[0m
+2026-07-25T20:15:05.1782364Z [36;1m    [[ -z "$project_id" ]] && continue[0m
+2026-07-25T20:15:05.1782759Z [36;1m    npm run catalog:refresh -- \[0m
+2026-07-25T20:15:05.1783132Z [36;1m      --mode project \[0m
+2026-07-25T20:15:05.1783495Z [36;1m      --project-id "$project_id" \[0m
+2026-07-25T20:15:05.1783885Z [36;1m      --deployment-requested[0m
+2026-07-25T20:15:05.1784258Z [36;1m  done <<< "$PROJECT_IDS"[0m
+2026-07-25T20:15:05.1784715Z [36;1m[0m
+2026-07-25T20:15:05.1784972Z [36;1m  args=(--write)[0m
+2026-07-25T20:15:05.1785593Z [36;1m  while IFS= read -r project_id; do[0m
+2026-07-25T20:15:05.1786164Z [36;1m    [[ -z "$project_id" ]] || args+=(--project-id "$project_id")[0m
+2026-07-25T20:15:05.1786639Z [36;1m  done <<< "$PROJECT_IDS"[0m
+2026-07-25T20:15:05.1787072Z [36;1m  npm run catalog:backfill-identities -- "${args[@]}"[0m
+2026-07-25T20:15:05.1787543Z [36;1m  npm run catalog:validate[0m
+2026-07-25T20:15:05.1787918Z [36;1m  publish_canary_preparation[0m
+2026-07-25T20:15:05.1788271Z [36;1m}[0m
+2026-07-25T20:15:05.1788514Z [36;1m[0m
+2026-07-25T20:15:05.1788765Z [36;1msync_main() {[0m
+2026-07-25T20:15:05.1789073Z [36;1m  for attempt in 1 2 3; do[0m
+2026-07-25T20:15:05.1789430Z [36;1m    if git fetch origin main &&[0m
+2026-07-25T20:15:05.1789826Z [36;1m      git rebase origin/main; then[0m
+2026-07-25T20:15:05.1790187Z [36;1m      return[0m
+2026-07-25T20:15:05.1790463Z [36;1m    fi[0m
+2026-07-25T20:15:05.1790835Z [36;1m    conflicts="$(git diff --name-only --diff-filter=U)"[0m
+2026-07-25T20:15:05.1791297Z [36;1m    if [[ -n "$conflicts" ]]; then[0m
+2026-07-25T20:15:05.1791725Z [36;1m      echo "Full rollout preparation conflict:"[0m
+2026-07-25T20:15:05.1792142Z [36;1m      echo "$conflicts"[0m
+2026-07-25T20:15:05.1792461Z [36;1m    fi[0m
+2026-07-25T20:15:05.1792744Z [36;1m    git rebase --abort || true[0m
+2026-07-25T20:15:05.1793115Z [36;1m    if (( attempt == 3 )); then[0m
+2026-07-25T20:15:05.1793460Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1793742Z [36;1m    fi[0m
+2026-07-25T20:15:05.1793993Z [36;1m  done[0m
+2026-07-25T20:15:05.1794244Z [36;1m}[0m
+2026-07-25T20:15:05.1794489Z [36;1m[0m
+2026-07-25T20:15:05.1794754Z [36;1mprepare_full_rollout() {[0m
+2026-07-25T20:15:05.1795096Z [36;1m  sync_main[0m
+2026-07-25T20:15:05.1795640Z [36;1m  for attempt in 1 2 3; do[0m
+2026-07-25T20:15:05.1796073Z [36;1m    npm run catalog:backfill-identities -- --write[0m
+2026-07-25T20:15:05.1796528Z [36;1m    npm run catalog:validate[0m
+2026-07-25T20:15:05.1796966Z [36;1m    if git diff --quiet -- data/registry/projects; then[0m
+2026-07-25T20:15:05.1797411Z [36;1m      return[0m
+2026-07-25T20:15:05.1797698Z [36;1m    fi[0m
+2026-07-25T20:15:05.1798120Z [36;1m    publish_changes "chore(catalog): prepare full enrichment rollout"[0m
+2026-07-25T20:15:05.1798632Z [36;1m  done[0m
+2026-07-25T20:15:05.1798975Z [36;1m  npm run catalog:backfill-identities -- --write[0m
+2026-07-25T20:15:05.1799462Z [36;1m  if ! git diff --quiet -- data/registry/projects; then[0m
+2026-07-25T20:15:05.1800051Z [36;1m    echo "Repository identities changed continuously during preparation." >&2[0m
+2026-07-25T20:15:05.1800560Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1800806Z [36;1m  fi[0m
+2026-07-25T20:15:05.1801042Z [36;1m}[0m
+2026-07-25T20:15:05.1801271Z [36;1m[0m
+2026-07-25T20:15:05.1801525Z [36;1mdeploy_registry_changes() {[0m
+2026-07-25T20:15:05.1801854Z [36;1m  DEPLOY_RUN_ID=""[0m
+2026-07-25T20:15:05.1802196Z [36;1m  if [[ "$REGISTRY_CHANGED" != "true" ]]; then[0m
+2026-07-25T20:15:05.1802561Z [36;1m    return[0m
+2026-07-25T20:15:05.1802810Z [36;1m  fi[0m
+2026-07-25T20:15:05.1803078Z [36;1m  if [[ -z "$PUBLISHED_SHA" ]]; then[0m
+2026-07-25T20:15:05.1803530Z [36;1m    echo "Registry changed without a published commit." >&2[0m
+2026-07-25T20:15:05.1803952Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1804357Z [36;1m  fi[0m
+2026-07-25T20:15:05.1804669Z [36;1m  gh workflow run deploy-pages.yml --ref main[0m
+2026-07-25T20:15:05.1805065Z [36;1m  for attempt in {1..30}; do[0m
+2026-07-25T20:15:05.1805610Z [36;1m    DEPLOY_RUN_ID="$([0m
+2026-07-25T20:15:05.1805913Z [36;1m      gh run list \[0m
+2026-07-25T20:15:05.1806242Z [36;1m        --workflow deploy-pages.yml \[0m
+2026-07-25T20:15:05.1806606Z [36;1m        --branch main \[0m
+2026-07-25T20:15:05.1806938Z [36;1m        --event workflow_dispatch \[0m
+2026-07-25T20:15:05.1807306Z [36;1m        --commit "$PUBLISHED_SHA" \[0m
+2026-07-25T20:15:05.1807780Z [36;1m        --limit 1 \[0m
+2026-07-25T20:15:05.1808090Z [36;1m        --json databaseId \[0m
+2026-07-25T20:15:05.1808446Z [36;1m        --jq '.[0].databaseId // empty'[0m
+2026-07-25T20:15:05.1808788Z [36;1m    )"[0m
+2026-07-25T20:15:05.1809058Z [36;1m    [[ -z "$DEPLOY_RUN_ID" ]] || break[0m
+2026-07-25T20:15:05.1809409Z [36;1m    sleep 10[0m
+2026-07-25T20:15:05.1809670Z [36;1m  done[0m
+2026-07-25T20:15:05.1809958Z [36;1m  if [[ -z "$DEPLOY_RUN_ID" ]]; then[0m
+2026-07-25T20:15:05.1810435Z [36;1m    echo "Pages deployment was not created for $PUBLISHED_SHA." >&2[0m
+2026-07-25T20:15:05.1810902Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1811152Z [36;1m  fi[0m
+2026-07-25T20:15:05.1811449Z [36;1m  gh run watch "$DEPLOY_RUN_ID" --exit-status[0m
+2026-07-25T20:15:05.1811824Z [36;1m}[0m
+2026-07-25T20:15:05.1812052Z [36;1m[0m
+2026-07-25T20:15:05.1812287Z [36;1mrun_batch() {[0m
+2026-07-25T20:15:05.1812569Z [36;1m  local run_mode="$1"[0m
+2026-07-25T20:15:05.1812883Z [36;1m  local publish="${2:-true}"[0m
+2026-07-25T20:15:05.1813419Z [36;1m  args=(--mode "$run_mode" --batch-size "$BATCH_SIZE" --concurrency "$MODEL_CONCURRENCY")[0m
+2026-07-25T20:15:05.1813991Z [36;1m  if [[ "$run_mode" == "canary" ]]; then[0m
+2026-07-25T20:15:05.1814378Z [36;1m    while IFS= read -r project_id; do[0m
+2026-07-25T20:15:05.1814839Z [36;1m      [[ -z "$project_id" ]] || args+=(--project-id "$project_id")[0m
+2026-07-25T20:15:05.1815538Z [36;1m    done <<< "$PROJECT_IDS"[0m
+2026-07-25T20:15:05.1815865Z [36;1m  fi[0m
+2026-07-25T20:15:05.1816150Z [36;1m  npm run catalog:enrich -- "${args[@]}"[0m
+2026-07-25T20:15:05.1816540Z [36;1m  if [[ "$publish" != "true" ]]; then[0m
+2026-07-25T20:15:05.1816891Z [36;1m    return[0m
+2026-07-25T20:15:05.1817143Z [36;1m  fi[0m
+2026-07-25T20:15:05.1817388Z [36;1m  npm run check[0m
+2026-07-25T20:15:05.1817782Z [36;1m  publish_changes "chore(catalog): enrich project metadata"[0m
+2026-07-25T20:15:05.1818234Z [36;1m  deploy_registry_changes[0m
+2026-07-25T20:15:05.1818549Z [36;1m}[0m
+2026-07-25T20:15:05.1818885Z [36;1m[0m
+2026-07-25T20:15:05.1819126Z [36;1menrichment_progress() {[0m
+2026-07-25T20:15:05.1819436Z [36;1m  jq -c \[0m
+2026-07-25T20:15:05.1819832Z [36;1m    '[.phase, .primary_cursor, .retry_cursor, (.retry_queue | length)]' \[0m
+2026-07-25T20:15:05.1820354Z [36;1m    data/reports/enrichment-report.json[0m
+2026-07-25T20:15:05.1820711Z [36;1m}[0m
+2026-07-25T20:15:05.1820939Z [36;1m[0m
+2026-07-25T20:15:05.1821175Z [36;1mcomplete_canary() {[0m
+2026-07-25T20:15:05.1821488Z [36;1m  run_batch canary false[0m
+2026-07-25T20:15:05.1821919Z [36;1m  status="$(jq -r '.status' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1822545Z [36;1m  while [[ "$status" == "running" ]]; do[0m
+2026-07-25T20:15:05.1822956Z [36;1m    progress_before="$(enrichment_progress)"[0m
+2026-07-25T20:15:05.1823338Z [36;1m    run_batch canary false[0m
+2026-07-25T20:15:05.1823709Z [36;1m    progress_after="$(enrichment_progress)"[0m
+2026-07-25T20:15:05.1824153Z [36;1m    if [[ "$progress_after" == "$progress_before" ]]; then[0m
+2026-07-25T20:15:05.1824895Z [36;1m      echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."[0m
+2026-07-25T20:15:05.1825786Z [36;1m      exit 1[0m
+2026-07-25T20:15:05.1826046Z [36;1m    fi[0m
+2026-07-25T20:15:05.1826420Z [36;1m    status="$(jq -r '.status' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1827048Z [36;1m  done[0m
+2026-07-25T20:15:05.1827363Z [36;1m  if [[ "$status" != "awaiting-deployment" ]]; then[0m
+2026-07-25T20:15:05.1827850Z [36;1m    echo "Canary did not reach deployment readiness." >&2[0m
+2026-07-25T20:15:05.1828259Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1828516Z [36;1m  fi[0m
+2026-07-25T20:15:05.1828775Z [36;1m  npm run check[0m
+2026-07-25T20:15:05.1829159Z [36;1m  publish_changes "chore(catalog): enrich project metadata"[0m
+2026-07-25T20:15:05.1829612Z [36;1m  deploy_registry_changes[0m
+2026-07-25T20:15:05.1830035Z [36;1m}[0m
+2026-07-25T20:15:05.1830262Z [36;1m[0m
+2026-07-25T20:15:05.1830503Z [36;1mresume_batch() {[0m
+2026-07-25T20:15:05.1830843Z [36;1m  progress_before="$(enrichment_progress)"[0m
+2026-07-25T20:15:05.1831227Z [36;1m  run_batch resume[0m
+2026-07-25T20:15:05.1831633Z [36;1m  run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1832190Z [36;1m  status="$(jq -r '.status' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1832658Z [36;1m  test "$run_mode" = "full"[0m
+2026-07-25T20:15:05.1833019Z [36;1m  progress_after="$(enrichment_progress)"[0m
+2026-07-25T20:15:05.1833534Z [36;1m  if [[ "$status" == "running" && "$progress_after" == "$progress_before" ]]; then[0m
+2026-07-25T20:15:05.1834351Z [36;1m    echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."[0m
+2026-07-25T20:15:05.1835000Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1835494Z [36;1m  fi[0m
+2026-07-25T20:15:05.1835735Z [36;1m}[0m
+2026-07-25T20:15:05.1835960Z [36;1m[0m
+2026-07-25T20:15:05.1836280Z [36;1mif [[ "$MODE" == "preflight" || "$MODE" == "canary" ]]; then[0m
+2026-07-25T20:15:05.1836933Z [36;1m  npm run catalog:enrich -- --mode preflight | tee "$RUNNER_TEMP/enrichment-preflight.log"[0m
+2026-07-25T20:15:05.1837499Z [36;1mfi[0m
+2026-07-25T20:15:05.1837763Z [36;1mif [[ "$MODE" == "preflight" ]]; then[0m
+2026-07-25T20:15:05.1838110Z [36;1m  exit 0[0m
+2026-07-25T20:15:05.1838363Z [36;1mfi[0m
+2026-07-25T20:15:05.1838588Z [36;1m[0m
+2026-07-25T20:15:05.1838832Z [36;1mif [[ "$MODE" == "canary" ]]; then[0m
+2026-07-25T20:15:05.1839430Z [36;1m  existing_mode="$(jq -r '.mode // empty' data/reports/enrichment-report.json 2>/dev/null || true)"[0m
+2026-07-25T20:15:05.1840280Z [36;1m  existing_status="$(jq -r '.status // empty' data/reports/enrichment-report.json 2>/dev/null || true)"[0m
+2026-07-25T20:15:05.1841084Z [36;1m  if [[ "$existing_mode" == "canary" && "$existing_status" == "awaiting-deployment" ]]; then[0m
+2026-07-25T20:15:05.1841661Z [36;1m    PUBLISHED_SHA="$(git rev-parse HEAD)"[0m
+2026-07-25T20:15:05.1842038Z [36;1m    REGISTRY_CHANGED=true[0m
+2026-07-25T20:15:05.1842375Z [36;1m    deploy_registry_changes[0m
+2026-07-25T20:15:05.1842688Z [36;1m  else[0m
+2026-07-25T20:15:05.1842958Z [36;1m    choose_canary_projects[0m
+2026-07-25T20:15:05.1843293Z [36;1m    prepare_canary_projects[0m
+2026-07-25T20:15:05.1843623Z [36;1m    complete_canary[0m
+2026-07-25T20:15:05.1843913Z [36;1m  fi[0m
+2026-07-25T20:15:05.1844269Z [36;1m  run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1844833Z [36;1m  status="$(jq -r '.status' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1845616Z [36;1m  if [[ "$run_mode" != "canary" || "$status" != "awaiting-deployment" ]]; then[0m
+2026-07-25T20:15:05.1846187Z [36;1m    echo "Canary did not reach deployment readiness." >&2[0m
+2026-07-25T20:15:05.1846608Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1846862Z [36;1m  fi[0m
+2026-07-25T20:15:05.1847225Z [36;1m  if [[ "$REGISTRY_CHANGED" != "true" || -z "$DEPLOY_RUN_ID" ]]; then[0m
+2026-07-25T20:15:05.1847804Z [36;1m    echo "Canary did not publish and deploy registry changes." >&2[0m
+2026-07-25T20:15:05.1848253Z [36;1m    exit 1[0m
+2026-07-25T20:15:05.1848504Z [36;1m  fi[0m
+2026-07-25T20:15:05.1848779Z [36;1m  npm run catalog:enrich -- \[0m
+2026-07-25T20:15:05.1849262Z [36;1m    --mode approve-canary \[0m
+2026-07-25T20:15:05.1849623Z [36;1m    --commit-sha "$PUBLISHED_SHA" \[0m
+2026-07-25T20:15:05.1850012Z [36;1m    --deployment-run-id "$DEPLOY_RUN_ID"[0m
+2026-07-25T20:15:05.1850375Z [36;1m  npm run check[0m
+2026-07-25T20:15:05.1850775Z [36;1m  publish_changes "chore(catalog): approve enrichment canary"[0m
+2026-07-25T20:15:05.1851365Z [36;1m  test "$(jq -r '.status' data/reports/enrichment-report.json)" = "passed"[0m
+2026-07-25T20:15:05.1851844Z [36;1m  exit 0[0m
+2026-07-25T20:15:05.1852084Z [36;1mfi[0m
+2026-07-25T20:15:05.1852309Z [36;1m[0m
+2026-07-25T20:15:05.1852671Z [36;1mif [[ "$MODE" == "start" ]]; then[0m
+2026-07-25T20:15:05.1853016Z [36;1m  prepare_full_rollout[0m
+2026-07-25T20:15:05.1853325Z [36;1m  run_batch start[0m
+2026-07-25T20:15:05.1853733Z [36;1m  run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1854286Z [36;1m  status="$(jq -r '.status' data/reports/enrichment-report.json)"[0m
+2026-07-25T20:15:05.1854748Z [36;1m  test "$run_mode" = "full"[0m
+2026-07-25T20:15:05.1855056Z [36;1melse[0m
+2026-07-25T20:15:05.1855589Z [36;1m  test "$MODE" = "resume"[0m
+2026-07-25T20:15:05.1855911Z [36;1m  resume_batch[0m
+2026-07-25T20:15:05.1856174Z [36;1mfi[0m
+2026-07-25T20:15:05.1856467Z [36;1mwhile [[ "$status" == "running" ]]; do[0m
+2026-07-25T20:15:05.1856833Z [36;1m  resume_batch[0m
+2026-07-25T20:15:05.1857099Z [36;1mdone[0m
+2026-07-25T20:15:05.1857352Z [36;1mtest "$status" = "complete"[0m
+2026-07-25T20:15:05.1908219Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-25T20:15:05.1908679Z env:
+2026-07-25T20:15:05.1909432Z   TAVERNARY_ENRICHMENT_API_URL: ***
+2026-07-25T20:15:05.1909977Z   TAVERNARY_ENRICHMENT_API_KEY: ***
+2026-07-25T20:15:05.1910439Z   TAVERNARY_ENRICHMENT_MODEL: ***
+2026-07-25T20:15:05.1914043Z   GITHUB_TOKEN: ***
+2026-07-25T20:15:05.1917856Z   GH_TOKEN: ***
+2026-07-25T20:15:05.1918138Z   MODE: start
+2026-07-25T20:15:05.1918398Z   PROJECT_IDS: 
+2026-07-25T20:15:05.1918675Z   BATCH_SIZE: 20
+2026-07-25T20:15:05.1918955Z   MODEL_CONCURRENCY: 4
+2026-07-25T20:15:05.1919246Z ##[endgroup]
+2026-07-25T20:15:05.3269524Z From https://github.com/MentallyQuill/Tavernary
+2026-07-25T20:15:05.3270196Z  * branch            main       -> FETCH_HEAD
+2026-07-25T20:15:05.3788813Z Current branch main is up to date.
+2026-07-25T20:15:05.4852295Z 
+2026-07-25T20:15:05.4852880Z > tavernary@0.1.0 catalog:backfill-identities
+2026-07-25T20:15:05.4854031Z > node scripts/catalog/backfill-repository-identities.mjs --write
+2026-07-25T20:15:05.4854712Z 
+2026-07-25T20:15:05.7341598Z Repository identity backfill: changed=185 skipped=29 conflicts=0
+2026-07-25T20:15:05.9870854Z Wrote 185 updated project files
+2026-07-25T20:15:06.0973214Z 
+2026-07-25T20:15:06.0973922Z > tavernary@0.1.0 catalog:validate
+2026-07-25T20:15:06.0974702Z > node scripts/catalog/validate.mjs
+2026-07-25T20:15:06.0975108Z 
+2026-07-25T20:15:06.3038781Z Validated 214 projects and 0 Kits
+2026-07-25T20:15:06.3929352Z [main 516f62e] chore(catalog): prepare full enrichment rollout
+2026-07-25T20:15:06.3931190Z  185 files changed, 185 insertions(+), 185 deletions(-)
+2026-07-25T20:15:06.5325731Z From https://github.com/MentallyQuill/Tavernary
+2026-07-25T20:15:06.5326923Z  * branch            main       -> FETCH_HEAD
+2026-07-25T20:15:06.5420839Z Current branch main is up to date.
+2026-07-25T20:15:06.6403278Z 
+2026-07-25T20:15:06.6403931Z > tavernary@0.1.0 check
+2026-07-25T20:15:06.6406274Z > npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export
+2026-07-25T20:15:06.6407716Z 
+2026-07-25T20:15:06.7382885Z 
+2026-07-25T20:15:06.7383564Z > tavernary@0.1.0 format:check
+2026-07-25T20:15:06.7384237Z > prettier --check .
+2026-07-25T20:15:06.7384548Z 
+2026-07-25T20:15:06.8265616Z Checking formatting...
+2026-07-25T20:15:10.7687652Z All matched files use Prettier code style!
+2026-07-25T20:15:10.9109245Z 
+2026-07-25T20:15:10.9110175Z > tavernary@0.1.0 lint
+2026-07-25T20:15:10.9110820Z > eslint .
+2026-07-25T20:15:10.9111073Z 
+2026-07-25T20:15:17.5640194Z 
+2026-07-25T20:15:17.5640985Z > tavernary@0.1.0 palette:audit
+2026-07-25T20:15:17.5641682Z > node scripts/audit-palette.mjs
+2026-07-25T20:15:17.5642027Z 
+2026-07-25T20:15:17.6310639Z Production palette verified
+2026-07-25T20:15:17.7394637Z 
+2026-07-25T20:15:17.7422477Z > tavernary@0.1.0 catalog:validate
+2026-07-25T20:15:17.7423205Z > node scripts/catalog/validate.mjs
+2026-07-25T20:15:17.7423558Z 
+2026-07-25T20:15:17.9466090Z Validated 214 projects and 0 Kits
+2026-07-25T20:15:18.0624126Z 
+2026-07-25T20:15:18.0624945Z > tavernary@0.1.0 catalog:build
+2026-07-25T20:15:18.0626238Z > node scripts/catalog/build.mjs
+2026-07-25T20:15:18.0626691Z 
+2026-07-25T20:15:18.1584737Z Built 214 projects and 0 Kits
+2026-07-25T20:15:18.2712436Z 
+2026-07-25T20:15:18.2713097Z > tavernary@0.1.0 typecheck
+2026-07-25T20:15:18.2713706Z > tsc --noEmit
+2026-07-25T20:15:18.2713996Z 
+2026-07-25T20:15:23.0661578Z 
+2026-07-25T20:15:23.0662557Z > tavernary@0.1.0 test
+2026-07-25T20:15:23.0663066Z > vitest run
+2026-07-25T20:15:23.0663296Z 
+2026-07-25T20:15:23.3654545Z 
+2026-07-25T20:15:23.3659291Z [1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/home/runner/work/Tavernary/Tavernary[39m
+2026-07-25T20:15:23.3660453Z 
+2026-07-25T20:15:24.8135988Z  [32m✓[39m tests/unit/github-inspector.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+2026-07-25T20:15:25.2588416Z  [32m✓[39m tests/unit/intake-migration.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 563[2mms[22m[39m
+2026-07-25T20:15:25.9686661Z  [32m✓[39m tests/unit/kit-builder.test.tsx [2m([22m[2m26 tests[22m[2m)[22m[33m 1073[2mms[22m[39m
+2026-07-25T20:15:26.3041440Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2munchanged projects require zero compares and zero clones
+2026-07-25T20:15:26.3044573Z [22m[39mGitHub refresh incremental: 204 project(s)
+2026-07-25T20:15:26.3045717Z 
+2026-07-25T20:15:26.3177302Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mfirst observation creates provisional evidence without cloning
+2026-07-25T20:15:26.3187344Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3206910Z 
+2026-07-25T20:15:26.3235979Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mrecords changed source evidence without cloning
+2026-07-25T20:15:26.3256423Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3257163Z 
+2026-07-25T20:15:26.3258565Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mrecords changed source evidence without cloning
+2026-07-25T20:15:26.3260156Z [22m[39mproject-000: accepted-source
+2026-07-25T20:15:26.3260813Z 
+2026-07-25T20:15:26.3262178Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3263618Z [22m[39mGitHub refresh incremental: 8 project(s)
+2026-07-25T20:15:26.3264056Z 
+2026-07-25T20:15:26.3264823Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3266236Z [22m[39mproject-000: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3266692Z 
+2026-07-25T20:15:26.3267428Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3268372Z [22m[39mproject-001: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3268806Z 
+2026-07-25T20:15:26.3269557Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3270482Z [22m[39mproject-002: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3271013Z 
+2026-07-25T20:15:26.3272290Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3273974Z [22m[39mproject-003: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3275463Z 
+2026-07-25T20:15:26.3277140Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3280661Z [22m[39mproject-004: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3281644Z 
+2026-07-25T20:15:26.3283012Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3284536Z [22m[39mproject-005: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3285595Z 
+2026-07-25T20:15:26.3286874Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3288303Z [22m[39mproject-006: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3288791Z 
+2026-07-25T20:15:26.3289415Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3290605Z [22m[39mproject-007: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3291513Z project-000: fallback Git inspection started
+2026-07-25T20:15:26.3292229Z project-001: fallback Git inspection started
+2026-07-25T20:15:26.3292940Z project-002: fallback Git inspection started
+2026-07-25T20:15:26.3293354Z 
+2026-07-25T20:15:26.3294724Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3296496Z [22m[39mproject-003: fallback Git inspection started
+2026-07-25T20:15:26.3296971Z 
+2026-07-25T20:15:26.3298130Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3299559Z [22m[39mproject-004: fallback Git inspection started
+2026-07-25T20:15:26.3300033Z 
+2026-07-25T20:15:26.3301173Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3302569Z [22m[39mproject-005: fallback Git inspection started
+2026-07-25T20:15:26.3303003Z 
+2026-07-25T20:15:26.3304037Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3305602Z [22m[39mproject-006: fallback Git inspection started
+2026-07-25T20:15:26.3306055Z 
+2026-07-25T20:15:26.3307208Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3308573Z [22m[39mproject-007: fallback Git inspection started
+2026-07-25T20:15:26.3309002Z 
+2026-07-25T20:15:26.3336952Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2muses no more than three concurrent Git fallbacks
+2026-07-25T20:15:26.3338785Z [22m[39mproject-000: fallback Git inspection complete in 9ms
+2026-07-25T20:15:26.3340159Z project-001: fallback Git inspection complete in 9ms
+2026-07-25T20:15:26.3341330Z project-002: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3342372Z project-003: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3343669Z project-004: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3344808Z project-005: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3346210Z project-006: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3347343Z project-007: fallback Git inspection complete in 8ms
+2026-07-25T20:15:26.3348102Z 
+2026-07-25T20:15:26.3349705Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mpersists a budgeted activity scan instead of consuming its evidence head
+2026-07-25T20:15:26.3351561Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3354642Z 
+2026-07-25T20:15:26.3356506Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mpersists a budgeted activity scan instead of consuming its evidence head
+2026-07-25T20:15:26.3358408Z [22m[39mproject-000: compare commit-limit; Git fallback required
+2026-07-25T20:15:26.3359843Z project-000: fallback Git inspection started
+2026-07-25T20:15:26.3360481Z 
+2026-07-25T20:15:26.3362034Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mpersists a budgeted activity scan instead of consuming its evidence head
+2026-07-25T20:15:26.3363901Z [22m[39mproject-000: fallback Git inspection complete in 1ms
+2026-07-25T20:15:26.3364663Z 
+2026-07-25T20:15:26.3366506Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mresumes a pending activity scan even when the observed head is unchanged
+2026-07-25T20:15:26.3368657Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3369388Z 
+2026-07-25T20:15:26.3370943Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mresumes a pending activity scan even when the observed head is unchanged
+2026-07-25T20:15:26.3372783Z [22m[39mproject-000: fallback Git inspection started
+2026-07-25T20:15:26.3373516Z 
+2026-07-25T20:15:26.3375031Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mresumes a pending activity scan even when the observed head is unchanged
+2026-07-25T20:15:26.3379691Z [22m[39mproject-000: fallback Git inspection complete in 0ms
+2026-07-25T20:15:26.3380494Z 
+2026-07-25T20:15:26.3382121Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mcompares from the evidence watermark when repository observation is ahead
+2026-07-25T20:15:26.3383929Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3384643Z 
+2026-07-25T20:15:26.3386486Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mcompares from the evidence watermark when repository observation is ahead
+2026-07-25T20:15:26.3388232Z [22m[39mproject-000: accepted-excluded
+2026-07-25T20:15:26.3388882Z 
+2026-07-25T20:15:26.3390422Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mforces a full scan for legacy degraded evidence without a watermark
+2026-07-25T20:15:26.3392189Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3392856Z 
+2026-07-25T20:15:26.3394318Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mforces a full scan for legacy degraded evidence without a watermark
+2026-07-25T20:15:26.3396305Z [22m[39mproject-000: fallback Git inspection started
+2026-07-25T20:15:26.3397038Z 
+2026-07-25T20:15:26.3398593Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mforces a full scan for legacy degraded evidence without a watermark
+2026-07-25T20:15:26.3401466Z [22m[39mproject-000: fallback Git inspection complete in 0ms
+2026-07-25T20:15:26.3403132Z 
+2026-07-25T20:15:26.3404713Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mpreserves a pending scan cursor across a transient inspection failure
+2026-07-25T20:15:26.3406811Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3407515Z 
+2026-07-25T20:15:26.3410067Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mpreserves a pending scan cursor across a transient inspection failure
+2026-07-25T20:15:26.3411816Z [22m[39mproject-000: fallback Git inspection started
+2026-07-25T20:15:26.3412579Z 
+2026-07-25T20:15:26.3419382Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msoft failures preserve observed facts and degrade the third failed baseline
+2026-07-25T20:15:26.3421144Z [22m[39mGitHub refresh baseline: 1 project(s)
+2026-07-25T20:15:26.3421864Z 
+2026-07-25T20:15:26.3423502Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msoft failures preserve observed facts and degrade the third failed baseline
+2026-07-25T20:15:26.3427471Z [22m[39mproject-000: baseline Git inspection started
+2026-07-25T20:15:26.3428206Z 
+2026-07-25T20:15:26.3438987Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msystemic observation failures publish nothing
+2026-07-25T20:15:26.3441359Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3442322Z 
+2026-07-25T20:15:26.3450575Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msystemic REST rate exhaustion aborts candidate publication
+2026-07-25T20:15:26.3453050Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3453770Z 
+2026-07-25T20:15:26.3458936Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msystemic REST rate exhaustion during a resumed scan aborts publication
+2026-07-25T20:15:26.3460644Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3461344Z 
+2026-07-25T20:15:26.3463171Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2msystemic REST rate exhaustion during a resumed scan aborts publication
+2026-07-25T20:15:26.3464963Z [22m[39mproject-000: fallback Git inspection started
+2026-07-25T20:15:26.3465926Z 
+2026-07-25T20:15:26.3472123Z [90mstdout[2m | tests/unit/incremental-refresh.test.ts[2m > [22m[2mvalidates and builds all candidates before publishing once
+2026-07-25T20:15:26.3473866Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:26.3474522Z 
+2026-07-25T20:15:26.4052076Z  [32m✓[39m tests/unit/incremental-refresh.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+2026-07-25T20:15:27.1481367Z  [32m✓[39m tests/unit/project-card.test.tsx [2m([22m[2m24 tests[22m[2m)[22m[33m 609[2mms[22m[39m
+2026-07-25T20:15:27.3099693Z  [32m✓[39m tests/unit/visual-alignment-contract.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+2026-07-25T20:15:27.7547549Z  [32m✓[39m tests/unit/build-catalog.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 114[2mms[22m[39m
+2026-07-25T20:15:28.8239320Z  [32m✓[39m tests/unit/catalog-selectors.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+2026-07-25T20:15:29.3110768Z  [32m✓[39m tests/unit/kit-builder-panel.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 793[2mms[22m[39m
+2026-07-25T20:15:29.9977868Z  [32m✓[39m tests/unit/validate-catalog.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 1303[2mms[22m[39m
+2026-07-25T20:15:30.1213029Z  [32m✓[39m tests/unit/refresh-github-workflow-safety.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+2026-07-25T20:15:30.5987300Z  [32m✓[39m tests/unit/enrichment-run-state.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+2026-07-25T20:15:31.2718988Z  [32m✓[39m tests/unit/enrich-readmes-cli.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 101[2mms[22m[39m
+2026-07-25T20:15:31.4827848Z  [32m✓[39m tests/unit/enrich-readmes.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+2026-07-25T20:15:32.5080355Z  [32m✓[39m tests/unit/workflows.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+2026-07-25T20:15:32.6530432Z  [32m✓[39m tests/unit/project-batch-selection.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 684[2mms[22m[39m
+2026-07-25T20:15:32.6587104Z    [33m[2m✓[22m[39m uses one explicit activation path for select and deselect [33m 310[2mms[22m[39m
+2026-07-25T20:15:32.7393251Z  [32m✓[39m tests/unit/github-observer.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+2026-07-25T20:15:33.8019468Z  [32m✓[39m tests/unit/repository-identity-backfill.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+2026-07-25T20:15:34.0517431Z  [32m✓[39m tests/unit/readme-source.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+2026-07-25T20:15:34.2008795Z  [32m✓[39m tests/unit/full-catalog-data.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 201[2mms[22m[39m
+2026-07-25T20:15:35.3678130Z  [32m✓[39m tests/unit/enrichment-provider.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+2026-07-25T20:15:35.5009691Z  [32m✓[39m tests/unit/catalog-license-filter-contract.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 464[2mms[22m[39m
+2026-07-25T20:15:35.5012792Z      [33m[2m✓[22m[39m pending and missing license filters stay distinct in selection and facet counts [33m 360[2mms[22m[39m
+2026-07-25T20:15:35.6017161Z  [32m✓[39m tests/unit/validate-kits.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 193[2mms[22m[39m
+2026-07-25T20:15:36.6447648Z  [32m✓[39m tests/unit/issue-forms.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+2026-07-25T20:15:36.7666163Z  [32m✓[39m tests/unit/refresh-kit-reactions.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-07-25T20:15:36.7741631Z  [32m✓[39m tests/unit/kit-selectors.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-07-25T20:15:37.9307177Z  [32m✓[39m tests/unit/activity-evidence.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+2026-07-25T20:15:37.9615109Z  [32m✓[39m tests/unit/kit-domain.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-07-25T20:15:38.6800235Z [90mstderr[2m | tests/unit/catalog-batch-flow.test.tsx[2m > [22m[2mcatalog Kit batch flow[2m > [22m[2mkeeps an open builder open when the final card selection is cancelled
+2026-07-25T20:15:38.6816639Z [22m[39mReceived `true` for a non-boolean attribute `priority`.
+2026-07-25T20:15:38.6841191Z 
+2026-07-25T20:15:38.6842398Z If you want to write it to the DOM, pass a string instead: priority="true" or priority={value.toString()}.
+2026-07-25T20:15:38.6843653Z 
+2026-07-25T20:15:38.9977617Z  [32m✓[39m tests/unit/catalog-batch-flow.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 863[2mms[22m[39m
+2026-07-25T20:15:38.9981803Z      [33m[2m✓[22m[39m keeps an open builder open when the final card selection is cancelled [33m 551[2mms[22m[39m
+2026-07-25T20:15:38.9984140Z      [33m[2m✓[22m[39m adds an explicitly selected project without changing builder visibility, then settles its status [33m 310[2mms[22m[39m
+2026-07-25T20:15:39.2068431Z  [32m✓[39m tests/unit/validate-kit-submission.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+2026-07-25T20:15:39.6517054Z  [32m✓[39m tests/unit/kit-card.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 309[2mms[22m[39m
+2026-07-25T20:15:40.3602752Z  [32m✓[39m tests/unit/refresh-failure-recovery.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+2026-07-25T20:15:40.3728581Z [90mstdout[2m | tests/unit/baseline-queue.test.ts[2m > [22m[2mrunBaselineQueueCli[2m > [22m[2mcaptures and reports measurable progress
+2026-07-25T20:15:40.3732363Z [22m[39mBaseline queue starts with 12 provisional project(s).
+2026-07-25T20:15:40.3733380Z 
+2026-07-25T20:15:40.3763192Z [90mstdout[2m | tests/unit/baseline-queue.test.ts[2m > [22m[2mrunBaselineQueueCli[2m > [22m[2mcaptures and reports measurable progress
+2026-07-25T20:15:40.3770960Z [22m[39mBaseline queue progress: 12 -> 5 provisional project(s).
+2026-07-25T20:15:40.3775736Z 
+2026-07-25T20:15:40.3803409Z [90mstdout[2m | tests/unit/baseline-queue.test.ts[2m > [22m[2mrunBaselineQueueCli[2m > [22m[2mreturns a failure and disables continuation when progress stalls
+2026-07-25T20:15:40.3808147Z [90mstderr[2m | tests/unit/baseline-queue.test.ts[2m > [22m[2mrunBaselineQueueCli[2m > [22m[2mreturns a failure and disables continuation when progress stalls
+2026-07-25T20:15:40.3877349Z [22m[39m::error title=Baseline queue stalled::Provisional count did not decrease (12 -> 12); no successor run was dispatched.
+2026-07-25T20:15:40.3878715Z [22m[39mBaseline queue progress: 12 -> 12 provisional project(s).
+2026-07-25T20:15:40.3885735Z 
+2026-07-25T20:15:40.3885753Z 
+2026-07-25T20:15:40.3888065Z  [32m✓[39m tests/unit/baseline-queue.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+2026-07-25T20:15:41.0413600Z  [32m✓[39m tests/unit/enrichment-write-safety.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 117[2mms[22m[39m
+2026-07-25T20:15:41.5902368Z  [32m✓[39m tests/unit/enrichment-report.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+2026-07-25T20:15:41.9476537Z  [32m✓[39m tests/unit/project-selection-dock.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 328[2mms[22m[39m
+2026-07-25T20:15:42.2748248Z  [32m✓[39m tests/unit/project-batch.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+2026-07-25T20:15:42.8170945Z  [32m✓[39m tests/unit/github-refresh-manifest.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-07-25T20:15:43.5300407Z  [32m✓[39m tests/unit/dual-range.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 308[2mms[22m[39m
+2026-07-25T20:15:43.9173795Z  [32m✓[39m tests/unit/catalog-toolbar.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 348[2mms[22m[39m
+2026-07-25T20:15:44.4808643Z  [32m✓[39m tests/unit/kit-draft-access.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 334[2mms[22m[39m
+2026-07-25T20:15:44.7747665Z  [32m✓[39m tests/unit/submission-transport.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+2026-07-25T20:15:45.1585415Z  [32m✓[39m tests/unit/enrichment-contract.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-07-25T20:15:45.7023992Z  [32m✓[39m tests/unit/apply-kit-submission.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-07-25T20:15:46.0286976Z  [32m✓[39m tests/unit/palette-audit.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+2026-07-25T20:15:46.7621424Z  [32m✓[39m tests/unit/modal-surface.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 262[2mms[22m[39m
+2026-07-25T20:15:47.0064932Z  [32m✓[39m tests/unit/kit-maintenance-docs.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+2026-07-25T20:15:47.1973690Z  [32m✓[39m tests/unit/static-export-verification.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-07-25T20:15:48.1381876Z  [32m✓[39m tests/unit/validate-submission.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-07-25T20:15:48.2303612Z [90mstdout[2m | tests/unit/refresh-github-description.test.ts[2m > [22m[2mpersists the observed description in a new schema-v2 snapshot
+2026-07-25T20:15:48.2306077Z [22m[39mGitHub refresh incremental: 1 project(s)
+2026-07-25T20:15:48.2306894Z 
+2026-07-25T20:15:48.2380942Z  [32m✓[39m tests/unit/refresh-github-description.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-07-25T20:15:48.8633568Z  [32m✓[39m tests/unit/kit-filter-panel.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 382[2mms[22m[39m
+2026-07-25T20:15:49.3057597Z  [32m✓[39m tests/unit/project-stack-drag-geometry.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+2026-07-25T20:15:49.4857124Z  [32m✓[39m tests/unit/readme-preparation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-07-25T20:15:50.1914254Z  [32m✓[39m tests/unit/favicon.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+2026-07-25T20:15:50.4031275Z  [32m✓[39m tests/unit/triage-issue.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-07-25T20:15:50.6617842Z  [32m✓[39m tests/unit/kit-query.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+2026-07-25T20:15:51.4015843Z  [32m✓[39m tests/unit/select-enrichment-canary.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+2026-07-25T20:15:51.6409679Z  [32m✓[39m tests/unit/project-stack-order.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-07-25T20:15:51.9541640Z  [32m✓[39m tests/unit/kit-project-layout.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+2026-07-25T20:15:52.4833569Z  [32m✓[39m tests/unit/kit-builder-opening-motion.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+2026-07-25T20:15:52.9967899Z [90mstderr[2m | tests/unit/project-visibility-reason.test.ts[2m > [22m[2mrequires a controlled reason for non-published projects
+2026-07-25T20:15:52.9972107Z [22m[39munknown format "uri" ignored in schema at path "#/properties/source/oneOf/1/properties/url"
+2026-07-25T20:15:52.9974126Z unknown format "uri" ignored in schema at path "#/properties/source/oneOf/1/properties/url"
+2026-07-25T20:15:52.9980245Z unknown format "uri" ignored in schema at path "#/properties/source/oneOf/2/properties/url"
+2026-07-25T20:15:52.9982232Z unknown format "uri" ignored in schema at path "#/properties/source/oneOf/2/properties/url"
+2026-07-25T20:15:52.9984179Z unknown format "date-time" ignored in schema at path "#/properties/source/oneOf/2/properties/published_at/anyOf/0"
+2026-07-25T20:15:52.9986317Z unknown format "date-time" ignored in schema at path "#/properties/source/oneOf/2/properties/published_at/anyOf/0"
+2026-07-25T20:15:52.9988312Z unknown format "date-time" ignored in schema at path "#/properties/cataloged_at"
+2026-07-25T20:15:52.9989805Z unknown format "date-time" ignored in schema at path "#/properties/cataloged_at"
+2026-07-25T20:15:52.9990722Z 
+2026-07-25T20:15:53.0100559Z  [32m✓[39m tests/unit/project-visibility-reason.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 94[2mms[22m[39m
+2026-07-25T20:15:53.2361440Z  [32m✓[39m tests/unit/apply-kit-withdrawal.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+2026-07-25T20:15:53.5146516Z  [32m✓[39m tests/unit/project-licensing.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+2026-07-25T20:15:54.2807637Z  [32m✓[39m tests/unit/activity.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+2026-07-25T20:15:54.3108541Z  [32m✓[39m tests/unit/license.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-07-25T20:15:54.8367504Z  [32m✓[39m tests/unit/transition-presence.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 28[2mms[22m[39m
+2026-07-25T20:15:55.4983756Z  [32m✓[39m tests/unit/kit-trending.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+2026-07-25T20:15:55.7036320Z  [32m✓[39m tests/unit/refresh-snapshot-format.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 60[2mms[22m[39m
+2026-07-25T20:15:55.9299964Z  [32m✓[39m tests/unit/commit-freshness.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+2026-07-25T20:15:56.4368802Z  [32m✓[39m tests/unit/line-endings.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+2026-07-25T20:15:56.4409747Z 
+2026-07-25T20:15:56.4416612Z [2m Test Files [22m [1m[32m70 passed[39m[22m[90m (70)[39m
+2026-07-25T20:15:56.4418987Z [2m      Tests [22m [1m[32m506 passed[39m[22m[90m (506)[39m
+2026-07-25T20:15:56.4420261Z [2m   Start at [22m 20:15:23
+2026-07-25T20:15:56.4422801Z [2m   Duration [22m 33.06s[2m (transform 1.53s, setup 7.18s, import 4.65s, tests 10.60s, environment 62.97s)[22m
+2026-07-25T20:15:56.4424599Z 
+2026-07-25T20:15:56.6065362Z 
+2026-07-25T20:15:56.6065934Z > tavernary@0.1.0 build
+2026-07-25T20:15:56.6066759Z > npm run catalog:build && next build
+2026-07-25T20:15:56.6067175Z 
+2026-07-25T20:15:56.7059358Z 
+2026-07-25T20:15:56.7062299Z > tavernary@0.1.0 catalog:build
+2026-07-25T20:15:56.7063269Z > node scripts/catalog/build.mjs
+2026-07-25T20:15:56.7063804Z 
+2026-07-25T20:15:56.8004297Z Built 214 projects and 0 Kits
+2026-07-25T20:15:57.2048314Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-07-25T20:15:57.2152625Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-07-25T20:15:57.2154646Z This information is used to shape Next.js' roadmap and prioritize features.
+2026-07-25T20:15:57.2157584Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-07-25T20:15:57.2159672Z https://nextjs.org/telemetry
+2026-07-25T20:15:57.2160236Z 
+2026-07-25T20:15:57.2352413Z ▲ Next.js 16.2.11 (Turbopack)
+2026-07-25T20:15:57.2353316Z 
+2026-07-25T20:15:57.2652481Z   Creating an optimized production build ...
+2026-07-25T20:16:00.1036935Z ✓ Compiled successfully in 2.6s
+2026-07-25T20:16:00.1066159Z   Running TypeScript ...
+2026-07-25T20:16:05.1691548Z   Finished TypeScript in 5.1s ...
+2026-07-25T20:16:05.1722201Z   Collecting page data using 3 workers ...
+2026-07-25T20:16:05.5937129Z   Generating static pages using 3 workers (0/4) ...
+2026-07-25T20:16:05.9102531Z   Generating static pages using 3 workers (1/4) 
+2026-07-25T20:16:05.9106080Z   Generating static pages using 3 workers (2/4) 
+2026-07-25T20:16:05.9107178Z   Generating static pages using 3 workers (3/4) 
+2026-07-25T20:16:05.9108601Z ✓ Generating static pages using 3 workers (4/4) in 317ms
+2026-07-25T20:16:05.9148867Z   Finalizing page optimization ...
+2026-07-25T20:16:06.4318841Z 
+2026-07-25T20:16:06.4340303Z Route (app)
+2026-07-25T20:16:06.4341338Z ┌ ○ /
+2026-07-25T20:16:06.4342946Z ├ ○ /_not-found
+2026-07-25T20:16:06.4343742Z └ ○ /about
+2026-07-25T20:16:06.4344206Z 
+2026-07-25T20:16:06.4344531Z 
+2026-07-25T20:16:06.4346005Z ○  (Static)  prerendered as static content
+2026-07-25T20:16:06.4346717Z 
+2026-07-25T20:16:06.5658117Z 
+2026-07-25T20:16:06.5659041Z > tavernary@0.1.0 verify:export
+2026-07-25T20:16:06.5659948Z > node scripts/verify-static-export.mjs
+2026-07-25T20:16:06.5660420Z 
+2026-07-25T20:16:06.6108340Z Static export verified
+2026-07-25T20:16:07.5921982Z To https://github.com/MentallyQuill/Tavernary
+2026-07-25T20:16:07.5923200Z    a9f5924..516f62e  HEAD -> main
+2026-07-25T20:16:07.6948581Z 
+2026-07-25T20:16:07.6949459Z > tavernary@0.1.0 catalog:backfill-identities
+2026-07-25T20:16:07.6950521Z > node scripts/catalog/backfill-repository-identities.mjs --write
+2026-07-25T20:16:07.6951076Z 
+2026-07-25T20:16:07.9372080Z Repository identity backfill: changed=0 skipped=214 conflicts=0
+2026-07-25T20:16:07.9374225Z Wrote 0 updated project files
+2026-07-25T20:16:08.0497082Z 
+2026-07-25T20:16:08.0497813Z > tavernary@0.1.0 catalog:validate
+2026-07-25T20:16:08.0498574Z > node scripts/catalog/validate.mjs
+2026-07-25T20:16:08.0498976Z 
+2026-07-25T20:16:08.2556703Z Validated 214 projects and 0 Kits
+2026-07-25T20:16:08.3769000Z 
+2026-07-25T20:16:08.3769682Z > tavernary@0.1.0 catalog:enrich
+2026-07-25T20:16:08.3770872Z > node scripts/catalog/enrich-readmes.mjs --mode start --batch-size 20 --concurrency 4
+2026-07-25T20:16:08.3771688Z 
+2026-07-25T20:16:08.5700742Z Error: full rollout requires a deployed canary using the configured model
+2026-07-25T20:16:08.5702516Z     at assertFullRolloutAllowed (file:///home/runner/work/Tavernary/Tavernary/scripts/catalog/enrichment-run-state.mjs:310:11)
+2026-07-25T20:16:08.5704414Z     at runCli (file:///home/runner/work/Tavernary/Tavernary/scripts/catalog/enrich-readmes.mjs:630:5)
+2026-07-25T20:16:08.5869250Z ##[error]Process completed with exit code 1.
+2026-07-25T20:16:08.5939306Z ##[group]Run if [[ "$MODE" == "preflight" ]]; then
+2026-07-25T20:16:08.5939824Z [36;1mif [[ "$MODE" == "preflight" ]]; then[0m
+2026-07-25T20:16:08.5940353Z [36;1m  echo "## Enrichment provider preflight" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5941050Z [36;1m  tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5941707Z [36;1melif [[ -f data/reports/enrichment-report.json ]]; then[0m
+2026-07-25T20:16:08.5943302Z [36;1m  node -e "const r=require('./data/reports/enrichment-report.json'); console.log('## Enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5944804Z [36;1mfi[0m
+2026-07-25T20:16:08.5990421Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-25T20:16:08.5990913Z env:
+2026-07-25T20:16:08.5991223Z   MODE: start
+2026-07-25T20:16:08.5991511Z ##[endgroup]
+2026-07-25T20:16:08.6502087Z Post job cleanup.
+2026-07-25T20:16:08.7385579Z [command]/usr/bin/git version
+2026-07-25T20:16:08.7433292Z git version 2.54.0
+2026-07-25T20:16:08.7485783Z Temporarily overriding HOME='/home/runner/work/_temp/02008918-a773-42f8-bce3-c60a6b27c3c6' before making global git config changes
+2026-07-25T20:16:08.7487321Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-25T20:16:08.7491968Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Tavernary/Tavernary
+2026-07-25T20:16:08.7527447Z Removing SSH command configuration
+2026-07-25T20:16:08.7534659Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-25T20:16:08.7573977Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-25T20:16:08.7835585Z Removing HTTP extra header
+2026-07-25T20:16:08.7842307Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-25T20:16:08.7899594Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-25T20:16:08.8158059Z Removing includeIf entries pointing to credentials config files
+2026-07-25T20:16:08.8165709Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-25T20:16:08.8218215Z includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git.path
+2026-07-25T20:16:08.8226705Z includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git/worktrees/*.path
+2026-07-25T20:16:08.8228238Z includeif.gitdir:/github/workspace/.git.path
+2026-07-25T20:16:08.8231162Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-07-25T20:16:08.8236655Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git.path
+2026-07-25T20:16:08.8260837Z /home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:16:08.8275861Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-b16dc392\-0725\-48ef\-9773\-3a146af9a922\.config
+2026-07-25T20:16:08.8319124Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git/worktrees/*.path
+2026-07-25T20:16:08.8348638Z /home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:16:08.8362112Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Tavernary/Tavernary/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-b16dc392\-0725\-48ef\-9773\-3a146af9a922\.config
+2026-07-25T20:16:08.8411693Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-07-25T20:16:08.8444113Z /github/runner_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:16:08.8454809Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-b16dc392\-0725\-48ef\-9773\-3a146af9a922\.config
+2026-07-25T20:16:08.8500258Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-07-25T20:16:08.8537423Z /github/runner_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config
+2026-07-25T20:16:08.8548616Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-b16dc392\-0725\-48ef\-9773\-3a146af9a922\.config
+2026-07-25T20:16:08.8594355Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-25T20:16:08.8843968Z Removing credentials config '/home/runner/work/_temp/git-credentials-b16dc392-0725-48ef-9773-3a146af9a922.config'
+2026-07-25T20:16:08.9026320Z Cleaning up orphan processes

@@ -18,6 +18,13 @@ test("exports the supplied Tavernary artwork", async ({ page }) => {
   expect(response.headers()["content-type"]).toBe("image/png");
 });
 
+test("locks the built-in dark theme against Dark Reader recoloring", async ({
+  page,
+}) => {
+  await page.goto(sitePath());
+  await expect(page.locator('meta[name="darkreader-lock"]')).toHaveCount(1);
+});
+
 test("exports canonical project links without intake-only metadata", async ({
   page,
 }) => {

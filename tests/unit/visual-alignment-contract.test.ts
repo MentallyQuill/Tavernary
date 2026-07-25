@@ -75,7 +75,7 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-right:\s*40px/s,
+      /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
     );
     expect(css).toMatch(
       /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
@@ -208,7 +208,15 @@ describe("catalog visual alignment", () => {
 
     expect(css).not.toContain('font-family: Georgia, "Times New Roman", serif');
     expect(css).not.toContain(".project-card::before");
-    expect(css).toMatch(/\.card-bottom\s*\{[^}]*border-top:/s);
+    expect(css).toMatch(
+      /\.card-bottom\s*\{[^}]*display:\s*flex[^}]*flex-direction:\s*column[^}]*align-items:\s*stretch[^}]*border-top:/s,
+    );
+    expect(css).toMatch(
+      /\.card-chips\s*\{[^}]*min-height:\s*40px[^}]*max-height:\s*40px[^}]*flex-wrap:\s*wrap[^}]*overflow:\s*hidden/s,
+    );
+    expect(css).toMatch(
+      /\.card-utility\s*\{[^}]*display:\s*flex[^}]*min-height:\s*28px[^}]*align-items:\s*center/s,
+    );
     expect(css).toMatch(/\.license\s*\{[^}]*border:\s*0/s);
     expect(css).toMatch(
       /\.project-grid\s*\{[^}]*repeat\(auto-fill,\s*minmax\(320px,\s*1fr\)\)[^}]*gap:\s*12px/s,
@@ -253,7 +261,7 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(/\.project-kit-control-hit\s*\{[^}]*right:\s*4px/s);
     expect(css).not.toMatch(/\.project-kit-control-hit\s*\{[^}]*left:\s*4px/s);
     expect(css).toMatch(
-      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-right:\s*40px/s,
+      /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
     );
     expect(css).toMatch(
       /\.compact-cards \.project-card h2,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*padding-right:\s*44px/s,

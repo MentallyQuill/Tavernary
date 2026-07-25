@@ -1,0 +1,11 @@
+﻿2026-07-25T20:16:08.5939295Z ##[group]Run if [[ "$MODE" == "preflight" ]]; then
+2026-07-25T20:16:08.5939821Z [36;1mif [[ "$MODE" == "preflight" ]]; then[0m
+2026-07-25T20:16:08.5940351Z [36;1m  echo "## Enrichment provider preflight" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5941048Z [36;1m  tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5941705Z [36;1melif [[ -f data/reports/enrichment-report.json ]]; then[0m
+2026-07-25T20:16:08.5943298Z [36;1m  node -e "const r=require('./data/reports/enrichment-report.json'); console.log('## Enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-07-25T20:16:08.5944801Z [36;1mfi[0m
+2026-07-25T20:16:08.5990411Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-25T20:16:08.5990911Z env:
+2026-07-25T20:16:08.5991171Z   MODE: start
+2026-07-25T20:16:08.5991509Z ##[endgroup]
