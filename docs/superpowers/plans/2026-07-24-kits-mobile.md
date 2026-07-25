@@ -608,7 +608,7 @@ Commit message: `test(kits): prove mobile interaction workflows`
 **Files:**
 
 - Verify: all changed source, test, fixture, documentation, and snapshot files
-- Verify: `src/registry/kits/`
+- Verify: `data/registry/kits/`
 
 - [ ] **Step 1: Run formatting and focused static checks**
 
@@ -650,7 +650,7 @@ Run the production catalog build after fixture tests:
 ```powershell
 npm.cmd run catalog:build
 git status --short
-Get-ChildItem src/registry/kits -Force
+Get-ChildItem data/registry/kits -Force
 ```
 
 Confirm the registry contains only `.gitkeep`, generated production data again
