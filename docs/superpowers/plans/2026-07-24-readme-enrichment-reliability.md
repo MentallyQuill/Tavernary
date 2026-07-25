@@ -8,6 +8,8 @@
 
 **Tech Stack:** Node.js 24 ESM, TypeScript declaration files, Ajv/JSON Schema, Vitest 4, Prettier, GitHub Actions, GitHub CLI, Next.js static export, and an OpenAI Chat Completions-compatible MiniMax M3 endpoint.
 
+**Execution status:** Implementation Tasks 1-9 are complete on `feature/readme-catalog-enrichment`. The post-rebase deterministic gate passes; Task 10's live preflight and five-card canary remain pending.
+
 ## Global Constraints
 
 - Work only in the existing `feature/readme-catalog-enrichment` worktree until branch integration.

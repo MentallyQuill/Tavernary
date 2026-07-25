@@ -1,10 +1,20 @@
 # README Enrichment Reliability and Chained Rollout Design
 
-**Status:** Approved design
+**Status:** Implemented on `feature/readme-catalog-enrichment`; live rollout remains gated by provider preflight and the five-card canary
 
 **Goal:** Make the GitHub-backed catalog enrichment run deterministic, resumable, efficient, and safe to publish automatically across the full catalog.
 
 **Builds on:** `2026-07-24-readme-catalog-enrichment-design.md`
+
+## Deterministic verification evidence
+
+Verified after rebasing onto `origin/main` at `b6d0f48`:
+
+- `npm.cmd run check`: formatting, lint, palette audit, validation of 214 projects and 0 Kits, catalog build, typecheck, 62 test files / 387 tests, production build, and static-export verification all passed;
+- `npm.cmd run test:e2e`: 34 browser tests passed, including exact summary text and four-line fit at desktop and mobile widths;
+- `npm.cmd run test:visual`: all 10 visual and reference-alignment checks passed.
+
+The live authenticated `MiniMax-M3` preflight, five-card canary, publication, and production-card inspection are intentionally still pending.
 
 ## Problem
 
