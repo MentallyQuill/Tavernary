@@ -15,7 +15,7 @@ import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitBuilder } from "@/features/kits/components/kit-builder";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
-import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
+import { useKitBuilder } from "@/features/kits/use-kit-builder";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -120,7 +120,7 @@ describe("Kit builder state", () => {
   test("starts create, duplicate, and edit drafts without mutating the live Kit", () => {
     const onSelectKit = vi.fn();
     const { result } = renderHook(() =>
-      useKitWorkspace({ selectedKitId: "", onSelectKit }),
+      useKitBuilder({ selectedKitId: "", onSelectKit }),
     );
     act(() => result.current.startCreate());
     expect(result.current.state).toMatchObject({
@@ -159,7 +159,7 @@ describe("Kit builder state", () => {
       components: [kit.components[1], kit.components[0], kit.components[2]],
     };
     const { result } = renderHook(() =>
-      useKitWorkspace({ selectedKitId: "", onSelectKit: vi.fn() }),
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
 
     act(() => result.current.startDuplicate(reorderedKit));
@@ -178,7 +178,7 @@ describe("Kit builder state", () => {
     const add = vi.spyOn(window, "addEventListener");
     const remove = vi.spyOn(window, "removeEventListener");
     const { result, unmount } = renderHook(() =>
-      useKitWorkspace({ selectedKitId: "", onSelectKit: vi.fn() }),
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
     );
     act(() => result.current.startCreate());
     expect(add.mock.calls.some(([name]) => name === "beforeunload")).toBe(
@@ -201,6 +201,22 @@ describe("Kit builder controls", () => {
     description: "A compact story stack.",
     projectIds: ["frontend", "memory", "preset"],
   };
+
+  test("uses the shared primary treatment for submission", () => {
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Submit Kit" })).toHaveClass(
+      "control-primary",
+    );
+  });
 
   test("pins the Frontend outside the ordered project stack", () => {
     const { container } = render(

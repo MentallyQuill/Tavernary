@@ -6,7 +6,7 @@ import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
-import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
+import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import type { CatalogProjectDragState } from "@/features/kits/use-catalog-project-drag";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
@@ -14,7 +14,7 @@ import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
 
-const workspaceBackground = [
+const builderBackground = [
   ".site-header",
   ".category-navigation",
   ".mobile-category",
@@ -30,7 +30,7 @@ function issueUrl(template: string, kit: CatalogKit) {
   return url.toString();
 }
 
-export function KitWorkspace({
+export function KitBuilderPanel({
   state,
   kit,
   onCollapse,
@@ -44,7 +44,7 @@ export function KitWorkspace({
   active = true,
   catalogDragState = null,
 }: {
-  state: KitWorkspaceState;
+  state: KitBuilderState;
   kit: CatalogKit | null;
   onCollapse: () => void;
   onDuplicate?: (kit: CatalogKit) => void;
@@ -109,7 +109,7 @@ export function KitWorkspace({
     active: modalOpen,
     containerRef: workspaceRef,
     initialFocusRef: headingRef,
-    inertSelectors: workspaceBackground,
+    inertSelectors: builderBackground,
     onDismiss: () => {
       onCollapse();
       returnFocus();
@@ -130,7 +130,7 @@ export function KitWorkspace({
       return (
         <aside
           ref={workspaceRef}
-          id="kit-workspace"
+          id="kit-builder-panel"
           className="kit-draft-pill-container"
           aria-label="Kit draft"
         >
@@ -152,18 +152,30 @@ export function KitWorkspace({
     return (
       <aside
         ref={workspaceRef}
-        id="kit-workspace"
-        className="kit-workspace collapsed"
-        aria-label="Kit workspace"
+        id="kit-builder-panel"
+        className="kit-builder-panel collapsed"
+        aria-label="Kit Builder"
       >
         <button
           type="button"
+          className="kit-builder-rail"
+          aria-label={
+            state.mode === "build" && state.draft.projectIds.length
+              ? `Open Kit Builder, ${state.draft.projectIds.length} projects in draft`
+              : "Open Kit Builder"
+          }
           onClick={(event) => {
             openerRef.current = event.currentTarget;
             onCollapse();
           }}
         >
-          Expand Kit workspace
+          <CategoryIcon name="kit-builder" />
+          <span>Kit Builder</span>
+          <span className="kit-builder-rail-status" aria-hidden="true">
+            {state.mode === "build" && state.draft.projectIds.length
+              ? `${state.draft.projectIds.length} projects`
+              : ""}
+          </span>
         </button>
       </aside>
     );
@@ -172,61 +184,75 @@ export function KitWorkspace({
   return (
     <aside
       ref={workspaceRef}
-      id="kit-workspace"
-      className="kit-workspace"
-      aria-label="Kit workspace"
+      id="kit-builder-panel"
+      className="kit-builder-panel"
+      aria-label="Kit Builder"
       role={phone ? "dialog" : "complementary"}
       aria-modal={phone ? true : undefined}
       data-motion-phase={phone ? phonePresence.phase : undefined}
     >
-      <header className="kit-workspace-header">
+      <header className="kit-builder-panel-header">
         <h2 ref={headingRef} tabIndex={-1}>
-          Kit workspace
+          Kit Builder
         </h2>
         <button
           type="button"
-          aria-label={phone ? "Close Kit workspace" : "Collapse workspace"}
+          className={`control-icon${phone ? "" : " kit-builder-collapse"}`}
+          aria-label={phone ? "Close Kit Builder" : "Collapse Kit Builder"}
           onClick={() => {
             onCollapse();
           }}
         >
-          <CategoryIcon name="collapse" />
+          <CategoryIcon name={phone ? "close" : "kit-builder"} />
         </button>
       </header>
-      <div className="kit-workspace-body">
+      <div className="kit-builder-panel-body">
         {state.mode === "intro" ? (
-          <div className="kit-workspace-intro">
+          <div className="kit-builder-panel-intro">
             <h2>Build and inspect Kits</h2>
             <p>
               Select a Kit to inspect its ordered stack, or create a transient
               draft.
             </p>
-            <button type="button" onClick={onStartCreate}>
+            <button
+              type="button"
+              className="control-primary"
+              onClick={onStartCreate}
+            >
               Create new Kit
             </button>
           </div>
         ) : state.mode === "inspect" && !kit ? (
-          <div className="kit-workspace-intro">
+          <div className="kit-builder-panel-intro">
             <h2>Unknown Kit</h2>
             <p>The selected Kit is no longer available in this catalog.</p>
           </div>
         ) : state.mode === "inspect" && kit ? (
-          <div className="kit-workspace-inspect">
+          <div className="kit-builder-panel-inspect">
             <header>
               <h2>{kit.title}</h2>
               <p>@{kit.author.login}</p>
             </header>
             <p>{kit.description}</p>
-            <div className="kit-workspace-actions">
-              <button type="button" onClick={() => onDuplicate?.(kit)}>
+            <div className="kit-builder-panel-actions">
+              <button
+                type="button"
+                className="control-secondary"
+                onClick={() => onDuplicate?.(kit)}
+              >
                 <CategoryIcon name="duplicate" />
                 Duplicate
               </button>
-              <button type="button" onClick={() => onEdit?.(kit)}>
+              <button
+                type="button"
+                className="control-secondary"
+                onClick={() => onEdit?.(kit)}
+              >
                 Edit
               </button>
               <button
                 type="button"
+                className="control-secondary"
                 aria-label="Copy link"
                 onClick={async () => {
                   const result = await copyKitLink(kit.id);
@@ -238,10 +264,18 @@ export function KitWorkspace({
                 <CategoryIcon name="copy-link" />
                 Copy link
               </button>
-              <a href={issueUrl("06-kit-report.yml", kit)} target="_blank">
+              <a
+                className="control-quiet"
+                href={issueUrl("06-kit-report.yml", kit)}
+                target="_blank"
+              >
                 Report Kit
               </a>
-              <a href={issueUrl("07-kit-withdrawal.yml", kit)} target="_blank">
+              <a
+                className="control-quiet"
+                href={issueUrl("07-kit-withdrawal.yml", kit)}
+                target="_blank"
+              >
                 Request withdrawal
               </a>
             </div>
@@ -257,7 +291,7 @@ export function KitWorkspace({
             <KitProjectStack components={kit.components} />
           </div>
         ) : state.mode === "build" ? (
-          <div className="kit-workspace-build">
+          <div className="kit-builder-panel-build">
             <h2>
               {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
             </h2>

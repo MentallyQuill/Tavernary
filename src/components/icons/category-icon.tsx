@@ -19,6 +19,7 @@ type IconName =
   | "collapse"
   | "close"
   | "kit"
+  | "kit-builder"
   | "add-to-kit"
   | "duplicate"
   | "copy-link"
@@ -39,6 +40,22 @@ export function CategoryIcon({
   name,
   ...props
 }: SVGProps<SVGSVGElement> & { name: IconName }) {
+  if (name === "kit-builder") {
+    return (
+      <svg
+        aria-hidden
+        data-icon="kit-builder"
+        viewBox="0 0 1920 1920"
+        fill="currentColor"
+        {...props}
+      >
+        <path
+          fillRule="evenodd"
+          d="M1807.124.056V1920h-112.938V.056h112.938ZM1468.254 0v1919.944H282.407c-93.4 0-169.407-75.895-169.407-169.407V169.407C113 76.007 189.007 0 282.407 0h1185.847ZM830.607 661.138 588.242 903.503h654.137v112.938H588.242l242.365 242.477-79.847 79.847-378.793-378.793 378.793-378.68 79.847 79.846Z"
+        />
+      </svg>
+    );
+  }
   if (name === "kit") {
     return (
       <svg {...strokeProps} viewBox="0 0 24 24" {...props}>

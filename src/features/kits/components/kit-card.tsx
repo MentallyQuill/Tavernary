@@ -38,7 +38,7 @@ export function KitCard({
         type="button"
         className="kit-card-select"
         aria-label={`Open ${kit.title}`}
-        aria-controls="kit-workspace"
+        aria-controls="kit-builder-panel"
         aria-expanded={selected}
         onClick={() => onSelect(kit.id)}
       >

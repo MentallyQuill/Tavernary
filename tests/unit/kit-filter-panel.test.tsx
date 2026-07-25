@@ -7,6 +7,22 @@ import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
 afterEach(cleanup);
 
 describe("KitFilterPanel", () => {
+  test("uses the shared quiet treatment for clearing filters", () => {
+    render(
+      <KitFilterPanel
+        query={DEFAULT_KIT_QUERY}
+        kits={[]}
+        projects={[]}
+        onChange={() => undefined}
+        onClear={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Clear Kit filters" }),
+    ).toHaveClass("control-quiet");
+  });
+
   test("renders mobile Kit filters as a visible modal sheet", () => {
     render(
       <KitFilterPanel

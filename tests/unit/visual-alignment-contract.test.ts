@@ -7,6 +7,33 @@ const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
 describe("catalog visual alignment", () => {
+  test("uses Kit Builder module names", () => {
+    expect(() =>
+      read("src/features/kits/components/kit-builder-panel.tsx"),
+    ).not.toThrow();
+    expect(() => read("src/features/kits/use-kit-builder.ts")).not.toThrow();
+  });
+
+  test("uses the supplied Kit Builder icon geometry", () => {
+    const icons = read("src/components/icons/category-icon.tsx");
+
+    expect(icons).toContain('name === "kit-builder"');
+    expect(icons).toContain('viewBox="0 0 1920 1920"');
+    expect(icons).toContain("M1807.124.056V1920");
+  });
+
+  test("defines shared controls and a horizontal Kit Builder rail", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toContain(".control-primary");
+    expect(css).toContain(".control-secondary");
+    expect(css).toContain(".control-quiet");
+    expect(css).toContain(".control-icon");
+    expect(css).toContain(".control-select");
+    expect(css).toContain(".kit-builder-rail");
+    expect(css).not.toContain("writing-mode: vertical-rl");
+  });
+
   test("uses the supplied deployable logo in mockup order", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 

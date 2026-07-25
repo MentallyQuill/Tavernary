@@ -18,12 +18,12 @@ import {
   openKitSubmission,
   serializeKitManifest,
 } from "@/features/kits/submission-transport";
-import { KitWorkspace } from "@/features/kits/components/kit-workspace";
+import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import {
   replaceKitFrontend,
   splitKitProjectIds,
 } from "@/features/kits/kit-project-layout";
-import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
+import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
@@ -61,7 +61,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const catalogLayoutRef = useRef<HTMLDivElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
-  const workspace = useKitWorkspace({
+  const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
     onSelectKit: (selectedKitId) =>
       setQuery((current) => ({
@@ -382,7 +382,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             />
           )}
         </main>
-        <KitWorkspace
+        <KitBuilderPanel
           state={workspace.state}
           kit={
             inspectedKitId

@@ -344,7 +344,11 @@ export function KitBuilder({
         <span key={draft.projectIds.length} className="kit-project-count">
           {draft.projectIds.length} projects
         </span>
-        <button type="submit" aria-label="Submit Kit">
+        <button
+          type="submit"
+          className="control-primary"
+          aria-label="Submit Kit"
+        >
           Submit Kit
         </button>
       </footer>

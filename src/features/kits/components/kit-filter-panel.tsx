@@ -179,7 +179,11 @@ export function KitFilterPanel({
         />
         Tavernary Pick only
       </label>
-      <button type="button" className="clear-filters" onClick={onClear}>
+      <button
+        type="button"
+        className="control-quiet clear-filters"
+        onClick={onClear}
+      >
         Clear Kit filters
       </button>
     </>

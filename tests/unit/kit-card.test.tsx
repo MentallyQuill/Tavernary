@@ -68,7 +68,7 @@ describe("Kit card", () => {
     const open = screen.getByRole("button", {
       name: "Open Long-Form Storyteller",
     });
-    expect(open).toHaveAttribute("aria-controls", "kit-workspace");
+    expect(open).toHaveAttribute("aria-controls", "kit-builder-panel");
     expect(screen.getByRole("button", { name: "Copy link" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Report Kit" })).toBeVisible();
 

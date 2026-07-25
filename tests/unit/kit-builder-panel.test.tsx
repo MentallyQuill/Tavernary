@@ -9,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { KitWorkspace } from "@/features/kits/components/kit-workspace";
+import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
@@ -115,11 +115,11 @@ afterEach(() => {
   });
 });
 
-describe("Kit workspace", () => {
+describe("Kit Builder", () => {
   test("keeps phone entry browse-first but opens explicit inspections", () => {
     mockMatchMedia({ phone: true, touchLayout: true });
     const { rerender } = render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "intro", collapsed: false }}
         kit={null}
         onCollapse={() => undefined}
@@ -128,20 +128,20 @@ describe("Kit workspace", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /Kit workspace/ }),
+      screen.queryByRole("button", { name: /Kit Builder/ }),
     ).not.toBeInTheDocument();
 
     rerender(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
         kit={fixtureKit()}
         onCollapse={() => undefined}
       />,
     );
-    expect(screen.getByRole("dialog", { name: "Kit workspace" })).toBeVisible();
+    expect(screen.getByRole("dialog", { name: "Kit Builder" })).toBeVisible();
 
     rerender(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "missing" }}
         kit={null}
         onCollapse={() => undefined}
@@ -153,7 +153,7 @@ describe("Kit workspace", () => {
   test("retains the desktop introductory workspace", () => {
     mockMatchMedia({});
     render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "intro", collapsed: false }}
         kit={null}
         onCollapse={() => undefined}
@@ -161,8 +161,27 @@ describe("Kit workspace", () => {
     );
 
     expect(
-      screen.getByRole("complementary", { name: "Kit workspace" }),
+      screen.getByRole("complementary", { name: "Kit Builder" }),
     ).toBeVisible();
+    expect(screen.getByRole("button", { name: "Create new Kit" })).toHaveClass(
+      "control-primary",
+    );
+  });
+
+  test("renders a readable desktop Kit Builder rail", () => {
+    mockMatchMedia({});
+    render(
+      <KitBuilderPanel
+        state={{ mode: "intro", collapsed: true }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    const rail = screen.getByRole("button", { name: "Open Kit Builder" });
+    expect(rail).toHaveClass("kit-builder-rail");
+    expect(rail).toHaveTextContent("Kit Builder");
+    expect(rail.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
   });
 
   test("uses a horizontal touch draft pill only for collapsed builds", async () => {
@@ -170,7 +189,7 @@ describe("Kit workspace", () => {
     const user = userEvent.setup();
     const onCollapse = vi.fn();
     const { rerender } = render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{
           mode: "build",
           collapsed: true,
@@ -196,7 +215,7 @@ describe("Kit workspace", () => {
     expect(onCollapse).toHaveBeenCalledOnce();
 
     rerender(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: true, kitId: "story-kit-41" }}
         kit={fixtureKit()}
         onCollapse={onCollapse}
@@ -206,7 +225,7 @@ describe("Kit workspace", () => {
       screen.queryByRole("button", { name: /Open draft/ }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Expand Kit workspace" }),
+      screen.queryByRole("button", { name: "Open Kit Builder" }),
     ).not.toBeInTheDocument();
   });
 
@@ -225,7 +244,7 @@ describe("Kit workspace", () => {
       },
     };
     const { rerender } = render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ ...buildState, collapsed: false }}
         kit={null}
         onCollapse={() => undefined}
@@ -233,7 +252,7 @@ describe("Kit workspace", () => {
     );
 
     rerender(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ ...buildState, collapsed: true }}
         kit={null}
         onCollapse={() => undefined}
@@ -256,7 +275,7 @@ describe("Kit workspace", () => {
           <main className="catalog-main">
             <button type="button">Catalog action</button>
           </main>
-          <KitWorkspace
+          <KitBuilderPanel
             state={{
               mode: "inspect",
               collapsed,
@@ -271,44 +290,48 @@ describe("Kit workspace", () => {
 
     render(<Harness />);
     expect(screen.getByRole("main")).toHaveAttribute("inert");
-    fireEvent.click(
-      screen.getByRole("button", { name: "Close Kit workspace" }),
+    fireEvent.click(screen.getByRole("button", { name: "Close Kit Builder" }));
+    expect(screen.getByRole("dialog", { name: "Kit Builder" })).toHaveAttribute(
+      "data-motion-phase",
+      "exiting",
     );
-    expect(
-      screen.getByRole("dialog", { name: "Kit workspace" }),
-    ).toHaveAttribute("data-motion-phase", "exiting");
     expect(screen.getByRole("main")).toHaveAttribute("inert");
     act(() => vi.advanceTimersByTime(220));
     expect(
-      screen.queryByRole("dialog", { name: "Kit workspace" }),
+      screen.queryByRole("dialog", { name: "Kit Builder" }),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("main")).not.toHaveAttribute("inert");
   });
 
-  test("shows intro, collapse, and unknown Kit states", async () => {
+  test("names the expanded surface Kit Builder", async () => {
     const user = userEvent.setup();
     const onCollapse = vi.fn();
-    const { rerender } = render(
-      <KitWorkspace
+    render(
+      <KitBuilderPanel
         state={{ mode: "intro", collapsed: false }}
         kit={null}
         onCollapse={onCollapse}
       />,
     );
     expect(
-      screen.getByRole("complementary", { name: "Kit workspace" }),
+      screen.getByRole("complementary", { name: "Kit Builder" }),
     ).toBeVisible();
     expect(screen.getByText("Build and inspect Kits")).toBeVisible();
-    await user.click(
-      screen.getByRole("button", { name: "Collapse workspace" }),
-    );
+    const collapse = screen.getByRole("button", {
+      name: "Collapse Kit Builder",
+    });
+    expect(collapse).toHaveClass("control-icon", "kit-builder-collapse");
+    expect(collapse.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
+    await user.click(collapse);
     expect(onCollapse).toHaveBeenCalled();
+  });
 
-    rerender(
-      <KitWorkspace
+  test("shows unknown Kit states", () => {
+    render(
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "missing" }}
         kit={null}
-        onCollapse={onCollapse}
+        onCollapse={() => undefined}
       />,
     );
     expect(screen.getByText("Unknown Kit")).toBeVisible();
@@ -317,7 +340,7 @@ describe("Kit workspace", () => {
   test("expands one project at a time and disables flagged rows", async () => {
     const user = userEvent.setup();
     render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
         kit={fixtureKit()}
         onCollapse={() => undefined}
@@ -344,6 +367,28 @@ describe("Kit workspace", () => {
     ).not.toBeInTheDocument();
   });
 
+  test("maps inspect actions to shared control treatments", () => {
+    render(
+      <KitBuilderPanel
+        state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
+        kit={fixtureKit()}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    for (const name of ["Duplicate", "Edit", "Copy link"]) {
+      expect(screen.getByRole("button", { name })).toHaveClass(
+        "control-secondary",
+      );
+    }
+    expect(screen.getByRole("link", { name: "Report Kit" })).toHaveClass(
+      "control-quiet",
+    );
+    expect(
+      screen.getByRole("link", { name: "Request withdrawal" }),
+    ).toHaveClass("control-quiet");
+  });
+
   test("copies links with selectable fallback and prefilled action URLs", async () => {
     const user = userEvent.setup();
     Object.defineProperty(navigator, "clipboard", {
@@ -357,7 +402,7 @@ describe("Kit workspace", () => {
     });
     window.history.replaceState(null, "", "/Tavernary/");
     render(
-      <KitWorkspace
+      <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
         kit={fixtureKit()}
         onCollapse={() => undefined}

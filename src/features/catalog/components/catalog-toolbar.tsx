@@ -43,7 +43,7 @@ export function CatalogToolbar({
           </h1>
           {query.mode === "kits" ? (
             <select
-              className="sort-kits"
+              className="control-select sort-kits"
               aria-label="Sort Kits"
               value={query.kits.sort}
               onChange={(event) => onKitSort(event.target.value as KitSort)}
@@ -56,7 +56,7 @@ export function CatalogToolbar({
           ) : (
             <>
               <button
-                className="density-toggle"
+                className="control-icon density-toggle"
                 type="button"
                 aria-label={
                   query.density === "standard"
@@ -69,7 +69,7 @@ export function CatalogToolbar({
                 <CategoryIcon name="collapse" />
               </button>
               <select
-                className="sort-projects"
+                className="control-select sort-projects"
                 aria-label="Sort projects"
                 value={query.sort}
                 onChange={(event) =>
@@ -89,7 +89,7 @@ export function CatalogToolbar({
       <div className="catalog-toolbar-actions">
         {query.mode === "kits" ? (
           <button
-            className="mobile-create-kit"
+            className="control-primary mobile-create-kit"
             type="button"
             onClick={onCreateKit}
           >
@@ -98,7 +98,7 @@ export function CatalogToolbar({
         ) : null}
         <button
           ref={filterButtonRef}
-          className="filter-toggle"
+          className="control-icon filter-toggle"
           type="button"
           aria-label="Open filters"
           onClick={onOpenFilters}

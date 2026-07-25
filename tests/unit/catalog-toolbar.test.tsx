@@ -24,11 +24,25 @@ test("offers Kit creation from the Kits toolbar only", async () => {
     <CatalogToolbar {...props} query={{ ...DEFAULT_QUERY, mode: "kits" }} />,
   );
 
-  await user.click(screen.getByRole("button", { name: "Create Kit" }));
+  expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveClass(
+    "control-select",
+  );
+  const createKit = screen.getByRole("button", { name: "Create Kit" });
+  expect(createKit).toHaveClass("control-primary");
+  await user.click(createKit);
   expect(onCreateKit).toHaveBeenCalledOnce();
 
   rerender(<CatalogToolbar {...props} query={DEFAULT_QUERY} />);
   expect(
     screen.queryByRole("button", { name: "Create Kit" }),
   ).not.toBeInTheDocument();
+  expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveClass(
+    "control-select",
+  );
+  expect(screen.getByRole("button", { name: "Use compact cards" })).toHaveClass(
+    "control-icon",
+  );
+  expect(screen.getByRole("button", { name: "Open filters" })).toHaveClass(
+    "control-icon",
+  );
 });

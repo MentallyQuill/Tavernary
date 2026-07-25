@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
-export type KitWorkspaceState =
+export type KitBuilderState =
   | { mode: "intro"; collapsed: boolean }
   | { mode: "inspect"; collapsed: boolean; kitId: string }
   | {
@@ -21,14 +21,14 @@ function normalizedKitProjectIds(kit: CatalogKit) {
   );
 }
 
-export function useKitWorkspace({
+export function useKitBuilder({
   selectedKitId,
   onSelectKit,
 }: {
   selectedKitId: string;
   onSelectKit: (kitId: string) => void;
 }) {
-  const [state, setState] = useState<KitWorkspaceState>(() =>
+  const [state, setState] = useState<KitBuilderState>(() =>
     selectedKitId
       ? { mode: "inspect", collapsed: false, kitId: selectedKitId }
       : { mode: "intro", collapsed: false },
