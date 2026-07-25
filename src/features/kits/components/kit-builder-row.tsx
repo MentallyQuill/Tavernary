@@ -10,6 +10,7 @@ export function KitBuilderRow({
   dragging,
   placement,
   touchLayout,
+  dragOffset,
 }: {
   project: CatalogProject;
   onRemove: (projectId: string) => void;
@@ -18,11 +19,17 @@ export function KitBuilderRow({
   dragging: boolean;
   placement: "before" | "after" | null;
   touchLayout: boolean;
+  dragOffset: number;
 }) {
   return (
     <li
       className={`kit-builder-row${dragging ? " dragging" : ""}${placement ? ` drag-${placement}` : ""}`}
       data-project-id={project.id}
+      style={
+        dragOffset === 0
+          ? undefined
+          : { transform: `translateY(${dragOffset}px)` }
+      }
     >
       <button
         type="button"

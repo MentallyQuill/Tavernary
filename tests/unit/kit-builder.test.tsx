@@ -653,4 +653,66 @@ describe("Kit builder controls", () => {
     const ghost = document.body.querySelector(".kit-drag-ghost") as HTMLElement;
     expect(ghost).toHaveStyle({ width: "200px", height: "60px" });
   });
+
+  test("opens a card-sized physical gap at the reorder target", () => {
+    Object.defineProperties(HTMLElement.prototype, {
+      setPointerCapture: { configurable: true, value: vi.fn() },
+      releasePointerCapture: { configurable: true, value: vi.fn() },
+    });
+    const { container } = render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+    const editor = container.querySelector(".kit-builder") as HTMLElement;
+    vi.spyOn(editor, "getBoundingClientRect").mockReturnValue({
+      x: 0,
+      y: 0,
+      top: 0,
+      left: 0,
+      right: 400,
+      bottom: 400,
+      width: 400,
+      height: 400,
+      toJSON: () => ({}),
+    });
+    const rows = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        ".kit-builder-stack [data-project-id]",
+      ),
+    );
+    rows.forEach((row, index) => {
+      vi.spyOn(row, "getBoundingClientRect").mockReturnValue({
+        x: 0,
+        y: index * 50,
+        top: index * 50,
+        left: 0,
+        right: 200,
+        bottom: index * 50 + 40,
+        width: 200,
+        height: 40,
+        toJSON: () => ({}),
+      });
+    });
+    const handle = screen.getByRole("button", {
+      name: "Drag memory to reorder or remove",
+    });
+    fireEvent.pointerDown(handle, {
+      pointerId: 12,
+      clientX: 10,
+      clientY: 10,
+    });
+    fireEvent.pointerMove(window, {
+      pointerId: 12,
+      clientX: 14,
+      clientY: 80,
+    });
+
+    expect(rows[0]).toHaveStyle({ transform: "translateY(47px)" });
+    expect(rows[1]).toHaveStyle({ transform: "translateY(-47px)" });
+  });
 });

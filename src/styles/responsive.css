@@ -434,6 +434,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .kit-card,
+  .kit-builder-row,
+  .kit-frontend-slot,
+  .catalog-project-drag-handle,
+  .add-to-kit,
+  .kit-builder-remove,
+  .kit-project-count,
   .kit-workspace *,
   .filter-sheet * {
     scroll-behavior: auto;

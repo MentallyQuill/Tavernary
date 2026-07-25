@@ -209,4 +209,32 @@ describe("catalog visual alignment", () => {
       /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*48px[^}]*height:\s*43px[^}]*transform:\s*none/,
     );
   });
+
+  test("uses the approved lean tactile motion vocabulary", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+    const builder = read("src/features/kits/components/kit-builder.tsx");
+
+    expect(css).toContain("--kit-motion-press: 80ms");
+    expect(css).toContain("--kit-motion-state: 120ms");
+    expect(css).toContain("--kit-motion-card: 150ms");
+    expect(css).toContain("--kit-motion-panel: 220ms");
+    expect(css).toContain("--kit-motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1)");
+    expect(css).toMatch(
+      /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?translateY\(-2px\)/,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-row:has\(\.kit-drag-handle:is\(:hover, :focus-visible\)\)\s*\{[^}]*transform:/s,
+    );
+    expect(css).toMatch(/\.kit-drag-ghost\s*\{[^}]*transition:\s*none/s);
+    expect(builder).toContain('className="kit-project-count"');
+    expect(css).toMatch(
+      /\.kit-project-count\s*\{[^}]*animation:[^}]*var\(--kit-motion-state\)/s,
+    );
+    expect(css).toContain("scale(1.02)");
+    expect(responsive).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(`${css.slice(css.indexOf(".kit-grid"))}\n${responsive}`).not.toMatch(
+      /\b(?:spring|bounce|rotate|filter:\s*blur)\b/i,
+    );
+  });
 });

@@ -134,6 +134,31 @@ export function KitBuilder({
     descriptionError && (touched.description || submitAttempted),
   );
   const visibleErrors = submitAttempted ? compositionErrors : [];
+  const dragOffsetFor = (index: number) => {
+    const state = drag.dragState;
+    if (state?.phase !== "reorder" || state.sourceIndex === state.targetIndex) {
+      return 0;
+    }
+    const distance = (state.sourceRect?.height ?? 0) + 7;
+    if (index === state.sourceIndex) {
+      return (state.targetIndex - state.sourceIndex) * distance;
+    }
+    if (
+      state.sourceIndex < state.targetIndex &&
+      index > state.sourceIndex &&
+      index <= state.targetIndex
+    ) {
+      return -distance;
+    }
+    if (
+      state.targetIndex < state.sourceIndex &&
+      index >= state.targetIndex &&
+      index < state.sourceIndex
+    ) {
+      return distance;
+    }
+    return 0;
+  };
 
   return (
     <form
@@ -279,6 +304,7 @@ export function KitBuilder({
               }
               placement={null}
               touchLayout={touchLayout}
+              dragOffset={dragOffsetFor(index)}
             />
           ) : null;
         })}
@@ -310,7 +336,9 @@ export function KitBuilder({
         </ul>
       ) : null}
       <footer className="kit-builder-footer">
-        <span>{draft.projectIds.length} projects</span>
+        <span key={draft.projectIds.length} className="kit-project-count">
+          {draft.projectIds.length} projects
+        </span>
         <button type="submit" aria-label="Submit Kit">
           Submit Kit
         </button>
