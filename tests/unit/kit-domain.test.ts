@@ -8,6 +8,7 @@ import {
 
 const projects = [
   { id: "frontend", kind: "frontend", visibility: "published" },
+  { id: "frontend-b", kind: "frontend", visibility: "published" },
   { id: "memory", kind: "extension", visibility: "published" },
   { id: "preset", kind: "preset", visibility: "published" },
   { id: "flagged", kind: "extension", visibility: "quarantined" },
@@ -40,6 +41,55 @@ describe("Kit domain", () => {
     ).toEqual({ valid: true, errors: [] });
   });
 
+  test("rejects a composition with more than one Frontend", () => {
+    const result = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "Story Kit",
+        description: "A compact story stack.",
+        projectIds: ["frontend", "frontend-b", "memory"],
+      },
+      projects,
+    );
+
+    expect(result.errors).toContain("A Kit requires exactly one Frontend.");
+  });
+
+  test("rejects a Frontend outside the first project position", () => {
+    const result = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "Story Kit",
+        description: "A compact story stack.",
+        projectIds: ["memory", "frontend", "preset"],
+      },
+      projects,
+    );
+
+    expect(result.errors).toContain(
+      "The Kit Frontend must be the first project.",
+    );
+  });
+
+  test("requires at least two non-Frontend projects", () => {
+    const result = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "Story Kit",
+        description: "A compact story stack.",
+        projectIds: ["frontend", "memory"],
+      },
+      projects,
+    );
+
+    expect(result.errors).toContain(
+      "A Kit requires at least two non-Frontend projects.",
+    );
+  });
+
   test("rejects invalid composition, duplicates, unknown and flagged projects", () => {
     const result = validateKitDraft(
       {
@@ -60,7 +110,8 @@ describe("Kit domain", () => {
         "A Kit cannot contain duplicate projects.",
         "Every Kit project must exist in the catalog.",
         "A Kit cannot contain flagged projects.",
-        "A Kit requires one Frontend and two non-Frontend projects.",
+        "A Kit requires exactly one Frontend.",
+        "A Kit requires at least two non-Frontend projects.",
       ]),
     );
   });

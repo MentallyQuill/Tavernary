@@ -52,8 +52,14 @@ export function validateKitDraft(draft, projects) {
   ) {
     errors.push("A Kit cannot contain flagged projects.");
   }
-  if (frontendCount < 1 || nonFrontendCount < 2) {
-    errors.push("A Kit requires one Frontend and two non-Frontend projects.");
+  if (frontendCount !== 1) {
+    errors.push("A Kit requires exactly one Frontend.");
+  }
+  if (frontendCount === 1 && resolved[0]?.kind !== "frontend") {
+    errors.push("The Kit Frontend must be the first project.");
+  }
+  if (nonFrontendCount < 2) {
+    errors.push("A Kit requires at least two non-Frontend projects.");
   }
 
   return { valid: errors.length === 0, errors };

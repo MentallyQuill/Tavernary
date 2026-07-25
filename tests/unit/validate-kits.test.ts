@@ -10,6 +10,7 @@ const project = (
 
 const projectRecords = [
   project("frontend", "frontend"),
+  project("frontend-b", "frontend"),
   project("memory", "extension"),
   project("preset", "preset"),
   project("flagged", "extension", "quarantined"),
@@ -88,6 +89,40 @@ describe("Kit registry validation", () => {
 
     expect(errors).toContain("second: duplicates the project set of first");
     expect(errors).toContain("missing: unknown project gone");
+  });
+
+  test("rejects a canonical Kit with multiple Frontends", async () => {
+    const errors = await validateKitData({
+      projectRecords,
+      kitRecords: [
+        kitRecord({
+          project_ids: ["frontend", "frontend-b", "memory"],
+        }),
+      ],
+      supportSnapshots: [],
+      blockedUsers: { schema_version: 1, blocked: [] },
+    });
+
+    expect(errors).toContain(
+      "story-kit-41: requires exactly one Frontend project",
+    );
+  });
+
+  test("rejects a canonical Kit whose Frontend is not first", async () => {
+    const errors = await validateKitData({
+      projectRecords,
+      kitRecords: [
+        kitRecord({
+          project_ids: ["memory", "frontend", "preset"],
+        }),
+      ],
+      supportSnapshots: [],
+      blockedUsers: { schema_version: 1, blocked: [] },
+    });
+
+    expect(errors).toContain(
+      "story-kit-41: Frontend project must be first",
+    );
   });
 
   test("rejects malformed authority, text, timestamps, status, and tombstones", async () => {

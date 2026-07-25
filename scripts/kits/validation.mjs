@@ -84,6 +84,18 @@ export async function validateKitData({
         errors.push(`${id}: unknown project ${projectId}`);
       }
     }
+    const resolvedProjects = (kit.project_ids ?? [])
+      .map((projectId) => projectsById.get(projectId))
+      .filter(Boolean);
+    const frontendCount = resolvedProjects.filter(
+      (project) => project.kind === "frontend",
+    ).length;
+    if (frontendCount !== 1) {
+      errors.push(`${id}: requires exactly one Frontend project`);
+    }
+    if (frontendCount === 1 && resolvedProjects[0]?.kind !== "frontend") {
+      errors.push(`${id}: Frontend project must be first`);
+    }
     const setKey = kitSetKey(kit.project_ids ?? []);
     const owner = setOwners.get(setKey);
     if (owner) {
