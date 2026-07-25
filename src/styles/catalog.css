@@ -1366,7 +1366,7 @@
 }
 
 .kit-workspace-header {
-  margin-bottom: 18px;
+  margin-bottom: 0;
   color: var(--color-muted);
   font-size: 11px;
   text-transform: uppercase;

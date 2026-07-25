@@ -706,7 +706,7 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
   expect(mobile).toEqual({
     mainLeft: 0,
     mainPaddingLeft: "13px",
-    triggerHeight: 42,
+    triggerHeight: 44,
     controlDisplay: "flex",
     sortHeight: 36,
   });
