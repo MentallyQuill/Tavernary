@@ -1,4 +1,5 @@
 import type { ReadmeSource } from "./readme-source.d.mts";
+import type { ProjectAttemptResult } from "./enrichment-run-state.d.mts";
 
 export type VocabularyEntry = { id: string; label?: string };
 export type EnrichmentInput = {
@@ -90,14 +91,24 @@ export function writeEnrichedRecord(
   },
 ): Promise<void>;
 
+export function mapWithConcurrency<T, R>(
+  items: readonly T[],
+  limit: number,
+  worker: (item: T, index: number) => Promise<R>,
+): Promise<R[]>;
+
 export function runEnrichmentBatch(options: {
-  records: RegistryRecord[];
-  snapshots: Record<string, GithubSnapshot>;
+  projectIds: string[];
+  recordsById: Record<string, RegistryRecord>;
+  snapshotsById: Record<string, GithubSnapshot>;
+  phase: "primary" | "retry";
   vocabularies: {
     primaryFunctions: VocabularyEntry[];
     capabilities: VocabularyEntry[];
   };
-  provider?: EnrichmentProvider;
+  provider: EnrichmentProvider;
+  validateSnapshot: (snapshot: unknown) => boolean;
+  concurrency?: number;
   loadSource?: (
     record: RegistryRecord,
     snapshot: GithubSnapshot,
@@ -111,15 +122,7 @@ export function runEnrichmentBatch(options: {
       capabilities: VocabularyEntry[];
     },
   ) => Promise<void>;
-  now?: string;
-  force?: boolean;
-}): Promise<{
-  generatedAt: string;
-  enriched: string[];
-  fallback: string[];
-  skipped: string[];
-  failed: Array<{ id: string; reason: string }>;
-}>;
+}): Promise<ProjectAttemptResult[]>;
 
 export function runCli(
   options?: EnrichmentOptions,

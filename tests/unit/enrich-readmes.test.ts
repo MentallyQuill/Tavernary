@@ -1,6 +1,10 @@
 import { expect, test, vi } from "vitest";
 
-import { enrichRecord } from "../../scripts/catalog/enrich-readmes.mjs";
+import {
+  enrichRecord,
+  mapWithConcurrency,
+  runEnrichmentBatch,
+} from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
   id: "fixture",
@@ -50,6 +54,46 @@ const providerMetadata = {
   returnedModel: "MiniMax-M3",
   latencyMs: 10,
 };
+
+function recordFor(id: string) {
+  return {
+    ...record,
+    id,
+    name: id,
+    source: {
+      ...record.source,
+      repository: `Creator/${id}`,
+      repository_id: 42,
+    },
+  };
+}
+
+function snapshotFor(id: string) {
+  return {
+    ...snapshot,
+    project_id: id,
+    repository: {
+      ...snapshot.repository,
+      name: id,
+      url: `https://github.com/Creator/${id}`,
+      description: `Description for ${id}.`,
+    },
+  };
+}
+
+function readySource(id: string) {
+  return {
+    status: "ready" as const,
+    sourceKind: "description" as const,
+    text: `Description for ${id}.`,
+    repositoryDescription: `Description for ${id}.`,
+    readmeText: null,
+    readmePath: null,
+    readmeRef: null,
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+  };
+}
 
 test("passes both source fields and only allowed vocabulary entries to provider", async () => {
   const generate = vi.fn(async (input) => ({
@@ -203,4 +247,132 @@ test("rejects uncategorized output when source text exists", async () => {
       { vocabularies },
     ),
   ).rejects.toThrow("substantive primary function");
+});
+
+test("returns ordered isolated outcomes for a mixed batch", async () => {
+  const projectIds = ["description", "fallback", "stale", "offline"];
+  const recordsById = Object.fromEntries(
+    projectIds.map((id) => [id, recordFor(id)]),
+  );
+  const snapshotsById = Object.fromEntries(
+    projectIds.map((id) => [id, snapshotFor(id)]),
+  );
+  const writeRecord = vi.fn(async () => {});
+  const result = await runEnrichmentBatch({
+    projectIds,
+    recordsById,
+    snapshotsById,
+    phase: "primary",
+    vocabularies,
+    provider: {
+      generate: vi.fn(async (input) => {
+        if (input.id === "offline") throw new Error("provider offline");
+        return {
+          output: {
+            summary:
+              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+            metadata_status: "curated" as const,
+            primary_function: "developer-infrastructure",
+            capabilities: ["automation"],
+          },
+          metadata: providerMetadata,
+        };
+      }),
+    },
+    validateSnapshot: () => true,
+    loadSource: async (candidate) => {
+      if (candidate.id === "fallback") {
+        return {
+          status: "fallback" as const,
+          sourceKind: "confirmed-fallback" as const,
+          readmePath: null,
+          readmeRef: "a".repeat(40),
+          repositoryId: 42,
+          headSha: "a".repeat(40),
+        };
+      }
+      if (candidate.id === "stale") {
+        return {
+          status: "source-not-ready" as const,
+          reasonCode: "stale-source" as const,
+          message: "Repository snapshot is stale.",
+        };
+      }
+      return readySource(candidate.id);
+    },
+    writeRecord,
+  });
+
+  expect(result.map(({ id, outcome }) => ({ id, outcome }))).toEqual([
+    { id: "description", outcome: "enriched" },
+    { id: "fallback", outcome: "fallback" },
+    { id: "stale", outcome: "source-not-ready" },
+    { id: "offline", outcome: "failed" },
+  ]);
+  expect(writeRecord).toHaveBeenCalledTimes(2);
+  expect(result[0]).toMatchObject({
+    sourceKind: "description",
+    provider: providerMetadata,
+  });
+  expect(result[1]).toMatchObject({
+    sourceKind: "confirmed-fallback",
+    readmeRef: "a".repeat(40),
+  });
+});
+
+test("runs no more than four model calls concurrently and preserves order", async () => {
+  const projectIds = Array.from(
+    { length: 12 },
+    (_, index) => `project-${index}`,
+  );
+  const recordsById = Object.fromEntries(
+    projectIds.map((id) => [id, recordFor(id)]),
+  );
+  const snapshotsById = Object.fromEntries(
+    projectIds.map((id) => [id, snapshotFor(id)]),
+  );
+  let active = 0;
+  let maximum = 0;
+  const result = await runEnrichmentBatch({
+    projectIds,
+    recordsById,
+    snapshotsById,
+    phase: "primary",
+    vocabularies,
+    provider: {
+      generate: vi.fn(async (input) => {
+        active += 1;
+        maximum = Math.max(maximum, active);
+        const index = Number(input.id.split("-").at(-1));
+        await new Promise((resolve) => setTimeout(resolve, (12 - index) % 5));
+        active -= 1;
+        return {
+          output: {
+            summary:
+              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+            metadata_status: "curated" as const,
+            primary_function: "developer-infrastructure",
+            capabilities: ["automation"],
+          },
+          metadata: providerMetadata,
+        };
+      }),
+    },
+    validateSnapshot: () => true,
+    loadSource: async (candidate) => readySource(candidate.id),
+    concurrency: 4,
+    writeRecord: vi.fn(async () => {}),
+  });
+
+  expect(maximum).toBe(4);
+  expect(result.map(({ id }) => id)).toEqual(projectIds);
+});
+
+test("validates worker-pool concurrency limits", async () => {
+  await expect(
+    mapWithConcurrency([1], 0, async (value) => value),
+  ).rejects.toThrow("between 1 and 8");
+  await expect(
+    mapWithConcurrency([1], 9, async (value) => value),
+  ).rejects.toThrow("between 1 and 8");
 });

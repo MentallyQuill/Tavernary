@@ -173,56 +173,234 @@ export async function writeEnrichedRecord(
   }
 }
 
-export async function runEnrichmentBatch({
-  records,
-  snapshots,
-  vocabularies,
-  provider,
-  loadSource,
-  writeRecord = async (record, output, allowedVocabularies) => {
-    if (!record.path) {
-      throw new Error(
-        "writeRecord or record.path is required for batch execution",
-      );
-    }
-    return writeEnrichedRecord(
-      record.path,
-      record,
-      output,
-      allowedVocabularies,
-    );
-  },
-  now = new Date().toISOString(),
-  force = false,
-}) {
-  const enriched = [];
-  const fallback = [];
-  const skipped = [];
-  const failed = [];
-  for (const record of records) {
-    try {
-      const output = await enrichRecord(
-        record,
-        snapshots[record.id],
-        provider,
-        {
-          force,
-          vocabularies,
-          loadSource,
-        },
-      );
-      if (!output) {
-        skipped.push(record.id);
-        continue;
-      }
-      await writeRecord(record, output, vocabularies);
-      if (output.summary === "No README file found.") fallback.push(record.id);
-      else enriched.push(record.id);
-    } catch (error) {
-      failed.push({ id: record.id, reason: error.message });
+export async function mapWithConcurrency(items, limit, worker) {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 8) {
+    throw new Error("concurrency must be between 1 and 8");
+  }
+  const results = new Array(items.length);
+  let cursor = 0;
+  async function runWorker() {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      results[index] = await worker(items[index], index);
     }
   }
-  return { generatedAt: now, enriched, fallback, skipped, failed };
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, () => runWorker()),
+  );
+  return results;
+}
+
+function fallbackOutput() {
+  return {
+    summary: "No README file found.",
+    metadata_status: "curated",
+    primary_function: "uncategorized",
+    capabilities: [],
+  };
+}
+
+function validateOutput(output, vocabularies, sourceBacked) {
+  const validation = validateEnrichmentOutput(output, {
+    primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
+    capabilities: entriesToSet(vocabularies.capabilities),
+  });
+  if (!validation.valid) {
+    return { valid: false, message: validation.errors.join("; ") };
+  }
+  if (sourceBacked && output.primary_function === "uncategorized") {
+    return {
+      valid: false,
+      message:
+        "source-backed enrichment must choose a substantive primary function",
+    };
+  }
+  return { valid: true };
+}
+
+function sourceProvenance(source) {
+  return {
+    sourceKind: source.sourceKind,
+    repositoryId: source.repositoryId,
+    headSha: source.headSha,
+    readmePath: source.readmePath ?? null,
+    readmeRef: source.readmeRef ?? null,
+  };
+}
+
+async function processProject(input, id) {
+  const {
+    recordsById,
+    snapshotsById,
+    phase,
+    provider,
+    validateSnapshot,
+    vocabularies,
+    loadSource,
+    writeRecord,
+  } = input;
+  const record = recordsById[id];
+  if (!record || !isEligible(record)) {
+    return {
+      id,
+      phase,
+      outcome: "skipped",
+      reasonCode: record ? "record-ineligible" : "record-missing",
+      message: record
+        ? "Registry record is no longer eligible."
+        : "Registry record is missing.",
+    };
+  }
+
+  const source = await loadSource(record, snapshotsById[id], {
+    validateSnapshot,
+  });
+  if (source.status === "source-not-ready" || source.status === "failed") {
+    return {
+      id,
+      phase,
+      outcome: source.status === "failed" ? "failed" : "source-not-ready",
+      reasonCode: source.reasonCode,
+      message: source.message,
+    };
+  }
+
+  let output;
+  let providerMetadata;
+  if (source.status === "fallback") {
+    output = fallbackOutput();
+  } else {
+    if (!provider?.generate) {
+      return {
+        id,
+        phase,
+        outcome: "failed",
+        reasonCode: "provider-configuration-invalid",
+        message: "Enrichment provider configuration is required.",
+        ...sourceProvenance(source),
+      };
+    }
+    const providerInput = {
+      id: record.id,
+      name: record.name,
+      kind: record.kind,
+      repository: record.source.repository,
+      repositoryDescription: source.repositoryDescription,
+      readmeText: source.readmeText,
+      frontends: record.frontends ?? [],
+      allowedPrimaryFunctions: vocabularies.primaryFunctions,
+      allowedCapabilities: vocabularies.capabilities,
+    };
+    try {
+      const generated = await provider.generate(providerInput);
+      output = generated.output;
+      providerMetadata = generated.metadata;
+    } catch (error) {
+      return {
+        id,
+        phase,
+        outcome: "failed",
+        reasonCode: error.code ?? "provider-response-invalid",
+        message: error.message ?? "The enrichment provider failed.",
+        ...sourceProvenance(source),
+      };
+    }
+  }
+
+  const validation = validateOutput(
+    output,
+    vocabularies,
+    source.status === "ready",
+  );
+  if (!validation.valid) {
+    return {
+      id,
+      phase,
+      outcome: "failed",
+      reasonCode: "output-invalid",
+      message: validation.message,
+      ...sourceProvenance(source),
+      ...(providerMetadata ? { provider: providerMetadata } : {}),
+    };
+  }
+  try {
+    await writeRecord(record, output, vocabularies);
+  } catch {
+    return {
+      id,
+      phase,
+      outcome: "failed",
+      reasonCode: "write-failed",
+      message: "Validated enrichment could not be written.",
+      ...sourceProvenance(source),
+      ...(providerMetadata ? { provider: providerMetadata } : {}),
+    };
+  }
+
+  return {
+    id,
+    phase,
+    outcome: source.status === "fallback" ? "fallback" : "enriched",
+    output,
+    ...sourceProvenance(source),
+    ...(providerMetadata ? { provider: providerMetadata } : {}),
+  };
+}
+
+export async function runEnrichmentBatch(input) {
+  const {
+    projectIds,
+    recordsById,
+    snapshotsById,
+    phase,
+    provider,
+    validateSnapshot,
+    vocabularies,
+    loadSource = loadReadmeSource,
+    concurrency = 4,
+    writeRecord = async (record, output, allowedVocabularies) => {
+      if (!record.path) {
+        throw new Error(
+          "writeRecord or record.path is required for batch execution",
+        );
+      }
+      return writeEnrichedRecord(
+        record.path,
+        record,
+        output,
+        allowedVocabularies,
+      );
+    },
+  } = input;
+  if (!["primary", "retry"].includes(phase)) {
+    throw new Error("batch phase must be primary or retry");
+  }
+  return mapWithConcurrency(projectIds, concurrency, async (id) => {
+    try {
+      return await processProject(
+        {
+          recordsById,
+          snapshotsById,
+          phase,
+          provider,
+          validateSnapshot,
+          vocabularies,
+          loadSource,
+          writeRecord,
+        },
+        id,
+      );
+    } catch (error) {
+      return {
+        id,
+        phase,
+        outcome: "failed",
+        reasonCode: error.code ?? "source-load-failed",
+        message: error.message ?? "Enrichment source loading failed.",
+      };
+    }
+  });
 }
 
 async function readJson(path) {

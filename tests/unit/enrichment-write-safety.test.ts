@@ -62,3 +62,45 @@ test("refuses invalid output without changing the record", async () => {
   ).rejects.toThrow();
   expect(await readFile(path, "utf8")).toBe(original);
 });
+
+test("preserves every non-editorial field across concurrent record writes", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
+  const records = ["alpha", "beta"].map((id, index) => ({
+    ...record,
+    id,
+    name: id,
+    source: {
+      ...record.source,
+      repository: `Creator/${id}`,
+      repository_id: index + 1,
+    },
+  }));
+  const paths = records.map(({ id }) => join(root, `${id}.json`));
+  await Promise.all(
+    records.map((candidate, index) =>
+      writeFile(paths[index], JSON.stringify(candidate, null, 2)),
+    ),
+  );
+
+  await Promise.all(
+    records.map((candidate, index) =>
+      writeEnrichedRecord(paths[index], candidate, output),
+    ),
+  );
+
+  const written = await Promise.all(
+    paths.map(async (path) => JSON.parse(await readFile(path, "utf8"))),
+  );
+  const editorial = new Set([
+    "summary",
+    "metadata_status",
+    "primary_function",
+    "capabilities",
+  ]);
+  const nonEditorial = (candidate: Record<string, unknown>) =>
+    Object.fromEntries(
+      Object.entries(candidate).filter(([key]) => !editorial.has(key)),
+    );
+
+  expect(written.map(nonEditorial)).toEqual(records.map(nonEditorial));
+});
