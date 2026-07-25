@@ -13,6 +13,7 @@ export function CatalogToolbar({
   onKitSort,
   onDensity,
   onOpenFilters,
+  onCreateKit,
   filterButtonRef,
 }: {
   count: number;
@@ -23,6 +24,7 @@ export function CatalogToolbar({
   onKitSort: (sort: KitSort) => void;
   onDensity: () => void;
   onOpenFilters: () => void;
+  onCreateKit?: () => void;
   filterButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
   return (
@@ -84,16 +86,27 @@ export function CatalogToolbar({
         </div>
         <p>Catalog refreshed {refreshedLabel}</p>
       </div>
-      <button
-        ref={filterButtonRef}
-        className="filter-toggle"
-        type="button"
-        aria-label="Open filters"
-        onClick={onOpenFilters}
-      >
-        <CategoryIcon name="filter-lines" />
-        {filterCount > 0 ? <b>{filterCount}</b> : null}
-      </button>
+      <div className="catalog-toolbar-actions">
+        {query.mode === "kits" ? (
+          <button
+            className="mobile-create-kit"
+            type="button"
+            onClick={onCreateKit}
+          >
+            Create Kit
+          </button>
+        ) : null}
+        <button
+          ref={filterButtonRef}
+          className="filter-toggle"
+          type="button"
+          aria-label="Open filters"
+          onClick={onOpenFilters}
+        >
+          <CategoryIcon name="filter-lines" />
+          {filterCount > 0 ? <b>{filterCount}</b> : null}
+        </button>
+      </div>
     </div>
   );
 }

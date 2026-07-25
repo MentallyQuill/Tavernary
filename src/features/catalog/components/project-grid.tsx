@@ -24,25 +24,31 @@ export function ProjectGrid({
 
   return (
     <section className="project-grid" aria-label="Project catalog">
-      {projects.map((project) =>
-        onAddToKit && draftProjectIds ? (
+      {projects.map((project) => {
+        if (!onAddToKit || !draftProjectIds) {
+          return <ProjectCard key={project.id} project={project} now={now} />;
+        }
+        const added = draftProjectIds.includes(project.id);
+        return (
           <div className="project-card-shell" key={project.id}>
             <ProjectCard project={project} now={now} />
             <button
               type="button"
               className="add-to-kit"
-              aria-label={`Add ${project.name} to Kit`}
-              disabled={draftProjectIds.includes(project.id)}
+              aria-label={
+                added
+                  ? `${project.name} added to Kit`
+                  : `Add ${project.name} to Kit`
+              }
+              disabled={added}
               onClick={() => onAddToKit(project.id)}
             >
               <CategoryIcon name="add-to-kit" />
-              Add to Kit
+              {added ? "Added" : "Add to Kit"}
             </button>
           </div>
-        ) : (
-          <ProjectCard key={project.id} project={project} now={now} />
-        ),
-      )}
+        );
+      })}
     </section>
   );
 }

@@ -7,6 +7,7 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
+import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
 
@@ -46,7 +47,7 @@ export function KitWorkspace({
   active?: boolean;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
-  const [mobile, setMobile] = useState(false);
+  const { phone, touchLayout } = useResponsiveCapabilities();
   const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -67,16 +68,7 @@ export function KitWorkspace({
   }, [fallbackUrl]);
 
   useEffect(() => {
-    if (typeof window.matchMedia !== "function") return;
-    const query = window.matchMedia("(max-width: 760px)");
-    const update = () => setMobile(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    if (!mobile || !active || state.collapsed) return;
+    if (!phone || !active || state.collapsed || state.mode === "intro") return;
     if (!workspaceRef.current?.contains(document.activeElement)) {
       const activeElement = document.activeElement as HTMLElement;
       if (activeElement !== document.body) {
@@ -118,11 +110,35 @@ export function KitWorkspace({
       window.removeEventListener("keydown", trapFocus);
       document.body.classList.remove("sheet-open");
     };
-  }, [active, mobile, onCollapse, returnFocus, state.collapsed]);
+  }, [active, onCollapse, phone, returnFocus, state.collapsed, state.mode]);
 
-  if (mobile && !active) return null;
+  if (phone && (!active || state.mode === "intro")) return null;
 
   if (state.collapsed) {
+    if (touchLayout) {
+      if (state.mode !== "build") return null;
+      return (
+        <aside
+          ref={workspaceRef}
+          id="kit-workspace"
+          className="kit-draft-pill-container"
+          aria-label="Kit draft"
+        >
+          <button
+            type="button"
+            className="kit-draft-pill"
+            aria-label={`Open draft with ${state.draft.projectIds.length} projects`}
+            onClick={(event) => {
+              openerRef.current = event.currentTarget;
+              onCollapse();
+            }}
+          >
+            Draft <span aria-hidden="true">·</span>{" "}
+            {state.draft.projectIds.length} projects
+          </button>
+        </aside>
+      );
+    }
     return (
       <aside
         ref={workspaceRef}
@@ -149,8 +165,8 @@ export function KitWorkspace({
       id="kit-workspace"
       className="kit-workspace"
       aria-label="Kit workspace"
-      role={mobile ? "dialog" : "complementary"}
-      aria-modal={mobile ? true : undefined}
+      role={phone ? "dialog" : "complementary"}
+      aria-modal={phone ? true : undefined}
     >
       <header className="kit-workspace-header">
         <h2 ref={headingRef} tabIndex={-1}>
@@ -158,10 +174,10 @@ export function KitWorkspace({
         </h2>
         <button
           type="button"
-          aria-label={mobile ? "Close Kit workspace" : "Collapse workspace"}
+          aria-label={phone ? "Close Kit workspace" : "Collapse workspace"}
           onClick={() => {
             onCollapse();
-            if (mobile) {
+            if (phone) {
               returnFocus();
             }
           }}

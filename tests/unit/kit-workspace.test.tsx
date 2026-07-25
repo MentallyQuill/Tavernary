@@ -6,6 +6,35 @@ import { KitWorkspace } from "@/features/kits/components/kit-workspace";
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
+const originalMatchMedia = window.matchMedia;
+
+function mockMatchMedia({
+  phone = false,
+  touchLayout = false,
+}: {
+  phone?: boolean;
+  touchLayout?: boolean;
+}) {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn((query: string) => ({
+      matches:
+        query === "(max-width: 760px)"
+          ? phone
+          : query === "(max-width: 1050px), (pointer: coarse)"
+            ? touchLayout
+            : false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
+
 function fixtureKit(): CatalogKit {
   return {
     id: "story-kit-41",
@@ -72,9 +101,107 @@ function fixtureKit(): CatalogKit {
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: originalMatchMedia,
+  });
 });
 
 describe("Kit workspace", () => {
+  test("keeps phone entry browse-first but opens explicit inspections", () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    const { rerender } = render(
+      <KitWorkspace
+        state={{ mode: "intro", collapsed: false }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Kit workspace/ }),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <KitWorkspace
+        state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
+        kit={fixtureKit()}
+        onCollapse={() => undefined}
+      />,
+    );
+    expect(screen.getByRole("dialog", { name: "Kit workspace" })).toBeVisible();
+
+    rerender(
+      <KitWorkspace
+        state={{ mode: "inspect", collapsed: false, kitId: "missing" }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+    expect(screen.getByText("Unknown Kit")).toBeVisible();
+  });
+
+  test("retains the desktop introductory workspace", () => {
+    mockMatchMedia({});
+    render(
+      <KitWorkspace
+        state={{ mode: "intro", collapsed: false }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("complementary", { name: "Kit workspace" }),
+    ).toBeVisible();
+  });
+
+  test("uses a horizontal touch draft pill only for collapsed builds", async () => {
+    mockMatchMedia({ touchLayout: true });
+    const user = userEvent.setup();
+    const onCollapse = vi.fn();
+    const { rerender } = render(
+      <KitWorkspace
+        state={{
+          mode: "build",
+          collapsed: true,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "",
+            description: "",
+            projectIds: ["one", "two", "three"],
+          },
+        }}
+        kit={null}
+        onCollapse={onCollapse}
+      />,
+    );
+
+    const pill = screen.getByRole("button", {
+      name: "Open draft with 3 projects",
+    });
+    expect(pill).toHaveClass("kit-draft-pill");
+    await user.click(pill);
+    expect(onCollapse).toHaveBeenCalledOnce();
+
+    rerender(
+      <KitWorkspace
+        state={{ mode: "inspect", collapsed: true, kitId: "story-kit-41" }}
+        kit={fixtureKit()}
+        onCollapse={onCollapse}
+      />,
+    );
+    expect(
+      screen.queryByRole("button", { name: /Open draft/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Expand Kit workspace" }),
+    ).not.toBeInTheDocument();
+  });
+
   test("shows intro, collapse, and unknown Kit states", async () => {
     const user = userEvent.setup();
     const onCollapse = vi.fn();

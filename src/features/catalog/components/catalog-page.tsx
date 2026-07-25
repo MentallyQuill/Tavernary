@@ -280,6 +280,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               )
             }
             onOpenFilters={() => setFiltersOpen(true)}
+            onCreateKit={workspace.startCreate}
             filterButtonRef={filterButtonRef}
           />
           <ActiveQuery

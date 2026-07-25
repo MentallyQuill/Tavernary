@@ -539,6 +539,16 @@
   margin-bottom: 14px;
 }
 
+.catalog-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-create-kit {
+  display: none;
+}
+
 .catalog-primary-controls {
   display: flex;
   min-width: 0;
@@ -1315,6 +1325,25 @@
 
 .kit-workspace.collapsed button {
   writing-mode: vertical-rl;
+}
+
+.kit-draft-pill-container {
+  position: fixed;
+  z-index: 80;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.kit-draft-pill {
+  min-height: 44px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  padding: 0 18px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-raised);
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
 }
 
 .kit-workspace-header,

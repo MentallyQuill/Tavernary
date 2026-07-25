@@ -195,8 +195,8 @@ Commit message: `fix(kits): make mobile filters accessible`
 - Modify: `src/features/catalog/components/catalog-page.tsx`
 - Modify: `src/features/kits/components/kit-workspace.tsx`
 - Modify: `src/features/kits/use-kit-workspace.ts`
-- Modify: `src/app/catalog.css`
-- Modify: `src/app/responsive.css`
+- Modify: `src/styles/catalog.css`
+- Modify: `src/styles/responsive.css`
 - Test: `tests/unit/kit-workspace.test.tsx`
 - Test: `tests/e2e/kits-builder-mobile.spec.ts`
 - Test: `tests/kits-e2e/kits.spec.ts`
@@ -317,8 +317,8 @@ Commit message: `feat(kits): add browse-first mobile entry`
 - Modify: `src/features/kits/project-stack-order.ts`
 - Modify: `src/features/kits/components/kit-builder.tsx`
 - Modify: `src/features/kits/components/kit-builder-row.tsx`
-- Modify: `src/app/catalog.css`
-- Modify: `src/app/responsive.css`
+- Modify: `src/styles/catalog.css`
+- Modify: `src/styles/responsive.css`
 - Test: `tests/unit/project-stack-order.test.ts`
 - Test: `tests/unit/kit-builder.test.tsx`
 
@@ -448,8 +448,8 @@ Commit message: `feat(kits): add tap-first mobile editing`
 - Modify: `src/features/kits/components/kit-project-stack.tsx`
 - Modify: `src/features/kits/components/kit-card.tsx`
 - Modify: `src/features/catalog/components/project-card.tsx`
-- Modify: `src/app/catalog.css`
-- Modify: `src/app/responsive.css`
+- Modify: `src/styles/catalog.css`
+- Modify: `src/styles/responsive.css`
 - Test: `tests/e2e/kits-builder-mobile.spec.ts`
 - Test: `tests/kits-e2e/kits.spec.ts`
 

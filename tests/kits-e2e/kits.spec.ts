@@ -89,7 +89,6 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page).toHaveURL(/mode=kits/);
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
 
   const filterButton = page.getByRole("button", { name: "Open filters" });
   await filterButton.click();
@@ -243,7 +242,9 @@ test("mobile workspace traps focus, returns it, and exposes explicit order contr
   await page.goto("/");
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await expect(page.getByRole("dialog", { name: "Kit workspace" })).toHaveCount(
+    0,
+  );
   const opener = page.getByRole("button", { name: "Open Alpha Kit" });
   await opener.click();
   await expect(
