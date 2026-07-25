@@ -18,8 +18,8 @@ import { recordIntervalActivity, weekStartUtc } from "./activity-evidence.mjs";
 import { buildCatalog } from "./build.mjs";
 import { buildRefreshManifest } from "./github-refresh-manifest.mjs";
 import {
+  inspectApiActivity,
   inspectDelta as inspectDeltaDefault,
-  inspectGitBaseline,
   mapConcurrent,
 } from "./github-inspector.mjs";
 import { observeRepositories } from "./github-observer.mjs";
@@ -102,7 +102,7 @@ export function selectRefreshRecords(records, snapshots, options) {
     return automatic
       .filter(
         ({ id }) =>
-          snapshotsById.get(id)?.activity?.evidence_status === "provisional",
+          snapshotsById.get(id)?.activity?.evidence_status !== "complete",
       )
       .slice(0, batchSize);
   }
@@ -170,7 +170,7 @@ function snapshotFromObservation(record, observation, previous, now) {
     ...(previous?.activity ?? provisionalActivity()),
     latest_release_at: observation.latestReleaseAt,
   };
-  return {
+  const snapshot = {
     schema_version: 2,
     project_id: record.id,
     repository: repositoryFacts(observation.repository),
@@ -181,6 +181,10 @@ function snapshotFromObservation(record, observation, previous, now) {
     refreshed_at: now,
     stale_since: null,
   };
+  if (previous && Object.hasOwn(previous, "activity_scan")) {
+    snapshot.activity_scan = previous.activity_scan;
+  }
+  return snapshot;
 }
 
 function withoutRefreshTimestamp(snapshot) {
@@ -448,7 +452,8 @@ export async function runRefresh(options = {}) {
         fetchCompare: (compareInput) => defaultCompare(compareInput, token),
         logger,
       }));
-  const inspectGit = options.inspectGit ?? inspectGitBaseline;
+  const inspectGit =
+    options.inspectGit ?? ((input) => inspectApiActivity(input, { token }));
   const snapshotsById = new Map(
     snapshots.map((snapshot) => [
       snapshot.project_id,
@@ -520,11 +525,18 @@ export async function runRefresh(options = {}) {
       previous,
       now,
     );
+    const lacksEvidenceWatermark =
+      previous !== null &&
+      previous.activity.evidence_status !== "complete" &&
+      previous.activity.evidence_head_sha == null;
     const requiresDirectGit =
-      mode === "forensic" ||
-      (previous === null && mode !== "incremental") ||
-      ((mode === "baseline" || mode === "project") &&
-        previous.activity.evidence_status !== "complete");
+      previous?.activity_scan !== null && previous?.activity_scan !== undefined
+        ? true
+        : lacksEvidenceWatermark ||
+          mode === "forensic" ||
+          (previous === null && mode !== "incremental") ||
+          ((mode === "baseline" || mode === "project") &&
+            previous.activity.evidence_status !== "complete");
     if (requiresDirectGit) {
       gitJobs.push({
         record,
@@ -532,7 +544,7 @@ export async function runRefresh(options = {}) {
         previous,
         candidate,
         started,
-        result: "baseline",
+        result: mode === "incremental" ? "fallback" : "baseline",
       });
       continue;
     }
@@ -543,7 +555,15 @@ export async function runRefresh(options = {}) {
       continue;
     }
 
-    if (previous.repository.head_sha === observation.repository.headSha) {
+    const evidenceHeadSha =
+      previous.activity.evidence_head_sha ??
+      (previous.activity.evidence_status === "complete"
+        ? previous.repository.head_sha
+        : null);
+    if (evidenceHeadSha === null) {
+      throw new Error(`${record.id}: activity evidence watermark is required`);
+    }
+    if (evidenceHeadSha === observation.repository.headSha) {
       const final = preserveTimestampIfOnlyRefreshChanged(candidate, previous);
       replaceSnapshot(snapshotsById, final);
       outcomes.push(
@@ -555,13 +575,15 @@ export async function runRefresh(options = {}) {
     try {
       const delta = await inspectDelta({
         repository: record.source.repository,
-        baseSha: previous.repository.head_sha,
+        baseSha: evidenceHeadSha,
         headSha: observation.repository.headSha,
         hoursSinceLastSuccess: hoursBetween(
           lastSuccessfulObservationAt(previous, previousManifest),
           now,
         ),
-        crossesAmbiguousWeeks: crossesAmbiguousWeeks(previous, observation),
+        crossesAmbiguousWeeks:
+          evidenceHeadSha !== previous.repository.head_sha ||
+          crossesAmbiguousWeeks(previous, observation),
       });
       restRequests += delta.requestCount;
       if (delta.kind === "fallback" || delta.licenseChanged) {
@@ -584,6 +606,7 @@ export async function runRefresh(options = {}) {
           observedAt: now,
         });
       }
+      candidate.activity.evidence_head_sha = observation.repository.headSha;
       const final = preserveTimestampIfOnlyRefreshChanged(candidate, previous);
       replaceSnapshot(snapshotsById, final);
       outcomes.push(
@@ -621,23 +644,48 @@ export async function runRefresh(options = {}) {
 
   const gitResults = await mapConcurrent(gitJobs, 3, async (job) => {
     logger.log(`${job.record.id}: ${job.result} Git inspection started`);
+    const evidenceHeadSha =
+      job.previous?.activity?.evidence_head_sha ??
+      (job.previous?.activity?.evidence_status === "complete"
+        ? job.previous.repository.head_sha
+        : null);
     return inspectGit({
       repository: job.record.source.repository,
       defaultBranch: job.observation.repository.defaultBranch,
-      expectedHeadSha: job.observation.repository.headSha,
+      expectedHeadSha:
+        job.previous?.activity_scan?.head_sha ??
+        job.observation.repository.headSha,
       headCommittedAt: job.observation.repository.headCommittedAt,
       now,
-      activity: job.candidate.activity,
+      activity: {
+        ...job.candidate.activity,
+        evidence_head_sha: evidenceHeadSha,
+      },
+      scan: job.previous?.activity_scan ?? null,
     });
   });
+  const systemicGitFailure = gitResults.find(
+    (result) =>
+      result.status === "rejected" &&
+      (result.reason?.systemic ||
+        result.reason?.rateLimited ||
+        result.reason?.status === 401),
+  );
+  if (systemicGitFailure) throw systemicGitFailure.reason;
   gitResults.forEach((result, index) => {
     const job = gitJobs[index];
     if (result.status === "fulfilled") {
+      restRequests += result.value.requestCount ?? 0;
       const candidate = {
         ...job.candidate,
         activity: result.value.activity,
-        license: normalizedLicense(result.value.license),
+        license: result.value.license
+          ? normalizedLicense(result.value.license)
+          : job.candidate.license,
       };
+      if (Object.hasOwn(result.value, "scan")) {
+        candidate.activity_scan = result.value.scan;
+      }
       const final = preserveTimestampIfOnlyRefreshChanged(
         candidate,
         job.previous,

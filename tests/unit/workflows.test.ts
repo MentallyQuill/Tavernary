@@ -213,14 +213,15 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   const refreshSteps = refresh.jobs.refresh.steps;
   expect(refreshSteps.map(({ name }) => name)).toEqual(
     expect.arrayContaining([
-      "Drain baseline queue or refresh selected sources",
+      "Advance baseline queue or refresh selected sources",
     ]),
   );
-  const drain = refreshSteps.find(
-    ({ name }) => name === "Drain baseline queue or refresh selected sources",
+  const advance = refreshSteps.find(
+    ({ name }) => name === "Advance baseline queue or refresh selected sources",
   )?.run;
-  expect(drain).toContain("baseline-queue.mjs evaluate");
-  expect(drain).toContain("while (( remaining > 0 )); do");
+  expect(advance).toContain("refresh_batch");
+  expect(advance).not.toContain("baseline-queue.mjs evaluate");
+  expect(advance).not.toContain("while (( remaining > 0 )); do");
   expect(source).not.toContain("workflow run refresh-catalog.yml");
   expect(source).toContain("data/snapshots/github/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");

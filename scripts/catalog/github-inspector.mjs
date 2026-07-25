@@ -6,7 +6,12 @@ import { promisify } from "node:util";
 
 import { classifyCommit } from "../../src/lib/github/activity.ts";
 import { classifyRootLicense } from "../../src/lib/github/license.ts";
-import { completeBaseline } from "./activity-evidence.mjs";
+import {
+  completeBaseline,
+  normalizeSourceWeeks,
+  weekStartUtc,
+  weekWindow,
+} from "./activity-evidence.mjs";
 
 const execFile = promisify(execFileCallback);
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -157,6 +162,391 @@ export async function inspectDelta(input, options) {
 
 function stdout(result) {
   return typeof result === "string" ? result : (result?.stdout ?? "");
+}
+
+function activityWithExactSourceCommit(activity, committedAt, now) {
+  const sourceWeeks = normalizeSourceWeeks(
+    [
+      ...activity.source_weeks,
+      {
+        week_start: weekStartUtc(committedAt),
+        latest_at: committedAt,
+        precision: "exact",
+      },
+    ],
+    now,
+  );
+  const active = new Set(sourceWeeks.map(({ week_start }) => week_start));
+  const latest =
+    activity.latest_source_activity_at === null ||
+    new Date(committedAt).getTime() >
+      new Date(activity.latest_source_activity_at).getTime()
+      ? committedAt
+      : activity.latest_source_activity_at;
+  return {
+    ...activity,
+    latest_source_activity_at: latest,
+    source_weeks: sourceWeeks,
+    provisional_weeks: weekWindow(now).map((week) => active.has(week)),
+    evidence_status: "provisional",
+    baseline_completed_at: null,
+  };
+}
+
+function accumulateCommitClassification(files, previous = null) {
+  let sourcePathSeen = previous?.source_path_seen ?? false;
+  let substantivePatchSeen = previous?.substantive_patch_seen ?? false;
+  let patchIncomplete = previous?.patch_incomplete ?? false;
+
+  for (const file of files) {
+    sourcePathSeen ||= classifyCommit([file.filename]) === "meaningful";
+    if (typeof file.patch !== "string") {
+      patchIncomplete = true;
+    } else {
+      substantivePatchSeen ||=
+        classifyCommit(["src/tavernary-activity-scan.ts"], {
+          patch: file.patch,
+        }) === "meaningful";
+    }
+  }
+
+  return {
+    source_path_seen: sourcePathSeen,
+    substantive_patch_seen: substantivePatchSeen,
+    patch_incomplete: patchIncomplete,
+    meaningful: sourcePathSeen && (patchIncomplete || substantivePatchSeen),
+  };
+}
+
+function githubActivityClient(options = {}) {
+  const token = options.token;
+  if (typeof token !== "string" || token.length === 0) {
+    throw new Error("GitHub REST authentication token is required");
+  }
+  const fetchImpl = options.fetchImpl ?? fetch;
+  let requestCount = 0;
+
+  async function request(url, accept = "application/vnd.github+json") {
+    requestCount += 1;
+    const response = await fetchImpl(url, {
+      headers: {
+        Accept: accept,
+        Authorization: `Bearer ${token}`,
+        "User-Agent": "Tavernary-catalog-refresh",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
+    if (!response.ok) {
+      let responseMessage = "";
+      try {
+        const payload = await response.clone().json();
+        responseMessage =
+          typeof payload?.message === "string" ? payload.message : "";
+      } catch {
+        responseMessage = "";
+      }
+      const secondaryRateLimit =
+        response.status === 403 &&
+        /secondary rate limit|abuse detection/i.test(responseMessage);
+      const error = new Error(
+        `GitHub REST request returned ${response.status}`,
+      );
+      error.status = response.status;
+      error.rateLimited =
+        response.status === 429 ||
+        secondaryRateLimit ||
+        (response.status === 403 &&
+          (response.headers.get("x-ratelimit-remaining") === "0" ||
+            response.headers.get("retry-after") !== null));
+      error.systemic = response.status === 401 || error.rateLimited;
+      throw error;
+    }
+    return response;
+  }
+
+  return {
+    requestCount: () => requestCount,
+    async fetchCommitsPage({ repository, headSha, cutoffAt, page }) {
+      const query = new URLSearchParams({
+        sha: headSha,
+        since: cutoffAt,
+        per_page: "100",
+        page: String(page),
+      });
+      const response = await request(
+        `https://api.github.com/repos/${repository}/commits?${query}`,
+      );
+      const payload = await response.json();
+      if (!Array.isArray(payload)) {
+        throw new Error("GitHub REST returned malformed commit history");
+      }
+      return payload.map((entry) => {
+        const committedAt =
+          entry?.commit?.committer?.date ?? entry?.commit?.author?.date;
+        if (
+          !/^[0-9a-f]{40}$/i.test(entry?.sha) ||
+          !Number.isFinite(new Date(committedAt).getTime()) ||
+          !Array.isArray(entry?.parents)
+        ) {
+          throw new Error("GitHub REST returned malformed commit metadata");
+        }
+        return {
+          sha: entry.sha.toLowerCase(),
+          committedAt: new Date(committedAt).toISOString(),
+          parentCount: entry.parents.length,
+        };
+      });
+    },
+    async fetchCommitFiles({ repository, sha, startPage = 1, maxPages = 3 }) {
+      const files = [];
+      for (let offset = 0; offset < maxPages; offset += 1) {
+        const page = startPage + offset;
+        const response = await request(
+          `https://api.github.com/repos/${repository}/commits/${sha}?per_page=100&page=${page}`,
+        );
+        const payload = await response.json();
+        if (!Array.isArray(payload?.files)) {
+          throw new Error("GitHub REST returned malformed commit files");
+        }
+        for (const file of payload.files) {
+          if (
+            typeof file?.filename !== "string" ||
+            !(
+              file.patch === undefined ||
+              file.patch === null ||
+              typeof file.patch === "string"
+            )
+          ) {
+            throw new Error("GitHub REST returned malformed commit file");
+          }
+          files.push({ filename: file.filename, patch: file.patch });
+        }
+        if (payload.files.length < 100) {
+          return { files, nextPage: null };
+        }
+      }
+      return { files, nextPage: startPage + maxPages };
+    },
+    async fetchRootLicenses({ repository, headSha }) {
+      const response = await request(
+        `https://api.github.com/repos/${repository}/contents?ref=${headSha}`,
+      );
+      const payload = await response.json();
+      if (!Array.isArray(payload)) {
+        throw new Error("GitHub REST returned malformed root contents");
+      }
+      const licenses = payload.filter(
+        (entry) =>
+          entry?.type === "file" &&
+          typeof entry.path === "string" &&
+          isRootLicense(entry.path),
+      );
+      const entry = licenses[0];
+      if (!entry) return [];
+      if (typeof entry.url !== "string") {
+        throw new Error("GitHub REST returned malformed license content");
+      }
+      const content = await request(
+        entry.url,
+        "application/vnd.github.raw+json",
+      );
+      return [{ path: entry.path, content: await content.text() }];
+    },
+  };
+}
+
+export async function inspectApiActivity(input, options = {}) {
+  const maxCommitInspections = options.maxCommitInspections ?? 40;
+  if (!Number.isInteger(maxCommitInspections) || maxCommitInspections < 1) {
+    throw new Error("API activity commit budget must be a positive integer");
+  }
+  const maxHistoryPages = options.maxHistoryPages ?? 25;
+  if (!Number.isInteger(maxHistoryPages) || maxHistoryPages < 1) {
+    throw new Error(
+      "API activity history-page budget must be a positive integer",
+    );
+  }
+  const defaultClient =
+    typeof options.fetchCommitsPage === "function" &&
+    typeof options.fetchCommitFiles === "function"
+      ? null
+      : githubActivityClient(options);
+  const fetchCommitsPage =
+    options.fetchCommitsPage ?? defaultClient.fetchCommitsPage;
+  const fetchCommitFiles =
+    options.fetchCommitFiles ?? defaultClient.fetchCommitFiles;
+  const fetchRootLicenses =
+    options.fetchRootLicenses ?? defaultClient?.fetchRootLicenses;
+
+  const cutoffAt =
+    input.scan?.cutoff_at ??
+    new Date(
+      new Date(input.now).getTime() - GIT_WINDOW_DAYS * DAY_MS,
+    ).toISOString();
+  const scan = input.scan ?? {
+    head_sha: input.expectedHeadSha,
+    cutoff_at: cutoffAt,
+    next_page: 1,
+    next_index: 0,
+    resolved_weeks: [],
+    pending_commit: null,
+  };
+  const knownActiveWeeks = new Set(
+    normalizeSourceWeeks(input.activity.source_weeks, input.now).map(
+      ({ week_start }) => week_start,
+    ),
+  );
+  let activity = {
+    ...structuredClone(input.activity),
+    provisional_weeks: weekWindow(input.now).map((week) =>
+      knownActiveWeeks.has(week),
+    ),
+    evidence_status: "provisional",
+    baseline_completed_at: null,
+  };
+  const resolvedWeeks = new Set(scan.resolved_weeks);
+  async function completedResult() {
+    const licenseFiles =
+      typeof fetchRootLicenses === "function"
+        ? await fetchRootLicenses({
+            repository: input.repository,
+            headSha: scan.head_sha,
+          })
+        : [];
+    return {
+      complete: true,
+      activity: {
+        ...activity,
+        evidence_head_sha: scan.head_sha,
+        provisional_weeks: null,
+        evidence_status: "complete",
+        baseline_completed_at: new Date(input.now).toISOString(),
+      },
+      license: classifyRootLicense(licenseFiles),
+      requestCount: defaultClient?.requestCount() ?? 0,
+      scan: null,
+    };
+  }
+  const activityWeeks = weekWindow(input.now);
+  if (activityWeeks.every((week) => resolvedWeeks.has(week))) {
+    return completedResult();
+  }
+  let inspected = 0;
+  let page = scan.next_page;
+  let nextIndex = scan.next_index;
+
+  for (
+    let pagesFetched = 0;
+    pagesFetched < maxHistoryPages;
+    pagesFetched += 1
+  ) {
+    const commits = await fetchCommitsPage({
+      repository: input.repository,
+      headSha: scan.head_sha,
+      cutoffAt: scan.cutoff_at,
+      page,
+    });
+
+    for (let index = nextIndex; index < commits.length; index += 1) {
+      const entry = commits[index];
+      const week = weekStartUtc(entry.committedAt);
+      if (!resolvedWeeks.has(week)) {
+        if (entry.parentCount > 1) continue;
+        if (inspected >= maxCommitInspections) {
+          return {
+            complete: false,
+            activity,
+            license: null,
+            requestCount: defaultClient?.requestCount() ?? 0,
+            scan: {
+              ...scan,
+              next_page: page,
+              next_index: index,
+              resolved_weeks: [...resolvedWeeks].sort(),
+              pending_commit: null,
+            },
+          };
+        }
+        inspected += 1;
+        const pendingCommit =
+          scan.pending_commit?.sha === entry.sha ? scan.pending_commit : null;
+        const fetchedFiles = await fetchCommitFiles({
+          repository: input.repository,
+          sha: entry.sha,
+          startPage: pendingCommit?.next_file_page ?? 1,
+          maxPages: 3,
+        });
+        const files = Array.isArray(fetchedFiles)
+          ? fetchedFiles
+          : fetchedFiles.files;
+        const nextFilePage = Array.isArray(fetchedFiles)
+          ? null
+          : fetchedFiles.nextPage;
+        const classification = accumulateCommitClassification(
+          files,
+          pendingCommit,
+        );
+        if (classification.meaningful) {
+          activity = activityWithExactSourceCommit(
+            activity,
+            entry.committedAt,
+            input.now,
+          );
+          resolvedWeeks.add(week);
+          if (activityWeeks.every((entry) => resolvedWeeks.has(entry))) {
+            return completedResult();
+          }
+        } else if (nextFilePage !== null) {
+          return {
+            complete: false,
+            activity,
+            license: null,
+            requestCount: defaultClient?.requestCount() ?? 0,
+            scan: {
+              ...scan,
+              next_page: page,
+              next_index: index,
+              resolved_weeks: [...resolvedWeeks].sort(),
+              pending_commit: {
+                sha: entry.sha,
+                committed_at: entry.committedAt,
+                parent_count: entry.parentCount,
+                next_file_page: nextFilePage,
+                source_path_seen: classification.source_path_seen,
+                substantive_patch_seen: classification.substantive_patch_seen,
+                patch_incomplete: classification.patch_incomplete,
+              },
+            },
+          };
+        }
+      }
+    }
+
+    if (commits.length < 100) {
+      page = null;
+      break;
+    }
+    page += 1;
+    nextIndex = 0;
+  }
+
+  if (page !== null) {
+    return {
+      complete: false,
+      activity,
+      license: null,
+      requestCount: defaultClient?.requestCount() ?? 0,
+      scan: {
+        ...scan,
+        next_page: page,
+        next_index: 0,
+        resolved_weeks: [...resolvedWeeks].sort(),
+        pending_commit: null,
+      },
+    };
+  }
+
+  return completedResult();
 }
 
 async function runGitDefault(cwd, args, options) {

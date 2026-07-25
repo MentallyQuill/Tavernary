@@ -351,6 +351,41 @@ describe("catalog validation", () => {
     expect(degradedResult.errors).toEqual([]);
   });
 
+  test("accepts a resumable activity scan with a separate evidence head", async () => {
+    const pending = structuredClone(validSnapshotV2);
+    pending.activity.evidence_status = "provisional";
+    pending.activity.evidence_head_sha = "a".repeat(40);
+    pending.activity.provisional_weeks = Array.from(
+      { length: 12 },
+      (_, index) => index === 11,
+    );
+    pending.activity.baseline_completed_at = null;
+    pending.repository.head_sha = "f".repeat(40);
+    pending.activity_scan = {
+      head_sha: "f".repeat(40),
+      cutoff_at: "2026-04-15T00:00:00.000Z",
+      next_page: 2,
+      next_index: 14,
+      resolved_weeks: ["2026-07-20"],
+      pending_commit: {
+        sha: "e".repeat(40),
+        committed_at: "2026-07-16T03:00:00.000Z",
+        parent_count: 1,
+        next_file_page: 4,
+        source_path_seen: true,
+        substantive_patch_seen: false,
+        patch_incomplete: false,
+      },
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [pending],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("rejects illegal evidence-state field combinations", async () => {
     const nullCompleteHead = structuredClone(validSnapshotV2);
     nullCompleteHead.repository.head_committed_at = null;
@@ -362,6 +397,14 @@ describe("catalog validation", () => {
     completeWithProvisional.activity.baseline_completed_at = null;
     const provisionalWithBaseline = structuredClone(validSnapshotV2);
     provisionalWithBaseline.activity.evidence_status = "provisional";
+    const completeWithScan = structuredClone(validSnapshotV2);
+    completeWithScan.activity_scan = {
+      head_sha: "f".repeat(40),
+      cutoff_at: "2026-04-15T00:00:00.000Z",
+      next_page: 1,
+      next_index: 0,
+      resolved_weeks: [],
+    };
 
     const result = await validateCatalog({
       records: [validRecord],
@@ -369,6 +412,7 @@ describe("catalog validation", () => {
         nullCompleteHead,
         completeWithProvisional,
         provisionalWithBaseline,
+        completeWithScan,
       ],
     });
 
@@ -383,6 +427,9 @@ describe("catalog validation", () => {
     );
     expect(result.errors).toContain(
       "valid-preset: provisional evidence cannot have baseline_completed_at",
+    );
+    expect(result.errors).toContain(
+      "valid-preset: activity scan requires provisional evidence",
     );
   });
 

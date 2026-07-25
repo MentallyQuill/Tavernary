@@ -57,7 +57,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Drain baseline queue or refresh selected sources
+      - name: Advance baseline queue or refresh selected sources
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -78,15 +78,7 @@ jobs:
             exit 0
           fi
 
-          remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
-          while (( remaining > 0 )); do
-            before="$remaining"
-            refresh_batch
-            node scripts/catalog/baseline-queue.mjs evaluate \
-              --before "$before" \
-              --manifest data/snapshots/github-refresh.json
-            remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
-          done
+          refresh_batch
       - name: Refresh Kit community support
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

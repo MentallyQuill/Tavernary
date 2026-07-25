@@ -123,6 +123,10 @@ function validateSnapshotEvidence(snapshot) {
     );
   }
 
+  if (snapshot.activity_scan && activity.evidence_status !== "provisional") {
+    errors.push(`${id}: activity scan requires provisional evidence`);
+  }
+
   if (
     activity.provisional_weeks !== null &&
     !["provisional", "degraded"].includes(activity.evidence_status)

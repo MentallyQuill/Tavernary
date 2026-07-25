@@ -1,6 +1,7 @@
 import { expect, test, vi } from "vitest";
 
 import {
+  inspectApiActivity,
   inspectDelta,
   inspectGitBaseline,
   mapConcurrent,
@@ -48,6 +49,450 @@ function deltaInput(overrides: Record<string, unknown> = {}) {
     ...overrides,
   };
 }
+
+test("checkpoints a large API activity scan after its commit budget", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: null,
+    },
+    {
+      maxCommitInspections: 1,
+      fetchCommitsPage: async () => [
+        {
+          sha: "f".repeat(40),
+          committedAt: "2026-07-23T04:00:00.000Z",
+          parentCount: 1,
+        },
+        {
+          sha: "e".repeat(40),
+          committedAt: "2026-07-16T03:00:00.000Z",
+          parentCount: 1,
+        },
+      ],
+      fetchCommitFiles: async () => [{ filename: "src/index.ts" }],
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(result.complete).toBe(false);
+  expect(result.scan).toMatchObject({
+    head_sha: "f".repeat(40),
+    next_page: 1,
+    next_index: 1,
+  });
+  expect(result.activity).toMatchObject({
+    latest_source_activity_at: "2026-07-23T04:00:00.000Z",
+    evidence_status: "provisional",
+  });
+  expect(result.activity.source_weeks).toContainEqual({
+    week_start: "2026-07-20",
+    latest_at: "2026-07-23T04:00:00.000Z",
+    precision: "exact",
+  });
+  expect(result.activity.provisional_weeks?.at(-1)).toBe(true);
+});
+
+test("downgrades complete evidence to provisional while a scan is unfinished", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: {
+        ...provisionalActivity(),
+        latest_source_activity_at: "2026-07-23T04:00:00.000Z",
+        source_weeks: [
+          {
+            week_start: "2026-07-20",
+            latest_at: "2026-07-23T04:00:00.000Z",
+            precision: "exact",
+          },
+        ],
+        provisional_weeks: null,
+        evidence_status: "complete",
+        baseline_completed_at: "2026-07-23T08:00:00.000Z",
+      },
+      scan: null,
+    },
+    {
+      maxCommitInspections: 1,
+      fetchCommitsPage: async () => [
+        {
+          sha: "f".repeat(40),
+          committedAt: "2026-07-23T04:00:00.000Z",
+          parentCount: 1,
+        },
+        {
+          sha: "e".repeat(40),
+          committedAt: "2026-07-16T03:00:00.000Z",
+          parentCount: 1,
+        },
+      ],
+      fetchCommitFiles: async () => [{ filename: "README.md" }],
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(result.complete).toBe(false);
+  expect(result.activity).toMatchObject({
+    evidence_status: "provisional",
+    baseline_completed_at: null,
+  });
+  expect(result.activity.provisional_weeks?.at(-1)).toBe(true);
+});
+
+test("skips resolved weeks across full commit pages in one bounded scan", async () => {
+  const pages: number[] = [];
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: {
+        head_sha: "f".repeat(40),
+        cutoff_at: "2026-04-15T00:00:00.000Z",
+        next_page: 1,
+        next_index: 0,
+        resolved_weeks: ["2026-07-20"],
+      },
+    },
+    {
+      fetchCommitsPage: async ({ page }) => {
+        pages.push(page);
+        return page === 1
+          ? Array.from({ length: 100 }, (_, index) => ({
+              sha: index.toString(16).padStart(40, "0"),
+              committedAt: "2026-07-23T04:00:00.000Z",
+              parentCount: 1,
+            }))
+          : [];
+      },
+      fetchCommitFiles: async () => {
+        throw new Error("resolved weeks must not fetch commit files");
+      },
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(pages).toEqual([1, 2]);
+  expect(result.complete).toBe(true);
+});
+
+test("completes immediately when every activity week is already resolved", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: {
+        head_sha: "f".repeat(40),
+        cutoff_at: "2026-04-15T00:00:00.000Z",
+        next_page: 26,
+        next_index: 0,
+        resolved_weeks: [
+          "2026-05-04",
+          "2026-05-11",
+          "2026-05-18",
+          "2026-05-25",
+          "2026-06-01",
+          "2026-06-08",
+          "2026-06-15",
+          "2026-06-22",
+          "2026-06-29",
+          "2026-07-06",
+          "2026-07-13",
+          "2026-07-20",
+        ],
+      },
+    },
+    {
+      fetchCommitsPage: async () => {
+        throw new Error("fully resolved activity must not fetch more history");
+      },
+      fetchCommitFiles: async () => [],
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(result.complete).toBe(true);
+  expect(result.activity.evidence_head_sha).toBe("f".repeat(40));
+});
+
+test("checkpoints within a commit when changed-file pagination exceeds its budget", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: null,
+    },
+    {
+      fetchCommitsPage: async () => [
+        {
+          sha: "f".repeat(40),
+          committedAt: "2026-07-23T04:00:00.000Z",
+          parentCount: 1,
+        },
+      ],
+      fetchCommitFiles: async ({ startPage }) => {
+        expect(startPage).toBe(1);
+        return {
+          files: [{ filename: "src/index.ts", patch: "+   " }],
+          nextPage: 4,
+        };
+      },
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(result.complete).toBe(false);
+  expect(result.scan).toMatchObject({
+    next_page: 1,
+    next_index: 0,
+    pending_commit: {
+      sha: "f".repeat(40),
+      committed_at: "2026-07-23T04:00:00.000Z",
+      parent_count: 1,
+      next_file_page: 4,
+      source_path_seen: true,
+      substantive_patch_seen: false,
+      patch_incomplete: false,
+    },
+  });
+});
+
+test("combines source-path and substantive-patch evidence across file pages", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: {
+        head_sha: "f".repeat(40),
+        cutoff_at: "2026-04-15T00:00:00.000Z",
+        next_page: 1,
+        next_index: 0,
+        resolved_weeks: [],
+        pending_commit: {
+          sha: "f".repeat(40),
+          committed_at: "2026-07-23T04:00:00.000Z",
+          parent_count: 1,
+          next_file_page: 4,
+          source_path_seen: true,
+          substantive_patch_seen: false,
+          patch_incomplete: false,
+        },
+      },
+    },
+    {
+      fetchCommitsPage: async () => [
+        {
+          sha: "f".repeat(40),
+          committedAt: "2026-07-23T04:00:00.000Z",
+          parentCount: 1,
+        },
+      ],
+      fetchCommitFiles: async ({ startPage }) => {
+        expect(startPage).toBe(4);
+        return {
+          files: [{ filename: "README.md", patch: "+Substantive docs" }],
+          nextPage: null,
+        };
+      },
+      fetchRootLicenses: async () => [],
+    },
+  );
+
+  expect(result.complete).toBe(true);
+  expect(result.activity.source_weeks).toContainEqual({
+    week_start: "2026-07-20",
+    latest_at: "2026-07-23T04:00:00.000Z",
+    precision: "exact",
+  });
+});
+
+test("resumes an API scan and completes license evidence at the frozen head", async () => {
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "a".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: {
+        ...provisionalActivity(),
+        latest_source_activity_at: "2026-07-23T04:00:00.000Z",
+        source_weeks: [
+          {
+            week_start: "2026-07-20",
+            latest_at: "2026-07-23T04:00:00.000Z",
+            precision: "exact",
+          },
+        ],
+      },
+      scan: {
+        head_sha: "f".repeat(40),
+        cutoff_at: "2026-04-15T00:00:00.000Z",
+        next_page: 1,
+        next_index: 1,
+        resolved_weeks: ["2026-07-20"],
+      },
+    },
+    {
+      fetchCommitsPage: async ({ headSha }) => {
+        expect(headSha).toBe("f".repeat(40));
+        return [
+          {
+            sha: "f".repeat(40),
+            committedAt: "2026-07-23T04:00:00.000Z",
+            parentCount: 1,
+          },
+          {
+            sha: "e".repeat(40),
+            committedAt: "2026-07-16T03:00:00.000Z",
+            parentCount: 1,
+          },
+        ];
+      },
+      fetchCommitFiles: async () => [{ filename: "README.md" }],
+      fetchRootLicenses: async ({ headSha }) => {
+        expect(headSha).toBe("f".repeat(40));
+        return [
+          {
+            path: "LICENSE",
+            content:
+              "Permission is hereby granted, free of charge, to any person obtaining a copy",
+          },
+        ];
+      },
+    },
+  );
+
+  expect(result.complete).toBe(true);
+  expect(result.scan).toBeNull();
+  expect(result.activity).toMatchObject({
+    evidence_status: "complete",
+    evidence_head_sha: "f".repeat(40),
+    provisional_weeks: null,
+    baseline_completed_at: "2026-07-24T00:00:00.000Z",
+  });
+  expect(result.license).toMatchObject({
+    status: "osi-approved",
+    spdxId: "MIT",
+    sourcePath: "LICENSE",
+  });
+});
+
+test("uses the bounded GitHub REST client when scan fetchers are not injected", async () => {
+  const requested: string[] = [];
+  const fetchImpl = vi.fn(
+    async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      requested.push(url);
+      if (url.includes("/commits?")) {
+        return new Response(
+          JSON.stringify([
+            {
+              sha: "f".repeat(40),
+              commit: { committer: { date: "2026-07-23T04:00:00.000Z" } },
+              parents: [{ sha: "e".repeat(40) }],
+            },
+          ]),
+        );
+      }
+      if (url.endsWith(`/commits/${"f".repeat(40)}?per_page=100&page=1`)) {
+        return new Response(
+          JSON.stringify({
+            files: [
+              { filename: "src/index.ts", patch: "+export const x = 1;" },
+            ],
+          }),
+        );
+      }
+      if (url.includes("/contents?ref=")) {
+        return new Response(
+          JSON.stringify([
+            {
+              name: "LICENSE",
+              path: "LICENSE",
+              type: "file",
+              url: "https://api.github.com/license-content",
+            },
+            {
+              name: "COPYING",
+              path: "COPYING",
+              type: "file",
+              url: "https://api.github.com/unused-license-content",
+            },
+          ]),
+        );
+      }
+      if (url === "https://api.github.com/license-content") {
+        expect(init?.headers).toMatchObject({
+          Accept: "application/vnd.github.raw+json",
+        });
+        return new Response(
+          "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        );
+      }
+      return new Response("not found", { status: 404 });
+    },
+  );
+
+  const result = await inspectApiActivity(
+    {
+      repository: "example/project",
+      expectedHeadSha: "f".repeat(40),
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+      scan: null,
+    },
+    { token: "test-token", fetchImpl },
+  );
+
+  expect(result.complete).toBe(true);
+  expect(result.activity.latest_source_activity_at).toBe(
+    "2026-07-23T04:00:00.000Z",
+  );
+  expect(result.license?.spdxId).toBe("MIT");
+  expect(result.requestCount).toBe(4);
+  expect(requested).toHaveLength(4);
+});
+
+test("marks headerless GitHub secondary rate limits as systemic", async () => {
+  await expect(
+    inspectApiActivity(
+      {
+        repository: "example/project",
+        expectedHeadSha: "f".repeat(40),
+        now: "2026-07-24T00:00:00.000Z",
+        activity: provisionalActivity(),
+        scan: null,
+      },
+      {
+        token: "test-token",
+        fetchImpl: async () =>
+          new Response(
+            JSON.stringify({
+              message:
+                "You have exceeded a secondary rate limit. Please wait a few minutes before you try again.",
+            }),
+            { status: 403 },
+          ),
+      },
+    ),
+  ).rejects.toMatchObject({
+    status: 403,
+    rateLimited: true,
+    systemic: true,
+  });
+});
 
 test("accepts a fresh bounded source delta", async () => {
   const result = await inspectDelta(deltaInput(), {

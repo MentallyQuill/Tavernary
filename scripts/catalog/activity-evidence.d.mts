@@ -8,6 +8,7 @@ export interface SourceWeek {
 }
 
 export interface ActivityEvidence {
+  evidence_head_sha?: string | null;
   latest_source_activity_at: string | null;
   source_weeks: SourceWeek[];
   provisional_weeks: boolean[] | null;

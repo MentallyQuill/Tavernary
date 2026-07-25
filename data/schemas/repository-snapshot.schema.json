@@ -63,6 +63,74 @@
         "private"
       ]
     },
+    "activity_scan": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "head_sha",
+            "cutoff_at",
+            "next_page",
+            "next_index",
+            "resolved_weeks"
+          ],
+          "properties": {
+            "head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "cutoff_at": { "type": "string", "format": "date-time" },
+            "next_page": { "type": "integer", "minimum": 1 },
+            "next_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99
+            },
+            "pending_commit": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "sha",
+                    "committed_at",
+                    "parent_count",
+                    "next_file_page",
+                    "source_path_seen",
+                    "substantive_patch_seen",
+                    "patch_incomplete"
+                  ],
+                  "properties": {
+                    "sha": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{40}$"
+                    },
+                    "committed_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "parent_count": { "type": "integer", "minimum": 0 },
+                    "next_file_page": { "type": "integer", "minimum": 2 },
+                    "source_path_seen": { "type": "boolean" },
+                    "substantive_patch_seen": { "type": "boolean" },
+                    "patch_incomplete": { "type": "boolean" }
+                  }
+                },
+                { "type": "null" }
+              ]
+            },
+            "resolved_weeks": {
+              "type": "array",
+              "maxItems": 12,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              }
+            }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
     "activity": {
       "type": "object",
       "additionalProperties": false,
@@ -76,6 +144,12 @@
         "baseline_attempts"
       ],
       "properties": {
+        "evidence_head_sha": {
+          "anyOf": [
+            { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            { "type": "null" }
+          ]
+        },
         "latest_source_activity_at": {
           "anyOf": [
             { "type": "string", "format": "date-time" },

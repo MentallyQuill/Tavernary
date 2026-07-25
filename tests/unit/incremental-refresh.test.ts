@@ -130,7 +130,14 @@ function observer(observations: unknown[]) {
 test("selects baseline records from evidence status rather than index", () => {
   const records = Array.from({ length: 213 }, (_, index) => record(index));
   const snapshots = records.map((_, index) =>
-    snapshot(index, [2, 200, 212].includes(index) ? "provisional" : "complete"),
+    snapshot(
+      index,
+      index === 1
+        ? "degraded"
+        : [2, 200, 212].includes(index)
+          ? "provisional"
+          : "complete",
+    ),
   );
 
   expect(
@@ -138,7 +145,7 @@ test("selects baseline records from evidence status rather than index", () => {
       mode: "baseline",
       batchSize: 2,
     }).map(({ id }) => id),
-  ).toEqual([record(2).id, record(200).id]);
+  ).toEqual([record(1).id, record(2).id]);
 });
 
 test("requires exact project modes and bounds baseline batches", () => {
@@ -291,6 +298,224 @@ test("uses no more than three concurrent Git fallbacks", async () => {
   expect(result.manifest.counts.fallback).toBe(8);
 });
 
+test("persists a budgeted activity scan instead of consuming its evidence head", async () => {
+  const changedHead = "f".repeat(40);
+  const previous = snapshot(0);
+  const scan = {
+    head_sha: changedHead,
+    cutoff_at: "2026-04-15T08:00:00.000Z",
+    next_page: 2,
+    next_index: 14,
+    resolved_weeks: ["2026-07-20"],
+  };
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [previous],
+    observe: observer([observation(0, changedHead)]),
+    inspectDelta: vi.fn(async () => ({
+      kind: "fallback",
+      reason: "commit-limit",
+      requestCount: 1,
+    })),
+    inspectGit: vi.fn(async ({ activity }) => ({
+      complete: false,
+      activity: {
+        ...activity,
+        evidence_status: "provisional",
+        baseline_completed_at: null,
+        provisional_weeks: Array.from(
+          { length: 12 },
+          (_, index) => index === 11,
+        ),
+      },
+      license: null,
+      requestCount: 7,
+      scan,
+    })),
+    write: false,
+  });
+
+  expect(result.snapshots[0]).toMatchObject({
+    repository: { head_sha: changedHead },
+    activity: {
+      evidence_status: "provisional",
+      evidence_head_sha: previous.repository.head_sha,
+    },
+    activity_scan: scan,
+  });
+  expect(result.manifest.counts.failed).toBe(0);
+  expect(result.manifest.api.rest_requests).toBe(8);
+});
+
+test("resumes a pending activity scan even when the observed head is unchanged", async () => {
+  const changedHead = "f".repeat(40);
+  const pending = {
+    ...snapshot(0),
+    repository: {
+      ...snapshot(0).repository,
+      head_sha: changedHead,
+    },
+    activity: {
+      ...activity("provisional"),
+      evidence_head_sha: snapshot(0).repository.head_sha,
+    },
+    activity_scan: {
+      head_sha: changedHead,
+      cutoff_at: "2026-04-15T08:00:00.000Z",
+      next_page: 2,
+      next_index: 14,
+      resolved_weeks: ["2026-07-20"],
+    },
+  };
+  const inspectGit = vi.fn(async ({ activity: priorActivity }) => ({
+    complete: true,
+    activity: {
+      ...priorActivity,
+      evidence_status: "complete",
+      evidence_head_sha: changedHead,
+      provisional_weeks: null,
+      baseline_completed_at: "2026-07-24T08:00:00.000Z",
+    },
+    license: {
+      status: "osi-approved",
+      spdxId: "MIT",
+      sourcePath: "LICENSE",
+    },
+    scan: null,
+  }));
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [pending],
+    observe: observer([observation(0, changedHead)]),
+    inspectDelta: vi.fn(),
+    inspectGit,
+    write: false,
+  });
+
+  expect(inspectGit).toHaveBeenCalledOnce();
+  expect(result.snapshots[0]).toMatchObject({
+    activity: {
+      evidence_status: "complete",
+      evidence_head_sha: changedHead,
+    },
+    activity_scan: null,
+  });
+});
+
+test("compares from the evidence watermark when repository observation is ahead", async () => {
+  const observedHead = "f".repeat(40);
+  const evidenceHead = "a".repeat(40);
+  const previous = {
+    ...snapshot(0),
+    repository: {
+      ...snapshot(0).repository,
+      head_sha: observedHead,
+    },
+    activity: {
+      ...snapshot(0).activity,
+      evidence_head_sha: evidenceHead,
+    },
+  };
+  const inspectDelta = vi.fn(async () => ({
+    kind: "accepted-excluded" as const,
+    licenseChanged: false,
+    requestCount: 1,
+  }));
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [previous],
+    observe: observer([observation(0, observedHead)]),
+    inspectDelta,
+    inspectGit: vi.fn(),
+    write: false,
+  });
+
+  expect(inspectDelta).toHaveBeenCalledWith(
+    expect.objectContaining({ baseSha: evidenceHead, headSha: observedHead }),
+  );
+  expect(result.snapshots[0].activity.evidence_head_sha).toBe(observedHead);
+});
+
+test("forces a full scan for legacy degraded evidence without a watermark", async () => {
+  const previous = snapshot(0, "degraded");
+  const inspectGit = vi.fn(async ({ activity: priorActivity }) => ({
+    complete: false,
+    activity: {
+      ...priorActivity,
+      evidence_status: "provisional",
+      provisional_weeks: Array.from({ length: 12 }, () => false),
+      baseline_completed_at: null,
+    },
+    license: null,
+    requestCount: 1,
+    scan: {
+      head_sha: previous.repository.head_sha,
+      cutoff_at: "2026-04-15T08:00:00.000Z",
+      next_page: 2,
+      next_index: 0,
+      resolved_weeks: [],
+    },
+  }));
+  await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [previous],
+    observe: observer([observation(0)]),
+    inspectDelta: vi.fn(),
+    inspectGit,
+    write: false,
+  });
+
+  expect(inspectGit).toHaveBeenCalledOnce();
+  expect(inspectGit).toHaveBeenCalledWith(
+    expect.objectContaining({
+      activity: expect.objectContaining({ evidence_head_sha: null }),
+      scan: null,
+    }),
+  );
+});
+
+test("preserves a pending scan cursor across a transient inspection failure", async () => {
+  const changedHead = "f".repeat(40);
+  const scan = {
+    head_sha: changedHead,
+    cutoff_at: "2026-04-15T08:00:00.000Z",
+    next_page: 2,
+    next_index: 14,
+    resolved_weeks: ["2026-07-20"],
+  };
+  const pending = {
+    ...snapshot(0, "provisional"),
+    repository: {
+      ...snapshot(0).repository,
+      head_sha: changedHead,
+    },
+    activity_scan: scan,
+  };
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [pending],
+    observe: observer([observation(0, changedHead)]),
+    inspectDelta: vi.fn(),
+    inspectGit: vi.fn(async () => {
+      throw new Error("temporary transport failure");
+    }),
+    write: false,
+  });
+
+  expect(result.snapshots[0].activity_scan).toEqual(scan);
+  expect(result.snapshots[0].activity.evidence_status).toBe("provisional");
+});
+
 test("soft failures preserve observed facts and degrade the third failed baseline", async () => {
   const provisional = snapshot(0, "provisional");
   const previous = {
@@ -370,6 +595,44 @@ test("systemic REST rate exhaustion aborts candidate publication", async () => {
         });
       }),
       inspectGit: vi.fn(),
+      publish,
+    }),
+  ).rejects.toThrow("rate budget exhausted");
+  expect(publish).not.toHaveBeenCalled();
+});
+
+test("systemic REST rate exhaustion during a resumed scan aborts publication", async () => {
+  const publish = vi.fn();
+  const changedHead = "f".repeat(40);
+  const pending = {
+    ...snapshot(0, "provisional"),
+    repository: {
+      ...snapshot(0).repository,
+      head_sha: changedHead,
+    },
+    activity_scan: {
+      head_sha: changedHead,
+      cutoff_at: "2026-04-15T08:00:00.000Z",
+      next_page: 2,
+      next_index: 14,
+      resolved_weeks: ["2026-07-20"],
+    },
+  };
+
+  await expect(
+    runRefresh({
+      mode: "incremental",
+      records: [record(0)],
+      snapshots: [pending],
+      observe: observer([observation(0, changedHead)]),
+      inspectDelta: vi.fn(),
+      inspectGit: vi.fn(async () => {
+        throw Object.assign(new Error("rate budget exhausted"), {
+          status: 403,
+          rateLimited: true,
+          systemic: true,
+        });
+      }),
       publish,
     }),
   ).rejects.toThrow("rate budget exhausted");

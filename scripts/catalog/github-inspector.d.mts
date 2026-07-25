@@ -35,6 +35,23 @@ export interface DeltaInput {
   crossesAmbiguousWeeks: boolean;
 }
 
+export interface ActivityScan {
+  head_sha: string;
+  cutoff_at: string;
+  next_page: number;
+  next_index: number;
+  resolved_weeks: string[];
+  pending_commit?: {
+    sha: string;
+    committed_at: string;
+    parent_count: number;
+    next_file_page: number;
+    source_path_seen: boolean;
+    substantive_patch_seen: boolean;
+    patch_incomplete: boolean;
+  } | null;
+}
+
 export function inspectDelta(
   input: DeltaInput,
   options: {
@@ -44,6 +61,60 @@ export function inspectDelta(
     logger?: { log(message: string): void; error(message: string): void };
   },
 ): Promise<DeltaInspection>;
+
+export function inspectApiActivity(
+  input: {
+    repository: string;
+    expectedHeadSha: string;
+    now: string;
+    activity: ActivityEvidence;
+    scan: ActivityScan | null;
+  },
+  options?: {
+    token?: string;
+    fetchImpl?: typeof fetch;
+    maxCommitInspections?: number;
+    maxHistoryPages?: number;
+    fetchCommitsPage?: (input: {
+      repository: string;
+      headSha: string;
+      cutoffAt: string;
+      page: number;
+    }) => Promise<
+      Array<{
+        sha: string;
+        committedAt: string;
+        parentCount: number;
+      }>
+    >;
+    fetchCommitFiles?: (input: {
+      repository: string;
+      sha: string;
+      startPage?: number;
+      maxPages?: number;
+    }) => Promise<
+      | Array<{ filename: string; patch?: string | null }>
+      | {
+          files: Array<{ filename: string; patch?: string | null }>;
+          nextPage: number | null;
+        }
+    >;
+    fetchRootLicenses?: (input: {
+      repository: string;
+      headSha: string;
+    }) => Promise<Array<{ path: string; content: string }>>;
+  },
+): Promise<{
+  complete: boolean;
+  activity: ActivityEvidence;
+  license: {
+    status: "osi-approved" | "proprietary" | "missing";
+    spdxId: string | null;
+    sourcePath: string | null;
+  } | null;
+  requestCount: number;
+  scan: ActivityScan | null;
+}>;
 
 export function inspectGitBaseline(
   input: {
