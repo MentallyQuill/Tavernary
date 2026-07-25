@@ -256,6 +256,7 @@ export function FilterPanel({
   mobile = false,
   onClose,
   now,
+  motionPhase = "entered",
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
@@ -264,6 +265,7 @@ export function FilterPanel({
   mobile?: boolean;
   onClose?: () => void;
   now: string;
+  motionPhase?: "entering" | "entered" | "exiting";
 }) {
   const [frontendSearch, setFrontendSearch] = useState("");
   const sheetRef = useRef<HTMLElement>(null);
@@ -360,7 +362,11 @@ export function FilterPanel({
 
   if (mobile) {
     return (
-      <div className="filter-overlay" onMouseDown={dismiss}>
+      <div
+        className="filter-overlay"
+        data-motion-phase={motionPhase}
+        onMouseDown={dismiss}
+      >
         <section
           ref={sheetRef}
           className="filter-sheet"

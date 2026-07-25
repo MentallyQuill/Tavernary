@@ -19,6 +19,7 @@
     width: min(360px, 92vw);
     height: calc(100vh - 66px);
     box-shadow: var(--shadow-raised);
+    transition: transform var(--kit-motion-panel) var(--kit-motion-ease);
   }
 
   .kit-drag-ghost {
@@ -415,6 +416,22 @@
 
   .filter-overlay {
     display: flex;
+  }
+
+  .filter-sheet {
+    transition: transform var(--kit-motion-panel) var(--kit-motion-ease);
+  }
+
+  .kit-workspace[data-motion-phase="entering"],
+  .kit-workspace[data-motion-phase="exiting"],
+  .filter-overlay[data-motion-phase="entering"] .filter-sheet,
+  .filter-overlay[data-motion-phase="exiting"] .filter-sheet {
+    transform: translateY(100%);
+  }
+
+  .kit-workspace[data-motion-phase="entered"],
+  .filter-overlay[data-motion-phase="entered"] .filter-sheet {
+    transform: translateY(0);
   }
 
   .sheet-open {

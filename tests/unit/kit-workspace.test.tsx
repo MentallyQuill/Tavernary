@@ -1,4 +1,10 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -102,6 +108,7 @@ function fixtureKit(): CatalogKit {
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  vi.useRealTimers();
   Object.defineProperty(window, "matchMedia", {
     configurable: true,
     value: originalMatchMedia,
@@ -203,9 +210,9 @@ describe("Kit workspace", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("makes the phone catalog inert only while inspection is open", async () => {
+  test("keeps the phone sheet and inert background through its exit", () => {
     mockMatchMedia({ phone: true, touchLayout: true });
-    const user = userEvent.setup();
+    vi.useFakeTimers();
 
     function Harness() {
       const [collapsed, setCollapsed] = useState(false);
@@ -229,9 +236,17 @@ describe("Kit workspace", () => {
 
     render(<Harness />);
     expect(screen.getByRole("main")).toHaveAttribute("inert");
-    await user.click(
+    fireEvent.click(
       screen.getByRole("button", { name: "Close Kit workspace" }),
     );
+    expect(
+      screen.getByRole("dialog", { name: "Kit workspace" }),
+    ).toHaveAttribute("data-motion-phase", "exiting");
+    expect(screen.getByRole("main")).toHaveAttribute("inert");
+    act(() => vi.advanceTimersByTime(220));
+    expect(
+      screen.queryByRole("dialog", { name: "Kit workspace" }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("main")).not.toHaveAttribute("inert");
   });
 

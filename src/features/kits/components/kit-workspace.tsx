@@ -10,6 +10,7 @@ import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
 import type { CatalogProjectDragState } from "@/features/kits/use-catalog-project-drag";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
+import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
 
@@ -64,6 +65,7 @@ export function KitWorkspace({
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const hadOpenPhoneSheetRef = useRef(false);
   const returnFocus = useCallback(() => {
     window.setTimeout(() => {
       const opener = openerRef.current;
@@ -79,8 +81,19 @@ export function KitWorkspace({
     if (fallbackUrl) fallbackRef.current?.select();
   }, [fallbackUrl]);
 
-  const modalOpen =
+  const phoneSheetVisible =
     phone && active && !state.collapsed && state.mode !== "intro";
+  const phonePresence = useTransitionPresence(phoneSheetVisible, 220);
+  const modalOpen = phone && phonePresence.present && state.mode !== "intro";
+
+  useEffect(() => {
+    if (phoneSheetVisible) {
+      hadOpenPhoneSheetRef.current = true;
+    } else if (hadOpenPhoneSheetRef.current && !phonePresence.present) {
+      hadOpenPhoneSheetRef.current = false;
+      returnFocus();
+    }
+  }, [phonePresence.present, phoneSheetVisible, returnFocus]);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -103,9 +116,9 @@ export function KitWorkspace({
     },
   });
 
-  if (phone && (!active || state.mode === "intro")) return null;
+  if (phone && !phonePresence.present) return null;
 
-  if (state.collapsed) {
+  if (state.collapsed && !(phone && phonePresence.present)) {
     if (touchLayout) {
       if (state.mode !== "build") return null;
       return (
@@ -158,6 +171,7 @@ export function KitWorkspace({
       aria-label="Kit workspace"
       role={phone ? "dialog" : "complementary"}
       aria-modal={phone ? true : undefined}
+      data-motion-phase={phone ? phonePresence.phase : undefined}
     >
       <header className="kit-workspace-header">
         <h2 ref={headingRef} tabIndex={-1}>
@@ -168,9 +182,6 @@ export function KitWorkspace({
           aria-label={phone ? "Close Kit workspace" : "Collapse workspace"}
           onClick={() => {
             onCollapse();
-            if (phone) {
-              returnFocus();
-            }
           }}
         >
           <CategoryIcon name="collapse" />

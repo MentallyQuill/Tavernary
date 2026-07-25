@@ -25,6 +25,7 @@ export function KitFilterPanel({
   onClear,
   mobile = false,
   onClose,
+  motionPhase = "entered",
 }: {
   query: KitQuery;
   kits: CatalogKit[];
@@ -33,6 +34,7 @@ export function KitFilterPanel({
   onClear: () => void;
   mobile?: boolean;
   onClose?: () => void;
+  motionPhase?: "entering" | "entered" | "exiting";
 }) {
   const sheetRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -185,7 +187,11 @@ export function KitFilterPanel({
 
   if (mobile) {
     return (
-      <div className="filter-overlay" onMouseDown={dismiss}>
+      <div
+        className="filter-overlay"
+        data-motion-phase={motionPhase}
+        onMouseDown={dismiss}
+      >
         <section
           ref={sheetRef}
           className="filter-sheet kit-filter-panel"

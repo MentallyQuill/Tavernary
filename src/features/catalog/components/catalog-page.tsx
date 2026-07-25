@@ -26,6 +26,7 @@ import {
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
 import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
+import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
@@ -55,6 +56,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     CatalogQuery["mode"] | null
   >(null);
   const filtersOpen = openFilterMode === query.mode;
+  const filterPresence = useTransitionPresence(filtersOpen, 220);
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const catalogLayoutRef = useRef<HTMLDivElement>(null);
@@ -235,7 +237,11 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
 
   const closeFilters = () => {
     setOpenFilterMode(null);
-    window.setTimeout(() => filterButtonRef.current?.focus(), 0);
+    const delay = window.matchMedia?.("(prefers-reduced-motion: reduce)")
+      .matches
+      ? 0
+      : 220;
+    window.setTimeout(() => filterButtonRef.current?.focus(), delay);
   };
   const selectProjectCategory = (category: string) =>
     setQuery((current) => ({
@@ -276,7 +282,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         onSelect={selectProjectCategory}
         onSelectKits={selectKitMode}
       />
-      <div className="catalog-layout" ref={catalogLayoutRef}>
+      <div
+        className={`catalog-layout${catalogDrag.dragState ? " catalog-drag-active" : ""}`}
+        ref={catalogLayoutRef}
+      >
         {query.mode === "kits" ? (
           <KitFilterPanel
             query={query.kits}
@@ -341,7 +350,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               draftFrontendId={draftFrontendId}
               onProjectDragStart={
                 buildState && !touchLayout
-                  ? (project, event) => catalogDrag.begin(project, event)
+                  ? (project, event) => {
+                      if (buildState.collapsed) workspace.toggleCollapsed();
+                      catalogDrag.begin(project, event);
+                    }
                   : undefined
               }
               onAddToKit={
@@ -414,10 +426,11 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           <span>{catalogDrag.dragState.actionLabel}</span>
         </div>
       ) : null}
-      {filtersOpen ? (
-        query.mode === "kits" ? (
+      {filterPresence.present ? (
+        (openFilterMode ?? query.mode) === "kits" ? (
           <KitFilterPanel
             mobile
+            motionPhase={filterPresence.phase}
             query={query.kits}
             kits={catalog.kits}
             projects={catalog.projects}
@@ -428,6 +441,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         ) : (
           <FilterPanel
             mobile
+            motionPhase={filterPresence.phase}
             query={query}
             projects={catalog.projects}
             now={catalog.generatedAt}

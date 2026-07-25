@@ -252,13 +252,20 @@
 
 .catalog-layout {
   display: grid;
-  grid-template-columns: 238px minmax(0, 1fr) minmax(280px, 340px);
+  grid-template-columns: 238px minmax(0, 1fr) clamp(280px, 22vw, 340px);
   min-height: calc(100vh - 116px);
   padding: 0;
+  transition: grid-template-columns var(--kit-motion-panel)
+    var(--kit-motion-ease);
 }
 
 .catalog-layout:has(> .kit-workspace.collapsed) {
   grid-template-columns: 238px minmax(0, 1fr) 48px;
+}
+
+.catalog-layout.catalog-drag-active {
+  grid-template-columns: 238px minmax(0, 1fr) clamp(280px, 22vw, 340px);
+  transition: none;
 }
 
 .filter-panel {
