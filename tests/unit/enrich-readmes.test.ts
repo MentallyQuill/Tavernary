@@ -10,17 +10,31 @@ const record = {
   summary: "Generic intake details.",
   visibility: "published",
   frontends: ["sillytavern"],
-  source: { type: "github", repository: "Creator/Project" },
+  source: {
+    type: "github",
+    repository: "Creator/Project",
+    repository_id: 42,
+  },
 };
 
 const snapshot = {
+  schema_version: 2,
+  project_id: "fixture",
+  source_health: "healthy",
+  stale_since: null,
   repository: {
+    id: 42,
     owner: "Creator",
     name: "Project",
+    url: "https://github.com/Creator/Project",
     default_branch: "main",
+    head_sha: "a".repeat(40),
+    head_committed_at: "2026-07-23T12:00:00.000Z",
     description: "A short project description.",
+    archived: false,
+    created_at: "2026-01-01T00:00:00.000Z",
+    size_kb: 10,
   },
-  readme: { found: true, path: "README.md", ref: "main" },
 };
 
 const vocabularies = {
@@ -47,10 +61,15 @@ test("passes both source fields and only allowed vocabulary entries to provider"
     {
       vocabularies,
       loadSource: async () => ({
+        status: "ready" as const,
+        sourceKind: "description" as const,
+        text: "A short project description.",
         repositoryDescription: "A short project description.",
-        readmeText: "# Project\n\nUseful README details.",
-        readmePath: "README.md",
-        readmeRef: "main",
+        readmeText: null,
+        readmePath: null,
+        readmeRef: null,
+        repositoryId: 42,
+        headSha: "a".repeat(40),
       }),
     },
   );
@@ -62,7 +81,7 @@ test("passes both source fields and only allowed vocabulary entries to provider"
   expect(generate).toHaveBeenCalledWith(
     expect.objectContaining({
       repositoryDescription: "A short project description.",
-      readmeText: "# Project\n\nUseful README details.",
+      readmeText: null,
       allowedPrimaryFunctions: vocabularies.primaryFunctions,
       allowedCapabilities: vocabularies.capabilities,
     }),
@@ -90,10 +109,12 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     {
       vocabularies,
       loadSource: async () => ({
-        repositoryDescription: null,
-        readmeText: null,
+        status: "fallback" as const,
+        sourceKind: "confirmed-fallback" as const,
         readmePath: null,
-        readmeRef: null,
+        readmeRef: "a".repeat(40),
+        repositoryId: 42,
+        headSha: "a".repeat(40),
       }),
     },
   );
@@ -105,6 +126,28 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     capabilities: [],
   });
 });
+
+test.each(["source-not-ready", "failed"] as const)(
+  "does not convert %s source outcomes into curated fallback",
+  async (status) => {
+    await expect(
+      enrichRecord(
+        record,
+        snapshot,
+        { generate: vi.fn() },
+        {
+          vocabularies,
+          loadSource: async () => ({
+            status,
+            reasonCode:
+              status === "failed" ? "readme-server-error" : "unhealthy-source",
+            message: "Source cannot be used.",
+          }),
+        },
+      ),
+    ).rejects.toThrow("Source cannot be used.");
+  },
+);
 
 test("force regenerates curated records and provider failures propagate", async () => {
   const generate = vi.fn().mockRejectedValue(new Error("provider offline"));

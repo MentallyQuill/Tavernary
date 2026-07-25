@@ -72,10 +72,10 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     primaryFunctions: [],
     capabilities: [],
   };
-  const hasSource = Boolean(
-    source.repositoryDescription?.trim() || source.readmeText?.trim(),
-  );
-  if (!hasSource) {
+  if (source.status === "source-not-ready" || source.status === "failed") {
+    throw new Error(source.message);
+  }
+  if (source.status === "fallback") {
     const fallback = {
       summary: "No README file found.",
       metadata_status: "curated",

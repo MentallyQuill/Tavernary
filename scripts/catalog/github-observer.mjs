@@ -11,6 +11,7 @@ function repositorySelection(index) {
       name
       nameWithOwner
       url
+      description
       createdAt
       diskUsage
       isArchived
@@ -213,6 +214,10 @@ function parseObservation(record, repository) {
     repository.databaseId <= 0 ||
     typeof repository.name !== "string" ||
     typeof repository.url !== "string" ||
+    !(
+      repository.description === null ||
+      typeof repository.description === "string"
+    ) ||
     !Number.isInteger(repository.diskUsage) ||
     repository.diskUsage < 0 ||
     typeof repository.isArchived !== "boolean" ||
@@ -231,6 +236,7 @@ function parseObservation(record, repository) {
         owner,
         name: repository.name,
         url: repository.url,
+        description: repository.description,
         defaultBranch: branch.name,
         headSha: head.oid.toLowerCase(),
         headCommittedAt: isoTimestamp(

@@ -26,7 +26,11 @@ export type RegistryRecord = {
   summary?: string;
   visibility?: string;
   frontends?: string[];
-  source?: { type: string; repository: string };
+  source?: {
+    type: string;
+    repository: string;
+    repository_id?: number | null;
+  };
   path?: string;
   [key: string]: unknown;
 };

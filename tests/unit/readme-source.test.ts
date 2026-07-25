@@ -1,124 +1,234 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
-import { loadReadmeSource } from "../../scripts/catalog/readme-source.mjs";
+import {
+  assessSourceReadiness,
+  loadReadmeSource,
+} from "../../scripts/catalog/readme-source.mjs";
 
 const record = {
   id: "fixture",
-  source: { type: "github", repository: "Creator/Project" },
+  source: {
+    type: "github",
+    repository: "Creator/Project",
+    repository_id: 42,
+  },
 };
 
-const snapshot = {
+const healthy = {
+  schema_version: 2,
+  project_id: "fixture",
+  source_health: "healthy",
+  stale_since: null,
   repository: {
+    id: 42,
     owner: "Creator",
     name: "Project",
+    url: "https://github.com/Creator/Project",
     default_branch: "main",
+    head_sha: "a".repeat(40),
+    head_committed_at: "2026-07-23T12:00:00.000Z",
     description: "A short project description.",
+    archived: false,
+    created_at: "2026-01-01T00:00:00.000Z",
+    size_kb: 10,
   },
-  readme: { found: true, path: "README.md", ref: "main" },
 };
 
-test("prefers a non-empty repository description without fetching README", async () => {
-  const calls: string[] = [];
-  const source = await loadReadmeSource(record, snapshot, {
-    github: async (path) => {
-      calls.push(path);
-      return null;
+const validateSnapshot = (value: unknown) =>
+  (value as { schema_version?: number })?.schema_version === 2;
+
+test.each([
+  ["missing snapshot", undefined, "missing-snapshot", record],
+  [
+    "invalid schema",
+    { ...healthy, schema_version: 1 },
+    "invalid-snapshot",
+    record,
+  ],
+  [
+    "unhealthy source",
+    { ...healthy, source_health: "unavailable" },
+    "unhealthy-source",
+    record,
+  ],
+  [
+    "stale source",
+    { ...healthy, stale_since: "2026-07-24T00:00:00.000Z" },
+    "stale-source",
+    record,
+  ],
+  [
+    "wrong project",
+    { ...healthy, project_id: "other" },
+    "project-mismatch",
+    record,
+  ],
+  [
+    "wrong repository",
+    {
+      ...healthy,
+      repository: { ...healthy.repository, owner: "Other" },
     },
+    "repository-mismatch",
+    record,
+  ],
+  [
+    "wrong identity",
+    {
+      ...healthy,
+      repository: { ...healthy.repository, id: 99 },
+    },
+    "identity-mismatch",
+    record,
+  ],
+  [
+    "missing permanent identity",
+    healthy,
+    "missing-permanent-identity",
+    {
+      ...record,
+      source: { ...record.source, repository_id: null },
+    },
+  ],
+] as const)(
+  "%s never becomes a fallback",
+  async (_name, snapshot, reasonCode, candidateRecord) => {
+    expect(
+      assessSourceReadiness(candidateRecord, snapshot, validateSnapshot),
+    ).toMatchObject({
+      status: "source-not-ready",
+      reasonCode,
+    });
+
+    await expect(
+      loadReadmeSource(candidateRecord, snapshot, {
+        validateSnapshot,
+        github: vi.fn(),
+      }),
+    ).resolves.toMatchObject({
+      status: "source-not-ready",
+      reasonCode,
+    });
+  },
+);
+
+test("prefers a non-empty repository description without fetching README", async () => {
+  const github = vi.fn();
+  const source = await loadReadmeSource(record, healthy, {
+    validateSnapshot,
+    github,
   });
 
   expect(source).toEqual({
+    status: "ready",
+    sourceKind: "description",
+    text: "A short project description.",
     repositoryDescription: "A short project description.",
     readmeText: null,
     readmePath: null,
     readmeRef: null,
+    repositoryId: 42,
+    headSha: "a".repeat(40),
   });
-  expect(calls).toEqual([]);
+  expect(github).not.toHaveBeenCalled();
 });
 
-test("decodes and normalizes README text when description is unavailable", async () => {
-  let request;
+test("loads README content at the snapshot head SHA", async () => {
+  const github = vi.fn(async () => ({
+    path: "docs/README.md",
+    encoding: "base64",
+    content: Buffer.from("\uFEFF# Project\r\n\r\nUseful tool.\n").toString(
+      "base64",
+    ),
+  }));
   const source = await loadReadmeSource(
     record,
     {
-      ...snapshot,
-      repository: { ...snapshot.repository, description: "   " },
+      ...healthy,
+      repository: { ...healthy.repository, description: null },
     },
-    {
-      github: async (path, options) => {
-        request = { path, options };
-        return {
-          path: "README.md",
-          encoding: "base64",
-          content: Buffer.from(
-            "\uFEFF# Project\r\n\r\nUseful tool.\n",
-          ).toString("base64"),
-        };
-      },
-    },
+    { validateSnapshot, github },
   );
 
-  expect(request).toEqual({
-    path: "/repos/Creator/Project/readme",
-    options: { ref: "main" },
+  expect(github).toHaveBeenCalledWith("/repos/Creator/Project/readme", {
+    ref: "a".repeat(40),
   });
   expect(source).toEqual({
+    status: "ready",
+    sourceKind: "readme",
+    text: "# Project\n\nUseful tool.",
     repositoryDescription: null,
     readmeText: "# Project\n\nUseful tool.",
-    readmePath: "README.md",
-    readmeRef: "main",
+    readmePath: "docs/README.md",
+    readmeRef: "a".repeat(40),
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+  });
+});
+
+test("uses the exact fallback only for an authenticated README 404", async () => {
+  await expect(
+    loadReadmeSource(
+      record,
+      {
+        ...healthy,
+        repository: { ...healthy.repository, description: null },
+      },
+      { validateSnapshot, github: async () => null },
+    ),
+  ).resolves.toEqual({
+    status: "fallback",
+    sourceKind: "confirmed-fallback",
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+    readmePath: null,
+    readmeRef: "a".repeat(40),
   });
 });
 
 test.each([
-  ["missing README", null],
-  ["empty README", { path: "README.md", encoding: "base64", content: "" }],
   [
-    "binary README",
-    {
-      path: "README.md",
+    "rate limiting",
+    async () => {
+      throw Object.assign(new Error("rate limited"), { status: 429 });
+    },
+    "readme-rate-limited",
+  ],
+  [
+    "server failure",
+    async () => {
+      throw Object.assign(new Error("server failed"), { status: 503 });
+    },
+    "readme-server-error",
+  ],
+  [
+    "malformed payload",
+    async () => ({ encoding: "base64", content: "%" }),
+    "readme-unusable",
+  ],
+  [
+    "binary payload",
+    async () => ({
       encoding: "base64",
       content: Buffer.from([0, 1, 2]).toString("base64"),
-    },
+    }),
+    "readme-unusable",
   ],
   [
-    "badge-only README",
-    {
-      path: "README.md",
-      encoding: "base64",
-      content: Buffer.from(
-        '<a href="https://badge.fury.io"><img src="badge.svg"></a>\n',
-      ).toString("base64"),
-    },
+    "empty payload",
+    async () => ({ encoding: "base64", content: "" }),
+    "readme-unusable",
   ],
-] as const)("returns null text for %s", async (_name, response) => {
+] as const)("%s remains retryable", async (_name, github, reasonCode) => {
   const source = await loadReadmeSource(
     record,
     {
-      ...snapshot,
-      repository: { ...snapshot.repository, description: null },
+      ...healthy,
+      repository: { ...healthy.repository, description: null },
     },
-    { github: async () => response },
+    { validateSnapshot, github },
   );
 
-  expect(source.repositoryDescription).toBeNull();
-  expect(source.readmeText).toBeNull();
-});
-
-test("returns null when the snapshot has no README provenance", async () => {
-  const source = await loadReadmeSource(
-    record,
-    {
-      ...snapshot,
-      readme: { found: false, path: null, ref: "main" },
-      repository: { ...snapshot.repository, description: null },
-    },
-    { github: async () => null },
-  );
-
-  expect(source).toEqual({
-    repositoryDescription: null,
-    readmeText: null,
-    readmePath: null,
-    readmeRef: null,
-  });
+  expect(source).toMatchObject({ status: "failed", reasonCode });
+  expect(source.status).not.toBe("fallback");
 });

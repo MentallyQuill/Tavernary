@@ -73,16 +73,23 @@ test("batch execution records fallback, skip, and failure outcomes", async () =>
     loadSource: async (record) =>
       record.id === "fallback"
         ? {
-            repositoryDescription: null,
-            readmeText: null,
+            status: "fallback" as const,
+            sourceKind: "confirmed-fallback" as const,
             readmePath: null,
-            readmeRef: null,
+            readmeRef: "a".repeat(40),
+            repositoryId: 42,
+            headSha: "a".repeat(40),
           }
         : {
+            status: "ready" as const,
+            sourceKind: "description" as const,
+            text: "source",
             repositoryDescription: "source",
             readmeText: null,
             readmePath: null,
             readmeRef: null,
+            repositoryId: 42,
+            headSha: "a".repeat(40),
           },
     writeRecord: write,
     now: "2026-07-24T00:00:00.000Z",

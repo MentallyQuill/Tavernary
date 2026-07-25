@@ -41,7 +41,11 @@ export function repositoryIdentityChanged(
 export function runRefresh(options?: Record<string, unknown>): Promise<{
   selected: Array<{ id: string; [key: string]: unknown }>;
   snapshots: Array<{
-    repository: { head_sha: string; [key: string]: unknown };
+    repository: {
+      head_sha: string;
+      description?: string | null;
+      [key: string]: unknown;
+    };
     activity: {
       source_weeks: Array<{
         week_start: string;

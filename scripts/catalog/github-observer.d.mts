@@ -5,6 +5,7 @@ export interface RepositoryObservation {
     owner: string;
     name: string;
     url: string;
+    description: string | null;
     defaultBranch: string;
     headSha: string;
     headCommittedAt: string;
