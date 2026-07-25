@@ -7,7 +7,6 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
-import type { CatalogProjectDragState } from "@/features/kits/use-catalog-project-drag";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
@@ -43,7 +42,6 @@ export function KitBuilderPanel({
   onUpdateDraft,
   onSubmitDraft,
   active = true,
-  catalogDragState = null,
   draftAccessStatus,
   hidePhoneDraftAccess = false,
 }: {
@@ -60,7 +58,6 @@ export function KitBuilderPanel({
   ) => void;
   onSubmitDraft?: () => void;
   active?: boolean;
-  catalogDragState?: CatalogProjectDragState | null;
   draftAccessStatus?: DraftAccessStatus;
   hidePhoneDraftAccess?: boolean;
 }) {
@@ -309,7 +306,6 @@ export function KitBuilderPanel({
               originalProjectIds={originalProjectIds}
               onUpdate={(patch) => onUpdateDraft?.(patch)}
               onSubmit={() => onSubmitDraft?.()}
-              catalogDragState={catalogDragState}
             />
           </div>
         ) : (

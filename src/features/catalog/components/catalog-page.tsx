@@ -13,18 +13,14 @@ import { KitGrid } from "@/features/kits/components/kit-grid";
 import { ProjectSelectionDock } from "@/features/kits/components/project-selection-dock";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
-import { addProject } from "@/features/kits/project-stack-order";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import {
   openKitSubmission,
   serializeKitManifest,
 } from "@/features/kits/submission-transport";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
-import { replaceKitFrontend } from "@/features/kits/kit-project-layout";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
-import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
-import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
@@ -58,7 +54,6 @@ type AddedStatus = {
 };
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
-  const { touchLayout } = useResponsiveCapabilities();
   const { query, setQuery } = useCatalogQuery();
   const [openFilterMode, setOpenFilterMode] = useState<
     CatalogQuery["mode"] | null
@@ -67,7 +62,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const filterPresence = useTransitionPresence(filtersOpen, 220);
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
-  const catalogLayoutRef = useRef<HTMLDivElement>(null);
   const addedStatusTimerRef = useRef<number | null>(null);
   const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
@@ -95,6 +89,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     projects: catalog.projects,
     draftProjectIds: buildState?.draft.projectIds ?? [],
     active: query.mode === "projects",
+    onFirstSelection: workspace.startSelectionDraft,
+    onSelectionEmpty: workspace.discardUntouchedSelectionDraft,
+    onRemoveFromDraft: workspace.removeProjectFromDraft,
     onApply: (projectIds) =>
       workspace.applyProjectBatch(projectIds, catalog.projects),
   });
@@ -125,25 +122,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       addedStatusTimerRef.current = null;
     }, 1600);
   };
-  const catalogDrag = useCatalogProjectDrag({
-    editorRef: catalogLayoutRef,
-    onDrop: (projectId, target) => {
-      if (!buildState) return;
-      const project = catalog.projects.find(({ id }) => id === projectId);
-      if (!project) return;
-      workspace.updateDraft({
-        projectIds:
-          target === "frontend"
-            ? replaceKitFrontend(
-                buildState.draft.projectIds,
-                projectId,
-                catalog.projects,
-              )
-            : addProject(buildState.draft.projectIds, projectId),
-      });
-    },
-  });
-
   useEffect(() => {
     document.body.classList.toggle(
       "compact-cards",
@@ -331,10 +309,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         onSelect={selectProjectCategory}
         onSelectKits={selectKitMode}
       />
-      <div
-        className={`catalog-layout${catalogDrag.pressed ? " catalog-drag-active" : ""}`}
-        ref={catalogLayoutRef}
-      >
+      <div className="catalog-layout">
         {query.mode === "kits" ? (
           <KitFilterPanel
             query={query.kits}
@@ -396,17 +371,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               projects={selectedProjects}
               now={catalog.generatedAt}
               selection={{
-                mode: batchSelection.selectionMode,
                 bindingsFor: batchSelection.bindingsFor,
               }}
-              onProjectDragStart={
-                buildState && !touchLayout
-                  ? (project, event) => {
-                      if (buildState.collapsed) workspace.toggleCollapsed();
-                      catalogDrag.begin(project, event);
-                    }
-                  : undefined
-              }
             />
           )}
           {batchSelection.selectionMode ? (
@@ -441,7 +407,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               : undefined
           }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}
-          catalogDragState={catalogDrag.dragState}
           draftAccessStatus={draftAccessStatus}
           hidePhoneDraftAccess={batchSelection.selectionMode}
         />
@@ -463,19 +428,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             )} in draft.`
           : ""}
       </p>
-      {catalogDrag.dragState ? (
-        <div
-          className="catalog-project-drag-ghost"
-          data-valid={catalogDrag.dragState.valid}
-          aria-hidden="true"
-          style={{
-            transform: `translate3d(${catalogDrag.dragState.point.x}px, ${catalogDrag.dragState.point.y}px, 0)`,
-          }}
-        >
-          <strong>{catalogDrag.dragState.projectName}</strong>
-          <span>{catalogDrag.dragState.actionLabel}</span>
-        </div>
-      ) : null}
       {filterPresence.present ? (
         (openFilterMode ?? query.mode) === "kits" ? (
           <KitFilterPanel

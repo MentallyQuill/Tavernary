@@ -188,7 +188,7 @@ describe("project card", () => {
     );
   });
 
-  test("renders a desktop drag handle beside the project link", () => {
+  test("does not render a catalog drag handle", () => {
     const { container } = render(
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
@@ -201,19 +201,17 @@ describe("project card", () => {
             onActivate: vi.fn(),
           }),
         }}
-        onProjectDragStart={() => undefined}
       />,
     );
 
     const link = screen.getByRole("link", { name: "Memory Tool" });
-    const handle = screen.getByRole("button", {
-      name: "Drag Memory Tool into Kit",
-    });
-    expect(link.contains(handle)).toBe(false);
-    expect(handle).toHaveAttribute("data-project-drag-handle");
+    expect(link).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Drag Memory Tool into Kit" }),
+    ).not.toBeInTheDocument();
     expect(
       container.querySelector(".project-card-shell")?.children,
-    ).toHaveLength(3);
+    ).toHaveLength(2);
   });
 
   test("marks provisional projects with a quiet provisional details treatment", () => {

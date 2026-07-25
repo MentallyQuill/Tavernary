@@ -6,22 +6,18 @@ export function KitFrontendSlot({
   project,
   touchLayout,
   dragging,
-  dropState,
   onRemove,
   onDragStart,
 }: {
   project: CatalogProject | null;
   touchLayout: boolean;
   dragging: boolean;
-  dropState: "idle" | "valid" | "invalid";
   onRemove: () => void;
   onDragStart: PointerEventHandler<HTMLButtonElement>;
 }) {
   return (
     <div
       className={`kit-frontend-slot${dragging ? " dragging" : ""}`}
-      data-kit-drop-target="frontend"
-      data-drop-state={dropState}
       data-current-frontend-name={project?.name}
     >
       {project ? (
