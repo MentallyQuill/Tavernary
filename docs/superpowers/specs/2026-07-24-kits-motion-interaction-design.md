@@ -1,6 +1,6 @@
 # Kits Motion and Direct-Manipulation Design
 
-**Status:** Pending written review
+**Status:** Approved
 
 **Date:** 2026-07-24
 
