@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "thexyzzyone-stgroupresponderselector",
+  "repository": {
+    "id": 1303700120,
+    "owner": "thexyzzyone",
+    "name": "STGroupResponderSelector",
+    "url": "https://github.com/thexyzzyone/STGroupResponderSelector",
+    "default_branch": "main",
+    "head_sha": "5492153cecd8aece110dddceecdb69a7ebf62da1",
+    "head_committed_at": "2026-07-20T18:11:55.000Z",
+    "archived": false,
+    "created_at": "2026-07-17T07:24:13.000Z",
+    "size_kb": 465
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 2,
+  "project_id": "jeka201216-silly-map",
+  "repository": {
+    "id": 1307082738,
+    "owner": "Jeka201216",
+    "name": "Silly-Map",
+    "url": "https://github.com/Jeka201216/Silly-Map",
+    "default_branch": "main",
+    "head_sha": "c8e352e3a005ae01d3920021d7ddaafbdc029ced",
+    "head_committed_at": "2026-07-20T23:11:01.000Z",
+    "archived": false,
+    "created_at": "2026-07-20T23:11:29.000Z",
+    "size_kb": 5471
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-20T23:11:01.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-20T23:11:01.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-20T23:16:22.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 14,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 14
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "stale_since": null
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "project_id": "lithiumwaves-danganronpa-sillytavern",
+  "repository": {
+    "id": 1135951236,
+    "owner": "LithiumWaves",
+    "name": "danganronpa-sillytavern",
+    "url": "https://github.com/LithiumWaves/danganronpa-sillytavern",
+    "default_branch": "main",
+    "head_sha": "b1ee009db819b52caea78478372627d91528886b",
+    "head_committed_at": "2026-06-29T21:12:34.000Z",
+    "archived": false,
+    "created_at": "2026-01-16T20:35:35.000Z",
+    "size_kb": 235250
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-29T21:12:34.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-06-29T21:12:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T18:15:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T21:30:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T22:12:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T21:07:17.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-28T11:21:14.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
+    "baseline_attempts": 1
+  },
+  "community": {
+    "stargazers_count": 6,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 7
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "stale_since": null
+}

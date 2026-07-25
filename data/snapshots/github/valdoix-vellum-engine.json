@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "valdoix-vellum-engine",
+  "repository": {
+    "id": 1281396724,
+    "owner": "valdoix",
+    "name": "vellum-engine",
+    "url": "https://github.com/valdoix/vellum-engine",
+    "default_branch": "main",
+    "head_sha": "69eca239911b7224e3fccc279902eb43cb583339",
+    "head_committed_at": "2026-07-20T06:09:53.000Z",
+    "archived": false,
+    "created_at": "2026-06-26T14:12:41.000Z",
+    "size_kb": 16004
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 4,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

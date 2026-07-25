@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "project_id": "loggo-presets-typingindicatorplus",
+  "repository": {
+    "id": 1132429516,
+    "owner": "Loggo-presets",
+    "name": "TypingIndicatorPlus",
+    "url": "https://github.com/Loggo-presets/TypingIndicatorPlus",
+    "default_branch": "main",
+    "head_sha": "e222639d3452ad0452af61efea4846362e548476",
+    "head_committed_at": "2026-01-20T00:32:32.000Z",
+    "archived": false,
+    "created_at": "2026-01-11T23:55:02.000Z",
+    "size_kb": 236
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 13,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 13
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "stale_since": null
+}

@@ -8,32 +8,50 @@
     "url": "https://github.com/cfigure/Lumiverse-Shutter",
     "default_branch": "main",
     "head_sha": "ec29185f2a3f89faa8840f2439a7e489da86d9d4",
+    "head_committed_at": "2026-07-09T16:30:21.000Z",
     "archived": false,
-    "created_at": "2026-05-10T15:30:53Z",
-    "size_kb": 402,
-    "head_committed_at": null
+    "created_at": "2026-05-10T15:30:53.000Z",
+    "size_kb": 251
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-09T15:48:45.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      true,
-      true,
-      true,
-      true,
-      true,
-      false,
-      true,
-      false,
-      true,
-      false,
-      false
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-09T15:48:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T12:32:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-10T19:33:51.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T22:17:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-23T12:08:56.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-14T00:26:37.000Z",
+        "precision": "exact"
+      }
     ],
-    "latest_release_at": "2026-07-09T16:31:13Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-09T16:31:13.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:22:39.715Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +65,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T19:17:34.406Z",
+  "refreshed_at": "2026-07-25T02:22:39.715Z",
   "stale_since": null
 }

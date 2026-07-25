@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "sillytavern-sillytavern-greetingtools",
+  "repository": {
+    "id": 1158265980,
+    "owner": "SillyTavern",
+    "name": "SillyTavern-GreetingTools",
+    "url": "https://github.com/SillyTavern/SillyTavern-GreetingTools",
+    "default_branch": "main",
+    "head_sha": "30dbe54e9f9e4e7da8539c6b3178ac8a5118bc18",
+    "head_committed_at": "2026-03-26T21:47:38.000Z",
+    "archived": false,
+    "created_at": "2026-02-15T04:07:14.000Z",
+    "size_kb": 158
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-03-26T21:50:28.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 2,
+    "subscribers_count": 0,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

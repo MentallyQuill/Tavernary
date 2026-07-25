@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "project_id": "mangkoodkung-another-universe",
+  "repository": {
+    "id": 1233011311,
+    "owner": "mangkoodkung",
+    "name": "another-universe",
+    "url": "https://github.com/mangkoodkung/another-universe",
+    "default_branch": "main",
+    "head_sha": "44239d3f71d5b3f3d9b0da29e5ed8c402bfa8c53",
+    "head_committed_at": "2026-05-20T17:05:36.000Z",
+    "archived": false,
+    "created_at": "2026-05-08T13:52:27.000Z",
+    "size_kb": 936
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-20T17:05:36.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-20T17:05:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T08:09:31.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 6,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 7
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "stale_since": null
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "project_id": "lukathehero-sillytavern-claudesubscription",
+  "repository": {
+    "id": 1232282077,
+    "owner": "LukaTheHero",
+    "name": "SillyTavern-ClaudeSubscription",
+    "url": "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription",
+    "default_branch": "main",
+    "head_sha": "595daa7404bb280de3f1aaeb52fb69060895b843",
+    "head_committed_at": "2026-07-02T00:09:52.000Z",
+    "archived": false,
+    "created_at": "2026-05-07T19:19:36.000Z",
+    "size_kb": 96
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-01T23:13:25.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T23:13:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-08T06:01:26.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-01T23:13:29.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "stale_since": null
+}

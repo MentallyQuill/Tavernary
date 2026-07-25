@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "sillyanonymous-sillytavern-characterlibrary",
+  "repository": {
+    "id": 1139430137,
+    "owner": "Sillyanonymous",
+    "name": "SillyTavern-CharacterLibrary",
+    "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
+    "default_branch": "main",
+    "head_sha": "d795c9b7356ed61172704c46b2729bb481f9ae0a",
+    "head_committed_at": "2026-07-18T00:06:05.000Z",
+    "archived": false,
+    "created_at": "2026-01-22T00:21:33.000Z",
+    "size_kb": 4444
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-07-18T00:06:53.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 98,
+    "forks_count": 20,
+    "subscribers_count": 2,
+    "aggregate": 120
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

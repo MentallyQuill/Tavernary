@@ -1,99 +1,171 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T01:17:58.367Z",
-  "completed_at": "2026-07-25T01:22:59.723Z",
+  "started_at": "2026-07-25T03:20:38.748Z",
+  "completed_at": "2026-07-25T03:35:48.326Z",
   "counts": {
-    "total": 12,
-    "checked": 12,
-    "changed": 12,
+    "total": 24,
+    "checked": 24,
+    "changed": 24,
     "unchanged": 0,
-    "provisional": 24,
-    "degraded": 0,
+    "provisional": 75,
+    "degraded": 4,
     "unavailable": 0,
-    "failed": 1,
+    "failed": 6,
     "compared": 0,
-    "baseline": 11,
+    "baseline": 18,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4997,
+    "graphql_remaining": 4999,
     "rest_requests": 0
   },
-  "duration_ms": 301356,
+  "duration_ms": 909578,
   "project_timings": [
     {
-      "project_id": "aikohanasaki-sillytavern-memorybooks",
+      "project_id": "icefog72-sillytavern-everytextlineeditor",
       "outcome": "failed",
-      "duration_ms": 300280,
+      "duration_ms": 907832,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "amousepad-lumiagent",
+      "project_id": "j-dandelion-lumiverse-canvas",
+      "outcome": "failed",
+      "duration_ms": 907832,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "lithiumwaves-danganronpa-sillytavern",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "amousepad-lumirealm",
+      "project_id": "maxipawlowski-story-orchestrator",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumistate",
+      "project_id": "mentallyquill-directive",
+      "outcome": "failed",
+      "duration_ms": 907833,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mentallyquill-saga",
+      "outcome": "failed",
+      "duration_ms": 907833,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mentallyquill-st-wandlight",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumiweather",
+      "project_id": "mindbound-lumiscript",
+      "outcome": "failed",
+      "duration_ms": 907833,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mitaska-weathertweaker",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumiworld",
+      "project_id": "mkrrussell0411-star-character-stats-extension",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-sillytavern-charactervisuals",
+      "project_id": "mokimoko-sillytavern-dynamicaudioredux",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-sillytavern-outfitswitch",
+      "project_id": "mokimoko-sillytavern-scenariocrafter",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "archkr-st-basicspotify",
+      "project_id": "morgoookru-st-chat-finder",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
-      "project_id": "arif-salah-megumin-suite",
+      "project_id": "multihogaurelius-context-injection-rng-for-dnd",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907834,
       "error_code": null
     },
     {
-      "project_id": "ayvencore-sillytavern-another-character-library",
+      "project_id": "multihogaurelius-sillytavern-multihogdndframework",
+      "outcome": "failed",
+      "duration_ms": 907834,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "n0819-sonder-engine",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 907834,
       "error_code": null
     },
     {
-      "project_id": "ayvencore-sillytavern-lorebook-manager",
+      "project_id": "nattaphat010447-nutho-autocloser",
       "outcome": "baseline",
-      "duration_ms": 300282,
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nbrown725-sillytavern-alternatedescriptions",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nemovonnirgend-nemopresetext",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nialyn-mid-polyceph",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nickchegg-game-engine",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "noathouard-sillytavern-extension-npc-portait-switcher",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "p-e-w-sorcery",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "paradox460-st-messagesplit",
+      "outcome": "baseline",
+      "duration_ms": 907834,
       "error_code": null
     }
   ],

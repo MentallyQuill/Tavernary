@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "project_id": "enerccio-sillytavern-sidequery",
+  "repository": {
+    "id": 1220910140,
+    "owner": "Enerccio",
+    "name": "SillyTavern-SideQuery",
+    "url": "https://github.com/Enerccio/SillyTavern-SideQuery",
+    "default_branch": "master",
+    "head_sha": "f4857597ad10c8564bc7c9f43cbf62a661a0e9da",
+    "head_committed_at": "2026-07-10T14:33:04.000Z",
+    "archived": false,
+    "created_at": "2026-04-25T13:55:53.000Z",
+    "size_kb": 741
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-10T14:33:04.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-10T14:33:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-02T18:26:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T06:11:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T17:37:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-04T15:18:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-30T14:36:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T20:22:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T12:58:25.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 4,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

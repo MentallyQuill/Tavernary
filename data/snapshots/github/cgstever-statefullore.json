@@ -8,32 +8,40 @@
     "url": "https://github.com/cgstever/StatefulLore",
     "default_branch": "main",
     "head_sha": "715fae8157b1de5386524eb93e2a6508c3de1f4d",
+    "head_committed_at": "2026-06-09T15:33:19.000Z",
     "archived": false,
-    "created_at": "2026-03-14T20:59:40Z",
-    "size_kb": 839,
-    "head_committed_at": null
+    "created_at": "2026-03-14T20:59:40.000Z",
+    "size_kb": 839
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-06-09T15:33:19.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      true,
-      true,
-      false,
-      true,
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "source_weeks": [
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-09T15:33:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T21:21:20.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-13T20:52:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T17:24:40.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:22:39.715Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,11 +50,7 @@
     "subscribers_count": 0,
     "aggregate": 5
   },
-  "license": {
-    "status": "missing",
-    "spdx_id": null,
-    "source_path": null
-  },
-  "refreshed_at": "2026-07-24T19:17:47.790Z",
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:22:39.715Z",
   "stale_since": null
 }

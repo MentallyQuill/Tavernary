@@ -1,0 +1,45 @@
+{
+  "schema_version": 2,
+  "project_id": "kurohomeless-sillytavern-token-and-cost-statistics",
+  "repository": {
+    "id": 1247868572,
+    "owner": "kurohomeless",
+    "name": "SillyTavern-Token-and-Cost-Statistics",
+    "url": "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics",
+    "default_branch": "master",
+    "head_sha": "2c6b36a15ef753a80707ab8c1fb39486b471172a",
+    "head_committed_at": "2026-05-28T17:45:42.000Z",
+    "archived": false,
+    "created_at": "2026-05-23T22:21:45.000Z",
+    "size_kb": 420
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-28T17:45:42.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-28T17:45:42.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "stale_since": null
+}

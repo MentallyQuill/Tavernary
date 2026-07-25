@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "project_id": "coneja-chibi-tunnelvision",
+  "repository": {
+    "id": 1174011234,
+    "owner": "Coneja-Chibi",
+    "name": "TunnelVision",
+    "url": "https://github.com/Coneja-Chibi/TunnelVision",
+    "default_branch": "main",
+    "head_sha": "882a40e35f1c9677c84df1523a4cceb5f52c3364",
+    "head_committed_at": "2026-07-20T03:32:37.000Z",
+    "archived": false,
+    "created_at": "2026-03-06T01:22:24.000Z",
+    "size_kb": 415
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-19T04:36:03.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T04:36:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-15T23:21:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-09T02:46:52.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 112,
+    "forks_count": 21,
+    "subscribers_count": 2,
+    "aggregate": 135
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

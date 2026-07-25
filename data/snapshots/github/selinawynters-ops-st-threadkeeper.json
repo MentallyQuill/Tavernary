@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "selinawynters-ops-st-threadkeeper",
+  "repository": {
+    "id": 1219416060,
+    "owner": "selinawynters-ops",
+    "name": "ST---ThreadKeeper",
+    "url": "https://github.com/selinawynters-ops/ST---ThreadKeeper",
+    "default_branch": "main",
+    "head_sha": "d33f8f56e2ea47dfff4eda3940491d8a2c7a767f",
+    "head_committed_at": "2026-07-17T21:51:13.000Z",
+    "archived": false,
+    "created_at": "2026-04-23T21:19:04.000Z",
+    "size_kb": 3419
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-06-01T06:22:47.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 1,
+    "subscribers_count": 1,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "project_id": "furitaocanon-sillytavern-personas",
+  "repository": {
+    "id": 1079428625,
+    "owner": "Furitaocanon",
+    "name": "SillyTavern-Personas",
+    "url": "https://github.com/Furitaocanon/SillyTavern-Personas",
+    "default_branch": "main",
+    "head_sha": "6b6439862f1d0c9a57feaa3c1fc215f1541b7b58",
+    "head_committed_at": "2025-10-27T05:21:51.000Z",
+    "archived": false,
+    "created_at": "2025-10-19T19:34:38.000Z",
+    "size_kb": 169
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2025-10-19T19:38:37.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 8,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 8
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

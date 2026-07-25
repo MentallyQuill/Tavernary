@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "project_id": "leandrojofre-sillytavern-stat-us-maximus",
+  "repository": {
+    "id": 1005915564,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-Stat-us-Maximus",
+    "url": "https://github.com/leandrojofre/SillyTavern-Stat-us-Maximus",
+    "default_branch": "release",
+    "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
+    "head_committed_at": "2026-07-02T00:36:51.000Z",
+    "archived": false,
+    "created_at": "2025-06-21T04:43:25.000Z",
+    "size_kb": 1293
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-02T00:36:15.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-02T00:36:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-30T02:05:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-23T07:08:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T00:52:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-05T21:24:03.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-02T00:37:04.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 2,
+    "subscribers_count": 0,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "stale_since": null
+}

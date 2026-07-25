@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "zapoverde-sillytavern-triggeryze",
+  "repository": {
+    "id": 1268032451,
+    "owner": "ZapoVerde",
+    "name": "SillyTavern-Triggeryze",
+    "url": "https://github.com/ZapoVerde/SillyTavern-Triggeryze",
+    "default_branch": "main",
+    "head_sha": "56a1f679a3e470c06e5dda4260386fb09fcb1ce9",
+    "head_committed_at": "2026-07-01T09:32:27.000Z",
+    "archived": false,
+    "created_at": "2026-06-13T04:35:53.000Z",
+    "size_kb": 768
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 6,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 6
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

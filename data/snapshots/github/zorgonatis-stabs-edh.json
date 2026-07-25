@@ -8,32 +8,35 @@
     "url": "https://github.com/Zorgonatis/Stabs-EDH",
     "default_branch": "main",
     "head_sha": "1d4bf8eebb60f5bc11222983cb0d7fccf6843b97",
+    "head_committed_at": "2026-05-21T19:07:33.000Z",
     "archived": false,
-    "created_at": "2025-11-21T03:38:52Z",
-    "size_kb": 20536,
-    "head_committed_at": null
+    "created_at": "2025-11-21T03:38:52.000Z",
+    "size_kb": 20536
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-05-21T19:07:33.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      true,
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "source_weeks": [
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-21T19:07:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-13T22:58:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T02:55:36.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:22:39.715Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,11 +45,7 @@
     "subscribers_count": 12,
     "aggregate": 189
   },
-  "license": {
-    "status": "missing",
-    "spdx_id": null,
-    "source_path": null
-  },
-  "refreshed_at": "2026-07-24T09:42:40.255Z",
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:22:39.715Z",
   "stale_since": null
 }

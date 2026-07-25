@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "virgilianshailer-llm-tools",
+  "repository": {
+    "id": 1251530217,
+    "owner": "virgilianshailer",
+    "name": "llm-tools",
+    "url": "https://github.com/virgilianshailer/llm-tools",
+    "default_branch": "main",
+    "head_sha": "2c0b9fac11446b9e9a11ccdb8d66537ae7001ba9",
+    "head_committed_at": "2026-05-27T17:51:08.000Z",
+    "archived": false,
+    "created_at": "2026-05-27T17:07:09.000Z",
+    "size_kb": 130
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

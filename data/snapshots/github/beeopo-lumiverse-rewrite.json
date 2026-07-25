@@ -8,32 +8,35 @@
     "url": "https://github.com/Beeopo/Lumiverse-Rewrite",
     "default_branch": "main",
     "head_sha": "0eb0fd0a1476f1ea3cad25369689f50e0270d2ab",
+    "head_committed_at": "2026-07-13T03:36:14.000Z",
     "archived": false,
-    "created_at": "2026-06-26T18:50:10Z",
-    "size_kb": 198,
-    "head_committed_at": null
+    "created_at": "2026-06-26T18:50:10.000Z",
+    "size_kb": 198
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-13T03:36:14.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      true,
-      true,
-      true,
-      false
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-13T03:36:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T04:59:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-26T21:50:48.000Z",
+        "precision": "exact"
+      }
     ],
-    "latest_release_at": "2026-07-13T03:40:13Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-13T03:40:13.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:15:54.114Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +50,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T19:03:48.858Z",
+  "refreshed_at": "2026-07-25T02:15:54.114Z",
   "stale_since": null
 }

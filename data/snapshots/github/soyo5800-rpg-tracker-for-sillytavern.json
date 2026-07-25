@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "soyo5800-rpg-tracker-for-sillytavern",
+  "repository": {
+    "id": 1281058203,
+    "owner": "Soyo5800",
+    "name": "rpg-tracker-for-sillytavern",
+    "url": "https://github.com/Soyo5800/rpg-tracker-for-sillytavern",
+    "default_branch": "main",
+    "head_sha": "34e321cd22034858c8ade505b7eda1c65f373920",
+    "head_committed_at": "2026-07-23T17:56:57.000Z",
+    "archived": false,
+    "created_at": "2026-06-26T07:29:50.000Z",
+    "size_kb": 3472
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

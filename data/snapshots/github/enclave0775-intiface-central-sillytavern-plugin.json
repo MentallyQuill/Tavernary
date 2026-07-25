@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "project_id": "enclave0775-intiface-central-sillytavern-plugin",
+  "repository": {
+    "id": 1034514716,
+    "owner": "Enclave0775",
+    "name": "Intiface_Central-Sillytavern-plugin",
+    "url": "https://github.com/Enclave0775/Intiface_Central-Sillytavern-plugin",
+    "default_branch": "main",
+    "head_sha": "1422c7c1a5143775f21053d15145ef179fd34501",
+    "head_committed_at": "2026-04-21T13:57:47.000Z",
+    "archived": false,
+    "created_at": "2025-08-08T14:09:38.000Z",
+    "size_kb": 333
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-04-21T13:57:47.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 30,
+    "forks_count": 2,
+    "subscribers_count": 0,
+    "aggregate": 32
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

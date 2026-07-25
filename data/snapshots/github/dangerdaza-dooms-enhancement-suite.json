@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "project_id": "dangerdaza-dooms-enhancement-suite",
+  "repository": {
+    "id": 1163555391,
+    "owner": "DangerDaza",
+    "name": "Dooms-Enhancement-Suite",
+    "url": "https://github.com/DangerDaza/Dooms-Enhancement-Suite",
+    "default_branch": "main",
+    "head_sha": "713f6b1981d36095ce801f9b5a88c133b5f3b58b",
+    "head_committed_at": "2026-07-19T01:11:57.000Z",
+    "archived": false,
+    "created_at": "2026-02-21T20:05:42.000Z",
+    "size_kb": 3989
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-19T01:11:57.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T01:11:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-08T00:55:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T20:28:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T01:14:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-25T23:49:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T20:26:37.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-06-11T17:11:22.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 46,
+    "forks_count": 9,
+    "subscribers_count": 3,
+    "aggregate": 58
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

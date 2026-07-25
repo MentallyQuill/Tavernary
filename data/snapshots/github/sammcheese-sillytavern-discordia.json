@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "sammcheese-sillytavern-discordia",
+  "repository": {
+    "id": 1104616181,
+    "owner": "SammCheese",
+    "name": "SillyTavern-Discordia",
+    "url": "https://github.com/SammCheese/SillyTavern-Discordia",
+    "default_branch": "main",
+    "head_sha": "83bf82886c4eb858edadb85217d44716a5db6174",
+    "head_committed_at": "2026-07-16T08:40:52.000Z",
+    "archived": false,
+    "created_at": "2025-11-26T13:00:55.000Z",
+    "size_kb": 3858
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 4,
+    "forks_count": 0,
+    "subscribers_count": 1,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

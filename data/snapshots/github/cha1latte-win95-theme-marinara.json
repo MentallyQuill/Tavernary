@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "project_id": "cha1latte-win95-theme-marinara",
+  "repository": {
+    "id": 1221894927,
+    "owner": "cha1latte",
+    "name": "win95-theme-marinara",
+    "url": "https://github.com/cha1latte/win95-theme-marinara",
+    "default_branch": "main",
+    "head_sha": "2c3660bc57bb5098876fac1134a10ccd9e9d6f77",
+    "head_committed_at": "2026-04-27T23:02:44.000Z",
+    "archived": false,
+    "created_at": "2026-04-26T20:17:49.000Z",
+    "size_kb": 2276
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-04-27T22:47:25.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "stale_since": null
+}

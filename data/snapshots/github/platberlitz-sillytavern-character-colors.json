@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "platberlitz-sillytavern-character-colors",
+  "repository": {
+    "id": 1133521830,
+    "owner": "platberlitz",
+    "name": "sillytavern-character-colors",
+    "url": "https://github.com/platberlitz/sillytavern-character-colors",
+    "default_branch": "main",
+    "head_sha": "9af3e1c499c6f0c2162f52704b02397e21d8d710",
+    "head_committed_at": "2026-07-23T12:44:41.000Z",
+    "archived": false,
+    "created_at": "2026-01-13T13:14:46.000Z",
+    "size_kb": 810
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 17,
+    "forks_count": 2,
+    "subscribers_count": 1,
+    "aggregate": 20
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}

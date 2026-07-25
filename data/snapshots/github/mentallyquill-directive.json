@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "mentallyquill-directive",
+  "repository": {
+    "id": 1273112032,
+    "owner": "MentallyQuill",
+    "name": "Directive",
+    "url": "https://github.com/MentallyQuill/Directive",
+    "default_branch": "main",
+    "head_sha": "c262bc50031d7df13f524a7828b29b3086fea4a2",
+    "head_committed_at": "2026-07-23T07:02:13.000Z",
+    "archived": false,
+    "created_at": "2026-06-18T08:09:47.000Z",
+    "size_kb": 109006
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 2
+  },
+  "community": {
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "stale_since": "2026-07-25T03:06:18.863Z"
+}

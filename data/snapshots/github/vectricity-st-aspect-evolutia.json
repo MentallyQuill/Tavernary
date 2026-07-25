@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "project_id": "vectricity-st-aspect-evolutia",
+  "repository": {
+    "id": 1225316984,
+    "owner": "Vectricity",
+    "name": "st-aspect-evolutia",
+    "url": "https://github.com/Vectricity/st-aspect-evolutia",
+    "default_branch": "main",
+    "head_sha": "7d7970b4b55e99b81ab63a8edfae0ca707d9d85b",
+    "head_committed_at": "2026-05-26T08:37:42.000Z",
+    "archived": false,
+    "created_at": "2026-04-30T06:54:15.000Z",
+    "size_kb": 235
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": "2026-05-26T08:36:29.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 10,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "stale_since": null
+}
