@@ -25,8 +25,6 @@ export function attributionTooltip(attribution: CatalogAttribution) {
 
   if (attribution.status === "pending") {
     parts.push("Contributor data pending");
-  } else if (humans.length === 0 && botsOrAi.length === 0) {
-    parts.push("No additional contributors reported by GitHub");
   } else {
     if (humans.length > 0) {
       parts.push(`Contributors: ${humans.join(", ")}`);

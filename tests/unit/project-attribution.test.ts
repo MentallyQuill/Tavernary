@@ -54,7 +54,7 @@ describe("project attribution copy", () => {
         humanContributorCount: 0,
         status: "current",
       }),
-    ).toBe("Owner: Solo · No additional contributors reported by GitHub");
+    ).toBe("Owner: Solo");
     expect(
       attributionTooltip({
         owner: "Solo",
