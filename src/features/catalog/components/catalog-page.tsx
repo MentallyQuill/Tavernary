@@ -21,6 +21,7 @@ import {
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
+import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
@@ -55,6 +56,7 @@ type AddedStatus = {
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { query, setQuery } = useCatalogQuery();
+  const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
     CatalogQuery["mode"] | null
   >(null);
@@ -90,7 +92,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     projects: catalog.projects,
     draftProjectIds: buildState?.draft.projectIds ?? [],
     active: query.mode === "projects",
-    onFirstSelection: workspace.startSelectionDraft,
+    onFirstSelection: () =>
+      workspace.startSelectionDraft({
+        collapsed: phone && workspace.state.mode === "intro" ? true : undefined,
+      }),
     onSelectionEmpty: workspace.discardUntouchedSelectionDraft,
     onRemoveFromDraft: workspace.removeProjectFromDraft,
     onStatus: setSelectionAnnouncement,

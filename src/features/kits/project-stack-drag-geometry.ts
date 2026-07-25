@@ -8,6 +8,13 @@ export type DragRect = {
   height: number;
 };
 
+export function dragHandleAnchor(source: DragRect, handle: DragRect): Point {
+  return {
+    x: handle.left + handle.width / 2 - source.left,
+    y: handle.top + handle.height / 2 - source.top,
+  };
+}
+
 export function exceedsDragThreshold(
   origin: Point,
   current: Point,

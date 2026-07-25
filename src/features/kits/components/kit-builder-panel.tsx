@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
@@ -28,6 +34,10 @@ function issueUrl(template: string, kit: CatalogKit) {
   url.searchParams.set("kit-id", kit.id);
   url.searchParams.set("share-url", kitShareUrl(kit.id));
   return url.toString();
+}
+
+export function availableBuilderHeight(viewportHeight: number, top: number) {
+  return Math.max(0, viewportHeight - Math.max(0, top));
 }
 
 export function KitBuilderPanel({
@@ -132,6 +142,41 @@ export function KitBuilderPanel({
     },
   });
 
+  useLayoutEffect(() => {
+    if (phone) return;
+
+    const workspace = workspaceRef.current;
+    if (!workspace) return;
+
+    let frame = 0;
+    const updateVisibleHeight = () => {
+      frame = 0;
+      const height = availableBuilderHeight(
+        window.innerHeight,
+        workspace.getBoundingClientRect().top,
+      );
+      workspace.style.setProperty(
+        "--kit-builder-visible-height",
+        `${height}px`,
+      );
+    };
+    const scheduleUpdate = () => {
+      if (!frame) {
+        frame = window.requestAnimationFrame(updateVisibleHeight);
+      }
+    };
+
+    updateVisibleHeight();
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("scroll", scheduleUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [phone, state.collapsed, state.mode]);
+
   if (
     phone &&
     !phonePresence.present &&
@@ -172,15 +217,17 @@ export function KitBuilderPanel({
             onOpen={openCollapsedBuilder}
           />
         ) : (
-          <button
-            type="button"
-            className="kit-builder-rail"
-            aria-label="Open Kit Builder"
-            onClick={openCollapsedBuilder}
-          >
-            <CategoryIcon name="kit-builder" />
+          <div className="kit-builder-rail">
+            <button
+              type="button"
+              className="kit-builder-toggle"
+              aria-label="Open Kit Builder"
+              onClick={openCollapsedBuilder}
+            >
+              <CategoryIcon name="kit-builder" />
+            </button>
             <span>Kit Builder</span>
-          </button>
+          </div>
         )}
       </aside>
     );
@@ -202,7 +249,9 @@ export function KitBuilderPanel({
         </h2>
         <button
           type="button"
-          className={`control-icon${phone ? "" : " kit-builder-collapse"}`}
+          className={`control-icon kit-builder-toggle${
+            phone ? "" : " kit-builder-collapse"
+          }`}
           aria-label={phone ? "Close Kit Builder" : "Collapse Kit Builder"}
           onClick={() => {
             onCollapse();

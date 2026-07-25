@@ -1,12 +1,34 @@
 import { describe, expect, test } from "vitest";
 
 import {
+  dragHandleAnchor,
   exceedsDragThreshold,
   isOutsideEditor,
   stackTargetIndex,
 } from "@/features/kits/project-stack-drag-geometry";
 
 describe("project stack drag geometry", () => {
+  test("anchors the drag ghost under the center of the handle", () => {
+    const source = {
+      top: 100,
+      right: 420,
+      bottom: 164,
+      left: 120,
+      width: 300,
+      height: 64,
+    };
+    const handle = {
+      top: 110,
+      right: 174,
+      bottom: 154,
+      left: 130,
+      width: 44,
+      height: 44,
+    };
+
+    expect(dragHandleAnchor(source, handle)).toEqual({ x: 32, y: 32 });
+  });
+
   test("activates at four CSS pixels of movement", () => {
     expect(exceedsDragThreshold({ x: 0, y: 0 }, { x: 3, y: 0 })).toBe(false);
     expect(exceedsDragThreshold({ x: 0, y: 0 }, { x: 4, y: 0 })).toBe(true);

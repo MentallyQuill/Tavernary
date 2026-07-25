@@ -67,22 +67,28 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-left:\s*40px/s,
+      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-right:\s*40px/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*left:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
+      /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
     );
     expect(css).toMatch(
       /\.project-kit-control\s*\{[^}]*width:\s*44px[^}]*height:\s*44px[^}]*background:\s*transparent/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.project-card-shell:hover,\s*\.project-card-shell:focus-within\s*\{[^}]*transform:\s*translateY\(-2px\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-card-shell:has\(\.project-card:active\),\s*\.project-card-shell:has\(\.project-kit-control:active\)\s*\{[^}]*transform:\s*scale\(0\.98\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
       /\.project-kit-control\[aria-pressed="true"\] \.project-kit-control-face\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-page\)[^}]*background:\s*var\(--color-kind-extension\)/s,
     );
     expect(css).toMatch(
       /\.kit-builder-remove\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
@@ -95,6 +101,9 @@ describe("catalog visual alignment", () => {
     );
     expect(responsive).toMatch(
       /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.project-card-shell:hover,[\s\S]*?\.project-card-shell:has\(\.project-kit-control:active\)\s*\{[^}]*transform:\s*none/s,
     );
     expect(motion).toMatch(
       /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.project-kit-control/s,
@@ -221,6 +230,42 @@ describe("catalog visual alignment", () => {
     );
     expect(css).toMatch(
       /\.compact-cards \.card-title\s*\{[^}]*display:\s*block[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis[^}]*white-space:\s*nowrap/s,
+    );
+  });
+
+  test("keeps the Kit control on the right inside the card shell motion frame", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.project-card-shell\s*\{[^}]*transition:[^}]*transform/s,
+    );
+    expect(css).toMatch(
+      /\.project-card-shell:hover,\s*\.project-card-shell:focus-within\s*\{[^}]*transform:\s*translateY\(-2px\)/s,
+    );
+    expect(css).toMatch(/\.project-kit-control-hit\s*\{[^}]*right:\s*4px/s);
+    expect(css).not.toMatch(/\.project-kit-control-hit\s*\{[^}]*left:\s*4px/s);
+    expect(css).toMatch(
+      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-right:\s*40px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.project-card h2,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*padding-right:\s*44px/s,
+    );
+  });
+
+  test("distinguishes builder sections and uses one desktop toggle size", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-frontend-slot\s*\{[^}]*border-color:\s*var\(--color-kind-frontend\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-composition-section h3\s*\{[^}]*text-transform:\s*uppercase/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-toggle\s*\{[^}]*width:\s*36px[^}]*height:\s*36px/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel\s*\{[^}]*height:\s*var\(--kit-builder-visible-height,\s*calc\(100dvh - 116px\)\)/s,
     );
   });
 

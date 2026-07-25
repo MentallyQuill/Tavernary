@@ -149,24 +149,27 @@ export function useKitBuilder({
     );
   }, []);
 
-  const startSelectionDraft = useCallback(() => {
-    if (state.mode === "build") return;
-    selectionStartedDraftRef.current = true;
-    setDraftOrigin("create");
-    setOriginalProjectIds([]);
-    setState({
-      mode: "build",
-      collapsed: true,
-      dirty: false,
-      draft: {
-        operation: "create",
-        kitId: null,
-        title: "",
-        description: "",
-        projectIds: [],
-      },
-    });
-  }, [state.mode]);
+  const startSelectionDraft = useCallback(
+    (options?: { collapsed?: boolean }) => {
+      if (state.mode === "build") return;
+      selectionStartedDraftRef.current = true;
+      setDraftOrigin("create");
+      setOriginalProjectIds([]);
+      setState({
+        mode: "build",
+        collapsed: options?.collapsed ?? state.collapsed,
+        dirty: false,
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "",
+          description: "",
+          projectIds: [],
+        },
+      });
+    },
+    [state.collapsed, state.mode],
+  );
 
   const discardUntouchedSelectionDraft = useCallback(() => {
     if (!selectionStartedDraftRef.current) return;
@@ -181,7 +184,7 @@ export function useKitBuilder({
         return current;
       }
       selectionStartedDraftRef.current = false;
-      return { mode: "intro", collapsed: true };
+      return { mode: "intro", collapsed: current.collapsed };
     });
   }, []);
 
@@ -237,7 +240,7 @@ export function useKitBuilder({
         setOriginalProjectIds([]);
         setState({
           mode: "build",
-          collapsed: true,
+          collapsed: state.collapsed,
           dirty: true,
           draft: {
             operation: "create",
