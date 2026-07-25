@@ -322,6 +322,22 @@ test("runs enrichment as one self-resuming rollout with durable canary authoriza
   );
 });
 
+test("synchronizes a queued enrichment dispatch before planning from repository state", async () => {
+  const source = await readFile(
+    resolve(workflowDirectory, "enrich-catalog.yml"),
+    "utf8",
+  );
+  const executionStart = source.lastIndexOf("finish_full_rollout()");
+  const preflight = source.lastIndexOf(
+    "npm run catalog:enrich -- --mode preflight",
+  );
+  const synchronization = source.lastIndexOf("sync_main", preflight);
+
+  expect(executionStart).toBeGreaterThan(-1);
+  expect(synchronization).toBeGreaterThan(executionStart);
+  expect(synchronization).toBeLessThan(preflight);
+});
+
 test("triage can label issues but cannot write repository content", async () => {
   const triage = await workflow("triage-submission");
   expect(triage.permissions).toEqual({
