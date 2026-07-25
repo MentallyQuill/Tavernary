@@ -1,6 +1,5 @@
 import type { EnrichmentInput, EnrichmentOutput } from "./enrich-readmes.d.mts";
 
-export const EXPECTED_ENRICHMENT_MODEL: "MiniMax-M3";
 export const ENRICHMENT_TIMEOUT_MS: 120000;
 
 export type ProviderErrorCode =
@@ -20,7 +19,7 @@ export class EnrichmentProviderError extends Error {
 export type ProviderResult = {
   output: EnrichmentOutput;
   metadata: {
-    requestedModel: "MiniMax-M3";
+    requestedModel: string;
     returnedModel: string | null;
     latencyMs: number;
   };
@@ -30,7 +29,7 @@ export function validateProviderConfiguration(input: {
   apiUrl?: string;
   apiKey?: string;
   model?: string;
-}): { apiUrl: string; apiKey: string; model: "MiniMax-M3" };
+}): { apiUrl: string; apiKey: string; model: string };
 
 export function createEnrichmentProvider(options: {
   apiUrl?: string;

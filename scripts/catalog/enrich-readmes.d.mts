@@ -43,7 +43,7 @@ export type EnrichmentProvider = {
   generate(input: EnrichmentInput): Promise<{
     output: EnrichmentOutput;
     metadata: {
-      requestedModel: "MiniMax-M3";
+      requestedModel: string;
       returnedModel: string | null;
       latencyMs: number;
     };
@@ -63,7 +63,7 @@ export type EnrichmentOptions = {
 export type PreflightResult = {
   mode: "preflight";
   status: "passed";
-  requested_model: "MiniMax-M3";
+  requested_model: string;
   returned_model: string | null;
   latency_ms: number;
   validation_status: "passed";

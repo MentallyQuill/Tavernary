@@ -131,6 +131,8 @@ test("enrichment prepares a random canary and limits batch publication", async (
   expect(text).toContain("while IFS= read -r project_id");
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
   expect(text).toContain("npm run catalog:enrich -- --mode preflight");
+  expect(text).toContain("## Enrichment provider preflight");
+  expect(text).not.toContain("## MiniMax M3 preflight");
   expect(text).toContain('"$MODE" == "canary"');
   expect(text).toContain('test "$run_mode" = "full"');
   expect(text).not.toContain("workflow run enrich-catalog.yml");

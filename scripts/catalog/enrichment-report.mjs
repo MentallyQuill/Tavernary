@@ -97,7 +97,7 @@ export function createEnrichmentReport(state) {
     mode: state.mode,
     status: state.status,
     phase: state.phase,
-    expected_model: "MiniMax-M3",
+    expected_model: state.expected_model,
     batch_size: state.batch_size,
     concurrency: state.concurrency,
     created_at: state.created_at,
@@ -133,8 +133,12 @@ export function validateEnrichmentReport(value) {
   if (!value || typeof value !== "object" || value.schema_version !== 1) {
     throw new Error("enrichment report schema is invalid");
   }
-  if (value.expected_model !== "MiniMax-M3") {
-    throw new Error("enrichment report must use MiniMax-M3");
+  if (
+    typeof value.expected_model !== "string" ||
+    value.expected_model.length === 0 ||
+    /\s/u.test(value.expected_model)
+  ) {
+    throw new Error("enrichment report must name its configured model");
   }
   if (!["canary", "full"].includes(value.mode)) {
     throw new Error("enrichment report mode is invalid");

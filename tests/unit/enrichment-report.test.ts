@@ -11,6 +11,7 @@ import {
 } from "../../scripts/catalog/enrichment-report.mjs";
 
 const now = "2026-07-24T00:00:00.000Z";
+const model = "minimax/minimax-m3:thinking";
 
 test("serializes only sanitized deterministic run-state fields", () => {
   let state = createEnrichmentRunState({
@@ -18,6 +19,7 @@ test("serializes only sanitized deterministic run-state fields", () => {
     manifest: ["b", "a"],
     runId: "run-1",
     now,
+    model,
   });
   state = applyAttemptResults(
     state,
@@ -38,8 +40,8 @@ test("serializes only sanitized deterministic run-state fields", () => {
         repositoryId: 42,
         headSha: "a".repeat(40),
         provider: {
-          requestedModel: "MiniMax-M3",
-          returnedModel: "MiniMax-M3",
+          requestedModel: model,
+          returnedModel: model,
           latencyMs: 250,
         },
       },
@@ -60,8 +62,8 @@ test("serializes only sanitized deterministic run-state fields", () => {
     message: "The enrichment provider returned a server error.",
   });
   expect(report.entries.b).toMatchObject({
-    requested_model: "MiniMax-M3",
-    returned_model: "MiniMax-M3",
+    requested_model: model,
+    returned_model: model,
   });
   expect(validateEnrichmentReport(JSON.parse(serialized))).toEqual(report);
 });
@@ -73,12 +75,13 @@ test("rejects malformed or contradictory durable reports", () => {
       manifest: ["a"],
       runId: "run-1",
       now,
+      model,
     }),
   );
 
   expect(() =>
-    validateEnrichmentReport({ ...report, expected_model: "other" }),
-  ).toThrow("MiniMax-M3");
+    validateEnrichmentReport({ ...report, expected_model: "" }),
+  ).toThrow("configured model");
   expect(() =>
     validateEnrichmentReport({ ...report, primary_cursor: 2 }),
   ).toThrow("cursor");
@@ -94,6 +97,7 @@ test("rejects malformed or contradictory durable reports", () => {
     manifest: ["a", "b", "c", "d", "e"],
     runId: "canary",
     now,
+    model,
   });
   canary = applyAttemptResults(
     canary,

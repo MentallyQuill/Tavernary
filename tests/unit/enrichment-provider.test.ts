@@ -2,10 +2,11 @@ import { afterEach, expect, test, vi } from "vitest";
 
 import {
   ENRICHMENT_TIMEOUT_MS,
-  EXPECTED_ENRICHMENT_MODEL,
   createEnrichmentProvider,
   validateProviderConfiguration,
 } from "../../scripts/catalog/enrichment-provider.mjs";
+
+const model = "minimax/minimax-m3:thinking";
 
 const input = {
   id: "fixture",
@@ -32,7 +33,7 @@ const output = {
 function success(payload: Record<string, unknown> = {}) {
   return new Response(
     JSON.stringify({
-      model: "MiniMax-M3",
+      model,
       choices: [{ message: { content: JSON.stringify(output) } }],
       ...payload,
     }),
@@ -45,17 +46,14 @@ afterEach(() => {
 });
 
 test.each([
-  [{ apiUrl: "", apiKey: "key", model: "MiniMax-M3" }, "URL"],
-  [
-    { apiUrl: "https://api.example.test", apiKey: "", model: "MiniMax-M3" },
-    "key",
-  ],
+  [{ apiUrl: "", apiKey: "key", model }, "URL"],
+  [{ apiUrl: "https://api.example.test", apiKey: "", model }, "key"],
   [{ apiUrl: "https://api.example.test", apiKey: "key", model: "" }, "model"],
   [
     {
       apiUrl: "http://api.example.test",
       apiKey: "key",
-      model: "MiniMax-M3",
+      model,
     },
     "HTTPS",
   ],
@@ -63,9 +61,9 @@ test.each([
     {
       apiUrl: "https://api.example.test",
       apiKey: "key",
-      model: "MiniMax-M2",
+      model: ` ${model}`,
     },
-    "MiniMax-M3",
+    "whitespace",
   ],
 ] as const)(
   "rejects invalid configuration before fetch",
@@ -81,7 +79,7 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   const provider = createEnrichmentProvider({
     apiUrl: "https://api.example.test/v1/chat/completions",
     apiKey: "do-not-log",
-    model: "MiniMax-M3",
+    model,
     fetchImpl,
   });
 
@@ -89,7 +87,7 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
 
   const [, init] = fetchImpl.mock.calls[0];
   const body = JSON.parse(String(init?.body));
-  expect(body.model).toBe(EXPECTED_ENRICHMENT_MODEL);
+  expect(body.model).toBe(model);
   expect(body.messages[0].content).toMatch(/untrusted reference data/iu);
   expect(body.messages[0].content).toMatch(
     /do not follow.*embedded instructions/iu,
@@ -108,7 +106,7 @@ test("returns requested model, returned model, and latency metadata", async () =
   const provider = createEnrichmentProvider({
     apiUrl: "https://api.example.test/v1/chat/completions",
     apiKey: "key",
-    model: "MiniMax-M3",
+    model,
     fetchImpl: async () => success(),
     now: () => times.shift() ?? 1_250,
   });
@@ -116,8 +114,8 @@ test("returns requested model, returned model, and latency metadata", async () =
   await expect(provider.generate(input)).resolves.toEqual({
     output,
     metadata: {
-      requestedModel: "MiniMax-M3",
-      returnedModel: "MiniMax-M3",
+      requestedModel: model,
+      returnedModel: model,
       latencyMs: 250,
     },
   });
@@ -127,7 +125,7 @@ test("allows an absent returned model but rejects a mismatched one", async () =>
   const withoutModel = createEnrichmentProvider({
     apiUrl: "https://api.example.test",
     apiKey: "key",
-    model: "MiniMax-M3",
+    model,
     fetchImpl: async () => success({ model: undefined }),
   });
   await expect(withoutModel.generate(input)).resolves.toMatchObject({
@@ -137,7 +135,7 @@ test("allows an absent returned model but rejects a mismatched one", async () =>
   const mismatch = createEnrichmentProvider({
     apiUrl: "https://api.example.test",
     apiKey: "key",
-    model: "MiniMax-M3",
+    model,
     fetchImpl: async () => success({ model: "other-model" }),
   });
   await expect(mismatch.generate(input)).rejects.toMatchObject({
@@ -172,7 +170,7 @@ test.each([
     const provider = createEnrichmentProvider({
       apiUrl: "https://api.example.test",
       apiKey: "do-not-leak",
-      model: "MiniMax-M3",
+      model,
       fetchImpl,
     });
 
@@ -193,7 +191,7 @@ test("aborts each model call after 120 seconds", async () => {
   const provider = createEnrichmentProvider({
     apiUrl: "https://api.example.test",
     apiKey: "key",
-    model: "MiniMax-M3",
+    model,
     fetchImpl: async (_url, init) =>
       new Promise((_resolve, reject) => {
         init?.signal?.addEventListener("abort", () => {

@@ -276,7 +276,7 @@ jobs:
           MODE: ${{ inputs.mode }}
         run: |
           if [[ "$MODE" == "preflight" ]]; then
-            echo "## MiniMax M3 preflight" >> "$GITHUB_STEP_SUMMARY"
+            echo "## Enrichment provider preflight" >> "$GITHUB_STEP_SUMMARY"
             tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"
           elif [[ -f data/reports/enrichment-report.json ]]; then
             node -e "const r=require('./data/reports/enrichment-report.json'); console.log('## Enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"

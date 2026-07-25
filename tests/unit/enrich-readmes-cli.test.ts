@@ -8,10 +8,11 @@ import {
 import { runCli } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const now = "2026-07-24T00:00:00.000Z";
+const model = "minimax/minimax-m3:thinking";
 const providerConfiguration = {
   apiUrl: "https://api.example.test/v1/chat/completions",
   apiKey: "test-key",
-  model: "MiniMax-M3",
+  model,
 };
 const vocabularies = {
   primaryFunctions: [
@@ -29,8 +30,8 @@ const providerOutput = {
     capabilities: ["automation"],
   },
   metadata: {
-    requestedModel: "MiniMax-M3" as const,
-    returnedModel: "MiniMax-M3",
+    requestedModel: model,
+    returnedModel: model,
     latencyMs: 10,
   },
 };
@@ -98,12 +99,13 @@ function executionOptions(ids: string[]) {
   };
 }
 
-function deployedCanary() {
+function deployedCanary(canaryModel = model) {
   let canary = createEnrichmentRunState({
     mode: "canary",
     manifest: ["a", "b", "c", "d", "e"],
     runId: "canary",
     now,
+    model: canaryModel,
   });
   canary = applyAttemptResults(
     canary,
@@ -122,10 +124,10 @@ function deployedCanary() {
 }
 
 test.each([
-  [{ apiUrl: "", apiKey: "key", model: "MiniMax-M3" }, "URL"],
+  [{ apiUrl: "", apiKey: "key", model }, "URL"],
   [
-    { apiUrl: "https://api.example.test", apiKey: "key", model: "other" },
-    "MiniMax-M3",
+    { apiUrl: "https://api.example.test", apiKey: "key", model: ` ${model}` },
+    "whitespace",
   ],
 ] as const)(
   "preflight fails closed on provider configuration",
@@ -166,8 +168,8 @@ test("preflight performs one synthetic call without loading or writing catalog d
   expect(result).toEqual({
     mode: "preflight",
     status: "passed",
-    requested_model: "MiniMax-M3",
-    returned_model: "MiniMax-M3",
+    requested_model: model,
+    returned_model: model,
     latency_ms: 10,
     validation_status: "passed",
   });
@@ -211,6 +213,7 @@ test("a canary retry resumes only its failed IDs", async () => {
     manifest: ids,
     runId: "canary-1",
     now,
+    model,
   });
   previousReport = applyAttemptResults(
     previousReport,
@@ -252,6 +255,7 @@ test("canary approval records verified deployment without provider access", asyn
       manifest: ["a", "b", "c", "d", "e"],
       runId: "canary",
       now,
+      model,
     }),
     ["a", "b", "c", "d", "e"].map((id) => ({
       id,
@@ -284,6 +288,13 @@ test("start requires a deployed canary and freezes the complete eligible manifes
   await expect(
     runCli({ ...executionOptions(ids), mode: "start", previousReport: null }),
   ).rejects.toThrow("deployed canary");
+  await expect(
+    runCli({
+      ...executionOptions(ids),
+      mode: "start",
+      previousReport: deployedCanary("other/model"),
+    }),
+  ).rejects.toThrow("configured model");
 
   const report = await runCli({
     ...executionOptions(ids),
@@ -303,6 +314,7 @@ test("resume uses the next state batch and rejects terminal or canary state", as
     manifest: ids,
     runId: "full",
     now,
+    model,
   });
   full = applyAttemptResults(
     full,
@@ -333,6 +345,49 @@ test("resume uses the next state batch and rejects terminal or canary state", as
       previousReport: report,
     }),
   ).rejects.toThrow("running full");
+});
+
+test("canary retry and full resume reject a changed configured model", async () => {
+  const canaryIds = ["a", "b", "c", "d", "e"];
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest: canaryIds,
+    runId: "canary",
+    now,
+    model: "other/model",
+  });
+  canary = applyAttemptResults(
+    canary,
+    canaryIds.map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: id === "e" ? ("failed" as const) : ("enriched" as const),
+    })),
+    now,
+  );
+  await expect(
+    runCli({
+      ...executionOptions(canaryIds),
+      mode: "canary",
+      projectIds: canaryIds,
+      previousReport: canary,
+    }),
+  ).rejects.toThrow("configured model");
+
+  const full = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "full",
+    now,
+    model: "other/model",
+  });
+  await expect(
+    runCli({
+      ...executionOptions(["a"]),
+      mode: "resume",
+      previousReport: full,
+    }),
+  ).rejects.toThrow("configured model");
 });
 
 test("record failures advance durable state without rejecting the CLI", async () => {

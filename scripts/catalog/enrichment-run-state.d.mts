@@ -18,7 +18,7 @@ export type ProjectAttemptResult = {
   readmePath?: string | null;
   readmeRef?: string | null;
   provider?: {
-    requestedModel: "MiniMax-M3";
+    requestedModel: string;
     returnedModel: string | null;
     latencyMs: number;
   };
@@ -41,7 +41,7 @@ export type EnrichmentRunState = {
   mode: "canary" | "full";
   status: "running" | "awaiting-deployment" | "passed" | "failed" | "complete";
   phase: "primary" | "retry" | "complete";
-  expected_model: "MiniMax-M3";
+  expected_model: string;
   batch_size: number;
   concurrency: number;
   created_at: string;
@@ -65,6 +65,7 @@ export function createEnrichmentRunState(input: {
   manifest: string[];
   runId: string;
   now: string;
+  model: string;
   batchSize?: number;
   concurrency?: number;
 }): EnrichmentRunState;
@@ -92,4 +93,7 @@ export function approveCanaryDeployment(
   },
 ): EnrichmentRunState;
 
-export function assertFullRolloutAllowed(previous: EnrichmentRunState): void;
+export function assertFullRolloutAllowed(
+  previous: EnrichmentRunState,
+  model: string,
+): void;

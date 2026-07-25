@@ -4,12 +4,24 @@ import {
   applyAttemptResults,
   approveCanaryDeployment,
   assertFullRolloutAllowed,
-  createEnrichmentRunState,
+  createEnrichmentRunState as createRawEnrichmentRunState,
   selectNextRunBatch,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
 
 const now = "2026-07-24T00:00:00.000Z";
 const later = "2026-07-24T00:01:00.000Z";
+const model = "minimax/minimax-m3:thinking";
+
+function createEnrichmentRunState(
+  input: Omit<Parameters<typeof createRawEnrichmentRunState>[0], "model"> & {
+    model?: string;
+  },
+) {
+  return createRawEnrichmentRunState({
+    ...input,
+    model: input.model ?? model,
+  });
+}
 
 function ids(count: number, offset = 0) {
   return Array.from(
@@ -25,6 +37,57 @@ function results(
 ) {
   return projectIds.map((id) => ({ id, phase, outcome }));
 }
+
+test("pins the configured model and rejects a different full-rollout model", () => {
+  const manifest = ["a", "b", "c", "d", "e"];
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest,
+    runId: "canary",
+    now,
+    model,
+  });
+  canary = applyAttemptResults(canary, results(manifest, "primary"), later);
+  const passed = approveCanaryDeployment(canary, {
+    commitSha: "b".repeat(40),
+    deploymentRunId: 12345,
+    now: later,
+  });
+
+  expect(passed.expected_model).toBe(model);
+  expect(() => assertFullRolloutAllowed(passed, model)).not.toThrow();
+  expect(() => assertFullRolloutAllowed(passed, "other/model")).toThrow(
+    "configured model",
+  );
+});
+
+test("rejects attempt metadata from a different model", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "full",
+    now,
+  });
+
+  expect(() =>
+    applyAttemptResults(
+      state,
+      [
+        {
+          id: "a",
+          phase: "primary",
+          outcome: "enriched",
+          provider: {
+            requestedModel: "other/model",
+            returnedModel: "other/model",
+            latencyMs: 10,
+          },
+        },
+      ],
+      later,
+    ),
+  ).toThrow("configured model");
+});
 
 test("attempts every frozen manifest ID after earlier records complete", () => {
   let state = createEnrichmentRunState({
@@ -183,7 +246,7 @@ test("requires verified deployment before a successful canary authorizes full ro
     phase: "complete",
     deployment: null,
   });
-  expect(() => assertFullRolloutAllowed(awaitingDeployment)).toThrow(
+  expect(() => assertFullRolloutAllowed(awaitingDeployment, model)).toThrow(
     "deployed canary",
   );
 
@@ -200,14 +263,17 @@ test("requires verified deployment before a successful canary authorizes full ro
       verified_at: "2026-07-24T00:02:00.000Z",
     },
   });
-  expect(() => assertFullRolloutAllowed(passed)).not.toThrow();
+  expect(() => assertFullRolloutAllowed(passed, model)).not.toThrow();
   expect(() =>
-    assertFullRolloutAllowed({
-      ...passed,
-      primary_cursor: 0,
-      attempts: {},
-      entries: {},
-    }),
+    assertFullRolloutAllowed(
+      {
+        ...passed,
+        primary_cursor: 0,
+        attempts: {},
+        entries: {},
+      },
+      model,
+    ),
   ).toThrow("deployed canary");
 
   let failed = createEnrichmentRunState({
@@ -231,7 +297,9 @@ test("requires verified deployment before a successful canary authorizes full ro
     later,
   );
   expect(failed).toMatchObject({ status: "failed", phase: "complete" });
-  expect(() => assertFullRolloutAllowed(failed)).toThrow("deployed canary");
+  expect(() => assertFullRolloutAllowed(failed, model)).toThrow(
+    "deployed canary",
+  );
 });
 
 test("rejects invalid or premature canary deployment approval", () => {

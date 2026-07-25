@@ -589,6 +589,11 @@ export async function runCli(options = {}) {
       previousState.status === "running" &&
       previousState.phase === "retry"
     ) {
+      if (previousState.expected_model !== configuration.model) {
+        throw new Error(
+          "configured model does not match the running enrichment report",
+        );
+      }
       if (
         options.projectIds &&
         JSON.stringify([...options.projectIds].sort()) !==
@@ -603,17 +608,19 @@ export async function runCli(options = {}) {
         manifest: options.projectIds ?? [],
         runId: options.runId ?? randomUUID(),
         now: timestamp,
+        model: configuration.model,
         batchSize: options.batchSize,
         concurrency: options.concurrency,
       });
     }
   } else if (mode === "start") {
-    assertFullRolloutAllowed(previousState);
+    assertFullRolloutAllowed(previousState, configuration.model);
     state = createEnrichmentRunState({
       mode: "full",
       manifest: selectEnrichmentRecords(records).map(({ id }) => id),
       runId: options.runId ?? randomUUID(),
       now: timestamp,
+      model: configuration.model,
       batchSize: options.batchSize,
       concurrency: options.concurrency,
     });
@@ -624,6 +631,11 @@ export async function runCli(options = {}) {
       !["primary", "retry"].includes(previousState.phase)
     ) {
       throw new Error("resume requires a running full enrichment report");
+    }
+    if (previousState.expected_model !== configuration.model) {
+      throw new Error(
+        "configured model does not match the running enrichment report",
+      );
     }
     state = previousState;
   }

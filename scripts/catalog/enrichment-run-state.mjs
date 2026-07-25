@@ -90,6 +90,13 @@ export function createEnrichmentRunState(input) {
   if (typeof input.runId !== "string" || input.runId.length === 0) {
     throw new Error("run ID is required");
   }
+  if (
+    typeof input.model !== "string" ||
+    input.model.length === 0 ||
+    /\s/u.test(input.model)
+  ) {
+    throw new Error("configured model is required");
+  }
   const batchSize = input.batchSize ?? 20;
   const concurrency = input.concurrency ?? 4;
   assertPositiveInteger(batchSize, "batch size");
@@ -102,7 +109,7 @@ export function createEnrichmentRunState(input) {
     mode: input.mode,
     status: "running",
     phase: "primary",
-    expected_model: "MiniMax-M3",
+    expected_model: input.model,
     batch_size: batchSize,
     concurrency,
     created_at: input.now,
@@ -158,6 +165,14 @@ function assertAttemptResults(state, results) {
     throw new Error(
       `attempt results did not match expected IDs: ${expected.projectIds.join(", ")}`,
     );
+  }
+  if (
+    results.some(
+      ({ provider }) =>
+        provider && provider.requestedModel !== state.expected_model,
+    )
+  ) {
+    throw new Error("attempt result does not use the configured model");
   }
 }
 
@@ -272,12 +287,12 @@ export function assertSuccessfulCanaryEntries(state) {
   }
 }
 
-export function assertFullRolloutAllowed(previous) {
+export function assertFullRolloutAllowed(previous, model) {
   try {
     assertSuccessfulCanaryEntries(previous);
     if (
       previous?.status !== "passed" ||
-      previous?.expected_model !== "MiniMax-M3" ||
+      previous?.expected_model !== model ||
       !/^[0-9a-f]{40}$/u.test(previous?.deployment?.commit_sha ?? "") ||
       !Number.isInteger(previous?.deployment?.run_id) ||
       previous.deployment.run_id < 1 ||
@@ -286,7 +301,9 @@ export function assertFullRolloutAllowed(previous) {
       throw new Error("invalid deployed canary");
     }
   } catch {
-    throw new Error("full rollout requires a deployed canary using MiniMax-M3");
+    throw new Error(
+      "full rollout requires a deployed canary using the configured model",
+    );
   }
 }
 
