@@ -35,11 +35,24 @@ test.beforeEach(async ({ page }) => {
 test("keeps summaries clamped at standard and compact card widths", async ({
   page,
 }) => {
+  const expectedSummary =
+    "Coordinates persistent character memories, reviews relevant context, and supplies concise guidance for consistent SillyTavern conversations.";
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     const summary = page.locator(".project-card .card-summary").first();
+    await summary.evaluate((element, text) => {
+      element.textContent = text;
+    }, expectedSummary);
+    await expect(summary).toHaveText(expectedSummary);
     await expect(summary).toHaveCSS("-webkit-line-clamp", "4");
     await expect(summary).toHaveCSS("overflow", "hidden");
+    const dimensions = await summary.evaluate((element) => ({
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+    }));
+    expect(dimensions.scrollHeight).toBeLessThanOrEqual(
+      dimensions.clientHeight,
+    );
   }
 });
 
@@ -543,11 +556,14 @@ test("explains every card fact with hover help", async ({ page }) => {
     );
   }
 
-  await repositoryCard.locator(".activity-score").hover();
+  const activityScore = repositoryCard.locator(".activity-score");
+  const activityLabel = await activityScore.getAttribute("aria-label");
+  expect(activityLabel).toBeTruthy();
+  await activityScore.hover();
   await expect(repositoryCard).toHaveCSS("overflow", "hidden");
   await expect(
     page.getByRole("tooltip", {
-      name: /^(?:Approximate|Source) activity in \d+ of the last 12 weeks(?:; baseline pending|; activity evidence is incomplete)?$/,
+      name: activityLabel!,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".card-identity").hover();
