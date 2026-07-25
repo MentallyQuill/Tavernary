@@ -1,171 +1,171 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T05:01:47.527Z",
-  "completed_at": "2026-07-25T05:14:24.104Z",
+  "started_at": "2026-07-25T05:16:15.267Z",
+  "completed_at": "2026-07-25T05:30:20.669Z",
   "counts": {
     "total": 24,
     "checked": 24,
     "changed": 24,
     "unchanged": 0,
-    "provisional": 56,
-    "degraded": 5,
+    "provisional": 34,
+    "degraded": 8,
     "unavailable": 0,
-    "failed": 6,
+    "failed": 5,
     "compared": 0,
-    "baseline": 18,
+    "baseline": 19,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4999,
+    "graphql_remaining": 4998,
     "rest_requests": 0
   },
-  "duration_ms": 756577,
+  "duration_ms": 845402,
   "project_timings": [
-    {
-      "project_id": "mentallyquill-directive",
-      "outcome": "failed",
-      "duration_ms": 754645,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
     {
       "project_id": "mentallyquill-saga",
       "outcome": "failed",
-      "duration_ms": 754645,
+      "duration_ms": 843541,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "mindbound-lumiscript",
       "outcome": "failed",
-      "duration_ms": 754645,
+      "duration_ms": 843540,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "multihogaurelius-sillytavern-multihogdndframework",
       "outcome": "failed",
-      "duration_ms": 754645,
+      "duration_ms": 843540,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "pasta-devs-marinara-engine",
       "outcome": "failed",
-      "duration_ms": 754645,
+      "duration_ms": 843540,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "phampyk-sillytavern-avatarbanner",
-      "outcome": "baseline",
-      "duration_ms": 754645,
-      "error_code": null
-    },
-    {
-      "project_id": "platberlitz-sd-proxy",
-      "outcome": "baseline",
-      "duration_ms": 754645,
-      "error_code": null
-    },
-    {
-      "project_id": "platberlitz-sillytavern-character-colors",
-      "outcome": "baseline",
-      "duration_ms": 754646,
-      "error_code": null
     },
     {
       "project_id": "prolix-oc-lumiverse",
       "outcome": "failed",
-      "duration_ms": 754646,
+      "duration_ms": 843540,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "prolix-oc-lumiverse-chatroom",
+      "project_id": "sammcheese-sillytavern-discordia",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843540,
       "error_code": null
     },
     {
-      "project_id": "prolix-oc-lumiverse-simtracker",
+      "project_id": "samueras-guidedgenerations-extension",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843540,
       "error_code": null
     },
     {
-      "project_id": "prolix-oc-lumiverse-spotifycontrols",
+      "project_id": "sca255-lumiverse-autoimg",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843540,
       "error_code": null
     },
     {
-      "project_id": "prolix-oc-lumiverse-xtimeline",
+      "project_id": "selinawynters-ops-st-threadkeeper",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843540,
       "error_code": null
     },
     {
-      "project_id": "prolix-oc-sillytavern-simtracker",
+      "project_id": "senjinthedragon-sillytavern-discord-connector",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "promansis-summary-sharder",
+      "project_id": "senjinthedragon-smart-memory",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "prompt-and-circumstance-storymode",
+      "project_id": "shadowtheimpure-sillytavern-character-card-generator",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "quackified-floating-viewer",
+      "project_id": "sigmareaver-rooms",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "qvink-sillytavern-messagesummarize",
+      "project_id": "sillyanonymous-sillytavern-characterlibrary",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "qvink-sillytavern-rightclickmessagemenu",
+      "project_id": "sillyanonymous-sillytavern-ui-shortcuts",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "retrovioletred-sillytavern-pictureprompt",
+      "project_id": "sillytavern-extension-mermaid",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "revivalist-dev-guidedgenerations-extension",
+      "project_id": "sillytavern-extension-promptinspector",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "rivelledays-sillytavern-chatcompletiontabs",
+      "project_id": "sillytavern-extension-topinfobar",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "rivelledays-sillytavern-moonlitechoestheme",
+      "project_id": "sillytavern-sillytavern-greetingtools",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
       "error_code": null
     },
     {
-      "project_id": "rossascends-st-samplerkillswitches",
+      "project_id": "sillytavern-sillytavern-nicknames",
       "outcome": "baseline",
-      "duration_ms": 754646,
+      "duration_ms": 843541,
+      "error_code": null
+    },
+    {
+      "project_id": "sillytavern-sillytavern-pronouns",
+      "outcome": "baseline",
+      "duration_ms": 843541,
+      "error_code": null
+    },
+    {
+      "project_id": "sillytavern-sillytavern-pushnotifications",
+      "outcome": "baseline",
+      "duration_ms": 843541,
+      "error_code": null
+    },
+    {
+      "project_id": "soyo5800-rpg-tracker-for-sillytavern",
+      "outcome": "baseline",
+      "duration_ms": 843541,
+      "error_code": null
+    },
+    {
+      "project_id": "spicymarinara-sillytavern-lovense",
+      "outcome": "baseline",
+      "duration_ms": 843541,
       "error_code": null
     }
   ],
