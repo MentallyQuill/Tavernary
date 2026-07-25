@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T01:17:58.367Z",
-  "completed_at": "2026-07-25T01:22:59.723Z",
+  "started_at": "2026-07-25T02:15:54.114Z",
+  "completed_at": "2026-07-25T02:20:56.293Z",
   "counts": {
     "total": 12,
     "checked": 12,
     "changed": 12,
     "unchanged": 0,
-    "provisional": 24,
-    "degraded": 0,
+    "provisional": 12,
+    "degraded": 1,
     "unavailable": 0,
     "failed": 1,
     "compared": 0,
@@ -19,81 +19,81 @@
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4997,
+    "graphql_remaining": 4999,
     "rest_requests": 0
   },
-  "duration_ms": 301356,
+  "duration_ms": 302179,
   "project_timings": [
     {
       "project_id": "aikohanasaki-sillytavern-memorybooks",
       "outcome": "failed",
-      "duration_ms": 300280,
+      "duration_ms": 300829,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "amousepad-lumiagent",
+      "project_id": "b4bysw0rld-sillytavern-typefacer",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "amousepad-lumirealm",
+      "project_id": "bal-spec-sillytavern-character-memory",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumistate",
+      "project_id": "bbw3000-simplesummary",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumiweather",
+      "project_id": "beeopo-lumiverse-rewrite",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-lumiverse-lumiworld",
+      "project_id": "beeopo-marinara-rewrite",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-sillytavern-charactervisuals",
+      "project_id": "bf-gith-bf-ooc-injection",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-sillytavern-outfitswitch",
+      "project_id": "bmen25124-sillytavern-character-creator",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "archkr-st-basicspotify",
+      "project_id": "bmen25124-sillytavern-flowchart",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "arif-salah-megumin-suite",
+      "project_id": "bmen25124-sillytavern-roadway",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300829,
       "error_code": null
     },
     {
-      "project_id": "ayvencore-sillytavern-another-character-library",
+      "project_id": "bmen25124-sillytavern-wtracker",
       "outcome": "baseline",
-      "duration_ms": 300281,
+      "duration_ms": 300830,
       "error_code": null
     },
     {
-      "project_id": "ayvencore-sillytavern-lorebook-manager",
+      "project_id": "bronya-rand-guinevere-ui-extension",
       "outcome": "baseline",
-      "duration_ms": 300282,
+      "duration_ms": 300830,
       "error_code": null
     }
   ],
