@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type KeyboardEventHandler,
@@ -50,6 +51,10 @@ export function useProjectBatchSelection({
   const [limitReached, setLimitReached] = useState(false);
   const pressRef = useRef<PressSession | null>(null);
   const suppressClickRef = useRef(false);
+  const activeSelectedProjectIds = useMemo(
+    () => (active ? selectedProjectIds : []),
+    [active, selectedProjectIds],
+  );
 
   const cancelPress = useCallback(() => {
     if (pressRef.current) window.clearTimeout(pressRef.current.timer);
@@ -111,12 +116,14 @@ export function useProjectBatchSelection({
   }, [cancelPress, clear]);
 
   useEffect(() => {
-    if (!active) clear();
+    if (active) return;
+    const timer = window.setTimeout(clear, 0);
+    return () => window.clearTimeout(timer);
   }, [active, clear]);
 
   const bindingsFor = useCallback(
     (projectId: string): ProjectSelectionBindings => ({
-      selected: selectedProjectIds.includes(projectId),
+      selected: activeSelectedProjectIds.includes(projectId),
       inDraft: draftProjectIds.includes(projectId),
       onPointerDown: (event) => {
         if (
@@ -164,7 +171,7 @@ export function useProjectBatchSelection({
           event.stopPropagation();
           return;
         }
-        if (selectedProjectIds.length === 0) return;
+        if (activeSelectedProjectIds.length === 0) return;
         event.preventDefault();
         event.stopPropagation();
         toggleProject(projectId);
@@ -173,7 +180,7 @@ export function useProjectBatchSelection({
         if (
           !active ||
           (event.key !== " " &&
-            !(event.key === "Enter" && selectedProjectIds.length > 0))
+            !(event.key === "Enter" && activeSelectedProjectIds.length > 0))
         ) {
           return;
         }
@@ -182,13 +189,20 @@ export function useProjectBatchSelection({
         toggleProject(projectId);
       },
     }),
-    [active, cancelPress, draftProjectIds, selectedProjectIds, toggleProject],
+    [
+      active,
+      activeSelectedProjectIds,
+      cancelPress,
+      draftProjectIds,
+      toggleProject,
+    ],
   );
   const draftFrontend = projects.find(
     ({ id, kind }) => kind === "frontend" && draftProjectIds.includes(id),
   );
   const selectedFrontend = projects.find(
-    ({ id, kind }) => kind === "frontend" && selectedProjectIds.includes(id),
+    ({ id, kind }) =>
+      kind === "frontend" && activeSelectedProjectIds.includes(id),
   );
   const replacementFrontendName =
     draftFrontend &&
@@ -197,16 +211,16 @@ export function useProjectBatchSelection({
       ? draftFrontend.name
       : null;
   const apply = useCallback(() => {
-    if (selectedProjectIds.length === 0) return null;
-    const plan = onApply(selectedProjectIds);
+    if (activeSelectedProjectIds.length === 0) return null;
+    const plan = onApply(activeSelectedProjectIds);
     clear();
     return plan;
-  }, [clear, onApply, selectedProjectIds]);
+  }, [activeSelectedProjectIds, clear, onApply]);
 
   return {
-    selectionMode: selectedProjectIds.length > 0,
-    selectedProjectIds,
-    selectedCount: selectedProjectIds.length,
+    selectionMode: activeSelectedProjectIds.length > 0,
+    selectedProjectIds: activeSelectedProjectIds,
+    selectedCount: activeSelectedProjectIds.length,
     limitReached,
     replacementFrontendName,
     bindingsFor,

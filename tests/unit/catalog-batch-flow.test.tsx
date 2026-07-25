@@ -16,7 +16,7 @@ vi.mock("next/image", () => ({
     src: string;
     alt: string;
     [key: string]: unknown;
-  }) => <img src={src} alt={alt} {...props} />,
+  }) => <span data-image-src={src} aria-label={alt || undefined} {...props} />,
 }));
 
 import { CatalogPage } from "@/features/catalog/components/catalog-page";

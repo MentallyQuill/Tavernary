@@ -398,6 +398,11 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   await page.mouse.move(editorBox.x + 40, editorBox.y + 80, { steps: 3 });
   await expect(page.getByText("Release to remove")).toHaveCount(0);
   await page.keyboard.press("Escape");
+  await page.mouse.up();
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+  );
   await expect(
     page.getByRole("button", { name: "Remove Fixture Tool 02" }),
   ).toBeVisible();
@@ -405,13 +410,19 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   const retryHandle = page.getByRole("button", {
     name: "Drag Fixture Tool 02 to reorder or remove",
   });
+  await retryHandle.hover();
   const retryBox = (await retryHandle.boundingBox())!;
   await page.mouse.move(
     retryBox.x + retryBox.width / 2,
     retryBox.y + retryBox.height / 2,
   );
   await page.mouse.down();
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+  );
   await page.mouse.move(editorBox.x - 8, editorBox.y + 80, { steps: 4 });
+  await expect(page.getByText("Release to remove")).toBeVisible();
   await page.mouse.up();
   await expect(
     page.getByRole("button", { name: "Remove Fixture Tool 02" }),

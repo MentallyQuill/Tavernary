@@ -106,7 +106,9 @@
 .control-icon:disabled,
 .control-select:disabled {
   cursor: not-allowed;
-  opacity: 0.48;
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
 }
 
 .catalog-shell {
@@ -1906,7 +1908,7 @@
   border-radius: 999px;
   padding-inline: 5px;
   color: var(--color-text-primary);
-  background: color-mix(in srgb, var(--color-page) 34%, transparent);
+  background: var(--color-page);
   font-size: 10px;
   font-variant-numeric: tabular-nums;
   place-items: center;
