@@ -1,172 +1,172 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T03:06:18.863Z",
-  "completed_at": "2026-07-25T03:19:03.307Z",
+  "started_at": "2026-07-25T03:20:38.748Z",
+  "completed_at": "2026-07-25T03:35:48.326Z",
   "counts": {
     "total": 24,
     "checked": 24,
     "changed": 24,
     "unchanged": 0,
-    "provisional": 95,
-    "degraded": 2,
+    "provisional": 75,
+    "degraded": 4,
     "unavailable": 0,
-    "failed": 5,
+    "failed": 6,
     "compared": 0,
-    "baseline": 19,
+    "baseline": 18,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4984,
+    "graphql_remaining": 4999,
     "rest_requests": 0
   },
-  "duration_ms": 764444,
+  "duration_ms": 909578,
   "project_timings": [
     {
       "project_id": "icefog72-sillytavern-everytextlineeditor",
       "outcome": "failed",
-      "duration_ms": 762403,
+      "duration_ms": 907832,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "j-dandelion-lumiverse-canvas",
       "outcome": "failed",
-      "duration_ms": 762403,
+      "duration_ms": 907832,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "kristyku-inlinesummary",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "kurohomeless-sillytavern-token-and-cost-statistics",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "leandrojofre-sillytavern-presence",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "leandrojofre-sillytavern-stat-us-maximus",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "lenanderson-sillytavern-videobackgrounds",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "lenanderson-sillytavern-worldinfoinfo",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
     },
     {
       "project_id": "lithiumwaves-danganronpa-sillytavern",
-      "outcome": "failed",
-      "duration_ms": 762403,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "loggo-presets-sillytavern-spellbook",
       "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "loggo-presets-typingindicatorplus",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "luisbrandao-sillytavern-tracker",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "lukasstraub2-sillytavern-imagepdf",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "lukathehero-sillytavern-claudesubscription",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "lukathehero-sillytavern-personatools",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "maiky93-image-generation-suite",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "mangkoodkung-another-universe",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "manjove1-forged-by-primus-portfolio",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "maxime-fleury-st-card-editor",
-      "outcome": "baseline",
-      "duration_ms": 762403,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
       "project_id": "maxipawlowski-story-orchestrator",
-      "outcome": "failed",
-      "duration_ms": 762403,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "mechamarmot-sillytavern-localimage",
       "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "mechamarmot-sillytavern-mazemaster",
-      "outcome": "baseline",
-      "duration_ms": 762403,
-      "error_code": null
-    },
-    {
-      "project_id": "mekineer-com-openalma",
-      "outcome": "baseline",
-      "duration_ms": 762404,
+      "duration_ms": 907833,
       "error_code": null
     },
     {
       "project_id": "mentallyquill-directive",
       "outcome": "failed",
-      "duration_ms": 762404,
+      "duration_ms": 907833,
       "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mentallyquill-saga",
+      "outcome": "failed",
+      "duration_ms": 907833,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mentallyquill-st-wandlight",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "mindbound-lumiscript",
+      "outcome": "failed",
+      "duration_ms": 907833,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mitaska-weathertweaker",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "mkrrussell0411-star-character-stats-extension",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "mokimoko-sillytavern-dynamicaudioredux",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "mokimoko-sillytavern-scenariocrafter",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "morgoookru-st-chat-finder",
+      "outcome": "baseline",
+      "duration_ms": 907833,
+      "error_code": null
+    },
+    {
+      "project_id": "multihogaurelius-context-injection-rng-for-dnd",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "multihogaurelius-sillytavern-multihogdndframework",
+      "outcome": "failed",
+      "duration_ms": 907834,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "n0819-sonder-engine",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nattaphat010447-nutho-autocloser",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nbrown725-sillytavern-alternatedescriptions",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nemovonnirgend-nemopresetext",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nialyn-mid-polyceph",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "nickchegg-game-engine",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "noathouard-sillytavern-extension-npc-portait-switcher",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "p-e-w-sorcery",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
+    },
+    {
+      "project_id": "paradox460-st-messagesplit",
+      "outcome": "baseline",
+      "duration_ms": 907834,
+      "error_code": null
     }
   ],
   "snapshot_changes": true,
