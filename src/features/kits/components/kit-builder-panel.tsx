@@ -4,11 +4,13 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useId,
   useRef,
   useState,
 } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
@@ -76,6 +78,7 @@ export function KitBuilderPanel({
   const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const tooltipId = useId();
   const openerRef = useRef<HTMLElement | null>(null);
   const hadOpenPhoneSheetRef = useRef(false);
   const returnFocus = useCallback(() => {
@@ -218,15 +221,21 @@ export function KitBuilderPanel({
           />
         ) : (
           <div className="kit-builder-rail">
-            <button
-              type="button"
-              className="kit-builder-toggle"
-              aria-label="Open Kit Builder"
-              onClick={openCollapsedBuilder}
+            <Tooltip
+              id={`${tooltipId}-open-kit-builder-tooltip`}
+              label="Open Kit Builder"
+              className="control-tooltip"
             >
-              <CategoryIcon name="kit-builder" />
-            </button>
-            <span>Kit Builder</span>
+              <button
+                type="button"
+                className="kit-builder-toggle"
+                aria-label="Open Kit Builder"
+                onClick={openCollapsedBuilder}
+              >
+                <CategoryIcon name="kit-builder" />
+              </button>
+            </Tooltip>
+            <span className="kit-builder-rail-label">Kit Builder</span>
           </div>
         )}
       </aside>
@@ -247,18 +256,31 @@ export function KitBuilderPanel({
         <h2 ref={headingRef} tabIndex={-1}>
           Kit Builder
         </h2>
-        <button
-          type="button"
-          className={`control-icon kit-builder-toggle${
-            phone ? "" : " kit-builder-collapse"
-          }`}
-          aria-label={phone ? "Close Kit Builder" : "Collapse Kit Builder"}
-          onClick={() => {
-            onCollapse();
-          }}
-        >
-          <CategoryIcon name={phone ? "close" : "kit-builder"} />
-        </button>
+        {phone ? (
+          <button
+            type="button"
+            className="control-icon kit-builder-toggle"
+            aria-label="Close Kit Builder"
+            onClick={onCollapse}
+          >
+            <CategoryIcon name="close" />
+          </button>
+        ) : (
+          <Tooltip
+            id={`${tooltipId}-collapse-kit-builder-tooltip`}
+            label="Collapse Kit Builder"
+            className="control-tooltip"
+          >
+            <button
+              type="button"
+              className="control-icon kit-builder-toggle kit-builder-collapse"
+              aria-label="Collapse Kit Builder"
+              onClick={onCollapse}
+            >
+              <CategoryIcon name="kit-builder" />
+            </button>
+          </Tooltip>
+        )}
       </header>
       <div className="kit-builder-panel-body">
         {state.mode === "intro" ? (

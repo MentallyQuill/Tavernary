@@ -188,7 +188,7 @@ test("uses one focus boundary for the main search", async ({ page }) => {
 
   await expect(search).toHaveAttribute(
     "placeholder",
-    "Search projects, capabilities, frontends, or creators…",
+    "Search projects or creators…",
   );
   await search.focus();
 

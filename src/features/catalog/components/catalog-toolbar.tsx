@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 import type { KitSort } from "@/features/kits/kit-query";
 import type { CatalogQuery } from "../catalog-query";
 
@@ -27,6 +28,9 @@ export function CatalogToolbar({
   onCreateKit?: () => void;
   filterButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
+  const densityAction =
+    query.density === "standard" ? "Use compact cards" : "Use standard cards";
+
   return (
     <div className="catalog-toolbar">
       <div className="catalog-heading">
@@ -55,19 +59,21 @@ export function CatalogToolbar({
             </select>
           ) : (
             <>
-              <button
-                className="control-icon density-toggle"
-                type="button"
-                aria-label={
-                  query.density === "standard"
-                    ? "Use compact cards"
-                    : "Use standard cards"
-                }
-                aria-pressed={query.density === "compact"}
-                onClick={onDensity}
+              <Tooltip
+                id="catalog-density-tooltip"
+                label={densityAction}
+                className="control-tooltip"
               >
-                <CategoryIcon name="collapse" />
-              </button>
+                <button
+                  className="control-icon density-toggle"
+                  type="button"
+                  aria-label={densityAction}
+                  aria-pressed={query.density === "compact"}
+                  onClick={onDensity}
+                >
+                  <CategoryIcon name="collapse" />
+                </button>
+              </Tooltip>
               <select
                 className="control-select sort-projects"
                 aria-label="Sort projects"

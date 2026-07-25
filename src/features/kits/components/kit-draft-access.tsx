@@ -1,4 +1,7 @@
+import { useId } from "react";
+
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 
 export type DraftAccessStatus =
   | { phase: "settled"; draftCount: number }
@@ -17,6 +20,8 @@ export function KitDraftAccess({
   status: DraftAccessStatus | null;
   onOpen: () => void;
 }) {
+  const tooltipId = useId();
+
   if (!status) return null;
 
   const accessibleName = `Open Kit Builder, ${projectsLabel(
@@ -44,15 +49,21 @@ export function KitDraftAccess({
 
   return (
     <div className="kit-builder-rail">
-      <button
-        type="button"
-        className="kit-builder-toggle"
-        aria-label={accessibleName}
-        onClick={onOpen}
+      <Tooltip
+        id={`${tooltipId}-open-kit-builder-tooltip`}
+        label="Open Kit Builder"
+        className="control-tooltip"
       >
-        <CategoryIcon name="kit-builder" />
-      </button>
-      <span>Kit Builder</span>
+        <button
+          type="button"
+          className="kit-builder-toggle"
+          aria-label={accessibleName}
+          onClick={onOpen}
+        >
+          <CategoryIcon name="kit-builder" />
+        </button>
+      </Tooltip>
+      <span className="kit-builder-rail-label">Kit Builder</span>
       <span className="kit-builder-rail-status" aria-hidden="true">
         {visibleStatus}
       </span>

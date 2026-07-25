@@ -30,7 +30,7 @@
   border: 1px solid var(--color-kind-extension);
   border-radius: 6px;
   padding: 0 13px;
-  color: var(--color-page);
+  color: var(--color-filled-control-text);
   background: var(--color-kind-extension);
   font-weight: 700;
 }
@@ -249,14 +249,14 @@
 
 .header-actions .submit-link {
   border: 1px solid var(--color-kind-extension);
-  color: var(--color-page);
+  color: var(--color-filled-control-text);
   background: var(--color-kind-extension);
   white-space: nowrap;
 }
 
 .header-actions .submit-link:hover,
 .header-actions .submit-link:focus-visible {
-  color: var(--color-page);
+  color: var(--color-filled-control-text);
   background: var(--color-kind-extension);
 }
 
@@ -360,6 +360,7 @@
 }
 
 .catalog-layout {
+  --kit-builder-expanded-width: clamp(280px, 22vw, 340px);
   display: grid;
   grid-template-columns: 238px minmax(0, 1fr) clamp(280px, 22vw, 340px);
   min-height: calc(100vh - 116px);
@@ -1135,6 +1136,10 @@
   position: relative;
 }
 
+.control-tooltip {
+  display: inline-flex;
+}
+
 .tooltip-content {
   position: fixed;
   z-index: 200;
@@ -1587,6 +1592,13 @@
   overscroll-behavior: contain;
 }
 
+.kit-builder-panel-header,
+.kit-builder-panel-body {
+  width: calc(var(--kit-builder-expanded-width) - 37px);
+  min-width: calc(var(--kit-builder-expanded-width) - 37px);
+  align-self: flex-end;
+}
+
 .kit-builder-panel.collapsed {
   display: grid;
   width: 72px;
@@ -1625,7 +1637,7 @@
   color: var(--color-kind-extension);
 }
 
-.kit-builder-rail > span:not(.kit-builder-rail-status) {
+.kit-builder-rail-label {
   max-width: 54px;
   font-size: 11px;
   font-weight: 700;
@@ -1861,19 +1873,23 @@
   display: grid;
   width: 28px;
   height: 28px;
+  aspect-ratio: 1;
   border: 1px solid var(--color-kind-extension);
   border-radius: 5px;
-  color: var(--color-page);
+  color: var(--color-filled-control-text);
   background: var(--color-kind-extension);
-  box-shadow: 0 2px 0 var(--color-page);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1;
+  box-shadow: none;
   place-items: center;
   transition:
     border-color var(--kit-motion-state) var(--kit-motion-ease),
     box-shadow var(--kit-motion-state) var(--kit-motion-ease),
     transform var(--kit-motion-press) var(--kit-motion-ease);
+}
+
+.project-kit-control-face svg {
+  display: block;
+  width: 12px;
+  height: 12px;
 }
 
 .project-kit-control[aria-pressed="true"] .project-kit-control-face {
@@ -2138,7 +2154,7 @@
   height: 28px;
   border: 1px solid var(--color-kind-extension);
   border-radius: 5px;
-  color: var(--color-page);
+  color: var(--color-filled-control-text);
   background: var(--color-kind-extension);
   font-size: 18px;
   line-height: 1;

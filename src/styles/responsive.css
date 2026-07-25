@@ -8,6 +8,7 @@
   }
 
   .catalog-layout {
+    --kit-builder-expanded-width: clamp(280px, 32vw, 340px);
     grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
   }
 
@@ -310,6 +311,13 @@
     padding: 16px calc(14px + env(safe-area-inset-right))
       calc(16px + env(safe-area-inset-bottom))
       calc(14px + env(safe-area-inset-left));
+  }
+
+  .kit-builder-panel-header,
+  .kit-builder-panel-body {
+    width: auto;
+    min-width: 0;
+    align-self: stretch;
   }
 
   .kit-builder-panel-build,

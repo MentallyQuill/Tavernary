@@ -33,6 +33,10 @@ npm run test:e2e
 npm run test:visual
 ```
 
+The visual commands verify layout and geometry without committed screenshot
+baselines. Any Playwright snapshots generated during local investigation are
+ignored.
+
 Use focused Vitest or Playwright commands while iterating, then run the full
 gate before handing off the change.
 

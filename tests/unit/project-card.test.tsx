@@ -131,6 +131,11 @@ describe("project card", () => {
     expect(container.querySelector(".project-card-shell")).toContainElement(
       button,
     );
+    expect(button.querySelector('[data-kit-glyph="add"]')).toBeInTheDocument();
+    expect(button.querySelector('[data-kit-glyph="add"] path')).toHaveAttribute(
+      "d",
+      "M6 1.5v9M1.5 6h9",
+    );
   });
 
   test("places the license before footer chips so the Kit control can occupy the right edge", () => {
@@ -171,6 +176,42 @@ describe("project card", () => {
       "A Kit can contain no more than 50 projects.",
     );
   });
+
+  test.each([
+    ["available", "Add Memory Tool to Kit", "Add to Kit"],
+    ["selected", "Remove Memory Tool from selection", "Remove from selection"],
+    ["in-kit", "Remove Memory Tool from Kit", "Remove from Kit"],
+  ] as const)(
+    "explains the %s Kit action without shortening its accessible name",
+    (state, accessibleName, tooltipLabel) => {
+      Object.defineProperty(window, "matchMedia", {
+        configurable: true,
+        value: vi.fn(() => ({
+          matches: false,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        })),
+      });
+      render(
+        <ProjectGrid
+          projects={[project("memory-tool", { name: "Memory Tool" })]}
+          now="2026-07-23T00:00:00Z"
+          selection={{
+            bindingsFor: () => ({
+              state,
+              disabled: false,
+              disabledReason: null,
+              onActivate: vi.fn(),
+            }),
+          }}
+        />,
+      );
+
+      const button = screen.getByRole("button", { name: accessibleName });
+      fireEvent.pointerEnter(button);
+      expect(screen.getByRole("tooltip", { name: tooltipLabel })).toBeVisible();
+    },
+  );
 
   test("exposes pending selection without changing the GitHub link", () => {
     const bindings: ProjectSelectionBindings = {
