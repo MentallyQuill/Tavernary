@@ -226,17 +226,66 @@ export function applyAttemptResults(state, results, now) {
   return next;
 }
 
-export function assertFullRolloutAllowed(previous) {
+export function assertSuccessfulCanaryEntries(state) {
+  const manifest = Array.isArray(state?.manifest) ? state.manifest : [];
+  const retryQueue = Array.isArray(state?.retry_queue) ? state.retry_queue : [];
+  const entries =
+    state?.entries && typeof state.entries === "object" ? state.entries : {};
+  const attempts =
+    state?.attempts && typeof state.attempts === "object" ? state.attempts : {};
+  const manifestIds = [...manifest].sort();
+  const entryIds = Object.keys(entries).sort();
+  const attemptIds = Object.keys(attempts).sort();
+  const retryIds = new Set(retryQueue);
+
   if (
-    previous?.mode !== "canary" ||
-    previous?.status !== "passed" ||
-    previous?.phase !== "complete" ||
-    previous?.expected_model !== "MiniMax-M3" ||
-    !/^[0-9a-f]{40}$/u.test(previous?.deployment?.commit_sha ?? "") ||
-    !Number.isInteger(previous?.deployment?.run_id) ||
-    previous.deployment.run_id < 1 ||
-    typeof previous?.deployment?.verified_at !== "string"
+    state?.mode !== "canary" ||
+    state?.phase !== "complete" ||
+    manifest.length !== 5 ||
+    new Set(manifest).size !== 5 ||
+    state.primary_cursor !== manifest.length ||
+    state.retry_cursor !== retryQueue.length ||
+    new Set(retryQueue).size !== retryQueue.length ||
+    retryQueue.some((id) => !manifest.includes(id)) ||
+    JSON.stringify(entryIds) !== JSON.stringify(manifestIds) ||
+    JSON.stringify(attemptIds) !== JSON.stringify(manifestIds)
   ) {
+    throw new Error("canary must contain five fully successful entries");
+  }
+
+  for (const id of manifest) {
+    const entry = entries[id];
+    const attempt = attempts[id];
+    const retried = retryIds.has(id);
+    const validOutcome = retried
+      ? ["retry-enriched", "retry-fallback"].includes(entry?.outcome)
+      : ["enriched", "fallback"].includes(entry?.outcome);
+    if (
+      entry?.id !== id ||
+      entry?.attempt !== attempt ||
+      attempt !== (retried ? 2 : 1) ||
+      entry?.phase !== (retried ? "retry" : "primary") ||
+      !validOutcome
+    ) {
+      throw new Error("canary must contain five fully successful entries");
+    }
+  }
+}
+
+export function assertFullRolloutAllowed(previous) {
+  try {
+    assertSuccessfulCanaryEntries(previous);
+    if (
+      previous?.status !== "passed" ||
+      previous?.expected_model !== "MiniMax-M3" ||
+      !/^[0-9a-f]{40}$/u.test(previous?.deployment?.commit_sha ?? "") ||
+      !Number.isInteger(previous?.deployment?.run_id) ||
+      previous.deployment.run_id < 1 ||
+      typeof previous?.deployment?.verified_at !== "string"
+    ) {
+      throw new Error("invalid deployed canary");
+    }
+  } catch {
     throw new Error("full rollout requires a deployed canary using MiniMax-M3");
   }
 }
@@ -252,6 +301,7 @@ export function approveCanaryDeployment(
   ) {
     throw new Error("canary must be awaiting deployment approval");
   }
+  assertSuccessfulCanaryEntries(state);
   if (!/^[0-9a-f]{40}$/u.test(commitSha ?? "")) {
     throw new Error("canary deployment commit SHA is invalid");
   }

@@ -201,6 +201,14 @@ test("requires verified deployment before a successful canary authorizes full ro
     },
   });
   expect(() => assertFullRolloutAllowed(passed)).not.toThrow();
+  expect(() =>
+    assertFullRolloutAllowed({
+      ...passed,
+      primary_cursor: 0,
+      attempts: {},
+      entries: {},
+    }),
+  ).toThrow("deployed canary");
 
   let failed = createEnrichmentRunState({
     mode: "canary",

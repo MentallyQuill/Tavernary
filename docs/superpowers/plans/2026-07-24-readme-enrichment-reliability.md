@@ -745,6 +745,8 @@ Add tests for alphabetical deduplication, immutable manifest, primary cursor adv
 
 Assert exactly five unique IDs are required, canary does not silently self-expand, all success produces `status: "awaiting-deployment"`, failed primary results move to retry, failed retry produces `status: "failed"`, and `assertFullRolloutAllowed()` accepts only a MiniMax M3 canary with a verified deployment record.
 
+Also reject forged or incomplete approval state: the manifest, entry keys, attempt keys, primary cursor, retry cursor, retry queue, phases, and terminal-success outcomes must account for all five cards consistently.
+
 - [ ] **Step 3: Run the state tests and verify failure**
 
 ```powershell

@@ -1,3 +1,5 @@
+import { assertSuccessfulCanaryEntries } from "./enrichment-run-state.mjs";
+
 const outcomeNames = [
   "enriched",
   "fallback",
@@ -182,6 +184,9 @@ export function validateEnrichmentReport(value) {
       value.deployment !== null)
   ) {
     throw new Error("canary deployment state is invalid");
+  }
+  if (value.status === "awaiting-deployment" || value.status === "passed") {
+    assertSuccessfulCanaryEntries(value);
   }
   if (
     value.status === "passed" &&

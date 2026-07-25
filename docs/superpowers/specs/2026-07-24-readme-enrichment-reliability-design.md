@@ -117,6 +117,8 @@ Only those five snapshots are refreshed with current schema-v2 repository facts,
 
 Canary mode never self-dispatches another batch. Valid canary records may publish automatically under the already approved partial-success rule. All five must first reach an expected terminal success—enriched or confirmed fallback—which leaves the report in `awaiting-deployment`. The workflow explicitly dispatches Pages for the pushed commit, watches that exact deployment, and only then records the canary as `passed` with its commit SHA, deployment run ID, and verification time. Any source-not-ready, provider failure, invalid output, write failure, catalog-check failure, or deployment failure blocks the full rollout.
 
+Both deployment approval and full-rollout initialization revalidate complete canary accounting: exactly five manifest IDs, five matching terminal-success entries, complete primary and retry cursors, and attempt counts consistent with the retry queue. Deployment metadata alone cannot authorize a rollout.
+
 After deployment, inspect the canary report and rendered tiles to verify:
 
 - the requested model was `MiniMax-M3`;

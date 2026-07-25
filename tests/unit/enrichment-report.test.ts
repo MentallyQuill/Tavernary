@@ -117,4 +117,13 @@ test("rejects malformed or contradictory durable reports", () => {
     }),
   );
   expect(validateEnrichmentReport(approved)).toEqual(approved);
+  expect(() =>
+    validateEnrichmentReport({
+      ...approved,
+      primary_cursor: 0,
+      retry_cursor: 0,
+      attempts: {},
+      entries: {},
+    }),
+  ).toThrow("successful entries");
 });

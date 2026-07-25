@@ -81,6 +81,8 @@ export function applyAttemptResults(
   now: string,
 ): EnrichmentRunState;
 
+export function assertSuccessfulCanaryEntries(state: EnrichmentRunState): void;
+
 export function approveCanaryDeployment(
   state: EnrichmentRunState,
   input: {
