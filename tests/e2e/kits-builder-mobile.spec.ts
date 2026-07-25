@@ -9,6 +9,19 @@ async function expectTouchTarget(locator: import("@playwright/test").Locator) {
   expect(box!.height, "touch target height").toBeGreaterThanOrEqual(44);
 }
 
+async function longPress(
+  page: import("@playwright/test").Page,
+  locator: import("@playwright/test").Locator,
+) {
+  await locator.scrollIntoViewIfNeeded();
+  const box = await locator.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(500);
+  await page.mouse.up();
+}
+
 test("mobile Kits builder stays browse-first and retains its draft pill", async ({
   page,
 }) => {
@@ -16,31 +29,40 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "Kit workspace" })).toHaveCount(
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
     0,
   );
   await page.getByRole("button", { name: "Create Kit" }).click();
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 0 projects" }),
+    page.getByRole("button", {
+      name: "Open Kit Builder, 0 projects in draft",
+    }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  for (let count = 1; count <= 3; count += 1) {
-    await page
-      .getByRole("button", { name: /Add .* to Kit/ })
-      .first()
-      .click();
-    await expect(
-      page.getByRole("button", {
-        name: `Open draft with ${count} projects`,
-      }),
-    ).toBeVisible();
-  }
-  await expect(page.locator(".add-to-kit:disabled")).toHaveCount(3);
-  await expectTouchTarget(page.locator(".add-to-kit:disabled").first());
+  const extensionShells = page
+    .locator(".project-card-shell")
+    .filter({ has: page.locator(".project-card.kind-extension") });
+  await longPress(page, extensionShells.nth(0));
+  await extensionShells.nth(1).click();
+  await extensionShells.nth(2).click();
+  const dock = page.getByRole("region", { name: "3 projects selected" });
+  await expectTouchTarget(dock.getByRole("button", { name: "Cancel" }));
+  await expectTouchTarget(dock.getByRole("button", { name: "Add to Kit" }));
+  await dock.getByRole("button", { name: "Add to Kit" }).click();
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
+  ).toBeVisible();
   await page
-    .getByRole("button", { name: "Open draft with 3 projects" })
+    .getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    })
     .click();
   const rows = page.locator(".kit-builder-row");
   const movedName = (await rows.nth(1).locator("strong").textContent())!;
@@ -72,9 +94,11 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
     page.getByRole("button", { name: `Remove ${movedName}` }),
   ).toHaveCount(0);
   await expect(page.getByText("Undo")).toHaveCount(0);
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 2 projects" }),
+    page.getByRole("button", {
+      name: "Open Kit Builder, 2 projects in draft",
+    }),
   ).toBeFocused();
   expect(
     await page.evaluate(
@@ -96,7 +120,7 @@ test("mobile Kits controls meet the touch-target and overflow contract", async (
     await expectTouchTarget(page.getByRole("button", { name: "Open filters" }));
     await page.getByRole("button", { name: "Create Kit" }).click();
     await expectTouchTarget(
-      page.getByRole("button", { name: "Close Kit workspace" }),
+      page.getByRole("button", { name: "Close Kit Builder" }),
     );
     await expectTouchTarget(page.getByRole("textbox", { name: "Title" }));
     await expectTouchTarget(page.getByRole("textbox", { name: "Description" }));
@@ -108,7 +132,7 @@ test("mobile Kits controls meet the touch-target and overflow contract", async (
     ).toBe(true);
     expect(
       await page
-        .getByRole("dialog", { name: "Kit workspace" })
+        .getByRole("dialog", { name: "Kit Builder" })
         .evaluate((element) => element.scrollWidth <= element.clientWidth),
     ).toBe(true);
   }

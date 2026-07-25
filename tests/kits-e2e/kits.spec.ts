@@ -17,6 +17,20 @@ async function expectMobileTarget(locator: import("@playwright/test").Locator) {
   expect(box!.height, "mobile target height").toBeGreaterThanOrEqual(44);
 }
 
+async function longPress(
+  page: import("@playwright/test").Page,
+  locator: import("@playwright/test").Locator,
+  duration = 500,
+) {
+  await locator.scrollIntoViewIfNeeded();
+  const box = await locator.boundingBox();
+  expect(box, "long-press target must have a bounding box").not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(duration);
+  await page.mouse.up();
+}
+
 test("navigates, restores URLs, searches every indexed Kit field, and sorts", async ({
   page,
 }) => {
@@ -53,17 +67,13 @@ test("navigates, restores URLs, searches every indexed Kit field, and sorts", as
   await expect(page).toHaveURL(/kit=alpha-kit-101/);
   await page.reload();
   await expect(
-    page
-      .getByLabel("Kit workspace")
-      .getByRole("heading", { name: "Alpha Kit" }),
+    page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await expect(page.locator(".project-card")).toHaveCount(50);
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
-    page
-      .getByLabel("Kit workspace")
-      .getByRole("heading", { name: "Alpha Kit" }),
+    page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
 });
 
@@ -204,33 +214,77 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   await expect(flagged.locator("a")).toHaveCount(0);
 });
 
-test("supports create, duplicate, edit, handle order, and collapsed persistence", async ({
+test("batches projects without interrupting browse state and preserves draft access", async ({
   page,
 }) => {
   await openKits(page);
-  await page.getByRole("button", { name: "Create new Kit" }).click();
-  await expect(page.getByRole("heading", { name: "Create Kit" })).toBeVisible();
-
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  const add = page.getByRole("button", { name: /Add .* to Kit/ });
-  await add.nth(0).click();
-  await add.nth(1).click();
-  await add.nth(2).click();
-  const rows = page.locator(".kit-builder-row");
-  const secondName = await rows.nth(1).locator("strong").textContent();
-  const secondHandle = rows
-    .nth(1)
-    .getByRole("button", { name: /Drag .* to reorder or remove/ });
-  await secondHandle.focus();
-  await page.keyboard.press("Alt+ArrowUp");
-  await expect(rows.nth(0).locator("strong")).toHaveText(secondName!);
+  await expect(page.getByRole("button", { name: /Add .* to Kit/ })).toHaveCount(
+    0,
+  );
+  const startingUrl = page.url();
+  const frontendShell = page
+    .locator(".project-card-shell")
+    .filter({ has: page.locator(".project-card.kind-frontend") })
+    .first();
+  const extensionShells = page
+    .locator(".project-card-shell")
+    .filter({ has: page.locator(".project-card.kind-extension") });
+  await longPress(page, frontendShell);
+  await extensionShells.nth(0).click();
+  await extensionShells.nth(1).click();
 
-  await page.getByRole("button", { name: "Collapse workspace" }).click();
+  const dock = page.getByRole("region", { name: "3 projects selected" });
+  await expect(dock).toBeVisible();
+  await expect(dock.locator(".selection-count")).toHaveText("3");
+  const scrollBeforeAdd = await page.evaluate(() => window.scrollY);
+  await dock.getByRole("button", { name: "Add to Kit" }).click();
+
+  expect(page.url()).toBe(startingUrl);
+  expect(await page.evaluate(() => window.scrollY)).toBe(scrollBeforeAdd);
+  expect(
+    await page.evaluate(() =>
+      document
+        .querySelector(".kit-builder-panel")
+        ?.contains(document.activeElement),
+    ),
+  ).toBe(false);
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
+  ).toBeVisible();
+
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  await search.fill("Fixture Tool 10");
+  await longPress(page, page.locator(".project-card-shell").first());
+  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await expect(search).toHaveValue("Fixture Tool 10");
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    })
+    .click();
+  await expect(page.locator(".kit-project-count")).toHaveText("4 projects");
+
+  await page.getByRole("button", { name: "Collapse Kit Builder" }).click();
+  await search.fill("");
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Expand Kit workspace" }),
+    page.getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Expand Kit workspace" }).click();
+  await page
+    .getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    })
+    .click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
   await page.getByRole("button", { name: "Duplicate" }).click();
@@ -300,8 +354,11 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
     await expect(page.getByText("Release to add")).toBeVisible();
     await page.mouse.up();
     await expect(
-      page.getByRole("button", { name: `${name} added to Kit` }),
-    ).toBeDisabled();
+      page
+        .locator(".project-card-shell")
+        .filter({ has: page.getByRole("link", { name, exact: true }) })
+        .getByText("In Kit"),
+    ).toBeVisible();
   }
   const rows = page.locator(".kit-builder-row");
   await expect(rows).toHaveCount(2);
@@ -360,7 +417,9 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
     page.getByRole("button", { name: "Remove Fixture Tool 02" }),
   ).toHaveCount(0);
 
-  const workspaceBox = (await page.locator(".kit-workspace").boundingBox())!;
+  const workspaceBox = (await page
+    .locator(".kit-builder-panel")
+    .boundingBox())!;
   const catalogMainBox = (await page.locator(".catalog-main").boundingBox())!;
   expect(workspaceBox.x).toBeGreaterThanOrEqual(
     catalogMainBox.x + catalogMainBox.width - 1,
@@ -368,7 +427,7 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   expect(
     await page.locator(".project-card").evaluateAll((projectCards) => {
       const workspace = document
-        .querySelector(".kit-workspace")!
+        .querySelector(".kit-builder-panel")!
         .getBoundingClientRect();
       return projectCards.every(
         (card) => card.getBoundingClientRect().right <= workspace.left + 1,
@@ -384,15 +443,15 @@ test("mobile workspace traps focus, returns it, and exposes touch handles", asyn
   await page.goto("/");
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "Kit workspace" })).toHaveCount(
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
     0,
   );
   const opener = page.getByRole("button", { name: "Open Alpha Kit" });
   await opener.click();
   await expect(
-    page.getByRole("complementary", { name: "Kit workspace" }),
+    page.getByRole("complementary", { name: "Kit Builder" }),
   ).toHaveCount(0);
-  const dialog = page.getByRole("dialog", { name: "Kit workspace" });
+  const dialog = page.getByRole("dialog", { name: "Kit Builder" });
   await expect(dialog).toBeVisible();
   await page.keyboard.press("Shift+Tab");
   expect(
@@ -433,9 +492,9 @@ test("mobile 50-project builder keeps sticky controls usable", async ({
   await page.getByRole("button", { name: "Open Large Stack" }).click();
   await page.getByRole("button", { name: "Duplicate" }).click();
 
-  const dialog = page.getByRole("dialog", { name: "Kit workspace" });
-  const body = dialog.locator(".kit-workspace-body");
-  const header = dialog.locator(".kit-workspace-header");
+  const dialog = page.getByRole("dialog", { name: "Kit Builder" });
+  const body = dialog.locator(".kit-builder-panel-body");
+  const header = dialog.locator(".kit-builder-panel-header");
   const footer = dialog.locator(".kit-builder-footer");
   await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
@@ -477,7 +536,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
-  const dialog = page.getByRole("dialog", { name: "Kit workspace" });
+  const dialog = page.getByRole("dialog", { name: "Kit Builder" });
   for (const action of ["Duplicate", "Edit", "Copy link"]) {
     await expectMobileTarget(dialog.getByRole("button", { name: action }));
   }
@@ -503,7 +562,7 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   await page.goto("/");
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "Kit workspace" })).toHaveCount(
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
     0,
   );
 
@@ -518,25 +577,74 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   await expect(filterButton).toBeFocused();
 
   await page.getByRole("button", { name: "Create Kit" }).click();
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 0 projects" }),
+    page.getByRole("button", {
+      name: "Open Kit Builder, 0 projects in draft",
+    }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  for (let count = 1; count <= 3; count += 1) {
-    await page
-      .getByRole("button", { name: /Add .* to Kit/ })
-      .first()
-      .click();
-    await expect(
-      page.getByRole("button", {
-        name: `Open draft with ${count} projects`,
-      }),
-    ).toBeVisible();
-  }
+  const extensionShells = page
+    .locator(".project-card-shell")
+    .filter({ has: page.locator(".project-card.kind-extension") });
+  const firstCardBox = (await extensionShells.first().boundingBox())!;
+  await page.mouse.move(
+    firstCardBox.x + firstCardBox.width / 2,
+    firstCardBox.y + firstCardBox.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(
+    firstCardBox.x + firstCardBox.width / 2,
+    firstCardBox.y + firstCardBox.height / 2 + 20,
+  );
+  await page.mouse.wheel(0, 160);
+  await page.waitForTimeout(500);
+  await page.mouse.up();
+  await expect(page.locator(".project-selection-dock")).toHaveCount(0);
+
+  await longPress(page, extensionShells.nth(0));
+  await extensionShells.nth(1).click();
+  await extensionShells.nth(2).click();
+  const selectionDock = page.getByRole("region", {
+    name: "3 projects selected",
+  });
+  await expect(selectionDock).toBeVisible();
+  await expectMobileTarget(
+    selectionDock.getByRole("button", { name: "Cancel" }),
+  );
+  await expectMobileTarget(
+    selectionDock.getByRole("button", { name: "Add to Kit" }),
+  );
+  await selectionDock.getByRole("button", { name: "Add to Kit" }).click();
+  await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
+  ).toBeVisible();
+  await page.waitForTimeout(1700);
+  await longPress(
+    page,
+    page.locator(".project-card-shell:not(.in-draft)").first(),
+  );
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Add to Kit" }).click();
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    }),
+  ).toBeVisible();
   await page
-    .getByRole("button", { name: "Open draft with 3 projects" })
+    .getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    })
     .click();
 
   const rows = page.locator(".kit-builder-row");
@@ -566,9 +674,11 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   await expect(page.getByText("Undo")).toHaveCount(0);
   await expect(page.getByText(/Drag here to remove/i)).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(
-    page.getByRole("button", { name: "Open draft with 2 projects" }),
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
   ).toBeFocused();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
@@ -576,9 +686,9 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   await alphaOpener.click();
   await expect(
     page
-      .getByRole("dialog", { name: "Kit workspace" })
+      .getByRole("dialog", { name: "Kit Builder" })
       .getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+  await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(alphaOpener).toBeFocused();
 });

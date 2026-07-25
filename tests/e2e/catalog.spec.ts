@@ -714,7 +714,7 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       workspaceLeft: Math.round(
         document
-          .querySelector<HTMLElement>(".kit-workspace")!
+          .querySelector<HTMLElement>(".kit-builder-panel")!
           .getBoundingClientRect().left,
       ),
       topLinkDisplay: getComputedStyle(
