@@ -46,78 +46,108 @@ function countBy<T>(records: T[], selector: (record: T) => string) {
   return Object.fromEntries(counts);
 }
 
-describe("full catalog data", () => {
-  test("matches the launched 214-record contract", async () => {
-    const records = await loadRegistryRecords();
-    const ids = new Set(records.map((record) => record.id));
-    const provisionalRecords = records.filter(
-      (record) => record.metadata_status === "provisional",
+function expectCatalogContract(records: CatalogRecord[]) {
+  const ids = new Set(records.map((record) => record.id));
+  const provisionalRecords = records.filter(
+    (record) => record.metadata_status === "provisional",
+  );
+
+  expect(records).toHaveLength(214);
+  expect(ids.size).toBe(214);
+  expect(countBy(records, (record) => record.kind)).toEqual({
+    extension: 198,
+    frontend: 4,
+    preset: 12,
+  });
+  expect(countBy(records, (record) => record.source.type)).toEqual({
+    github: 204,
+    "github-organization": 1,
+    url: 9,
+  });
+  expect(
+    records.filter(
+      (record) =>
+        record.source.type === "url" &&
+        record.source.license_status === "pending",
+    ),
+  ).toHaveLength(8);
+  expect(
+    records.filter(
+      (record) =>
+        record.source.type === "url" &&
+        record.source.license_status === "missing",
+    ),
+  ).toHaveLength(1);
+
+  for (const record of records) {
+    expect(["curated", "provisional"], record.id).toContain(
+      record.metadata_status,
     );
+  }
 
-    expect(records).toHaveLength(214);
-    expect(ids.size).toBe(214);
-    expect(countBy(records, (record) => record.metadata_status)).toEqual({
-      curated: 5,
-      provisional: 209,
-    });
-    expect(countBy(records, (record) => record.kind)).toEqual({
-      extension: 198,
-      frontend: 4,
-      preset: 12,
-    });
-    expect(countBy(records, (record) => record.source.type)).toEqual({
-      github: 204,
-      "github-organization": 1,
-      url: 9,
-    });
-    expect(countBy(records, (record) => record.primary_function)).toEqual({
-      uncategorized: 209,
-      "generation-reasoning": 3,
-      "interface-workflow": 1,
-      frontend: 1,
-    });
+  for (const record of provisionalRecords) {
+    expect(record.primary_function).toBe("uncategorized");
+    expect(record.capabilities).toEqual([]);
+  }
+
+  for (const record of records.filter(
+    (record) => record.source.type === "github",
+  )) {
+    const repositoryId = record.source.repository_id;
     expect(
-      records.filter(
+      repositoryId === null ||
+        (Number.isInteger(repositoryId) && (repositoryId ?? 0) > 0),
+      record.id,
+    ).toBe(true);
+    if (record.metadata_status === "curated") {
+      expect(repositoryId, record.id).toEqual(expect.any(Number));
+      expect(record.primary_function, record.id).not.toBe("uncategorized");
+    }
+  }
+
+  const curatedGitHubIds = [
+    "mentallyquill-recursion",
+    "platberlitz-sillytavern-image-gen",
+    "sillytavern-sillytavern",
+    "zorgonatis-stabs-edh",
+  ];
+
+  for (const id of curatedGitHubIds) {
+    const record = records.find((entry) => entry.id === id);
+    expect(record, `missing curated overlap record: ${id}`).toBeDefined();
+    expect(record?.metadata_status).toBe("curated");
+    expect(record?.source.type).toBe("github");
+    expect(record?.primary_function).not.toBe("uncategorized");
+    expect(record?.capabilities ?? []).not.toEqual([]);
+    expect(record?.source.repository_id).toEqual(expect.any(Number));
+  }
+}
+
+describe("full catalog data", () => {
+  test("matches the stable 214-record contract", async () => {
+    expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("allows identity preparation and progressive enrichment", async () => {
+    const records = structuredClone(await loadRegistryRecords());
+    const canary = records
+      .filter(
         (record) =>
-          record.source.type === "url" &&
-          record.source.license_status === "pending",
-      ),
-    ).toHaveLength(8);
-    expect(
-      records.filter(
-        (record) =>
-          record.source.type === "url" &&
-          record.source.license_status === "missing",
-      ),
-    ).toHaveLength(1);
+          record.metadata_status === "provisional" &&
+          record.source.type === "github",
+      )
+      .slice(0, 5);
 
-    for (const record of provisionalRecords) {
-      expect(record.primary_function).toBe("uncategorized");
-      expect(record.capabilities).toEqual([]);
+    for (const [index, record] of canary.entries()) {
+      record.source.repository_id = 1_000_000 + index;
+      record.metadata_status = "curated";
+      record.primary_function = "developer-infrastructure";
+      record.capabilities = ["automation"];
+      record.summary =
+        "A focused extension for automating repeatable project workflows across supported roleplaying frontends and creator tools.";
     }
 
-    for (const record of provisionalRecords.filter(
-      (record) => record.source.type === "github",
-    )) {
-      expect(record.source.repository_id).toBeNull();
-    }
-
-    const curatedGitHubIds = [
-      "mentallyquill-recursion",
-      "platberlitz-sillytavern-image-gen",
-      "sillytavern-sillytavern",
-      "zorgonatis-stabs-edh",
-    ];
-
-    for (const id of curatedGitHubIds) {
-      const record = records.find((entry) => entry.id === id);
-      expect(record, `missing curated overlap record: ${id}`).toBeDefined();
-      expect(record?.metadata_status).toBe("curated");
-      expect(record?.source.type).toBe("github");
-      expect(record?.primary_function).not.toBe("uncategorized");
-      expect(record?.capabilities ?? []).not.toEqual([]);
-      expect(record?.source.repository_id).toEqual(expect.any(Number));
-    }
+    expectCatalogContract(records);
   });
 
   test("keeps the production Kit registry empty before community publication", async () => {

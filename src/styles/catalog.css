@@ -132,7 +132,7 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: fit-content;
   text-decoration: none;
 }
@@ -152,9 +152,13 @@
 
 .brand-logo {
   width: 52px;
-  height: 47px;
+  height: 52px;
   object-fit: contain;
   transform: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 
 .brand-tagline {
@@ -1570,7 +1574,7 @@
   flex-direction: column;
   align-self: start;
   min-width: 0;
-  height: calc(100vh - 116px);
+  height: 100dvh;
   padding: 18px;
   overflow: hidden;
   border-left: 1px solid var(--color-border);

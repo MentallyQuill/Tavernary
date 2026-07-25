@@ -77,6 +77,31 @@ test("navigates, restores URLs, searches every indexed Kit field, and sorts", as
   ).toBeVisible();
 });
 
+test("desktop Kit Builder stays flush with the viewport after the header scrolls away", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  await page.evaluate(() => window.scrollTo(0, 300));
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(116);
+
+  const panelEdges = await page
+    .locator(".kit-builder-panel")
+    .evaluate((panel) => {
+      const bounds = panel.getBoundingClientRect();
+      return {
+        top: bounds.top,
+        bottomGap: window.innerHeight - bounds.bottom,
+      };
+    });
+
+  expect(panelEdges.top).toBeCloseTo(0, 0);
+  expect(panelEdges.bottomGap).toBeCloseTo(0, 0);
+});
+
 test("applies every Kit filter and clears them", async ({ page }) => {
   await openKits(page);
   const filter = page.getByRole("complementary", { name: "Kit filters" });

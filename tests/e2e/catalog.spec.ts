@@ -179,7 +179,7 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
   await expect(page.locator(".view-tabs")).toHaveCount(0);
   const logo = page.locator(".brand-logo");
   await expect(logo).toHaveCSS("width", "52px");
-  await expect(logo).toHaveCSS("height", "47px");
+  await expect(logo).toHaveCSS("height", "52px");
   await expect(logo).toHaveCSS("transform", "none");
 });
 

@@ -4,6 +4,19 @@ import { sitePath } from "../helpers/site-path";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
+test.describe("server-rendered mobile shell", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("does not flash the desktop Kit Builder before hydration", async ({
+    page,
+  }) => {
+    await page.goto(sitePath());
+
+    await expect(page.locator(".site-header")).toBeVisible();
+    await expect(page.locator(".kit-builder-panel")).toBeHidden();
+  });
+});
+
 test("matches the approved mobile header hierarchy", async ({ page }) => {
   await page.goto(sitePath());
 
@@ -14,10 +27,10 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   );
   await expect(brand.locator("img")).toHaveAttribute(
     "src",
-    "./tavernary-gems.png",
+    "./tavernary-trihex.png",
   );
   await expect(brand.locator("img")).toHaveCSS("width", "48px");
-  await expect(brand.locator("img")).toHaveCSS("height", "43px");
+  await expect(brand.locator("img")).toHaveCSS("height", "48px");
   await expect(brand.locator("img")).toHaveCSS("transform", "none");
   const actions = page.locator(".header-actions");
   await expect(actions).toContainText("Submit Project");

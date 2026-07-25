@@ -89,16 +89,13 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("uses the supplied deployable logo in mockup order", () => {
+  test("uses the supplied trihex lockup with live tagline", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 
-    expect(header).toContain('src="./tavernary-gems.png"');
-    expect(header).not.toContain('src="./tavernary-logo.png"');
-    expect(header.indexOf("brand-copy")).toBeLessThan(
-      header.indexOf("brand-logo"),
-    );
+    expect(header).toContain('src="./tavernary-trihex.png"');
+    expect(header).toContain("Where AI roleplay tools gather");
     expect(header.indexOf("brand-logo")).toBeLessThan(
-      header.indexOf("header-actions"),
+      header.indexOf("brand-copy"),
     );
   });
 
@@ -296,15 +293,15 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("uses the approved gem geometry", () => {
+  test("uses the approved trihex geometry", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
 
     expect(css).toMatch(
-      /\.brand-logo\s*\{[^}]*width:\s*52px[^}]*height:\s*47px[^}]*transform:\s*none/s,
+      /\.brand-logo\s*\{[^}]*width:\s*52px[^}]*height:\s*52px[^}]*transform:\s*none/s,
     );
     expect(responsive).toMatch(
-      /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*48px[^}]*height:\s*43px[^}]*transform:\s*none/,
+      /@media \(max-width:\s*760px\)[\s\S]*?\.brand-logo\s*\{[^}]*width:\s*48px[^}]*height:\s*48px[^}]*transform:\s*none/,
     );
   });
 
