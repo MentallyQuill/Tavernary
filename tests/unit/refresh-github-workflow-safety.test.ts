@@ -17,7 +17,7 @@ test("uses status-driven refresh modes without indexed backfill", async () => {
   expect(source).not.toContain("start_index");
   expect(source).not.toContain("next_index");
   expect(source).not.toContain("< 200");
-  expect(source).toContain("-f mode=baseline");
+  expect(source).toContain('"$MODE" != "baseline"');
 });
 
 test("stages only snapshots and the refresh manifest", async () => {
@@ -59,24 +59,17 @@ test("rebases with bounded retries and never force-pushes", async () => {
   expect(postRebaseCheck).toBeLessThan(push);
 });
 
-test("continues baselines only after measurable progress", async () => {
+test("drains baselines in one serialized run and stops without progress", async () => {
   const source = await readFile(refreshPath, "utf8");
-  const capture = source.indexOf("Capture baseline queue state");
-  const refresh = source.indexOf("Refresh selected sources");
-  const evaluate = source.indexOf("Evaluate baseline queue progress");
-  const dispatch = source.indexOf("Dispatch next baseline batch");
+  const drain = source.indexOf("Drain baseline queue");
+  const evaluate = source.indexOf("baseline-queue.mjs evaluate", drain);
 
-  expect(capture).toBeGreaterThan(-1);
-  expect(capture).toBeLessThan(refresh);
-  expect(refresh).toBeLessThan(evaluate);
-  expect(evaluate).toBeLessThan(dispatch);
-  expect(source).toContain("baseline-queue.mjs capture");
+  expect(drain).toBeGreaterThan(-1);
+  expect(evaluate).toBeGreaterThan(drain);
+  expect(source).toContain("while (( remaining > 0 )); do");
+  expect(source).toContain('before="$remaining"');
   expect(source).toContain("baseline-queue.mjs evaluate");
-  expect(source).toContain(
-    "steps.baseline-progress.outputs.continue == 'true'",
-  );
-  expect(source).toContain("steps.baseline-progress.outputs.remaining");
-  expect(source).not.toContain("if (( remaining > 0 ))");
+  expect(source).not.toContain("workflow run refresh-catalog.yml");
 });
 
 test("names catalog runs by their actual operating mode", async () => {
@@ -167,6 +160,34 @@ test("enrichment prepares a random canary and limits batch publication", async (
       }
     ).concurrency.group,
   ).toBe("catalog-refresh");
+});
+
+test("fails an enrichment resume when its cursor state does not advance", async () => {
+  const source = await workflowSource("enrich-catalog");
+  const resumeFunction = source.indexOf("resume_batch()");
+  const before = source.indexOf(
+    'progress_before="$(enrichment_progress)"',
+    resumeFunction,
+  );
+  const resume = source.indexOf("run_batch resume", before);
+  const after = source.indexOf(
+    'progress_after="$(enrichment_progress)"',
+    resume,
+  );
+  const guard = source.indexOf(
+    '"$progress_after" == "$progress_before"',
+    after,
+  );
+
+  expect(source).toContain("enrichment_progress()");
+  expect(resumeFunction).toBeGreaterThan(-1);
+  expect(before).toBeGreaterThan(resumeFunction);
+  expect(resume).toBeGreaterThan(before);
+  expect(after).toBeGreaterThan(resume);
+  expect(guard).toBeGreaterThan(after);
+  expect(source).toContain("Enrichment stalled");
+  expect(source).not.toContain('run_batch "$MODE"');
+  expect(source.match(/\bresume_batch\b/gu)).toHaveLength(3);
 });
 
 test("identity backfill targets optional IDs and owns only repository identity writes", async () => {

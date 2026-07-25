@@ -219,6 +219,25 @@ jobs:
             deploy_registry_changes
           }
 
+          enrichment_progress() {
+            jq -c \
+              '[.phase, .primary_cursor, .retry_cursor, (.retry_queue | length)]' \
+              data/reports/enrichment-report.json
+          }
+
+          resume_batch() {
+            progress_before="$(enrichment_progress)"
+            run_batch resume
+            run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
+            status="$(jq -r '.status' data/reports/enrichment-report.json)"
+            test "$run_mode" = "full"
+            progress_after="$(enrichment_progress)"
+            if [[ "$status" == "running" && "$progress_after" == "$progress_before" ]]; then
+              echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."
+              exit 1
+            fi
+          }
+
           if [[ "$MODE" == "preflight" || "$MODE" == "canary" ]]; then
             npm run catalog:enrich -- --mode preflight | tee "$RUNNER_TEMP/enrichment-preflight.log"
           fi
@@ -258,15 +277,17 @@ jobs:
             exit 0
           fi
 
-          run_batch "$MODE"
-          run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
-          status="$(jq -r '.status' data/reports/enrichment-report.json)"
-          test "$run_mode" = "full"
-          while [[ "$status" == "running" ]]; do
-            run_batch resume
+          if [[ "$MODE" == "start" ]]; then
+            run_batch start
             run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
             status="$(jq -r '.status' data/reports/enrichment-report.json)"
             test "$run_mode" = "full"
+          else
+            test "$MODE" = "resume"
+            resume_batch
+          fi
+          while [[ "$status" == "running" ]]; do
+            resume_batch
           done
           test "$status" = "complete"
       - name: Write sanitized workflow summary

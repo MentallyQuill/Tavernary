@@ -57,13 +57,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Capture baseline queue state
-        id: baseline-start
-        if: inputs.mode == 'baseline'
-        run: >-
-          node scripts/catalog/baseline-queue.mjs capture
-          --manifest data/snapshots/github-refresh.json
-      - name: Refresh selected sources
+      - name: Drain baseline queue or refresh selected sources
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,11 +65,28 @@ jobs:
           BATCH_SIZE: ${{ inputs.batch_size || 12 }}
           PROJECT_ID: ${{ inputs.project_id || '' }}
         run: |
-          args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
-          if [[ -n "$PROJECT_ID" ]]; then
-            args+=(--project-id "$PROJECT_ID")
+          refresh_batch() {
+            args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
+            if [[ -n "$PROJECT_ID" ]]; then
+              args+=(--project-id "$PROJECT_ID")
+            fi
+            npm run catalog:refresh -- "${args[@]}"
+          }
+
+          if [[ "$MODE" != "baseline" ]]; then
+            refresh_batch
+            exit 0
           fi
-          npm run catalog:refresh -- "${args[@]}"
+
+          remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
+          while (( remaining > 0 )); do
+            before="$remaining"
+            refresh_batch
+            node scripts/catalog/baseline-queue.mjs evaluate \
+              --before "$before" \
+              --manifest data/snapshots/github-refresh.json
+            remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
+          done
       - name: Refresh Kit community support
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -121,26 +132,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-pages.yml --ref main
-      - name: Evaluate baseline queue progress
-        id: baseline-progress
-        if: ${{ success() && inputs.mode == 'baseline' }}
-        env:
-          BEFORE: ${{ steps.baseline-start.outputs.provisional }}
-        shell: bash
-        run: |
-          node scripts/catalog/baseline-queue.mjs evaluate \
-            --before "$BEFORE" \
-            --manifest data/snapshots/github-refresh.json
-      - name: Dispatch next baseline batch
-        if: steps.baseline-progress.outputs.continue == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BATCH_SIZE: ${{ inputs.batch_size || 12 }}
-          REMAINING: ${{ steps.baseline-progress.outputs.remaining }}
-        shell: bash
-        run: |
-          gh workflow run refresh-catalog.yml \
-            --ref main \
-            -f mode=baseline \
-            -f batch_size="$BATCH_SIZE"
-          echo "Queued the next baseline batch with $REMAINING provisional project(s) remaining."
