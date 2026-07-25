@@ -1,26 +1,17 @@
 name: Submit a project
 description: Propose a public AI roleplay project for maintainer review.
-title: "[Project submission]: "
+title: "[Project submission]"
 labels:
   - project-submission
 body:
   - type: markdown
     attributes:
       value: |
-        Tavernary is a link aggregator. It does not host project files, and submission never publishes a listing automatically.
-
-        Frontends and Extensions require a public `github.com/owner/repository` source. A System Preset may use another stable public HTTPS page, but non-GitHub System Presets are locked after acceptance except for maintainer moderation.
-  - type: input
-    id: project-name
-    attributes:
-      label: Project name
-      description: Use the name published by the project creator.
-    validations:
-      required: true
+        GitHub repository URL required for Extensions and Frontends, not for Presets.
   - type: dropdown
-    id: project-kind
+    id: project-type
     attributes:
-      label: Project kind
+      label: Project Type
       options:
         - Frontend
         - Extension
@@ -28,54 +19,16 @@ body:
     validations:
       required: true
   - type: input
-    id: canonical-source-url
+    id: project-url
     attributes:
-      label: Canonical source URL
-      description: Frontends and Extensions must use a public GitHub repository. System Presets may use another stable public HTTPS page.
+      label: Project URL
       placeholder: https://github.com/owner/repository
     validations:
       required: true
   - type: textarea
-    id: frontends
+    id: additional-context
     attributes:
-      label: Compatible frontends
-      description: List every frontend the project directly supports.
-    validations:
-      required: true
-  - type: textarea
-    id: factual-summary
-    attributes:
-      label: Factual summary
-      description: In one or two neutral sentences, explain what the project does.
-    validations:
-      required: true
-  - type: input
-    id: primary-function
-    attributes:
-      label: Suggested primary function
-      description: Name the project's single main function.
-    validations:
-      required: true
-  - type: textarea
-    id: capabilities
-    attributes:
-      label: Suggested capabilities
-      description: List the project's important searchable capabilities.
-    validations:
-      required: true
-  - type: textarea
-    id: supporting-context
-    attributes:
-      label: Supporting context
-      description: Add documentation, announcement, release, or compatibility links that will help maintainers verify the submission.
+      label: Anything we should know?
+      description: Optional context that may help us review this project.
     validations:
       required: false
-  - type: checkboxes
-    id: acknowledgements
-    attributes:
-      label: Acknowledgements
-      options:
-        - label: I understand that Frontends and Extensions require a public GitHub repository.
-          required: true
-        - label: I understand that submission does not publish the project automatically.
-          required: true

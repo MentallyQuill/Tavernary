@@ -9,16 +9,20 @@ import {
   parseKitIssueFields,
 } from "../../scripts/submissions/triage-kit-issue.mjs";
 
-test("parses the issue-form fields used by automated triage", () => {
+test("parses only the minimal fields used by automated triage", () => {
   expect(
     parseIssueFields(`
-### Project kind
+### Project Type
 
 Extension
 
-### Canonical source URL
+### Project URL
 
 https://github.com/MentallyQuill/Recursion
+
+### Anything we should know?
+
+This is an unusual installation.
 `),
   ).toEqual({
     kind: "Extension",

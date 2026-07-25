@@ -108,36 +108,38 @@ test("Kit submission is a readable review form without redundant machine fields"
   }
 });
 
-test("project submissions state the source rules and required acknowledgements", async () => {
-  const source = await readFile(
-    resolve(templateDirectory, "01-project-submission.yml"),
-    "utf8",
+test("project submission is a minimal three-field intake", async () => {
+  const submission = parse(
+    await readFile(
+      resolve(templateDirectory, "01-project-submission.yml"),
+      "utf8",
+    ),
   );
-  const form = parse(source);
-  const fieldIds = form.body
-    .map((field: { id?: string }) => field.id)
-    .filter(Boolean);
+  const fields = submission.body.filter((field: { id?: string }) => field.id);
 
-  expect(fieldIds).toEqual(
-    expect.arrayContaining([
-      "project-name",
-      "project-kind",
-      "canonical-source-url",
-      "frontends",
-      "factual-summary",
-      "primary-function",
-      "capabilities",
-      "supporting-context",
-      "acknowledgements",
-    ]),
+  expect(submission.title).toBe("[Project submission]");
+  expect(fields.map((field: { id: string }) => field.id)).toEqual([
+    "project-type",
+    "project-url",
+    "additional-context",
+  ]);
+  expect(
+    fields.map(
+      (field: { attributes: { label: string } }) => field.attributes.label,
+    ),
+  ).toEqual(["Project Type", "Project URL", "Anything we should know?"]);
+  expect(fields[0].attributes.options).toEqual([
+    "Frontend",
+    "Extension",
+    "System Preset",
+  ]);
+  expect(fields[0].validations.required).toBe(true);
+  expect(fields[1].validations.required).toBe(true);
+  expect(fields[1].attributes.placeholder).toBe(
+    "https://github.com/owner/repository",
   );
-  expect(source).toContain(
-    "I understand that Frontends and Extensions require a public GitHub repository.",
-  );
-  expect(source).toContain(
-    "I understand that submission does not publish the project automatically.",
-  );
-  expect(source).toContain(
-    "non-GitHub System Presets are locked after acceptance",
+  expect(fields[2].validations?.required ?? false).toBe(false);
+  expect(submission.body[0].attributes.value).toContain(
+    "GitHub repository URL required for Extensions and Frontends, not for Presets.",
   );
 });

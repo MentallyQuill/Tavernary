@@ -22,11 +22,12 @@ through public issue forms.
 
 ### Projects
 
-1. The issue is created with the selected form and basic machine checks
-   (duplicates, source shape, and required fields).
-2. A maintainer validates the issue data against Tavernary rules:
+1. The submitter provides the Project Type, Project URL, and any optional
+   context. Automation checks URL validity, source eligibility, and obvious
+   duplicates.
+2. A maintainer derives and validates the catalog metadata:
    - Frontends and Extensions require a public GitHub repo.
-   - System Presets use approved non-GitHub source types only when policy allows.
+   - System Presets may use another stable public HTTPS page.
    - `id`, `kind`, `summary`, `capabilities`, and `frontends` must be internally
      consistent.
 3. The maintainer updates the canonical record in

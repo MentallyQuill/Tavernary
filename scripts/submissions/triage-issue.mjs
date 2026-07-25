@@ -35,8 +35,8 @@ export function parseIssueFields(body) {
     );
   }
   return {
-    kind: fields.get("Project kind") ?? "",
-    sourceUrl: fields.get("Canonical source URL") ?? "",
+    kind: fields.get("Project Type") ?? "",
+    sourceUrl: fields.get("Project URL") ?? "",
   };
 }
 
