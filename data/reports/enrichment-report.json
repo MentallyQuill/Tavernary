@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:08:41.623Z",
+  "updated_at": "2026-07-25T15:10:03.337Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 120,
+  "primary_cursor": 140,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -329,7 +329,27 @@
     "multihogaurelius-sillytavern-multihogdndframework": 1,
     "n0819-sonder-engine": 1,
     "nattaphat010447-nutho-autocloser": 1,
-    "nbrown725-sillytavern-alternatedescriptions": 1
+    "nbrown725-sillytavern-alternatedescriptions": 1,
+    "nemovonnirgend-nemopresetext": 1,
+    "nialyn-mid-polyceph": 1,
+    "nickchegg-game-engine": 1,
+    "noathouard-sillytavern-extension-npc-portait-switcher": 1,
+    "p-e-w-sorcery": 1,
+    "paradox460-st-messagesplit": 1,
+    "pasta-devs-marinara-engine": 1,
+    "phampyk-sillytavern-avatarbanner": 1,
+    "platberlitz-sd-proxy": 1,
+    "platberlitz-sillytavern-character-colors": 1,
+    "prolix-oc-lumiverse": 1,
+    "prolix-oc-lumiverse-chatroom": 1,
+    "prolix-oc-lumiverse-simtracker": 1,
+    "prolix-oc-lumiverse-spotifycontrols": 1,
+    "prolix-oc-lumiverse-xtimeline": 1,
+    "prolix-oc-sillytavern-simtracker": 1,
+    "promansis-summary-sharder": 1,
+    "quackified-floating-viewer": 1,
+    "qvink-sillytavern-messagesummarize": 1,
+    "qvink-sillytavern-rightclickmessagemenu": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -1435,13 +1455,199 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:08:41.623Z"
+    },
+    "nemovonnirgend-nemopresetext": {
+      "id": "nemovonnirgend-nemopresetext",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "nialyn-mid-polyceph": {
+      "id": "nialyn-mid-polyceph",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "enriched",
+      "source_kind": "description",
+      "repository_id": 1218665690,
+      "head_sha": "0fff51593aafc91298bca7dd81a804b01394568f",
+      "readme_path": null,
+      "readme_ref": null,
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 7704,
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "nickchegg-game-engine": {
+      "id": "nickchegg-game-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "noathouard-sillytavern-extension-npc-portait-switcher": {
+      "id": "noathouard-sillytavern-extension-npc-portait-switcher",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "p-e-w-sorcery": {
+      "id": "p-e-w-sorcery",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "paradox460-st-messagesplit": {
+      "id": "paradox460-st-messagesplit",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "pasta-devs-marinara-engine": {
+      "id": "pasta-devs-marinara-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "phampyk-sillytavern-avatarbanner": {
+      "id": "phampyk-sillytavern-avatarbanner",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "platberlitz-sd-proxy": {
+      "id": "platberlitz-sd-proxy",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "platberlitz-sillytavern-character-colors": {
+      "id": "platberlitz-sillytavern-character-colors",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-lumiverse": {
+      "id": "prolix-oc-lumiverse",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-lumiverse-chatroom": {
+      "id": "prolix-oc-lumiverse-chatroom",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-lumiverse-simtracker": {
+      "id": "prolix-oc-lumiverse-simtracker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-lumiverse-spotifycontrols": {
+      "id": "prolix-oc-lumiverse-spotifycontrols",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-lumiverse-xtimeline": {
+      "id": "prolix-oc-lumiverse-xtimeline",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "prolix-oc-sillytavern-simtracker": {
+      "id": "prolix-oc-sillytavern-simtracker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "promansis-summary-sharder": {
+      "id": "promansis-summary-sharder",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "quackified-floating-viewer": {
+      "id": "quackified-floating-viewer",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "qvink-sillytavern-messagesummarize": {
+      "id": "qvink-sillytavern-messagesummarize",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
+    },
+    "qvink-sillytavern-rightclickmessagemenu": {
+      "id": "qvink-sillytavern-rightclickmessagemenu",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:10:03.337Z"
     }
   },
   "deployment": null,
   "aggregates": {
-    "enriched": 4,
+    "enriched": 5,
     "fallback": 0,
-    "source-not-ready": 116,
+    "source-not-ready": 135,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
