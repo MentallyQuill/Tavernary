@@ -21,10 +21,10 @@ import {
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import {
   replaceKitFrontend,
-  splitKitProjectIds,
 } from "@/features/kits/kit-project-layout";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
+import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
@@ -81,10 +81,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
   const buildState = workspace.state.mode === "build" ? workspace.state : null;
-  const draftFrontendId = buildState
-    ? splitKitProjectIds(buildState.draft.projectIds, catalog.projects)
-        .frontendId
-    : null;
+  const batchSelection = useProjectBatchSelection({
+    projects: catalog.projects,
+    draftProjectIds: buildState?.draft.projectIds ?? [],
+    active: query.mode === "projects",
+    onApply: (projectIds) =>
+      workspace.applyProjectBatch(projectIds, catalog.projects),
+  });
   const catalogDrag = useCatalogProjectDrag({
     editorRef: catalogLayoutRef,
     onDrop: (projectId, target) => {
@@ -346,36 +349,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             <ProjectGrid
               projects={selectedProjects}
               now={catalog.generatedAt}
-              draftProjectIds={buildState?.draft.projectIds}
-              draftFrontendId={draftFrontendId}
+              selection={{
+                mode: batchSelection.selectionMode,
+                bindingsFor: batchSelection.bindingsFor,
+              }}
               onProjectDragStart={
                 buildState && !touchLayout
                   ? (project, event) => {
                       if (buildState.collapsed) workspace.toggleCollapsed();
                       catalogDrag.begin(project, event);
-                    }
-                  : undefined
-              }
-              onAddToKit={
-                buildState
-                  ? (projectId) => {
-                      const project = catalog.projects.find(
-                        ({ id }) => id === projectId,
-                      );
-                      if (!project) return;
-                      workspace.updateDraft({
-                        projectIds:
-                          project.kind === "frontend"
-                            ? replaceKitFrontend(
-                                buildState.draft.projectIds,
-                                projectId,
-                                catalog.projects,
-                              )
-                            : addProject(
-                                buildState.draft.projectIds,
-                                projectId,
-                              ),
-                      });
                     }
                   : undefined
               }

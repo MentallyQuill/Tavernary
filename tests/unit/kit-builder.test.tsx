@@ -11,7 +11,6 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitBuilder } from "@/features/kits/components/kit-builder";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
@@ -190,6 +189,84 @@ describe("Kit builder state", () => {
     expect(remove.mock.calls.some(([name]) => name === "beforeunload")).toBe(
       true,
     );
+  });
+
+  test("applies a project batch into a silent collapsed draft", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    let plan;
+    act(() => {
+      plan = result.current.applyProjectBatch(
+        ["memory", "frontend"],
+        projects,
+      );
+    });
+
+    expect(plan).toMatchObject({
+      projectIds: ["frontend", "memory"],
+      addedProjectIds: ["memory", "frontend"],
+    });
+    expect(result.current.state).toEqual({
+      mode: "build",
+      collapsed: true,
+      dirty: true,
+      draft: {
+        operation: "create",
+        kitId: null,
+        title: "",
+        description: "",
+        projectIds: ["frontend", "memory"],
+      },
+    });
+    expect(result.current.draftOrigin).toBe("create");
+  });
+
+  test("appends a batch without opening the builder or replacing draft metadata", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    act(() => result.current.startCreate());
+    act(() =>
+      result.current.updateDraft({
+        title: "Kept title",
+        description: "Kept description",
+        projectIds: ["frontend", "memory"],
+      }),
+    );
+    act(() => result.current.toggleCollapsed());
+
+    act(() => {
+      result.current.applyProjectBatch(["preset"], projects);
+    });
+
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      collapsed: true,
+      dirty: true,
+      draft: {
+        title: "Kept title",
+        description: "Kept description",
+        projectIds: ["frontend", "memory", "preset"],
+      },
+    });
+  });
+
+  test("does not create a draft when a project batch adds nothing", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => {
+      result.current.applyProjectBatch(["unknown"], projects);
+    });
+
+    expect(result.current.state).toEqual({
+      mode: "intro",
+      collapsed: false,
+    });
+    expect(result.current.draftOrigin).toBeNull();
   });
 });
 
@@ -448,52 +525,6 @@ describe("Kit builder controls", () => {
     render(<Harness />);
     await user.click(screen.getByRole("button", { name: "Remove memory" }));
     expect(screen.getByRole("button", { name: "Remove preset" })).toHaveFocus();
-  });
-
-  test("renders Add to Kit as a sibling of the project link", async () => {
-    const user = userEvent.setup();
-    const onAdd = vi.fn();
-    const { container } = render(
-      <ProjectGrid
-        projects={[projects[0]]}
-        now="2026-07-24T00:00:00.000Z"
-        draftProjectIds={[]}
-        onAddToKit={onAdd}
-      />,
-    );
-    const link = screen.getByRole("link", { name: "frontend" });
-    const add = screen.getByRole("button", { name: "Add frontend to Kit" });
-    expect(link.contains(add)).toBe(false);
-    expect(
-      container.querySelector(".project-card-shell")?.children,
-    ).toHaveLength(2);
-    await user.click(add);
-    expect(onAdd).toHaveBeenCalledWith("frontend");
-  });
-
-  test("offers to replace the selected Frontend instead of adding another", async () => {
-    const user = userEvent.setup();
-    const onAdd = vi.fn();
-    const alternateFrontend = project("frontend-b", "frontend");
-    render(
-      <ProjectGrid
-        projects={[projects[0], alternateFrontend]}
-        now="2026-07-24T00:00:00.000Z"
-        draftProjectIds={["frontend"]}
-        draftFrontendId="frontend"
-        onAddToKit={onAdd}
-      />,
-    );
-
-    expect(
-      screen.getByRole("button", { name: "frontend added to Kit" }),
-    ).toBeDisabled();
-    const replacement = screen.getByRole("button", {
-      name: "Use frontend-b instead",
-    });
-    expect(replacement).toHaveTextContent("Use instead");
-    await user.click(replacement);
-    expect(onAdd).toHaveBeenCalledWith("frontend-b");
   });
 
   test("activates a stack drag only after four pixels of movement", () => {

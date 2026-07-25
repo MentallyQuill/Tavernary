@@ -26,9 +26,14 @@ export function planKitProjectBatch({
   );
   const currentFrontendId =
     draftProjectIds.find((id) => kindById.get(id) === "frontend") ?? null;
-  const selectedFrontendId =
-    selectedProjectIds.findLast((id) => kindById.get(id) === "frontend") ??
-    null;
+  let selectedFrontendId: string | null = null;
+  for (let index = selectedProjectIds.length - 1; index >= 0; index -= 1) {
+    const projectId = selectedProjectIds[index];
+    if (kindById.get(projectId) === "frontend") {
+      selectedFrontendId = projectId;
+      break;
+    }
+  }
   const frontendId = selectedFrontendId ?? currentFrontendId;
   const stackProjectIds = draftProjectIds.filter(
     (id) => kindById.get(id) !== "frontend",

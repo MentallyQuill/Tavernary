@@ -49,6 +49,20 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("distinguishes selected, focused, and in-draft project cards", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-kind-preset\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-selection-check\s*\{[^}]*position:\s*absolute/s,
+    );
+    expect(css).toMatch(
+      /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-muted\)/s,
+    );
+  });
+
   test("uses the supplied deployable logo in mockup order", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 

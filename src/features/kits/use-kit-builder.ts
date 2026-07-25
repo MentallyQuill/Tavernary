@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
+import { planKitProjectBatch } from "@/features/kits/project-batch";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
 export type KitBuilderState =
@@ -140,6 +142,48 @@ export function useKitBuilder({
     );
   }, []);
 
+  const applyProjectBatch = useCallback(
+    (selectedProjectIds: string[], projects: CatalogProject[]) => {
+      const draftProjectIds =
+        state.mode === "build" ? state.draft.projectIds : [];
+      const plan = planKitProjectBatch({
+        draftProjectIds,
+        selectedProjectIds,
+        projects,
+      });
+      if (plan.addedProjectIds.length === 0) return plan;
+
+      if (state.mode === "build") {
+        setState({
+          ...state,
+          dirty: true,
+          draft: {
+            ...state.draft,
+            projectIds: plan.projectIds,
+          },
+        });
+      } else {
+        setDraftOrigin("create");
+        setOriginalProjectIds([]);
+        setState({
+          mode: "build",
+          collapsed: true,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "",
+            description: "",
+            projectIds: plan.projectIds,
+          },
+        });
+      }
+
+      return plan;
+    },
+    [state],
+  );
+
   useEffect(() => {
     if (state.mode !== "build" || !state.dirty) return;
     const warn = (event: BeforeUnloadEvent) => {
@@ -158,6 +202,7 @@ export function useKitBuilder({
     startDuplicate,
     startEdit,
     updateDraft,
+    applyProjectBatch,
     draftOrigin,
     originalProjectIds,
   };

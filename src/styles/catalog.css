@@ -1739,8 +1739,52 @@
 }
 
 .project-card-shell {
+  position: relative;
   display: grid;
   min-width: 0;
+}
+
+.project-card-shell.selected .project-card {
+  outline: 2px solid var(--color-kind-preset);
+  outline-offset: 2px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+
+.project-card-shell:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 4px;
+}
+
+.project-selection-check,
+.project-in-draft {
+  z-index: 3;
+  top: -7px;
+  display: grid;
+  min-height: 22px;
+  border-radius: 999px;
+  place-items: center;
+  pointer-events: none;
+}
+
+.project-selection-check {
+  position: absolute;
+  right: -7px;
+  width: 22px;
+  color: var(--color-page);
+  background: var(--color-kind-preset);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.project-in-draft {
+  position: absolute;
+  left: 8px;
+  border: 1px solid var(--color-border);
+  padding: 0 7px;
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
+  font-size: 9px;
 }
 
 .project-card-shell .project-card {
@@ -1777,33 +1821,6 @@
 
 .catalog-project-drag-handle svg {
   width: 18px;
-}
-
-.project-card-shell.drag-enabled .add-to-kit {
-  border-radius: 0 0 10px 0;
-}
-
-.add-to-kit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 34px;
-  border: 1px solid var(--color-border);
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
-  color: var(--color-text-secondary);
-  background: var(--color-surface-primary);
-  transition:
-    border-color var(--kit-motion-state) var(--kit-motion-ease),
-    color var(--kit-motion-state) var(--kit-motion-ease),
-    background var(--kit-motion-card) var(--kit-motion-ease),
-    transform var(--kit-motion-press) var(--kit-motion-ease);
-}
-
-.add-to-kit svg {
-  width: 16px;
-  height: 16px;
 }
 
 .kit-builder {
@@ -2039,7 +2056,6 @@
   transform: translateY(-2px);
 }
 
-.add-to-kit:active,
 .catalog-project-drag-handle:active,
 .kit-builder-remove:active,
 .kit-drag-handle:active,

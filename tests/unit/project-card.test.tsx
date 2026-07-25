@@ -1,9 +1,10 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 import { ProjectCard } from "@/features/catalog/components/project-card";
 import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 
 function project(
   id: string,
@@ -75,20 +76,75 @@ describe("project card", () => {
     cleanup();
   });
 
-  test("shows a stable Added state for projects already in the draft", () => {
+  test("does not render per-card Add to Kit controls", () => {
     render(
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
         now="2026-07-23T00:00:00Z"
-        draftProjectIds={["memory-tool"]}
-        onAddToKit={() => undefined}
       />,
     );
 
     expect(
-      screen.getByRole("button", { name: "Memory Tool added to Kit" }),
-    ).toBeDisabled();
-    expect(screen.getByText("Added")).toBeVisible();
+      screen.queryByRole("button", { name: /Memory Tool .*Kit/ }),
+    ).not.toBeInTheDocument();
+  });
+
+  test("renders selected project cards as options with a visible check", () => {
+    const bindings: ProjectSelectionBindings = {
+      selected: true,
+      inDraft: false,
+      onPointerDown: vi.fn(),
+      onPointerMove: vi.fn(),
+      onPointerUp: vi.fn(),
+      onPointerCancel: vi.fn(),
+      onClick: vi.fn(),
+      onKeyDown: vi.fn(),
+    };
+    render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        selection={{
+          mode: true,
+          bindingsFor: () => bindings,
+        }}
+      />,
+    );
+
+    expect(screen.getByRole("option")).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByLabelText("Selected")).toBeVisible();
+  });
+
+  test("marks draft members without presenting them as selected", () => {
+    const bindings: ProjectSelectionBindings = {
+      selected: false,
+      inDraft: true,
+      onPointerDown: vi.fn(),
+      onPointerMove: vi.fn(),
+      onPointerUp: vi.fn(),
+      onPointerCancel: vi.fn(),
+      onClick: vi.fn(),
+      onKeyDown: vi.fn(),
+    };
+    const { container } = render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        selection={{
+          mode: false,
+          bindingsFor: () => bindings,
+        }}
+      />,
+    );
+
+    expect(screen.getByText("In Kit")).toBeVisible();
+    expect(screen.queryByLabelText("Selected")).not.toBeInTheDocument();
+    expect(container.querySelector(".project-card-shell")).toHaveClass(
+      "in-draft",
+    );
   });
 
   test("renders a desktop drag handle beside the project link", () => {
@@ -96,8 +152,6 @@ describe("project card", () => {
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
         now="2026-07-23T00:00:00Z"
-        draftProjectIds={[]}
-        onAddToKit={() => undefined}
         onProjectDragStart={() => undefined}
       />,
     );
@@ -107,9 +161,10 @@ describe("project card", () => {
       name: "Drag Memory Tool into Kit",
     });
     expect(link.contains(handle)).toBe(false);
+    expect(handle).toHaveAttribute("data-project-drag-handle");
     expect(
       container.querySelector(".project-card-shell")?.children,
-    ).toHaveLength(3);
+    ).toHaveLength(2);
   });
 
   test("marks provisional projects with a quiet provisional details treatment", () => {
