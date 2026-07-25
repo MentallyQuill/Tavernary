@@ -21,8 +21,26 @@ describe("ProjectSelectionDock", () => {
     expect(
       screen.getByRole("region", { name: "3 projects selected" }),
     ).toBeVisible();
-    expect(screen.getByRole("button", { name: "Add to Kit" })).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Add 3 projects to Kit" }),
+    ).toBeEnabled();
     expect(screen.getByText("3")).toHaveClass("selection-count");
+  });
+
+  test("uses singular project copy in the primary accessible name", () => {
+    render(
+      <ProjectSelectionDock
+        selectedCount={1}
+        replacementFrontendName={null}
+        limitReached={false}
+        onCancel={() => undefined}
+        onAdd={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Add 1 project to Kit" }),
+    ).toBeEnabled();
   });
 
   test("presents Frontend replacement and capacity guidance", () => {
@@ -73,7 +91,9 @@ describe("ProjectSelectionDock", () => {
     expect(onCancel).toHaveBeenCalledOnce();
     expect(onAdd).not.toHaveBeenCalled();
 
-    await user.click(screen.getByRole("button", { name: "Add to Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Add 2 projects to Kit" }),
+    );
     expect(onAdd).toHaveBeenCalledOnce();
     expect(onCancel).toHaveBeenCalledOnce();
   });
@@ -89,6 +109,8 @@ describe("ProjectSelectionDock", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Add to Kit" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Add 0 projects to Kit" }),
+    ).toBeDisabled();
   });
 });

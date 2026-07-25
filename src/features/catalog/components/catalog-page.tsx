@@ -64,6 +64,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const addedStatusTimerRef = useRef<number | null>(null);
   const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
+  const [selectionAnnouncement, setSelectionAnnouncement] = useState("");
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
@@ -92,6 +93,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     onFirstSelection: workspace.startSelectionDraft,
     onSelectionEmpty: workspace.discardUntouchedSelectionDraft,
     onRemoveFromDraft: workspace.removeProjectFromDraft,
+    onStatus: setSelectionAnnouncement,
     onApply: (projectIds) =>
       workspace.applyProjectBatch(projectIds, catalog.projects),
   });
@@ -107,6 +109,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         }
     : undefined;
   const addSelectedProjects = () => {
+    const replacedFrontend = batchSelection.replacementFrontendName;
+    const selectedFrontend = batchSelection.selectedFrontendName;
     const plan = batchSelection.apply();
     if (!plan || plan.addedProjectIds.length === 0) return;
 
@@ -117,6 +121,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       addedCount: plan.addedProjectIds.length,
       draftCount: plan.projectIds.length,
     });
+    setSelectionAnnouncement(
+      replacedFrontend && selectedFrontend
+        ? `${selectedFrontend} replaced ${replacedFrontend}. ${projectCountLabel(
+            plan.projectIds.length,
+          )} in draft.`
+        : `${projectCountLabel(plan.addedProjectIds.length)} added. ${projectCountLabel(
+            plan.projectIds.length,
+          )} in draft.`,
+    );
     addedStatusTimerRef.current = window.setTimeout(() => {
       setAddedStatus(null);
       addedStatusTimerRef.current = null;
@@ -422,11 +435,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         />
       ) : null}
       <p className="visually-hidden" aria-live="polite" aria-atomic="true">
-        {addedStatus
-          ? `${projectCountLabel(addedStatus.addedCount)} added. ${projectCountLabel(
-              addedStatus.draftCount,
-            )} in draft.`
-          : ""}
+        {selectionAnnouncement}
       </p>
       {filterPresence.present ? (
         (openFilterMode ?? query.mode) === "kits" ? (

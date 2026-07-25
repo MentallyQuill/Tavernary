@@ -13,10 +13,14 @@ export function ProjectSelectionDock({
   onCancel: () => void;
   onAdd: () => void;
 }) {
+  const projectLabel = `${selectedCount} ${
+    selectedCount === 1 ? "project" : "projects"
+  }`;
+
   return (
     <section
       className="project-selection-dock"
-      aria-label={`${selectedCount} projects selected`}
+      aria-label={`${projectLabel} selected`}
     >
       <div className="project-selection-actions">
         <button className="control-quiet" type="button" onClick={onCancel}>
@@ -25,6 +29,7 @@ export function ProjectSelectionDock({
         <button
           className="control-primary"
           type="button"
+          aria-label={`Add ${projectLabel} to Kit`}
           disabled={selectedCount === 0}
           onClick={onAdd}
         >
