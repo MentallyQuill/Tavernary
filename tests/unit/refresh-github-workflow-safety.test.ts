@@ -152,6 +152,16 @@ test("enrichment prepares a random canary and limits batch publication", async (
   expect(enrich).toBeGreaterThan(runBatch);
   expect(check).toBeGreaterThan(enrich);
   expect(publish).toBeGreaterThan(check);
+  for (const [functionName, nextFunction] of [
+    ["publish_changes()", "publish_canary_preparation()"],
+    ["publish_canary_preparation()", "choose_canary_projects()"],
+  ]) {
+    const start = text.indexOf(functionName);
+    const end = text.indexOf(nextFunction, start + functionName.length);
+    const body = text.slice(start, end);
+    expect(body).toMatch(/if ! npm run check; then\s+exit 1\s+fi/u);
+    expect(body).not.toMatch(/npm run check &&\s+git push/u);
+  }
   expect(document.concurrency.group).toBe("catalog-refresh");
   expect(
     (

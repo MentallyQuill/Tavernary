@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { backfillRepositoryIdentities } from "./repository-identity-backfill.mjs";
+import { formatJson } from "./json-format.mjs";
 import { validateCatalog } from "./validate.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -95,11 +96,14 @@ async function loadSnapshots() {
   }
 }
 
-async function writeUpdatedRecords(records) {
+export async function writeUpdatedRecords(
+  records,
+  directory = projectDirectory,
+) {
   for (const record of records) {
     await writeFile(
-      resolve(projectDirectory, `${record.id}.json`),
-      `${JSON.stringify(record, null, 2)}\n`,
+      resolve(directory, `${record.id}.json`),
+      await formatJson(record),
     );
   }
 }

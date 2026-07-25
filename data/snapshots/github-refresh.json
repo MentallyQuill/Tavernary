@@ -1,100 +1,40 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T06:20:47.793Z",
-  "completed_at": "2026-07-25T06:30:25.772Z",
+  "started_at": "2026-07-25T06:32:19.337Z",
+  "completed_at": "2026-07-25T06:37:21.147Z",
   "counts": {
-    "total": 12,
-    "checked": 12,
-    "changed": 12,
+    "total": 2,
+    "checked": 2,
+    "changed": 2,
     "unchanged": 0,
-    "provisional": 2,
-    "degraded": 10,
+    "provisional": 0,
+    "degraded": 12,
     "unavailable": 0,
     "failed": 2,
     "compared": 0,
-    "baseline": 10,
+    "baseline": 0,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4997,
+    "graphql_remaining": 4996,
     "rest_requests": 0
   },
-  "duration_ms": 577979,
+  "duration_ms": 301810,
   "project_timings": [
     {
       "project_id": "twitter-twemoji",
       "outcome": "failed",
-      "duration_ms": 576811,
+      "duration_ms": 301164,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "valdoix-vellum-engine",
       "outcome": "failed",
-      "duration_ms": 576811,
+      "duration_ms": 301163,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "virgilianshailer-automusic",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "virgilianshailer-llm-tools",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "virgilianshailer-lorebook-creator",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "wanderingmonk8-lummate",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "zapoverde-sillytavern-canonize",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "zapoverde-sillytavern-mobilyze",
-      "outcome": "baseline",
-      "duration_ms": 576811,
-      "error_code": null
-    },
-    {
-      "project_id": "zapoverde-sillytavern-triggeryze",
-      "outcome": "baseline",
-      "duration_ms": 576812,
-      "error_code": null
-    },
-    {
-      "project_id": "zapoverde-sillytavern-vistalyze",
-      "outcome": "baseline",
-      "duration_ms": 576812,
-      "error_code": null
-    },
-    {
-      "project_id": "zdost-story-engine",
-      "outcome": "baseline",
-      "duration_ms": 576812,
-      "error_code": null
-    },
-    {
-      "project_id": "zhenyapav-sillytavern-namegen",
-      "outcome": "baseline",
-      "duration_ms": 576812,
-      "error_code": null
     }
   ],
   "snapshot_changes": true,

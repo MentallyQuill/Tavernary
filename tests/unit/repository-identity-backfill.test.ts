@@ -1,8 +1,13 @@
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test } from "vitest";
 
 import {
   parseIdentityBackfillArguments,
   planRepositoryIdentityBackfill,
+  writeUpdatedRecords,
 } from "../../scripts/catalog/backfill-repository-identities.mjs";
 import { backfillRepositoryIdentities } from "../../scripts/catalog/repository-identity-backfill.mjs";
 import type { IdentityRecord } from "../../scripts/catalog/repository-identity-backfill.mjs";
@@ -300,4 +305,27 @@ test("rejects unknown targeted IDs before catalog validation", async () => {
       validateCatalog,
     }),
   ).rejects.toThrow("unknown project ID");
+});
+
+test("writes backfilled records in repository Prettier format", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-backfill-"));
+  await writeUpdatedRecords(
+    [
+      {
+        id: "formatted",
+        frontends: ["sillytavern"],
+        capabilities: [],
+        source: {
+          type: "github",
+          repository: "Example/Formatted",
+          repository_id: 42,
+        },
+      },
+    ],
+    directory,
+  );
+
+  const serialized = await readFile(join(directory, "formatted.json"), "utf8");
+  expect(serialized).toContain('"frontends": ["sillytavern"]');
+  expect(serialized).toContain('"capabilities": []');
 });

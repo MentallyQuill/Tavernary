@@ -1,107 +1,86 @@
 # Catalog data model
 
-Tavernary is a link aggregator. It indexes project metadata and points visitors
-to each project's canonical source; it does not host project files.
+Tavernary uses two authoritative data layers and one browser output artifact.
 
-## Current launch state
+## Layer 1 - curated registry
 
-As of Friday, July 24, 2026, the public seed catalog is a 214-project union:
+Canonical records live in `data/registry/projects/*.json`.
 
-- 213 historical intake rows in `data/catalog/projects.json`;
-- 214 canonical registry files in `data/registry/projects/`;
-- 5 curated records;
-- 209 provisional records; and
-- 1 registry-only record, `sillytavern-sillytavern`.
+- Schema: `data/schemas/project.schema.json`
+- Schema version: `3`
+- Mutated only by PRs or approved workflows
+- `source.type` determines source behavior:
+  - `github` for regular frontends and extensions
+  - `github-organization` for source collections
+  - `url` for curated preset-like entries
 
-The current source mix in the canonical registry is:
+## Layer 2 - evidence snapshots
 
-- 204 GitHub repositories;
-- 1 GitHub organization entry, `tavern-rpg-suite`; and
-- 9 URL-backed presets.
+Machine evidence lives in `data/snapshots/github/*.json`.
 
-`data/catalog/projects.json` is historical intake only. It is preserved for
-auditability and deterministic reruns of `npm run catalog:migrate`, but it is
-not a runtime input and does not override the canonical registry.
+- Schema: `data/schemas/repository-snapshot.schema.json`
+- Schema version: `2`
+- Refreshed by `npm run catalog:refresh`.
+- Contains: repo identity+head, community counts, license, activity evidence,
+  API refresh timestamps, and health state.
 
-## Authority boundaries
+## Layer 3 - generated runtime catalog
 
-- Canonical project records in `data/registry/projects/` are the curated source
-  of truth. They contain schema-version-2 editorial data and source identity.
-- Repository snapshots in `data/snapshots/github/` are machine-authored GitHub
-  refresh outputs. They contain activity, repository, community, and license
-  facts.
-- The generated browser catalog in `src/generated/catalog.json` joins published
-  registry records, snapshots, and vocabularies into the static site artifact.
+`src/generated/catalog.json` is the browser artifact loaded by the Next.js app.
 
-No script should treat `data/catalog/projects.json` or `src/generated/catalog.json`
-as the authoring source of truth.
+- Schema shape: `Catalog` in `src/features/catalog/catalog-types.ts`
+- Includes: curated fields + snapshot-derived computed values + `generatedAt`
+- Generated deterministically by `npm run catalog:build`
+- Never edited manually.
 
-## Registry schema v2
+## Source status model
 
-Every canonical project record uses `schema_version: 2`.
+Generated project objects expose `sourceStatus`:
 
-Key launch fields:
+- `pending`: no snapshot yet
+- `healthy`: snapshot exists and refresh is current
+- `stale`: snapshot existed but is retaining prior values due to recoverable failure
+- `manual`: non-GitHub (`url`) sources and curated organization entries
 
-- `metadata_status`: `"curated"` or `"provisional"`;
-- `source.type`: `"github"`, `"github-organization"`, or `"url"`;
-- `source.repository_id: null` allowed only for provisional GitHub records
-  pending identity enrichment;
-- `primary_function: "uncategorized"` for imported provisional editorial data;
-- `visibility` for publication state; and
-- `refresh_policy` for automation state.
+`manual` status also covers any source that is intentionally excluded from GitHub refresh automation.
 
-The current seed launch intentionally publishes provisional records before full
-editorial enrichment is complete. Missing enrichment is shown as pending facts,
-not as confirmed absence and not as synthetic zeroes.
+## Publication gates
 
-## Source rules
+A registry record is visible when:
 
-Frontend and extension records normally require a GitHub repository source.
-Presets may instead use a stable HTTPS source URL. URL-backed presets are
-manually processed and use `refresh_policy: "paused"`.
+- `visibility: published`
+- snapshot source health is not `identity-change`, `deleted`, or `private`
+- kind/source pair passes the same boundary rules as production code.
 
-`tavern-rpg-suite` is the sole `github-organization` exception. It is a
-provisional paused extension record that represents a project collection rather
-than a single repository snapshot target.
+`source_health: unavailable` keeps a published record visible with stale indicators.
 
-## Snapshot publication model
+## Repository identity flow
 
-Published GitHub records do not require a healthy snapshot to appear in the
-catalog.
+1. New GitHub-backed record can start with `repository_id: null`.
+2. Successful refresh can establish repository identity.
+3. `npm run catalog:backfill-identities -- --write` copies identity into registry.
+4. `identity-change` requires curator repair before re-publication.
 
-- No snapshot yet: the project stays public with pending GitHub-derived facts.
-- `source_health: "unavailable"`: keep the last known good facts and mark the
-  record stale.
-- `source_health: "identity-change"`: remove the project from the public build
-  until curator review resolves the mismatch.
-- `source_health: "deleted"` or `"private"`: remove the project from the public
-  build.
+## Seed and counts
 
-This distinction is intentional: transient refresh failure is recoverable
-staleness, while identity failure or confirmed source removal is a safety
-boundary.
+V1 seed set currently has:
 
-## Repository identity backfill
+- 214 registry records
+- 5 curated, 209 provisional
+- 204 GitHub repositories
+- 1 GitHub organization source
+- 9 URL-backed records
 
-GitHub identity is established in two phases:
+These numbers are audit context and may change with intake and curation.
 
-1. the canonical registry may publish a provisional GitHub record with
-   `repository_id: null`;
-2. a successful refresh writes a healthy snapshot with the immutable GitHub
-   repository ID; and
-3. `npm run catalog:backfill-identities -- --write` copies that verified ID
-   into the canonical registry record.
+## Query surface
 
-Backfill updates source identity only. It does not auto-curate summaries,
-functions, capabilities, or visibility.
+The UI supports:
 
-## Seed-launch semantics
+- search: `q`
+- views: `all`, `active`, `new`, `released`
+- sort: `recent`, `sustained`, `popularity`, `alphabetical`
+- category, frontends, kind, capabilities, development, license
+- density and kit mode query set
 
-The `seed` cohort is excluded from the New view so the July 2026 bulk import
-does not present all 209 imported records as newly released. Standard records
-use `cataloged_at` for that view; repository creation time remains separate
-snapshot metadata.
-
-Imported seed records remain visibly provisional until a curator replaces the
-generated summary, `uncategorized` function, and empty capability set with
-reviewed editorial metadata.
+See `src/features/catalog/catalog-query.ts` for exact canonical params.

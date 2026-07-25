@@ -24,3 +24,8 @@ export function parseIdentityBackfillArguments(argv: string[]): {
   write: boolean;
   projectIds: Set<string> | null;
 };
+
+export function writeUpdatedRecords(
+  records: IdentityRecord[],
+  directory?: string,
+): Promise<void>;

@@ -1,78 +1,85 @@
 # GitHub refresh methodology
 
-The GitHub refresher treats curated project files as read-only inputs. It writes
-version 2 repository evidence under `data/snapshots/github/` and one sanitized
-run manifest at `data/snapshots/github-refresh.json`.
+This reflects the current implementation in `scripts/catalog/refresh-github.mjs`.
 
-## Activity evidence
+## What refresh does
 
-`N/12` means qualifying source activity occurred in N of the current twelve
-fixed, Monday-based UTC weeks. It does not count commits or weight busy weeks.
-The twelve binary graph ticks run oldest to newest.
-
-Documentation-only, lockfile-only, generated/vendor-only, merge-only, and
-whitespace-only changes do not count as source activity. Root license changes
-are tracked as license evidence, not source activity. A complete baseline with
-no qualifying change reports no source activity in the last twelve weeks.
-
-Exact baseline evidence records the qualifying commit timestamp for each active
-week. A safe GitHub comparison can add interval evidence after that baseline.
-Provisional tiles retain migrated twelve-week display evidence until their
-exact baseline succeeds. Three failed baseline attempts mark the evidence
-degraded so the dynamic queue can advance.
-
-## Incremental observation
-
-Daily incremental refreshes batch up to 25 repositories per GraphQL request.
-An unchanged head updates repository, release, and community facts without a
-REST comparison or Git clone. A changed head uses GitHub's compare API when the
-delta is complete, current, under the response limits, and does not cross an
-ambiguous multiweek interval.
-
-A bounded Git inspection is used only for:
-
-- provisional baselines;
-- explicit forensic runs;
-- divergent, stale, oversized, unavailable, or malformed comparisons; and
-- changed root-license evidence that needs exact classification.
-
-Git inspection uses a partial no-checkout clone with a 100-day
-`--shallow-since` boundary. Every Git command has a five-minute timeout and
-bounded output, temporary directories are always removed, and at most three
-inspections run concurrently.
+- Reads canonical GitHub-backed registry records (`refresh_policy: automatic`)
+- Selects observation targets from mode and history
+- Queries GitHub repository state and snapshots
+- Preserves prior values on non-systemic failure
+- Computes evidence fields and license/activity/community fields
+- Writes changed snapshots to `data/snapshots/github/*.json`
+- Writes a sanitized manifest to `data/snapshots/github-refresh.json`
+- Leaves registry files untouched
 
 ## Modes
 
-- `incremental` observes every automatic GitHub source.
-- `baseline` selects the next 1–24 provisional snapshots by evidence status.
-- `project` observes one exact project and baselines it when its evidence is
-  incomplete.
-- `forensic` forces one bounded Git inspection for one exact project.
+- `incremental` (default): all automatic GitHub sources (batched).
+- `baseline`: provisional snapshot queue slice (`--batch-size`, bounded by workflow input, currently 1-24).
+- `project`: single repository, baseline/forensic decision path.
+- `forensic`: forced deep inspection for diagnosis.
 
-The baseline queue has no start index or catalog-size constant. After a
-successful baseline commit, the workflow dispatches another batch only when the
-committed manifest still reports provisional snapshots.
+## Fallback mechanics
 
-## Failure and publication
+- Baseline and non-incremental modes may trigger direct Git inspection if:
+  - no previous snapshot
+  - baseline still provisional
+  - baseline/project request
+  - `forensic`
+  - incremental compare path fails and needs recovery
+- Git inspection uses shallow/no-checkout clone from default branch.
+- Max clone depth window is adaptive:
+  - full shallow boundary based on 100-day age rule from head commit.
+- Concurrency for fallback jobs is capped at 3 (`mapConcurrent`).
 
-Soft repository failures preserve last-known-good facts and set `stale_since`.
-Deleted, private, unavailable, and immutable repository-ID mismatch states
-retain their visibility and curator-review rules. Authentication, exhausted API
-budget, malformed batch identity data, validation failure, build failure, or
-publication failure aborts the run before candidate publication.
+## Activity evidence
 
-Candidate snapshots and the manifest are staged together. The complete
-candidate record/snapshot set is schema-validated and built before committed
-files are replaced. The refresher never edits names, summaries, compatibility,
-taxonomy, visibility, moderation controls, or anything under `data/registry/`.
+- Weekly windows are Monday-based UTC.
+- `derivePublicActivity` returns 12 booleans + active-week count.
+- `N/12` means activity occurred in `N` of the current 12 weekly bins.
+- `provisional_weeks` and `evidence_status` represent baseline completion state.
+- Dormant = complete evidence + no source activity in last 12 weeks.
 
-The manifest records run mode, completion time, outcome counts, remaining
-provisional/degraded evidence, GraphQL and REST usage, clone reasons, bounded
-project timings, snapshot changes, and deployment intent. It contains no
-tokens, response bodies, repository clone paths, or credential-bearing URLs.
-The public catalog's `generatedAt` value comes from this manifest.
+## Failure and health transitions
 
-The GitHub Action stages only snapshots and the manifest. Before pushing, it
-fetches and rebases onto `main` with at most three attempts, never force-pushes,
-and reports conflicting snapshot paths. A successful committed change triggers
-the Pages deployment workflow.
+- GitHub compare/REST failures are mostly non-fatal:
+  - stale values retained
+  - `stale_since` set when transitioning from clean state
+- `source_health` transitions:
+  - to `unavailable` on HTTP 404 in failure path
+  - to `identity-change` when observed repository no longer matches registry identity
+  - remains `healthy` when recoverable failure can be tolerated as stale
+- `baseline_attempts` increments per failed baseline attempt.
+- `evidence_status` enters `degraded` after repeated failed baseline attempts.
+
+## Manifest
+
+`data/snapshots/github-refresh.json` contains:
+
+- mode, start/completion timestamps
+- counts (total/checked/changed/unchanged/degraded/unavailable/.../fallback/provisional)
+- API usage counters
+- project timing entries (`project_id`, outcome, duration, error_code)
+- `snapshot_changes`
+- `deployment_requested`
+
+Outcomes include:
+
+- `unchanged`, `compare-source`, `compare-excluded`, `baseline`, `fallback`,
+  `unavailable`, `identity-change`, `failed`
+
+Kit reaction refresh is handled in the same workflow after target project refresh:
+
+- `.github/workflows/refresh-catalog.yml` runs `scripts/kits/refresh-reactions.mjs`
+  every execution.
+
+## Workflow controls
+
+- `.github/workflows/refresh-catalog.yml` dispatches by mode.
+- Scheduled run uses `incremental` and a fixed UTC minute.
+- Baseline mode uses continuation checks:
+  - captures provisional count before run
+  - dispatches next batch only if provisional count decreases
+- Snapshot commit + rebase retry with bounded attempts before hard fail.
+- `npm run check` gates snapshot publication.

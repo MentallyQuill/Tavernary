@@ -242,7 +242,7 @@ git commit -m "feat(catalog): add activity evidence reducer"
 **Interfaces:**
 - Consumes: Task 1 `derivePublicActivity`.
 - Produces: `migrateSnapshotV1(snapshot, now): RepositorySnapshotV2`
-- Produces CLI: `npm run catalog:migrate-snapshots -- --write`
+- Produces CLI: `npm run catalog:migrate -- --write`
 - Temporarily keeps the existing browser activity property names derived from
   version 2 evidence so the current UI remains functional until Task 3.
 
@@ -370,7 +370,7 @@ Expected: all focused tests pass.
 Run:
 
 ```powershell
-npm.cmd run catalog:migrate-snapshots -- --write
+npm.cmd run catalog:migrate -- --write
 npm.cmd run catalog:validate
 npm.cmd run catalog:build
 ```
