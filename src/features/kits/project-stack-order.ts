@@ -4,6 +4,17 @@ export function addProject(projectIds: string[], projectId: string) {
     : [...projectIds, projectId];
 }
 
+export function insertProject(
+  projectIds: string[],
+  projectId: string,
+  index: number,
+) {
+  if (projectIds.includes(projectId)) return projectIds;
+  const result = [...projectIds];
+  result.splice(Math.max(0, Math.min(projectIds.length, index)), 0, projectId);
+  return result;
+}
+
 export function removeProject(projectIds: string[], projectId: string) {
   return projectIds.includes(projectId)
     ? projectIds.filter((id) => id !== projectId)

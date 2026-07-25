@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 
 import {
   addProject,
+  insertProject,
   moveProject,
   removeProject,
   reorderProject,
@@ -11,6 +12,13 @@ test("adds only new projects", () => {
   const original = ["a", "b"];
   expect(addProject(original, "c")).toEqual(["a", "b", "c"]);
   expect(addProject(original, "b")).toBe(original);
+});
+
+test("inserts a unique project at a clamped index", () => {
+  expect(insertProject(["a", "c"], "b", 1)).toEqual(["a", "b", "c"]);
+  expect(insertProject(["a"], "a", 0)).toEqual(["a"]);
+  expect(insertProject(["a"], "b", 99)).toEqual(["a", "b"]);
+  expect(insertProject(["a"], "b", -5)).toEqual(["b", "a"]);
 });
 
 test("moves projects with clamped destinations", () => {

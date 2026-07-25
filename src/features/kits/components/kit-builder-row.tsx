@@ -11,6 +11,7 @@ export function KitBuilderRow({
   onDragStart,
   dragging,
   placement,
+  touchLayout,
 }: {
   project: CatalogProject;
   index: number;
@@ -20,20 +21,23 @@ export function KitBuilderRow({
   onDragStart: PointerEventHandler<HTMLButtonElement>;
   dragging: boolean;
   placement: "before" | "after" | null;
+  touchLayout: boolean;
 }) {
   return (
     <li
       className={`kit-builder-row${dragging ? " dragging" : ""}${placement ? ` drag-${placement}` : ""}`}
       data-project-id={project.id}
     >
-      <button
-        type="button"
-        className="kit-drag-handle"
-        aria-label={`Drag ${project.name}`}
-        onPointerDown={onDragStart}
-      >
-        <CategoryIcon name="drag-handle" />
-      </button>
+      {!touchLayout ? (
+        <button
+          type="button"
+          className="kit-drag-handle"
+          aria-label={`Drag ${project.name}`}
+          onPointerDown={onDragStart}
+        >
+          <CategoryIcon name="drag-handle" />
+        </button>
+      ) : null}
       <span>
         <strong>{project.name}</strong>
         <small>{project.kind}</small>

@@ -25,7 +25,9 @@ export function useModalSurface({
   inertSelectors: readonly string[];
 }) {
   const onDismissRef = useRef(onDismiss);
-  onDismissRef.current = onDismiss;
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
 
   useEffect(() => {
     if (!active) return;

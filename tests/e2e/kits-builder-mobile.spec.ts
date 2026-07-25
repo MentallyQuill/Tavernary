@@ -37,10 +37,28 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await expect(
     page.getByRole("button", { name: /Move .* up/ }).nth(1),
   ).toBeVisible();
+  await expect(page.getByRole("button", { name: /Drag / })).toHaveCount(0);
   await page
     .getByRole("button", { name: /Move .* up/ })
     .nth(1)
     .click();
+  const rows = page.locator(".kit-builder-row");
+  const orderBeforeRemove = await rows.evaluateAll((elements) =>
+    elements.map((element) => element.getAttribute("data-project-id")),
+  );
+  const removedName = (await rows.nth(1).locator("strong").textContent())!;
+  await rows
+    .nth(1)
+    .getByRole("button", { name: `Remove ${removedName}` })
+    .click();
+  await page
+    .getByRole("button", { name: `Undo remove ${removedName}` })
+    .click();
+  expect(
+    await rows.evaluateAll((elements) =>
+      elements.map((element) => element.getAttribute("data-project-id")),
+    ),
+  ).toEqual(orderBeforeRemove);
   await page.getByRole("button", { name: "Close Kit workspace" }).click();
   await expect(
     page.getByRole("button", { name: "Open draft with 3 projects" }),

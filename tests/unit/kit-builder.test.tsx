@@ -7,6 +7,7 @@ import {
   screen,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { ProjectGrid } from "@/features/catalog/components/project-grid";
@@ -14,6 +15,24 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitBuilder } from "@/features/kits/components/kit-builder";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
+
+const originalMatchMedia = window.matchMedia;
+
+function mockTouchLayout() {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn((query: string) => ({
+      matches: query === "(max-width: 1050px), (pointer: coarse)",
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
 
 function project(
   id: string,
@@ -89,6 +108,11 @@ const kit: CatalogKit = {
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  vi.useRealTimers();
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: originalMatchMedia,
+  });
 });
 
 describe("Kit builder state", () => {
@@ -156,24 +180,67 @@ describe("Kit builder controls", () => {
     projectIds: ["frontend", "memory", "preset"],
   };
 
-  test("enforces counters, validation, duplicate changes, and row actions", async () => {
+  test("uses stable labels and reveals validation only after interaction", async () => {
     const user = userEvent.setup();
     const onUpdate = vi.fn();
     const onSubmit = vi.fn();
     const { rerender } = render(
       <KitBuilder
-        draft={{ ...validDraft, title: "No", description: "" }}
+        draft={{
+          ...validDraft,
+          title: "No",
+          description: "",
+          projectIds: [],
+        }}
         projects={projects}
         originalProjectIds={[]}
         onUpdate={onUpdate}
         onSubmit={onSubmit}
       />,
     );
-    expect(screen.getByText("2/60 characters")).toBeVisible();
-    expect(screen.getByText("0/100 words")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Submit Kit" })).toBeDisabled();
+
+    const title = screen.getByRole("textbox", { name: "Title" });
+    const description = screen.getByRole("textbox", {
+      name: "Description",
+    });
+    expect(title).toHaveAccessibleDescription("2/60 characters");
+    expect(description).toHaveAccessibleDescription("0/100 words");
+    expect(
+      screen.queryByRole("list", { name: "Kit validation" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Submit Kit" })).toBeEnabled();
+
+    await user.click(title);
+    await user.tab();
+    expect(
+      screen.getByText("Title must contain 3–60 characters."),
+    ).toBeVisible();
+    expect(
+      screen.queryByText("A Kit must contain 3–50 projects."),
+    ).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(screen.getByText("A Kit must contain 3–50 projects.")).toBeVisible();
 
     rerender(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={onUpdate}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    expect(onSubmit).toHaveBeenCalledOnce();
+  });
+
+  test("enforces duplicate changes and row actions", async () => {
+    const user = userEvent.setup();
+    const onUpdate = vi.fn();
+    const onSubmit = vi.fn();
+    const { rerender } = render(
       <KitBuilder
         draft={validDraft}
         projects={projects}
@@ -182,7 +249,11 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    expect(screen.getByRole("button", { name: "Submit Kit" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(
+      screen.getByText("A duplicate must change the selected project set."),
+    ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Move memory up" }));
     expect(onUpdate).toHaveBeenCalledWith({
       projectIds: ["memory", "frontend", "preset"],
@@ -204,7 +275,82 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    expect(screen.getByRole("button", { name: "Submit Kit" })).toBeEnabled();
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    expect(onSubmit).toHaveBeenCalledOnce();
+  });
+
+  test("omits drag handles on touch layouts but keeps explicit order controls", () => {
+    mockTouchLayout();
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Drag memory" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Move memory up" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Move memory down" }),
+    ).toBeVisible();
+    expect(screen.getByRole("button", { name: "Remove memory" })).toBeVisible();
+  });
+
+  test("restores a removed project at its prior index for six seconds", () => {
+    mockTouchLayout();
+    vi.useFakeTimers();
+
+    function Harness() {
+      const [draft, setDraft] = useState(validDraft);
+      return (
+        <KitBuilder
+          draft={draft}
+          projects={projects}
+          originalProjectIds={[]}
+          onUpdate={(patch) =>
+            setDraft((current) => ({ ...current, ...patch }))
+          }
+          onSubmit={() => undefined}
+        />
+      );
+    }
+
+    const { container } = render(<Harness />);
+    const rowIds = () =>
+      Array.from(container.querySelectorAll("[data-project-id]")).map((row) =>
+        row.getAttribute("data-project-id"),
+      );
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
+    expect(rowIds()).toEqual(["frontend", "preset"]);
+    const undoStatus = screen.getByRole("status");
+    expect(undoStatus).toHaveAttribute("aria-live", "assertive");
+    expect(undoStatus).toHaveTextContent("Removed memory.");
+    fireEvent.click(screen.getByRole("button", { name: "Undo remove memory" }));
+    expect(rowIds()).toEqual(["frontend", "memory", "preset"]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
+    act(() => vi.advanceTimersByTime(6000));
+    expect(
+      screen.queryByRole("button", { name: "Undo remove memory" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove preset" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove frontend" }));
+    expect(
+      screen.queryByRole("button", { name: "Undo remove preset" }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Undo remove frontend" }),
+    );
+    expect(rowIds()).toEqual(["frontend"]);
   });
 
   test("renders Add to Kit as a sibling of the project link", async () => {

@@ -1471,11 +1471,27 @@
   gap: 14px;
 }
 
-.kit-builder > label {
+.kit-builder-field {
   display: grid;
   gap: 5px;
   color: var(--color-text-secondary);
   font-size: 11px;
+}
+
+.kit-builder-field-error {
+  color: var(--color-kind-extension);
+}
+
+.kit-builder-footer {
+  display: grid;
+  gap: 8px;
+}
+
+.kit-builder-undo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .kit-builder input,
