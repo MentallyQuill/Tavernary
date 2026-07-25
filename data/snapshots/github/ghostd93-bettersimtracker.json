@@ -6,6 +6,7 @@
     "owner": "ghostd93",
     "name": "BetterSimTracker",
     "url": "https://github.com/ghostd93/BetterSimTracker",
+    "description": "  SillyTavern extension that tracks character relationship stats per message, visualizes history with graphs, and   injects relationship state into prompts for coherent roleplay behavior.",
     "default_branch": "main",
     "head_sha": "fa1d9a1d7c8cac6953ee6cb8df64a9599dfdadb1",
     "head_committed_at": "2026-05-24T15:12:58.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

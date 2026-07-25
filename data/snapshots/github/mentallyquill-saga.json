@@ -6,6 +6,7 @@
     "owner": "MentallyQuill",
     "name": "Saga",
     "url": "https://github.com/MentallyQuill/Saga",
+    "description": "A Multi-Fandom Lore System for SillyTavern",
     "default_branch": "main",
     "head_sha": "2294dd1ec61fee33e49eede297871ec0fcaa99e1",
     "head_committed_at": "2026-07-17T22:48:19.000Z",
@@ -43,6 +44,6 @@
     "aggregate": 22
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
-  "stale_since": "2026-07-25T03:20:38.748Z"
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
+  "stale_since": null
 }

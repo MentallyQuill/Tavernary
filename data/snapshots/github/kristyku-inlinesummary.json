@@ -6,6 +6,7 @@
     "owner": "Kristyku",
     "name": "InlineSummary",
     "url": "https://github.com/Kristyku/InlineSummary",
+    "description": "InlineSummary - SillyTavern Extension",
     "default_branch": "main",
     "head_sha": "1d07e382f74dace80cf6a4ae1458d70ce5f2656a",
     "head_committed_at": "2026-07-10T13:19:19.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "MIT",
     "source_path": "license.md"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

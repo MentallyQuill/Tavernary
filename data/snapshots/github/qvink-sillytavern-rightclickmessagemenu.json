@@ -6,6 +6,7 @@
     "owner": "qvink",
     "name": "SillyTavern-RightClickMessageMenu",
     "url": "https://github.com/qvink/SillyTavern-RightClickMessageMenu",
+    "description": "Extension for SillyTavern that adds a right-click context menu for message buttons",
     "default_branch": "master",
     "head_sha": "c28b4f218478043fa1cbcdd53c84702148e09991",
     "head_committed_at": "2025-10-21T22:34:03.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

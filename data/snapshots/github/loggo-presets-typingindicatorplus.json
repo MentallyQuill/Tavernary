@@ -6,6 +6,7 @@
     "owner": "Loggo-presets",
     "name": "TypingIndicatorPlus",
     "url": "https://github.com/Loggo-presets/TypingIndicatorPlus",
+    "description": "An enhanced typing indicator extension for SillyTavern with multiple visual styles, sound effects, and customization options.",
     "default_branch": "main",
     "head_sha": "e222639d3452ad0452af61efea4846362e548476",
     "head_committed_at": "2026-01-20T00:32:32.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

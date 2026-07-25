@@ -6,6 +6,7 @@
     "owner": "ayvencore",
     "name": "Sillytavern-Another-Character-Library",
     "url": "https://github.com/ayvencore/Sillytavern-Another-Character-Library",
+    "description": "An SillyTavern extension that replaces the default landing page with a rich character library view.",
     "default_branch": "main",
     "head_sha": "01f868f7067cba7b61af016875d58144e3f31723",
     "head_committed_at": "2026-03-27T11:19:43.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

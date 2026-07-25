@@ -6,6 +6,7 @@
     "owner": "Beeopo",
     "name": "Marinara-Rewrite",
     "url": "https://github.com/Beeopo/Marinara-Rewrite",
+    "description": "Highlight-to-rewrite AI extension for Marinara Engine",
     "default_branch": "main",
     "head_sha": "cfbe260391b4acc0f30961b374d2c7b0baabc911",
     "head_committed_at": "2026-06-26T19:04:51.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Bronya-Rand",
     "name": "Prome-VN-Extension",
     "url": "https://github.com/Bronya-Rand/Prome-VN-Extension",
+    "description": "An enhanced SillyTavern Visual Novel Experience in an extension",
     "default_branch": "master",
     "head_sha": "9cf09fb307e859f21bf507d781e5327b7acd89fa",
     "head_committed_at": "2026-02-08T21:45:41.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

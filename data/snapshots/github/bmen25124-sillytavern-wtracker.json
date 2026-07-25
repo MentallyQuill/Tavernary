@@ -6,6 +6,7 @@
     "owner": "bmen25124",
     "name": "SillyTavern-WTracker",
     "url": "https://github.com/bmen25124/SillyTavern-WTracker",
+    "description": "A SillyTavern extension that tracking stats with LLMs",
     "default_branch": "main",
     "head_sha": "8a5e42e6cbea0b63ca0fb92b5ce52ec4a399012c",
     "head_committed_at": "2026-06-08T23:03:27.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Sillyanonymous",
     "name": "SillyTavern-UIShortcuts",
     "url": "https://github.com/Sillyanonymous/SillyTavern-UIShortcuts",
+    "description": null,
     "default_branch": "master",
     "head_sha": "2205d1d0576acc3dcbcef4d1b0a472c283d4a9ad",
     "head_committed_at": "2026-07-13T13:23:31.000Z",
@@ -51,6 +52,6 @@
     "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

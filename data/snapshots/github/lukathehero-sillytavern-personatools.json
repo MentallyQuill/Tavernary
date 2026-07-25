@@ -6,6 +6,7 @@
     "owner": "LukaTheHero",
     "name": "SillyTavern-PersonaTools",
     "url": "https://github.com/LukaTheHero/SillyTavern-PersonaTools",
+    "description": "A combined SillyTavern extension for persona management — quick switcher, folders, tags, and styled tooltips",
     "default_branch": "main",
     "head_sha": "d392c4d32c786608419244deebf39ab51d00b813",
     "head_committed_at": "2026-07-09T05:27:48.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

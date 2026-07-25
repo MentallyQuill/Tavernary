@@ -6,6 +6,7 @@
     "owner": "bal-spec",
     "name": "sillytavern-character-memory",
     "url": "https://github.com/bal-spec/sillytavern-character-memory",
+    "description": "SillyTavern extension that automatically extracts structured character memories from chat and stores them in the Data Bank for vector-based retrieval at generation time",
     "default_branch": "master",
     "head_sha": "96f528b9571ce2a0a322f770c40d71305ebd993e",
     "head_committed_at": "2026-04-19T19:20:14.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 72
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

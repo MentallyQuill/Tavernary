@@ -6,6 +6,7 @@
     "owner": "ForgottenGlory",
     "name": "ST-SuperObjective",
     "url": "https://github.com/ForgottenGlory/ST-SuperObjective",
+    "description": "A major enhancement and partial rewrite of the existing Objective extension for SillyTavern.",
     "default_branch": "main",
     "head_sha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
     "head_committed_at": "2025-03-17T21:18:51.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

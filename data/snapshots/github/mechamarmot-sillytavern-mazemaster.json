@@ -6,6 +6,7 @@
     "owner": "mechamarmot",
     "name": "SillyTavern-MazeMaster",
     "url": "https://github.com/mechamarmot/SillyTavern-MazeMaster",
+    "description": "The ultimate 2.5D roguelike RPG toolkit for SillyTavern",
     "default_branch": "main",
     "head_sha": "ef8e1f899d9977cd4a814ac248a03f298391bc8e",
     "head_committed_at": "2025-12-29T07:14:01.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "mekineer-com",
     "name": "OpenAlma",
     "url": "https://github.com/mekineer-com/OpenAlma",
+    "description": "OpenAlma — AI companion memory, local-first",
     "default_branch": "main",
     "head_sha": "ab04dfdbf8e2a011db3528512cf547d15bdae79c",
     "head_committed_at": "2026-07-11T00:13:50.000Z",
@@ -80,6 +81,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

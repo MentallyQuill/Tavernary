@@ -6,6 +6,7 @@
     "owner": "Arif-salah",
     "name": "Megumin-Suite",
     "url": "https://github.com/Arif-salah/Megumin-Suite",
+    "description": null,
     "default_branch": "main",
     "head_sha": "ecc9be90be0feffd3b73571a5c18397cd34f2b79",
     "head_committed_at": "2026-07-22T19:43:08.000Z",
@@ -45,16 +46,16 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 209,
+    "stargazers_count": 210,
     "forks_count": 9,
     "subscribers_count": 4,
-    "aggregate": 222
+    "aggregate": 223
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "License"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

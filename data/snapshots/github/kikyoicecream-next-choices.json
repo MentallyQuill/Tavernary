@@ -6,6 +6,7 @@
     "owner": "kikyoicecream",
     "name": "next-choices",
     "url": "https://github.com/kikyoicecream/next-choices",
+    "description": null,
     "default_branch": "main",
     "head_sha": "3c16657331d2eac0c158006aa4d78c7a1fa57306",
     "head_committed_at": "2026-07-20T02:57:07.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

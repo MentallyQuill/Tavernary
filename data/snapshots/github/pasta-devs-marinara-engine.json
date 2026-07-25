@@ -12,7 +12,7 @@
     "head_committed_at": "2026-07-23T00:11:48.000Z",
     "archived": false,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 225333
+    "size_kb": 225553
   },
   "source_health": "healthy",
   "activity": {
@@ -44,6 +44,6 @@
     "aggregate": 669
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T06:05:19.795Z",
-  "stale_since": "2026-07-25T05:01:47.527Z"
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
+  "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "nbrown725",
     "name": "SillyTavern-AlternateDescriptions",
     "url": "https://github.com/nbrown725/SillyTavern-AlternateDescriptions",
+    "description": null,
     "default_branch": "main",
     "head_sha": "980f932cefb29c96dee075dae3edacbaccdb6874",
     "head_committed_at": "2025-09-02T18:41:38.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

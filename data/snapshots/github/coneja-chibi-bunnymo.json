@@ -6,6 +6,7 @@
     "owner": "Coneja-Chibi",
     "name": "BunnyMo",
     "url": "https://github.com/Coneja-Chibi/BunnyMo",
+    "description": "The Repository for the SillyTavern thinking engine!",
     "default_branch": "BunnyMo",
     "head_sha": "7a61c9f0959bf46a76a4e1339e80ce1a3d6a5aa9",
     "head_committed_at": "2026-03-02T00:05:38.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "cha1latte",
     "name": "marinara-avatar-background",
     "url": "https://github.com/cha1latte/marinara-avatar-background",
+    "description": "A Marinara Engine extension that renders the currently-speaking character's avatar as a soft, blurred background behind group Conversation chats.",
     "default_branch": "main",
     "head_sha": "46f2bc726912d26f01c0130ec68fbe262620859f",
     "head_committed_at": "2026-04-28T19:50:56.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

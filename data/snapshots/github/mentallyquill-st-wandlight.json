@@ -6,6 +6,7 @@
     "owner": "MentallyQuill",
     "name": "ST-Wandlight",
     "url": "https://github.com/MentallyQuill/ST-Wandlight",
+    "description": "A Harry Potter focused SillyTavern AI Preset",
     "default_branch": "main",
     "head_sha": "9686c388a860f0bda7011c9cedc3a00448e3ebe2",
     "head_committed_at": "2026-05-25T02:49:03.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

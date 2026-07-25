@@ -6,6 +6,7 @@
     "owner": "nattaphat010447",
     "name": "nutho_autocloser",
     "url": "https://github.com/nattaphat010447/nutho_autocloser",
+    "description": "Auto Closer Extension for SillyTavern",
     "default_branch": "main",
     "head_sha": "1f54fc8aebbd4f3fb8665ca36ad355aee6226381",
     "head_committed_at": "2026-07-14T01:51:11.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "aikohanasaki",
     "name": "SillyTavern-CharacterLocks",
     "url": "https://github.com/aikohanasaki/SillyTavern-CharacterLocks",
+    "description": "Locks presets and connection profiles to characters and groups",
     "default_branch": "STCL",
     "head_sha": "208ec33a8828decdd9d7459904baabfc79e3084a",
     "head_committed_at": "2026-05-03T16:50:48.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:06:55.971Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

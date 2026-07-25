@@ -6,6 +6,7 @@
     "owner": "Hexicy",
     "name": "ST-CharacterPreview",
     "url": "https://github.com/Hexicy/ST-CharacterPreview",
+    "description": "Character preview for Sillytavern",
     "default_branch": "main",
     "head_sha": "b8cde7c92696fd68e0ffd668057c9d001b2d31ba",
     "head_committed_at": "2025-12-11T14:19:22.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Archkr",
     "name": "Lumiverse-LumiWorld",
     "url": "https://github.com/Archkr/Lumiverse-LumiWorld",
+    "description": "A prompt interceptor that asks a controller model how the world should react before the main model replies.",
     "default_branch": "main",
     "head_sha": "b2d012adaf4eaadbde6b63661a16f26fda60a99c",
     "head_committed_at": "2026-07-17T01:23:21.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

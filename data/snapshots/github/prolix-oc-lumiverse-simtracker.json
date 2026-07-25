@@ -6,17 +6,23 @@
     "owner": "prolix-oc",
     "name": "Lumiverse-SimTracker",
     "url": "https://github.com/prolix-oc/Lumiverse-SimTracker",
+    "description": null,
     "default_branch": "main",
-    "head_sha": "41ceaf84bb898e171b9404b493a02af89b099b07",
-    "head_committed_at": "2026-07-17T07:37:45.000Z",
+    "head_sha": "f96055645f5251bbd95b6d3027e7a5621b931f31",
+    "head_committed_at": "2026-07-25T09:04:33.000Z",
     "archived": false,
     "created_at": "2026-03-08T08:42:24.000Z",
     "size_kb": 1970
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-17T07:37:45.000Z",
+    "latest_source_activity_at": "2026-07-25T09:04:33.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-25T09:04:33.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-17T07:37:45.000Z",
@@ -51,7 +57,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T05:01:47.527Z",
+    "baseline_completed_at": "2026-07-25T09:14:41.435Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -65,6 +71,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

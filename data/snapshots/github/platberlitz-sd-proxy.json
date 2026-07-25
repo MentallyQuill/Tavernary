@@ -6,6 +6,7 @@
     "owner": "platberlitz",
     "name": "sd-proxy",
     "url": "https://github.com/platberlitz/sd-proxy",
+    "description": "Multi-backend image generation proxy with OpenAI-compatible API and comprehensive web dashboard",
     "default_branch": "main",
     "head_sha": "d7d17addf01db615a65bc0834cf5a223fd792583",
     "head_committed_at": "2026-05-05T07:00:08.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

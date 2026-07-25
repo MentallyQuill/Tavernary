@@ -6,6 +6,7 @@
     "owner": "bmen25124",
     "name": "SillyTavern-Character-Creator",
     "url": "https://github.com/bmen25124/SillyTavern-Character-Creator",
+    "description": "A SillyTavern extension that creates character with LLMs.",
     "default_branch": "main",
     "head_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
     "head_committed_at": "2026-06-09T02:36:29.000Z",
@@ -30,16 +31,16 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 160,
+    "stargazers_count": 161,
     "forks_count": 22,
     "subscribers_count": 4,
-    "aggregate": 186
+    "aggregate": 187
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

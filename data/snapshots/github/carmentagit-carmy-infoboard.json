@@ -6,6 +6,7 @@
     "owner": "CarmentaGit",
     "name": "Carmy-InfoBoard",
     "url": "https://github.com/CarmentaGit/Carmy-InfoBoard",
+    "description": null,
     "default_branch": "main",
     "head_sha": "a31eb3210a7eff6445a037bb9954780cd163006d",
     "head_committed_at": "2026-01-15T07:21:27.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

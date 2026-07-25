@@ -6,6 +6,7 @@
     "owner": "Bronya-Rand",
     "name": "Guinevere-UI-Extension",
     "url": "https://github.com/Bronya-Rand/Guinevere-UI-Extension",
+    "description": "An UI overhaul extension making your SillyTavern your way",
     "default_branch": "master",
     "head_sha": "d93c056ccdd7720253b167fe1a29ad0cbbe66f9d",
     "head_committed_at": "2025-09-21T22:17:34.000Z",
@@ -24,16 +25,16 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 64,
+    "stargazers_count": 65,
     "forks_count": 9,
     "subscribers_count": 2,
-    "aggregate": 75
+    "aggregate": 76
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

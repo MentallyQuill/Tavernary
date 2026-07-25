@@ -6,6 +6,7 @@
     "owner": "EUM27",
     "name": "nai-inlay-illustrator",
     "url": "https://github.com/EUM27/nai-inlay-illustrator",
+    "description": null,
     "default_branch": "main",
     "head_sha": "2fc483353d4e3187c0613f478fc16ffafc2bc579",
     "head_committed_at": "2026-06-16T09:13:01.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

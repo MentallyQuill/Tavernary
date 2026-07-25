@@ -6,6 +6,7 @@
     "owner": "HelpfulToolsCompany",
     "name": "lorevault-extension",
     "url": "https://github.com/HelpfulToolsCompany/lorevault-extension",
+    "description": null,
     "default_branch": "main",
     "head_sha": "c3d0529a0665715a6202bab2f0701bf8cdda41d3",
     "head_committed_at": "2026-07-08T20:50:03.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

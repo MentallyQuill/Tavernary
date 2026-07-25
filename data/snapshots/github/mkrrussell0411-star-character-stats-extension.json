@@ -6,6 +6,7 @@
     "owner": "mkrrussell0411-star",
     "name": "Character-stats-extension",
     "url": "https://github.com/mkrrussell0411-star/Character-stats-extension",
+    "description": null,
     "default_branch": "main",
     "head_sha": "75100e0c0849a2af37092236057aefaaeda9eb0d",
     "head_committed_at": "2026-03-13T07:37:48.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

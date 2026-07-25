@@ -6,6 +6,7 @@
     "owner": "phampyk",
     "name": "SillyTavern-AvatarBanner",
     "url": "https://github.com/phampyk/SillyTavern-AvatarBanner",
+    "description": "SillyTavern Extension to show the avatars as banners on the chat",
     "default_branch": "main",
     "head_sha": "f51b177b42453f5d50626085757d941f81f0e645",
     "head_committed_at": "2026-03-20T00:55:42.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

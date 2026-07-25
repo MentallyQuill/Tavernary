@@ -6,6 +6,7 @@
     "owner": "MultihogAurelius",
     "name": "SillyTavern-MultihogDnDFramework",
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
+    "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG framework where you can basically make your own game. Mechanical integrity and simulation depth is key here. This isn't a narrative-first philosophy; it aims for relentless \"simulation autism.\"",
     "default_branch": "main",
     "head_sha": "c344a512df40faa432f439c73ea53e32a14dc2b9",
     "head_committed_at": "2026-07-24T22:07:28.000Z",
@@ -43,6 +44,6 @@
     "aggregate": 50
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
-  "stale_since": "2026-07-25T03:20:38.748Z"
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
+  "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "datacat-run",
     "name": "datacat-sillytavern-browser",
     "url": "https://github.com/datacat-run/datacat-sillytavern-browser",
+    "description": "Browse Data Cat from SillyTavern.",
     "default_branch": "main",
     "head_sha": "34abe49aba887bb0f966ba2040453d7554915905",
     "head_committed_at": "2026-07-19T15:30:30.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "b4bysw0rld",
     "name": "SillyTavern-TypefaceR",
     "url": "https://github.com/b4bysw0rld/SillyTavern-TypefaceR",
+    "description": "A SillyTavern extension that allows you to customize fonts for chat messages, including support for local system fonts and Google Fonts.",
     "default_branch": "main",
     "head_sha": "2876e81f1230681922841377597e7b2f1f68b42d",
     "head_committed_at": "2025-11-30T13:40:30.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "senjinthedragon",
     "name": "Smart-Memory",
     "url": "https://github.com/senjinthedragon/Smart-Memory",
+    "description": "A SillyTavern extension providing a multi-tier memory and narrative context system for AI roleplay. Tracks character facts, relationship history, per-character knowledge and secrets, entity state, scene history, story arcs, and rolling summaries - extracted automatically so your AI stays coherent no matter how long the story runs.",
     "default_branch": "main",
     "head_sha": "194a011b6b4ecbc0cd347ae8b6e59a6c1a56021a",
     "head_committed_at": "2026-07-02T15:34:39.000Z",
@@ -70,6 +71,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

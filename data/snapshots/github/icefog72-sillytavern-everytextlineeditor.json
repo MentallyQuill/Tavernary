@@ -6,6 +6,7 @@
     "owner": "IceFog72",
     "name": "SillyTavern-EveryTextLineEditor",
     "url": "https://github.com/IceFog72/SillyTavern-EveryTextLineEditor",
+    "description": null,
     "default_branch": "main",
     "head_sha": "290870688da47363a4705284ff404bb6d56c7e4d",
     "head_committed_at": "2026-05-24T00:39:59.000Z",
@@ -43,6 +44,6 @@
     "aggregate": 21
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
-  "stale_since": "2026-07-25T02:56:16.026Z"
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
+  "stale_since": null
 }

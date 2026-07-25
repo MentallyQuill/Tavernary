@@ -6,6 +6,7 @@
     "owner": "maxime-fleury",
     "name": "ST-cardEditor",
     "url": "https://github.com/maxime-fleury/ST-cardEditor",
+    "description": null,
     "default_branch": "master",
     "head_sha": "5c1929cbb7362001db0a1b7271ca8d9ad2f08dfe",
     "head_committed_at": "2026-07-16T10:24:20.000Z",
@@ -30,12 +31,12 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 3,
+    "stargazers_count": 4,
     "forks_count": 0,
     "subscribers_count": 0,
-    "aggregate": 3
+    "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

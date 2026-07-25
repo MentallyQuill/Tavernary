@@ -6,6 +6,7 @@
     "owner": "maiky93",
     "name": "image-generation-suite",
     "url": "https://github.com/maiky93/image-generation-suite",
+    "description": "Sillytavern Image Generation Suite",
     "default_branch": "main",
     "head_sha": "9db8b7dad2a40b2ccc47402cd6bb3de6959b6298",
     "head_committed_at": "2026-07-08T23:28:05.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

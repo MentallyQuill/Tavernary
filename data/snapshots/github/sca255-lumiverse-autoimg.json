@@ -6,6 +6,7 @@
     "owner": "sca255",
     "name": "lumiverse-autoimg",
     "url": "https://github.com/sca255/lumiverse-autoimg",
+    "description": "automatric image gen on ai demand",
     "default_branch": "main",
     "head_sha": "2587831347f26a65ca2b334811f09414268f152d",
     "head_committed_at": "2026-07-10T11:28:20.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

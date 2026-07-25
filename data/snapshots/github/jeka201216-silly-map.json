@@ -6,6 +6,7 @@
     "owner": "Jeka201216",
     "name": "Silly-Map",
     "url": "https://github.com/Jeka201216/Silly-Map",
+    "description": "A D&D-style interactive map extension for SillyTavern designed for better roleplay visualization.",
     "default_branch": "main",
     "head_sha": "c8e352e3a005ae01d3920021d7ddaafbdc029ced",
     "head_committed_at": "2026-07-20T23:11:01.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

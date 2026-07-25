@@ -6,6 +6,7 @@
     "owner": "NoaThouard",
     "name": "SillyTavern-Extension-NPC-Portait-Switcher",
     "url": "https://github.com/NoaThouard/SillyTavern-Extension-NPC-Portait-Switcher",
+    "description": null,
     "default_branch": "main",
     "head_sha": "9ea4112b5331516bf73f9eece4c81db22611bf20",
     "head_committed_at": "2026-06-26T00:14:34.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

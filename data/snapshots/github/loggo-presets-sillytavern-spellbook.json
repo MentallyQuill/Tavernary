@@ -6,6 +6,7 @@
     "owner": "Loggo-presets",
     "name": "SillyTavern-SpellBook",
     "url": "https://github.com/Loggo-presets/SillyTavern-SpellBook",
+    "description": "The Spell Book: Markdown Notepad for SillyTavern A feature-rich, glassmorphism-style floating notepad extension. Organize your notes, spell lores, references, and creative content with style.",
     "default_branch": "main",
     "head_sha": "c826e7451f27fd03a4754082f27d65a96a3815cf",
     "head_committed_at": "2026-01-09T11:30:02.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

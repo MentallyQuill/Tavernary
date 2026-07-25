@@ -6,6 +6,7 @@
     "owner": "aikohanasaki",
     "name": "SillyTavern-MemoryBooks",
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
+    "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
     "head_sha": "47a08a0676679a0317330e0be564c2cc74e948ff",
     "head_committed_at": "2026-07-24T21:34:28.000Z",
@@ -47,6 +48,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Iaminvisibru",
     "name": "MarinaraJanitorAI",
     "url": "https://github.com/Iaminvisibru/MarinaraJanitorAI",
+    "description": "JanitorAI Browser for Marinara Engine. (Custom Launcher) (Extension)",
     "default_branch": "main",
     "head_sha": "f8b167e1366b3e8ad5a3d83aedf342ca2108dfd2",
     "head_committed_at": "2026-04-06T21:40:30.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

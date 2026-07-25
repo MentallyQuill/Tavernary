@@ -6,6 +6,7 @@
     "owner": "sigmareaver",
     "name": "rooms",
     "url": "https://github.com/sigmareaver/rooms",
+    "description": "SillyTavern extension for MUD-like rooms in your chats.",
     "default_branch": "main",
     "head_sha": "51718f8cbebd5df86d20f312309aaabb25ad42b3",
     "head_committed_at": "2026-07-23T16:54:06.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

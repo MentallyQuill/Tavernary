@@ -6,6 +6,7 @@
     "owner": "Soyo5800",
     "name": "rpg-tracker-for-sillytavern",
     "url": "https://github.com/Soyo5800/rpg-tracker-for-sillytavern",
+    "description": null,
     "default_branch": "main",
     "head_sha": "34e321cd22034858c8ade505b7eda1c65f373920",
     "head_committed_at": "2026-07-23T17:56:57.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

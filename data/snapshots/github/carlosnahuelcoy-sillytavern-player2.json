@@ -6,6 +6,7 @@
     "owner": "CarlosNahuelcoy",
     "name": "SillyTavern-Player2",
     "url": "https://github.com/CarlosNahuelcoy/SillyTavern-Player2",
+    "description": "SillyTavern extension that connects to the Player2 AI API. Supports local app auto-auth and web OAuth login.",
     "default_branch": "master",
     "head_sha": "fae29f2137b330d60368344a5f68997af0a00dd7",
     "head_committed_at": "2026-06-02T18:59:21.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

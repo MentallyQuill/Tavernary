@@ -6,6 +6,7 @@
     "owner": "LenAnderson",
     "name": "SillyTavern-VideoBackgrounds",
     "url": "https://github.com/LenAnderson/SillyTavern-VideoBackgrounds",
+    "description": null,
     "default_branch": "master",
     "head_sha": "6a7a607b56ae1d85460dbeb914d251c27a28a8ba",
     "head_committed_at": "2025-10-23T21:21:53.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 24
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

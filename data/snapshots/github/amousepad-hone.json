@@ -6,6 +6,7 @@
     "owner": "AMousePad",
     "name": "Hone",
     "url": "https://github.com/AMousePad/Hone",
+    "description": "A Message Refinement System for Lumiverse",
     "default_branch": "main",
     "head_sha": "0538b853ad4a388455dc8df55296cee047e4f5c0",
     "head_committed_at": "2026-07-19T04:38:43.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T01:06:55.971Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

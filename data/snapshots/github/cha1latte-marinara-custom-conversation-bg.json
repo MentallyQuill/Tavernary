@@ -6,6 +6,7 @@
     "owner": "cha1latte",
     "name": "marinara-custom-conversation-bg",
     "url": "https://github.com/cha1latte/marinara-custom-conversation-bg",
+    "description": "User-configurable chat background for Marinara Engine",
     "default_branch": "main",
     "head_sha": "b9599933ce37552ebc1b6f0d30b13690435765ea",
     "head_committed_at": "2026-04-28T21:28:11.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

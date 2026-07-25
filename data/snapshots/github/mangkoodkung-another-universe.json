@@ -6,6 +6,7 @@
     "owner": "mangkoodkung",
     "name": "another-universe",
     "url": "https://github.com/mangkoodkung/another-universe",
+    "description": "If we met again in another universe, would everything change?",
     "default_branch": "main",
     "head_sha": "44239d3f71d5b3f3d9b0da29e5ed8c402bfa8c53",
     "head_committed_at": "2026-05-20T17:05:36.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

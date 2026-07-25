@@ -6,6 +6,7 @@
     "owner": "Manjove1",
     "name": "forged-by-primus-portfolio",
     "url": "https://github.com/Manjove1/forged-by-primus-portfolio",
+    "description": "Portfolio for Transformers: Forged by Primus — a modular long-form AI Dungeon Master system demonstrating advanced prompt engineering techniques for stateful RPG experiences.",
     "default_branch": "main",
     "head_sha": "02ee2417cb554cdb6fb7e66ef358419d68747f0f",
     "head_committed_at": "2026-07-23T19:42:36.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

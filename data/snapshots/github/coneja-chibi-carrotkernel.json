@@ -6,6 +6,7 @@
     "owner": "Coneja-Chibi",
     "name": "CarrotKernel",
     "url": "https://github.com/Coneja-Chibi/CarrotKernel",
+    "description": "The helper extension for BunnyMo Packs! (Electric Boogaloo)",
     "default_branch": "main",
     "head_sha": "c736e771449562be5a9c842315d65dabf9a92f6f",
     "head_committed_at": "2026-07-20T03:36:23.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 59
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

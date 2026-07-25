@@ -6,6 +6,7 @@
     "owner": "cfigure",
     "name": "Lumiverse-Shutter",
     "url": "https://github.com/cfigure/Lumiverse-Shutter",
+    "description": null,
     "default_branch": "main",
     "head_sha": "ec29185f2a3f89faa8840f2439a7e489da86d9d4",
     "head_committed_at": "2026-07-09T16:30:21.000Z",
@@ -65,6 +66,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

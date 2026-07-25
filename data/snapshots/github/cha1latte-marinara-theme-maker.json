@@ -6,6 +6,7 @@
     "owner": "cha1latte",
     "name": "marinara-theme-maker",
     "url": "https://github.com/cha1latte/marinara-theme-maker",
+    "description": "Prompt and sample themes for generating importable Marinara Engine custom themes.",
     "default_branch": "master",
     "head_sha": "ecadd96b8dd433fe7ce40584cf518805db98fece",
     "head_committed_at": "2026-05-19T15:51:38.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

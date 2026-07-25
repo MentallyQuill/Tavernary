@@ -6,6 +6,7 @@
     "owner": "Archkr",
     "name": "SillyTavern-CharacterVisuals",
     "url": "https://github.com/Archkr/SillyTavern-CharacterVisuals",
+    "description": "An extension that enhances the Character Expressions extension in SillyTavern by automatically switching the active costume being used in realtime.",
     "default_branch": "main",
     "head_sha": "6b390a294af977451d75877a6781d142023ba321",
     "head_committed_at": "2026-01-16T00:27:26.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

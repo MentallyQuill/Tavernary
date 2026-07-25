@@ -6,6 +6,7 @@
     "owner": "Quackified",
     "name": "Floating-Viewer",
     "url": "https://github.com/Quackified/Floating-Viewer",
+    "description": "A SillyTavern extension that replaces the default image popup with a draggable and resizable floating window.",
     "default_branch": "main",
     "head_sha": "9fdceffac491322be469857d655ea74e27705e89",
     "head_committed_at": "2025-12-27T06:21:05.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

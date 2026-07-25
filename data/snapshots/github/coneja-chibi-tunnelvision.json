@@ -6,6 +6,7 @@
     "owner": "Coneja-Chibi",
     "name": "TunnelVision",
     "url": "https://github.com/Coneja-Chibi/TunnelVision",
+    "description": "Fully autonomous and agentic lorebook, tracker, and summary retrieval for SillyTavern!",
     "default_branch": "main",
     "head_sha": "882a40e35f1c9677c84df1523a4cceb5f52c3364",
     "head_committed_at": "2026-07-20T03:32:37.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

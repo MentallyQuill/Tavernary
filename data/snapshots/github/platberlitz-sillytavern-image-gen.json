@@ -6,6 +6,7 @@
     "owner": "platberlitz",
     "name": "sillytavern-image-gen",
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
+    "description": "SillyTavern extension for AI image generation with multiple backend support",
     "default_branch": "main",
     "head_sha": "eb4c484eaed99270739d7077bda1fc81eec9c3cd",
     "head_committed_at": "2026-07-24T09:18:59.000Z",
@@ -80,6 +81,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

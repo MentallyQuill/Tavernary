@@ -6,6 +6,7 @@
     "owner": "RetroVioletRed",
     "name": "SillyTavern-PicturePrompt",
     "url": "https://github.com/RetroVioletRed/SillyTavern-PicturePrompt",
+    "description": "A SillyTavern extension allowing your characters to see the world you're building",
     "default_branch": "main",
     "head_sha": "5aa5631d31f1b8d9e0fff7da1b4e7a2b8ebe70f8",
     "head_committed_at": "2026-07-12T23:24:28.000Z",
@@ -85,6 +86,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

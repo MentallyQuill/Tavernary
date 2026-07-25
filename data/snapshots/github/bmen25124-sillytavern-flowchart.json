@@ -6,6 +6,7 @@
     "owner": "bmen25124",
     "name": "SillyTavern-Flowchart",
     "url": "https://github.com/bmen25124/SillyTavern-Flowchart",
+    "description": "Automate things, visualize your flows.",
     "default_branch": "main",
     "head_sha": "b7c091b0ba227df5913453c311bdf264d7c454be",
     "head_committed_at": "2026-06-09T01:32:07.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

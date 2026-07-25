@@ -6,6 +6,7 @@
     "owner": "Flaxify",
     "name": "ST-Hands-Free-Voice",
     "url": "https://github.com/Flaxify/ST-Hands-Free-Voice",
+    "description": "Hands-free voice interaction for SillyTavern (TTS/STT sequencing with silence detection)",
     "default_branch": "main",
     "head_sha": "5c85276a86441674792ce0e8fe40e4dc4d9e73b2",
     "head_committed_at": "2026-05-06T01:20:10.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

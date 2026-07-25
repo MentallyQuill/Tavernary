@@ -6,6 +6,7 @@
     "owner": "Giglio256",
     "name": "SillyTavern-GiglioMachine",
     "url": "https://github.com/Giglio256/SillyTavern-GiglioMachine",
+    "description": "As of march 2026, most advanced ST extension for controlling and analyzing lorebook budget and order",
     "default_branch": "main",
     "head_sha": "5abdb3498716752a9a286505704513fe6b12bffb",
     "head_committed_at": "2026-07-05T10:43:50.000Z",
@@ -60,6 +61,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

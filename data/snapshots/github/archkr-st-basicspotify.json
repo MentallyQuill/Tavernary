@@ -6,6 +6,7 @@
     "owner": "Archkr",
     "name": "ST-BasicSpotify",
     "url": "https://github.com/Archkr/ST-BasicSpotify",
+    "description": null,
     "default_branch": "main",
     "head_sha": "c6bb84e64924d8a7a89c6289b996a11742d08a5a",
     "head_committed_at": "2026-01-16T04:25:59.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

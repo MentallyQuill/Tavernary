@@ -6,6 +6,7 @@
     "owner": "closuretxt",
     "name": "recast-post-processing",
     "url": "https://github.com/closuretxt/recast-post-processing",
+    "description": "A SillyTavern extension dedicated to prose post-processing.",
     "default_branch": "master",
     "head_sha": "5066894fb1cb340c534b0f5f9244a380b701b0ed",
     "head_committed_at": "2026-04-09T19:00:54.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

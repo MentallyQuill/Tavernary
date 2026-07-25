@@ -6,6 +6,7 @@
     "owner": "heikouidou",
     "name": "chara-color-filter",
     "url": "https://github.com/heikouidou/chara-color-filter",
+    "description": null,
     "default_branch": "main",
     "head_sha": "be02bb1027e3f9b55a5ebb9d22860fc93262d8d8",
     "head_committed_at": "2026-01-20T12:41:27.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "LenAnderson",
     "name": "SillyTavern-WorldInfoInfo",
     "url": "https://github.com/LenAnderson/SillyTavern-WorldInfoInfo",
+    "description": "See which WorldInfo entries were active in the last generated message.",
     "default_branch": "master",
     "head_sha": "86a3bbba78558714f76e1c7f74b8e23b60d7f38c",
     "head_committed_at": "2025-09-12T00:23:47.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 55
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

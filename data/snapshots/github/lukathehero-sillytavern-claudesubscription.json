@@ -6,6 +6,7 @@
     "owner": "LukaTheHero",
     "name": "SillyTavern-ClaudeSubscription",
     "url": "https://github.com/LukaTheHero/SillyTavern-ClaudeSubscription",
+    "description": "A SillyTavern server plugin that routes chat through the Claude Agent SDK so it bills against your Anthropic Pro/Max subscription instead of an API key",
     "default_branch": "main",
     "head_sha": "595daa7404bb280de3f1aaeb52fb69060895b843",
     "head_committed_at": "2026-07-02T00:09:52.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

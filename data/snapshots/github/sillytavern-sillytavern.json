@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "SillyTavern",
     "url": "https://github.com/SillyTavern/SillyTavern",
+    "description": "LLM Frontend for Power Users.",
     "default_branch": "release",
     "head_sha": "8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8",
     "head_committed_at": "2026-07-07T17:36:20.000Z",
@@ -30,16 +31,16 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 31094,
-    "forks_count": 5877,
-    "subscribers_count": 145,
-    "aggregate": 37116
+    "stargazers_count": 31113,
+    "forks_count": 5879,
+    "subscribers_count": 144,
+    "aggregate": 37136
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

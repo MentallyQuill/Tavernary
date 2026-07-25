@@ -6,6 +6,7 @@
     "owner": "chesswoodspixel",
     "name": "SillyTavern-LorebookStickySort",
     "url": "https://github.com/chesswoodspixel/SillyTavern-LorebookStickySort",
+    "description": "SillyTavern extension that remembers your preferred sort order for each lorebook.",
     "default_branch": "main",
     "head_sha": "5deba7bacdc36deef4fe4dcb5941ee122ab75b6c",
     "head_committed_at": "2025-11-22T05:36:57.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

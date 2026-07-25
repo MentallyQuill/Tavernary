@@ -6,6 +6,7 @@
     "owner": "NemoVonNirgend",
     "name": "NemoPresetExt",
     "url": "https://github.com/NemoVonNirgend/NemoPresetExt",
+    "description": "A Sillytavern extension for creating drop downs for ChatCompletion presets.",
     "default_branch": "main",
     "head_sha": "8d4adc6d8834404d16235cfe93b578a05e593a3d",
     "head_committed_at": "2026-07-23T19:13:07.000Z",
@@ -51,6 +52,6 @@
     "aggregate": 104
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

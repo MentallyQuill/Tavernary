@@ -6,6 +6,7 @@
     "owner": "Sillyanonymous",
     "name": "SillyTavern-CharacterLibrary",
     "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
+    "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
     "default_branch": "main",
     "head_sha": "d795c9b7356ed61172704c46b2729bb481f9ae0a",
     "head_committed_at": "2026-07-18T00:06:05.000Z",
@@ -80,6 +81,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }
