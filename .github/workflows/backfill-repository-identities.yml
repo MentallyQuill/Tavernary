@@ -1,0 +1,68 @@
+name: Backfill repository identities
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_ids:
+        description: Optional newline-separated project IDs; empty selects all.
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Backfill selected identities
+        env:
+          PROJECT_IDS: ${{ inputs.project_ids || '' }}
+        shell: bash
+        run: |
+          args=(--write)
+          while IFS= read -r project_id; do
+            [[ -z "$project_id" ]] || args+=(--project-id "$project_id")
+          done <<< "$PROJECT_IDS"
+          npm run catalog:backfill-identities -- "${args[@]}"
+      - name: Validate catalog identities
+        run: npm run catalog:validate
+      - name: Commit repository identities
+        shell: bash
+        run: |
+          git add data/registry/projects/*.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(catalog): backfill repository identities"
+          for attempt in 1 2 3; do
+            if git fetch origin main &&
+              git rebase origin/main; then
+              if npm run catalog:validate &&
+                git push origin HEAD:main; then
+                break
+              fi
+            fi
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              exit 1
+            fi
+          done

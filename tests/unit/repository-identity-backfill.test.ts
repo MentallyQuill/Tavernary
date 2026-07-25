@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { planRepositoryIdentityBackfill } from "../../scripts/catalog/backfill-repository-identities.mjs";
+import {
+  parseIdentityBackfillArguments,
+  planRepositoryIdentityBackfill,
+} from "../../scripts/catalog/backfill-repository-identities.mjs";
 import { backfillRepositoryIdentities } from "../../scripts/catalog/repository-identity-backfill.mjs";
 import type { IdentityRecord } from "../../scripts/catalog/repository-identity-backfill.mjs";
 
@@ -221,4 +224,80 @@ test("plans a validated backfill projection before writing", async () => {
       source: expect.objectContaining({ repository_id: 42 }),
     }),
   ]);
+});
+
+test("targets only explicitly selected project IDs", () => {
+  const records = ["canary-a", "canary-b", "other"].map((id) => ({
+    id,
+    source: {
+      type: "github",
+      repository: `Example/${id}`,
+      repository_id: null,
+    },
+  }));
+  const snapshots = records.map(({ id }, index) => ({
+    project_id: id,
+    source_health: "healthy",
+    repository: {
+      id: index + 1,
+      owner: "Example",
+      name: id,
+    },
+  }));
+
+  const result = backfillRepositoryIdentities(records, snapshots, {
+    projectIds: new Set(["canary-a", "canary-b"]),
+  });
+
+  expect(result.updated.map(({ id }) => id)).toEqual(["canary-a", "canary-b"]);
+  expect(result.updated).not.toContainEqual(
+    expect.objectContaining({ id: "other" }),
+  );
+  expect(result.summary).toEqual({
+    changed: 2,
+    skipped: 1,
+    conflicts: 0,
+  });
+});
+
+test("parses repeated project IDs and rejects duplicates", () => {
+  expect(
+    parseIdentityBackfillArguments([
+      "--write",
+      "--project-id",
+      "a",
+      "--project-id",
+      "b",
+    ]),
+  ).toEqual({
+    write: true,
+    projectIds: new Set(["a", "b"]),
+  });
+  expect(() =>
+    parseIdentityBackfillArguments(["--project-id", "a", "--project-id", "a"]),
+  ).toThrow("duplicate");
+});
+
+test("rejects unknown targeted IDs before catalog validation", async () => {
+  const validateCatalog = async () => {
+    throw new Error("validation should not run");
+  };
+
+  await expect(
+    planRepositoryIdentityBackfill({
+      records: [
+        {
+          id: "known",
+          source: {
+            type: "github",
+            repository: "Example/Known",
+            repository_id: null,
+          },
+        },
+      ],
+      snapshots: [],
+      projectIds: new Set(["unknown"]),
+      validateCatalog,
+    }),
+  ).rejects.toThrow("unknown project ID");
 });

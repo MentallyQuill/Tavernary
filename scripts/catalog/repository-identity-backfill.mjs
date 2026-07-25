@@ -1,4 +1,4 @@
-export function backfillRepositoryIdentities(records, snapshots) {
+export function backfillRepositoryIdentities(records, snapshots, options = {}) {
   const snapshotsById = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
   );
@@ -7,6 +7,10 @@ export function backfillRepositoryIdentities(records, snapshots) {
   let skipped = 0;
 
   for (const record of records) {
+    if (options.projectIds && !options.projectIds.has(record.id)) {
+      skipped += 1;
+      continue;
+    }
     if (record.source.type !== "github") {
       skipped += 1;
       continue;
