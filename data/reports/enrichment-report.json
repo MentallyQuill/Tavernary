@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T14:57:37.544Z",
+  "updated_at": "2026-07-25T14:59:04.044Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 20,
+  "primary_cursor": 40,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -229,7 +229,27 @@
     "archkr-sillytavern-outfitswitch": 1,
     "archkr-st-basicspotify": 1,
     "arif-salah-megumin-suite": 1,
-    "ayvencore-sillytavern-another-character-library": 1
+    "ayvencore-sillytavern-another-character-library": 1,
+    "ayvencore-sillytavern-lorebook-manager": 1,
+    "b4bysw0rld-sillytavern-typefacer": 1,
+    "bal-spec-sillytavern-character-memory": 1,
+    "bbw3000-simplesummary": 1,
+    "beeopo-lumiverse-rewrite": 1,
+    "beeopo-marinara-rewrite": 1,
+    "bf-gith-bf-ooc-injection": 1,
+    "bmen25124-sillytavern-character-creator": 1,
+    "bmen25124-sillytavern-flowchart": 1,
+    "bmen25124-sillytavern-roadway": 1,
+    "bmen25124-sillytavern-wtracker": 1,
+    "bronya-rand-guinevere-ui-extension": 1,
+    "bronya-rand-prome-vn-extension": 1,
+    "carlosnahuelcoy-sillytavern-player2": 1,
+    "carmentagit-carmy-infoboard": 1,
+    "cfigure-lumiverse-prompt-viewer": 1,
+    "cfigure-lumiverse-shutter": 1,
+    "cgstever-statefullore": 1,
+    "cha1latte-marinara-avatar-background": 1,
+    "cha1latte-marinara-custom-conversation-bg": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -411,13 +431,193 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T14:57:37.544Z"
+    },
+    "ayvencore-sillytavern-lorebook-manager": {
+      "id": "ayvencore-sillytavern-lorebook-manager",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "b4bysw0rld-sillytavern-typefacer": {
+      "id": "b4bysw0rld-sillytavern-typefacer",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bal-spec-sillytavern-character-memory": {
+      "id": "bal-spec-sillytavern-character-memory",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bbw3000-simplesummary": {
+      "id": "bbw3000-simplesummary",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "beeopo-lumiverse-rewrite": {
+      "id": "beeopo-lumiverse-rewrite",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "beeopo-marinara-rewrite": {
+      "id": "beeopo-marinara-rewrite",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bf-gith-bf-ooc-injection": {
+      "id": "bf-gith-bf-ooc-injection",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bmen25124-sillytavern-character-creator": {
+      "id": "bmen25124-sillytavern-character-creator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bmen25124-sillytavern-flowchart": {
+      "id": "bmen25124-sillytavern-flowchart",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bmen25124-sillytavern-roadway": {
+      "id": "bmen25124-sillytavern-roadway",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bmen25124-sillytavern-wtracker": {
+      "id": "bmen25124-sillytavern-wtracker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bronya-rand-guinevere-ui-extension": {
+      "id": "bronya-rand-guinevere-ui-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "bronya-rand-prome-vn-extension": {
+      "id": "bronya-rand-prome-vn-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "carlosnahuelcoy-sillytavern-player2": {
+      "id": "carlosnahuelcoy-sillytavern-player2",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "carmentagit-carmy-infoboard": {
+      "id": "carmentagit-carmy-infoboard",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cfigure-lumiverse-prompt-viewer": {
+      "id": "cfigure-lumiverse-prompt-viewer",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cfigure-lumiverse-shutter": {
+      "id": "cfigure-lumiverse-shutter",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cgstever-statefullore": {
+      "id": "cgstever-statefullore",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cha1latte-marinara-avatar-background": {
+      "id": "cha1latte-marinara-avatar-background",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cha1latte-marinara-custom-conversation-bg": {
+      "id": "cha1latte-marinara-custom-conversation-bg",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T14:59:04.044Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 0,
     "fallback": 0,
-    "source-not-ready": 20,
+    "source-not-ready": 40,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
