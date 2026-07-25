@@ -1,13 +1,9 @@
-export type EnrichmentReport = {
-  generated_at: string;
-  selected: number;
-  enriched: string[];
-  fallback: string[];
-  skipped: string[];
-  failed: Array<{ id: string; reason: string }>;
-};
+import type { EnrichmentRunState } from "./enrichment-run-state.d.mts";
+
+export type EnrichmentReport = EnrichmentRunState;
 
 export function createEnrichmentReport(
-  generatedAt: string,
-  result: Omit<EnrichmentReport, "generated_at" | "selected">,
+  state: EnrichmentRunState,
 ): EnrichmentReport;
+
+export function validateEnrichmentReport(value: unknown): EnrichmentReport;

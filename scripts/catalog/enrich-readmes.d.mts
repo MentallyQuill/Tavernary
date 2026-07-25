@@ -1,5 +1,8 @@
 import type { ReadmeSource } from "./readme-source.d.mts";
-import type { ProjectAttemptResult } from "./enrichment-run-state.d.mts";
+import type {
+  EnrichmentRunState,
+  ProjectAttemptResult,
+} from "./enrichment-run-state.d.mts";
 
 export type VocabularyEntry = { id: string; label?: string };
 export type EnrichmentInput = {
@@ -47,20 +50,28 @@ export type EnrichmentProvider = {
   }>;
 };
 export type EnrichmentOptions = {
-  startIndex?: number;
+  mode?: "preflight" | "canary" | "start" | "resume";
   batchSize?: number;
-  projectId?: string;
-  force?: boolean;
-  mode?: "backfill";
+  concurrency?: number;
+  projectIds?: string[];
   vocabularies?: {
     primaryFunctions: VocabularyEntry[];
     capabilities: VocabularyEntry[];
   };
 };
 
+export type PreflightResult = {
+  mode: "preflight";
+  status: "passed";
+  requested_model: "MiniMax-M3";
+  returned_model: string | null;
+  latency_ms: number;
+  validation_status: "passed";
+};
+
 export function selectEnrichmentRecords(
   records: RegistryRecord[],
-  options?: EnrichmentOptions,
+  options?: { force?: boolean },
 ): RegistryRecord[];
 
 export function enrichRecord(
@@ -124,6 +135,43 @@ export function runEnrichmentBatch(options: {
   ) => Promise<void>;
 }): Promise<ProjectAttemptResult[]>;
 
+export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
+  providerConfiguration?: {
+    apiUrl?: string;
+    apiKey?: string;
+    model?: string;
+  };
+  provider?: EnrichmentProvider;
+  timeoutMs?: number;
+  records?: RegistryRecord[];
+  snapshots?: Record<string, GithubSnapshot> | GithubSnapshot[];
+  snapshotSchema?: Record<string, unknown>;
+  validateSnapshot?: (snapshot: unknown) => boolean;
+  previousReport?: unknown;
+  runId?: string;
+  now?: string;
+  loadSource?: (
+    record: RegistryRecord,
+    snapshot: GithubSnapshot,
+    options?: Record<string, unknown>,
+  ) => Promise<ReadmeSource>;
+  writeRecord?: (
+    record: RegistryRecord,
+    output: EnrichmentOutput,
+    vocabularies: {
+      primaryFunctions: VocabularyEntry[];
+      capabilities: VocabularyEntry[];
+    },
+  ) => Promise<void>;
+  reportPath?: string | null;
+  writeReport?: (report: EnrichmentRunState) => Promise<void>;
+};
+
 export function runCli(
-  options?: EnrichmentOptions,
-): Promise<Record<string, unknown>>;
+  options: RunCliOptions & { mode: "canary" | "start" | "resume" },
+): Promise<EnrichmentRunState>;
+export function runCli(
+  options?: RunCliOptions & { mode?: "preflight" },
+): Promise<PreflightResult>;
+
+export function cliOptions(argv: string[]): EnrichmentOptions;

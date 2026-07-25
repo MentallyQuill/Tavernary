@@ -11,8 +11,21 @@ import {
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { createEnrichmentProvider } from "./enrichment-provider.mjs";
-import { createEnrichmentReport } from "./enrichment-report.mjs";
+import {
+  createEnrichmentProvider,
+  validateProviderConfiguration,
+} from "./enrichment-provider.mjs";
+import {
+  createEnrichmentReport,
+  validateEnrichmentReport,
+} from "./enrichment-report.mjs";
+import {
+  applyAttemptResults,
+  assertFullRolloutAllowed,
+  createEnrichmentRunState,
+  selectNextRunBatch,
+} from "./enrichment-run-state.mjs";
+import { createSnapshotValidator } from "./readme-source.mjs";
 
 function entriesToSet(entries) {
   return new Set(
@@ -34,15 +47,9 @@ function isEligible(record, force = false) {
 }
 
 export function selectEnrichmentRecords(records, options = {}) {
-  const sorted = records
+  return records
     .filter((record) => isEligible(record, options.force))
     .sort((left, right) => left.id.localeCompare(right.id));
-  if (options.projectId) {
-    return sorted.filter((record) => record.id === options.projectId);
-  }
-  const startIndex = Math.max(0, options.startIndex ?? 0);
-  const batchSize = Math.max(1, options.batchSize ?? 20);
-  return sorted.slice(startIndex, startIndex + batchSize);
 }
 
 export async function enrichRecord(record, snapshot, provider, options = {}) {
@@ -407,11 +414,93 @@ async function readJson(path) {
   return JSON.parse(await readFile(path, "utf8"));
 }
 
-export async function runCli(options = {}) {
-  if (options.mode && options.mode !== "backfill") {
-    throw new Error(`unsupported enrichment mode: ${options.mode}`);
+async function readOptionalJson(path) {
+  try {
+    return await readJson(path);
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw error;
   }
+}
+
+async function writeJsonAtomic(path, value) {
+  await mkdir(dirname(path), { recursive: true });
+  const temporaryPath = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}\n`);
+    await rename(temporaryPath, path);
+  } catch (error) {
+    await rm(temporaryPath, { force: true });
+    throw error;
+  }
+}
+
+const preflightInput = {
+  id: "provider-preflight",
+  name: "Provider preflight",
+  kind: "extension",
+  repository: "tavernary/provider-preflight",
+  repositoryDescription:
+    "A synthetic source used only to verify structured catalog enrichment.",
+  readmeText: null,
+  frontends: ["sillytavern"],
+  allowedPrimaryFunctions: [
+    {
+      id: "developer-infrastructure",
+      label: "Developer infrastructure",
+    },
+  ],
+  allowedCapabilities: [{ id: "automation", label: "Automation" }],
+};
+
+async function runPreflight(provider) {
+  const result = await provider.generate(preflightInput);
+  const validation = validateEnrichmentOutput(result.output, {
+    primaryFunctions: preflightInput.allowedPrimaryFunctions,
+    capabilities: preflightInput.allowedCapabilities,
+  });
+  if (!validation.valid || result.output.primary_function === "uncategorized") {
+    throw new Error("provider preflight output failed validation");
+  }
+  return {
+    mode: "preflight",
+    status: "passed",
+    requested_model: result.metadata.requestedModel,
+    returned_model: result.metadata.returnedModel,
+    latency_ms: result.metadata.latencyMs,
+    validation_status: "passed",
+  };
+}
+
+function providerConfiguration(options) {
+  return validateProviderConfiguration(
+    options.providerConfiguration ?? {
+      apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+      apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+      model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+    },
+  );
+}
+
+export async function runCli(options = {}) {
+  const mode = options.mode ?? "preflight";
+  if (!["preflight", "canary", "start", "resume"].includes(mode)) {
+    throw new Error(`unsupported enrichment mode: ${mode}`);
+  }
+  const configuration = providerConfiguration(options);
+  const provider =
+    options.provider ??
+    createEnrichmentProvider({
+      ...configuration,
+      timeoutMs: options.timeoutMs,
+    });
+  if (mode === "preflight") return runPreflight(provider);
+
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+  const reportPath =
+    options.reportPath === undefined
+      ? resolve(root, "data/reports/enrichment-report.json")
+      : options.reportPath;
   const records =
     options.records ??
     (await Promise.all(
@@ -419,18 +508,22 @@ export async function runCli(options = {}) {
         .filter((name) => name.endsWith(".json"))
         .map((name) => readJson(resolve(root, "data/registry/projects", name))),
     ));
-  const snapshots =
-    options.snapshots ??
-    Object.fromEntries(
-      await Promise.all(
-        (await readdir(resolve(root, "data/snapshots/github")))
-          .filter((name) => name.endsWith(".json"))
-          .map(async (name) => [
-            name.slice(0, -5),
-            await readJson(resolve(root, "data/snapshots/github", name)),
-          ]),
-      ),
-    );
+  const snapshots = options.snapshots
+    ? Array.isArray(options.snapshots)
+      ? Object.fromEntries(
+          options.snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+        )
+      : options.snapshots
+    : Object.fromEntries(
+        await Promise.all(
+          (await readdir(resolve(root, "data/snapshots/github")))
+            .filter((name) => name.endsWith(".json"))
+            .map(async (name) => [
+              name.slice(0, -5),
+              await readJson(resolve(root, "data/snapshots/github", name)),
+            ]),
+        ),
+      );
   const vocabularyFiles = options.vocabularies
     ? null
     : await Promise.all([
@@ -441,22 +534,89 @@ export async function runCli(options = {}) {
     primaryFunctions: vocabularyFiles[0].primary_functions,
     capabilities: vocabularyFiles[1].capabilities,
   };
-  const selected = selectEnrichmentRecords(records, options);
-  const result = await runEnrichmentBatch({
-    records: selected,
-    snapshots,
+  const validateSnapshot =
+    options.validateSnapshot ??
+    createSnapshotValidator(
+      options.snapshotSchema ??
+        (await readJson(
+          resolve(root, "data/schemas/repository-snapshot.schema.json"),
+        )),
+    );
+  const previousReport =
+    options.previousReport !== undefined
+      ? options.previousReport
+      : reportPath
+        ? await readOptionalJson(reportPath)
+        : null;
+  let previousState = null;
+  if (previousReport !== null) {
+    try {
+      previousState = validateEnrichmentReport(previousReport);
+    } catch (error) {
+      if (mode !== "canary" || !options.projectIds?.length) throw error;
+    }
+  }
+  const timestamp = new Date(options.now ?? Date.now()).toISOString();
+  let state;
+
+  if (mode === "canary") {
+    if (
+      previousState?.mode === "canary" &&
+      previousState.status === "running" &&
+      previousState.phase === "retry"
+    ) {
+      if (
+        options.projectIds &&
+        JSON.stringify([...options.projectIds].sort()) !==
+          JSON.stringify(previousState.manifest)
+      ) {
+        throw new Error("canary resume project IDs must match its manifest");
+      }
+      state = previousState;
+    } else {
+      state = createEnrichmentRunState({
+        mode: "canary",
+        manifest: options.projectIds ?? [],
+        runId: options.runId ?? randomUUID(),
+        now: timestamp,
+        batchSize: options.batchSize,
+        concurrency: options.concurrency,
+      });
+    }
+  } else if (mode === "start") {
+    assertFullRolloutAllowed(previousState);
+    state = createEnrichmentRunState({
+      mode: "full",
+      manifest: selectEnrichmentRecords(records).map(({ id }) => id),
+      runId: options.runId ?? randomUUID(),
+      now: timestamp,
+      batchSize: options.batchSize,
+      concurrency: options.concurrency,
+    });
+  } else {
+    if (
+      previousState?.mode !== "full" ||
+      previousState.status !== "running" ||
+      !["primary", "retry"].includes(previousState.phase)
+    ) {
+      throw new Error("resume requires a running full enrichment report");
+    }
+    state = previousState;
+  }
+
+  const batch = selectNextRunBatch(state);
+  const results = await runEnrichmentBatch({
+    projectIds: batch.projectIds,
+    recordsById: Object.fromEntries(
+      records.map((record) => [record.id, record]),
+    ),
+    snapshotsById: snapshots,
+    phase: batch.phase,
     vocabularies,
-    provider:
-      options.provider ??
-      (process.env.TAVERNARY_ENRICHMENT_API_URL
-        ? createEnrichmentProvider({
-            apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-            apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-            model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-          })
-        : undefined),
-    now: options.now,
-    force: options.force,
+    provider,
+    validateSnapshot,
+    concurrency: state.concurrency,
+    loadSource: options.loadSource,
     writeRecord:
       options.writeRecord ??
       ((record, output, allowedVocabularies) =>
@@ -467,32 +627,24 @@ export async function runCli(options = {}) {
           allowedVocabularies,
         )),
   });
-  const report = createEnrichmentReport(result.generatedAt, result);
-  const reportPath =
-    options.reportPath ?? resolve(root, "data/reports/enrichment-report.json");
-  if (reportPath) {
-    await mkdir(dirname(reportPath), { recursive: true });
-    await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);
-  }
-  if (report.failed.length > 0) {
-    throw new Error(
-      `enrichment batch failed for ${report.failed.length} record(s)`,
-    );
-  }
+  state = applyAttemptResults(state, results, timestamp);
+  const report = createEnrichmentReport(state);
+  if (options.writeReport) await options.writeReport(report);
+  if (reportPath) await writeJsonAtomic(reportPath, report);
   return report;
 }
 
-function cliOptions(argv) {
-  const value = (name, fallback) => {
-    const index = argv.indexOf(name);
-    return index < 0 ? fallback : argv[index + 1];
-  };
+export function cliOptions(argv) {
+  const values = (name) =>
+    argv.flatMap((value, index) =>
+      value === name && argv[index + 1] !== undefined ? [argv[index + 1]] : [],
+    );
+  const value = (name, fallback) => values(name).at(-1) ?? fallback;
   return {
-    mode: value("--mode", "backfill"),
-    startIndex: Number(value("--start-index", 0)),
+    mode: value("--mode", "preflight"),
     batchSize: Number(value("--batch-size", 20)),
-    projectId: value("--project-id", undefined),
-    force: argv.includes("--force"),
+    concurrency: Number(value("--concurrency", 4)),
+    projectIds: values("--project-id"),
   };
 }
 

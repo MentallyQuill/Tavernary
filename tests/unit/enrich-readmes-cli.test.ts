@@ -1,109 +1,339 @@
 import { expect, test, vi } from "vitest";
 
 import {
-  runEnrichmentBatch,
-  selectEnrichmentRecords,
-} from "../../scripts/catalog/enrich-readmes.mjs";
+  applyAttemptResults,
+  createEnrichmentRunState,
+} from "../../scripts/catalog/enrichment-run-state.mjs";
+import { runCli } from "../../scripts/catalog/enrich-readmes.mjs";
 
-const githubRecord = (id: string, overrides = {}) => ({
-  id,
-  name: id,
-  kind: "extension",
-  summary: "Generic intake details.",
-  metadata_status: "provisional",
-  visibility: "published",
-  frontends: [],
-  source: { type: "github", repository: `Creator/${id}` },
-  ...overrides,
-});
+const now = "2026-07-24T00:00:00.000Z";
+const providerConfiguration = {
+  apiUrl: "https://api.example.test/v1/chat/completions",
+  apiKey: "test-key",
+  model: "MiniMax-M3",
+};
+const vocabularies = {
+  primaryFunctions: [
+    { id: "developer-infrastructure", label: "Developer infrastructure" },
+    { id: "uncategorized", label: "Uncategorized" },
+  ],
+  capabilities: [{ id: "automation", label: "Automation" }],
+};
+const providerOutput = {
+  output: {
+    summary:
+      "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+    metadata_status: "curated" as const,
+    primary_function: "developer-infrastructure",
+    capabilities: ["automation"],
+  },
+  metadata: {
+    requestedModel: "MiniMax-M3" as const,
+    returnedModel: "MiniMax-M3",
+    latencyMs: 10,
+  },
+};
 
-test("selects a deterministic default batch of 20", () => {
-  const records = Array.from({ length: 25 }, (_, index) =>
-    githubRecord(`project-${String(25 - index).padStart(2, "0")}`),
-  );
-
-  const selected = selectEnrichmentRecords(records, {});
-  expect(selected).toHaveLength(20);
-  expect(selected.map((record) => record.id)).toEqual(
-    Array.from(
-      { length: 20 },
-      (_, index) => `project-${String(index + 1).padStart(2, "0")}`,
-    ),
-  );
-});
-
-test("supports zero-based start indexes and explicit project IDs", () => {
-  const records = [githubRecord("a"), githubRecord("b"), githubRecord("c")];
-  expect(
-    selectEnrichmentRecords(records, { startIndex: 1, batchSize: 1 })[0].id,
-  ).toBe("b");
-  expect(
-    selectEnrichmentRecords(records, { projectId: "c", batchSize: 20 })[0].id,
-  ).toBe("c");
-});
-
-test("force includes curated records but excludes non-GitHub sources", () => {
-  const records = [
-    githubRecord("curated", { metadata_status: "curated" }),
-    githubRecord("disabled", { visibility: "disabled" }),
-    githubRecord("url-source", {
-      source: { type: "url", url: "https://example.test/project" },
-    }),
-  ];
-  expect(
-    selectEnrichmentRecords(records, { force: true }).map(
-      (record) => record.id,
-    ),
-  ).toEqual(["curated"]);
-});
-
-test("batch execution records fallback, skip, and failure outcomes", async () => {
-  const write = vi.fn(async () => {});
-  const result = await runEnrichmentBatch({
-    records: [githubRecord("fallback"), githubRecord("broken")],
-    snapshots: {
-      fallback: { repository: {}, readme: { found: false } },
-      broken: { repository: {}, readme: { found: true } },
+function record(id: string) {
+  return {
+    id,
+    name: id,
+    kind: "extension",
+    summary: "Generic intake details.",
+    metadata_status: "provisional",
+    visibility: "published",
+    frontends: [],
+    source: {
+      type: "github",
+      repository: `Creator/${id}`,
+      repository_id: 42,
     },
-    vocabularies: {
-      primaryFunctions: [{ id: "uncategorized" }],
-      capabilities: [],
+  };
+}
+
+function snapshot(id: string) {
+  return {
+    schema_version: 2,
+    project_id: id,
+    source_health: "healthy",
+    stale_since: null,
+    repository: {
+      id: 42,
+      owner: "Creator",
+      name: id,
+      head_sha: "a".repeat(40),
+      description: `Description for ${id}.`,
     },
-    provider: { generate: vi.fn().mockRejectedValue(new Error("offline")) },
-    loadSource: async (record) =>
-      record.id === "fallback"
-        ? {
-            status: "fallback" as const,
-            sourceKind: "confirmed-fallback" as const,
-            readmePath: null,
-            readmeRef: "a".repeat(40),
-            repositoryId: 42,
-            headSha: "a".repeat(40),
-          }
-        : {
-            status: "ready" as const,
-            sourceKind: "description" as const,
-            text: "source",
-            repositoryDescription: "source",
-            readmeText: null,
-            readmePath: null,
-            readmeRef: null,
-            repositoryId: 42,
-            headSha: "a".repeat(40),
-          },
-    writeRecord: write,
-    now: "2026-07-24T00:00:00.000Z",
+  };
+}
+
+function sources(id: string) {
+  return {
+    status: "ready" as const,
+    sourceKind: "description" as const,
+    text: `Description for ${id}.`,
+    repositoryDescription: `Description for ${id}.`,
+    readmeText: null,
+    readmePath: null,
+    readmeRef: null,
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+  };
+}
+
+function executionOptions(ids: string[]) {
+  return {
+    records: ids.map(record),
+    snapshots: Object.fromEntries(ids.map((id) => [id, snapshot(id)])),
+    vocabularies,
+    validateSnapshot: () => true,
+    providerConfiguration,
+    provider: { generate: vi.fn(async (_input: unknown) => providerOutput) },
+    loadSource: async (candidate: { id: string }) => sources(candidate.id),
+    writeRecord: vi.fn(async () => {}),
+    reportPath: null,
+    now,
+    runId: "run-1",
+  };
+}
+
+test.each([
+  [{ apiUrl: "", apiKey: "key", model: "MiniMax-M3" }, "URL"],
+  [
+    { apiUrl: "https://api.example.test", apiKey: "key", model: "other" },
+    "MiniMax-M3",
+  ],
+] as const)(
+  "preflight fails closed on provider configuration",
+  async (configuration, message) => {
+    await expect(
+      runCli({
+        mode: "preflight",
+        providerConfiguration: configuration,
+        provider: { generate: vi.fn() },
+        reportPath: null,
+      }),
+    ).rejects.toThrow(message);
+  },
+);
+
+test("preflight performs one synthetic call without loading or writing catalog data", async () => {
+  const generate = vi.fn(async (_input: unknown) => providerOutput);
+  const loadSource = vi.fn();
+  const writeRecord = vi.fn();
+  const result = await runCli({
+    mode: "preflight",
+    providerConfiguration,
+    provider: { generate },
+    loadSource,
+    writeRecord,
+    reportPath: null,
+    now,
   });
 
-  expect(result.fallback).toEqual(["fallback"]);
-  expect(result.failed).toEqual([{ id: "broken", reason: "offline" }]);
-  expect(write).toHaveBeenCalledTimes(1);
+  expect(generate).toHaveBeenCalledOnce();
+  expect(generate.mock.calls[0][0]).toMatchObject({
+    id: "provider-preflight",
+    repositoryDescription:
+      "A synthetic source used only to verify structured catalog enrichment.",
+  });
+  expect(loadSource).not.toHaveBeenCalled();
+  expect(writeRecord).not.toHaveBeenCalled();
+  expect(result).toEqual({
+    mode: "preflight",
+    status: "passed",
+    requested_model: "MiniMax-M3",
+    returned_model: "MiniMax-M3",
+    latency_ms: 10,
+    validation_status: "passed",
+  });
 });
 
-test("rejects unsupported modes", async () => {
+test("canary requires exactly five unique explicit IDs", async () => {
   await expect(
-    import("../../scripts/catalog/enrich-readmes.mjs").then(({ runCli }) =>
-      runCli({ mode: "not-a-mode" } as never),
-    ),
-  ).rejects.toThrow("unsupported enrichment mode");
+    runCli({
+      mode: "canary",
+      projectIds: ["a", "b", "c", "d"],
+      ...executionOptions(["a", "b", "c", "d"]),
+    }),
+  ).rejects.toThrow("five unique");
+});
+
+test("an explicit canary replaces the obsolete pre-alpha report format", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  await expect(
+    runCli({
+      ...executionOptions(ids),
+      mode: "canary",
+      projectIds: ids,
+      previousReport: {
+        generated_at: now,
+        enriched: [],
+        fallback: [],
+        skipped: [],
+        failed: [],
+      },
+    }),
+  ).resolves.toMatchObject({ mode: "canary", status: "passed" });
+});
+
+test("a canary retry resumes only its failed IDs", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  let previousReport = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ids,
+    runId: "canary-1",
+    now,
+  });
+  previousReport = applyAttemptResults(
+    previousReport,
+    ids.map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: id === "e" ? ("failed" as const) : ("enriched" as const),
+    })),
+    now,
+  );
+  const options = executionOptions(ids);
+  const report = await runCli({
+    ...options,
+    mode: "canary",
+    projectIds: ids,
+    previousReport,
+    loadSource: async () => ({
+      status: "fallback" as const,
+      sourceKind: "confirmed-fallback" as const,
+      readmePath: null,
+      readmeRef: "a".repeat(40),
+      repositoryId: 42,
+      headSha: "a".repeat(40),
+    }),
+  });
+
+  expect(options.writeRecord).toHaveBeenCalledOnce();
+  expect(report).toMatchObject({
+    status: "passed",
+    phase: "complete",
+    retry_cursor: 1,
+  });
+});
+
+test("start requires a passed canary and freezes the complete eligible manifest", async () => {
+  const ids = Array.from({ length: 25 }, (_, index) => `project-${index}`);
+  await expect(
+    runCli({ ...executionOptions(ids), mode: "start", previousReport: null }),
+  ).rejects.toThrow("passed canary");
+
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ["a", "b", "c", "d", "e"],
+    runId: "canary",
+    now,
+  });
+  canary = applyAttemptResults(
+    canary,
+    ["a", "b", "c", "d", "e"].map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+  const report = await runCli({
+    ...executionOptions(ids),
+    mode: "start",
+    previousReport: canary,
+  });
+
+  expect(report.manifest).toEqual([...ids].sort());
+  expect(report.primary_cursor).toBe(20);
+  expect(report.status).toBe("running");
+});
+
+test("resume uses the next state batch and rejects terminal or canary state", async () => {
+  const ids = Array.from({ length: 25 }, (_, index) => `project-${index}`);
+  let full = createEnrichmentRunState({
+    mode: "full",
+    manifest: ids,
+    runId: "full",
+    now,
+  });
+  full = applyAttemptResults(
+    full,
+    full.manifest.slice(0, 20).map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+  const options = executionOptions(ids);
+  const report = await runCli({
+    ...options,
+    mode: "resume",
+    previousReport: full,
+  });
+  expect(options.writeRecord).toHaveBeenCalledTimes(5);
+  expect(report).toMatchObject({
+    status: "complete",
+    phase: "complete",
+    primary_cursor: 25,
+  });
+
+  await expect(
+    runCli({
+      ...options,
+      mode: "resume",
+      previousReport: report,
+    }),
+  ).rejects.toThrow("running full");
+});
+
+test("record failures advance durable state without rejecting the CLI", async () => {
+  const ids = ["broken"];
+  const report = await runCli({
+    ...executionOptions(ids),
+    mode: "start",
+    previousReport: (() => {
+      let canary = createEnrichmentRunState({
+        mode: "canary",
+        manifest: ["a", "b", "c", "d", "e"],
+        runId: "canary",
+        now,
+      });
+      canary = applyAttemptResults(
+        canary,
+        ["a", "b", "c", "d", "e"].map((id) => ({
+          id,
+          phase: "primary" as const,
+          outcome: "enriched" as const,
+        })),
+        now,
+      );
+      return canary;
+    })(),
+    provider: {
+      generate: vi.fn().mockRejectedValue(
+        Object.assign(
+          new Error("The enrichment provider returned a server error."),
+          {
+            code: "provider-server-error",
+          },
+        ),
+      ),
+    },
+  });
+
+  expect(report).toMatchObject({
+    status: "running",
+    phase: "retry",
+    primary_cursor: 1,
+    retry_queue: ["broken"],
+  });
+});
+
+test("rejects the removed mutable backfill mode", async () => {
+  await expect(runCli({ mode: "backfill" } as never)).rejects.toThrow(
+    "unsupported enrichment mode",
+  );
 });

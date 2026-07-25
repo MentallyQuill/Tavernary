@@ -67,7 +67,9 @@ test.each([
 );
 
 test("sends the exact model, hardened prompt, and strict JSON schema", async () => {
-  const fetchImpl = vi.fn(async () => success());
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) => success(),
+  );
   const provider = createEnrichmentProvider({
     apiUrl: "https://api.example.test/v1/chat/completions",
     apiKey: "do-not-log",

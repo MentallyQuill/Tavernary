@@ -58,7 +58,7 @@ test("deduplicates and sorts a full manifest without mutating input", () => {
 
   expect(manifest).toEqual(["z", "a", "z", "b"]);
   expect(state.manifest).toEqual(["a", "b", "z"]);
-  expect(() => state.manifest.push("later")).toThrow();
+  expect(() => (state.manifest as string[]).push("later")).toThrow();
 });
 
 test("queues primary failures once and retries only after primary completion", () => {
