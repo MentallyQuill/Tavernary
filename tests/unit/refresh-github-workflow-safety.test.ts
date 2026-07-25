@@ -69,7 +69,7 @@ test("continues baselines only after successful publication", async () => {
   expect(source).toContain('-f batch_size="$BATCH_SIZE"');
 });
 
-test("enrichment stages only registry records and report after the command", async () => {
+test("enrichment prepares a random canary and limits batch publication", async () => {
   const text = await workflowSource("enrich-catalog");
   const document = parse(text) as {
     jobs: Record<string, { steps: Array<{ run?: string }> }>;
@@ -85,7 +85,7 @@ test("enrichment stages only registry records and report after the command", asy
   );
   expect(text).toContain("data/registry/projects/*.json");
   expect(text).toContain("data/reports/enrichment-report.json");
-  expect(text).not.toMatch(/git add .*data\/snapshots/);
+  expect(text).toContain("publish_canary_preparation()");
   expect(document.on.workflow_dispatch.inputs.mode.options).toEqual([
     "preflight",
     "canary",
@@ -96,6 +96,18 @@ test("enrichment stages only registry records and report after the command", asy
     "start_index",
   );
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("force");
+  expect(text).toContain(
+    "Optional newline-separated project IDs; empty randomly selects five.",
+  );
+  expect(text).toContain("npm run --silent catalog:select-canary");
+  expect(text).toContain('existing_status" == "running"');
+  expect(text).toContain("jq -r '.manifest[]'");
+  expect(text).toContain("npm run catalog:refresh -- \\");
+  expect(text).toContain("--mode project");
+  expect(text).toContain('--project-id "$project_id"');
+  expect(text).toContain("npm run catalog:backfill-identities");
+  expect(text).toContain("data/snapshots/github/*.json");
+  expect(text).toContain("data/snapshots/github-refresh.json");
   expect(text).toContain('args+=(--project-id "$project_id")');
   expect(text).toContain("while IFS= read -r project_id");
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);

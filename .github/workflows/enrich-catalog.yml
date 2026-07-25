@@ -13,7 +13,7 @@ on:
           - resume
         default: preflight
       project_ids:
-        description: Exactly five newline-separated project IDs for canary mode.
+        description: Optional newline-separated project IDs; empty randomly selects five.
         type: string
         required: false
       batch_size:
@@ -101,6 +101,79 @@ jobs:
             done
           }
 
+          publish_canary_preparation() {
+            git add \
+              data/snapshots/github/*.json \
+              data/snapshots/github-refresh.json \
+              data/registry/projects/*.json
+            if git diff --cached --quiet; then
+              return
+            fi
+            git commit -m "chore(catalog): prepare enrichment canary"
+            for attempt in 1 2 3; do
+              if git fetch origin main &&
+                git rebase origin/main; then
+                if npm run check &&
+                  git push origin HEAD:main; then
+                  return
+                fi
+              fi
+              conflicts="$(git diff --name-only --diff-filter=U)"
+              if [[ -n "$conflicts" ]]; then
+                echo "Canary preparation publication conflict:"
+                echo "$conflicts"
+              fi
+              git rebase --abort || true
+              if (( attempt == 3 )); then
+                exit 1
+              fi
+            done
+          }
+
+          choose_canary_projects() {
+            if [[ "$existing_mode" == "canary" && "$existing_status" == "running" ]]; then
+              PROJECT_IDS="$(jq -r '.manifest[]' data/reports/enrichment-report.json)"
+            elif [[ -z "${PROJECT_IDS//[[:space:]]/}" ]]; then
+              PROJECT_IDS="$(npm run --silent catalog:select-canary)"
+            fi
+
+            mapfile -t canary_ids < <(
+              printf '%s\n' "$PROJECT_IDS" | sed '/^[[:space:]]*$/d'
+            )
+            if [[ "${#canary_ids[@]}" -ne 5 ]]; then
+              echo "Canary requires exactly five project IDs." >&2
+              exit 1
+            fi
+            unique_count="$(
+              printf '%s\n' "${canary_ids[@]}" | sort -u | wc -l | tr -d '[:space:]'
+            )"
+            if [[ "$unique_count" -ne 5 ]]; then
+              echo "Canary project IDs must be unique." >&2
+              exit 1
+            fi
+            PROJECT_IDS="$(printf '%s\n' "${canary_ids[@]}")"
+            echo "Selected canary projects:"
+            printf '  %s\n' "${canary_ids[@]}"
+          }
+
+          prepare_canary_projects() {
+            while IFS= read -r project_id; do
+              [[ -z "$project_id" ]] && continue
+              npm run catalog:refresh -- \
+                --mode project \
+                --project-id "$project_id" \
+                --deployment-requested
+            done <<< "$PROJECT_IDS"
+
+            args=(--write)
+            while IFS= read -r project_id; do
+              [[ -z "$project_id" ]] || args+=(--project-id "$project_id")
+            done <<< "$PROJECT_IDS"
+            npm run catalog:backfill-identities -- "${args[@]}"
+            npm run catalog:validate
+            publish_canary_preparation
+          }
+
           deploy_registry_changes() {
             DEPLOY_RUN_ID=""
             if [[ "$REGISTRY_CHANGED" != "true" ]]; then
@@ -161,6 +234,8 @@ jobs:
               REGISTRY_CHANGED=true
               deploy_registry_changes
             else
+              choose_canary_projects
+              prepare_canary_projects
               run_batch canary
             fi
             run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
