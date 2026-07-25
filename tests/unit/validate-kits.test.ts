@@ -120,9 +120,7 @@ describe("Kit registry validation", () => {
       blockedUsers: { schema_version: 1, blocked: [] },
     });
 
-    expect(errors).toContain(
-      "story-kit-41: Frontend project must be first",
-    );
+    expect(errors).toContain("story-kit-41: Frontend project must be first");
   });
 
   test("rejects malformed authority, text, timestamps, status, and tombstones", async () => {
