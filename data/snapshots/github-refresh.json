@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T06:05:19.795Z",
-  "completed_at": "2026-07-25T06:11:13.043Z",
+  "started_at": "2026-07-25T06:13:32.026Z",
+  "completed_at": "2026-07-25T06:18:38.059Z",
   "counts": {
     "total": 12,
     "checked": 12,
     "changed": 12,
     "unchanged": 0,
-    "provisional": 22,
+    "provisional": 12,
     "degraded": 10,
     "unavailable": 0,
     "failed": 2,
@@ -19,81 +19,81 @@
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4999,
+    "graphql_remaining": 4998,
     "rest_requests": 0
   },
-  "duration_ms": 353248,
+  "duration_ms": 306033,
   "project_timings": [
     {
-      "project_id": "pasta-devs-marinara-engine",
+      "project_id": "thejackals-sillytavern-mapregionslocator",
+      "outcome": "baseline",
+      "duration_ms": 304920,
+      "error_code": null
+    },
+    {
+      "project_id": "thejackals-sillytavern-summaryn-resizechat",
+      "outcome": "baseline",
+      "duration_ms": 304920,
+      "error_code": null
+    },
+    {
+      "project_id": "thexyzzyone-stfastuserswitching",
+      "outcome": "baseline",
+      "duration_ms": 304920,
+      "error_code": null
+    },
+    {
+      "project_id": "thexyzzyone-stgroupresponderselector",
+      "outcome": "baseline",
+      "duration_ms": 304920,
+      "error_code": null
+    },
+    {
+      "project_id": "twitter-twemoji",
       "outcome": "failed",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "prolix-oc-lumiverse",
+      "project_id": "tydorius-st-characterpreview",
+      "outcome": "baseline",
+      "duration_ms": 304921,
+      "error_code": null
+    },
+    {
+      "project_id": "tyranomaster-expressions-plus",
+      "outcome": "baseline",
+      "duration_ms": 304921,
+      "error_code": null
+    },
+    {
+      "project_id": "valdoix-vellum-engine",
       "outcome": "failed",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "spicymarinara-sillytavern-spotify-music-extension",
+      "project_id": "vectricity-st-aspect-evolutia",
       "outcome": "baseline",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": null
     },
     {
-      "project_id": "splitclover-rewrite-extension",
+      "project_id": "vectricity-st-aspect-vocalia",
       "outcome": "baseline",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": null
     },
     {
-      "project_id": "starlitcode-lumiverse-auto-retry",
+      "project_id": "vibecoder9000-extension-tokenusage",
       "outcome": "baseline",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": null
     },
     {
-      "project_id": "subzero5544-favorites-carousel",
+      "project_id": "virgilianshailer-autobackgound",
       "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "subzero5544-preset-search",
-      "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "sulphuratum-go-llamaswap-comfy-proxy",
-      "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "sulphuratum-marinara-neural-memory",
-      "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "supker-st-copilot",
-      "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "taezn-creator-notes-html-renderer",
-      "outcome": "baseline",
-      "duration_ms": 352224,
-      "error_code": null
-    },
-    {
-      "project_id": "tclowe1982-marinara-extender",
-      "outcome": "baseline",
-      "duration_ms": 352224,
+      "duration_ms": 304921,
       "error_code": null
     }
   ],

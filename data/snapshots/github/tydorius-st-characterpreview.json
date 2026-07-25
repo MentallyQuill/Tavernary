@@ -6,6 +6,7 @@
     "owner": "Tydorius",
     "name": "ST-CharacterPreview",
     "url": "https://github.com/Tydorius/ST-CharacterPreview",
+    "description": "Character preview for Sillytavern",
     "default_branch": "main",
     "head_sha": "982d840df7de4be031b1ddce06a3462ae506b596",
     "head_committed_at": "2026-01-13T04:14:01.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:13:32.026Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -43,6 +31,6 @@
     "aggregate": 12
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T06:13:32.026Z",
   "stale_since": null
 }

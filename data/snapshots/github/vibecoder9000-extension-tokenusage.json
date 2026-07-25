@@ -6,6 +6,7 @@
     "owner": "Vibecoder9000",
     "name": "Extension-TokenUsage",
     "url": "https://github.com/Vibecoder9000/Extension-TokenUsage",
+    "description": "A SillyTavern extension that tracks and visualizes token usage for your chats.",
     "default_branch": "master",
     "head_sha": "8d7aae32f6b84b845af22a6c9ba97d01866126d6",
     "head_committed_at": "2026-07-20T08:12:27.000Z",
@@ -15,25 +16,23 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-20T08:12:27.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-20T08:12:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T09:02:16.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:13:32.026Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +41,11 @@
     "subscribers_count": 0,
     "aggregate": 15
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T06:13:32.026Z",
   "stale_since": null
 }
