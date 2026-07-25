@@ -92,7 +92,30 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
   "stale_since": null,
-  "activity_scan": null
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "prolix-oc", "type": "User" },
+      { "login": "AMousePad", "type": "User" },
+      { "login": "Archkr", "type": "User" },
+      { "login": "TheLiquorPriest", "type": "User" },
+      { "login": "Sillyfrogster", "type": "User" },
+      { "login": "vectoriin", "type": "User" },
+      { "login": "mindbound", "type": "User" },
+      { "login": "DJLegends1011", "type": "User" },
+      { "login": "fazo96", "type": "User" },
+      { "login": "j-dandelion", "type": "User" },
+      { "login": "CloudCompile", "type": "User" },
+      { "login": "Vaitas", "type": "User" },
+      { "login": "Vishousdev", "type": "User" },
+      { "login": "Copilot", "type": "Bot" },
+      { "login": "sneezejayhauser", "type": "User" },
+      { "login": "Plaguis", "type": "User" },
+      { "login": "aaron-j-reeves", "type": "User" }
+    ],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

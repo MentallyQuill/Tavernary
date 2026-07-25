@@ -12,7 +12,7 @@
     "head_committed_at": "2026-07-23T00:11:48.000Z",
     "archived": false,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 226130
+    "size_kb": 223691
   },
   "source_health": "healthy",
   "activity": {
@@ -87,17 +87,77 @@
     "evidence_head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29"
   },
   "community": {
-    "stargazers_count": 522,
+    "stargazers_count": 523,
     "forks_count": 139,
     "subscribers_count": 8,
-    "aggregate": 669
+    "aggregate": 670
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
   "stale_since": null,
-  "activity_scan": null
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SpicyMarinara", "type": "User" },
+      { "login": "cha1latte", "type": "User" },
+      { "login": "kolacheee", "type": "User" },
+      { "login": "Romuromylus", "type": "User" },
+      { "login": "thetopham", "type": "User" },
+      { "login": "Gunterlie", "type": "User" },
+      { "login": "LukaTheHero", "type": "User" },
+      { "login": "Xelvanis", "type": "User" },
+      { "login": "TheLonelyDevil9", "type": "User" },
+      { "login": "Promansis", "type": "User" },
+      { "login": "coxde", "type": "User" },
+      { "login": "munimunigamer", "type": "User" },
+      { "login": "Minsklatte", "type": "User" },
+      { "login": "aeriondyseti", "type": "User" },
+      { "login": "Copilot", "type": "Bot" },
+      { "login": "JorgeLTE", "type": "User" },
+      { "login": "Sulphuratum", "type": "User" },
+      { "login": "loungemeister", "type": "User" },
+      { "login": "kaldigo", "type": "User" },
+      { "login": "NeoKazuya", "type": "User" },
+      { "login": "felorhik", "type": "User" },
+      { "login": "bignast", "type": "User" },
+      { "login": "jake9000", "type": "User" },
+      { "login": "JurijPietrowicz", "type": "User" },
+      { "login": "mm14141", "type": "User" },
+      { "login": "amauragis", "type": "User" },
+      { "login": "marysia", "type": "User" },
+      { "login": "myaiexp", "type": "User" },
+      { "login": "kh0p", "type": "User" },
+      { "login": "LightD31", "type": "User" },
+      { "login": "Lochalan", "type": "User" },
+      { "login": "Lamboozled", "type": "User" },
+      { "login": "ailthrim", "type": "User" },
+      { "login": "adunato", "type": "User" },
+      { "login": "Trade-Mottoes", "type": "User" },
+      { "login": "RaynoldVanHeyningen", "type": "User" },
+      { "login": "OnlyJimmy", "type": "User" },
+      { "login": "MagicGoddess", "type": "User" },
+      { "login": "Javedz678", "type": "User" },
+      { "login": "Morgul", "type": "User" },
+      { "login": "BahamutRU", "type": "User" },
+      { "login": "smurfboyyessir", "type": "User" },
+      { "login": "taiman724", "type": "User" },
+      { "login": "abhi-0203", "type": "User" },
+      { "login": "Yasyasyasvil", "type": "User" },
+      { "login": "vanta-jack", "type": "User" },
+      { "login": "pwildani", "type": "User" },
+      { "login": "Lemon-will", "type": "User" },
+      { "login": "kevin-ho", "type": "User" },
+      { "login": "KeKKERUUU", "type": "User" },
+      { "login": "Rafa-Ross", "type": "User" },
+      { "login": "Dinokin", "type": "User" },
+      { "login": "DarthTheMonster", "type": "User" },
+      { "login": "Anarchistcowboy", "type": "User" }
+    ],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

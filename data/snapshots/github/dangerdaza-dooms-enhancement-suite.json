@@ -66,6 +66,18 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "claude", "type": "User" },
+      { "login": "DangerDaza", "type": "User" },
+      { "login": "github-actions[bot]", "type": "Bot" },
+      { "login": "SpicyMarinara", "type": "User" },
+      { "login": "IkarusV", "type": "User" },
+      { "login": "Ryah", "type": "User" }
+    ],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

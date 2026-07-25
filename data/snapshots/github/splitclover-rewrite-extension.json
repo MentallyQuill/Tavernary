@@ -31,6 +31,15 @@
     "aggregate": 63
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T06:05:19.795Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "splitclover", "type": "User" },
+      { "login": "DAurielS", "type": "User" },
+      { "login": "lesser0", "type": "User" }
+    ],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

@@ -6,7 +6,7 @@
     "owner": "selinawynters-ops",
     "name": "ST---ThreadKeeper",
     "url": "https://github.com/selinawynters-ops/ST---ThreadKeeper",
-    "description": "LLM-powered memory for long roleplays, keep facts for a fraction of the cost. At present, this existension is not compatible with ST versions higher than 1.16.0",
+    "description": "LLM-powered memory for long roleplays, keep facts for a fraction of the cost. ",
     "default_branch": "main",
     "head_sha": "d33f8f56e2ea47dfff4eda3940491d8a2c7a767f",
     "head_committed_at": "2026-07-17T21:51:13.000Z",
@@ -51,6 +51,11 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "selinawynters-ops", "type": "User" }],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

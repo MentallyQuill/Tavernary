@@ -62,7 +62,12 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T14:40:11.455Z",
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
   "stale_since": null,
-  "activity_scan": null
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [{ "login": "MentallyQuill", "type": "User" }],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }

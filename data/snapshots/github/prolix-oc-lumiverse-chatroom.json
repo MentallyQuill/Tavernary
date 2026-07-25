@@ -62,6 +62,11 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T09:14:41.435Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T21:20:33.057Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "prolix-oc", "type": "User" }],
+    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "stale_since": null
+  }
 }
