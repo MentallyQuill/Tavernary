@@ -8,32 +8,65 @@
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "default_branch": "main",
     "head_sha": "eb4c484eaed99270739d7077bda1fc81eec9c3cd",
+    "head_committed_at": "2026-07-24T09:18:59.000Z",
     "archived": false,
-    "created_at": "2026-01-12T06:21:59Z",
-    "size_kb": 2370,
-    "head_committed_at": null
+    "created_at": "2026-01-12T06:21:59.000Z",
+    "size_kb": 2519
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-24T09:18:59.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      true,
-      true,
-      true,
-      false,
-      true,
-      true,
-      true,
-      true,
-      false,
-      true,
-      false,
-      true
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-24T09:18:59.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-09T09:16:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T18:03:02.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-25T12:25:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-16T01:28:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T21:55:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T03:32:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-16T08:35:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-06T15:00:54.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:22:39.715Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +80,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T09:38:12.974Z",
+  "refreshed_at": "2026-07-25T02:22:39.715Z",
   "stale_since": null
 }

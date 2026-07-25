@@ -8,10 +8,10 @@
     "url": "https://github.com/SillyTavern/SillyTavern",
     "default_branch": "release",
     "head_sha": "8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8",
+    "head_committed_at": "2026-07-07T17:36:20.000Z",
     "archived": false,
-    "created_at": "2023-02-09T10:19:24Z",
-    "size_kb": 214814,
-    "head_committed_at": null
+    "created_at": "2023-02-09T10:19:24.000Z",
+    "size_kb": 214814
   },
   "source_health": "healthy",
   "activity": {
@@ -31,22 +31,22 @@
       false,
       false
     ],
-    "latest_release_at": "2026-05-03T15:55:24Z",
+    "latest_release_at": "2026-05-03T15:55:24.000Z",
     "evidence_status": "provisional",
     "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 31074,
-    "forks_count": 5872,
+    "stargazers_count": 31093,
+    "forks_count": 5876,
     "subscribers_count": 145,
-    "aggregate": 37091
+    "aggregate": 37114
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T09:42:39.017Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "stale_since": "2026-07-25T02:22:39.715Z"
 }
