@@ -72,10 +72,7 @@ function subscribeBuilderCollapsed(listener: () => void) {
 function storeBuilderCollapsed(collapsed: boolean) {
   volatileBuilderCollapsed = collapsed;
   try {
-    window.localStorage.setItem(
-      builderCollapsedStorageKey,
-      String(collapsed),
-    );
+    window.localStorage.setItem(builderCollapsedStorageKey, String(collapsed));
   } catch {
     // The in-memory state remains authoritative when storage is unavailable.
   }
@@ -89,10 +86,11 @@ export function useKitBuilder({
   selectedKitId: string;
   onSelectKit: (kitId: string) => void;
 }) {
-  const [contentState, setContentState] = useState<KitBuilderContentState>(() =>
-    selectedKitId
-      ? { mode: "inspect", kitId: selectedKitId }
-      : { mode: "intro" },
+  const [contentState, setContentState] = useState<KitBuilderContentState>(
+    () =>
+      selectedKitId
+        ? { mode: "inspect", kitId: selectedKitId }
+        : { mode: "intro" },
   );
   const collapsed = useSyncExternalStore(
     subscribeBuilderCollapsed,
