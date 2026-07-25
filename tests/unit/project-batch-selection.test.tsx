@@ -1,10 +1,11 @@
 import {
-  act,
   cleanup,
   fireEvent,
   render,
   screen,
+  waitFor,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 
 import type { CatalogProject } from "@/features/catalog/catalog-types";
@@ -18,76 +19,63 @@ const fixtureProjects = [
   { id: "frontend-b", name: "Frontend B", kind: "frontend" },
 ] as CatalogProject[];
 
-function Harness({
-  active = true,
-  draftProjectIds = [],
-  availableProjects = fixtureProjects,
-  onApply = () => ({
+function emptyPlan(): KitBatchPlan {
+  return {
     projectIds: [],
     addedProjectIds: [],
     skippedProjectIds: [],
     replacedFrontendId: null,
     limitReached: false,
-  }),
+  };
+}
+
+function Harness({
+  active = true,
+  draftProjectIds = [],
+  availableProjects = fixtureProjects,
+  onApply = emptyPlan,
+  onFirstSelection = vi.fn(),
+  onSelectionEmpty = vi.fn(),
+  onRemoveFromDraft = vi.fn(() => true),
+  onStatus = vi.fn(),
 }: {
   active?: boolean;
   draftProjectIds?: string[];
   availableProjects?: CatalogProject[];
   onApply?: (projectIds: string[]) => KitBatchPlan;
+  onFirstSelection?: () => void;
+  onSelectionEmpty?: () => void;
+  onRemoveFromDraft?: (projectId: string) => boolean;
+  onStatus?: (message: string) => void;
 }) {
   const selection = useProjectBatchSelection({
     projects: availableProjects,
     draftProjectIds,
     active,
     onApply,
+    onFirstSelection,
+    onSelectionEmpty,
+    onRemoveFromDraft,
+    onStatus,
   });
-  const bindings = selection.bindingsFor("memory");
-  const presetBindings = selection.bindingsFor("preset");
-  const frontendABindings = selection.bindingsFor("frontend-a");
-  const frontendBBindings = selection.bindingsFor("frontend-b");
 
   return (
     <>
-      <div
-        data-testid="memory"
-        tabIndex={0}
-        aria-selected={bindings.selected}
-        onPointerDown={bindings.onPointerDown}
-        onPointerMove={bindings.onPointerMove}
-        onPointerUp={bindings.onPointerUp}
-        onPointerCancel={bindings.onPointerCancel}
-        onClick={bindings.onClick}
-        onKeyDown={bindings.onKeyDown}
-      >
-        <button type="button" data-project-drag-handle>
-          Drag
-        </button>
-      </div>
-      <div
-        data-testid="preset"
-        tabIndex={0}
-        aria-selected={presetBindings.selected}
-        onPointerDown={presetBindings.onPointerDown}
-        onPointerMove={presetBindings.onPointerMove}
-        onPointerUp={presetBindings.onPointerUp}
-        onPointerCancel={presetBindings.onPointerCancel}
-        onClick={presetBindings.onClick}
-        onKeyDown={presetBindings.onKeyDown}
-      />
-      <div
-        data-testid="frontend-a"
-        tabIndex={0}
-        aria-selected={frontendABindings.selected}
-        onClick={frontendABindings.onClick}
-        onKeyDown={frontendABindings.onKeyDown}
-      />
-      <div
-        data-testid="frontend-b"
-        tabIndex={0}
-        aria-selected={frontendBBindings.selected}
-        onClick={frontendBBindings.onClick}
-        onKeyDown={frontendBBindings.onKeyDown}
-      />
+      {["memory", "preset", "frontend-a", "frontend-b"].map((projectId) => {
+        const bindings = selection.bindingsFor(projectId);
+        return (
+          <button
+            key={projectId}
+            type="button"
+            aria-label={`Toggle ${projectId}`}
+            aria-pressed={bindings.state !== "available"}
+            disabled={bindings.disabled}
+            onClick={bindings.onActivate}
+          >
+            {bindings.state}
+          </button>
+        );
+      })}
       <output aria-label="Selected count">{selection.selectedCount}</output>
       <output aria-label="Limit reached">
         {selection.limitReached ? "yes" : "no"}
@@ -98,8 +86,14 @@ function Harness({
       <output aria-label="Replacement Frontend">
         {selection.replacementFrontendName ?? ""}
       </output>
+      <output aria-label="Selected Frontend">
+        {selection.selectedFrontendName ?? ""}
+      </output>
       <button type="button" onClick={() => selection.apply()}>
         Apply
+      </button>
+      <button type="button" onClick={selection.clear}>
+        Clear
       </button>
     </>
   );
@@ -107,181 +101,121 @@ function Harness({
 
 afterEach(() => {
   cleanup();
-  vi.useRealTimers();
   vi.restoreAllMocks();
 });
 
-test("selects a project after a 450ms press", () => {
-  vi.useFakeTimers();
-  render(<Harness />);
-  const card = screen.getByTestId("memory");
+test("uses one explicit activation path for select and deselect", async () => {
+  const user = userEvent.setup();
+  const onFirstSelection = vi.fn();
+  const onSelectionEmpty = vi.fn();
+  const onStatus = vi.fn();
+  render(
+    <Harness
+      onFirstSelection={onFirstSelection}
+      onSelectionEmpty={onSelectionEmpty}
+      onStatus={onStatus}
+    />,
+  );
 
-  fireEvent.pointerDown(card, {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  act(() => vi.advanceTimersByTime(449));
-  expect(card).toHaveAttribute("aria-selected", "false");
-  act(() => vi.advanceTimersByTime(1));
-  expect(card).toHaveAttribute("aria-selected", "true");
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
+  expect(onFirstSelection).toHaveBeenCalledOnce();
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
-});
+  expect(
+    screen.getByRole("button", { name: "Toggle memory" }),
+  ).toHaveTextContent("selected");
+  expect(onStatus).toHaveBeenLastCalledWith("Memory selected");
 
-test("cancels a press after more than eight pixels of movement", () => {
-  vi.useFakeTimers();
-  render(<Harness />);
-  const card = screen.getByTestId("memory");
-
-  fireEvent.pointerDown(card, {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  fireEvent.pointerMove(card, {
-    pointerId: 1,
-    clientX: 109,
-    clientY: 100,
-  });
-  act(() => vi.advanceTimersByTime(450));
-
-  expect(card).toHaveAttribute("aria-selected", "false");
-});
-
-test("cancels a pending press when the page scrolls", () => {
-  vi.useFakeTimers();
-  render(<Harness />);
-  const card = screen.getByTestId("memory");
-
-  fireEvent.pointerDown(card, {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  fireEvent.scroll(window);
-  act(() => vi.advanceTimersByTime(450));
-
-  expect(card).toHaveAttribute("aria-selected", "false");
-});
-
-test("does not start selection from a project drag handle", () => {
-  vi.useFakeTimers();
-  render(<Harness />);
-  const card = screen.getByTestId("memory");
-
-  fireEvent.pointerDown(screen.getByRole("button", { name: "Drag" }), {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  act(() => vi.advanceTimersByTime(450));
-
-  expect(card).toHaveAttribute("aria-selected", "false");
-});
-
-test("does not toggle active selection from a drag handle", () => {
-  render(<Harness />);
-  const memory = screen.getByTestId("memory");
-  const dragHandle = screen.getByRole("button", { name: "Drag" });
-
-  fireEvent.keyDown(screen.getByTestId("preset"), { key: " " });
-  fireEvent.click(dragHandle);
-  expect(memory).toHaveAttribute("aria-selected", "false");
-
-  fireEvent.keyDown(dragHandle, { key: " " });
-  expect(memory).toHaveAttribute("aria-selected", "false");
-  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
-});
-
-test("acknowledges activation and consumes the follow-up click", () => {
-  vi.useFakeTimers();
-  const vibrate = vi.fn();
-  Object.defineProperty(navigator, "vibrate", {
-    configurable: true,
-    value: vibrate,
-  });
-  render(<Harness />);
-  const card = screen.getByTestId("memory");
-
-  fireEvent.pointerDown(card, {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  act(() => vi.advanceTimersByTime(450));
-  const click = new MouseEvent("click", { bubbles: true, cancelable: true });
-  card.dispatchEvent(click);
-
-  expect(vibrate).toHaveBeenCalledWith(10);
-  expect(click.defaultPrevented).toBe(true);
-});
-
-test("uses ordinary clicks to toggle projects after selection starts", () => {
-  vi.useFakeTimers();
-  render(<Harness />);
-  const memory = screen.getByTestId("memory");
-  const preset = screen.getByTestId("preset");
-
-  fireEvent.pointerDown(memory, {
-    pointerId: 1,
-    button: 0,
-    clientX: 100,
-    clientY: 100,
-  });
-  act(() => vi.advanceTimersByTime(450));
-  fireEvent.click(memory);
-  fireEvent.click(preset);
-  expect(preset).toHaveAttribute("aria-selected", "true");
-  fireEvent.click(memory);
-
-  expect(memory).toHaveAttribute("aria-selected", "false");
-  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
-});
-
-test("supports Space, Enter, and Escape selection controls", () => {
-  render(<Harness />);
-  const memory = screen.getByTestId("memory");
-  const preset = screen.getByTestId("preset");
-
-  fireEvent.keyDown(memory, { key: " " });
-  expect(memory).toHaveAttribute("aria-selected", "true");
-  fireEvent.keyDown(preset, { key: "Enter" });
-  expect(preset).toHaveAttribute("aria-selected", "true");
-  fireEvent.keyDown(window, { key: "Escape" });
-
-  expect(memory).toHaveAttribute("aria-selected", "false");
-  expect(preset).toHaveAttribute("aria-selected", "false");
-});
-
-test("swaps the selected Frontend instead of selecting two", () => {
-  render(<Harness />);
-  const frontendA = screen.getByTestId("frontend-a");
-  const frontendB = screen.getByTestId("frontend-b");
-
-  fireEvent.keyDown(frontendA, { key: " " });
-  fireEvent.click(frontendB);
-
-  expect(frontendA).toHaveAttribute("aria-selected", "false");
-  expect(frontendB).toHaveAttribute("aria-selected", "true");
-  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
-});
-
-test("does not select projects already present in the draft", () => {
-  render(<Harness draftProjectIds={["memory"]} />);
-  const memory = screen.getByTestId("memory");
-
-  fireEvent.keyDown(memory, { key: " " });
-
-  expect(memory).toHaveAttribute("aria-selected", "false");
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
+  expect(onSelectionEmpty).toHaveBeenCalledOnce();
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
+  expect(onStatus).toHaveBeenLastCalledWith("Memory removed from selection");
 });
 
-test("stops selection when the draft has reached 50 projects", () => {
+test("removes an In-Kit project instead of selecting it", async () => {
+  const user = userEvent.setup();
+  const onRemoveFromDraft = vi.fn(() => true);
+  const onStatus = vi.fn();
+  render(
+    <Harness
+      draftProjectIds={["memory"]}
+      onRemoveFromDraft={onRemoveFromDraft}
+      onStatus={onStatus}
+    />,
+  );
+
+  const memory = screen.getByRole("button", { name: "Toggle memory" });
+  expect(memory).toHaveTextContent("in-kit");
+  await user.click(memory);
+
+  expect(onRemoveFromDraft).toHaveBeenCalledWith("memory");
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
+  expect(onStatus).toHaveBeenCalledWith("Memory removed from Kit");
+});
+
+test("does not announce failed In-Kit removal", async () => {
+  const user = userEvent.setup();
+  const onStatus = vi.fn();
+  render(
+    <Harness
+      draftProjectIds={["memory"]}
+      onRemoveFromDraft={() => false}
+      onStatus={onStatus}
+    />,
+  );
+
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
+
+  expect(onStatus).not.toHaveBeenCalled();
+});
+
+test("Escape and Clear empty the current selection once", async () => {
+  const user = userEvent.setup();
+  const onSelectionEmpty = vi.fn();
+  render(<Harness onSelectionEmpty={onSelectionEmpty} />);
+
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
+  fireEvent.keyDown(window, { key: "Escape" });
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
+  expect(onSelectionEmpty).toHaveBeenCalledOnce();
+
+  await user.click(screen.getByRole("button", { name: "Clear" }));
+  expect(onSelectionEmpty).toHaveBeenCalledOnce();
+});
+
+test("swaps the selected Frontend instead of selecting two", async () => {
+  const user = userEvent.setup();
+  render(<Harness />);
+
+  await user.click(screen.getByRole("button", { name: "Toggle frontend-a" }));
+  await user.click(screen.getByRole("button", { name: "Toggle frontend-b" }));
+
+  expect(
+    screen.getByRole("button", { name: "Toggle frontend-a" }),
+  ).toHaveTextContent("available");
+  expect(
+    screen.getByRole("button", { name: "Toggle frontend-b" }),
+  ).toHaveTextContent("selected");
+  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
+  expect(screen.getByLabelText("Selected Frontend")).toHaveTextContent(
+    "Frontend B",
+  );
+});
+
+test("reports the draft Frontend that selection will replace", async () => {
+  const user = userEvent.setup();
+  render(<Harness draftProjectIds={["frontend-a"]} />);
+
+  await user.click(screen.getByRole("button", { name: "Toggle frontend-b" }));
+
+  expect(screen.getByLabelText("Replacement Frontend")).toHaveTextContent(
+    "Frontend A",
+  );
+  expect(screen.getByLabelText("Selected Frontend")).toHaveTextContent(
+    "Frontend B",
+  );
+});
+
+test("disables additions when the draft has reached 50 projects", () => {
   const fullDraft = Array.from({ length: 50 }, (_, index) => `draft-${index}`);
   const availableProjects = [
     ...fixtureProjects,
@@ -293,25 +227,35 @@ test("stops selection when the draft has reached 50 projects", () => {
       availableProjects={availableProjects}
     />,
   );
-  const memory = screen.getByTestId("memory");
 
-  fireEvent.keyDown(memory, { key: " " });
-
-  expect(memory).toHaveAttribute("aria-selected", "false");
-  expect(screen.getByLabelText("Limit reached")).toHaveTextContent("yes");
+  expect(screen.getByRole("button", { name: "Toggle memory" })).toBeDisabled();
 });
 
-test("reports the draft Frontend that selection will replace", () => {
-  render(<Harness draftProjectIds={["frontend-a"]} />);
-
-  fireEvent.keyDown(screen.getByTestId("frontend-b"), { key: " " });
-
-  expect(screen.getByLabelText("Replacement Frontend")).toHaveTextContent(
-    "Frontend A",
+test("allows a Frontend replacement when the draft has 50 projects", () => {
+  const fullDraft = [
+    "frontend-a",
+    ...Array.from({ length: 49 }, (_, index) => `draft-${index}`),
+  ];
+  const availableProjects = [
+    ...fixtureProjects,
+    ...fullDraft
+      .filter((id) => id !== "frontend-a")
+      .map((id) => ({ id, kind: "extension" as const })),
+  ] as CatalogProject[];
+  render(
+    <Harness
+      draftProjectIds={fullDraft}
+      availableProjects={availableProjects}
+    />,
   );
+
+  expect(
+    screen.getByRole("button", { name: "Toggle frontend-b" }),
+  ).toBeEnabled();
 });
 
-test("applies selected IDs once and clears transient selection", () => {
+test("applies selected IDs once and clears transient selection", async () => {
+  const user = userEvent.setup();
   const onApply = vi.fn((selectedProjectIds: string[]): KitBatchPlan => ({
     projectIds: selectedProjectIds,
     addedProjectIds: selectedProjectIds,
@@ -320,20 +264,21 @@ test("applies selected IDs once and clears transient selection", () => {
     limitReached: false,
   }));
   render(<Harness onApply={onApply} />);
-  fireEvent.keyDown(screen.getByTestId("memory"), { key: " " });
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
 
-  fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+  await user.click(screen.getByRole("button", { name: "Apply" }));
 
   expect(onApply).toHaveBeenCalledOnce();
   expect(onApply).toHaveBeenCalledWith(["memory"]);
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
 });
 
-test("retains selection and reports when an applied batch adds nothing", () => {
+test("retains selection when an applied batch adds nothing", async () => {
+  const user = userEvent.setup();
   render(<Harness />);
-  fireEvent.keyDown(screen.getByTestId("memory"), { key: " " });
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
 
-  fireEvent.click(screen.getByRole("button", { name: "Apply" }));
+  await user.click(screen.getByRole("button", { name: "Apply" }));
 
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
   expect(screen.getByLabelText("Nothing can be added")).toHaveTextContent(
@@ -341,12 +286,14 @@ test("retains selection and reports when an applied batch adds nothing", () => {
   );
 });
 
-test("clears selection when All Projects becomes inactive", () => {
-  const { rerender } = render(<Harness />);
-  fireEvent.keyDown(screen.getByTestId("memory"), { key: " " });
-  expect(screen.getByLabelText("Selected count")).toHaveTextContent("1");
+test("clears selection when project browsing becomes inactive", async () => {
+  const user = userEvent.setup();
+  const onSelectionEmpty = vi.fn();
+  const { rerender } = render(<Harness onSelectionEmpty={onSelectionEmpty} />);
+  await user.click(screen.getByRole("button", { name: "Toggle memory" }));
 
-  rerender(<Harness active={false} />);
+  rerender(<Harness active={false} onSelectionEmpty={onSelectionEmpty} />);
 
   expect(screen.getByLabelText("Selected count")).toHaveTextContent("0");
+  await waitFor(() => expect(onSelectionEmpty).toHaveBeenCalledOnce());
 });

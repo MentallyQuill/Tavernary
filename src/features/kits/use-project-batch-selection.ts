@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEventHandler,
-  type MouseEventHandler,
-  type PointerEventHandler,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import {
@@ -17,84 +8,87 @@ import {
   type KitBatchPlan,
 } from "@/features/kits/project-batch";
 
+export type ProjectKitControlState = "available" | "selected" | "in-kit";
+
 export type ProjectSelectionBindings = {
-  selected: boolean;
-  inDraft: boolean;
-  onPointerDown: PointerEventHandler<HTMLElement>;
-  onPointerMove: PointerEventHandler<HTMLElement>;
-  onPointerUp: PointerEventHandler<HTMLElement>;
-  onPointerCancel: PointerEventHandler<HTMLElement>;
-  onClick: MouseEventHandler<HTMLElement>;
-  onKeyDown: KeyboardEventHandler<HTMLElement>;
+  state: ProjectKitControlState;
+  disabled: boolean;
+  disabledReason: string | null;
+  onActivate: () => void;
 };
 
-type PressSession = {
-  projectId: string;
-  pointerId: number;
-  originX: number;
-  originY: number;
-  timer: number;
-};
-
-function originatesFromProjectDragHandle(target: EventTarget | null) {
-  return (
-    target instanceof Element &&
-    target.closest("[data-project-drag-handle]") !== null
-  );
-}
+const noOp = () => undefined;
+const noRemoval = () => false;
 
 export function useProjectBatchSelection({
   projects,
   draftProjectIds,
   active,
   onApply,
+  onFirstSelection = noOp,
+  onSelectionEmpty = noOp,
+  onRemoveFromDraft = noRemoval,
+  onStatus = noOp,
 }: {
   projects: CatalogProject[];
   draftProjectIds: string[];
   active: boolean;
   onApply: (projectIds: string[]) => KitBatchPlan;
+  onFirstSelection?: () => void;
+  onSelectionEmpty?: () => void;
+  onRemoveFromDraft?: (projectId: string) => boolean;
+  onStatus?: (message: string) => void;
 }) {
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
   const [limitReached, setLimitReached] = useState(false);
   const [nothingCanBeAdded, setNothingCanBeAdded] = useState(false);
-  const pressRef = useRef<PressSession | null>(null);
-  const suppressClickRef = useRef(false);
   const activeSelectedProjectIds = useMemo(
     () => (active ? selectedProjectIds : []),
     [active, selectedProjectIds],
   );
+  const projectsById = useMemo(
+    () => new Map(projects.map((project) => [project.id, project])),
+    [projects],
+  );
 
-  const cancelPress = useCallback(() => {
-    if (pressRef.current) window.clearTimeout(pressRef.current.timer);
-    pressRef.current = null;
-  }, []);
   const clear = useCallback(() => {
-    cancelPress();
+    if (selectedProjectIds.length === 0) return;
     setSelectedProjectIds([]);
     setLimitReached(false);
     setNothingCanBeAdded(false);
-  }, [cancelPress]);
+    onSelectionEmpty();
+  }, [onSelectionEmpty, selectedProjectIds.length]);
+
+  const candidateFor = useCallback(
+    (projectId: string) => {
+      const project = projectsById.get(projectId);
+      if (!project) return activeSelectedProjectIds;
+      const withoutFrontend =
+        project.kind === "frontend"
+          ? activeSelectedProjectIds.filter(
+              (id) => projectsById.get(id)?.kind !== "frontend",
+            )
+          : activeSelectedProjectIds;
+      return [...withoutFrontend, projectId];
+    },
+    [activeSelectedProjectIds, projectsById],
+  );
+
   const toggleProject = useCallback(
     (projectId: string) => {
-      if (draftProjectIds.includes(projectId)) return false;
-      if (selectedProjectIds.includes(projectId)) {
-        setSelectedProjectIds((current) =>
-          current.filter((id) => id !== projectId),
-        );
+      const project = projectsById.get(projectId);
+      if (!project || draftProjectIds.includes(projectId)) return false;
+      if (activeSelectedProjectIds.includes(projectId)) {
+        const next = activeSelectedProjectIds.filter((id) => id !== projectId);
+        setSelectedProjectIds(next);
         setLimitReached(false);
         setNothingCanBeAdded(false);
+        onStatus(`${project.name} removed from selection`);
+        if (next.length === 0) onSelectionEmpty();
         return true;
       }
-      const project = projects.find(({ id }) => id === projectId);
-      const withoutFrontend =
-        project?.kind === "frontend"
-          ? selectedProjectIds.filter(
-              (id) =>
-                projects.find((candidate) => candidate.id === id)?.kind !==
-                "frontend",
-            )
-          : selectedProjectIds;
-      const candidate = [...withoutFrontend, projectId];
+
+      const candidate = candidateFor(projectId);
       const plan = planKitProjectBatch({
         draftProjectIds,
         selectedProjectIds: candidate,
@@ -102,111 +96,89 @@ export function useProjectBatchSelection({
       });
       if (!plan.addedProjectIds.includes(projectId)) {
         setLimitReached(plan.limitReached);
+        if (plan.limitReached) onStatus("Kit limit reached; 50 projects");
         return false;
       }
+
+      if (activeSelectedProjectIds.length === 0) onFirstSelection();
       setSelectedProjectIds(candidate);
       setLimitReached(false);
       setNothingCanBeAdded(false);
+      onStatus(`${project.name} selected`);
       return true;
     },
-    [draftProjectIds, projects, selectedProjectIds],
+    [
+      activeSelectedProjectIds,
+      candidateFor,
+      draftProjectIds,
+      onFirstSelection,
+      onSelectionEmpty,
+      onStatus,
+      projects,
+      projectsById,
+    ],
   );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      clear();
+      if (event.key === "Escape") clear();
     };
-    window.addEventListener("scroll", cancelPress, true);
     window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("scroll", cancelPress, true);
-      window.removeEventListener("keydown", handleKeyDown);
-      cancelPress();
-    };
-  }, [cancelPress, clear]);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [clear]);
 
   useEffect(() => {
-    if (active) return;
+    if (active || selectedProjectIds.length === 0) return;
     const timer = window.setTimeout(clear, 0);
     return () => window.clearTimeout(timer);
-  }, [active, clear]);
+  }, [active, clear, selectedProjectIds.length]);
 
   const bindingsFor = useCallback(
-    (projectId: string): ProjectSelectionBindings => ({
-      selected: activeSelectedProjectIds.includes(projectId),
-      inDraft: draftProjectIds.includes(projectId),
-      onPointerDown: (event) => {
-        if (
-          !active ||
-          event.button !== 0 ||
-          draftProjectIds.includes(projectId)
-        ) {
-          return;
-        }
-        if (originatesFromProjectDragHandle(event.target)) {
-          return;
-        }
-        cancelPress();
-        const timer = window.setTimeout(() => {
-          if (toggleProject(projectId)) {
-            suppressClickRef.current = true;
-            navigator.vibrate?.(10);
+    (projectId: string): ProjectSelectionBindings => {
+      const project = projectsById.get(projectId);
+      const selected = activeSelectedProjectIds.includes(projectId);
+      const inDraft = draftProjectIds.includes(projectId);
+      const candidate = candidateFor(projectId);
+      const candidatePlan = planKitProjectBatch({
+        draftProjectIds,
+        selectedProjectIds: candidate,
+        projects,
+      });
+      const disabled =
+        !project ||
+        (!selected &&
+          !inDraft &&
+          !candidatePlan.addedProjectIds.includes(projectId));
+
+      return {
+        state: inDraft ? "in-kit" : selected ? "selected" : "available",
+        disabled,
+        disabledReason: disabled ? "Kit limit reached · 50 projects" : null,
+        onActivate: () => {
+          if (!active || disabled || !project) return;
+          if (inDraft) {
+            if (onRemoveFromDraft(projectId)) {
+              onStatus(`${project.name} removed from Kit`);
+            }
+            return;
           }
-          pressRef.current = null;
-        }, 450);
-        pressRef.current = {
-          projectId,
-          pointerId: event.pointerId,
-          originX: event.clientX,
-          originY: event.clientY,
-          timer,
-        };
-      },
-      onPointerMove: (event) => {
-        const press = pressRef.current;
-        if (!press || press.pointerId !== event.pointerId) return;
-        const deltaX = event.clientX - press.originX;
-        const deltaY = event.clientY - press.originY;
-        if (deltaX * deltaX + deltaY * deltaY > 8 ** 2) cancelPress();
-      },
-      onPointerUp: cancelPress,
-      onPointerCancel: cancelPress,
-      onClick: (event) => {
-        if (originatesFromProjectDragHandle(event.target)) return;
-        if (suppressClickRef.current) {
-          suppressClickRef.current = false;
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-        if (activeSelectedProjectIds.length === 0) return;
-        event.preventDefault();
-        event.stopPropagation();
-        toggleProject(projectId);
-      },
-      onKeyDown: (event) => {
-        if (originatesFromProjectDragHandle(event.target)) return;
-        if (
-          !active ||
-          (event.key !== " " &&
-            !(event.key === "Enter" && activeSelectedProjectIds.length > 0))
-        ) {
-          return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        toggleProject(projectId);
-      },
-    }),
+          toggleProject(projectId);
+        },
+      };
+    },
     [
       active,
       activeSelectedProjectIds,
-      cancelPress,
+      candidateFor,
       draftProjectIds,
+      onRemoveFromDraft,
+      onStatus,
+      projects,
+      projectsById,
       toggleProject,
     ],
   );
+
   const draftFrontend = projects.find(
     ({ id, kind }) => kind === "frontend" && draftProjectIds.includes(id),
   );
@@ -220,6 +192,7 @@ export function useProjectBatchSelection({
     draftFrontend.id !== selectedFrontend.id
       ? draftFrontend.name
       : null;
+  const selectedFrontendName = selectedFrontend?.name ?? null;
   const apply = useCallback(() => {
     if (activeSelectedProjectIds.length === 0) return null;
     const plan = onApply(activeSelectedProjectIds);
@@ -228,9 +201,11 @@ export function useProjectBatchSelection({
       setLimitReached(plan.limitReached);
       return plan;
     }
-    clear();
+    setSelectedProjectIds([]);
+    setLimitReached(false);
+    setNothingCanBeAdded(false);
     return plan;
-  }, [activeSelectedProjectIds, clear, onApply]);
+  }, [activeSelectedProjectIds, onApply]);
 
   return {
     selectionMode: activeSelectedProjectIds.length > 0,
@@ -239,6 +214,7 @@ export function useProjectBatchSelection({
     limitReached,
     nothingCanBeAdded,
     replacementFrontendName,
+    selectedFrontendName,
     bindingsFor,
     clear,
     apply,

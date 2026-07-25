@@ -104,77 +104,85 @@ describe("project card", () => {
     },
   );
 
-  test("does not render per-card Add to Kit controls", () => {
-    render(
-      <ProjectGrid
-        projects={[project("memory-tool", { name: "Memory Tool" })]}
-        now="2026-07-23T00:00:00Z"
-      />,
-    );
-
-    expect(
-      screen.queryByRole("button", { name: /Memory Tool .*Kit/ }),
-    ).not.toBeInTheDocument();
-  });
-
-  test("exposes selection without hiding project link and handle semantics", () => {
-    const bindings: ProjectSelectionBindings = {
-      selected: true,
-      inDraft: false,
-      onPointerDown: vi.fn(),
-      onPointerMove: vi.fn(),
-      onPointerUp: vi.fn(),
-      onPointerCancel: vi.fn(),
-      onClick: vi.fn(),
-      onKeyDown: vi.fn(),
-    };
-    render(
+  test("keeps the Kit control outside the GitHub link", () => {
+    const { container } = render(
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
         now="2026-07-23T00:00:00Z"
         selection={{
-          mode: true,
-          bindingsFor: () => bindings,
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
         }}
-        onProjectDragStart={() => undefined}
       />,
     );
 
-    expect(
-      screen.getByRole("group", { name: "Memory Tool, selected" }),
-    ).toHaveAttribute("aria-keyshortcuts", "Space Enter");
-    expect(screen.queryByRole("option")).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Memory Tool" })).toBeVisible();
-    expect(
-      screen.getByRole("button", { name: "Drag Memory Tool into Kit" }),
-    ).toBeVisible();
-    expect(screen.getByLabelText("Selected")).toBeVisible();
+    const link = screen.getByRole("link", { name: "Memory Tool" });
+    const button = screen.getByRole("button", {
+      name: "Add Memory Tool to Kit",
+    });
+    expect(link).not.toContainElement(button);
+    expect(container.querySelector(".project-card-shell")).toContainElement(
+      link,
+    );
+    expect(container.querySelector(".project-card-shell")).toContainElement(
+      button,
+    );
   });
 
-  test("marks draft members without presenting them as selected", () => {
+  test("exposes pending selection without changing the GitHub link", () => {
     const bindings: ProjectSelectionBindings = {
-      selected: false,
-      inDraft: true,
-      onPointerDown: vi.fn(),
-      onPointerMove: vi.fn(),
-      onPointerUp: vi.fn(),
-      onPointerCancel: vi.fn(),
-      onClick: vi.fn(),
-      onKeyDown: vi.fn(),
+      state: "selected",
+      disabled: false,
+      disabledReason: null,
+      onActivate: vi.fn(),
     };
     const { container } = render(
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
         now="2026-07-23T00:00:00Z"
         selection={{
-          mode: false,
+          bindingsFor: () => bindings,
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Remove Memory Tool from selection",
+      }),
+    ).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("link", { name: "Memory Tool" })).toBeVisible();
+    expect(container.querySelector(".project-card-shell")).toHaveClass(
+      "selected",
+    );
+    expect(screen.queryByLabelText("Selected")).not.toBeInTheDocument();
+  });
+
+  test("marks draft members with an immediate removal control", () => {
+    const bindings: ProjectSelectionBindings = {
+      state: "in-kit",
+      disabled: false,
+      disabledReason: null,
+      onActivate: vi.fn(),
+    };
+    const { container } = render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        selection={{
           bindingsFor: () => bindings,
         }}
       />,
     );
 
     expect(screen.getByText("In Kit")).toBeVisible();
-    expect(screen.queryByLabelText("Selected")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Remove Memory Tool from Kit" }),
+    ).toHaveAttribute("aria-pressed", "true");
     expect(container.querySelector(".project-card-shell")).toHaveClass(
       "in-draft",
     );
@@ -185,6 +193,14 @@ describe("project card", () => {
       <ProjectGrid
         projects={[project("memory-tool", { name: "Memory Tool" })]}
         now="2026-07-23T00:00:00Z"
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
+        }}
         onProjectDragStart={() => undefined}
       />,
     );
@@ -197,7 +213,7 @@ describe("project card", () => {
     expect(handle).toHaveAttribute("data-project-drag-handle");
     expect(
       container.querySelector(".project-card-shell")?.children,
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 
   test("marks provisional projects with a quiet provisional details treatment", () => {

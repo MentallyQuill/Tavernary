@@ -3,6 +3,7 @@ import { CategoryIcon } from "@/components/icons/category-icon";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 import type { PointerEventHandler } from "react";
 import { ProjectCard, projectDisplayName } from "./project-card";
+import { ProjectKitControl } from "./project-kit-control";
 
 export function ProjectGrid({
   projects,
@@ -12,8 +13,8 @@ export function ProjectGrid({
 }: {
   projects: CatalogProject[];
   now: string;
-  selection?: {
-    mode: boolean;
+  selection: {
+    mode?: boolean;
     bindingsFor: (projectId: string) => ProjectSelectionBindings;
   };
   onProjectDragStart?: (
@@ -33,48 +34,29 @@ export function ProjectGrid({
   return (
     <section className="project-grid" aria-label="Project catalog">
       {projects.map((project) => {
-        if (!selection && !onProjectDragStart) {
-          return <ProjectCard key={project.id} project={project} now={now} />;
-        }
-        const bindings = selection?.bindingsFor(project.id);
+        const bindings = selection.bindingsFor(project.id);
+        const displayName = projectDisplayName(project.name);
         return (
           <div
             className={[
               "project-card-shell",
+              "has-kit-control",
               onProjectDragStart ? "drag-enabled" : "",
-              bindings?.selected ? "selected" : "",
-              bindings?.inDraft ? "in-draft" : "",
+              bindings.state === "selected" ? "selected" : "",
+              bindings.state === "in-kit" ? "in-draft" : "",
             ]
               .filter(Boolean)
               .join(" ")}
             key={project.id}
-            role={selection?.mode ? "group" : undefined}
-            aria-roledescription={
-              selection?.mode ? "selectable project" : undefined
-            }
-            aria-label={
-              selection?.mode
-                ? `${projectDisplayName(project.name)}, ${
-                    bindings?.selected ? "selected" : "not selected"
-                  }`
-                : undefined
-            }
-            aria-keyshortcuts={selection?.mode ? "Space Enter" : undefined}
-            tabIndex={selection?.mode ? 0 : undefined}
-            onPointerDown={bindings?.onPointerDown}
-            onPointerMove={bindings?.onPointerMove}
-            onPointerUp={bindings?.onPointerUp}
-            onPointerCancel={bindings?.onPointerCancel}
-            onClick={bindings?.onClick}
-            onKeyDown={bindings?.onKeyDown}
           >
             <ProjectCard project={project} now={now} />
-            {bindings?.selected ? (
-              <span className="project-selection-check" aria-label="Selected">
-                ✓
-              </span>
-            ) : null}
-            {bindings?.inDraft ? (
+            <span className="project-kit-control-hit">
+              <ProjectKitControl
+                projectName={displayName}
+                bindings={bindings}
+              />
+            </span>
+            {bindings.state === "in-kit" ? (
               <span className="project-in-draft">In Kit</span>
             ) : null}
             {onProjectDragStart ? (
