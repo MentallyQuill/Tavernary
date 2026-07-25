@@ -6,6 +6,7 @@
     "owner": "Promansis",
     "name": "summary-sharder",
     "url": "https://github.com/Promansis/summary-sharder",
+    "description": "A summarisation extension for SillyTavern with user-control in mind.",
     "default_branch": "main",
     "head_sha": "17c3f9adf0ee3aac96d0dcbe4a94f71b7cff8b72",
     "head_committed_at": "2026-03-14T12:03:46.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

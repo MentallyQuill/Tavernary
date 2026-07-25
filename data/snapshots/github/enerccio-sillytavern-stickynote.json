@@ -6,6 +6,7 @@
     "owner": "Enerccio",
     "name": "SillyTavern-StickyNote",
     "url": "https://github.com/Enerccio/SillyTavern-StickyNote",
+    "description": null,
     "default_branch": "master",
     "head_sha": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
     "head_committed_at": "2026-06-21T20:22:25.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

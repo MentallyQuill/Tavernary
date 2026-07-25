@@ -6,6 +6,7 @@
     "owner": "bbw3000",
     "name": "SimpleSummary",
     "url": "https://github.com/bbw3000/SimpleSummary",
+    "description": "Yet another summarization extension for SillyTavern.",
     "default_branch": "main",
     "head_sha": "f1374cd568ba389b53aaf8bcaf111aaaebdc1263",
     "head_committed_at": "2026-06-02T08:13:33.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

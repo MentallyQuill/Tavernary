@@ -6,6 +6,7 @@
     "owner": "MentallyQuill",
     "name": "Recursion",
     "url": "https://github.com/MentallyQuill/Recursion",
+    "description": "A Recursive Multi-Step Thinking Extension for SillyTavern, Using Context-Aware Bounded Guidance",
     "default_branch": "main",
     "head_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720",
     "head_committed_at": "2026-07-22T17:29:15.000Z",
@@ -47,6 +48,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

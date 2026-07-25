@@ -6,6 +6,7 @@
     "owner": "IkarusV",
     "name": "IkarusAutoImage",
     "url": "https://github.com/IkarusV/IkarusAutoImage",
+    "description": "SillyTavern extension for automatic AI image generation with tag replacements, character prompts, and folder management",
     "default_branch": "main",
     "head_sha": "fdca3f70f84856d32babb0a1111068a5cb796b09",
     "head_committed_at": "2026-07-15T01:09:20.000Z",
@@ -46,6 +47,6 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

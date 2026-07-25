@@ -6,6 +6,7 @@
     "owner": "cha1latte",
     "name": "win95-theme-marinara",
     "url": "https://github.com/cha1latte/win95-theme-marinara",
+    "description": "Authentic Windows 95 theme for Marinara Engine — beveled buttons, blue title bars, MS Sans Serif, sunken inputs. Paste-installable client extension.",
     "default_branch": "main",
     "head_sha": "2c3660bc57bb5098876fac1134a10ccd9e9d6f77",
     "head_committed_at": "2026-04-27T23:02:44.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "platberlitz",
     "name": "sillytavern-character-colors",
     "url": "https://github.com/platberlitz/sillytavern-character-colors",
+    "description": "LLM-powered dialogue and thought coloring with auto-regex-install for SillyTavern",
     "default_branch": "main",
     "head_sha": "9af3e1c499c6f0c2162f52704b02397e21d8d710",
     "head_committed_at": "2026-07-23T12:44:41.000Z",
@@ -76,6 +77,6 @@
     "aggregate": 20
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

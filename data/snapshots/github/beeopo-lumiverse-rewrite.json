@@ -6,6 +6,7 @@
     "owner": "Beeopo",
     "name": "Lumiverse-Rewrite",
     "url": "https://github.com/Beeopo/Lumiverse-Rewrite",
+    "description": "ME Port",
     "default_branch": "main",
     "head_sha": "0eb0fd0a1476f1ea3cad25369689f50e0270d2ab",
     "head_committed_at": "2026-07-13T03:36:14.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

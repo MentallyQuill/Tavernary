@@ -6,6 +6,7 @@
     "owner": "AMousePad",
     "name": "LumiBooks",
     "url": "https://github.com/AMousePad/LumiBooks",
+    "description": "A Simple Memory Extension",
     "default_branch": "main",
     "head_sha": "163e96595fb74010096c9b3571c974dd7d6a284c",
     "head_committed_at": "2026-07-22T04:41:24.000Z",
@@ -75,6 +76,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:06:55.971Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

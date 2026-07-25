@@ -6,6 +6,7 @@
     "owner": "Alatheus1",
     "name": "marinara-engine-game-sessions",
     "url": "https://github.com/Alatheus1/marinara-engine-game-sessions",
+    "description": "Client extension for Marinara Engine adding a Sessions browser to the Game Mode toolbar (implements upstream issue #441).",
     "default_branch": "main",
     "head_sha": "5ed60138b592b41d2b9d1944da2fe1c6ee0afc3f",
     "head_committed_at": "2026-06-10T01:57:00.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:06:55.971Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

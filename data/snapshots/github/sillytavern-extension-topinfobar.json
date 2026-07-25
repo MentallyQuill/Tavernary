@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "Extension-TopInfoBar",
     "url": "https://github.com/SillyTavern/Extension-TopInfoBar",
+    "description": "Adds a top bar to the chat window with shortcuts to quick actions.",
     "default_branch": "main",
     "head_sha": "930be54913d90abd90ebd698ddd81affa924e2e1",
     "head_committed_at": "2025-06-13T19:38:39.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

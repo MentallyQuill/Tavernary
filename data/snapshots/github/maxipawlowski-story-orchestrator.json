@@ -6,6 +6,7 @@
     "owner": "MaxiPawlowski",
     "name": "story-orchestrator",
     "url": "https://github.com/MaxiPawlowski/story-orchestrator",
+    "description": null,
     "default_branch": "master",
     "head_sha": "d2d7122117a80a6813faee5de7e4556dcc93541e",
     "head_committed_at": "2026-07-07T07:08:53.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

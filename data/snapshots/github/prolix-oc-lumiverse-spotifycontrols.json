@@ -6,6 +6,7 @@
     "owner": "prolix-oc",
     "name": "Lumiverse-SpotifyControls",
     "url": "https://github.com/prolix-oc/Lumiverse-SpotifyControls",
+    "description": null,
     "default_branch": "main",
     "head_sha": "66207d58beef50fa763a70e7a4b94516fbc374f7",
     "head_committed_at": "2026-07-23T19:59:43.000Z",
@@ -60,6 +61,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

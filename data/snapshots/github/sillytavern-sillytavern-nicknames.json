@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "SillyTavern-Nicknames",
     "url": "https://github.com/SillyTavern/SillyTavern-Nicknames",
+    "description": "SillyTavern Extension to define nicknames for characters and personas to be used in prompts",
     "default_branch": "main",
     "head_sha": "b43ddb9f15c508df4749ebf48a8a5f4c3c924419",
     "head_committed_at": "2026-04-16T22:39:16.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

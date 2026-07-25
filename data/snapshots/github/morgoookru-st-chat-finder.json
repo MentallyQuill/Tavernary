@@ -6,6 +6,7 @@
     "owner": "MorgoookRU",
     "name": "st-chat-finder",
     "url": "https://github.com/MorgoookRU/st-chat-finder",
+    "description": "Simple SillyTavern extencion for find/replace text in your chats",
     "default_branch": "main",
     "head_sha": "387e08efd3c9d47c2c0baeca4553fec96a402976",
     "head_committed_at": "2026-02-26T18:26:29.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "kurohomeless",
     "name": "SillyTavern-Token-and-Cost-Statistics",
     "url": "https://github.com/kurohomeless/SillyTavern-Token-and-Cost-Statistics",
+    "description": "A SillyTavern extension that tracks and visualizes token usage for your chats.",
     "default_branch": "master",
     "head_sha": "2c6b36a15ef753a80707ab8c1fb39486b471172a",
     "head_committed_at": "2026-05-28T17:45:42.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

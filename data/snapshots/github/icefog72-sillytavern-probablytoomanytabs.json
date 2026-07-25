@@ -6,6 +6,7 @@
     "owner": "IceFog72",
     "name": "SillyTavern-ProbablyTooManyTabs",
     "url": "https://github.com/IceFog72/SillyTavern-ProbablyTooManyTabs",
+    "description": null,
     "default_branch": "main",
     "head_sha": "52a7461aedfce272a5ee93d57356f3cf3bb8bb61",
     "head_committed_at": "2026-07-08T15:31:28.000Z",
@@ -80,6 +81,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "SillyTavern-GreetingTools",
     "url": "https://github.com/SillyTavern/SillyTavern-GreetingTools",
+    "description": "A complete overhaul of greeting management in SillyTavern. Organize your character greetings with titles, descriptions, and AI-powered generation via redesigned popup and an inline chat selector.",
     "default_branch": "main",
     "head_sha": "30dbe54e9f9e4e7da8539c6b3178ac8a5118bc18",
     "head_committed_at": "2026-03-26T21:47:38.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

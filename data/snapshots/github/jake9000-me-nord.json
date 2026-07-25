@@ -6,6 +6,7 @@
     "owner": "jake9000",
     "name": "me-nord",
     "url": "https://github.com/jake9000/me-nord",
+    "description": null,
     "default_branch": "master",
     "head_sha": "a7a8616591e6da6c56a6cc0a3f986ae8673dd730",
     "head_committed_at": "2026-07-23T01:22:44.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": null,
     "source_path": "license.txt"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

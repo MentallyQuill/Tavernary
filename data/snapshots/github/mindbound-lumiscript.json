@@ -6,6 +6,7 @@
     "owner": "mindbound",
     "name": "lumiscript",
     "url": "https://github.com/mindbound/lumiscript",
+    "description": null,
     "default_branch": "master",
     "head_sha": "66ac526a4e58ef90fa5cad755a4e6a4741148112",
     "head_committed_at": "2026-07-05T10:41:35.000Z",
@@ -43,6 +44,6 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
-  "stale_since": "2026-07-25T03:20:38.748Z"
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
+  "stale_since": null
 }

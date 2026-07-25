@@ -6,6 +6,7 @@
     "owner": "DangerDaza",
     "name": "Dooms-Enhancement-Suite",
     "url": "https://github.com/DangerDaza/Dooms-Enhancement-Suite",
+    "description": "An immersive RPG enhancement extension for SillyTavern — character tracking, lore library, TTS highlighting, portrait bar, scene headers, chat bubbles, weather effects, and more.",
     "default_branch": "main",
     "head_sha": "713f6b1981d36095ce801f9b5a88c133b5f3b58b",
     "head_committed_at": "2026-07-19T01:11:57.000Z",
@@ -65,6 +66,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

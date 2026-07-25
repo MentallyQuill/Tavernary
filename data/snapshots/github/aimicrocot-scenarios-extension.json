@@ -6,6 +6,7 @@
     "owner": "aimicrocot",
     "name": "Scenarios-Extension",
     "url": "https://github.com/aimicrocot/Scenarios-Extension",
+    "description": "An extension that allow you to add multiple scenarios to a single bot",
     "default_branch": "main",
     "head_sha": "68d34b58a26e73ff8de013680d9bc57a11ca5906",
     "head_committed_at": "2026-06-19T10:32:27.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T01:06:55.971Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

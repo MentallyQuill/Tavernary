@@ -6,6 +6,7 @@
     "owner": "Revivalist-Dev",
     "name": "GuidedGenerations-Extension",
     "url": "https://github.com/Revivalist-Dev/GuidedGenerations-Extension",
+    "description": null,
     "default_branch": "main",
     "head_sha": "db5c9686856256b0f80fe94eff83d6b531efa940",
     "head_committed_at": "2026-07-01T01:49:55.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

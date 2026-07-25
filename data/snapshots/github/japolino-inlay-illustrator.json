@@ -6,6 +6,7 @@
     "owner": "japolino",
     "name": "inlay-illustrator",
     "url": "https://github.com/japolino/inlay-illustrator",
+    "description": "Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/ComfyUI prompt output, and optional tag cleanup.",
     "default_branch": "stable",
     "head_sha": "d757aa9d876a806775f4ca4cacf69ff4f53f4df5",
     "head_committed_at": "2026-07-18T03:48:09.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Coneja-Chibi",
     "name": "VectHare",
     "url": "https://github.com/Coneja-Chibi/VectHare",
+    "description": "A Powerful tool meant to revolutionize RAG as you know it!",
     "default_branch": "main",
     "head_sha": "7924a57731023b886f8db017852db03607870e04",
     "head_committed_at": "2025-12-23T17:12:56.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 86
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

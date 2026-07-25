@@ -6,6 +6,7 @@
     "owner": "Coneja-Chibi",
     "name": "Rabbit-Response-Team",
     "url": "https://github.com/Coneja-Chibi/Rabbit-Response-Team",
+    "description": "A random word generator to try and destabilize standard LLM pattern/probability prone thinking!",
     "default_branch": "main",
     "head_sha": "05ba6e5249a153b84782922f5ab702fc92338bf9",
     "head_committed_at": "2025-10-22T23:58:55.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

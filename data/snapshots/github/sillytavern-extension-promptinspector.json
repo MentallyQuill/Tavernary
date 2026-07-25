@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "Extension-PromptInspector",
     "url": "https://github.com/SillyTavern/Extension-PromptInspector",
+    "description": "Adds an option to inspect and edit output prompts before sending them to the server.",
     "default_branch": "main",
     "head_sha": "97a9fd90afbc156db27478e9097b143dc27b9c7a",
     "head_committed_at": "2026-01-09T10:08:42.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

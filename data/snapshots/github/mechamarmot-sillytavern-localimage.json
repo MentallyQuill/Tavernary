@@ -6,6 +6,7 @@
     "owner": "mechamarmot",
     "name": "SillyTavern-LocalImage",
     "url": "https://github.com/mechamarmot/SillyTavern-LocalImage",
+    "description": "Local image handling for SillyTavern",
     "default_branch": "master",
     "head_sha": "b08838e9ebb0c51d16ce25d490959f992108df32",
     "head_committed_at": "2025-12-13T18:46:15.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

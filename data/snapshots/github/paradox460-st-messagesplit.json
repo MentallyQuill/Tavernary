@@ -6,6 +6,7 @@
     "owner": "paradox460",
     "name": "ST-MessageSplit",
     "url": "https://github.com/paradox460/ST-MessageSplit",
+    "description": "Split and Merge SillyTavern messages at will",
     "default_branch": "master",
     "head_sha": "2daade16f6408ca832a4af9efba907007de555fd",
     "head_committed_at": "2026-06-27T00:05:36.000Z",
@@ -45,6 +46,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

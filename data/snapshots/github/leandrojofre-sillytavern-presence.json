@@ -6,6 +6,7 @@
     "owner": "leandrojofre",
     "name": "SillyTavern-Presence",
     "url": "https://github.com/leandrojofre/SillyTavern-Presence",
+    "description": "Gives each individual character their own memory.",
     "default_branch": "main",
     "head_sha": "c20af6d5a8dc110c84ecd44ce1e865eaaea23cf5",
     "head_committed_at": "2026-07-13T03:31:04.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

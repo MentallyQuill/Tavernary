@@ -6,6 +6,7 @@
     "owner": "AMousePad",
     "name": "LumiAgent",
     "url": "https://github.com/AMousePad/LumiAgent",
+    "description": "A capable helper for your Lumiverse",
     "default_branch": "main",
     "head_sha": "236ba1c16ba368c77dad72c54a602683ba0595b6",
     "head_committed_at": "2026-06-27T09:36:03.000Z",
@@ -70,6 +71,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENCE"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

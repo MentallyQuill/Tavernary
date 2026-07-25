@@ -6,6 +6,7 @@
     "owner": "GentleBurr",
     "name": "SillyTavern-SmartImport",
     "url": "https://github.com/GentleBurr/SillyTavern-SmartImport",
+    "description": "A SillyTavern extension that enables batch-importing of characters from external URLs while intelligently preventing duplicate files via metadata matching.",
     "default_branch": "main",
     "head_sha": "9b3a332ee9a7c71f2e080b690941b90b610f1544",
     "head_committed_at": "2026-04-23T04:53:39.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

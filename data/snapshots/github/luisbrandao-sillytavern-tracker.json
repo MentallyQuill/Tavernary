@@ -6,6 +6,7 @@
     "owner": "luisbrandao",
     "name": "SillyTavern-Tracker",
     "url": "https://github.com/luisbrandao/SillyTavern-Tracker",
+    "description": null,
     "default_branch": "main",
     "head_sha": "657b8a89a49a388d5752693d51d2b7713ca26040",
     "head_committed_at": "2026-06-15T16:50:38.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "RivelleDays",
     "name": "SillyTavern-ChatCompletionTabs",
     "url": "https://github.com/RivelleDays/SillyTavern-ChatCompletionTabs",
+    "description": "Adds tabs to the Chat Completion presets settings.",
     "default_branch": "main",
     "head_sha": "a427446a7625ca19606fedfdc39891e2e3f8f3d1",
     "head_committed_at": "2025-10-09T21:35:03.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

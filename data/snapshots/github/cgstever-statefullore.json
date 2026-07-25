@@ -6,6 +6,7 @@
     "owner": "cgstever",
     "name": "StatefulLore",
     "url": "https://github.com/cgstever/StatefulLore",
+    "description": "Sillytavern Extention to replace the current lore system WIP",
     "default_branch": "main",
     "head_sha": "715fae8157b1de5386524eb93e2a6508c3de1f4d",
     "head_committed_at": "2026-06-09T15:33:19.000Z",
@@ -51,6 +52,6 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

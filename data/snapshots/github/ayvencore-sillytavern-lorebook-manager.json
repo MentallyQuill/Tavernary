@@ -6,6 +6,7 @@
     "owner": "ayvencore",
     "name": "SillyTavern-Lorebook-Manager",
     "url": "https://github.com/ayvencore/SillyTavern-Lorebook-Manager",
+    "description": "Lorebook manager and organizer for SillyTavern!",
     "default_branch": "main",
     "head_sha": "93a08b9ba00559f2f4455f92586bec731b1cafe8",
     "head_committed_at": "2026-03-27T11:19:27.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

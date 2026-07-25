@@ -6,6 +6,7 @@
     "owner": "bmen25124",
     "name": "SillyTavern-Roadway",
     "url": "https://github.com/bmen25124/SillyTavern-Roadway",
+    "description": "A SillyTavern extension that helps you to make decisions about the story. It could give an idea.",
     "default_branch": "main",
     "head_sha": "8bd72bdbfecf707ebf2d15f0dd11d9fd886644ed",
     "head_committed_at": "2026-06-09T12:27:03.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

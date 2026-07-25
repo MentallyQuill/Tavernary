@@ -6,6 +6,7 @@
     "owner": "daddytorgo-hash",
     "name": "FrankenGarage",
     "url": "https://github.com/daddytorgo-hash/FrankenGarage",
+    "description": "A repository for my LLM roleplay presets and trackers",
     "default_branch": "main",
     "head_sha": "36a3586144c050eacb90afe36d82d73068ec25d8",
     "head_committed_at": "2026-07-17T12:11:29.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "leandrojofre",
     "name": "SillyTavern-Stat-us-Maximus",
     "url": "https://github.com/leandrojofre/SillyTavern-Stat-us-Maximus",
+    "description": "Add custom status trackers to your chats",
     "default_branch": "release",
     "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
     "head_committed_at": "2026-07-02T00:36:51.000Z",
@@ -60,6 +61,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:06:18.863Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

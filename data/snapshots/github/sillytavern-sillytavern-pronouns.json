@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "SillyTavern-Pronouns",
     "url": "https://github.com/SillyTavern/SillyTavern-Pronouns",
+    "description": "Add pronouns functionality to personas and characters to SillyTavern",
     "default_branch": "main",
     "head_sha": "c0dca691da8d36e2e8b06565b8497ca775e8cfbe",
     "head_committed_at": "2026-04-16T22:50:42.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "dfaker",
     "name": "st-char-powersearch",
     "url": "https://github.com/dfaker/st-char-powersearch",
+    "description": "More powerful and faster character search for ST",
     "default_branch": "main",
     "head_sha": "a76c788a3a7da179793d481a5494fe78d53611c8",
     "head_committed_at": "2025-08-30T21:06:40.000Z",
@@ -30,6 +31,6 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

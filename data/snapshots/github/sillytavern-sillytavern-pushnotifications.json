@@ -6,6 +6,7 @@
     "owner": "SillyTavern",
     "name": "SillyTavern-PushNotifications",
     "url": "https://github.com/SillyTavern/SillyTavern-PushNotifications",
+    "description": "Allows to receive push notifications for incoming chat messages.",
     "default_branch": "main",
     "head_sha": "49e5d246854dcca2b7ddf4460f002217548809fb",
     "head_committed_at": "2024-05-24T20:49:55.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

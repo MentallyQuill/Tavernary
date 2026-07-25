@@ -6,6 +6,7 @@
     "owner": "Zorgonatis",
     "name": "Stabs-EDH",
     "url": "https://github.com/Zorgonatis/Stabs-EDH",
+    "description": "Stab's Execution Directive Heirarchy preset for SillyTavern",
     "default_branch": "main",
     "head_sha": "1d4bf8eebb60f5bc11222983cb0d7fccf6843b97",
     "head_committed_at": "2026-05-21T19:07:33.000Z",
@@ -46,6 +47,6 @@
     "aggregate": 189
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

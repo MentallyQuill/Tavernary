@@ -6,6 +6,7 @@
     "owner": "qvink",
     "name": "SillyTavern-MessageSummarize",
     "url": "https://github.com/qvink/SillyTavern-MessageSummarize",
+    "description": null,
     "default_branch": "master",
     "head_sha": "81b3326c1d81ea3411ab057280ecd5786fbe29a1",
     "head_committed_at": "2026-05-25T19:28:41.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:01:47.527Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

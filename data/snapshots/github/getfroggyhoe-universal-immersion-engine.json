@@ -6,6 +6,7 @@
     "owner": "GetfroggyHoe",
     "name": "universal-immersion-engine",
     "url": "https://github.com/GetfroggyHoe/universal-immersion-engine",
+    "description": null,
     "default_branch": "main",
     "head_sha": "d51c17548fa85fc667f9862f47b60f179065229e",
     "head_committed_at": "2026-07-17T07:21:48.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 84
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

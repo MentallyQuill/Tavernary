@@ -6,6 +6,7 @@
     "owner": "Decidetto",
     "name": "ME-accent-color-changer",
     "url": "https://github.com/Decidetto/ME-accent-color-changer",
+    "description": "Simple Marinara Engine extension to change the accent colors of built-in and compatible themes.",
     "default_branch": "main",
     "head_sha": "47d443f5e6c2e472edb9f4d4c2e8f790b75c3e10",
     "head_committed_at": "2026-04-26T23:57:00.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "Mitaska",
     "name": "WeatherTweaker",
     "url": "https://github.com/Mitaska/WeatherTweaker",
+    "description": "Marinara Engine extension — tweak weather effects (opacity, speed, size, count, brightness, contrast, tint) in real-time via a chat toolbar popup.",
     "default_branch": "main",
     "head_sha": "8c55914cdfce0bdafb495ad4ec7237bea5232bc1",
     "head_committed_at": "2026-07-04T15:13:26.000Z",
@@ -55,6 +56,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

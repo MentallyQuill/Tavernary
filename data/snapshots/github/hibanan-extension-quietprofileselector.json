@@ -6,6 +6,7 @@
     "owner": "Hibanan",
     "name": "Extension-QuietProfileSelector",
     "url": "https://github.com/Hibanan/Extension-QuietProfileSelector",
+    "description": null,
     "default_branch": "main",
     "head_sha": "aa017e07f92177616933e51c0c731b13c0432399",
     "head_committed_at": "2026-06-13T04:04:41.000Z",
@@ -36,6 +37,6 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

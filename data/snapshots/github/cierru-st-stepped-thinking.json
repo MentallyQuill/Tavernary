@@ -6,6 +6,7 @@
     "owner": "cierru",
     "name": "st-stepped-thinking",
     "url": "https://github.com/cierru/st-stepped-thinking",
+    "description": "An extension for SillyTavern that lets characters think before responding",
     "default_branch": "master",
     "head_sha": "9b58956c8e5fe95598e5ad771bcb5c0f9de4fa09",
     "head_committed_at": "2026-01-09T09:42:30.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

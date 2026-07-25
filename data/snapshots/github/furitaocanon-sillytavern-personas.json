@@ -6,6 +6,7 @@
     "owner": "Furitaocanon",
     "name": "SillyTavern-Personas",
     "url": "https://github.com/Furitaocanon/SillyTavern-Personas",
+    "description": "organize your personas with custom groups",
     "default_branch": "main",
     "head_sha": "6b6439862f1d0c9a57feaa3c1fc215f1541b7b58",
     "head_committed_at": "2025-10-27T05:21:51.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

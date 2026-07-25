@@ -6,6 +6,7 @@
     "owner": "Gu-gu-gu-gu-gu",
     "name": "Weather-Calendar-Assistant",
     "url": "https://github.com/Gu-gu-gu-gu-gu/Weather-Calendar-Assistant",
+    "description": "SillyTavern 前端扩展：自动解析剧情时间，注入节假日、天气与生理周期提示。",
     "default_branch": "main",
     "head_sha": "9d81c16f8e24f05a71b4486b763e4275bcea3d42",
     "head_committed_at": "2026-05-16T18:02:14.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

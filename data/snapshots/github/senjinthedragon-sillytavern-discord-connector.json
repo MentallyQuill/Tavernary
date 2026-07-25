@@ -6,6 +6,7 @@
     "owner": "senjinthedragon",
     "name": "SillyTavern-Discord-Connector",
     "url": "https://github.com/senjinthedragon/SillyTavern-Discord-Connector",
+    "description": "Discord bot bridge for SillyTavern - Chat with your characters in real time!",
     "default_branch": "main",
     "head_sha": "e3a2678c4293baea97d195c4dc5cceb4db2810ca",
     "head_committed_at": "2026-05-30T03:00:54.000Z",
@@ -40,6 +41,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T05:16:15.267Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

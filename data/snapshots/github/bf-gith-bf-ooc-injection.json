@@ -6,6 +6,7 @@
     "owner": "BF-GitH",
     "name": "bf-ooc-injection",
     "url": "https://github.com/BF-GitH/bf-ooc-injection",
+    "description": "SillyTavern extension that prevents repetitive LLM responses through automated, randomized prompt injection. Clean history, zero maintenance.",
     "default_branch": "main",
     "head_sha": "17ca911eeac55a0a50a15a1db65ce0b41d91d291",
     "head_committed_at": "2026-04-12T19:01:53.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:15:54.114Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

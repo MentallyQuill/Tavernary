@@ -6,6 +6,7 @@
     "owner": "Enclave0775",
     "name": "Intiface_Central-Sillytavern-plugin",
     "url": "https://github.com/Enclave0775/Intiface_Central-Sillytavern-plugin",
+    "description": "A SillyTavern plugin that integrates Intiface Central and Buttplug.io for haptic device interactions during AI roleplay.",
     "default_branch": "main",
     "head_sha": "1422c7c1a5143775f21053d15145ef179fd34501",
     "head_committed_at": "2026-04-21T13:57:47.000Z",
@@ -34,6 +35,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:49:36.921Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

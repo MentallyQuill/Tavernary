@@ -6,6 +6,7 @@
     "owner": "Kenhito",
     "name": "Marinara-RPG-Extension",
     "url": "https://github.com/Kenhito/Marinara-RPG-Extension",
+    "description": "Extension and documentation to allow basic ruleset editing inside the Marinara Engine GM Mode.",
     "default_branch": "main",
     "head_sha": "39160a667c8331ff1d3acab20fe70a16f99d78f5",
     "head_committed_at": "2026-05-23T00:51:29.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:56:16.026Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

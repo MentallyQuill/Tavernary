@@ -6,6 +6,7 @@
     "owner": "cfigure",
     "name": "Lumiverse-prompt-viewer",
     "url": "https://github.com/cfigure/Lumiverse-prompt-viewer",
+    "description": null,
     "default_branch": "main",
     "head_sha": "5371791661804c2d90a3b3560f0db72ca1530e97",
     "head_committed_at": "2026-07-24T23:28:28.000Z",
@@ -50,6 +51,6 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T02:22:39.715Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

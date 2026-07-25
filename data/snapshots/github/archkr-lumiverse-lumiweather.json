@@ -6,6 +6,7 @@
     "owner": "Archkr",
     "name": "Lumiverse-LumiWeather",
     "url": "https://github.com/Archkr/Lumiverse-LumiWeather",
+    "description": "Narrative weather, date, and time HUD with layered ambient effects for chat scenes.",
     "default_branch": "main",
     "head_sha": "e7ecfea6451b8d2c7518f9976dfbfcb323643631",
     "head_committed_at": "2026-07-22T04:03:43.000Z",
@@ -60,6 +61,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-25T01:17:58.367Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }

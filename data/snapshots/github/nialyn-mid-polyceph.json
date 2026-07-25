@@ -6,6 +6,7 @@
     "owner": "nialyn-mid",
     "name": "polyceph",
     "url": "https://github.com/nialyn-mid/polyceph",
+    "description": "An extension for SillyTavern which allows user-defined multi-step chain-of-thought/multi-agent response generation.",
     "default_branch": "main",
     "head_sha": "0fff51593aafc91298bca7dd81a804b01394568f",
     "head_committed_at": "2026-05-14T01:20:24.000Z",
@@ -41,6 +42,6 @@
     "aggregate": 9
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T03:20:38.748Z",
+  "refreshed_at": "2026-07-25T09:14:41.435Z",
   "stale_since": null
 }
