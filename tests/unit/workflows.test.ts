@@ -6,8 +6,8 @@ import { parse } from "yaml";
 
 const workflowDirectory = resolve(".github/workflows");
 const pinnedActions = {
-  "actions/checkout": "d23441a48e516b6c34aea4fa41551a30e30af803",
-  "actions/setup-node": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+  "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+  "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020",
   "actions/configure-pages": "45bfe0192ca1faeb007ade9deae92b16b8254a0d",
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128",
@@ -58,6 +58,28 @@ test("keeps CI read-only and runs every local gate", async () => {
   expect(commands).toContain("playwright install --with-deps chromium");
   expect(commands).toContain("npm run test:e2e");
   expect(commands).toContain("npm run test:visual");
+});
+
+test("runs Windows-specific visual baselines on a Windows runner", async () => {
+  const ci = await workflow("ci");
+  const jobs = ci.jobs as Record<
+    string,
+    {
+      "runs-on"?: string;
+      steps?: Array<{ run?: string }>;
+    }
+  >;
+  const verifyCommands = (jobs.verify.steps ?? [])
+    .map((step) => step.run)
+    .filter(Boolean);
+  const visualCommands = (jobs.visual?.steps ?? [])
+    .map((step) => step.run)
+    .filter(Boolean);
+
+  expect(jobs.verify["runs-on"]).toBe("ubuntu-latest");
+  expect(verifyCommands).not.toContain("npm run test:visual");
+  expect(jobs.visual?.["runs-on"]).toBe("windows-latest");
+  expect(visualCommands).toContain("npm run test:visual");
 });
 
 test("deploys only a verified static export to the Pages environment", async () => {
@@ -112,4 +134,24 @@ test("triage can label issues but cannot write repository content", async () => 
     contents: "read",
     issues: "write",
   });
+});
+
+test("groups coupled dependency updates into coherent pull requests", async () => {
+  const dependabot = parse(
+    await readFile(resolve(".github/dependabot.yml"), "utf8"),
+  ) as {
+    updates: Array<{
+      "package-ecosystem": string;
+      groups?: Record<string, { patterns: string[] }>;
+    }>;
+  };
+  const npm = dependabot.updates.find(
+    (update) => update["package-ecosystem"] === "npm",
+  );
+  const actions = dependabot.updates.find(
+    (update) => update["package-ecosystem"] === "github-actions",
+  );
+
+  expect(npm?.groups?.react.patterns).toEqual(["react", "react-dom"]);
+  expect(actions?.groups?.actions.patterns).toEqual(["*"]);
 });
