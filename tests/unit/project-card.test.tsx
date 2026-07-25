@@ -38,6 +38,7 @@ function project(
       },
     ],
     searchableText: `${id} extension automation`,
+    attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",
       activeWeeks12: 4,

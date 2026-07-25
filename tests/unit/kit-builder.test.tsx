@@ -52,6 +52,7 @@ function project(
     frontends: [],
     capabilities: [],
     searchableText: id,
+    attribution: null,
     activity: {
       latestSourceActivityAt: null,
       activeWeeks12: null,

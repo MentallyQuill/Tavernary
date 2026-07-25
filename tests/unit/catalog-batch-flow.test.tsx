@@ -39,6 +39,7 @@ function project(): CatalogProject {
     frontends: [],
     capabilities: [],
     searchableText: "memory",
+    attribution: null,
     activity: {
       latestSourceActivityAt: null,
       activeWeeks12: null,

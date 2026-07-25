@@ -30,6 +30,7 @@ function project(
       { id: "automation", label: "Automation", description: "Capability." },
     ],
     searchableText: `${id} extension automation`,
+    attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",
       activeWeeks12: 4,
@@ -147,6 +148,33 @@ const projects = [
 const context = { now: "2026-07-23T00:00:00Z" };
 
 describe("catalog selectors", () => {
+  test("matches repository owners, human contributors, and bot contributors", () => {
+    const attributed = project("directive", {
+      searchableText: "directive mentallyquill alice claude dependabot[bot]",
+      attribution: {
+        owner: "MentallyQuill",
+        contributors: [
+          { login: "alice", botOrAi: false },
+          { login: "claude", botOrAi: true },
+          { login: "dependabot[bot]", botOrAi: true },
+        ],
+        humanContributorCount: 1,
+        status: "current",
+      },
+    });
+
+    for (const search of [
+      "mentallyquill",
+      "alice",
+      "claude",
+      "dependabot[bot]",
+    ]) {
+      expect(
+        selectProjects([attributed], { ...DEFAULT_QUERY, search }, context),
+      ).toEqual([attributed]);
+    }
+  });
+
   test("applies search, views, and multi-select group semantics", () => {
     expect(selectProjects(projects, DEFAULT_QUERY, context)).toHaveLength(5);
     expect(

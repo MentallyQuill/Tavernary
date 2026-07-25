@@ -285,10 +285,60 @@ test("publishes snapshotless github records with pending source facts", async ()
         label: "Pending",
         tooltip: "Repository facts are pending the first successful snapshot.",
       },
+      attribution: {
+        owner: "example",
+        contributors: [],
+        humanContributorCount: 0,
+        status: "pending",
+      },
       refreshedAt: null,
       staleSince: null,
     }),
   ]);
+});
+
+test("builds searchable owner and contributor attribution from GitHub facts", async () => {
+  const catalog = await buildCatalog({
+    write: false,
+    records: [
+      fixtureProject({
+        kind: "extension",
+        source: {
+          type: "github",
+          repository: "example/fixture",
+          repository_id: 123,
+        },
+      }),
+    ],
+    snapshots: [
+      fixtureSnapshot({
+        contributors: {
+          accounts: [
+            { login: "example", type: "User" },
+            { login: "Alice", type: "User" },
+            { login: "Claude", type: "User" },
+            { login: "dependabot[bot]", type: "Bot" },
+          ],
+          refreshed_at: "2026-07-25T00:00:00.000Z",
+          stale_since: null,
+        },
+      }),
+    ],
+  });
+
+  expect(catalog.projects[0].attribution).toEqual({
+    owner: "example",
+    contributors: [
+      { login: "Alice", botOrAi: false },
+      { login: "Claude", botOrAi: true },
+      { login: "dependabot[bot]", botOrAi: true },
+    ],
+    humanContributorCount: 1,
+    status: "current",
+  });
+  expect(catalog.projects[0].searchableText).toContain(
+    "example alice claude dependabot[bot]",
+  );
 });
 
 test("keeps stale github facts public when the snapshot is unavailable", async () => {
@@ -373,6 +423,7 @@ test("publishes github organizations as manual-source public projects", async ()
         label: "Pending",
         tooltip: "License review is pending for this source.",
       },
+      attribution: null,
       preset: null,
       refreshedAt: null,
       staleSince: null,
@@ -409,6 +460,7 @@ test("keeps URL presets public with manual source and pending license display", 
         label: "Pending",
         tooltip: "License review is pending for this source.",
       },
+      attribution: null,
     }),
   ]);
 });

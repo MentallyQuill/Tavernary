@@ -25,6 +25,18 @@ export interface CatalogLabel {
   description: string;
 }
 
+export interface CatalogContributor {
+  login: string;
+  botOrAi: boolean;
+}
+
+export interface CatalogAttribution {
+  owner: string;
+  contributors: CatalogContributor[];
+  humanContributorCount: number;
+  status: "current" | "stale" | "pending";
+}
+
 export interface CatalogProject {
   id: string;
   name: string;
@@ -39,6 +51,7 @@ export interface CatalogProject {
   frontends: CatalogLabel[];
   capabilities: CatalogLabel[];
   searchableText: string;
+  attribution: CatalogAttribution | null;
   activity: {
     latestSourceActivityAt: string | null;
     activeWeeks12: number | null;

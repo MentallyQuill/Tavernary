@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 
@@ -100,6 +101,9 @@ function githubProject(record, snapshot, vocabularies, now) {
       vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
+  const owner =
+    snapshot?.repository?.owner ?? record.source.repository.split("/")[0];
+  const attribution = catalogAttribution(owner, snapshot?.contributors);
   const searchableText = [
     record.name,
     record.kind,
@@ -107,6 +111,8 @@ function githubProject(record, snapshot, vocabularies, now) {
     primaryFunction.label,
     ...frontends.map(({ label }) => label),
     ...capabilities.map(({ label }) => label),
+    attribution.owner,
+    ...attribution.contributors.map(({ login }) => login),
   ]
     .join(" ")
     .toLowerCase();
@@ -141,6 +147,7 @@ function githubProject(record, snapshot, vocabularies, now) {
     frontends,
     capabilities,
     searchableText,
+    attribution,
     activity: snapshot
       ? {
           latestSourceActivityAt: snapshot.activity.latest_source_activity_at,
@@ -222,6 +229,7 @@ function urlPreset(record, vocabularies) {
     community: null,
     repositorySizeKb: null,
     license,
+    attribution: null,
     preset: {
       version: record.source.version,
       publishedAt: record.source.published_at,
@@ -270,6 +278,7 @@ function manualProject(record, vocabularies) {
     community: null,
     repositorySizeKb: null,
     license: licenseDisplay("pending", null, "url"),
+    attribution: null,
     preset: null,
     refreshedAt: null,
     staleSince: null,
