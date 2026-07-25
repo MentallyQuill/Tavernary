@@ -13,6 +13,7 @@ import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
+import { KitDraftAccess, type DraftAccessStatus } from "./kit-draft-access";
 
 const builderBackground = [
   ".site-header",
@@ -43,6 +44,8 @@ export function KitBuilderPanel({
   onSubmitDraft,
   active = true,
   catalogDragState = null,
+  draftAccessStatus,
+  hidePhoneDraftAccess = false,
 }: {
   state: KitBuilderState;
   kit: CatalogKit | null;
@@ -58,9 +61,11 @@ export function KitBuilderPanel({
   onSubmitDraft?: () => void;
   active?: boolean;
   catalogDragState?: CatalogProjectDragState | null;
+  draftAccessStatus?: DraftAccessStatus;
+  hidePhoneDraftAccess?: boolean;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
-  const { phone, touchLayout } = useResponsiveCapabilities();
+  const { phone } = useResponsiveCapabilities();
   const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -85,6 +90,20 @@ export function KitBuilderPanel({
     phone && active && !state.collapsed && state.mode !== "intro";
   const phonePresence = useTransitionPresence(phoneSheetVisible, 220);
   const modalOpen = phone && phonePresence.present && state.mode !== "intro";
+  const resolvedDraftAccessStatus =
+    state.mode === "build"
+      ? (draftAccessStatus ?? {
+          phase: "settled" as const,
+          draftCount: state.draft.projectIds.length,
+        })
+      : null;
+  const openCollapsedBuilder = () => {
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLElement) {
+      openerRef.current = activeElement;
+    }
+    onCollapse();
+  };
 
   useEffect(() => {
     if (phoneSheetVisible) {
@@ -125,8 +144,8 @@ export function KitBuilderPanel({
   }
 
   if (state.collapsed && !(phone && phonePresence.present)) {
-    if (touchLayout) {
-      if (state.mode !== "build") return null;
+    if (phone) {
+      if (state.mode !== "build" || hidePhoneDraftAccess) return null;
       return (
         <aside
           ref={workspaceRef}
@@ -134,18 +153,11 @@ export function KitBuilderPanel({
           className="kit-draft-pill-container"
           aria-label="Kit draft"
         >
-          <button
-            type="button"
-            className="kit-draft-pill"
-            aria-label={`Open draft with ${state.draft.projectIds.length} projects`}
-            onClick={(event) => {
-              openerRef.current = event.currentTarget;
-              onCollapse();
-            }}
-          >
-            Draft <span aria-hidden="true">·</span>{" "}
-            {state.draft.projectIds.length} projects
-          </button>
+          <KitDraftAccess
+            variant="pill"
+            status={resolvedDraftAccessStatus}
+            onOpen={openCollapsedBuilder}
+          />
         </aside>
       );
     }
@@ -156,27 +168,23 @@ export function KitBuilderPanel({
         className="kit-builder-panel collapsed"
         aria-label="Kit Builder"
       >
-        <button
-          type="button"
-          className="kit-builder-rail"
-          aria-label={
-            state.mode === "build" && state.draft.projectIds.length
-              ? `Open Kit Builder, ${state.draft.projectIds.length} projects in draft`
-              : "Open Kit Builder"
-          }
-          onClick={(event) => {
-            openerRef.current = event.currentTarget;
-            onCollapse();
-          }}
-        >
-          <CategoryIcon name="kit-builder" />
-          <span>Kit Builder</span>
-          <span className="kit-builder-rail-status" aria-hidden="true">
-            {state.mode === "build" && state.draft.projectIds.length
-              ? `${state.draft.projectIds.length} projects`
-              : ""}
-          </span>
-        </button>
+        {state.mode === "build" ? (
+          <KitDraftAccess
+            variant="rail"
+            status={resolvedDraftAccessStatus}
+            onOpen={openCollapsedBuilder}
+          />
+        ) : (
+          <button
+            type="button"
+            className="kit-builder-rail"
+            aria-label="Open Kit Builder"
+            onClick={openCollapsedBuilder}
+          >
+            <CategoryIcon name="kit-builder" />
+            <span>Kit Builder</span>
+          </button>
+        )}
       </aside>
     );
   }

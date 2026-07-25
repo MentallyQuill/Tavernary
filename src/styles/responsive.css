@@ -188,8 +188,35 @@
     padding: 16px 13px 50px;
   }
 
-  .catalog-shell:has(.kit-draft-pill) .catalog-main {
+  .catalog-shell:has(.kit-draft-pill) .catalog-main,
+  .catalog-shell:has(.project-selection-dock) .catalog-main {
     padding-bottom: calc(74px + env(safe-area-inset-bottom));
+  }
+
+  .project-selection-spacer {
+    height: calc(96px + env(safe-area-inset-bottom));
+  }
+
+  .project-selection-dock {
+    right: max(13px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: max(13px, env(safe-area-inset-left));
+    width: auto;
+    min-height: 44px;
+    padding: 10px;
+  }
+
+  .project-selection-actions {
+    display: grid;
+    grid-template-columns: minmax(88px, auto) minmax(0, 1fr);
+  }
+
+  .project-selection-actions button {
+    min-height: 44px;
+  }
+
+  .project-selection-actions .control-primary {
+    justify-content: center;
   }
 
   .catalog-toolbar {
@@ -307,7 +334,6 @@
 
   .kit-builder-panel-inspect > input,
   .kit-project-row,
-  .add-to-kit,
   .kit-builder input {
     min-height: 44px;
   }

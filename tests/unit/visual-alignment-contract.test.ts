@@ -63,6 +63,26 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("keeps the selection dock aligned, touch-safe, and clear of the final card", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+    const motion = read("src/styles/motion.css");
+
+    expect(css).toMatch(
+      /\.project-selection-dock\s*\{[^}]*position:\s*fixed[^}]*left:\s*calc\(238px \+ 22px\)[^}]*right:\s*calc\(clamp\(280px,\s*22vw,\s*340px\) \+ 22px\)/s,
+    );
+    expect(css).toMatch(/\.project-selection-spacer\s*\{[^}]*height:\s*112px/s);
+    expect(css).toMatch(
+      /\.project-selection-dock\s*\{[^}]*transition:\s*opacity 160ms[^}]*transform 160ms/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(max-width:\s*760px\)[\s\S]*?\.project-selection-dock\s*\{[^}]*left:\s*max\(13px,\s*env\(safe-area-inset-left\)\)[^}]*min-height:\s*44px/s,
+    );
+    expect(motion).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.project-selection-dock/s,
+    );
+  });
+
   test("uses the supplied deployable logo in mockup order", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 

@@ -184,8 +184,8 @@ describe("Kit Builder", () => {
     expect(rail.querySelector('[data-icon="kit-builder"]')).not.toBeNull();
   });
 
-  test("uses a horizontal touch draft pill only for collapsed builds", async () => {
-    mockMatchMedia({ touchLayout: true });
+  test("uses a horizontal draft pill only for collapsed phone builds", async () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
     const user = userEvent.setup();
     const onCollapse = vi.fn();
     const { rerender } = render(
@@ -208,7 +208,7 @@ describe("Kit Builder", () => {
     );
 
     const pill = screen.getByRole("button", {
-      name: "Open draft with 3 projects",
+      name: "Open Kit Builder, 3 projects in draft",
     });
     expect(pill).toHaveClass("kit-draft-pill");
     await user.click(pill);
@@ -222,10 +222,65 @@ describe("Kit Builder", () => {
       />,
     );
     expect(
-      screen.queryByRole("button", { name: /Open draft/ }),
+      screen.queryByRole("button", { name: /projects in draft/ }),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Open Kit Builder" }),
+    ).not.toBeInTheDocument();
+  });
+
+  test("keeps the readable rail on touch tablets", () => {
+    mockMatchMedia({ touchLayout: true });
+    render(
+      <KitBuilderPanel
+        state={{
+          mode: "build",
+          collapsed: true,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "",
+            description: "",
+            projectIds: ["one", "two"],
+          },
+        }}
+        kit={null}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Open Kit Builder, 2 projects in draft",
+      }),
+    ).toHaveClass("kit-builder-rail");
+  });
+
+  test("can hide phone draft access while the selection dock is active", () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    render(
+      <KitBuilderPanel
+        state={{
+          mode: "build",
+          collapsed: true,
+          dirty: true,
+          draft: {
+            operation: "create",
+            kitId: null,
+            title: "",
+            description: "",
+            projectIds: ["one"],
+          },
+        }}
+        kit={null}
+        onCollapse={() => undefined}
+        hidePhoneDraftAccess
+      />,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: /Open Kit Builder/ }),
     ).not.toBeInTheDocument();
   });
 
@@ -260,7 +315,9 @@ describe("Kit Builder", () => {
     );
     act(() => vi.advanceTimersByTime(220));
     expect(
-      screen.getByRole("button", { name: "Open draft with 0 projects" }),
+      screen.getByRole("button", {
+        name: "Open Kit Builder, 0 projects in draft",
+      }),
     ).toBeVisible();
   });
 

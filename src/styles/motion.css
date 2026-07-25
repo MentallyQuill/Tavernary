@@ -1,4 +1,10 @@
 @media (prefers-reduced-motion: reduce) {
+  .project-selection-dock,
+  .kit-draft-pill,
+  .kit-builder-rail-status {
+    transform: none !important;
+  }
+
   *,
   *::before,
   *::after {

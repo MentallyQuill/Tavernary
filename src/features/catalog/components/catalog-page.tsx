@@ -10,6 +10,7 @@ import { selectProjects } from "@/features/catalog/catalog-selectors";
 import { useCatalogQuery } from "@/features/catalog/use-catalog-query";
 import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { KitGrid } from "@/features/kits/components/kit-grid";
+import { ProjectSelectionDock } from "@/features/kits/components/project-selection-dock";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { addProject } from "@/features/kits/project-stack-order";
@@ -19,9 +20,7 @@ import {
   serializeKitManifest,
 } from "@/features/kits/submission-transport";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
-import {
-  replaceKitFrontend,
-} from "@/features/kits/kit-project-layout";
+import { replaceKitFrontend } from "@/features/kits/kit-project-layout";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
@@ -49,6 +48,15 @@ function relativeRefresh(timestamp: string, now: string) {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
+function projectCountLabel(count: number) {
+  return `${count} ${count === 1 ? "project" : "projects"}`;
+}
+
+type AddedStatus = {
+  addedCount: number;
+  draftCount: number;
+};
+
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { touchLayout } = useResponsiveCapabilities();
   const { query, setQuery } = useCatalogQuery();
@@ -60,6 +68,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const catalogLayoutRef = useRef<HTMLDivElement>(null);
+  const addedStatusTimerRef = useRef<number | null>(null);
+  const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
@@ -88,6 +98,33 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     onApply: (projectIds) =>
       workspace.applyProjectBatch(projectIds, catalog.projects),
   });
+  const draftAccessStatus = buildState
+    ? addedStatus
+      ? {
+          phase: "added" as const,
+          ...addedStatus,
+        }
+      : {
+          phase: "settled" as const,
+          draftCount: buildState.draft.projectIds.length,
+        }
+    : undefined;
+  const addSelectedProjects = () => {
+    const plan = batchSelection.apply();
+    if (!plan || plan.addedProjectIds.length === 0) return;
+
+    if (addedStatusTimerRef.current !== null) {
+      window.clearTimeout(addedStatusTimerRef.current);
+    }
+    setAddedStatus({
+      addedCount: plan.addedProjectIds.length,
+      draftCount: plan.projectIds.length,
+    });
+    addedStatusTimerRef.current = window.setTimeout(() => {
+      setAddedStatus(null);
+      addedStatusTimerRef.current = null;
+    }, 1600);
+  };
   const catalogDrag = useCatalogProjectDrag({
     editorRef: catalogLayoutRef,
     onDrop: (projectId, target) => {
@@ -114,6 +151,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     );
     return () => document.body.classList.remove("compact-cards");
   }, [query.density, query.mode]);
+
+  useEffect(
+    () => () => {
+      if (addedStatusTimerRef.current !== null) {
+        window.clearTimeout(addedStatusTimerRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const focusSearch = (event: KeyboardEvent) => {
@@ -363,6 +409,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               }
             />
           )}
+          {batchSelection.selectionMode ? (
+            <div className="project-selection-spacer" aria-hidden="true" />
+          ) : null}
         </main>
         <KitBuilderPanel
           state={workspace.state}
@@ -393,8 +442,26 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}
           catalogDragState={catalogDrag.dragState}
+          draftAccessStatus={draftAccessStatus}
+          hidePhoneDraftAccess={batchSelection.selectionMode}
         />
       </div>
+      {batchSelection.selectionMode ? (
+        <ProjectSelectionDock
+          selectedCount={batchSelection.selectedCount}
+          replacementFrontendName={batchSelection.replacementFrontendName}
+          limitReached={batchSelection.limitReached}
+          onCancel={batchSelection.clear}
+          onAdd={addSelectedProjects}
+        />
+      ) : null}
+      <p className="visually-hidden" aria-live="polite" aria-atomic="true">
+        {addedStatus
+          ? `${projectCountLabel(addedStatus.addedCount)} added. ${projectCountLabel(
+              addedStatus.draftCount,
+            )} in draft.`
+          : ""}
+      </p>
       {catalogDrag.dragState ? (
         <div
           className="catalog-project-drag-ghost"
