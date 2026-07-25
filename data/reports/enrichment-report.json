@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T14:59:04.044Z",
+  "updated_at": "2026-07-25T15:00:25.707Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 40,
+  "primary_cursor": 60,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -249,7 +249,27 @@
     "cfigure-lumiverse-shutter": 1,
     "cgstever-statefullore": 1,
     "cha1latte-marinara-avatar-background": 1,
-    "cha1latte-marinara-custom-conversation-bg": 1
+    "cha1latte-marinara-custom-conversation-bg": 1,
+    "cha1latte-marinara-theme-maker": 1,
+    "cha1latte-win95-theme-marinara": 1,
+    "chesswoodspixel-sillytavern-lorebookstickysort": 1,
+    "cierru-st-stepped-thinking": 1,
+    "closuretxt-recast-post-processing": 1,
+    "coneja-chibi-bunnymo": 1,
+    "coneja-chibi-carrotkernel": 1,
+    "coneja-chibi-rabbit-response-team": 1,
+    "coneja-chibi-tunnelvision": 1,
+    "coneja-chibi-vecthare": 1,
+    "daddytorgo-hash-frankengarage": 1,
+    "dangerdaza-dooms-enhancement-suite": 1,
+    "datacat-run-datacat-sillytavern-browser": 1,
+    "decidetto-me-accent-color-changer": 1,
+    "dfaker-st-char-powersearch": 1,
+    "enclave0775-intiface-central-sillytavern-plugin": 1,
+    "enerccio-sillytavern-persistentitemizedprompts": 1,
+    "enerccio-sillytavern-sidequery": 1,
+    "enerccio-sillytavern-stickynote": 1,
+    "eum27-nai-inlay-illustrator": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -611,13 +631,193 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T14:59:04.044Z"
+    },
+    "cha1latte-marinara-theme-maker": {
+      "id": "cha1latte-marinara-theme-maker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "cha1latte-win95-theme-marinara": {
+      "id": "cha1latte-win95-theme-marinara",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "chesswoodspixel-sillytavern-lorebookstickysort": {
+      "id": "chesswoodspixel-sillytavern-lorebookstickysort",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "cierru-st-stepped-thinking": {
+      "id": "cierru-st-stepped-thinking",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "closuretxt-recast-post-processing": {
+      "id": "closuretxt-recast-post-processing",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "coneja-chibi-bunnymo": {
+      "id": "coneja-chibi-bunnymo",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "coneja-chibi-carrotkernel": {
+      "id": "coneja-chibi-carrotkernel",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "coneja-chibi-rabbit-response-team": {
+      "id": "coneja-chibi-rabbit-response-team",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "coneja-chibi-tunnelvision": {
+      "id": "coneja-chibi-tunnelvision",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "coneja-chibi-vecthare": {
+      "id": "coneja-chibi-vecthare",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "daddytorgo-hash-frankengarage": {
+      "id": "daddytorgo-hash-frankengarage",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "dangerdaza-dooms-enhancement-suite": {
+      "id": "dangerdaza-dooms-enhancement-suite",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "datacat-run-datacat-sillytavern-browser": {
+      "id": "datacat-run-datacat-sillytavern-browser",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "decidetto-me-accent-color-changer": {
+      "id": "decidetto-me-accent-color-changer",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "dfaker-st-char-powersearch": {
+      "id": "dfaker-st-char-powersearch",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "enclave0775-intiface-central-sillytavern-plugin": {
+      "id": "enclave0775-intiface-central-sillytavern-plugin",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "enerccio-sillytavern-persistentitemizedprompts": {
+      "id": "enerccio-sillytavern-persistentitemizedprompts",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "enerccio-sillytavern-sidequery": {
+      "id": "enerccio-sillytavern-sidequery",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "enerccio-sillytavern-stickynote": {
+      "id": "enerccio-sillytavern-stickynote",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
+    },
+    "eum27-nai-inlay-illustrator": {
+      "id": "eum27-nai-inlay-illustrator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:00:25.707Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 0,
     "fallback": 0,
-    "source-not-ready": 40,
+    "source-not-ready": 60,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
