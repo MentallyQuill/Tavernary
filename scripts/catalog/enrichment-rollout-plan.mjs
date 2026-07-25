@@ -3,7 +3,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { assertFullRolloutAllowed } from "./enrichment-run-state.mjs";
-import { validateEnrichmentReport } from "./enrichment-report.mjs";
+import {
+  isPreHardeningTerminalFullReport,
+  validateEnrichmentReport,
+} from "./enrichment-report.mjs";
 import { selectEnrichmentRecords } from "./enrich-readmes.mjs";
 
 export function planEnrichmentRollout(input) {
@@ -106,20 +109,7 @@ function validateFullReportForPlanning(fullReport) {
   try {
     return validateEnrichmentReport(fullReport);
   } catch (error) {
-    const isPreHardeningTerminalLedger =
-      error?.message === "terminal full report accounting is invalid" &&
-      fullReport?.schema_version === 1 &&
-      fullReport.mode === "full" &&
-      fullReport.status === "complete" &&
-      fullReport.phase === "complete" &&
-      !Object.hasOwn(fullReport, "deferred_ids") &&
-      !Object.hasOwn(fullReport, "authorized_canary_run_id") &&
-      !Object.hasOwn(fullReport, "publication");
-    if (!isPreHardeningTerminalLedger) throw error;
-    validateEnrichmentReport({
-      ...fullReport,
-      status: "complete-with-errors",
-    });
+    if (!isPreHardeningTerminalFullReport(fullReport)) throw error;
     return null;
   }
 }
