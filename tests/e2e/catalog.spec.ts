@@ -186,6 +186,10 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
 test("uses one focus boundary for the main search", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search projects" });
 
+  await expect(search).toHaveAttribute(
+    "placeholder",
+    "Search projects, capabilities, frontends, or creators…",
+  );
   await search.focus();
 
   await expect(search).toHaveCSS("appearance", "none");
