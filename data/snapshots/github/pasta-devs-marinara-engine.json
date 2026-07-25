@@ -6,6 +6,7 @@
     "owner": "Pasta-Devs",
     "name": "Marinara-Engine",
     "url": "https://github.com/Pasta-Devs/Marinara-Engine",
+    "description": "AI frontend",
     "default_branch": "main",
     "head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29",
     "head_committed_at": "2026-07-23T00:11:48.000Z",
@@ -32,17 +33,17 @@
       false
     ],
     "latest_release_at": "2026-07-23T00:13:35.000Z",
-    "evidence_status": "provisional",
+    "evidence_status": "degraded",
     "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "baseline_attempts": 3
   },
   "community": {
-    "stargazers_count": 521,
+    "stargazers_count": 522,
     "forks_count": 139,
     "subscribers_count": 8,
-    "aggregate": 668
+    "aggregate": 669
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
+  "stale_since": "2026-07-25T05:01:47.527Z"
 }

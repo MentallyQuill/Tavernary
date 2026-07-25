@@ -6,6 +6,7 @@
     "owner": "twitter",
     "name": "twemoji",
     "url": "https://github.com/twitter/twemoji",
+    "description": "Emoji for everyone. https://twemoji.twitter.com/",
     "default_branch": "master",
     "head_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
     "head_committed_at": "2026-07-07T21:41:18.000Z",
@@ -34,7 +35,7 @@
     "latest_release_at": "2022-03-31T03:08:55.000Z",
     "evidence_status": "provisional",
     "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "baseline_attempts": 2
   },
   "community": {
     "stargazers_count": 17707,
@@ -43,6 +44,6 @@
     "aggregate": 19925
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T06:20:47.793Z",
+  "stale_since": "2026-07-25T06:13:32.026Z"
 }

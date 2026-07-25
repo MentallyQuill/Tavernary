@@ -32,6 +32,8 @@ test("pins every first-party action to its resolved commit", async () => {
     "ci",
     "deploy-pages",
     "refresh-catalog",
+    "enrich-catalog",
+    "backfill-repository-identities",
     "triage-submission",
     "triage-kit-submission",
     "apply-kit-submission",
@@ -153,10 +155,31 @@ test("deploys only a verified static export to the Pages environment", async () 
   expect(commands).toContain("npm run check");
   expect(commands).toContain("npm run verify:export");
   expect(JSON.stringify(deploy.jobs)).toContain("github-pages");
+  expect(deploy.on.push["paths-ignore"]).toContain("data/reports/**");
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {
-  const refresh = await workflow("refresh-catalog");
+  const refresh = (await workflow("refresh-catalog")) as {
+    "run-name": string;
+    permissions: Record<string, string>;
+    concurrency: Record<string, unknown>;
+    on: {
+      workflow_dispatch: {
+        inputs: Record<string, { options?: string[]; default?: unknown }>;
+      };
+    };
+    jobs: Record<
+      string,
+      {
+        steps: Array<{
+          id?: string;
+          name?: string;
+          if?: string;
+          run?: string;
+        }>;
+      }
+    >;
+  };
   const source = await readFile(
     resolve(workflowDirectory, "refresh-catalog.yml"),
     "utf8",
@@ -186,6 +209,19 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   ]);
   expect(inputs.batch_size.default).toBe(12);
   expect(inputs).not.toHaveProperty("start_index");
+  expect(refresh["run-name"]).toContain("Baseline queue");
+  const refreshSteps = refresh.jobs.refresh.steps;
+  expect(refreshSteps.map(({ name }) => name)).toEqual(
+    expect.arrayContaining([
+      "Drain baseline queue or refresh selected sources",
+    ]),
+  );
+  const drain = refreshSteps.find(
+    ({ name }) => name === "Drain baseline queue or refresh selected sources",
+  )?.run;
+  expect(drain).toContain("baseline-queue.mjs evaluate");
+  expect(drain).toContain("while (( remaining > 0 )); do");
+  expect(source).not.toContain("workflow run refresh-catalog.yml");
   expect(source).toContain("data/snapshots/github/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).toContain("data/snapshots/github/kits/*.json");

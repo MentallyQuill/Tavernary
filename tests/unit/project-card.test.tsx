@@ -1,10 +1,12 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 
 import { ProjectCard } from "@/features/catalog/components/project-card";
 import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
+
+const originalMatchMedia = window.matchMedia;
 
 function project(
   id: string,
@@ -74,7 +76,33 @@ function project(
 describe("project card", () => {
   test.afterEach(() => {
     cleanup();
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: originalMatchMedia,
+    });
   });
+
+  test.each([
+    ["SillyTavern ReMemory", "ReMemory"],
+    ["sillytavern-Namegen", "Namegen"],
+    ["SillyTavern_Extension Mermaid", "Extension Mermaid"],
+    ["RPG Tracker for SillyTavern", "RPG Tracker for SillyTavern"],
+    ["datacat SillyTavern Browser", "datacat SillyTavern Browser"],
+    ["SillyTavern", "SillyTavern"],
+  ])(
+    "displays %s as %s without changing non-leading occurrences",
+    (name, expectedName) => {
+      render(
+        <ProjectCard
+          project={project("display-name", { name })}
+          now="2026-07-23T00:00:00Z"
+        />,
+      );
+
+      const card = screen.getByRole("link", { name: expectedName });
+      expect(card.querySelector(".card-title")).toHaveTextContent(expectedName);
+    },
+  );
 
   test("does not render per-card Add to Kit controls", () => {
     render(
@@ -277,6 +305,20 @@ describe("project card", () => {
   });
 
   test("shows an empty complete window without inventing a source timestamp", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => ({
+        matches: false,
+        media: "(max-width: 760px)",
+        onchange: null,
+        addListener: () => undefined,
+        removeListener: () => undefined,
+        addEventListener: () => undefined,
+        removeEventListener: () => undefined,
+        dispatchEvent: () => true,
+      }),
+    });
+
     render(
       <ProjectCard
         project={project("inactive-window", {
@@ -306,9 +348,17 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("0/12")).toBeInTheDocument();
+    expect(screen.getByText("Quiet")).toBeVisible();
     expect(
-      screen.getByText("No source activity in the last 12 weeks"),
+      screen.getByLabelText("No source activity in the last 12 weeks"),
     ).toBeInTheDocument();
+
+    fireEvent.pointerEnter(screen.getByText("Quiet"));
+    expect(
+      screen.getByRole("tooltip", {
+        name: "No source activity in the last 12 weeks",
+      }),
+    ).toBeVisible();
   });
 
   test("does not claim no activity before a baseline completes", () => {
@@ -339,7 +389,10 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByText("Source activity baseline pending")).toBeVisible();
+    expect(screen.getByText("Pending")).toBeVisible();
+    expect(
+      screen.getByLabelText("Source activity baseline pending"),
+    ).toBeInTheDocument();
     expect(
       screen.queryByText("No source activity in the last 12 weeks"),
     ).not.toBeInTheDocument();
@@ -352,9 +405,10 @@ describe("project card", () => {
         now="2026-07-24T00:00:00Z"
       />,
     );
+    expect(screen.getByText("Partial")).toBeVisible();
     expect(
-      screen.getByText("Source activity evidence incomplete"),
-    ).toBeVisible();
+      screen.getByLabelText("Source activity evidence incomplete"),
+    ).toBeInTheDocument();
   });
 
   test("renders pending manual-source facts as honest unavailable states", () => {
@@ -384,7 +438,8 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("Manual source")).toBeInTheDocument();
-    expect(screen.getByText("Activity unavailable")).toBeInTheDocument();
+    expect(screen.getByText("No data")).toBeVisible();
+    expect(screen.getByLabelText("Activity unavailable")).toBeInTheDocument();
     expect(screen.getByText("Release unavailable")).toBeInTheDocument();
     expect(screen.getByText("Popularity unavailable")).toBeInTheDocument();
     expect(screen.getByText("Repository size unavailable")).toBeInTheDocument();
@@ -413,7 +468,8 @@ describe("project card", () => {
     );
 
     expect(screen.getByText("Manual source")).toBeInTheDocument();
-    expect(screen.getByText("Activity unavailable")).toBeInTheDocument();
+    expect(screen.getByText("No data")).toBeVisible();
+    expect(screen.getByLabelText("Activity unavailable")).toBeInTheDocument();
     expect(
       screen.queryByText("Popularity unavailable"),
     ).not.toBeInTheDocument();

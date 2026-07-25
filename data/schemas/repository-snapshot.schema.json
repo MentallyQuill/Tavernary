@@ -38,6 +38,9 @@
         "owner": { "type": "string", "minLength": 1 },
         "name": { "type": "string", "minLength": 1 },
         "url": { "type": "string", "format": "uri" },
+        "description": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }]
+        },
         "default_branch": { "type": "string", "minLength": 1 },
         "head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
         "head_committed_at": {

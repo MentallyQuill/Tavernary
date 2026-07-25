@@ -6,6 +6,7 @@
     "owner": "splitclover",
     "name": "rewrite-extension",
     "url": "https://github.com/splitclover/rewrite-extension",
+    "description": null,
     "default_branch": "main",
     "head_sha": "019f5f53a6feb3eb9b8015136d175254954ba7c9",
     "head_committed_at": "2025-09-02T21:46:36.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -43,6 +31,6 @@
     "aggregate": 63
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }

@@ -23,9 +23,20 @@ async function readJsonDirectory(directory) {
 export async function planRepositoryIdentityBackfill({
   records,
   snapshots,
+  projectIds,
   validateCatalog: validate = validateCatalog,
 }) {
-  const result = backfillRepositoryIdentities(records, snapshots);
+  if (projectIds) {
+    const recordIds = new Set(records.map(({ id }) => id));
+    for (const id of projectIds) {
+      if (!recordIds.has(id)) {
+        throw new Error(`unknown project ID: ${id}`);
+      }
+    }
+  }
+  const result = backfillRepositoryIdentities(records, snapshots, {
+    projectIds,
+  });
   const updatedById = new Map(
     result.updated.map((record) => [record.id, record]),
   );
@@ -44,8 +55,29 @@ export async function planRepositoryIdentityBackfill({
   };
 }
 
-function hasWriteFlag(argv = process.argv) {
-  return argv.includes("--write");
+export function parseIdentityBackfillArguments(argv) {
+  const ids = [];
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (argument === "--write") continue;
+    if (argument === "--project-id") {
+      const id = argv[index + 1];
+      if (!id || id.startsWith("--")) {
+        throw new Error("--project-id requires a value");
+      }
+      ids.push(id);
+      index += 1;
+      continue;
+    }
+    throw new Error(`unknown identity backfill argument: ${argument}`);
+  }
+  if (new Set(ids).size !== ids.length) {
+    throw new Error("duplicate project ID");
+  }
+  return {
+    write: argv.includes("--write"),
+    projectIds: ids.length > 0 ? new Set(ids) : null,
+  };
 }
 
 async function loadRecords() {
@@ -73,11 +105,16 @@ async function writeUpdatedRecords(records) {
 }
 
 async function main() {
+  const arguments_ = parseIdentityBackfillArguments(process.argv.slice(2));
   const [records, snapshots] = await Promise.all([
     loadRecords(),
     loadSnapshots(),
   ]);
-  const result = await planRepositoryIdentityBackfill({ records, snapshots });
+  const result = await planRepositoryIdentityBackfill({
+    records,
+    snapshots,
+    projectIds: arguments_.projectIds,
+  });
 
   console.log(
     `Repository identity backfill: changed=${result.summary.changed} skipped=${result.summary.skipped} conflicts=${result.summary.conflicts}`,
@@ -101,7 +138,7 @@ async function main() {
     return;
   }
 
-  if (hasWriteFlag()) {
+  if (arguments_.write) {
     await writeUpdatedRecords(result.updated);
     console.log(`Wrote ${result.updated.length} updated project files`);
   }

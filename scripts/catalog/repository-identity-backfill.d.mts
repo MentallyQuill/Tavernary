@@ -38,4 +38,5 @@ export interface RepositoryIdentityBackfillResult {
 export function backfillRepositoryIdentities(
   records: IdentityRecord[],
   snapshots: IdentitySnapshot[],
+  options?: { projectIds?: ReadonlySet<string> | null },
 ): RepositoryIdentityBackfillResult;

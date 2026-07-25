@@ -1,5 +1,14 @@
 name: Refresh catalog
 
+run-name: >-
+  ${{ github.event_name == 'schedule'
+    && 'Refresh catalog — scheduled incremental'
+    || inputs.mode == 'baseline'
+    && format('Baseline queue — up to {0} projects', inputs.batch_size)
+    || inputs.project_id
+    && format('Refresh catalog — {0}: {1}', inputs.mode, inputs.project_id)
+    || format('Refresh catalog — {0}', inputs.mode) }}
+
 on:
   schedule:
     - cron: "17 7 * * *"
@@ -48,7 +57,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Refresh selected sources
+      - name: Drain baseline queue or refresh selected sources
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,11 +65,28 @@ jobs:
           BATCH_SIZE: ${{ inputs.batch_size || 12 }}
           PROJECT_ID: ${{ inputs.project_id || '' }}
         run: |
-          args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
-          if [[ -n "$PROJECT_ID" ]]; then
-            args+=(--project-id "$PROJECT_ID")
+          refresh_batch() {
+            args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
+            if [[ -n "$PROJECT_ID" ]]; then
+              args+=(--project-id "$PROJECT_ID")
+            fi
+            npm run catalog:refresh -- "${args[@]}"
+          }
+
+          if [[ "$MODE" != "baseline" ]]; then
+            refresh_batch
+            exit 0
           fi
-          npm run catalog:refresh -- "${args[@]}"
+
+          remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
+          while (( remaining > 0 )); do
+            before="$remaining"
+            refresh_batch
+            node scripts/catalog/baseline-queue.mjs evaluate \
+              --before "$before" \
+              --manifest data/snapshots/github-refresh.json
+            remaining="$(jq -r '.counts.provisional' data/snapshots/github-refresh.json)"
+          done
       - name: Refresh Kit community support
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -106,22 +132,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-pages.yml --ref main
-      - name: Continue baseline queue
-        if: ${{ success() && inputs.mode == 'baseline' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BATCH_SIZE: ${{ inputs.batch_size || 12 }}
-        shell: bash
-        run: |
-          # counts.provisional is derived from current snapshot evidence_status values.
-          remaining="$(
-            node -e "const fs=require('fs');const value=JSON.parse(fs.readFileSync('data/snapshots/github-refresh.json','utf8')).counts.provisional;process.stdout.write(String(value))"
-          )"
-          if (( remaining > 0 )); then
-            gh workflow run refresh-catalog.yml \
-              --ref main \
-              -f mode=baseline \
-              -f batch_size="$BATCH_SIZE"
-          else
-            echo "Baseline queue complete."
-          fi

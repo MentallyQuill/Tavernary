@@ -125,6 +125,7 @@ function repositoryFacts(observation) {
     owner: observation.owner,
     name: observation.name,
     url: observation.url,
+    description: observation.description,
     default_branch: observation.defaultBranch,
     head_sha: observation.headSha,
     head_committed_at: observation.headCommittedAt,

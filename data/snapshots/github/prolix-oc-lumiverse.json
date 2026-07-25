@@ -6,6 +6,7 @@
     "owner": "prolix-oc",
     "name": "Lumiverse",
     "url": "https://github.com/prolix-oc/Lumiverse",
+    "description": "A self-host AI chat frontend with a rich ecosystem and heavy emphasis on optimization, built from the ground up in TypeScript + Bun.",
     "default_branch": "main",
     "head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69",
     "head_committed_at": "2026-07-19T01:49:32.000Z",
@@ -32,17 +33,17 @@
       false
     ],
     "latest_release_at": "2026-07-19T01:52:36.000Z",
-    "evidence_status": "provisional",
+    "evidence_status": "degraded",
     "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "baseline_attempts": 3
   },
   "community": {
-    "stargazers_count": 149,
+    "stargazers_count": 150,
     "forks_count": 44,
     "subscribers_count": 1,
-    "aggregate": 194
+    "aggregate": 195
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
-  "stale_since": null
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
+  "stale_since": "2026-07-25T05:01:47.527Z"
 }
