@@ -15,25 +15,23 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-01T23:13:25.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T23:13:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-08T06:01:26.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": "2026-07-01T23:13:29.000Z",
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +40,11 @@
     "subscribers_count": 0,
     "aggregate": 2
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
   "stale_since": null
 }

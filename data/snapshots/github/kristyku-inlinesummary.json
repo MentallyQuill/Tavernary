@@ -15,25 +15,33 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-10T13:19:19.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-10T13:19:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T08:49:32.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T11:03:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-20T07:48:03.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +50,11 @@
     "subscribers_count": 2,
     "aggregate": 63
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "license.md"
+  },
+  "refreshed_at": "2026-07-25T03:06:18.863Z",
   "stale_since": null
 }

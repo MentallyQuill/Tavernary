@@ -1,172 +1,172 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T02:56:16.026Z",
-  "completed_at": "2026-07-25T03:04:38.804Z",
+  "started_at": "2026-07-25T03:06:18.863Z",
+  "completed_at": "2026-07-25T03:19:03.307Z",
   "counts": {
     "total": 24,
     "checked": 24,
     "changed": 24,
     "unchanged": 0,
-    "provisional": 114,
+    "provisional": 95,
     "degraded": 2,
     "unavailable": 0,
-    "failed": 2,
+    "failed": 5,
     "compared": 0,
-    "baseline": 22,
+    "baseline": 19,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4985,
+    "graphql_remaining": 4984,
     "rest_requests": 0
   },
-  "duration_ms": 502778,
+  "duration_ms": 764444,
   "project_timings": [
-    {
-      "project_id": "gentleburr-sillytavern-smartimport",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "getfroggyhoe-universal-immersion-engine",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "ghostd93-bettersimtracker",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "giglio256-sillytavern-gigliomachine",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "gu-gu-gu-gu-gu-weather-calendar-assistant",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "hans123m12m1-lumiverse-notehaven",
-      "outcome": "baseline",
-      "duration_ms": 500480,
-      "error_code": null
-    },
-    {
-      "project_id": "heikouidou-chara-color-filter",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "helpfultoolscompany-lorevault-extension",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "hexicy-st-characterpreview",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "hibanan-css-default-scoped",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "hibanan-disable-global-lore",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "hibanan-extension-quietprofileselector",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "iaminvisibru-marinara-janitorai",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
     {
       "project_id": "icefog72-sillytavern-everytextlineeditor",
       "outcome": "failed",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "icefog72-sillytavern-probablytoomanytabs",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "ikarusv-ikarusautoimage",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
-    },
-    {
-      "project_id": "inspectorcaracal-sillytavern-rememory",
-      "outcome": "baseline",
-      "duration_ms": 500481,
-      "error_code": null
     },
     {
       "project_id": "j-dandelion-lumiverse-canvas",
       "outcome": "failed",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "jake9000-me-nord",
+      "project_id": "kristyku-inlinesummary",
       "outcome": "baseline",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": null
     },
     {
-      "project_id": "japkozjad-st-action-pickers",
+      "project_id": "kurohomeless-sillytavern-token-and-cost-statistics",
       "outcome": "baseline",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": null
     },
     {
-      "project_id": "japolino-inlay-illustrator",
+      "project_id": "leandrojofre-sillytavern-presence",
       "outcome": "baseline",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": null
     },
     {
-      "project_id": "jeka201216-silly-map",
+      "project_id": "leandrojofre-sillytavern-stat-us-maximus",
       "outcome": "baseline",
-      "duration_ms": 500481,
+      "duration_ms": 762403,
       "error_code": null
     },
     {
-      "project_id": "kenhito-marinara-rpg-extension",
+      "project_id": "lenanderson-sillytavern-videobackgrounds",
       "outcome": "baseline",
-      "duration_ms": 500482,
+      "duration_ms": 762403,
       "error_code": null
     },
     {
-      "project_id": "kikyoicecream-next-choices",
+      "project_id": "lenanderson-sillytavern-worldinfoinfo",
       "outcome": "baseline",
-      "duration_ms": 500482,
+      "duration_ms": 762403,
       "error_code": null
+    },
+    {
+      "project_id": "lithiumwaves-danganronpa-sillytavern",
+      "outcome": "failed",
+      "duration_ms": 762403,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "loggo-presets-sillytavern-spellbook",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "loggo-presets-typingindicatorplus",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "luisbrandao-sillytavern-tracker",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "lukasstraub2-sillytavern-imagepdf",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "lukathehero-sillytavern-claudesubscription",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "lukathehero-sillytavern-personatools",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "maiky93-image-generation-suite",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "mangkoodkung-another-universe",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "manjove1-forged-by-primus-portfolio",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "maxime-fleury-st-card-editor",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "maxipawlowski-story-orchestrator",
+      "outcome": "failed",
+      "duration_ms": 762403,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "mechamarmot-sillytavern-localimage",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "mechamarmot-sillytavern-mazemaster",
+      "outcome": "baseline",
+      "duration_ms": 762403,
+      "error_code": null
+    },
+    {
+      "project_id": "mekineer-com-openalma",
+      "outcome": "baseline",
+      "duration_ms": 762404,
+      "error_code": null
+    },
+    {
+      "project_id": "mentallyquill-directive",
+      "outcome": "failed",
+      "duration_ms": 762404,
+      "error_code": "PROJECT_REFRESH_FAILED"
     }
   ],
   "snapshot_changes": true,
