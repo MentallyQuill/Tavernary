@@ -9,137 +9,197 @@ import {
   type RefObject,
 } from "react";
 
-export type DragState = {
+import {
+  exceedsDragThreshold,
+  isOutsideEditor,
+  stackTargetIndex,
+  type DragRect,
+  type Point,
+} from "@/features/kits/project-stack-drag-geometry";
+
+export type ProjectStackDragState = {
+  phase: "pressed" | "reorder" | "remove";
   projectId: string;
   pointerId: number;
-  overProjectId: string | null;
-  placement: "before" | "after" | null;
+  point: Point;
+  sourceRect: DragRect | null;
+  sourceIndex: number;
+  targetIndex: number;
+  reorderable: boolean;
 };
 
-function placeProject(
-  projectIds: string[],
-  projectId: string,
-  overProjectId: string,
-  placement: "before" | "after",
+type DragSession = ProjectStackDragState & {
+  origin: Point;
+  editorRect: DragRect | null;
+  handle: HTMLElement;
+  captured: boolean;
+};
+
+function reorderProject(
+  projectIds: readonly string[],
+  sourceIndex: number,
+  targetIndex: number,
 ) {
-  if (projectId === overProjectId) return projectIds;
-  const remaining = projectIds.filter((id) => id !== projectId);
-  const targetIndex = remaining.indexOf(overProjectId);
-  if (targetIndex < 0 || remaining.length === projectIds.length) {
+  if (sourceIndex < 0 || targetIndex < 0 || sourceIndex === targetIndex) {
     return projectIds;
   }
-  const insertionIndex = targetIndex + (placement === "after" ? 1 : 0);
-  remaining.splice(insertionIndex, 0, projectId);
-  return remaining.every((id, index) => id === projectIds[index])
-    ? projectIds
-    : remaining;
+  const next = [...projectIds];
+  const [projectId] = next.splice(sourceIndex, 1);
+  next.splice(targetIndex, 0, projectId);
+  return next;
+}
+
+function rectOf(element: Element): DragRect {
+  const rect = element.getBoundingClientRect();
+  return {
+    top: rect.top,
+    right: rect.right,
+    bottom: rect.bottom,
+    left: rect.left,
+    width: rect.width,
+    height: rect.height,
+  };
 }
 
 export function useProjectStackDrag({
   projectIds,
+  editorRef,
+  stackRef,
+  touchLayout,
   onReorder,
-  scrollContainerRef,
+  onRemove,
 }: {
   projectIds: string[];
+  editorRef: RefObject<HTMLElement | null>;
+  stackRef: RefObject<HTMLElement | null>;
+  touchLayout: boolean;
   onReorder: (projectIds: string[]) => void;
-  scrollContainerRef: RefObject<HTMLElement | null>;
+  onRemove: (projectId: string) => void;
 }) {
-  const [dragState, setDragState] = useState<DragState | null>(null);
-  const dragRef = useRef<DragState | null>(null);
-  const handleRef = useRef<HTMLElement | null>(null);
-  const animationRef = useRef<number | null>(null);
-  const pointerYRef = useRef(0);
+  const [dragState, setDragState] = useState<ProjectStackDragState | null>(
+    null,
+  );
+  const sessionRef = useRef<DragSession | null>(null);
   const cleanupRef = useRef<() => void>(() => undefined);
 
-  const stopAutoscroll = useCallback(() => {
-    if (animationRef.current !== null) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-  }, []);
-
-  const startAutoscroll = useCallback(() => {
-    stopAutoscroll();
-    const tick = () => {
-      const container = scrollContainerRef.current;
-      if (container && dragRef.current) {
-        const bounds = container.getBoundingClientRect();
-        const distanceTop = pointerYRef.current - bounds.top;
-        const distanceBottom = bounds.bottom - pointerYRef.current;
-        if (distanceTop < 40) container.scrollBy({ top: -10 });
-        else if (distanceBottom < 40) container.scrollBy({ top: 10 });
-      }
-      animationRef.current = requestAnimationFrame(tick);
-    };
-    animationRef.current = requestAnimationFrame(tick);
-  }, [scrollContainerRef, stopAutoscroll]);
-
   const begin = useCallback(
-    (projectId: string, event: ReactPointerEvent<HTMLElement>) => {
+    (
+      projectId: string,
+      event: ReactPointerEvent<HTMLElement>,
+      { reorderable }: { reorderable: boolean },
+    ) => {
       if (event.button !== 0) return;
-      const initial: DragState = {
+      cleanupRef.current();
+
+      const sourceIndex = projectIds.indexOf(projectId);
+      const point = { x: event.clientX, y: event.clientY };
+      const initial: DragSession = {
+        phase: "pressed",
         projectId,
         pointerId: event.pointerId,
-        overProjectId: null,
-        placement: null,
+        point,
+        sourceRect: null,
+        sourceIndex,
+        targetIndex: sourceIndex,
+        reorderable,
+        origin: point,
+        editorRect: null,
+        handle: event.currentTarget,
+        captured: false,
       };
-      dragRef.current = initial;
-      handleRef.current = event.currentTarget;
-      pointerYRef.current = event.clientY;
-      event.currentTarget.setPointerCapture(event.pointerId);
+      sessionRef.current = initial;
       setDragState(initial);
 
       const cleanup = () => {
-        stopAutoscroll();
-        const handle = handleRef.current;
-        const pointerId = dragRef.current?.pointerId;
-        if (handle && pointerId !== undefined) {
-          try {
-            handle.releasePointerCapture(pointerId);
-          } catch {
-            // Capture may already be released by the browser.
-          }
-        }
+        const session = sessionRef.current;
+        sessionRef.current = null;
         window.removeEventListener("pointermove", move);
         window.removeEventListener("pointerup", finish);
         window.removeEventListener("pointercancel", cancel);
         window.removeEventListener("keydown", keydown);
-        handle?.removeEventListener("lostpointercapture", cancel);
-        dragRef.current = null;
-        handleRef.current = null;
+        session?.handle.removeEventListener("lostpointercapture", cancel);
+        if (session?.captured) {
+          try {
+            session.handle.releasePointerCapture(session.pointerId);
+          } catch {
+            // The browser may already have released capture.
+          }
+        }
         setDragState(null);
       };
+
       const move = (pointerEvent: PointerEvent) => {
-        const current = dragRef.current;
+        const current = sessionRef.current;
         if (!current || pointerEvent.pointerId !== current.pointerId) return;
-        pointerYRef.current = pointerEvent.clientY;
-        const target = document
-          .elementFromPoint(pointerEvent.clientX, pointerEvent.clientY)
-          ?.closest<HTMLElement>("[data-project-id]");
-        const overProjectId = target?.dataset.projectId ?? null;
-        const placement: DragState["placement"] =
-          target && overProjectId && overProjectId !== current.projectId
-            ? pointerEvent.clientY <
-              target.getBoundingClientRect().top +
-                target.getBoundingClientRect().height / 2
-              ? "before"
-              : "after"
+        const nextPoint = {
+          x: pointerEvent.clientX,
+          y: pointerEvent.clientY,
+        };
+        if (
+          current.phase === "pressed" &&
+          !exceedsDragThreshold(current.origin, nextPoint)
+        ) {
+          return;
+        }
+
+        if (!current.captured) {
+          current.handle.setPointerCapture(current.pointerId);
+          current.captured = true;
+          current.editorRect = editorRef.current
+            ? rectOf(editorRef.current)
             : null;
-        const next = { ...current, overProjectId, placement };
-        dragRef.current = next;
+          const source = current.handle.closest(
+            "[data-project-id], .kit-frontend-slot",
+          );
+          current.sourceRect = source ? rectOf(source) : null;
+        }
+
+        const outside =
+          !touchLayout &&
+          current.editorRect !== null &&
+          isOutsideEditor(nextPoint, current.editorRect);
+        let phase: ProjectStackDragState["phase"] = outside
+          ? "remove"
+          : current.reorderable
+            ? "reorder"
+            : "pressed";
+        let targetIndex = current.sourceIndex;
+
+        if (phase === "reorder") {
+          const rows = Array.from(
+            stackRef.current?.querySelectorAll<HTMLElement>(
+              "[data-project-id]",
+            ) ?? [],
+          ).map((row, index) => ({ index, rect: rectOf(row) }));
+          targetIndex = stackTargetIndex(
+            pointerEvent.clientY,
+            rows,
+            current.sourceIndex,
+          );
+        }
+
+        const next: DragSession = {
+          ...current,
+          phase,
+          point: nextPoint,
+          targetIndex,
+        };
+        sessionRef.current = next;
         setDragState(next);
       };
+
       const finish = (pointerEvent: PointerEvent) => {
-        const current = dragRef.current;
+        const current = sessionRef.current;
         if (!current || pointerEvent.pointerId !== current.pointerId) return;
-        if (current.overProjectId && current.placement) {
-          const reordered = placeProject(
+        if (current.phase === "remove") {
+          onRemove(current.projectId);
+        } else if (current.phase === "reorder") {
+          const reordered = reorderProject(
             projectIds,
-            current.projectId,
-            current.overProjectId,
-            current.placement,
+            current.sourceIndex,
+            current.targetIndex,
           );
-          if (reordered !== projectIds) onReorder(reordered);
+          if (reordered !== projectIds) onReorder([...reordered]);
         }
         cleanup();
       };
@@ -147,15 +207,15 @@ export function useProjectStackDrag({
       const keydown = (keyboardEvent: KeyboardEvent) => {
         if (keyboardEvent.key === "Escape") cleanup();
       };
+
       cleanupRef.current = cleanup;
       window.addEventListener("pointermove", move);
       window.addEventListener("pointerup", finish);
       window.addEventListener("pointercancel", cancel);
       window.addEventListener("keydown", keydown);
       event.currentTarget.addEventListener("lostpointercapture", cancel);
-      startAutoscroll();
     },
-    [onReorder, projectIds, startAutoscroll, stopAutoscroll],
+    [editorRef, onRemove, onReorder, projectIds, stackRef, touchLayout],
   );
 
   useEffect(() => () => cleanupRef.current(), []);

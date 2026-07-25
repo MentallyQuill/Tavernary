@@ -402,9 +402,7 @@ describe("Kit builder controls", () => {
     const { container } = render(<Harness />);
     const rowIds = () =>
       Array.from(
-        container.querySelectorAll(
-          ".kit-builder-stack [data-project-id]",
-        ),
+        container.querySelectorAll(".kit-builder-stack [data-project-id]"),
       ).map((row) => row.getAttribute("data-project-id"));
 
     fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
@@ -433,9 +431,7 @@ describe("Kit builder controls", () => {
 
     render(<Harness />);
     await user.click(screen.getByRole("button", { name: "Remove memory" }));
-    expect(
-      screen.getByRole("button", { name: "Remove preset" }),
-    ).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Remove preset" })).toHaveFocus();
   });
 
   test("renders Add to Kit as a sibling of the project link", async () => {
@@ -484,10 +480,9 @@ describe("Kit builder controls", () => {
     expect(onAdd).toHaveBeenCalledWith("frontend-b");
   });
 
-  test("captures pointer drag from handles, cancels with Escape, and commits once", () => {
+  test("activates a stack drag only after four pixels of movement", () => {
     const onUpdate = vi.fn();
     const setPointerCapture = vi.fn();
-    const releasePointerCapture = vi.fn();
     Object.defineProperties(HTMLElement.prototype, {
       setPointerCapture: {
         configurable: true,
@@ -495,7 +490,7 @@ describe("Kit builder controls", () => {
       },
       releasePointerCapture: {
         configurable: true,
-        value: releasePointerCapture,
+        value: vi.fn(),
       },
     });
     render(
@@ -510,47 +505,152 @@ describe("Kit builder controls", () => {
     const memoryHandle = screen.getByRole("button", {
       name: "Drag memory to reorder or remove",
     });
-    const presetRow = screen
-      .getAllByText("preset")[0]
-      .closest("[data-project-id]") as HTMLElement;
-    Object.defineProperty(document, "elementFromPoint", {
-      configurable: true,
-      value: vi.fn().mockReturnValue(presetRow),
-    });
-    vi.spyOn(presetRow, "getBoundingClientRect").mockReturnValue({
-      x: 0,
-      y: 100,
-      top: 100,
-      left: 0,
-      right: 100,
-      bottom: 140,
-      width: 100,
-      height: 40,
-      toJSON: () => ({}),
-    });
 
-    fireEvent.pointerDown(memoryHandle, { pointerId: 7, clientY: 110 });
-    expect(setPointerCapture).toHaveBeenCalledWith(7);
+    fireEvent.pointerDown(memoryHandle, {
+      pointerId: 7,
+      clientX: 10,
+      clientY: 10,
+    });
+    expect(setPointerCapture).not.toHaveBeenCalled();
+    expect(document.querySelector(".kit-drag-ghost")).toBeNull();
     fireEvent.pointerMove(window, {
       pointerId: 7,
-      clientX: 5,
-      clientY: 130,
+      clientX: 13,
+      clientY: 10,
     });
-    fireEvent.keyDown(window, { key: "Escape" });
-    expect(onUpdate).not.toHaveBeenCalled();
-
-    fireEvent.pointerDown(memoryHandle, { pointerId: 8, clientY: 110 });
+    expect(setPointerCapture).not.toHaveBeenCalled();
+    expect(document.querySelector(".kit-drag-ghost")).toBeNull();
     fireEvent.pointerMove(window, {
-      pointerId: 8,
-      clientX: 5,
-      clientY: 130,
+      pointerId: 7,
+      clientX: 14,
+      clientY: 10,
     });
-    fireEvent.pointerUp(window, { pointerId: 8 });
-    fireEvent.pointerUp(window, { pointerId: 8 });
-    expect(onUpdate).toHaveBeenCalledTimes(1);
+    expect(setPointerCapture).toHaveBeenCalledWith(7);
+    expect(document.querySelector(".kit-drag-ghost")).not.toBeNull();
+    expect(onUpdate).not.toHaveBeenCalled();
+  });
+
+  test("arms desktop drag-off removal outside the editor and commits on release", () => {
+    const onUpdate = vi.fn();
+    Object.defineProperties(HTMLElement.prototype, {
+      setPointerCapture: { configurable: true, value: vi.fn() },
+      releasePointerCapture: { configurable: true, value: vi.fn() },
+    });
+    const { container } = render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={onUpdate}
+        onSubmit={() => undefined}
+      />,
+    );
+    const editor = container.querySelector(".kit-builder") as HTMLElement;
+    vi.spyOn(editor, "getBoundingClientRect").mockReturnValue({
+      x: 0,
+      y: 0,
+      top: 0,
+      left: 0,
+      right: 100,
+      bottom: 100,
+      width: 100,
+      height: 100,
+      toJSON: () => ({}),
+    });
+    const handle = screen.getByRole("button", {
+      name: "Drag memory to reorder or remove",
+    });
+
+    fireEvent.pointerDown(handle, {
+      pointerId: 9,
+      clientX: 50,
+      clientY: 50,
+    });
+    fireEvent.pointerMove(window, {
+      pointerId: 9,
+      clientX: 101,
+      clientY: 50,
+    });
+    expect(screen.getByText("Release to remove")).toBeVisible();
+    expect(editor).toHaveAttribute("data-drag-intent", "remove");
+
+    fireEvent.pointerUp(window, {
+      pointerId: 9,
+      clientX: 101,
+      clientY: 50,
+    });
+    expect(onUpdate).toHaveBeenCalledOnce();
+    expect(onUpdate).toHaveBeenCalledWith({
+      projectIds: ["frontend", "preset"],
+    });
+  });
+
+  test("reorders from the focused handle with Alt and arrow keys", () => {
+    const onUpdate = vi.fn();
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={onUpdate}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    fireEvent.keyDown(
+      screen.getByRole("button", {
+        name: "Drag memory to reorder or remove",
+      }),
+      { key: "ArrowDown", altKey: true },
+    );
     expect(onUpdate).toHaveBeenCalledWith({
       projectIds: ["frontend", "preset", "memory"],
     });
-    expect(releasePointerCapture).toHaveBeenCalled();
+  });
+
+  test("renders a source-sized drag ghost outside the editor", () => {
+    Object.defineProperties(HTMLElement.prototype, {
+      setPointerCapture: { configurable: true, value: vi.fn() },
+      releasePointerCapture: { configurable: true, value: vi.fn() },
+    });
+    const { container } = render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+    const handle = screen.getByRole("button", {
+      name: "Drag memory to reorder or remove",
+    });
+    const row = handle.closest("[data-project-id]") as HTMLElement;
+    vi.spyOn(row, "getBoundingClientRect").mockReturnValue({
+      x: 10,
+      y: 20,
+      top: 20,
+      left: 10,
+      right: 210,
+      bottom: 80,
+      width: 200,
+      height: 60,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.pointerDown(handle, {
+      pointerId: 11,
+      clientX: 20,
+      clientY: 30,
+    });
+    fireEvent.pointerMove(window, {
+      pointerId: 11,
+      clientX: 24,
+      clientY: 30,
+    });
+
+    expect(container.querySelector(".kit-drag-ghost")).toBeNull();
+    const ghost = document.body.querySelector(".kit-drag-ghost") as HTMLElement;
+    expect(ghost).toHaveStyle({ width: "200px", height: "60px" });
   });
 });

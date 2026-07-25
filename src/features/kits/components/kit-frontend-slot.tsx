@@ -5,16 +5,18 @@ import type { PointerEventHandler } from "react";
 export function KitFrontendSlot({
   project,
   touchLayout,
+  dragging,
   onRemove,
   onDragStart,
 }: {
   project: CatalogProject | null;
   touchLayout: boolean;
+  dragging: boolean;
   onRemove: () => void;
   onDragStart: PointerEventHandler<HTMLButtonElement>;
 }) {
   return (
-    <div className="kit-frontend-slot">
+    <div className={`kit-frontend-slot${dragging ? " dragging" : ""}`}>
       {project ? (
         <>
           {!touchLayout ? (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import {
@@ -45,12 +46,8 @@ export function KitBuilder({
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const editorRef = useRef<HTMLFormElement>(null);
   const stackRef = useRef<HTMLOListElement>(null);
-  const drag = useProjectStackDrag({
-    projectIds: draft.projectIds,
-    onReorder: (projectIds) => onUpdate({ projectIds }),
-    scrollContainerRef: stackRef,
-  });
   const projectsById = new Map(
     projects.map((project) => [project.id, project]),
   );
@@ -58,6 +55,58 @@ export function KitBuilder({
     draft.projectIds,
     projects,
   );
+  const removeImmediately = (projectId: string) => {
+    const removedStackIndex = stackProjectIds.indexOf(projectId);
+    onUpdate({ projectIds: removeProject(draft.projectIds, projectId) });
+    queueMicrotask(() => {
+      const rows = Array.from(
+        stackRef.current?.querySelectorAll<HTMLElement>("[data-project-id]") ??
+          [],
+      );
+      const targetRow =
+        removedStackIndex >= 0
+          ? rows[Math.min(removedStackIndex, rows.length - 1)]
+          : rows[0];
+      targetRow
+        ?.querySelector<HTMLButtonElement>(".kit-builder-remove")
+        ?.focus();
+    });
+  };
+  const reorderFromKeyboard = (
+    projectId: string,
+    index: number,
+    direction: -1 | 1,
+  ) => {
+    const targetIndex = Math.max(
+      0,
+      Math.min(stackProjectIds.length - 1, index + direction),
+    );
+    if (targetIndex === index) return;
+    const nextStack = [...stackProjectIds];
+    const [moved] = nextStack.splice(index, 1);
+    nextStack.splice(targetIndex, 0, moved);
+    onUpdate({
+      projectIds: frontendId ? [frontendId, ...nextStack] : nextStack,
+    });
+    queueMicrotask(() => {
+      const row = Array.from(
+        stackRef.current?.querySelectorAll<HTMLElement>("[data-project-id]") ??
+          [],
+      ).find((candidate) => candidate.dataset.projectId === projectId);
+      row?.querySelector<HTMLElement>(".kit-drag-handle")?.focus();
+    });
+  };
+  const drag = useProjectStackDrag({
+    projectIds: stackProjectIds,
+    editorRef,
+    stackRef,
+    touchLayout,
+    onReorder: (projectIds) =>
+      onUpdate({
+        projectIds: frontendId ? [frontendId, ...projectIds] : projectIds,
+      }),
+    onRemove: (projectId) => removeImmediately(projectId),
+  });
   const validation = validateKitDraft(draft, projects);
   const duplicateUnchanged =
     originalProjectIds.length > 0 &&
@@ -83,27 +132,13 @@ export function KitBuilder({
   );
   const visibleErrors = submitAttempted ? compositionErrors : [];
 
-  const removeImmediately = (projectId: string) => {
-    const removedStackIndex = stackProjectIds.indexOf(projectId);
-    onUpdate({ projectIds: removeProject(draft.projectIds, projectId) });
-    queueMicrotask(() => {
-      const rows = Array.from(
-        stackRef.current?.querySelectorAll<HTMLElement>("[data-project-id]") ??
-          [],
-      );
-      const targetRow =
-        removedStackIndex >= 0
-          ? rows[Math.min(removedStackIndex, rows.length - 1)]
-          : rows[0];
-      targetRow
-        ?.querySelector<HTMLButtonElement>(".kit-builder-remove")
-        ?.focus();
-    });
-  };
-
   return (
     <form
+      ref={editorRef}
       className="kit-builder"
+      data-drag-intent={
+        drag.dragState?.phase === "remove" ? "remove" : undefined
+      }
       onSubmit={(event) => {
         event.preventDefault();
         if (errors.length === 0) {
@@ -177,11 +212,17 @@ export function KitBuilder({
         <KitFrontendSlot
           project={frontendId ? (projectsById.get(frontendId) ?? null) : null}
           touchLayout={touchLayout}
+          dragging={
+            drag.dragState?.projectId === frontendId &&
+            drag.dragState.phase === "remove"
+          }
           onRemove={() => {
             if (frontendId) removeImmediately(frontendId);
           }}
           onDragStart={(event) => {
-            if (frontendId) drag.begin(frontendId, event);
+            if (frontendId) {
+              drag.begin(frontendId, event, { reorderable: false });
+            }
           }}
         />
       </section>
@@ -190,30 +231,59 @@ export function KitBuilder({
         className="kit-builder-stack"
         aria-label="Ordered Kit projects"
       >
-        {stackProjectIds.map((projectId) => {
+        {stackProjectIds.map((projectId, index) => {
           const project = projectsById.get(projectId);
           return project ? (
             <KitBuilderRow
               key={projectId}
               project={project}
               onRemove={removeImmediately}
-              onDragStart={(event) => drag.begin(projectId, event)}
-              dragging={drag.dragState?.projectId === projectId}
-              placement={
-                drag.dragState?.overProjectId === projectId
-                  ? drag.dragState.placement
-                  : null
+              onDragStart={(event) =>
+                drag.begin(projectId, event, { reorderable: true })
               }
+              onDragKeyDown={(event) => {
+                if (
+                  !event.altKey ||
+                  (event.key !== "ArrowUp" && event.key !== "ArrowDown")
+                ) {
+                  return;
+                }
+                event.preventDefault();
+                reorderFromKeyboard(
+                  projectId,
+                  index,
+                  event.key === "ArrowUp" ? -1 : 1,
+                );
+              }}
+              dragging={
+                drag.dragState?.projectId === projectId &&
+                drag.dragState.phase !== "pressed"
+              }
+              placement={null}
               touchLayout={touchLayout}
             />
           ) : null;
         })}
       </ol>
-      {drag.dragState ? (
-        <div className="kit-drag-ghost" aria-hidden="true">
-          {projectsById.get(drag.dragState.projectId)?.name}
-        </div>
-      ) : null}
+      {drag.dragState && drag.dragState.phase !== "pressed"
+        ? createPortal(
+            <div
+              className="kit-drag-ghost"
+              aria-hidden="true"
+              style={{
+                width: drag.dragState.sourceRect?.width,
+                height: drag.dragState.sourceRect?.height,
+                transform: `translate3d(${drag.dragState.point.x}px, ${drag.dragState.point.y}px, 0)`,
+              }}
+            >
+              {projectsById.get(drag.dragState.projectId)?.name}
+              {drag.dragState.phase === "remove" ? (
+                <span>Release to remove</span>
+              ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
       {visibleErrors.length > 0 ? (
         <ul className="kit-builder-errors" aria-label="Kit validation">
           {visibleErrors.map((error) => (

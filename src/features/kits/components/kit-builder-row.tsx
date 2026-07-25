@@ -1,11 +1,12 @@
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import type { PointerEventHandler } from "react";
+import type { KeyboardEventHandler, PointerEventHandler } from "react";
 
 export function KitBuilderRow({
   project,
   onRemove,
   onDragStart,
+  onDragKeyDown,
   dragging,
   placement,
   touchLayout,
@@ -13,6 +14,7 @@ export function KitBuilderRow({
   project: CatalogProject;
   onRemove: (projectId: string) => void;
   onDragStart: PointerEventHandler<HTMLButtonElement>;
+  onDragKeyDown: KeyboardEventHandler<HTMLButtonElement>;
   dragging: boolean;
   placement: "before" | "after" | null;
   touchLayout: boolean;
@@ -27,6 +29,7 @@ export function KitBuilderRow({
         className="kit-drag-handle"
         aria-label={`Drag ${project.name} to ${touchLayout ? "reorder" : "reorder or remove"}`}
         onPointerDown={onDragStart}
+        onKeyDown={onDragKeyDown}
       >
         <CategoryIcon name="drag-handle" />
       </button>
