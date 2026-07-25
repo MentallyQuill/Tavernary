@@ -74,6 +74,11 @@ test("enrichment stages only registry records and report after the command", asy
   const document = parse(text) as {
     jobs: Record<string, { steps: Array<{ run?: string }> }>;
     concurrency: { group: string };
+    on: {
+      workflow_dispatch: {
+        inputs: Record<string, { options?: string[]; default?: unknown }>;
+      };
+    };
   };
   const commands = Object.values(document.jobs).flatMap((job) =>
     job.steps.flatMap((step) => (step.run ? [step.run] : [])),
@@ -81,8 +86,26 @@ test("enrichment stages only registry records and report after the command", asy
   expect(text).toContain("data/registry/projects/*.json");
   expect(text).toContain("data/reports/enrichment-report.json");
   expect(text).not.toMatch(/git add .*data\/snapshots/);
-  expect(text).not.toContain("format('--project-id");
-  expect(text).toContain('args+=(--project-id "$PROJECT_ID")');
+  expect(document.on.workflow_dispatch.inputs.mode.options).toEqual([
+    "preflight",
+    "canary",
+    "start",
+    "resume",
+  ]);
+  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
+    "start_index",
+  );
+  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("force");
+  expect(text).toContain('args+=(--project-id "$project_id")');
+  expect(text).toContain("while IFS= read -r project_id");
+  expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
+  expect(text).toContain("npm run catalog:enrich -- --mode preflight");
+  expect(text).toContain('"$MODE" == "canary"');
+  expect(text).toContain('[[ "$run_mode" == "full"');
+  expect(text).toContain("workflow run enrich-catalog.yml");
+  expect(text).not.toContain("workflow run deploy-pages.yml");
+  expect(text).toContain("registry_changed=true");
+  expect(text).toContain("gh run watch");
   expect(commands.join("\n")).toContain("npm run check");
   expect(commands.join("\n").indexOf("npm run catalog:enrich")).toBeLessThan(
     commands.join("\n").indexOf("git add data/registry/projects"),
@@ -95,4 +118,27 @@ test("enrichment stages only registry records and report after the command", asy
       }
     ).concurrency.group,
   ).toBe("catalog-refresh");
+});
+
+test("identity backfill targets optional IDs and owns only repository identity writes", async () => {
+  const text = await workflowSource("backfill-repository-identities");
+  const document = parse(text) as {
+    concurrency: { group: string };
+    jobs: Record<string, { steps: Array<{ run?: string }> }>;
+  };
+  const commands = Object.values(document.jobs)
+    .flatMap(({ steps }) => steps)
+    .map(({ run }) => run)
+    .filter(Boolean)
+    .join("\n");
+
+  expect(document.concurrency.group).toBe("catalog-refresh");
+  expect(text).toContain("while IFS= read -r project_id");
+  expect(text).toContain('args+=(--project-id "$project_id")');
+  expect(commands).toContain("npm run catalog:backfill-identities");
+  expect(commands).toContain("npm run catalog:validate");
+  expect(text).toContain("git add data/registry/projects/*.json");
+  expect(text).not.toMatch(/git add .*data\/snapshots/);
+  expect(text).not.toContain("data/reports/enrichment-report.json");
+  expect(text).not.toContain("workflow run enrich-catalog.yml");
 });

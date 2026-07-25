@@ -33,6 +33,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "deploy-pages",
     "refresh-catalog",
     "enrich-catalog",
+    "backfill-repository-identities",
     "triage-submission",
     "triage-kit-submission",
     "apply-kit-submission",
@@ -154,6 +155,7 @@ test("deploys only a verified static export to the Pages environment", async () 
   expect(commands).toContain("npm run check");
   expect(commands).toContain("npm run verify:export");
   expect(JSON.stringify(deploy.jobs)).toContain("github-pages");
+  expect(deploy.on.push["paths-ignore"]).toContain("data/reports/**");
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {

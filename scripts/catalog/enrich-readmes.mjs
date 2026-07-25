@@ -652,8 +652,10 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  runCli(cliOptions(process.argv.slice(2))).catch((error) => {
-    console.error(error.stack ?? error.message);
-    process.exitCode = 1;
-  });
+  runCli(cliOptions(process.argv.slice(2)))
+    .then((result) => console.log(JSON.stringify(result)))
+    .catch((error) => {
+      console.error(error.stack ?? error.message);
+      process.exitCode = 1;
+    });
 }

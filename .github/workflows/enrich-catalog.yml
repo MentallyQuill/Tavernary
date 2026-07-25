@@ -4,27 +4,26 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Enrichment mode.
+        description: Verify the provider, run a five-card canary, start, or resume.
         type: choice
         options:
-          - backfill
-        default: backfill
-      start_index:
-        description: Zero-based first record for this batch.
-        type: number
-        default: 0
-      batch_size:
-        description: Number of records for this batch.
-        type: number
-        default: 20
-      project_id:
-        description: Optional single project ID.
+          - preflight
+          - canary
+          - start
+          - resume
+        default: preflight
+      project_ids:
+        description: Exactly five newline-separated project IDs for canary mode.
         type: string
         required: false
-      force:
-        description: Re-enrich curated records.
-        type: boolean
-        default: false
+      batch_size:
+        description: Frozen primary and retry batch size.
+        type: number
+        default: 20
+      model_concurrency:
+        description: Concurrent model calls, from 1 through 4.
+        type: number
+        default: 4
 
 permissions:
   contents: write
@@ -36,42 +35,56 @@ concurrency:
 
 jobs:
   enrich:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Enrich selected records
+      - name: Run verified enrichment path
         env:
           TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
           TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
           TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
-          START_INDEX: ${{ inputs.start_index || 0 }}
+          MODE: ${{ inputs.mode }}
+          PROJECT_IDS: ${{ inputs.project_ids || '' }}
           BATCH_SIZE: ${{ inputs.batch_size || 20 }}
-          PROJECT_ID: ${{ inputs.project_id || '' }}
-          FORCE: ${{ inputs.force || false }}
+          MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 4 }}
         shell: bash
         run: |
-          args=(--mode backfill --start-index "$START_INDEX" --batch-size "$BATCH_SIZE")
-          if [[ -n "$PROJECT_ID" ]]; then
-            args+=(--project-id "$PROJECT_ID")
+          set -euo pipefail
+          if [[ "$MODE" == "preflight" || "$MODE" == "canary" ]]; then
+            npm run catalog:enrich -- --mode preflight | tee "$RUNNER_TEMP/enrichment-preflight.log"
           fi
-          if [[ "$FORCE" == "true" ]]; then
-            args+=(--force)
+          if [[ "$MODE" == "preflight" ]]; then
+            exit 0
           fi
+          args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --concurrency "$MODEL_CONCURRENCY")
+          while IFS= read -r project_id; do
+            [[ -z "$project_id" ]] || args+=(--project-id "$project_id")
+          done <<< "$PROJECT_IDS"
           npm run catalog:enrich -- "${args[@]}"
       - name: Validate enriched catalog
+        if: inputs.mode != 'preflight'
         run: npm run check
-      - name: Commit registry enrichment
+      - name: Commit registry enrichment and durable state
+        if: inputs.mode != 'preflight'
         id: commit
         shell: bash
         run: |
+          if git diff --quiet -- data/registry/projects; then
+            echo "registry_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "registry_changed=true" >> "$GITHUB_OUTPUT"
+          fi
           git add data/registry/projects/*.json data/reports/enrichment-report.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -81,20 +94,71 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(catalog): enrich project metadata"
           for attempt in 1 2 3; do
-            git fetch origin main
-            if git rebase origin/main && git push; then
-              break
+            if git fetch origin main &&
+              git rebase origin/main; then
+              if npm run check &&
+                git push origin HEAD:main; then
+                break
+              fi
+            fi
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            if [[ -n "$conflicts" ]]; then
+              echo "Enrichment publication conflict:"
+              echo "$conflicts"
             fi
             git rebase --abort || true
             if (( attempt == 3 )); then
-              echo "Enrichment push conflict after three retries; inspect registry/report files." >&2
               exit 1
             fi
-            sleep $((attempt * 2))
           done
           echo "changed=true" >> "$GITHUB_OUTPUT"
-      - name: Redeploy enriched catalog
-        if: steps.commit.outputs.changed == 'true'
+          echo "pushed_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Verify canary deployment and terminal state
+        if: inputs.mode == 'canary'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy-pages.yml --ref main
+          PUSHED_SHA: ${{ steps.commit.outputs.pushed_sha }}
+          REGISTRY_CHANGED: ${{ steps.commit.outputs.registry_changed }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$REGISTRY_CHANGED" == "true" ]]; then
+            deploy_run_id=""
+            for attempt in {1..30}; do
+              deploy_run_id="$(gh run list --workflow deploy-pages.yml --commit "$PUSHED_SHA" --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+              [[ -z "$deploy_run_id" ]] || break
+              sleep 10
+            done
+            if [[ -z "$deploy_run_id" ]]; then
+              echo "Pages deployment was not created for canary commit." >&2
+              exit 1
+            fi
+            gh run watch "$deploy_run_id" --exit-status
+          fi
+          test "$(jq -r '.mode' data/reports/enrichment-report.json)" = "canary"
+          test "$(jq -r '.status' data/reports/enrichment-report.json)" = "passed"
+      - name: Continue full rollout
+        if: >-
+          steps.commit.outputs.changed == 'true' &&
+          (inputs.mode == 'start' || inputs.mode == 'resume')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
+          status="$(jq -r '.status' data/reports/enrichment-report.json)"
+          if [[ "$run_mode" == "full" && "$status" == "running" ]]; then
+            gh workflow run enrich-catalog.yml --ref main -f mode=resume
+          fi
+      - name: Write sanitized workflow summary
+        if: always()
+        shell: bash
+        env:
+          MODE: ${{ inputs.mode }}
+        run: |
+          if [[ "$MODE" == "preflight" ]]; then
+            echo "## MiniMax M3 preflight" >> "$GITHUB_STEP_SUMMARY"
+            tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"
+          elif [[ -f data/reports/enrichment-report.json ]]; then
+            node -e "const r=require('./data/reports/enrichment-report.json'); console.log('## Enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"
+          fi
