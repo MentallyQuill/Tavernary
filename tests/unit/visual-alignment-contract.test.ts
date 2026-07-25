@@ -77,9 +77,11 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(/\.card-bottom\s*\{[^}]*border-top:/s);
     expect(css).toMatch(/\.license\s*\{[^}]*border:\s*0/s);
     expect(css).toMatch(
-      /\.project-grid\s*\{[^}]*repeat\(auto-fill,\s*minmax\(255px,\s*1fr\)\)[^}]*gap:\s*12px/s,
+      /\.project-grid\s*\{[^}]*repeat\(auto-fill,\s*minmax\(320px,\s*1fr\)\)[^}]*gap:\s*12px/s,
     );
-    expect(css).toMatch(/\.card-top\s*\{[^}]*min-height:\s*48px/s);
+    expect(css).toMatch(
+      /\.card-top\s*\{[^}]*min-height:\s*48px[^}]*flex-wrap:\s*wrap/s,
+    );
     expect(css).toMatch(
       /\.function-symbol\s*\{[^}]*width:\s*23px[^}]*height:\s*23px[^}]*border:\s*0[^}]*border-radius:\s*0[^}]*background:\s*transparent/s,
     );
@@ -90,6 +92,9 @@ describe("catalog visual alignment", () => {
     expect(card).not.toContain("This icon shows");
     expect(css).toMatch(
       /\.compact-cards \.project-card\s*\{[^}]*height:\s*auto[^}]*min-height:\s*0[^}]*padding:\s*11px 12px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.project-grid\s*\{[^}]*minmax\(255px,\s*1fr\)/s,
     );
     expect(css).toMatch(
       /\.compact-cards \.community,[\s\S]*?\.compact-cards \.card-summary,[\s\S]*?\.compact-cards \.card-bottom\s*\{[^}]*display:\s*none/s,
@@ -109,13 +114,15 @@ describe("catalog visual alignment", () => {
 
   test("uses the reference tablet and mobile breakpoints", () => {
     const responsive = read("src/styles/responsive.css");
+    const tablet = responsive.slice(
+      responsive.indexOf("@media (min-width: 761px)"),
+      responsive.indexOf("@media (max-width: 760px)"),
+    );
 
-    expect(responsive).toMatch(
-      /@media \(min-width:\s*761px\) and \(max-width:\s*1050px\)[\s\S]*?\.catalog-layout\s*\{[^}]*grid-template-columns:\s*210px minmax\(0,\s*1fr\)/,
+    expect(tablet).toMatch(
+      /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*210px minmax\(0,\s*1fr\) clamp\(280px,\s*32vw,\s*340px\)/,
     );
-    expect(responsive).toMatch(
-      /@media \(min-width:\s*761px\) and \(max-width:\s*1050px\)[\s\S]*?\.project-grid\s*\{[^}]*repeat\(auto-fill,\s*minmax\(240px,\s*1fr\)\)/,
-    );
+    expect(tablet).not.toMatch(/\.kit-workspace\s*\{[^}]*position:\s*fixed/);
     expect(responsive).toMatch(
       /@media \(max-width:\s*760px\)[\s\S]*?\.catalog-main\s*\{[^}]*padding:\s*16px 13px 50px/,
     );

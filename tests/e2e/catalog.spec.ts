@@ -449,6 +449,36 @@ test("matches the approved card anatomy", async ({ page }) => {
   ).toBe("none");
 });
 
+test("keeps dense project-card header facts from overlapping", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  await page.reload();
+
+  const measuredCards = page
+    .locator(".project-card")
+    .filter({ has: page.locator(".activity-score") });
+  expect(await measuredCards.count()).toBeGreaterThan(0);
+  expect(
+    await measuredCards.evaluateAll((cards) =>
+      cards.every((card) => {
+        const identity = card
+          .querySelector(".card-identity")!
+          .getBoundingClientRect();
+        const development = card
+          .querySelector(".development")!
+          .getBoundingClientRect();
+        const separatedHorizontally = identity.right + 8 <= development.left;
+        const separatedVertically = identity.bottom <= development.top;
+        return (
+          card.getBoundingClientRect().width >= 320 &&
+          (separatedHorizontally || separatedVertically)
+        );
+      }),
+    ),
+  ).toBe(true);
+});
+
 test("explains every card fact with hover help", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const repositoryCard = page.locator(".project-card").filter({
@@ -668,7 +698,13 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     return {
       filterWidth: Math.round(filters.getBoundingClientRect().width),
       mainLeft: Math.round(main.getBoundingClientRect().left),
+      mainRight: Math.round(main.getBoundingClientRect().right),
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
+      workspaceLeft: Math.round(
+        document
+          .querySelector<HTMLElement>(".kit-workspace")!
+          .getBoundingClientRect().left,
+      ),
       topLinkDisplay: getComputedStyle(
         document.querySelector<HTMLElement>(".header-actions .top-link")!,
       ).display,
@@ -677,7 +713,9 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
   expect(tablet).toEqual({
     filterWidth: 210,
     mainLeft: 210,
-    columns: 2,
+    mainRight: 612,
+    columns: 1,
+    workspaceLeft: 612,
     topLinkDisplay: "none",
   });
 

@@ -691,7 +691,7 @@
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   align-items: stretch;
   gap: 12px;
 }
@@ -743,6 +743,7 @@
 .card-top {
   display: flex;
   min-height: 48px;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
@@ -751,6 +752,7 @@
 .card-identity {
   display: flex;
   min-width: 0;
+  flex: none;
   align-items: center;
   gap: 8px;
   color: var(--kind-color);
@@ -781,6 +783,7 @@
 .development {
   display: grid;
   min-width: 0;
+  flex: none;
   grid-template-columns: auto auto;
   align-items: center;
   justify-content: end;
@@ -1116,6 +1119,7 @@
 }
 
 .compact-cards .project-grid {
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
   align-items: start;
 }
 

@@ -8,35 +8,15 @@
   }
 
   .catalog-layout {
-    grid-template-columns: 210px minmax(0, 1fr);
+    grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
   }
 
-  .kit-workspace {
-    position: fixed;
-    z-index: 30;
-    right: 0;
-    bottom: 0;
-    width: min(360px, 92vw);
-    height: calc(100vh - 66px);
-    box-shadow: var(--shadow-raised);
-    transition: transform var(--kit-motion-panel) var(--kit-motion-ease);
+  .catalog-layout:has(> .kit-workspace.collapsed) {
+    grid-template-columns: 210px minmax(0, 1fr) 48px;
   }
 
-  .kit-drag-ghost {
-    display: none;
-  }
-
-  .kit-workspace.collapsed {
-    position: fixed;
-    top: auto;
-    right: 12px;
-    bottom: 12px;
-    width: auto;
-    height: auto;
-  }
-
-  .project-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  .catalog-layout.catalog-drag-active {
+    grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
   }
 }
 
