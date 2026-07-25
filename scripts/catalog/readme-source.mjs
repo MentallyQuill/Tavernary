@@ -1,5 +1,7 @@
 import Ajv from "ajv";
 
+import { prepareReadmeText } from "./readme-preparation.mjs";
+
 const githubApi = "https://api.github.com";
 
 const readinessMessages = {
@@ -211,7 +213,8 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     };
   }
 
-  const readmeText = decodeReadme(readme);
+  const decoded = decodeReadme(readme);
+  const readmeText = decoded === null ? null : prepareReadmeText(decoded);
   if (!readmeText) {
     return {
       status: "failed",
