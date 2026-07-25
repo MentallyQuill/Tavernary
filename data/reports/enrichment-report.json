@@ -8,7 +8,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:01:47.422Z",
+  "updated_at": "2026-07-25T15:05:15.344Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 80,
+  "primary_cursor": 100,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -289,7 +289,27 @@
     "icefog72-sillytavern-everytextlineeditor": 1,
     "icefog72-sillytavern-probablytoomanytabs": 1,
     "ikarusv-ikarusautoimage": 1,
-    "j-dandelion-lumiverse-canvas": 1
+    "j-dandelion-lumiverse-canvas": 1,
+    "jake9000-me-nord": 1,
+    "japolino-inlay-illustrator": 1,
+    "jeka201216-silly-map": 1,
+    "kenhito-marinara-rpg-extension": 1,
+    "kikyoicecream-next-choices": 1,
+    "kristyku-inlinesummary": 1,
+    "kurohomeless-sillytavern-token-and-cost-statistics": 1,
+    "leandrojofre-sillytavern-presence": 1,
+    "leandrojofre-sillytavern-stat-us-maximus": 1,
+    "lenanderson-sillytavern-videobackgrounds": 1,
+    "lenanderson-sillytavern-worldinfoinfo": 1,
+    "lithiumwaves-danganronpa-sillytavern": 1,
+    "loggo-presets-sillytavern-spellbook": 1,
+    "loggo-presets-typingindicatorplus": 1,
+    "luisbrandao-sillytavern-tracker": 1,
+    "lukasstraub2-sillytavern-imagepdf": 1,
+    "lukathehero-sillytavern-claudesubscription": 1,
+    "lukathehero-sillytavern-personatools": 1,
+    "maiky93-image-generation-suite": 1,
+    "mangkoodkung-another-universe": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -1017,13 +1037,211 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:01:47.422Z"
+    },
+    "jake9000-me-nord": {
+      "id": "jake9000-me-nord",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "japolino-inlay-illustrator": {
+      "id": "japolino-inlay-illustrator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "jeka201216-silly-map": {
+      "id": "jeka201216-silly-map",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "enriched",
+      "source_kind": "description",
+      "repository_id": 1307082738,
+      "head_sha": "c8e352e3a005ae01d3920021d7ddaafbdc029ced",
+      "readme_path": null,
+      "readme_ref": null,
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 12329,
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "kenhito-marinara-rpg-extension": {
+      "id": "kenhito-marinara-rpg-extension",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "kikyoicecream-next-choices": {
+      "id": "kikyoicecream-next-choices",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "kristyku-inlinesummary": {
+      "id": "kristyku-inlinesummary",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "kurohomeless-sillytavern-token-and-cost-statistics": {
+      "id": "kurohomeless-sillytavern-token-and-cost-statistics",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "leandrojofre-sillytavern-presence": {
+      "id": "leandrojofre-sillytavern-presence",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "leandrojofre-sillytavern-stat-us-maximus": {
+      "id": "leandrojofre-sillytavern-stat-us-maximus",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "enriched",
+      "source_kind": "description",
+      "repository_id": 1005915564,
+      "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
+      "readme_path": null,
+      "readme_ref": null,
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 29503,
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lenanderson-sillytavern-videobackgrounds": {
+      "id": "lenanderson-sillytavern-videobackgrounds",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lenanderson-sillytavern-worldinfoinfo": {
+      "id": "lenanderson-sillytavern-worldinfoinfo",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lithiumwaves-danganronpa-sillytavern": {
+      "id": "lithiumwaves-danganronpa-sillytavern",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "loggo-presets-sillytavern-spellbook": {
+      "id": "loggo-presets-sillytavern-spellbook",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "loggo-presets-typingindicatorplus": {
+      "id": "loggo-presets-typingindicatorplus",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "luisbrandao-sillytavern-tracker": {
+      "id": "luisbrandao-sillytavern-tracker",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lukasstraub2-sillytavern-imagepdf": {
+      "id": "lukasstraub2-sillytavern-imagepdf",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "enriched",
+      "source_kind": "description",
+      "repository_id": 1292206739,
+      "head_sha": "89d2e0c1b375d1a3411a5b988da4eb96f8588c16",
+      "readme_path": null,
+      "readme_ref": null,
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 14943,
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lukathehero-sillytavern-claudesubscription": {
+      "id": "lukathehero-sillytavern-claudesubscription",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "lukathehero-sillytavern-personatools": {
+      "id": "lukathehero-sillytavern-personatools",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "maiky93-image-generation-suite": {
+      "id": "maiky93-image-generation-suite",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
+    },
+    "mangkoodkung-another-universe": {
+      "id": "mangkoodkung-another-universe",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:05:15.344Z"
     }
   },
   "deployment": null,
   "aggregates": {
-    "enriched": 1,
+    "enriched": 4,
     "fallback": 0,
-    "source-not-ready": 79,
+    "source-not-ready": 96,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
