@@ -6,6 +6,7 @@
     "owner": "subzero5544",
     "name": "favorites-carousel",
     "url": "https://github.com/subzero5544/favorites-carousel",
+    "description": "hey everyone a friend of mine asked me if i could make this so here it is. ",
     "default_branch": "main",
     "head_sha": "18acf38cf170366cfa172611bd17e6ded9f02e5a",
     "head_committed_at": "2025-06-14T06:37:03.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +30,11 @@
     "subscribers_count": 0,
     "aggregate": 8
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }

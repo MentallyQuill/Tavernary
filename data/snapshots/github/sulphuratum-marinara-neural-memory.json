@@ -6,6 +6,7 @@
     "owner": "Sulphuratum",
     "name": "marinara-neural-memory",
     "url": "https://github.com/Sulphuratum/marinara-neural-memory",
+    "description": "Agents and Functions that enable Marinara Engine to store memories in Shodh for later retrieval",
     "default_branch": "main",
     "head_sha": "fea575ad2b843ec8ab56d10ac51bff71e3381c25",
     "head_committed_at": "2026-07-08T13:20:28.000Z",
@@ -15,25 +16,18 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-08T13:16:54.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-08T13:16:54.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -43,6 +37,6 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "starlitcode",
     "name": "Lumiverse-Auto-Retry",
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
+    "description": "Automatically re-fires generations that fail, come back empty, stall mid-stream, or get cut off. It is a rebuild of the SillyTavern fetch-retry idea by Hikarushmz for Lumiverse's Spindle framework.",
     "default_branch": "main",
     "head_sha": "855a6ff543fe98cc91c2687a5d749572e9286dbf",
     "head_committed_at": "2026-07-24T21:05:06.000Z",
@@ -15,25 +16,43 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-24T21:05:06.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-24T21:05:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T14:35:17.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T18:15:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-27T18:37:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-17T10:02:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-10T18:30:22.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +61,11 @@
     "subscribers_count": 0,
     "aggregate": 1
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }

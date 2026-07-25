@@ -6,6 +6,7 @@
     "owner": "ZapoVerde",
     "name": "SillyTavern-Triggeryze",
     "url": "https://github.com/ZapoVerde/SillyTavern-Triggeryze",
+    "description": "Parses sillytavern responses for keywords and operates on them",
     "default_branch": "main",
     "head_sha": "56a1f679a3e470c06e5dda4260386fb09fcb1ce9",
     "head_committed_at": "2026-07-01T09:32:27.000Z",
@@ -15,25 +16,33 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+    "latest_source_activity_at": "2026-07-01T09:29:56.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T09:29:56.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T10:03:20.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T14:21:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T13:38:42.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +51,11 @@
     "subscribers_count": 0,
     "aggregate": 6
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T06:20:47.793Z",
   "stale_since": null
 }

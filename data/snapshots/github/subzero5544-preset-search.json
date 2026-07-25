@@ -6,6 +6,7 @@
     "owner": "subzero5544",
     "name": "preset-search",
     "url": "https://github.com/subzero5544/preset-search",
+    "description": "hey there here is just a simple preset search function that i have wanted for a while so why not make it an extension",
     "default_branch": "main",
     "head_sha": "7d67370c5df889ea46b24c711631d97701fe21e7",
     "head_committed_at": "2025-06-13T07:02:45.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +30,11 @@
     "subscribers_count": 0,
     "aggregate": 1
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }

@@ -6,6 +6,7 @@
     "owner": "SpicyMarinara",
     "name": "SillyTavern-Spotify-Music-Extension",
     "url": "https://github.com/SpicyMarinara/SillyTavern-Spotify-Music-Extension",
+    "description": "A Sillytavern Extension that allows models to select and play songs on your Spotify.",
     "default_branch": "main",
     "head_sha": "979cbe39409c9e4773467d735d1f8571ec1be7ad",
     "head_committed_at": "2025-09-24T09:31:26.000Z",
@@ -17,23 +18,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -43,6 +31,6 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "refreshed_at": "2026-07-25T06:05:19.795Z",
   "stale_since": null
 }
