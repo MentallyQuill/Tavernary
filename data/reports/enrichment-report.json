@@ -2,13 +2,13 @@
   "schema_version": 1,
   "run_id": "3bd6d97a-c84b-45a4-9ad2-9ded1b60e07a",
   "mode": "full",
-  "status": "running",
-  "phase": "primary",
+  "status": "complete",
+  "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T14:57:37.544Z",
-  "updated_at": "2026-07-25T15:14:40.643Z",
+  "updated_at": "2026-07-25T15:16:02.403Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -206,7 +206,7 @@
     "zdost-story-engine",
     "zhenyapav-sillytavern-namegen"
   ],
-  "primary_cursor": 180,
+  "primary_cursor": 195,
   "retry_queue": [],
   "retry_cursor": 0,
   "attempts": {
@@ -389,7 +389,22 @@
     "thexyzzyone-stgroupresponderselector": 1,
     "twitter-twemoji": 1,
     "tydorius-st-characterpreview": 1,
-    "tyranomaster-expressions-plus": 1
+    "tyranomaster-expressions-plus": 1,
+    "valdoix-vellum-engine": 1,
+    "vectricity-st-aspect-evolutia": 1,
+    "vectricity-st-aspect-vocalia": 1,
+    "vibecoder9000-extension-tokenusage": 1,
+    "virgilianshailer-autobackgound": 1,
+    "virgilianshailer-automusic": 1,
+    "virgilianshailer-llm-tools": 1,
+    "virgilianshailer-lorebook-creator": 1,
+    "wanderingmonk8-lummate": 1,
+    "zapoverde-sillytavern-canonize": 1,
+    "zapoverde-sillytavern-mobilyze": 1,
+    "zapoverde-sillytavern-triggeryze": 1,
+    "zapoverde-sillytavern-vistalyze": 1,
+    "zdost-story-engine": 1,
+    "zhenyapav-sillytavern-namegen": 1
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
@@ -2041,13 +2056,148 @@
       "reason_code": "missing-permanent-identity",
       "message": "Permanent repository identity is missing.",
       "completed_at": "2026-07-25T15:14:40.643Z"
+    },
+    "valdoix-vellum-engine": {
+      "id": "valdoix-vellum-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "vectricity-st-aspect-evolutia": {
+      "id": "vectricity-st-aspect-evolutia",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "vectricity-st-aspect-vocalia": {
+      "id": "vectricity-st-aspect-vocalia",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "vibecoder9000-extension-tokenusage": {
+      "id": "vibecoder9000-extension-tokenusage",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "virgilianshailer-autobackgound": {
+      "id": "virgilianshailer-autobackgound",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "virgilianshailer-automusic": {
+      "id": "virgilianshailer-automusic",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "virgilianshailer-llm-tools": {
+      "id": "virgilianshailer-llm-tools",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "virgilianshailer-lorebook-creator": {
+      "id": "virgilianshailer-lorebook-creator",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "wanderingmonk8-lummate": {
+      "id": "wanderingmonk8-lummate",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zapoverde-sillytavern-canonize": {
+      "id": "zapoverde-sillytavern-canonize",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zapoverde-sillytavern-mobilyze": {
+      "id": "zapoverde-sillytavern-mobilyze",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zapoverde-sillytavern-triggeryze": {
+      "id": "zapoverde-sillytavern-triggeryze",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zapoverde-sillytavern-vistalyze": {
+      "id": "zapoverde-sillytavern-vistalyze",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zdost-story-engine": {
+      "id": "zdost-story-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
+    },
+    "zhenyapav-sillytavern-namegen": {
+      "id": "zhenyapav-sillytavern-namegen",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "source-not-ready",
+      "reason_code": "missing-permanent-identity",
+      "message": "Permanent repository identity is missing.",
+      "completed_at": "2026-07-25T15:16:02.403Z"
     }
   },
   "deployment": null,
   "aggregates": {
     "enriched": 5,
     "fallback": 0,
-    "source-not-ready": 175,
+    "source-not-ready": 190,
     "retry-pending": 0,
     "retry-enriched": 0,
     "retry-fallback": 0,
