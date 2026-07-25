@@ -1,171 +1,99 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T05:16:15.267Z",
-  "completed_at": "2026-07-25T05:30:20.669Z",
+  "started_at": "2026-07-25T06:05:19.795Z",
+  "completed_at": "2026-07-25T06:11:13.043Z",
   "counts": {
-    "total": 24,
-    "checked": 24,
-    "changed": 24,
+    "total": 12,
+    "checked": 12,
+    "changed": 12,
     "unchanged": 0,
-    "provisional": 34,
-    "degraded": 8,
+    "provisional": 22,
+    "degraded": 10,
     "unavailable": 0,
-    "failed": 5,
+    "failed": 2,
     "compared": 0,
-    "baseline": 19,
+    "baseline": 10,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4998,
+    "graphql_remaining": 4999,
     "rest_requests": 0
   },
-  "duration_ms": 845402,
+  "duration_ms": 353248,
   "project_timings": [
-    {
-      "project_id": "mentallyquill-saga",
-      "outcome": "failed",
-      "duration_ms": 843541,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "mindbound-lumiscript",
-      "outcome": "failed",
-      "duration_ms": 843540,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "multihogaurelius-sillytavern-multihogdndframework",
-      "outcome": "failed",
-      "duration_ms": 843540,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
     {
       "project_id": "pasta-devs-marinara-engine",
       "outcome": "failed",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "prolix-oc-lumiverse",
       "outcome": "failed",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "sammcheese-sillytavern-discordia",
+      "project_id": "spicymarinara-sillytavern-spotify-music-extension",
       "outcome": "baseline",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "samueras-guidedgenerations-extension",
+      "project_id": "splitclover-rewrite-extension",
       "outcome": "baseline",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "sca255-lumiverse-autoimg",
+      "project_id": "starlitcode-lumiverse-auto-retry",
       "outcome": "baseline",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "selinawynters-ops-st-threadkeeper",
+      "project_id": "subzero5544-favorites-carousel",
       "outcome": "baseline",
-      "duration_ms": 843540,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "senjinthedragon-sillytavern-discord-connector",
+      "project_id": "subzero5544-preset-search",
       "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "senjinthedragon-smart-memory",
+      "project_id": "sulphuratum-go-llamaswap-comfy-proxy",
       "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "shadowtheimpure-sillytavern-character-card-generator",
+      "project_id": "sulphuratum-marinara-neural-memory",
       "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "sigmareaver-rooms",
+      "project_id": "supker-st-copilot",
       "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "sillyanonymous-sillytavern-characterlibrary",
+      "project_id": "taezn-creator-notes-html-renderer",
       "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     },
     {
-      "project_id": "sillyanonymous-sillytavern-ui-shortcuts",
+      "project_id": "tclowe1982-marinara-extender",
       "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-extension-mermaid",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-extension-promptinspector",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-extension-topinfobar",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-sillytavern-greetingtools",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-sillytavern-nicknames",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-sillytavern-pronouns",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "sillytavern-sillytavern-pushnotifications",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "soyo5800-rpg-tracker-for-sillytavern",
-      "outcome": "baseline",
-      "duration_ms": 843541,
-      "error_code": null
-    },
-    {
-      "project_id": "spicymarinara-sillytavern-lovense",
-      "outcome": "baseline",
-      "duration_ms": 843541,
+      "duration_ms": 352224,
       "error_code": null
     }
   ],
