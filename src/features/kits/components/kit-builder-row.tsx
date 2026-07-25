@@ -4,9 +4,6 @@ import type { PointerEventHandler } from "react";
 
 export function KitBuilderRow({
   project,
-  index,
-  count,
-  onMove,
   onRemove,
   onDragStart,
   dragging,
@@ -14,9 +11,6 @@ export function KitBuilderRow({
   touchLayout,
 }: {
   project: CatalogProject;
-  index: number;
-  count: number;
-  onMove: (index: number, delta: number) => void;
   onRemove: (projectId: string) => void;
   onDragStart: PointerEventHandler<HTMLButtonElement>;
   dragging: boolean;
@@ -28,45 +22,26 @@ export function KitBuilderRow({
       className={`kit-builder-row${dragging ? " dragging" : ""}${placement ? ` drag-${placement}` : ""}`}
       data-project-id={project.id}
     >
-      {!touchLayout ? (
-        <button
-          type="button"
-          className="kit-drag-handle"
-          aria-label={`Drag ${project.name}`}
-          onPointerDown={onDragStart}
-        >
-          <CategoryIcon name="drag-handle" />
-        </button>
-      ) : null}
+      <button
+        type="button"
+        className="kit-drag-handle"
+        aria-label={`Drag ${project.name} to ${touchLayout ? "reorder" : "reorder or remove"}`}
+        onPointerDown={onDragStart}
+      >
+        <CategoryIcon name="drag-handle" />
+      </button>
       <span className="kit-builder-row-identity">
         <strong>{project.name}</strong>
         <small>{project.kind}</small>
       </span>
-      <span className="kit-builder-row-actions">
-        <button
-          type="button"
-          aria-label={`Move ${project.name} up`}
-          disabled={index === 0}
-          onClick={() => onMove(index, -1)}
-        >
-          Move up
-        </button>
-        <button
-          type="button"
-          aria-label={`Move ${project.name} down`}
-          disabled={index === count - 1}
-          onClick={() => onMove(index, 1)}
-        >
-          Move down
-        </button>
-        <button
-          type="button"
-          aria-label={`Remove ${project.name}`}
-          onClick={() => onRemove(project.id)}
-        >
-          Remove
-        </button>
-      </span>
+      <button
+        type="button"
+        className="kit-builder-remove"
+        aria-label={`Remove ${project.name}`}
+        onClick={() => onRemove(project.id)}
+      >
+        ×
+      </button>
     </li>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import {
@@ -8,21 +8,13 @@ import {
   kitSetKey,
   validateKitDraft,
 } from "@/features/kits/kit-domain.mjs";
-import {
-  insertProject,
-  moveProject,
-  removeProject,
-} from "@/features/kits/project-stack-order";
+import { removeProject } from "@/features/kits/project-stack-order";
 import type { KitDraft } from "@/features/kits/kit-types";
+import { splitKitProjectIds } from "@/features/kits/kit-project-layout";
 import { useProjectStackDrag } from "@/features/kits/use-project-stack-drag";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
+import { KitFrontendSlot } from "./kit-frontend-slot";
 import { KitBuilderRow } from "./kit-builder-row";
-
-type RemovedProject = {
-  projectId: string;
-  projectName: string;
-  index: number;
-};
 
 export function KitBuilder({
   draft,
@@ -45,15 +37,12 @@ export function KitBuilder({
   const descriptionId = `${formId}-description`;
   const descriptionCountId = `${formId}-description-count`;
   const descriptionErrorId = `${formId}-description-error`;
+  const frontendHeadingId = `${formId}-frontend-heading`;
   const [touched, setTouched] = useState({
     title: false,
     description: false,
   });
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [removedProject, setRemovedProject] = useState<RemovedProject | null>(
-    null,
-  );
-  const removalTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const stackRef = useRef<HTMLOListElement>(null);
@@ -64,6 +53,10 @@ export function KitBuilder({
   });
   const projectsById = new Map(
     projects.map((project) => [project.id, project]),
+  );
+  const { frontendId, stackProjectIds } = splitKitProjectIds(
+    draft.projectIds,
+    projects,
   );
   const validation = validateKitDraft(draft, projects);
   const duplicateUnchanged =
@@ -90,45 +83,22 @@ export function KitBuilder({
   );
   const visibleErrors = submitAttempted ? compositionErrors : [];
 
-  const clearRemovalTimer = () => {
-    if (removalTimerRef.current !== null) {
-      clearTimeout(removalTimerRef.current);
-      removalTimerRef.current = null;
-    }
-  };
-
-  useEffect(
-    () => () => {
-      clearRemovalTimer();
-    },
-    [],
-  );
-
-  const removeWithUndo = (
-    projectId: string,
-    projectName: string,
-    index: number,
-  ) => {
-    clearRemovalTimer();
-    setRemovedProject({ projectId, projectName, index });
+  const removeImmediately = (projectId: string) => {
+    const removedStackIndex = stackProjectIds.indexOf(projectId);
     onUpdate({ projectIds: removeProject(draft.projectIds, projectId) });
-    removalTimerRef.current = setTimeout(() => {
-      setRemovedProject(null);
-      removalTimerRef.current = null;
-    }, 6000);
-  };
-
-  const undoRemoval = () => {
-    if (!removedProject) return;
-    clearRemovalTimer();
-    onUpdate({
-      projectIds: insertProject(
-        draft.projectIds,
-        removedProject.projectId,
-        removedProject.index,
-      ),
+    queueMicrotask(() => {
+      const rows = Array.from(
+        stackRef.current?.querySelectorAll<HTMLElement>("[data-project-id]") ??
+          [],
+      );
+      const targetRow =
+        removedStackIndex >= 0
+          ? rows[Math.min(removedStackIndex, rows.length - 1)]
+          : rows[0];
+      targetRow
+        ?.querySelector<HTMLButtonElement>(".kit-builder-remove")
+        ?.focus();
     });
-    setRemovedProject(null);
   };
 
   return (
@@ -199,21 +169,34 @@ export function KitBuilder({
           </span>
         ) : null}
       </div>
-      <ol ref={stackRef} className="kit-builder-stack">
-        {draft.projectIds.map((projectId, index) => {
+      <section
+        className="kit-frontend-foundation"
+        aria-labelledby={frontendHeadingId}
+      >
+        <h3 id={frontendHeadingId}>Frontend</h3>
+        <KitFrontendSlot
+          project={frontendId ? (projectsById.get(frontendId) ?? null) : null}
+          touchLayout={touchLayout}
+          onRemove={() => {
+            if (frontendId) removeImmediately(frontendId);
+          }}
+          onDragStart={(event) => {
+            if (frontendId) drag.begin(frontendId, event);
+          }}
+        />
+      </section>
+      <ol
+        ref={stackRef}
+        className="kit-builder-stack"
+        aria-label="Ordered Kit projects"
+      >
+        {stackProjectIds.map((projectId) => {
           const project = projectsById.get(projectId);
           return project ? (
             <KitBuilderRow
               key={projectId}
               project={project}
-              index={index}
-              count={draft.projectIds.length}
-              onMove={(rowIndex, delta) =>
-                onUpdate({
-                  projectIds: moveProject(draft.projectIds, rowIndex, delta),
-                })
-              }
-              onRemove={(id) => removeWithUndo(id, project.name, index)}
+              onRemove={removeImmediately}
               onDragStart={(event) => drag.begin(projectId, event)}
               dragging={drag.dragState?.projectId === projectId}
               placement={
@@ -240,18 +223,6 @@ export function KitBuilder({
       ) : null}
       <footer className="kit-builder-footer">
         <span>{draft.projectIds.length} projects</span>
-        {removedProject ? (
-          <div className="kit-builder-undo" role="status" aria-live="assertive">
-            Removed {removedProject.projectName}.
-            <button
-              type="button"
-              aria-label={`Undo remove ${removedProject.projectName}`}
-              onClick={undoRemoval}
-            >
-              Undo
-            </button>
-          </div>
-        ) : null}
         <button type="submit" aria-label="Submit Kit">
           Submit Kit
         </button>

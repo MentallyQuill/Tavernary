@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
 export type KitWorkspaceState =
@@ -12,6 +13,13 @@ export type KitWorkspaceState =
       draft: KitDraft;
       dirty: boolean;
     };
+
+function normalizedKitProjectIds(kit: CatalogKit) {
+  return normalizeKitProjectIds(
+    kit.components.map(({ projectId }) => projectId),
+    kit.components.map(({ projectId, kind }) => ({ id: projectId, kind })),
+  );
+}
 
 export function useKitWorkspace({
   selectedKitId,
@@ -85,7 +93,7 @@ export function useKitWorkspace({
   }, []);
 
   const startDuplicate = useCallback((kit: CatalogKit) => {
-    const projectIds = kit.components.map(({ projectId }) => projectId);
+    const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("duplicate");
     setOriginalProjectIds(projectIds);
     setState({
@@ -103,7 +111,7 @@ export function useKitWorkspace({
   }, []);
 
   const startEdit = useCallback((kit: CatalogKit) => {
-    const projectIds = kit.components.map(({ projectId }) => projectId);
+    const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("edit");
     setOriginalProjectIds(projectIds);
     setState({

@@ -1497,13 +1497,6 @@
   gap: 8px;
 }
 
-.kit-builder-undo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .kit-builder input,
 .kit-builder textarea {
   min-width: 0;
@@ -1527,9 +1520,24 @@
   list-style: none;
 }
 
+.kit-frontend-foundation {
+  display: grid;
+  gap: 6px;
+}
+
+.kit-frontend-foundation h3 {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kit-frontend-slot,
 .kit-builder-row {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
   gap: 8px;
   padding: 9px;
   border: 1px solid var(--color-border);
@@ -1537,23 +1545,14 @@
   background: var(--color-surface-card);
 }
 
+.kit-frontend-slot > span {
+  grid-column: 1 / -1;
+  color: var(--color-muted);
+}
+
 .kit-builder-row-identity {
   display: grid;
   min-width: 0;
-}
-
-.kit-builder-row-actions {
-  display: flex;
-  grid-column: 2;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.kit-builder-row-actions button {
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
-  color: var(--color-text-secondary);
-  background: var(--color-surface-primary);
 }
 
 .kit-drag-handle svg {
@@ -1562,12 +1561,29 @@
 }
 
 .kit-drag-handle {
+  display: grid;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
+  place-items: center;
   border: 0;
   color: var(--color-muted);
   background: transparent;
   cursor: grab;
   touch-action: none;
+}
+
+.kit-builder-remove {
+  display: grid;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  color: var(--color-muted);
+  background: transparent;
+  font-size: 18px;
 }
 
 .kit-builder-row.dragging {

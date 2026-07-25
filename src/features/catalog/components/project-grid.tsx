@@ -6,11 +6,13 @@ export function ProjectGrid({
   projects,
   now,
   draftProjectIds,
+  draftFrontendId,
   onAddToKit,
 }: {
   projects: CatalogProject[];
   now: string;
   draftProjectIds?: string[];
+  draftFrontendId?: string | null;
   onAddToKit?: (projectId: string) => void;
 }) {
   if (projects.length === 0) {
@@ -29,6 +31,10 @@ export function ProjectGrid({
           return <ProjectCard key={project.id} project={project} now={now} />;
         }
         const added = draftProjectIds.includes(project.id);
+        const replacesFrontend =
+          project.kind === "frontend" &&
+          Boolean(draftFrontendId) &&
+          project.id !== draftFrontendId;
         return (
           <div className="project-card-shell" key={project.id}>
             <ProjectCard project={project} now={now} />
@@ -38,13 +44,15 @@ export function ProjectGrid({
               aria-label={
                 added
                   ? `${project.name} added to Kit`
+                  : replacesFrontend
+                    ? `Use ${project.name} instead`
                   : `Add ${project.name} to Kit`
               }
               disabled={added}
               onClick={() => onAddToKit(project.id)}
             >
               <CategoryIcon name="add-to-kit" />
-              {added ? "Added" : "Add to Kit"}
+              {added ? "Added" : replacesFrontend ? "Use instead" : "Add to Kit"}
             </button>
           </div>
         );

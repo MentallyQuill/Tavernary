@@ -5,6 +5,7 @@ import {
   render,
   renderHook,
   screen,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
@@ -152,6 +153,27 @@ describe("Kit builder state", () => {
     expect(kit.title).toBe("Story Kit");
   });
 
+  test("normalizes the Frontend first when duplicating or editing", () => {
+    const reorderedKit: CatalogKit = {
+      ...kit,
+      components: [kit.components[1], kit.components[0], kit.components[2]],
+    };
+    const { result } = renderHook(() =>
+      useKitWorkspace({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.startDuplicate(reorderedKit));
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      draft: { projectIds: ["frontend", "memory", "preset"] },
+    });
+    act(() => result.current.startEdit(reorderedKit));
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      draft: { projectIds: ["frontend", "memory", "preset"] },
+    });
+  });
+
   test("registers beforeunload only while a draft is dirty", () => {
     const add = vi.spyOn(window, "addEventListener");
     const remove = vi.spyOn(window, "removeEventListener");
@@ -179,6 +201,72 @@ describe("Kit builder controls", () => {
     description: "A compact story stack.",
     projectIds: ["frontend", "memory", "preset"],
   };
+
+  test("pins the Frontend outside the ordered project stack", () => {
+    const { container } = render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    const foundation = screen.getByRole("region", { name: "Frontend" });
+    expect(within(foundation).getByText("frontend")).toBeVisible();
+    expect(
+      container.querySelector(
+        '.kit-builder-stack [data-project-id="frontend"]',
+      ),
+    ).toBeNull();
+  });
+
+  test("uses a grab handle and corner remove control for stack projects", () => {
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Drag memory to reorder or remove",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Remove memory" }),
+    ).toHaveTextContent("×");
+    expect(
+      screen.queryByRole("button", { name: "Move memory up" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Move memory down" }),
+    ).not.toBeInTheDocument();
+  });
+
+  test("gives the desktop Frontend a removal handle and corner remove control", () => {
+    render(
+      <KitBuilder
+        draft={validDraft}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Drag frontend to remove" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Remove frontend" }),
+    ).toHaveTextContent("×");
+  });
 
   test("uses stable labels and reveals validation only after interaction", async () => {
     const user = userEvent.setup();
@@ -236,7 +324,7 @@ describe("Kit builder controls", () => {
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
-  test("enforces duplicate changes and row actions", async () => {
+  test("enforces duplicate changes before submission", async () => {
     const user = userEvent.setup();
     const onUpdate = vi.fn();
     const onSubmit = vi.fn();
@@ -254,14 +342,6 @@ describe("Kit builder controls", () => {
     expect(
       screen.getByText("A duplicate must change the selected project set."),
     ).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Move memory up" }));
-    expect(onUpdate).toHaveBeenCalledWith({
-      projectIds: ["memory", "frontend", "preset"],
-    });
-    await user.click(screen.getByRole("button", { name: "Remove preset" }));
-    expect(onUpdate).toHaveBeenCalledWith({
-      projectIds: ["frontend", "memory"],
-    });
 
     rerender(
       <KitBuilder
@@ -279,7 +359,7 @@ describe("Kit builder controls", () => {
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
-  test("omits drag handles on touch layouts but keeps explicit order controls", () => {
+  test("uses handles only for stack reordering on touch layouts", () => {
     mockTouchLayout();
     render(
       <KitBuilder
@@ -292,21 +372,18 @@ describe("Kit builder controls", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Drag memory" }),
+      screen.getByRole("button", { name: "Drag memory to reorder" }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Drag frontend to remove" }),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Move memory up" }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("button", { name: "Move memory down" }),
-    ).toBeVisible();
     expect(screen.getByRole("button", { name: "Remove memory" })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Remove frontend" }),
+    ).toBeVisible();
   });
 
-  test("restores a removed project at its prior index for six seconds", () => {
-    mockTouchLayout();
-    vi.useFakeTimers();
-
+  test("removes a stack project immediately without an undo state", () => {
     function Harness() {
       const [draft, setDraft] = useState(validDraft);
       return (
@@ -324,33 +401,41 @@ describe("Kit builder controls", () => {
 
     const { container } = render(<Harness />);
     const rowIds = () =>
-      Array.from(container.querySelectorAll("[data-project-id]")).map((row) =>
-        row.getAttribute("data-project-id"),
+      Array.from(
+        container.querySelectorAll(
+          ".kit-builder-stack [data-project-id]",
+        ),
+      ).map((row) => row.getAttribute("data-project-id"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
+    expect(rowIds()).toEqual(["preset"]);
+    expect(screen.queryByText("Undo")).not.toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  test("moves focus to the nearest remaining remove control", async () => {
+    const user = userEvent.setup();
+
+    function Harness() {
+      const [draft, setDraft] = useState(validDraft);
+      return (
+        <KitBuilder
+          draft={draft}
+          projects={projects}
+          originalProjectIds={[]}
+          onUpdate={(patch) =>
+            setDraft((current) => ({ ...current, ...patch }))
+          }
+          onSubmit={() => undefined}
+        />
       );
+    }
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
-    expect(rowIds()).toEqual(["frontend", "preset"]);
-    const undoStatus = screen.getByRole("status");
-    expect(undoStatus).toHaveAttribute("aria-live", "assertive");
-    expect(undoStatus).toHaveTextContent("Removed memory.");
-    fireEvent.click(screen.getByRole("button", { name: "Undo remove memory" }));
-    expect(rowIds()).toEqual(["frontend", "memory", "preset"]);
-
-    fireEvent.click(screen.getByRole("button", { name: "Remove memory" }));
-    act(() => vi.advanceTimersByTime(6000));
+    render(<Harness />);
+    await user.click(screen.getByRole("button", { name: "Remove memory" }));
     expect(
-      screen.queryByRole("button", { name: "Undo remove memory" }),
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Remove preset" }));
-    fireEvent.click(screen.getByRole("button", { name: "Remove frontend" }));
-    expect(
-      screen.queryByRole("button", { name: "Undo remove preset" }),
-    ).not.toBeInTheDocument();
-    fireEvent.click(
-      screen.getByRole("button", { name: "Undo remove frontend" }),
-    );
-    expect(rowIds()).toEqual(["frontend"]);
+      screen.getByRole("button", { name: "Remove preset" }),
+    ).toHaveFocus();
   });
 
   test("renders Add to Kit as a sibling of the project link", async () => {
@@ -372,6 +457,31 @@ describe("Kit builder controls", () => {
     ).toHaveLength(2);
     await user.click(add);
     expect(onAdd).toHaveBeenCalledWith("frontend");
+  });
+
+  test("offers to replace the selected Frontend instead of adding another", async () => {
+    const user = userEvent.setup();
+    const onAdd = vi.fn();
+    const alternateFrontend = project("frontend-b", "frontend");
+    render(
+      <ProjectGrid
+        projects={[projects[0], alternateFrontend]}
+        now="2026-07-24T00:00:00.000Z"
+        draftProjectIds={["frontend"]}
+        draftFrontendId="frontend"
+        onAddToKit={onAdd}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "frontend added to Kit" }),
+    ).toBeDisabled();
+    const replacement = screen.getByRole("button", {
+      name: "Use frontend-b instead",
+    });
+    expect(replacement).toHaveTextContent("Use instead");
+    await user.click(replacement);
+    expect(onAdd).toHaveBeenCalledWith("frontend-b");
   });
 
   test("captures pointer drag from handles, cancels with Escape, and commits once", () => {
@@ -398,7 +508,7 @@ describe("Kit builder controls", () => {
       />,
     );
     const memoryHandle = screen.getByRole("button", {
-      name: "Drag memory",
+      name: "Drag memory to reorder or remove",
     });
     const presetRow = screen
       .getAllByText("preset")[0]

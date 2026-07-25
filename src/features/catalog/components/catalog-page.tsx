@@ -19,6 +19,10 @@ import {
   serializeKitManifest,
 } from "@/features/kits/submission-transport";
 import { KitWorkspace } from "@/features/kits/components/kit-workspace";
+import {
+  replaceKitFrontend,
+  splitKitProjectIds,
+} from "@/features/kits/kit-project-layout";
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
@@ -44,7 +48,10 @@ function relativeRefresh(timestamp: string, now: string) {
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { query, setQuery } = useCatalogQuery();
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [openFilterMode, setOpenFilterMode] = useState<
+    CatalogQuery["mode"] | null
+  >(null);
+  const filtersOpen = openFilterMode === query.mode;
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
@@ -68,6 +75,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
   const buildState = workspace.state.mode === "build" ? workspace.state : null;
+  const draftFrontendId = buildState
+    ? splitKitProjectIds(buildState.draft.projectIds, catalog.projects)
+        .frontendId
+    : null;
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -201,7 +212,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       .at(-1) ?? catalog.generatedAt;
 
   const closeFilters = () => {
-    setFiltersOpen(false);
+    setOpenFilterMode(null);
     window.setTimeout(() => filterButtonRef.current?.focus(), 0);
   };
   const selectProjectCategory = (category: string) =>
@@ -279,7 +290,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
                 query.density === "standard" ? "compact" : "standard",
               )
             }
-            onOpenFilters={() => setFiltersOpen(true)}
+            onOpenFilters={() => setOpenFilterMode(query.mode)}
             onCreateKit={workspace.startCreate}
             filterButtonRef={filterButtonRef}
           />
@@ -305,15 +316,28 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               projects={selectedProjects}
               now={catalog.generatedAt}
               draftProjectIds={buildState?.draft.projectIds}
+              draftFrontendId={draftFrontendId}
               onAddToKit={
                 buildState
-                  ? (projectId) =>
+                  ? (projectId) => {
+                      const project = catalog.projects.find(
+                        ({ id }) => id === projectId,
+                      );
+                      if (!project) return;
                       workspace.updateDraft({
-                        projectIds: addProject(
-                          buildState.draft.projectIds,
-                          projectId,
-                        ),
-                      })
+                        projectIds:
+                          project.kind === "frontend"
+                            ? replaceKitFrontend(
+                                buildState.draft.projectIds,
+                                projectId,
+                                catalog.projects,
+                              )
+                            : addProject(
+                                buildState.draft.projectIds,
+                                projectId,
+                              ),
+                      });
+                    }
                   : undefined
               }
             />
