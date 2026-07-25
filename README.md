@@ -38,6 +38,18 @@ Playwright's first local run may also require:
 npx playwright install chromium
 ```
 
+The Kit fixture proof is isolated from production catalog data:
+
+```powershell
+npm run build:test-kits
+npm run test:kits-e2e
+npm run test:kits-visual
+```
+
+The fixture builder leaves the deterministic Kit export in `out/` for the two
+browser suites and restores `src/generated/catalog.json` from the production
+registry before it exits.
+
 ## Catalog data
 
 Tavernary keeps four distinct layers:
@@ -75,7 +87,7 @@ qualifying change reports no source activity in the last twelve weeks.
 
 Snapshotless published GitHub records stay visible. The site renders them as
 pending enrichment rather than as zero activity or verified missing metadata.
-Imported seed records also remain visibly `uncategorized` until a curator
+Imported seed records also remain visibly `uncategorized` until a maintainer
 replaces the provisional editorial metadata.
 
 ## Refresh operations
@@ -146,7 +158,7 @@ A repository-ID mismatch sets `source_health: identity-change` and removes the
 entry from the public build. Confirmed deleted or private repositories also
 stay out of the public build. Transient unavailable or rate-limited refreshes
 preserve the last known good facts and record staleness instead of unpublishing
-the project. Curators can also set `refresh_policy: paused` to stop automatic
+the project. Maintainers can also set `refresh_policy: paused` to stop automatic
 processing or change `visibility` to hide or disable a record.
 
 Before clearing a quarantine:
@@ -164,10 +176,18 @@ Before clearing a quarantine:
 
 The **Submit Project** link opens a structured GitHub issue. Automation checks
 source eligibility and obvious duplicates, but never creates or edits a
-production record. A curator must vet and add every accepted entry.
+production record. A maintainer must vet and add every accepted entry.
+
+Kits are community-authored, ordered collections of 3â€“50 catalog projects.
+The browser builder keeps drafts only in memory and hands a stable JSON
+manifest to GitHub. New Kits and edits are validated automatically, but a
+maintainer publishes them only after review. Support is derived from eligible
+`+1` reactions on the Kit's source issue; it is catalog evidence rather than
+a user-rating system. Tavernary remains a static, build-time catalog with no
+accounts, database service, or runtime API.
 
 The Help chooser provides project-information reports, website bug reports,
-help requests, a private security path, and an Other form. Curators can pause
+help requests, a private security path, and an Other form. Maintainers can pause
 refreshes, hide entries, or remove them when a source becomes unsafe or
 abusive.
 

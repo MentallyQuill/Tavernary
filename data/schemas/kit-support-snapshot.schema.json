@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/kit-support-snapshot.schema.json",
+  "title": "Tavernary Kit support snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kit_id",
+    "source_issue_number",
+    "refreshed_at",
+    "stale_since",
+    "supporters"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "kit_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "source_issue_number": { "type": "integer", "minimum": 1 },
+    "refreshed_at": { "type": "string", "format": "date-time" },
+    "stale_since": {
+      "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }]
+    },
+    "supporters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["github_user_id", "login", "first_reacted_at", "active"],
+        "properties": {
+          "github_user_id": { "type": "integer", "minimum": 1 },
+          "login": { "type": "string", "minLength": 1 },
+          "first_reacted_at": { "type": "string", "format": "date-time" },
+          "active": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

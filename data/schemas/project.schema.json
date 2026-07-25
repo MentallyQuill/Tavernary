@@ -18,10 +18,11 @@
     "cataloged_at",
     "catalog_cohort",
     "visibility",
+    "visibility_reason",
     "refresh_policy"
   ],
   "properties": {
-    "schema_version": { "const": 2 },
+    "schema_version": { "const": 3 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
@@ -125,6 +126,40 @@
     "cataloged_at": { "type": "string", "format": "date-time" },
     "catalog_cohort": { "enum": ["seed", "standard"] },
     "visibility": { "enum": ["published", "quarantined", "disabled"] },
+    "visibility_reason": {
+      "enum": [
+        "identity-change",
+        "source-unavailable",
+        "removed",
+        "safety-review",
+        null
+      ]
+    },
     "refresh_policy": { "enum": ["automatic", "paused"] }
-  }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "visibility": { "const": "published" } } },
+      "then": { "properties": { "visibility_reason": { "type": "null" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "visibility": { "enum": ["quarantined", "disabled"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "visibility_reason": {
+            "enum": [
+              "identity-change",
+              "source-unavailable",
+              "removed",
+              "safety-review"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

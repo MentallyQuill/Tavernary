@@ -199,6 +199,8 @@ test("plans a validated backfill projection before writing", async () => {
   }) => ({
     projectCount: projectedRecords.length,
     snapshotCount: snapshots.length,
+    kitCount: 0,
+    kitSnapshotCount: 0,
     errors: [],
   });
 

@@ -6,6 +6,9 @@ import { CategoryIcon } from "@/components/icons/category-icon";
 import { CATEGORY_OPTIONS } from "../catalog-query";
 
 function CategoryMark({ id }: { id: string }) {
+  if (id === "kits") {
+    return <CategoryIcon name="kit" />;
+  }
   if (!id) {
     return (
       <span className="all-symbol" aria-hidden="true">
@@ -23,11 +26,15 @@ function CategoryMark({ id }: { id: string }) {
 }
 
 export function CategoryNavigation({
+  mode,
   selected,
   onSelect,
+  onSelectKits,
 }: {
+  mode: "projects" | "kits";
   selected: string;
   onSelect: (id: string) => void;
+  onSelectKits: () => void;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const current =
@@ -35,14 +42,26 @@ export function CategoryNavigation({
 
   return (
     <>
-      <nav className="category-navigation" aria-label="Project categories">
+      <nav className="category-navigation" aria-label="Catalog categories">
+        <button
+          className={mode === "kits" ? "active" : ""}
+          data-category="kits"
+          type="button"
+          aria-pressed={mode === "kits"}
+          onClick={onSelectKits}
+        >
+          <CategoryMark id="kits" />
+          <span>Kits</span>
+        </button>
         {CATEGORY_OPTIONS.map((category) => (
           <button
-            className={selected === category.id ? "active" : ""}
+            className={
+              mode === "projects" && selected === category.id ? "active" : ""
+            }
             data-category={category.id || "all"}
             key={category.id || "all"}
             type="button"
-            aria-pressed={selected === category.id}
+            aria-pressed={mode === "projects" && selected === category.id}
             onClick={() => onSelect(category.id)}
           >
             <CategoryMark id={category.id} />
@@ -58,22 +77,38 @@ export function CategoryNavigation({
           aria-label="Browse categories"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
-          data-category={current.id || "all"}
+          data-category={mode === "kits" ? "kits" : current.id || "all"}
         >
-          <CategoryMark id={current.id} />
+          <CategoryMark id={mode === "kits" ? "kits" : current.id} />
           <span>
             <small>Browse</small>
-            {current.label}
+            {mode === "kits" ? "Kits" : current.label}
           </span>
           <CategoryIcon name="chevron" />
         </button>
         {mobileOpen ? (
           <div className="mobile-category-menu">
+            <button
+              type="button"
+              className={mode === "kits" ? "active" : ""}
+              data-category="kits"
+              onClick={() => {
+                onSelectKits();
+                setMobileOpen(false);
+              }}
+            >
+              <CategoryMark id="kits" />
+              <span>Kits</span>
+            </button>
             {CATEGORY_OPTIONS.map((category) => (
               <button
                 key={category.id || "all"}
                 type="button"
-                className={selected === category.id ? "active" : ""}
+                className={
+                  mode === "projects" && selected === category.id
+                    ? "active"
+                    : ""
+                }
                 data-category={category.id || "all"}
                 onClick={() => {
                   onSelect(category.id);

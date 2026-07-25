@@ -8,6 +8,8 @@ export type LicenseFilter =
   "open-source" | "proprietary" | "missing" | "pending";
 
 export interface CatalogQuery {
+  mode: CatalogMode;
+  selectedKitId: string;
   search: string;
   category: string;
   view: CatalogView;
@@ -18,9 +20,12 @@ export interface CatalogQuery {
   capabilities: string[];
   development: DevelopmentFilter[];
   licenses: LicenseFilter[];
+  kits: KitQuery;
 }
 
 export const DEFAULT_QUERY: CatalogQuery = {
+  mode: "projects",
+  selectedKitId: "",
   search: "",
   category: "",
   view: "all",
@@ -31,6 +36,7 @@ export const DEFAULT_QUERY: CatalogQuery = {
   capabilities: [],
   development: [],
   licenses: [],
+  kits: DEFAULT_KIT_QUERY,
 };
 
 export const CATEGORY_OPTIONS = [
@@ -81,6 +87,15 @@ export const CATEGORY_OPTIONS = [
 const validCategories = new Set([
   "frontend",
   "preset",
+  "memory-retrieval",
+  "generation-reasoning",
+  "character-worldbuilding",
+  "rpg-systems",
+  "interface-workflow",
+  "developer-infrastructure",
+  "uncategorized",
+]);
+const validPurposes = new Set([
   "memory-retrieval",
   "generation-reasoning",
   "character-worldbuilding",
@@ -145,22 +160,58 @@ function manyOf<T extends string>(values: string[], valid: Set<T>): T[] {
 export function parseCatalogQuery(search: string): CatalogQuery {
   const parameters = new URLSearchParams(search);
   const category = parameters.get("category");
+  const selectedKitId = parameters.get("kit")?.trim() ?? "";
+  const mode =
+    parameters.get("mode") === "kits" || selectedKitId ? "kits" : "projects";
+  const parseRange = (name: string, fallback: number) => {
+    const value = Number(parameters.get(name));
+    return Number.isInteger(value) && value >= 3 && value <= 50
+      ? value
+      : fallback;
+  };
+  const minProjects = parseRange("minProjects", DEFAULT_KIT_QUERY.minProjects);
+  const maxProjects = parseRange("maxProjects", DEFAULT_KIT_QUERY.maxProjects);
+  const parsedKitQuery: KitQuery = {
+    frontends: manyOf(parameters.getAll("frontend"), validFrontends),
+    purposes: manyOf(parameters.getAll("purpose"), validPurposes),
+    includesProjectId: parameters.get("includes")?.trim() ?? "",
+    minProjects,
+    maxProjects,
+    tavernaryPickOnly: parameters.get("pick") === "1",
+    sort: oneOf(
+      parameters.get("sort"),
+      KIT_SORTS,
+      DEFAULT_KIT_QUERY.sort,
+    ) as KitSort,
+  };
   return {
+    mode,
+    selectedKitId,
     search: parameters.get("q")?.trim() ?? "",
     category:
       category !== null && validCategories.has(category) ? category : "",
     view: oneOf(parameters.get("view"), validViews, DEFAULT_QUERY.view),
-    sort: oneOf(parameters.get("sort"), validSorts, DEFAULT_QUERY.sort),
+    sort:
+      mode === "projects"
+        ? oneOf(parameters.get("sort"), validSorts, DEFAULT_QUERY.sort)
+        : DEFAULT_QUERY.sort,
     density: oneOf(
       parameters.get("density"),
       validDensities,
       DEFAULT_QUERY.density,
     ),
-    frontends: manyOf(parameters.getAll("frontend"), validFrontends),
+    frontends:
+      mode === "projects"
+        ? manyOf(parameters.getAll("frontend"), validFrontends)
+        : [],
     kinds: manyOf(parameters.getAll("kind"), validKinds),
     capabilities: manyOf(parameters.getAll("capability"), validCapabilities),
     development: manyOf(parameters.getAll("development"), validDevelopment),
     licenses: manyOf(parameters.getAll("license"), validLicenses),
+    kits:
+      mode === "kits" && minProjects <= maxProjects
+        ? parsedKitQuery
+        : { ...DEFAULT_KIT_QUERY },
   };
 }
 
@@ -179,22 +230,54 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
   if (query.search.trim()) {
     parameters.set("q", query.search.trim());
   }
-  if (query.category) {
-    parameters.set("category", query.category);
-  }
-  if (query.view !== DEFAULT_QUERY.view) {
-    parameters.set("view", query.view);
-  }
-  if (query.sort !== DEFAULT_QUERY.sort) {
-    parameters.set("sort", query.sort);
-  }
   if (query.density !== DEFAULT_QUERY.density) {
     parameters.set("density", query.density);
   }
-  appendMany(parameters, "frontend", query.frontends);
-  appendMany(parameters, "kind", query.kinds);
-  appendMany(parameters, "capability", query.capabilities);
-  appendMany(parameters, "development", query.development);
-  appendMany(parameters, "license", query.licenses);
+  if (query.mode === "kits") {
+    parameters.set("mode", "kits");
+    if (query.selectedKitId) {
+      parameters.set("kit", query.selectedKitId);
+    }
+    appendMany(parameters, "frontend", query.kits.frontends);
+    appendMany(parameters, "purpose", query.kits.purposes);
+    if (query.kits.includesProjectId) {
+      parameters.set("includes", query.kits.includesProjectId);
+    }
+    if (query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects) {
+      parameters.set("minProjects", String(query.kits.minProjects));
+    }
+    if (query.kits.maxProjects !== DEFAULT_KIT_QUERY.maxProjects) {
+      parameters.set("maxProjects", String(query.kits.maxProjects));
+    }
+    if (query.kits.tavernaryPickOnly) {
+      parameters.set("pick", "1");
+    }
+    if (query.kits.sort !== DEFAULT_KIT_QUERY.sort) {
+      parameters.set("sort", query.kits.sort);
+    }
+  } else {
+    if (query.category) {
+      parameters.set("category", query.category);
+    }
+    if (query.view !== DEFAULT_QUERY.view) {
+      parameters.set("view", query.view);
+    }
+    if (query.sort !== DEFAULT_QUERY.sort) {
+      parameters.set("sort", query.sort);
+    }
+    appendMany(parameters, "frontend", query.frontends);
+    appendMany(parameters, "kind", query.kinds);
+    appendMany(parameters, "capability", query.capabilities);
+    appendMany(parameters, "development", query.development);
+    appendMany(parameters, "license", query.licenses);
+  }
   return parameters.toString();
 }
+import {
+  DEFAULT_KIT_QUERY,
+  KIT_SORTS,
+  type KitQuery,
+  type KitSort,
+} from "@/features/kits/kit-query";
+
+export type CatalogMode = "projects" | "kits";

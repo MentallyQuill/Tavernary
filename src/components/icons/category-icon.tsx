@@ -17,7 +17,14 @@ type IconName =
   | "chevron"
   | "filter-lines"
   | "collapse"
-  | "close";
+  | "close"
+  | "kit"
+  | "add-to-kit"
+  | "duplicate"
+  | "copy-link"
+  | "report"
+  | "drag-handle"
+  | "caution";
 
 const strokeProps = {
   "aria-hidden": true,
@@ -32,6 +39,50 @@ export function CategoryIcon({
   name,
   ...props
 }: SVGProps<SVGSVGElement> & { name: IconName }) {
+  if (name === "kit") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <path d="M4 7h16v12H4zM7 4h10v3M8 11h8M8 15h5" />
+      </svg>
+    );
+  }
+  if (name === "add-to-kit") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <path d="M4 6h10v12H4zM17 8v8M13 12h8" />
+      </svg>
+    );
+  }
+  if (name === "duplicate") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <rect x="7" y="7" width="12" height="12" rx="2" />
+        <path d="M5 16H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1" />
+      </svg>
+    );
+  }
+  if (name === "copy-link") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <path d="M9 15 15 9M7.5 17.5l-1 1a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0M16.5 6.5l1-1a3.5 3.5 0 0 1 5 5l-4 4a3.5 3.5 0 0 1-5 0" />
+      </svg>
+    );
+  }
+  if (name === "report" || name === "caution") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <path d="M12 3 2.5 20h19L12 3Z" />
+        <path d="M12 9v5M12 17h.01" />
+      </svg>
+    );
+  }
+  if (name === "drag-handle") {
+    return (
+      <svg {...strokeProps} viewBox="0 0 24 24" {...props}>
+        <path d="M8 6h8M8 12h8M8 18h8" />
+      </svg>
+    );
+  }
   if (name === "frontend") {
     return (
       <svg {...strokeProps} viewBox="0 0 24 24" {...props}>

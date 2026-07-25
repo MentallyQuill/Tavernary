@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "id": "village-maker-anonpaste-prompt",
   "name": "Village Maker — Supplementary Paste",
   "kind": "preset",
@@ -20,5 +20,6 @@
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
-  "refresh_policy": "paused"
+  "refresh_policy": "paused",
+  "visibility_reason": null
 }

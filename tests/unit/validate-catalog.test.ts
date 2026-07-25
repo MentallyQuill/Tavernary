@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { validateCatalog } from "../../scripts/catalog/validate.mjs";
 
 const validRecord = {
-  schema_version: 2,
+  schema_version: 3,
   id: "valid-preset",
   name: "Valid Preset",
   kind: "preset",
@@ -20,6 +20,7 @@ const validRecord = {
   cataloged_at: "2026-07-23T00:00:00Z",
   catalog_cohort: "seed",
   visibility: "published",
+  visibility_reason: null,
   refresh_policy: "automatic",
 };
 
@@ -74,6 +75,8 @@ describe("catalog validation", () => {
     const result = await validateCatalog();
     expect(result.errors).toEqual([]);
     expect(result.projectCount).toBe(214);
+    expect(result.kitCount).toBe(0);
+    expect(result.kitSnapshotCount).toBe(0);
   });
 
   test("rejects an invalid global refresh manifest", async () => {
@@ -92,7 +95,7 @@ describe("catalog validation", () => {
     const result = await validateCatalog({
       records: [
         {
-          schema_version: 2,
+          schema_version: 3,
           id: "bad-extension",
           name: "Bad Extension",
           kind: "extension",
@@ -105,6 +108,7 @@ describe("catalog validation", () => {
           cataloged_at: "2026-07-23T00:00:00Z",
           catalog_cohort: "seed",
           visibility: "published",
+          visibility_reason: null,
           refresh_policy: "automatic",
         },
       ],

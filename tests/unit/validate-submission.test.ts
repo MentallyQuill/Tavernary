@@ -15,14 +15,14 @@ test("rejects an extension without GitHub", () => {
   });
 });
 
-test("accepts a non-GitHub System Preset for curator review", () => {
+test("accepts a non-GitHub System Preset for maintainer review", () => {
   expect(
     validateSubmission({
       kind: "System Preset",
       sourceUrl: "https://example.com/preset",
       existingSources: [],
     }),
-  ).toEqual({ labels: ["needs-curator-review"], errors: [] });
+  ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
 });
 
 test("flags an existing canonical source", () => {
@@ -72,5 +72,5 @@ test("ignores malformed existing source values during duplicate checks", () => {
       sourceUrl: "https://example.com/preset",
       existingSources: ["not a URL"],
     }),
-  ).toEqual({ labels: ["needs-curator-review"], errors: [] });
+  ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
 });

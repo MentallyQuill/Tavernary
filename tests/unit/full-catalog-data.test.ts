@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, test } from "vitest";
 
+import { buildCatalog } from "../../scripts/catalog/build.mjs";
+
 interface CatalogRecord {
   id: string;
   kind: string;
@@ -114,5 +116,11 @@ describe("full catalog data", () => {
       expect(record?.capabilities ?? []).not.toEqual([]);
       expect(record?.source.repository_id).toEqual(expect.any(Number));
     }
+  });
+
+  test("keeps the production Kit registry empty before community publication", async () => {
+    const catalog = await buildCatalog({ write: false });
+    expect(catalog.schemaVersion).toBe(2);
+    expect(catalog.kits).toEqual([]);
   });
 });

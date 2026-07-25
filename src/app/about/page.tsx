@@ -37,7 +37,7 @@ export default function AboutPage() {
           <p>
             Every submission is reviewed before it appears. A non-GitHub System
             Preset is locked after acceptance because Tavernary cannot verify
-            that a later editor is the original creator. Curators may still
+            that a later editor is the original creator. Maintainers may still
             correct, hide, or remove an entry when necessary.
           </p>
         </section>
@@ -45,10 +45,11 @@ export default function AboutPage() {
         <section>
           <h2>What Tavernary records</h2>
           <p>
-            Curators maintain the project name, factual summary, classification,
-            supported frontends, capabilities, and canonical source. GitHub
-            supplies repository facts such as the latest meaningful commit,
-            release date, community counts, repository size, and root license.
+            Maintainers manage the project name, factual summary,
+            classification, supported frontends, capabilities, and canonical
+            source. GitHub supplies repository facts such as the latest
+            meaningful commit, release date, community counts, repository size,
+            and root license.
           </p>
           <p>
             Recent Activity sorts by the latest meaningful commit. Activity

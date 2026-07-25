@@ -6,6 +6,9 @@ export interface BuildCatalogOptions {
   records?: unknown[];
   snapshots?: unknown[];
   refreshManifest?: unknown;
+  kitRecords?: unknown[];
+  kitSnapshots?: unknown[];
+  blockedUsers?: unknown;
 }
 
 export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;

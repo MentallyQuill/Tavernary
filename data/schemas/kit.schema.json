@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/kit.schema.json",
+  "title": "Tavernary Kit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "status",
+    "title",
+    "description",
+    "author",
+    "source_issue_number",
+    "project_ids",
+    "published_at",
+    "updated_at",
+    "tavernary_pick"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "status": { "enum": ["published", "withdrawn"] },
+    "title": { "type": "string", "minLength": 3, "maxLength": 60 },
+    "description": { "type": "string", "minLength": 1 },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github_user_id", "login"],
+      "properties": {
+        "github_user_id": { "type": "integer", "minimum": 1 },
+        "login": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source_issue_number": { "type": "integer", "minimum": 1 },
+    "project_ids": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      }
+    },
+    "published_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "tavernary_pick": { "type": "boolean" },
+    "withdrawn_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "withdrawn" } } },
+      "then": { "required": ["withdrawn_at"] },
+      "else": { "not": { "required": ["withdrawn_at"] } }
+    }
+  ]
+}

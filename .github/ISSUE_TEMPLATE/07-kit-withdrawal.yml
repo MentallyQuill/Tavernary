@@ -1,0 +1,29 @@
+name: Withdraw a Kit
+description: Request withdrawal of a Kit you authored.
+title: "[Kit withdrawal]: "
+labels:
+  - kit-withdrawal
+body:
+  - type: markdown
+    attributes:
+      value: |
+        GitHub's numeric user ID is checked against the Kit author. A matching author request creates a retained withdrawal tombstone.
+  - type: input
+    id: kit-id
+    attributes:
+      label: Kit ID
+    validations:
+      required: true
+  - type: input
+    id: share-url
+    attributes:
+      label: Kit share URL
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I request withdrawal of this Kit.
+          required: true

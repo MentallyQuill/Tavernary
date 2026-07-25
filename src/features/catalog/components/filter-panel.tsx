@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
+import { useModalSurface } from "@/hooks/use-modal-surface";
 import frontendVocabulary from "../../../../data/vocabularies/frontends.json";
 import type {
   CatalogKind,
@@ -39,6 +40,7 @@ const frontendOptions = frontendVocabulary.frontends.map(({ id, label }) => ({
   id,
   label,
 }));
+const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
 function uniqueLabels(
   projects: CatalogProject[],
@@ -254,6 +256,7 @@ export function FilterPanel({
   mobile = false,
   onClose,
   now,
+  motionPhase = "entered",
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
@@ -262,15 +265,28 @@ export function FilterPanel({
   mobile?: boolean;
   onClose?: () => void;
   now: string;
+  motionPhase?: "entering" | "entered" | "exiting";
 }) {
   const [frontendSearch, setFrontendSearch] = useState("");
+  const sheetRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const dismiss = onClose ?? (() => undefined);
+  useModalSurface({
+    active: mobile,
+    containerRef: sheetRef,
+    initialFocusRef: headingRef,
+    onDismiss: dismiss,
+    inertSelectors: modalBackground,
+  });
   const content = (
     <>
       {mobile ? (
         <div className="filter-sheet-heading">
           <div>
             <small>Refine catalog</small>
-            <h2>Filters</h2>
+            <h2 ref={headingRef} id="project-filter-heading" tabIndex={-1}>
+              Filters
+            </h2>
           </div>
           <button type="button" aria-label="Close filters" onClick={onClose}>
             <CategoryIcon name="close" />
@@ -346,12 +362,17 @@ export function FilterPanel({
 
   if (mobile) {
     return (
-      <div className="filter-overlay" onMouseDown={onClose}>
+      <div
+        className="filter-overlay"
+        data-motion-phase={motionPhase}
+        onMouseDown={dismiss}
+      >
         <section
+          ref={sheetRef}
           className="filter-sheet"
           role="dialog"
           aria-modal="true"
-          aria-label="Filters"
+          aria-labelledby="project-filter-heading"
           onMouseDown={(event) => event.stopPropagation()}
         >
           {content}

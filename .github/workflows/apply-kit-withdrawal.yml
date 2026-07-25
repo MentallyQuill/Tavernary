@@ -1,0 +1,56 @@
+name: Apply verified Kit withdrawal
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: kit-registry
+  cancel-in-progress: false
+
+jobs:
+  withdraw:
+    if: startsWith(github.event.issue.title, '[Kit withdrawal]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify numeric author and write tombstone
+        run: node scripts/kits/apply-withdrawal.mjs
+        env:
+          WITHDRAWAL_ACTOR_ID: ${{ github.event.issue.user.id }}
+      - name: Validate withdrawal
+        run: |
+          npm run catalog:validate
+          npm run catalog:build
+          npm test
+      - name: Commit Kit tombstone
+        run: |
+          git add data/registry/kits
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "feat(kits): withdraw issue #${{ github.event.issue.number }}"
+          git push
+      - name: Close withdrawal request
+        run: gh issue close "${{ github.event.issue.number }}" --comment "Verified author withdrawal applied."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy updated catalog
+        run: gh workflow run deploy-pages.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

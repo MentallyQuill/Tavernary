@@ -72,4 +72,5 @@ export interface Catalog {
   schemaVersion: 2;
   generatedAt: string;
   projects: CatalogProject[];
+  kits: import("@/features/kits/kit-types").CatalogKit[];
 }

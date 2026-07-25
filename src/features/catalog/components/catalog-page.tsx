@@ -8,6 +8,25 @@ import {
 } from "@/features/catalog/catalog-query";
 import { selectProjects } from "@/features/catalog/catalog-selectors";
 import { useCatalogQuery } from "@/features/catalog/use-catalog-query";
+import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
+import { KitGrid } from "@/features/kits/components/kit-grid";
+import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
+import { selectKits } from "@/features/kits/kit-selectors";
+import { addProject } from "@/features/kits/project-stack-order";
+import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
+import {
+  openKitSubmission,
+  serializeKitManifest,
+} from "@/features/kits/submission-transport";
+import { KitWorkspace } from "@/features/kits/components/kit-workspace";
+import {
+  replaceKitFrontend,
+  splitKitProjectIds,
+} from "@/features/kits/kit-project-layout";
+import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
+import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
+import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
+import { useTransitionPresence } from "@/hooks/use-transition-presence";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
@@ -31,28 +50,67 @@ function relativeRefresh(timestamp: string, now: string) {
 }
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
+  const { touchLayout } = useResponsiveCapabilities();
   const { query, setQuery } = useCatalogQuery();
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [openFilterMode, setOpenFilterMode] = useState<
+    CatalogQuery["mode"] | null
+  >(null);
+  const filtersOpen = openFilterMode === query.mode;
+  const filterPresence = useTransitionPresence(filtersOpen, 220);
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const catalogLayoutRef = useRef<HTMLDivElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
-  const selected = useMemo(
+  const workspace = useKitWorkspace({
+    selectedKitId: query.selectedKitId,
+    onSelectKit: (selectedKitId) =>
+      setQuery((current) => ({
+        ...current,
+        mode: "kits",
+        selectedKitId,
+      })),
+  });
+  const selectedProjects = useMemo(
     () => selectProjects(catalog.projects, query, context),
     [catalog.projects, context, query],
   );
+  const selectedKits = useMemo(
+    () => selectKits(catalog.kits, query.kits, query.search),
+    [catalog.kits, query.kits, query.search],
+  );
+  const inspectedKitId =
+    workspace.state.mode === "inspect" ? workspace.state.kitId : null;
+  const buildState = workspace.state.mode === "build" ? workspace.state : null;
+  const draftFrontendId = buildState
+    ? splitKitProjectIds(buildState.draft.projectIds, catalog.projects)
+        .frontendId
+    : null;
+  const catalogDrag = useCatalogProjectDrag({
+    editorRef: catalogLayoutRef,
+    onDrop: (projectId, target) => {
+      if (!buildState) return;
+      const project = catalog.projects.find(({ id }) => id === projectId);
+      if (!project) return;
+      workspace.updateDraft({
+        projectIds:
+          target === "frontend"
+            ? replaceKitFrontend(
+                buildState.draft.projectIds,
+                projectId,
+                catalog.projects,
+              )
+            : addProject(buildState.draft.projectIds, projectId),
+      });
+    },
+  });
 
   useEffect(() => {
     document.body.classList.toggle(
       "compact-cards",
-      query.density === "compact",
+      query.mode === "projects" && query.density === "compact",
     );
     return () => document.body.classList.remove("compact-cards");
-  }, [query.density]);
-
-  useEffect(() => {
-    document.body.classList.toggle("sheet-open", filtersOpen);
-    return () => document.body.classList.remove("sheet-open");
-  }, [filtersOpen]);
+  }, [query.density, query.mode]);
 
   useEffect(() => {
     const focusSearch = (event: KeyboardEvent) => {
@@ -67,19 +125,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         event.preventDefault();
         searchRef.current?.focus();
       }
-      if (event.key === "Escape" && filtersOpen) {
-        setFiltersOpen(false);
-        filterButtonRef.current?.focus();
-      }
     };
     window.addEventListener("keydown", focusSearch);
     return () => window.removeEventListener("keydown", focusSearch);
-  }, [filtersOpen]);
+  }, []);
 
   const update = <Key extends keyof CatalogQuery>(
     key: Key,
     value: CatalogQuery[Key],
   ) => setQuery((current) => ({ ...current, [key]: value }));
+  const updateKits = (kits: KitQuery) =>
+    setQuery((current) => ({ ...current, kits }));
 
   const toggleFilter = (group: FilterArray, value: string) => {
     setQuery((current) => {
@@ -109,19 +165,69 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     });
   };
 
+  const removeKitFilter = (key: keyof KitQuery, value?: string) => {
+    setQuery((current) => {
+      const kits = current.kits;
+      if (key === "frontends" || key === "purposes") {
+        return {
+          ...current,
+          kits: {
+            ...kits,
+            [key]: value ? kits[key].filter((item) => item !== value) : [],
+          },
+        };
+      }
+      if (key === "includesProjectId") {
+        return { ...current, kits: { ...kits, includesProjectId: "" } };
+      }
+      if (key === "tavernaryPickOnly") {
+        return { ...current, kits: { ...kits, tavernaryPickOnly: false } };
+      }
+      if (key === "minProjects" || key === "maxProjects") {
+        return {
+          ...current,
+          kits: {
+            ...kits,
+            minProjects: DEFAULT_KIT_QUERY.minProjects,
+            maxProjects: DEFAULT_KIT_QUERY.maxProjects,
+          },
+        };
+      }
+      return current;
+    });
+  };
+
   const clearFilters = () =>
-    setQuery((current) => ({
-      ...DEFAULT_QUERY,
-      sort: current.sort,
-      density: current.density,
-    }));
+    setQuery((current) =>
+      current.mode === "kits"
+        ? {
+            ...current,
+            search: "",
+            selectedKitId: "",
+            kits: { ...DEFAULT_KIT_QUERY, sort: current.kits.sort },
+          }
+        : {
+            ...DEFAULT_QUERY,
+            sort: current.sort,
+            density: current.density,
+          },
+    );
 
   const filterCount =
-    query.frontends.length +
-    query.kinds.length +
-    query.capabilities.length +
-    query.development.length +
-    query.licenses.length;
+    query.mode === "kits"
+      ? query.kits.frontends.length +
+        query.kits.purposes.length +
+        Number(Boolean(query.kits.includesProjectId)) +
+        Number(
+          query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects ||
+            query.kits.maxProjects !== DEFAULT_KIT_QUERY.maxProjects,
+        ) +
+        Number(query.kits.tavernaryPickOnly)
+      : query.frontends.length +
+        query.kinds.length +
+        query.capabilities.length +
+        query.development.length +
+        query.licenses.length;
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -130,8 +236,37 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       .at(-1) ?? catalog.generatedAt;
 
   const closeFilters = () => {
-    setFiltersOpen(false);
-    window.setTimeout(() => filterButtonRef.current?.focus(), 0);
+    setOpenFilterMode(null);
+    const delay = window.matchMedia?.("(prefers-reduced-motion: reduce)")
+      .matches
+      ? 0
+      : 220;
+    window.setTimeout(() => filterButtonRef.current?.focus(), delay);
+  };
+  const selectProjectCategory = (category: string) =>
+    setQuery((current) => ({
+      ...current,
+      mode: "projects",
+      selectedKitId: "",
+      category,
+      kits: DEFAULT_KIT_QUERY,
+    }));
+  const selectKitMode = () =>
+    setQuery((current) => ({
+      ...DEFAULT_QUERY,
+      mode: "kits",
+      search: current.search,
+      density: current.density,
+      kits: current.kits,
+    }));
+  const reportKit = (kitId: string) => {
+    const url = new URL(
+      "https://github.com/MentallyQuill/Tavernary/issues/new",
+    );
+    url.searchParams.set("template", "06-kit-report.yml");
+    url.searchParams.set("kit-id", kitId);
+    url.searchParams.set("share-url", kitShareUrl(kitId));
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -142,52 +277,179 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         searchRef={searchRef}
       />
       <CategoryNavigation
+        mode={query.mode}
         selected={query.category}
-        onSelect={(category) => update("category", category)}
+        onSelect={selectProjectCategory}
+        onSelectKits={selectKitMode}
       />
-      <div className="catalog-layout">
-        <FilterPanel
-          query={query}
-          projects={catalog.projects}
-          now={catalog.generatedAt}
-          onToggle={toggleFilter}
-          onClear={clearFilters}
-        />
+      <div
+        className={`catalog-layout${catalogDrag.pressed ? " catalog-drag-active" : ""}`}
+        ref={catalogLayoutRef}
+      >
+        {query.mode === "kits" ? (
+          <KitFilterPanel
+            query={query.kits}
+            kits={catalog.kits}
+            projects={catalog.projects}
+            onChange={updateKits}
+            onClear={clearFilters}
+          />
+        ) : (
+          <FilterPanel
+            query={query}
+            projects={catalog.projects}
+            now={catalog.generatedAt}
+            onToggle={toggleFilter}
+            onClear={clearFilters}
+          />
+        )}
         <main className="catalog-main">
           <CatalogToolbar
-            count={selected.length}
+            count={
+              query.mode === "kits"
+                ? selectedKits.length
+                : selectedProjects.length
+            }
             query={query}
             refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
             filterCount={filterCount}
             onSort={(sort) => update("sort", sort)}
+            onKitSort={(sort) => updateKits({ ...query.kits, sort })}
             onDensity={() =>
               update(
                 "density",
                 query.density === "standard" ? "compact" : "standard",
               )
             }
-            onOpenFilters={() => setFiltersOpen(true)}
+            onOpenFilters={() => setOpenFilterMode(query.mode)}
+            onCreateKit={workspace.startCreate}
             filterButtonRef={filterButtonRef}
           />
           <ActiveQuery
             query={query}
             projects={catalog.projects}
+            kits={catalog.kits}
             onRemove={removeFilter}
+            onRemoveKit={removeKitFilter}
             onClear={clearFilters}
           />
-          <ProjectGrid projects={selected} now={catalog.generatedAt} />
+          {query.mode === "kits" ? (
+            <KitGrid
+              kits={selectedKits}
+              now={catalog.generatedAt}
+              selectedKitId={query.selectedKitId}
+              onSelect={workspace.selectKit}
+              onCopyLink={(kitId) => void copyKitLink(kitId)}
+              onReport={reportKit}
+            />
+          ) : (
+            <ProjectGrid
+              projects={selectedProjects}
+              now={catalog.generatedAt}
+              draftProjectIds={buildState?.draft.projectIds}
+              draftFrontendId={draftFrontendId}
+              onProjectDragStart={
+                buildState && !touchLayout
+                  ? (project, event) => {
+                      if (buildState.collapsed) workspace.toggleCollapsed();
+                      catalogDrag.begin(project, event);
+                    }
+                  : undefined
+              }
+              onAddToKit={
+                buildState
+                  ? (projectId) => {
+                      const project = catalog.projects.find(
+                        ({ id }) => id === projectId,
+                      );
+                      if (!project) return;
+                      workspace.updateDraft({
+                        projectIds:
+                          project.kind === "frontend"
+                            ? replaceKitFrontend(
+                                buildState.draft.projectIds,
+                                projectId,
+                                catalog.projects,
+                              )
+                            : addProject(
+                                buildState.draft.projectIds,
+                                projectId,
+                              ),
+                      });
+                    }
+                  : undefined
+              }
+            />
+          )}
         </main>
-      </div>
-      {filtersOpen ? (
-        <FilterPanel
-          mobile
-          query={query}
+        <KitWorkspace
+          state={workspace.state}
+          kit={
+            inspectedKitId
+              ? (catalog.kits.find(({ id }) => id === inspectedKitId) ?? null)
+              : null
+          }
+          onCollapse={workspace.toggleCollapsed}
+          onDuplicate={workspace.startDuplicate}
+          onEdit={workspace.startEdit}
           projects={catalog.projects}
-          now={catalog.generatedAt}
-          onToggle={toggleFilter}
-          onClear={clearFilters}
-          onClose={closeFilters}
+          originalProjectIds={
+            workspace.draftOrigin === "duplicate"
+              ? workspace.originalProjectIds
+              : []
+          }
+          onStartCreate={workspace.startCreate}
+          onUpdateDraft={workspace.updateDraft}
+          onSubmitDraft={
+            buildState
+              ? () =>
+                  void openKitSubmission(
+                    "https://github.com/MentallyQuill/Tavernary/issues/new?template=05-kit-submission.yml",
+                    serializeKitManifest(buildState.draft),
+                  )
+              : undefined
+          }
+          active={query.mode === "kits" || workspace.state.mode !== "intro"}
+          catalogDragState={catalogDrag.dragState}
         />
+      </div>
+      {catalogDrag.dragState ? (
+        <div
+          className="catalog-project-drag-ghost"
+          data-valid={catalogDrag.dragState.valid}
+          aria-hidden="true"
+          style={{
+            transform: `translate3d(${catalogDrag.dragState.point.x}px, ${catalogDrag.dragState.point.y}px, 0)`,
+          }}
+        >
+          <strong>{catalogDrag.dragState.projectName}</strong>
+          <span>{catalogDrag.dragState.actionLabel}</span>
+        </div>
+      ) : null}
+      {filterPresence.present ? (
+        (openFilterMode ?? query.mode) === "kits" ? (
+          <KitFilterPanel
+            mobile
+            motionPhase={filterPresence.phase}
+            query={query.kits}
+            kits={catalog.kits}
+            projects={catalog.projects}
+            onChange={updateKits}
+            onClear={clearFilters}
+            onClose={closeFilters}
+          />
+        ) : (
+          <FilterPanel
+            mobile
+            motionPhase={filterPresence.phase}
+            query={query}
+            projects={catalog.projects}
+            now={catalog.generatedAt}
+            onToggle={toggleFilter}
+            onClear={clearFilters}
+            onClose={closeFilters}
+          />
+        )
       ) : null}
     </div>
   );

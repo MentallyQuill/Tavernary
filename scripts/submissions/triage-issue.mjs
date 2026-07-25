@@ -6,9 +6,9 @@ import { validateSubmission } from "./validate-submission.mjs";
 
 const validationMarker = "<!-- tavernary-submission-validation -->";
 const triageLabels = {
-  "needs-curator-review": {
+  "needs-maintainer-review": {
     color: "0e8a16",
-    description: "Submission passed automation and awaits curator review.",
+    description: "Submission passed automation and awaits maintainer review.",
   },
   "needs-information": {
     color: "d93f0b",
@@ -44,12 +44,12 @@ export function buildValidationComment(validation) {
   if (validation.errors.length === 0) {
     return [
       validationMarker,
-      "Automated validation now passes. This submission is ready for curator review.",
+      "Automated validation now passes. This submission is ready for maintainer review.",
     ].join("\n");
   }
   return [
     validationMarker,
-    "Tavernary could not send this submission to curator review:",
+    "Tavernary could not send this submission to maintainer review:",
     "",
     ...validation.errors.map((error) => `- ${error}`),
     "",

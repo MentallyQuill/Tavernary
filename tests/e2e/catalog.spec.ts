@@ -78,14 +78,14 @@ test("uses the approved category strip", async ({ page }) => {
   expect(metrics).toEqual({
     display: "grid",
     height: 50,
-    tracks: 10,
+    tracks: 11,
     activeBorder: "1px",
     afterContent: "none",
     justifyContent: "center",
     textAlign: "center",
   });
 
-  await expect(page.locator(".category-navigation button")).toHaveCount(10);
+  await expect(page.locator(".category-navigation button")).toHaveCount(11);
   expect(
     await page
       .locator(".category-navigation button")
@@ -93,6 +93,7 @@ test("uses the approved category strip", async ({ page }) => {
         buttons.map((button) => button.textContent?.trim()),
       ),
   ).toEqual([
+    "Kits",
     "All Projects",
     "Frontends",
     "System Presets",
@@ -439,13 +440,43 @@ test("matches the approved card anatomy", async ({ page }) => {
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       gap: getComputedStyle(grid).gap,
     })),
-  ).toEqual({ columns: 4, gap: "12px" });
+  ).toEqual({ columns: 2, gap: "12px" });
   expect(
     await card.evaluate((element) => {
       return getComputedStyle(element, "::before").content;
     }),
     "kind stripes were removed from the reference design",
   ).toBe("none");
+});
+
+test("keeps dense project-card header facts from overlapping", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  await page.reload();
+
+  const measuredCards = page
+    .locator(".project-card")
+    .filter({ has: page.locator(".activity-score") });
+  expect(await measuredCards.count()).toBeGreaterThan(0);
+  expect(
+    await measuredCards.evaluateAll((cards) =>
+      cards.every((card) => {
+        const identity = card
+          .querySelector(".card-identity")!
+          .getBoundingClientRect();
+        const development = card
+          .querySelector(".development")!
+          .getBoundingClientRect();
+        const separatedHorizontally = identity.right + 8 <= development.left;
+        const separatedVertically = identity.bottom <= development.top;
+        return (
+          card.getBoundingClientRect().width >= 320 &&
+          (separatedHorizontally || separatedVertically)
+        );
+      }),
+    ),
+  ).toBe(true);
 });
 
 test("explains every card fact with hover help", async ({ page }) => {
@@ -505,7 +536,7 @@ test("explains every card fact with hover help", async ({ page }) => {
   await expect(repositoryCard).toHaveCSS("overflow", "hidden");
   await expect(
     page.getByRole("tooltip", {
-      name: /^Approximate activity in \d+ of the last 12 weeks; baseline pending$/,
+      name: /^(?:Approximate|Source) activity in \d+ of the last 12 weeks(?:; baseline pending|; activity evidence is incomplete)?$/,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".card-identity").hover();
@@ -679,7 +710,13 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     return {
       filterWidth: Math.round(filters.getBoundingClientRect().width),
       mainLeft: Math.round(main.getBoundingClientRect().left),
+      mainRight: Math.round(main.getBoundingClientRect().right),
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
+      workspaceLeft: Math.round(
+        document
+          .querySelector<HTMLElement>(".kit-workspace")!
+          .getBoundingClientRect().left,
+      ),
       topLinkDisplay: getComputedStyle(
         document.querySelector<HTMLElement>(".header-actions .top-link")!,
       ).display,
@@ -688,7 +725,9 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
   expect(tablet).toEqual({
     filterWidth: 210,
     mainLeft: 210,
-    columns: 2,
+    mainRight: 612,
+    columns: 1,
+    workspaceLeft: 612,
     topLinkDisplay: "none",
   });
 
@@ -717,7 +756,7 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
   expect(mobile).toEqual({
     mainLeft: 0,
     mainPaddingLeft: "13px",
-    triggerHeight: 42,
+    triggerHeight: 44,
     controlDisplay: "flex",
     sortHeight: 36,
   });

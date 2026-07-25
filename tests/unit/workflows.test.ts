@@ -33,6 +33,9 @@ test("pins every first-party action to its resolved commit", async () => {
     "deploy-pages",
     "refresh-catalog",
     "triage-submission",
+    "triage-kit-submission",
+    "apply-kit-submission",
+    "apply-kit-withdrawal",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -41,6 +44,47 @@ test("pins every first-party action to its resolved commit", async () => {
       expect(sha).toMatch(/^[a-f0-9]{40}$/);
     }
   }
+});
+
+test("publishes Kits only by manual dispatch and serializes registry writes", async () => {
+  const publication = await workflow("apply-kit-submission");
+  const withdrawal = await workflow("apply-kit-withdrawal");
+  const publicationSource = await readFile(
+    resolve(workflowDirectory, "apply-kit-submission.yml"),
+    "utf8",
+  );
+  const withdrawalSource = await readFile(
+    resolve(workflowDirectory, "apply-kit-withdrawal.yml"),
+    "utf8",
+  );
+  expect(publication.on.workflow_dispatch.inputs.issue_number.required).toBe(
+    true,
+  );
+  expect(publication.on.issues).toBeUndefined();
+  expect(withdrawal.on.issues.types).toEqual(["opened", "edited"]);
+  for (const document of [publication, withdrawal]) {
+    expect(document.permissions).toEqual({
+      contents: "write",
+      issues: "write",
+      actions: "write",
+    });
+    expect(document.concurrency).toEqual({
+      group: "kit-registry",
+      "cancel-in-progress": false,
+    });
+  }
+  expect(publicationSource.indexOf("catalog:validate")).toBeLessThan(
+    publicationSource.indexOf("git add"),
+  );
+  expect(withdrawalSource.indexOf("catalog:validate")).toBeLessThan(
+    withdrawalSource.indexOf("git add"),
+  );
+  expect(publicationSource).toContain("kit-published");
+  expect(publicationSource).toContain("workflow run deploy-pages.yml");
+  expect(withdrawalSource).toContain("github.event.issue.user.id");
+  expect(withdrawalSource).not.toMatch(
+    /github\.event\.issue\.user\.login\s*==/,
+  );
 });
 
 test("keeps CI read-only and runs every local gate", async () => {
@@ -58,6 +102,9 @@ test("keeps CI read-only and runs every local gate", async () => {
   expect(commands).toContain("playwright install --with-deps chromium");
   expect(commands).toContain("npm run test:e2e");
   expect(commands).toContain("npm run test:visual");
+  expect(commands).toContain("npm run build:test-kits");
+  expect(commands).toContain("npm run test:kits-e2e");
+  expect(commands).toContain("npm run test:kits-visual");
 });
 
 test("runs Windows-specific visual baselines on a Windows runner", async () => {
@@ -118,6 +165,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(refresh.permissions).toEqual({
     contents: "write",
     actions: "write",
+    issues: "read",
   });
   expect(refresh.concurrency).toEqual({
     group: "catalog-refresh",
@@ -140,7 +188,10 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(inputs).not.toHaveProperty("start_index");
   expect(source).toContain("data/snapshots/github/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
+  expect(source).toContain("data/snapshots/github/kits/*.json");
+  expect(source).toContain("refresh-reactions.mjs");
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
+  expect(source).not.toContain("git add src/generated/catalog.json");
   expect(source).toContain("workflow run deploy-pages.yml");
 });
 
@@ -150,6 +201,18 @@ test("triage can label issues but cannot write repository content", async () => 
     contents: "read",
     issues: "write",
   });
+  const kitTriage = await workflow("triage-kit-submission");
+  expect(kitTriage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+  });
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-kit-submission.yml"),
+    "utf8",
+  );
+  expect(source).toContain("opened");
+  expect(source).toContain("edited");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
 test("groups coupled dependency updates into coherent pull requests", async () => {

@@ -4,6 +4,7 @@ import {
   repositoryIdentityChanged,
   snapshotForFailure,
 } from "../../scripts/catalog/refresh-github.mjs";
+import { refreshKitReactions } from "../../scripts/kits/refresh-reactions.mjs";
 
 const prior = {
   schema_version: 2,
@@ -108,4 +109,35 @@ test("repository identity checks allow unverified records and reject mismatches"
       { repository: { id: 42 } },
     ),
   ).toBe(true);
+});
+test("Kit reaction failure preserves the prior ledger as stale", async () => {
+  const snapshot = {
+    schema_version: 1 as const,
+    kit_id: "fixture-kit",
+    source_issue_number: 12,
+    refreshed_at: "2026-07-20T00:00:00.000Z",
+    stale_since: null,
+    supporters: [],
+  };
+  await expect(
+    refreshKitReactions({
+      kits: [
+        {
+          id: "fixture-kit",
+          status: "published",
+          source_issue_number: 12,
+          published_at: "2026-07-01T00:00:00.000Z",
+          author: { github_user_id: 1, login: "author" },
+        },
+      ],
+      snapshots: [snapshot],
+      blockedUsers: { blocked: [] },
+      fetchPage: async () => {
+        throw new Error("rate limited");
+      },
+      now: "2026-07-24T00:00:00.000Z",
+    }),
+  ).resolves.toEqual([
+    { ...snapshot, stale_since: "2026-07-24T00:00:00.000Z" },
+  ]);
 });

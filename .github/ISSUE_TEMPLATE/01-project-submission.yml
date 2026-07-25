@@ -1,5 +1,5 @@
 name: Submit a project
-description: Propose a public AI roleplay project for curator review.
+description: Propose a public AI roleplay project for maintainer review.
 title: "[Project submission]: "
 labels:
   - project-submission
@@ -9,7 +9,7 @@ body:
       value: |
         Tavernary is a link aggregator. It does not host project files, and submission never publishes a listing automatically.
 
-        Frontends and Extensions require a public `github.com/owner/repository` source. A System Preset may use another stable public HTTPS page, but non-GitHub System Presets are locked after acceptance except for curator moderation.
+        Frontends and Extensions require a public `github.com/owner/repository` source. A System Preset may use another stable public HTTPS page, but non-GitHub System Presets are locked after acceptance except for maintainer moderation.
   - type: input
     id: project-name
     attributes:
@@ -67,7 +67,7 @@ body:
     id: supporting-context
     attributes:
       label: Supporting context
-      description: Add documentation, announcement, release, or compatibility links that will help curators verify the submission.
+      description: Add documentation, announcement, release, or compatibility links that will help maintainers verify the submission.
     validations:
       required: false
   - type: checkboxes
