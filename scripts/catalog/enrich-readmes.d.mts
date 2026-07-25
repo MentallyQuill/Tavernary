@@ -50,10 +50,18 @@ export type EnrichmentProvider = {
   }>;
 };
 export type EnrichmentOptions = {
-  mode?: "preflight" | "canary" | "approve-canary" | "start" | "resume";
+  mode?:
+    | "preflight"
+    | "canary"
+    | "approve-canary"
+    | "authorize-full"
+    | "start"
+    | "resume";
   batchSize?: number;
   concurrency?: number;
   projectIds?: string[];
+  reportPath?: string | null;
+  canaryReportPath?: string | null;
   vocabularies?: {
     primaryFunctions: VocabularyEntry[];
     capabilities: VocabularyEntry[];
@@ -67,6 +75,13 @@ export type PreflightResult = {
   returned_model: string | null;
   latency_ms: number;
   validation_status: "passed";
+};
+
+export type FullAuthorizationResult = {
+  mode: "authorize-full";
+  status: "passed";
+  canary_run_id: string;
+  requested_model: string;
 };
 
 export function selectEnrichmentRecords(
@@ -165,7 +180,6 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
       capabilities: VocabularyEntry[];
     },
   ) => Promise<void>;
-  reportPath?: string | null;
   writeReport?: (report: EnrichmentRunState) => Promise<void>;
 };
 
@@ -174,6 +188,9 @@ export function runCli(
     mode: "canary" | "approve-canary" | "start" | "resume";
   },
 ): Promise<EnrichmentRunState>;
+export function runCli(
+  options: RunCliOptions & { mode: "authorize-full" },
+): Promise<FullAuthorizationResult>;
 export function runCli(
   options?: RunCliOptions & { mode?: "preflight" },
 ): Promise<PreflightResult>;

@@ -24,6 +24,7 @@
     "catalog:validate": "node scripts/catalog/validate.mjs",
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
     "catalog:enrich": "node scripts/catalog/enrich-readmes.mjs",
+    "catalog:enrichment-plan": "node scripts/catalog/enrichment-rollout-plan.mjs",
     "catalog:select-canary": "node scripts/catalog/select-enrichment-canary.mjs",
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",

@@ -9,7 +9,7 @@ import {
   approveCanaryDeployment,
   createEnrichmentRunState,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
-import { runCli } from "../../scripts/catalog/enrich-readmes.mjs";
+import { cliOptions, runCli } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const now = "2026-07-24T00:00:00.000Z";
 const model = "minimax/minimax-m3:thinking";
@@ -103,7 +103,7 @@ function executionOptions(ids: string[]) {
   };
 }
 
-function deployedCanary(canaryModel = model) {
+function awaitingCanary(canaryModel = model) {
   let canary = createEnrichmentRunState({
     mode: "canary",
     manifest: ["a", "b", "c", "d", "e"],
@@ -120,6 +120,11 @@ function deployedCanary(canaryModel = model) {
     })),
     now,
   );
+  return canary;
+}
+
+function deployedCanary(canaryModel = model) {
+  const canary = awaitingCanary(canaryModel);
   return approveCanaryDeployment(canary, {
     commitSha: "b".repeat(40),
     deploymentRunId: 12345,
@@ -252,6 +257,42 @@ test("a canary retry resumes only its failed IDs", async () => {
   });
 });
 
+test("a canary primary phase resumes from its committed cursor", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  let previousReport = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ids,
+    runId: "canary-primary",
+    now,
+    model,
+    batchSize: 2,
+  });
+  previousReport = applyAttemptResults(
+    previousReport,
+    ids.slice(0, 2).map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: "enriched" as const,
+    })),
+    now,
+  );
+  const options = executionOptions(ids);
+  const report = await runCli({
+    ...options,
+    mode: "canary",
+    projectIds: ids,
+    previousReport,
+  });
+
+  expect(options.writeRecord).toHaveBeenCalledTimes(2);
+  expect(report).toMatchObject({
+    run_id: "canary-primary",
+    status: "running",
+    phase: "primary",
+    primary_cursor: 4,
+  });
+});
+
 test("canary approval records verified deployment without provider access", async () => {
   const awaiting = applyAttemptResults(
     createEnrichmentRunState({
@@ -321,6 +362,76 @@ test("canary approval writes its durable ledger without replacing the full repor
   const full = await readFile(reportPath, "utf8").catch(() => null);
   expect(canary).toMatchObject({ mode: "canary", status: "passed" });
   expect(full).toBeNull();
+});
+
+test("start authorizes from the durable canary ledger and writes separate full progress", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-full-ledger-"));
+  const canaryReportPath = join(directory, "enrichment-canary.json");
+  const reportPath = join(directory, "enrichment-report.json");
+  const ids = ["project-a"];
+
+  await runCli({
+    mode: "approve-canary",
+    previousReport: awaitingCanary(),
+    canaryReportPath,
+    reportPath,
+    commitSha: "c".repeat(40),
+    deploymentRunId: 67890,
+    now,
+  });
+  const report = await runCli({
+    ...executionOptions(ids),
+    mode: "start",
+    previousReport: undefined,
+    canaryReportPath,
+    reportPath,
+  });
+
+  const canary = JSON.parse(await readFile(canaryReportPath, "utf8"));
+  const full = JSON.parse(await readFile(reportPath, "utf8"));
+  expect(canary).toMatchObject({ mode: "canary", status: "passed" });
+  expect(report).toMatchObject({ mode: "full", status: "complete" });
+  expect(full.run_id).toBe(report.run_id);
+});
+
+test("authorize-full validates durable canary proof without touching catalog data", async () => {
+  const loadSource = vi.fn();
+  const writeRecord = vi.fn();
+  const result = await runCli({
+    mode: "authorize-full",
+    previousReport: deployedCanary(),
+    providerConfiguration,
+    loadSource,
+    writeRecord,
+    reportPath: null,
+    canaryReportPath: null,
+  });
+
+  expect(result).toEqual({
+    mode: "authorize-full",
+    status: "passed",
+    canary_run_id: "canary",
+    requested_model: model,
+  });
+  expect(loadSource).not.toHaveBeenCalled();
+  expect(writeRecord).not.toHaveBeenCalled();
+});
+
+test("CLI report flags keep canary authorization and full progress separate", () => {
+  expect(
+    cliOptions([
+      "--mode",
+      "authorize-full",
+      "--report-path",
+      "full.json",
+      "--canary-report-path",
+      "canary.json",
+    ]),
+  ).toMatchObject({
+    mode: "authorize-full",
+    reportPath: "full.json",
+    canaryReportPath: "canary.json",
+  });
 });
 
 test("writes enrichment reports in repository Prettier format", async () => {

@@ -499,15 +499,31 @@ function providerConfiguration(options) {
 export async function runCli(options = {}) {
   const mode = options.mode ?? "preflight";
   if (
-    !["preflight", "canary", "approve-canary", "start", "resume"].includes(mode)
+    ![
+      "preflight",
+      "canary",
+      "approve-canary",
+      "authorize-full",
+      "start",
+      "resume",
+    ].includes(mode)
   ) {
     throw new Error(`unsupported enrichment mode: ${mode}`);
   }
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-  const reportPath =
+  const fullReportPath =
     options.reportPath === undefined
       ? resolve(root, "data/reports/enrichment-report.json")
       : options.reportPath;
+  const canaryReportPath =
+    options.canaryReportPath === undefined
+      ? options.reportPath === undefined
+        ? resolve(root, "data/reports/enrichment-canary.json")
+        : options.reportPath
+      : options.canaryReportPath;
+  const reportPath = ["canary", "approve-canary"].includes(mode)
+    ? canaryReportPath
+    : fullReportPath;
   const timestamp = new Date(options.now ?? Date.now()).toISOString();
   if (mode === "approve-canary") {
     const previousReport =
@@ -531,6 +547,22 @@ export async function runCli(options = {}) {
   }
 
   const configuration = providerConfiguration(options);
+  if (mode === "authorize-full") {
+    const canaryReport =
+      options.previousReport !== undefined
+        ? options.previousReport
+        : canaryReportPath
+          ? await readOptionalJson(canaryReportPath)
+          : null;
+    const canary = validateEnrichmentReport(canaryReport);
+    assertFullRolloutAllowed(canary, configuration.model);
+    return {
+      mode: "authorize-full",
+      status: "passed",
+      canary_run_id: canary.run_id,
+      requested_model: configuration.model,
+    };
+  }
   const provider =
     options.provider ??
     createEnrichmentProvider({
@@ -583,9 +615,13 @@ export async function runCli(options = {}) {
   const previousReport =
     options.previousReport !== undefined
       ? options.previousReport
-      : reportPath
-        ? await readOptionalJson(reportPath)
-        : null;
+      : mode === "start"
+        ? canaryReportPath
+          ? await readOptionalJson(canaryReportPath)
+          : null
+        : reportPath
+          ? await readOptionalJson(reportPath)
+          : null;
   let previousState = null;
   if (previousReport !== null) {
     try {
@@ -600,7 +636,7 @@ export async function runCli(options = {}) {
     if (
       previousState?.mode === "canary" &&
       previousState.status === "running" &&
-      previousState.phase === "retry"
+      ["primary", "retry"].includes(previousState.phase)
     ) {
       if (previousState.expected_model !== configuration.model) {
         throw new Error(
@@ -696,6 +732,8 @@ export function cliOptions(argv) {
     projectIds: values("--project-id"),
     commitSha: value("--commit-sha", undefined),
     deploymentRunId: Number(value("--deployment-run-id", Number.NaN)),
+    reportPath: value("--report-path", undefined),
+    canaryReportPath: value("--canary-report-path", undefined),
   };
 }
 

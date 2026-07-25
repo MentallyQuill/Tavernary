@@ -3,19 +3,6 @@ name: Enrich catalog
 on:
   workflow_dispatch:
     inputs:
-      mode:
-        description: Verify the provider, run a five-card canary, start, or resume.
-        type: choice
-        options:
-          - preflight
-          - canary
-          - start
-          - resume
-        default: preflight
-      project_ids:
-        description: Optional newline-separated project IDs; empty randomly selects five.
-        type: string
-        required: false
       batch_size:
         description: Frozen primary and retry batch size.
         type: number
@@ -57,13 +44,14 @@ jobs:
           TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MODE: ${{ inputs.mode }}
-          PROJECT_IDS: ${{ inputs.project_ids || '' }}
           BATCH_SIZE: ${{ inputs.batch_size || 20 }}
           MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 4 }}
         shell: bash
         run: |
           set -euo pipefail
+
+          FULL_REPORT="data/reports/enrichment-report.json"
+          CANARY_REPORT="data/reports/enrichment-canary.json"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -75,7 +63,11 @@ jobs:
             if ! git diff --quiet -- data/registry/projects; then
               REGISTRY_CHANGED=true
             fi
-            git add data/registry/projects/*.json data/reports/enrichment-report.json
+            git add -A -- data/registry/projects data/reports/enrichment-report.json
+            if [[ -e "$CANARY_REPORT" ]] ||
+              git ls-files --error-unmatch "$CANARY_REPORT" >/dev/null 2>&1; then
+              git add -A -- "$CANARY_REPORT"
+            fi
             if git diff --cached --quiet; then
               return
             fi
@@ -153,9 +145,10 @@ jobs:
           }
 
           choose_canary_projects() {
-            if [[ "$existing_mode" == "canary" && "$existing_status" == "running" ]]; then
-              PROJECT_IDS="$(jq -r '.manifest[]' data/reports/enrichment-report.json)"
-            elif [[ -z "${PROJECT_IDS//[[:space:]]/}" ]]; then
+            local use_existing="${1:-false}"
+            if [[ "$use_existing" == "true" ]]; then
+              PROJECT_IDS="$(jq -r '.manifest[]' "$CANARY_REPORT")"
+            else
               PROJECT_IDS="$(npm run --silent catalog:select-canary)"
             fi
 
@@ -214,6 +207,52 @@ jobs:
             done
           }
 
+          publish_full_source_refresh() {
+            git add -A -- \
+              data/snapshots/github/*.json \
+              data/snapshots/github-refresh.json
+            if git diff --cached --quiet; then
+              return
+            fi
+            git commit -m "chore(catalog): refresh enrichment sources"
+            for attempt in 1 2 3; do
+              if ! git fetch origin main; then
+                if (( attempt == 3 )); then
+                  exit 1
+                fi
+                continue
+              fi
+              if ! git rebase origin/main; then
+                conflicts="$(git diff --name-only --diff-filter=U)"
+                if [[ -n "$conflicts" ]]; then
+                  echo "Full source refresh publication conflict:"
+                  echo "$conflicts"
+                fi
+                git rebase --abort || true
+                if (( attempt == 3 )); then
+                  exit 1
+                fi
+                continue
+              fi
+              if ! npm run check; then
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                return
+              fi
+              if (( attempt == 3 )); then
+                exit 1
+              fi
+            done
+          }
+
+          refresh_full_sources() {
+            sync_main
+            npm run catalog:refresh -- --mode incremental --deployment-requested
+            npm run check
+            publish_full_source_refresh
+          }
+
           prepare_full_rollout() {
             sync_main
             for attempt in 1 2 3; do
@@ -265,7 +304,13 @@ jobs:
           run_batch() {
             local run_mode="$1"
             local publish="${2:-true}"
-            args=(--mode "$run_mode" --batch-size "$BATCH_SIZE" --concurrency "$MODEL_CONCURRENCY")
+            args=(
+              --mode "$run_mode"
+              --batch-size "$BATCH_SIZE"
+              --concurrency "$MODEL_CONCURRENCY"
+              --report-path "$FULL_REPORT"
+              --canary-report-path "$CANARY_REPORT"
+            )
             if [[ "$run_mode" == "canary" ]]; then
               while IFS= read -r project_id; do
                 [[ -z "$project_id" ]] || args+=(--project-id "$project_id")
@@ -281,108 +326,143 @@ jobs:
           }
 
           enrichment_progress() {
+            local report_path="$1"
             jq -c \
               '[.phase, .primary_cursor, .retry_cursor, (.retry_queue | length)]' \
-              data/reports/enrichment-report.json
+              "$report_path"
           }
 
           complete_canary() {
             run_batch canary false
-            status="$(jq -r '.status' data/reports/enrichment-report.json)"
+            status="$(jq -r '.status' "$CANARY_REPORT")"
             while [[ "$status" == "running" ]]; do
-              progress_before="$(enrichment_progress)"
+              progress_before="$(enrichment_progress "$CANARY_REPORT")"
               run_batch canary false
-              progress_after="$(enrichment_progress)"
+              progress_after="$(enrichment_progress "$CANARY_REPORT")"
               if [[ "$progress_after" == "$progress_before" ]]; then
-                echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."
+                echo "::error title=Enrichment stalled::Canary remained running without advancing its phase or cursors."
                 exit 1
               fi
-              status="$(jq -r '.status' data/reports/enrichment-report.json)"
+              status="$(jq -r '.status' "$CANARY_REPORT")"
             done
             if [[ "$status" != "awaiting-deployment" ]]; then
               echo "Canary did not reach deployment readiness." >&2
               exit 1
             fi
             npm run check
-            publish_changes "chore(catalog): enrich project metadata"
+            publish_changes "chore(catalog): enrich canary project metadata"
             deploy_registry_changes
           }
 
-          resume_batch() {
-            progress_before="$(enrichment_progress)"
-            run_batch resume
-            run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
-            status="$(jq -r '.status' data/reports/enrichment-report.json)"
-            test "$run_mode" = "full"
-            progress_after="$(enrichment_progress)"
-            if [[ "$status" == "running" && "$progress_after" == "$progress_before" ]]; then
-              echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."
-              exit 1
-            fi
-          }
-
-          if [[ "$MODE" == "preflight" || "$MODE" == "canary" ]]; then
-            npm run catalog:enrich -- --mode preflight | tee "$RUNNER_TEMP/enrichment-preflight.log"
-          fi
-          if [[ "$MODE" == "preflight" ]]; then
-            exit 0
-          fi
-
-          if [[ "$MODE" == "canary" ]]; then
-            existing_mode="$(jq -r '.mode // empty' data/reports/enrichment-report.json 2>/dev/null || true)"
-            existing_status="$(jq -r '.status // empty' data/reports/enrichment-report.json 2>/dev/null || true)"
-            if [[ "$existing_mode" == "canary" && "$existing_status" == "awaiting-deployment" ]]; then
-              PUBLISHED_SHA="$(git rev-parse HEAD)"
-              REGISTRY_CHANGED=true
-              deploy_registry_changes
-            else
-              choose_canary_projects
-              prepare_canary_projects
-              complete_canary
-            fi
-            run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
-            status="$(jq -r '.status' data/reports/enrichment-report.json)"
-            if [[ "$run_mode" != "canary" || "$status" != "awaiting-deployment" ]]; then
-              echo "Canary did not reach deployment readiness." >&2
-              exit 1
-            fi
+          approve_canary() {
             if [[ "$REGISTRY_CHANGED" != "true" || -z "$DEPLOY_RUN_ID" ]]; then
               echo "Canary did not publish and deploy registry changes." >&2
               exit 1
             fi
             npm run catalog:enrich -- \
               --mode approve-canary \
+              --report-path "$FULL_REPORT" \
+              --canary-report-path "$CANARY_REPORT" \
               --commit-sha "$PUBLISHED_SHA" \
               --deployment-run-id "$DEPLOY_RUN_ID"
             npm run check
             publish_changes "chore(catalog): approve enrichment canary"
-            test "$(jq -r '.status' data/reports/enrichment-report.json)" = "passed"
+            test "$(jq -r '.status' "$CANARY_REPORT")" = "passed"
+          }
+
+          resume_full_batch() {
+            progress_before="$(enrichment_progress "$FULL_REPORT")"
+            run_batch resume
+            run_mode="$(jq -r '.mode' "$FULL_REPORT")"
+            status="$(jq -r '.status' "$FULL_REPORT")"
+            test "$run_mode" = "full"
+            progress_after="$(enrichment_progress "$FULL_REPORT")"
+            if [[ "$status" == "running" && "$progress_after" == "$progress_before" ]]; then
+              echo "::error title=Enrichment stalled::Full rollout remained running without advancing its phase or cursors."
+              exit 1
+            fi
+          }
+
+          finish_full_rollout() {
+            while [[ "$status" == "running" ]]; do
+              resume_full_batch
+            done
+            if [[ "$status" != "complete" ]]; then
+              echo "::error title=Enrichment incomplete::Full rollout ended with status $status."
+              exit 1
+            fi
+          }
+
+          npm run catalog:enrich -- --mode preflight |
+            tee "$RUNNER_TEMP/enrichment-preflight.log"
+
+          PLAN_JSON="$(npm run --silent catalog:enrichment-plan)"
+          echo "Rollout plan: $PLAN_JSON"
+          ACTION="$(jq -r '.action' <<< "$PLAN_JSON")"
+
+          if [[ "$ACTION" == "complete" ]]; then
+            echo "No projects currently require enrichment."
             exit 0
           fi
 
-          if [[ "$MODE" == "start" ]]; then
-            prepare_full_rollout
-            run_batch start
-            run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
-            status="$(jq -r '.status' data/reports/enrichment-report.json)"
-            test "$run_mode" = "full"
-          else
-            test "$MODE" = "resume"
-            resume_batch
+          if [[ "$ACTION" == "resume-full" ]]; then
+            status="$(jq -r '.status' "$FULL_REPORT")"
+            finish_full_rollout
+            exit 0
           fi
-          while [[ "$status" == "running" ]]; do
-            resume_batch
-          done
-          test "$status" = "complete"
+
+          if [[ "$ACTION" == "start-canary" ]]; then
+            choose_canary_projects false
+            prepare_canary_projects
+            complete_canary
+            approve_canary
+          elif [[ "$ACTION" == "continue-canary" ]]; then
+            choose_canary_projects true
+            complete_canary
+            approve_canary
+          elif [[ "$ACTION" == "deploy-canary" ]]; then
+            sync_main
+            PUBLISHED_SHA="$(git rev-parse HEAD)"
+            REGISTRY_CHANGED=true
+            deploy_registry_changes
+            approve_canary
+          else
+            test "$ACTION" = "start-full"
+          fi
+
+          PLAN_JSON="$(npm run --silent catalog:enrichment-plan)"
+          echo "Post-canary rollout plan: $PLAN_JSON"
+          ACTION="$(jq -r '.action' <<< "$PLAN_JSON")"
+          if [[ "$ACTION" == "complete" ]]; then
+            echo "Canary completed every project that required enrichment."
+            exit 0
+          fi
+          test "$ACTION" = "start-full"
+
+          npm run catalog:enrich -- \
+            --mode authorize-full \
+            --report-path "$FULL_REPORT" \
+            --canary-report-path "$CANARY_REPORT"
+          refresh_full_sources
+          prepare_full_rollout
+          run_batch start
+          run_mode="$(jq -r '.mode' "$FULL_REPORT")"
+          status="$(jq -r '.status' "$FULL_REPORT")"
+          test "$run_mode" = "full"
+          finish_full_rollout
       - name: Write sanitized workflow summary
         if: always()
         shell: bash
-        env:
-          MODE: ${{ inputs.mode }}
         run: |
-          if [[ "$MODE" == "preflight" ]]; then
+          if [[ -f "$RUNNER_TEMP/enrichment-preflight.log" ]]; then
             echo "## Enrichment provider preflight" >> "$GITHUB_STEP_SUMMARY"
             tail -n 1 "$RUNNER_TEMP/enrichment-preflight.log" >> "$GITHUB_STEP_SUMMARY"
-          elif [[ -f data/reports/enrichment-report.json ]]; then
-            node -e "const r=require('./data/reports/enrichment-report.json'); console.log('## Enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -f data/reports/enrichment-report.json ]]; then
+            node -e "const r=require('./data/reports/enrichment-report.json'); const a=r.aggregates||{}; console.log('## Full enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Enriched: '+((a.enriched||0)+(a['retry-enriched']||0))+'\\n- Fallback: '+((a.fallback||0)+(a['retry-fallback']||0))+'\\n- Source not ready: '+(a['source-not-ready']||0)+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
+            node -e "const r=require('./data/reports/enrichment-report.json'); const entries=Object.values(r.entries||{}); const unresolved=entries.filter(entry=>['source-not-ready','final-failure','skipped'].includes(entry.outcome)); const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(unresolved.length){ console.log('\\n### Unresolved projects\\n\\n| Project | Outcome | Reason | Detail |\\n| --- | --- | --- | --- |'); for(const entry of unresolved){ console.log('| '+cell(entry.id)+' | '+cell(entry.outcome)+' | '+cell(entry.reason_code)+' | '+cell(entry.message)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -f data/reports/enrichment-canary.json ]]; then
+            node -e "const r=require('./data/reports/enrichment-canary.json'); console.log('## Enrichment canary '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length)" >> "$GITHUB_STEP_SUMMARY"
           fi

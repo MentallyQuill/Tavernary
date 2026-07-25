@@ -95,22 +95,19 @@ test("enrichment prepares a random canary and limits batch publication", async (
   );
   expect(text).toContain("data/registry/projects/*.json");
   expect(text).toContain("data/reports/enrichment-report.json");
+  expect(text).toContain("data/reports/enrichment-canary.json");
   expect(text).toContain("publish_canary_preparation()");
-  expect(document.on.workflow_dispatch.inputs.mode.options).toEqual([
-    "preflight",
-    "canary",
-    "start",
-    "resume",
-  ]);
+  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("mode");
+  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
+    "project_ids",
+  );
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
     "start_index",
   );
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("force");
-  expect(text).toContain(
-    "Optional newline-separated project IDs; empty randomly selects five.",
-  );
+  expect(text).toContain("npm run --silent catalog:enrichment-plan");
   expect(text).toContain("npm run --silent catalog:select-canary");
-  expect(text).toContain('existing_status" == "running"');
+  expect(text).toContain('if [[ "$use_existing" == "true" ]]');
   expect(text).toContain("jq -r '.manifest[]'");
   expect(text).toContain("npm run catalog:refresh -- \\");
   expect(text).toContain("--mode project");
@@ -124,7 +121,8 @@ test("enrichment prepares a random canary and limits batch publication", async (
   expect(text).toContain("npm run catalog:enrich -- --mode preflight");
   expect(text).toContain("## Enrichment provider preflight");
   expect(text).not.toContain("## MiniMax M3 preflight");
-  expect(text).toContain('"$MODE" == "canary"');
+  expect(text).toContain('"$ACTION" == "start-canary"');
+  expect(text).toContain('"$ACTION" == "resume-full"');
   expect(text).toContain('test "$run_mode" = "full"');
   expect(text).not.toContain("workflow run enrich-catalog.yml");
   expect(text).toContain("workflow run deploy-pages.yml");
@@ -173,14 +171,14 @@ test("enrichment prepares a random canary and limits batch publication", async (
 test("completes canary retries before publishing and deploying", async () => {
   const source = await workflowSource("enrich-catalog");
   const start = source.indexOf("complete_canary()");
-  const end = source.indexOf("resume_batch()", start);
+  const end = source.indexOf("approve_canary()", start);
   const body = source.slice(start, end);
   const firstBatch = body.indexOf("run_batch canary false");
   const retryLoop = body.indexOf('while [[ "$status" == "running" ]]');
   const retryBatch = body.indexOf("run_batch canary false", firstBatch + 1);
   const check = body.indexOf("npm run check", retryBatch);
   const publish = body.indexOf(
-    'publish_changes "chore(catalog): enrich project metadata"',
+    'publish_changes "chore(catalog): enrich canary project metadata"',
     check,
   );
   const deploy = body.indexOf("deploy_registry_changes", publish);
@@ -196,23 +194,23 @@ test("completes canary retries before publishing and deploying", async () => {
   expect(body).toContain("Enrichment stalled");
 
   const canaryBranch = source.slice(
-    source.indexOf('if [[ "$MODE" == "canary" ]]'),
-    source.indexOf('if [[ "$MODE" == "start" ]]'),
+    source.indexOf('if [[ "$ACTION" == "start-canary" ]]'),
+    source.indexOf('elif [[ "$ACTION" == "deploy-canary" ]]'),
   );
   expect(canaryBranch).toContain("complete_canary");
-  expect(canaryBranch).not.toContain("run_batch canary");
+  expect(canaryBranch).toContain("choose_canary_projects");
 });
 
 test("fails an enrichment resume when its cursor state does not advance", async () => {
   const source = await workflowSource("enrich-catalog");
-  const resumeFunction = source.indexOf("resume_batch()");
+  const resumeFunction = source.indexOf("resume_full_batch()");
   const before = source.indexOf(
-    'progress_before="$(enrichment_progress)"',
+    'progress_before="$(enrichment_progress "$FULL_REPORT")"',
     resumeFunction,
   );
   const resume = source.indexOf("run_batch resume", before);
   const after = source.indexOf(
-    'progress_after="$(enrichment_progress)"',
+    'progress_after="$(enrichment_progress "$FULL_REPORT")"',
     resume,
   );
   const guard = source.indexOf(
@@ -228,7 +226,7 @@ test("fails an enrichment resume when its cursor state does not advance", async 
   expect(guard).toBeGreaterThan(after);
   expect(source).toContain("Enrichment stalled");
   expect(source).not.toContain('run_batch "$MODE"');
-  expect(source.match(/\bresume_batch\b/gu)).toHaveLength(3);
+  expect(source.match(/\bresume_full_batch\b/gu)).toHaveLength(2);
 });
 
 test("prepares permanent repository identities before a full rollout starts", async () => {
@@ -248,11 +246,10 @@ test("prepares permanent repository identities before a full rollout starts", as
     preparationStart,
   );
   const preparation = source.slice(preparationStart, preparationEnd);
-  const startBranchStart = source.indexOf('if [[ "$MODE" == "start" ]]');
-  const startBranch = source.slice(
-    startBranchStart,
-    source.indexOf('while [[ "$status" == "running" ]]', startBranchStart),
+  const orchestrationStart = source.lastIndexOf(
+    "npm run catalog:enrich -- --mode preflight",
   );
+  const startBranch = source.slice(orchestrationStart);
 
   expect(synchronizationStart).toBeGreaterThan(-1);
   expect(synchronization).toContain("git fetch origin main");
@@ -268,7 +265,11 @@ test("prepares permanent repository identities before a full rollout starts", as
   expect(preparation).toContain(
     'publish_changes "chore(catalog): prepare full enrichment rollout"',
   );
+  expect(startBranch.indexOf("--mode authorize-full")).toBeGreaterThan(-1);
   expect(startBranch.indexOf("prepare_full_rollout")).toBeGreaterThan(-1);
+  expect(startBranch.indexOf("--mode authorize-full")).toBeLessThan(
+    startBranch.indexOf("prepare_full_rollout"),
+  );
   expect(startBranch.indexOf("prepare_full_rollout")).toBeLessThan(
     startBranch.indexOf("run_batch start"),
   );
