@@ -220,6 +220,63 @@ describe("Kit builder state", () => {
     expect(result.current.draftOrigin).toBe("create");
   });
 
+  test("starts a collapsed untouched draft for card selection", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.startSelectionDraft());
+
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      collapsed: true,
+      dirty: false,
+      draft: {
+        operation: "create",
+        title: "",
+        description: "",
+        projectIds: [],
+      },
+    });
+  });
+
+  test("discards only an untouched empty selection-started draft", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+
+    act(() => result.current.startSelectionDraft());
+    act(() => result.current.discardUntouchedSelectionDraft());
+    expect(result.current.state.mode).toBe("intro");
+
+    act(() => result.current.startSelectionDraft());
+    act(() => result.current.updateDraft({ title: "Keep me" }));
+    act(() => result.current.discardUntouchedSelectionDraft());
+    expect(result.current.state.mode).toBe("build");
+  });
+
+  test("removes one draft project through the workspace", () => {
+    const { result } = renderHook(() =>
+      useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),
+    );
+    act(() => result.current.startCreate());
+    act(() => {
+      result.current.applyProjectBatch(["frontend", "memory"], projects);
+    });
+
+    let removed = false;
+    act(() => {
+      removed = result.current.removeProjectFromDraft("memory");
+    });
+
+    expect(removed).toBe(true);
+    expect(result.current.state).toMatchObject({
+      mode: "build",
+      dirty: true,
+      draft: { projectIds: ["frontend"] },
+    });
+  });
+
   test("appends a batch without opening the builder or replacing draft metadata", () => {
     const { result } = renderHook(() =>
       useKitBuilder({ selectedKitId: "", onSelectKit: vi.fn() }),

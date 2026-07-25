@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { normalizeKitProjectIds } from "@/features/kits/kit-project-layout";
 import { planKitProjectBatch } from "@/features/kits/project-batch";
+import { removeProject } from "@/features/kits/project-stack-order";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
 export type KitBuilderState =
@@ -39,12 +40,14 @@ export function useKitBuilder({
     "create" | "duplicate" | "edit" | null
   >(null);
   const [originalProjectIds, setOriginalProjectIds] = useState<string[]>([]);
+  const selectionStartedDraftRef = useRef(false);
 
   useEffect(() => {
     if (!selectedKitId) return;
     let cancelled = false;
     queueMicrotask(() => {
       if (cancelled) return;
+      selectionStartedDraftRef.current = false;
       setState((current) => ({
         mode: "inspect",
         collapsed: current.collapsed,
@@ -58,6 +61,7 @@ export function useKitBuilder({
 
   const selectKit = useCallback(
     (kitId: string) => {
+      selectionStartedDraftRef.current = false;
       onSelectKit(kitId);
       setState((current) => ({
         mode: "inspect",
@@ -78,6 +82,7 @@ export function useKitBuilder({
   );
 
   const startCreate = useCallback(() => {
+    selectionStartedDraftRef.current = false;
     setDraftOrigin("create");
     setOriginalProjectIds([]);
     setState({
@@ -95,6 +100,7 @@ export function useKitBuilder({
   }, []);
 
   const startDuplicate = useCallback((kit: CatalogKit) => {
+    selectionStartedDraftRef.current = false;
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("duplicate");
     setOriginalProjectIds(projectIds);
@@ -113,6 +119,7 @@ export function useKitBuilder({
   }, []);
 
   const startEdit = useCallback((kit: CatalogKit) => {
+    selectionStartedDraftRef.current = false;
     const projectIds = normalizedKitProjectIds(kit);
     setDraftOrigin("edit");
     setOriginalProjectIds(projectIds);
@@ -142,6 +149,68 @@ export function useKitBuilder({
     );
   }, []);
 
+  const startSelectionDraft = useCallback(() => {
+    if (state.mode === "build") return;
+    selectionStartedDraftRef.current = true;
+    setDraftOrigin("create");
+    setOriginalProjectIds([]);
+    setState({
+      mode: "build",
+      collapsed: true,
+      dirty: false,
+      draft: {
+        operation: "create",
+        kitId: null,
+        title: "",
+        description: "",
+        projectIds: [],
+      },
+    });
+  }, [state.mode]);
+
+  const discardUntouchedSelectionDraft = useCallback(() => {
+    if (!selectionStartedDraftRef.current) return;
+    setState((current) => {
+      if (
+        current.mode !== "build" ||
+        current.dirty ||
+        current.draft.title ||
+        current.draft.description ||
+        current.draft.projectIds.length > 0
+      ) {
+        return current;
+      }
+      selectionStartedDraftRef.current = false;
+      return { mode: "intro", collapsed: true };
+    });
+  }, []);
+
+  const removeProjectFromDraft = useCallback(
+    (projectId: string) => {
+      const removed =
+        state.mode === "build" && state.draft.projectIds.includes(projectId);
+      if (!removed) return false;
+      setState((current) => {
+        if (
+          current.mode !== "build" ||
+          !current.draft.projectIds.includes(projectId)
+        ) {
+          return current;
+        }
+        return {
+          ...current,
+          dirty: true,
+          draft: {
+            ...current.draft,
+            projectIds: removeProject(current.draft.projectIds, projectId),
+          },
+        };
+      });
+      return true;
+    },
+    [state],
+  );
+
   const applyProjectBatch = useCallback(
     (selectedProjectIds: string[], projects: CatalogProject[]) => {
       const draftProjectIds =
@@ -152,6 +221,7 @@ export function useKitBuilder({
         projects,
       });
       if (plan.addedProjectIds.length === 0) return plan;
+      selectionStartedDraftRef.current = false;
 
       if (state.mode === "build") {
         setState({
@@ -199,9 +269,12 @@ export function useKitBuilder({
     selectKit,
     toggleCollapsed,
     startCreate,
+    startSelectionDraft,
+    discardUntouchedSelectionDraft,
     startDuplicate,
     startEdit,
     updateDraft,
+    removeProjectFromDraft,
     applyProjectBatch,
     draftOrigin,
     originalProjectIds,
