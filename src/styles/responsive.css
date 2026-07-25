@@ -15,6 +15,10 @@
     grid-template-columns: 210px minmax(0, 1fr) 48px;
   }
 
+  .catalog-layout:has(> .kit-draft-pill-container) {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+
   .catalog-layout.catalog-drag-active {
     grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
   }

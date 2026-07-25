@@ -59,6 +59,9 @@ describe("catalog visual alignment", () => {
       /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*238px minmax\(0,\s*1fr\)[^}]*padding:\s*0/s,
     );
     expect(css).toMatch(
+      /\.catalog-layout:has\(> \.kit-draft-pill-container\)\s*\{[^}]*grid-template-columns:\s*238px minmax\(0,\s*1fr\)/s,
+    );
+    expect(css).toMatch(
       /\.filter-panel\s*\{[^}]*padding:\s*20px 18px 50px[^}]*border-right:/s,
     );
     expect(css).toMatch(/\.catalog-main\s*\{[^}]*padding:\s*20px 22px 60px/s);
@@ -121,6 +124,9 @@ describe("catalog visual alignment", () => {
 
     expect(tablet).toMatch(
       /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*210px minmax\(0,\s*1fr\) clamp\(280px,\s*32vw,\s*340px\)/,
+    );
+    expect(tablet).toMatch(
+      /\.catalog-layout:has\(> \.kit-draft-pill-container\)\s*\{[^}]*grid-template-columns:\s*210px minmax\(0,\s*1fr\)/,
     );
     expect(tablet).not.toMatch(/\.kit-workspace\s*\{[^}]*position:\s*fixed/);
     expect(responsive).toMatch(
