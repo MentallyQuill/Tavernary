@@ -78,6 +78,27 @@ describe("project card", () => {
     expect(screen.getByText("Added")).toBeVisible();
   });
 
+  test("renders a desktop drag handle beside the project link", () => {
+    const { container } = render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        draftProjectIds={[]}
+        onAddToKit={() => undefined}
+        onProjectDragStart={() => undefined}
+      />,
+    );
+
+    const link = screen.getByRole("link", { name: "Memory Tool" });
+    const handle = screen.getByRole("button", {
+      name: "Drag Memory Tool into Kit",
+    });
+    expect(link.contains(handle)).toBe(false);
+    expect(
+      container.querySelector(".project-card-shell")?.children,
+    ).toHaveLength(3);
+  });
+
   test("marks provisional projects with a quiet provisional details treatment", () => {
     render(
       <ProjectCard

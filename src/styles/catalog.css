@@ -1458,6 +1458,38 @@
   border-radius: 10px 10px 0 0;
 }
 
+.project-card-shell.drag-enabled {
+  grid-template-columns: 44px minmax(0, 1fr);
+}
+
+.project-card-shell.drag-enabled .project-card {
+  grid-column: 1 / -1;
+}
+
+.catalog-project-drag-handle {
+  display: grid;
+  min-width: 44px;
+  min-height: 34px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-top: 0;
+  border-right: 0;
+  border-radius: 0 0 0 10px;
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
+  cursor: grab;
+  touch-action: none;
+}
+
+.catalog-project-drag-handle svg {
+  width: 18px;
+}
+
+.project-card-shell.drag-enabled .add-to-kit {
+  border-radius: 0 0 10px 0;
+}
+
 .add-to-kit {
   display: flex;
   align-items: center;
@@ -1550,6 +1582,18 @@
   color: var(--color-muted);
 }
 
+.kit-frontend-slot[data-drop-state="valid"],
+.kit-builder-stack[data-drop-state="valid"] {
+  outline: 2px solid var(--color-kind-preset);
+  outline-offset: 2px;
+}
+
+.kit-frontend-slot[data-drop-state="invalid"],
+.kit-builder-stack[data-drop-state="invalid"] {
+  outline: 2px solid var(--color-kind-extension);
+  outline-offset: 2px;
+}
+
 .kit-builder-row-identity {
   display: grid;
   min-width: 0;
@@ -1629,6 +1673,33 @@
 
 .kit-drag-ghost span {
   color: var(--color-kind-extension);
+  font-size: 11px;
+}
+
+.catalog-project-drag-ghost {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: 3px;
+  min-width: 180px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-raised);
+  pointer-events: none;
+  transition: none;
+  will-change: transform;
+}
+
+.catalog-project-drag-ghost[data-valid="false"] {
+  border-color: var(--color-kind-extension);
+}
+
+.catalog-project-drag-ghost span {
+  color: var(--color-text-secondary);
   font-size: 11px;
 }
 

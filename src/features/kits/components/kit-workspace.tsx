@@ -7,6 +7,7 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitWorkspaceState } from "@/features/kits/use-kit-workspace";
+import type { CatalogProjectDragState } from "@/features/kits/use-catalog-project-drag";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { KitProjectStack } from "./kit-project-stack";
@@ -40,6 +41,7 @@ export function KitWorkspace({
   onUpdateDraft,
   onSubmitDraft,
   active = true,
+  catalogDragState = null,
 }: {
   state: KitWorkspaceState;
   kit: CatalogKit | null;
@@ -54,6 +56,7 @@ export function KitWorkspace({
   ) => void;
   onSubmitDraft?: () => void;
   active?: boolean;
+  catalogDragState?: CatalogProjectDragState | null;
 }) {
   const [fallbackUrl, setFallbackUrl] = useState("");
   const { phone, touchLayout } = useResponsiveCapabilities();
@@ -247,6 +250,7 @@ export function KitWorkspace({
               originalProjectIds={originalProjectIds}
               onUpdate={(patch) => onUpdateDraft?.(patch)}
               onSubmit={() => onSubmitDraft?.()}
+              catalogDragState={catalogDragState}
             />
           </div>
         ) : (

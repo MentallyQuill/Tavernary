@@ -11,6 +11,7 @@ import {
 } from "@/features/kits/kit-domain.mjs";
 import { removeProject } from "@/features/kits/project-stack-order";
 import type { KitDraft } from "@/features/kits/kit-types";
+import type { CatalogProjectDragState } from "@/features/kits/use-catalog-project-drag";
 import { splitKitProjectIds } from "@/features/kits/kit-project-layout";
 import { useProjectStackDrag } from "@/features/kits/use-project-stack-drag";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
@@ -23,12 +24,14 @@ export function KitBuilder({
   originalProjectIds,
   onUpdate,
   onSubmit,
+  catalogDragState = null,
 }: {
   draft: KitDraft;
   projects: CatalogProject[];
   originalProjectIds: string[];
   onUpdate: (patch: Partial<KitDraft>) => void;
   onSubmit: () => void;
+  catalogDragState?: CatalogProjectDragState | null;
 }) {
   const { touchLayout } = useResponsiveCapabilities();
   const formId = useId();
@@ -216,6 +219,13 @@ export function KitBuilder({
             drag.dragState?.projectId === frontendId &&
             drag.dragState.phase === "remove"
           }
+          dropState={
+            catalogDragState?.target === "frontend"
+              ? catalogDragState.valid
+                ? "valid"
+                : "invalid"
+              : "idle"
+          }
           onRemove={() => {
             if (frontendId) removeImmediately(frontendId);
           }}
@@ -230,6 +240,14 @@ export function KitBuilder({
         ref={stackRef}
         className="kit-builder-stack"
         aria-label="Ordered Kit projects"
+        data-kit-drop-target="stack"
+        data-drop-state={
+          catalogDragState?.target === "stack"
+            ? catalogDragState.valid
+              ? "valid"
+              : "invalid"
+            : "idle"
+        }
       >
         {stackProjectIds.map((projectId, index) => {
           const project = projectsById.get(projectId);

@@ -24,6 +24,8 @@ import {
   splitKitProjectIds,
 } from "@/features/kits/kit-project-layout";
 import { useKitWorkspace } from "@/features/kits/use-kit-workspace";
+import { useCatalogProjectDrag } from "@/features/kits/use-catalog-project-drag";
+import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import type { Catalog } from "../catalog-types";
 import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
@@ -47,6 +49,7 @@ function relativeRefresh(timestamp: string, now: string) {
 }
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
+  const { touchLayout } = useResponsiveCapabilities();
   const { query, setQuery } = useCatalogQuery();
   const [openFilterMode, setOpenFilterMode] = useState<
     CatalogQuery["mode"] | null
@@ -54,6 +57,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const filtersOpen = openFilterMode === query.mode;
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const catalogLayoutRef = useRef<HTMLDivElement>(null);
   const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
   const workspace = useKitWorkspace({
     selectedKitId: query.selectedKitId,
@@ -79,6 +83,24 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     ? splitKitProjectIds(buildState.draft.projectIds, catalog.projects)
         .frontendId
     : null;
+  const catalogDrag = useCatalogProjectDrag({
+    editorRef: catalogLayoutRef,
+    onDrop: (projectId, target) => {
+      if (!buildState) return;
+      const project = catalog.projects.find(({ id }) => id === projectId);
+      if (!project) return;
+      workspace.updateDraft({
+        projectIds:
+          target === "frontend"
+            ? replaceKitFrontend(
+                buildState.draft.projectIds,
+                projectId,
+                catalog.projects,
+              )
+            : addProject(buildState.draft.projectIds, projectId),
+      });
+    },
+  });
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -254,7 +276,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         onSelect={selectProjectCategory}
         onSelectKits={selectKitMode}
       />
-      <div className="catalog-layout">
+      <div className="catalog-layout" ref={catalogLayoutRef}>
         {query.mode === "kits" ? (
           <KitFilterPanel
             query={query.kits}
@@ -317,6 +339,11 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               now={catalog.generatedAt}
               draftProjectIds={buildState?.draft.projectIds}
               draftFrontendId={draftFrontendId}
+              onProjectDragStart={
+                buildState && !touchLayout
+                  ? (project, event) => catalogDrag.begin(project, event)
+                  : undefined
+              }
               onAddToKit={
                 buildState
                   ? (projectId) => {
@@ -371,8 +398,22 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               : undefined
           }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}
+          catalogDragState={catalogDrag.dragState}
         />
       </div>
+      {catalogDrag.dragState ? (
+        <div
+          className="catalog-project-drag-ghost"
+          data-valid={catalogDrag.dragState.valid}
+          aria-hidden="true"
+          style={{
+            transform: `translate3d(${catalogDrag.dragState.point.x}px, ${catalogDrag.dragState.point.y}px, 0)`,
+          }}
+        >
+          <strong>{catalogDrag.dragState.projectName}</strong>
+          <span>{catalogDrag.dragState.actionLabel}</span>
+        </div>
+      ) : null}
       {filtersOpen ? (
         query.mode === "kits" ? (
           <KitFilterPanel
