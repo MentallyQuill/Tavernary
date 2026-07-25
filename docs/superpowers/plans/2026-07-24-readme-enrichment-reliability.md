@@ -4,7 +4,7 @@
 
 **Goal:** Replace the unsafe single-batch enrichment command with a tested MiniMax M3 preflight, five-card canary, stable chained rollout, and one bounded retry per failed card.
 
-**Architecture:** Keep GitHub refresh responsible only for repository snapshots and keep enrichment responsible only for four editorial registry fields. Add a source-readiness boundary, deterministic README preparation, a strict provider adapter, and a committed run-state ledger that drives fixed manifest batches instead of recalculating mutable indexes. GitHub Actions publishes each verified successful subset, resumes from committed state, and retries failed IDs once after the primary phase.
+**Architecture:** Preserve the schema-v2 status-driven GitHub refresh architecture and add the repository short description to its existing batched GraphQL observation. Keep refresh responsible only for repository snapshots and enrichment responsible only for four editorial registry fields. When a healthy snapshot has no usable short description, enrichment fetches the README on demand at that snapshot's exact head SHA. A source-readiness boundary, deterministic README preparation, strict provider adapter, and committed run-state ledger drive fixed manifest batches instead of recalculating mutable indexes. GitHub Actions publishes each verified successful subset, resumes from committed state, and retries failed IDs once after the primary phase.
 
 **Tech Stack:** Node.js 24 ESM, TypeScript declaration files, Ajv/JSON Schema, Vitest 4, Prettier, GitHub Actions, GitHub CLI, Next.js static export, and an OpenAI Chat Completions-compatible MiniMax M3 endpoint.
 
@@ -21,10 +21,12 @@
 - Summaries are exactly one factual sentence, target 12-24 words, maximum 140 characters, and contain no markdown or newlines.
 - The exact confirmed-no-source fallback is `No README file found.`.
 - A fallback is curated with `primary_function: "uncategorized"` and no capabilities.
-- Missing, stale, unhealthy, mismatched, or legacy snapshots never produce the fallback.
+- Missing, invalid, stale, unhealthy, or mismatched snapshots never produce the fallback.
 - Non-GitHub records and already curated non-generic records remain untouched.
 - Enrichment writes only `summary`, `metadata_status`, `primary_function`, and `capabilities`.
-- Refresh stages only `data/snapshots/github/*.json`.
+- Refresh stages only `data/snapshots/github/*.json` and `data/snapshots/github-refresh.json`.
+- Refresh never probes README endpoints per repository; it obtains short descriptions through the existing batched GraphQL query.
+- Enrichment treats only an authenticated README `404` at `repository.head_sha` as confirmation for `No README file found.`.
 - Repository identity backfill is a distinct command, workflow, and commit.
 - Do not begin catalog-wide source preparation until the live provider preflight and five-card canary pass.
 - Never write API credentials, authorization headers, raw README text, full prompts, or raw provider responses to logs or reports.
@@ -46,15 +48,20 @@
 **Modify:**
 
 - `scripts/catalog/readme-source.mjs` and `.d.mts` — snapshot readiness and explicit source-result union.
+- `scripts/catalog/github-observer.mjs` and `.d.mts` — include GitHub short descriptions in existing batched GraphQL observations.
+- `scripts/catalog/refresh-github.mjs` and `.d.mts` — persist the observed description in schema-v2 repository facts.
+- `data/schemas/repository-snapshot.schema.json` — allow the nullable repository description without adding README provenance.
 - `scripts/catalog/enrichment-provider.mjs` and `.d.mts` — strict MiniMax M3 provider and preflight metadata.
 - `scripts/catalog/enrich-readmes.mjs` and `.d.mts` — bounded workers, partial success, preflight/canary/start/resume CLI modes.
 - `scripts/catalog/enrichment-report.mjs` and `.d.mts` — durable sanitized run-state serialization and workflow summary.
 - `scripts/catalog/backfill-repository-identities.mjs` — repeated project-ID filtering for canary preparation.
 - `scripts/catalog/repository-identity-backfill.mjs` and `.d.mts` — optional allowed-ID set.
 - `.github/workflows/enrich-catalog.yml` — preflight, canary, full initialization, resume, commit, deployment verification, and self-dispatch.
-- `.github/workflows/refresh-catalog.yml` — prevent targeted canary refreshes from advancing the full queue and remove the hard-coded 200-record stop.
+- `.github/workflows/refresh-catalog.yml` — preserve status-driven modes, dynamic baseline continuation, and snapshot-only publication.
 - `.github/workflows/deploy-pages.yml` — ignore report-only pushes while continuing to deploy registry and snapshot changes.
 - `tests/unit/readme-source.test.ts`
+- `tests/unit/github-observer.test.ts`
+- `tests/unit/refresh-github.test.ts`
 - `tests/unit/enrich-readmes.test.ts`
 - `tests/unit/enrich-readmes-cli.test.ts`
 - `tests/unit/enrichment-report.test.ts`
@@ -85,7 +92,7 @@ type RegistryRecord = {
 };
 
 type GithubSnapshot = {
-  schema_version: 1;
+  schema_version: 2;
   project_id: string;
   source_health:
     | "healthy"
@@ -99,12 +106,13 @@ type GithubSnapshot = {
     owner: string;
     name: string;
     head_sha: string;
-    description: string | null;
-  };
-  readme?: {
-    found: boolean;
-    path: string | null;
-    ref: string | null;
+    head_committed_at: string | null;
+    description?: string | null;
+    default_branch: string;
+    url: string;
+    archived: boolean;
+    created_at: string;
+    size_kb: number;
   };
 };
 
@@ -136,8 +144,9 @@ type SourceReasonCode =
   | "repository-mismatch"
   | "identity-mismatch"
   | "missing-permanent-identity"
-  | "missing-readme-provenance"
   | "readme-fetch-failed"
+  | "readme-rate-limited"
+  | "readme-server-error"
   | "readme-unusable";
 
 type FailureReasonCode =
@@ -264,12 +273,19 @@ type EnrichmentRunState = {
 
 ---
 
-### Task 1: Enforce snapshot readiness before source selection
+### Task 1: Integrate schema-v2 descriptions and enforce source readiness
 
 **Files:**
 
+- Modify: `scripts/catalog/github-observer.mjs`
+- Modify: `scripts/catalog/github-observer.d.mts`
+- Modify: `scripts/catalog/refresh-github.mjs`
+- Modify: `scripts/catalog/refresh-github.d.mts`
+- Modify: `data/schemas/repository-snapshot.schema.json`
 - Modify: `scripts/catalog/readme-source.mjs`
 - Modify: `scripts/catalog/readme-source.d.mts`
+- Test: `tests/unit/github-observer.test.ts`
+- Test: `tests/unit/refresh-github.test.ts`
 - Test: `tests/unit/readme-source.test.ts`
 
 **Interfaces:**
@@ -279,9 +295,25 @@ type EnrichmentRunState = {
 - Produce `loadReadmeSource(record, snapshot, options): Promise<EnrichmentSource>`.
 - Consume an Ajv-compatible `validateSnapshot(snapshot): boolean` callback compiled once by the CLI.
 
-- [ ] **Step 1: Replace null-source tests with explicit readiness cases**
+- [ ] **Step 1: Write failing schema-v2 observation tests**
 
-Add a complete healthy fixture with `schema_version`, `project_id`, `source_health`, `stale_since`, repository identity, `head_sha`, and README provenance. Add a table test:
+Assert that the existing batched GraphQL query requests `description`, the observer preserves a string or `null`, `repositoryFacts()` writes it into new schema-v2 snapshots, and the schema accepts both values. Assert that neither the observer nor refresh calls `/readme`.
+
+- [ ] **Step 2: Run the observation tests and verify failure**
+
+```powershell
+npm.cmd test -- --run tests/unit/github-observer.test.ts tests/unit/refresh-github.test.ts
+```
+
+Expected: FAIL because schema-v2 observations do not yet carry the GitHub short description.
+
+- [ ] **Step 3: Add description to the optimized refresh path**
+
+Add `description` to each repository selection in `github-observer.mjs`, preserve it in the parsed observation type, and copy it into `snapshot.repository` from `repositoryFacts()`. Add a nullable, optional `description` property to `repository-snapshot.schema.json` so checked-in snapshots remain valid during the rollout while every newly refreshed snapshot receives the field. Do not add README path, found, content, or provenance fields and do not add REST calls per repository.
+
+- [ ] **Step 4: Replace null-source tests with explicit readiness cases**
+
+Add a complete healthy schema-v2 fixture with `project_id`, `source_health`, `stale_since`, repository identity, `head_sha`, and an optional description. Add a table test:
 
 ```ts
 const wrongRepository = {
@@ -306,26 +338,31 @@ test.each([
   ["wrong repository", wrongRepository, "repository-mismatch"],
   ["wrong identity", wrongIdentity, "identity-mismatch"],
   ["missing identity", healthy, "missing-permanent-identity", recordWithoutId],
-  ["legacy provenance", { ...healthy, readme: undefined }, "missing-readme-provenance"],
 ])("%s never becomes a fallback", async (_name, candidate, reasonCode, candidateRecord = record) => {
   const source = await loadReadmeSource(candidateRecord, candidate, {
-    validateSnapshot: (value) => value?.schema_version === 1,
+    validateSnapshot: (value) => value?.schema_version === 2,
   });
   expect(source).toMatchObject({ status: "source-not-ready", reasonCode });
 });
 ```
 
-Also assert that a healthy description source is returned without a README request, and a healthy explicit `readme.found: false` snapshot returns `status: "fallback"`.
+Also assert:
 
-- [ ] **Step 2: Run the source tests and verify failure**
+- a healthy non-empty description is returned without a README request;
+- a healthy absent/null description requests `/repos/{owner}/{name}/readme?ref={head_sha}`;
+- a successful README records the returned path and requested head-SHA ref;
+- a README `404` returns `status: "fallback"`;
+- HTTP 429, HTTP 5xx, timeout/network failure, malformed base64, binary data, empty text, and unusable text return `status: "failed"` rather than fallback.
+
+- [ ] **Step 5: Run the source tests and verify failure**
 
 ```powershell
 npm.cmd test -- --run tests/unit/readme-source.test.ts
 ```
 
-Expected: FAIL because the current loader converts every absent/false README value into indistinguishable null source fields.
+Expected: FAIL because the transplanted loader expects snapshot-v1 README provenance and fetches from the mutable default branch.
 
-- [ ] **Step 3: Implement the readiness decision tree**
+- [ ] **Step 6: Implement the schema-v2 readiness decision tree**
 
 Build `createSnapshotValidator()` with Ajv using the same URI and UTC date-time formats as `scripts/catalog/validate.mjs`. Implement ordered checks so the first failure returns a controlled reason:
 
@@ -345,8 +382,6 @@ export function assessSourceReadiness(record, snapshot, validateSnapshot) {
   if (expected !== received) return notReady("repository-mismatch");
   if (record.source.repository_id !== snapshot.repository.id)
     return notReady("identity-mismatch");
-  if (typeof snapshot.readme?.found !== "boolean")
-    return notReady("missing-readme-provenance");
 
   return { status: "ready-to-load", snapshot };
 }
@@ -354,30 +389,30 @@ export function assessSourceReadiness(record, snapshot, validateSnapshot) {
 
 Use controlled public messages such as `Snapshot source is unavailable.` rather than raw exception text.
 
-- [ ] **Step 4: Make source selection explicit**
+- [ ] **Step 7: Make source selection explicit**
 
 Return:
 
 - `status: "ready", sourceKind: "description"` for a non-empty repository description;
-- `status: "fallback"` only for a healthy explicit `readme.found: false`;
 - `status: "ready", sourceKind: "readme"` after successful retrieval;
-- `status: "failed"` for a fetch/decode problem when `readme.found: true`.
+- `status: "fallback"` only for an authenticated GitHub `404`;
+- `status: "failed"` for every other fetch, decode, or preparation problem.
 
-Fetch the README using `snapshot.repository.head_sha` as the `ref` so the content matches the snapshot revision. Never fall back to the mutable default branch.
+Fetch the README using `snapshot.repository.head_sha` as the URL-encoded `ref` so the content matches the snapshot revision. Never fall back to the mutable default branch. Keep README path and ref on the `EnrichmentSource` result for report generation only.
 
-- [ ] **Step 5: Update declarations and run focused tests**
+- [ ] **Step 8: Update declarations and run focused tests**
 
 ```powershell
-npm.cmd test -- --run tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts
-npx.cmd prettier --check scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts tests/unit/readme-source.test.ts
+npm.cmd test -- --run tests/unit/github-observer.test.ts tests/unit/refresh-github.test.ts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts
+npx.cmd prettier --check scripts/catalog/github-observer.mjs scripts/catalog/github-observer.d.mts scripts/catalog/refresh-github.mjs scripts/catalog/refresh-github.d.mts data/schemas/repository-snapshot.schema.json scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts tests/unit/github-observer.test.ts tests/unit/refresh-github.test.ts tests/unit/readme-source.test.ts
 ```
 
 Expected: all focused tests pass and formatting matches.
 
-- [ ] **Step 6: Commit the readiness boundary**
+- [ ] **Step 9: Commit the schema-v2 source boundary**
 
 ```powershell
-git add scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts
+git add scripts/catalog/github-observer.mjs scripts/catalog/github-observer.d.mts scripts/catalog/refresh-github.mjs scripts/catalog/refresh-github.d.mts data/schemas/repository-snapshot.schema.json scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts tests/unit/github-observer.test.ts tests/unit/refresh-github.test.ts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts
 git commit -m "fix(catalog): gate enrichment sources"
 ```
 
@@ -481,7 +516,7 @@ Implement `selectIntroductionAndUsefulSections()` in the same focused module. Ke
 
 - [ ] **Step 4: Route decoded README text through preparation**
 
-Call `prepareReadmeText(decoded)` from `readme-source.mjs`. When the snapshot asserted `found: true` but preparation returns null, return:
+Call `prepareReadmeText(decoded)` from `readme-source.mjs`. When a successful README response cannot be prepared into usable text, return:
 
 ```js
 {
@@ -987,9 +1022,7 @@ git commit -m "feat(catalog): resume enrichment rollouts"
 - Modify: `scripts/catalog/repository-identity-backfill.d.mts`
 - Modify: `tests/unit/repository-identity-backfill.test.ts`
 - Create: `.github/workflows/backfill-repository-identities.yml`
-- Modify: `.github/workflows/refresh-catalog.yml`
 - Modify: `tests/unit/workflows.test.ts`
-- Modify: `tests/unit/refresh-github-workflow-safety.test.ts`
 
 **Interfaces:**
 
@@ -1029,7 +1062,7 @@ Parse every `--project-id` occurrence, validate uniqueness and existence, filter
 Require the new workflow to:
 
 - accept newline-separated `project_ids`, with an empty value meaning all;
-- share `catalog-publish` concurrency;
+- share `catalog-refresh` concurrency;
 - run the validated identity command;
 - run `npm run catalog:validate`;
 - stage only `data/registry/projects/*.json`;
@@ -1037,43 +1070,9 @@ Require the new workflow to:
 - use the same bounded fetch/rebase/push loop;
 - never trigger full enrichment automatically.
 
-- [ ] **Step 5: Protect targeted refreshes and remove the 200-record limit**
+- [ ] **Step 5: Preserve the optimized refresh workflow contract**
 
-Change the refresh continuation condition so a dispatch containing `project_id` refreshes only that project and never advances the full backfill queue:
-
-```yaml
-if: ${{ success() && inputs.mode == 'backfill' && inputs.project_id == '' }}
-```
-
-Replace `next_index < 200` with a dynamically calculated count of published, automatically refreshed GitHub records. Compute it from checked-in registry JSON before deciding whether to dispatch:
-
-```bash
-total_records=$(node --input-type=module -e '
-  import { readdir, readFile } from "node:fs/promises";
-  const directory = "data/registry/projects";
-  const files = (await readdir(directory)).filter((name) => name.endsWith(".json"));
-  const records = await Promise.all(
-    files.map(async (name) => JSON.parse(await readFile(`${directory}/${name}`, "utf8"))),
-  );
-  console.log(
-    records.filter(
-      (record) =>
-        record.visibility === "published" &&
-        record.refresh_policy === "automatic" &&
-        record.source?.type === "github",
-    ).length,
-  );
-')
-if (( next_index < total_records )); then
-  gh workflow run refresh-catalog.yml \
-    --ref main \
-    -f mode=backfill \
-    -f start_index="$next_index" \
-    -f batch_size="$BATCH_SIZE"
-fi
-```
-
-Add tests proving the workflow no longer contains `next_index < 200`, targeted refreshes cannot self-expand, and a 204-record inventory schedules the final four records.
+Keep `refresh-catalog.yml` on its existing schema-v2 `incremental`, `baseline`, `project`, and `forensic` modes. Existing tests must continue proving that baseline continuation is driven by `counts.provisional`, project mode does not self-expand, no arithmetic index or hard-coded catalog size exists, and only snapshots plus `github-refresh.json` are staged.
 
 - [ ] **Step 6: Create the identity workflow**
 
@@ -1093,8 +1092,8 @@ Commit only when registry files changed, and use `chore(catalog): backfill repos
 
 ```powershell
 npm.cmd test -- --run tests/unit/repository-identity-backfill.test.ts tests/unit/workflows.test.ts tests/unit/refresh-github-workflow-safety.test.ts
-npx.cmd prettier --check scripts/catalog/backfill-repository-identities.mjs scripts/catalog/repository-identity-backfill.mjs scripts/catalog/repository-identity-backfill.d.mts tests/unit/repository-identity-backfill.test.ts .github/workflows/backfill-repository-identities.yml .github/workflows/refresh-catalog.yml tests/unit/workflows.test.ts tests/unit/refresh-github-workflow-safety.test.ts
-git add scripts/catalog/backfill-repository-identities.mjs scripts/catalog/repository-identity-backfill.mjs scripts/catalog/repository-identity-backfill.d.mts tests/unit/repository-identity-backfill.test.ts .github/workflows/backfill-repository-identities.yml .github/workflows/refresh-catalog.yml tests/unit/workflows.test.ts tests/unit/refresh-github-workflow-safety.test.ts
+npx.cmd prettier --check scripts/catalog/backfill-repository-identities.mjs scripts/catalog/repository-identity-backfill.mjs scripts/catalog/repository-identity-backfill.d.mts tests/unit/repository-identity-backfill.test.ts .github/workflows/backfill-repository-identities.yml tests/unit/workflows.test.ts
+git add scripts/catalog/backfill-repository-identities.mjs scripts/catalog/repository-identity-backfill.mjs scripts/catalog/repository-identity-backfill.d.mts tests/unit/repository-identity-backfill.test.ts .github/workflows/backfill-repository-identities.yml tests/unit/workflows.test.ts
 git commit -m "ci(catalog): isolate identity backfill"
 ```
 
@@ -1138,7 +1137,7 @@ Assert:
 - report-only pushes do not trigger Pages;
 - mixed-result full batches can commit and continue;
 - continuation dispatches only when mode is `start`/`resume` and report status is not complete;
-- the full workflow shares `catalog-publish`;
+- the full workflow shares `catalog-refresh`;
 - canary waits for the Pages run associated with its pushed commit and fails if deployment fails.
 
 - [ ] **Step 2: Run workflow tests and verify failure**
@@ -1341,7 +1340,7 @@ Stop here and diagnose before any source preparation if the preflight fails.
 
 - [ ] **Step 3: Select five explicit canary IDs**
 
-Inspect current healthy GitHub snapshots and choose five published provisional IDs covering repository description, README, extension classification, another GitHub-backed kind when available, and confirmed fallback when available. Store the exact five values in a PowerShell array named `$canaryIds`, record them in the operator notes, and do not expand beyond five.
+Inspect current healthy GitHub snapshots and choose five published provisional IDs covering repository description, README, extension classification, another GitHub-backed kind when available, and a likely no-README fallback when available. Store the exact five values in a PowerShell array named `$canaryIds`, record them in the operator notes, and do not expand beyond five.
 
 - [ ] **Step 4: Refresh only the five canary snapshots**
 
@@ -1349,11 +1348,11 @@ Dispatch `refresh-catalog.yml` once per selected ID:
 
 ```powershell
 $canaryIds | ForEach-Object {
-  gh workflow run refresh-catalog.yml --ref main -f mode=backfill -f "project_id=$_" -f batch_size=1
+  gh workflow run refresh-catalog.yml --ref main -f mode=project -f "project_id=$_"
 }
 ```
 
-Wait for all five runs. Verify each committed snapshot is healthy, non-stale, identity-matching, and has explicit README provenance.
+Wait for all five runs. Verify each committed schema-v2 snapshot is healthy, non-stale, identity-matching, contains the exact head SHA, and contains `repository.description` as a string or `null`. Verify the refresh runs made no per-repository README calls.
 
 - [ ] **Step 5: Backfill only the five canary identities**
 
@@ -1399,7 +1398,7 @@ Refresh one enriched canary project again, wait for its snapshot commit/deployme
 
 Present the preflight run, canary run, deploy run, five card IDs, report outcomes, and rendered-card inspection to the user. The next authorized sequence is:
 
-1. refresh all remaining GitHub snapshots with the finalized bounded refresh workflow;
+1. refresh all remaining GitHub snapshots with the finalized status-driven baseline workflow so short descriptions are populated;
 2. run full repository-identity backfill;
 3. verify the source-not-ready inventory;
 4. dispatch enrichment `start`;

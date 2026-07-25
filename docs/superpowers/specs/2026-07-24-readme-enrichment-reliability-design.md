@@ -11,7 +11,7 @@
 The first enrichment implementation established the correct ownership boundary but is not safe for a full automatic rollout:
 
 - batch selection slices a changing set of eligible records, so completed records disappearing from that set can cause later records to be skipped;
-- missing, legacy, stale, or unhealthy snapshots can be mistaken for proof that a repository has no README;
+- missing, stale, or unhealthy snapshots can be mistaken for proof that a repository has no README;
 - model calls run serially and have no timeout;
 - a single failure can prevent already validated work from being committed, causing successful paid calls to be repeated;
 - entire README files can be sent to the provider without deterministic size limits or prompt-injection hardening;
@@ -31,6 +31,7 @@ This project is pre-alpha, so the existing batch-index and enrichment-report for
 - Primary failures are collected and retried after all primary batches finish.
 - A final retry failure leaves the registry record unchanged and remains visible in the report for manual attention.
 - GitHub short description remains the preferred enrichment input. README content is used only when no usable short description exists.
+- Refresh captures that short description through its existing batched GraphQL observation and never adds per-repository README probes.
 - The exact no-source fallback remains `No README file found.`.
 - Non-GitHub records remain outside this process.
 - GitHub refresh continues to own snapshots only. Enrichment continues to own only `summary`, `metadata_status`, `primary_function`, and `capabilities`.
@@ -64,7 +65,7 @@ process retry batches of 20
 mark rollout complete
 ```
 
-The enrichment and refresh workflows retain the shared `catalog-publish` concurrency group with `cancel-in-progress: false`. This prevents either workflow from rebasing and publishing against catalog state being changed by the other.
+The enrichment, refresh, and identity workflows share the existing `catalog-refresh` concurrency group with `cancel-in-progress: false`. This prevents one catalog writer from rebasing and publishing against catalog state being changed by another.
 
 ## Staged rollout gates
 
@@ -100,7 +101,7 @@ After the provider preflight passes, source preparation is limited to five expli
 - another GitHub-backed project kind when available;
 - confirmed no-README fallback when available.
 
-Only those five snapshots are refreshed with current README provenance, and only those five repository identities are backfilled through the separate identity command. The canary then invokes the same loader, provider, validator, writer, report generator, catalog checks, commit path, and deploy path used by the full rollout. It is not a mock or a separate simplified implementation.
+Only those five snapshots are refreshed with current schema-v2 repository facts, including GitHub's short description and the exact head SHA, and only those five repository identities are backfilled through the separate identity command. The canary then invokes the same loader, provider, validator, writer, report generator, catalog checks, commit path, and deploy path used by the full rollout. It is not a mock or a separate simplified implementation.
 
 Canary mode never self-dispatches another batch. Valid canary records may publish automatically under the already approved partial-success rule, but the canary is not considered passed unless all five reach an expected terminal success: enriched or confirmed fallback. Any source-not-ready, provider failure, invalid output, write failure, catalog-check failure, or deployment failure blocks the full rollout.
 
@@ -117,13 +118,13 @@ After deployment, inspect the canary report and rendered tiles to verify:
 
 Only after the five-card canary is verified:
 
-1. Refresh all remaining GitHub snapshots with current README provenance.
+1. Refresh all remaining GitHub snapshots with current schema-v2 repository descriptions and head SHAs.
 2. Run the existing repository-identity backfill as a separate validated migration and commit.
 3. Confirm that every full-rollout candidate passes the identity and snapshot preconditions or appears in the source-not-ready inventory.
 4. Initialize the stable full-rollout manifest.
 5. Let the primary and retry batches chain automatically to completion.
 
-At design time, `origin/main` contains 204 GitHub snapshots and 200 GitHub records without permanent repository IDs. The full refresh and identity migration are therefore required rollout preparation, not optional cleanup. They remain separate from enrichment's four-field write boundary.
+At design time, `origin/main` contains 204 GitHub snapshots and 200 GitHub records without permanent repository IDs. The full refresh is required to populate the newly observed short descriptions efficiently, and the identity migration remains required rollout preparation rather than optional cleanup. Both remain separate from enrichment's four-field write boundary.
 
 ## Stable manifest and run state
 
@@ -161,30 +162,29 @@ Every card must pass a deterministic readiness gate before fallback generation o
 6. `stale_since` is `null`.
 7. The snapshot repository owner and name match the registry repository path case-insensitively.
 8. When the registry contains a permanent `repository_id`, it matches the snapshot repository ID.
-9. README provenance is explicitly present with a boolean `found` value.
 
 A missing permanent repository ID is not invented by enrichment. Identity backfill remains a separate operation, and any registry rule requiring that ID must be satisfied before the card can be published as curated.
 
-Records that fail readiness receive a `source-not-ready` outcome and no registry change. Reason codes distinguish missing snapshot, unsupported snapshot schema, unhealthy source, stale source, project mismatch, repository mismatch, identity mismatch, missing README provenance, and missing permanent identity.
+Records that fail readiness receive a `source-not-ready` outcome and no registry change. Reason codes distinguish missing snapshot, unsupported snapshot schema, unhealthy source, stale source, project mismatch, repository mismatch, identity mismatch, and missing permanent identity.
 
 The following states must never produce the fallback:
 
 - absent snapshot;
-- legacy snapshot without README provenance;
 - `unavailable`, `identity-change`, `deleted`, or `private` source health;
 - non-null `stale_since`;
 - repository identity mismatch;
-- README retrieval or decoding failure after the snapshot asserted that a README exists.
+- README retrieval, transport, or decoding failure.
 
 ## Source selection and fallback
 
 After readiness succeeds:
 
 1. A non-empty `repository.description` is normalized and used as the sole model source.
-2. Otherwise, `readme.found: true` causes the README to be fetched using the authenticated GitHub API at the snapshot's recorded source revision.
-3. Otherwise, an explicit healthy `readme.found: false` result produces `No README file found.` without a model call.
+2. Otherwise, enrichment requests the repository README through the authenticated GitHub API using `snapshot.repository.head_sha` as the exact `ref`.
+3. A successful, decodable README becomes the model source.
+4. An authenticated GitHub `404` at that exact ref confirms the fallback `No README file found.` without a model call.
 
-If the snapshot says a README exists but retrieval returns an error, empty response, malformed payload, unsupported encoding, or unusable text, the attempt fails and enters the retry queue. It does not become a fallback.
+HTTP 429, HTTP 5xx, timeout, network failure, malformed payload, unsupported encoding, empty content, or unusable text fails the attempt and enters the retry queue. None of those states becomes a fallback. README path and the requested head-SHA ref are recorded only in the enrichment report; snapshots do not gain README provenance fields.
 
 The fallback output is:
 
@@ -324,8 +324,8 @@ Implementation follows test-driven development. Required coverage includes:
 - primary-to-retry phase transition;
 - one retry maximum and terminal final failures;
 - partial batch success preserving valid outputs;
-- source readiness for every health, staleness, schema, provenance, and identity case;
-- fallback only from an explicit healthy `readme.found: false` snapshot;
+- source readiness for every health, staleness, schema, and identity case;
+- fallback only from an authenticated README `404` at the healthy snapshot's exact head SHA;
 - README retrieval failure remaining retryable;
 - deterministic README cleaning and 8,000-character limit;
 - prompt text treating source material as untrusted;
