@@ -135,7 +135,9 @@ test("passes both source fields and only allowed vocabulary entries to provider"
     expect.objectContaining({
       repositoryDescription: "A short project description.",
       readmeText: null,
-      allowedPrimaryFunctions: vocabularies.primaryFunctions,
+      allowedPrimaryFunctions: [
+        { id: "developer-infrastructure", label: "Developer" },
+      ],
       allowedCapabilities: vocabularies.capabilities,
     }),
   );
@@ -258,27 +260,26 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     projectIds.map((id) => [id, snapshotFor(id)]),
   );
   const writeRecord = vi.fn(async () => {});
+  const generate = vi.fn(async (input) => {
+    if (input.id === "offline") throw new Error("provider offline");
+    return {
+      output: {
+        summary:
+          "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+        metadata_status: "curated" as const,
+        primary_function: "developer-infrastructure",
+        capabilities: ["automation"],
+      },
+      metadata: providerMetadata,
+    };
+  });
   const result = await runEnrichmentBatch({
     projectIds,
     recordsById,
     snapshotsById,
     phase: "primary",
     vocabularies,
-    provider: {
-      generate: vi.fn(async (input) => {
-        if (input.id === "offline") throw new Error("provider offline");
-        return {
-          output: {
-            summary:
-              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
-            metadata_status: "curated" as const,
-            primary_function: "developer-infrastructure",
-            capabilities: ["automation"],
-          },
-          metadata: providerMetadata,
-        };
-      }),
-    },
+    provider: { generate },
     validateSnapshot: () => true,
     loadSource: async (candidate) => {
       if (candidate.id === "fallback") {
@@ -318,6 +319,13 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     sourceKind: "confirmed-fallback",
     readmeRef: "a".repeat(40),
   });
+  for (const [input] of generate.mock.calls) {
+    expect(input.allowedPrimaryFunctions).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "uncategorized" }),
+      ]),
+    );
+  }
 });
 
 test("runs no more than four model calls concurrently and preserves order", async () => {
