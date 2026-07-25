@@ -229,6 +229,7 @@ jobs:
 
           run_batch() {
             local run_mode="$1"
+            local publish="${2:-true}"
             args=(--mode "$run_mode" --batch-size "$BATCH_SIZE" --concurrency "$MODEL_CONCURRENCY")
             if [[ "$run_mode" == "canary" ]]; then
               while IFS= read -r project_id; do
@@ -236,6 +237,9 @@ jobs:
               done <<< "$PROJECT_IDS"
             fi
             npm run catalog:enrich -- "${args[@]}"
+            if [[ "$publish" != "true" ]]; then
+              return
+            fi
             npm run check
             publish_changes "chore(catalog): enrich project metadata"
             deploy_registry_changes
@@ -245,6 +249,28 @@ jobs:
             jq -c \
               '[.phase, .primary_cursor, .retry_cursor, (.retry_queue | length)]' \
               data/reports/enrichment-report.json
+          }
+
+          complete_canary() {
+            run_batch canary false
+            status="$(jq -r '.status' data/reports/enrichment-report.json)"
+            while [[ "$status" == "running" ]]; do
+              progress_before="$(enrichment_progress)"
+              run_batch canary false
+              progress_after="$(enrichment_progress)"
+              if [[ "$progress_after" == "$progress_before" ]]; then
+                echo "::error title=Enrichment stalled::Enrichment remained running without advancing its phase or cursors."
+                exit 1
+              fi
+              status="$(jq -r '.status' data/reports/enrichment-report.json)"
+            done
+            if [[ "$status" != "awaiting-deployment" ]]; then
+              echo "Canary did not reach deployment readiness." >&2
+              exit 1
+            fi
+            npm run check
+            publish_changes "chore(catalog): enrich project metadata"
+            deploy_registry_changes
           }
 
           resume_batch() {
@@ -277,7 +303,7 @@ jobs:
             else
               choose_canary_projects
               prepare_canary_projects
-              run_batch canary
+              complete_canary
             fi
             run_mode="$(jq -r '.mode' data/reports/enrichment-report.json)"
             status="$(jq -r '.status' data/reports/enrichment-report.json)"

@@ -59,16 +59,14 @@ test("rebases with bounded retries and never force-pushes", async () => {
   expect(postRebaseCheck).toBeLessThan(push);
 });
 
-test("drains baselines in one serialized run and stops without progress", async () => {
+test("runs one bounded baseline batch so activity cursors persist between runs", async () => {
   const source = await readFile(refreshPath, "utf8");
-  const drain = source.indexOf("Drain baseline queue");
-  const evaluate = source.indexOf("baseline-queue.mjs evaluate", drain);
-
-  expect(drain).toBeGreaterThan(-1);
-  expect(evaluate).toBeGreaterThan(drain);
-  expect(source).toContain("while (( remaining > 0 )); do");
-  expect(source).toContain('before="$remaining"');
-  expect(source).toContain("baseline-queue.mjs evaluate");
+  expect(source).toContain(
+    "Advance baseline queue or refresh selected sources",
+  );
+  expect(source).not.toContain("while (( remaining > 0 )); do");
+  expect(source).not.toContain("baseline-queue.mjs evaluate");
+  expect(source.match(/\brefresh_batch\b/gu)).toHaveLength(3);
   expect(source).not.toContain("workflow run refresh-catalog.yml");
 });
 
@@ -170,6 +168,39 @@ test("enrichment prepares a random canary and limits batch publication", async (
       }
     ).concurrency.group,
   ).toBe("catalog-refresh");
+});
+
+test("completes canary retries before publishing and deploying", async () => {
+  const source = await workflowSource("enrich-catalog");
+  const start = source.indexOf("complete_canary()");
+  const end = source.indexOf("resume_batch()", start);
+  const body = source.slice(start, end);
+  const firstBatch = body.indexOf("run_batch canary false");
+  const retryLoop = body.indexOf('while [[ "$status" == "running" ]]');
+  const retryBatch = body.indexOf("run_batch canary false", firstBatch + 1);
+  const check = body.indexOf("npm run check", retryBatch);
+  const publish = body.indexOf(
+    'publish_changes "chore(catalog): enrich project metadata"',
+    check,
+  );
+  const deploy = body.indexOf("deploy_registry_changes", publish);
+
+  expect(start).toBeGreaterThan(-1);
+  expect(end).toBeGreaterThan(start);
+  expect(firstBatch).toBeGreaterThan(-1);
+  expect(retryLoop).toBeGreaterThan(firstBatch);
+  expect(retryBatch).toBeGreaterThan(retryLoop);
+  expect(check).toBeGreaterThan(retryBatch);
+  expect(publish).toBeGreaterThan(check);
+  expect(deploy).toBeGreaterThan(publish);
+  expect(body).toContain("Enrichment stalled");
+
+  const canaryBranch = source.slice(
+    source.indexOf('if [[ "$MODE" == "canary" ]]'),
+    source.indexOf('if [[ "$MODE" == "start" ]]'),
+  );
+  expect(canaryBranch).toContain("complete_canary");
+  expect(canaryBranch).not.toContain("run_batch canary");
 });
 
 test("fails an enrichment resume when its cursor state does not advance", async () => {
