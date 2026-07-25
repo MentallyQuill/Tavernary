@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "mode": "project",
-  "started_at": "2026-07-25T14:43:31.015Z",
-  "completed_at": "2026-07-25T14:43:31.525Z",
+  "started_at": "2026-07-25T19:29:13.190Z",
+  "completed_at": "2026-07-25T19:29:13.637Z",
   "counts": {
     "total": 1,
     "checked": 1,
@@ -22,10 +22,10 @@
     "graphql_remaining": 4995,
     "rest_requests": 0
   },
-  "duration_ms": 510,
+  "duration_ms": 447,
   "project_timings": [
     {
-      "project_id": "thejackals-sillytavern-mapregionslocator",
+      "project_id": "archkr-lumiverse-lumistate",
       "outcome": "unchanged",
       "duration_ms": 0,
       "error_code": null
