@@ -8,32 +8,30 @@
     "url": "https://github.com/Archkr/Lumiverse-LumiMind",
     "default_branch": "main",
     "head_sha": "dd7865bd5c3b29ae983271a3c73879475038dd84",
+    "head_committed_at": "2026-07-22T23:27:32.000Z",
     "archived": false,
-    "created_at": "2026-07-16T19:45:15Z",
-    "size_kb": 294,
-    "head_committed_at": null
+    "created_at": "2026-07-16T19:45:15.000Z",
+    "size_kb": 294
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-22T23:27:32.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      true,
-      true
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-22T23:27:32.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T23:42:43.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:06:55.971Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +45,6 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-24T18:53:53.022Z",
+  "refreshed_at": "2026-07-25T01:06:55.971Z",
   "stale_since": null
 }

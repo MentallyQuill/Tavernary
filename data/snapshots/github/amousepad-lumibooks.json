@@ -8,32 +8,60 @@
     "url": "https://github.com/AMousePad/LumiBooks",
     "default_branch": "main",
     "head_sha": "163e96595fb74010096c9b3571c974dd7d6a284c",
+    "head_committed_at": "2026-07-22T04:41:24.000Z",
     "archived": false,
-    "created_at": "2026-05-25T07:13:23Z",
-    "size_kb": 3060,
-    "head_committed_at": null
+    "created_at": "2026-05-25T07:13:23.000Z",
+    "size_kb": 3060
   },
   "source_health": "healthy",
   "activity": {
     "latest_source_activity_at": "2026-07-22T04:41:24.000Z",
-    "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      true,
-      true,
-      true,
-      false,
-      true,
-      false,
-      true,
-      true,
-      true
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-22T04:41:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T14:37:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-07T20:21:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-25T20:34:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T13:33:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-08T15:39:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T11:01:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T00:14:46.000Z",
+        "precision": "exact"
+      }
     ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:06:55.971Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -47,6 +75,6 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-24T18:43:55.625Z",
+  "refreshed_at": "2026-07-25T01:06:55.971Z",
   "stale_since": null
 }

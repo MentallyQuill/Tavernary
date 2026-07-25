@@ -34,7 +34,7 @@
     "latest_release_at": null,
     "evidence_status": "provisional",
     "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "baseline_attempts": 1
   },
   "community": {
     "stargazers_count": 7,
@@ -48,5 +48,5 @@
     "source_path": "LICENCE"
   },
   "refreshed_at": "2026-07-24T18:38:09.178Z",
-  "stale_since": null
+  "stale_since": "2026-07-25T01:06:55.971Z"
 }
