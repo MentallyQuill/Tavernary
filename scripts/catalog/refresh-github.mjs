@@ -16,6 +16,7 @@ import { format } from "prettier";
 import { calculateCommunity } from "../../src/lib/github/repository-metrics.ts";
 import { recordIntervalActivity, weekStartUtc } from "./activity-evidence.mjs";
 import { buildCatalog } from "./build.mjs";
+import { fetchRepositoryContributors } from "./github-contributors.mjs";
 import { buildRefreshManifest } from "./github-refresh-manifest.mjs";
 import {
   inspectApiActivity,
@@ -165,7 +166,29 @@ function normalizedLicense(license) {
   };
 }
 
-function snapshotFromObservation(record, observation, previous, now) {
+export function contributorSnapshotForSuccess(accounts, now) {
+  return {
+    accounts,
+    refreshed_at: now,
+    stale_since: null,
+  };
+}
+
+export function contributorSnapshotForFailure(previous, now) {
+  if (!previous) return undefined;
+  return {
+    ...previous,
+    stale_since: previous.stale_since ?? now,
+  };
+}
+
+function snapshotFromObservation(
+  record,
+  observation,
+  previous,
+  now,
+  contributors,
+) {
   const activity = {
     ...(previous?.activity ?? provisionalActivity()),
     latest_release_at: observation.latestReleaseAt,
@@ -183,6 +206,9 @@ function snapshotFromObservation(record, observation, previous, now) {
   };
   if (previous && Object.hasOwn(previous, "activity_scan")) {
     snapshot.activity_scan = previous.activity_scan;
+  }
+  if (contributors) {
+    snapshot.contributors = contributors;
   }
   return snapshot;
 }
@@ -473,6 +499,41 @@ export async function runRefresh(options = {}) {
   const failuresById = new Map(
     observed.failures.map((failure) => [failure.projectId, failure]),
   );
+  const fetchContributors =
+    options.fetchContributors ??
+    (token
+      ? (repository) => fetchRepositoryContributors(repository, { token })
+      : null);
+  const contributorJobs = fetchContributors
+    ? observed.observations.map((observation) => ({
+        projectId: observation.projectId,
+        repository: {
+          owner: observation.repository.owner,
+          name: observation.repository.name,
+        },
+      }))
+    : [];
+  const contributorResults = await mapConcurrent(contributorJobs, 3, (job) =>
+    fetchContributors(job.repository),
+  );
+  const systemicContributorFailure = contributorResults.find(
+    (result) =>
+      result.status === "rejected" &&
+      (result.reason?.systemic ||
+        result.reason?.rateLimited ||
+        result.reason?.status === 401),
+  );
+  if (systemicContributorFailure) {
+    throw systemicContributorFailure.reason;
+  }
+  const contributorResultsById = new Map();
+  contributorResults.forEach((result, index) => {
+    restRequests +=
+      result.status === "fulfilled"
+        ? (result.value.requestCount ?? 0)
+        : (result.reason?.requestCount ?? 0);
+    contributorResultsById.set(contributorJobs[index].projectId, result);
+  });
 
   for (const record of selected) {
     const started = Date.now();
@@ -519,11 +580,19 @@ export async function runRefresh(options = {}) {
       continue;
     }
 
+    const contributorResult = contributorResultsById.get(record.id);
+    const contributors =
+      contributorResult?.status === "fulfilled"
+        ? contributorSnapshotForSuccess(contributorResult.value.accounts, now)
+        : contributorResult?.status === "rejected"
+          ? contributorSnapshotForFailure(previous?.contributors, now)
+          : previous?.contributors;
     const candidate = snapshotFromObservation(
       record,
       observation,
       previous,
       now,
+      contributors,
     );
     const lacksEvidenceWatermark =
       previous !== null &&

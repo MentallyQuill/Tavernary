@@ -54,6 +54,32 @@
         "size_kb": { "type": "integer", "minimum": 0 }
       }
     },
+    "contributors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accounts", "refreshed_at", "stale_since"],
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["login", "type"],
+            "properties": {
+              "login": { "type": "string", "minLength": 1 },
+              "type": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "refreshed_at": { "type": "string", "format": "date-time" },
+        "stale_since": {
+          "anyOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
     "source_health": {
       "enum": [
         "healthy",

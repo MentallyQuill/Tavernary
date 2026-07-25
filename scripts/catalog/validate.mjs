@@ -162,6 +162,15 @@ function validateSnapshotEvidence(snapshot) {
     errors.push(`${id}: source_weeks must be sorted newest to oldest`);
   }
 
+  const contributorLogins = new Set();
+  for (const account of snapshot.contributors?.accounts ?? []) {
+    const login = account.login.toLocaleLowerCase("en");
+    if (contributorLogins.has(login)) {
+      errors.push(`${id}: duplicate contributor username ${login}`);
+    }
+    contributorLogins.add(login);
+  }
+
   return errors;
 }
 

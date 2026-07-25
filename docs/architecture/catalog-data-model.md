@@ -21,8 +21,13 @@ Machine evidence lives in `data/snapshots/github/*.json`.
 - Schema: `data/schemas/repository-snapshot.schema.json`
 - Schema version: `2`
 - Refreshed by `npm run catalog:refresh`.
-- Contains: repo identity+head, community counts, license, activity evidence,
-  API refresh timestamps, and health state.
+- Contains: repo identity+head, linked GitHub contributor identities, community
+  counts, license, activity evidence, API refresh timestamps, and health state.
+
+Repository snapshot v2 may contain generated `contributors` facts: each linked
+GitHub account's `login` and account `type`, the last successful contributor
+refresh timestamp, and contributor-specific staleness. Absence means contributor
+collection is pending, not that the repository has an empty contributor set.
 
 ## Layer 3 - generated runtime catalog
 

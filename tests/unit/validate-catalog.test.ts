@@ -319,6 +319,46 @@ describe("catalog validation", () => {
     expect(result.snapshotCount).toBe(1);
   });
 
+  test("accepts optional contributor facts in a version two snapshot", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.contributors = {
+      accounts: [
+        { login: "Alice", type: "User" },
+        { login: "Claude", type: "User" },
+      ],
+      refreshed_at: "2026-07-25T00:00:00.000Z",
+      stale_since: null,
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
+  test("rejects case-insensitive duplicate contributor usernames", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.contributors = {
+      accounts: [
+        { login: "Alice", type: "User" },
+        { login: "alice", type: "User" },
+      ],
+      refreshed_at: "2026-07-25T00:00:00.000Z",
+      stale_since: null,
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: duplicate contributor username alice",
+    );
+  });
+
   test("accepts provisional and degraded version two evidence states", async () => {
     const provisional = structuredClone(validSnapshotV2);
     provisional.repository.head_committed_at = null;

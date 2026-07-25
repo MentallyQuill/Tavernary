@@ -7,6 +7,7 @@ This reflects the current implementation in `scripts/catalog/refresh-github.mjs`
 - Reads canonical GitHub-backed registry records (`refresh_policy: automatic`)
 - Selects observation targets from mode and history
 - Queries GitHub repository state and snapshots
+- Follows every REST contributor page with concurrency capped at 3
 - Preserves prior values on non-systemic failure
 - Computes evidence fields and license/activity/community fields
 - Writes changed snapshots to `data/snapshots/github/*.json`
@@ -46,6 +47,11 @@ This reflects the current implementation in `scripts/catalog/refresh-github.mjs`
 - GitHub compare/REST failures are mostly non-fatal:
   - stale values retained
   - `stale_since` set when transitioning from clean state
+- Project-specific contributor failure preserves the last successful
+  contributor list and marks only those facts stale.
+- First-time contributor failure leaves contributor facts absent rather than
+  inventing an empty list.
+- Contributor authentication failure or rate exhaustion aborts the refresh.
 - `source_health` transitions:
   - to `unavailable` on HTTP 404 in failure path
   - to `identity-change` when observed repository no longer matches registry identity

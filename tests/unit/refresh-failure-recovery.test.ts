@@ -1,6 +1,8 @@
 import { expect, test } from "vitest";
 
 import {
+  contributorSnapshotForFailure,
+  contributorSnapshotForSuccess,
   repositoryIdentityChanged,
   snapshotForFailure,
 } from "../../scripts/catalog/refresh-github.mjs";
@@ -110,6 +112,42 @@ test("repository identity checks allow unverified records and reject mismatches"
     ),
   ).toBe(true);
 });
+
+test("records a successful contributor observation as current", () => {
+  expect(
+    contributorSnapshotForSuccess(
+      [{ login: "Alice", type: "User" }],
+      "2026-07-25T00:00:00.000Z",
+    ),
+  ).toEqual({
+    accounts: [{ login: "Alice", type: "User" }],
+    refreshed_at: "2026-07-25T00:00:00.000Z",
+    stale_since: null,
+  });
+});
+
+test("preserves previous contributor facts and marks them stale", () => {
+  const previous = {
+    accounts: [{ login: "Alice", type: "User" }],
+    refreshed_at: "2026-07-24T00:00:00.000Z",
+    stale_since: null,
+  };
+
+  expect(
+    contributorSnapshotForFailure(previous, "2026-07-25T00:00:00.000Z"),
+  ).toEqual({
+    ...previous,
+    stale_since: "2026-07-25T00:00:00.000Z",
+  });
+  expect(previous.stale_since).toBeNull();
+});
+
+test("keeps contributor facts unknown after a first request failure", () => {
+  expect(
+    contributorSnapshotForFailure(undefined, "2026-07-25T00:00:00.000Z"),
+  ).toBeUndefined();
+});
+
 test("Kit reaction failure preserves the prior ledger as stale", async () => {
   const snapshot = {
     schema_version: 1 as const,
