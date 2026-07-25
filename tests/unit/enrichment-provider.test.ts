@@ -3,6 +3,7 @@ import { afterEach, expect, test, vi } from "vitest";
 import {
   ENRICHMENT_TIMEOUT_MS,
   createEnrichmentProvider,
+  parseProviderMessage,
   validateProviderConfiguration,
 } from "../../scripts/catalog/enrichment-provider.mjs";
 
@@ -44,6 +45,59 @@ function success(payload: Record<string, unknown> = {}) {
 afterEach(() => {
   vi.useRealTimers();
 });
+
+test.each([
+  ["JSON string", { content: JSON.stringify(output) }],
+  [
+    "text content parts",
+    {
+      content: [
+        { type: "text", text: JSON.stringify(output).slice(0, 40) },
+        { type: "text", text: JSON.stringify(output).slice(40) },
+      ],
+    },
+  ],
+  [
+    "whole-response JSON fence",
+    { content: `\`\`\`json\n${JSON.stringify(output)}\n\`\`\`` },
+  ],
+] as const)("parses a safe %s provider envelope", (_name, message) => {
+  expect(parseProviderMessage(message)).toEqual(output);
+});
+
+test.each([
+  ["missing content", {}, "content-missing"],
+  [
+    "tool calls alongside valid JSON",
+    {
+      content: JSON.stringify(output),
+      tool_calls: [{ id: "call-1", type: "function" }],
+    },
+    "tool-calls-present",
+  ],
+  [
+    "non-text content part",
+    { content: [{ type: "image", image_url: "https://example.test/a.png" }] },
+    "content-parts-invalid",
+  ],
+  [
+    "leading prose",
+    { content: `Here is the result: ${JSON.stringify(output)}` },
+    "json-invalid",
+  ],
+  ["malformed JSON", { content: "{not-json" }, "json-invalid"],
+  ["JSON array", { content: JSON.stringify([output]) }, "json-not-object"],
+] as const)(
+  "rejects %s with a sanitized diagnostic",
+  (_name, message, diagnosticCode) => {
+    expect(() => parseProviderMessage(message)).toThrowError(
+      expect.objectContaining({
+        code: "provider-response-invalid",
+        diagnosticCode,
+      }),
+    );
+  },
+);
 
 test.each([
   [{ apiUrl: "", apiKey: "key", model }, "URL"],

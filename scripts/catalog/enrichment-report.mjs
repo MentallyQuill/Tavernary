@@ -64,6 +64,8 @@ function sanitizedEntry(entry) {
     "returned_model",
     "latency_ms",
     "reason_code",
+    "diagnostic_code",
+    "repair_hint",
   ]) {
     if (entry[key] !== undefined) result[key] = entry[key];
   }
@@ -103,6 +105,8 @@ export function createEnrichmentReport(state) {
     created_at: state.created_at,
     updated_at: state.updated_at,
     manifest: [...state.manifest],
+    deferred_ids: [...(state.deferred_ids ?? [])],
+    authorized_canary_run_id: state.authorized_canary_run_id ?? null,
     primary_cursor: state.primary_cursor,
     retry_queue: [...state.retry_queue],
     retry_cursor: state.retry_cursor,
@@ -112,6 +116,12 @@ export function createEnrichmentReport(state) {
       ),
     ),
     entries,
+    publication: state.publication
+      ? {
+          checkpoint_commit_sha: state.publication.checkpoint_commit_sha,
+          recorded_at: state.publication.recorded_at,
+        }
+      : null,
     deployment: state.deployment
       ? {
           commit_sha: state.deployment.commit_sha,
@@ -129,10 +139,78 @@ function assertUnique(values, name) {
   }
 }
 
+function assertTerminalFullAccounting(value) {
+  if (
+    value.mode !== "full" ||
+    !["complete", "complete-with-errors"].includes(value.status)
+  ) {
+    return;
+  }
+  const manifestIds = [...value.manifest].sort();
+  const entryIds = Object.keys(value.entries ?? {}).sort();
+  const attemptIds = Object.keys(value.attempts ?? {}).sort();
+  const retryIds = new Set(value.retry_queue);
+  const successfulOutcomes = new Set([
+    "enriched",
+    "fallback",
+    "retry-enriched",
+    "retry-fallback",
+  ]);
+  if (
+    value.phase !== "complete" ||
+    value.primary_cursor !== value.manifest.length ||
+    value.retry_cursor !== value.retry_queue.length ||
+    JSON.stringify(entryIds) !== JSON.stringify(manifestIds) ||
+    JSON.stringify(attemptIds) !== JSON.stringify(manifestIds)
+  ) {
+    throw new Error("terminal full report accounting is invalid");
+  }
+  let successfulCount = 0;
+  for (const id of value.manifest) {
+    const entry = value.entries[id];
+    const retried = retryIds.has(id);
+    const terminalOutcomes = retried
+      ? new Set([
+          "retry-enriched",
+          "retry-fallback",
+          "final-failure",
+          "skipped",
+        ])
+      : new Set(["enriched", "fallback", "source-not-ready", "skipped"]);
+    if (
+      entry?.id !== id ||
+      entry?.attempt !== (retried ? 2 : 1) ||
+      value.attempts[id] !== entry.attempt ||
+      entry?.phase !== (retried ? "retry" : "primary") ||
+      !terminalOutcomes.has(entry?.outcome)
+    ) {
+      throw new Error("terminal full report accounting is invalid");
+    }
+    if (successfulOutcomes.has(entry.outcome)) successfulCount += 1;
+  }
+  const allSuccessful =
+    successfulCount === value.manifest.length &&
+    value.deferred_ids.length === 0;
+  const validWarning =
+    (successfulCount > 0 &&
+      (!allSuccessful || value.deferred_ids.length > 0)) ||
+    (value.manifest.length === 0 && value.deferred_ids.length > 0);
+  if (
+    (value.status === "complete" && !allSuccessful) ||
+    (value.status === "complete-with-errors" && !validWarning)
+  ) {
+    throw new Error("terminal full report accounting is invalid");
+  }
+}
+
 export function validateEnrichmentReport(value) {
   if (!value || typeof value !== "object" || value.schema_version !== 1) {
     throw new Error("enrichment report schema is invalid");
   }
+  value = structuredClone(value);
+  value.deferred_ids ??= [];
+  value.authorized_canary_run_id ??= null;
+  value.publication ??= null;
   if (
     typeof value.expected_model !== "string" ||
     value.expected_model.length === 0 ||
@@ -153,12 +231,46 @@ export function validateEnrichmentReport(value) {
       "passed",
       "failed",
       "complete",
+      "complete-with-errors",
     ].includes(value.status)
   ) {
     throw new Error("enrichment report status is invalid");
   }
   assertUnique(value.manifest, "manifest");
+  assertUnique(value.deferred_ids, "deferred IDs");
   assertUnique(value.retry_queue, "retry queue");
+  if (
+    value.deferred_ids.some(
+      (id) =>
+        typeof id !== "string" ||
+        id.length === 0 ||
+        value.manifest.includes(id),
+    ) ||
+    (value.mode === "canary" && value.deferred_ids.length > 0) ||
+    (value.mode === "full" &&
+      value.manifest.length === 0 &&
+      (value.deferred_ids.length === 0 ||
+        value.status !== "complete-with-errors" ||
+        value.phase !== "complete"))
+  ) {
+    throw new Error("enrichment report deferred state is invalid");
+  }
+  if (
+    value.authorized_canary_run_id !== null &&
+    (value.mode !== "full" ||
+      typeof value.authorized_canary_run_id !== "string" ||
+      value.authorized_canary_run_id.length === 0)
+  ) {
+    throw new Error("enrichment report canary authorization is invalid");
+  }
+  if (
+    value.publication !== null &&
+    (!/^[0-9a-f]{40}$/u.test(value.publication?.checkpoint_commit_sha ?? "") ||
+      typeof value.publication?.recorded_at !== "string" ||
+      value.publication.recorded_at.length === 0)
+  ) {
+    throw new Error("enrichment report publication is invalid");
+  }
   if (
     !Number.isInteger(value.primary_cursor) ||
     value.primary_cursor < 0 ||
@@ -178,6 +290,7 @@ export function validateEnrichmentReport(value) {
   ) {
     throw new Error("enrichment report state is inconsistent");
   }
+  assertTerminalFullAccounting(value);
   if (value.phase === "complete" && value.status === "running") {
     throw new Error("completed enrichment report cannot be running");
   }
@@ -202,6 +315,19 @@ export function validateEnrichmentReport(value) {
       typeof value.deployment?.verified_at !== "string")
   ) {
     throw new Error("passed canary requires verified deployment");
+  }
+  if (
+    value.mode === "full" &&
+    value.deployment !== null &&
+    (value.phase !== "complete" ||
+      !["complete", "complete-with-errors"].includes(value.status) ||
+      value.deployment.commit_sha !==
+        value.publication?.checkpoint_commit_sha ||
+      !Number.isInteger(value.deployment.run_id) ||
+      value.deployment.run_id < 1 ||
+      typeof value.deployment.verified_at !== "string")
+  ) {
+    throw new Error("full deployment state is invalid");
   }
   return createEnrichmentReport(value);
 }

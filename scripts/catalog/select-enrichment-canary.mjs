@@ -29,21 +29,94 @@ export function selectRandomCanaryIds(records, options = {}) {
   return candidates.slice(0, count);
 }
 
-async function loadRecords() {
+export function selectRepresentativeCanaryIds(
+  records,
+  snapshots,
+  options = {},
+) {
+  const count = options.count ?? 7;
+  const candidates = selectEnrichmentRecords(records)
+    .filter((record) => record.refresh_policy === "automatic")
+    .sort((left, right) => left.id.localeCompare(right.id));
+  if (candidates.length < 5) {
+    throw new Error(
+      `Canary selection requires at least five refreshable enrichment candidates; found ${candidates.length}.`,
+    );
+  }
+  const snapshotsById = Array.isArray(snapshots)
+    ? Object.fromEntries(
+        snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+      )
+    : snapshots;
+  const selected = [];
+  const choose = (predicate) => {
+    const match = candidates.find(
+      (record) => !selected.includes(record.id) && predicate(record),
+    );
+    if (match) selected.push(match.id);
+  };
+  const healthySnapshot = (record) => {
+    const snapshot = snapshotsById?.[record.id];
+    return snapshot?.source_health === "healthy" &&
+      snapshot.stale_since === null
+      ? snapshot
+      : null;
+  };
+
+  choose((record) => {
+    const description = healthySnapshot(record)?.repository?.description;
+    return typeof description === "string" && description.trim().length > 0;
+  });
+  choose((record) => {
+    const snapshot = healthySnapshot(record);
+    return snapshot && !snapshot.repository?.description;
+  });
+  const selectedRecords = () =>
+    selected.map((id) => candidates.find((record) => record.id === id));
+  if (!selectedRecords().some((record) => record?.kind === "extension")) {
+    choose((record) => record.kind === "extension");
+  }
+  if (!selectedRecords().some((record) => record?.kind !== "extension")) {
+    choose((record) => record.kind !== "extension");
+  }
+  for (const record of candidates) {
+    if (selected.length >= Math.min(count, candidates.length)) break;
+    if (!selected.includes(record.id)) selected.push(record.id);
+  }
+  return selected;
+}
+
+async function loadCatalog() {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-  const directory = resolve(root, "data/registry/projects");
-  const files = (await readdir(directory))
+  const recordDirectory = resolve(root, "data/registry/projects");
+  const snapshotDirectory = resolve(root, "data/snapshots/github");
+  const recordFiles = (await readdir(recordDirectory))
     .filter((name) => name.endsWith(".json"))
     .sort();
-  return Promise.all(
-    files.map(async (name) =>
-      JSON.parse(await readFile(resolve(directory, name), "utf8")),
+  const snapshotFiles = (await readdir(snapshotDirectory))
+    .filter((name) => name.endsWith(".json"))
+    .sort();
+  const [records, snapshotEntries] = await Promise.all([
+    Promise.all(
+      recordFiles.map(async (name) =>
+        JSON.parse(await readFile(resolve(recordDirectory, name), "utf8")),
+      ),
     ),
-  );
+    Promise.all(
+      snapshotFiles.map(async (name) => {
+        const snapshot = JSON.parse(
+          await readFile(resolve(snapshotDirectory, name), "utf8"),
+        );
+        return [snapshot.project_id, snapshot];
+      }),
+    ),
+  ]);
+  return { records, snapshots: Object.fromEntries(snapshotEntries) };
 }
 
 async function main() {
-  const selected = selectRandomCanaryIds(await loadRecords());
+  const { records, snapshots } = await loadCatalog();
+  const selected = selectRepresentativeCanaryIds(records, snapshots);
   process.stdout.write(`${selected.join("\n")}\n`);
 }
 

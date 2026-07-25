@@ -108,12 +108,25 @@ export function selectRefreshRecords(records, snapshots, options) {
       .slice(0, batchSize);
   }
   if (mode === "project" || mode === "forensic") {
-    if (!options.projectId) {
+    const projectIds = [
+      ...new Set(
+        (options.projectIds ?? (options.projectId ? [options.projectId] : []))
+          .filter(Boolean)
+          .map(String),
+      ),
+    ];
+    if (projectIds.length === 0) {
       throw new Error(`${mode} mode requires project_id`);
     }
-    const selected = automatic.filter(({ id }) => id === options.projectId);
-    if (selected.length !== 1) {
-      throw new Error(`Unknown refreshable project: ${options.projectId}`);
+    if (mode === "forensic" && projectIds.length !== 1) {
+      throw new Error("forensic mode requires exactly one project_id");
+    }
+    const requested = new Set(projectIds);
+    const selected = automatic.filter(({ id }) => requested.has(id));
+    const selectedIds = new Set(selected.map(({ id }) => id));
+    const missing = projectIds.filter((id) => !selectedIds.has(id));
+    if (missing.length > 0) {
+      throw new Error(`Unknown refreshable project: ${missing.join(", ")}`);
     }
     return selected;
   }
@@ -464,6 +477,7 @@ export async function runRefresh(options = {}) {
     mode,
     batchSize: options.batchSize,
     projectId: options.projectId,
+    projectIds: options.projectIds,
   });
   const logger = options.logger ?? console;
   const token =
@@ -877,15 +891,25 @@ function argument(name, fallback = null) {
   return index < 0 ? fallback : process.argv[index + 1];
 }
 
+function argumentsFor(name) {
+  return process.argv.flatMap((value, index) =>
+    value === name && process.argv[index + 1] !== undefined
+      ? [process.argv[index + 1]]
+      : [],
+  );
+}
+
 async function main() {
   const mode = argument("--mode", "incremental");
   const batchSize = Number.parseInt(argument("--batch-size", "12"), 10);
-  const projectId = argument("--project-id");
+  const projectIds = argumentsFor("--project-id");
+  const projectId = projectIds.at(-1) ?? null;
   const deploymentRequested = process.argv.includes("--deployment-requested");
   const result = await runRefresh({
     mode,
     batchSize,
     projectId,
+    projectIds,
     deploymentRequested,
   });
   console.table(result.manifest.counts);

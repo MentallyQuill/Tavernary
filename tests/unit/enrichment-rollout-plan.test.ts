@@ -4,6 +4,8 @@ import {
   applyAttemptResults,
   approveCanaryDeployment,
   createEnrichmentRunState,
+  recordCheckpointPublication,
+  recordFullDeployment,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
 import {
   createEnrichmentRolloutPlan,
@@ -69,6 +71,58 @@ test("rejects resuming a full rollout under a different configured model", () =>
   ).toThrow("configured model does not match the running full rollout");
 });
 
+test("restarts a failed full rollout only when recoverable work remains", () => {
+  const failed = {
+    schema_version: 1,
+    run_id: "failed-full",
+    mode: "full",
+    status: "failed",
+    phase: "complete",
+    expected_model: model,
+    batch_size: 20,
+    concurrency: 4,
+    created_at: now,
+    updated_at: now,
+    manifest: ["missing"],
+    deferred_ids: [],
+    authorized_canary_run_id: "canary",
+    primary_cursor: 1,
+    retry_queue: [],
+    retry_cursor: 0,
+    attempts: { missing: 1 },
+    entries: {
+      missing: {
+        id: "missing",
+        attempt: 1,
+        phase: "primary",
+        outcome: "final-failure",
+        reason_code: "record-missing",
+        completed_at: now,
+      },
+    },
+    publication: null,
+    deployment: null,
+    aggregates: {},
+  };
+
+  expect(
+    planEnrichmentRollout({
+      model,
+      eligibleCount: 10,
+      fullReport: failed,
+      canaryReport: passedCanary(),
+    }),
+  ).toEqual({ action: "restart-full" });
+  expect(() =>
+    planEnrichmentRollout({
+      model,
+      eligibleCount: 0,
+      fullReport: failed,
+      canaryReport: passedCanary(),
+    }),
+  ).toThrow("failed full rollout has no recoverable candidates");
+});
+
 test("completes without paid work when no enrichment candidates remain", () => {
   expect(
     planEnrichmentRollout({
@@ -80,20 +134,98 @@ test("completes without paid work when no enrichment candidates remain", () => {
   ).toEqual({ action: "complete" });
 });
 
+test("recovers an undeployed terminal full checkpoint before completing", () => {
+  let full = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["project"],
+      runId: "full",
+      now,
+      model,
+      authorizedCanaryRunId: "canary",
+    }),
+    [
+      {
+        id: "project",
+        phase: "primary",
+        outcome: "enriched",
+      },
+    ],
+    now,
+  );
+  full = recordCheckpointPublication(full, {
+    commitSha: "c".repeat(40),
+    now,
+  });
+
+  expect(
+    planEnrichmentRollout({
+      model,
+      eligibleCount: 0,
+      fullReport: full,
+      canaryReport: passedCanary(),
+    }),
+  ).toEqual({ action: "deploy-full" });
+
+  full = recordFullDeployment(full, {
+    commitSha: "c".repeat(40),
+    deploymentRunId: 24680,
+    now,
+  });
+  expect(
+    planEnrichmentRollout({
+      model,
+      eligibleCount: 0,
+      fullReport: full,
+      canaryReport: passedCanary(),
+    }),
+  ).toEqual({ action: "complete" });
+});
+
 test("starts a new full rollout from separately preserved canary authorization", () => {
+  let previousFull = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["previous"],
+      runId: "previous-full",
+      now,
+      model,
+    }),
+    [{ id: "previous", phase: "primary", outcome: "enriched" }],
+    now,
+  );
+  previousFull = recordCheckpointPublication(previousFull, {
+    commitSha: "d".repeat(40),
+    now,
+  });
+  previousFull = recordFullDeployment(previousFull, {
+    commitSha: "d".repeat(40),
+    deploymentRunId: 24680,
+    now,
+  });
+
   expect(
     planEnrichmentRollout({
       model,
       eligibleCount: 190,
-      fullReport: {
-        mode: "full",
-        status: "complete",
-        phase: "complete",
-        expected_model: model,
-      },
+      fullReport: previousFull,
       canaryReport: passedCanary(),
     }),
   ).toEqual({ action: "start-full" });
+});
+
+test("rejects a corrupt ledger that claims the canary passed", () => {
+  expect(() =>
+    planEnrichmentRollout({
+      model,
+      eligibleCount: 190,
+      fullReport: null,
+      canaryReport: {
+        ...passedCanary(),
+        deployment: null,
+      },
+    }),
+  ).toThrow("full rollout requires a deployed canary");
 });
 
 test.each([
@@ -175,4 +307,26 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
       canaryReport: null,
     }),
   ).resolves.toEqual({ action: "start-canary", eligible_count: 5 });
+});
+
+test("planner CLI rejects a corrupt durable ledger before taking action", async () => {
+  const records = Array.from({ length: 5 }, (_, index) => ({
+    id: `project-${index}`,
+    summary: "Generic intake details.",
+    metadata_status: "provisional",
+    visibility: "published",
+    source: { type: "github", repository: `Creator/project-${index}` },
+  }));
+
+  await expect(
+    runPlannerCli({
+      model,
+      records,
+      fullReport: null,
+      canaryReport: {
+        mode: "canary",
+        status: "passed",
+      },
+    }),
+  ).rejects.toThrow("schema is invalid");
 });

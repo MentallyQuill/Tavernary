@@ -169,6 +169,24 @@ test("requires exact project modes and bounds baseline batches", () => {
   ).toThrow("between 1 and 24");
 });
 
+test("selects one coherent project-mode batch from repeated IDs", () => {
+  const records = [record(0), record(1), record(2), record(3)];
+  const snapshots = records.map((_, index) => snapshot(index));
+
+  expect(
+    selectRefreshRecords(records, snapshots, {
+      mode: "project",
+      projectIds: [record(2).id, record(0).id, record(2).id],
+    }).map(({ id }) => id),
+  ).toEqual([record(0).id, record(2).id]);
+  expect(() =>
+    selectRefreshRecords(records, snapshots, {
+      mode: "project",
+      projectIds: [record(0).id, "missing-project"],
+    }),
+  ).toThrow("missing-project");
+});
+
 test("unchanged projects require zero compares and zero clones", async () => {
   const records = Array.from({ length: 204 }, (_, index) => record(index));
   const snapshots = records.map((_, index) => snapshot(index));

@@ -131,3 +131,91 @@ test("rejects malformed or contradictory durable reports", () => {
     }),
   ).toThrow("successful entries");
 });
+
+test("round-trips a full report completed with isolated errors", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a", "b"],
+    runId: "warning-run",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "enriched",
+      },
+      {
+        id: "b",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "unhealthy-source",
+      },
+    ],
+    now,
+  );
+  const report = createEnrichmentReport(state);
+
+  expect(report.status).toBe("complete-with-errors");
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
+test("round-trips durable publication and deferred canary IDs", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: [],
+    deferredIds: ["a", "b"],
+    authorizedCanaryRunId: "canary-run",
+    runId: "deferred",
+    now,
+    model,
+  });
+  state.publication = {
+    checkpoint_commit_sha: "d".repeat(40),
+    recorded_at: now,
+  };
+
+  const report = createEnrichmentReport(state);
+  expect(report).toMatchObject({
+    status: "complete-with-errors",
+    deferred_ids: ["a", "b"],
+    authorized_canary_run_id: "canary-run",
+    publication: {
+      checkpoint_commit_sha: "d".repeat(40),
+      recorded_at: now,
+    },
+  });
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
+test("rejects a terminal full report with incomplete accounting", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "corrupt-terminal",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [{ id: "a", phase: "primary", outcome: "enriched" }],
+    now,
+  );
+  const report = createEnrichmentReport(state);
+
+  expect(() =>
+    validateEnrichmentReport({
+      ...report,
+      primary_cursor: 0,
+    }),
+  ).toThrow("terminal full report accounting is invalid");
+  expect(() =>
+    validateEnrichmentReport({
+      ...report,
+      entries: {},
+    }),
+  ).toThrow("terminal full report accounting is invalid");
+});

@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { selectRandomCanaryIds } from "../../scripts/catalog/select-enrichment-canary.mjs";
+import {
+  selectRandomCanaryIds,
+  selectRepresentativeCanaryIds,
+} from "../../scripts/catalog/select-enrichment-canary.mjs";
 
 function record(
   id: string,
@@ -49,4 +52,52 @@ test("fails clearly when fewer than five candidates are available", () => {
       Array.from({ length: 4 }, (_, index) => record(`eligible-${index}`)),
     ),
   ).toThrow("at least five");
+});
+
+test("deterministically selects a representative seven-project pool", () => {
+  const records = [
+    record("a-fill", { kind: "extension" }),
+    record("b-fill", { kind: "extension" }),
+    record("c-fill", { kind: "extension" }),
+    record("d-fill", { kind: "extension" }),
+    record("e-fill", { kind: "extension" }),
+    record("x-preset", { kind: "preset" }),
+    record("y-readme", { kind: "extension" }),
+    record("z-description", { kind: "extension" }),
+  ];
+  const snapshots = Object.fromEntries(
+    records.map(({ id }) => [
+      id,
+      {
+        project_id: id,
+        source_health: "healthy",
+        stale_since: null,
+        repository: {
+          description:
+            id === "z-description"
+              ? "A repository description."
+              : id === "y-readme"
+                ? null
+                : "Filler description.",
+        },
+      },
+    ]),
+  );
+
+  const first = selectRepresentativeCanaryIds(records, snapshots);
+  const second = selectRepresentativeCanaryIds(
+    [...records].reverse(),
+    snapshots,
+  );
+
+  expect(first).toEqual([
+    "a-fill",
+    "y-readme",
+    "x-preset",
+    "b-fill",
+    "c-fill",
+    "d-fill",
+    "e-fill",
+  ]);
+  expect(second).toEqual(first);
 });

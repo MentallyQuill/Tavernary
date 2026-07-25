@@ -1,5 +1,7 @@
 name: Deploy Pages
 
+run-name: Deploy Pages - ${{ inputs.source_sha || github.sha }}
+
 on:
   push:
     branches:
@@ -7,6 +9,11 @@ on:
     paths-ignore:
       - "data/reports/**"
   workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact checkpoint commit to deploy
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -25,6 +32,23 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Validate exact deployment source
+        if: ${{ inputs.source_sha != '' }}
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Deployment source must be a full lowercase commit SHA." >&2
+            exit 1
+          fi
+          git fetch --no-tags origin main
+          git cat-file -e "$SOURCE_SHA^{commit}"
+          git merge-base --is-ancestor "$SOURCE_SHA" origin/main
+          git checkout --detach "$SOURCE_SHA"
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:

@@ -23,6 +23,8 @@ export type ProjectAttemptResult = {
     latencyMs: number;
   };
   reasonCode?: string;
+  diagnosticCode?: string | null;
+  repairHint?: string;
   message?: string;
 };
 
@@ -39,7 +41,13 @@ export type EnrichmentRunState = {
   schema_version: 1;
   run_id: string;
   mode: "canary" | "full";
-  status: "running" | "awaiting-deployment" | "passed" | "failed" | "complete";
+  status:
+    | "running"
+    | "awaiting-deployment"
+    | "passed"
+    | "failed"
+    | "complete"
+    | "complete-with-errors";
   phase: "primary" | "retry" | "complete";
   expected_model: string;
   batch_size: number;
@@ -47,11 +55,17 @@ export type EnrichmentRunState = {
   created_at: string;
   updated_at: string;
   manifest: readonly string[];
+  deferred_ids: readonly string[];
+  authorized_canary_run_id: string | null;
   primary_cursor: number;
   retry_queue: string[];
   retry_cursor: number;
   attempts: Record<string, number>;
   entries: Record<string, EnrichmentRunEntry>;
+  publication: {
+    checkpoint_commit_sha: string;
+    recorded_at: string;
+  } | null;
   deployment: {
     commit_sha: string;
     run_id: number;
@@ -68,6 +82,8 @@ export function createEnrichmentRunState(input: {
   model: string;
   batchSize?: number;
   concurrency?: number;
+  deferredIds?: string[];
+  authorizedCanaryRunId?: string;
 }): EnrichmentRunState;
 
 export function selectNextRunBatch(state: EnrichmentRunState): {
@@ -82,7 +98,28 @@ export function applyAttemptResults(
   now: string,
 ): EnrichmentRunState;
 
+export function recordCheckpointPublication(
+  state: EnrichmentRunState,
+  input: {
+    commitSha: string;
+    now: string;
+  },
+): EnrichmentRunState;
+
+export function recordFullDeployment(
+  state: EnrichmentRunState,
+  input: {
+    commitSha: string;
+    deploymentRunId: number;
+    now: string;
+  },
+): EnrichmentRunState;
+
 export function assertSuccessfulCanaryEntries(state: EnrichmentRunState): void;
+
+export function failureScope(
+  reasonCode: string | undefined,
+): "systemic" | "isolated";
 
 export function approveCanaryDeployment(
   state: EnrichmentRunState,

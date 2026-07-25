@@ -14,6 +14,7 @@ export type ProviderErrorCode =
 
 export class EnrichmentProviderError extends Error {
   code: ProviderErrorCode;
+  diagnosticCode: string | null;
 }
 
 export type ProviderResult = {
@@ -30,6 +31,8 @@ export function validateProviderConfiguration(input: {
   apiKey?: string;
   model?: string;
 }): { apiUrl: string; apiKey: string; model: string };
+
+export function parseProviderMessage(message: unknown): EnrichmentOutput;
 
 export function createEnrichmentProvider(options: {
   apiUrl?: string;

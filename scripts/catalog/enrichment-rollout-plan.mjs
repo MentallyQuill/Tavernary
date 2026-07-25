@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { assertFullRolloutAllowed } from "./enrichment-run-state.mjs";
+import { validateEnrichmentReport } from "./enrichment-report.mjs";
 import { selectEnrichmentRecords } from "./enrich-readmes.mjs";
 
 export function planEnrichmentRollout(input) {
@@ -17,13 +18,51 @@ export function planEnrichmentRollout(input) {
     }
     return { action: "resume-full" };
   }
+  if (
+    input.fullReport?.mode === "full" &&
+    input.fullReport.status === "failed"
+  ) {
+    if (input.fullReport.expected_model !== input.model) {
+      throw new Error(
+        "configured model does not match the failed full rollout",
+      );
+    }
+    if (input.eligibleCount === 0) {
+      throw new Error("failed full rollout has no recoverable candidates");
+    }
+    assertFullRolloutAllowed(input.canaryReport, input.model);
+    return { action: "restart-full" };
+  }
+  if (
+    input.fullReport?.mode === "full" &&
+    ["complete", "complete-with-errors"].includes(input.fullReport.status)
+  ) {
+    if (input.fullReport.expected_model !== input.model) {
+      throw new Error(
+        "configured model does not match the completed full rollout",
+      );
+    }
+    const checkpoint =
+      input.fullReport.publication?.checkpoint_commit_sha ?? null;
+    const deployment = input.fullReport.deployment;
+    if (
+      !/^[0-9a-f]{40}$/u.test(checkpoint ?? "") ||
+      deployment?.commit_sha !== checkpoint ||
+      !Number.isInteger(deployment?.run_id) ||
+      deployment.run_id < 1 ||
+      typeof deployment?.verified_at !== "string"
+    ) {
+      return { action: "deploy-full" };
+    }
+  }
   if (input.eligibleCount === 0) {
     return { action: "complete" };
   }
   try {
     assertFullRolloutAllowed(input.canaryReport, input.model);
     return { action: "start-full" };
-  } catch {
+  } catch (error) {
+    if (input.canaryReport?.status === "passed") throw error;
     // A missing or stale authorization falls through to canary recovery.
   }
   if (
@@ -91,11 +130,15 @@ export async function runPlannerCli(options = {}) {
           options.canaryReportPath ??
             resolve(root, "data/reports/enrichment-canary.json"),
         );
+  const validatedFullReport =
+    fullReport === null ? null : validateEnrichmentReport(fullReport);
+  const validatedCanaryReport =
+    canaryReport === null ? null : validateEnrichmentReport(canaryReport);
   return createEnrichmentRolloutPlan({
     model,
     records,
-    fullReport,
-    canaryReport,
+    fullReport: validatedFullReport,
+    canaryReport: validatedCanaryReport,
   });
 }
 

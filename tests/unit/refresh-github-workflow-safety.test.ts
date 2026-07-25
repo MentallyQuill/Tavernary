@@ -79,86 +79,53 @@ test("names catalog runs by their actual operating mode", async () => {
   expect(source).toContain("inputs.batch_size");
 });
 
-test("enrichment prepares a random canary and limits batch publication", async () => {
+test("enrichment delegates one durable rollout to the tested orchestrator", async () => {
   const text = await workflowSource("enrich-catalog");
   const document = parse(text) as {
-    jobs: Record<string, { steps: Array<{ run?: string }> }>;
-    concurrency: { group: string };
+    jobs: Record<
+      string,
+      {
+        steps: Array<{
+          name?: string;
+          run?: string;
+          env?: Record<string, string>;
+        }>;
+      }
+    >;
+    concurrency: { group: string; "cancel-in-progress": boolean };
     on: {
       workflow_dispatch: {
-        inputs: Record<string, { options?: string[]; default?: unknown }>;
+        inputs: Record<string, unknown>;
       };
     };
   };
-  const commands = Object.values(document.jobs).flatMap((job) =>
-    job.steps.flatMap((step) => (step.run ? [step.run] : [])),
+  const steps = Object.values(document.jobs).flatMap(({ steps }) => steps);
+  const rollout = steps.find(
+    ({ name }) => name === "Run durable enrichment rollout",
   );
-  expect(text).toContain("data/registry/projects/*.json");
-  expect(text).toContain("data/reports/enrichment-report.json");
-  expect(text).toContain("data/reports/enrichment-canary.json");
-  expect(text).toContain("publish_canary_preparation()");
+
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("mode");
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
     "project_ids",
   );
-  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
-    "start_index",
-  );
-  expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("force");
-  expect(text).toContain("npm run --silent catalog:enrichment-plan");
-  expect(text).toContain("npm run --silent catalog:select-canary");
-  expect(text).toContain('if [[ "$use_existing" == "true" ]]');
-  expect(text).toContain("jq -r '.manifest[]'");
-  expect(text).toContain("npm run catalog:refresh -- \\");
-  expect(text).toContain("--mode project");
-  expect(text).toContain('--project-id "$project_id"');
-  expect(text).toContain("npm run catalog:backfill-identities");
-  expect(text).toContain("data/snapshots/github/*.json");
-  expect(text).toContain("data/snapshots/github-refresh.json");
-  expect(text).toContain('args+=(--project-id "$project_id")');
-  expect(text).toContain("while IFS= read -r project_id");
+  expect(rollout?.run?.trim()).toBe("npm run catalog:enrichment-rollout");
+  expect(rollout?.env).toMatchObject({
+    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+    GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+  });
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
-  expect(text).toContain("npm run catalog:enrich -- --mode preflight");
   expect(text).toContain("## Enrichment provider preflight");
-  expect(text).not.toContain("## MiniMax M3 preflight");
-  expect(text).toContain('"$ACTION" == "start-canary"');
-  expect(text).toContain('"$ACTION" == "resume-full"');
-  expect(text).toContain('test "$run_mode" = "full"');
-  expect(text).not.toContain("workflow run enrich-catalog.yml");
-  expect(text).toContain("workflow run deploy-pages.yml");
-  expect(text).toContain("--mode approve-canary");
-  expect(text).toContain('"$status" != "awaiting-deployment"');
-  expect(text).toContain('while [[ "$status" == "running" ]]');
-  expect(text).toContain("GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}");
-  expect(text).toContain("REGISTRY_CHANGED=true");
-  expect(text).toContain("gh run watch");
-  const deploy = text.indexOf("gh workflow run deploy-pages.yml");
-  const watch = text.indexOf("gh run watch", deploy);
-  const approve = text.indexOf("--mode approve-canary", watch);
-  expect(deploy).toBeGreaterThan(-1);
-  expect(watch).toBeGreaterThan(deploy);
-  expect(approve).toBeGreaterThan(watch);
+  expect(text).not.toContain("publish_changes()");
+  expect(text).not.toContain("complete_canary()");
+  expect(text).not.toContain("finish_full_rollout()");
   expect(text).toContain("timeout-minutes: 300");
-  expect(commands.join("\n")).toContain("npm run check");
-  const runBatch = text.indexOf("run_batch()");
-  const enrich = text.indexOf("npm run catalog:enrich", runBatch);
-  const check = text.indexOf("npm run check", enrich);
-  const publish = text.indexOf('publish_changes "chore(catalog)', check);
-  expect(runBatch).toBeGreaterThan(-1);
-  expect(enrich).toBeGreaterThan(runBatch);
-  expect(check).toBeGreaterThan(enrich);
-  expect(publish).toBeGreaterThan(check);
-  for (const [functionName, nextFunction] of [
-    ["publish_changes()", "publish_canary_preparation()"],
-    ["publish_canary_preparation()", "choose_canary_projects()"],
-  ]) {
-    const start = text.indexOf(functionName);
-    const end = text.indexOf(nextFunction, start + functionName.length);
-    const body = text.slice(start, end);
-    expect(body).toMatch(/if ! npm run check; then\s+exit 1\s+fi/u);
-    expect(body).not.toMatch(/npm run check &&\s+git push/u);
-  }
-  expect(document.concurrency.group).toBe("catalog-refresh");
+  expect(document.concurrency).toEqual({
+    group: "catalog-refresh",
+    "cancel-in-progress": false,
+  });
   expect(
     (
       parse(await workflowSource("refresh-catalog")) as {
@@ -166,113 +133,6 @@ test("enrichment prepares a random canary and limits batch publication", async (
       }
     ).concurrency.group,
   ).toBe("catalog-refresh");
-});
-
-test("completes canary retries before publishing and deploying", async () => {
-  const source = await workflowSource("enrich-catalog");
-  const start = source.indexOf("complete_canary()");
-  const end = source.indexOf("approve_canary()", start);
-  const body = source.slice(start, end);
-  const firstBatch = body.indexOf("run_batch canary false");
-  const retryLoop = body.indexOf('while [[ "$status" == "running" ]]');
-  const retryBatch = body.indexOf("run_batch canary false", firstBatch + 1);
-  const check = body.indexOf("npm run check", retryBatch);
-  const publish = body.indexOf(
-    'publish_changes "chore(catalog): enrich canary project metadata"',
-    check,
-  );
-  const deploy = body.indexOf("deploy_registry_changes", publish);
-
-  expect(start).toBeGreaterThan(-1);
-  expect(end).toBeGreaterThan(start);
-  expect(firstBatch).toBeGreaterThan(-1);
-  expect(retryLoop).toBeGreaterThan(firstBatch);
-  expect(retryBatch).toBeGreaterThan(retryLoop);
-  expect(check).toBeGreaterThan(retryBatch);
-  expect(publish).toBeGreaterThan(check);
-  expect(deploy).toBeGreaterThan(publish);
-  expect(body).toContain("Enrichment stalled");
-
-  const canaryBranch = source.slice(
-    source.indexOf('if [[ "$ACTION" == "start-canary" ]]'),
-    source.indexOf('elif [[ "$ACTION" == "deploy-canary" ]]'),
-  );
-  expect(canaryBranch).toContain("complete_canary");
-  expect(canaryBranch).toContain("choose_canary_projects");
-});
-
-test("fails an enrichment resume when its cursor state does not advance", async () => {
-  const source = await workflowSource("enrich-catalog");
-  const resumeFunction = source.indexOf("resume_full_batch()");
-  const before = source.indexOf(
-    'progress_before="$(enrichment_progress "$FULL_REPORT")"',
-    resumeFunction,
-  );
-  const resume = source.indexOf("run_batch resume", before);
-  const after = source.indexOf(
-    'progress_after="$(enrichment_progress "$FULL_REPORT")"',
-    resume,
-  );
-  const guard = source.indexOf(
-    '"$progress_after" == "$progress_before"',
-    after,
-  );
-
-  expect(source).toContain("enrichment_progress()");
-  expect(resumeFunction).toBeGreaterThan(-1);
-  expect(before).toBeGreaterThan(resumeFunction);
-  expect(resume).toBeGreaterThan(before);
-  expect(after).toBeGreaterThan(resume);
-  expect(guard).toBeGreaterThan(after);
-  expect(source).toContain("Enrichment stalled");
-  expect(source).not.toContain('run_batch "$MODE"');
-  expect(source.match(/\bresume_full_batch\b/gu)).toHaveLength(2);
-});
-
-test("prepares permanent repository identities before a full rollout starts", async () => {
-  const source = await workflowSource("enrich-catalog");
-  const synchronizationStart = source.indexOf("sync_main()");
-  const synchronizationEnd = source.indexOf(
-    "prepare_full_rollout()",
-    synchronizationStart,
-  );
-  const synchronization = source.slice(
-    synchronizationStart,
-    synchronizationEnd,
-  );
-  const preparationStart = source.indexOf("prepare_full_rollout()");
-  const preparationEnd = source.indexOf(
-    "deploy_registry_changes()",
-    preparationStart,
-  );
-  const preparation = source.slice(preparationStart, preparationEnd);
-  const orchestrationStart = source.lastIndexOf(
-    "npm run catalog:enrich -- --mode preflight",
-  );
-  const startBranch = source.slice(orchestrationStart);
-
-  expect(synchronizationStart).toBeGreaterThan(-1);
-  expect(synchronization).toContain("git fetch origin main");
-  expect(synchronization).toContain("git rebase origin/main");
-  expect(preparationStart).toBeGreaterThan(-1);
-  expect(preparation).toContain("sync_main");
-  expect(preparation).toContain("for attempt in 1 2 3");
-  expect(preparation).toContain(
-    "npm run catalog:backfill-identities -- --write",
-  );
-  expect(preparation).toContain("npm run catalog:validate");
-  expect(preparation).toContain("git diff --quiet -- data/registry/projects");
-  expect(preparation).toContain(
-    'publish_changes "chore(catalog): prepare full enrichment rollout"',
-  );
-  expect(startBranch.indexOf("--mode authorize-full")).toBeGreaterThan(-1);
-  expect(startBranch.indexOf("prepare_full_rollout")).toBeGreaterThan(-1);
-  expect(startBranch.indexOf("--mode authorize-full")).toBeLessThan(
-    startBranch.indexOf("prepare_full_rollout"),
-  );
-  expect(startBranch.indexOf("prepare_full_rollout")).toBeLessThan(
-    startBranch.indexOf("run_batch start"),
-  );
 });
 
 test("identity backfill targets optional IDs and owns only repository identity writes", async () => {

@@ -156,6 +156,23 @@ test("deploys only a verified static export to the Pages environment", async () 
   expect(commands).toContain("npm run verify:export");
   expect(JSON.stringify(deploy.jobs)).toContain("github-pages");
   expect(deploy.on.push["paths-ignore"]).toContain("data/reports/**");
+  expect(deploy.on.workflow_dispatch.inputs.source_sha).toMatchObject({
+    required: false,
+    type: "string",
+  });
+  expect(deploy["run-name"]).toContain("inputs.source_sha");
+  const deploySource = await readFile(
+    resolve(workflowDirectory, "deploy-pages.yml"),
+    "utf8",
+  );
+  expect(deploySource).toContain("^[0-9a-f]{40}$");
+  expect(deploySource).toContain(
+    'git merge-base --is-ancestor "$SOURCE_SHA" origin/main',
+  );
+  expect(deploySource).toContain('git checkout --detach "$SOURCE_SHA"');
+  expect(deploySource).not.toContain(
+    "ref: ${{ inputs.source_sha || github.sha }}",
+  );
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {
@@ -232,7 +249,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(source).toContain("workflow run deploy-pages.yml");
 });
 
-test("runs enrichment as one self-resuming rollout with durable canary authorization", async () => {
+test("runs enrichment through one tested durable orchestrator", async () => {
   const enrich = (await workflow("enrich-catalog")) as {
     permissions: Record<string, string>;
     concurrency: Record<string, unknown>;
@@ -258,84 +275,13 @@ test("runs enrichment as one self-resuming rollout with durable canary authoriza
     group: "catalog-refresh",
     "cancel-in-progress": false,
   });
-  expect(source).toContain("catalog:enrichment-plan");
+  expect(source).toContain("npm run catalog:enrichment-rollout");
   expect(source).toContain("data/reports/enrichment-canary.json");
-  expect(source).toContain("--mode preflight");
-  expect(source).toContain("--mode authorize-full");
-  expect(source).toContain("run_batch canary false");
-  expect(source).toContain("run_batch start");
-  expect(source).toContain("run_batch resume");
-  const orchestration = source.slice(
-    source.lastIndexOf("npm run catalog:enrich -- --mode preflight"),
-  );
-  expect(orchestration.indexOf("--mode authorize-full")).toBeLessThan(
-    orchestration.indexOf("refresh_full_sources"),
-  );
-  expect(orchestration.indexOf("refresh_full_sources")).toBeLessThan(
-    orchestration.indexOf("prepare_full_rollout"),
-  );
-  expect(orchestration.indexOf("prepare_full_rollout")).toBeLessThan(
-    orchestration.indexOf("run_batch start"),
-  );
-  expect(source).toContain(
-    "npm run catalog:refresh -- --mode incremental --deployment-requested",
-  );
-  expect(source).toMatch(
-    /git add -A --\s+\\?\s*data\/snapshots\/github\/\*\.json\s+\\?\s*data\/snapshots\/github-refresh\.json/,
-  );
-  const sourceRefresh = source.slice(
-    source.indexOf("refresh_full_sources()"),
-    source.indexOf("prepare_full_rollout()"),
-  );
-  expect(sourceRefresh.indexOf("npm run check")).toBeLessThan(
-    sourceRefresh.indexOf("publish_full_source_refresh"),
-  );
-  const sourcePublisher = source.slice(
-    source.indexOf("publish_full_source_refresh()"),
-    source.indexOf("refresh_full_sources()"),
-  );
-  expect(sourcePublisher).toContain("npm run check");
-  expect(sourcePublisher).not.toContain("npm run catalog:validate");
-  const afterCanaryApproval = orchestration.slice(
-    orchestration.indexOf("approve_canary"),
-  );
-  expect(afterCanaryApproval).toContain("catalog:enrichment-plan");
-  expect(afterCanaryApproval).toContain(
-    'if [[ "$ACTION" == "complete" ]]; then',
-  );
-  expect(source).toContain(
-    "git add -A -- data/registry/projects data/reports/enrichment-report.json",
-  );
-  expect(source).toContain('if [[ -e "$CANARY_REPORT" ]]');
-  const deploymentRecovery = source
-    .slice(source.indexOf('elif [[ "$ACTION" == "deploy-canary" ]]'))
-    .split("else", 1)[0];
-  expect(deploymentRecovery).toContain("sync_main");
-  expect(deploymentRecovery).toContain('PUBLISHED_SHA="$(git rev-parse HEAD)"');
-  expect(deploymentRecovery).not.toContain("git log -1");
-  expect(source).not.toContain(
-    "elif [[ -f data/reports/enrichment-canary.json ]]",
-  );
   expect(source).toContain("| Project | Outcome | Reason | Detail |");
   expect(source).toContain(
     "['source-not-ready','final-failure','skipped'].includes(entry.outcome)",
   );
-});
-
-test("synchronizes a queued enrichment dispatch before planning from repository state", async () => {
-  const source = await readFile(
-    resolve(workflowDirectory, "enrich-catalog.yml"),
-    "utf8",
-  );
-  const executionStart = source.lastIndexOf("finish_full_rollout()");
-  const preflight = source.lastIndexOf(
-    "npm run catalog:enrich -- --mode preflight",
-  );
-  const synchronization = source.lastIndexOf("sync_main", preflight);
-
-  expect(executionStart).toBeGreaterThan(-1);
-  expect(synchronization).toBeGreaterThan(executionStart);
-  expect(synchronization).toBeLessThan(preflight);
+  expect(source).not.toContain("publish_changes()");
 });
 
 test("triage can label issues but cannot write repository content", async () => {

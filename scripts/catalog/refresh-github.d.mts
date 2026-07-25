@@ -26,6 +26,7 @@ export function selectRefreshRecords(
     mode: RefreshMode;
     batchSize?: number;
     projectId?: string | null;
+    projectIds?: string[];
   },
 ): Array<{ id: string; [key: string]: unknown }>;
 export function snapshotForFailure<T>(

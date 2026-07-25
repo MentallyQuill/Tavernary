@@ -15,6 +15,10 @@ export type EnrichmentInput = {
   frontends: string[];
   allowedPrimaryFunctions: VocabularyEntry[];
   allowedCapabilities: VocabularyEntry[];
+  repair?: {
+    reasonCode: string;
+    message: string;
+  };
 };
 export type EnrichmentOutput = {
   summary: string;
@@ -54,6 +58,9 @@ export type EnrichmentOptions = {
     | "preflight"
     | "canary"
     | "approve-canary"
+    | "record-canary-publication"
+    | "record-full-publication"
+    | "record-full-deployment"
     | "authorize-full"
     | "start"
     | "resume";
@@ -148,6 +155,7 @@ export function runEnrichmentBatch(options: {
       capabilities: VocabularyEntry[];
     },
   ) => Promise<void>;
+  previousEntries?: EnrichmentRunState["entries"];
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
@@ -163,6 +171,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   snapshotSchema?: Record<string, unknown>;
   validateSnapshot?: (snapshot: unknown) => boolean;
   previousReport?: unknown;
+  previousFullReport?: unknown;
   runId?: string;
   now?: string;
   commitSha?: string;
@@ -185,7 +194,14 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
 
 export function runCli(
   options: RunCliOptions & {
-    mode: "canary" | "approve-canary" | "start" | "resume";
+    mode:
+      | "canary"
+      | "approve-canary"
+      | "record-canary-publication"
+      | "record-full-publication"
+      | "record-full-deployment"
+      | "start"
+      | "resume";
   },
 ): Promise<EnrichmentRunState>;
 export function runCli(

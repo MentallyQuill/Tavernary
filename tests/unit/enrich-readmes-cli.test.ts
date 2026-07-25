@@ -257,6 +257,95 @@ test("a canary retry resumes only its failed IDs", async () => {
   });
 });
 
+test("a retry tells the provider which validation defect to correct", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  let previousReport = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ids,
+    runId: "canary-repair",
+    now,
+    model,
+  });
+  previousReport = applyAttemptResults(
+    previousReport,
+    ids.map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: id === "e" ? ("failed" as const) : ("enriched" as const),
+      ...(id === "e"
+        ? {
+            reasonCode: "output-invalid",
+            message: "Summary must contain 12-24 words.",
+            repairHint: "Summary must contain 12-24 words.",
+          }
+        : {}),
+    })),
+    now,
+  );
+  const options = executionOptions(ids);
+  const generate = vi.fn(async (_input: unknown) => providerOutput);
+
+  await runCli({
+    ...options,
+    provider: { generate },
+    mode: "canary",
+    projectIds: ids,
+    previousReport,
+  });
+
+  expect(generate).toHaveBeenCalledOnce();
+  expect(generate.mock.calls[0][0]).toMatchObject({
+    id: "e",
+    repair: {
+      reasonCode: "output-invalid",
+      message: "Summary must contain 12-24 words.",
+    },
+  });
+});
+
+test("a structured-content retry uses its sanitized transport diagnostic", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  let previousReport = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ids,
+    runId: "canary-json-repair",
+    now,
+    model,
+  });
+  previousReport = applyAttemptResults(
+    previousReport,
+    ids.map((id) => ({
+      id,
+      phase: "primary" as const,
+      outcome: id === "e" ? ("failed" as const) : ("enriched" as const),
+      ...(id === "e"
+        ? {
+            reasonCode: "provider-response-invalid",
+            diagnosticCode: "json-invalid",
+          }
+        : {}),
+    })),
+    now,
+  );
+  const options = executionOptions(ids);
+  const generate = vi.fn(async (_input: unknown) => providerOutput);
+
+  await runCli({
+    ...options,
+    provider: { generate },
+    mode: "canary",
+    projectIds: ids,
+    previousReport,
+  });
+
+  expect(generate.mock.calls[0][0]).toMatchObject({
+    repair: {
+      reasonCode: "provider-response-invalid",
+      message: "Return one valid JSON object without surrounding prose.",
+    },
+  });
+});
+
 test("a canary primary phase resumes from its committed cursor", async () => {
   const ids = ["a", "b", "c", "d", "e"];
   let previousReport = createEnrichmentRunState({
@@ -417,6 +506,66 @@ test("authorize-full validates durable canary proof without touching catalog dat
   expect(writeRecord).not.toHaveBeenCalled();
 });
 
+test("records an exact checkpoint publication without provider configuration", async () => {
+  const reports: unknown[] = [];
+  const report = await runCli({
+    mode: "record-full-publication",
+    previousReport: createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "full",
+      now,
+      model,
+    }),
+    reportPath: null,
+    commitSha: "d".repeat(40),
+    now,
+    writeReport: async (value) => {
+      reports.push(value);
+    },
+  });
+
+  expect(report.publication).toEqual({
+    checkpoint_commit_sha: "d".repeat(40),
+    recorded_at: now,
+  });
+  expect(reports).toEqual([report]);
+});
+
+test("records a verified full deployment without provider configuration", async () => {
+  let full = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "full",
+    now,
+    model,
+  });
+  full = applyAttemptResults(
+    full,
+    [{ id: "a", phase: "primary", outcome: "enriched" }],
+    now,
+  );
+  full.publication = {
+    checkpoint_commit_sha: "d".repeat(40),
+    recorded_at: now,
+  };
+
+  const report = await runCli({
+    mode: "record-full-deployment",
+    previousReport: full,
+    reportPath: null,
+    commitSha: "d".repeat(40),
+    deploymentRunId: 98765,
+    now,
+  });
+
+  expect(report.deployment).toEqual({
+    commit_sha: "d".repeat(40),
+    run_id: 98765,
+    verified_at: now,
+  });
+});
+
 test("CLI report flags keep canary authorization and full progress separate", () => {
   expect(
     cliOptions([
@@ -488,6 +637,84 @@ test("start requires a deployed canary and freezes the complete eligible manifes
   expect(report.manifest).toEqual([...ids].sort());
   expect(report.primary_cursor).toBe(20);
   expect(report.status).toBe("running");
+});
+
+test("defers unsuccessful canary members until the next dispatch", async () => {
+  let canary = createEnrichmentRunState({
+    mode: "canary",
+    manifest: ["a", "b", "c", "d", "e", "f", "g"],
+    runId: "canary-seven",
+    now,
+    model,
+  });
+  canary = applyAttemptResults(
+    canary,
+    [
+      ...["a", "b", "c", "d", "e"].map((id) => ({
+        id,
+        phase: "primary" as const,
+        outcome: "enriched" as const,
+      })),
+      {
+        id: "f",
+        phase: "primary" as const,
+        outcome: "source-not-ready" as const,
+      },
+      {
+        id: "g",
+        phase: "primary" as const,
+        outcome: "source-not-ready" as const,
+      },
+    ],
+    now,
+  );
+  const deployed = approveCanaryDeployment(canary, {
+    commitSha: "b".repeat(40),
+    deploymentRunId: 12345,
+    now,
+  });
+  const firstRecords = ["f", "g", "h"].map(record);
+  const first = await runCli({
+    ...executionOptions(["f", "g", "h"]),
+    records: firstRecords,
+    mode: "start",
+    previousReport: deployed,
+  });
+
+  expect(first).toMatchObject({
+    status: "complete-with-errors",
+    manifest: ["h"],
+    deferred_ids: ["f", "g"],
+    authorized_canary_run_id: "canary-seven",
+    attempts: { h: 1 },
+  });
+
+  const second = await runCli({
+    ...executionOptions(["f", "g"]),
+    mode: "start",
+    previousReport: deployed,
+    previousFullReport: first,
+  });
+  expect(second).toMatchObject({
+    status: "complete",
+    manifest: ["f", "g"],
+    deferred_ids: [],
+    authorized_canary_run_id: "canary-seven",
+    attempts: { f: 1, g: 1 },
+  });
+
+  const third = await runCli({
+    ...executionOptions(["f", "g"]),
+    mode: "start",
+    previousReport: deployed,
+    previousFullReport: second,
+  });
+  expect(third).toMatchObject({
+    status: "complete",
+    manifest: ["f", "g"],
+    deferred_ids: [],
+    authorized_canary_run_id: "canary-seven",
+  });
 });
 
 test("resume uses the next state batch and rejects terminal or canary state", async () => {

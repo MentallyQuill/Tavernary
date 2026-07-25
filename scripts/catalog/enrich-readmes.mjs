@@ -25,6 +25,8 @@ import {
   approveCanaryDeployment,
   assertFullRolloutAllowed,
   createEnrichmentRunState,
+  recordCheckpointPublication,
+  recordFullDeployment,
   selectNextRunBatch,
 } from "./enrichment-run-state.mjs";
 import { createSnapshotValidator } from "./readme-source.mjs";
@@ -226,13 +228,51 @@ function validateOutput(output, vocabularies, sourceBacked) {
     capabilities: entriesToSet(vocabularies.capabilities),
   });
   if (!validation.valid) {
-    return { valid: false, message: validation.errors.join("; ") };
+    const repairHints = validation.errors.map((error) => {
+      if (error === "summary must be a non-empty string") {
+        return "Summary must be a non-empty string.";
+      }
+      if (error === "summary must be 140 characters or fewer") {
+        return "Summary must be at most 140 characters.";
+      }
+      if (error === "summary must contain between 12 and 24 words") {
+        return "Summary must contain 12-24 words.";
+      }
+      if (error === "summary must not contain line breaks") {
+        return "Summary must not contain line breaks.";
+      }
+      if (error === "summary must not contain markdown or list syntax") {
+        return "Summary must not contain Markdown or list syntax.";
+      }
+      if (error === "summary must be exactly one sentence") {
+        return "Summary must be exactly one sentence.";
+      }
+      if (error === "metadata_status must be curated") {
+        return "Set metadata_status to curated.";
+      }
+      if (error === "primary_function is not in the controlled vocabulary") {
+        return "Use one allowed primary_function ID.";
+      }
+      if (error === "capabilities must be an array") {
+        return "Return capabilities as an array.";
+      }
+      if (error.startsWith("capabilities contains an unknown")) {
+        return "Use only allowed capability IDs.";
+      }
+      return "Return an object that satisfies the enrichment schema.";
+    });
+    return {
+      valid: false,
+      message: validation.errors.join("; "),
+      repairHint: [...new Set(repairHints)].join(" "),
+    };
   }
   if (sourceBacked && output.primary_function === "uncategorized") {
     return {
       valid: false,
       message:
         "source-backed enrichment must choose a substantive primary function",
+      repairHint: "Choose one substantive allowed primary_function ID.",
     };
   }
   return { valid: true };
@@ -248,6 +288,18 @@ function sourceProvenance(source) {
   };
 }
 
+function retryRepairMessage(entry) {
+  if (entry.repair_hint) return entry.repair_hint;
+  const diagnostics = {
+    "content-missing": "Return the required JSON object in message content.",
+    "content-parts-invalid": "Return only textual JSON content.",
+    "json-invalid": "Return one valid JSON object without surrounding prose.",
+    "json-not-object": "Return a JSON object, not an array or scalar.",
+    "tool-calls-present": "Return only the JSON object without tool calls.",
+  };
+  return diagnostics[entry.diagnostic_code] ?? entry.message;
+}
+
 async function processProject(input, id) {
   const {
     recordsById,
@@ -258,6 +310,7 @@ async function processProject(input, id) {
     vocabularies,
     loadSource,
     writeRecord,
+    previousEntries,
   } = input;
   const record = recordsById[id];
   if (!record || !isEligible(record)) {
@@ -313,6 +366,17 @@ async function processProject(input, id) {
       ),
       allowedCapabilities: vocabularies.capabilities,
     };
+    const previousEntry = previousEntries?.[id];
+    if (
+      phase === "retry" &&
+      typeof previousEntry?.reason_code === "string" &&
+      typeof previousEntry?.message === "string"
+    ) {
+      providerInput.repair = {
+        reasonCode: previousEntry.reason_code,
+        message: retryRepairMessage(previousEntry),
+      };
+    }
     try {
       const generated = await provider.generate(providerInput);
       output = generated.output;
@@ -323,6 +387,7 @@ async function processProject(input, id) {
         phase,
         outcome: "failed",
         reasonCode: error.code ?? "provider-response-invalid",
+        diagnosticCode: error.diagnosticCode,
         message: error.message ?? "The enrichment provider failed.",
         ...sourceProvenance(source),
       };
@@ -341,6 +406,7 @@ async function processProject(input, id) {
       outcome: "failed",
       reasonCode: "output-invalid",
       message: validation.message,
+      repairHint: validation.repairHint,
       ...sourceProvenance(source),
       ...(providerMetadata ? { provider: providerMetadata } : {}),
     };
@@ -393,6 +459,7 @@ export async function runEnrichmentBatch(input) {
         allowedVocabularies,
       );
     },
+    previousEntries = {},
   } = input;
   if (!["primary", "retry"].includes(phase)) {
     throw new Error("batch phase must be primary or retry");
@@ -409,6 +476,7 @@ export async function runEnrichmentBatch(input) {
           vocabularies,
           loadSource,
           writeRecord,
+          previousEntries,
         },
         id,
       );
@@ -503,6 +571,9 @@ export async function runCli(options = {}) {
       "preflight",
       "canary",
       "approve-canary",
+      "record-canary-publication",
+      "record-full-publication",
+      "record-full-deployment",
       "authorize-full",
       "start",
       "resume",
@@ -521,7 +592,11 @@ export async function runCli(options = {}) {
         ? resolve(root, "data/reports/enrichment-canary.json")
         : options.reportPath
       : options.canaryReportPath;
-  const reportPath = ["canary", "approve-canary"].includes(mode)
+  const reportPath = [
+    "canary",
+    "approve-canary",
+    "record-canary-publication",
+  ].includes(mode)
     ? canaryReportPath
     : fullReportPath;
   const timestamp = new Date(options.now ?? Date.now()).toISOString();
@@ -541,6 +616,54 @@ export async function runCli(options = {}) {
       },
     );
     const report = createEnrichmentReport(state);
+    if (options.writeReport) await options.writeReport(report);
+    if (reportPath) await writeJsonAtomic(reportPath, report);
+    return report;
+  }
+
+  if (
+    mode === "record-canary-publication" ||
+    mode === "record-full-publication"
+  ) {
+    const previousReport =
+      options.previousReport !== undefined
+        ? options.previousReport
+        : reportPath
+          ? await readOptionalJson(reportPath)
+          : null;
+    const expectedMode =
+      mode === "record-canary-publication" ? "canary" : "full";
+    const state = validateEnrichmentReport(previousReport);
+    if (state.mode !== expectedMode) {
+      throw new Error(
+        `${expectedMode} checkpoint publication requires a ${expectedMode} report`,
+      );
+    }
+    const report = createEnrichmentReport(
+      recordCheckpointPublication(state, {
+        commitSha: options.commitSha,
+        now: timestamp,
+      }),
+    );
+    if (options.writeReport) await options.writeReport(report);
+    if (reportPath) await writeJsonAtomic(reportPath, report);
+    return report;
+  }
+
+  if (mode === "record-full-deployment") {
+    const previousReport =
+      options.previousReport !== undefined
+        ? options.previousReport
+        : reportPath
+          ? await readOptionalJson(reportPath)
+          : null;
+    const report = createEnrichmentReport(
+      recordFullDeployment(validateEnrichmentReport(previousReport), {
+        commitSha: options.commitSha,
+        deploymentRunId: options.deploymentRunId,
+        now: timestamp,
+      }),
+    );
     if (options.writeReport) await options.writeReport(report);
     if (reportPath) await writeJsonAtomic(reportPath, report);
     return report;
@@ -664,9 +787,31 @@ export async function runCli(options = {}) {
     }
   } else if (mode === "start") {
     assertFullRolloutAllowed(previousState, configuration.model);
+    const previousFullReport =
+      options.previousFullReport !== undefined
+        ? options.previousFullReport
+        : fullReportPath
+          ? await readOptionalJson(fullReportPath)
+          : null;
+    const previousFullState =
+      previousFullReport === null
+        ? null
+        : validateEnrichmentReport(previousFullReport);
+    const eligibleIds = selectEnrichmentRecords(records).map(({ id }) => id);
+    const canaryBoundaryAlreadyApplied =
+      previousFullState?.mode === "full" &&
+      previousFullState.phase === "complete" &&
+      previousFullState.authorized_canary_run_id === previousState.run_id;
+    const canaryIds = new Set(previousState.manifest);
+    const deferredIds = canaryBoundaryAlreadyApplied
+      ? []
+      : eligibleIds.filter((id) => canaryIds.has(id));
+    const manifest = eligibleIds.filter((id) => !deferredIds.includes(id));
     state = createEnrichmentRunState({
       mode: "full",
-      manifest: selectEnrichmentRecords(records).map(({ id }) => id),
+      manifest,
+      deferredIds,
+      authorizedCanaryRunId: previousState.run_id,
       runId: options.runId ?? randomUUID(),
       now: timestamp,
       model: configuration.model,
@@ -687,6 +832,13 @@ export async function runCli(options = {}) {
       );
     }
     state = previousState;
+  }
+
+  if (state.phase === "complete") {
+    const report = createEnrichmentReport(state);
+    if (options.writeReport) await options.writeReport(report);
+    if (reportPath) await writeJsonAtomic(reportPath, report);
+    return report;
   }
 
   const batch = selectNextRunBatch(state);
@@ -711,6 +863,7 @@ export async function runCli(options = {}) {
           output,
           allowedVocabularies,
         )),
+    previousEntries: state.entries,
   });
   state = applyAttemptResults(state, results, timestamp);
   const report = createEnrichmentReport(state);

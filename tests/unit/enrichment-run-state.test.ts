@@ -4,7 +4,10 @@ import {
   applyAttemptResults,
   approveCanaryDeployment,
   assertFullRolloutAllowed,
+  assertSuccessfulCanaryEntries,
   createEnrichmentRunState as createRawEnrichmentRunState,
+  recordCheckpointPublication,
+  recordFullDeployment,
   selectNextRunBatch,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
 
@@ -162,7 +165,7 @@ test("queues primary failures once and retries only after primary completion", (
   });
 });
 
-test("maps retry outcomes, recomputes aggregates, and fails with exhausted retries", () => {
+test("maps retry outcomes and completes with isolated errors", () => {
   let state = createEnrichmentRunState({
     mode: "full",
     manifest: ["a", "b"],
@@ -178,13 +181,18 @@ test("maps retry outcomes, recomputes aggregates, and fails with exhausted retri
     state,
     [
       { id: "a", phase: "retry", outcome: "enriched" },
-      { id: "b", phase: "retry", outcome: "failed" },
+      {
+        id: "b",
+        phase: "retry",
+        outcome: "failed",
+        reasonCode: "output-invalid",
+      },
     ],
     later,
   );
 
   expect(state).toMatchObject({
-    status: "failed",
+    status: "complete-with-errors",
     phase: "complete",
     attempts: { a: 2, b: 2 },
     aggregates: {
@@ -195,7 +203,7 @@ test("maps retry outcomes, recomputes aggregates, and fails with exhausted retri
   expect(selectNextRunBatch(state).projectIds).toEqual([]);
 });
 
-test("fails a full rollout containing source-not-ready entries", () => {
+test("completes with errors when a full rollout has an isolated source exception", () => {
   const initial = createEnrichmentRunState({
     mode: "full",
     manifest: ["a", "b"],
@@ -206,16 +214,75 @@ test("fails a full rollout containing source-not-ready entries", () => {
     initial,
     [
       { id: "a", phase: "primary", outcome: "enriched" },
-      { id: "b", phase: "primary", outcome: "source-not-ready" },
+      {
+        id: "b",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "unhealthy-source",
+      },
     ],
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "complete-with-errors",
+    phase: "complete",
+    aggregates: { enriched: 1, "source-not-ready": 1 },
+  });
+});
+
+test.each([
+  "provider-authentication-failed",
+  "provider-model-mismatch",
+  "write-failed",
+])("fails a full rollout containing systemic reason %s", (reasonCode) => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "systemic",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    [{ id: "a", phase: "primary", outcome: "failed", reasonCode }],
     later,
   );
 
   expect(state).toMatchObject({
     status: "failed",
     phase: "complete",
-    aggregates: { enriched: 1, "source-not-ready": 1 },
+    retry_queue: [],
+    entries: { a: { attempt: 1, outcome: "final-failure" } },
   });
+});
+
+test("fails a full rollout that produces no successful records", () => {
+  const initial = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a", "b"],
+    runId: "zero-success",
+    now,
+  });
+  const state = applyAttemptResults(
+    initial,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "unhealthy-source",
+      },
+      {
+        id: "b",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "stale-source",
+      },
+    ],
+    later,
+  );
+
+  expect(state.status).toBe("failed");
 });
 
 test("fails a full rollout whose terminal entries do not cover its manifest", () => {
@@ -277,6 +344,75 @@ test("requires exactly five unique canary IDs", () => {
       now,
     }),
   ).toThrow("five unique");
+});
+
+test("accepts five successes from a seven-project canary pool", () => {
+  const manifest = ["a", "b", "c", "d", "e", "f", "g"];
+  let state = createEnrichmentRunState({
+    mode: "canary",
+    manifest,
+    runId: "pooled-canary",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    manifest.map((id, index) => ({
+      id,
+      phase: "primary" as const,
+      outcome: index < 5 ? ("enriched" as const) : ("failed" as const),
+      ...(index < 5 ? {} : { reasonCode: "output-invalid" }),
+    })),
+    later,
+  );
+  state = applyAttemptResults(
+    state,
+    ["f", "g"].map((id) => ({
+      id,
+      phase: "retry" as const,
+      outcome: "failed" as const,
+      reasonCode: "output-invalid",
+    })),
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "awaiting-deployment",
+    aggregates: { enriched: 5, "final-failure": 2 },
+  });
+  expect(() => assertSuccessfulCanaryEntries(state)).not.toThrow();
+});
+
+test("rejects a seven-project canary pool with fewer than five successes", () => {
+  const manifest = ["a", "b", "c", "d", "e", "f", "g"];
+  let state = createEnrichmentRunState({
+    mode: "canary",
+    manifest,
+    runId: "insufficient-canary",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    manifest.map((id, index) => ({
+      id,
+      phase: "primary" as const,
+      outcome: index < 4 ? ("enriched" as const) : ("failed" as const),
+      ...(index < 4 ? {} : { reasonCode: "output-invalid" }),
+    })),
+    later,
+  );
+  state = applyAttemptResults(
+    state,
+    ["e", "f", "g"].map((id) => ({
+      id,
+      phase: "retry" as const,
+      outcome: "failed" as const,
+      reasonCode: "output-invalid",
+    })),
+    later,
+  );
+
+  expect(state.status).toBe("failed");
+  expect(() => assertSuccessfulCanaryEntries(state)).toThrow("five successful");
 });
 
 test("requires verified deployment before a successful canary authorizes full rollout", () => {
@@ -412,6 +548,150 @@ test("source-not-ready blocks a canary without consuming a retry", () => {
     retry_queue: [],
     attempts: { a: 1, b: 1, c: 1, d: 1, e: 1 },
   });
+});
+
+test("a systemic primary failure stops immediately without entering retry", () => {
+  const state = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "systemic-primary",
+      now,
+    }),
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "failed",
+        reasonCode: "provider-authentication-failed",
+      },
+    ],
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "failed",
+    phase: "complete",
+    retry_queue: [],
+    entries: {
+      a: {
+        attempt: 1,
+        outcome: "final-failure",
+        reason_code: "provider-authentication-failed",
+      },
+    },
+  });
+});
+
+test("a systemic skipped result stops before later frozen-state batches", () => {
+  const state = applyAttemptResults(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a", "b"],
+      runId: "missing-record",
+      now,
+      batchSize: 1,
+    }),
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "skipped",
+        reasonCode: "record-missing",
+      },
+    ],
+    later,
+  );
+
+  expect(state).toMatchObject({
+    status: "failed",
+    phase: "complete",
+    primary_cursor: 1,
+    entries: {
+      a: {
+        outcome: "final-failure",
+        reason_code: "record-missing",
+      },
+    },
+  });
+  expect(selectNextRunBatch(state).projectIds).toEqual([]);
+});
+
+test("records the exact published checkpoint without changing progress", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "publication",
+    now,
+  });
+  const published = recordCheckpointPublication(state, {
+    commitSha: "c".repeat(40),
+    now: later,
+  });
+
+  expect(published.publication).toEqual({
+    checkpoint_commit_sha: "c".repeat(40),
+    recorded_at: later,
+  });
+  expect(published.primary_cursor).toBe(0);
+  expect(() =>
+    recordCheckpointPublication(state, {
+      commitSha: "not-a-sha",
+      now: later,
+    }),
+  ).toThrow("checkpoint commit SHA");
+});
+
+test("records a full deployment only for its exact durable checkpoint", () => {
+  const state = recordCheckpointPublication(
+    applyAttemptResults(
+      createEnrichmentRunState({
+        mode: "full",
+        manifest: ["a"],
+        runId: "full-deployment",
+        now,
+      }),
+      [{ id: "a", phase: "primary", outcome: "enriched" }],
+      later,
+    ),
+    { commitSha: "c".repeat(40), now },
+  );
+  const deployed = recordFullDeployment(state, {
+    commitSha: "c".repeat(40),
+    deploymentRunId: 12345,
+    now: later,
+  });
+
+  expect(deployed.deployment).toEqual({
+    commit_sha: "c".repeat(40),
+    run_id: 12345,
+    verified_at: later,
+  });
+  expect(() =>
+    recordFullDeployment(state, {
+      commitSha: "d".repeat(40),
+      deploymentRunId: 12345,
+      now: later,
+    }),
+  ).toThrow("does not match");
+});
+
+test("allows a warning-only full checkpoint that defers canary failures", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: [],
+    deferredIds: ["failed-canary-a", "failed-canary-b"],
+    runId: "deferred-only",
+    now,
+  });
+
+  expect(state).toMatchObject({
+    status: "complete-with-errors",
+    phase: "complete",
+    manifest: [],
+    deferred_ids: ["failed-canary-a", "failed-canary-b"],
+  });
+  expect(selectNextRunBatch(state).projectIds).toEqual([]);
 });
 
 test("rejects out-of-order, duplicate, or over-limit attempt results", () => {
