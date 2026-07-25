@@ -114,6 +114,11 @@ function formatDate(timestamp: string) {
   }).format(new Date(timestamp));
 }
 
+export function projectDisplayName(name: string) {
+  const withoutPrefix = name.replace(/^sillytavern[\s_-]+/i, "");
+  return withoutPrefix || name;
+}
+
 function missingSourceActivityStatus(
   evidenceStatus: CatalogProject["activity"]["evidenceStatus"],
 ) {
@@ -153,6 +158,7 @@ export function ProjectCard({
   const titleId = `${project.id}-title`;
   const licenseId = `${project.id}-license`;
   const cardDescriptionId = `${project.id}-card-description`;
+  const displayName = projectDisplayName(project.name);
   const primaryFunction =
     CATEGORY_OPTIONS.find(({ id }) => id === project.primaryFunction)?.label ??
     project.primaryFunction;
@@ -228,7 +234,7 @@ export function ProjectCard({
       href={project.canonicalUrl}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={project.name}
+      aria-label={displayName}
       aria-describedby={cardDescriptionId}
     >
       <span className="visually-hidden" id={cardDescriptionId}>
@@ -349,7 +355,7 @@ export function ProjectCard({
           className="card-title"
           showOnAncestorFocus
         >
-          {project.name}
+          {displayName}
         </Tooltip>
       </h2>
       {details.length > 0 ? (

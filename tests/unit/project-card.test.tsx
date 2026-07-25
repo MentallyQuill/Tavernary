@@ -81,6 +81,28 @@ describe("project card", () => {
     });
   });
 
+  test.each([
+    ["SillyTavern ReMemory", "ReMemory"],
+    ["sillytavern-Namegen", "Namegen"],
+    ["SillyTavern_Extension Mermaid", "Extension Mermaid"],
+    ["RPG Tracker for SillyTavern", "RPG Tracker for SillyTavern"],
+    ["datacat SillyTavern Browser", "datacat SillyTavern Browser"],
+    ["SillyTavern", "SillyTavern"],
+  ])(
+    "displays %s as %s without changing non-leading occurrences",
+    (name, expectedName) => {
+      render(
+        <ProjectCard
+          project={project("display-name", { name })}
+          now="2026-07-23T00:00:00Z"
+        />,
+      );
+
+      const card = screen.getByRole("link", { name: expectedName });
+      expect(card.querySelector(".card-title")).toHaveTextContent(expectedName);
+    },
+  );
+
   test("shows a stable Added state for projects already in the draft", () => {
     render(
       <ProjectGrid
