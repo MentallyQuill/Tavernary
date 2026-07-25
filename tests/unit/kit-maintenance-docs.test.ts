@@ -21,3 +21,23 @@ test("documents reviewed Tavernary Pick and narrow safety repair procedures", as
   expect(source).toMatch(/advance `updated_at`/i);
   expect(source).toMatch(/complete catalog gates/i);
 });
+
+test("documents the current Kit Builder batch-selection behavior", async () => {
+  const paths = [
+    "docs/superpowers/specs/2026-07-24-kits-design.md",
+    "docs/superpowers/specs/2026-07-24-kits-mobile-design.md",
+    "docs/superpowers/specs/2026-07-24-kits-motion-interaction-design.md",
+    "docs/maintenance/kits.md",
+  ];
+  const productSources = (
+    await Promise.all(paths.map((path) => readFile(path, "utf8")))
+  ).join("\n");
+
+  expect(productSources).not.toMatch(/Kit Workspace/i);
+  expect(productSources).toContain("Kit Builder");
+  expect(productSources.toLowerCase()).toContain("long press");
+  expect(productSources).toContain("Add to Kit");
+  expect(productSources).toContain("dual-thumb");
+  expect(productSources).toMatch(/does not open the Kit Builder/i);
+  expect(productSources).toMatch(/no undo/i);
+});

@@ -41,7 +41,7 @@ It supersedes only the interaction contracts listed below:
 
 All unrelated Kits decisions remain approved and unchanged, including the
 static architecture, browse-first phone entry, transient in-memory drafts,
-GitHub issue submission, manual approval, registry rules, workspace
+GitHub issue submission, manual approval, registry rules, Kit Builder
 accessibility, Kit filtering, and publication model.
 
 ## Implementation Direction
@@ -66,7 +66,7 @@ Kits defines a small local motion vocabulary:
 | Press | 80 ms | Button and card press feedback |
 | State | 120 ms | Border, background, danger, and label changes |
 | Card | 150 ms | Lift, reorder displacement, settling, and gap closure |
-| Panel | 220 ms | Mobile sheet and desktop workspace movement |
+| Panel | 220 ms | Mobile sheet and desktop Kit Builder movement |
 
 The standard easing curve is a restrained deceleration:
 
@@ -95,17 +95,19 @@ releases. There is no sticky hover simulation.
 
 ### Project cards
 
-Project cards retain the same restrained 2-pixel hover/focus lift. While a
-draft is active:
+Project cards retain the same restrained 2-pixel hover/focus lift. Batch
+selection appears immediately as a distinct outline and check without fading
+the card. A 450-millisecond long press or Space starts selection; the pending
+press has no decorative progress animation. Movement beyond eight CSS pixels
+or scrolling cancels it.
 
-- **Add to Kit** compresses on press;
-- the button changes to **Added** through a 150-millisecond local state
-  transition;
-- the draft count performs one restrained 2–3 percent scale acknowledgement;
-- no card copy flies through the viewport.
-
-When the draft already contains a Frontend, every other Frontend project uses
-**Use instead** rather than **Add to Kit**.
+The floating selection dock enters through a restrained 160-millisecond
+opacity and vertical-position transition. Its primary **Add to Kit** action
+compresses on press and keeps the count in a separate badge. Applying replaces
+the dock with the desktop/tablet rail status or mobile draft pill. The brief
+added count settles to the cumulative count after 1600 milliseconds. No card
+copy flies through the viewport, and the Kit Builder does not open
+automatically.
 
 Filtering and sorting replace the result grid immediately. Kits does not
 animate many catalog cards into new grid positions.
@@ -153,13 +155,13 @@ The Frontend row:
 
 With an empty slot:
 
-- Add or drag installs the selected Frontend at index zero;
+- batch addition or drag installs the selected Frontend at index zero;
 - the slot expands cleanly to its populated height.
 
 With a populated slot:
 
-- another Frontend project exposes **Use instead**;
-- activating **Use instead** directly replaces the Frontend;
+- selecting another Frontend swaps the prior Frontend in the batch;
+- applying the batch directly replaces the Frontend;
 - dragging another Frontend over the slot highlights only that slot;
 - the slot says **Release to replace _current frontend_**;
 - dropping directly replaces the Frontend;
@@ -305,7 +307,7 @@ layouts.
 Touch layouts do not add a persistent or transient remove bar. The corner `×`
 is the sole removal path.
 
-## Workspace and Sheet Movement
+## Kit Builder and Sheet Movement
 
 ### Mobile
 
@@ -327,32 +329,32 @@ The draft pill moves from and returns toward the bottom edge.
 Desktop uses an in-flow three-column layout:
 
 ```text
-filters | catalog cards | Kit workspace
+filters | catalog cards | Kit Builder
 ```
 
-Opening the workspace expands its grid track from the 48-pixel collapsed rail
-to the existing 280–340-pixel workspace width. The catalog track contracts by
+Opening the Kit Builder expands its grid track from the 72-pixel collapsed rail
+to the existing 280–340-pixel Builder width. The catalog track contracts by
 the same amount and its cards reflow within the remaining space.
 
-The workspace:
+The Kit Builder:
 
 - never overlays catalog cards;
 - remains clipped to its own grid area;
 - never hides a draggable project behind the editor;
 - contracts back to the 48-pixel rail when collapsed.
 
-If a project drag begins during the 220-millisecond layout transition, the
-workspace snaps to its final open geometry before the drag controller measures
+If a project drag begins during the 220-millisecond layout transition, the Kit
+Builder snaps to its final open geometry before the drag controller measures
 targets.
 
-Switching between inspection and editing inside an already-open workspace is
+Switching between inspection and editing inside an already-open Kit Builder is
 immediate and does not replay the entrance movement.
 
 ### Tablet
 
-Tablet retains the approved overlay workspace because the viewport cannot
-support three usable in-flow columns. It uses the same touch interaction rules
-as mobile.
+Tablet retains the approved in-flow Kit Builder and 72-pixel collapsed rail.
+It uses the same touch interaction rules as mobile while preserving a usable
+catalog track.
 
 ## Interruption and Responsiveness
 
@@ -403,7 +405,7 @@ Implementation follows strict red-green-refactor TDD.
 At desktop width:
 
 - Kit and project cards use the approved lift;
-- the workspace displaces rather than covers the catalog;
+- the Kit Builder displaces rather than covers the catalog;
 - every visible catalog project remains draggable;
 - drag activation creates a source-sized ghost and physical gap;
 - row midpoint crossing moves the gap;
@@ -416,12 +418,12 @@ At desktop width:
 
 At 320, 390, and 430 CSS-pixel widths:
 
-- the entire workspace slides from the bottom without fading;
+- the entire Kit Builder slides from the bottom without fading;
 - non-Frontend handles reorder;
 - no drag gesture removes;
 - every corner `×` is at least 44 by 44 CSS pixels;
 - the pinned Frontend is compact and has no handle;
-- replacement through **Use instead** works;
+- single-Frontend batch replacement works;
 - the 50-project stack remains scrollable and reorderable.
 
 ### Motion and accessibility contracts

@@ -198,10 +198,7 @@ describe("Kit builder state", () => {
 
     let plan;
     act(() => {
-      plan = result.current.applyProjectBatch(
-        ["memory", "frontend"],
-        projects,
-      );
+      plan = result.current.applyProjectBatch(["memory", "frontend"], projects);
     });
 
     expect(plan).toMatchObject({

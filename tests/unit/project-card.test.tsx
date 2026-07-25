@@ -111,10 +111,7 @@ describe("project card", () => {
       />,
     );
 
-    expect(screen.getByRole("option")).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(screen.getByRole("option")).toHaveAttribute("aria-selected", "true");
     expect(screen.getByLabelText("Selected")).toBeVisible();
   });
 

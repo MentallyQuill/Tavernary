@@ -69,7 +69,7 @@ The feature is called **Kits**, not Sets.
 
 - an integrated Kits mode on the existing homepage;
 - compact Kit cards;
-- a persistent, collapsible right-side Kit workspace on desktop;
+- a persistent, collapsible right-side Kit Builder on desktop and tablet;
 - locked Kit inspection and one-project-at-a-time expansion;
 - an in-site builder for new, duplicated, and edited Kits;
 - pointer reordering plus keyboard and touch alternatives;
@@ -120,7 +120,7 @@ Kits is a catalog mode, not another project kind.
 - Project filters are replaced by Kit filters in Kits mode.
 - Search text and project-card density survive mode changes.
 - Incompatible filters clear when changing modes.
-- A Kit workspace and its in-memory draft survive mode changes until the page
+- The Kit Builder and its in-memory draft survive mode changes until the page
   is refreshed or closed.
 - Browser history and share links reproduce the active mode, Kit selection,
   search, and active mode-specific filters.
@@ -181,7 +181,7 @@ Rules:
 - `mode=projects` is optional because projects are the default.
 - `kit=<id>` implies `mode=kits`.
 - Unknown Kit IDs leave Kits mode active and show a not-found message in the
-  workspace.
+  Kit Builder.
 - Invalid ranges reset to 3–50.
 - `minProjects` and `maxProjects` are inclusive and cannot cross.
 - Default values are omitted during serialization.
@@ -230,12 +230,13 @@ non-Frontend component. The `frontend` primary function is omitted.
 `uncategorized` remains represented until the underlying project is
 classified, preventing the build from inventing a purpose.
 
-The size control uses two accessible handles plus synchronized numeric inputs:
+The size control is one accessible dual-thumb track with persistent minimum
+and maximum readouts:
 
 ```tsx
 <fieldset className="kit-size-filter">
   <legend>Kit size</legend>
-  <RangeSlider
+  <DualRange
     min={3}
     max={50}
     lower={query.minProjects}
@@ -272,8 +273,8 @@ user returns to project mode.
 ## Kit Cards
 
 Kit cards reuse the project card’s surface, border, radius, typography, focus,
-and hover vocabulary. They do not display the entire project stack; the right
-workspace owns detailed inspection.
+and hover vocabulary. They do not display the entire project stack; the
+right-side Kit Builder owns detailed inspection.
 
 A card displays:
 
@@ -289,8 +290,8 @@ A card displays:
 - caution badge and affected-project count when applicable;
 - Copy link and Report actions.
 
-The full description remains in the Kit workspace and source data. Truncation
-is presentation-only:
+The full description remains in the Kit Builder and source data. Truncation is
+presentation-only:
 
 ```css
 .kit-card-description {
@@ -309,7 +310,7 @@ dedicated title/select button and sibling actions:
   <button
     className="kit-card-select"
     type="button"
-    aria-controls="kit-workspace"
+    aria-controls="kit-builder-panel"
     aria-expanded={selected}
     onClick={() => onSelect(kit.id)}
   >
@@ -340,43 +341,44 @@ Publication age uses the project card’s existing freshness color progression
 over 30 days. Very recent Kits receive the strongest highlight, then fade to
 the normal date color. There is no “New this week” badge or filter.
 
-## Kit Workspace
+## Kit Builder
 
 ### Desktop Layout
 
-Desktop adds a right-side workspace beside the existing filter rail and card
-area:
+Desktop and tablet add a right-side Kit Builder beside the existing filter
+rail and card area:
 
 ```text
 ┌─────────────┬──────────────────────────┬─────────────────────┐
-│ Kit filters │ Compact Kit card grid    │ Kit workspace       │
+│ Kit filters │ Compact Kit card grid    │ Kit Builder         │
 │             │ or project card grid     │ inspect or build    │
 └─────────────┴──────────────────────────┴─────────────────────┘
 ```
 
-- Entering Kits mode opens the workspace by default.
+- Entering Kits mode opens the Kit Builder by default on desktop and tablet.
 - With no selected Kit, it explains Kits and offers **Create new Kit**.
 - Selecting a Kit populates a locked detail view.
-- The workspace can collapse to a narrow edge control and expand without
+- The Kit Builder can collapse to a 72-pixel icon-and-label rail and expand
+  without
   losing selection or draft state.
-- Switching to project mode keeps the workspace available so project cards can
+- Switching to project mode keeps the Kit Builder available so project cards can
   be added to an active draft.
-- A collapsed workspace never overlays or intercepts the card grid.
-- The open workspace remains in normal grid flow and displaces/reflows catalog
+- A collapsed Kit Builder never overlays or intercepts the card grid.
+- The open Kit Builder remains in normal grid flow and displaces/reflows catalog
   cards. No project card may sit behind it or become unreachable.
 
 Recommended sizing:
 
 ```css
-.kit-workspace {
+.kit-builder-panel {
   width: clamp(22rem, 34vw, 34rem);
   min-width: 0;
   border-left: 1px solid var(--color-border);
   background: var(--color-surface-primary);
 }
 
-.kit-workspace[data-collapsed="true"] {
-  width: 2.75rem;
+.kit-builder-panel[data-collapsed="true"] {
+  width: 4.5rem;
 }
 ```
 
@@ -398,12 +400,12 @@ Selecting a closed row opens it. Selecting another closes the first. Selecting
 the open row closes it. The expanded project card is a sibling of the
 disclosure button so external links remain valid interactive HTML.
 
-If a share URL selects a Kit, the workspace opens with every project row
+If a share URL selects a Kit, the Kit Builder opens with every project row
 collapsed.
 
 ### Builder Modes
 
-The workspace supports:
+The Kit Builder supports:
 
 - **Create:** empty title, description, and stack;
 - **Duplicate:** a copy of the selected stack and description with a new,
@@ -431,7 +433,7 @@ export interface KitDraft {
 
 The primary action says **Submit Kit** or **Submit changes**, never Save.
 
-### Drag, Add, and Reorder
+### Drag, Batch Add, and Reorder
 
 On desktop, users can drag project cards from the catalog into the pinned
 Frontend slot or non-Frontend stack and drag stack rows to reorder them. The
@@ -445,13 +447,30 @@ interaction adapts the established Saga Lower Deck behavior:
 - Escape cancellation;
 - deterministic cleanup after drop, cancel, or lost pointer capture.
 
-Drag is never the only operation:
+Drag remains the direct desktop path. Project cards never carry individual
+**Add to Kit** buttons. A 450-millisecond long press on a card body, or Space
+while its card is focused, starts batch selection. Movement beyond eight CSS
+pixels or scrolling cancels a pending long press. Once selection is active,
+ordinary taps or clicks toggle more cards.
 
-- every project card exposes **Add to Kit** while a draft is active;
+The floating selection dock exposes a quiet Cancel action, a primary
+**Add to Kit** action, a separate tally, and concise Frontend-replacement or
+capacity guidance. Applying performs one atomic update, clears selection, and
+does not open the Kit Builder, change the query, move scroll, or steal focus.
+With no draft, it creates a collapsed draft; otherwise it preserves the Kit
+Builder's expanded or collapsed state. The 50-project limit, deduplication, and
+single-Frontend replacement use the same domain planner.
+
+After applying, the desktop/tablet rail reports the cumulative draft count and
+briefly reports the net number added. On phones, the same bottom surface
+changes from the selection dock to an added status and then to the persistent
+Kit draft pill. There is no undo action.
+
+Inside the Kit Builder:
+
 - every builder card exposes a corner × removal control with a 44-by-44 target;
 - non-Frontend cards expose grab handles for pointer and touch reordering;
-- Alt+Arrow Up and Alt+Arrow Down provide keyboard reordering;
-- duplicate additions are rejected with a concise inline message.
+- Alt+Arrow Up and Alt+Arrow Down provide keyboard reordering.
 
 The drag handle is a handle, not the entire row, so disclosure and project
 links remain usable. On desktop, dragging a builder card outside the editor
@@ -461,8 +480,8 @@ no Undo, confirmation, or remove bar.
 
 The single Frontend is rendered as a hyper-compact pinned foundation above the
 ordered stack. It cannot be reordered. Desktop exposes its handle only for
-drag-off removal; touch omits that handle. Selecting another Frontend uses
-**Use instead** and atomically replaces the current Frontend.
+drag-off removal; touch omits that handle. Selecting another Frontend in a
+batch atomically replaces the current Frontend.
 
 Motion follows
 `docs/superpowers/specs/2026-07-24-kits-motion-interaction-design.md`: modern,
@@ -473,13 +492,13 @@ clean, tactile, and practical without ornamental animation.
 Draft state lives in React memory only:
 
 ```ts
-type KitWorkspaceState =
+type KitBuilderState =
   | { mode: "intro"; collapsed: boolean }
   | { mode: "inspect"; collapsed: boolean; kitId: string }
   | { mode: "build"; collapsed: boolean; draft: KitDraft; dirty: boolean };
 ```
 
-- Collapsing the workspace and switching catalog modes preserve the draft.
+- Collapsing the Kit Builder and switching catalog modes preserve the draft.
 - Refreshing, closing, or navigating away loses it.
 - A dirty draft triggers a browser navigation warning.
 - V1 does not use `localStorage`, IndexedDB, private Gists, export files, or
@@ -488,14 +507,15 @@ type KitWorkspaceState =
 
 ### Mobile
 
-On mobile, the workspace becomes a full-height sheet rather than squeezing the
-card grid. It must provide:
+On mobile, the Kit Builder becomes a full-height sheet rather than squeezing
+the card grid. It must provide:
 
 - an explicit close control;
 - focus containment while open;
 - Escape dismissal when a hardware keyboard is present;
 - focus return to the invoking card or action;
-- tap-to-add, **Use instead**, touch grab handles, and corner × controls;
+- long press and Space batch selection, touch grab handles, and corner ×
+  controls;
 - whole-sheet bottom movement with no opacity fade.
 
 ## Composition and Validation
@@ -718,7 +738,7 @@ derived and do not belong in the canonical record.
 
 ### Browser Handoff
 
-1. The user builds or edits a Kit in the right workspace.
+1. The user builds or edits a Kit in the right-side Kit Builder.
 2. Tavernary validates the draft locally.
 3. Tavernary serializes a compact manifest containing operation, Kit ID when
    editing, title, description, and ordered project IDs.
@@ -883,13 +903,13 @@ Opening the URL:
 
 - activates Kits mode;
 - scrolls to and highlights the Kit card when present;
-- opens the workspace to the locked Kit;
+- opens the Kit Builder to the locked Kit;
 - keeps all project rows collapsed.
 
 ## Reports
 
 A visually quiet Report action appears at the bottom edge of the Kit card and
-workspace. Its visible icon may be small, but its interactive target must meet
+Kit Builder. Its visible icon may be small, but its interactive target must meet
 the site’s normal accessible hit-area standard.
 
 The action opens a prefilled GitHub issue with Kit ID and share URL. Categories
@@ -1091,12 +1111,12 @@ src/features/kits/
   kit-selectors.ts
   kit-validation.ts
   kit-trending.ts
-  use-kit-workspace.ts
+  use-kit-builder.ts
   components/
     kit-card.tsx
     kit-grid.tsx
     kit-filter-panel.tsx
-    kit-workspace.tsx
+    kit-builder-panel.tsx
     kit-project-stack.tsx
     kit-builder.tsx
 
@@ -1115,7 +1135,7 @@ Responsibilities:
 - selectors own search, filtering, and sorting;
 - validation owns objective draft and registry rules;
 - Trending owns reaction age and score calculation;
-- workspace state owns inspection and transient drafts;
+- Kit Builder state owns inspection and transient drafts;
 - GitHub workflows own identity and publication authority;
 - React components never decide whether an edit or withdrawal is authorized.
 
@@ -1138,7 +1158,7 @@ return (
       <main className="catalog-main">
         {isKits ? <KitGrid kits={selectedKits} /> : <ProjectGrid projects={selectedProjects} />}
       </main>
-      <KitWorkspace state={workspace} />
+      <KitBuilderPanel state={builder} />
     </div>
   </div>
 );
@@ -1150,7 +1170,7 @@ existing `CatalogPage` to accumulate every Kit interaction.
 ## Failure Handling
 
 - Invalid URL state falls back to mode defaults without throwing.
-- An unknown shared Kit ID produces a workspace not-found state.
+- An unknown shared Kit ID produces a Kit Builder not-found state.
 - Missing project IDs fail new or revised Kit validation.
 - Published Kits resolve quarantined or disabled projects as tombstones.
 - Failed GitHub prefill uses clipboard transport and preserves the browser
@@ -1191,14 +1211,14 @@ existing `CatalogPage` to accumulate every Kit interaction.
 ### Builder and Accessibility
 
 - create, duplicate, and edit modes initialize correctly.
-- drafts survive mode changes and workspace collapse.
+- drafts survive mode changes and Kit Builder collapse.
 - refresh does not pretend to persist a draft.
 - add, drag, reorder, remove, and duplicate rejection pass.
 - keyboard and touch alternatives can perform every critical stack operation;
   touch removal uses × and touch drag never arms removal.
 - dirty-navigation warning fires only when needed.
 - one project detail is expanded at a time.
-- focus returns after mobile workspace dismissal.
+- focus returns after mobile Kit Builder dismissal.
 - cards contain no nested interactive-content violations.
 
 ### Identity and Workflows
@@ -1238,7 +1258,7 @@ Review project and Kits modes at desktop, tablet, and mobile widths with:
 - a five-line truncated description;
 - a long title and GitHub login;
 - selected, hover, and keyboard-focus states;
-- an open and collapsed desktop workspace;
+- an open and collapsed desktop Kit Builder;
 - create, duplicate, and edit builder modes;
 - one expanded Frontend, Preset, and Extension;
 - a flagged-project caution state;
