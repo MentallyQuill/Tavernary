@@ -40,6 +40,7 @@ export function inspectDelta(
   options: {
     fetchCompare(input: DeltaInput): Promise<unknown>;
     maxRetries?: number;
+    delay?: (milliseconds: number) => Promise<void>;
     logger?: { log(message: string): void; error(message: string): void };
   },
 ): Promise<DeltaInspection>;
@@ -48,6 +49,8 @@ export function inspectGitBaseline(
   input: {
     repository: string;
     defaultBranch: string;
+    expectedHeadSha: string;
+    headCommittedAt: string;
     now: string;
     activity: ActivityEvidence;
   },

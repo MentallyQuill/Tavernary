@@ -38,11 +38,20 @@ test("validates before commit and deploys only after a committed change", async 
 test("rebases with bounded retries and never force-pushes", async () => {
   const source = await readFile(refreshPath, "utf8");
 
+  expect(source).toContain(
+    "if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'",
+  );
+  expect(source).toContain("fetch-depth: 0");
   expect(source).toContain("for attempt in 1 2 3");
   expect(source).toContain("git fetch origin main");
   expect(source).toContain("git rebase origin/main");
   expect(source).toContain("git rebase --abort || true");
   expect(source).not.toMatch(/push[^\n]*(?:--force|-f\b)/);
+  const rebase = source.indexOf("git rebase origin/main");
+  const postRebaseCheck = source.indexOf("npm run check", rebase);
+  const push = source.indexOf("git push origin HEAD:main", rebase);
+  expect(postRebaseCheck).toBeGreaterThan(rebase);
+  expect(postRebaseCheck).toBeLessThan(push);
 });
 
 test("continues baselines only after successful publication", async () => {

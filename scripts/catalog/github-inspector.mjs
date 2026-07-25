@@ -43,7 +43,11 @@ function validComparison(comparison) {
     Array.isArray(comparison.commits) &&
     comparison.commits.length > 0 &&
     Array.isArray(comparison.files) &&
-    comparison.files.every(({ filename }) => typeof filename === "string")
+    comparison.files.every(
+      ({ filename, patch }) =>
+        typeof filename === "string" &&
+        (patch === undefined || patch === null || typeof patch === "string"),
+    )
   );
 }
 
@@ -59,6 +63,10 @@ function compareCommitTimestamp(commit) {
 async function fetchComparison(input, options) {
   const maxRetries = options.maxRetries ?? 2;
   const logger = options.logger ?? defaultLogger;
+  const delay =
+    options.delay ??
+    ((milliseconds) =>
+      new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds)));
   let requestCount = 0;
 
   for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
@@ -75,9 +83,11 @@ async function fetchComparison(input, options) {
       const retryable =
         error?.status === undefined ||
         error.status === 429 ||
+        (error.status === 403 && error.rateLimited) ||
         error.status >= 500;
       if (retryable && attempt < maxRetries) {
         logger.log("Retrying GitHub compare request");
+        await delay(error?.retryAfterMs ?? 0);
         continue;
       }
       throw error;
@@ -123,7 +133,10 @@ export async function inspectDelta(input, options) {
 
   const files = comparison.files.map(({ filename }) => filename);
   const licenseChanged = files.some(isRootLicense);
-  const sourceBearing = classifyCommit(files) === "meaningful";
+  const sourceBearing = comparison.files.some(
+    ({ filename, patch }) =>
+      classifyCommit([filename], { patch }) === "meaningful",
+  );
   const activityAt = timestamps.sort((left, right) =>
     right.localeCompare(left),
   )[0];
@@ -215,6 +228,17 @@ export async function inspectGitBaseline(input, options = {}) {
   const cutoffIso = new Date(
     now.getTime() - GIT_WINDOW_DAYS * DAY_MS,
   ).toISOString();
+  const headCommittedAt = new Date(input.headCommittedAt);
+  if (!Number.isFinite(headCommittedAt.getTime())) {
+    throw new Error(`Invalid head commit timestamp: ${input.headCommittedAt}`);
+  }
+  if (!/^[0-9a-f]{40}$/i.test(input.expectedHeadSha)) {
+    throw new Error(`Invalid expected Git head: ${input.expectedHeadSha}`);
+  }
+  const cloneBoundary =
+    headCommittedAt.getTime() < new Date(cutoffIso).getTime()
+      ? "--depth=1"
+      : `--shallow-since=${cutoffIso}`;
   const temporaryRoot = await makeTemporaryRoot();
   const cloneDirectory = resolve(temporaryRoot, "repository");
 
@@ -226,7 +250,7 @@ export async function inspectGitBaseline(input, options = {}) {
         "--quiet",
         "--filter=blob:none",
         "--no-checkout",
-        `--shallow-since=${cutoffIso}`,
+        cloneBoundary,
         "--single-branch",
         "--branch",
         input.defaultBranch,
@@ -235,6 +259,14 @@ export async function inspectGitBaseline(input, options = {}) {
       ],
       GIT_OPTIONS,
     );
+    const clonedHead = stdout(
+      await runGit(cloneDirectory, ["rev-parse", "HEAD"], GIT_OPTIONS),
+    ).trim();
+    if (clonedHead.toLowerCase() !== input.expectedHeadSha.toLowerCase()) {
+      throw new Error(
+        `${input.repository}: default branch advanced after observation`,
+      );
+    }
     const logOutput = stdout(
       await runGit(
         cloneDirectory,

@@ -221,6 +221,52 @@ describe("project card", () => {
     ).toBeInTheDocument();
   });
 
+  test("does not claim no activity before a baseline completes", () => {
+    const emptyActivity = {
+      latestSourceActivityAt: null,
+      activeWeeks12: 0,
+      weeklyActivity: Array.from({ length: 12 }, () => false) as [
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+      ],
+      evidenceStatus: "provisional" as const,
+      dormant: false,
+    };
+    const { rerender } = render(
+      <ProjectCard
+        project={project("provisional-empty", { activity: emptyActivity })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+
+    expect(screen.getByText("Source activity baseline pending")).toBeVisible();
+    expect(
+      screen.queryByText("No source activity in the last 12 weeks"),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <ProjectCard
+        project={project("degraded-empty", {
+          activity: { ...emptyActivity, evidenceStatus: "degraded" },
+        })}
+        now="2026-07-24T00:00:00Z"
+      />,
+    );
+    expect(
+      screen.getByText("Source activity evidence incomplete"),
+    ).toBeVisible();
+  });
+
   test("renders pending manual-source facts as honest unavailable states", () => {
     render(
       <ProjectCard

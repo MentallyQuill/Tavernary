@@ -4,6 +4,14 @@ import type {
 } from "./github-refresh-manifest.mjs";
 
 export function formatSnapshot(snapshot: unknown): Promise<string>;
+export function publishCandidates(
+  input: { changedSnapshots: unknown[]; manifest: unknown },
+  options?: {
+    snapshotDirectory?: string;
+    manifestPath?: string;
+    rename?: (from: string, to: string) => Promise<void>;
+  },
+): Promise<void>;
 export function selectRefreshRecords(
   records: Array<{
     id: string;

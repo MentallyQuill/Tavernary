@@ -275,7 +275,11 @@ export function ProjectCard({
                   </Tooltip>
                 ) : (
                   <span className="commit-age no-source-activity">
-                    No source activity in the last 12 weeks
+                    {evidenceStatus === "complete"
+                      ? "No source activity in the last 12 weeks"
+                      : evidenceStatus === "provisional"
+                        ? "Source activity baseline pending"
+                        : "Source activity evidence incomplete"}
                   </span>
                 )}
               </>

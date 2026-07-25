@@ -76,11 +76,18 @@ function validRateLimit(rateLimit) {
 
 function retryDelay(response) {
   const retryAfter = response.headers.get("retry-after");
-  if (retryAfter === null) return 0;
-  const seconds = Number(retryAfter);
-  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
-  const timestamp = new Date(retryAfter).getTime();
-  return Number.isFinite(timestamp) ? Math.max(0, timestamp - Date.now()) : 0;
+  if (retryAfter !== null) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+    const timestamp = new Date(retryAfter).getTime();
+    if (Number.isFinite(timestamp)) {
+      return Math.max(0, timestamp - Date.now());
+    }
+  }
+  const resetSeconds = Number(response.headers.get("x-ratelimit-reset"));
+  return Number.isFinite(resetSeconds)
+    ? Math.max(0, resetSeconds * 1000 - Date.now())
+    : 0;
 }
 
 async function wait(milliseconds) {
@@ -114,6 +121,19 @@ async function requestBatch(body, options) {
       throw new Error("GitHub GraphQL transport request failed");
     }
 
+    const rateLimited =
+      response.status === 429 ||
+      (response.status === 403 &&
+        (response.headers.get("x-ratelimit-remaining") === "0" ||
+          response.headers.get("retry-after") !== null));
+    if (rateLimited && attempt < maxRetries) {
+      logger.log("Retrying GitHub GraphQL request after rate limiting");
+      await wait(retryDelay(response));
+      continue;
+    }
+    if (rateLimited) {
+      throw new Error("GitHub GraphQL rate budget is exhausted");
+    }
     if (response.status === 401 || response.status === 403) {
       throw new Error("GitHub GraphQL authentication failed");
     }
@@ -285,6 +305,9 @@ export async function observeRepositories(records, options = {}) {
     }
     pointCost += result.data.rateLimit.cost;
     remainingPoints = result.data.rateLimit.remaining;
+    logger.log(
+      `GitHub GraphQL batch ${Math.floor(start / batchSize) + 1}: ${batch.length} repositories, cost ${result.data.rateLimit.cost}, remaining ${remainingPoints}`,
+    );
     if (remainingPoints <= 0) {
       throw new Error("GitHub GraphQL rate budget is exhausted");
     }

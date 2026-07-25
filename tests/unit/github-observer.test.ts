@@ -228,6 +228,31 @@ describe("GitHub repository observer", () => {
     ).rejects.toThrow(message);
   });
 
+  test("honors a rate-limited 403 before retrying", async () => {
+    let calls = 0;
+    const result = await observeRepositories(records(1), {
+      token: "secret-token",
+      maxRetries: 1,
+      fetchImpl: async () => {
+        calls += 1;
+        if (calls === 1) {
+          return new Response("", {
+            status: 403,
+            headers: {
+              "retry-after": "0",
+              "x-ratelimit-remaining": "0",
+            },
+          });
+        }
+        return batchResponse(0, 1);
+      },
+    });
+
+    expect(calls).toBe(2);
+    expect(result.observations).toHaveLength(1);
+    expect(result.usage.requestCount).toBe(2);
+  });
+
   test("bounds retryable failures and never logs or throws the token", async () => {
     const logger = { log: vi.fn(), error: vi.fn() };
     let calls = 0;

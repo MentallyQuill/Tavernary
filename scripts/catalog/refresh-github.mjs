@@ -1,4 +1,5 @@
 import {
+  copyFile,
   mkdir,
   mkdtemp,
   readFile,
@@ -57,6 +58,15 @@ async function readSnapshots() {
   return Promise.all(
     files.map((file) => readJson(resolve(snapshotDirectory, file))),
   );
+}
+
+async function readRefreshManifest() {
+  try {
+    return await readJson(manifestPath);
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 export async function formatSnapshot(snapshot) {
@@ -235,6 +245,20 @@ function hoursBetween(earlier, later) {
   return Number.isFinite(elapsed) ? Math.max(0, elapsed / 3_600_000) : 49;
 }
 
+function lastSuccessfulObservationAt(previous, previousManifest) {
+  if (!previousManifest || previous.stale_since !== null) {
+    return previous.refreshed_at;
+  }
+  const covered =
+    previousManifest.mode === "incremental" ||
+    previousManifest.project_timings?.some(
+      (timing) =>
+        timing.project_id === previous.project_id &&
+        !["failed", "unavailable", "identity-change"].includes(timing.outcome),
+    );
+  return covered ? previousManifest.completed_at : previous.refreshed_at;
+}
+
 function crossesAmbiguousWeeks(previous, observation) {
   const from = previous.repository.head_committed_at;
   const to = observation.repository.headCommittedAt;
@@ -278,6 +302,22 @@ function defaultHeaders(token) {
   };
 }
 
+function retryDelayFromHeaders(headers) {
+  const retryAfter = headers.get("retry-after");
+  if (retryAfter !== null) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1_000;
+    const timestamp = new Date(retryAfter).getTime();
+    if (Number.isFinite(timestamp)) {
+      return Math.max(0, timestamp - Date.now());
+    }
+  }
+  const resetSeconds = Number(headers.get("x-ratelimit-reset"));
+  return Number.isFinite(resetSeconds)
+    ? Math.max(0, resetSeconds * 1_000 - Date.now())
+    : 0;
+}
+
 async function defaultCompare(input, token) {
   const response = await fetch(
     `${githubApi}/repos/${input.repository}/compare/${input.baseSha}...${input.headSha}`,
@@ -286,39 +326,88 @@ async function defaultCompare(input, token) {
   if (!response.ok) {
     const error = new Error(`GitHub compare returned ${response.status}`);
     error.status = response.status;
+    error.rateLimited =
+      response.status === 429 ||
+      (response.status === 403 &&
+        (response.headers.get("x-ratelimit-remaining") === "0" ||
+          response.headers.get("retry-after") !== null));
+    error.systemic = response.status === 401 || error.rateLimited;
+    error.retryAfterMs = retryDelayFromHeaders(response.headers);
     throw error;
   }
   return response.json();
 }
 
-async function publishCandidates({ changedSnapshots, manifest }) {
-  await mkdir(snapshotDirectory, { recursive: true });
+export async function publishCandidates(
+  { changedSnapshots, manifest },
+  options = {},
+) {
+  const destinationDirectory = options.snapshotDirectory ?? snapshotDirectory;
+  const destinationManifest = options.manifestPath ?? manifestPath;
+  const renameFile = options.rename ?? rename;
+  await mkdir(destinationDirectory, { recursive: true });
   const temporaryRoot = await mkdtemp(
-    resolve(dirname(snapshotDirectory), ".github-refresh-"),
+    resolve(dirname(destinationDirectory), ".github-refresh-"),
   );
   try {
     const stagedSnapshots = resolve(temporaryRoot, "github");
+    const backupDirectory = resolve(temporaryRoot, "backup");
     await mkdir(stagedSnapshots, { recursive: true });
+    await mkdir(backupDirectory, { recursive: true });
     const replacements = [];
-    for (const snapshot of changedSnapshots) {
+    for (const [index, snapshot] of changedSnapshots.entries()) {
       const temporaryPath = resolve(
         stagedSnapshots,
         `${snapshot.project_id}.json`,
       );
       const destinationPath = resolve(
-        snapshotDirectory,
+        destinationDirectory,
         `${snapshot.project_id}.json`,
       );
       await writeFile(temporaryPath, await formatSnapshot(snapshot));
-      replacements.push({ temporaryPath, destinationPath });
+      replacements.push({
+        temporaryPath,
+        destinationPath,
+        backupPath: resolve(backupDirectory, `${index}.json`),
+      });
     }
     const temporaryManifest = resolve(temporaryRoot, "github-refresh.json");
     await writeFile(temporaryManifest, await formatSnapshot(manifest));
+    replacements.push({
+      temporaryPath: temporaryManifest,
+      destinationPath: destinationManifest,
+      backupPath: resolve(backupDirectory, "manifest.json"),
+    });
 
     for (const replacement of replacements) {
-      await rename(replacement.temporaryPath, replacement.destinationPath);
+      try {
+        await copyFile(replacement.destinationPath, replacement.backupPath);
+        replacement.existed = true;
+      } catch (error) {
+        if (error.code !== "ENOENT") throw error;
+        replacement.existed = false;
+      }
     }
-    await rename(temporaryManifest, manifestPath);
+
+    const installed = [];
+    try {
+      for (const replacement of replacements) {
+        await renameFile(
+          replacement.temporaryPath,
+          replacement.destinationPath,
+        );
+        installed.push(replacement);
+      }
+    } catch (error) {
+      for (const replacement of installed.reverse()) {
+        if (replacement.existed) {
+          await copyFile(replacement.backupPath, replacement.destinationPath);
+        } else {
+          await rm(replacement.destinationPath, { force: true });
+        }
+      }
+      throw error;
+    }
   } finally {
     await rm(temporaryRoot, {
       recursive: true,
@@ -335,6 +424,11 @@ export async function runRefresh(options = {}) {
   const now = new Date(options.now ?? startedAt).toISOString();
   const records = options.records ?? (await readRecords());
   const snapshots = options.snapshots ?? (await readSnapshots());
+  const previousManifest =
+    options.previousManifest ??
+    (options.records === undefined && options.snapshots === undefined
+      ? await readRefreshManifest()
+      : null);
   const selected = selectRefreshRecords(records, snapshots, {
     mode,
     batchSize: options.batchSize,
@@ -427,7 +521,7 @@ export async function runRefresh(options = {}) {
     );
     const requiresDirectGit =
       mode === "forensic" ||
-      previous === null ||
+      (previous === null && mode !== "incremental") ||
       ((mode === "baseline" || mode === "project") &&
         previous.activity.evidence_status !== "complete");
     if (requiresDirectGit) {
@@ -439,6 +533,12 @@ export async function runRefresh(options = {}) {
         started,
         result: "baseline",
       });
+      continue;
+    }
+
+    if (previous === null) {
+      replaceSnapshot(snapshotsById, candidate);
+      outcomes.push(outcome(record.id, "unchanged", started, candidate, true));
       continue;
     }
 
@@ -456,11 +556,17 @@ export async function runRefresh(options = {}) {
         repository: record.source.repository,
         baseSha: previous.repository.head_sha,
         headSha: observation.repository.headSha,
-        hoursSinceLastSuccess: hoursBetween(previous.refreshed_at, now),
+        hoursSinceLastSuccess: hoursBetween(
+          lastSuccessfulObservationAt(previous, previousManifest),
+          now,
+        ),
         crossesAmbiguousWeeks: crossesAmbiguousWeeks(previous, observation),
       });
       restRequests += delta.requestCount;
       if (delta.kind === "fallback" || delta.licenseChanged) {
+        logger.log(
+          `${record.id}: compare ${delta.kind === "fallback" ? delta.reason : "license-change"}; Git fallback required`,
+        );
         gitJobs.push({
           record,
           observation,
@@ -490,7 +596,11 @@ export async function runRefresh(options = {}) {
           final !== previous,
         ),
       );
+      logger.log(`${record.id}: ${delta.kind}`);
     } catch (error) {
+      if (error?.systemic || error?.rateLimited || error?.status === 401) {
+        throw error;
+      }
       const recovered = snapshotForFailure(previous, error, now);
       replaceSnapshot(snapshotsById, recovered);
       outcomes.push(
@@ -513,6 +623,8 @@ export async function runRefresh(options = {}) {
     return inspectGit({
       repository: job.record.source.repository,
       defaultBranch: job.observation.repository.defaultBranch,
+      expectedHeadSha: job.observation.repository.headSha,
+      headCommittedAt: job.observation.repository.headCommittedAt,
       now,
       activity: job.candidate.activity,
     });
@@ -539,7 +651,9 @@ export async function runRefresh(options = {}) {
           final !== job.previous,
         ),
       );
-      logger.log(`${job.record.id}: ${job.result} Git inspection complete`);
+      logger.log(
+        `${job.record.id}: ${job.result} Git inspection complete in ${Math.max(0, Date.now() - job.started)}ms`,
+      );
       return;
     }
     const recovered = snapshotForFailure(job.previous, result.reason, now, {
@@ -646,6 +760,7 @@ async function main() {
     deploymentRequested,
   });
   console.table(result.manifest.counts);
+  console.table(result.manifest.project_timings);
 }
 
 if (

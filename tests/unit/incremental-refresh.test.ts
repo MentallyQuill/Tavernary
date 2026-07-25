@@ -1,6 +1,18 @@
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test, vi } from "vitest";
 
 import {
+  publishCandidates,
   runRefresh,
   selectRefreshRecords,
 } from "../../scripts/catalog/refresh-github.mjs";
@@ -174,26 +186,60 @@ test("unchanged projects require zero compares and zero clones", async () => {
   });
 });
 
-test("records changed source evidence without cloning", async () => {
-  const changedHead = "f".repeat(40);
+test("first observation creates provisional evidence without cloning", async () => {
+  const inspectDelta = vi.fn();
   const inspectGit = vi.fn();
   const result = await runRefresh({
     mode: "incremental",
     now: "2026-07-24T08:00:00.000Z",
     records: [record(0)],
+    snapshots: [],
+    observe: observer([observation(0)]),
+    inspectDelta,
+    inspectGit,
+    write: false,
+  });
+
+  expect(inspectDelta).not.toHaveBeenCalled();
+  expect(inspectGit).not.toHaveBeenCalled();
+  expect(result.snapshots[0].activity).toMatchObject({
+    evidence_status: "provisional",
+    provisional_weeks: Array.from({ length: 12 }, () => false),
+  });
+  expect(result.manifest.counts).toMatchObject({
+    changed: 1,
+    provisional: 1,
+  });
+});
+
+test("records changed source evidence without cloning", async () => {
+  const changedHead = "f".repeat(40);
+  const inspectGit = vi.fn();
+  const inspectDelta = vi.fn(async () => ({
+    kind: "accepted-source" as const,
+    activityAt: "2026-07-23T12:00:00.000Z",
+    licenseChanged: false,
+    requestCount: 1,
+  }));
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
     snapshots: [snapshot(0)],
+    previousManifest: {
+      mode: "incremental",
+      completed_at: "2026-07-23T20:00:00.000Z",
+    },
     observe: observer([observation(0, changedHead)]),
-    inspectDelta: vi.fn(async () => ({
-      kind: "accepted-source",
-      activityAt: "2026-07-23T12:00:00.000Z",
-      licenseChanged: false,
-      requestCount: 1,
-    })),
+    inspectDelta,
     inspectGit,
     write: false,
   });
 
   expect(inspectGit).not.toHaveBeenCalled();
+  expect(inspectDelta).toHaveBeenCalledWith(
+    expect.objectContaining({ hoursSinceLastSuccess: 12 }),
+  );
   expect(result.snapshots[0].repository.head_sha).toBe(changedHead);
   expect(result.snapshots[0].activity.source_weeks[0]).toMatchObject({
     week_start: "2026-07-20",
@@ -293,6 +339,29 @@ test("systemic observation failures publish nothing", async () => {
   expect(publish).not.toHaveBeenCalled();
 });
 
+test("systemic REST rate exhaustion aborts candidate publication", async () => {
+  const publish = vi.fn();
+  const changedHead = "f".repeat(40);
+
+  await expect(
+    runRefresh({
+      mode: "incremental",
+      records: [record(0)],
+      snapshots: [snapshot(0)],
+      observe: observer([observation(0, changedHead)]),
+      inspectDelta: vi.fn(async () => {
+        throw Object.assign(new Error("rate budget exhausted"), {
+          status: 403,
+          rateLimited: true,
+        });
+      }),
+      inspectGit: vi.fn(),
+      publish,
+    }),
+  ).rejects.toThrow("rate budget exhausted");
+  expect(publish).not.toHaveBeenCalled();
+});
+
 test("validates and builds all candidates before publishing once", async () => {
   const validateCandidates = vi.fn(async () => ({ errors: [] }));
   const buildCandidates = vi.fn(async () => ({ projects: [] }));
@@ -320,4 +389,54 @@ test("validates and builds all candidates before publishing once", async () => {
   expect(buildCandidates.mock.invocationCallOrder[0]).toBeLessThan(
     publish.mock.invocationCallOrder[0],
   );
+});
+
+test("rolls back installed snapshots when publication fails", async () => {
+  const temporaryRoot = await mkdtemp(
+    join(tmpdir(), "tavernary-publish-test-"),
+  );
+  const snapshotDirectory = join(temporaryRoot, "github");
+  const manifestPath = join(temporaryRoot, "github-refresh.json");
+  await mkdir(snapshotDirectory);
+  const firstPath = join(snapshotDirectory, "first.json");
+  const secondPath = join(snapshotDirectory, "second.json");
+  await writeFile(firstPath, '{"version":"old-first"}\n');
+  await writeFile(secondPath, '{"version":"old-second"}\n');
+  await writeFile(manifestPath, '{"version":"old-manifest"}\n');
+  let failed = false;
+
+  try {
+    await expect(
+      publishCandidates(
+        {
+          changedSnapshots: [
+            { project_id: "first", version: "new-first" },
+            { project_id: "second", version: "new-second" },
+          ],
+          manifest: { version: "new-manifest" },
+        },
+        {
+          snapshotDirectory,
+          manifestPath,
+          rename: async (from, to) => {
+            if (!failed && to === secondPath) {
+              failed = true;
+              throw new Error("simulated publication failure");
+            }
+            await rename(from, to);
+          },
+        },
+      ),
+    ).rejects.toThrow("simulated publication failure");
+
+    expect(await readFile(firstPath, "utf8")).toBe('{"version":"old-first"}\n');
+    expect(await readFile(secondPath, "utf8")).toBe(
+      '{"version":"old-second"}\n',
+    );
+    expect(await readFile(manifestPath, "utf8")).toBe(
+      '{"version":"old-manifest"}\n',
+    );
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
 });

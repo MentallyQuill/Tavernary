@@ -86,6 +86,22 @@ test("accepts excluded-only paths and detects root license candidates", async ()
   });
 });
 
+test("does not count whitespace-only source patches as activity", async () => {
+  const result = await inspectDelta(deltaInput(), {
+    fetchCompare: async () =>
+      compare({
+        files: [
+          {
+            filename: "src/index.ts",
+            patch: "@@ -1 +1 @@\n-   \n+\t\n",
+          },
+        ],
+      }),
+  });
+
+  expect(result).toMatchObject({ kind: "accepted-excluded" });
+});
+
 test.each([
   ["history-not-ahead", compare({ status: "diverged" }), {}],
   ["commit-limit", compare({ total_commits: 251 }), {}],
@@ -173,6 +189,29 @@ test("retries retryable compare failures serially and counts requests", async ()
   expect(maximumActive).toBe(1);
 });
 
+test("honors compare rate-limit delays before retrying", async () => {
+  let calls = 0;
+  const delay = vi.fn(async () => {});
+  const result = await inspectDelta(deltaInput(), {
+    maxRetries: 1,
+    delay,
+    fetchCompare: async () => {
+      calls += 1;
+      if (calls === 1) {
+        throw Object.assign(new Error("rate limited"), {
+          status: 403,
+          rateLimited: true,
+          retryAfterMs: 250,
+        });
+      }
+      return compare();
+    },
+  });
+
+  expect(delay).toHaveBeenCalledWith(250);
+  expect(result).toMatchObject({ kind: "accepted-source", requestCount: 2 });
+});
+
 test("uses a 100-day shallow boundary and returns exact weekly evidence", async () => {
   const calls: Array<{
     cwd: string;
@@ -184,6 +223,8 @@ test("uses a 100-day shallow boundary and returns exact weekly evidence", async 
     {
       repository: "example/project",
       defaultBranch: "main",
+      expectedHeadSha: "c".repeat(40),
+      headCommittedAt: "2026-07-23T00:00:00.000Z",
       now: "2026-07-24T00:00:00.000Z",
       activity: provisionalActivity(),
     },
@@ -200,6 +241,7 @@ test("uses a 100-day shallow boundary and returns exact weekly evidence", async 
             "README.md",
           ].join("\n");
         }
+        if (args[0] === "rev-parse") return "c".repeat(40);
         if (args[0] === "ls-tree") return "LICENSE\npackage.json";
         if (args[0] === "show") {
           return "MIT License\nPermission is hereby granted, free of charge, to any person obtaining a copy";
@@ -241,6 +283,61 @@ test("uses a 100-day shallow boundary and returns exact weekly evidence", async 
   expect(cleanup).toHaveBeenCalledWith("C:\\temp\\bounded-inspection");
 });
 
+test("uses a depth-one baseline when the observed head predates the window", async () => {
+  const calls: string[][] = [];
+  const result = await inspectGitBaseline(
+    {
+      repository: "example/dormant",
+      defaultBranch: "main",
+      expectedHeadSha: "d".repeat(40),
+      headCommittedAt: "2025-01-01T00:00:00.000Z",
+      now: "2026-07-24T00:00:00.000Z",
+      activity: provisionalActivity(),
+    },
+    {
+      makeTemporaryRoot: async () => "C:\\temp\\dormant-inspection",
+      cleanup: async () => {},
+      runGit: async (_cwd, args) => {
+        calls.push(args);
+        if (args[0] === "rev-parse") return "d".repeat(40);
+        return "";
+      },
+    },
+  );
+
+  const clone = calls.find(([command]) => command === "clone");
+  expect(clone).toContain("--depth=1");
+  expect(
+    clone?.some((argument) => argument.startsWith("--shallow-since")),
+  ).toBe(false);
+  expect(result.activity).toMatchObject({
+    evidence_status: "complete",
+    latest_source_activity_at: null,
+    source_weeks: [],
+  });
+});
+
+test("rejects a clone whose branch advanced after observation", async () => {
+  await expect(
+    inspectGitBaseline(
+      {
+        repository: "example/project",
+        defaultBranch: "main",
+        expectedHeadSha: "a".repeat(40),
+        headCommittedAt: "2026-07-23T00:00:00.000Z",
+        now: "2026-07-24T00:00:00.000Z",
+        activity: provisionalActivity(),
+      },
+      {
+        makeTemporaryRoot: async () => "C:\\temp\\advanced-inspection",
+        cleanup: async () => {},
+        runGit: async (_cwd, args) =>
+          args[0] === "rev-parse" ? "b".repeat(40) : "",
+      },
+    ),
+  ).rejects.toThrow("advanced after observation");
+});
+
 test("cleans the temporary root when cloning times out", async () => {
   const cleanup = vi.fn(async () => {});
   await expect(
@@ -248,6 +345,8 @@ test("cleans the temporary root when cloning times out", async () => {
       {
         repository: "example/project",
         defaultBranch: "main",
+        expectedHeadSha: "a".repeat(40),
+        headCommittedAt: "2026-07-23T00:00:00.000Z",
         now: "2026-07-24T00:00:00.000Z",
         activity: provisionalActivity(),
       },
