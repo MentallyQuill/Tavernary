@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 
+import { DualRange } from "@/components/ui/dual-range";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
@@ -55,17 +56,6 @@ export function KitFilterPanel({
         : [...current, value],
     });
   };
-  const setMinimum = (value: number) =>
-    onChange({
-      ...query,
-      minProjects: Math.min(Math.max(3, value), query.maxProjects),
-    });
-  const setMaximum = (value: number) =>
-    onChange({
-      ...query,
-      maxProjects: Math.max(Math.min(50, value), query.minProjects),
-    });
-
   const content = (
     <>
       {mobile ? (
@@ -130,45 +120,17 @@ export function KitFilterPanel({
           ))}
         </datalist>
       </fieldset>
-      <fieldset className="filter-group kit-size-filter">
-        <legend>Kit size</legend>
-        <label>
-          Minimum
-          <input
-            type="range"
-            min="3"
-            max="50"
-            value={query.minProjects}
-            onChange={(event) => setMinimum(Number(event.target.value))}
-          />
-          <input
-            type="number"
-            min="3"
-            max="50"
-            aria-label="Minimum projects"
-            value={query.minProjects}
-            onChange={(event) => setMinimum(Number(event.target.value))}
-          />
-        </label>
-        <label>
-          Maximum
-          <input
-            type="range"
-            min="3"
-            max="50"
-            value={query.maxProjects}
-            onChange={(event) => setMaximum(Number(event.target.value))}
-          />
-          <input
-            type="number"
-            min="3"
-            max="50"
-            aria-label="Maximum projects"
-            value={query.maxProjects}
-            onChange={(event) => setMaximum(Number(event.target.value))}
-          />
-        </label>
-      </fieldset>
+      <DualRange
+        label="Kit size"
+        minimumLabel="Minimum projects"
+        maximumLabel="Maximum projects"
+        min={3}
+        max={50}
+        value={[query.minProjects, query.maxProjects]}
+        onChange={([minProjects, maxProjects]) =>
+          onChange({ ...query, minProjects, maxProjects })
+        }
+      />
       <label className="kit-pick-filter">
         <input
           type="checkbox"

@@ -23,6 +23,26 @@ describe("KitFilterPanel", () => {
     ).toHaveClass("control-quiet");
   });
 
+  test("renders Kit size as one dual-thumb range without number fields", () => {
+    const { container } = render(
+      <KitFilterPanel
+        query={{ ...DEFAULT_KIT_QUERY, minProjects: 8, maxProjects: 24 }}
+        kits={[]}
+        projects={[]}
+        onChange={() => undefined}
+        onClear={() => undefined}
+      />,
+    );
+
+    expect(screen.getByRole("group", { name: "Kit size" })).toHaveClass(
+      "dual-range",
+    );
+    expect(screen.getAllByRole("slider")).toHaveLength(2);
+    expect(container.querySelectorAll('input[type="number"]')).toHaveLength(0);
+    expect(screen.getByText("Min 8")).toBeVisible();
+    expect(screen.getByText("Max 24")).toBeVisible();
+  });
+
   test("renders mobile Kit filters as a visible modal sheet", () => {
     render(
       <KitFilterPanel

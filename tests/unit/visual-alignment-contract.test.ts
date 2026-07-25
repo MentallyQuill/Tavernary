@@ -34,6 +34,21 @@ describe("catalog visual alignment", () => {
     expect(css).not.toContain("writing-mode: vertical-rl");
   });
 
+  test("styles one selected dual-range track with touch-safe thumbs", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-kind-preset\)/s,
+    );
+    expect(css).toMatch(
+      /\.dual-range input\[type="range"\]\s*\{[^}]*position:\s*absolute[^}]*background:\s*transparent/s,
+    );
+    expect(responsive).toMatch(
+      /@media \(pointer:\s*coarse\)[\s\S]*?\.dual-range-track\s*\{[^}]*min-height:\s*44px/s,
+    );
+  });
+
   test("uses the supplied deployable logo in mockup order", () => {
     const header = read("src/features/catalog/components/site-header.tsx");
 

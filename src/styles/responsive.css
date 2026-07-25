@@ -461,3 +461,12 @@
     font-size: 11px;
   }
 }
+@media (pointer: coarse) {
+  .dual-range-track {
+    min-height: 44px;
+  }
+
+  .dual-range input[type="range"] {
+    height: 44px;
+  }
+}
