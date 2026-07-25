@@ -8,6 +8,7 @@ import type { ValidationResult } from "./validate.mjs";
 export function planRepositoryIdentityBackfill(options: {
   records: IdentityRecord[];
   snapshots: IdentitySnapshot[];
+  projectIds?: ReadonlySet<string> | null;
   validateCatalog?: (options: {
     records: IdentityRecord[];
     snapshots: IdentitySnapshot[];
@@ -18,3 +19,8 @@ export function planRepositoryIdentityBackfill(options: {
     validation: ValidationResult;
   }
 >;
+
+export function parseIdentityBackfillArguments(argv: string[]): {
+  write: boolean;
+  projectIds: Set<string> | null;
+};

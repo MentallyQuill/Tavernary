@@ -23,6 +23,7 @@
     "palette:audit": "node scripts/audit-palette.mjs",
     "catalog:validate": "node scripts/catalog/validate.mjs",
     "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
+    "catalog:enrich": "node scripts/catalog/enrich-readmes.mjs",
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",

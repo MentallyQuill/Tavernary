@@ -26,7 +26,7 @@
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
-    "summary": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 140 },
     "metadata_status": { "enum": ["provisional", "curated"] },
     "source": {
       "oneOf": [

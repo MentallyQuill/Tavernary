@@ -22,6 +22,7 @@ function repositoryNode(
     name: `repository-${index}`,
     nameWithOwner: `owner-${index}/repository-${index}`,
     url: `https://github.com/owner-${index}/repository-${index}`,
+    description: `Description ${index}`,
     createdAt: "2026-01-01T00:00:00Z",
     diskUsage: 100 + index,
     isArchived: false,
@@ -99,6 +100,8 @@ describe("GitHub repository observer", () => {
     expect(calls[0].query).toContain(
       "r0: repository(owner: $owner0, name: $name0)",
     );
+    expect(calls[0].query).toMatch(/\n\s+description\n/);
+    expect(calls[0].query).not.toContain("/readme");
     expect(calls[0].query).not.toContain("owner-0");
     expect(calls[0].variables).toMatchObject({
       owner0: "owner-0",
@@ -129,6 +132,7 @@ describe("GitHub repository observer", () => {
       projectId: "project-0",
       repository: {
         id: 1000,
+        description: "Description 0",
         defaultBranch: "main",
         headCommittedAt: "2026-07-23T00:00:00.000Z",
       },
@@ -140,6 +144,18 @@ describe("GitHub repository observer", () => {
       latestReleaseAt: null,
       coarseLicenseSpdxId: null,
     });
+  });
+
+  test("preserves a nullable GitHub short description", async () => {
+    const result = await observeRepositories(records(1), {
+      token: "test-token",
+      fetchImpl: async () =>
+        batchResponse(0, 1, {
+          r0: repositoryNode(0, { description: null }),
+        }),
+    });
+
+    expect(result.observations[0].repository.description).toBeNull();
   });
 
   test("keeps alias errors, identity changes, and missing branches per project", async () => {
