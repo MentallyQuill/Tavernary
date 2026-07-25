@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T03:20:38.748Z",
-  "completed_at": "2026-07-25T03:35:48.326Z",
+  "started_at": "2026-07-25T05:01:47.527Z",
+  "completed_at": "2026-07-25T05:14:24.104Z",
   "counts": {
     "total": 24,
     "checked": 24,
     "changed": 24,
     "unchanged": 0,
-    "provisional": 75,
-    "degraded": 4,
+    "provisional": 56,
+    "degraded": 5,
     "unavailable": 0,
     "failed": 6,
     "compared": 0,
@@ -22,150 +22,150 @@
     "graphql_remaining": 4999,
     "rest_requests": 0
   },
-  "duration_ms": 909578,
+  "duration_ms": 756577,
   "project_timings": [
-    {
-      "project_id": "icefog72-sillytavern-everytextlineeditor",
-      "outcome": "failed",
-      "duration_ms": 907832,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "j-dandelion-lumiverse-canvas",
-      "outcome": "failed",
-      "duration_ms": 907832,
-      "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "lithiumwaves-danganronpa-sillytavern",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "maxipawlowski-story-orchestrator",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
     {
       "project_id": "mentallyquill-directive",
       "outcome": "failed",
-      "duration_ms": 907833,
+      "duration_ms": 754645,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
       "project_id": "mentallyquill-saga",
       "outcome": "failed",
-      "duration_ms": 907833,
+      "duration_ms": 754645,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "mentallyquill-st-wandlight",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
     },
     {
       "project_id": "mindbound-lumiscript",
       "outcome": "failed",
-      "duration_ms": 907833,
+      "duration_ms": 754645,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "mitaska-weathertweaker",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "mkrrussell0411-star-character-stats-extension",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "mokimoko-sillytavern-dynamicaudioredux",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "mokimoko-sillytavern-scenariocrafter",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "morgoookru-st-chat-finder",
-      "outcome": "baseline",
-      "duration_ms": 907833,
-      "error_code": null
-    },
-    {
-      "project_id": "multihogaurelius-context-injection-rng-for-dnd",
-      "outcome": "baseline",
-      "duration_ms": 907834,
-      "error_code": null
     },
     {
       "project_id": "multihogaurelius-sillytavern-multihogdndframework",
       "outcome": "failed",
-      "duration_ms": 907834,
+      "duration_ms": 754645,
       "error_code": "PROJECT_REFRESH_FAILED"
     },
     {
-      "project_id": "n0819-sonder-engine",
+      "project_id": "pasta-devs-marinara-engine",
+      "outcome": "failed",
+      "duration_ms": 754645,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "phampyk-sillytavern-avatarbanner",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754645,
       "error_code": null
     },
     {
-      "project_id": "nattaphat010447-nutho-autocloser",
+      "project_id": "platberlitz-sd-proxy",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754645,
       "error_code": null
     },
     {
-      "project_id": "nbrown725-sillytavern-alternatedescriptions",
+      "project_id": "platberlitz-sillytavern-character-colors",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "nemovonnirgend-nemopresetext",
+      "project_id": "prolix-oc-lumiverse",
+      "outcome": "failed",
+      "duration_ms": 754646,
+      "error_code": "PROJECT_REFRESH_FAILED"
+    },
+    {
+      "project_id": "prolix-oc-lumiverse-chatroom",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "nialyn-mid-polyceph",
+      "project_id": "prolix-oc-lumiverse-simtracker",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "nickchegg-game-engine",
+      "project_id": "prolix-oc-lumiverse-spotifycontrols",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "noathouard-sillytavern-extension-npc-portait-switcher",
+      "project_id": "prolix-oc-lumiverse-xtimeline",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "p-e-w-sorcery",
+      "project_id": "prolix-oc-sillytavern-simtracker",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
       "error_code": null
     },
     {
-      "project_id": "paradox460-st-messagesplit",
+      "project_id": "promansis-summary-sharder",
       "outcome": "baseline",
-      "duration_ms": 907834,
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "prompt-and-circumstance-storymode",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "quackified-floating-viewer",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "qvink-sillytavern-messagesummarize",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "qvink-sillytavern-rightclickmessagemenu",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "retrovioletred-sillytavern-pictureprompt",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "revivalist-dev-guidedgenerations-extension",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "rivelledays-sillytavern-chatcompletiontabs",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "rivelledays-sillytavern-moonlitechoestheme",
+      "outcome": "baseline",
+      "duration_ms": 754646,
+      "error_code": null
+    },
+    {
+      "project_id": "rossascends-st-samplerkillswitches",
+      "outcome": "baseline",
+      "duration_ms": 754646,
       "error_code": null
     }
   ],

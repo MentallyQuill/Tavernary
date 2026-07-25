@@ -17,23 +17,10 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:01:47.527Z",
     "baseline_attempts": 0
   },
   "community": {
@@ -42,7 +29,11 @@
     "subscribers_count": 0,
     "aggregate": 5
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-25T02:46:59.372Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-25T05:01:47.527Z",
   "stale_since": null
 }
