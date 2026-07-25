@@ -1,40 +1,34 @@
 {
   "schema_version": 1,
   "mode": "baseline",
-  "started_at": "2026-07-25T02:29:43.060Z",
-  "completed_at": "2026-07-25T02:34:43.912Z",
+  "started_at": "2026-07-25T02:36:19.945Z",
+  "completed_at": "2026-07-25T02:41:21.244Z",
   "counts": {
-    "total": 2,
-    "checked": 2,
-    "changed": 2,
+    "total": 1,
+    "checked": 1,
+    "changed": 1,
     "unchanged": 0,
-    "provisional": 1,
-    "degraded": 1,
+    "provisional": 0,
+    "degraded": 2,
     "unavailable": 0,
     "failed": 1,
     "compared": 0,
-    "baseline": 1,
+    "baseline": 0,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4997,
+    "graphql_remaining": 4996,
     "rest_requests": 0
   },
-  "duration_ms": 300852,
+  "duration_ms": 301299,
   "project_timings": [
     {
       "project_id": "mentallyquill-recursion",
       "outcome": "failed",
-      "duration_ms": 300374,
+      "duration_ms": 300848,
       "error_code": "PROJECT_REFRESH_FAILED"
-    },
-    {
-      "project_id": "sillytavern-sillytavern",
-      "outcome": "baseline",
-      "duration_ms": 300374,
-      "error_code": null
     }
   ],
   "snapshot_changes": true,
