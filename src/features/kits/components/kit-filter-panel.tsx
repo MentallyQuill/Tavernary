@@ -1,8 +1,13 @@
 "use client";
 
+import { useRef } from "react";
+
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { useModalSurface } from "@/hooks/use-modal-surface";
+
+const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
 function labels(kits: CatalogKit[], property: "frontends" | "purposes") {
   const values = new Map<string, string>();
@@ -29,6 +34,16 @@ export function KitFilterPanel({
   mobile?: boolean;
   onClose?: () => void;
 }) {
+  const sheetRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const dismiss = onClose ?? (() => undefined);
+  useModalSurface({
+    active: mobile,
+    containerRef: sheetRef,
+    initialFocusRef: headingRef,
+    onDismiss: dismiss,
+    inertSelectors: modalBackground,
+  });
   const updateArray = (property: "frontends" | "purposes", value: string) => {
     const current = query[property];
     onChange({
@@ -49,15 +64,21 @@ export function KitFilterPanel({
       maxProjects: Math.max(Math.min(50, value), query.minProjects),
     });
 
-  return (
-    <aside
-      className={`filter-panel kit-filter-panel${mobile ? " mobile-filter-sheet" : ""}`}
-      aria-label="Kit filters"
-    >
+  const content = (
+    <>
       {mobile ? (
-        <div className="filter-sheet-header">
-          <strong>Kit filters</strong>
-          <button type="button" onClick={onClose}>
+        <div className="filter-sheet-heading">
+          <div>
+            <small>Refine catalog</small>
+            <h2 ref={headingRef} id="kit-filter-heading" tabIndex={-1}>
+              Kit filters
+            </h2>
+          </div>
+          <button
+            type="button"
+            aria-label="Close Kit filters"
+            onClick={dismiss}
+          >
             Close
           </button>
         </div>
@@ -159,6 +180,29 @@ export function KitFilterPanel({
       <button type="button" className="clear-filters" onClick={onClear}>
         Clear Kit filters
       </button>
+    </>
+  );
+
+  if (mobile) {
+    return (
+      <div className="filter-overlay" onMouseDown={dismiss}>
+        <section
+          ref={sheetRef}
+          className="filter-sheet kit-filter-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="kit-filter-heading"
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          {content}
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <aside className="filter-panel kit-filter-panel" aria-label="Kit filters">
+      {content}
     </aside>
   );
 }

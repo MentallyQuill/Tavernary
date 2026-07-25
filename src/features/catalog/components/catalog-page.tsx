@@ -78,11 +78,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   }, [query.density, query.mode]);
 
   useEffect(() => {
-    document.body.classList.toggle("sheet-open", filtersOpen);
-    return () => document.body.classList.remove("sheet-open");
-  }, [filtersOpen]);
-
-  useEffect(() => {
     const focusSearch = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
       if (
@@ -95,14 +90,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         event.preventDefault();
         searchRef.current?.focus();
       }
-      if (event.key === "Escape" && filtersOpen) {
-        setFiltersOpen(false);
-        filterButtonRef.current?.focus();
-      }
     };
     window.addEventListener("keydown", focusSearch);
     return () => window.removeEventListener("keydown", focusSearch);
-  }, [filtersOpen]);
+  }, []);
 
   const update = <Key extends keyof CatalogQuery>(
     key: Key,

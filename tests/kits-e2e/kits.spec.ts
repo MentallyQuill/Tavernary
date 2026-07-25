@@ -81,6 +81,35 @@ test("applies every Kit filter and clears them", async ({ page }) => {
   await expect(cards(page)).toHaveCount(8);
 });
 
+test("mobile Kit filters are visible, dismissible, and mode-local", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await expect(page).toHaveURL(/mode=kits/);
+  await page.getByRole("button", { name: "Close Kit workspace" }).click();
+
+  const filterButton = page.getByRole("button", { name: "Open filters" });
+  await filterButton.click();
+  const kitFilters = page.getByRole("dialog", { name: "Kit filters" });
+  await expect(kitFilters).toBeVisible();
+  await kitFilters.getByText("Tavernary Pick only").click();
+  await expect(filterButton.locator("b")).toHaveText("1");
+  await kitFilters.getByRole("button", { name: "Close Kit filters" }).click();
+  await expect(filterButton).toBeFocused();
+
+  await page.getByRole("button", { name: "Browse categories" }).click();
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  await expect(kitFilters).toHaveCount(0);
+  await filterButton.click();
+  await expect(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Kit filters" })).toHaveCount(
+    0,
+  );
+});
+
 test("inspects stacks, preserves caution rows, and builds contribution URLs", async ({
   page,
   context,
