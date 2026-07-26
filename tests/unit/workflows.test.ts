@@ -28,6 +28,53 @@ function allSteps(document: Record<string, unknown>) {
   return Object.values(jobs).flatMap((job) => job.steps ?? []);
 }
 
+test("uses category-prefixed workflow display names", async () => {
+  const expectedNames = {
+    "admit-issue": "Submission intake: Check issue eligibility",
+    "triage-submission": "Project submissions: Validate submission",
+    "generate-project-submission": "Project submissions: Create review PR",
+    "project-submission-lifecycle":
+      "Project submissions: Process review result",
+    "triage-kit-submission": "Kit submissions: Validate submission",
+    "apply-kit-submission": "Kit submissions: Publish approved Kit",
+    "apply-kit-withdrawal": "Kit submissions: Withdraw published Kit",
+    "refresh-catalog": "Catalog maintenance: Refresh source data",
+    "enrich-catalog": "Catalog maintenance: Enrich project metadata",
+    "backfill-repository-identities":
+      "Catalog maintenance: Backfill repository IDs",
+    ci: "Site: Validate changes",
+    "deploy-pages": "Site: Deploy to GitHub Pages",
+  } as const;
+
+  for (const [file, expectedName] of Object.entries(expectedNames)) {
+    expect((await workflow(file)).name).toBe(expectedName);
+  }
+});
+
+test("identifies the object and action in every workflow run name", async () => {
+  const expectedRunNameParts = {
+    "admit-issue": ["Issue #", "Check submission eligibility"],
+    "triage-submission": ["Project #", "Validate submission"],
+    "generate-project-submission": ["Project #", "Create review PR"],
+    "project-submission-lifecycle": ["Project review PR #", "Process result"],
+    "triage-kit-submission": ["Kit #", "Validate submission"],
+    "apply-kit-submission": ["Kit #", "Publish approved Kit"],
+    "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
+    "refresh-catalog": ["Catalog:", "Refresh"],
+    "enrich-catalog": ["Catalog:", "Enrich", "project metadata"],
+    "backfill-repository-identities": ["Catalog:", "Backfill repository IDs"],
+    ci: ["Site:", "Validate"],
+    "deploy-pages": ["Site:", "Deploy"],
+  } as const;
+
+  for (const [file, expectedParts] of Object.entries(expectedRunNameParts)) {
+    const runName = String((await workflow(file))["run-name"] ?? "");
+    for (const expectedPart of expectedParts) {
+      expect(runName).toContain(expectedPart);
+    }
+  }
+});
+
 test("pins every first-party action to its resolved commit", async () => {
   for (const name of [
     "ci",
@@ -331,7 +378,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   ]);
   expect(inputs.batch_size.default).toBe(12);
   expect(inputs).not.toHaveProperty("start_index");
-  expect(refresh["run-name"]).toContain("Baseline queue");
+  expect(refresh["run-name"]).toContain("Catalog: Refresh baseline queue");
   const refreshSteps = refresh.jobs.refresh.steps;
   expect(refreshSteps.map(({ name }) => name)).toEqual(
     expect.arrayContaining([
