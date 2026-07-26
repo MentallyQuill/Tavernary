@@ -1,68 +1,66 @@
-"use client";
-
-import { useState } from "react";
-
+import { CategoryIcon } from "@/components/icons/category-icon";
+import { ProjectCard } from "@/features/catalog/components/project-card";
 import type { CatalogKitComponent } from "@/features/kits/kit-types";
+
+const kindLabels = {
+  frontend: "Frontend",
+  extension: "Extension",
+  preset: "System Preset",
+};
 
 export function KitProjectStack({
   components,
+  now,
 }: {
   components: CatalogKitComponent[];
+  now: string;
 }) {
-  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(
-    null,
-  );
-
   return (
-    <ol className="kit-project-stack">
+    <ol className="kit-project-stack" aria-label="Kit projects">
       {components.map((component) => {
-        const expanded = expandedProjectId === component.projectId;
-        const flagged = component.availability === "flagged";
+        const project =
+          component.availability === "available" &&
+          component.project !== null &&
+          component.canonicalUrl !== null
+            ? {
+                ...component.project,
+                canonicalUrl: component.canonicalUrl,
+              }
+            : null;
         return (
-          <li key={component.projectId} className={flagged ? "flagged" : ""}>
-            {flagged ? (
-              <div className="kit-project-row">
-                <span>
-                  <strong>{component.name}</strong>
-                  <small>{component.kind}</small>
-                </span>
-                <em>{component.unavailableReason}</em>
-              </div>
+          <li
+            key={component.projectId}
+            className={project ? undefined : "flagged"}
+          >
+            {project ? (
+              <ProjectCard project={project} now={now} />
             ) : (
-              <>
-                <button
-                  type="button"
-                  className="kit-project-row"
-                  aria-label={`${component.name} project details`}
-                  aria-expanded={expanded}
-                  onClick={() =>
-                    setExpandedProjectId(expanded ? null : component.projectId)
-                  }
-                >
-                  <span>
-                    <strong>{component.name}</strong>
-                    <small>{component.kind}</small>
+              <div
+                className={`project-card kit-project-card-unavailable kind-${component.kind}`}
+                role="group"
+                aria-label={`${component.name} unavailable`}
+                aria-disabled="true"
+              >
+                <div className="card-top">
+                  <span className="card-identity">
+                    <span className="function-symbol">
+                      <CategoryIcon
+                        name={
+                          component.primaryFunction as Parameters<
+                            typeof CategoryIcon
+                          >[0]["name"]
+                        }
+                      />
+                    </span>
+                    <span>{kindLabels[component.kind]}</span>
                   </span>
-                  <span aria-hidden="true">{expanded ? "−" : "+"}</span>
-                </button>
-                {expanded ? (
-                  <div className="kit-project-details">
-                    <p>
-                      {component.project?.summary ??
-                        `${component.name} is part of this Kit.`}
-                    </p>
-                    {component.canonicalUrl ? (
-                      <a
-                        href={component.canonicalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {component.name}
-                      </a>
-                    ) : null}
-                  </div>
-                ) : null}
-              </>
+                  <span className="development-unavailable">Unavailable</span>
+                </div>
+                <h2>{component.name}</h2>
+                <p className="card-summary">
+                  {component.unavailableReason ?? "Project unavailable"}
+                </p>
+              </div>
             )}
           </li>
         );

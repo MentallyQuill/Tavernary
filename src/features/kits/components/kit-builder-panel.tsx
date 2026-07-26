@@ -46,6 +46,7 @@ export function availableBuilderHeight(viewportHeight: number, top: number) {
 export function KitBuilderPanel({
   state,
   kit,
+  now,
   onCopyLink,
   onCollapse,
   onDuplicate,
@@ -364,7 +365,7 @@ export function KitBuilderPanel({
                 Request withdrawal
               </a>
             </div>
-            <KitProjectStack components={kit.components} />
+            <KitProjectStack components={kit.components} now={now} />
           </div>
         ) : state.mode === "build" ? (
           <div className="kit-builder-panel-build">

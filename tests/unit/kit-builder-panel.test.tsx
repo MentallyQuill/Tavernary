@@ -14,6 +14,7 @@ import {
   KitBuilderPanel as ProductionKitBuilderPanel,
 } from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
+import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
 const originalMatchMedia = window.matchMedia;
@@ -63,6 +64,76 @@ function mockMatchMedia({
   });
 }
 
+function fixtureProject({
+  id,
+  name,
+  kind,
+  primaryFunction,
+}: Pick<
+  CatalogProject,
+  "id" | "name" | "kind" | "primaryFunction"
+>): CatalogProject {
+  return {
+    id,
+    name,
+    kind,
+    metadataStatus: "curated",
+    sourceStatus: "healthy",
+    primaryFunction,
+    summary: `${name} summary`,
+    canonicalUrl: `https://example.com/${id}`,
+    catalogedAt: "2026-07-01T00:00:00.000Z",
+    catalogCohort: "standard",
+    frontends: [],
+    capabilities: [],
+    searchableText: name.toLocaleLowerCase(),
+    attribution: {
+      owner: "example-owner",
+      contributors: [],
+      humanContributorCount: 1,
+      status: "current",
+    },
+    activity: {
+      latestSourceActivityAt: "2026-07-24T00:00:00.000Z",
+      activeWeeks12: 12,
+      weeklyActivity: [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+      ],
+      evidenceStatus: "complete",
+      dormant: false,
+    },
+    latestReleaseAt: null,
+    community: null,
+    repositorySizeKb: null,
+    license: {
+      status: "osi-approved",
+      label: "MIT",
+      tooltip: "MIT License",
+    },
+    preset:
+      kind === "preset"
+        ? {
+            version: "1.0.0",
+            publishedAt: "2026-07-24T00:00:00.000Z",
+            artifactSizeBytes: 1024,
+          }
+        : null,
+    refreshedAt: "2026-07-24T00:00:00.000Z",
+    staleSince: null,
+  };
+}
+
 function fixtureKit(): CatalogKit {
   return {
     id: "story-kit-41",
@@ -83,7 +154,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/frontend",
-        project: null,
+        project: fixtureProject({
+          id: "frontend",
+          name: "Frontend",
+          kind: "frontend",
+          primaryFunction: "frontend",
+        }),
       },
       {
         projectId: "memory",
@@ -93,7 +169,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/memory",
-        project: null,
+        project: fixtureProject({
+          id: "memory",
+          name: "Memory",
+          kind: "extension",
+          primaryFunction: "memory-retrieval",
+        }),
       },
       {
         projectId: "preset",
@@ -103,7 +184,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/preset",
-        project: null,
+        project: fixtureProject({
+          id: "preset",
+          name: "Preset",
+          kind: "preset",
+          primaryFunction: "generation-reasoning",
+        }),
       },
       {
         projectId: "flagged",
@@ -531,8 +617,7 @@ describe("Kit Builder", () => {
     expect(screen.getByText("Unknown Kit")).toBeVisible();
   });
 
-  test("expands one project at a time and disables flagged rows", async () => {
-    const user = userEvent.setup();
+  test("links available projects directly and keeps flagged projects noninteractive", () => {
     render(
       <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
@@ -542,19 +627,20 @@ describe("Kit Builder", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Story Kit" })).toBeVisible();
-    expect(
-      screen.getAllByRole("button", { name: /project details/i }),
-    ).toHaveLength(3);
-    await user.click(
-      screen.getByRole("button", { name: "Memory project details" }),
+    expect(screen.getByRole("link", { name: "Frontend" })).toHaveAttribute(
+      "href",
+      "https://example.com/frontend",
     );
-    expect(screen.getByRole("link", { name: "Memory" })).toBeVisible();
-    await user.click(
-      screen.getByRole("button", { name: "Preset project details" }),
+    expect(screen.getByRole("link", { name: "Memory" })).toHaveAttribute(
+      "href",
+      "https://example.com/memory",
     );
-    expect(
-      screen.queryByRole("link", { name: "Memory" }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Preset" })).toHaveAttribute(
+      "href",
+      "https://example.com/preset",
+    );
+    expect(screen.queryByText("project details")).not.toBeInTheDocument();
+    expect(document.querySelector("[aria-expanded]")).toBeNull();
     expect(screen.getByText("safety-review")).toBeVisible();
     expect(
       screen.queryByRole("link", { name: "Flagged" }),
