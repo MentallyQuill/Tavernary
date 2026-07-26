@@ -133,9 +133,7 @@ describe("catalog Kit batch flow", () => {
       screen.getByRole("button", { name: "Show Frontend cards" }),
     );
 
-    expect(
-      screen.getByRole("checkbox", { name: "Frontend" }),
-    ).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Frontend" })).toBeChecked();
     expect(
       screen.getByRole("button", { name: "Remove Frontend" }),
     ).toBeVisible();
@@ -179,9 +177,7 @@ describe("catalog Kit batch flow", () => {
       "extension",
       "frontend",
     ]);
-    expect(
-      screen.getByRole("checkbox", { name: "Frontend" }),
-    ).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Frontend" })).toBeChecked();
   });
 
   test("returns from Kits mode to the project cards without discarding the draft", () => {

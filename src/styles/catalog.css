@@ -2598,9 +2598,46 @@
   border-color: var(--color-frontend-border);
 }
 
-.kit-frontend-slot > span {
+.kit-frontend-discovery {
   grid-column: 1 / -1;
+  display: grid;
+  width: 100%;
+  min-height: 44px;
+  gap: 3px;
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 8px;
   color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition:
+    color var(--kit-motion-state) var(--kit-motion-ease),
+    background var(--kit-motion-state) var(--kit-motion-ease);
+}
+
+.kit-frontend-discovery strong {
+  color: var(--color-frontend-text);
+  font-size: 12px;
+}
+
+.kit-frontend-discovery span {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.kit-frontend-discovery:hover {
+  background: var(--color-frontend-bg-hover);
+}
+
+.kit-frontend-discovery:active {
+  background: var(--color-frontend-bg);
+}
+
+.kit-frontend-discovery:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
 .kit-frontend-slot[data-drop-state="valid"],

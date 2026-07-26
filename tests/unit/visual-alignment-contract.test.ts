@@ -425,6 +425,23 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("styles the empty Frontend slot as a tokenized catalog shortcut", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-frontend-discovery\s*\{[^}]*grid-column:\s*1\s*\/\s*-1[^}]*cursor:\s*pointer/s,
+    );
+    expect(css).toMatch(
+      /\.kit-frontend-discovery strong\s*\{[^}]*color:\s*var\(--color-frontend-text\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-frontend-discovery:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--color-focus-ring\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-frontend-discovery:hover\s*\{[^}]*background:\s*var\(--color-frontend-bg-hover\)/s,
+    );
+  });
+
   test("keeps repository facts visible on mobile", () => {
     const responsive = read("src/styles/responsive.css");
 

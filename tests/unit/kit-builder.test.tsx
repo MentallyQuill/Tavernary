@@ -30,10 +30,7 @@ function KitBuilder({
   ...props
 }: TestKitBuilderProps) {
   return (
-    <ProductionKitBuilder
-      {...props}
-      onRevealFrontends={onRevealFrontends}
-    />
+    <ProductionKitBuilder {...props} onRevealFrontends={onRevealFrontends} />
   );
 }
 
