@@ -8,15 +8,34 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import { KitBuilder } from "@/features/kits/components/kit-builder";
+import { KitBuilder as ProductionKitBuilder } from "@/features/kits/components/kit-builder";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
 
 const originalMatchMedia = window.matchMedia;
+
+type TestKitBuilderProps = Omit<
+  ComponentProps<typeof ProductionKitBuilder>,
+  "onRevealFrontends"
+> & {
+  onRevealFrontends?: () => void;
+};
+
+function KitBuilder({
+  onRevealFrontends = () => undefined,
+  ...props
+}: TestKitBuilderProps) {
+  return (
+    <ProductionKitBuilder
+      {...props}
+      onRevealFrontends={onRevealFrontends}
+    />
+  );
+}
 
 function mockTouchLayout() {
   Object.defineProperty(window, "matchMedia", {
@@ -630,6 +649,31 @@ describe("Kit builder controls", () => {
     description: "A compact story stack.",
     projectIds: ["frontend", "memory", "preset"],
   };
+
+  test("teaches and invokes Frontend catalog discovery from the empty slot", async () => {
+    const user = userEvent.setup();
+    const onRevealFrontends = vi.fn();
+
+    render(
+      <KitBuilder
+        draft={{ ...validDraft, projectIds: [] }}
+        projects={projects}
+        originalProjectIds={[]}
+        onRevealFrontends={onRevealFrontends}
+        onUpdate={() => undefined}
+        onSubmit={() => undefined}
+      />,
+    );
+
+    const shortcut = screen.getByRole("button", {
+      name: "Show Frontend cards",
+    });
+    expect(shortcut).toHaveTextContent("Add a Frontend");
+    expect(shortcut).toHaveTextContent("Choose one from the catalog cards");
+
+    await user.click(shortcut);
+    expect(onRevealFrontends).toHaveBeenCalledOnce();
+  });
 
   test("uses the shared primary treatment for submission", () => {
     render(

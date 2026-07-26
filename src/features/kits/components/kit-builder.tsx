@@ -18,12 +18,14 @@ export function KitBuilder({
   draft,
   projects,
   originalProjectIds,
+  onRevealFrontends,
   onUpdate,
   onSubmit,
 }: {
   draft: KitDraft;
   projects: CatalogProject[];
   originalProjectIds: string[];
+  onRevealFrontends: () => void;
   onUpdate: (patch: Partial<KitDraft>) => void;
   onSubmit: () => void;
 }) {
@@ -236,6 +238,7 @@ export function KitBuilder({
         <KitFrontendSlot
           project={frontendId ? (projectsById.get(frontendId) ?? null) : null}
           touchLayout={touchLayout}
+          onRevealFrontends={onRevealFrontends}
           dragging={
             drag.dragState?.projectId === frontendId &&
             drag.dragState.phase === "remove"

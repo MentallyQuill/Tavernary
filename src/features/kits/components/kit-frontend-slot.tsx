@@ -6,12 +6,14 @@ export function KitFrontendSlot({
   project,
   touchLayout,
   dragging,
+  onRevealFrontends,
   onRemove,
   onDragStart,
 }: {
   project: CatalogProject | null;
   touchLayout: boolean;
   dragging: boolean;
+  onRevealFrontends: () => void;
   onRemove: () => void;
   onDragStart: PointerEventHandler<HTMLButtonElement>;
 }) {
@@ -44,7 +46,15 @@ export function KitFrontendSlot({
           </button>
         </>
       ) : (
-        <span>Choose one Frontend</span>
+        <button
+          type="button"
+          className="kit-frontend-discovery"
+          aria-label="Show Frontend cards"
+          onClick={onRevealFrontends}
+        >
+          <strong>Add a Frontend</strong>
+          <span>Choose one from the catalog cards</span>
+        </button>
       )}
     </div>
   );

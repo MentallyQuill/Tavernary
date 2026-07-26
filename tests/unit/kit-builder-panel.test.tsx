@@ -22,19 +22,26 @@ const originalMatchMedia = window.matchMedia;
 
 type TestKitBuilderPanelProps = Omit<
   ComponentProps<typeof ProductionKitBuilderPanel>,
-  "now" | "onCopyLink"
+  "now" | "onCopyLink" | "onRevealFrontends"
 > & {
   now?: string;
   onCopyLink?: (kitId: string) => void | Promise<void>;
+  onRevealFrontends?: () => void;
 };
 
 function KitBuilderPanel({
   now = "2026-07-24T00:00:00.000Z",
   onCopyLink = () => undefined,
+  onRevealFrontends = () => undefined,
   ...props
 }: TestKitBuilderPanelProps) {
   return (
-    <ProductionKitBuilderPanel {...props} now={now} onCopyLink={onCopyLink} />
+    <ProductionKitBuilderPanel
+      {...props}
+      now={now}
+      onCopyLink={onCopyLink}
+      onRevealFrontends={onRevealFrontends}
+    />
   );
 }
 

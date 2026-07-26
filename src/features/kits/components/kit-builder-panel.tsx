@@ -80,6 +80,7 @@ export function KitBuilderPanel({
   projects = [],
   originalProjectIds = [],
   onStartCreate,
+  onRevealFrontends,
   onUpdateDraft,
   onSubmitDraft,
   onDiscardDraft,
@@ -98,6 +99,7 @@ export function KitBuilderPanel({
   projects?: CatalogProject[];
   originalProjectIds?: string[];
   onStartCreate?: () => void;
+  onRevealFrontends: () => void;
   onUpdateDraft?: (
     patch: Partial<import("@/features/kits/kit-types").KitDraft>,
   ) => void;
@@ -482,6 +484,7 @@ export function KitBuilderPanel({
                 draft={state.draft}
                 projects={projects}
                 originalProjectIds={originalProjectIds}
+                onRevealFrontends={onRevealFrontends}
                 onUpdate={(patch) => onUpdateDraft?.(patch)}
                 onSubmit={() => onSubmitDraft?.()}
               />

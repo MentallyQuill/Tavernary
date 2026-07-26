@@ -30,6 +30,22 @@ import { openKitSubmission } from "@/features/kits/submission-transport";
 
 const originalMatchMedia = window.matchMedia;
 
+function mockDesktopMatchMedia() {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
+
 function project(): CatalogProject {
   return {
     id: "memory",
@@ -107,6 +123,85 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
+  test("reveals Frontend cards through the visible shared filter", () => {
+    mockDesktopMatchMedia();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create new Kit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Show Frontend cards" }),
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: "Frontend" }),
+    ).toBeChecked();
+    expect(
+      screen.getByRole("button", { name: "Remove Frontend" }),
+    ).toBeVisible();
+    expect(new URLSearchParams(window.location.search).getAll("kind")).toEqual([
+      "frontend",
+    ]);
+    expect(screen.getByRole("link", { name: "Frontend" })).toBeVisible();
+    expect(
+      screen.queryByRole("link", { name: "Memory" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Frontend" }));
+    expect(
+      screen.getByRole("checkbox", { name: "Frontend" }),
+    ).not.toBeChecked();
+    expect(new URLSearchParams(window.location.search).getAll("kind")).toEqual(
+      [],
+    );
+  });
+
+  test("preserves catalog filters and never toggles Frontend off", () => {
+    mockDesktopMatchMedia();
+    window.history.replaceState(
+      null,
+      "",
+      "/?q=memory&kind=extension&license=missing",
+    );
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Kit Builder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create new Kit" }));
+    const shortcut = screen.getByRole("button", {
+      name: "Show Frontend cards",
+    });
+    fireEvent.click(shortcut);
+    fireEvent.click(shortcut);
+
+    expect(window.location.search).toContain("q=memory");
+    expect(window.location.search).toContain("license=missing");
+    expect(new URLSearchParams(window.location.search).getAll("kind")).toEqual([
+      "extension",
+      "frontend",
+    ]);
+    expect(
+      screen.getByRole("checkbox", { name: "Frontend" }),
+    ).toBeChecked();
+  });
+
+  test("returns from Kits mode to the project cards without discarding the draft", () => {
+    mockDesktopMatchMedia();
+    window.history.replaceState(null, "", "/?mode=kits");
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Create Kit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Show Frontend cards" }),
+    );
+
+    expect(window.location.search).not.toContain("mode=kits");
+    expect(window.location.search).toContain("kind=frontend");
+    expect(
+      screen.getByRole("region", { name: "Project catalog" }),
+    ).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Create Kit" })).toBeVisible();
+  });
+
   test("exposes collapsed builder state directly on the catalog layout", () => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,

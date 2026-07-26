@@ -182,6 +182,20 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   ) => setQuery((current) => ({ ...current, [key]: value }));
   const updateKits = (kits: KitQuery) =>
     setQuery((current) => ({ ...current, kits }));
+  const revealFrontendCards = () =>
+    setQuery((current) => {
+      if (current.mode === "projects" && current.kinds.includes("frontend")) {
+        return current;
+      }
+      return {
+        ...current,
+        mode: "projects",
+        selectedKitId: "",
+        kinds: current.kinds.includes("frontend")
+          ? current.kinds
+          : [...current.kinds, "frontend"],
+      };
+    });
 
   const toggleFilter = (group: FilterArray, value: string) => {
     setQuery((current) => {
@@ -432,6 +446,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               : []
           }
           onStartCreate={workspace.startCreate}
+          onRevealFrontends={revealFrontendCards}
           onUpdateDraft={workspace.updateDraft}
           onDiscardDraft={workspace.discardDraft}
           omittedProjectCount={workspace.omittedProjectCount}
