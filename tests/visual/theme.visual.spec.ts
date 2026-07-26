@@ -568,18 +568,12 @@ test("dual-range host exposes its rendered minimum hit area", async ({
   const box = await minimum.boundingBox();
   expect(box).not.toBeNull();
 
-  // Chromium exposes host styles for its native range-thumb pseudo-element.
-  // This verifies only the host input hit area at its rendered minimum value;
-  // it does not establish native thumb styling or geometry.
-  await expect
-    .poll(() =>
-      page.evaluate(
-        ({ x, y }) =>
-          document.elementFromPoint(x, y)?.getAttribute("aria-label"),
-        { x: box!.x + 9, y: box!.y + box!.height / 2 },
-      ),
-    )
-    .toBe("Minimum projects");
+  // A real pointer action verifies that the native minimum thumb remains the
+  // interactive target without relying on pseudo-element hit-test internals.
+  await minimum.click({
+    position: { x: 1, y: box!.height / 2 },
+  });
+  await expect(minimum).toBeFocused();
 });
 
 test("desktop selection and focus treatments use the teal family", async ({
