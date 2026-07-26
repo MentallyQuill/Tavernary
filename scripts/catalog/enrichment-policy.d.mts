@@ -21,9 +21,7 @@ export function defaultEnrichmentFields(source: {
   enrichment_note?: string;
 };
 
-export function isAutomaticEnrichment(
-  record: EnrichmentPolicyRecord,
-): boolean;
+export function isAutomaticEnrichment(record: EnrichmentPolicyRecord): boolean;
 
 export function manualEnrichmentExclusions(
   records: EnrichmentPolicyRecord[],

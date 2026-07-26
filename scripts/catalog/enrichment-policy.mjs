@@ -1,8 +1,7 @@
 export const MANUAL_ENRICHMENT_REASON_CODE = "manual-enrichment-policy";
 
 const URL_NOTE = "External URL source; requires manual curation.";
-const ORGANIZATION_NOTE =
-  "Multi-repository suite; requires manual curation.";
+const ORGANIZATION_NOTE = "Multi-repository suite; requires manual curation.";
 
 export function defaultEnrichmentFields(source) {
   if (source?.type === "github") {

@@ -295,8 +295,7 @@ describe("catalog validation", () => {
           ],
           refresh_policy: "paused",
           enrichment_policy: "manual",
-          enrichment_note:
-            "Multi-repository suite; requires manual curation.",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -323,8 +322,7 @@ describe("catalog validation", () => {
           capabilities: ["automation"],
           refresh_policy: "automatic",
           enrichment_policy: "manual",
-          enrichment_note:
-            "Multi-repository suite; requires manual curation.",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -352,8 +350,7 @@ describe("catalog validation", () => {
           primary_function: "uncategorized",
           refresh_policy: "paused",
           enrichment_policy: "manual",
-          enrichment_note:
-            "Multi-repository suite; requires manual curation.",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -381,8 +378,7 @@ describe("catalog validation", () => {
           primary_function: "uncategorized",
           refresh_policy: "paused",
           enrichment_policy: "manual",
-          enrichment_note:
-            "Multi-repository suite; requires manual curation.",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "someone-else",

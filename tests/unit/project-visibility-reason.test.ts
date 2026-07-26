@@ -4,7 +4,7 @@ import Ajv from "ajv";
 import { expect, test } from "vitest";
 
 const published = {
-  schema_version: 3,
+  schema_version: 4,
   id: "fixture",
   name: "Fixture",
   kind: "extension",
@@ -23,6 +23,7 @@ const published = {
   visibility: "published",
   visibility_reason: null,
   refresh_policy: "automatic",
+  enrichment_policy: "automatic",
 };
 
 test("requires a controlled reason for non-published projects", async () => {

@@ -78,10 +78,12 @@ test("re-reads and refuses a record changed to manual after selection", async ()
   const original = JSON.stringify(manual, null, 2);
   await writeFile(path, original);
 
-  await expect(writeEnrichedRecord(path, record, output)).rejects.toMatchObject({
-    code: "manual-enrichment-policy",
-    enrichmentNote: "Maintainer locked this record.",
-  });
+  await expect(writeEnrichedRecord(path, record, output)).rejects.toMatchObject(
+    {
+      code: "manual-enrichment-policy",
+      enrichmentNote: "Maintainer locked this record.",
+    },
+  );
   expect(await readFile(path, "utf8")).toBe(original);
 });
 

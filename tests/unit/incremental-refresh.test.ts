@@ -19,7 +19,7 @@ import {
 
 function record(index: number) {
   return {
-    schema_version: 2,
+    schema_version: 4,
     id: `project-${String(index).padStart(3, "0")}`,
     source: {
       type: "github",
@@ -27,6 +27,7 @@ function record(index: number) {
       repository_id: 1_000 + index,
     },
     refresh_policy: "automatic",
+    enrichment_policy: "automatic",
   };
 }
 
