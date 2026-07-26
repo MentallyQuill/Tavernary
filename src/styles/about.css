@@ -56,7 +56,7 @@
 
 .about-content section {
   padding: 28px 0;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-divider);
 }
 
 .about-content h2 {
@@ -75,14 +75,26 @@
   align-items: center;
   gap: 24px;
   padding-top: 30px;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-divider);
 }
 
 .about-actions .primary-action {
   padding: 12px 18px;
-  border: 1px solid var(--color-preset);
+  border: 1px solid var(--color-action-primary-bg);
   border-radius: 6px;
-  color: var(--color-text-primary);
+  color: var(--color-action-primary-text);
+  background: var(--color-action-primary-bg);
+}
+
+.about-actions .primary-action:hover,
+.about-actions .primary-action:focus-visible {
+  border-color: var(--color-action-primary-hover);
+  background: var(--color-action-primary-hover);
+}
+
+.about-actions .primary-action:active {
+  border-color: var(--color-action-primary-pressed);
+  background: var(--color-action-primary-pressed);
 }
 
 @media (max-width: 520px) {

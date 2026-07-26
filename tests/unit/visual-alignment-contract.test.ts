@@ -39,7 +39,7 @@ describe("catalog visual alignment", () => {
     const responsive = read("src/styles/responsive.css");
 
     expect(css).toMatch(
-      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-preset\)/s,
+      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-control-border-focus\)/s,
     );
     expect(css).toMatch(
       /\.dual-range input\[type="range"\]\s*\{[^}]*position:\s*absolute[^}]*background:\s*transparent/s,
@@ -410,7 +410,7 @@ describe("catalog visual alignment", () => {
       /\.brand-name\s*\{[^}]*color:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
-      /\.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)/s,
+      /\.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-action-primary-bg\)/s,
     );
     expect(css).toMatch(
       /\.site-search input\s*\{[^}]*appearance:\s*none[^}]*outline:\s*0[^}]*box-shadow:\s*none/s,

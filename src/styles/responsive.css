@@ -33,6 +33,8 @@
     grid-template-columns: 1fr auto;
     gap: 10px;
     padding: 11px 13px;
+    border-bottom-color: var(--color-divider);
+    background: var(--color-bg-header);
   }
 
   .brand {
@@ -75,7 +77,7 @@
     position: relative;
     z-index: 18;
     display: block;
-    border-bottom: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-divider);
     padding: 9px 13px;
     background: var(--color-bg-sidebar);
   }
@@ -88,11 +90,11 @@
     grid-template-columns: 30px 1fr auto;
     align-items: center;
     gap: 10px;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid var(--color-divider);
     border-radius: 7px;
     padding: 0 12px;
     color: var(--color-text-primary);
-    background: var(--color-bg-surface-raised);
+    background: var(--color-bg-sidebar);
     text-align: left;
   }
 
@@ -140,7 +142,7 @@
     left: 13px;
     display: grid;
     gap: 4px;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid var(--color-divider);
     border-radius: 7px;
     padding: 7px;
     background: var(--color-bg-sidebar);
@@ -167,8 +169,9 @@
 
   .mobile-category-menu button.active,
   .mobile-category-menu button:hover {
-    color: var(--color-text-primary);
-    background: var(--color-bg-surface-raised);
+    border-color: var(--color-accent-teal-border);
+    color: var(--color-accent-teal-text);
+    background: var(--color-accent-teal-bg);
   }
 
   .catalog-layout {
@@ -245,11 +248,11 @@
     display: inline-flex;
     min-height: 44px;
     align-items: center;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid var(--color-action-primary-bg);
     border-radius: 6px;
     padding: 0 12px;
-    color: var(--color-text-primary);
-    background: var(--color-bg-surface-raised);
+    color: var(--color-action-primary-text);
+    background: var(--color-action-primary-bg);
   }
 
   .sort-projects {
@@ -283,7 +286,7 @@
     padding: 0;
     overflow: hidden;
     border-left: 0;
-    background: var(--color-bg-sidebar);
+    background: var(--color-bg-overlay);
     box-shadow: var(--shadow-overlay);
   }
 
@@ -295,8 +298,8 @@
     padding: calc(10px + env(safe-area-inset-top))
       calc(14px + env(safe-area-inset-right)) 10px
       calc(14px + env(safe-area-inset-left));
-    border-bottom: 1px solid var(--color-border-default);
-    background: var(--color-bg-sidebar);
+    border-bottom: 1px solid var(--color-divider);
+    background: var(--color-bg-overlay);
   }
 
   .kit-builder-panel-header button {
@@ -385,8 +388,8 @@
     padding: 12px calc(14px + env(safe-area-inset-right))
       calc(12px + env(safe-area-inset-bottom))
       calc(14px + env(safe-area-inset-left));
-    border-top: 1px solid var(--color-border-default);
-    background: var(--color-bg-sidebar);
+    border-top: 1px solid var(--color-divider);
+    background: var(--color-bg-overlay);
   }
 
   .kit-builder-footer > button {
@@ -548,8 +551,8 @@
     border: 0;
     background: radial-gradient(
       circle,
-      var(--color-preset) 0 7px,
-      var(--color-bg-canvas) 7px 9px,
+      var(--color-control-border-focus) 0 7px,
+      var(--color-control-bg) 7px 9px,
       transparent 9px
     );
     box-shadow: none;
@@ -561,8 +564,8 @@
     border: 0;
     background: radial-gradient(
       circle,
-      var(--color-preset) 0 7px,
-      var(--color-bg-canvas) 7px 9px,
+      var(--color-control-border-focus) 0 7px,
+      var(--color-control-bg) 7px 9px,
       transparent 9px
     );
     box-shadow: none;
@@ -572,9 +575,9 @@
   .dual-range input[type="range"]:focus-visible::-moz-range-thumb {
     background: radial-gradient(
       circle,
-      var(--color-preset) 0 7px,
-      var(--color-bg-canvas) 7px 10px,
-      var(--color-preset) 10px 12px,
+      var(--color-control-border-focus) 0 7px,
+      var(--color-control-bg) 7px 10px,
+      var(--color-focus-ring) 10px 12px,
       transparent 12px
     );
     box-shadow: none;
