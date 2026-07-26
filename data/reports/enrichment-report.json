@@ -46,7 +46,7 @@
   "batch_size": 30,
   "concurrency": 4,
   "created_at": "2026-07-26T04:50:18.972Z",
-  "updated_at": "2026-07-26T04:54:36.277Z",
+  "updated_at": "2026-07-26T04:56:06.984Z",
   "manifest": [
     "archkr-lumiverse-lumistate",
     "carmentagit-carmy-infoboard",
@@ -233,9 +233,13 @@
   },
   "publication": {
     "checkpoint_commit_sha": "d24f0c4052dc4352561ba28d17c9630baf7799de",
-    "recorded_at": "2026-07-26T04:54:36.277Z"
+    "recorded_at": "2026-07-26T04:56:06.702Z"
   },
-  "deployment": null,
+  "deployment": {
+    "commit_sha": "d24f0c4052dc4352561ba28d17c9630baf7799de",
+    "run_id": 30188524145,
+    "verified_at": "2026-07-26T04:56:06.984Z"
+  },
   "aggregates": {
     "enriched": 3,
     "fallback": 2,
