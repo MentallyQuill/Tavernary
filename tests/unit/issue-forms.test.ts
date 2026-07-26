@@ -108,7 +108,7 @@ test("Kit submission is a readable review form without redundant machine fields"
   }
 });
 
-test("project submission is a minimal three-field intake", async () => {
+test("project submission is a structured fallback for automated intake", async () => {
   const submission = parse(
     await readFile(
       resolve(templateDirectory, "01-project-submission.yml"),
@@ -121,13 +121,27 @@ test("project submission is a minimal three-field intake", async () => {
   expect(fields.map((field: { id: string }) => field.id)).toEqual([
     "project-type",
     "project-url",
+    "project-name",
+    "project-description",
+    "supported-frontends",
+    "frontend-independent",
     "additional-context",
+    "project-manifest",
   ]);
   expect(
     fields.map(
       (field: { attributes: { label: string } }) => field.attributes.label,
     ),
-  ).toEqual(["Project Type", "Project URL", "Anything we should know?"]);
+  ).toEqual([
+    "Project Type",
+    "Project URL",
+    "Project Name",
+    "Short Description",
+    "Supported frontends",
+    "Frontend-independent",
+    "Anything we should know?",
+    "Project manifest",
+  ]);
   expect(fields[0].attributes.options).toEqual([
     "Frontend",
     "Extension",
@@ -138,8 +152,15 @@ test("project submission is a minimal three-field intake", async () => {
   expect(fields[1].attributes.placeholder).toBe(
     "https://github.com/owner/repository",
   );
-  expect(fields[2].validations?.required ?? false).toBe(false);
+  expect(fields[4].attributes.description).toContain(
+    "comma- or newline-separated",
+  );
+  expect(fields[5].attributes.options).toEqual(["No", "Yes"]);
+  expect(fields[7].validations?.required ?? false).toBe(false);
   expect(submission.body[0].attributes.value).toContain(
     "GitHub repository URL required for Extensions and Frontends, not for Presets.",
+  );
+  expect(submission.body[0].attributes.value).toContain(
+    "Tavernary submission builder",
   );
 });

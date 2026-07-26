@@ -1,0 +1,75 @@
+import { expect, test } from "vitest";
+
+import {
+  normalizeProjectSubmissionManifest,
+  serializeProjectSubmissionManifest,
+} from "../../src/features/submissions/project-submission-manifest.mjs";
+
+test("normalizes a builder manifest without trusting whitespace", () => {
+  expect(
+    normalizeProjectSubmissionManifest({
+      schema_version: 1,
+      project_type: "extension",
+      source_url: " https://github.com/Owner/Repo ",
+      name: " Example ",
+      description: "",
+      frontends: {
+        known_ids: ["sillytavern", "sillytavern"],
+        other: [],
+      },
+      frontend_independent: false,
+      additional_context: " ",
+    }),
+  ).toEqual({
+    valid: true,
+    manifest: {
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/Owner/Repo",
+      name: "Example",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    },
+  });
+});
+
+test("requires name and description for an external preset", () => {
+  const result = normalizeProjectSubmissionManifest({
+    schema_version: 1,
+    project_type: "preset",
+    source_url: "https://example.com/preset",
+    name: null,
+    description: null,
+    frontends: { known_ids: ["sillytavern"], other: [] },
+    frontend_independent: false,
+    additional_context: null,
+  });
+
+  expect(result).toMatchObject({ valid: false });
+  if (result.valid) throw new Error("Expected invalid manifest");
+  expect(result.errors).toEqual(
+    expect.arrayContaining([
+      "External System Presets require a project name.",
+      "External System Presets require a short description.",
+    ]),
+  );
+});
+
+test("serializes the stable submission manifest with a trailing newline", () => {
+  expect(
+    serializeProjectSubmissionManifest({
+      schema_version: 1,
+      project_type: "frontend",
+      source_url: "https://github.com/Owner/Frontend",
+      name: "Frontend",
+      description: null,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+  ).toBe(
+    '{\n  "schema_version": 1,\n  "project_type": "frontend",\n  "source_url": "https://github.com/Owner/Frontend",\n  "name": "Frontend",\n  "description": null,\n  "frontends": {\n    "known_ids": [],\n    "other": []\n  },\n  "frontend_independent": false,\n  "additional_context": null\n}\n',
+  );
+});
