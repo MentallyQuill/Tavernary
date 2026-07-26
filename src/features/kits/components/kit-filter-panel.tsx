@@ -10,6 +10,7 @@ import {
   FilterSheetHeading,
   type FilterOption,
 } from "@/features/catalog/components/filter-controls";
+import { CATEGORY_OPTIONS } from "@/features/catalog/catalog-query";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { KitArrayFilter } from "@/features/kits/kit-selectors";
 import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
@@ -19,10 +20,33 @@ import { useModalSurface } from "@/hooks/use-modal-surface";
 
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
-function labels(kits: CatalogKit[], property: "frontends" | "purposes") {
+function frontendOptions(projects: CatalogProject[], kits: CatalogKit[]) {
   const values = new Map<string, string>();
+  for (const project of projects) {
+    for (const item of project.frontends) values.set(item.id, item.label);
+  }
   for (const kit of kits) {
-    for (const item of kit[property]) values.set(item.id, item.label);
+    for (const item of kit.frontends) values.set(item.id, item.label);
+  }
+  return [...values]
+    .map(([id, label]) => ({ id, label }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
+function purposeOptions(projects: CatalogProject[], kits: CatalogKit[]) {
+  const purposeLabels = new Map<string, string>(
+    CATEGORY_OPTIONS.map(({ id, label }) => [id, label]),
+  );
+  const values = new Map<string, string>();
+  for (const project of projects) {
+    if (project.kind === "frontend") continue;
+    values.set(
+      project.primaryFunction,
+      purposeLabels.get(project.primaryFunction) ?? project.primaryFunction,
+    );
+  }
+  for (const kit of kits) {
+    for (const item of kit.purposes) values.set(item.id, item.label);
   }
   return [...values]
     .map(([id, label]) => ({ id, label }))
@@ -66,13 +90,7 @@ export function KitFilterPanel({
   const [frontendSearch, setFrontendSearch] = useState("");
   const [purposeSearch, setPurposeSearch] = useState("");
   const [projectSearch, setProjectSearch] = useState("");
-  const includedProjectIds = new Set(
-    kits.flatMap((kit) =>
-      kit.components.map((component) => component.projectId),
-    ),
-  );
   const includedProjectOptions = projects
-    .filter((project) => includedProjectIds.has(project.id))
     .map((project) => ({
       id: project.id,
       label: project.name,
@@ -123,7 +141,7 @@ export function KitFilterPanel({
       <FilterGroup
         title="Compatible frontend"
         options={countedOptions(
-          labels(kits, "frontends"),
+          frontendOptions(projects, kits),
           kits,
           query,
           "frontends",
@@ -139,7 +157,7 @@ export function KitFilterPanel({
       <FilterGroup
         title="Purpose"
         options={countedOptions(
-          labels(kits, "purposes"),
+          purposeOptions(projects, kits),
           kits,
           query,
           "purposes",

@@ -120,6 +120,37 @@ describe("KitFilterPanel", () => {
     expect(screen.getByRole("link", { name: "AGPL-3.0-only" })).toBeVisible();
   });
 
+  test("renders catalog-backed filters before any Kits are published", () => {
+    render(
+      <KitFilterPanel
+        query={DEFAULT_KIT_QUERY}
+        kits={[]}
+        projects={[project]}
+        onChange={() => undefined}
+        onClear={() => undefined}
+      />,
+    );
+
+    expect(
+      screen.getByRole("group", { name: "Compatible frontend" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("checkbox", { name: "sillytavern" }).closest("label"),
+    ).toHaveTextContent("sillytavern0");
+    expect(screen.getByRole("group", { name: "Purpose" })).toBeVisible();
+    expect(
+      screen
+        .getByRole("checkbox", { name: "Generation & Reasoning" })
+        .closest("label"),
+    ).toHaveTextContent("Generation & Reasoning0");
+    expect(
+      screen.getByRole("group", { name: "Includes project" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("radio", { name: "Routing Extension" }).closest("label"),
+    ).toHaveTextContent("Routing Extension0");
+  });
+
   test("renders only the five approved Kit filters in order", () => {
     render(
       <KitFilterPanel
