@@ -1,3 +1,5 @@
+import { defaultEnrichmentFields } from "./enrichment-policy.mjs";
+
 const frontendIdByLabel = new Map([
   ["SillyTavern", "sillytavern"],
   ["Lumiverse", "lumiverse"],
@@ -157,7 +159,7 @@ function toRecord(record) {
   const { source, normalizedChange } = normalizeSource(record);
   return {
     record: {
-      schema_version: 3,
+      schema_version: 4,
       id: assertString(record.id, "id"),
       name: assertString(record.name, "name"),
       kind,
@@ -175,6 +177,7 @@ function toRecord(record) {
         record.source_url || record.source_type === "organization"
           ? "paused"
           : "automatic",
+      ...defaultEnrichmentFields(source),
     },
     normalizedSourceChange: normalizedChange
       ? {
