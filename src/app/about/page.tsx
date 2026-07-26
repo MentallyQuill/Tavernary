@@ -18,54 +18,71 @@ export default function AboutPage() {
         <p className="about-kicker">About</p>
         <h1>About Tavernary</h1>
         <p className="about-lead">
-          Tavernary is a search and discovery catalog for AI roleplay tools. It
-          indexes public project information and sends visitors to each
-          creator&apos;s own GitHub repository or source page. Tavernary does
-          not host, mirror, redistribute, or install project files.
+          Tavernary is a search and discovery catalog for AI roleplay tools,
+          surrounding the SillyTavern community. It indexes public project
+          information and sends visitors to each creator&apos;s own GitHub
+          repository or source page.
         </p>
 
         <section>
-          <h2>What belongs in the catalog</h2>
+          <h2>Why Tavernary exists</h2>
           <p>
-            Frontends and Extensions must have a public GitHub repository so
-            Tavernary can verify their identity and refresh factual project
-            information automatically. System Presets may instead link to the
-            public page where their creator publishes them.
+            The tools people use to shape their roleplay experience are spread
+            across Reddit posts, Discord channels, creator repositories, and
+            word of mouth. The best discoveries can be difficult to find again,
+            and a great project can be invisible outside the small corner where
+            someone happened to share it.
           </p>
           <p>
-            Every submission is reviewed before it appears. A non-GitHub System
-            Preset is locked after acceptance because Tavernary cannot verify
-            that a later editor is the original creator. Maintainers may still
-            correct, hide, or remove an entry when necessary.
-          </p>
-        </section>
-
-        <section>
-          <h2>What Tavernary records</h2>
-          <p>
-            Maintainers manage the project name, factual summary,
-            classification, supported frontends, capabilities, and canonical
-            source. GitHub supplies repository facts such as the latest
-            meaningful commit, release date, community counts, repository size,
-            and root license.
-          </p>
-          <p>
-            Recent Activity sorts by the latest meaningful commit. Activity
-            Strength is the number of weeks with meaningful commits during the
-            last 12 weeks. Projects with no meaningful commit for more than 12
-            weeks may remain visible but are marked dormant. Automated updates
-            can be paused, and entries can be hidden or removed during
-            moderation.
+            Tavernary is meant to give that scattered community a shared place
+            to gather: somewhere to explore what exists, understand what each
+            project does, and follow the path back to the people who made it.
           </p>
         </section>
 
         <section>
-          <h2>Independent projects</h2>
+          <h2>Built for exploration</h2>
           <p>
-            Inclusion is not an endorsement, certification, or guarantee.
-            Project creators control their own files, releases, documentation,
-            licenses, and support. Review a project&apos;s source page before
-            installing or using it.
+            Search projects and creators, browse Frontends, Extensions, and
+            System Presets, and use the catalog filters to narrow the field.
+            Whether you are looking for a new interface, a small quality-of-life
+            extension, or a preset to try, Tavernary is a place to start
+            exploring.
+          </p>
+          <p>
+            The idea takes inspiration from PCPartPicker.com and its Reddit
+            roots: bring a fragmented community&apos;s knowledge into one place,
+            then give people the tools to make something that fits them.
+          </p>
+        </section>
+
+        <section>
+          <h2>Make it yours with Kits</h2>
+          <p>
+            Kits are user-tailored collections of catalog projects. Browse
+            community-made Kits for ideas, or assemble your own combination from
+            the catalog instead of settling for one bundle chosen by Tavernary.
+          </p>
+          <p>
+            Reorder the stack, save a draft in your browser, share your Kit with
+            others, and submit it for review. Kits are a way for the community
+            to show how its tools fit together—and for every visitor to find a
+            setup that feels like their own.
+          </p>
+        </section>
+
+        <section>
+          <h2>Projects remain independent</h2>
+          <p>
+            Tavernary links outward to creator-owned repositories and source
+            pages. It does not host, mirror, redistribute, or install project
+            files. Creators remain responsible for their own releases,
+            documentation, licenses, and support, and inclusion is not an
+            endorsement or guarantee.
+          </p>
+          <p>
+            If you have made something for the community, you can add it to the
+            catalog and help make the next discovery easier for someone else.
           </p>
         </section>
 
