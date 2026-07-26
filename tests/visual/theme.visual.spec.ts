@@ -106,6 +106,17 @@ test("mobile category selection retains the teal navigation border", async ({
     graphiteTeal.frontend,
   );
   await expectStyle(
+    browse.locator("svg").first(),
+    "color",
+    graphiteTeal.frontend,
+  );
+  await activeCategory.hover();
+  await expectStyle(
+    activeCategory,
+    "background-color",
+    graphiteTeal.tealBackground,
+  );
+  await expectStyle(
     page.locator('.mobile-category-menu button[data-category="preset"] svg'),
     "color",
     graphiteTeal.preset,

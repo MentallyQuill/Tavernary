@@ -179,6 +179,10 @@
     background: var(--color-accent-teal-bg-hover);
   }
 
+  .mobile-category-menu button.active:hover {
+    background: var(--color-accent-teal-bg);
+  }
+
   .mobile-category-trigger[data-category="frontend"] > svg:first-child,
   .mobile-category-menu button[data-category="frontend"] svg {
     color: var(--color-frontend);
