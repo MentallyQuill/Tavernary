@@ -59,7 +59,17 @@ test("supports frontend-independent and not-listed submission paths", async ({
   ).toHaveCount(0);
 
   await page.getByLabel("Frontend-independent").uncheck();
+  const frontendSection = page
+    .getByRole("heading", { name: "Supported frontends" })
+    .locator("..")
+    .locator("..");
+  await expect(frontendSection.getByText("0 selected")).toBeVisible();
   await page.getByLabel("Other or not listed").check();
+  await expect(
+    page.getByText(
+      "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",
+    ),
+  ).toBeVisible();
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,

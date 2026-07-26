@@ -597,49 +597,57 @@ export function ProjectSubmissionBuilder({
           </label>
 
           {includeOtherFrontend ? (
-            <div className="submission-other-fields">
+            <>
               <p className="submission-hint">
                 This project will stay blocked until the missing frontend is
                 submitted, reviewed, and merged.
               </p>
-              <div className="submission-field">
-                <label htmlFor="other-frontend-name">Other frontend name</label>
-                <input
-                  id="other-frontend-name"
-                  value={otherFrontendName}
-                  onChange={(event) => setOtherFrontendName(event.target.value)}
-                  aria-invalid={Boolean(errorFor("other-frontend-name"))}
-                  aria-describedby={
-                    errorFor("other-frontend-name")
-                      ? "other-frontend-name-error"
-                      : undefined
-                  }
-                />
-                <InlineError
-                  id="other-frontend-name-error"
-                  message={errorFor("other-frontend-name")}
-                />
+              <div className="submission-other-fields">
+                <div className="submission-field">
+                  <label htmlFor="other-frontend-name">
+                    Other frontend name
+                  </label>
+                  <input
+                    id="other-frontend-name"
+                    value={otherFrontendName}
+                    onChange={(event) =>
+                      setOtherFrontendName(event.target.value)
+                    }
+                    aria-invalid={Boolean(errorFor("other-frontend-name"))}
+                    aria-describedby={
+                      errorFor("other-frontend-name")
+                        ? "other-frontend-name-error"
+                        : undefined
+                    }
+                  />
+                  <InlineError
+                    id="other-frontend-name-error"
+                    message={errorFor("other-frontend-name")}
+                  />
+                </div>
+                <div className="submission-field">
+                  <label htmlFor="other-frontend-url">Other frontend URL</label>
+                  <input
+                    id="other-frontend-url"
+                    type="url"
+                    value={otherFrontendUrl}
+                    onChange={(event) =>
+                      setOtherFrontendUrl(event.target.value)
+                    }
+                    aria-invalid={Boolean(errorFor("other-frontend-url"))}
+                    aria-describedby={
+                      errorFor("other-frontend-url")
+                        ? "other-frontend-url-error"
+                        : undefined
+                    }
+                  />
+                  <InlineError
+                    id="other-frontend-url-error"
+                    message={errorFor("other-frontend-url")}
+                  />
+                </div>
               </div>
-              <div className="submission-field">
-                <label htmlFor="other-frontend-url">Other frontend URL</label>
-                <input
-                  id="other-frontend-url"
-                  type="url"
-                  value={otherFrontendUrl}
-                  onChange={(event) => setOtherFrontendUrl(event.target.value)}
-                  aria-invalid={Boolean(errorFor("other-frontend-url"))}
-                  aria-describedby={
-                    errorFor("other-frontend-url")
-                      ? "other-frontend-url-error"
-                      : undefined
-                  }
-                />
-                <InlineError
-                  id="other-frontend-url-error"
-                  message={errorFor("other-frontend-url")}
-                />
-              </div>
-            </div>
+            </>
           ) : null}
         </section>
       ) : null}
