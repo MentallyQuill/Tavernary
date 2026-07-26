@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "id": "writers-block-4",
   "name": "Writer's Block 4",
   "kind": "preset",
@@ -21,6 +21,8 @@
     "instruction-control",
     "planning-reasoning"
   ],
+  "model_families": ["glm", "gemma", "deepseek"],
+  "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

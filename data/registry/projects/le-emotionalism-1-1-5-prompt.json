@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "id": "le-emotionalism-1-1-5-prompt",
   "name": "LE_EMOTIONALISM 1.1.5",
   "kind": "preset",
@@ -22,6 +22,8 @@
     "planning-reasoning",
     "character-worldbuilding"
   ],
+  "model_families": ["glm", "claude", "kimi", "mimo"],
+  "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

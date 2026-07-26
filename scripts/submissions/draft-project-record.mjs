@@ -128,7 +128,7 @@ export async function draftProjectRecord(input) {
   if (enrichment.warning) warnings.push(enrichment.warning);
 
   const record = {
-    schema_version: 4,
+    schema_version: 5,
     id,
     name,
     kind: admitted.manifest.project_type,
@@ -138,6 +138,17 @@ export async function draftProjectRecord(input) {
     frontends: [...new Set(frontendIds)].sort(),
     primary_function: enrichment.primary_function,
     capabilities: [...new Set(enrichment.capabilities)].sort(),
+    ...(admitted.manifest.project_type === "preset" &&
+    admitted.manifest.preset_compatibility
+      ? {
+          model_families: [
+            ...admitted.manifest.preset_compatibility.model_families.known_ids,
+          ].sort(),
+          completion_formats: [
+            ...admitted.manifest.preset_compatibility.completion_formats,
+          ].sort(),
+        }
+      : {}),
     cataloged_at: now,
     catalog_cohort: "standard",
     visibility: "published",
@@ -158,6 +169,7 @@ export async function draftProjectRecord(input) {
       frontends: admitted.manifest.frontends,
       frontend_independent: admitted.manifest.frontend_independent,
       additional_context: admitted.manifest.additional_context,
+      preset_compatibility: admitted.manifest.preset_compatibility,
     },
     observed:
       identity.kind === "github"

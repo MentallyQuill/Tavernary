@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 async function openKits(page: import("@playwright/test").Page) {
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page).toHaveURL(/mode=kits/);
 }
@@ -132,7 +133,7 @@ test("keeps discard confirmation actions inside the phone dialog", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await page.getByRole("button", { name: "Create Kit" }).click();
@@ -182,7 +183,7 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const expectedInk = "rgb(22, 16, 8)";
   const submitProject = page.getByRole("link", { name: "Submit Project" });
@@ -266,7 +267,7 @@ test("desktop Kit Builder open and close controls share one 36-pixel geometry", 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Open Kit Builder" }).click();
 
   const collapse = page.getByRole("button", {
@@ -318,7 +319,7 @@ test("desktop Kit Builder keeps form focus rings visible and text fonts consiste
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Open Kit Builder" }).click();
   await page.getByRole("button", { name: "Create new Kit" }).click();
 
@@ -477,14 +478,14 @@ test("desktop Kit inspection keeps fixed actions reachable with a 600-character 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
 
   const panel = page.getByRole("complementary", { name: "Kit Builder" });
-  const description = panel.locator(".kit-builder-panel-inspect-header > p");
+  const description = panel.locator(".kit-builder-inspect-description");
   await description.evaluate((element) => {
     element.textContent = "Long Kit description ".repeat(30).slice(0, 600);
   });
 
   await expect(description).toHaveCSS("-webkit-line-clamp", "4");
   await expect(
-    panel.getByRole("button", { name: "Copy link" }),
+    panel.getByRole("link", { name: "Report Kit" }),
   ).toBeInViewport();
   await expect(
     panel.getByRole("link", { name: "Request withdrawal" }),
@@ -495,7 +496,7 @@ test("compact cards keep the Kit control right-aligned and reserve an ellipsis g
   page,
 }) => {
   await page.setViewportSize({ width: 1024, height: 800 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const shell = page.locator(".project-card-shell").first();
   const license = shell.locator(".license");
@@ -572,7 +573,7 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page).toHaveURL(/mode=kits/);
@@ -743,92 +744,66 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   await expect(flagged.locator("a")).toHaveCount(0);
 });
 
-test("scrolls a large desktop project stack under a fixed Kit header", async ({
+test("scrolls one desktop inspector body without a nested project scroll", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 800 });
   await openKits(page);
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const panel = page.locator(".kit-builder-panel");
-  const header = panel.locator(".kit-builder-panel-header");
-  const actions = panel.locator(".kit-builder-panel-actions");
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const body = panel.locator(".kit-builder-panel-body");
   const stack = panel.locator(".kit-project-stack");
-  await expect(header).toBeVisible();
-  await expect(actions).toBeVisible();
-  const before = await panel.evaluate((element) => {
-    const headerElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-header",
-    );
-    const actionsElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-actions",
-    );
-    if (!headerElement || !actionsElement) {
-      throw new Error("Kit inspector chrome is missing");
+  const firstCard = stack.locator(".project-card").first();
+
+  await expect
+    .poll(() =>
+      panel.evaluate((element) => element.getBoundingClientRect().width),
+    )
+    .toBeCloseTo(316.8, 0);
+
+  const geometry = await panel.evaluate((element) => {
+    const body = element.querySelector<HTMLElement>(".kit-builder-panel-body");
+    const stack = element.querySelector<HTMLElement>(".kit-project-stack");
+    const card = stack?.querySelector<HTMLElement>(".project-card");
+    if (!body || !stack || !card) {
+      throw new Error("Kit inspector geometry is incomplete");
     }
     return {
-      actions: actionsElement.getBoundingClientRect().toJSON(),
-      header: headerElement.getBoundingClientRect().toJSON(),
-      viewport: {
-        bottom: window.innerHeight,
-        left: 0,
-        right: window.innerWidth,
-        top: 0,
-      },
+      bodyClientHeight: body.clientHeight,
+      bodyScrollHeight: body.scrollHeight,
+      cardWidth: card.getBoundingClientRect().width,
+      panelWidth: element.getBoundingClientRect().width,
+      stackClientHeight: stack.clientHeight,
+      stackScrollHeight: stack.scrollHeight,
     };
   });
-  for (const chrome of [before.header, before.actions]) {
-    expect(chrome.left).toBeGreaterThanOrEqual(before.viewport.left);
-    expect(chrome.right).toBeLessThanOrEqual(before.viewport.right);
-    expect(chrome.top).toBeGreaterThanOrEqual(before.viewport.top);
-    expect(chrome.bottom).toBeLessThanOrEqual(before.viewport.bottom);
-  }
-  const scroll = await stack.evaluate((element) => ({
-    clientHeight: element.clientHeight,
-    scrollHeight: element.scrollHeight,
-  }));
-  expect(scroll.scrollHeight).toBeGreaterThan(scroll.clientHeight);
 
-  await stack.evaluate((element) => {
+  expect(geometry.panelWidth).toBeCloseTo(316.8, 0);
+  expect(geometry.cardWidth).toBeGreaterThanOrEqual(280);
+  expect(geometry.bodyScrollHeight).toBeGreaterThan(geometry.bodyClientHeight);
+  expect(geometry.stackScrollHeight).toBe(geometry.stackClientHeight);
+  await expect(firstCard).toBeVisible();
+
+  await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
+    element.dispatchEvent(new Event("scroll"));
   });
+
   await expect(
     stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
   ).toBeInViewport();
   await expect(
     stack.getByRole("group", { name: "Fixture Flagged Tool unavailable" }),
   ).toBeVisible();
-  await expect(header).toBeVisible();
-  await expect(actions).toBeVisible();
-  const after = await panel.evaluate((element) => {
-    const headerElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-header",
-    );
-    const actionsElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-actions",
-    );
-    if (!headerElement || !actionsElement) {
-      throw new Error("Kit inspector chrome is missing after scrolling");
-    }
-    return {
-      actions: actionsElement.getBoundingClientRect().toJSON(),
-      header: headerElement.getBoundingClientRect().toJSON(),
-      viewport: {
-        bottom: window.innerHeight,
-        left: 0,
-        right: window.innerWidth,
-        top: 0,
-      },
-    };
-  });
-  for (const chrome of [after.header, after.actions]) {
-    expect(chrome.left).toBeGreaterThanOrEqual(after.viewport.left);
-    expect(chrome.right).toBeLessThanOrEqual(after.viewport.right);
-    expect(chrome.top).toBeGreaterThanOrEqual(after.viewport.top);
-    expect(chrome.bottom).toBeLessThanOrEqual(after.viewport.bottom);
-  }
-  expect(after.header.y).toBe(before.header.y);
-  expect(after.actions.y).toBe(before.actions.y);
+  await expect(panel.locator(".kit-builder-panel-header")).toBeVisible();
+  await expect(panel.locator(".kit-builder-panel-body-frame")).toHaveAttribute(
+    "data-can-scroll-up",
+    "true",
+  );
+  await expect(
+    panel.locator(".kit-builder-panel-body-frame"),
+  ).not.toHaveAttribute("data-can-scroll-down");
 });
 
 test("phone inspectors expose direct project links without horizontal overflow", async ({
@@ -836,7 +811,7 @@ test("phone inspectors expose direct project links without horizontal overflow",
 }) => {
   for (const width of [390, 360, 320]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/");
+    await page.goto(sitePath());
     await page.getByRole("button", { name: "Browse categories" }).click();
     await page.getByRole("button", { name: "Kits", exact: true }).click();
     await page.getByRole("button", { name: "Open Alpha Kit" }).click();
@@ -934,7 +909,7 @@ for (const viewport of [
     page,
   }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/");
+    await page.goto(sitePath());
     if (viewport.width <= 760) {
       await expectMobileTarget(
         page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
@@ -1100,7 +1075,7 @@ test("mobile workspace traps focus, returns it, and exposes touch handles", asyn
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
@@ -1146,7 +1121,7 @@ test("mobile 50-project builder keeps sticky controls usable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await page.getByRole("button", { name: "Open Large Stack" }).click();
@@ -1172,7 +1147,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
 
@@ -1216,7 +1191,7 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(

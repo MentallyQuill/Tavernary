@@ -86,7 +86,7 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   await expect(
     page.getByRole("button", { name: `Remove ${movedName} from Kit` }),
   ).toHaveCount(0);
-  await expect(page.getByText("Undo")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /Undo/i })).toHaveCount(0);
   await page.getByRole("button", { name: "Close Kit Builder" }).click();
   await expect(
     page.getByRole("button", {

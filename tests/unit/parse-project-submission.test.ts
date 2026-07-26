@@ -87,3 +87,45 @@ https://github.com/Owner/Valid
     errors: ["Project manifest must be valid JSON."],
   });
 });
+
+test("parses fallback Preset compatibility fields into manifest version 2", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+System Preset
+### Project URL
+https://github.com/Owner/Preset
+### Project Name
+Example
+### Supported frontends
+SillyTavern
+### Frontend-independent
+No
+### Supported model families
+- [x] claude
+- [ ] gpt
+- [x] gemini
+### Other model family
+FutureModel
+### Completion formats
+- [x] chat-completion
+- [x] text-completion
+### Project manifest
+_No response_
+`);
+
+  expect(result).toMatchObject({
+    valid: true,
+    source: "headings",
+    manifest: {
+      schema_version: 2,
+      project_type: "preset",
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["claude", "gemini"],
+          other: ["FutureModel"],
+        },
+        completion_formats: ["chat-completion", "text-completion"],
+      },
+    },
+  });
+});

@@ -59,7 +59,17 @@ test("supports frontend-independent and not-listed submission paths", async ({
   ).toHaveCount(0);
 
   await page.getByLabel("Frontend-independent").uncheck();
+  const frontendSection = page
+    .getByRole("heading", { name: "Supported frontends" })
+    .locator("..")
+    .locator("..");
+  await expect(frontendSection.getByText("0 selected")).toBeVisible();
   await page.getByLabel("Other or not listed").check();
+  await expect(
+    page.getByText(
+      "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",
+    ),
+  ).toBeVisible();
   await page.evaluate(() => {
     Object.defineProperty(window, "open", {
       configurable: true,
@@ -78,6 +88,8 @@ test("supports frontend-independent and not-listed submission paths", async ({
   await page
     .getByLabel("Other frontend URL")
     .fill("https://github.com/example/future-frontend");
+  await page.getByLabel("Claude", { exact: true }).check();
+  await page.getByLabel("Chat Completion", { exact: true }).check();
   await page.getByRole("button", { name: "Continue to GitHub" }).click();
 
   const openedUrl = await page.evaluate(() =>
@@ -87,6 +99,10 @@ test("supports frontend-independent and not-listed submission paths", async ({
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
       project_type: "preset",
+      preset_compatibility: {
+        model_families: { known_ids: ["claude"], other: [] },
+        completion_formats: ["chat-completion"],
+      },
       frontends: {
         known_ids: [],
         other: [
@@ -130,7 +146,7 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   expect(opened.searchParams.get("template")).toBe("01-project-submission.yml");
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
-      schema_version: 1,
+      schema_version: 2,
       project_type: "extension",
       source_url: "https://github.com/example/extension",
       frontends: {

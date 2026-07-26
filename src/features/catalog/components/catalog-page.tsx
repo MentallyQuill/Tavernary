@@ -185,7 +185,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
 
   const toggleFilter = (group: FilterArray, value: string) => {
     setQuery((current) => {
-      const values = current[group] as string[];
+      const values = (current[group] ?? []) as string[];
       return {
         ...current,
         [group]: values.includes(value)
@@ -214,12 +214,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const removeKitFilter = (key: keyof KitQuery, value?: string) => {
     setQuery((current) => {
       const kits = current.kits;
-      if (key === "frontends" || key === "purposes") {
+      if (
+        key === "frontends" ||
+        key === "purposes" ||
+        key === "modelFamilies"
+      ) {
+        const values = kits[key] ?? [];
         return {
           ...current,
           kits: {
             ...kits,
-            [key]: value ? kits[key].filter((item) => item !== value) : [],
+            [key]: value ? values.filter((item) => item !== value) : [],
           },
         };
       }
@@ -266,6 +271,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     query.mode === "kits"
       ? query.kits.frontends.length +
         query.kits.purposes.length +
+        (query.kits.modelFamilies?.length ?? 0) +
         Number(Boolean(query.kits.includesProjectId)) +
         Number(
           query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects ||
@@ -275,6 +281,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       : query.frontends.length +
         query.kinds.length +
         query.capabilities.length +
+        (query.modelFamilies?.length ?? 0) +
+        (query.completionFormats?.length ?? 0) +
         query.development.length +
         query.licenses.length;
   const lastRefresh =
