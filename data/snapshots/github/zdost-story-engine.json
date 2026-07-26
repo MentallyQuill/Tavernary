@@ -12,7 +12,7 @@
     "head_committed_at": "2026-07-26T04:20:32.000Z",
     "archived": false,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 8768
+    "size_kb": 8772
   },
   "source_health": "healthy",
   "activity": {
@@ -93,11 +93,11 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T04:48:30.967Z",
+  "refreshed_at": "2026-07-26T12:53:44.928Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "ZDOSt", "type": "User" }],
-    "refreshed_at": "2026-07-26T04:48:30.967Z",
+    "refreshed_at": "2026-07-26T12:53:44.928Z",
     "stale_since": null
   }
 }

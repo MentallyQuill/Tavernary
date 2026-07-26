@@ -8,19 +8,19 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "47a08a0676679a0317330e0be564c2cc74e948ff",
-    "head_committed_at": "2026-07-24T21:34:28.000Z",
+    "head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f",
+    "head_committed_at": "2026-07-26T06:51:39.000Z",
     "archived": false,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 18229
+    "size_kb": 19857
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-24T21:34:28.000Z",
+    "latest_source_activity_at": "2026-07-26T06:51:39.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-20",
-        "latest_at": "2026-07-24T21:34:28.000Z",
+        "latest_at": "2026-07-26T06:51:39.000Z",
         "precision": "exact"
       },
       {
@@ -84,7 +84,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-25T14:40:11.455Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "47a08a0676679a0317330e0be564c2cc74e948ff"
+    "evidence_head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f"
   },
   "community": {
     "stargazers_count": 263,
@@ -97,7 +97,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T04:48:30.967Z",
+  "refreshed_at": "2026-07-26T12:53:44.928Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -106,7 +106,7 @@
       { "login": "paradox460", "type": "User" },
       { "login": "dddanny79", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T04:48:30.967Z",
+    "refreshed_at": "2026-07-26T12:53:44.928Z",
     "stale_since": null
   }
 }

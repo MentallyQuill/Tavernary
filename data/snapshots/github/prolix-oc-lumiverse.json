@@ -82,17 +82,17 @@
     "evidence_head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69"
   },
   "community": {
-    "stargazers_count": 150,
+    "stargazers_count": 151,
     "forks_count": 44,
     "subscribers_count": 1,
-    "aggregate": 195
+    "aggregate": 196
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-26T04:48:30.967Z",
+  "refreshed_at": "2026-07-26T12:53:44.928Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -115,7 +115,7 @@
       { "login": "Plaguis", "type": "User" },
       { "login": "aaron-j-reeves", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T04:48:30.967Z",
+    "refreshed_at": "2026-07-26T12:53:44.928Z",
     "stale_since": null
   }
 }
