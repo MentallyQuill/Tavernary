@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "id": "zorgonatis-stabs-edh",
   "name": "Stab's Directives",
   "kind": "preset",
@@ -13,6 +13,8 @@
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
   "capabilities": ["prompt-engineering", "instruction-control"],
+  "model_families": ["glm", "deepseek"],
+  "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

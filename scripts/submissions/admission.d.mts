@@ -2,6 +2,7 @@ import type { ProjectSubmissionManifest } from "../../src/features/submissions/p
 import type {
   FrontendResolution,
   FrontendSuggestion,
+  MissingFrontendDependency,
 } from "./frontend-reconciliation.mjs";
 import type { SourceIdentity } from "./source-identity.mjs";
 
@@ -48,6 +49,7 @@ export type ProjectSubmissionDecision =
       status: "needs-information";
       errors: string[];
       suggestions: FrontendSuggestion[];
+      frontendDependencies: MissingFrontendDependency[];
     }
   | {
       status: "retryable";

@@ -516,14 +516,14 @@ test("mobile category selection retains the teal navigation border", async ({
   await expectStyle(
     page.locator('.mobile-category-menu button[data-category="kits"] svg'),
     "color",
-    graphiteTeal.controlFocus,
+    graphiteTeal.secondaryText,
   );
   await expectStyle(
     page.locator(
       '.mobile-category-menu button[data-category="all"] .all-symbol',
     ),
     "color",
-    graphiteTeal.controlFocus,
+    graphiteTeal.secondaryText,
   );
 
   const preset = page.locator(

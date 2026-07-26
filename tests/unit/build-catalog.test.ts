@@ -1,6 +1,24 @@
+import { readdir, readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { expect, test } from "vitest";
 
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
+
+const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+
+async function readJsonDirectory<T>(relativePath: string): Promise<T[]> {
+  const directory = resolve(rootDirectory, relativePath);
+  const files = (await readdir(directory))
+    .filter((file) => file.endsWith(".json"))
+    .sort();
+  return Promise.all(
+    files.map(async (file) =>
+      JSON.parse(await readFile(resolve(directory, file), "utf8")),
+    ),
+  );
+}
 
 function countBy<T>(items: T[], selector: (item: T) => string) {
   const counts = new Map<string, number>();
@@ -464,9 +482,36 @@ test("keeps URL presets public with manual source and pending license display", 
   ]);
 });
 
-test("builds 211 public cards with consolidated manual sources", async () => {
+test("builds every eligible public card with consolidated manual sources", async () => {
   const catalog = await buildCatalog({ write: false });
-  expect(catalog.projects).toHaveLength(211);
+  const [records, snapshots] = await Promise.all([
+    readJsonDirectory<{
+      id: string;
+      kind: string;
+      visibility: string;
+      source: { type: string };
+    }>("data/registry/projects"),
+    readJsonDirectory<{ project_id: string; source_health: string }>(
+      "data/snapshots/github",
+    ),
+  ]);
+  const snapshotsByProject = new Map(
+    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+  );
+  const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
+  const expectedProjectIds = records
+    .filter((record) => {
+      const snapshot = snapshotsByProject.get(record.id);
+      return (
+        record.visibility === "published" &&
+        !(snapshot && hiddenSourceStates.has(snapshot.source_health)) &&
+        (record.source.type !== "url" || record.kind === "preset")
+      );
+    })
+    .map(({ id }) => id)
+    .sort();
+
+  expect(catalog.projects.map(({ id }) => id)).toEqual(expectedProjectIds);
   expect(
     catalog.projects.every((project) =>
       ["curated", "provisional"].includes(project.metadataStatus),
@@ -492,12 +537,11 @@ test("builds 211 public cards with consolidated manual sources", async () => {
       supportedSourceStatuses.includes(status),
     ),
   ).toBe(true);
-  expect(sourceStatuses.manual).toBe(7);
   expect(
     (sourceStatuses.healthy ?? 0) +
       (sourceStatuses.pending ?? 0) +
       (sourceStatuses.stale ?? 0),
-  ).toBe(204);
+  ).toBe(catalog.projects.length - (sourceStatuses.manual ?? 0));
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
   const manualIds = catalog.projects
     .filter(({ sourceStatus }) => sourceStatus === "manual")
@@ -630,6 +674,8 @@ test("builds Kits from complete project records and nullable support", async () 
       name: "Preset",
       kind: "preset",
       primary_function: "generation-reasoning",
+      model_families: ["claude"],
+      completion_formats: ["chat-completion"],
     }),
     fixtureProject({
       id: "flagged",
@@ -690,6 +736,7 @@ test("builds Kits from complete project records and nullable support", async () 
       {
         id: "story-kit-41",
         frontends: [expect.objectContaining({ id: "sillytavern" })],
+        modelFamilies: [expect.objectContaining({ id: "claude" })],
         purposes: [
           expect.objectContaining({ id: "memory-retrieval" }),
           expect.objectContaining({ id: "generation-reasoning" }),

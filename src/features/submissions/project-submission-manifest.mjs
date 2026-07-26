@@ -54,9 +54,40 @@ export function normalizeProjectSubmissionManifest(value) {
   const knownIds = uniqueStrings(value?.frontends?.known_ids);
   const other = normalizeOtherFrontends(value?.frontends?.other);
   const frontendIndependent = value?.frontend_independent === true;
+  const compatibility = value?.preset_compatibility;
+  const modelFamilies = uniqueStrings(compatibility?.model_families?.known_ids);
+  const otherModelFamilies = uniqueStrings(
+    compatibility?.model_families?.other,
+  ).filter(
+    (entry, index, entries) =>
+      entries.findIndex(
+        (candidate) =>
+          candidate.toLocaleLowerCase() === entry.toLocaleLowerCase(),
+      ) === index,
+  );
+  const completionFormats = uniqueStrings(compatibility?.completion_formats);
+  const validModelFamilies = new Set([
+    "model-agnostic",
+    "claude",
+    "gpt",
+    "gemini",
+    "gemma",
+    "deepseek",
+    "glm",
+    "minimax",
+    "mimo",
+    "kimi",
+    "qwen",
+    "llama",
+    "mistral",
+  ]);
+  const validCompletionFormats = new Set([
+    "chat-completion",
+    "text-completion",
+  ]);
 
-  if (value?.schema_version !== 1) {
-    errors.push("Submission manifest must use schema version 1.");
+  if (![1, 2].includes(value?.schema_version)) {
+    errors.push("Submission manifest must use schema version 1 or 2.");
   }
   if (!["frontend", "extension", "preset"].includes(projectType)) {
     errors.push("Project type is invalid.");
@@ -75,6 +106,37 @@ export function normalizeProjectSubmissionManifest(value) {
   ) {
     errors.push("Extensions require at least one supported frontend.");
   }
+  if (projectType === "preset" && value?.schema_version === 2) {
+    if (modelFamilies.length === 0 && otherModelFamilies.length === 0) {
+      errors.push(
+        "System Presets require at least one supported model family.",
+      );
+    }
+    if (completionFormats.length === 0) {
+      errors.push("System Presets require at least one completion format.");
+    }
+    if (otherModelFamilies.some((family) => family.length > 60)) {
+      errors.push("Unlisted model families must be 60 characters or fewer.");
+    }
+    for (const family of modelFamilies) {
+      if (!validModelFamilies.has(family)) {
+        errors.push(`Unknown model family: ${family}.`);
+      }
+    }
+    for (const format of completionFormats) {
+      if (!validCompletionFormats.has(format)) {
+        errors.push(`Unknown completion format: ${format}.`);
+      }
+    }
+    if (
+      modelFamilies.includes("model-agnostic") &&
+      (modelFamilies.length > 1 || otherModelFamilies.length > 0)
+    ) {
+      errors.push(
+        "Model-Agnostic cannot be combined with another model family.",
+      );
+    }
+  }
   if (projectType === "preset" && !githubRepositoryShape(sourceUrl) && !name) {
     errors.push("External System Presets require a project name.");
   }
@@ -92,7 +154,7 @@ export function normalizeProjectSubmissionManifest(value) {
   return {
     valid: true,
     manifest: {
-      schema_version: 1,
+      schema_version: value.schema_version,
       project_type: projectType,
       source_url: sourceUrl,
       name,
@@ -100,6 +162,17 @@ export function normalizeProjectSubmissionManifest(value) {
       frontends: { known_ids: knownIds, other },
       frontend_independent: frontendIndependent,
       additional_context: nullableText(value?.additional_context),
+      ...(projectType === "preset" && value.schema_version === 2
+        ? {
+            preset_compatibility: {
+              model_families: {
+                known_ids: modelFamilies,
+                other: otherModelFamilies,
+              },
+              completion_formats: completionFormats,
+            },
+          }
+        : {}),
     },
   };
 }

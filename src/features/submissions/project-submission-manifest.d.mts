@@ -6,7 +6,7 @@ export interface OtherFrontendSubmission {
 }
 
 export interface ProjectSubmissionManifest {
-  schema_version: 1;
+  schema_version: 1 | 2;
   project_type: ProjectSubmissionType;
   source_url: string;
   name: string | null;
@@ -17,6 +17,13 @@ export interface ProjectSubmissionManifest {
   };
   frontend_independent: boolean;
   additional_context: string | null;
+  preset_compatibility?: {
+    model_families: {
+      known_ids: string[];
+      other: string[];
+    };
+    completion_formats: string[];
+  };
 }
 
 export type ManifestValidation =

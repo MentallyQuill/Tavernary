@@ -64,6 +64,40 @@ body:
       description: Optional context that may help us review this project.
     validations:
       required: false
+  - type: checkboxes
+    id: supported-model-families
+    attributes:
+      label: Supported model families
+      description: System Presets only. Select every supported family; Model-Agnostic must be selected alone.
+      options:
+        - label: model-agnostic
+        - label: claude
+        - label: gpt
+        - label: gemini
+        - label: gemma
+        - label: deepseek
+        - label: glm
+        - label: minimax
+        - label: mimo
+        - label: kimi
+        - label: qwen
+        - label: llama
+        - label: mistral
+  - type: input
+    id: other-model-family
+    attributes:
+      label: Other model family
+      description: System Presets only. A maintainer must reconcile this value before publication.
+    validations:
+      required: false
+  - type: checkboxes
+    id: completion-formats
+    attributes:
+      label: Completion formats
+      description: System Presets only. Select at least one.
+      options:
+        - label: chat-completion
+        - label: text-completion
   - type: textarea
     id: project-manifest
     attributes:
