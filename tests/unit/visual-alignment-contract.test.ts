@@ -50,7 +50,7 @@ describe("catalog visual alignment", () => {
       /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*auto[^}]*min-width:\s*0/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-panel-inspect-header > p\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+      /\.kit-builder-inspect-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
     );
     expect(css).toMatch(
       /\.kit-card-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
@@ -71,6 +71,32 @@ describe("catalog visual alignment", () => {
     );
     expect(css).not.toMatch(
       /\.kit-project-card-unavailable\s*\{[^}]*opacity:\s*(?!0(?:;|\s*\}))/s,
+    );
+  });
+
+  test("aligns the inspector summary and administrative controls", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-builder-inspect-heading h2\s*\{[^}]*font-size:\s*17px[^}]*font-weight:\s*720[^}]*letter-spacing:\s*-0\.02em[^}]*line-height:\s*1\.3/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-inspect-identity small\s*\{[^}]*font-size:\s*10px[^}]*font-weight:\s*500/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-inspect-description\s*\{[^}]*overflow:\s*hidden[^}]*-webkit-line-clamp:\s*4/s,
+    );
+    expect(css).toMatch(
+      /@media \(min-width:\s*761px\)[\s\S]*?\.kit-builder-inspect-description\s*\{[^}]*font-size:\s*11px[^}]*line-height:\s*1\.48/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel-primary-actions\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel-admin-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-withdrawal-action\s*\{[^}]*border-color:\s*var\(--color-danger-border\)[^}]*color:\s*var\(--color-danger-text\)/s,
     );
   });
 

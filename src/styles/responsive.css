@@ -404,8 +404,8 @@
     overflow: visible;
   }
 
-  .kit-builder-panel-actions {
-    display: grid;
+  .kit-builder-panel-primary-actions,
+  .kit-builder-panel-admin-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

@@ -334,56 +334,82 @@ export function KitBuilderPanel({
         ) : state.mode === "inspect" && kit ? (
           <div className="kit-builder-panel-inspect">
             <div className="kit-builder-panel-inspect-header">
-              <header>
-                <h2>{kit.title}</h2>
-                <p>@{kit.author.login}</p>
-              </header>
-              <p>{kit.description}</p>
+              <section
+                className="kit-builder-inspect-summary"
+                aria-labelledby={`${kit.id}-inspect-title`}
+              >
+                {phone ? (
+                  <header>
+                    <h2 id={`${kit.id}-inspect-title`}>{kit.title}</h2>
+                    <p>@{kit.author.login}</p>
+                  </header>
+                ) : (
+                  <header className="kit-builder-inspect-heading">
+                    <CategoryIcon name="kit" />
+                    <span className="kit-builder-inspect-identity">
+                      <h2 id={`${kit.id}-inspect-title`}>{kit.title}</h2>
+                      <small>@{kit.author.login}</small>
+                    </span>
+                    <b className="kit-project-count-tag">
+                      {kit.components.length}{" "}
+                      {kit.components.length === 1 ? "Project" : "Projects"}
+                    </b>
+                  </header>
+                )}
+                <p className="kit-builder-inspect-description">
+                  {kit.description}
+                </p>
+              </section>
               <div className="kit-builder-panel-actions">
-                <button
-                  type="button"
-                  className="control-secondary"
-                  onClick={() => onDuplicate?.(kit)}
-                >
-                  <CategoryIcon name="duplicate" />
-                  Duplicate
-                </button>
-                <button
-                  type="button"
-                  className="control-secondary"
-                  onClick={() => onEdit?.(kit)}
-                >
-                  Edit
-                </button>
-                <Tooltip
-                  id={`${tooltipId}-copy-kit-link-tooltip`}
-                  label="Copy a direct link to this Kit"
-                  className="control-tooltip"
-                >
+                <div className="kit-builder-panel-primary-actions">
                   <button
                     type="button"
                     className="control-secondary"
-                    aria-label="Copy link"
-                    onClick={() => void onCopyLink(kit.id)}
+                    onClick={() => onDuplicate?.(kit)}
                   >
-                    <CategoryIcon name="copy-link" />
-                    Copy link
+                    <CategoryIcon name="duplicate" />
+                    Duplicate
                   </button>
-                </Tooltip>
-                <a
-                  className="control-quiet"
-                  href={issueUrl("06-kit-report.yml", kit)}
-                  target="_blank"
-                >
-                  Report Kit
-                </a>
-                <a
-                  className="control-quiet"
-                  href={issueUrl("07-kit-withdrawal.yml", kit)}
-                  target="_blank"
-                >
-                  Request withdrawal
-                </a>
+                  <button
+                    type="button"
+                    className="control-secondary"
+                    onClick={() => onEdit?.(kit)}
+                  >
+                    Edit
+                  </button>
+                  <Tooltip
+                    id={`${tooltipId}-copy-kit-link-tooltip`}
+                    label="Copy a direct link to this Kit"
+                    className="control-tooltip"
+                  >
+                    <button
+                      type="button"
+                      className="control-secondary"
+                      aria-label="Copy link"
+                      onClick={() => void onCopyLink(kit.id)}
+                    >
+                      <CategoryIcon name="copy-link" />
+                      Copy link
+                    </button>
+                  </Tooltip>
+                </div>
+                <div className="kit-builder-panel-admin-actions">
+                  <a
+                    className="control-secondary"
+                    href={issueUrl("06-kit-report.yml", kit)}
+                    target="_blank"
+                  >
+                    <CategoryIcon name="report" />
+                    Report Kit
+                  </a>
+                  <a
+                    className="control-secondary kit-withdrawal-action"
+                    href={issueUrl("07-kit-withdrawal.yml", kit)}
+                    target="_blank"
+                  >
+                    Request withdrawal
+                  </a>
+                </div>
               </div>
             </div>
             <section
@@ -394,8 +420,11 @@ export function KitBuilderPanel({
                 id={`${kit.id}-project-list-heading`}
                 className="kit-project-list-heading"
               >
-                {kit.components.length}{" "}
-                {kit.components.length === 1 ? "Project" : "Projects"}
+                {phone
+                  ? `${kit.components.length} ${
+                      kit.components.length === 1 ? "Project" : "Projects"
+                    }`
+                  : "Projects"}
               </h3>
               <KitProjectStack components={kit.components} now={now} />
             </section>
