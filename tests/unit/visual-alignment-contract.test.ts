@@ -7,6 +7,23 @@ const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
 describe("catalog visual alignment", () => {
+  test("positions one animated Kit share notice above safe areas", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-share-notice\s*\{[^}]*position:\s*fixed[^}]*z-index:\s*120[^}]*bottom:\s*max\(22px,\s*env\(safe-area-inset-bottom\)\)/s,
+    );
+    expect(css).toContain("@keyframes kit-share-notice-enter");
+    expect(css).toContain("@keyframes kit-share-notice-life");
+    expect(css).toMatch(
+      /\.kit-share-notice\[data-tone="copied"\]\s*\{[^}]*animation:\s*kit-share-notice-life\s+2000ms/s,
+    );
+    expect(responsive).toMatch(
+      /\.kit-share-notice[^}]*\{[^}]*animation:\s*none/s,
+    );
+  });
+
   test("gives desktop Kit inspection one bounded project scroll", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");

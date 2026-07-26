@@ -510,6 +510,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .kit-share-notice {
+    animation: none;
+    transform: none;
+  }
+
   .kit-card-action,
   .kit-card-action:is(:hover, :focus-visible),
   .kit-card-action:active {
