@@ -80,8 +80,8 @@ export default function AboutPage() {
             documentation, licenses, and support.
           </p>
           <p>
-            If you've made something for the community, or know of a killer 
-            extension, prompt, or frontend that isn't on Tavernary, you can add 
+            If you hvae made something for the community, or know of a killer 
+            extension, prompt, or frontend that is not on Tavernary, you can add 
             it to the catalog and help make the next discovery easier for someone 
             else.
           </p>
