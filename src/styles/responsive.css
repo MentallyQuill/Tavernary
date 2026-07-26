@@ -422,6 +422,12 @@
     text-align: center;
   }
 
+  .kit-builder-panel-actions .kit-preview-action {
+    width: auto;
+    min-height: 44px;
+    padding: 0 11px;
+  }
+
   .kit-builder-panel-inspect > input,
   .kit-builder input {
     min-height: 44px;

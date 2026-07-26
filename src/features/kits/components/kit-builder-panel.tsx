@@ -23,6 +23,7 @@ import { KitProjectStack } from "./kit-project-stack";
 import { KitBuilder } from "./kit-builder";
 import { KitDiscardDialog } from "./kit-discard-dialog";
 import { KitDraftAccess, type DraftAccessStatus } from "./kit-draft-access";
+import { KitPreviewActionIcon } from "./kit-preview-action-icon";
 
 const builderBackground = [
   ".site-header",
@@ -38,6 +39,30 @@ function issueUrl(template: string, kit: CatalogKit) {
   url.searchParams.set("kit-id", kit.id);
   url.searchParams.set("share-url", kitShareUrl(kit.id));
   return url.toString();
+}
+
+function formatProjectKindSummary(kit: CatalogKit) {
+  const counts = kit.components.reduce(
+    (summary, component) => {
+      if (component.kind === "preset") summary.preset += 1;
+      if (component.kind === "extension") summary.extension += 1;
+      return summary;
+    },
+    { preset: 0, extension: 0 },
+  );
+
+  return [
+    counts.preset > 0
+      ? `${counts.preset} ${counts.preset === 1 ? "Preset" : "Presets"}`
+      : null,
+    counts.extension > 0
+      ? `${counts.extension} ${
+          counts.extension === 1 ? "Extension" : "Extensions"
+        }`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 }
 
 export function availableBuilderHeight(viewportHeight: number, top: number) {
@@ -348,10 +373,6 @@ export function KitBuilderPanel({
                         <h2 id={`${kit.id}-inspect-title`}>{kit.title}</h2>
                         <small>@{kit.author.login}</small>
                       </span>
-                      <b className="kit-project-count-tag">
-                        {kit.components.length}{" "}
-                        {kit.components.length === 1 ? "Project" : "Projects"}
-                      </b>
                     </header>
                   )}
                   <p className="kit-builder-inspect-description">
@@ -362,15 +383,15 @@ export function KitBuilderPanel({
                   <div className="kit-builder-panel-primary-actions">
                     <button
                       type="button"
-                      className="control-secondary"
+                      className="control-secondary kit-preview-action"
                       onClick={() => onDuplicate?.(kit)}
                     >
-                      <CategoryIcon name="duplicate" />
+                      <KitPreviewActionIcon name="duplicate" />
                       Duplicate
                     </button>
                     <button
                       type="button"
-                      className="control-secondary"
+                      className="control-secondary kit-preview-action"
                       onClick={() => onEdit?.(kit)}
                     >
                       Edit
@@ -382,26 +403,26 @@ export function KitBuilderPanel({
                     >
                       <button
                         type="button"
-                        className="control-secondary"
+                        className="control-secondary kit-preview-action"
                         aria-label="Copy link"
                         onClick={() => void onCopyLink(kit.id)}
                       >
-                        <CategoryIcon name="copy-link" />
+                        <KitPreviewActionIcon name="copy-link" />
                         Copy link
                       </button>
                     </Tooltip>
                   </div>
                   <div className="kit-builder-panel-admin-actions">
                     <a
-                      className="control-secondary"
+                      className="control-secondary kit-preview-action"
                       href={issueUrl("06-kit-report.yml", kit)}
                       target="_blank"
                     >
-                      <CategoryIcon name="report" />
+                      <KitPreviewActionIcon name="report" />
                       Report Kit
                     </a>
                     <a
-                      className="control-secondary kit-withdrawal-action"
+                      className="control-secondary kit-preview-action kit-withdrawal-action"
                       href={issueUrl("07-kit-withdrawal.yml", kit)}
                       target="_blank"
                     >
@@ -418,12 +439,11 @@ export function KitBuilderPanel({
                   id={`${kit.id}-project-list-heading`}
                   className="kit-project-list-heading"
                 >
-                  {phone
-                    ? `${kit.components.length} ${
-                        kit.components.length === 1 ? "Project" : "Projects"
-                      }`
-                    : "Projects"}
+                  Projects
                 </h3>
+                <p className="kit-project-kind-summary">
+                  {formatProjectKindSummary(kit)}
+                </p>
                 <KitProjectStack components={kit.components} now={now} />
               </section>
             </div>

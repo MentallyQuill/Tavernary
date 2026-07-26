@@ -42,6 +42,15 @@ test("requires supported frontends only for Extensions", async () => {
   expect(
     screen.queryByLabelText("Frontend-independent"),
   ).not.toBeInTheDocument();
+  expect(screen.getByText("0 selected")).toBeVisible();
+  expect(screen.getByLabelText("SillyTavern")).not.toBeChecked();
+
+  await user.click(screen.getByLabelText("Other or not listed"));
+  expect(
+    screen.getByText(
+      "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",
+    ),
+  ).toBeVisible();
 });
 
 test("allows a System Preset to be frontend-independent", async () => {
@@ -148,7 +157,7 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
   await user.type(screen.getByLabelText("Other frontend name"), "New UI");
   await user.type(
     screen.getByLabelText("Other frontend URL"),
-    "http://example.com/frontend",
+    "https://example.com/frontend",
   );
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
@@ -160,6 +169,8 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
     "other-frontend-url-error",
   );
   expect(
-    screen.getByText("Other frontend URL must be a public HTTPS URL."),
+    screen.getByText(
+      "Other frontend URL must be an exact public GitHub owner/repository URL.",
+    ),
   ).toBeVisible();
 });

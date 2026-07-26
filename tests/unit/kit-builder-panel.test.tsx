@@ -660,15 +660,47 @@ describe("Kit Builder", () => {
       }),
     ).toBeVisible();
     expect(within(summary as HTMLElement).getByText("@author")).toBeVisible();
-    expect(within(summary as HTMLElement).getByText("4 Projects")).toHaveClass(
-      "kit-project-count-tag",
-    );
+    expect(
+      within(summary as HTMLElement).queryByText("4 Projects"),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Projects" })).toHaveClass(
       "kit-project-list-heading",
+    );
+    expect(screen.getByText("1 Preset · 2 Extensions")).toHaveClass(
+      "kit-project-kind-summary",
     );
     expect(screen.getByRole("list", { name: "Kit projects" })).toHaveClass(
       "kit-project-stack",
     );
+  });
+
+  test("omits Frontend and zero-count kinds from the project breakdown", () => {
+    const kit = fixtureKit();
+    const preset = kit.components.find(
+      (component) => component.kind === "preset",
+    );
+    expect(preset).toBeDefined();
+    kit.components = [
+      kit.components[0],
+      preset!,
+      {
+        ...preset!,
+        projectId: "second-preset",
+        name: "Second Preset",
+      },
+    ];
+
+    render(
+      <KitBuilderPanel
+        state={{ mode: "inspect", collapsed: false, kitId: kit.id }}
+        kit={kit}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    const breakdown = document.querySelector(".kit-project-kind-summary");
+    expect(breakdown).toHaveTextContent("2 Presets");
+    expect(breakdown).not.toHaveTextContent(/Extension|Frontend/);
   });
 
   test("exposes truthful desktop inspector scroll boundaries", () => {
@@ -701,14 +733,35 @@ describe("Kit Builder", () => {
     for (const name of ["Duplicate", "Edit", "Copy link"]) {
       expect(screen.getByRole("button", { name })).toHaveClass(
         "control-secondary",
+        "kit-preview-action",
       );
     }
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveClass(
       "control-secondary",
+      "kit-preview-action",
     );
     expect(
       screen.getByRole("link", { name: "Request withdrawal" }),
-    ).toHaveClass("control-secondary", "kit-withdrawal-action");
+    ).toHaveClass(
+      "control-secondary",
+      "kit-preview-action",
+      "kit-withdrawal-action",
+    );
+    expect(
+      screen
+        .getByRole("button", { name: "Duplicate" })
+        .querySelector('[data-kit-preview-icon="duplicate"]'),
+    ).not.toBeNull();
+    expect(
+      screen
+        .getByRole("button", { name: "Copy link" })
+        .querySelector('[data-kit-preview-icon="copy-link"]'),
+    ).not.toBeNull();
+    expect(
+      screen
+        .getByRole("link", { name: "Report Kit" })
+        .querySelector('[data-kit-preview-icon="report"]'),
+    ).not.toBeNull();
   });
 
   test("preserves the current phone inspect summary", () => {
@@ -726,8 +779,11 @@ describe("Kit Builder", () => {
     expect(document.querySelector(".kit-builder-inspect-heading")).toBeNull();
     expect(screen.getByRole("heading", { name: "Story Kit" })).toBeVisible();
     expect(screen.getByText("@author")).toBeVisible();
-    expect(screen.getByRole("heading", { name: "4 Projects" })).toHaveClass(
+    expect(screen.getByRole("heading", { name: "Projects" })).toHaveClass(
       "kit-project-list-heading",
+    );
+    expect(screen.getByText("1 Preset · 2 Extensions")).toHaveClass(
+      "kit-project-kind-summary",
     );
     expect(document.querySelector(".kit-project-count-tag")).toBeNull();
   });

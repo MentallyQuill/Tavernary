@@ -218,6 +218,15 @@ test("Alpha Kit inspector renders compact direct project cards", async ({
   await expect(
     inspector.getByRole("link", { name: "Fixture Frontend", exact: true }),
   ).toBeVisible();
+  await expect(inspector.locator(".kit-project-count-tag")).toHaveCount(0);
+  await expect(
+    inspector.getByText("2 Extensions", { exact: true }),
+  ).toHaveClass("kit-project-kind-summary");
+  for (const name of ["duplicate", "copy-link", "report"]) {
+    await expect(
+      inspector.locator(`[data-kit-preview-icon="${name}"]`),
+    ).toBeVisible();
+  }
   await expect(inspector).toHaveScreenshot("alpha-kit-inspector.png", {
     animations: "disabled",
   });
@@ -296,6 +305,18 @@ for (const width of [390, 320]) {
     await expect(
       sheet.getByRole("link", { name: "Fixture Frontend", exact: true }),
     ).toBeVisible();
+    await expect(
+      sheet.getByText("2 Extensions", { exact: true }),
+    ).toBeVisible();
+    for (const action of [
+      sheet.getByRole("button", { name: "Duplicate" }),
+      sheet.getByRole("button", { name: "Edit" }),
+      sheet.getByRole("button", { name: "Copy link" }),
+      sheet.getByRole("link", { name: "Report Kit" }),
+      sheet.getByRole("link", { name: "Request withdrawal" }),
+    ]) {
+      await expect(action).toHaveCSS("min-height", "44px");
+    }
     await expectNoHorizontalOverflow(page);
     await expect(sheet).toHaveScreenshot(`alpha-kit-inspector-${width}px.png`, {
       animations: "disabled",

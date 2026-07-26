@@ -190,10 +190,10 @@ export function ProjectSubmissionBuilder({
       }
       if (!otherFrontendUrl.trim()) {
         addError("other-frontend-url", "Other frontend URL is required.");
-      } else if (!publicHttpsUrl(otherFrontendUrl)) {
+      } else if (!isGithubRepositoryUrl(otherFrontendUrl)) {
         addError(
           "other-frontend-url",
-          "Other frontend URL must be a public HTTPS URL.",
+          "Other frontend URL must be an exact public GitHub owner/repository URL.",
         );
       }
     }
@@ -437,6 +437,10 @@ export function ProjectSubmissionBuilder({
 
           {includeOtherFrontend ? (
             <div className="submission-other-fields">
+              <p className="submission-hint">
+                This project will stay blocked until the missing frontend is
+                submitted, reviewed, and merged.
+              </p>
               <div className="submission-field">
                 <label htmlFor="other-frontend-name">Other frontend name</label>
                 <input

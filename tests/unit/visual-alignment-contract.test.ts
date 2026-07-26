@@ -93,10 +93,13 @@ describe("catalog visual alignment", () => {
       /@media \(min-width:\s*761px\)[\s\S]*?\.kit-builder-inspect-description\s*\{[^}]*font-size:\s*11px[^}]*line-height:\s*1\.48/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-panel-primary-actions\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s,
+      /\.kit-builder-panel-primary-actions,\s*\.kit-builder-panel-admin-actions\s*\{[^}]*display:\s*flex[^}]*flex-wrap:\s*wrap/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-panel-admin-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+      /\.kit-builder-panel-actions \.kit-preview-action\s*\{[^}]*width:\s*auto[^}]*min-height:\s*36px[^}]*font-size:\s*12px/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-kind-summary\s*\{[^}]*color:\s*var\(--color-preset\)[^}]*font-size:\s*11px/s,
     );
     expect(css).toMatch(
       /\.kit-withdrawal-action\s*\{[^}]*border-color:\s*var\(--color-danger-border\)[^}]*color:\s*var\(--color-danger-text\)/s,
