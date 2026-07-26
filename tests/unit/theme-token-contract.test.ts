@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, test } from "vitest";
@@ -140,6 +140,25 @@ const LEGACY_TOKENS = [
   "shadow-raised",
 ] as const;
 
+const LEGACY_REFERENCE =
+  /--color-page|--color-surface-primary|--color-surface-card|--color-surface-raised|--color-border(?!-)|--color-navigation-primary|--color-muted|--color-filled-control-text|--color-kind-extension|--color-kind-frontend|--color-kind-preset|--shadow-raised/g;
+
+function productionFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = resolve(directory, entry.name);
+    return entry.isDirectory() ? productionFiles(path) : [path];
+  });
+}
+
+function legacyReferencesInProduction() {
+  return productionFiles(resolve(root, "src")).flatMap((file) => {
+    const source = readFileSync(file, "utf8");
+    return [...source.matchAll(LEGACY_REFERENCE)].map(
+      (match) => `${file.slice(root.length + 1)}:${match[0]}`,
+    );
+  });
+}
+
 describe("Graphite Teal token contract", () => {
   test("uses local formatter boundaries for case-sensitive token literals", () => {
     expect(tokensSource).toMatch(/^\/\* prettier-ignore \*\/\r?\n:root \{/);
@@ -164,5 +183,9 @@ describe("Graphite Teal token contract", () => {
     expect(actual["header-height"]).toBe("78px");
     expect(actual["category-height"]).toBe("62px");
     expect(actual["content-max"]).toBe("1520px");
+  });
+
+  test("has no removed token references anywhere in production source", () => {
+    expect(legacyReferencesInProduction()).toEqual([]);
   });
 });

@@ -1,7 +1,7 @@
 .submission-page {
   min-height: 100vh;
   padding: 28px clamp(20px, 6vw, 72px) 72px;
-  background: var(--color-page);
+  background: var(--color-bg-canvas);
 }
 
 .submission-nav,
@@ -17,19 +17,20 @@
 
 .submission-nav a,
 .submission-fallback a {
-  color: var(--color-accent, var(--color-kind-preset));
+  color: var(--color-link);
   font-weight: 650;
   text-decoration: none;
 }
 
 .submission-nav a:hover,
 .submission-fallback a:hover {
+  color: var(--color-link-hover);
   text-decoration: underline;
 }
 
 .submission-kicker {
   margin: 0 0 8px;
-  color: var(--color-kind-preset);
+  color: var(--color-preset);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -57,10 +58,10 @@
 
 .submission-section,
 .submission-errors {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-default);
   border-radius: var(--radius);
   padding: clamp(18px, 4vw, 28px);
-  background: var(--color-surface-card);
+  background: var(--color-bg-surface);
 }
 
 .submission-section {
@@ -86,11 +87,11 @@
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-border);
   border-radius: 7px;
   padding: 10px 12px;
-  color: var(--color-text-primary);
-  background: var(--color-surface-primary);
+  color: var(--color-control-text);
+  background: var(--color-control-bg);
 }
 
 .submission-field textarea {
@@ -100,11 +101,15 @@
 
 .submission-field input:hover,
 .submission-field select:hover,
-.submission-field textarea:hover,
+.submission-field textarea:hover {
+  border-color: var(--color-control-border-hover);
+  background: var(--color-control-bg-hover);
+}
+
 .submission-field input:focus,
 .submission-field select:focus,
 .submission-field textarea:focus {
-  border-color: var(--color-border-strong);
+  border-color: var(--color-control-border-focus);
 }
 
 .submission-hint,
@@ -112,7 +117,7 @@
 .submission-actions p,
 .submission-fallback,
 .submission-toggle small {
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   line-height: 1.55;
 }
 
@@ -136,11 +141,11 @@
 
 .submission-section-heading > span {
   flex: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-border);
   border-radius: 999px;
   padding: 5px 9px;
   color: var(--color-text-secondary);
-  background: var(--color-surface-primary);
+  background: var(--color-control-bg);
   font-size: 0.78rem;
 }
 
@@ -161,10 +166,10 @@
   min-width: 0;
   min-height: 52px;
   gap: 12px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-control-border);
   border-radius: 7px;
   padding: 11px 12px;
-  background: var(--color-surface-primary);
+  background: var(--color-bg-surface);
   cursor: pointer;
 }
 
@@ -174,7 +179,7 @@
   height: 18px;
   flex: none;
   margin: 2px 0 0;
-  accent-color: var(--color-kind-extension);
+  accent-color: var(--color-checkbox-checked);
 }
 
 .submission-options span,
@@ -191,8 +196,8 @@
 
 .submission-options > label:hover,
 .submission-toggle:hover {
-  border-color: var(--color-border-strong);
-  background: var(--color-surface-raised);
+  border-color: var(--color-control-border-hover);
+  background: var(--color-bg-surface-hover);
 }
 
 .submission-chips {
@@ -203,11 +208,11 @@
 
 .submission-chips button {
   min-height: 44px;
-  border: 1px solid var(--color-kind-preset);
+  border: 1px solid var(--color-frontend-border);
   border-radius: 999px;
   padding: 6px 11px;
-  color: var(--color-text-primary);
-  background: var(--color-surface-primary);
+  color: var(--color-frontend-text);
+  background: var(--color-frontend-bg);
   cursor: pointer;
 }
 
@@ -219,11 +224,13 @@
 
 .submission-confirmation {
   margin: -8px 0 0;
-  color: var(--color-kind-preset);
+  color: var(--color-preset);
 }
 
 .submission-errors {
-  border-color: var(--color-kind-frontend);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
 }
 
 .submission-errors p {
@@ -233,14 +240,14 @@
 
 .submission-field-error {
   margin: 0;
-  color: var(--color-kind-frontend);
+  color: var(--color-danger-text);
   font-size: 0.86rem;
   font-weight: 650;
   line-height: 1.45;
 }
 
 .submission-field [aria-invalid="true"] {
-  border-color: var(--color-kind-frontend);
+  border-color: var(--color-danger-border);
 }
 
 .submission-actions {
@@ -252,31 +259,37 @@
 .submission-actions button {
   min-height: 44px;
   flex: none;
-  border: 1px solid var(--color-kind-extension);
+  border: 1px solid var(--color-action-primary-bg);
   border-radius: 6px;
   padding: 0 18px;
-  color: var(--color-filled-control-text);
-  background: var(--color-kind-extension);
+  color: var(--color-action-primary-text);
+  background: var(--color-action-primary-bg);
   font-weight: 750;
   cursor: pointer;
 }
 
 .submission-actions button:hover,
 .submission-actions button:focus-visible {
-  border-color: var(--color-text-primary);
+  border-color: var(--color-action-primary-hover);
+  background: var(--color-action-primary-hover);
+}
+
+.submission-actions button:active {
+  border-color: var(--color-action-primary-pressed);
+  background: var(--color-action-primary-pressed);
 }
 
 .submission-actions button:disabled {
   cursor: wait;
-  border-color: var(--color-border);
-  color: var(--color-muted);
-  background: var(--color-surface-primary);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  background: var(--color-bg-disabled);
 }
 
 .submission-status {
   min-height: 1.5em;
   margin: 0;
-  color: var(--color-kind-preset);
+  color: var(--color-info-text);
 }
 
 .submission-fallback {
