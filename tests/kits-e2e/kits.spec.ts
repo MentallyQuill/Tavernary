@@ -367,7 +367,11 @@ test("navigates, restores URLs, searches every indexed Kit field, and sorts", as
     page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.locator(".project-card")).toHaveCount(53);
+  await expect(
+    page
+      .getByRole("region", { name: "Project catalog" })
+      .locator(".project-card"),
+  ).toHaveCount(50);
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
     page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
@@ -591,11 +595,33 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     .getByRole("article")
     .filter({ hasText: "Five Line Kit" })
     .locator(".kit-card-description");
-  expect(
-    await longDescription.evaluate(
-      (element) => getComputedStyle(element).webkitLineClamp,
-    ),
-  ).toBe("4");
+  const descriptionClamp = await longDescription.evaluate((element) => {
+    element.textContent = "Long Kit description ".repeat(30);
+    const oneLine = element.cloneNode() as HTMLElement;
+    oneLine.textContent = "M";
+    oneLine.style.cssText =
+      "position:absolute;visibility:hidden;display:block;overflow:visible;white-space:nowrap;-webkit-line-clamp:unset;";
+    document.body.append(oneLine);
+    const lineHeight = oneLine.getBoundingClientRect().height;
+    oneLine.remove();
+
+    const style = getComputedStyle(element);
+    return {
+      clientHeight: element.clientHeight,
+      lineClamp: style.webkitLineClamp,
+      lineHeight,
+      overflow: style.overflow,
+      scrollHeight: element.scrollHeight,
+    };
+  });
+  expect(descriptionClamp.lineClamp).toBe("4");
+  expect(descriptionClamp.overflow).toBe("hidden");
+  expect(descriptionClamp.scrollHeight).toBeGreaterThan(
+    descriptionClamp.clientHeight,
+  );
+  expect(descriptionClamp.clientHeight).toBeLessThanOrEqual(
+    descriptionClamp.lineHeight * 4 + 1,
+  );
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
   const cardCopy = card.getByRole("button", { name: "Copy link" });
@@ -695,9 +721,39 @@ test("scrolls a large desktop project stack under a fixed Kit header", async ({
   await openKits(page);
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const header = page.locator(".kit-builder-panel-inspect-header");
-  const stack = page.locator(".kit-project-stack");
-  const headerBefore = await header.boundingBox();
+  const panel = page.locator(".kit-builder-panel");
+  const header = panel.locator(".kit-builder-panel-header");
+  const actions = panel.locator(".kit-builder-panel-actions");
+  const stack = panel.locator(".kit-project-stack");
+  await expect(header).toBeVisible();
+  await expect(actions).toBeVisible();
+  const before = await panel.evaluate((element) => {
+    const headerElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-header",
+    );
+    const actionsElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-actions",
+    );
+    if (!headerElement || !actionsElement) {
+      throw new Error("Kit inspector chrome is missing");
+    }
+    return {
+      actions: actionsElement.getBoundingClientRect().toJSON(),
+      header: headerElement.getBoundingClientRect().toJSON(),
+      viewport: {
+        bottom: window.innerHeight,
+        left: 0,
+        right: window.innerWidth,
+        top: 0,
+      },
+    };
+  });
+  for (const chrome of [before.header, before.actions]) {
+    expect(chrome.left).toBeGreaterThanOrEqual(before.viewport.left);
+    expect(chrome.right).toBeLessThanOrEqual(before.viewport.right);
+    expect(chrome.top).toBeGreaterThanOrEqual(before.viewport.top);
+    expect(chrome.bottom).toBeLessThanOrEqual(before.viewport.bottom);
+  }
   const scroll = await stack.evaluate((element) => ({
     clientHeight: element.clientHeight,
     scrollHeight: element.scrollHeight,
@@ -713,7 +769,37 @@ test("scrolls a large desktop project stack under a fixed Kit header", async ({
   await expect(
     stack.getByRole("group", { name: "Fixture Flagged Tool unavailable" }),
   ).toBeVisible();
-  expect((await header.boundingBox())?.y).toBe(headerBefore?.y);
+  await expect(header).toBeVisible();
+  await expect(actions).toBeVisible();
+  const after = await panel.evaluate((element) => {
+    const headerElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-header",
+    );
+    const actionsElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-actions",
+    );
+    if (!headerElement || !actionsElement) {
+      throw new Error("Kit inspector chrome is missing after scrolling");
+    }
+    return {
+      actions: actionsElement.getBoundingClientRect().toJSON(),
+      header: headerElement.getBoundingClientRect().toJSON(),
+      viewport: {
+        bottom: window.innerHeight,
+        left: 0,
+        right: window.innerWidth,
+        top: 0,
+      },
+    };
+  });
+  for (const chrome of [after.header, after.actions]) {
+    expect(chrome.left).toBeGreaterThanOrEqual(after.viewport.left);
+    expect(chrome.right).toBeLessThanOrEqual(after.viewport.right);
+    expect(chrome.top).toBeGreaterThanOrEqual(after.viewport.top);
+    expect(chrome.bottom).toBeLessThanOrEqual(after.viewport.bottom);
+  }
+  expect(after.header.y).toBe(before.header.y);
+  expect(after.actions.y).toBe(before.actions.y);
 });
 
 test("phone inspectors expose direct project links without horizontal overflow", async ({

@@ -229,15 +229,15 @@ test("large Kit inspector stays visually coherent after stack scrolling", async 
   await openKits(page, { width: 1440, height: 800 });
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const inspector = page.getByRole("complementary", { name: "Kit Builder" });
-  const stack = inspector.locator(".kit-project-stack");
+  const panel = page.locator(".kit-builder-panel");
+  const stack = panel.locator(".kit-project-stack");
   await stack.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
   });
   await expect(
     stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
   ).toBeInViewport();
-  await expect(inspector).toHaveScreenshot("large-kit-inspector-scrolled.png", {
+  await expect(panel).toHaveScreenshot("large-kit-inspector-scrolled.png", {
     animations: "disabled",
   });
 });
