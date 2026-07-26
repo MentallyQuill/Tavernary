@@ -2,13 +2,13 @@
   "schema_version": 1,
   "run_id": "b25c315d-60d3-47be-bc73-edcc9cac33b5",
   "mode": "canary",
-  "status": "awaiting-deployment",
+  "status": "passed",
   "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-25T23:56:38.519Z",
-  "updated_at": "2026-07-25T23:59:24.578Z",
+  "updated_at": "2026-07-26T00:01:07.575Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -141,9 +141,13 @@
   },
   "publication": {
     "checkpoint_commit_sha": "a9c75b20001f741e3e3b7a347b67805134f211c1",
-    "recorded_at": "2026-07-25T23:59:24.578Z"
+    "recorded_at": "2026-07-26T00:01:07.306Z"
   },
-  "deployment": null,
+  "deployment": {
+    "commit_sha": "a9c75b20001f741e3e3b7a347b67805134f211c1",
+    "run_id": 30180369683,
+    "verified_at": "2026-07-26T00:01:07.575Z"
+  },
   "aggregates": {
     "enriched": 6,
     "fallback": 0,
