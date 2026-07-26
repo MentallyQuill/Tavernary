@@ -1,20 +1,10 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import { expect, test } from "@playwright/test";
 
+import {
+  generatedCatalog as catalog,
+  generatedProjectCount,
+} from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
-
-const catalog = JSON.parse(
-  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
-) as {
-  projects: Array<{
-    metadataStatus: string;
-    sourceStatus: string;
-    primaryFunction: string;
-    license: { status: string };
-  }>;
-};
 
 const provisionalCount = catalog.projects.filter(
   ({ metadataStatus }) => metadataStatus === "provisional",
@@ -377,9 +367,13 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   page,
 }) => {
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", {
+      name: `${generatedProjectCount} projects`,
+    }),
   ).toBeVisible();
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(
+    generatedProjectCount,
+  );
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
@@ -441,7 +435,9 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     .click();
   await expect(page).toHaveURL(/\/$/);
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", {
+      name: `${generatedProjectCount} projects`,
+    }),
   ).toBeVisible();
 });
 
@@ -468,9 +464,11 @@ test("shows the full launch catalog without default-query hidden records", async
   page,
 }) => {
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(
+    generatedProjectCount,
+  );
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    212,
+    generatedProjectCount,
   );
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
@@ -519,7 +517,9 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
     .getByRole("button", { name: "Remove Pending verification" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", {
+      name: `${generatedProjectCount} projects`,
+    }),
   ).toBeVisible();
   await expect(page).not.toHaveURL(/license=/);
 
@@ -534,7 +534,9 @@ test("matches the approved card anatomy", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const card = page.locator(".project-card").first();
 
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(
+    generatedProjectCount,
+  );
   await expect(card.locator("h2")).toHaveCSS("font-family", /Inter/);
   await expect(card.locator(".card-bottom")).toHaveCSS(
     "border-top-style",
