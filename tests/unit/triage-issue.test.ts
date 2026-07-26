@@ -233,6 +233,56 @@ test("links the existing project and closes duplicate issues", () => {
   );
 });
 
+test("keeps missing frontend dependencies open with an actionable response", () => {
+  const mutation = buildProjectSubmissionTriage(
+    {
+      status: "needs-information",
+      errors: ["Aikobots is not currently indexed as a Tavernary frontend."],
+      suggestions: [],
+      frontendDependencies: [
+        {
+          name: "Aikobots",
+          canonicalUrl: "https://github.com/aikohanasaki/Aikobots",
+          repository: "aikohanasaki/Aikobots",
+        },
+      ],
+    },
+    {
+      issueNumber: 23,
+      currentTitle:
+        "[Project submission] aikohanasaki/SillyTavern-WorldInfoLocks",
+      currentLabels: ["issue-admitted"],
+      generatedTitle:
+        "[Project submission] aikohanasaki/SillyTavern-WorldInfoLocks",
+      previousMarker: null,
+    },
+  );
+
+  expect(mutation).toMatchObject({
+    labels: ["issue-admitted", "project-submission", "needs-information"],
+    close: false,
+    dispatchGeneration: false,
+    marker: {
+      frontend_dependencies: [
+        {
+          name: "Aikobots",
+          canonical_url: "https://github.com/aikohanasaki/Aikobots",
+          repository: "aikohanasaki/Aikobots",
+        },
+      ],
+    },
+  });
+  expect(mutation.commentBody).toContain(
+    "**Aikobots is not currently indexed as a Tavernary frontend.**",
+  );
+  expect(mutation.commentBody).toContain(
+    "project-type=Frontend&project-url=https%3A%2F%2Fgithub.com%2Faikohanasaki%2FAikobots",
+  );
+  expect(mutation.commentBody).toContain(
+    "This issue will remain open and retry automatically after that frontend is merged.",
+  );
+});
+
 test("does not dispatch a second generation while a submission PR is open", () => {
   const mutation = buildProjectSubmissionTriage(
     {
@@ -335,6 +385,65 @@ test("parses the stable submission state marker", () => {
     generated_title: "[Project submission] owner/repo",
     status: "admitted",
   });
+});
+
+test("parses frontend dependencies from the stable state marker", () => {
+  expect(
+    parseProjectSubmissionStateMarker(
+      [
+        "<!-- tavernary-project-submission-state",
+        JSON.stringify({
+          schema_version: 1,
+          generated_title:
+            "[Project submission] aikohanasaki/SillyTavern-WorldInfoLocks",
+          status: "needs-information",
+          frontend_dependencies: [
+            {
+              name: "Aikobots",
+              canonical_url: "https://github.com/aikohanasaki/Aikobots",
+              repository: "aikohanasaki/Aikobots",
+            },
+          ],
+        }),
+        "-->",
+      ].join("\n"),
+    ),
+  ).toEqual({
+    schema_version: 1,
+    generated_title:
+      "[Project submission] aikohanasaki/SillyTavern-WorldInfoLocks",
+    status: "needs-information",
+    frontend_dependencies: [
+      {
+        name: "Aikobots",
+        canonical_url: "https://github.com/aikohanasaki/Aikobots",
+        repository: "aikohanasaki/Aikobots",
+      },
+    ],
+  });
+});
+
+test("rejects malformed frontend dependencies in the state marker", () => {
+  expect(
+    parseProjectSubmissionStateMarker(
+      [
+        "<!-- tavernary-project-submission-state",
+        JSON.stringify({
+          schema_version: 1,
+          generated_title: "[Project submission] owner/repo",
+          status: "needs-information",
+          frontend_dependencies: [
+            {
+              name: "Aikobots",
+              canonical_url: "",
+              repository: "aikohanasaki/Aikobots",
+            },
+          ],
+        }),
+        "-->",
+      ].join("\n"),
+    ),
+  ).toBeNull();
 });
 
 test("processes an admitted issue through injected GitHub mutations", async () => {

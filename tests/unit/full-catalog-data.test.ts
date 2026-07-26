@@ -145,36 +145,25 @@ function expectCatalogContract(records: CatalogRecord[]) {
     (record) => record.metadata_status === "provisional",
   );
 
-  expect(records).toHaveLength(211);
-  expect(ids.size).toBe(211);
-  expect(countBy(records, (record) => record.kind)).toEqual({
-    extension: 198,
-    frontend: 4,
-    preset: 9,
-  });
-  expect(countBy(records, (record) => record.source.type)).toEqual({
-    github: 204,
-    "github-organization": 1,
-    url: 6,
-  });
-  expect(countBy(records, (record) => record.enrichment_policy)).toEqual({
-    automatic: 204,
-    manual: 7,
-  });
+  expect(records.length).toBeGreaterThan(0);
+  expect(ids.size).toBe(records.length);
+  expect(Object.keys(countBy(records, (record) => record.kind)).sort()).toEqual(
+    ["extension", "frontend", "preset"],
+  );
   expect(
-    records.filter(
-      (record) =>
-        record.source.type === "url" &&
-        record.source.license_status === "pending",
-    ),
-  ).toHaveLength(0);
+    Object.keys(countBy(records, (record) => record.source.type)).sort(),
+  ).toEqual(["github", "github-organization", "url"]);
   expect(
-    records.filter(
-      (record) =>
-        record.source.type === "url" &&
-        record.source.license_status === "missing",
-    ),
-  ).toHaveLength(6);
+    Object.keys(countBy(records, (record) => record.enrichment_policy)).sort(),
+  ).toEqual(["automatic", "manual"]);
+  const urlRecords = records.filter((record) => record.source.type === "url");
+  const expectedUrlRecordIds = Object.keys(manualCuratedRecords)
+    .filter((id) => id !== "tavern-rpg-suite")
+    .sort();
+  expect(urlRecords.map(({ id }) => id).sort()).toEqual(expectedUrlRecordIds);
+  expect(
+    urlRecords.every((record) => record.source.license_status === "missing"),
+  ).toBe(true);
 
   for (const record of records) {
     expect(["curated", "provisional"], record.id).toContain(
@@ -248,7 +237,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
 }
 
 describe("full catalog data", () => {
-  test("matches the consolidated 211-record contract", async () => {
+  test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
   });
 

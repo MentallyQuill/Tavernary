@@ -126,6 +126,9 @@ test("project submission is a structured fallback for automated intake", async (
     "supported-frontends",
     "frontend-independent",
     "additional-context",
+    "supported-model-families",
+    "other-model-family",
+    "completion-formats",
     "project-manifest",
   ]);
   expect(
@@ -140,6 +143,9 @@ test("project submission is a structured fallback for automated intake", async (
     "Supported frontends",
     "Frontend-independent",
     "Anything we should know?",
+    "Supported model families",
+    "Other model family",
+    "Completion formats",
     "Project manifest",
   ]);
   expect(fields[0].attributes.options).toEqual([

@@ -12,7 +12,7 @@ export type AdmittedProjectSubmission = Extract<
 >;
 
 export interface DraftedProjectRecord {
-  schema_version: 4;
+  schema_version: 5;
   id: string;
   name: string;
   kind: "frontend" | "extension" | "preset";
@@ -36,6 +36,8 @@ export interface DraftedProjectRecord {
   frontends: string[];
   primary_function: string;
   capabilities: string[];
+  model_families?: string[];
+  completion_formats?: string[];
   cataloged_at: string;
   catalog_cohort: "standard";
   visibility: "published";

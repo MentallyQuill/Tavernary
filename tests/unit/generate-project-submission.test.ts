@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 import { generateProjectSubmission } from "../../scripts/submissions/generate-project-submission.mjs";
 
 const record = {
-  schema_version: 4,
+  schema_version: 5,
   id: "owner-repo",
   name: "Repository Tool",
   kind: "extension",

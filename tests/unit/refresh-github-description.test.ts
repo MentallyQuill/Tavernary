@@ -6,7 +6,7 @@ import { expect, test, vi } from "vitest";
 import { runRefresh } from "../../scripts/catalog/refresh-github.mjs";
 
 const record = {
-  schema_version: 4,
+  schema_version: 5,
   id: "fixture",
   source: {
     type: "github",

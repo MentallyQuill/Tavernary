@@ -6,7 +6,7 @@ import { describe, expect, test } from "vitest";
 import { validateCatalog } from "../../scripts/catalog/validate.mjs";
 
 const validRecord = {
-  schema_version: 4,
+  schema_version: 5,
   id: "valid-preset",
   name: "Valid Preset",
   kind: "preset",
@@ -20,6 +20,8 @@ const validRecord = {
   frontends: ["sillytavern"],
   primary_function: "generation-reasoning",
   capabilities: ["prompt-engineering"],
+  model_families: ["claude"],
+  completion_formats: ["chat-completion"],
   cataloged_at: "2026-07-23T00:00:00Z",
   catalog_cohort: "seed",
   visibility: "published",
@@ -83,7 +85,9 @@ describe("catalog validation", () => {
     const result = await validateCatalog();
 
     expect(result.errors).toEqual([]);
-    expect(result.projectCount).toBe(211);
+    expect(result.projectCount).toBe(
+      await countJsonFiles("data/registry/projects"),
+    );
     expect(result.kitCount).toBe(await countJsonFiles("data/registry/kits"));
     expect(result.kitSnapshotCount).toBe(
       await countJsonFiles("data/snapshots/github/kits"),
@@ -168,7 +172,7 @@ describe("catalog validation", () => {
     const result = await validateCatalog({
       records: [
         {
-          schema_version: 4,
+          schema_version: 5,
           id: "bad-extension",
           name: "Bad Extension",
           kind: "extension",
@@ -244,6 +248,36 @@ describe("catalog validation", () => {
     );
   });
 
+  test("rejects an unknown Preset model family", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          model_families: ["unknown-family"],
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: unknown model family unknown-family",
+    );
+  });
+
+  test("rejects Model-Agnostic combined with a named family", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          model_families: ["model-agnostic", "claude"],
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: model-agnostic cannot be combined with named model families",
+    );
+  });
+
   test("accepts provisional GitHub null identity and uncategorized metadata", async () => {
     const result = await validateCatalog({
       records: [
@@ -303,6 +337,8 @@ describe("catalog validation", () => {
             "instruction-control",
             "model-routing",
           ],
+          model_families: undefined,
+          completion_formats: undefined,
           refresh_policy: "paused",
           enrichment_policy: "manual",
           enrichment_note: "Multi-repository suite; requires manual curation.",

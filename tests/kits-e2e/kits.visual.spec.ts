@@ -1,11 +1,12 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 async function openKits(
   page: Page,
   viewport: { width: number; height: number },
 ) {
   await page.setViewportSize(viewport);
-  await page.goto("/");
+  await page.goto(sitePath());
   if (viewport.width <= 760) {
     await page.getByRole("button", { name: "Browse categories" }).click();
   }
@@ -77,7 +78,7 @@ test("320px card footer gives two metadata rows full width above utility actions
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const shell = page.locator(".project-card-shell").first();
   const footer = shell.locator(".card-bottom");
@@ -218,6 +219,15 @@ test("Alpha Kit inspector renders compact direct project cards", async ({
   await expect(
     inspector.getByRole("link", { name: "Fixture Frontend", exact: true }),
   ).toBeVisible();
+  await expect(inspector.locator(".kit-project-count-tag")).toHaveCount(0);
+  await expect(
+    inspector.getByText("2 Extensions", { exact: true }),
+  ).toHaveClass("kit-project-kind-summary");
+  for (const name of ["duplicate", "copy-link", "report"]) {
+    await expect(
+      inspector.locator(`[data-kit-preview-icon="${name}"]`),
+    ).toBeVisible();
+  }
   await expect(inspector).toHaveScreenshot("alpha-kit-inspector.png", {
     animations: "disabled",
   });
@@ -229,15 +239,40 @@ test("large Kit inspector stays visually coherent after stack scrolling", async 
   await openKits(page, { width: 1440, height: 800 });
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const panel = page.locator(".kit-builder-panel");
-  const stack = panel.locator(".kit-project-stack");
-  await stack.evaluate((element) => {
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const body = panel.locator(".kit-builder-panel-body");
+  await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
+    element.dispatchEvent(new Event("scroll"));
   });
   await expect(
-    stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
+    panel.getByRole("link", { name: "Fixture Tool 49", exact: true }),
   ).toBeInViewport();
   await expect(panel).toHaveScreenshot("large-kit-inspector-scrolled.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit inspector Report link has button affordance", async ({ page }) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  await panel.getByRole("link", { name: "Report Kit" }).hover();
+  await expect(panel).toHaveScreenshot("kit-inspector-report-hover.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit inspector withdrawal link has restrained danger affordance", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  await panel.getByRole("link", { name: "Request withdrawal" }).hover();
+  await expect(panel).toHaveScreenshot("kit-inspector-withdrawal-hover.png", {
     animations: "disabled",
   });
 });
@@ -271,6 +306,18 @@ for (const width of [390, 320]) {
     await expect(
       sheet.getByRole("link", { name: "Fixture Frontend", exact: true }),
     ).toBeVisible();
+    await expect(
+      sheet.getByText("2 Extensions", { exact: true }),
+    ).toBeVisible();
+    for (const action of [
+      sheet.getByRole("button", { name: "Duplicate" }),
+      sheet.getByRole("button", { name: "Edit" }),
+      sheet.getByRole("button", { name: "Copy link" }),
+      sheet.getByRole("link", { name: "Report Kit" }),
+      sheet.getByRole("link", { name: "Request withdrawal" }),
+    ]) {
+      await expect(action).toHaveCSS("min-height", "44px");
+    }
     await expectNoHorizontalOverflow(page);
     await expect(sheet).toHaveScreenshot(`alpha-kit-inspector-${width}px.png`, {
       animations: "disabled",

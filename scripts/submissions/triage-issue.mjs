@@ -98,7 +98,18 @@ export function parseProjectSubmissionStateMarker(body) {
       marker?.schema_version !== 1 ||
       (marker.generated_title !== null &&
         typeof marker.generated_title !== "string") ||
-      typeof marker.status !== "string"
+      typeof marker.status !== "string" ||
+      (marker.frontend_dependencies !== undefined &&
+        (!Array.isArray(marker.frontend_dependencies) ||
+          marker.frontend_dependencies.some(
+            (dependency) =>
+              typeof dependency?.name !== "string" ||
+              dependency.name.trim().length === 0 ||
+              typeof dependency?.canonical_url !== "string" ||
+              dependency.canonical_url.trim().length === 0 ||
+              typeof dependency?.repository !== "string" ||
+              dependency.repository.trim().length === 0,
+          )))
     ) {
       return null;
     }
@@ -123,11 +134,47 @@ function decisionLabel(decision, currentLabels) {
   }[decision.status];
 }
 
+function frontendDependencyComment(dependency) {
+  const target = new URL(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+  );
+  target.searchParams.set("template", "01-project-submission.yml");
+  target.searchParams.set("project-type", "Frontend");
+  target.searchParams.set("project-url", dependency.canonicalUrl);
+  return [
+    `**${dependency.name} is not currently indexed as a Tavernary frontend.**`,
+    "",
+    `Extensions and presets can only reference frontends that have completed Tavernary review. [Submit ${dependency.name} as a frontend first](${target.toString()}). This issue will remain open and retry automatically after that frontend is merged.`,
+  ].join("\n");
+}
+
 function decisionComment(decision) {
   if (decision.status === "duplicate") {
     return `This source is already cataloged as [${decision.existingProject.name}](${decision.existingProject.canonicalUrl}). The duplicate submission has been closed.`;
   }
   if (decision.status === "needs-information") {
+    if (decision.frontendDependencies?.length) {
+      const dependencyErrors = new Set(
+        decision.frontendDependencies.map(
+          ({ name }) =>
+            `${name} is not currently indexed as a Tavernary frontend.`,
+        ),
+      );
+      const remainingErrors = decision.errors.filter(
+        (error) => !dependencyErrors.has(error),
+      );
+      return [
+        ...decision.frontendDependencies.map(frontendDependencyComment),
+        ...(remainingErrors.length
+          ? [
+              "",
+              "Tavernary also needs corrected information:",
+              "",
+              ...remainingErrors.map((error) => `- ${error}`),
+            ]
+          : []),
+      ].join("\n");
+    }
     return [
       "Tavernary needs corrected information before it can create a review pull request:",
       "",
@@ -166,6 +213,18 @@ export function buildProjectSubmissionTriage(decision, context) {
     schema_version: 1,
     generated_title: generatedTitle,
     status: decision.status,
+    ...(decision.status === "needs-information" &&
+    decision.frontendDependencies?.length
+      ? {
+          frontend_dependencies: decision.frontendDependencies.map(
+            (dependency) => ({
+              name: dependency.name,
+              canonical_url: dependency.canonicalUrl,
+              repository: dependency.repository,
+            }),
+          ),
+        }
+      : {}),
   };
   const commentBody = [
     projectSubmissionStateMarker,
@@ -579,6 +638,7 @@ export async function processProjectSubmissionTriage({
         status: "needs-information",
         errors: parsed.errors,
         suggestions: [],
+        dependencies: [],
       },
       errors: parsed.errors,
     });

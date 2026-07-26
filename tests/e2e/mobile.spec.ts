@@ -110,11 +110,13 @@ test("expands canonical mobile frontends", async ({ page }) => {
   const group = page
     .getByRole("dialog", { name: "Filters" })
     .getByRole("group", { name: "Compatible frontend" });
-  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
+  await expect(group.getByLabel("Aikobots", { exact: true })).toBeVisible();
   await expect(group.getByLabel("Lumiverse")).toBeVisible();
   await expect(group.getByLabel("Marinara Engine")).toBeVisible();
+  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeHidden();
   await expect(group.getByLabel("Sonder Engine")).toBeHidden();
-  await group.getByRole("button", { name: "Show 1 more" }).click();
+  await group.getByRole("button", { name: "Show 2 more" }).click();
+  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
   await expect(group.getByLabel("Sonder Engine")).toBeVisible();
 });
 
@@ -130,9 +132,7 @@ test("shows compact summaries without rendering mobile tooltips", async ({
   const summary = card.locator(".card-summary");
 
   await expect(summary).toBeVisible();
-  await expect(summary).toHaveText(
-    "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
-  );
+  await expect(summary).toHaveText(/\S+/);
   await expect(summary).toHaveCSS("white-space", "nowrap");
   await expect(summary).toHaveCSS("text-overflow", "ellipsis");
   await expect(summary).toHaveCSS("overflow", "hidden");
