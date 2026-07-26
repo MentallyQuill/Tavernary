@@ -28,7 +28,6 @@ export interface CatalogKit {
   sourceIssueNumber: number;
   publishedAt: string;
   updatedAt: string;
-  tavernaryPick: boolean;
   frontends: CatalogLabel[];
   purposes: CatalogLabel[];
   components: CatalogKitComponent[];

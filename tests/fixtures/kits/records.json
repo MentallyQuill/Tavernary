@@ -9,8 +9,7 @@
     "source_issue_number": 101,
     "project_ids": ["fixture-frontend", "fixture-tool-02", "fixture-tool-04"],
     "published_at": "2026-07-01T00:00:00.000Z",
-    "updated_at": "2026-07-01T00:00:00.000Z",
-    "tavernary_pick": true
+    "updated_at": "2026-07-01T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -22,8 +21,7 @@
     "source_issue_number": 102,
     "project_ids": ["fixture-frontend", "fixture-tool-03", "fixture-tool-05"],
     "published_at": "2026-07-02T00:00:00.000Z",
-    "updated_at": "2026-07-02T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-02T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -86,8 +84,7 @@
       "fixture-tool-50"
     ],
     "published_at": "2026-07-03T00:00:00.000Z",
-    "updated_at": "2026-07-03T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-03T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -121,8 +118,7 @@
       "fixture-tool-21"
     ],
     "published_at": "2026-07-04T00:00:00.000Z",
-    "updated_at": "2026-07-04T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-04T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -134,8 +130,7 @@
     "source_issue_number": 105,
     "project_ids": ["fixture-frontend", "fixture-tool-06", "fixture-tool-07"],
     "published_at": "2026-07-05T00:00:00.000Z",
-    "updated_at": "2026-07-05T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-05T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -147,8 +142,7 @@
     "source_issue_number": 106,
     "project_ids": ["fixture-frontend", "fixture-tool-08", "fixture-tool-09"],
     "published_at": "2026-07-06T00:00:00.000Z",
-    "updated_at": "2026-07-06T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-06T00:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -160,8 +154,7 @@
     "source_issue_number": 107,
     "project_ids": ["fixture-frontend", "fixture-tool-10", "fixture-tool-11"],
     "published_at": "2026-06-01T00:00:00.000Z",
-    "updated_at": "2026-07-24T10:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-24T10:00:00.000Z"
   },
   {
     "schema_version": 1,
@@ -173,7 +166,6 @@
     "source_issue_number": 108,
     "project_ids": ["fixture-frontend", "fixture-tool-12", "fixture-tool-50"],
     "published_at": "2026-07-23T00:00:00.000Z",
-    "updated_at": "2026-07-23T00:00:00.000Z",
-    "tavernary_pick": false
+    "updated_at": "2026-07-23T00:00:00.000Z"
   }
 ]

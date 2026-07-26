@@ -22,7 +22,6 @@ const existing = {
   project_ids: ["frontend", "memory", "lore"],
   published_at: "2026-07-01T00:00:00.000Z",
   updated_at: "2026-07-01T00:00:00.000Z",
-  tavernary_pick: true,
 };
 
 test("creates a complete stable Kit record from the issue actor", () => {
@@ -37,7 +36,6 @@ test("creates a complete stable Kit record from the issue actor", () => {
     project_ids: create.project_ids,
     published_at: now,
     updated_at: now,
-    tavernary_pick: false,
   });
 });
 

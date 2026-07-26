@@ -80,9 +80,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     [catalog.projects, context, query],
   );
   const selectedKits = useMemo(
-    () =>
-      selectKits(catalog.kits, query.kits, query.search, catalog.generatedAt),
-    [catalog.generatedAt, catalog.kits, query.kits, query.search],
+    () => selectKits(catalog.kits, query.kits, query.search),
+    [catalog.kits, query.kits, query.search],
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
@@ -212,14 +211,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const removeKitFilter = (key: keyof KitQuery, value?: string) => {
     setQuery((current) => {
       const kits = current.kits;
-      if (
-        key === "frontends" ||
-        key === "purposes" ||
-        key === "kinds" ||
-        key === "capabilities" ||
-        key === "development" ||
-        key === "licenses"
-      ) {
+      if (key === "frontends" || key === "purposes") {
         return {
           ...current,
           kits: {
@@ -228,23 +220,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           },
         };
       }
-      if (key === "creatorIds") {
-        const creatorId = Number(value);
-        return {
-          ...current,
-          kits: {
-            ...kits,
-            creatorIds: Number.isSafeInteger(creatorId)
-              ? kits.creatorIds.filter((item) => item !== creatorId)
-              : [],
-          },
-        };
-      }
       if (key === "includesProjectId") {
         return { ...current, kits: { ...kits, includesProjectId: "" } };
-      }
-      if (key === "tavernaryPickOnly") {
-        return { ...current, kits: { ...kits, tavernaryPickOnly: false } };
       }
       if (key === "allComponentsAvailable") {
         return {
@@ -287,16 +264,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       ? query.kits.frontends.length +
         query.kits.purposes.length +
         Number(Boolean(query.kits.includesProjectId)) +
-        query.kits.creatorIds.length +
-        query.kits.kinds.length +
-        query.kits.capabilities.length +
-        query.kits.development.length +
-        query.kits.licenses.length +
         Number(
           query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects ||
             query.kits.maxProjects !== DEFAULT_KIT_QUERY.maxProjects,
         ) +
-        Number(query.kits.tavernaryPickOnly) +
         Number(query.kits.allComponentsAvailable)
       : query.frontends.length +
         query.kinds.length +
@@ -369,7 +340,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             search={query.search}
             onChange={updateKits}
             onClear={clearFilters}
-            now={catalog.generatedAt}
           />
         ) : (
           <FilterPanel
@@ -493,7 +463,6 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             onChange={updateKits}
             onClear={clearFilters}
             onClose={closeFilters}
-            now={catalog.generatedAt}
           />
         ) : (
           <FilterPanel

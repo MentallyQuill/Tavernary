@@ -17,7 +17,6 @@ export interface CanonicalKit {
   project_ids: string[];
   published_at: string;
   updated_at: string;
-  tavernary_pick: boolean;
   withdrawn_at?: string;
 }
 

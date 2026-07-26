@@ -131,10 +131,6 @@ const validSorts = new Set<CatalogSort>([
 ]);
 const validDensities = new Set<CatalogDensity>(["standard", "compact"]);
 const validKinds = new Set<CatalogKind>(["frontend", "extension", "preset"]);
-const validKitKinds = new Set<KitQuery["kinds"][number]>([
-  "extension",
-  "preset",
-]);
 const validDevelopment = new Set<DevelopmentFilter>([
   "active-month",
   "new-release",
@@ -161,16 +157,6 @@ function manyOf<T extends string>(values: string[], valid: Set<T>): T[] {
   ].sort();
 }
 
-function positiveIntegerIds(values: string[]): number[] {
-  return [
-    ...new Set(
-      values
-        .map(Number)
-        .filter((value) => Number.isSafeInteger(value) && value > 0),
-    ),
-  ].sort((left, right) => left - right);
-}
-
 export function parseCatalogQuery(search: string): CatalogQuery {
   const parameters = new URLSearchParams(search);
   const category = parameters.get("category");
@@ -189,14 +175,8 @@ export function parseCatalogQuery(search: string): CatalogQuery {
     frontends: manyOf(parameters.getAll("frontend"), validFrontends),
     purposes: manyOf(parameters.getAll("purpose"), validPurposes),
     includesProjectId: parameters.get("includes")?.trim() ?? "",
-    creatorIds: positiveIntegerIds(parameters.getAll("creator")),
-    kinds: manyOf(parameters.getAll("kind"), validKitKinds),
-    capabilities: manyOf(parameters.getAll("capability"), validCapabilities),
-    development: manyOf(parameters.getAll("development"), validDevelopment),
-    licenses: manyOf(parameters.getAll("license"), validLicenses),
     minProjects,
     maxProjects,
-    tavernaryPickOnly: parameters.get("pick") === "1",
     allComponentsAvailable: parameters.get("available") === "1",
     sort: oneOf(
       parameters.get("sort"),
@@ -273,23 +253,11 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     if (query.kits.includesProjectId) {
       parameters.set("includes", query.kits.includesProjectId);
     }
-    for (const creatorId of [...new Set(query.kits.creatorIds)].sort(
-      (left, right) => left - right,
-    )) {
-      parameters.append("creator", String(creatorId));
-    }
-    appendMany(parameters, "kind", query.kits.kinds);
-    appendMany(parameters, "capability", query.kits.capabilities);
-    appendMany(parameters, "development", query.kits.development);
-    appendMany(parameters, "license", query.kits.licenses);
     if (query.kits.minProjects !== DEFAULT_KIT_QUERY.minProjects) {
       parameters.set("minProjects", String(query.kits.minProjects));
     }
     if (query.kits.maxProjects !== DEFAULT_KIT_QUERY.maxProjects) {
       parameters.set("maxProjects", String(query.kits.maxProjects));
-    }
-    if (query.kits.tavernaryPickOnly) {
-      parameters.set("pick", "1");
     }
     if (query.kits.allComponentsAvailable) {
       parameters.set("available", "1");

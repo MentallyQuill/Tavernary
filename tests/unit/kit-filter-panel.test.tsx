@@ -47,7 +47,6 @@ const kit: CatalogKit = {
   sourceIssueNumber: 42,
   publishedAt: "2026-07-01T00:00:00.000Z",
   updatedAt: "2026-07-01T00:00:00.000Z",
-  tavernaryPick: true,
   frontends: [label("sillytavern")],
   purposes: [label("generation-reasoning")],
   components: [
@@ -99,7 +98,6 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -115,7 +113,6 @@ describe("KitFilterPanel", () => {
         projects={[]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -123,7 +120,7 @@ describe("KitFilterPanel", () => {
     expect(screen.getByRole("link", { name: "AGPL-3.0-only" })).toBeVisible();
   });
 
-  test("renders every approved Kit filter group in order", () => {
+  test("renders only the five approved Kit filters in order", () => {
     render(
       <KitFilterPanel
         query={DEFAULT_KIT_QUERY}
@@ -131,7 +128,6 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -141,47 +137,26 @@ describe("KitFilterPanel", () => {
       expect.stringMatching(/^Compatible frontend/),
       expect.stringMatching(/^Purpose/),
       expect.stringMatching(/^Includes project/),
-      expect.stringMatching(/^Kit creator/),
-      expect.stringMatching(/^Included project kind/),
-      expect.stringMatching(/^Capabilities & characteristics/),
-      expect.stringMatching(/^Development/),
-      expect.stringMatching(/^Included project license/),
       expect.stringMatching(/^Kit size/),
       expect.stringMatching(/^Kit status/),
     ]);
-  });
-
-  test("keeps Kit status checkbox names independent from their counts", () => {
-    render(
-      <KitFilterPanel
-        query={DEFAULT_KIT_QUERY}
-        kits={[kit]}
-        projects={[project]}
-        onChange={() => undefined}
-        onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
-      />,
-    );
-
-    expect(
-      screen.getByRole("checkbox", { name: "Tavernary Pick" }),
-    ).toBeVisible();
     expect(
       screen.getByRole("checkbox", { name: "All components available" }),
     ).toBeVisible();
+    expect(
+      screen.queryByRole("checkbox", { name: "Tavernary Pick" }),
+    ).not.toBeInTheDocument();
   });
 
-  test("counts Kit status options without retaining the other status filter", () => {
+  test("counts fully available Kits", () => {
     const flaggedPick = {
       ...kit,
       id: "flagged-pick",
-      tavernaryPick: true,
       flaggedProjectCount: 1,
     };
     const availableNonPick = {
       ...kit,
       id: "available-non-pick",
-      tavernaryPick: false,
       flaggedProjectCount: 0,
     };
     render(
@@ -191,13 +166,9 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
-    expect(
-      screen.getByRole("checkbox", { name: "Tavernary Pick" }).closest("label"),
-    ).toHaveTextContent("Tavernary Pick1");
     expect(
       screen
         .getByRole("checkbox", { name: "All components available" })
@@ -205,7 +176,7 @@ describe("KitFilterPanel", () => {
     ).toHaveTextContent("All components available1");
   });
 
-  test("makes broad Purpose and Capability facets searchable", () => {
+  test("makes the Purpose facet searchable", () => {
     render(
       <KitFilterPanel
         query={DEFAULT_KIT_QUERY}
@@ -213,17 +184,11 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
     expect(
       screen.getByRole("searchbox", { name: "Search Kit purposes" }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("searchbox", {
-        name: "Search Kit capabilities and characteristics",
-      }),
     ).toBeVisible();
   });
 
@@ -236,13 +201,12 @@ describe("KitFilterPanel", () => {
         search="does-not-match"
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
     expect(
-      screen.getByRole("checkbox", { name: "Extension" }).closest("label"),
-    ).toHaveTextContent("Extension0");
+      screen.getByRole("checkbox", { name: "sillytavern" }).closest("label"),
+    ).toHaveTextContent("sillytavern0");
   });
 
   test("displays an included project's name while preserving its ID state", () => {
@@ -253,7 +217,6 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -290,7 +253,6 @@ describe("KitFilterPanel", () => {
         projects={[project, secondProject]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -310,7 +272,6 @@ describe("KitFilterPanel", () => {
         projects={[]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -330,7 +291,6 @@ describe("KitFilterPanel", () => {
         projects={[project]}
         onChange={() => undefined}
         onClear={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 
@@ -353,7 +313,6 @@ describe("KitFilterPanel", () => {
         onClear={() => undefined}
         mobile
         onClose={() => undefined}
-        now="2026-07-25T00:00:00.000Z"
       />,
     );
 

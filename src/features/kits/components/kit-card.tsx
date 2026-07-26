@@ -64,7 +64,6 @@ export function KitCard({
         ) : null}
       </div>
       <div className="kit-card-badges">
-        {kit.tavernaryPick ? <b>Tavernary Pick</b> : null}
         {kit.flaggedProjectCount > 0 ? (
           <b className="kit-caution">
             <CategoryIcon name="caution" />

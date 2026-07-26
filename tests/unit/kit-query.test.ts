@@ -6,9 +6,9 @@ import {
   serializeCatalogQuery,
 } from "@/features/catalog/catalog-query";
 
-test("round-trips Kit mode, selection, range, and sort", () => {
+test("round-trips the retained Kit filters in stable order", () => {
   const query = parseCatalogQuery(
-    "?mode=kits&kit=story-kit-41&frontend=sillytavern&purpose=memory-retrieval&minProjects=5&maxProjects=20&pick=1&sort=updated",
+    "?mode=kits&kit=story-kit-41&frontend=sillytavern&purpose=memory-retrieval&includes=recursion&minProjects=5&maxProjects=20&available=1&sort=updated",
   );
   expect(query).toMatchObject({
     mode: "kits",
@@ -16,31 +16,26 @@ test("round-trips Kit mode, selection, range, and sort", () => {
     kits: {
       frontends: ["sillytavern"],
       purposes: ["memory-retrieval"],
+      includesProjectId: "recursion",
       minProjects: 5,
       maxProjects: 20,
-      tavernaryPickOnly: true,
+      allComponentsAvailable: true,
       sort: "updated",
     },
   });
   expect(parseCatalogQuery(`?${serializeCatalogQuery(query)}`)).toEqual(query);
 });
 
-test("round-trips expanded Kit discovery filters in stable order", () => {
+test("ignores obsolete Kit filters", () => {
   const query = parseCatalogQuery(
-    "?mode=kits&creator=42&creator=7&kind=preset&kind=extension&capability=model-routing&development=dormant&license=open-source&available=1",
+    "?mode=kits&creator=42&kind=extension&capability=model-routing&development=dormant&license=open-source&pick=1&available=1",
   );
 
-  expect(query.kits).toMatchObject({
-    creatorIds: [7, 42],
-    kinds: ["extension", "preset"],
-    capabilities: ["model-routing"],
-    development: ["dormant"],
-    licenses: ["open-source"],
+  expect(query.kits).toEqual({
+    ...DEFAULT_QUERY.kits,
     allComponentsAvailable: true,
   });
-  expect(serializeCatalogQuery(query)).toBe(
-    "mode=kits&creator=7&creator=42&kind=extension&kind=preset&capability=model-routing&development=dormant&license=open-source&available=1",
-  );
+  expect(serializeCatalogQuery(query)).toBe("mode=kits&available=1");
 });
 
 test("keeps Kit-only URL facets out of the project query", () => {

@@ -1,16 +1,9 @@
 # Kit Maintenance
 
-Kit publication and author edits use the issue workflows. The following two
-maintainer operations use ordinary Git history so every exceptional change is
-reviewable.
-
-## Tavernary Pick
-
-1. Edit only `tavernary_pick` in the canonical Kit record.
-2. Do not change `updated_at`; Pick is Tavernary editorial metadata, not an
-   author revision.
-3. Run `npm run catalog:validate` and `npm run catalog:build`.
-4. Merge the change through a reviewed pull request.
+Kit publication and author edits use the issue workflows. Discovery is
+community-driven: community support feeds Trending, with no maintainer-curated
+endorsement. The following exceptional maintainer operation uses ordinary Git
+history so every change is reviewable.
 
 ## Safety repair
 

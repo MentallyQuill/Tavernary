@@ -35,7 +35,6 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
       project_ids: [...manifest.project_ids],
       published_at: now,
       updated_at: now,
-      tavernary_pick: false,
     };
   }
 

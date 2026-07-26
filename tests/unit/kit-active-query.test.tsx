@@ -49,7 +49,6 @@ const kit: CatalogKit = {
   sourceIssueNumber: 42,
   publishedAt: "2026-07-01T00:00:00.000Z",
   updatedAt: "2026-07-01T00:00:00.000Z",
-  tavernaryPick: false,
   frontends: [label("sillytavern")],
   purposes: [],
   components: [
@@ -72,7 +71,7 @@ const kit: CatalogKit = {
   searchableText: "kit routing",
 };
 
-test("renders removable tokens for every expanded Kit facet", () => {
+test("renders removable tokens for retained Kit filters", () => {
   render(
     <ActiveQuery
       query={{
@@ -80,12 +79,11 @@ test("renders removable tokens for every expanded Kit facet", () => {
         mode: "kits",
         kits: {
           ...DEFAULT_QUERY.kits,
+          frontends: ["sillytavern"],
+          purposes: ["generation-reasoning"],
           includesProjectId: project.id,
-          creatorIds: [42],
-          kinds: ["extension"],
-          capabilities: ["model-routing"],
-          development: ["active-month"],
-          licenses: ["open-source"],
+          minProjects: 4,
+          maxProjects: 12,
           allComponentsAvailable: true,
         },
       }}
@@ -98,12 +96,10 @@ test("renders removable tokens for every expanded Kit facet", () => {
   );
 
   for (const label of [
+    "sillytavern",
+    "generation-reasoning",
     "Includes: Routing",
-    "routing-author",
-    "Extension",
-    "Model routing",
-    "Active this month",
-    "Open source",
+    "4–12 projects",
     "All components available",
   ]) {
     expect(

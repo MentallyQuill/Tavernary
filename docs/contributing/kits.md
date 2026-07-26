@@ -6,8 +6,8 @@ moderated through issue forms, not direct registry edits.
 ## What is a Kit
 
 - A Kit is a named ordered list of 3-50 published project IDs.
-- It is a published suggestion surface with optional `tavernary_pick` status for
-  promotion.
+- Community support feeds Trending; Tavernary does not assign editorial
+  endorsements.
 - Kits are stable JSON records in `data/registry/kits/*.json` after maintainer
   publication.
 
@@ -75,4 +75,3 @@ For maintainer-side actions, see:
 
 - [Kit maintenance](../maintenance/kits.md)
 - [Maintainer runbook](../maintenance/operations-runbook.md)
-
