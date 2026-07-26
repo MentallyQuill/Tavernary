@@ -3,15 +3,15 @@
   "id": "mekineer-com-openalma",
   "name": "OpenAlma",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "OpenAlma is a local-first SillyTavern extension that provides AI companion memory functionality.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "mekineer-com/OpenAlma",
     "repository_id": 1190054879
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "memory-retrieval",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

@@ -3,15 +3,15 @@
   "id": "loggo-presets-typingindicatorplus",
   "name": "TypingIndicatorPlus",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "TypingIndicatorPlus enhances SillyTavern's typing indicator with multiple visual styles, sound effects, and customization options.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Loggo-presets/TypingIndicatorPlus",
     "repository_id": 1132429516
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
