@@ -79,6 +79,7 @@ test("copies an oversized manifest while preserving readable prefills", async ()
     expect.stringContaining('"schema_version": 1'),
   );
   const opened = new URL(String(open.mock.calls[0]?.[0]));
+  expect(opened.toString().length).toBeLessThanOrEqual(7_000);
   expect(opened.searchParams.get("project-url")).toBe(manifest.source_url);
   expect(opened.searchParams.get("project-manifest")).toBe(
     "Paste the project manifest copied by Tavernary here.",

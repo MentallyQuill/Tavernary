@@ -25,7 +25,10 @@ const frontends = [
   },
 ];
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 test("requires supported frontends only for Extensions", async () => {
   const user = userEvent.setup();
@@ -77,4 +80,53 @@ test("submits multiple current frontend identities in the manifest", async () =>
       frontend_independent: false,
     }),
   );
+});
+
+test("blocks a non-HTTPS Frontend source before GitHub handoff", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "http://github.com/example/frontend",
+  );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+  expect(screen.getByLabelText("Project URL")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  expect(
+    screen.getByText("Project URL must be a public HTTPS URL."),
+  ).toBeVisible();
+});
+
+test("associates an invalid not-listed frontend URL with its field", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/extension",
+  );
+  await user.click(screen.getByLabelText("Other or not listed"));
+  await user.type(screen.getByLabelText("Other frontend name"), "New UI");
+  await user.type(
+    screen.getByLabelText("Other frontend URL"),
+    "http://example.com/frontend",
+  );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  const otherUrl = screen.getByLabelText("Other frontend URL");
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+  expect(otherUrl).toHaveAttribute("aria-invalid", "true");
+  expect(otherUrl).toHaveAttribute(
+    "aria-describedby",
+    "other-frontend-url-error",
+  );
+  expect(
+    screen.getByText("Other frontend URL must be a public HTTPS URL."),
+  ).toBeVisible();
 });

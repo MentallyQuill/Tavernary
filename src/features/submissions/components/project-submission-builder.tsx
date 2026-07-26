@@ -18,16 +18,73 @@ export interface SubmissionFrontendOption {
   canonicalUrl: string;
 }
 
+type SubmissionField =
+  | "project-url"
+  | "project-name"
+  | "project-description"
+  | "frontend-selection"
+  | "other-frontend-name"
+  | "other-frontend-url";
+
+interface SubmissionError {
+  field: SubmissionField;
+  message: string;
+}
+
+function publicHttpsUrl(value: string): URL | null {
+  try {
+    const url = new URL(value.trim());
+    return url.protocol === "https:" && !url.username && !url.password
+      ? url
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function isGithubRepositoryUrl(value: string): boolean {
+  const url = publicHttpsUrl(value);
+  if (!url || url.hostname.toLowerCase() !== "github.com") return false;
+  const parts = url.pathname
+    .replace(/\/+$/u, "")
+    .replace(/\.git$/iu, "")
+    .split("/")
+    .filter(Boolean);
+  return parts.length === 2;
+}
+
 function isExternalPreset(
   projectType: ProjectSubmissionType,
   sourceUrl: string,
 ) {
   if (projectType !== "preset") return false;
-  try {
-    return new URL(sourceUrl).hostname.toLowerCase() !== "github.com";
-  } catch {
-    return false;
+  return Boolean(sourceUrl.trim()) && !isGithubRepositoryUrl(sourceUrl);
+}
+
+function manifestErrorField(message: string): SubmissionField {
+  if (message.includes("project name")) return "project-name";
+  if (message.includes("short description")) return "project-description";
+  if (
+    message.includes("supported frontend") ||
+    message.includes("frontend-independent")
+  ) {
+    return "frontend-selection";
   }
+  return "project-url";
+}
+
+function InlineError({
+  id,
+  message,
+}: {
+  id: string;
+  message: string | undefined;
+}) {
+  return message ? (
+    <p className="submission-field-error" id={id}>
+      {message}
+    </p>
+  ) : null;
 }
 
 export function ProjectSubmissionBuilder({
@@ -47,7 +104,7 @@ export function ProjectSubmissionBuilder({
   const [otherFrontendName, setOtherFrontendName] = useState("");
   const [otherFrontendUrl, setOtherFrontendUrl] = useState("");
   const [frontendIndependent, setFrontendIndependent] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<SubmissionError[]>([]);
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -69,6 +126,8 @@ export function ProjectSubmissionBuilder({
     projectType === "extension" ||
     (projectType === "preset" && !frontendIndependent);
   const externalPreset = isExternalPreset(projectType, sourceUrl);
+  const errorFor = (field: SubmissionField) =>
+    errors.find((error) => error.field === field)?.message;
 
   function toggleFrontend(id: string) {
     setKnownFrontendIds((current) =>
@@ -98,27 +157,45 @@ export function ProjectSubmissionBuilder({
       frontend_independent: projectType === "preset" && frontendIndependent,
       additional_context: additionalContext,
     });
-    const nextErrors = validation.valid ? [] : validation.errors;
+    const nextErrors: SubmissionError[] = validation.valid
+      ? []
+      : validation.errors.map((message) => ({
+          field: manifestErrorField(message),
+          message,
+        }));
+    const addError = (field: SubmissionField, message: string) => {
+      if (!nextErrors.some((error) => error.message === message)) {
+        nextErrors.push({ field, message });
+      }
+    };
 
-    if (sourceUrl) {
-      try {
-        const parsedUrl = new URL(sourceUrl);
-        if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-          nextErrors.push("Project URL must use HTTP or HTTPS.");
-        }
-      } catch {
-        nextErrors.push("Project URL must be a valid URL.");
+    if (sourceUrl && !publicHttpsUrl(sourceUrl)) {
+      addError("project-url", "Project URL must be a public HTTPS URL.");
+    } else if (
+      sourceUrl &&
+      ["frontend", "extension"].includes(projectType) &&
+      !isGithubRepositoryUrl(sourceUrl)
+    ) {
+      addError(
+        "project-url",
+        "Frontends and Extensions require an exact public GitHub owner/repository URL.",
+      );
+    }
+    if (showFrontendFields && includeOtherFrontend) {
+      if (!otherFrontendName.trim()) {
+        addError("other-frontend-name", "Other frontend name is required.");
+      }
+      if (!otherFrontendUrl.trim()) {
+        addError("other-frontend-url", "Other frontend URL is required.");
+      } else if (!publicHttpsUrl(otherFrontendUrl)) {
+        addError(
+          "other-frontend-url",
+          "Other frontend URL must be a public HTTPS URL.",
+        );
       }
     }
-    if (
-      showFrontendFields &&
-      includeOtherFrontend &&
-      (!otherFrontendName.trim() || !otherFrontendUrl.trim())
-    ) {
-      nextErrors.push("Other frontends require both a name and URL.");
-    }
     if (nextErrors.length > 0) {
-      setErrors([...new Set(nextErrors)]);
+      setErrors(nextErrors);
       return null;
     }
     setErrors([]);
@@ -179,10 +256,20 @@ export function ProjectSubmissionBuilder({
             onChange={(event) => setSourceUrl(event.target.value)}
             placeholder="https://github.com/owner/repository"
             required
+            aria-invalid={Boolean(errorFor("project-url"))}
+            aria-describedby={
+              errorFor("project-url")
+                ? "project-url-hint project-url-error"
+                : "project-url-hint"
+            }
           />
-          <p className="submission-hint">
+          <p className="submission-hint" id="project-url-hint">
             Frontends and Extensions require a public GitHub repository.
           </p>
+          <InlineError
+            id="project-url-error"
+            message={errorFor("project-url")}
+          />
         </div>
 
         <div className="submission-field">
@@ -194,6 +281,14 @@ export function ProjectSubmissionBuilder({
             value={name}
             onChange={(event) => setName(event.target.value)}
             required={externalPreset}
+            aria-invalid={Boolean(errorFor("project-name"))}
+            aria-describedby={
+              errorFor("project-name") ? "project-name-error" : undefined
+            }
+          />
+          <InlineError
+            id="project-name-error"
+            message={errorFor("project-name")}
           />
         </div>
 
@@ -207,6 +302,16 @@ export function ProjectSubmissionBuilder({
             onChange={(event) => setDescription(event.target.value)}
             rows={4}
             required={externalPreset}
+            aria-invalid={Boolean(errorFor("project-description"))}
+            aria-describedby={
+              errorFor("project-description")
+                ? "project-description-error"
+                : undefined
+            }
+          />
+          <InlineError
+            id="project-description-error"
+            message={errorFor("project-description")}
           />
         </div>
       </section>
@@ -256,6 +361,16 @@ export function ProjectSubmissionBuilder({
               value={frontendSearch}
               onChange={(event) => setFrontendSearch(event.target.value)}
               placeholder="Search names or URLs"
+              aria-invalid={Boolean(errorFor("frontend-selection"))}
+              aria-describedby={
+                errorFor("frontend-selection")
+                  ? "frontend-selection-error"
+                  : undefined
+              }
+            />
+            <InlineError
+              id="frontend-selection-error"
+              message={errorFor("frontend-selection")}
             />
           </div>
 
@@ -321,6 +436,16 @@ export function ProjectSubmissionBuilder({
                   id="other-frontend-name"
                   value={otherFrontendName}
                   onChange={(event) => setOtherFrontendName(event.target.value)}
+                  aria-invalid={Boolean(errorFor("other-frontend-name"))}
+                  aria-describedby={
+                    errorFor("other-frontend-name")
+                      ? "other-frontend-name-error"
+                      : undefined
+                  }
+                />
+                <InlineError
+                  id="other-frontend-name-error"
+                  message={errorFor("other-frontend-name")}
                 />
               </div>
               <div className="submission-field">
@@ -330,6 +455,16 @@ export function ProjectSubmissionBuilder({
                   type="url"
                   value={otherFrontendUrl}
                   onChange={(event) => setOtherFrontendUrl(event.target.value)}
+                  aria-invalid={Boolean(errorFor("other-frontend-url"))}
+                  aria-describedby={
+                    errorFor("other-frontend-url")
+                      ? "other-frontend-url-error"
+                      : undefined
+                  }
+                />
+                <InlineError
+                  id="other-frontend-url-error"
+                  message={errorFor("other-frontend-url")}
                 />
               </div>
             </div>
@@ -353,12 +488,7 @@ export function ProjectSubmissionBuilder({
 
       {errors.length > 0 ? (
         <div className="submission-errors" role="alert">
-          <p>Please fix the following:</p>
-          <ul>
-            {errors.map((error) => (
-              <li key={error}>{error}</li>
-            ))}
-          </ul>
+          <p>Please fix the highlighted fields before continuing.</p>
         </div>
       ) : null}
 

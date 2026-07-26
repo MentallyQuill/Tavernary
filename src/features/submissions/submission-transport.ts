@@ -23,6 +23,20 @@ function readableFrontendSelection(
   ].join("\n");
 }
 
+function readablePrefills(
+  manifest: ProjectSubmissionManifest,
+): Array<[string, string]> {
+  return [
+    ["project-type", displayKind(manifest.project_type)],
+    ["project-url", manifest.source_url],
+    ["project-name", manifest.name ?? ""],
+    ["project-description", manifest.description ?? ""],
+    ["supported-frontends", readableFrontendSelection(manifest)],
+    ["frontend-independent", manifest.frontend_independent ? "Yes" : "No"],
+    ["additional-context", manifest.additional_context ?? ""],
+  ];
+}
+
 export async function openProjectSubmission(
   formUrl: string | URL,
   manifest: ProjectSubmissionManifest,
@@ -31,22 +45,9 @@ export async function openProjectSubmission(
   const serializedManifest = serializeProjectSubmissionManifest(manifest);
 
   target.searchParams.set("template", "01-project-submission.yml");
-  target.searchParams.set("project-type", displayKind(manifest.project_type));
-  target.searchParams.set("project-url", manifest.source_url);
-  target.searchParams.set("project-name", manifest.name ?? "");
-  target.searchParams.set("project-description", manifest.description ?? "");
-  target.searchParams.set(
-    "supported-frontends",
-    readableFrontendSelection(manifest),
-  );
-  target.searchParams.set(
-    "frontend-independent",
-    manifest.frontend_independent ? "Yes" : "No",
-  );
-  target.searchParams.set(
-    "additional-context",
-    manifest.additional_context ?? "",
-  );
+  for (const [key, value] of readablePrefills(manifest)) {
+    target.searchParams.set(key, value);
+  }
   target.searchParams.set("project-manifest", serializedManifest);
 
   if (target.toString().length <= MAX_PREFILL_URL_LENGTH) {
@@ -62,7 +63,19 @@ export async function openProjectSubmission(
       serializedManifest,
     );
   }
-  target.searchParams.set("project-manifest", pasteInstruction);
-  window.open(target, "_blank", "noopener,noreferrer");
+  const fallback = new URL(formUrl.toString());
+  fallback.search = "";
+  fallback.searchParams.set("template", "01-project-submission.yml");
+  fallback.searchParams.set("project-manifest", pasteInstruction);
+  for (const [key, value] of readablePrefills(manifest)) {
+    fallback.searchParams.set(key, value);
+    if (fallback.toString().length > MAX_PREFILL_URL_LENGTH) {
+      fallback.searchParams.delete(key);
+    }
+  }
+  if (fallback.toString().length > MAX_PREFILL_URL_LENGTH) {
+    throw new Error("GitHub issue form URL exceeds the safe handoff limit.");
+  }
+  window.open(fallback, "_blank", "noopener,noreferrer");
   return "clipboard";
 }
