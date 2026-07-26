@@ -166,6 +166,21 @@ function expectCatalogContract(records: CatalogRecord[]) {
   ).toBe(true);
 
   for (const record of records) {
+    expect(["extension", "frontend", "preset"], record.id).toContain(
+      record.kind,
+    );
+    expect(["github", "github-organization", "url"], record.id).toContain(
+      record.source.type,
+    );
+    expect(["automatic", "manual"], record.id).toContain(
+      record.enrichment_policy,
+    );
+    if (record.source.type === "url") {
+      expect(
+        ["osi-approved", "proprietary", "missing", "pending"],
+        record.id,
+      ).toContain(record.source.license_status);
+    }
     expect(["curated", "provisional"], record.id).toContain(
       record.metadata_status,
     );

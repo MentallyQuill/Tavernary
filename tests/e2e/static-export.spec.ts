@@ -1,7 +1,22 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { expect, test } from "@playwright/test";
 
 import { generatedProjectCount } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
+
+const publishedKits = (
+  JSON.parse(
+    readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
+  ) as { kits: Array<{ title: string }> }
+).kits;
+const frontendVocabulary = JSON.parse(
+  readFileSync(
+    resolve(process.cwd(), "data/vocabularies/frontends.json"),
+    "utf8",
+  ),
+) as { frontends: Array<{ label: string }> };
 
 test("serves the catalog from the configured base path", async ({ page }) => {
   await page.goto(sitePath());
@@ -55,4 +70,33 @@ test("exports canonical project links without intake-only metadata", async ({
   );
   await expect(page.locator("body")).not.toContainText("submitted_at");
   await expect(page.locator("body")).not.toContainText("catalog_intake");
+});
+
+test("renders every configured frontend filter", async ({ page }) => {
+  await page.goto(sitePath());
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Compatible frontend",
+  });
+  const hiddenCount = Math.max(frontendVocabulary.frontends.length - 3, 0);
+
+  if (hiddenCount > 0) {
+    await group
+      .getByRole("button", { name: `Show ${hiddenCount} more` })
+      .click();
+  }
+  for (const { label } of frontendVocabulary.frontends) {
+    await expect(group.getByLabel(label, { exact: true })).toBeVisible();
+  }
+});
+
+test("renders every published Kit", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+
+  await expect(page.locator(".kit-card")).toHaveCount(publishedKits.length);
+  for (const { title } of publishedKits) {
+    await expect(
+      page.getByRole("heading", { name: title, exact: true }),
+    ).toBeVisible();
+  }
 });

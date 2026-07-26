@@ -1,4 +1,4 @@
-# Content-Aware Pull Request CI Design
+# Content-Aware Pull Request CI Design Contract
 
 ## Purpose
 

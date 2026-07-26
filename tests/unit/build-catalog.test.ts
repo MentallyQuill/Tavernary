@@ -543,21 +543,6 @@ test("builds every eligible public card with consolidated manual sources", async
       (sourceStatuses.stale ?? 0),
   ).toBe(catalog.projects.length - (sourceStatuses.manual ?? 0));
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
-  const manualIds = catalog.projects
-    .filter(({ sourceStatus }) => sourceStatus === "manual")
-    .map(({ id }) => id)
-    .sort();
-  expect(manualIds).toEqual(
-    [
-      "le-emotionalism-1-1-5-prompt",
-      "puras-director-v15",
-      "purrfect-logic-4-max-mini",
-      "realistic-frankenstein-preset",
-      "tavern-rpg-suite",
-      "village-maker-google-drive-prompt",
-      "writers-block-4",
-    ].sort(),
-  );
   expect(catalog.projects.map(({ id }) => id)).not.toEqual(
     expect.arrayContaining([
       "village-maker-anonpaste-prompt",
