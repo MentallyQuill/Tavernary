@@ -3,7 +3,7 @@
   "id": "thejackals-sillytavern-mapregionslocator",
   "name": "SillyTavern Map Regions Locator",
   "kind": "extension",
-  "summary": "SillyTavern extension that transforms a plain map into a location-on-map display for the SillyTavern frontend.",
+  "summary": "This SillyTavern extension converts a plain map into an interactive location-on-map view for roleplay sessions. It transforms static map references into navigable regional positioning during chats.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

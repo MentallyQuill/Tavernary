@@ -3,7 +3,7 @@
   "id": "zdost-story-engine",
   "name": "Story Engine",
   "kind": "extension",
-  "summary": "SillyTavern extension adding game master mechanics with dice-based action resolution, context-aware NPC behavior, and event generation.",
+  "summary": "Story Engine is a SillyTavern extension that adds game master mechanics to AI roleplay. A semantic ledger decides when to roll dice, then engines resolve combat, NPCs, and events before narrating.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -15,10 +15,10 @@
   "capabilities": [
     "automation",
     "character-worldbuilding",
-    "instruction-control",
     "model-routing",
     "planning-reasoning",
-    "prompt-engineering"
+    "prompt-engineering",
+    "review-validation"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

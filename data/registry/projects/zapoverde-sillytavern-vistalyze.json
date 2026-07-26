@@ -3,7 +3,7 @@
   "id": "zapoverde-sillytavern-vistalyze",
   "name": "SillyTavern Vistalyze",
   "kind": "extension",
-  "summary": "SillyTavern extension that auto-generates cinematic backgrounds by detecting location changes in chat to sync visuals with narrative.",
+  "summary": "SillyTavern Vistalyze is a frontend extension that generates cinematic backgrounds during roleplay chats. It uses the SillyTavern API to automatically detect location changes and keep visuals in sync with the story.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1195030528
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
+  "primary_function": "frontend",
   "capabilities": ["image-generation", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

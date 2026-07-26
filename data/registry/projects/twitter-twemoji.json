@@ -3,7 +3,7 @@
   "id": "twitter-twemoji",
   "name": "Twemoji",
   "kind": "extension",
-  "summary": "Twemoji is a SillyTavern extension providing Twitter's emoji set for consistent emoji rendering in roleplay interfaces.",
+  "summary": "Twemoji is a SillyTavern extension that brings Twitter's emoji set to the roleplay frontend. It extends the chat interface with a library of emoji images for use in messages.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["image-generation"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

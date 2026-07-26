@@ -3,7 +3,7 @@
   "id": "virgilianshailer-lorebook-creator",
   "name": "Lorebook Creator",
   "kind": "extension",
-  "summary": "Builds SillyTavern World Info and LoreBooks using an LLM from an idea or guided tabbed worldbuilding form.",
+  "summary": "Lorebook Creator is a SillyTavern extension that builds complete World Info entries using an LLM. Users can start from a single idea or fill in a guided tabbed worldbuilding form to generate structured lore.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,12 @@
     "repository_id": 1248273779
   },
   "frontends": ["sillytavern"],
-  "primary_function": "memory-retrieval",
-  "capabilities": ["character-worldbuilding", "automation"],
+  "primary_function": "character-worldbuilding",
+  "capabilities": [
+    "character-worldbuilding",
+    "automation",
+    "prompt-engineering"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
