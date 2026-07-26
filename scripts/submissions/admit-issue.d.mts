@@ -34,3 +34,11 @@ export function processIssueAdmission(input: {
       admittedIssueNumbers: [];
     }
 >;
+
+export function issueAdmissionOutputs(
+  decision: { admitted: boolean },
+  event: AdmissionEvent,
+): {
+  admitted: string;
+  issue_number: string;
+};

@@ -1,6 +1,7 @@
 import { expect, test, vi } from "vitest";
 
 import {
+  issueAdmissionOutputs,
   listOpenIssues,
   processIssueAdmission,
 } from "../../scripts/submissions/admit-issue.mjs";
@@ -175,4 +176,13 @@ test("trusted collaborators bypass lookup and admission limits", async () => {
   expect(
     request.mock.calls.some(([path]) => String(path).includes("?state=open")),
   ).toBe(false);
+});
+
+test("reports admission outputs for downstream workflow dispatch", () => {
+  expect(
+    issueAdmissionOutputs({ admitted: true }, event(21, "COLLABORATOR")),
+  ).toEqual({
+    admitted: "true",
+    issue_number: "21",
+  });
 });

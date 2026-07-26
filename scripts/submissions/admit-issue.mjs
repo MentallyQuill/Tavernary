@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 import {
@@ -183,12 +183,29 @@ async function github(path, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
+export function issueAdmissionOutputs(decision, event) {
+  return {
+    admitted: String(decision.admitted),
+    issue_number: String(event.issue.number),
+  };
+}
+
 async function main() {
   const event = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
   );
   if (!event.issue) return;
-  await processIssueAdmission({ event, request: github });
+  const decision = await processIssueAdmission({ event, request: github });
+  if (process.env.GITHUB_OUTPUT) {
+    const outputs = issueAdmissionOutputs(decision, event);
+    await appendFile(
+      process.env.GITHUB_OUTPUT,
+      `${Object.entries(outputs)
+        .map(([name, value]) => `${name}=${value}`)
+        .join("\n")}\n`,
+      "utf8",
+    );
+  }
 }
 
 if (

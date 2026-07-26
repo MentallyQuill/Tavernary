@@ -408,6 +408,10 @@ test("triage dispatches admitted projects without repository write access", asyn
   );
 
   expect(triage.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
   expect(triage.permissions).toEqual({
     contents: "read",
     issues: "write",
@@ -415,12 +419,16 @@ test("triage dispatches admitted projects without repository write access", asyn
   });
   expect(triage.concurrency["cancel-in-progress"]).toBe(true);
   expect(triage.concurrency.group).toContain(
-    "${{ github.event.issue.number }}",
+    "${{ inputs.issue_number || github.event.issue.number }}",
   );
   expect(source).toContain("issue-admitted");
   expect(source).toContain("github.event.issue.state == 'open'");
   expect(source).toContain("github.event.label.name == 'issue-admitted'");
   expect(source).toContain("github.event.action == 'edited'");
+  expect(source).toContain("github.event_name == 'workflow_dispatch'");
+  expect(source).toContain(
+    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
+  );
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run generate-project-submission.yml");
   expect(source).not.toContain("npm ci");
@@ -435,11 +443,19 @@ test("keeps Kit triage read-only and dependency-free", async () => {
   );
 
   expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(document.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
   expect(document.permissions).toEqual({
     contents: "read",
     issues: "write",
   });
   expect(document.concurrency["cancel-in-progress"]).toBe(true);
+  expect(source).toContain("github.event_name == 'workflow_dispatch'");
+  expect(source).toContain(
+    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
+  );
   expect(source).not.toContain("npm ci");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -470,6 +486,15 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).toContain("git rebase origin/main");
   expect(source).toContain("previous-generated-paths.txt");
   expect(source).toContain("Refusing unsafe generated path");
+  expect(source).toContain("labels.includes('issue-admitted')");
+  expect(source).toContain("Refresh and revalidate issue before PR mutation");
+  expect(source).toContain("Refresh and revalidate issue before labeling");
+  expect(
+    source.match(/issue is no longer admitted/g)?.length,
+  ).toBeGreaterThanOrEqual(3);
+  expect(source).toContain("gh api --method DELETE");
+  expect(source).toContain("(HTTP 404)");
+  expect(source).not.toContain("gh api --method PUT");
   expect(source).not.toMatch(/git push (?:--force|-f)(?!-with-lease)/);
   expect(source).not.toMatch(
     /(?:npm|pnpm|yarn|bun|node)\s+(?:--prefix\s+)?(?:https?:\/\/|\.\/submitted)/,
@@ -501,7 +526,7 @@ test("handles submission closure from default-branch code only", async () => {
   expect(source).not.toContain("github.event.pull_request.head.ref }}");
 });
 
-test("admits opened and reopened issues before submission triage", async () => {
+test("continues admitted submissions in the admission run", async () => {
   const admission = await workflow("admit-issue");
   const source = await readFile(
     resolve(workflowDirectory, "admit-issue.yml"),
@@ -512,12 +537,16 @@ test("admits opened and reopened issues before submission triage", async () => {
   expect(admission.permissions).toEqual({
     contents: "read",
     issues: "write",
+    actions: "write",
   });
   expect(admission.concurrency).toEqual({
     group: "issue-admission-${{ github.event.issue.number }}",
     "cancel-in-progress": false,
   });
   expect(source).toContain("node scripts/submissions/admit-issue.mjs");
+  expect(source).toContain("steps.admission.outputs.admitted == 'true'");
+  expect(source).toContain("gh workflow run triage-submission.yml");
+  expect(source).toContain("gh workflow run triage-kit-submission.yml");
   expect(source).not.toContain("npm ci");
 });
 

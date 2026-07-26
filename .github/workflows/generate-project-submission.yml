@@ -60,7 +60,8 @@ jobs:
             import fs from 'node:fs';
             const issue = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
             const labels = issue.labels.map((label) => label.name);
-            if (issue.state !== 'open' || !labels.includes('project-submission') ||
+            if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
+                !labels.includes('project-submission') ||
                 (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
               throw new Error('Submission issue is no longer admitted.');
             }
@@ -217,14 +218,36 @@ jobs:
             fs.writeFileSync(process.env.RUNNER_TEMP + '/project-submission-pr.md', body);
           "
           title="[Project submission] ${PROJECT_ID}"
+          # Refresh and revalidate issue before PR mutation.
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
+            > "${RUNNER_TEMP}/project-submission-issue.json"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const issue = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const labels = issue.labels.map((label) => label.name);
+            if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
+                !labels.includes('project-submission') ||
+                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+              throw new Error('Submission issue is no longer admitted.');
+            }
+          " "${RUNNER_TEMP}/project-submission-issue.json"
           if [[ -n "$PR_NUMBER" ]]; then
             gh pr edit "$PR_NUMBER" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
           else
             gh pr create --base main --head "$BRANCH" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
           fi
+          # Refresh and revalidate issue before labeling.
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
+            > "${RUNNER_TEMP}/project-submission-issue.json"
           node --input-type=module -e "
             import fs from 'node:fs';
             const issue = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/project-submission-issue.json', 'utf8'));
+            const labels = issue.labels.map((label) => label.name);
+            if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
+                !labels.includes('project-submission') ||
+                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+              throw new Error('Submission issue is no longer admitted.');
+            }
             const owned = new Set([
               'needs-maintainer-review',
               'needs-information',
@@ -233,13 +256,25 @@ jobs:
               'submission-pr-open',
               'submission-declined',
             ]);
-            const labels = issue.labels.map((label) => label.name).filter((label) => !owned.has(label));
-            labels.push('submission-pr-open');
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/project-submission-labels-to-delete.txt',
+              labels.filter((label) => owned.has(label) && label !== 'submission-pr-open').join('\n'),
+            );
             fs.writeFileSync(
               process.env.RUNNER_TEMP + '/project-submission-labels.json',
-              JSON.stringify({ labels: [...new Set(labels)] }),
+              JSON.stringify({ labels: ['submission-pr-open'] }),
             );
           "
+          while IFS= read -r label; do
+            [[ -z "$label" ]] && continue
+            if ! delete_output="$(gh api --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels/${label}" 2>&1)"; then
+              if [[ "$delete_output" != *"(HTTP 404)"* ]]; then
+                echo "$delete_output" >&2
+                exit 1
+              fi
+            fi
+          done < "${RUNNER_TEMP}/project-submission-labels-to-delete.txt"
           gh api --method POST \
             "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
             --input "${RUNNER_TEMP}/project-submission-labels.json"

@@ -65,7 +65,11 @@ export interface ProjectSubmissionTriageApi {
       state_reason?: "not_planned" | null;
     },
   ): Promise<unknown>;
-  replaceLabels(issueNumber: number, labels: string[]): Promise<unknown>;
+  synchronizeLabels(
+    issueNumber: number,
+    currentLabels: string[],
+    desiredLabels: string[],
+  ): Promise<unknown>;
   listComments(
     issueNumber: number,
   ): Promise<Array<{ id: number; body?: string | null }>>;
@@ -103,8 +107,19 @@ export interface ProjectSubmissionTriageEvent {
   };
 }
 
+export interface ProjectSubmissionEventContext {
+  repository: { full_name: string };
+  issue: {
+    number: number;
+    title?: string;
+    body?: string | null;
+    labels?: Array<string | { name: string }>;
+    state?: string;
+  };
+}
+
 export function processProjectSubmissionTriage(input: {
-  event: ProjectSubmissionTriageEvent;
+  event: ProjectSubmissionEventContext;
   request: ProjectSubmissionGitHubRequest;
   probe?: (url: string, options?: SafeProbeOptions) => Promise<SafeProbeResult>;
   catalogData?: {
@@ -113,6 +128,11 @@ export function processProjectSubmissionTriage(input: {
   };
   writeOutput?: (name: string, value: string) => Promise<unknown>;
 }): Promise<ProjectSubmissionDecision>;
+
+export function resolveProjectSubmissionEvent(
+  event: unknown,
+  environment: Record<string, string | undefined>,
+): ProjectSubmissionEventContext | null;
 
 export function loadProjectSubmissionCatalogData(): Promise<{
   vocabulary: FrontendVocabulary;

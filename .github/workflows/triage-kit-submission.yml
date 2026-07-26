@@ -5,26 +5,35 @@ on:
     types:
       - labeled
       - edited
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Kit submission issue number
+        required: true
+        type: number
 
 permissions:
   contents: read
   issues: write
 
 concurrency:
-  group: triage-kit-${{ github.event.issue.number }}
+  group: triage-kit-${{ inputs.issue_number || github.event.issue.number }}
   cancel-in-progress: true
 
 jobs:
   validate:
     if: >-
-      startsWith(github.event.issue.title, '[Kit submission]') &&
-      github.event.issue.state == 'open' &&
-      contains(github.event.issue.labels.*.name, 'issue-admitted') &&
+      github.event_name == 'workflow_dispatch' ||
       (
-        github.event.action == 'edited' ||
+        startsWith(github.event.issue.title, '[Kit submission]') &&
+        github.event.issue.state == 'open' &&
+        contains(github.event.issue.labels.*.name, 'issue-admitted') &&
         (
-          github.event.action == 'labeled' &&
-          github.event.label.name == 'issue-admitted'
+          github.event.action == 'edited' ||
+          (
+            github.event.action == 'labeled' &&
+            github.event.label.name == 'issue-admitted'
+          )
         )
       )
     runs-on: ubuntu-latest
@@ -39,3 +48,4 @@ jobs:
         run: node scripts/submissions/triage-kit-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}

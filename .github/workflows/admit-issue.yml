@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: write
 
 concurrency:
   group: issue-admission-${{ github.event.issue.number }}
@@ -25,6 +26,27 @@ jobs:
         with:
           node-version: 24
       - name: Apply open-issue admission policy
+        id: admission
         run: node scripts/submissions/admit-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dispatch project submission triage
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          startsWith(github.event.issue.title, '[Project submission]')
+        run: >
+          gh workflow run triage-submission.yml
+          --ref main
+          -f issue_number="${{ steps.admission.outputs.issue_number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dispatch Kit submission triage
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          startsWith(github.event.issue.title, '[Kit submission]')
+        run: >
+          gh workflow run triage-kit-submission.yml
+          --ref main
+          -f issue_number="${{ steps.admission.outputs.issue_number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

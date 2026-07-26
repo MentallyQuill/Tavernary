@@ -18,6 +18,10 @@ import {
 const validationMarker = "<!-- tavernary-submission-validation -->";
 const projectSubmissionStateMarker = "<!-- tavernary-project-submission-state";
 const triageLabels = {
+  "project-submission": {
+    color: "1d76db",
+    description: "Structured project submission awaiting Tavernary processing.",
+  },
   "needs-maintainer-review": {
     color: "0e8a16",
     description: "Submission passed automation and awaits maintainer review.",
@@ -150,10 +154,13 @@ export function buildProjectSubmissionTriage(decision, context) {
       : context.currentTitle;
   const label = decisionLabel(decision, context.currentLabels);
   const labels = [
-    ...context.currentLabels.filter(
-      (current) => !submissionQueueLabels.includes(current),
-    ),
-    label,
+    ...new Set([
+      ...context.currentLabels.filter(
+        (current) => !submissionQueueLabels.includes(current),
+      ),
+      "project-submission",
+      label,
+    ]),
   ];
   const marker = {
     schema_version: 1,
@@ -204,8 +211,14 @@ export async function synchronizeProjectSubmissionTriage(
   if (Object.keys(issuePatch).length > 0) {
     await api.updateIssue(issue.number, issuePatch);
   }
-  if (!sameLabels(issue.labels, mutation.labels)) {
-    await api.replaceLabels(issue.number, mutation.labels);
+  const currentQueueLabels = issue.labels.filter((label) =>
+    submissionQueueLabels.includes(label),
+  );
+  const desiredQueueLabels = mutation.labels.filter((label) =>
+    submissionQueueLabels.includes(label),
+  );
+  if (!sameLabels(currentQueueLabels, desiredQueueLabels)) {
+    await api.synchronizeLabels(issue.number, issue.labels, mutation.labels);
   }
 
   const comments = await api.listComments(issue.number);
@@ -281,6 +294,21 @@ function labelsFromIssue(issue) {
   return issue.labels.map((label) =>
     typeof label === "string" ? label : label.name,
   );
+}
+
+function assertProjectSubmissionEligible(
+  issue,
+  { requireRoutingLabel = false } = {},
+) {
+  const hasRoutingLabel = issue.labels.includes("project-submission");
+  if (
+    issue.state !== "open" ||
+    (!issue.title?.startsWith("[Project submission]") && !hasRoutingLabel) ||
+    (requireRoutingLabel && !hasRoutingLabel) ||
+    !issue.labels.includes("issue-admitted")
+  ) {
+    throw new Error("Project submission issue is not open and admitted.");
+  }
 }
 
 export function projectSubmissionExistingProject(record) {
@@ -462,11 +490,30 @@ function triageApi(repository, request) {
         method: "PATCH",
         body: JSON.stringify(patch),
       }),
-    replaceLabels: (issueNumber, labels) =>
-      request(`/repos/${repository}/issues/${issueNumber}/labels`, {
-        method: "POST",
-        body: JSON.stringify({ labels }),
-      }),
+    synchronizeLabels: async (issueNumber, currentLabels, desiredLabels) => {
+      const desired = new Set(
+        desiredLabels.filter((label) => submissionQueueLabels.includes(label)),
+      );
+      for (const label of currentLabels.filter(
+        (current) =>
+          submissionQueueLabels.includes(current) && !desired.has(current),
+      )) {
+        try {
+          await request(
+            `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(label)}`,
+            { method: "DELETE" },
+          );
+        } catch (error) {
+          if (error.status !== 404) throw error;
+        }
+      }
+      if (desired.size > 0) {
+        await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
+          method: "POST",
+          body: JSON.stringify({ labels: [...desired] }),
+        });
+      }
+    },
     listComments: (issueNumber) =>
       request(
         `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
@@ -492,10 +539,27 @@ export async function processProjectSubmissionTriage({
   writeOutput,
 }) {
   const repository = event.repository.full_name;
-  const issue = {
-    ...event.issue,
-    labels: labelsFromIssue(event.issue),
+  const currentIssue = await request(
+    `/repos/${repository}/issues/${event.issue.number}`,
+  );
+  let issue = {
+    ...currentIssue,
+    labels: labelsFromIssue(currentIssue),
   };
+  assertProjectSubmissionEligible(issue);
+  await ensureLabels(repository, request);
+  await request(`/repos/${repository}/issues/${issue.number}/labels`, {
+    method: "POST",
+    body: JSON.stringify({ labels: ["project-submission"] }),
+  });
+  const routedIssue = await request(
+    `/repos/${repository}/issues/${event.issue.number}`,
+  );
+  issue = {
+    ...routedIssue,
+    labels: labelsFromIssue(routedIssue),
+  };
+  assertProjectSubmissionEligible(issue, { requireRoutingLabel: true });
   const data = catalogData ?? (await loadProjectSubmissionCatalogData());
   const parsed = parseProjectSubmissionIssue(issue.body ?? "");
   let decision;
@@ -549,7 +613,18 @@ export async function processProjectSubmissionTriage({
     });
   }
 
-  await ensureLabels(repository, request);
+  const latestIssue = await request(
+    `/repos/${repository}/issues/${event.issue.number}`,
+  );
+  const latest = {
+    ...latestIssue,
+    labels: labelsFromIssue(latestIssue),
+  };
+  assertProjectSubmissionEligible(latest, { requireRoutingLabel: true });
+  if ((latest.body ?? "") !== (issue.body ?? "")) {
+    throw new Error("Project submission changed during triage.");
+  }
+  issue = latest;
   const comments = await request(
     `/repos/${repository}/issues/${issue.number}/comments?per_page=100`,
   );
@@ -581,11 +656,35 @@ export async function processProjectSubmissionTriage({
   return decision;
 }
 
+export function resolveProjectSubmissionEvent(event, environment) {
+  const source = event && typeof event === "object" ? event : {};
+  const issueNumber = Number(
+    environment.ISSUE_NUMBER ?? source.issue?.number ?? 0,
+  );
+  const repository =
+    environment.GITHUB_REPOSITORY ?? source.repository?.full_name ?? "";
+  if (!Number.isInteger(issueNumber) || issueNumber < 1 || !repository) {
+    return null;
+  }
+  return {
+    ...source,
+    repository: {
+      ...(source.repository ?? {}),
+      full_name: repository,
+    },
+    issue: {
+      ...(source.issue ?? {}),
+      number: issueNumber,
+    },
+  };
+}
+
 async function main() {
-  const event = JSON.parse(
+  const rawEvent = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
   );
-  if (!event.issue) return;
+  const event = resolveProjectSubmissionEvent(rawEvent, process.env);
+  if (!event) return;
   await processProjectSubmissionTriage({
     event,
     request: github,

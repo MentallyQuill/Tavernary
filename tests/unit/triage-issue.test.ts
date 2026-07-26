@@ -6,11 +6,15 @@ import {
   parseIssueFields,
   parseProjectSubmissionStateMarker,
   processProjectSubmissionTriage,
+  resolveProjectSubmissionEvent,
   synchronizeProjectSubmissionTriage,
 } from "../../scripts/submissions/triage-issue.mjs";
 import {
+  assertKitSubmissionEligible,
   buildKitValidationComment,
   parseKitIssueFields,
+  resolveKitSubmissionEvent,
+  synchronizeKitSubmission,
 } from "../../scripts/submissions/triage-kit-issue.mjs";
 
 test("parses only the minimal fields used by automated triage", () => {
@@ -137,7 +141,7 @@ test("updates a generic title and records the generated title marker", () => {
 
   expect(mutation).toMatchObject({
     desiredTitle: "[Project submission] owner/repo",
-    labels: ["needs-maintainer-review"],
+    labels: ["project-submission", "needs-maintainer-review"],
     close: false,
     dispatchGeneration: true,
   });
@@ -219,7 +223,7 @@ test("links the existing project and closes duplicate issues", () => {
   );
 
   expect(mutation).toMatchObject({
-    labels: ["issue-admitted", "duplicate-candidate"],
+    labels: ["issue-admitted", "project-submission", "duplicate-candidate"],
     close: true,
     closeReason: "not_planned",
     dispatchGeneration: false,
@@ -261,7 +265,7 @@ test("does not dispatch a second generation while a submission PR is open", () =
     },
   );
 
-  expect(mutation.labels).toEqual(["submission-pr-open"]);
+  expect(mutation.labels).toEqual(["project-submission", "submission-pr-open"]);
   expect(mutation.dispatchGeneration).toBe(false);
 });
 
@@ -286,7 +290,7 @@ test("updates the stable state comment instead of creating a duplicate", async (
   );
   const api = {
     updateIssue: vi.fn(),
-    replaceLabels: vi.fn(),
+    synchronizeLabels: vi.fn(),
     listComments: vi.fn().mockResolvedValue([
       {
         id: 99,
@@ -334,14 +338,54 @@ test("parses the stable submission state marker", () => {
 });
 
 test("processes an admitted issue through injected GitHub mutations", async () => {
+  const currentBody = [
+    "### Project manifest",
+    "",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/repo",
+      name: "Example",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
   const requests: Array<{
     path: string;
     method: string;
     body?: string;
   }> = [];
+  let issueReads = 0;
   const request = vi.fn(async (path: string, options = {}) => {
     const method = options.method ?? "GET";
     requests.push({ path, method, body: options.body });
+    if (path === "/repos/Tavernary/Tavernary/issues/127" && method === "GET") {
+      issueReads += 1;
+      return {
+        number: 127,
+        title: "[Project submission]",
+        body: currentBody,
+        labels:
+          issueReads === 1
+            ? ["issue-admitted"]
+            : [
+                "issue-admitted",
+                "project-submission",
+                "maintainer-label",
+                "submission-retryable",
+              ],
+        state: "open",
+      };
+    }
+    if (path.endsWith("/labels/submission-retryable")) {
+      throw Object.assign(new Error("Label no longer exists."), {
+        status: 404,
+      });
+    }
     if (path === "/repos/owner/repo") {
       return {
         id: 42,
@@ -364,23 +408,8 @@ test("processes an admitted issue through injected GitHub mutations", async () =
       issue: {
         number: 127,
         title: "[Project submission]",
-        body: [
-          "### Project manifest",
-          "",
-          "```json",
-          JSON.stringify({
-            schema_version: 1,
-            project_type: "extension",
-            source_url: "https://github.com/owner/repo",
-            name: "Example",
-            description: null,
-            frontends: { known_ids: ["sillytavern"], other: [] },
-            frontend_independent: false,
-            additional_context: null,
-          }),
-          "```",
-        ].join("\n"),
-        labels: ["issue-admitted"],
+        body: "",
+        labels: [],
         state: "open",
       },
     },
@@ -404,11 +433,371 @@ test("processes an admitted issue through injected GitHub mutations", async () =
 
   expect(decision.status).toBe("admitted");
   expect(outputs).toEqual({ admitted: "true", issue_number: "127" });
+  expect(requests).toContainEqual({
+    path: "/repos/Tavernary/Tavernary/issues/127",
+    method: "GET",
+    body: undefined,
+  });
+  expect(issueReads).toBe(3);
   expect(requests).toContainEqual(
     expect.objectContaining({
       path: "/repos/Tavernary/Tavernary/issues/127",
       method: "PATCH",
       body: JSON.stringify({ title: "[Project submission] owner/repo" }),
     }),
+  );
+  expect(requests).toContainEqual({
+    path: "/repos/Tavernary/Tavernary/issues/127/labels",
+    method: "POST",
+    body: JSON.stringify({
+      labels: ["needs-maintainer-review"],
+    }),
+  });
+  expect(requests.some(({ method }) => method === "PUT")).toBe(false);
+  expect(requests).toContainEqual({
+    path: "/repos/Tavernary/Tavernary/issues/127/labels/submission-retryable",
+    method: "DELETE",
+    body: undefined,
+  });
+});
+
+test("accepts a manually customized project title after routing", async () => {
+  const body = [
+    "### Project manifest",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "preset",
+      source_url: "https://example.com/preset",
+      name: "Example",
+      description: null,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: true,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
+  const updates: unknown[] = [];
+  const request = vi.fn(async (path: string, options = {}) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/128") {
+      if ((options.method ?? "GET") === "PATCH") updates.push(options);
+      return {
+        number: 128,
+        title: "Maintainer-approved custom title",
+        body,
+        labels: ["issue-admitted", "project-submission"],
+        state: "open",
+      };
+    }
+    if (path.endsWith("/comments?per_page=100")) return [];
+    return {};
+  });
+
+  await expect(
+    processProjectSubmissionTriage({
+      event: {
+        repository: { full_name: "Tavernary/Tavernary" },
+        issue: { number: 128 },
+      },
+      request,
+      probe: vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        finalUrl: "https://example.com/preset",
+      }),
+      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+    }),
+  ).resolves.toBeDefined();
+  expect(updates).toEqual([]);
+});
+
+test("does not apply a stale decision after the issue body changes", async () => {
+  const originalBody = [
+    "### Project manifest",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "preset",
+      source_url: "https://example.com/original",
+      name: "Original",
+      description: null,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: true,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
+  let reads = 0;
+  const request = vi.fn(async (path: string, options = {}) => {
+    if (
+      path === "/repos/Tavernary/Tavernary/issues/129" &&
+      (options.method ?? "GET") === "GET"
+    ) {
+      reads += 1;
+      return {
+        number: 129,
+        title: "[Project submission]",
+        body: reads < 3 ? originalBody : `${originalBody}\nchanged`,
+        labels: ["issue-admitted", "project-submission"],
+        state: "open",
+      };
+    }
+    return {};
+  });
+
+  await expect(
+    processProjectSubmissionTriage({
+      event: {
+        repository: { full_name: "Tavernary/Tavernary" },
+        issue: { number: 129 },
+      },
+      request,
+      probe: vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        finalUrl: "https://example.com/original",
+      }),
+      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+    }),
+  ).rejects.toThrow("Project submission changed during triage.");
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path === "/repos/Tavernary/Tavernary/issues/129" &&
+        ["PATCH", "PUT", "DELETE"].includes(options?.method),
+    ),
+  ).toBe(false);
+});
+
+test("does not dispatch after the routing label is revoked", async () => {
+  let reads = 0;
+  const request = vi.fn(async (path: string, options = {}) => {
+    if (
+      path === "/repos/Tavernary/Tavernary/issues/131" &&
+      (options.method ?? "GET") === "GET"
+    ) {
+      reads += 1;
+      return {
+        number: 131,
+        title: "[Project submission]",
+        body: "### Project manifest\ninvalid",
+        labels:
+          reads < 3
+            ? ["issue-admitted", "project-submission"]
+            : ["issue-admitted"],
+        state: "open",
+      };
+    }
+    return {};
+  });
+  const writeOutput = vi.fn();
+
+  await expect(
+    processProjectSubmissionTriage({
+      event: {
+        repository: { full_name: "Tavernary/Tavernary" },
+        issue: { number: 131 },
+      },
+      request,
+      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+      writeOutput,
+    }),
+  ).rejects.toThrow("Project submission issue is not open and admitted.");
+  expect(writeOutput).not.toHaveBeenCalled();
+});
+
+test("rechecks Kit eligibility before applying triage mutations", async () => {
+  const request = vi.fn(async (path: string) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/130") {
+      return {
+        number: 130,
+        title: "[Kit submission]: Example",
+        state: "closed",
+        labels: ["issue-admitted"],
+      };
+    }
+    throw new Error(`Unexpected mutation: ${path}`);
+  });
+
+  await expect(
+    synchronizeKitSubmission(
+      "Tavernary/Tavernary",
+      130,
+      {
+        valid: true,
+        manifest: null,
+        errors: [],
+        warnings: [],
+        labels: ["kit-submission-valid"],
+      },
+      request,
+    ),
+  ).rejects.toThrow("Kit submission issue is not open and admitted.");
+  expect(request).toHaveBeenCalledTimes(1);
+});
+
+test("Kit synchronization tolerates a concurrently removed owned label", async () => {
+  const request = vi.fn(async (path: string, options = {}) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/132") {
+      return {
+        number: 132,
+        title: "[Kit submission]: Example",
+        state: "open",
+        labels: ["issue-admitted", "needs-information"],
+      };
+    }
+    if (path.endsWith("/labels/needs-information")) {
+      throw Object.assign(new Error("Label no longer exists."), {
+        status: 404,
+      });
+    }
+    if (path.endsWith("/comments?per_page=100")) return [];
+    return {};
+  });
+
+  await expect(
+    synchronizeKitSubmission(
+      "Tavernary/Tavernary",
+      132,
+      {
+        valid: true,
+        manifest: null,
+        errors: [],
+        warnings: [],
+        labels: ["needs-maintainer-review"],
+      },
+      request,
+    ),
+  ).resolves.toBeUndefined();
+  expect(request).toHaveBeenCalledWith(
+    "/repos/Tavernary/Tavernary/issues/132/labels",
+    {
+      method: "POST",
+      body: JSON.stringify({ labels: ["needs-maintainer-review"] }),
+    },
+  );
+});
+
+test("resolves a workflow-dispatch project issue context", () => {
+  expect(
+    resolveProjectSubmissionEvent(
+      { inputs: { issue_number: 21 } },
+      {
+        GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+        ISSUE_NUMBER: "21",
+      },
+    ),
+  ).toMatchObject({
+    repository: { full_name: "MentallyQuill/Tavernary" },
+    issue: { number: 21 },
+  });
+});
+
+test("resolves a workflow-dispatch Kit issue context", async () => {
+  const request = vi.fn().mockResolvedValue({
+    number: 20,
+    title: "[Kit submission]: Example",
+    body: "### Kit manifest",
+  });
+  await expect(
+    resolveKitSubmissionEvent(
+      { inputs: { issue_number: 20 } },
+      {
+        GITHUB_REPOSITORY: "MentallyQuill/Tavernary",
+        ISSUE_NUMBER: "20",
+      },
+      request,
+    ),
+  ).resolves.toMatchObject({
+    repository: { full_name: "MentallyQuill/Tavernary" },
+    issue: {
+      number: 20,
+      title: "[Kit submission]: Example",
+      body: "### Kit manifest",
+    },
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/20",
+  );
+});
+
+test.each([
+  {
+    name: "closed",
+    issue: {
+      title: "[Project submission]",
+      state: "closed",
+      labels: ["issue-admitted"],
+    },
+  },
+  {
+    name: "unadmitted",
+    issue: {
+      title: "[Project submission]",
+      state: "open",
+      labels: [],
+    },
+  },
+  {
+    name: "wrong-kind",
+    issue: {
+      title: "[Kit submission]: Example",
+      state: "open",
+      labels: ["issue-admitted"],
+    },
+  },
+])("rejects $name workflow-dispatch project issues", async ({ issue }) => {
+  const request = vi.fn(async (path: string) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/21") {
+      return {
+        number: 21,
+        body: "",
+        ...issue,
+      };
+    }
+    throw new Error(`Unexpected request: ${path}`);
+  });
+
+  await expect(
+    processProjectSubmissionTriage({
+      event: {
+        repository: { full_name: "Tavernary/Tavernary" },
+        issue: {
+          number: 21,
+          title: "",
+          body: "",
+          labels: [],
+          state: "",
+        },
+      },
+      request,
+      catalogData: {
+        vocabulary: { frontends: [] },
+        projects: [],
+      },
+    }),
+  ).rejects.toThrow("Project submission issue is not open and admitted.");
+  expect(request).toHaveBeenCalledTimes(1);
+});
+
+test.each([
+  {
+    title: "[Kit submission]: Example",
+    state: "closed",
+    labels: ["issue-admitted"],
+  },
+  {
+    title: "[Kit submission]: Example",
+    state: "open",
+    labels: [],
+  },
+  {
+    title: "[Project submission] owner/repo",
+    state: "open",
+    labels: ["issue-admitted"],
+  },
+])("rejects ineligible workflow-dispatch Kit issues", (issue) => {
+  expect(() => assertKitSubmissionEligible(issue)).toThrow(
+    "Kit submission issue is not open and admitted.",
   );
 });

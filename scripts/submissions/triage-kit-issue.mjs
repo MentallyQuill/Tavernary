@@ -104,8 +104,14 @@ async function ensureLabels(repository) {
   }
 }
 
-async function synchronize(repository, issueNumber, validation) {
-  const issue = await github(`/repos/${repository}/issues/${issueNumber}`);
+export async function synchronizeKitSubmission(
+  repository,
+  issueNumber,
+  validation,
+  request = github,
+) {
+  const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
+  assertKitSubmissionEligible(issue);
   const current = new Set(
     issue.labels.map((label) =>
       typeof label === "string" ? label : label.name,
@@ -113,18 +119,22 @@ async function synchronize(repository, issueNumber, validation) {
   );
   for (const name of Object.keys(triageLabels)) {
     if (current.has(name) && !validation.labels.includes(name)) {
-      await github(
-        `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(name)}`,
-        { method: "DELETE" },
-      );
+      try {
+        await request(
+          `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(name)}`,
+          { method: "DELETE" },
+        );
+      } catch (error) {
+        if (error.status !== 404) throw error;
+      }
     }
   }
-  await github(`/repos/${repository}/issues/${issueNumber}/labels`, {
+  await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
     method: "POST",
     body: JSON.stringify({ labels: validation.labels }),
   });
 
-  const comments = await github(
+  const comments = await request(
     `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
   );
   const existing = comments.find((comment) =>
@@ -133,24 +143,60 @@ async function synchronize(repository, issueNumber, validation) {
   const body = buildKitValidationComment(validation);
   if (existing) {
     if (existing.body !== body) {
-      await github(`/repos/${repository}/issues/comments/${existing.id}`, {
+      await request(`/repos/${repository}/issues/comments/${existing.id}`, {
         method: "PATCH",
         body: JSON.stringify({ body }),
       });
     }
   } else {
-    await github(`/repos/${repository}/issues/${issueNumber}/comments`, {
+    await request(`/repos/${repository}/issues/${issueNumber}/comments`, {
       method: "POST",
       body: JSON.stringify({ body }),
     });
   }
 }
 
+export async function resolveKitSubmissionEvent(event, environment, request) {
+  const source = event && typeof event === "object" ? event : {};
+  const issueNumber = Number(
+    environment.ISSUE_NUMBER ?? source.issue?.number ?? 0,
+  );
+  const repository =
+    environment.GITHUB_REPOSITORY ?? source.repository?.full_name ?? "";
+  if (!Number.isInteger(issueNumber) || issueNumber < 1 || !repository) {
+    return null;
+  }
+  const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
+  return {
+    ...source,
+    repository: {
+      ...(source.repository ?? {}),
+      full_name: repository,
+    },
+    issue,
+  };
+}
+
+export function assertKitSubmissionEligible(issue) {
+  const labels = (issue.labels ?? []).map((label) =>
+    typeof label === "string" ? label : label.name,
+  );
+  if (
+    issue.state !== "open" ||
+    !issue.title?.startsWith("[Kit submission]") ||
+    !labels.includes("issue-admitted")
+  ) {
+    throw new Error("Kit submission issue is not open and admitted.");
+  }
+}
+
 async function main() {
-  const event = JSON.parse(
+  const rawEvent = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
   );
-  if (!event.issue?.title?.startsWith("[Kit submission]")) return;
+  const event = await resolveKitSubmissionEvent(rawEvent, process.env, github);
+  if (!event?.issue) return;
+  assertKitSubmissionEligible(event.issue);
   const [projects, kits, blockedUsers] = await Promise.all([
     readJsonDirectory("data/registry/projects"),
     readJsonDirectory("data/registry/kits"),
@@ -166,7 +212,11 @@ async function main() {
     blockedUsers,
   });
   await ensureLabels(event.repository.full_name);
-  await synchronize(event.repository.full_name, event.issue.number, validation);
+  await synchronizeKitSubmission(
+    event.repository.full_name,
+    event.issue.number,
+    validation,
+  );
 }
 
 if (
