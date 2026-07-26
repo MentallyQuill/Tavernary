@@ -3,15 +3,15 @@
   "id": "datacat-run-datacat-sillytavern-browser",
   "name": "datacat SillyTavern Browser",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Extension that lets users browse Data Cat content from within the SillyTavern frontend interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "datacat-run/datacat-sillytavern-browser",
     "repository_id": 1305445141
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

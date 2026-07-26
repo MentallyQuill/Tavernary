@@ -3,15 +3,15 @@
   "id": "dfaker-st-char-powersearch",
   "name": "ST Character PowerSearch",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "A SillyTavern extension that provides more powerful and faster character search functionality for the frontend interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "dfaker/st-char-powersearch",
     "repository_id": 1044610257
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
