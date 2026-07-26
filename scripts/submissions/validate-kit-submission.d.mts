@@ -26,10 +26,12 @@ export function validateKitSubmission(input: {
     id: string;
     status: string;
     author: { github_user_id: number; login: string };
+    source_issue_number?: number;
     project_ids: string[];
   }>;
   blockedUsers: {
     schema_version?: number;
     blocked: Array<{ github_user_id: number; login: string; reason: string }>;
   };
+  sourceIssueNumber?: number;
 }): KitSubmissionValidation;

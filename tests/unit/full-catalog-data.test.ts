@@ -298,10 +298,25 @@ describe("full catalog data", () => {
     expectCatalogContract(records);
   });
 
-  test("keeps the production Kit registry empty before community publication", async () => {
+  test("builds every published production Kit", async () => {
+    const kitDirectory = resolve(rootDirectory, "data/registry/kits");
+    const kitRecords = await Promise.all(
+      (await readdir(kitDirectory))
+        .filter((file) => file.endsWith(".json"))
+        .sort()
+        .map(async (file) =>
+          JSON.parse(await readFile(resolve(kitDirectory, file), "utf8")),
+        ),
+    );
     const catalog = await buildCatalog({ write: false });
+
     expect(catalog.schemaVersion).toBe(2);
-    expect(catalog.kits).toEqual([]);
+    expect(catalog.kits.map(({ id }) => id)).toEqual(
+      kitRecords
+        .filter(({ status }) => status === "published")
+        .map(({ id }) => id)
+        .sort(),
+    );
   });
 
   test("keeps every summary within the card presentation contract", async () => {

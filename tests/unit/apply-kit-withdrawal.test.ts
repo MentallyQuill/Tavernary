@@ -39,3 +39,19 @@ test("creates a tombstone while preserving all history-bearing fields", () => {
     withdrawn_at: "2026-07-24T18:00:00.000Z",
   });
 });
+
+test("preserves the original tombstone on a withdrawal retry", () => {
+  const withdrawn = {
+    ...kit,
+    status: "withdrawn" as const,
+    withdrawn_at: "2026-07-24T18:00:00.000Z",
+  };
+
+  expect(
+    applyKitWithdrawal({
+      kit: withdrawn,
+      actorId: 42,
+      now: "2026-07-25T18:00:00.000Z",
+    }),
+  ).toEqual(withdrawn);
+});

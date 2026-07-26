@@ -16,9 +16,30 @@ function slug(value) {
   );
 }
 
+export function findExistingKitForSubmission({ manifest, issueNumber, kits }) {
+  return manifest.operation === "edit"
+    ? kits.find((kit) => kit.id === manifest.kit_id)
+    : kits.find((kit) => kit.source_issue_number === issueNumber);
+}
+
 export function applyKitSubmission({ manifest, issue, existingKit, now }) {
   if (manifest.operation === "create") {
     if (existingKit) {
+      if (existingKit.status === "withdrawn") {
+        throw new Error(
+          "A withdrawn Kit cannot be republished as a create retry.",
+        );
+      }
+      const isIdenticalRetry =
+        existingKit.source_issue_number === issue.number &&
+        existingKit.author.github_user_id === issue.user.id &&
+        existingKit.title === manifest.title.trim() &&
+        existingKit.description === manifest.description.trim() &&
+        JSON.stringify(existingKit.project_ids) ===
+          JSON.stringify(manifest.project_ids);
+      if (isIdenticalRetry) {
+        return existingKit;
+      }
       throw new Error("An exact duplicate Kit already exists.");
     }
     return {
@@ -40,6 +61,9 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
 
   if (!existingKit || existingKit.id !== manifest.kit_id) {
     throw new Error("The Kit selected for editing does not exist.");
+  }
+  if (existingKit.status === "withdrawn") {
+    throw new Error("A withdrawn Kit cannot be edited.");
   }
   if (existingKit.author.github_user_id !== issue.user.id) {
     throw new Error("Only the Kit author may publish an edit.");
@@ -109,16 +133,18 @@ async function main() {
     projects,
     kits,
     blockedUsers,
+    sourceIssueNumber: issue.number,
   });
   if (!validation.valid) {
     throw new Error(
       `Kit submission is invalid: ${validation.errors.join(" ")}`,
     );
   }
-  const existingKit =
-    validation.manifest.operation === "edit"
-      ? kits.find((kit) => kit.id === validation.manifest.kit_id)
-      : undefined;
+  const existingKit = findExistingKitForSubmission({
+    manifest: validation.manifest,
+    issueNumber: issue.number,
+    kits,
+  });
   const record = applyKitSubmission({
     manifest: validation.manifest,
     issue,

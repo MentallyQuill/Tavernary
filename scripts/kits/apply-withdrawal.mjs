@@ -6,6 +6,9 @@ export function applyKitWithdrawal({ kit, actorId, now }) {
   if (kit.author.github_user_id !== actorId) {
     throw new Error("Only the Kit author may withdraw this Kit.");
   }
+  if (kit.status === "withdrawn") {
+    return kit;
+  }
   return { ...kit, status: "withdrawn", withdrawn_at: now };
 }
 

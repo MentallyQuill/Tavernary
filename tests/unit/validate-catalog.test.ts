@@ -1,3 +1,6 @@
+import { readdir } from "node:fs/promises";
+import { resolve } from "node:path";
+
 import { describe, expect, test } from "vitest";
 
 import { validateCatalog } from "../../scripts/catalog/validate.mjs";
@@ -72,12 +75,19 @@ const validSnapshotV2: Record<string, any> = {
 };
 
 describe("catalog validation", () => {
-  test("accepts the 211-project launch catalog", async () => {
+  test("accepts the production catalog at its current Kit counts", async () => {
+    const countJsonFiles = async (directory: string) =>
+      (await readdir(resolve(directory))).filter((file) =>
+        file.endsWith(".json"),
+      ).length;
     const result = await validateCatalog();
+
     expect(result.errors).toEqual([]);
     expect(result.projectCount).toBe(211);
-    expect(result.kitCount).toBe(0);
-    expect(result.kitSnapshotCount).toBe(0);
+    expect(result.kitCount).toBe(await countJsonFiles("data/registry/kits"));
+    expect(result.kitSnapshotCount).toBe(
+      await countJsonFiles("data/snapshots/github/kits"),
+    );
   });
 
   test("requires an explicit enrichment policy", async () => {

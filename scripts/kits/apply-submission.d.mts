@@ -20,6 +20,12 @@ export interface CanonicalKit {
   withdrawn_at?: string;
 }
 
+export function findExistingKitForSubmission(input: {
+  manifest: KitSubmissionManifest;
+  issueNumber: number;
+  kits: CanonicalKit[];
+}): CanonicalKit | undefined;
+
 export function applyKitSubmission(input: {
   manifest: KitSubmissionManifest;
   issue: { number: number; user: { id: number; login: string } };

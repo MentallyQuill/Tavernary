@@ -89,6 +89,107 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
 });
 
+test("rebases and revalidates Kit registry commits before pushing", async () => {
+  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+    const commitBlock = source.slice(source.indexOf("git commit -m"));
+    const rebase = commitBlock.indexOf("git rebase origin/main");
+    const validate = commitBlock.indexOf("npm run catalog:validate");
+    const push = commitBlock.indexOf("git push origin HEAD:main");
+
+    expect(commitBlock).toContain("for attempt in 1 2 3");
+    expect(rebase).toBeGreaterThanOrEqual(0);
+    expect(rebase).toBeLessThan(validate);
+    expect(validate).toBeLessThan(push);
+  }
+});
+
+test("rebases no-op Kit retries before selecting their deployment commit", async () => {
+  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+    const stage = source.indexOf("git add data/registry/kits");
+    const commitGuardEnd = source.indexOf("\n          fi", stage);
+    const retryLoop = source.indexOf("for attempt in 1 2 3", stage);
+    const publishedSha = source.indexOf(
+      'echo "sha=$(git rev-parse HEAD)"',
+      stage,
+    );
+
+    expect(commitGuardEnd).toBeGreaterThan(stage);
+    expect(retryLoop).toBeGreaterThan(commitGuardEnd);
+    expect(publishedSha).toBeGreaterThan(retryLoop);
+  }
+});
+
+test("dispatches Kit deployments for the exact published commit", async () => {
+  for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+
+    expect(source).toContain("id: commit");
+    expect(source).toContain(
+      'echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"',
+    );
+    expect(source).toContain(
+      'gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"',
+    );
+  }
+});
+
+test("runs Kit registry writers from full main-branch history", async () => {
+  for (const [name, jobName] of [
+    ["apply-kit-submission", "publish"],
+    ["apply-kit-withdrawal", "withdraw"],
+  ]) {
+    const document = (await workflow(name)) as {
+      jobs: Record<
+        string,
+        {
+          if?: string;
+          steps: Array<{
+            uses?: string;
+            with?: { "fetch-depth"?: number };
+          }>;
+        }
+      >;
+    };
+    const job = document.jobs[jobName];
+    const checkout = job.steps.find((step) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+
+    expect(job.if).toContain("github.ref == 'refs/heads/main'");
+    expect(checkout?.with?.["fetch-depth"]).toBe(0);
+  }
+});
+
+test("synchronizes current main before mutating the Kit registry", async () => {
+  for (const [name, mutation] of [
+    ["apply-kit-submission", "node scripts/kits/apply-submission.mjs"],
+    ["apply-kit-withdrawal", "node scripts/kits/apply-withdrawal.mjs"],
+  ]) {
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+    const fetch = source.indexOf("git fetch origin main");
+    const checkout = source.indexOf("git checkout -B main origin/main");
+    const mutate = source.indexOf(mutation);
+
+    expect(fetch).toBeGreaterThanOrEqual(0);
+    expect(fetch).toBeLessThan(checkout);
+    expect(checkout).toBeLessThan(mutate);
+  }
+});
+
 test("keeps CI read-only and runs every local gate", async () => {
   const ci = await workflow("ci");
   const commands = allSteps(ci)

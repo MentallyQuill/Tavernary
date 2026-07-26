@@ -19,6 +19,7 @@ export function validateKitSubmission({
   projects,
   kits,
   blockedUsers,
+  sourceIssueNumber,
 }) {
   const errors = [];
   const warnings = [];
@@ -60,6 +61,8 @@ export function validateKitSubmission({
       : null;
   if (parsed?.operation === "edit" && !existingKit) {
     errors.push("The Kit selected for editing does not exist.");
+  } else if (existingKit?.status === "withdrawn") {
+    errors.push("A withdrawn Kit cannot be edited.");
   } else if (existingKit && existingKit.author.github_user_id !== actor.id) {
     errors.push("Only the Kit author may submit an edit.");
   }
@@ -81,7 +84,11 @@ export function validateKitSubmission({
     errors.push(...draftValidation.errors);
 
     const candidates = kits.filter(
-      (kit) => kit.status === "published" && kit.id !== parsed.kit_id,
+      (kit) =>
+        kit.status === "published" &&
+        kit.id !== parsed.kit_id &&
+        (!Number.isInteger(sourceIssueNumber) ||
+          kit.source_issue_number !== sourceIssueNumber),
     );
     const setKey = kitSetKey(parsed.project_ids);
     if (candidates.some((kit) => kitSetKey(kit.project_ids) === setKey)) {

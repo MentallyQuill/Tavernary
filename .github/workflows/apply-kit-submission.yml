@@ -19,10 +19,13 @@ concurrency:
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -30,6 +33,10 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Synchronize current main
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
       - name: Re-fetch, revalidate, and apply approved issue
         run: node scripts/kits/apply-submission.mjs
         env:
@@ -41,18 +48,36 @@ jobs:
           npm run catalog:build
           npm test
       - name: Commit canonical Kit
+        id: commit
+        shell: bash
         run: |
           git add data/registry/kits
-          if git diff --cached --quiet; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "feat(kits): publish issue #${{ inputs.issue_number }}"
-          git push
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "feat(kits): publish issue #${{ inputs.issue_number }}"
+          fi
+          for attempt in 1 2 3; do
+            if git fetch origin main &&
+              git rebase origin/main; then
+              if npm run catalog:validate &&
+                npm run catalog:build &&
+                npm test &&
+                git push origin HEAD:main; then
+                break
+              fi
+            fi
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              exit 1
+            fi
+          done
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Mark issue published
         run: gh issue edit "${{ inputs.issue_number }}" --add-label kit-published
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy updated catalog
-        run: gh workflow run deploy-pages.yml
+        run: gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
