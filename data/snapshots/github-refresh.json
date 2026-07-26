@@ -1,33 +1,33 @@
 {
   "schema_version": 1,
   "mode": "incremental",
-  "started_at": "2026-07-26T00:09:51.778Z",
-  "completed_at": "2026-07-26T00:10:19.342Z",
+  "started_at": "2026-07-26T04:48:30.967Z",
+  "completed_at": "2026-07-26T04:49:07.033Z",
   "counts": {
     "total": 204,
     "checked": 204,
     "changed": 204,
-    "unchanged": 204,
+    "unchanged": 203,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 0,
+    "compared": 1,
     "baseline": 0,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 9,
     "graphql_points": 9,
-    "graphql_remaining": 4962,
-    "rest_requests": 207
+    "graphql_remaining": 4991,
+    "rest_requests": 208
   },
-  "duration_ms": 27564,
+  "duration_ms": 36066,
   "project_timings": [
     {
       "project_id": "aikohanasaki-sillytavern-characterlocks",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -111,7 +111,7 @@
     {
       "project_id": "archkr-lumiverse-lumiworld",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -249,7 +249,7 @@
     {
       "project_id": "cgstever-statefullore",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -285,7 +285,7 @@
     {
       "project_id": "cierru-st-stepped-thinking",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -399,7 +399,7 @@
     {
       "project_id": "forgottenglory-st-superobjective",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -465,7 +465,7 @@
     {
       "project_id": "hibanan-css-default-scoped",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -543,7 +543,7 @@
     {
       "project_id": "kenhito-marinara-rpg-extension",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -633,7 +633,7 @@
     {
       "project_id": "maiky93-image-generation-suite",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -681,7 +681,7 @@
     {
       "project_id": "mentallyquill-directive",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -795,7 +795,7 @@
     {
       "project_id": "p-e-w-sorcery",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -807,7 +807,7 @@
     {
       "project_id": "pasta-devs-marinara-engine",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -921,7 +921,7 @@
     {
       "project_id": "rivelledays-sillytavern-moonlitechoestheme",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -933,7 +933,7 @@
     {
       "project_id": "sammcheese-sillytavern-discordia",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1089,7 +1089,7 @@
     {
       "project_id": "sulphuratum-marinara-neural-memory",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1137,7 +1137,7 @@
     {
       "project_id": "twitter-twemoji",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1215,7 +1215,7 @@
     {
       "project_id": "zapoverde-sillytavern-mobilyze",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1232,8 +1232,8 @@
     },
     {
       "project_id": "zdost-story-engine",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 351,
       "error_code": null
     },
     {
