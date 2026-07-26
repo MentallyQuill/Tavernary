@@ -26,7 +26,7 @@ const record = {
 
 const output = {
   summary:
-    "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated",
   primary_function: "developer-infrastructure",
   capabilities: ["automation"],

@@ -99,7 +99,7 @@ test("passes both source fields and only allowed vocabulary entries to provider"
   const generate = vi.fn(async (input) => ({
     output: {
       summary:
-        "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
       metadata_status: "curated" as const,
       primary_function: input.allowedPrimaryFunctions[0].id,
       capabilities: [input.allowedCapabilities[0].id],
@@ -238,7 +238,7 @@ test("rejects uncategorized output when source text exists", async () => {
         generate: async () => ({
           output: {
             summary:
-              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated",
             primary_function: "uncategorized",
             capabilities: [],
@@ -265,7 +265,7 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     return {
       output: {
         summary:
-          "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated" as const,
         primary_function: "developer-infrastructure",
         capabilities: ["automation"],
@@ -357,7 +357,7 @@ test("runs no more than four model calls concurrently and preserves order", asyn
         return {
           output: {
             summary:
-              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated" as const,
             primary_function: "developer-infrastructure",
             capabilities: ["automation"],

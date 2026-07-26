@@ -28,7 +28,7 @@ const vocabularies = {
 const providerOutput = {
   output: {
     summary:
-      "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
     metadata_status: "curated" as const,
     primary_function: "developer-infrastructure",
     capabilities: ["automation"],
@@ -309,8 +309,8 @@ test("a retry tells the provider which validation defect to correct", async () =
       ...(id === "e"
         ? {
             reasonCode: "output-invalid",
-            message: "Summary must contain 12-24 words.",
-            repairHint: "Summary must contain 12-24 words.",
+            message: "Summary must contain 24-36 words.",
+            repairHint: "Summary must contain 24-36 words.",
           }
         : {}),
     })),
@@ -332,7 +332,7 @@ test("a retry tells the provider which validation defect to correct", async () =
     id: "e",
     repair: {
       reasonCode: "output-invalid",
-      message: "Summary must contain 12-24 words.",
+      message: "Summary must contain 24-36 words.",
     },
   });
 });

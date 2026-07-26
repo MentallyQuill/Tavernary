@@ -233,11 +233,11 @@ function validateOutput(output, vocabularies, sourceBacked) {
       if (error === "summary must be a non-empty string") {
         return "Summary must be a non-empty string.";
       }
-      if (error === "summary must be 140 characters or fewer") {
-        return "Summary must be at most 140 characters.";
+      if (error === "summary must be 220 characters or fewer") {
+        return "Summary must be at most 220 characters.";
       }
-      if (error === "summary must contain between 12 and 24 words") {
-        return "Summary must contain 12-24 words.";
+      if (error === "summary must contain between 24 and 36 words") {
+        return "Summary must contain 24-36 words.";
       }
       if (error === "summary must not contain line breaks") {
         return "Summary must not contain line breaks.";
@@ -245,8 +245,8 @@ function validateOutput(output, vocabularies, sourceBacked) {
       if (error === "summary must not contain markdown or list syntax") {
         return "Summary must not contain Markdown or list syntax.";
       }
-      if (error === "summary must be exactly one sentence") {
-        return "Summary must be exactly one sentence.";
+      if (error === "summary must be exactly two sentences") {
+        return "Summary must be exactly two sentences.";
       }
       if (error === "metadata_status must be curated") {
         return "Set metadata_status to curated.";

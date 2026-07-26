@@ -21,10 +21,10 @@ function summaryErrors(summary) {
   if (summary === FALLBACK_SUMMARY) return [];
 
   const errors = [];
-  if (summary.length > 140)
-    errors.push("summary must be 140 characters or fewer");
-  if (wordCount(summary) < 12 || wordCount(summary) > 24) {
-    errors.push("summary must contain between 12 and 24 words");
+  if (summary.length > 220)
+    errors.push("summary must be 220 characters or fewer");
+  if (wordCount(summary) < 24 || wordCount(summary) > 36) {
+    errors.push("summary must contain between 24 and 36 words");
   }
   if (/[\r\n\u2028\u2029]/u.test(summary))
     errors.push("summary must not contain line breaks");
@@ -33,8 +33,8 @@ function summaryErrors(summary) {
   }
 
   const endings = summary.match(/[.!?](?=\s|$)/gu) ?? [];
-  if (endings.length !== 1 || !/[.!?]$/u.test(summary.trim())) {
-    errors.push("summary must be exactly one sentence");
+  if (endings.length !== 2 || !/[.!?]$/u.test(summary.trim())) {
+    errors.push("summary must be exactly two sentences");
   }
 
   return errors;
