@@ -42,6 +42,15 @@ test("requires supported frontends only for Extensions", async () => {
   expect(
     screen.queryByLabelText("Frontend-independent"),
   ).not.toBeInTheDocument();
+  expect(screen.getByText("0 selected")).toBeVisible();
+  expect(screen.getByLabelText("SillyTavern")).not.toBeChecked();
+
+  await user.click(screen.getByLabelText("Other or not listed"));
+  expect(
+    screen.getByText(
+      "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",
+    ),
+  ).toBeVisible();
 });
 
 test("allows a System Preset to be frontend-independent", async () => {
@@ -70,7 +79,7 @@ test("submits multiple current frontend identities in the manifest", async () =>
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 1,
+      schema_version: 2,
       project_type: "extension",
       source_url: "https://github.com/example/extension",
       frontends: {
@@ -148,7 +157,7 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
   await user.type(screen.getByLabelText("Other frontend name"), "New UI");
   await user.type(
     screen.getByLabelText("Other frontend URL"),
-    "http://example.com/frontend",
+    "https://example.com/frontend",
   );
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
@@ -160,6 +169,72 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
     "other-frontend-url-error",
   );
   expect(
-    screen.getByText("Other frontend URL must be a public HTTPS URL."),
+    screen.getByText(
+      "Other frontend URL must be an exact public GitHub owner/repository URL.",
+    ),
   ).toBeVisible();
+});
+
+test("requires an enabled unlisted model family and keeps it exclusive with Model-Agnostic", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
+  await user.click(screen.getByLabelText("Model-Agnostic"));
+  await user.click(screen.getByLabelText("Other model family"));
+
+  expect(screen.getByLabelText("Model-Agnostic")).not.toBeChecked();
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://example.com/preset",
+  );
+  await user.type(screen.getByLabelText("Project Name (required)"), "Preset");
+  await user.type(
+    screen.getByLabelText("Short Description (required)"),
+    "A preset.",
+  );
+  await user.click(screen.getByLabelText("Chat Completion"));
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  const otherModel = screen.getByLabelText("Other model family name");
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+  expect(otherModel).toHaveAttribute("aria-invalid", "true");
+  expect(otherModel).toHaveAttribute(
+    "aria-describedby",
+    "other-model-family-error",
+  );
+  expect(
+    screen.getByText("Other model family name is required."),
+  ).toBeVisible();
+});
+
+test("serializes multiple model families and both completion formats for a Preset", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/preset",
+  );
+  await user.click(screen.getByLabelText("Claude"));
+  await user.click(screen.getByLabelText("Gemini"));
+  await user.click(screen.getByLabelText("Chat Completion"));
+  await user.click(screen.getByLabelText("Text Completion"));
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).toHaveBeenCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      schema_version: 2,
+      project_type: "preset",
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["claude", "gemini"],
+          other: [],
+        },
+        completion_formats: ["chat-completion", "text-completion"],
+      },
+    }),
+  );
 });

@@ -75,7 +75,7 @@ test("names catalog runs by their actual operating mode", async () => {
 
   expect(source).toContain("run-name:");
   expect(source).toContain("scheduled incremental");
-  expect(source).toContain("Baseline queue");
+  expect(source).toContain("Catalog: Refresh baseline queue");
   expect(source).toContain("inputs.batch_size");
 });
 

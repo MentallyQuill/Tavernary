@@ -4,7 +4,7 @@ import Ajv from "ajv";
 import { expect, test } from "vitest";
 
 const published = {
-  schema_version: 4,
+  schema_version: 5,
   id: "fixture",
   name: "Fixture",
   kind: "extension",

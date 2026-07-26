@@ -1,4 +1,5 @@
-name: Enrich catalog
+name: "Catalog maintenance: Enrich project metadata"
+run-name: "Catalog: Enrich ${{ inputs.enrichment_scope }} project metadata"
 
 on:
   workflow_dispatch:

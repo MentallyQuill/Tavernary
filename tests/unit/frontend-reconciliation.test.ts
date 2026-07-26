@@ -86,6 +86,55 @@ test("matches submitted labels and explicit aliases", () => {
   });
 });
 
+test("classifies an unknown GitHub frontend as a dependency", () => {
+  expect(
+    reconcileFrontends({
+      projectType: "extension",
+      knownIds: ["sillytavern"],
+      other: [
+        {
+          name: "Aikobots",
+          url: "https://github.com/aikohanasaki/Aikobots",
+        },
+      ],
+      frontendIndependent: false,
+      vocabulary,
+      frontendProjects,
+    }),
+  ).toEqual({
+    status: "needs-information",
+    errors: ["Aikobots is not currently indexed as a Tavernary frontend."],
+    suggestions: [],
+    dependencies: [
+      {
+        name: "Aikobots",
+        canonicalUrl: "https://github.com/aikohanasaki/Aikobots",
+        repository: "aikohanasaki/Aikobots",
+      },
+    ],
+  });
+});
+
+test("requires an exact GitHub repository for an unknown frontend", () => {
+  expect(
+    reconcileFrontends({
+      projectType: "extension",
+      knownIds: [],
+      other: [{ name: "Aikobots", url: "https://www.aikobots.com/" }],
+      frontendIndependent: false,
+      vocabulary,
+      frontendProjects,
+    }),
+  ).toEqual({
+    status: "needs-information",
+    errors: [
+      "Aikobots needs an exact public GitHub owner/repository URL before it can be submitted as a frontend.",
+    ],
+    suggestions: [],
+    dependencies: [],
+  });
+});
+
 test("returns candidates instead of guessing an ambiguous typo", () => {
   const result = reconcileFrontends({
     projectType: "preset",
@@ -116,6 +165,7 @@ test("rejects frontend-independent extensions", () => {
     status: "needs-information",
     errors: ["Extensions must identify at least one supported frontend."],
     suggestions: [],
+    dependencies: [],
   });
 });
 
@@ -133,6 +183,7 @@ test("requires a frontend for non-independent presets", () => {
     status: "needs-information",
     errors: ["Select a supported frontend or mark the preset independent."],
     suggestions: [],
+    dependencies: [],
   });
 });
 

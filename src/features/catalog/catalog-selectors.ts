@@ -2,6 +2,10 @@ import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import type { CatalogQuery } from "./catalog-query";
 import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
+import {
+  matchesCompletionFormats,
+  matchesModelFamilies,
+} from "./preset-compatibility";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
@@ -170,6 +174,14 @@ export function selectProjects(
       matchesAny(
         query.capabilities,
         project.capabilities.map(({ id }) => id),
+      ) &&
+      matchesModelFamilies(
+        query.modelFamilies ?? [],
+        project.preset?.modelFamilies?.map(({ id }) => id) ?? [],
+      ) &&
+      matchesCompletionFormats(
+        query.completionFormats ?? [],
+        project.preset?.completionFormats?.map(({ id }) => id) ?? [],
       ) &&
       matchesDevelopment(project, query.development, context.now) &&
       matchesAny(query.licenses, [licenseFilter(project)]) &&
