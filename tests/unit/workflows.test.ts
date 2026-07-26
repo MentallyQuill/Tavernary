@@ -35,6 +35,8 @@ test("uses category-prefixed workflow display names", async () => {
     "generate-project-submission": "Project submissions: Create review PR",
     "project-submission-lifecycle":
       "Project submissions: Process review result",
+    "retry-frontend-dependencies":
+      "Project submissions: Retry frontend dependencies",
     "triage-kit-submission": "Kit submissions: Validate submission",
     "apply-kit-submission": "Kit submissions: Publish approved Kit",
     "apply-kit-withdrawal": "Kit submissions: Withdraw published Kit",
@@ -57,6 +59,10 @@ test("identifies the object and action in every workflow run name", async () => 
     "triage-submission": ["Project #", "Validate submission"],
     "generate-project-submission": ["Project #", "Create review PR"],
     "project-submission-lifecycle": ["Project review PR #", "Process result"],
+    "retry-frontend-dependencies": [
+      "Project submissions:",
+      "Retry merged frontend dependencies",
+    ],
     "triage-kit-submission": ["Kit #", "Validate submission"],
     "apply-kit-submission": ["Kit #", "Publish approved Kit"],
     "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
@@ -86,6 +92,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "triage-submission",
     "generate-project-submission",
     "project-submission-lifecycle",
+    "retry-frontend-dependencies",
     "triage-kit-submission",
     "apply-kit-submission",
     "apply-kit-withdrawal",
@@ -479,6 +486,38 @@ test("triage dispatches admitted projects without repository write access", asyn
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run generate-project-submission.yml");
   expect(source).not.toContain("npm ci");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
+test("retries frontend dependencies from read-only catalog changes", async () => {
+  const retry = await workflow("retry-frontend-dependencies");
+  const source = await readFile(
+    resolve(workflowDirectory, "retry-frontend-dependencies.yml"),
+    "utf8",
+  );
+
+  expect(retry.name).toBe("Project submissions: Retry frontend dependencies");
+  expect(retry["run-name"]).toContain("Retry merged frontend dependencies");
+  expect(retry.on.push.branches).toEqual(["main"]);
+  expect(retry.on.push.paths).toEqual(
+    expect.arrayContaining([
+      "data/registry/projects/**",
+      "data/vocabularies/frontends.json",
+    ]),
+  );
+  expect(retry.on.workflow_dispatch).toBeDefined();
+  expect(retry.permissions).toEqual({
+    contents: "read",
+    issues: "read",
+    actions: "write",
+  });
+  expect(retry.concurrency).toEqual({
+    group: "retry-frontend-dependencies",
+    "cancel-in-progress": false,
+  });
+  expect(source).toContain(
+    "node scripts/submissions/retry-frontend-dependencies.mjs",
+  );
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
