@@ -2,12 +2,12 @@ name: "Catalog maintenance: Refresh source data"
 
 run-name: >-
   ${{ github.event_name == 'schedule'
-    && 'Refresh catalog — scheduled incremental'
+    && 'Catalog: Refresh scheduled incremental'
     || inputs.mode == 'baseline'
-    && format('Baseline queue — up to {0} projects', inputs.batch_size)
+    && format('Catalog: Refresh baseline queue (up to {0} projects)', inputs.batch_size)
     || inputs.project_id
-    && format('Refresh catalog — {0}: {1}', inputs.mode, inputs.project_id)
-    || format('Refresh catalog — {0}', inputs.mode) }}
+    && format('Catalog: Refresh {0} project {1}', inputs.mode, inputs.project_id)
+    || format('Catalog: Refresh {0}', inputs.mode) }}
 
 on:
   schedule:

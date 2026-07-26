@@ -1,4 +1,5 @@
 name: "Kit submissions: Withdraw published Kit"
+run-name: "Kit #${{ github.event.issue.number }}: Withdraw published Kit"
 
 on:
   issues:

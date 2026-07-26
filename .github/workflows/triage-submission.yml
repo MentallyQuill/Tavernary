@@ -1,4 +1,5 @@
 name: "Project submissions: Validate submission"
+run-name: "Project #${{ inputs.issue_number || github.event.issue.number }}: Validate submission"
 
 on:
   issues:

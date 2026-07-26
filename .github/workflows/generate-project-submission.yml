@@ -1,4 +1,5 @@
 name: "Project submissions: Create review PR"
+run-name: "Project #${{ inputs.issue_number }}: Create review PR"
 
 on:
   workflow_dispatch:

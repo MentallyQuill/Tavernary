@@ -1,4 +1,5 @@
 name: "Kit submissions: Publish approved Kit"
+run-name: "Kit #${{ inputs.issue_number }}: Publish approved Kit"
 
 on:
   workflow_dispatch:

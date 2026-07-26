@@ -1,4 +1,8 @@
 name: "Site: Validate changes"
+run-name: >-
+  ${{ github.event_name == 'pull_request'
+    && format('Site: Validate PR #{0}', github.event.pull_request.number)
+    || format('Site: Validate {0}', github.ref_name) }}
 
 on:
   pull_request:

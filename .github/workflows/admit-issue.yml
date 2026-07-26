@@ -1,4 +1,5 @@
 name: "Submission intake: Check issue eligibility"
+run-name: "Issue #${{ github.event.issue.number }}: Check submission eligibility"
 
 on:
   issues:
