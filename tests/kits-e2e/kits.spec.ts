@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 async function openKits(page: import("@playwright/test").Page) {
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page).toHaveURL(/mode=kits/);
 }
@@ -132,7 +133,7 @@ test("keeps discard confirmation actions inside the phone dialog", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await page.getByRole("button", { name: "Create Kit" }).click();
@@ -182,7 +183,7 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const expectedInk = "rgb(22, 16, 8)";
   const submitProject = page.getByRole("link", { name: "Submit Project" });
@@ -266,7 +267,7 @@ test("desktop Kit Builder open and close controls share one 36-pixel geometry", 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Open Kit Builder" }).click();
 
   const collapse = page.getByRole("button", {
@@ -318,7 +319,7 @@ test("desktop Kit Builder keeps form focus rings visible and text fonts consiste
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Open Kit Builder" }).click();
   await page.getByRole("button", { name: "Create new Kit" }).click();
 
@@ -495,7 +496,7 @@ test("compact cards keep the Kit control right-aligned and reserve an ellipsis g
   page,
 }) => {
   await page.setViewportSize({ width: 1024, height: 800 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const shell = page.locator(".project-card-shell").first();
   const license = shell.locator(".license");
@@ -572,7 +573,7 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page).toHaveURL(/mode=kits/);
@@ -810,7 +811,7 @@ test("phone inspectors expose direct project links without horizontal overflow",
 }) => {
   for (const width of [390, 360, 320]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/");
+    await page.goto(sitePath());
     await page.getByRole("button", { name: "Browse categories" }).click();
     await page.getByRole("button", { name: "Kits", exact: true }).click();
     await page.getByRole("button", { name: "Open Alpha Kit" }).click();
@@ -908,7 +909,7 @@ for (const viewport of [
     page,
   }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/");
+    await page.goto(sitePath());
     if (viewport.width <= 760) {
       await expectMobileTarget(
         page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
@@ -1074,7 +1075,7 @@ test("mobile workspace traps focus, returns it, and exposes touch handles", asyn
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
@@ -1120,7 +1121,7 @@ test("mobile 50-project builder keeps sticky controls usable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await page.getByRole("button", { name: "Open Large Stack" }).click();
@@ -1146,7 +1147,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
 
@@ -1190,7 +1191,7 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Kit Builder" })).toHaveCount(
