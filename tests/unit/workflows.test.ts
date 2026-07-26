@@ -34,6 +34,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "refresh-catalog",
     "enrich-catalog",
     "backfill-repository-identities",
+    "admit-issue",
     "triage-submission",
     "triage-kit-submission",
     "apply-kit-submission",
@@ -396,24 +397,50 @@ test("runs enrichment through one tested durable orchestrator", async () => {
   expect(source).not.toContain("publish_changes()");
 });
 
-test("triage can label issues but cannot write repository content", async () => {
-  const triage = await workflow("triage-submission");
-  expect(triage.permissions).toEqual({
-    contents: "read",
-    issues: "write",
-  });
-  const kitTriage = await workflow("triage-kit-submission");
-  expect(kitTriage.permissions).toEqual({
-    contents: "read",
-    issues: "write",
-  });
+test("triage validates admitted submissions without installing dependencies", async () => {
+  for (const name of ["triage-submission", "triage-kit-submission"]) {
+    const document = await workflow(name);
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+
+    expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+    expect(document.permissions).toEqual({
+      contents: "read",
+      issues: "write",
+    });
+    expect(document.concurrency["cancel-in-progress"]).toBe(true);
+    expect(document.concurrency.group).toContain(
+      "${{ github.event.issue.number }}",
+    );
+    expect(source).toContain("issue-admitted");
+    expect(source).toContain("github.event.issue.state == 'open'");
+    expect(source).toContain("github.event.label.name == 'issue-admitted'");
+    expect(source).toContain("github.event.action == 'edited'");
+    expect(source).not.toContain("npm ci");
+    expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+  }
+});
+
+test("admits opened and reopened issues before submission triage", async () => {
+  const admission = await workflow("admit-issue");
   const source = await readFile(
-    resolve(workflowDirectory, "triage-kit-submission.yml"),
+    resolve(workflowDirectory, "admit-issue.yml"),
     "utf8",
   );
-  expect(source).toContain("opened");
-  expect(source).toContain("edited");
-  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+
+  expect(admission.on.issues.types).toEqual(["opened", "reopened"]);
+  expect(admission.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+  });
+  expect(admission.concurrency).toEqual({
+    group: "issue-admission-${{ github.event.issue.number }}",
+    "cancel-in-progress": false,
+  });
+  expect(source).toContain("node scripts/submissions/admit-issue.mjs");
+  expect(source).not.toContain("npm ci");
 });
 
 test("groups coupled dependency updates into coherent pull requests", async () => {

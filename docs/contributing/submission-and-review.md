@@ -18,6 +18,17 @@ Use the issue chooser and choose the narrowest form:
 Security issues are always handled via `SECURITY.md` private reporting and never
 through public issue forms.
 
+## Open issue limit
+
+External GitHub accounts may keep up to 10 open issues in Tavernary at one
+time. The limit spans all public issue types; edits and comments do not consume
+additional slots. Closing an issue restores one slot immediately.
+
+If an account already has 10 older open issues, Tavernary closes the newer issue
+with a neutral explanation. The author may close or resolve another issue and
+then reopen the limited issue. New and established GitHub accounts follow the
+same rule.
+
 ## What happens after submission
 
 ### Projects
