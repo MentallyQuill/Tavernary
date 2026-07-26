@@ -1445,7 +1445,7 @@
   margin: 0;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
 }
 
 .kit-card-metadata,
@@ -1915,6 +1915,13 @@
 
 .kit-builder-panel-inspect-header {
   min-width: 0;
+}
+
+.kit-builder-panel-inspect-header > p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .kit-project-list {

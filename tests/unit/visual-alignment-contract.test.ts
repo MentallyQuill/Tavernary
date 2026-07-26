@@ -20,6 +20,12 @@ describe("catalog visual alignment", () => {
     expect(responsive).toMatch(
       /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
     );
+    expect(css).toMatch(
+      /\.kit-builder-panel-inspect-header > p\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+    );
   });
 
   test("locks Kit count and action motion", () => {

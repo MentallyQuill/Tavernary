@@ -436,6 +436,28 @@ test("desktop long Kit stacks scroll through the final row and submit controls",
   await expect(panel.getByRole("button", { name: "Submit Kit" })).toBeVisible();
 });
 
+test("desktop Kit inspection keeps fixed actions reachable with a 600-character description", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 500 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const description = panel.locator(".kit-builder-panel-inspect-header > p");
+  await description.evaluate((element) => {
+    element.textContent = "Long Kit description ".repeat(30).slice(0, 600);
+  });
+
+  await expect(description).toHaveCSS("-webkit-line-clamp", "4");
+  await expect(
+    panel.getByRole("button", { name: "Copy link" }),
+  ).toBeInViewport();
+  await expect(
+    panel.getByRole("link", { name: "Request withdrawal" }),
+  ).toBeInViewport();
+});
+
 test("compact cards keep the Kit control right-aligned and reserve an ellipsis gutter", async ({
   page,
 }) => {
@@ -573,7 +595,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     await longDescription.evaluate(
       (element) => getComputedStyle(element).webkitLineClamp,
     ),
-  ).toBe("5");
+  ).toBe("4");
 
   await page
     .getByRole("article", { name: "Alpha Kit" })
@@ -588,16 +610,22 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   );
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
-  const first = page.getByRole("button", {
-    name: "Fixture Frontend project details",
+  const frontend = page.getByRole("link", {
+    name: "Fixture Frontend",
+    exact: true,
   });
-  const second = page.getByRole("button", {
-    name: "Fixture Tool 02 project details",
+  const tool = page.getByRole("link", {
+    name: "Fixture Tool 02",
+    exact: true,
   });
-  await first.click();
-  await second.click();
-  await expect(first).toHaveAttribute("aria-expanded", "false");
-  await expect(second).toHaveAttribute("aria-expanded", "true");
+  await expect(frontend).toHaveAttribute(
+    "href",
+    "https://github.com/fixture/fixture-frontend",
+  );
+  await expect(tool).toHaveAttribute(
+    "href",
+    "https://github.com/fixture/fixture-tool-02",
+  );
 
   await page
     .getByRole("button", { name: "Copy link", exact: true })
@@ -970,9 +998,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
     await expectMobileTarget(dialog.getByRole("link", { name: action }));
   }
   await expectMobileTarget(
-    dialog.getByRole("button", {
-      name: "Fixture Frontend project details",
-    }),
+    dialog.getByRole("link", { name: "Fixture Frontend", exact: true }),
   );
   expect(
     await dialog.evaluate(
