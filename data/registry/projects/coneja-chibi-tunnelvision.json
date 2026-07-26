@@ -3,16 +3,20 @@
   "id": "coneja-chibi-tunnelvision",
   "name": "TunnelVision",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Fully autonomous SillyTavern extension that provides agentic lorebook management, tracker functionality, and summary retrieval.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Coneja-Chibi/TunnelVision",
     "repository_id": 1174011234
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "memory-retrieval",
+  "capabilities": [
+    "automation",
+    "character-worldbuilding",
+    "review-validation"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

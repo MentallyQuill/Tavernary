@@ -3,16 +3,21 @@
   "id": "japolino-inlay-illustrator",
   "name": "Inlay Illustrator",
   "kind": "extension",
-  "summary": "An extension for Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "Frontend extension providing persistent character image generation with visual memory and ComfyUI output for Lumiverse.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "japolino/inlay-illustrator",
     "repository_id": 1294022879
   },
   "frontends": ["lumiverse"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "frontend",
+  "capabilities": [
+    "image-generation",
+    "character-worldbuilding",
+    "extension-development",
+    "prompt-engineering"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
