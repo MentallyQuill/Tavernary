@@ -3,16 +3,21 @@
   "id": "kikyoicecream-next-choices",
   "name": "Next Choices",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension generating three suggested player response buttons above the input after each AI character reply.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "kikyoicecream/next-choices",
     "repository_id": 1305892185
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "automation",
+    "model-routing",
+    "prompt-engineering",
+    "instruction-control"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

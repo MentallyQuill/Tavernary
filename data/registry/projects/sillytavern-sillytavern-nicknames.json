@@ -3,16 +3,20 @@
   "id": "sillytavern-sillytavern-nicknames",
   "name": "SillyTavern Nicknames",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that defines nicknames for characters and personas to substitute into prompts.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "SillyTavern/SillyTavern-Nicknames",
     "repository_id": 936859577
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "prompt-engineering",
+    "character-worldbuilding",
+    "extension-development"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
