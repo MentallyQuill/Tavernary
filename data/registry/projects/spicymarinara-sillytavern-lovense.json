@@ -3,7 +3,7 @@
   "id": "spicymarinara-sillytavern-lovense",
   "name": "SillyTavern Lovense",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds Lovense device control support to SillyTavern and Marinara frontends.",
+  "summary": "SillyTavern Lovense adds Lovense device control support to the SillyTavern chat frontend. It works with both SillyTavern and Marinara Engine frontends to enable connected hardware interaction during sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern", "marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["multi-frontend"],
+  "capabilities": ["multi-frontend", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

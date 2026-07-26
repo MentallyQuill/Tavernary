@@ -3,7 +3,7 @@
   "id": "shadowtheimpure-sillytavern-character-card-generator",
   "name": "SillyTavern Character Card Generator",
   "kind": "extension",
-  "summary": "SillyTavern extension that uses AI to automatically generate character cards for self-hosted roleplay workflows.",
+  "summary": "An AI-driven extension that generates character cards for the SillyTavern frontend via self-hosted deployment. It automates card creation, letting users produce ready-to-use characters without pre-made templates.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,11 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "automation",
-    "prompt-engineering"
-  ],
+  "capabilities": ["character-worldbuilding", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

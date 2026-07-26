@@ -3,7 +3,7 @@
   "id": "sillytavern-extension-promptinspector",
   "name": "SillyTavern Extension PromptInspector",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds a UI option to inspect and edit prompts before sending them to the AI server.",
+  "summary": "SillyTavern PromptInspector is a frontend extension that lets users view and edit output prompts before they reach the server. It provides transparency and manual control over the exact context sent to language models.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -13,9 +13,9 @@
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "capabilities": [
+    "instruction-control",
     "prompt-engineering",
-    "review-validation",
-    "instruction-control"
+    "review-validation"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

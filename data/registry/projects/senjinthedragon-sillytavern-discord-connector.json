@@ -3,7 +3,7 @@
   "id": "senjinthedragon-sillytavern-discord-connector",
   "name": "SillyTavern Discord Connector",
   "kind": "extension",
-  "summary": "Discord bot bridge connecting SillyTavern users to real-time character chats through the messaging platform.",
+  "summary": "The SillyTavern Discord Connector is an extension that bridges Discord with SillyTavern for real-time character chats. It automates message routing so users converse with roleplay characters directly through Discord.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

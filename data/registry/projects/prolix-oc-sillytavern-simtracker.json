@@ -3,7 +3,7 @@
   "id": "prolix-oc-sillytavern-simtracker",
   "name": "SillyTavern SimTracker",
   "kind": "extension",
-  "summary": "SillyTavern SimTracker is an extension that generates visual tracker cards from chat JSON data for stat tracking.",
+  "summary": "SillyTavern SimTracker is an extension that renders visual stat cards from JSON data in chat messages. It offers customizable templates and integrates with SillyTavern's macro system for RPG and dating sim tracking.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control"],
+  "capabilities": ["automation", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -3,7 +3,7 @@
   "id": "sillytavern-sillytavern-greetingtools",
   "name": "SillyTavern Greeting Tools",
   "kind": "extension",
-  "summary": "SillyTavern extension that overhauls greeting management with AI-powered generation, a redesigned popup, and an inline chat selector.",
+  "summary": "SillyTavern Greeting Tools overhauls greeting management in SillyTavern, letting users organize greetings with titles and descriptions. It adds AI-powered generation, a redesigned popup, and inline chat selection.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "character-worldbuilding"],
+  "capabilities": ["character-worldbuilding", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

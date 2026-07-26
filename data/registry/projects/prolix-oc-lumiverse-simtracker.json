@@ -3,7 +3,7 @@
   "id": "prolix-oc-lumiverse-simtracker",
   "name": "Lumiverse SimTracker",
   "kind": "extension",
-  "summary": "Lumiverse extension rendering rich tracker cards from structured data in character messages for stats, relationships, and story progression.",
+  "summary": "Lumiverse SimTracker renders visually rich tracker cards from structured character messages for Lumiverse. It tracks stats, relationships, biology, and story progression in dating sims, RPGs, and slice-of-life roleplay.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

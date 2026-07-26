@@ -3,7 +3,7 @@
   "id": "retrovioletred-sillytavern-pictureprompt",
   "name": "SillyTavern PicturePrompt",
   "kind": "extension",
-  "summary": "SillyTavern extension that generates images of the world being built, allowing characters to see their environment during roleplay.",
+  "summary": "SillyTavern PicturePrompt is an extension letting roleplay characters visualize scenes described in conversation. It produces image prompts tied to the narrative so generated illustrations stay consistent with the story.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

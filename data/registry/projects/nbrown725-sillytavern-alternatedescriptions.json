@@ -3,7 +3,7 @@
   "id": "nbrown725-sillytavern-alternatedescriptions",
   "name": "SillyTavern Alternate Descriptions",
   "kind": "extension",
-  "summary": "SillyTavern extension that saves and switches between multiple versions of character fields within a single card.",
+  "summary": "SillyTavern Alternate Descriptions lets users save and switch between multiple versions of character fields. It auto-saves changes, tracks token counts, and stores alternates directly inside the character card.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,12 @@
     "repository_id": 994448098
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "prompt-engineering"],
+  "primary_function": "character-worldbuilding",
+  "capabilities": [
+    "character-worldbuilding",
+    "prompt-engineering",
+    "instruction-control"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
