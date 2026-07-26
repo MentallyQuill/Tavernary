@@ -3,15 +3,15 @@
   "id": "archkr-st-basicspotify",
   "name": "ST BasicSpotify",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that displays and controls currently playing media from MPRIS-compatible Linux players via a collapsible sidebar.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Archkr/ST-BasicSpotify",
     "repository_id": 1135415804
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

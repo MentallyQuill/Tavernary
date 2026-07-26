@@ -3,15 +3,15 @@
   "id": "b4bysw0rld-sillytavern-typefacer",
   "name": "SillyTavern TypefaceR",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that customizes fonts for chat messages, supporting local system fonts and Google Fonts.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "b4bysw0rld/SillyTavern-TypefaceR",
     "repository_id": 1105308117
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
