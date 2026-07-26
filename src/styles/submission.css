@@ -1,0 +1,307 @@
+.submission-page {
+  min-height: 100vh;
+  padding: 28px clamp(20px, 6vw, 72px) 72px;
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      color-mix(in srgb, var(--color-kind-preset) 9%, transparent),
+      transparent 34rem
+    ),
+    var(--color-page);
+}
+
+.submission-nav,
+.submission-content {
+  width: min(760px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.submission-nav {
+  margin-bottom: 48px;
+}
+
+.submission-nav a,
+.submission-fallback a {
+  color: var(--color-accent, var(--color-kind-preset));
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.submission-nav a:hover,
+.submission-fallback a:hover {
+  text-decoration: underline;
+}
+
+.submission-kicker {
+  margin: 0 0 8px;
+  color: var(--color-kind-preset);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.submission-content > h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 0.96;
+}
+
+.submission-lead {
+  margin: 28px 0 36px;
+  color: var(--color-text-secondary);
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+  line-height: 1.65;
+}
+
+.submission-form {
+  display: grid;
+  gap: 18px;
+}
+
+.submission-section,
+.submission-errors {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: clamp(18px, 4vw, 28px);
+  background: var(--color-surface-card);
+}
+
+.submission-section {
+  display: grid;
+  gap: 22px;
+}
+
+.submission-field {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.submission-field > label,
+.submission-section-heading h2 {
+  color: var(--color-text-primary);
+  font-weight: 720;
+}
+
+.submission-field input,
+.submission-field select,
+.submission-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-primary);
+}
+
+.submission-field textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.submission-field input:hover,
+.submission-field select:hover,
+.submission-field textarea:hover,
+.submission-field input:focus,
+.submission-field select:focus,
+.submission-field textarea:focus {
+  border-color: var(--color-border-strong);
+}
+
+.submission-hint,
+.submission-section-heading p,
+.submission-actions p,
+.submission-fallback,
+.submission-toggle small {
+  color: var(--color-muted);
+  line-height: 1.55;
+}
+
+.submission-hint,
+.submission-section-heading p,
+.submission-actions p {
+  margin: 0;
+}
+
+.submission-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.submission-section-heading h2 {
+  margin: 0 0 5px;
+  font-size: 1.15rem;
+}
+
+.submission-section-heading > span {
+  flex: none;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-primary);
+  font-size: 0.78rem;
+}
+
+.submission-options {
+  display: grid;
+  max-height: 300px;
+  margin: 0;
+  overflow-y: auto;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+}
+
+.submission-options > label,
+.submission-toggle {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 52px;
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 11px 12px;
+  background: var(--color-surface-primary);
+  cursor: pointer;
+}
+
+.submission-options input,
+.submission-toggle input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 2px 0 0;
+  accent-color: var(--color-kind-extension);
+}
+
+.submission-options span,
+.submission-toggle span {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.submission-options small,
+.submission-toggle small {
+  overflow-wrap: anywhere;
+}
+
+.submission-options > label:hover,
+.submission-toggle:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-raised);
+}
+
+.submission-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.submission-chips button {
+  min-height: 36px;
+  border: 1px solid var(--color-kind-preset);
+  border-radius: 999px;
+  padding: 6px 11px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-primary);
+  cursor: pointer;
+}
+
+.submission-other-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 14px;
+}
+
+.submission-confirmation {
+  margin: -8px 0 0;
+  color: var(--color-kind-preset);
+}
+
+.submission-errors {
+  border-color: var(--color-kind-frontend);
+}
+
+.submission-errors p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.submission-errors ul {
+  margin: 8px 0 0;
+  padding-left: 22px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.submission-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.submission-actions button {
+  min-height: 44px;
+  flex: none;
+  border: 1px solid var(--color-kind-extension);
+  border-radius: 6px;
+  padding: 0 18px;
+  color: var(--color-filled-control-text);
+  background: var(--color-kind-extension);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.submission-actions button:hover,
+.submission-actions button:focus-visible {
+  border-color: var(--color-text-primary);
+}
+
+.submission-actions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.submission-status {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--color-kind-preset);
+}
+
+.submission-fallback {
+  margin: 26px 0 0;
+}
+
+@media (max-width: 560px) {
+  .submission-page {
+    padding-top: 20px;
+  }
+
+  .submission-nav {
+    margin-bottom: 32px;
+  }
+
+  .submission-section-heading,
+  .submission-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .submission-other-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .submission-actions button {
+    width: 100%;
+  }
+}
