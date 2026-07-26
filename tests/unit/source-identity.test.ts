@@ -3,9 +3,11 @@ import { expect, test } from "vitest";
 import {
   parseSourceIdentity,
   projectSubmissionTitle,
+  resolveRedditShareIdentity,
   resolveSourceIdentity,
   sourceDuplicateKeys,
 } from "../../scripts/submissions/source-identity.mjs";
+import { safeProbe } from "../../scripts/submissions/safe-source-fetch.mjs";
 
 test("normalizes GitHub repository identity and title", () => {
   const identity = parseSourceIdentity(
@@ -58,6 +60,86 @@ test.each([
   expect(sourceDuplicateKeys(parseSourceIdentity(url))).toEqual([
     "reddit-post:abc123",
   ]);
+});
+
+test("resolves a Reddit share link only through trusted Reddit hosts", async () => {
+  const parsed = parseSourceIdentity(
+    "https://www.reddit.com/r/SillyTavernAI/s/share123",
+  );
+
+  const resolved = await resolveRedditShareIdentity(parsed, {
+    probe: async (_url, options) => {
+      expect(options.allowedRedirectHosts).toEqual(
+        new Set([
+          "reddit.com",
+          "www.reddit.com",
+          "old.reddit.com",
+          "new.reddit.com",
+          "m.reddit.com",
+          "redd.it",
+        ]),
+      );
+      return {
+        finalUrl:
+          "https://www.reddit.com/r/SillyTavernAI/comments/abc123/my_new_preset/",
+        status: 200,
+        contentType: "text/html",
+        contentLength: 100,
+        redirects: [
+          "https://www.reddit.com/r/SillyTavernAI/comments/abc123/my_new_preset/",
+        ],
+      };
+    },
+  });
+
+  expect(resolved).toMatchObject({
+    kind: "reddit",
+    postId: "abc123",
+    subreddit: "SillyTavernAI",
+    slug: "my_new_preset",
+  });
+});
+
+test("rejects a Reddit share redirect leaving trusted hosts", async () => {
+  await expect(
+    resolveRedditShareIdentity(
+      parseSourceIdentity("https://reddit.com/r/Test/s/share123"),
+      {
+        probe: (url, options) =>
+          safeProbe(url, {
+            ...options,
+            lookup: async () => [
+              { address: "93.184.216.34", family: 4 as const },
+            ],
+            fetchImpl: async () =>
+              new Response(null, {
+                status: 302,
+                headers: { location: "https://evil.example/post" },
+              }),
+          }),
+      },
+    ),
+  ).rejects.toMatchObject({ code: "reddit-share-unresolved" });
+});
+
+test("routes Reddit share links through general source resolution", async () => {
+  const resolved = await resolveSourceIdentity(
+    parseSourceIdentity("https://reddit.com/r/Test/s/share123"),
+    {
+      probe: async () => ({
+        finalUrl: "https://redd.it/abc123",
+        status: 200,
+        contentType: "text/html",
+        contentLength: 10,
+        redirects: ["https://redd.it/abc123"],
+      }),
+    },
+  );
+
+  expect(resolved).toMatchObject({
+    kind: "reddit",
+    postId: "abc123",
+  });
 });
 
 test("normalizes a generic external URL and readable issue title", () => {

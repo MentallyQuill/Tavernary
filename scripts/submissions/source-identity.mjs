@@ -1,3 +1,5 @@
+import { safeProbe } from "./safe-source-fetch.mjs";
+
 const projectSubmissionPrefix = "[Project submission]";
 const redditHosts = new Set([
   "reddit.com",
@@ -6,6 +8,7 @@ const redditHosts = new Set([
   "new.reddit.com",
   "m.reddit.com",
 ]);
+const redditRedirectHosts = new Set([...redditHosts, "redd.it"]);
 
 function githubIdentity(url) {
   if (url.hostname.toLowerCase() !== "github.com") return null;
@@ -44,6 +47,17 @@ function redditIdentity(url) {
   }
   if (!redditHosts.has(url.hostname.toLowerCase())) return null;
   const parts = url.pathname.split("/").filter(Boolean);
+  if (
+    parts.length === 4 &&
+    parts[0].toLowerCase() === "r" &&
+    parts[2].toLowerCase() === "s"
+  ) {
+    return {
+      kind: "reddit-share",
+      shareUrl: url.toString(),
+      subreddit: parts[1],
+    };
+  }
   if (
     parts.length >= 5 &&
     parts[0].toLowerCase() === "r" &&
@@ -89,7 +103,33 @@ export function parseSourceIdentity(value) {
   return githubIdentity(url) ?? redditIdentity(url) ?? externalIdentity(url);
 }
 
+export async function resolveRedditShareIdentity(identity, options) {
+  if (identity.kind !== "reddit-share") return identity;
+  try {
+    const result = await options.probe(identity.shareUrl, {
+      allowedRedirectHosts: redditRedirectHosts,
+    });
+    const resolved = parseSourceIdentity(result.finalUrl);
+    if (resolved.kind !== "reddit") {
+      throw new Error("Reddit share link did not resolve to a post permalink.");
+    }
+    return resolved;
+  } catch (cause) {
+    const error = new Error(
+      "Reddit share link could not be resolved to a post permalink.",
+      { cause },
+    );
+    error.code = "reddit-share-unresolved";
+    throw error;
+  }
+}
+
 export async function resolveSourceIdentity(identity, options = {}) {
+  if (identity.kind === "reddit-share") {
+    return resolveRedditShareIdentity(identity, {
+      probe: options.probe ?? safeProbe,
+    });
+  }
   if (identity.kind !== "github" || !options.resolveGithub) return identity;
   const resolved = await options.resolveGithub(identity.repository);
   if (
@@ -112,6 +152,11 @@ export async function resolveSourceIdentity(identity, options = {}) {
 }
 
 export function sourceDuplicateKeys(identity) {
+  if (identity.kind === "reddit-share") {
+    throw new Error(
+      "Reddit share identity must be resolved before comparison.",
+    );
+  }
   if (identity.kind === "github") {
     return [
       `url:${identity.canonicalUrl.toLowerCase()}`,
@@ -134,6 +179,9 @@ function humanizeSlug(slug) {
 }
 
 export function projectSubmissionTitle(identity) {
+  if (identity.kind === "reddit-share") {
+    throw new Error("Reddit share identity must be resolved before titling.");
+  }
   if (identity.kind === "github") {
     return `${projectSubmissionPrefix} ${identity.repository}`;
   }

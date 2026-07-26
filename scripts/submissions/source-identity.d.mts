@@ -15,6 +15,12 @@ export interface RedditSourceIdentity {
   slug: string | null;
 }
 
+export interface RedditShareSourceIdentity {
+  kind: "reddit-share";
+  shareUrl: string;
+  subreddit: string;
+}
+
 export interface ExternalSourceIdentity {
   kind: "external";
   canonicalUrl: string;
@@ -25,10 +31,30 @@ export interface ExternalSourceIdentity {
 export type SourceIdentity =
   GithubSourceIdentity | RedditSourceIdentity | ExternalSourceIdentity;
 
-export function parseSourceIdentity(value: string): SourceIdentity;
+export type ParsedSourceIdentity = SourceIdentity | RedditShareSourceIdentity;
+
+export interface SourceProbeResult {
+  finalUrl: string;
+  status: number;
+  contentType: string | null;
+  contentLength: number | null;
+  redirects: string[];
+}
+
+export type SourceProbe = (
+  url: string,
+  options: { allowedRedirectHosts: Set<string> },
+) => Promise<SourceProbeResult>;
+
+export function parseSourceIdentity(value: string): ParsedSourceIdentity;
+
+export function resolveRedditShareIdentity(
+  identity: ParsedSourceIdentity,
+  options: { probe: SourceProbe },
+): Promise<SourceIdentity>;
 
 export function resolveSourceIdentity(
-  identity: SourceIdentity,
+  identity: ParsedSourceIdentity,
   options?: {
     resolveGithub?: (repository: string) => Promise<{
       id: number;
@@ -36,9 +62,10 @@ export function resolveSourceIdentity(
       name: string;
       url?: string;
     }>;
+    probe?: SourceProbe;
   },
 ): Promise<SourceIdentity>;
 
-export function sourceDuplicateKeys(identity: SourceIdentity): string[];
+export function sourceDuplicateKeys(identity: ParsedSourceIdentity): string[];
 
-export function projectSubmissionTitle(identity: SourceIdentity): string;
+export function projectSubmissionTitle(identity: ParsedSourceIdentity): string;
