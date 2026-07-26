@@ -3,16 +3,23 @@
   "id": "zdost-story-engine",
   "name": "Story Engine",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension adding game master mechanics with dice-based action resolution, context-aware NPC behavior, and event generation.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "ZDOSt/Story-Engine",
     "repository_id": 1225640741
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "rpg-systems",
+  "capabilities": [
+    "automation",
+    "character-worldbuilding",
+    "instruction-control",
+    "model-routing",
+    "planning-reasoning",
+    "prompt-engineering"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
