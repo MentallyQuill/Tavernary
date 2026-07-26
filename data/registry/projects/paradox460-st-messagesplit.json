@@ -3,7 +3,7 @@
   "id": "paradox460-st-messagesplit",
   "name": "ST MessageSplit",
   "kind": "extension",
-  "summary": "A SillyTavern extension that lets users split and merge chat messages directly within the interface.",
+  "summary": "ST MessageSplit is a SillyTavern extension that splits and merges chat messages on demand. It reorganizes message boundaries without manual editing, giving fine-grained control over chat history.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

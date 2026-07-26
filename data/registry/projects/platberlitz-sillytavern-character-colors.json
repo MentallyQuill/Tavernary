@@ -3,7 +3,7 @@
   "id": "platberlitz-sillytavern-character-colors",
   "name": "SillyTavern Character Colors",
   "kind": "extension",
-  "summary": "Auto-installs regex patterns that use LLMs to color SillyTavern character dialogue and thoughts for visual differentiation.",
+  "summary": "This SillyTavern extension colors character dialogue and thoughts using LLM-powered processing for clearer chat readability. It streamlines installation by auto-installing required regex patterns, reducing manual setup.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

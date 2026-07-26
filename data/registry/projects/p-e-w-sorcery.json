@@ -3,7 +3,7 @@
   "id": "p-e-w-sorcery",
   "name": "Sorcery",
   "kind": "extension",
-  "summary": "Sorcery is a SillyTavern extension described as the future of AI roleplay.",
+  "summary": "Sorcery is a SillyTavern extension built to enhance AI-driven roleplay experiences through additional workflow features. It provides developers with tooling to extend the frontend with custom roleplay capabilities.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

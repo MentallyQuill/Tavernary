@@ -3,7 +3,7 @@
   "id": "quackified-floating-viewer",
   "name": "Floating Viewer",
   "kind": "extension",
-  "summary": "A SillyTavern extension that replaces the default image popup with a draggable and resizable floating window.",
+  "summary": "Floating Viewer is a SillyTavern extension that replaces the default image popup with a floating window. Users can drag and resize the window to position images anywhere while interacting with the chat.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

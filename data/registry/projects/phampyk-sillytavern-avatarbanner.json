@@ -3,7 +3,7 @@
   "id": "phampyk-sillytavern-avatarbanner",
   "name": "SillyTavern AvatarBanner",
   "kind": "extension",
-  "summary": "SillyTavern AvatarBanner is a SillyTavern extension that displays avatars as banners on the chat interface.",
+  "summary": "SillyTavern AvatarBanner is a SillyTavern extension that displays avatars as banners within the chat interface. The styling presents avatar images in banner format directly on the conversation screen.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

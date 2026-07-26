@@ -3,7 +3,7 @@
   "id": "prompt-and-circumstance-storymode",
   "name": "StoryMode",
   "kind": "extension",
-  "summary": "StoryMode is a SillyTavern extension that provides narrative storytelling features for roleplay sessions.",
+  "summary": "StoryMode is a Silly Tavern extension that supports narrative storytelling sessions. It manages story structure and prompt context, helping users run guided, immersive roleplay adventures.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,11 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "prompt-engineering",
-    "character-worldbuilding",
-    "instruction-control"
-  ],
+  "capabilities": ["prompt-engineering", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

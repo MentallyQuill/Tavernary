@@ -3,7 +3,7 @@
   "id": "promansis-summary-sharder",
   "name": "Summary Sharder",
   "kind": "extension",
-  "summary": "Summary Sharder is a SillyTavern extension that automates text summarization with user-controllable settings.",
+  "summary": "Summary Sharder is a summarisation extension for SillyTavern that emphasizes user control over the process. It integrates with the Marinara Engine frontend to support configurable text summarization.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control", "review-validation"],
+  "capabilities": ["automation", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

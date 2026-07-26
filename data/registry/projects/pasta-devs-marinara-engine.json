@@ -3,7 +3,7 @@
   "id": "pasta-devs-marinara-engine",
   "name": "Marinara Engine",
   "kind": "frontend",
-  "summary": "Marinara Engine is an AI frontend project developed by the Pasta-Devs organization.",
+  "summary": "Marinara Engine is an AI frontend by Pasta-Devs that provides an interface for language model interactions. It operates as the marinara-engine frontend, enabling users to engage with AI systems.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["marinara-engine"],
   "primary_function": "frontend",
-  "capabilities": [],
+  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
