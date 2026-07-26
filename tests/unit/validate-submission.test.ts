@@ -74,3 +74,29 @@ test("ignores malformed existing source values during duplicate checks", () => {
     }),
   ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
 });
+
+test("detects duplicates by permanent GitHub repository ID", () => {
+  expect(
+    validateSubmission({
+      projectType: "extension",
+      identity: {
+        kind: "github",
+        canonicalUrl: "https://github.com/NewOwner/NewName",
+        repository: "NewOwner/NewName",
+        repositoryId: 123,
+        owner: "NewOwner",
+        name: "NewName",
+      },
+      existingIdentities: [
+        {
+          kind: "github",
+          canonicalUrl: "https://github.com/OldOwner/OldName",
+          repository: "OldOwner/OldName",
+          repositoryId: 123,
+          owner: "OldOwner",
+          name: "OldName",
+        },
+      ],
+    }),
+  ).toEqual({ duplicate: true, errors: [] });
+});

@@ -1,3 +1,5 @@
+import { sourceDuplicateKeys } from "./source-identity.mjs";
+
 function canonicalSource(sourceUrl) {
   const parsed = new URL(sourceUrl);
   const pathname = parsed.pathname
@@ -7,7 +9,30 @@ function canonicalSource(sourceUrl) {
   return `${parsed.hostname.toLowerCase()}${pathname}`;
 }
 
-export function validateSubmission({ kind, sourceUrl, existingSources }) {
+function validateResolvedSubmission({
+  projectType,
+  identity,
+  existingIdentities,
+}) {
+  const errors = [];
+  if (
+    (projectType === "frontend" || projectType === "extension") &&
+    identity.kind !== "github"
+  ) {
+    errors.push("Frontends and Extensions require a public GitHub repository.");
+  }
+  const existingKeys = new Set(
+    existingIdentities.flatMap((candidate) => sourceDuplicateKeys(candidate)),
+  );
+  const duplicate = sourceDuplicateKeys(identity).some((key) =>
+    existingKeys.has(key),
+  );
+  return { duplicate, errors };
+}
+
+export function validateSubmission(input) {
+  if (input?.identity) return validateResolvedSubmission(input);
+  const { kind, sourceUrl, existingSources } = input;
   const errors = [];
   let parsed;
 
