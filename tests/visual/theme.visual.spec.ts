@@ -6,6 +6,8 @@ const graphiteTeal = {
   canvas: "rgb(13, 17, 23)",
   header: "rgb(16, 24, 32)",
   sidebar: "rgb(18, 26, 31)",
+  raised: "rgb(28, 40, 46)",
+  overlay: "rgb(32, 44, 50)",
   tealBackground: "rgb(21, 59, 57)",
   tealHover: "rgb(27, 74, 70)",
   tealBorder: "rgb(40, 99, 94)",
@@ -97,6 +99,93 @@ test("desktop catalog applies graphite surfaces and teal interaction roles", asy
   );
 });
 
+for (const viewport of [
+  { name: "desktop", width: 1440, height: 1000 },
+  { name: "mobile", width: 390, height: 844 },
+]) {
+  test(`${viewport.name} catalog retains its graphite canvas and teal default selection`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto(sitePath());
+
+    if (viewport.name === "mobile") {
+      await page.getByRole("button", { name: "Browse categories" }).click();
+    }
+
+    await expectStyle(
+      page.locator("body"),
+      "background-color",
+      graphiteTeal.canvas,
+    );
+    const allProjects = page.getByRole("button", { name: "All Projects" });
+    await expect(allProjects).toHaveClass(/active/);
+    await expectStyle(
+      allProjects,
+      "background-color",
+      graphiteTeal.tealBackground,
+    );
+  });
+}
+
+for (const viewport of [
+  { name: "desktop", width: 1440, height: 1000 },
+  { name: "mobile", width: 390, height: 844 },
+]) {
+  test(`${viewport.name} Kit Builder retains its approved elevation`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto(sitePath());
+
+    if (viewport.name === "mobile") {
+      await page.getByRole("button", { name: "Browse categories" }).click();
+    }
+
+    await page.getByRole("button", { name: "Kits", exact: true }).click();
+    if (viewport.name === "mobile") {
+      await page.getByRole("button", { name: "Create Kit" }).click();
+    } else {
+      await page.getByRole("button", { name: "Open Kit Builder" }).click();
+      await page.getByRole("button", { name: "Create new Kit" }).click();
+    }
+
+    const builder =
+      viewport.name === "mobile"
+        ? page.getByRole("dialog", { name: "Kit Builder" })
+        : page.getByRole("complementary", { name: "Kit Builder" });
+    await expect(builder).toBeVisible();
+    await expectStyle(
+      builder,
+      "background-color",
+      viewport.name === "mobile" ? graphiteTeal.overlay : graphiteTeal.raised,
+    );
+  });
+}
+
+for (const viewport of [
+  { name: "desktop", width: 1440, height: 1000 },
+  { name: "mobile", width: 390, height: 844 },
+]) {
+  test(`${viewport.name} About retains its graphite canvas and teal links`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto(sitePath("/about/"));
+
+    await expectStyle(
+      page.locator(".about-page"),
+      "background-color",
+      graphiteTeal.canvas,
+    );
+    await expectStyle(
+      page.locator(".about-nav a").first(),
+      "color",
+      "rgb(110, 231, 216)",
+    );
+  });
+}
+
 test("mobile category selection retains the teal navigation border", async ({
   page,
 }) => {
@@ -167,6 +256,45 @@ test("mobile category selection retains the teal navigation border", async ({
   );
   await preset.hover();
   await expectStyle(preset, "background-color", graphiteTeal.tealHover);
+});
+
+test("desktop generation and reasoning category retains its orange mark", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+
+  await expectStyle(
+    page.locator('[data-category="generation-reasoning"] svg'),
+    "color",
+    graphiteTeal.functional,
+  );
+});
+
+test("dual-range keeps its rendered minimum thumb interactive", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+
+  const minimum = page.getByRole("slider", { name: "Minimum projects" });
+  await expectStyle(minimum, "height", "28px");
+  const box = await minimum.boundingBox();
+  expect(box).not.toBeNull();
+
+  // Chromium exposes host styles for its native range-thumb pseudo-element.
+  // A hit test still verifies that the rendered thumb, rather than its
+  // pointer-events-disabled host, receives interaction at the minimum value.
+  await expect
+    .poll(() =>
+      page.evaluate(
+        ({ x, y }) =>
+          document.elementFromPoint(x, y)?.getAttribute("aria-label"),
+        { x: box!.x + 9, y: box!.y + box!.height / 2 },
+      ),
+    )
+    .toBe("Minimum projects");
 });
 
 test("desktop selection and focus treatments use the teal family", async ({
