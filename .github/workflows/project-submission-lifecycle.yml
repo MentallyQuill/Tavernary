@@ -1,4 +1,5 @@
-name: Close reviewed project submission
+name: "Project submissions: Process review result"
+run-name: "Project review PR #${{ github.event.pull_request.number }}: Process result"
 
 on:
   pull_request:

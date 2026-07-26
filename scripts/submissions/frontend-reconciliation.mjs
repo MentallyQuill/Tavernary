@@ -97,6 +97,7 @@ export function reconcileFrontends(input) {
       status: "needs-information",
       errors: ["Extensions must identify at least one supported frontend."],
       suggestions: [],
+      dependencies: [],
     };
   }
   if (input.projectType === "preset" && input.frontendIndependent) {
@@ -107,6 +108,7 @@ export function reconcileFrontends(input) {
   const errors = [];
   const suggestions = [];
   const warnings = [];
+  const dependencies = [];
 
   function add(id) {
     if (!ids.includes(id)) ids.push(id);
@@ -159,14 +161,40 @@ export function reconcileFrontends(input) {
           `Interpreted ${submittedLabel} as ${candidates[0].label}.`,
         );
       } else {
-        errors.push(`Unknown frontend: ${submittedLabel}.`);
-        suggestions.push({ submitted: submittedLabel, candidates });
+        let dependency = null;
+        if (submitted.url?.trim()) {
+          try {
+            const identity = parseSourceIdentity(submitted.url.trim());
+            if (identity.kind === "github") {
+              dependency = {
+                name: submitted.name?.trim() || identity.repository,
+                canonicalUrl: identity.canonicalUrl,
+                repository: identity.repository,
+              };
+            }
+          } catch {
+            // Malformed dependency URLs are reported as correction errors.
+          }
+        }
+        if (candidates.length > 1) {
+          errors.push(`Unknown frontend: ${submittedLabel}.`);
+          suggestions.push({ submitted: submittedLabel, candidates });
+        } else if (dependency) {
+          dependencies.push(dependency);
+          errors.push(
+            `${dependency.name} is not currently indexed as a Tavernary frontend.`,
+          );
+        } else {
+          errors.push(
+            `${submitted.name || "Unknown frontend"} needs an exact public GitHub owner/repository URL before it can be submitted as a frontend.`,
+          );
+        }
       }
     }
   }
 
   if (errors.length > 0) {
-    return { status: "needs-information", errors, suggestions };
+    return { status: "needs-information", errors, suggestions, dependencies };
   }
   if (ids.length === 0) {
     return {
@@ -177,6 +205,7 @@ export function reconcileFrontends(input) {
           : "Select at least one supported frontend.",
       ],
       suggestions: [],
+      dependencies: [],
     };
   }
   return { status: "resolved", ids, warnings };

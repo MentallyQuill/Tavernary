@@ -142,6 +142,8 @@ const projects = [
       version: "1",
       publishedAt: "2026-07-10T00:00:00Z",
       artifactSizeBytes: null,
+      modelFamilies: [],
+      completionFormats: [],
     },
   }),
 ];

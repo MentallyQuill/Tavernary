@@ -76,6 +76,8 @@ export interface CatalogProject {
     version: string | null;
     publishedAt: string | null;
     artifactSizeBytes: number | null;
+    modelFamilies: CatalogLabel[];
+    completionFormats: CatalogLabel[];
   } | null;
   refreshedAt: string | null;
   staleSince: string | null;

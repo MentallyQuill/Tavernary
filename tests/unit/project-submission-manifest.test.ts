@@ -73,3 +73,28 @@ test("serializes the stable submission manifest with a trailing newline", () => 
     '{\n  "schema_version": 1,\n  "project_type": "frontend",\n  "source_url": "https://github.com/Owner/Frontend",\n  "name": "Frontend",\n  "description": null,\n  "frontends": {\n    "known_ids": [],\n    "other": []\n  },\n  "frontend_independent": false,\n  "additional_context": null\n}\n',
   );
 });
+
+test("limits unlisted model family names to 60 characters", () => {
+  const result = normalizeProjectSubmissionManifest({
+    schema_version: 2,
+    project_type: "preset",
+    source_url: "https://github.com/Owner/Preset",
+    name: "Preset",
+    description: null,
+    frontends: { known_ids: ["sillytavern"], other: [] },
+    frontend_independent: false,
+    additional_context: null,
+    preset_compatibility: {
+      model_families: {
+        known_ids: [],
+        other: ["x".repeat(61)],
+      },
+      completion_formats: ["chat-completion"],
+    },
+  });
+
+  expect(result).toEqual({
+    valid: false,
+    errors: ["Unlisted model families must be 60 characters or fewer."],
+  });
+});

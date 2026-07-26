@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 test("keeps a closed desktop Kit Builder closed after refresh", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/?mode=kits");
+  await page.goto(sitePath("/?mode=kits"));
 
   await page
     .getByRole("button", { name: "Collapse Kit Builder", exact: true })

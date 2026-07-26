@@ -4,6 +4,12 @@ import { useRef, useState } from "react";
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import frontendVocabulary from "../../../../data/vocabularies/frontends.json";
+import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
+import completionFormatVocabulary from "../../../../data/vocabularies/completion-formats.json";
+import {
+  matchesCompletionFormats,
+  matchesModelFamilies,
+} from "../preset-compatibility";
 import type {
   CatalogKind,
   CatalogQuery,
@@ -20,7 +26,13 @@ import {
 } from "./filter-controls";
 
 type FilterArray =
-  "frontends" | "kinds" | "capabilities" | "development" | "licenses";
+  | "frontends"
+  | "kinds"
+  | "capabilities"
+  | "modelFamilies"
+  | "completionFormats"
+  | "development"
+  | "licenses";
 
 const kindOptions: Array<{ id: CatalogKind; label: string }> = [
   { id: "frontend", label: "Frontend" },
@@ -45,6 +57,12 @@ const frontendOptions = frontendVocabulary.frontends.map(({ id, label }) => ({
   id,
   label,
 }));
+const modelOptions = modelFamilyVocabulary.model_families.map(
+  ({ id, label }) => ({ id, label }),
+);
+const completionOptions = completionFormatVocabulary.completion_formats.map(
+  ({ id, label }) => ({ id, label }),
+);
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
 function uniqueLabels(
@@ -71,6 +89,18 @@ function countFor(
   return projects.filter((project) => {
     if (group === "frontends" || group === "capabilities") {
       return project[group].some(({ id }) => id === value);
+    }
+    if (group === "modelFamilies") {
+      return matchesModelFamilies(
+        [value],
+        project.preset?.modelFamilies?.map(({ id }) => id) ?? [],
+      );
+    }
+    if (group === "completionFormats") {
+      return matchesCompletionFormats(
+        [value],
+        project.preset?.completionFormats?.map(({ id }) => id) ?? [],
+      );
     }
     if (group === "kinds") {
       return project.kind === value;
@@ -171,6 +201,25 @@ export function FilterPanel({
         )}
         selected={query.capabilities}
         onToggle={(value) => onToggle("capabilities", value)}
+        presentation="chips"
+      />
+      <FilterGroup
+        title="Model family"
+        options={withCounts(modelOptions, projects, "modelFamilies", now)}
+        selected={query.modelFamilies ?? []}
+        onToggle={(value) => onToggle("modelFamilies", value)}
+        presentation="chips"
+      />
+      <FilterGroup
+        title="Completion format"
+        options={withCounts(
+          completionOptions,
+          projects,
+          "completionFormats",
+          now,
+        )}
+        selected={query.completionFormats ?? []}
+        onToggle={(value) => onToggle("completionFormats", value)}
         presentation="chips"
       />
       <FilterGroup

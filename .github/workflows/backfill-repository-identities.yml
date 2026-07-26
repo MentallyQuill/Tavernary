@@ -1,4 +1,5 @@
-name: Backfill repository identities
+name: "Catalog maintenance: Backfill repository IDs"
+run-name: "Catalog: Backfill repository IDs"
 
 on:
   workflow_dispatch:

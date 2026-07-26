@@ -1,0 +1,82 @@
+{
+  "model_families": [
+    {
+      "id": "model-agnostic",
+      "label": "Model-Agnostic",
+      "description": "Designed to work across model families.",
+      "aliases": ["universal", "any model"]
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "description": "Designed for Anthropic Claude models.",
+      "aliases": ["Anthropic", "Opus", "Sonnet", "Haiku"]
+    },
+    {
+      "id": "gpt",
+      "label": "GPT",
+      "description": "Designed for GPT-family models.",
+      "aliases": ["ChatGPT", "OpenAI"]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "description": "Designed for Google Gemini models.",
+      "aliases": ["Google Gemini"]
+    },
+    {
+      "id": "gemma",
+      "label": "Gemma",
+      "description": "Designed for Google Gemma models.",
+      "aliases": ["Google Gemma"]
+    },
+    {
+      "id": "deepseek",
+      "label": "DeepSeek",
+      "description": "Designed for DeepSeek models.",
+      "aliases": []
+    },
+    {
+      "id": "glm",
+      "label": "GLM",
+      "description": "Designed for GLM-family models.",
+      "aliases": ["ChatGLM", "Zhipu"]
+    },
+    {
+      "id": "minimax",
+      "label": "MiniMax",
+      "description": "Designed for MiniMax models.",
+      "aliases": []
+    },
+    {
+      "id": "mimo",
+      "label": "MiMo",
+      "description": "Designed for Xiaomi MiMo models.",
+      "aliases": ["Xiaomi MiMo"]
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "description": "Designed for Kimi models.",
+      "aliases": ["Moonshot", "Moonshot AI"]
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "description": "Designed for Qwen-family models.",
+      "aliases": ["Alibaba", "Tongyi"]
+    },
+    {
+      "id": "llama",
+      "label": "Llama",
+      "description": "Designed for Meta Llama models.",
+      "aliases": ["Meta Llama"]
+    },
+    {
+      "id": "mistral",
+      "label": "Mistral",
+      "description": "Designed for Mistral-family models.",
+      "aliases": ["Mixtral"]
+    }
+  ]
+}

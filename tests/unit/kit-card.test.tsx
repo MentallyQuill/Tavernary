@@ -35,6 +35,7 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
     updatedAt: "2026-07-22T00:00:00.000Z",
     frontends: [label("sillytavern")],
     purposes: [label("memory-retrieval")],
+    modelFamilies: [],
     components: Array.from({ length: 8 }, (_, index) => ({
       projectId: `project-${index}`,
       name: `Project ${index}`,

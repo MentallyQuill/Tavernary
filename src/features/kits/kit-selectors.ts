@@ -1,9 +1,10 @@
 import type { KitQuery, KitSort } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { matchesModelFamilies } from "@/features/catalog/preset-compatibility";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
-export type KitArrayFilter = "frontends" | "purposes";
+export type KitArrayFilter = "frontends" | "purposes" | "modelFamilies";
 
 function matchesAny(selected: string[], values: string[]) {
   return (
@@ -66,6 +67,12 @@ export function selectKits(
       matchesAny(
         query.frontends,
         kit.frontends.map(({ id }) => id),
+      ),
+    )
+    .filter((kit) =>
+      matchesModelFamilies(
+        query.modelFamilies ?? [],
+        kit.modelFamilies?.map(({ id }) => id) ?? [],
       ),
     )
     .filter((kit) =>
