@@ -233,6 +233,35 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
   );
 });
 
+test("matches expanded project-card typography on Kit cards", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  const title = card.getByRole("heading", { name: "Alpha Kit" });
+  const author = card.locator("small");
+  const description = card.locator(".kit-card-description");
+  const metadata = card.locator(".kit-card-metadata");
+
+  await expect(title).toHaveCSS("font-size", "17px");
+  await expect(title).toHaveCSS("font-weight", "720");
+  await expect(title).toHaveCSS("letter-spacing", "-0.34px");
+  await expect(title).toHaveCSS("line-height", "22.1px");
+
+  await expect(author).toHaveCSS("font-size", "10px");
+  await expect(author).toHaveCSS("font-weight", "500");
+  await expect(author).toHaveCSS("line-height", "13px");
+  await expect(author).toHaveCSS("color", "rgb(130, 144, 153)");
+
+  await expect(description).toHaveCSS("font-size", "11px");
+  await expect(description).toHaveCSS("line-height", "16.28px");
+  await expect(description).toHaveCSS("-webkit-line-clamp", "4");
+
+  await expect(metadata).toHaveCSS("font-size", "10px");
+});
+
 test("desktop Kit Builder open and close controls share one 36-pixel geometry", async ({
   page,
 }) => {
@@ -573,7 +602,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     await longDescription.evaluate(
       (element) => getComputedStyle(element).webkitLineClamp,
     ),
-  ).toBe("5");
+  ).toBe("4");
 
   await page
     .getByRole("article", { name: "Alpha Kit" })
