@@ -262,13 +262,18 @@
 .header-actions a {
   border-radius: 6px;
   padding: 8px 11px;
-  color: var(--color-link);
+  color: var(--color-text-primary);
   font-size: 12px;
   text-decoration: none;
 }
 
 .header-actions a:hover {
   color: var(--color-link-hover);
+}
+
+.header-actions .top-link:hover,
+.header-actions .top-link:focus-visible {
+  color: var(--color-text-primary);
 }
 
 .header-actions .submit-link {
@@ -358,12 +363,12 @@
 }
 
 .category-navigation button:is([data-category="kits"], [data-category="all"]) {
-  color: var(--color-accent-teal);
+  color: var(--color-text-primary);
 }
 
 .category-navigation button[data-category="kits"] svg,
 .category-navigation button[data-category="all"] .all-symbol {
-  color: var(--color-accent-teal);
+  color: var(--color-text-primary);
 }
 
 .category-navigation button[data-category="kits"] svg,

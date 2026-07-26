@@ -223,6 +223,30 @@ for (const viewport of [
   });
 }
 
+test("top-bar utility links and primary catalog modes use theme white", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+
+  for (const linkName of ["About", "Help"]) {
+    const link = page.getByRole("link", { name: linkName, exact: true });
+    await expectStyle(link, "color", graphiteTeal.secondaryText);
+    await link.hover();
+    await expectStyle(link, "color", graphiteTeal.secondaryText);
+  }
+
+  for (const modeName of ["Kits", "All Projects"]) {
+    const mode = page.getByRole("button", { name: modeName, exact: true });
+    await expectStyle(mode, "color", graphiteTeal.secondaryText);
+    await expectStyle(
+      modeName === "Kits" ? mode.locator("svg") : mode.locator(".all-symbol"),
+      "color",
+      graphiteTeal.secondaryText,
+    );
+  }
+});
+
 test("discard controls retain danger styling through interaction states", async ({
   page,
 }) => {

@@ -212,7 +212,7 @@
     svg,
   .mobile-category-trigger[data-category="all"] .all-symbol,
   .mobile-category-menu button[data-category="all"] .all-symbol {
-    color: var(--color-accent-teal);
+    color: var(--color-text-primary);
   }
 
   .catalog-layout {

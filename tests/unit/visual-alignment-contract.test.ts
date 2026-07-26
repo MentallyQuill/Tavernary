@@ -177,10 +177,10 @@ describe("catalog visual alignment", () => {
     );
     expect(tokens).toContain("--color-accent-teal: #2DD4BF;");
     expect(css).toMatch(
-      /\.category-navigation button:is\(\[data-category="kits"\], \[data-category="all"\]\)\s*\{[^}]*color:\s*var\(--color-accent-teal\)/s,
+      /\.category-navigation button:is\(\[data-category="kits"\], \[data-category="all"\]\)\s*\{[^}]*color:\s*var\(--color-text-primary\)/s,
     );
     expect(css).toMatch(
-      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation button\[data-category="all"\] \.all-symbol\s*\{[^}]*color:\s*var\(--color-accent-teal\)/s,
+      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation button\[data-category="all"\] \.all-symbol\s*\{[^}]*color:\s*var\(--color-text-primary\)/s,
     );
     expect(css).toContain(
       'button:not([data-category="all"]):not([data-category="kits"]):not(',
