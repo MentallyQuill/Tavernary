@@ -16,7 +16,6 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
     sourceIssueNumber: 41,
     publishedAt: "2026-07-22T00:00:00.000Z",
     updatedAt: "2026-07-22T00:00:00.000Z",
-    tavernaryPick: false,
     frontends: [label("sillytavern")],
     purposes: [label("memory-retrieval")],
     components: Array.from({ length: 8 }, (_, index) => ({
@@ -80,13 +79,12 @@ describe("Kit card", () => {
     expect(onReport).toHaveBeenCalledWith("long-form-storyteller-41");
   });
 
-  test("shows unavailable support, update, Pick, and caution states", () => {
+  test("shows unavailable support, update, and caution states without editorial badges", () => {
     render(
       <KitCard
         kit={kit({
           supporterCount: null,
           updatedAt: "2026-07-23T00:00:00.000Z",
-          tavernaryPick: true,
           flaggedProjectCount: 2,
         })}
         now="2026-07-24T00:00:00.000Z"
@@ -99,7 +97,7 @@ describe("Kit card", () => {
 
     expect(screen.getByText("Support unavailable")).toBeVisible();
     expect(screen.getByText("Updated 1d ago")).toBeVisible();
-    expect(screen.getByText("Tavernary Pick")).toBeVisible();
+    expect(screen.queryByText("Tavernary Pick")).not.toBeInTheDocument();
     expect(screen.getByText("Contains flagged projects")).toBeVisible();
   });
 });

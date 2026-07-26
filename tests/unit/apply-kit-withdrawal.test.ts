@@ -13,7 +13,6 @@ const kit = {
   project_ids: ["frontend", "memory", "lore"],
   published_at: "2026-07-01T00:00:00.000Z",
   updated_at: "2026-07-02T00:00:00.000Z",
-  tavernary_pick: true,
 };
 
 test("rejects withdrawal by a different durable GitHub identity", () => {

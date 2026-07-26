@@ -14,8 +14,7 @@
     "source_issue_number",
     "project_ids",
     "published_at",
-    "updated_at",
-    "tavernary_pick"
+    "updated_at"
   ],
   "properties": {
     "schema_version": { "const": 1 },
@@ -45,7 +44,6 @@
     },
     "published_at": { "type": "string", "format": "date-time" },
     "updated_at": { "type": "string", "format": "date-time" },
-    "tavernary_pick": { "type": "boolean" },
     "withdrawn_at": { "type": "string", "format": "date-time" }
   },
   "allOf": [

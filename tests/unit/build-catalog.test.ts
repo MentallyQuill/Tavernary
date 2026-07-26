@@ -220,7 +220,6 @@ const fixtureKit = (overrides: Record<string, unknown> = {}) => ({
   project_ids: ["frontend", "memory", "preset"],
   published_at: "2026-07-24T00:00:00.000Z",
   updated_at: "2026-07-24T00:00:00.000Z",
-  tavernary_pick: false,
   ...overrides,
 });
 
@@ -658,6 +657,7 @@ test("builds Kits from complete project records and nullable support", async () 
     projectId: "frontend",
     availability: "available",
   });
+  expect(catalog.kits[1]).not.toHaveProperty("tavernaryPick");
   expect(catalog.projects.map(({ id }) => id)).not.toContain("flagged");
   expect(catalog.kits.map(({ id }) => id)).not.toContain("withdrawn-kit-43");
 });

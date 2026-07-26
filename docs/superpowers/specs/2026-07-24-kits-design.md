@@ -59,7 +59,6 @@ manual-review discussion, reports, and community reactions.
   supporters.
 - **Trending:** the default ranking produced by decaying each effective
   supporter’s weight over time.
-- **Tavernary Pick:** a maintainer-controlled editorial badge and filter.
 - **Flagged project:** a project that is quarantined, disabled, removed, or
   otherwise unsafe to link from the public catalog.
 - **Withdrawal:** author-requested removal of a Kit from public discovery while
@@ -82,7 +81,6 @@ The feature is called **Kits**, not Sets.
 - Kit-specific search, filters, and sorts;
 - GitHub-backed author identity and `+1` support;
 - time-decayed Trending;
-- Tavernary Picks;
 - stable Kit share URLs and a Copy link action;
 - cautions and disabled component links when projects become unavailable;
 - ODbL and DbCL contribution acknowledgement.
@@ -141,7 +139,7 @@ export interface KitQuery {
   includesProjectId: string;
   minProjects: number;
   maxProjects: number;
-  tavernaryPickOnly: boolean;
+  allComponentsAvailable: boolean;
   sort: KitSort;
 }
 
@@ -160,7 +158,7 @@ export const DEFAULT_KIT_QUERY: KitQuery = {
   includesProjectId: "",
   minProjects: 3,
   maxProjects: 50,
-  tavernaryPickOnly: false,
+  allComponentsAvailable: false,
   sort: "trending",
 };
 ```
@@ -218,7 +216,8 @@ Kit filters are:
    project primary function.
 3. **Includes project:** one searchable canonical-project selector in V1.
 4. **Kit size:** an inclusive two-handled range from 3 to 50.
-5. **Tavernary Pick:** a boolean filter.
+5. **All components available:** a boolean filter matching Kits whose
+   `flaggedProjectCount` is zero.
 
 Selections within one multi-select group use OR. Different groups use AND.
 For example, SillyTavern or Lumiverse combined with Memory & Retrieval means:
@@ -267,9 +266,6 @@ and maximum readouts:
 - **Recently updated** — descending `updatedAt`;
 - **Alphabetical** — locale-aware title order.
 
-Tavernary Pick does not automatically outrank other Kits. It is a badge and
-filter, not a hidden score multiplier.
-
 Project density controls are hidden in Kits mode because Kit cards have one
 compact V1 presentation. The selected project density remains intact when the
 user returns to project mode.
@@ -290,7 +286,6 @@ A card displays:
 - derived frontend and purpose labels;
 - `Published <relative date>` in the upper-right corner;
 - muted `Updated <relative date>` below it when a material revision exists;
-- Tavernary Pick badge when applicable;
 - caution badge and affected-project count when applicable;
 - Copy link and Report actions.
 
@@ -338,7 +333,6 @@ The following do not advance `updatedAt`:
 - project metadata refresh;
 - compatibility or purpose re-derivation;
 - support refresh;
-- Tavernary Pick changes;
 - a project becoming quarantined or disabled.
 
 Publication age uses the project card’s existing freshness color progression
@@ -643,7 +637,6 @@ export interface CatalogKit {
   purposes: CatalogLabel[];
   publishedAt: string;
   updatedAt: string;
-  tavernaryPick: boolean;
   supporterCount: number | null;
   trendingScore: number | null;
   supportRefreshedAt: string | null;
@@ -713,8 +706,7 @@ new timestamp.
     "example-memory-extension"
   ],
   "published_at": "2026-07-24T18:00:00.000Z",
-  "updated_at": "2026-07-24T18:00:00.000Z",
-  "tavernary_pick": false
+  "updated_at": "2026-07-24T18:00:00.000Z"
 }
 ```
 
@@ -812,8 +804,7 @@ Approved edits:
 - refresh the display login from the matching GitHub issue actor;
 - replace title, description, and ordered project IDs;
 - advance `updatedAt`;
-- preserve the support ledger and Trending history;
-- retain Tavernary Pick unless a maintainer explicitly changes it.
+- preserve the support ledger and Trending history.
 
 An edit that changes the recommendation so fundamentally that it no longer
 represents the same Kit should be submitted as a new Kit. Maintainers make
@@ -1017,19 +1008,6 @@ after every flagged row is resolved by an approved edit or project recovery.
 
 If the Kit itself becomes dangerous rather than merely stale, a maintainer may
 withdraw it.
-
-## Tavernary Pick
-
-Repository maintainers may set or remove `tavernary_pick` on an approved Kit.
-
-- It appears as a restrained badge.
-- It can be filtered.
-- It does not modify Trending.
-- Changing it does not change `updatedAt`.
-- An approved author edit does not silently remove it.
-- The badge text is **Tavernary Pick**.
-
-No new public role accompanies this editorial field.
 
 ## Licensing and Contribution Terms
 
@@ -1250,7 +1228,6 @@ existing `CatalogPage` to accumulate every Kit interaction.
 - ordinary revisions preserve support.
 - duplicates begin at zero.
 - reports never automatically alter visibility or Trending.
-- Tavernary Pick never modifies Trending or `updatedAt`.
 
 ### Visual Review
 
@@ -1266,7 +1243,6 @@ Review project and Kits modes at desktop, tablet, and mobile widths with:
 - create, duplicate, and edit builder modes;
 - one expanded Frontend, Preset, and Extension;
 - a flagged-project caution state;
-- Tavernary Pick;
 - stale and unavailable support;
 - empty and filtered result states;
 - no horizontal overflow.

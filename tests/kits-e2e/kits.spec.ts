@@ -507,7 +507,7 @@ test("applies every Kit filter and clears them", async ({ page }) => {
   await filter.getByLabel("Minimum projects").fill("3");
   await filter.getByLabel("Maximum projects").fill("3");
   await expect(cards(page).first()).toContainText("Alpha Kit");
-  await filter.getByLabel("Tavernary Pick").check();
+  await filter.getByLabel("All components available").check();
   await expect(cards(page)).toHaveCount(1);
   await filter.getByRole("button", { name: "Clear all" }).click();
   await expect(cards(page)).toHaveCount(8);
@@ -526,7 +526,7 @@ test("mobile Kit filters are visible, dismissible, and mode-local", async ({
   await filterButton.click();
   const kitFilters = page.getByRole("dialog", { name: "Filters" });
   await expect(kitFilters).toBeVisible();
-  await kitFilters.getByLabel("Tavernary Pick").check();
+  await kitFilters.getByLabel("All components available").check();
   await expect(filterButton.locator("b")).toHaveText("1");
   await kitFilters.getByRole("button", { name: "Close Kit filters" }).click();
   await expect(filterButton).toBeFocused();
@@ -956,7 +956,9 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   await expectMobileTarget(
     filters.getByRole("button", { name: "Close Kit filters" }),
   );
-  await expectMobileTarget(filters.getByLabel("Tavernary Pick").locator(".."));
+  await expectMobileTarget(
+    filters.getByLabel("All components available").locator(".."),
+  );
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
@@ -993,9 +995,9 @@ test("complete mobile direct-manipulation workflow stays touch-safe", async ({
   const filterButton = page.getByRole("button", { name: "Open filters" });
   await filterButton.click();
   const filters = page.getByRole("dialog", { name: "Filters" });
-  await filters.getByLabel("Tavernary Pick").check();
-  await expect(cards(page)).toHaveCount(1);
-  await filters.getByLabel("Tavernary Pick").uncheck();
+  await filters.getByLabel("All components available").check();
+  await expect(cards(page)).toHaveCount(6);
+  await filters.getByLabel("All components available").uncheck();
   await expect(cards(page)).toHaveCount(8);
   await filters.getByRole("button", { name: "Close Kit filters" }).click();
   await expect(filterButton).toBeFocused();

@@ -55,10 +55,6 @@ export function ActiveQuery({
       value?: string;
       label: string;
     }> = [];
-    const creatorLabels = new Map(
-      kits.map((kit) => [kit.author.githubUserId, kit.author.login] as const),
-    );
-    const capabilityLabels = labelMaps(projects).capabilities;
     const projectLabels = new Map(
       projects.map((project) => [project.id, project.name] as const),
     );
@@ -84,43 +80,11 @@ export function ActiveQuery({
           query.kits.includesProjectId
         }`,
       });
-    for (const value of query.kits.creatorIds)
-      tokens.push({
-        key: "creatorIds",
-        value: String(value),
-        label: creatorLabels.get(value) ?? String(value),
-      });
-    for (const value of query.kits.kinds)
-      tokens.push({
-        key: "kinds",
-        value,
-        label: staticLabels[value] ?? value,
-      });
-    for (const value of query.kits.capabilities)
-      tokens.push({
-        key: "capabilities",
-        value,
-        label: capabilityLabels.get(value) ?? value,
-      });
-    for (const value of query.kits.development)
-      tokens.push({
-        key: "development",
-        value,
-        label: staticLabels[value] ?? value,
-      });
-    for (const value of query.kits.licenses)
-      tokens.push({
-        key: "licenses",
-        value,
-        label: staticLabels[value] ?? value,
-      });
     if (query.kits.minProjects !== 3 || query.kits.maxProjects !== 50)
       tokens.push({
         key: "minProjects",
         label: `${query.kits.minProjects}–${query.kits.maxProjects} projects`,
       });
-    if (query.kits.tavernaryPickOnly)
-      tokens.push({ key: "tavernaryPickOnly", label: "Tavernary Pick" });
     if (query.kits.allComponentsAvailable)
       tokens.push({
         key: "allComponentsAvailable",

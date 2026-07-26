@@ -455,7 +455,6 @@ export async function buildCatalog(options = {}) {
         sourceIssueNumber: kit.source_issue_number,
         publishedAt: kit.published_at,
         updatedAt: kit.updated_at,
-        tavernaryPick: kit.tavernary_pick,
         frontends,
         purposes,
         components,
