@@ -1,0 +1,22 @@
+{
+  "schema_version": 4,
+  "id": "mattjaybe-sillytavern-echochamber",
+  "name": "SillyTavern-EchoChamber",
+  "kind": "extension",
+  "summary": "A SillyTavern extension that generates AI-powered \"audience\" reactions in various chat styles (Discord/Twitch, Twitter, News, MST3K, etc.) that appear below the chat input.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "mattjaybe/SillyTavern-EchoChamber",
+    "repository_id": 1128074609
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-26T19:32:08.845Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
