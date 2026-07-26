@@ -38,6 +38,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "admit-issue",
     "triage-submission",
     "generate-project-submission",
+    "project-submission-lifecycle",
     "triage-kit-submission",
     "apply-kit-submission",
     "apply-kit-withdrawal",
@@ -473,6 +474,31 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).not.toMatch(
     /(?:npm|pnpm|yarn|bun|node)\s+(?:--prefix\s+)?(?:https?:\/\/|\.\/submitted)/,
   );
+});
+
+test("handles submission closure from default-branch code only", async () => {
+  const lifecycle = await workflow("project-submission-lifecycle");
+  const source = await readFile(
+    resolve(workflowDirectory, "project-submission-lifecycle.yml"),
+    "utf8",
+  );
+  const checkout = allSteps(lifecycle).find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  ) as { with?: { ref?: string } } | undefined;
+
+  expect(lifecycle.on.pull_request.types).toEqual(["closed"]);
+  expect(lifecycle.permissions).toEqual({
+    contents: "write",
+    issues: "write",
+    "pull-requests": "read",
+  });
+  expect(checkout?.with?.ref).toBe(
+    "${{ github.event.repository.default_branch }}",
+  );
+  expect(source).toContain("github.event.pull_request.head.sha");
+  expect(source).toContain("submission-declined");
+  expect(source).toContain("state_reason");
+  expect(source).not.toContain("github.event.pull_request.head.ref }}");
 });
 
 test("admits opened and reopened issues before submission triage", async () => {
