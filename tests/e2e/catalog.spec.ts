@@ -1,8 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 import {
+  collapsedFrontendOptions,
+  frontendExpansionLabel,
+  frontendOptions,
   generatedCatalog as catalog,
   generatedProjectCount,
+  initiallyVisibleFrontendOptions,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
@@ -322,17 +326,28 @@ test("keeps canonical frontends ordered and expands the remainder", async ({
     name: "Compatible frontend",
   });
   const labels = await group.locator("label").allTextContents();
+  expect(labels.map((label) => label.replace(/\d+$/, "").trim())).toEqual(
+    initiallyVisibleFrontendOptions.map(({ label }) => label),
+  );
+  for (const { label, count } of initiallyVisibleFrontendOptions) {
+    const option = group.getByLabel(label, { exact: true });
+    await expect(option).toBeVisible();
+    await expect(option.locator("..")).toContainText(String(count));
+  }
+  for (const { label } of collapsedFrontendOptions) {
+    await expect(group.getByLabel(label, { exact: true })).toBeHidden();
+  }
+  await group.getByRole("button", { name: frontendExpansionLabel }).click();
   expect(
-    labels.slice(0, 3).map((label) => label.replace(/\d+$/, "").trim()),
-  ).toEqual(["Aikobots", "Lumiverse", "Marinara Engine"]);
-  await expect(group.getByLabel("Aikobots")).toBeVisible();
-  await expect(group.getByLabel("Lumiverse")).toBeVisible();
-  await expect(group.getByLabel("Lumiverse").locator("..")).toContainText("26");
-  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeHidden();
-  await expect(group.getByLabel("Sonder Engine")).toBeHidden();
-  await group.getByRole("button", { name: "Show 2 more" }).click();
-  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
-  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+    (await group.locator("label").allTextContents()).map((label) =>
+      label.replace(/\d+$/, "").trim(),
+    ),
+  ).toEqual(frontendOptions.map(({ label }) => label));
+  for (const { label, count } of collapsedFrontendOptions) {
+    const option = group.getByLabel(label, { exact: true });
+    await expect(option).toBeVisible();
+    await expect(option.locator("..")).toContainText(String(count));
+  }
   await expect(group.getByRole("button", { name: "Show fewer" })).toBeVisible();
 });
 
@@ -342,12 +357,18 @@ test("search and selected extras bypass frontend collapse", async ({
   const group = page.locator(".filter-panel").getByRole("group", {
     name: "Compatible frontend",
   });
+  const selectedExtra = collapsedFrontendOptions.at(-1);
+  if (!selectedExtra) throw new Error("Missing collapsed frontend fixture");
   const search = group.getByRole("searchbox");
-  await search.fill("Sonder");
-  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
-  await group.getByLabel("Sonder Engine").check();
+  await search.fill(selectedExtra.label);
+  await expect(
+    group.getByLabel(selectedExtra.label, { exact: true }),
+  ).toBeVisible();
+  await group.getByLabel(selectedExtra.label, { exact: true }).check();
   await search.fill("");
-  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+  await expect(
+    group.getByLabel(selectedExtra.label, { exact: true }),
+  ).toBeVisible();
 });
 
 test("uses neutral kind-checkbox outlines and teal checked fills", async ({
@@ -423,8 +444,14 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
   const frontendGroup = page.locator(".filter-panel").getByRole("group", {
     name: "Compatible frontend",
   });
-  await frontendGroup.getByRole("button", { name: "Show 2 more" }).click();
-  await frontendGroup.getByLabel("SillyTavern", { exact: true }).check();
+  const selectedFrontend = collapsedFrontendOptions[0];
+  if (!selectedFrontend) throw new Error("Missing collapsed frontend fixture");
+  await frontendGroup
+    .getByRole("button", { name: frontendExpansionLabel })
+    .click();
+  await frontendGroup
+    .getByLabel(selectedFrontend.label, { exact: true })
+    .check();
   await expect(
     page.getByRole("button", { name: "Remove Extension" }),
   ).toBeVisible();
