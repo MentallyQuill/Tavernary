@@ -2,8 +2,8 @@
   "schema_version": 1,
   "run_id": "75cc111c-eb93-4c9c-a20c-2328380225a0",
   "mode": "full",
-  "status": "running",
-  "phase": "retry",
+  "status": "complete-with-errors",
+  "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "selection_mode": "pending",
   "manual_exclusions": [
@@ -46,7 +46,7 @@
   "batch_size": 30,
   "concurrency": 4,
   "created_at": "2026-07-26T04:50:18.972Z",
-  "updated_at": "2026-07-26T04:53:21.470Z",
+  "updated_at": "2026-07-26T04:53:23.237Z",
   "manifest": [
     "archkr-lumiverse-lumistate",
     "carmentagit-carmy-infoboard",
@@ -69,18 +69,18 @@
     "noathouard-sillytavern-extension-npc-portait-switcher",
     "qvink-sillytavern-messagesummarize"
   ],
-  "retry_cursor": 0,
+  "retry_cursor": 5,
   "attempts": {
     "archkr-lumiverse-lumistate": 1,
-    "carmentagit-carmy-infoboard": 1,
-    "enerccio-sillytavern-stickynote": 1,
+    "carmentagit-carmy-infoboard": 2,
+    "enerccio-sillytavern-stickynote": 2,
     "heikouidou-chara-color-filter": 1,
-    "lukathehero-sillytavern-claudesubscription": 1,
+    "lukathehero-sillytavern-claudesubscription": 2,
     "maxime-fleury-st-card-editor": 1,
-    "noathouard-sillytavern-extension-npc-portait-switcher": 1,
+    "noathouard-sillytavern-extension-npc-portait-switcher": 2,
     "prolix-oc-lumiverse-chatroom": 1,
     "prolix-oc-lumiverse-spotifycontrols": 1,
-    "qvink-sillytavern-messagesummarize": 1
+    "qvink-sillytavern-messagesummarize": 2
   },
   "entries": {
     "archkr-lumiverse-lumistate": {
@@ -100,9 +100,9 @@
     },
     "carmentagit-carmy-infoboard": {
       "id": "carmentagit-carmy-infoboard",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "readme",
       "repository_id": 1131514178,
       "head_sha": "a31eb3210a7eff6445a037bb9954780cd163006d",
@@ -110,17 +110,17 @@
       "readme_ref": "a31eb3210a7eff6445a037bb9954780cd163006d",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 10467,
+      "latency_ms": 3625,
       "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
+      "repair_hint": "Summary must be at most 220 characters. Summary must contain 24-36 words. Summary must not contain Markdown or list syntax.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T04:50:18.972Z"
+      "completed_at": "2026-07-26T04:53:23.237Z"
     },
     "enerccio-sillytavern-stickynote": {
       "id": "enerccio-sillytavern-stickynote",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "readme",
       "repository_id": 1251549736,
       "head_sha": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
@@ -128,11 +128,11 @@
       "readme_ref": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 28799,
+      "latency_ms": 4099,
       "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
+      "repair_hint": "Summary must be at most 220 characters. Summary must contain 24-36 words.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T04:50:18.972Z"
+      "completed_at": "2026-07-26T04:53:23.237Z"
     },
     "heikouidou-chara-color-filter": {
       "id": "heikouidou-chara-color-filter",
@@ -151,9 +151,9 @@
     },
     "lukathehero-sillytavern-claudesubscription": {
       "id": "lukathehero-sillytavern-claudesubscription",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1232282077,
       "head_sha": "595daa7404bb280de3f1aaeb52fb69060895b843",
@@ -161,11 +161,8 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 6237,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T04:50:18.972Z"
+      "latency_ms": 5065,
+      "completed_at": "2026-07-26T04:53:23.237Z"
     },
     "maxime-fleury-st-card-editor": {
       "id": "maxime-fleury-st-card-editor",
@@ -184,9 +181,9 @@
     },
     "noathouard-sillytavern-extension-npc-portait-switcher": {
       "id": "noathouard-sillytavern-extension-npc-portait-switcher",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "readme",
       "repository_id": 1278555504,
       "head_sha": "9ea4112b5331516bf73f9eece4c81db22611bf20",
@@ -194,11 +191,11 @@
       "readme_ref": "9ea4112b5331516bf73f9eece4c81db22611bf20",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 4395,
+      "latency_ms": 2376,
       "reason_code": "output-invalid",
-      "repair_hint": "Summary must be exactly two sentences.",
+      "repair_hint": "Summary must contain 24-36 words. Summary must be exactly two sentences.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T04:50:18.972Z"
+      "completed_at": "2026-07-26T04:53:23.237Z"
     },
     "prolix-oc-lumiverse-chatroom": {
       "id": "prolix-oc-lumiverse-chatroom",
@@ -226,12 +223,12 @@
     },
     "qvink-sillytavern-messagesummarize": {
       "id": "qvink-sillytavern-messagesummarize",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "reason_code": "readme-unusable",
       "message": "GitHub README content is unusable.",
-      "completed_at": "2026-07-26T04:50:18.972Z"
+      "completed_at": "2026-07-26T04:53:23.237Z"
     }
   },
   "publication": {
@@ -243,10 +240,10 @@
     "enriched": 3,
     "fallback": 2,
     "source-not-ready": 0,
-    "retry-pending": 5,
-    "retry-enriched": 0,
+    "retry-pending": 0,
+    "retry-enriched": 1,
     "retry-fallback": 0,
-    "final-failure": 0,
+    "final-failure": 4,
     "skipped": 0
   }
 }
