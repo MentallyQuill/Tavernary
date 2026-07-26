@@ -129,54 +129,31 @@ async function loadRegistryRecords(): Promise<CatalogRecord[]> {
   );
 }
 
-function countBy<T>(records: T[], selector: (record: T) => string) {
-  const counts = new Map<string, number>();
-  for (const record of records) {
-    const key = selector(record);
-    counts.set(key, (counts.get(key) ?? 0) + 1);
-  }
-
-  return Object.fromEntries(counts);
-}
-
 function expectCatalogContract(records: CatalogRecord[]) {
   const ids = new Set(records.map((record) => record.id));
   const provisionalRecords = records.filter(
     (record) => record.metadata_status === "provisional",
   );
 
-  expect(records).toHaveLength(212);
-  expect(ids.size).toBe(212);
-  expect(countBy(records, (record) => record.kind)).toEqual({
-    extension: 198,
-    frontend: 5,
-    preset: 9,
-  });
-  expect(countBy(records, (record) => record.source.type)).toEqual({
-    github: 205,
-    "github-organization": 1,
-    url: 6,
-  });
-  expect(countBy(records, (record) => record.enrichment_policy)).toEqual({
-    automatic: 205,
-    manual: 7,
-  });
-  expect(
-    records.filter(
-      (record) =>
-        record.source.type === "url" &&
-        record.source.license_status === "pending",
-    ),
-  ).toHaveLength(0);
-  expect(
-    records.filter(
-      (record) =>
-        record.source.type === "url" &&
-        record.source.license_status === "missing",
-    ),
-  ).toHaveLength(6);
+  expect(records.length).toBeGreaterThan(0);
+  expect(ids.size).toBe(records.length);
 
   for (const record of records) {
+    expect(["extension", "frontend", "preset"], record.id).toContain(
+      record.kind,
+    );
+    expect(["github", "github-organization", "url"], record.id).toContain(
+      record.source.type,
+    );
+    expect(["automatic", "manual"], record.id).toContain(
+      record.enrichment_policy,
+    );
+    if (record.source.type === "url") {
+      expect(
+        ["osi-approved", "proprietary", "missing", "pending"],
+        record.id,
+      ).toContain(record.source.license_status);
+    }
     expect(["curated", "provisional"], record.id).toContain(
       record.metadata_status,
     );
@@ -248,7 +225,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
 }
 
 describe("full catalog data", () => {
-  test("matches the consolidated 212-record contract", async () => {
+  test("matches the consolidated registry contract", async () => {
     expectCatalogContract(await loadRegistryRecords());
   });
 

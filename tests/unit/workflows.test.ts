@@ -268,6 +268,90 @@ test("keeps CI read-only and runs every local gate", async () => {
   expect(commands).toContain("npm run test:kits-visual");
 });
 
+test("keeps one read-only CI workflow with a stable verify job", async () => {
+  const ci = await workflow("ci");
+
+  expect(ci.permissions).toEqual({ contents: "read" });
+  expect(ci.jobs.verify).toBeDefined();
+  expect(ci.jobs.verify.outputs.route).toContain("steps.route.outputs.route");
+});
+
+test("classifies pull request and dispatched branch diffs fail closed", async () => {
+  const source = await readFile(resolve(workflowDirectory, "ci.yml"), "utf8");
+
+  expect(source).toContain("github.event.pull_request.base.sha");
+  expect(source).toContain("github.event.pull_request.head.sha");
+  expect(source).toContain("git merge-base origin/main HEAD");
+  expect(source).toContain("git diff --no-renames --name-only -z");
+  expect(source).toContain("classify-pr-paths.mjs --paths-file");
+  expect(source).toContain('route="full"');
+});
+
+test("runs mutually selected content and full Linux stacks", async () => {
+  const ci = await workflow("ci");
+  const steps = ci.jobs.verify.steps as Array<{
+    if?: string;
+    run?: string;
+  }>;
+
+  expect(steps).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        if: "steps.route.outputs.route == 'content'",
+        run: "npm run check:content",
+      }),
+      expect.objectContaining({
+        if: "steps.route.outputs.route == 'full'",
+        run: "npm run check",
+      }),
+      expect.objectContaining({
+        if: "steps.route.outputs.route == 'content'",
+        run: "npm run test:content-e2e",
+      }),
+      expect.objectContaining({
+        if: "steps.route.outputs.route == 'full'",
+        run: "npm run test:e2e",
+      }),
+    ]),
+  );
+});
+
+test("runs Windows visual and Kit checks only for full CI", async () => {
+  const ci = await workflow("ci");
+
+  expect(ci.jobs.visual.needs).toBe("verify");
+  expect(ci.jobs.visual.if).toBe("needs.verify.outputs.route == 'full'");
+});
+
+test("does not install a path-filter action", async () => {
+  const ci = await workflow("ci");
+
+  expect(allSteps(ci).some((step) => step.uses?.includes("paths-filter"))).toBe(
+    false,
+  );
+});
+
+test("owns the focused content checks in package scripts", async () => {
+  const packageDocument = JSON.parse(
+    await readFile(resolve("package.json"), "utf8"),
+  );
+
+  expect(packageDocument.scripts["test:content"]).toContain(
+    "tests/unit/validate-catalog.test.ts",
+  );
+  expect(packageDocument.scripts["test:content"]).toContain(
+    "tests/unit/validate-kits.test.ts",
+  );
+  expect(packageDocument.scripts["test:content-e2e"]).toBe(
+    "node scripts/run-playwright.mjs tests/e2e/static-export.spec.ts",
+  );
+  expect(packageDocument.scripts["check:content"]).toContain(
+    "npm run catalog:validate",
+  );
+  expect(packageDocument.scripts["check:content"]).toContain("npm run build");
+  expect(packageDocument.scripts["check:content"]).not.toContain("npm test");
+});
+
 test("runs Windows-specific visual baselines on a Windows runner", async () => {
   const ci = await workflow("ci");
   const jobs = ci.jobs as Record<

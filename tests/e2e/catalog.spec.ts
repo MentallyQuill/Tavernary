@@ -31,6 +31,10 @@ const pendingLicenseCount = catalog.projects.filter(
 const missingLicenseCount = catalog.projects.filter(
   ({ license }) => license.status === "missing",
 ).length;
+const projectCount = catalog.projects.length;
+const projectHeading = `${projectCount} ${
+  projectCount === 1 ? "project" : "projects"
+}`;
 
 test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
@@ -377,9 +381,9 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   page,
 }) => {
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", { name: projectHeading }),
   ).toBeVisible();
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(projectCount);
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
@@ -441,7 +445,7 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     .click();
   await expect(page).toHaveURL(/\/$/);
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", { name: projectHeading }),
   ).toBeVisible();
 });
 
@@ -468,9 +472,9 @@ test("shows the full launch catalog without default-query hidden records", async
   page,
 }) => {
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(projectCount);
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    212,
+    projectCount,
   );
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
@@ -519,7 +523,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
     .getByRole("button", { name: "Remove Pending verification" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", { name: projectHeading }),
   ).toBeVisible();
   await expect(page).not.toHaveURL(/license=/);
 
@@ -534,7 +538,7 @@ test("matches the approved card anatomy", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const card = page.locator(".project-card").first();
 
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(projectCount);
   await expect(card.locator("h2")).toHaveCSS("font-family", /Inter/);
   await expect(card.locator(".card-bottom")).toHaveCSS(
     "border-top-style",

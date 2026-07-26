@@ -1,13 +1,30 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { expect, test } from "@playwright/test";
 
 import { sitePath } from "../helpers/site-path";
 
+const catalog = JSON.parse(
+  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
+) as { projects: unknown[]; kits: Array<{ title: string }> };
+const frontendVocabulary = JSON.parse(
+  readFileSync(
+    resolve(process.cwd(), "data/vocabularies/frontends.json"),
+    "utf8",
+  ),
+) as { frontends: Array<{ label: string }> };
+const projectCount = catalog.projects.length;
+const projectHeading = `${projectCount} ${
+  projectCount === 1 ? "project" : "projects"
+}`;
+
 test("serves the catalog from the configured base path", async ({ page }) => {
   await page.goto(sitePath());
   await expect(
-    page.getByRole("heading", { name: "212 projects" }),
+    page.getByRole("heading", { name: projectHeading }),
   ).toBeVisible();
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(projectCount);
   await expect(page).not.toHaveTitle(/404/);
 });
 
@@ -46,8 +63,37 @@ test("exports canonical project links without intake-only metadata", async ({
 }) => {
   await page.goto(sitePath());
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    212,
+    projectCount,
   );
   await expect(page.locator("body")).not.toContainText("submitted_at");
   await expect(page.locator("body")).not.toContainText("catalog_intake");
+});
+
+test("renders every configured frontend filter", async ({ page }) => {
+  await page.goto(sitePath());
+  const group = page.locator(".filter-panel").getByRole("group", {
+    name: "Compatible frontend",
+  });
+  const hiddenCount = Math.max(frontendVocabulary.frontends.length - 3, 0);
+
+  if (hiddenCount > 0) {
+    await group
+      .getByRole("button", { name: `Show ${hiddenCount} more` })
+      .click();
+  }
+  for (const { label } of frontendVocabulary.frontends) {
+    await expect(group.getByLabel(label, { exact: true })).toBeVisible();
+  }
+});
+
+test("renders every published Kit", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+
+  await expect(page.locator(".kit-card")).toHaveCount(catalog.kits.length);
+  for (const { title } of catalog.kits) {
+    await expect(
+      page.getByRole("heading", { name: title, exact: true }),
+    ).toBeVisible();
+  }
 });

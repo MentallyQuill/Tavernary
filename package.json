@@ -15,7 +15,9 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:content": "vitest run tests/unit/validate-catalog.test.ts tests/unit/build-catalog.test.ts tests/unit/full-catalog-data.test.ts tests/unit/validate-kits.test.ts tests/unit/static-export-verification.test.ts",
     "test:e2e": "node scripts/run-playwright.mjs tests/e2e",
+    "test:content-e2e": "node scripts/run-playwright.mjs tests/e2e/static-export.spec.ts",
     "test:visual": "node scripts/run-playwright.mjs tests/visual",
     "build:test-kits": "node scripts/kits/build-test-export.mjs",
     "test:kits-e2e": "node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.spec.ts",
@@ -31,7 +33,8 @@
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
-    "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export"
+    "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export",
+    "check:content": "npm run format:check && npm run catalog:validate && npm run catalog:build && npm run test:content && npm run build && npm run verify:export"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

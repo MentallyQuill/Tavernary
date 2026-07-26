@@ -6,7 +6,7 @@
 
 **Architecture:** A pure repository-owned classifier is the single source of truth for content paths. The existing Linux `verify` job computes the complete branch diff, exports `content` or `full`, and conditionally runs package-owned check stacks; the existing Windows `visual` job runs only for `full`. Frozen catalog totals are replaced with generated-data expectations and durable invariants so content-only merges cannot make later full CI stale.
 
-**Tech Stack:** Node.js 24 ESM, TypeScript declaration files, Vitest, npm scripts, GitHub Actions YAML, Playwright Chromium.
+**Tech Stack:** Git, Node.js 24 ESM, TypeScript declaration files, Vitest, npm scripts, GitHub Actions YAML, Playwright Chromium.
 
 ## Global Constraints
 

@@ -1,6 +1,14 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { expect, test } from "@playwright/test";
 
 import { sitePath } from "../helpers/site-path";
+
+const catalog = JSON.parse(
+  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
+) as { projects: unknown[] };
+const projectCount = catalog.projects.length;
 
 test("switches between projects and the published Kits catalog", async ({
   page,
@@ -17,5 +25,5 @@ test("switches between projects and the published Kits catalog", async ({
     "trending",
   );
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.locator(".project-card")).toHaveCount(212);
+  await expect(page.locator(".project-card")).toHaveCount(projectCount);
 });

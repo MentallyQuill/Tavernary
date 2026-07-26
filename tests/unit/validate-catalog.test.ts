@@ -85,7 +85,9 @@ describe("catalog validation", () => {
     const result = await validateCatalog();
 
     expect(result.errors).toEqual([]);
-    expect(result.projectCount).toBe(212);
+    expect(result.projectCount).toBe(
+      await countJsonFiles("data/registry/projects"),
+    );
     expect(result.kitCount).toBe(await countJsonFiles("data/registry/kits"));
     expect(result.kitSnapshotCount).toBe(
       await countJsonFiles("data/snapshots/github/kits"),
