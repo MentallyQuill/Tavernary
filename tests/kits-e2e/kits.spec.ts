@@ -178,13 +178,13 @@ test("keeps discard confirmation actions inside the phone dialog", async ({
   );
 });
 
-test("filled desktop actions use dark ink and card Kit glyphs are centered in a square", async ({
+test("filled desktop actions use Graphite Teal ink and card Kit glyphs are centered in a square", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const expectedInk = "rgb(7, 24, 29)";
+  const expectedInk = "rgb(22, 16, 8)";
   const submitProject = page.getByRole("link", { name: "Submit Project" });
   await page.getByRole("button", { name: "Open Kit Builder" }).click();
   const createKit = page.getByRole("button", { name: "Create new Kit" });

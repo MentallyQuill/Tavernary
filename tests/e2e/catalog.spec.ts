@@ -212,7 +212,7 @@ test("uses one focus boundary for the main search", async ({ page }) => {
   await expect(search).toHaveCSS("box-shadow", "none");
   await expect(page.locator(".site-search")).toHaveCSS(
     "border-top-color",
-    "rgb(87, 197, 163)",
+    "rgb(45, 212, 191)",
   );
 });
 
@@ -314,19 +314,16 @@ test("search and selected extras bypass frontend collapse", async ({
   await expect(group.getByLabel("Sonder Engine")).toBeVisible();
 });
 
-test("themes project-kind checkbox outlines", async ({ page }) => {
-  const expected = {
-    Frontend: "rgb(214, 40, 57)",
-    Extension: "rgb(225, 138, 36)",
-    "System Preset": "rgb(87, 197, 163)",
-  };
-  for (const [name, color] of Object.entries(expected)) {
+test("uses neutral kind-checkbox outlines and teal checked fills", async ({
+  page,
+}) => {
+  for (const name of ["Frontend", "Extension", "System Preset"]) {
     const input = page
       .locator(".filter-panel")
       .getByLabel(name, { exact: true });
-    await expect(input).toHaveCSS("border-top-color", color);
+    await expect(input).toHaveCSS("border-top-color", "rgb(80, 97, 104)");
     await input.check();
-    await expect(input).toHaveCSS("background-color", color);
+    await expect(input).toHaveCSS("background-color", "rgb(45, 212, 191)");
   }
 });
 
@@ -677,7 +674,7 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
   await expect(summary).toHaveCSS("white-space", "nowrap");
   await expect(summary).toHaveCSS("text-overflow", "ellipsis");
   await expect(summary).toHaveCSS("overflow", "hidden");
-  await expect(summary).toHaveCSS("color", "rgb(203, 214, 211)");
+  await expect(summary).toHaveCSS("color", "rgb(168, 179, 186)");
   await expect(repositoryCard.locator(".card-state-list")).toBeHidden();
   await expect(repositoryCard.locator(".community")).toBeHidden();
   await expect(repositoryCard.locator(".repository-size")).toBeHidden();

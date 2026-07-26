@@ -11,6 +11,6 @@ test("uses the Tavernary page color before external CSS loads", async ({
 
   await expect(page.locator("html")).toHaveCSS(
     "background-color",
-    "rgb(7, 24, 29)",
+    "rgb(13, 17, 23)",
   );
 });
