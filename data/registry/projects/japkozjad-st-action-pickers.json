@@ -3,7 +3,7 @@
   "id": "japkozjad-st-action-pickers",
   "name": "ST Action Pickers",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds quality-of-life action pickers to streamline the use of Quick Replies in chat interactions.",
+  "summary": "ST Action Pickers is a SillyTavern extension that adds quality-of-life action pickers for quick replies. It adds a picker interface that lets users select quick reply actions directly in chat.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

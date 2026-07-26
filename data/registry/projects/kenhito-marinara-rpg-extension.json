@@ -3,7 +3,7 @@
   "id": "kenhito-marinara-rpg-extension",
   "name": "Marinara RPG Extension",
   "kind": "extension",
-  "summary": "Extension and documentation enabling basic ruleset editing within the Marinara Engine GM Mode frontend.",
+  "summary": "Marinara RPG Extension enables basic ruleset editing within the Marinara Engine's GM Mode. It provides accompanying documentation to help users customize RPG rulesets directly inside the engine interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

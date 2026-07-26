@@ -3,7 +3,7 @@
   "id": "hibanan-disable-global-lore",
   "name": "Disable Global Lore",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds a per-character toggle to exclude global lorebooks from the AI prompt context.",
+  "summary": "Disable Global Lore is a SillyTavern extension that adds a per-character toggle to exclude global lorebooks from prompt context. It enables finer control over which lore entries influence each character's conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1288823245
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

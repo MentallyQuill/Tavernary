@@ -3,7 +3,7 @@
   "id": "hexicy-st-characterpreview",
   "name": "ST CharacterPreview",
   "kind": "extension",
-  "summary": "Sillytavern extension that previews character details within the frontend interface for easier selection and review.",
+  "summary": "ST CharacterPreview is a SillyTavern extension that adds character preview functionality to the frontend. It displays character details directly within the SillyTavern interface for streamlined viewing.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
