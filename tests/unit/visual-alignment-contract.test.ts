@@ -30,21 +30,30 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("gives desktop Kit inspection one bounded project scroll", () => {
+  test("gives desktop Kit inspection one narrow body scroll", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
 
-    expect(css).toMatch(
-      /\.kit-builder-panel-inspect\s*\{[^}]*grid-template-rows:\s*auto minmax\(0,\s*1fr\)[^}]*min-height:\s*0/s,
+    expect(css).toContain(
+      "--kit-builder-expanded-width: clamp(280px, 22vw, 340px)",
     );
     expect(css).toMatch(
-      /\.kit-project-stack\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
+      /\.kit-builder-panel\s*\{[^}]*--kit-builder-content-inset:\s*12px[^}]*padding:\s*18px var\(--kit-builder-content-inset\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel\[data-mode="inspect"\] \.kit-builder-panel-body\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-stack\s*\{[^}]*padding:\s*0[^}]*overflow:\s*visible/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel\[data-mode="inspect"\]\s*\.kit-builder-panel-body::-webkit-scrollbar\s*\{[^}]*width:\s*6px/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-scroll-fade\s*\{[^}]*pointer-events:\s*none/s,
     );
     expect(responsive).toMatch(
-      /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
-    );
-    expect(css).toMatch(
-      /\.kit-builder-panel-inspect-header > p\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+      /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*auto[^}]*min-width:\s*0/s,
     );
     expect(css).toMatch(
       /\.kit-card-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
@@ -65,6 +74,32 @@ describe("catalog visual alignment", () => {
     );
     expect(css).not.toMatch(
       /\.kit-project-card-unavailable\s*\{[^}]*opacity:\s*(?!0(?:;|\s*\}))/s,
+    );
+  });
+
+  test("aligns the inspector summary and administrative controls", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-builder-inspect-heading h2\s*\{[^}]*font-size:\s*17px[^}]*font-weight:\s*720[^}]*letter-spacing:\s*-0\.02em[^}]*line-height:\s*1\.3/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-inspect-identity small\s*\{[^}]*font-size:\s*10px[^}]*font-weight:\s*500/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-inspect-description\s*\{[^}]*overflow:\s*hidden[^}]*-webkit-line-clamp:\s*4/s,
+    );
+    expect(css).toMatch(
+      /@media \(min-width:\s*761px\)[\s\S]*?\.kit-builder-inspect-description\s*\{[^}]*font-size:\s*11px[^}]*line-height:\s*1\.48/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel-primary-actions\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel-admin-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-withdrawal-action\s*\{[^}]*border-color:\s*var\(--color-danger-border\)[^}]*color:\s*var\(--color-danger-text\)/s,
     );
   });
 

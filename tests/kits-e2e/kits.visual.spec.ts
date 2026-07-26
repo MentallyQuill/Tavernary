@@ -229,15 +229,40 @@ test("large Kit inspector stays visually coherent after stack scrolling", async 
   await openKits(page, { width: 1440, height: 800 });
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const panel = page.locator(".kit-builder-panel");
-  const stack = panel.locator(".kit-project-stack");
-  await stack.evaluate((element) => {
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const body = panel.locator(".kit-builder-panel-body");
+  await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
+    element.dispatchEvent(new Event("scroll"));
   });
   await expect(
-    stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
+    panel.getByRole("link", { name: "Fixture Tool 49", exact: true }),
   ).toBeInViewport();
   await expect(panel).toHaveScreenshot("large-kit-inspector-scrolled.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit inspector Report link has button affordance", async ({ page }) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  await panel.getByRole("link", { name: "Report Kit" }).hover();
+  await expect(panel).toHaveScreenshot("kit-inspector-report-hover.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit inspector withdrawal link has restrained danger affordance", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  await panel.getByRole("link", { name: "Request withdrawal" }).hover();
+  await expect(panel).toHaveScreenshot("kit-inspector-withdrawal-hover.png", {
     animations: "disabled",
   });
 });

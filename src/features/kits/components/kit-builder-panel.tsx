@@ -14,6 +14,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
@@ -85,6 +86,7 @@ export function KitBuilderPanel({
   const [discardOpen, setDiscardOpen] = useState(false);
   const { phone } = useResponsiveCapabilities();
   const workspaceRef = useRef<HTMLElement>(null);
+  const panelBodyRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const discardRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
@@ -112,6 +114,13 @@ export function KitBuilderPanel({
           draftCount: state.draft.projectIds.length,
         })
       : null;
+  const inspectScrollActive =
+    !phone && state.mode === "inspect" && kit !== null;
+  const scrollBoundaries = useScrollBoundaries(
+    panelBodyRef,
+    inspectScrollActive,
+    `${state.mode}:${kit?.id ?? "none"}:${kit?.components.length ?? 0}`,
+  );
   const openCollapsedBuilder = () => {
     const activeElement = document.activeElement;
     if (activeElement instanceof HTMLElement) {
@@ -292,138 +301,187 @@ export function KitBuilderPanel({
           </Tooltip>
         )}
       </header>
-      <div className="kit-builder-panel-body">
-        {state.mode === "intro" ? (
-          <div className="kit-builder-panel-intro">
-            <h2>Build and inspect Kits</h2>
-            <p>
-              Select a Kit to inspect its ordered stack, or create a transient
-              draft.
-            </p>
-            <button
-              type="button"
-              className="control-primary"
-              onClick={onStartCreate}
-            >
-              Create new Kit
-            </button>
-          </div>
-        ) : state.mode === "inspect" && !kit ? (
-          <div className="kit-builder-panel-intro">
-            <h2>Unknown Kit</h2>
-            <p>The selected Kit is no longer available in this catalog.</p>
-          </div>
-        ) : state.mode === "inspect" && kit ? (
-          <div className="kit-builder-panel-inspect">
-            <div className="kit-builder-panel-inspect-header">
-              <header>
-                <h2>{kit.title}</h2>
-                <p>@{kit.author.login}</p>
-              </header>
-              <p>{kit.description}</p>
-              <div className="kit-builder-panel-actions">
-                <button
-                  type="button"
-                  className="control-secondary"
-                  onClick={() => onDuplicate?.(kit)}
+      <div
+        className="kit-builder-panel-body-frame"
+        data-can-scroll-up={scrollBoundaries.canScrollUp ? "true" : undefined}
+        data-can-scroll-down={
+          scrollBoundaries.canScrollDown ? "true" : undefined
+        }
+      >
+        <div ref={panelBodyRef} className="kit-builder-panel-body">
+          {state.mode === "intro" ? (
+            <div className="kit-builder-panel-intro">
+              <h2>Build and inspect Kits</h2>
+              <p>
+                Select a Kit to inspect its ordered stack, or create a transient
+                draft.
+              </p>
+              <button
+                type="button"
+                className="control-primary"
+                onClick={onStartCreate}
+              >
+                Create new Kit
+              </button>
+            </div>
+          ) : state.mode === "inspect" && !kit ? (
+            <div className="kit-builder-panel-intro">
+              <h2>Unknown Kit</h2>
+              <p>The selected Kit is no longer available in this catalog.</p>
+            </div>
+          ) : state.mode === "inspect" && kit ? (
+            <div className="kit-builder-panel-inspect">
+              <div className="kit-builder-panel-inspect-header">
+                <section
+                  className="kit-builder-inspect-summary"
+                  aria-labelledby={`${kit.id}-inspect-title`}
                 >
-                  <CategoryIcon name="duplicate" />
-                  Duplicate
-                </button>
-                <button
-                  type="button"
-                  className="control-secondary"
-                  onClick={() => onEdit?.(kit)}
+                  {phone ? (
+                    <header>
+                      <h2 id={`${kit.id}-inspect-title`}>{kit.title}</h2>
+                      <p>@{kit.author.login}</p>
+                    </header>
+                  ) : (
+                    <header className="kit-builder-inspect-heading">
+                      <CategoryIcon name="kit" />
+                      <span className="kit-builder-inspect-identity">
+                        <h2 id={`${kit.id}-inspect-title`}>{kit.title}</h2>
+                        <small>@{kit.author.login}</small>
+                      </span>
+                      <b className="kit-project-count-tag">
+                        {kit.components.length}{" "}
+                        {kit.components.length === 1 ? "Project" : "Projects"}
+                      </b>
+                    </header>
+                  )}
+                  <p className="kit-builder-inspect-description">
+                    {kit.description}
+                  </p>
+                </section>
+                <div className="kit-builder-panel-actions">
+                  <div className="kit-builder-panel-primary-actions">
+                    <button
+                      type="button"
+                      className="control-secondary"
+                      onClick={() => onDuplicate?.(kit)}
+                    >
+                      <CategoryIcon name="duplicate" />
+                      Duplicate
+                    </button>
+                    <button
+                      type="button"
+                      className="control-secondary"
+                      onClick={() => onEdit?.(kit)}
+                    >
+                      Edit
+                    </button>
+                    <Tooltip
+                      id={`${tooltipId}-copy-kit-link-tooltip`}
+                      label="Copy a direct link to this Kit"
+                      className="control-tooltip"
+                    >
+                      <button
+                        type="button"
+                        className="control-secondary"
+                        aria-label="Copy link"
+                        onClick={() => void onCopyLink(kit.id)}
+                      >
+                        <CategoryIcon name="copy-link" />
+                        Copy link
+                      </button>
+                    </Tooltip>
+                  </div>
+                  <div className="kit-builder-panel-admin-actions">
+                    <a
+                      className="control-secondary"
+                      href={issueUrl("06-kit-report.yml", kit)}
+                      target="_blank"
+                    >
+                      <CategoryIcon name="report" />
+                      Report Kit
+                    </a>
+                    <a
+                      className="control-secondary kit-withdrawal-action"
+                      href={issueUrl("07-kit-withdrawal.yml", kit)}
+                      target="_blank"
+                    >
+                      Request withdrawal
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <section
+                className="kit-project-list"
+                aria-labelledby={`${kit.id}-project-list-heading`}
+              >
+                <h3
+                  id={`${kit.id}-project-list-heading`}
+                  className="kit-project-list-heading"
                 >
-                  Edit
-                </button>
+                  {phone
+                    ? `${kit.components.length} ${
+                        kit.components.length === 1 ? "Project" : "Projects"
+                      }`
+                    : "Projects"}
+                </h3>
+                <KitProjectStack components={kit.components} now={now} />
+              </section>
+            </div>
+          ) : state.mode === "build" ? (
+            <div className="kit-builder-panel-build">
+              <div className="kit-builder-panel-build-heading">
+                <h2>
+                  {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
+                </h2>
                 <Tooltip
-                  id={`${tooltipId}-copy-kit-link-tooltip`}
-                  label="Copy a direct link to this Kit"
+                  id={`${tooltipId}-discard-draft-tooltip`}
+                  label="Discard draft"
                   className="control-tooltip"
                 >
                   <button
+                    ref={discardRef}
                     type="button"
-                    className="control-secondary"
-                    aria-label="Copy link"
-                    onClick={() => void onCopyLink(kit.id)}
+                    className="control-icon kit-discard-trigger"
+                    aria-label="Discard draft"
+                    onClick={() => setDiscardOpen(true)}
                   >
-                    <CategoryIcon name="copy-link" />
-                    Copy link
+                    <CategoryIcon name="remove" />
                   </button>
                 </Tooltip>
-                <a
-                  className="control-quiet"
-                  href={issueUrl("06-kit-report.yml", kit)}
-                  target="_blank"
-                >
-                  Report Kit
-                </a>
-                <a
-                  className="control-quiet"
-                  href={issueUrl("07-kit-withdrawal.yml", kit)}
-                  target="_blank"
-                >
-                  Request withdrawal
-                </a>
               </div>
+              {omittedProjectCount > 0 ? (
+                <p className="kit-draft-restore-notice" role="status">
+                  {omittedProjectCount} saved{" "}
+                  {omittedProjectCount === 1 ? "project is" : "projects are"} no
+                  longer available and{" "}
+                  {omittedProjectCount === 1 ? "was" : "were"} removed from this
+                  draft.
+                </p>
+              ) : null}
+              <KitBuilder
+                draft={state.draft}
+                projects={projects}
+                originalProjectIds={originalProjectIds}
+                onUpdate={(patch) => onUpdateDraft?.(patch)}
+                onSubmit={() => onSubmitDraft?.()}
+              />
             </div>
-            <section
-              className="kit-project-list"
-              aria-labelledby={`${kit.id}-project-list-heading`}
-            >
-              <h3
-                id={`${kit.id}-project-list-heading`}
-                className="kit-project-list-heading"
-              >
-                {kit.components.length}{" "}
-                {kit.components.length === 1 ? "Project" : "Projects"}
-              </h3>
-              <KitProjectStack components={kit.components} now={now} />
-            </section>
-          </div>
-        ) : state.mode === "build" ? (
-          <div className="kit-builder-panel-build">
-            <div className="kit-builder-panel-build-heading">
-              <h2>
-                {state.draft.operation === "edit" ? "Edit Kit" : "Create Kit"}
-              </h2>
-              <Tooltip
-                id={`${tooltipId}-discard-draft-tooltip`}
-                label="Discard draft"
-                className="control-tooltip"
-              >
-                <button
-                  ref={discardRef}
-                  type="button"
-                  className="control-icon kit-discard-trigger"
-                  aria-label="Discard draft"
-                  onClick={() => setDiscardOpen(true)}
-                >
-                  <CategoryIcon name="remove" />
-                </button>
-              </Tooltip>
-            </div>
-            {omittedProjectCount > 0 ? (
-              <p className="kit-draft-restore-notice" role="status">
-                {omittedProjectCount} saved{" "}
-                {omittedProjectCount === 1 ? "project is" : "projects are"} no
-                longer available and{" "}
-                {omittedProjectCount === 1 ? "was" : "were"} removed from this
-                draft.
-              </p>
-            ) : null}
-            <KitBuilder
-              draft={state.draft}
-              projects={projects}
-              originalProjectIds={originalProjectIds}
-              onUpdate={(patch) => onUpdateDraft?.(patch)}
-              onSubmit={() => onSubmitDraft?.()}
-            />
-          </div>
-        ) : (
-          <div />
-        )}
+          ) : (
+            <div />
+          )}
+        </div>
+        {inspectScrollActive && scrollBoundaries.canScrollUp ? (
+          <span
+            className="kit-builder-scroll-fade kit-builder-scroll-fade-top"
+            aria-hidden="true"
+          />
+        ) : null}
+        {inspectScrollActive && scrollBoundaries.canScrollDown ? (
+          <span
+            className="kit-builder-scroll-fade kit-builder-scroll-fade-bottom"
+            aria-hidden="true"
+          />
+        ) : null}
       </div>
       {discardOpen && state.mode === "build" ? (
         <KitDiscardDialog

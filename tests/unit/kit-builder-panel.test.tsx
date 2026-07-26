@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   screen,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ComponentProps, useState } from "react";
@@ -647,34 +648,55 @@ describe("Kit Builder", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("separates the inspect header from its project list", () => {
+  test("renders a Kit-card-aligned inspect summary and accessible project list", () => {
     renderInspectPanel();
 
-    const builder = screen.getByRole("complementary", {
-      name: "Kit Builder",
-    });
-    expect(builder).toHaveAttribute("data-mode", "inspect");
-    expect(screen.getByRole("heading", { name: "4 Projects" })).toHaveClass(
+    const summary = document.querySelector(".kit-builder-inspect-summary");
+    expect(summary).not.toBeNull();
+    expect(summary?.querySelector("svg")).not.toBeNull();
+    expect(
+      within(summary as HTMLElement).getByRole("heading", {
+        name: "Story Kit",
+      }),
+    ).toBeVisible();
+    expect(within(summary as HTMLElement).getByText("@author")).toBeVisible();
+    expect(within(summary as HTMLElement).getByText("4 Projects")).toHaveClass(
+      "kit-project-count-tag",
+    );
+    expect(screen.getByRole("heading", { name: "Projects" })).toHaveClass(
       "kit-project-list-heading",
     );
     expect(screen.getByRole("list", { name: "Kit projects" })).toHaveClass(
       "kit-project-stack",
     );
-    expect(
-      screen
-        .getByRole("heading", { name: "Story Kit" })
-        .closest(".kit-builder-panel-inspect-header"),
-    ).not.toBeNull();
   });
 
-  test("maps inspect actions to shared control treatments", () => {
-    render(
-      <KitBuilderPanel
-        state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
-        kit={fixtureKit()}
-        onCollapse={() => undefined}
-      />,
+  test("exposes truthful desktop inspector scroll boundaries", () => {
+    renderInspectPanel();
+    const body = document.querySelector<HTMLElement>(".kit-builder-panel-body");
+    const frame = document.querySelector<HTMLElement>(
+      ".kit-builder-panel-body-frame",
     );
+    expect(body).not.toBeNull();
+    expect(frame).not.toBeNull();
+
+    Object.defineProperties(body!, {
+      clientHeight: { configurable: true, value: 300 },
+      scrollHeight: { configurable: true, value: 900 },
+      scrollTop: { configurable: true, writable: true, value: 0 },
+    });
+    fireEvent.scroll(body!);
+    expect(frame).not.toHaveAttribute("data-can-scroll-up");
+    expect(frame).toHaveAttribute("data-can-scroll-down", "true");
+
+    body!.scrollTop = 600;
+    fireEvent.scroll(body!);
+    expect(frame).toHaveAttribute("data-can-scroll-up", "true");
+    expect(frame).not.toHaveAttribute("data-can-scroll-down");
+  });
+
+  test("maps every inspect action to a visible control treatment", () => {
+    renderInspectPanel();
 
     for (const name of ["Duplicate", "Edit", "Copy link"]) {
       expect(screen.getByRole("button", { name })).toHaveClass(
@@ -682,11 +704,32 @@ describe("Kit Builder", () => {
       );
     }
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveClass(
-      "control-quiet",
+      "control-secondary",
     );
     expect(
       screen.getByRole("link", { name: "Request withdrawal" }),
-    ).toHaveClass("control-quiet");
+    ).toHaveClass("control-secondary", "kit-withdrawal-action");
+  });
+
+  test("preserves the current phone inspect summary", () => {
+    mockMatchMedia({ phone: true, touchLayout: true });
+    render(
+      <KitBuilderPanel
+        state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
+        kit={fixtureKit()}
+        now="2026-07-24T00:00:00.000Z"
+        onCopyLink={() => undefined}
+        onCollapse={() => undefined}
+      />,
+    );
+
+    expect(document.querySelector(".kit-builder-inspect-heading")).toBeNull();
+    expect(screen.getByRole("heading", { name: "Story Kit" })).toBeVisible();
+    expect(screen.getByText("@author")).toBeVisible();
+    expect(screen.getByRole("heading", { name: "4 Projects" })).toHaveClass(
+      "kit-project-list-heading",
+    );
+    expect(document.querySelector(".kit-project-count-tag")).toBeNull();
   });
 
   test("delegates inspect-mode copying and preserves action URLs", async () => {
