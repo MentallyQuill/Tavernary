@@ -25,6 +25,66 @@ async function selectProject(
   await page.getByRole("button", { name: `Add ${projectName} to Kit` }).click();
 }
 
+async function verifyFrontendDiscovery(
+  page: import("@playwright/test").Page,
+  phone: boolean,
+) {
+  await page.goto(sitePath());
+  if (phone) {
+    await page.getByRole("button", { name: "Browse categories" }).click();
+    await page.getByRole("button", { name: "Kits", exact: true }).click();
+    await page.getByRole("button", { name: "Create Kit" }).click();
+  } else {
+    await page.getByRole("button", { name: "Open Kit Builder" }).click();
+    await page.getByRole("button", { name: "Create new Kit" }).click();
+  }
+
+  const shortcut = page.getByRole("button", {
+    name: "Show Frontend cards",
+  });
+  await expect(shortcut).toContainText("Add a Frontend");
+  await expect(shortcut).toContainText("Choose one from the catalog cards");
+  const slot = page.locator(".kit-frontend-slot");
+  const slotBox = (await slot.boundingBox())!;
+  const shortcutBox = (await shortcut.boundingBox())!;
+  expect(shortcutBox.x).toBeGreaterThanOrEqual(slotBox.x);
+  expect(shortcutBox.y).toBeGreaterThanOrEqual(slotBox.y);
+  expect(shortcutBox.x + shortcutBox.width).toBeLessThanOrEqual(
+    slotBox.x + slotBox.width,
+  );
+  expect(shortcutBox.y + shortcutBox.height).toBeLessThanOrEqual(
+    slotBox.y + slotBox.height,
+  );
+  if (phone) await expectMobileTarget(shortcut);
+
+  await shortcut.click();
+  await expect(page).toHaveURL(/kind=frontend/);
+  if (phone) {
+    await expect(page).not.toHaveURL(/mode=kits/);
+    await page.getByRole("button", { name: "Close Kit Builder" }).click();
+    await expect(
+      page.getByRole("region", { name: "Project catalog" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Open filters" }).click();
+    const filters = page.getByRole("dialog", { name: "Filters" });
+    await expect(
+      filters.getByRole("checkbox", { name: "Frontend" }),
+    ).toBeChecked();
+    await filters.getByRole("button", { name: "Close filters" }).click();
+  } else {
+    await expect(
+      page.getByRole("checkbox", { name: "Frontend" }),
+    ).toBeChecked();
+  }
+
+  await expect(
+    page.getByRole("button", { name: "Remove Frontend" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
+  ).toBeVisible();
+}
+
 async function verifyUnifiedSelectionFlow(
   page: import("@playwright/test").Page,
   phone: boolean,
@@ -94,6 +154,34 @@ async function verifyUnifiedSelectionFlow(
     page.getByRole("button", { name: "Add Fixture Frontend to Kit" }),
   ).toBeVisible();
 }
+
+test("desktop Frontend discovery reveals the visible filter and card action", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await verifyFrontendDiscovery(page, false);
+
+  await selectProject(page, "Fixture Frontend");
+  await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
+  await expect(
+    page.getByRole("region", { name: "Frontend" }).getByRole("button", {
+      name: "Remove Fixture Frontend from Kit",
+    }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Remove Frontend" }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "Frontend" }),
+  ).not.toBeChecked();
+  await expect(page).not.toHaveURL(/kind=frontend/);
+});
+
+test("mobile Frontend discovery returns from Kits to the filtered cards", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await verifyFrontendDiscovery(page, true);
+});
 
 test("restores a browser-local draft and confirms before discarding it", async ({
   page,
