@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "aikohanasaki-sillytavern-bookmarks",
+  "name": "SillyTavern-Bookmarks",
+  "kind": "extension",
+  "summary": "No README file found.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "aikohanasaki/SillyTavern-Bookmarks",
+    "repository_id": 1064216842
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-26T19:31:37.707Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
