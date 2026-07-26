@@ -28,6 +28,11 @@ export interface ProjectSubmissionStateMarker {
   schema_version: 1;
   generated_title: string | null;
   status: ProjectSubmissionDecision["status"];
+  frontend_dependencies?: Array<{
+    name: string;
+    canonical_url: string;
+    repository: string;
+  }>;
 }
 
 export interface ProjectSubmissionTriageMutation {
