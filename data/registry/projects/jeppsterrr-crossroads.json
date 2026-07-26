@@ -1,0 +1,22 @@
+{
+  "schema_version": 4,
+  "id": "jeppsterrr-crossroads",
+  "name": "CrossRoads",
+  "kind": "frontend",
+  "summary": "CrossRoads is a frontend that brings CYOA-style branching choices to roleplay conversations. It provides selectable story options that let users guide the narrative direction during interactive sessions.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "jeppsterrr/CrossRoads",
+    "repository_id": 1310212816
+  },
+  "frontends": ["crossroads"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["prompt-engineering"],
+  "cataloged_at": "2026-07-26T19:32:33.792Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

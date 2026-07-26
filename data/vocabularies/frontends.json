@@ -1,9 +1,9 @@
 {
   "frontends": [
     {
-      "id": "sillytavern",
-      "label": "SillyTavern",
-      "description": "Works with the SillyTavern roleplay frontend."
+      "id": "crossroads",
+      "label": "CrossRoads",
+      "description": "Works with the CrossRoads roleplay frontend."
     },
     {
       "id": "lumiverse",
@@ -14,6 +14,11 @@
       "id": "marinara-engine",
       "label": "Marinara Engine",
       "description": "Works with the Marinara Engine roleplay frontend."
+    },
+    {
+      "id": "sillytavern",
+      "label": "SillyTavern",
+      "description": "Works with the SillyTavern roleplay frontend."
     },
     {
       "id": "sonder-engine",
