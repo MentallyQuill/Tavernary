@@ -1,0 +1,22 @@
+{
+  "schema_version": 4,
+  "id": "aikohanasaki-sillytavern-lorebookordering",
+  "name": "SillyTavern-LorebookOrdering",
+  "kind": "extension",
+  "summary": "Gives lorebook-level control over activation priority.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "aikohanasaki/SillyTavern-LorebookOrdering",
+    "repository_id": 1059754623
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-26T19:31:48.440Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
