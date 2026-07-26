@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
 
+import {
+  collapsedFrontendOptions,
+  frontendExpansionLabel,
+  initiallyVisibleFrontendOptions,
+} from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
 test.use({ viewport: { width: 390, height: 844 } });
@@ -110,14 +115,16 @@ test("expands canonical mobile frontends", async ({ page }) => {
   const group = page
     .getByRole("dialog", { name: "Filters" })
     .getByRole("group", { name: "Compatible frontend" });
-  await expect(group.getByLabel("Aikobots", { exact: true })).toBeVisible();
-  await expect(group.getByLabel("Lumiverse")).toBeVisible();
-  await expect(group.getByLabel("Marinara Engine")).toBeVisible();
-  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeHidden();
-  await expect(group.getByLabel("Sonder Engine")).toBeHidden();
-  await group.getByRole("button", { name: "Show 2 more" }).click();
-  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
-  await expect(group.getByLabel("Sonder Engine")).toBeVisible();
+  for (const { label } of initiallyVisibleFrontendOptions) {
+    await expect(group.getByLabel(label, { exact: true })).toBeVisible();
+  }
+  for (const { label } of collapsedFrontendOptions) {
+    await expect(group.getByLabel(label, { exact: true })).toBeHidden();
+  }
+  await group.getByRole("button", { name: frontendExpansionLabel }).click();
+  for (const { label } of collapsedFrontendOptions) {
+    await expect(group.getByLabel(label, { exact: true })).toBeVisible();
+  }
 });
 
 test("shows compact summaries without rendering mobile tooltips", async ({
