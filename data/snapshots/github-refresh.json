@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "mode": "incremental",
-  "started_at": "2026-07-26T00:04:22.956Z",
-  "completed_at": "2026-07-26T00:04:50.497Z",
+  "started_at": "2026-07-26T00:09:51.778Z",
+  "completed_at": "2026-07-26T00:10:19.342Z",
   "counts": {
     "total": 204,
     "checked": 204,
@@ -19,15 +19,15 @@
   "api": {
     "graphql_requests": 9,
     "graphql_points": 9,
-    "graphql_remaining": 4971,
+    "graphql_remaining": 4962,
     "rest_requests": 207
   },
-  "duration_ms": 27541,
+  "duration_ms": 27564,
   "project_timings": [
     {
       "project_id": "aikohanasaki-sillytavern-characterlocks",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -75,7 +75,7 @@
     {
       "project_id": "amousepad-lumibooks",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -189,7 +189,7 @@
     {
       "project_id": "bmen25124-sillytavern-character-creator",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -285,7 +285,7 @@
     {
       "project_id": "cierru-st-stepped-thinking",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -333,7 +333,7 @@
     {
       "project_id": "dangerdaza-dooms-enhancement-suite",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -465,7 +465,7 @@
     {
       "project_id": "hibanan-css-default-scoped",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -489,7 +489,7 @@
     {
       "project_id": "icefog72-sillytavern-everytextlineeditor",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -627,13 +627,13 @@
     {
       "project_id": "lukathehero-sillytavern-personatools",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "project_id": "maiky93-image-generation-suite",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -753,7 +753,7 @@
     {
       "project_id": "n0819-sonder-engine",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -795,7 +795,7 @@
     {
       "project_id": "p-e-w-sorcery",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -861,7 +861,7 @@
     {
       "project_id": "prolix-oc-lumiverse-xtimeline",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -933,7 +933,7 @@
     {
       "project_id": "sammcheese-sillytavern-discordia",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -987,7 +987,7 @@
     {
       "project_id": "sillyanonymous-sillytavern-ui-shortcuts",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1011,7 +1011,7 @@
     {
       "project_id": "sillytavern-sillytavern",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1047,7 +1047,7 @@
     {
       "project_id": "spicymarinara-sillytavern-lovense",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1137,7 +1137,7 @@
     {
       "project_id": "twitter-twemoji",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1173,7 +1173,7 @@
     {
       "project_id": "vibecoder9000-extension-tokenusage",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {

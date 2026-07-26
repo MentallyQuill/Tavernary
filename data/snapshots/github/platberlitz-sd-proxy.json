@@ -33,15 +33,15 @@
   "community": {
     "stargazers_count": 4,
     "forks_count": 1,
-    "subscribers_count": 0,
-    "aggregate": 5
+    "subscribers_count": 1,
+    "aggregate": 6
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T00:04:22.956Z",
+  "refreshed_at": "2026-07-26T00:09:51.778Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "web-flow", "type": "User" }],
-    "refreshed_at": "2026-07-26T00:04:22.956Z",
+    "refreshed_at": "2026-07-26T00:09:51.778Z",
     "stale_since": null
   }
 }
