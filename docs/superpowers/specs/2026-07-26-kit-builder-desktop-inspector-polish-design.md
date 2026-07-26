@@ -1,7 +1,7 @@
 # Kit Builder Desktop Inspector Polish Design
 
 **Date:** 2026-07-26  
-**Status:** Draft for written-spec review
+**Status:** Approved
 
 ## Summary
 
@@ -213,12 +213,12 @@ outer width.
 The project cards remain one column and retain the existing shared
 `ProjectCard` rendering and whole-card canonical link.
 
-### 5. Restyle the Kit summary with existing site typography
+### 5. Restyle the desktop Kit summary with existing site typography
 
-The inspected Kit summary receives dedicated classes instead of relying on the
-generic `.kit-builder-panel h2` and `.kit-builder-panel p` rules.
+The desktop inspected Kit summary receives dedicated classes instead of relying
+on the generic `.kit-builder-panel h2` and `.kit-builder-panel p` rules.
 
-Its hierarchy is:
+Its desktop hierarchy is:
 
 1. Kit icon;
 2. Kit title;
@@ -238,9 +238,13 @@ The summary uses the established Kit-card values:
 The summary remains an unboxed section of the sidebar. It must not become a
 card nested inside the Kit Builder surface.
 
-The project count moves into the summary tag. The project section begins after
-a normal divider or spacing break and retains an accessible **Projects**
-heading.
+On desktop, the project count moves into the summary tag. The project section
+begins after a normal divider or spacing break and retains an accessible
+**Projects** heading.
+
+On mobile, preserve the current title, author, description, and
+`{count} Projects` heading presentation. Do not add the desktop Kit icon or
+count tag to the mobile summary.
 
 ### 6. Give all actions button affordance
 
@@ -311,6 +315,8 @@ mobile sheet structure and scrolling must not change.
 - Existing full-screen dialog behavior remains unchanged.
 - Panel body continues to own scrolling.
 - Project stack remains overflow-visible.
+- Existing summary hierarchy, typography, and project-count heading remain
+  unchanged.
 - Safe-area padding, 44px touch targets, focus trapping, and close behavior
   remain unchanged.
 - No mobile snapshot changes except where the two newly button-styled
