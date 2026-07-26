@@ -3,7 +3,7 @@
   "id": "furitaocanon-sillytavern-personas",
   "name": "SillyTavern Personas",
   "kind": "extension",
-  "summary": "SillyTavern extension that organizes user personas into custom groups for streamlined character management.",
+  "summary": "SillyTavern Personas is a SillyTavern extension that lets users organize their personas into custom groups. It provides structured grouping options that simplify managing multiple persona profiles for roleplay sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -3,7 +3,7 @@
   "id": "datacat-run-datacat-sillytavern-browser",
   "name": "datacat SillyTavern Browser",
   "kind": "extension",
-  "summary": "Extension that lets users browse Data Cat content from within the SillyTavern frontend interface.",
+  "summary": "This SillyTavern extension enables browsing Data Cat content directly from within the frontend. It integrates external data browsing into the SillyTavern workflow through a dedicated interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

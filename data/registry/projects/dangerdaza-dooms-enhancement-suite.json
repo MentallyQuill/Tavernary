@@ -3,7 +3,7 @@
   "id": "dangerdaza-dooms-enhancement-suite",
   "name": "Doom's Enhancement Suite",
   "kind": "extension",
-  "summary": "Doom's Enhancement Suite is a SillyTavern extension with character tracking, lore library, TTS highlighting, and weather effects.",
+  "summary": "Doom's Enhancement Suite adds RPG elements to the SillyTavern interface. It includes character tracking, a lore library, TTS highlighting, portrait bars, and environmental effects like weather.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
