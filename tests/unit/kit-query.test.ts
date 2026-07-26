@@ -8,7 +8,7 @@ import {
 
 test("round-trips the retained Kit filters in stable order", () => {
   const query = parseCatalogQuery(
-    "?mode=kits&kit=story-kit-41&frontend=sillytavern&purpose=memory-retrieval&includes=recursion&minProjects=5&maxProjects=20&available=1&sort=updated",
+    "?mode=kits&kit=story-kit-41&frontend=sillytavern&purpose=memory-retrieval&model=claude&includes=recursion&minProjects=5&maxProjects=20&available=1&sort=updated",
   );
   expect(query).toMatchObject({
     mode: "kits",
@@ -16,12 +16,26 @@ test("round-trips the retained Kit filters in stable order", () => {
     kits: {
       frontends: ["sillytavern"],
       purposes: ["memory-retrieval"],
+      modelFamilies: ["claude"],
       includesProjectId: "recursion",
       minProjects: 5,
       maxProjects: 20,
       allComponentsAvailable: true,
       sort: "updated",
     },
+  });
+  expect(parseCatalogQuery(`?${serializeCatalogQuery(query)}`)).toEqual(query);
+});
+
+test("round-trips project model-family and completion-format filters", () => {
+  const query = parseCatalogQuery(
+    "?category=preset&model=claude&model=gemini&completion=chat-completion&completion=text-completion",
+  );
+
+  expect(query).toMatchObject({
+    category: "preset",
+    modelFamilies: ["claude", "gemini"],
+    completionFormats: ["chat-completion", "text-completion"],
   });
   expect(parseCatalogQuery(`?${serializeCatalogQuery(query)}`)).toEqual(query);
 });

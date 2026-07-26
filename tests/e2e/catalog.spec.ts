@@ -238,8 +238,15 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     page.getByText("Capabilities & characteristics", { exact: true }),
   ).toBeVisible();
-  await expect(page.locator(".metadata-options")).toHaveCSS("display", "flex");
-  await expect(page.locator(".metadata-filter-chip")).toHaveCount(10);
+  await expect(page.locator(".metadata-options").first()).toHaveCSS(
+    "display",
+    "flex",
+  );
+  await expect(page.getByText("Model family", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Completion format", { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".metadata-filter-chip")).toHaveCount(25);
 
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
@@ -249,6 +256,42 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     frontendFilters.getByLabel("SillyTavern", { exact: true }),
   ).toBeHidden();
+});
+
+test("filters Presets and Kits by model family with shareable state", async ({
+  page,
+}) => {
+  await page
+    .getByRole("button", { name: "System Presets", exact: true })
+    .click();
+  const presetModelGroup = page
+    .locator(".filter-panel")
+    .getByRole("group", { name: "Model family" });
+  await presetModelGroup.getByText("Claude", { exact: true }).click();
+  await expect(
+    presetModelGroup.getByLabel("Claude", { exact: true }),
+  ).toBeChecked();
+
+  await expect(page.getByRole("heading", { name: "6 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Wandlight", exact: true }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/model=claude/u);
+
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "6 projects" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  const kitModelGroup = page
+    .locator(".filter-panel")
+    .getByRole("group", { name: "Model family" });
+  await kitModelGroup.getByText("Claude", { exact: true }).click();
+  await expect(
+    kitModelGroup.getByLabel("Claude", { exact: true }),
+  ).toBeChecked();
+  await expect(
+    page.getByRole("heading", { name: "Ultimate Harry Potter", exact: true }),
+  ).toBeVisible();
 });
 
 test("collapses capabilities to four rows and keeps selections visible", async ({

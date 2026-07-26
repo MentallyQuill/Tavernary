@@ -51,6 +51,7 @@ const kit: CatalogKit = {
   updatedAt: "2026-07-01T00:00:00.000Z",
   frontends: [label("sillytavern")],
   purposes: [],
+  modelFamilies: [],
   components: [
     {
       projectId: project.id,

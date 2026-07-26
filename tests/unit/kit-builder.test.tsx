@@ -87,6 +87,7 @@ const kit: CatalogKit = {
   updatedAt: "2026-07-24T00:00:00.000Z",
   frontends: [],
   purposes: [],
+  modelFamilies: [],
   components: projects.slice(0, 3).map((entry) => ({
     projectId: entry.id,
     name: entry.name,

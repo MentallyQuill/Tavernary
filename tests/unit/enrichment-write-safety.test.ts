@@ -8,7 +8,7 @@ import { expect, test } from "vitest";
 import { writeEnrichedRecord } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
-  schema_version: 4,
+  schema_version: 5,
   id: "fixture",
   name: "Fixture",
   kind: "extension",

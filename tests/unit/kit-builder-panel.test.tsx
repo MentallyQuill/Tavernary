@@ -127,6 +127,8 @@ function fixtureProject({
             version: "1.0.0",
             publishedAt: "2026-07-24T00:00:00.000Z",
             artifactSizeBytes: 1024,
+            modelFamilies: [],
+            completionFormats: [],
           }
         : null,
     refreshedAt: "2026-07-24T00:00:00.000Z",
@@ -145,6 +147,7 @@ function fixtureKit(): CatalogKit {
     updatedAt: "2026-07-24T00:00:00.000Z",
     frontends: [],
     purposes: [],
+    modelFamilies: [],
     components: [
       {
         projectId: "frontend",
