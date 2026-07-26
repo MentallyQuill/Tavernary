@@ -100,7 +100,7 @@ const NAMED_COLOR_EXPRESSION = new RegExp(
 const COLOR_PROPERTY =
   "(?:color|background(?:-color)?|border(?:-(?:top|right|bottom|left))?(?:-color)?|outline(?:-color)?|box-shadow|text-shadow|fill|stroke|stop-color|flood-color|lighting-color|text-decoration-color|caret-color|accent-color|column-rule-color|backgroundColor|borderColor|outlineColor|boxShadow|textShadow|stopColor|floodColor|lightingColor|textDecorationColor|caretColor|accentColor|columnRuleColor)";
 const COLOR_DECLARATION_EXPRESSION = new RegExp(
-  `\\b${COLOR_PROPERTY}\\s*:\\s*([^;}\\n]+)`,
+  `(?:\\b${COLOR_PROPERTY}|--[\\w-]+)\\s*:\\s*([^;}\\n]+)`,
   "gi",
 );
 const COLOR_ATTRIBUTE_EXPRESSION =

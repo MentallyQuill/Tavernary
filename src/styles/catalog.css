@@ -1106,7 +1106,7 @@
 }
 
 .card-state-note::before {
-  content: "â€¢ ";
+  content: "• ";
 }
 
 .card-summary {
@@ -1484,8 +1484,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border-color: var(--color-functional);
-  color: var(--color-functional);
+  border-color: var(--color-warning-border);
+  color: var(--color-warning-text);
 }
 
 .kit-caution svg,
@@ -1822,7 +1822,9 @@
   width: 36px;
   height: 36px;
   flex: 0 0 auto;
-  color: var(--color-frontend);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
 }
 
 .kit-discard-trigger svg {
@@ -1877,8 +1879,23 @@
 }
 
 .kit-discard-confirm {
-  border-color: var(--color-frontend);
-  background: var(--color-frontend);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+}
+
+.kit-discard-trigger:is(:hover, :focus-visible),
+.kit-discard-confirm:is(:hover, :focus-visible) {
+  border-color: var(--color-danger);
+  color: var(--color-danger-text);
+  background: var(--color-danger-border);
+}
+
+.kit-discard-trigger:active,
+.kit-discard-confirm:active {
+  border-color: var(--color-danger);
+  color: var(--color-text-inverse);
+  background: var(--color-danger);
 }
 
 .kit-builder-panel p {
@@ -2258,13 +2275,13 @@
 
 .kit-frontend-slot[data-drop-state="valid"],
 .kit-builder-stack[data-drop-state="valid"] {
-  outline: 2px solid var(--color-preset);
+  outline: 2px solid var(--color-success);
   outline-offset: 2px;
 }
 
 .kit-frontend-slot[data-drop-state="invalid"],
 .kit-builder-stack[data-drop-state="invalid"] {
-  outline: 2px solid var(--color-functional);
+  outline: 2px solid var(--color-danger);
   outline-offset: 2px;
 }
 
@@ -2364,13 +2381,21 @@
   align-items: center;
   gap: 8px;
   padding: 9px;
-  border: 1px solid var(--color-preset);
+  border: 1px solid var(--color-functional);
   border-radius: 7px;
   color: var(--color-text-primary);
   background: var(--color-bg-surface-raised);
   pointer-events: none;
   transition: none;
   will-change: transform;
+}
+
+.kit-drag-ghost[data-kind="frontend"] {
+  border-color: var(--color-frontend);
+}
+
+.kit-drag-ghost[data-kind="preset"] {
+  border-color: var(--color-preset);
 }
 
 .kit-drag-ghost-handle {
@@ -2391,8 +2416,16 @@
 }
 
 .kit-drag-ghost-identity small {
-  color: var(--color-functional);
+  color: var(--color-functional-text);
   font-size: 11px;
+}
+
+.kit-drag-ghost[data-kind="frontend"] .kit-drag-ghost-identity small {
+  color: var(--color-frontend-text);
+}
+
+.kit-drag-ghost[data-kind="preset"] .kit-drag-ghost-identity small {
+  color: var(--color-preset-text);
 }
 
 .kit-builder[data-drag-intent="remove"] .dragging {

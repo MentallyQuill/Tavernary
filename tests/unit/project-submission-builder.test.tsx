@@ -82,6 +82,39 @@ test("submits multiple current frontend identities in the manifest", async () =>
   );
 });
 
+test("exposes a successful GitHub handoff as a success status", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/frontend",
+  );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  const status = await screen.findByRole("status");
+  expect(status).toHaveTextContent("GitHub opened with your submission.");
+  expect(status).toHaveAttribute("data-status", "success");
+});
+
+test("exposes a failed GitHub handoff as an error alert", async () => {
+  openProjectSubmission.mockRejectedValueOnce(new Error("popup failed"));
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/frontend",
+  );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  const status = await screen.findByRole("alert");
+  expect(status).toHaveTextContent(
+    "Tavernary could not open GitHub. Please try again.",
+  );
+  expect(status).toHaveAttribute("data-status", "error");
+});
+
 test("blocks a non-HTTPS Frontend source before GitHub handoff", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);

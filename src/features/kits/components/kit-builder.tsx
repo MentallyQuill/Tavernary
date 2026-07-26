@@ -305,6 +305,7 @@ export function KitBuilder({
         ? createPortal(
             <div
               className="kit-drag-ghost"
+              data-kind={projectsById.get(drag.dragState.projectId)?.kind}
               aria-hidden="true"
               style={{
                 width: drag.dragState.sourceRect?.width,

@@ -68,6 +68,8 @@ test("ignores color syntax in comments and asset URLs", () => {
   const source = [
     "/* #fff rgb(0 0 0) opacity:.5 */",
     '.hero{background:url("/assets/red-banner.png")}',
+    ':root{--hero-image:url("/assets/red-banner.png")}',
+    "/* :root{--documented-color:red} */",
   ].join("\n");
 
   expect(auditSource("src/styles/example.css", source)).toEqual([]);
@@ -90,6 +92,10 @@ test.each([
   ["rgb", ".x{color:rgb(7 24 29 / .96)}"],
   ["rgba", ".x{box-shadow:0 0 2px rgba(0,0,0,.4)}"],
   ["named color", ".x{color:white}"],
+  [
+    "named color hidden behind a custom property",
+    ":root{--rogue:red}.x{color:var(--rogue)}",
+  ],
   ["extra color mix", ".x{color:color-mix(in srgb,red 50%,blue)}"],
   ["partial opacity", ".x{opacity:.5}"],
   ["SVG partial opacity", '<path opacity=".5" />'],

@@ -106,6 +106,9 @@ export function ProjectSubmissionBuilder({
   const [frontendIndependent, setFrontendIndependent] = useState(false);
   const [errors, setErrors] = useState<SubmissionError[]>([]);
   const [status, setStatus] = useState("");
+  const [statusKind, setStatusKind] = useState<"success" | "error" | null>(
+    null,
+  );
   const [submitting, setSubmitting] = useState(false);
 
   const filteredFrontends = useMemo(() => {
@@ -205,6 +208,7 @@ export function ProjectSubmissionBuilder({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("");
+    setStatusKind(null);
     const manifest = buildManifest();
     if (!manifest) return;
 
@@ -219,8 +223,10 @@ export function ProjectSubmissionBuilder({
           ? "GitHub opened with your submission."
           : "GitHub opened. Paste the copied manifest into the form.",
       );
+      setStatusKind("success");
     } catch {
       setStatus("Tavernary could not open GitHub. Please try again.");
+      setStatusKind("error");
     } finally {
       setSubmitting(false);
     }
@@ -239,6 +245,7 @@ export function ProjectSubmissionBuilder({
               setFrontendIndependent(false);
               setErrors([]);
               setStatus("");
+              setStatusKind(null);
             }}
           >
             <option value="frontend">Frontend</option>
@@ -501,7 +508,18 @@ export function ProjectSubmissionBuilder({
           submitting it.
         </p>
       </div>
-      <p className="submission-status" aria-live="polite">
+      <p
+        className="submission-status"
+        data-status={statusKind ?? undefined}
+        role={
+          statusKind === "success"
+            ? "status"
+            : statusKind === "error"
+              ? "alert"
+              : undefined
+        }
+        aria-live="polite"
+      >
         {status}
       </p>
     </form>

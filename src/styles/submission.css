@@ -30,7 +30,7 @@
 
 .submission-kicker {
   margin: 0 0 8px;
-  color: var(--color-preset);
+  color: var(--color-accent-teal);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -290,6 +290,14 @@
   min-height: 1.5em;
   margin: 0;
   color: var(--color-info-text);
+}
+
+.submission-status[data-status="success"] {
+  color: var(--color-success-text);
+}
+
+.submission-status[data-status="error"] {
+  color: var(--color-danger-text);
 }
 
 .submission-fallback {

@@ -1083,6 +1083,7 @@ describe("Kit builder controls", () => {
     expect(container.querySelector(".kit-drag-ghost")).toBeNull();
     const ghost = document.body.querySelector(".kit-drag-ghost") as HTMLElement;
     expect(ghost).toHaveStyle({ width: "200px", height: "60px" });
+    expect(ghost).toHaveAttribute("data-kind", "extension");
   });
 
   test("opens a card-sized physical gap at the reorder target", () => {

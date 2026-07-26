@@ -13,6 +13,7 @@ const graphiteTeal = {
   tealBorder: "rgb(40, 99, 94)",
   tealText: "rgb(140, 233, 222)",
   frontend: "rgb(214, 40, 57)",
+  frontendBackground: "rgb(53, 24, 31)",
   preset: "rgb(87, 197, 163)",
   functional: "rgb(225, 138, 36)",
   focusRing: "rgb(94, 234, 212)",
@@ -25,6 +26,9 @@ const graphiteTeal = {
   secondaryBackground: "rgb(28, 40, 46)",
   secondaryHover: "rgb(38, 54, 61)",
   secondaryText: "rgb(230, 237, 243)",
+  disabledBackground: "rgb(23, 31, 35)",
+  disabledBorder: "rgb(34, 48, 56)",
+  disabledText: "rgb(95, 107, 114)",
   surface: "rgb(24, 34, 40)",
   surfaceHover: "rgb(34, 49, 56)",
   activityCurrent: "rgb(45, 212, 191)",
@@ -44,6 +48,13 @@ const graphiteTeal = {
   infoBackground: "rgb(22, 43, 69)",
   infoBorder: "rgb(49, 95, 145)",
   infoText: "rgb(121, 192, 255)",
+  success: "rgb(63, 185, 80)",
+  successText: "rgb(126, 231, 135)",
+  warningBorder: "rgb(122, 91, 24)",
+  warningText: "rgb(227, 179, 65)",
+  danger: "rgb(248, 81, 73)",
+  dangerBackground: "rgb(61, 27, 31)",
+  dangerBorder: "rgb(140, 47, 53)",
   dangerText: "rgb(255, 123, 114)",
   muted: "rgb(130, 144, 153)",
 } as const;
@@ -99,6 +110,90 @@ test("desktop catalog applies graphite surfaces and teal interaction roles", asy
   );
 });
 
+test("catalog state notes render a real Unicode bullet", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+
+  const note = page.locator(".card-state-note").first();
+  await expect(note).toBeVisible();
+  await expect(
+    note.evaluate((element) => getComputedStyle(element, "::before").content),
+  ).resolves.toBe('"• "');
+});
+
+test("flagged Kit cautions use the warning family", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.evaluate(() => {
+    const badges = document.createElement("div");
+    badges.className = "kit-card-badges";
+    badges.innerHTML =
+      '<b class="kit-caution" data-theme-test="kit-caution">Contains flagged projects</b>';
+    document.body.append(badges);
+  });
+
+  const caution = page.locator('[data-theme-test="kit-caution"]');
+  await expectStyle(caution, "border-top-color", graphiteTeal.warningBorder);
+  await expectStyle(caution, "color", graphiteTeal.warningText);
+});
+
+test("Kit drop targets distinguish valid and invalid status families", async ({
+  page,
+}) => {
+  await page.goto(sitePath());
+  await page.evaluate(() => {
+    const fixture = document.createElement("div");
+    fixture.innerHTML = `
+      <div class="kit-frontend-slot" data-drop-state="valid" data-theme-test="valid-drop"></div>
+      <div class="kit-frontend-slot" data-drop-state="invalid" data-theme-test="invalid-drop"></div>
+    `;
+    document.body.append(fixture);
+  });
+
+  await expectStyle(
+    page.locator('[data-theme-test="valid-drop"]'),
+    "outline-color",
+    graphiteTeal.success,
+  );
+  await expectStyle(
+    page.locator('[data-theme-test="invalid-drop"]'),
+    "outline-color",
+    graphiteTeal.danger,
+  );
+});
+
+test("Kit drag ghosts preserve the dragged project kind", async ({ page }) => {
+  await page.goto(sitePath());
+  await page.evaluate(() => {
+    const fixture = document.createElement("div");
+    fixture.innerHTML = `
+      <div class="kit-drag-ghost" data-kind="frontend"><span class="kit-drag-ghost-identity"><small>Frontend</small></span></div>
+      <div class="kit-drag-ghost" data-kind="preset"><span class="kit-drag-ghost-identity"><small>Preset</small></span></div>
+      <div class="kit-drag-ghost" data-kind="extension"><span class="kit-drag-ghost-identity"><small>Extension</small></span></div>
+    `;
+    document.body.append(fixture);
+  });
+
+  const frontend = page.locator('.kit-drag-ghost[data-kind="frontend"]');
+  await expectStyle(frontend, "border-top-color", graphiteTeal.frontend);
+  await expectStyle(
+    frontend.locator("small"),
+    "color",
+    graphiteTeal.frontendText,
+  );
+
+  const preset = page.locator('.kit-drag-ghost[data-kind="preset"]');
+  await expectStyle(preset, "border-top-color", graphiteTeal.preset);
+  await expectStyle(preset.locator("small"), "color", graphiteTeal.presetText);
+
+  const extension = page.locator('.kit-drag-ghost[data-kind="extension"]');
+  await expectStyle(extension, "border-top-color", graphiteTeal.functional);
+  await expectStyle(
+    extension.locator("small"),
+    "color",
+    graphiteTeal.functionalText,
+  );
+});
+
 for (const viewport of [
   { name: "desktop", width: 1440, height: 1000 },
   { name: "mobile", width: 390, height: 844 },
@@ -127,6 +222,42 @@ for (const viewport of [
     );
   });
 }
+
+test("discard controls retain danger styling through interaction states", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
+  await page.getByRole("button", { name: "Create new Kit" }).click();
+
+  const trigger = page.getByRole("button", { name: "Discard draft" });
+  await expectStyle(trigger, "background-color", graphiteTeal.dangerBackground);
+  await expectStyle(trigger, "border-top-color", graphiteTeal.dangerBorder);
+  await expectStyle(trigger, "color", graphiteTeal.dangerText);
+  await trigger.hover();
+  await expectStyle(trigger, "background-color", graphiteTeal.dangerBorder);
+  await expectStyle(trigger, "border-top-color", graphiteTeal.danger);
+
+  await trigger.click();
+  const confirm = page.getByRole("button", { name: "Discard Kit" });
+  await expectStyle(confirm, "background-color", graphiteTeal.dangerBackground);
+  await expectStyle(confirm, "border-top-color", graphiteTeal.dangerBorder);
+  await expectStyle(confirm, "color", graphiteTeal.dangerText);
+  await confirm.hover();
+  await expectStyle(confirm, "background-color", graphiteTeal.dangerBorder);
+  await expectStyle(confirm, "border-top-color", graphiteTeal.danger);
+
+  const box = await confirm.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await expectStyle(confirm, "background-color", graphiteTeal.danger);
+  await expectStyle(confirm, "border-top-color", graphiteTeal.danger);
+  await expectStyle(confirm, "color", graphiteTeal.canvas);
+  await page.mouse.up();
+});
 
 for (const viewport of [
   { name: "desktop", width: 1440, height: 1000 },
@@ -185,6 +316,126 @@ for (const viewport of [
     );
   });
 }
+
+test("generic page kickers use the teal interaction accent", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/about/"));
+  await expectStyle(
+    page.locator(".about-kicker"),
+    "color",
+    graphiteTeal.controlFocus,
+  );
+
+  await page.goto(sitePath("/submit/project/"));
+  await expectStyle(
+    page.locator(".submission-kicker"),
+    "color",
+    graphiteTeal.controlFocus,
+  );
+});
+
+test("submission inputs and textareas retain border focus plus the global ring", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/submit/project/"));
+
+  const projectUrl = page.getByRole("textbox", { name: "Project URL" });
+  await projectUrl.focus();
+  await expectStyle(projectUrl, "border-top-color", graphiteTeal.controlFocus);
+  await expectStyle(projectUrl, "outline-color", graphiteTeal.focusRing);
+
+  const description = page.getByRole("textbox", {
+    name: /Short Description/,
+  });
+  await description.focus();
+  await expectStyle(description, "border-top-color", graphiteTeal.controlFocus);
+  await expectStyle(description, "outline-color", graphiteTeal.focusRing);
+});
+
+test("project submission statuses use distinct semantic families", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/submit/project/"));
+  await page.evaluate(() => {
+    window.open = () => null;
+  });
+  await page
+    .getByRole("textbox", { name: "Project URL" })
+    .fill("https://github.com/example/frontend");
+  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+
+  const status = page.locator('.submission-status[data-status="success"]');
+  await expect(status).toHaveText("GitHub opened with your submission.");
+  await expectStyle(status, "color", graphiteTeal.successText);
+
+  await page.evaluate(() => {
+    window.open = () => {
+      throw new Error("popup blocked");
+    };
+  });
+  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  const error = page.locator('.submission-status[data-status="error"]');
+  await expect(error).toHaveText(
+    "Tavernary could not open GitHub. Please try again.",
+  );
+  await expectStyle(error, "color", graphiteTeal.dangerText);
+});
+
+test("project submission renders its complete graphite control treatment", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/submit/project/"));
+
+  await expectStyle(
+    page.locator(".submission-page"),
+    "background-color",
+    graphiteTeal.canvas,
+  );
+  await expectStyle(
+    page.locator(".submission-section").first(),
+    "background-color",
+    graphiteTeal.surface,
+  );
+  await expectStyle(
+    page.getByRole("textbox", { name: "Project URL" }),
+    "background-color",
+    graphiteTeal.controlBackground,
+  );
+
+  await page
+    .getByRole("combobox", { name: "Project Type" })
+    .selectOption("extension");
+  await page.locator(".submission-options input").first().click();
+  const chip = page.locator(".submission-chips button").first();
+  await expect(chip).toBeVisible();
+  await expectStyle(chip, "background-color", graphiteTeal.frontendBackground);
+  await expectStyle(chip, "border-top-color", graphiteTeal.frontendBorder);
+  await expectStyle(chip, "color", graphiteTeal.frontendText);
+
+  const submit = page.getByRole("button", { name: "Continue to GitHub" });
+  await expectStyle(submit, "background-color", graphiteTeal.primaryBackground);
+  await expectStyle(submit, "color", graphiteTeal.primaryText);
+  await submit.hover();
+  await expectStyle(submit, "background-color", graphiteTeal.primaryHover);
+  const box = await submit.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await expectStyle(submit, "background-color", graphiteTeal.primaryPressed);
+  await page.mouse.up();
+
+  await submit.evaluate((button) => {
+    button.setAttribute("disabled", "");
+  });
+  await expectStyle(
+    submit,
+    "background-color",
+    graphiteTeal.disabledBackground,
+  );
+  await expectStyle(submit, "border-top-color", graphiteTeal.disabledBorder);
+  await expectStyle(submit, "color", graphiteTeal.disabledText);
+});
 
 test("mobile category selection retains the teal navigation border", async ({
   page,
