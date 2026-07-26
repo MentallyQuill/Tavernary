@@ -7,6 +7,22 @@ const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
 describe("catalog visual alignment", () => {
+  test("locks Kit count and action motion", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-project-count-tag\s*\{[^}]*border-radius:\s*999px[^}]*white-space:\s*nowrap/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-action\s*\{[^}]*150ms[^}]*transform\s+150ms/s,
+    );
+    expect(css).toMatch(/\.kit-card-action:active\s*\{[^}]*scale\(0\.98\)/s);
+    expect(responsive).toMatch(
+      /\.kit-card-action:active[^}]*\{[^}]*transform:\s*none/s,
+    );
+  });
+
   test("uses Kit Builder module names", () => {
     expect(() =>
       read("src/features/kits/components/kit-builder-panel.tsx"),

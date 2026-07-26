@@ -334,15 +334,21 @@ export function KitBuilderPanel({
               >
                 Edit
               </button>
-              <button
-                type="button"
-                className="control-secondary"
-                aria-label="Copy link"
-                onClick={() => void onCopyLink(kit.id)}
+              <Tooltip
+                id={`${tooltipId}-copy-kit-link-tooltip`}
+                label="Copy a direct link to this Kit"
+                className="control-tooltip"
               >
-                <CategoryIcon name="copy-link" />
-                Copy link
-              </button>
+                <button
+                  type="button"
+                  className="control-secondary"
+                  aria-label="Copy link"
+                  onClick={() => void onCopyLink(kit.id)}
+                >
+                  <CategoryIcon name="copy-link" />
+                  Copy link
+                </button>
+              </Tooltip>
               <a
                 className="control-quiet"
                 href={issueUrl("06-kit-report.yml", kit)}

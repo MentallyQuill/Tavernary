@@ -497,6 +497,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .kit-card-action,
+  .kit-card-action:is(:hover, :focus-visible),
+  .kit-card-action:active {
+    transform: none;
+  }
+
   .project-card-shell,
   .project-card-shell:hover,
   .project-card-shell:focus-within,

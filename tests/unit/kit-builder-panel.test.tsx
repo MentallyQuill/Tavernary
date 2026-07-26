@@ -7,7 +7,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ComponentProps, useState } from "react";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import {
   availableBuilderHeight,
@@ -125,6 +125,18 @@ function fixtureKit(): CatalogKit {
   };
 }
 
+function renderInspectPanel() {
+  return render(
+    <KitBuilderPanel
+      state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
+      kit={fixtureKit()}
+      now="2026-07-24T00:00:00.000Z"
+      onCopyLink={() => undefined}
+      onCollapse={() => undefined}
+    />,
+  );
+}
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
@@ -135,7 +147,21 @@ afterEach(() => {
   });
 });
 
+beforeEach(() => mockMatchMedia({}));
+
 describe("Kit Builder", () => {
+  test("explains inspect-mode Copy link on hover and focus", async () => {
+    renderInspectPanel();
+    const copy = screen.getByRole("button", { name: "Copy link" });
+
+    await userEvent.hover(copy);
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Copy a direct link to this Kit",
+      }),
+    ).toBeVisible();
+  });
+
   test("keeps phone entry browse-first but opens explicit inspections", () => {
     mockMatchMedia({ phone: true, touchLayout: true });
     const { rerender } = render(

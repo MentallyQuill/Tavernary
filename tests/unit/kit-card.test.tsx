@@ -1,11 +1,28 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { KitCard } from "@/features/kits/components/kit-card";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
 const label = (id: string) => ({ id, label: id, description: id });
+const originalMatchMedia = window.matchMedia;
+
+function mockMatchMedia() {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn(() => ({
+      matches: false,
+      media: "",
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
 
 function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
   return {
@@ -38,7 +55,28 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
   };
 }
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: originalMatchMedia,
+  });
+});
+
+beforeEach(mockMatchMedia);
+
+function renderCard(value: CatalogKit = kit()) {
+  return render(
+    <KitCard
+      kit={value}
+      now="2026-07-24T00:00:00.000Z"
+      selected={false}
+      onSelect={() => undefined}
+      onCopyLink={() => undefined}
+      onReport={() => undefined}
+    />,
+  );
+}
 
 describe("Kit card", () => {
   test("renders compact metadata and sibling actions", async () => {
@@ -62,7 +100,9 @@ describe("Kit card", () => {
     ).toBeVisible();
     expect(screen.getByText("@example-author")).toBeVisible();
     expect(screen.getByText("12 supporters")).toBeVisible();
-    expect(screen.getByText("8 projects")).toBeVisible();
+    const count = screen.getByText("8 Projects");
+    expect(count).toHaveClass("kit-project-count-tag");
+    expect(screen.queryByText("8 projects")).not.toBeInTheDocument();
     expect(screen.getByText("Published 2d ago")).toBeVisible();
     const open = screen.getByRole("button", {
       name: "Open Long-Form Storyteller",
@@ -95,9 +135,37 @@ describe("Kit card", () => {
       />,
     );
 
-    expect(screen.getByText("Support unavailable")).toBeVisible();
+    expect(screen.queryByText("Support unavailable")).not.toBeInTheDocument();
+    expect(screen.queryByText(/supporter/)).not.toBeInTheDocument();
     expect(screen.getByText("Updated 1d ago")).toBeVisible();
     expect(screen.queryByText("Tavernary Pick")).not.toBeInTheDocument();
     expect(screen.getByText("Contains flagged projects")).toBeVisible();
+  });
+
+  test("uses singular project count copy", () => {
+    renderCard(kit({ components: [kit().components[0]] }));
+    expect(screen.getByText("1 Project")).toHaveClass("kit-project-count-tag");
+  });
+
+  test("explains Copy link and Report on hover and focus", async () => {
+    const user = userEvent.setup();
+    renderCard(kit());
+
+    const copy = screen.getByRole("button", { name: "Copy link" });
+    await user.hover(copy);
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Copy a direct link to this Kit",
+      }),
+    ).toBeVisible();
+
+    await user.unhover(copy);
+    const report = screen.getByRole("button", { name: "Report Kit" });
+    report.focus();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
+      ).toBeVisible();
+    });
   });
 });
