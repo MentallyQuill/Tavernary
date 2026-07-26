@@ -1,28 +1,28 @@
 {
   "schema_version": 1,
   "mode": "incremental",
-  "started_at": "2026-07-26T00:01:09.857Z",
-  "completed_at": "2026-07-26T00:01:43.108Z",
+  "started_at": "2026-07-26T00:02:48.937Z",
+  "completed_at": "2026-07-26T00:03:17.285Z",
   "counts": {
     "total": 204,
     "checked": 204,
     "changed": 204,
-    "unchanged": 203,
+    "unchanged": 204,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 1,
+    "compared": 0,
     "baseline": 0,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 9,
     "graphql_points": 9,
-    "graphql_remaining": 4989,
-    "rest_requests": 208
+    "graphql_remaining": 4980,
+    "rest_requests": 207
   },
-  "duration_ms": 33251,
+  "duration_ms": 28348,
   "project_timings": [
     {
       "project_id": "aikohanasaki-sillytavern-characterlocks",
@@ -33,13 +33,13 @@
     {
       "project_id": "aikohanasaki-sillytavern-memorybooks",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
       "project_id": "aikohanasaki-sillytavern-modelinjection",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -195,7 +195,7 @@
     {
       "project_id": "bmen25124-sillytavern-flowchart",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -219,7 +219,7 @@
     {
       "project_id": "bronya-rand-prome-vn-extension",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -339,7 +339,7 @@
     {
       "project_id": "datacat-run-datacat-sillytavern-browser",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -357,7 +357,7 @@
     {
       "project_id": "enclave0775-intiface-central-sillytavern-plugin",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -495,13 +495,13 @@
     {
       "project_id": "icefog72-sillytavern-probablytoomanytabs",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
       "project_id": "ikarusv-ikarusautoimage",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -627,7 +627,7 @@
     {
       "project_id": "lukathehero-sillytavern-personatools",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -639,7 +639,7 @@
     {
       "project_id": "mangkoodkung-another-universe",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -752,8 +752,8 @@
     },
     {
       "project_id": "n0819-sonder-engine",
-      "outcome": "compare-source",
-      "duration_ms": 430,
+      "outcome": "unchanged",
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -813,7 +813,7 @@
     {
       "project_id": "phampyk-sillytavern-avatarbanner",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -867,7 +867,7 @@
     {
       "project_id": "prolix-oc-sillytavern-simtracker",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -933,7 +933,7 @@
     {
       "project_id": "sammcheese-sillytavern-discordia",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -969,7 +969,7 @@
     {
       "project_id": "shadowtheimpure-sillytavern-character-card-generator",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1011,7 +1011,7 @@
     {
       "project_id": "sillytavern-sillytavern",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1023,7 +1023,7 @@
     {
       "project_id": "sillytavern-sillytavern-nicknames",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1101,7 +1101,7 @@
     {
       "project_id": "taezn-creator-notes-html-renderer",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1155,7 +1155,7 @@
     {
       "project_id": "valdoix-vellum-engine",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1221,7 +1221,7 @@
     {
       "project_id": "zapoverde-sillytavern-triggeryze",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
