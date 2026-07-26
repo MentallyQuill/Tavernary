@@ -3,6 +3,11 @@ import type {
   RefreshMode,
 } from "./github-refresh-manifest.mjs";
 
+export {
+  contributorSnapshotForFailure,
+  contributorSnapshotForSuccess,
+} from "./repository-snapshot.mjs";
+
 export function formatSnapshot(snapshot: unknown): Promise<string>;
 export function publishCandidates(
   input: { changedSnapshots: unknown[]; manifest: unknown },
@@ -39,17 +44,6 @@ export function repositoryIdentityChanged(
   record: { source: { repository_id: number | null } },
   observation: { repository: { id: number } },
 ): boolean;
-export function contributorSnapshotForSuccess(
-  accounts: Array<{ login: string; type: string }>,
-  now: string,
-): {
-  accounts: Array<{ login: string; type: string }>;
-  refreshed_at: string;
-  stale_since: null;
-};
-export function contributorSnapshotForFailure<
-  T extends { stale_since: string | null },
->(previous: T | undefined, now: string): T | undefined;
 export function runRefresh(options?: Record<string, unknown>): Promise<{
   selected: Array<{ id: string; [key: string]: unknown }>;
   snapshots: Array<{
