@@ -477,15 +477,13 @@ test("desktop Kit inspection keeps fixed actions reachable with a 600-character 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
 
   const panel = page.getByRole("complementary", { name: "Kit Builder" });
-  const description = panel.locator(".kit-builder-panel-inspect-header > p");
+  const description = panel.locator(".kit-builder-inspect-description");
   await description.evaluate((element) => {
     element.textContent = "Long Kit description ".repeat(30).slice(0, 600);
   });
 
   await expect(description).toHaveCSS("-webkit-line-clamp", "4");
-  await expect(
-    panel.getByRole("button", { name: "Copy link" }),
-  ).toBeInViewport();
+  await expect(panel.getByRole("link", { name: "Report Kit" })).toBeInViewport();
   await expect(
     panel.getByRole("link", { name: "Request withdrawal" }),
   ).toBeInViewport();
@@ -743,92 +741,70 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   await expect(flagged.locator("a")).toHaveCount(0);
 });
 
-test("scrolls a large desktop project stack under a fixed Kit header", async ({
+test("scrolls one desktop inspector body without a nested project scroll", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 800 });
   await openKits(page);
   await page.getByRole("button", { name: "Open Large Stack" }).click();
 
-  const panel = page.locator(".kit-builder-panel");
-  const header = panel.locator(".kit-builder-panel-header");
-  const actions = panel.locator(".kit-builder-panel-actions");
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const body = panel.locator(".kit-builder-panel-body");
   const stack = panel.locator(".kit-project-stack");
-  await expect(header).toBeVisible();
-  await expect(actions).toBeVisible();
-  const before = await panel.evaluate((element) => {
-    const headerElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-header",
+  const firstCard = stack.locator(".project-card").first();
+
+  await expect
+    .poll(() =>
+      panel.evaluate((element) => element.getBoundingClientRect().width),
+    )
+    .toBeCloseTo(316.8, 0);
+
+  const geometry = await panel.evaluate((element) => {
+    const body = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-body",
     );
-    const actionsElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-actions",
-    );
-    if (!headerElement || !actionsElement) {
-      throw new Error("Kit inspector chrome is missing");
+    const stack = element.querySelector<HTMLElement>(".kit-project-stack");
+    const card = stack?.querySelector<HTMLElement>(".project-card");
+    if (!body || !stack || !card) {
+      throw new Error("Kit inspector geometry is incomplete");
     }
     return {
-      actions: actionsElement.getBoundingClientRect().toJSON(),
-      header: headerElement.getBoundingClientRect().toJSON(),
-      viewport: {
-        bottom: window.innerHeight,
-        left: 0,
-        right: window.innerWidth,
-        top: 0,
-      },
+      bodyClientHeight: body.clientHeight,
+      bodyScrollHeight: body.scrollHeight,
+      cardWidth: card.getBoundingClientRect().width,
+      panelWidth: element.getBoundingClientRect().width,
+      stackClientHeight: stack.clientHeight,
+      stackScrollHeight: stack.scrollHeight,
     };
   });
-  for (const chrome of [before.header, before.actions]) {
-    expect(chrome.left).toBeGreaterThanOrEqual(before.viewport.left);
-    expect(chrome.right).toBeLessThanOrEqual(before.viewport.right);
-    expect(chrome.top).toBeGreaterThanOrEqual(before.viewport.top);
-    expect(chrome.bottom).toBeLessThanOrEqual(before.viewport.bottom);
-  }
-  const scroll = await stack.evaluate((element) => ({
-    clientHeight: element.clientHeight,
-    scrollHeight: element.scrollHeight,
-  }));
-  expect(scroll.scrollHeight).toBeGreaterThan(scroll.clientHeight);
 
-  await stack.evaluate((element) => {
+  expect(geometry.panelWidth).toBeCloseTo(316.8, 0);
+  expect(geometry.cardWidth).toBeGreaterThanOrEqual(280);
+  expect(geometry.bodyScrollHeight).toBeGreaterThan(
+    geometry.bodyClientHeight,
+  );
+  expect(geometry.stackScrollHeight).toBe(geometry.stackClientHeight);
+  await expect(firstCard).toBeVisible();
+
+  await body.evaluate((element) => {
     element.scrollTop = element.scrollHeight;
+    element.dispatchEvent(new Event("scroll"));
   });
+
   await expect(
     stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
   ).toBeInViewport();
   await expect(
     stack.getByRole("group", { name: "Fixture Flagged Tool unavailable" }),
   ).toBeVisible();
-  await expect(header).toBeVisible();
-  await expect(actions).toBeVisible();
-  const after = await panel.evaluate((element) => {
-    const headerElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-header",
-    );
-    const actionsElement = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-actions",
-    );
-    if (!headerElement || !actionsElement) {
-      throw new Error("Kit inspector chrome is missing after scrolling");
-    }
-    return {
-      actions: actionsElement.getBoundingClientRect().toJSON(),
-      header: headerElement.getBoundingClientRect().toJSON(),
-      viewport: {
-        bottom: window.innerHeight,
-        left: 0,
-        right: window.innerWidth,
-        top: 0,
-      },
-    };
-  });
-  for (const chrome of [after.header, after.actions]) {
-    expect(chrome.left).toBeGreaterThanOrEqual(after.viewport.left);
-    expect(chrome.right).toBeLessThanOrEqual(after.viewport.right);
-    expect(chrome.top).toBeGreaterThanOrEqual(after.viewport.top);
-    expect(chrome.bottom).toBeLessThanOrEqual(after.viewport.bottom);
-  }
-  expect(after.header.y).toBe(before.header.y);
-  expect(after.actions.y).toBe(before.actions.y);
+  await expect(panel.locator(".kit-builder-panel-header")).toBeVisible();
+  await expect(panel.locator(".kit-builder-panel-body-frame")).toHaveAttribute(
+    "data-can-scroll-up",
+    "true",
+  );
+  await expect(
+    panel.locator(".kit-builder-panel-body-frame"),
+  ).not.toHaveAttribute("data-can-scroll-down");
 });
 
 test("phone inspectors expose direct project links without horizontal overflow", async ({

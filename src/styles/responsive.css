@@ -377,6 +377,10 @@
     overflow-y: auto;
   }
 
+  .kit-builder-scroll-fade {
+    display: none;
+  }
+
   .kit-builder-panel-header,
   .kit-builder-panel-body-frame {
     width: auto;

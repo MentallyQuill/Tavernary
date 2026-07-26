@@ -30,27 +30,30 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("gives desktop Kit inspection one bounded project scroll", () => {
+  test("gives desktop Kit inspection one narrow body scroll", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
 
-    expect(css).toMatch(
-      /\.kit-builder-panel-inspect\s*\{[^}]*grid-template-rows:\s*auto minmax\(0,\s*1fr\)[^}]*min-height:\s*0/s,
+    expect(css).toContain(
+      "--kit-builder-expanded-width: clamp(280px, 22vw, 340px)",
     );
     expect(css).toMatch(
-      /\.kit-project-stack\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
-    );
-    expect(responsive).toMatch(
-      /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
+      /\.kit-builder-panel\s*\{[^}]*--kit-builder-content-inset:\s*12px[^}]*padding:\s*18px var\(--kit-builder-content-inset\)/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*calc\(var\(--kit-builder-expanded-width\) - 37px\)/s,
+      /\.kit-builder-panel\[data-mode="inspect"\] \.kit-builder-panel-body\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-stack\s*\{[^}]*padding:\s*0[^}]*overflow:\s*visible/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel\[data-mode="inspect"\]\s*\.kit-builder-panel-body::-webkit-scrollbar\s*\{[^}]*width:\s*6px/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-scroll-fade\s*\{[^}]*pointer-events:\s*none/s,
     );
     expect(responsive).toMatch(
       /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*auto[^}]*min-width:\s*0/s,
-    );
-    expect(css).toMatch(
-      /\.kit-builder-inspect-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
     );
     expect(css).toMatch(
       /\.kit-card-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
