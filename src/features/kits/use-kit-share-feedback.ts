@@ -27,15 +27,21 @@ export function useKitShareFeedback(): {
     }
   }, []);
 
-  useEffect(() => clearTimer, [clearTimer]);
+  useEffect(
+    () => () => {
+      sequence.current += 1;
+      clearTimer();
+    },
+    [clearTimer],
+  );
 
   const copy = useCallback(
     async (kitId: string) => {
-      clearTimer();
       sequence.current += 1;
       const current = sequence.current;
       const result = await copyKitLink(kitId);
       if (current !== sequence.current) return;
+      clearTimer();
       if (result === "fallback") {
         setFeedback({
           phase: "fallback",

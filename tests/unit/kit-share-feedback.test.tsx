@@ -70,6 +70,38 @@ test("repeated copy replaces the notice and restarts its timer", async () => {
   expect(screen.queryByRole("status")).not.toBeInTheDocument();
 });
 
+test("expires the prior success while a newer copy is pending", async () => {
+  vi.useFakeTimers();
+  let resolveSecondCopy: (() => void) | undefined;
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: {
+      writeText: vi
+        .fn()
+        .mockResolvedValueOnce(undefined)
+        .mockImplementationOnce(
+          () =>
+            new Promise<void>((resolve) => {
+              resolveSecondCopy = resolve;
+            }),
+        ),
+    },
+  });
+  render(<Harness />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+  await act(async () => undefined);
+  act(() => vi.advanceTimersByTime(1500));
+  fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+  await act(async () => undefined);
+
+  act(() => vi.advanceTimersByTime(500));
+  expect(screen.queryByRole("status")).not.toBeInTheDocument();
+
+  resolveSecondCopy?.();
+  await act(async () => undefined);
+});
+
 test("clipboard failure exposes and selects the share URL", async () => {
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
@@ -106,4 +138,30 @@ test("clears an active success timer on unmount", async () => {
   unmount();
 
   expect(clearTimeoutSpy).toHaveBeenCalled();
+});
+
+test("does not schedule feedback after unmount during a pending copy", async () => {
+  vi.useFakeTimers();
+  let resolveCopy: (() => void) | undefined;
+  const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: {
+      writeText: vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            resolveCopy = resolve;
+          }),
+      ),
+    },
+  });
+  const { unmount } = render(<Harness />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+  await act(async () => undefined);
+  unmount();
+  resolveCopy?.();
+  await act(async () => undefined);
+
+  expect(setTimeoutSpy).not.toHaveBeenCalled();
 });
