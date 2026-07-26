@@ -75,14 +75,15 @@ export default function AboutPage() {
           <h2>Projects remain independent</h2>
           <p>
             Tavernary links outward to creator-owned repositories and source
-            pages. It does not host, mirror, redistribute, or install project
+            pages. It does not host, mirror, redistribute, or maintain project
             files. Creators remain responsible for their own releases,
-            documentation, licenses, and support, and inclusion is not an
-            endorsement or guarantee.
+            documentation, licenses, and support.
           </p>
           <p>
-            If you have made something for the community, you can add it to the
-            catalog and help make the next discovery easier for someone else.
+            If you've made something for the community, or know of a killer 
+            extension, prompt, or frontend that isn't on Tavernary, you can add 
+            it to the catalog and help make the next discovery easier for someone 
+            else.
           </p>
         </section>
 
