@@ -37,24 +37,24 @@
     "evidence_head_sha": "5f7f5478d9fd2c2470210eb3b27240a365fd5bae"
   },
   "community": {
-    "stargazers_count": 42,
+    "stargazers_count": 43,
     "forks_count": 5,
     "subscribers_count": 1,
-    "aggregate": 48
+    "aggregate": 49
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T00:02:48.937Z",
+  "refreshed_at": "2026-07-26T00:04:22.956Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "N0819", "type": "User" },
       { "login": "DonBananas", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T00:02:48.937Z",
+    "refreshed_at": "2026-07-26T00:04:22.956Z",
     "stale_since": null
   }
 }
