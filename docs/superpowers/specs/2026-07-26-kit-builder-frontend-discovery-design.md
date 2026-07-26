@@ -28,10 +28,12 @@ button:
 - supporting copy: **Choose one from the catalog cards**
 - accessible name: **Show Frontend cards**
 
-Activating the button adds `frontend` to the existing `query.kinds` array. It
-does not maintain separate component state, toggle the filter off, or clear the
-current search, category, sort, density, or other filters. If `frontend` is
-already present, activation leaves the query unchanged.
+Activating the button switches the catalog to Projects mode when necessary and
+adds `frontend` to the existing `query.kinds` array. It does not maintain
+separate component state, toggle the filter off, or clear the current search,
+category, sort, density, or other project filters. If Projects mode is already
+active and `frontend` is already present, activation leaves the query
+unchanged.
 
 Because the normal query is updated:
 
@@ -52,8 +54,11 @@ presentation, desktop drag-to-remove affordance, and explicit removal control.
 ## State Ownership
 
 `CatalogPage` remains the owner of `CatalogQuery`. It provides a focused
-callback to the Kit Builder for revealing Frontend cards. The callback performs
-an idempotent union of `frontend` into `query.kinds` through `setQuery`.
+callback to the Kit Builder for revealing Frontend cards. The callback selects
+Projects mode, clears any inspected Kit identity, and performs an idempotent
+union of `frontend` into `query.kinds` through `setQuery`. The editable Kit
+draft remains owned by the Kit workspace and is not discarded or collapsed by
+the mode change.
 
 The Kit Builder owns no filter state. `KitBuilderPanel`, `KitBuilder`, and
 `KitFrontendSlot` only pass and invoke the callback while the slot is empty.
@@ -82,6 +87,8 @@ a Frontend is already in the draft.
   produce no results. The shortcut does not silently discard those choices;
   the visible filter controls and active-query summary let the user adjust
   them.
+- Activating the shortcut from Kits mode returns to Projects mode so the
+  catalog cards and project-kind filter are available.
 - Repeated activation is idempotent and must not uncheck Frontend.
 - Manual removal of the Frontend filter immediately restores the user's normal
   catalog query behavior.
