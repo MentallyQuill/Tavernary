@@ -50,6 +50,7 @@ export function createProductionOperations(options?: {
   npmCommand?: string;
   batchSize?: number;
   concurrency?: number;
+  selectionMode?: "pending" | "all-automatic";
   runCommand?: typeof executeCommand;
   readJson?: (path: string) => Promise<Record<string, any>>;
   runnerTemp?: string;

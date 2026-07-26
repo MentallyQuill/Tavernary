@@ -7,12 +7,19 @@ Tavernary uses two authoritative data layers and one browser output artifact.
 Canonical records live in `data/registry/projects/*.json`.
 
 - Schema: `data/schemas/project.schema.json`
-- Schema version: `3`
+- Schema version: `4`
 - Mutated only by PRs or approved workflows
 - `source.type` determines source behavior:
   - `github` for regular frontends and extensions
   - `github-organization` for source collections
   - `url` for curated preset-like entries
+- `enrichment_policy` is canonical maintainer-owned rollout eligibility:
+  - `automatic` for regular GitHub repositories, including GitHub-hosted presets
+  - `manual` for external URLs, organization collections, and documented
+    GitHub exceptions
+- Manual records require `enrichment_note`; automatic records forbid it.
+- `refresh_policy` controls source evidence refresh and is independent of
+  `enrichment_policy`, which protects model-written editorial fields.
 
 ## Layer 2 - evidence snapshots
 
@@ -68,13 +75,14 @@ A registry record is visible when:
 
 ## Seed and counts
 
-V1 seed set currently has:
+The current V1 catalog has:
 
-- 214 registry records
-- 5 curated, 209 provisional
+- 211 registry records
+- 203 curated, 8 provisional
 - 204 GitHub repositories
 - 1 GitHub organization source
-- 9 URL-backed records
+- 6 URL-backed records
+- 204 automatic-enrichment records and 7 manual-enrichment records
 
 These numbers are audit context and may change with intake and curation.
 

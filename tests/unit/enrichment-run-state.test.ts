@@ -41,6 +41,90 @@ function results(
   return projectIds.map((id) => ({ id, phase, outcome }));
 }
 
+test("freezes selection mode and manual exclusions in new state", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["automatic"],
+    runId: "run",
+    now,
+    selectionMode: "all-automatic",
+    manualExclusions: [
+      {
+        id: "manual",
+        reason_code: "manual-enrichment-policy",
+        enrichment_note: "Requires review.",
+      },
+    ],
+  });
+
+  expect(state.selection_mode).toBe("all-automatic");
+  expect(state.manual_exclusions).toEqual([
+    {
+      id: "manual",
+      reason_code: "manual-enrichment-policy",
+      enrichment_note: "Requires review.",
+    },
+  ]);
+  expect(() => (state.manual_exclusions as Array<unknown>).push({})).toThrow();
+});
+
+test("rejects invalid manual exclusions and selection modes", () => {
+  const base = {
+    mode: "full" as const,
+    manifest: ["automatic"],
+    runId: "run",
+    now,
+  };
+
+  expect(() =>
+    createEnrichmentRunState({
+      ...base,
+      selectionMode: "everything" as "pending",
+    }),
+  ).toThrow("selection mode");
+  expect(() =>
+    createEnrichmentRunState({
+      ...base,
+      manualExclusions: [
+        {
+          id: "manual",
+          reason_code: "manual-enrichment-policy",
+          enrichment_note: "Requires review.",
+        },
+        {
+          id: "manual",
+          reason_code: "manual-enrichment-policy",
+          enrichment_note: "Requires review.",
+        },
+      ],
+    }),
+  ).toThrow("unique");
+  expect(() =>
+    createEnrichmentRunState({
+      ...base,
+      manualExclusions: [
+        {
+          id: "manual",
+          reason_code: "manual-enrichment-policy",
+          enrichment_note: "",
+        },
+      ],
+    }),
+  ).toThrow("note");
+  expect(() =>
+    createEnrichmentRunState({
+      ...base,
+      manualExclusions: [
+        {
+          id: "automatic",
+          reason_code: "manual-enrichment-policy",
+          enrichment_note: "Requires review.",
+        },
+      ],
+    }),
+  ).toThrow("overlap");
+});
+
 test("pins the configured model and rejects a different full-rollout model", () => {
   const manifest = ["a", "b", "c", "d", "e"];
   let canary = createEnrichmentRunState({

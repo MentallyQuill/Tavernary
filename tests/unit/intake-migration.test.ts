@@ -45,7 +45,7 @@ describe("intake migration", () => {
 
     expect(result.expectedRecords).toEqual([
       {
-        schema_version: 3,
+        schema_version: 4,
         id: "samueras-guidedgenerations-extension",
         name: "Guided Generations Extension",
         kind: "extension",
@@ -64,6 +64,7 @@ describe("intake migration", () => {
         visibility: "published",
         visibility_reason: null,
         refresh_policy: "automatic",
+        enrichment_policy: "automatic",
       },
     ]);
     expect(result.recordsToWrite).toEqual(result.expectedRecords);
@@ -100,7 +101,7 @@ describe("intake migration", () => {
 
     expect(result.expectedRecords).toEqual([
       {
-        schema_version: 3,
+        schema_version: 4,
         id: "puras-director-v15",
         name: "Pura's Director v15.0",
         kind: "preset",
@@ -123,6 +124,8 @@ describe("intake migration", () => {
         visibility: "published",
         visibility_reason: null,
         refresh_policy: "paused",
+        enrichment_policy: "manual",
+        enrichment_note: "External URL source; requires manual curation.",
       },
     ]);
     expect(result.report.by_source).toEqual({
@@ -141,7 +144,7 @@ describe("intake migration", () => {
 
   test("treats curated records as authoritative and reuses matching provisional records", () => {
     const curated = {
-      schema_version: 3,
+      schema_version: 4,
       id: "mentallyquill-recursion",
       name: "Recursion",
       kind: "extension",
@@ -160,9 +163,10 @@ describe("intake migration", () => {
       visibility: "published",
       visibility_reason: null,
       refresh_policy: "automatic",
+      enrichment_policy: "automatic",
     };
     const provisional = {
-      schema_version: 3,
+      schema_version: 4,
       id: "samueras-guidedgenerations-extension",
       name: "Guided Generations Extension",
       kind: "extension",
@@ -181,6 +185,7 @@ describe("intake migration", () => {
       visibility: "published",
       visibility_reason: null,
       refresh_policy: "automatic",
+      enrichment_policy: "automatic",
     };
 
     const result = migrateIntake({
@@ -247,7 +252,7 @@ describe("intake migration", () => {
         ],
         existingRecords: [
           {
-            schema_version: 3,
+            schema_version: 4,
             id: "samueras-guidedgenerations-extension",
             name: "Guided Generations Extension",
             kind: "extension",
@@ -266,6 +271,7 @@ describe("intake migration", () => {
             visibility: "published",
             visibility_reason: null,
             refresh_policy: "automatic",
+            enrichment_policy: "automatic",
           },
         ],
       }),
@@ -478,7 +484,7 @@ describe("intake migration", () => {
       resolve(rootDirectory, "data/registry/projects/stale-provisional.json"),
       `${JSON.stringify(
         {
-          schema_version: 3,
+          schema_version: 4,
           id: "stale-provisional",
           name: "Stale Provisional",
           kind: "extension",
@@ -497,6 +503,7 @@ describe("intake migration", () => {
           visibility: "published",
           visibility_reason: null,
           refresh_policy: "automatic",
+          enrichment_policy: "automatic",
         },
         null,
         2,

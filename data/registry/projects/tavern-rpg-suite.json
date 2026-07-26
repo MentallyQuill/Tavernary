@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "id": "tavern-rpg-suite",
   "name": "Tavern RPG Suite",
   "kind": "extension",
@@ -23,5 +23,7 @@
   "catalog_cohort": "seed",
   "visibility": "published",
   "refresh_policy": "paused",
-  "visibility_reason": null
+  "visibility_reason": null,
+  "enrichment_policy": "manual",
+  "enrichment_note": "Multi-repository suite; requires manual curation."
 }

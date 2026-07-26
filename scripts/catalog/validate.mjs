@@ -290,8 +290,16 @@ export async function validateCatalog(options = {}) {
           `${id}: github-organization url must be ${approvedOrganizationRecord.url}`,
         );
       }
-      if (record.kind !== "extension" || record.refresh_policy !== "paused") {
-        errors.push(`${id}: github-organization requires paused extension`);
+      if (
+        record.kind !== "extension" ||
+        record.refresh_policy !== "paused" ||
+        record.enrichment_policy !== "manual" ||
+        record.enrichment_note !==
+          "Multi-repository suite; requires manual curation."
+      ) {
+        errors.push(
+          `${id}: github-organization requires paused extension with manual enrichment policy`,
+        );
       }
     } else if (record.source?.type === "url") {
       let protocol;

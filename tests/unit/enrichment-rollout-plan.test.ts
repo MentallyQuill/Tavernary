@@ -16,7 +16,7 @@ import {
 const model = "minimax/minimax-m3:thinking";
 const now = "2026-07-25T00:00:00.000Z";
 
-function passedCanary() {
+function passedCanary(selectionMode: "pending" | "all-automatic" = "pending") {
   const awaiting = applyAttemptResults(
     createEnrichmentRunState({
       mode: "canary",
@@ -24,6 +24,7 @@ function passedCanary() {
       runId: "canary",
       now,
       model,
+      selectionMode,
     }),
     ["a", "b", "c", "d", "e"].map((id) => ({
       id,
@@ -276,6 +277,7 @@ test("catalog inspection reports the action and exact eligible count", () => {
     summary:
       index === 5 ? "A curated project summary." : "Generic intake details.",
     metadata_status: index === 5 ? "curated" : "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     source: { type: "github", repository: `Creator/project-${index}` },
   }));
@@ -287,7 +289,94 @@ test("catalog inspection reports the action and exact eligible count", () => {
       fullReport: null,
       canaryReport: null,
     }),
-  ).toEqual({ action: "start-canary", eligible_count: 5 });
+  ).toEqual({
+    action: "start-canary",
+    eligible_count: 5,
+    manual_exclusion_count: 0,
+  });
+});
+
+test("all-automatic planning counts eligible records and manual exclusions separately", () => {
+  const automatic = Array.from({ length: 204 }, (_, index) => ({
+    id: `automatic-${index}`,
+    kind: index === 0 ? "preset" : "extension",
+    summary: "A complete editorial description.",
+    metadata_status: "curated",
+    enrichment_policy: "automatic",
+    visibility: "published",
+    source: { type: "github", repository: `Creator/automatic-${index}` },
+  }));
+  const manual = Array.from({ length: 7 }, (_, index) => ({
+    id: `manual-${index}`,
+    kind: "preset",
+    summary: "A manually curated description.",
+    metadata_status: "curated",
+    enrichment_policy: "manual",
+    enrichment_note: "Requires review.",
+    visibility: "published",
+    source: { type: "github", repository: `Creator/manual-${index}` },
+  }));
+
+  expect(
+    createEnrichmentRolloutPlan({
+      model,
+      records: [...automatic, ...manual],
+      fullReport: null,
+      canaryReport: null,
+      selectionMode: "all-automatic",
+    }),
+  ).toEqual({
+    action: "start-canary",
+    eligible_count: 204,
+    manual_exclusion_count: 7,
+  });
+});
+
+test("rejects a running rollout from another selection mode", () => {
+  expect(() =>
+    planEnrichmentRollout({
+      model,
+      selectionMode: "pending",
+      eligibleCount: 10,
+      fullReport: {
+        mode: "full",
+        status: "running",
+        phase: "primary",
+        expected_model: model,
+        selection_mode: "all-automatic",
+      },
+      canaryReport: null,
+    }),
+  ).toThrow("selection mode");
+});
+
+test("ignores terminal authorization from another selection mode", () => {
+  expect(
+    planEnrichmentRollout({
+      model,
+      selectionMode: "pending",
+      eligibleCount: 10,
+      fullReport: null,
+      canaryReport: passedCanary("all-automatic"),
+    }),
+  ).toEqual({ action: "start-canary" });
+});
+
+test("ignores a completed full rollout from another selection mode", () => {
+  expect(
+    planEnrichmentRollout({
+      model,
+      selectionMode: "pending",
+      eligibleCount: 10,
+      fullReport: {
+        mode: "full",
+        status: "complete",
+        expected_model: model,
+        selection_mode: "all-automatic",
+      },
+      canaryReport: null,
+    }),
+  ).toEqual({ action: "start-canary" });
 });
 
 test("planner CLI returns a machine-readable recovery decision", async () => {
@@ -295,6 +384,7 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     source: { type: "github", repository: `Creator/project-${index}` },
   }));
@@ -306,7 +396,11 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
       fullReport: null,
       canaryReport: null,
     }),
-  ).resolves.toEqual({ action: "start-canary", eligible_count: 5 });
+  ).resolves.toEqual({
+    action: "start-canary",
+    eligible_count: 5,
+    manual_exclusion_count: 0,
+  });
 });
 
 test("planner CLI quarantines a pre-hardening terminal full ledger", async () => {
@@ -314,6 +408,7 @@ test("planner CLI quarantines a pre-hardening terminal full ledger", async () =>
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     source: { type: "github", repository: `Creator/project-${index}` },
   }));
@@ -356,7 +451,11 @@ test("planner CLI quarantines a pre-hardening terminal full ledger", async () =>
       },
       canaryReport: null,
     }),
-  ).resolves.toEqual({ action: "start-canary", eligible_count: 5 });
+  ).resolves.toEqual({
+    action: "start-canary",
+    eligible_count: 5,
+    manual_exclusion_count: 0,
+  });
 });
 
 test("planner CLI still rejects corrupt current-format terminal ledgers", async () => {
@@ -364,6 +463,7 @@ test("planner CLI still rejects corrupt current-format terminal ledgers", async 
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     source: { type: "github", repository: `Creator/project-${index}` },
   }));
@@ -417,6 +517,7 @@ test("planner CLI rejects a corrupt durable ledger before taking action", async 
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     source: { type: "github", repository: `Creator/project-${index}` },
   }));

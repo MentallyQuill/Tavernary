@@ -8,6 +8,8 @@ const outcomes = [
   "final-failure",
   "skipped",
 ];
+const selectionModes = new Set(["pending", "all-automatic"]);
+const manualEnrichmentReasonCode = "manual-enrichment-policy";
 
 const systemicFailureCodes = new Set([
   "provider-configuration-invalid",
@@ -77,6 +79,52 @@ function normalizedManifest(mode, manifest, deferredIds) {
   return Object.freeze(unique);
 }
 
+function normalizedManualExclusions(manualExclusions, manifest) {
+  if (!Array.isArray(manualExclusions)) {
+    throw new Error("manual exclusions must be an array");
+  }
+  const normalized = manualExclusions.map((entry) => {
+    if (
+      !entry ||
+      typeof entry.id !== "string" ||
+      entry.id.trim().length === 0
+    ) {
+      throw new Error("manual exclusion IDs must be non-empty strings");
+    }
+    if (entry.reason_code !== manualEnrichmentReasonCode) {
+      throw new Error("manual exclusion reason code is invalid");
+    }
+    if (
+      typeof entry.enrichment_note !== "string" ||
+      entry.enrichment_note.trim().length === 0
+    ) {
+      throw new Error("manual exclusion note must be a non-empty string");
+    }
+    return Object.freeze({
+      id: entry.id,
+      reason_code: manualEnrichmentReasonCode,
+      enrichment_note: entry.enrichment_note,
+    });
+  });
+  const ids = normalized.map(({ id }) => id);
+  if (new Set(ids).size !== ids.length) {
+    throw new Error("manual exclusion IDs must be unique");
+  }
+  if (ids.some((id) => manifest.includes(id))) {
+    throw new Error("manual exclusions must not overlap the manifest");
+  }
+  return Object.freeze(
+    normalized.sort((left, right) => left.id.localeCompare(right.id)),
+  );
+}
+
+function freezeSelectionState(next, state) {
+  next.selection_mode = state.selection_mode ?? "pending";
+  next.manual_exclusions = Object.freeze(
+    (state.manual_exclusions ?? []).map((entry) => Object.freeze({ ...entry })),
+  );
+}
+
 function aggregateEntries(entries) {
   const aggregates = Object.fromEntries(
     outcomes.map((outcome) => [outcome, 0]),
@@ -139,6 +187,7 @@ function entryForResult(result, attempt, outcome, now) {
     ["readmePath", "readme_path"],
     ["readmeRef", "readme_ref"],
     ["reasonCode", "reason_code"],
+    ["enrichmentNote", "enrichment_note"],
     ["diagnosticCode", "diagnostic_code"],
     ["repairHint", "repair_hint"],
     ["message", "message"],
@@ -178,6 +227,14 @@ export function createEnrichmentRunState(input) {
     input.deferredIds ?? [],
   );
   const manifest = normalizedManifest(input.mode, input.manifest, deferredIds);
+  const selectionMode = input.selectionMode ?? "pending";
+  if (!selectionModes.has(selectionMode)) {
+    throw new Error(`unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  const manualExclusions = normalizedManualExclusions(
+    input.manualExclusions ?? [],
+    manifest,
+  );
   const deferredOnly =
     input.mode === "full" && manifest.length === 0 && deferredIds.length > 0;
   const authorizedCanaryRunId = input.authorizedCanaryRunId ?? null;
@@ -197,6 +254,8 @@ export function createEnrichmentRunState(input) {
     status: deferredOnly ? "complete-with-errors" : "running",
     phase: deferredOnly ? "complete" : "primary",
     expected_model: input.model,
+    selection_mode: selectionMode,
+    manual_exclusions: manualExclusions,
     batch_size: batchSize,
     concurrency,
     created_at: input.now,
@@ -270,6 +329,7 @@ export function applyAttemptResults(state, results, now) {
   assertAttemptResults(state, results);
   const next = structuredClone(state);
   next.manifest = Object.freeze([...state.manifest]);
+  freezeSelectionState(next, state);
   const attempt = state.phase === "primary" ? 1 : 2;
   let systemicAttemptFailure = false;
 
@@ -362,6 +422,7 @@ export function recordCheckpointPublication(state, { commitSha, now }) {
   const next = structuredClone(state);
   next.manifest = Object.freeze([...state.manifest]);
   next.deferred_ids = Object.freeze([...(state.deferred_ids ?? [])]);
+  freezeSelectionState(next, state);
   next.publication = {
     checkpoint_commit_sha: commitSha,
     recorded_at: now,
@@ -398,6 +459,7 @@ export function recordFullDeployment(
   const next = structuredClone(state);
   next.manifest = Object.freeze([...state.manifest]);
   next.deferred_ids = Object.freeze([...(state.deferred_ids ?? [])]);
+  freezeSelectionState(next, state);
   next.deployment = {
     commit_sha: commitSha,
     run_id: deploymentRunId,
@@ -471,12 +533,17 @@ export function assertSuccessfulCanaryEntries(state) {
   }
 }
 
-export function assertFullRolloutAllowed(previous, model) {
+export function assertFullRolloutAllowed(
+  previous,
+  model,
+  selectionMode = "pending",
+) {
   try {
     assertSuccessfulCanaryEntries(previous);
     if (
       previous?.status !== "passed" ||
       previous?.expected_model !== model ||
+      previous?.selection_mode !== selectionMode ||
       !/^[0-9a-f]{40}$/u.test(previous?.deployment?.commit_sha ?? "") ||
       !Number.isInteger(previous?.deployment?.run_id) ||
       previous.deployment.run_id < 1 ||
@@ -515,6 +582,7 @@ export function approveCanaryDeployment(
 
   const next = structuredClone(state);
   next.manifest = Object.freeze([...state.manifest]);
+  freezeSelectionState(next, state);
   next.status = "passed";
   next.updated_at = now;
   next.deployment = {

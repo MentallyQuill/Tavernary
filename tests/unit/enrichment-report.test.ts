@@ -132,6 +132,25 @@ test("rejects malformed or contradictory durable reports", () => {
   ).toThrow("successful entries");
 });
 
+test("hydrates old reports as pending with no manual exclusions", () => {
+  const legacy = createEnrichmentReport(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "legacy-run",
+      now,
+      model,
+    }),
+  ) as Record<string, unknown>;
+  delete legacy.selection_mode;
+  delete legacy.manual_exclusions;
+
+  expect(validateEnrichmentReport(legacy)).toMatchObject({
+    selection_mode: "pending",
+    manual_exclusions: [],
+  });
+});
+
 test("round-trips a full report completed with isolated errors", () => {
   let state = createEnrichmentRunState({
     mode: "full",
@@ -160,6 +179,39 @@ test("round-trips a full report completed with isolated errors", () => {
   const report = createEnrichmentReport(state);
 
   expect(report.status).toBe("complete-with-errors");
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
+test("preserves a manual enrichment note with a sanitized skip message", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["manual"],
+    runId: "manual-run",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "manual",
+        phase: "primary",
+        outcome: "skipped",
+        reasonCode: "manual-enrichment-policy",
+        enrichmentNote: "Requires manual curation.",
+        message: "Untrusted message must not survive.",
+      },
+    ],
+    now,
+  );
+
+  const report = createEnrichmentReport(state);
+  expect(report.entries.manual).toMatchObject({
+    outcome: "skipped",
+    reason_code: "manual-enrichment-policy",
+    enrichment_note: "Requires manual curation.",
+    message: "Registry record requires manual enrichment.",
+  });
   expect(validateEnrichmentReport(report)).toEqual(report);
 });
 

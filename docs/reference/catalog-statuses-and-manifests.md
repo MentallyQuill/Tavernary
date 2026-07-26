@@ -12,6 +12,8 @@ the V1 catalog.
 | `visibility` | `published`, `quarantined`, `disabled` | Visibility gate for public cards. |
 | `visibility_reason` | `null`, `identity-change`, `source-unavailable`, `removed`, `safety-review` | Required reason when visibility is not `published`. |
 | `refresh_policy` | `automatic`, `paused` | Whether GitHub refresh continues automatically. |
+| `enrichment_policy` | `automatic`, `manual` | Whether model enrichment may update editorial fields. |
+| `enrichment_note` | non-empty string when manual | Maintainer-facing reason that automatic enrichment is locked. |
 
 ### Source status derivation
 
@@ -107,3 +109,22 @@ Interpretation:
 `snapshot_changes` and `deployment_requested` are the high-level deployment gates for
 automation (whether persisted snapshot writes and Pages deployment were requested for
 the run).
+
+## Enrichment reports
+
+`data/reports/enrichment-canary.json` and
+`data/reports/enrichment-report.json` are durable rollout ledgers. New reports
+include:
+
+- `selection_mode`: `pending` or `all-automatic`
+- `manual_exclusions`: sorted entries with `id`,
+  `reason_code: manual-enrichment-policy`, and `enrichment_note`
+
+Older reports without these fields hydrate as `pending` with no recorded
+manual exclusions. A running report cannot resume under another selection
+mode. Terminal reports from another scope do not authorize new work.
+
+`all-automatic` means all records whose canonical
+`enrichment_policy` is `automatic`; it never overrides a manual lock. The
+workflow summary reports the chosen scope and renders manual exclusions using
+sanitized table cells.

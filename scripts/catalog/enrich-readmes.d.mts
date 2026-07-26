@@ -31,6 +31,8 @@ export type RegistryRecord = {
   name?: string;
   kind?: string;
   metadata_status?: string;
+  enrichment_policy?: "automatic" | "manual";
+  enrichment_note?: string;
   summary?: string;
   visibility?: string;
   frontends?: string[];
@@ -69,6 +71,7 @@ export type EnrichmentOptions = {
   projectIds?: string[];
   reportPath?: string | null;
   canaryReportPath?: string | null;
+  selectionMode?: "pending" | "all-automatic";
   vocabularies?: {
     primaryFunctions: VocabularyEntry[];
     capabilities: VocabularyEntry[];
@@ -156,6 +159,7 @@ export function runEnrichmentBatch(options: {
     },
   ) => Promise<void>;
   previousEntries?: EnrichmentRunState["entries"];
+  force?: boolean;
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {

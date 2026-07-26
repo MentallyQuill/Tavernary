@@ -25,7 +25,7 @@ const input = {
 
 const output = {
   summary:
-    "A useful extension for automating structured prompt workflows across SillyTavern projects.",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated",
   primary_function: "developer-infrastructure",
   capabilities: ["automation"],
@@ -142,14 +142,30 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   const [, init] = fetchImpl.mock.calls[0];
   const body = JSON.parse(String(init?.body));
   expect(body.model).toBe(model);
+  expect(body.temperature).toBe(0.95);
   expect(body.messages[0].content).toMatch(/untrusted reference data/iu);
   expect(body.messages[0].content).toMatch(
     /do not follow.*embedded instructions/iu,
   );
   expect(body.response_format).toMatchObject({
     type: "json_schema",
-    json_schema: { strict: true },
+    json_schema: {
+      strict: true,
+      schema: {
+        properties: {
+          summary: {
+            type: "string",
+            maxLength: 220,
+          },
+        },
+      },
+    },
   });
+  expect(body.messages[0].content).toMatch(/exactly two sentences/iu);
+  expect(body.messages[0].content).toMatch(/purpose/iu);
+  expect(body.messages[0].content).toMatch(
+    /distinctive workflow, capability, or benefit/iu,
+  );
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });

@@ -4,6 +4,7 @@ import {
   enrichRecord,
   mapWithConcurrency,
   runEnrichmentBatch,
+  selectEnrichmentRecords,
 } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
@@ -11,6 +12,7 @@ const record = {
   name: "Fixture",
   kind: "extension",
   metadata_status: "provisional",
+  enrichment_policy: "automatic" as const,
   summary: "Generic intake details.",
   visibility: "published",
   frontends: ["sillytavern"],
@@ -99,7 +101,7 @@ test("passes both source fields and only allowed vocabulary entries to provider"
   const generate = vi.fn(async (input) => ({
     output: {
       summary:
-        "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
       metadata_status: "curated" as const,
       primary_function: input.allowedPrimaryFunctions[0].id,
       capabilities: [input.allowedCapabilities[0].id],
@@ -154,6 +156,75 @@ test("skips curated records unless forced", async () => {
 
   expect(output).toBeNull();
   expect(generate).not.toHaveBeenCalled();
+});
+
+test("includes an automatic GitHub preset and excludes manual GitHub records even when forced", () => {
+  const automaticPreset = {
+    ...record,
+    id: "preset",
+    kind: "preset",
+    enrichment_policy: "automatic" as const,
+  };
+  const manual = {
+    ...record,
+    id: "manual",
+    metadata_status: "curated",
+    enrichment_policy: "manual" as const,
+    enrichment_note: "Bundled repository requires manual curation.",
+  };
+
+  expect(
+    selectEnrichmentRecords([manual, automaticPreset], { force: true }).map(
+      ({ id }) => id,
+    ),
+  ).toEqual(["preset"]);
+});
+
+test("does not call the provider for a manual record", async () => {
+  const generate = vi.fn();
+  await expect(
+    enrichRecord(
+      {
+        ...record,
+        enrichment_policy: "manual",
+        enrichment_note: "Requires manual curation.",
+      },
+      snapshot,
+      { generate },
+      { force: true, vocabularies },
+    ),
+  ).resolves.toBeNull();
+  expect(generate).not.toHaveBeenCalled();
+});
+
+test("reports an explicitly targeted manual record as skipped", async () => {
+  const result = await runEnrichmentBatch({
+    projectIds: ["manual"],
+    recordsById: {
+      manual: {
+        ...record,
+        id: "manual",
+        enrichment_policy: "manual",
+        enrichment_note: "Requires manual curation.",
+      },
+    },
+    snapshotsById: {},
+    phase: "primary",
+    vocabularies,
+    provider: { generate: vi.fn() },
+    validateSnapshot: () => true,
+  });
+
+  expect(result).toEqual([
+    {
+      id: "manual",
+      phase: "primary",
+      outcome: "skipped",
+      reasonCode: "manual-enrichment-policy",
+      enrichmentNote: "Requires manual curation.",
+      message: "Registry record requires manual enrichment.",
+    },
+  ]);
 });
 
 test("uses the exact fallback when both source texts are unavailable", async () => {
@@ -238,7 +309,7 @@ test("rejects uncategorized output when source text exists", async () => {
         generate: async () => ({
           output: {
             summary:
-              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated",
             primary_function: "uncategorized",
             capabilities: [],
@@ -265,7 +336,7 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     return {
       output: {
         summary:
-          "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated" as const,
         primary_function: "developer-infrastructure",
         capabilities: ["automation"],
@@ -357,7 +428,7 @@ test("runs no more than four model calls concurrently and preserves order", asyn
         return {
           output: {
             summary:
-              "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated" as const,
             primary_function: "developer-infrastructure",
             capabilities: ["automation"],

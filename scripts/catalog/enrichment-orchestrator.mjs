@@ -298,6 +298,16 @@ export function createProductionOperations(options = {}) {
   const concurrency = String(
     options.concurrency ?? process.env.MODEL_CONCURRENCY ?? 4,
   );
+  const selectionMode =
+    options.selectionMode ?? process.env.ENRICHMENT_SELECTION_MODE ?? "pending";
+  if (!["pending", "all-automatic"].includes(selectionMode)) {
+    throw new Error(`Unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  const selectionArguments = ["--selection-mode", selectionMode];
+  const selectionEnvironment = {
+    ...process.env,
+    ENRICHMENT_SELECTION_MODE: selectionMode,
+  };
   const batchArguments = [
     "--batch-size",
     batchSize,
@@ -383,6 +393,7 @@ export function createProductionOperations(options = {}) {
         CANARY_REPORT,
         "--commit-sha",
         checkpointCommit,
+        ...selectionArguments,
       ]);
       await publishChanges({
         paths: [path],
@@ -464,12 +475,14 @@ export function createProductionOperations(options = {}) {
     async plan() {
       const result = await npm(["run", "--silent", "catalog:enrichment-plan"], {
         silent: true,
+        env: selectionEnvironment,
       });
       return JSON.parse(result.stdout.trim());
     },
     async startCanary() {
       const selected = await npm(["run", "--silent", "catalog:select-canary"], {
         silent: true,
+        env: selectionEnvironment,
       });
       canaryIds = selected.stdout
         .split(/\r?\n/u)
@@ -526,6 +539,7 @@ export function createProductionOperations(options = {}) {
         "--canary-report-path",
         CANARY_REPORT,
         ...batchArguments,
+        ...selectionArguments,
         ...canaryIds.flatMap((id) => ["--project-id", id]),
       ]);
       return reportCheckpoint(
@@ -613,6 +627,7 @@ export function createProductionOperations(options = {}) {
         CANARY_REPORT,
         "--commit-sha",
         commit,
+        ...selectionArguments,
       ]);
       await npm([
         "run",
@@ -628,6 +643,7 @@ export function createProductionOperations(options = {}) {
         commit,
         "--deployment-run-id",
         String(runId),
+        ...selectionArguments,
       ]);
       await publishChanges({
         paths: [CANARY_REPORT],
@@ -647,6 +663,7 @@ export function createProductionOperations(options = {}) {
         CANARY_REPORT,
         "--commit-sha",
         commit,
+        ...selectionArguments,
       ]);
       await npm([
         "run",
@@ -662,6 +679,7 @@ export function createProductionOperations(options = {}) {
         commit,
         "--deployment-run-id",
         String(runId),
+        ...selectionArguments,
       ]);
       await publishChanges({
         paths: [FULL_REPORT],
@@ -679,6 +697,7 @@ export function createProductionOperations(options = {}) {
         FULL_REPORT,
         "--canary-report-path",
         CANARY_REPORT,
+        ...selectionArguments,
       ]);
     },
     async prepareFull() {
@@ -733,6 +752,7 @@ export function createProductionOperations(options = {}) {
         "--canary-report-path",
         CANARY_REPORT,
         ...batchArguments,
+        ...selectionArguments,
       ]);
       return reportCheckpoint(
         FULL_REPORT,
@@ -752,6 +772,7 @@ export function createProductionOperations(options = {}) {
         "--canary-report-path",
         CANARY_REPORT,
         ...batchArguments,
+        ...selectionArguments,
       ]);
       return reportCheckpoint(
         FULL_REPORT,

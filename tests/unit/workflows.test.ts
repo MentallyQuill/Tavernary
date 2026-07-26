@@ -267,6 +267,12 @@ test("runs enrichment through one tested durable orchestrator", async () => {
 
   expect(inputs).not.toHaveProperty("mode");
   expect(inputs).not.toHaveProperty("project_ids");
+  expect(inputs.enrichment_scope).toEqual({
+    description: "Choose pending records or re-enrich every automatic record.",
+    type: "choice",
+    options: ["pending", "all-automatic"],
+    default: "pending",
+  });
   expect(enrich.permissions).toEqual({
     contents: "write",
     actions: "write",
@@ -276,6 +282,11 @@ test("runs enrichment through one tested durable orchestrator", async () => {
     "cancel-in-progress": false,
   });
   expect(source).toContain("npm run catalog:enrichment-rollout");
+  expect(source).toContain(
+    "ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}",
+  );
+  expect(source).toContain("Manual exclusions:");
+  expect(source).toContain("manual_exclusions");
   expect(source).toContain("data/reports/enrichment-canary.json");
   expect(source).toContain("| Project | Outcome | Reason | Detail |");
   expect(source).toContain(

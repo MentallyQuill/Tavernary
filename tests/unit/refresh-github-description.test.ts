@@ -6,7 +6,7 @@ import { expect, test, vi } from "vitest";
 import { runRefresh } from "../../scripts/catalog/refresh-github.mjs";
 
 const record = {
-  schema_version: 2,
+  schema_version: 4,
   id: "fixture",
   source: {
     type: "github",
@@ -14,6 +14,7 @@ const record = {
     repository_id: 42,
   },
   refresh_policy: "automatic",
+  enrichment_policy: "automatic",
 };
 
 const observedRepository = {

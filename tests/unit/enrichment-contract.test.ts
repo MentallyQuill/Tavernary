@@ -15,13 +15,13 @@ const vocabularies = {
 
 const valid = {
   summary:
-    "A compact toolkit for automating prompt workflows and maintaining projects in SillyTavern.",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated" as const,
   primary_function: "developer-infrastructure",
   capabilities: ["automation", "prompt-engineering"],
 };
 
-test("accepts a valid one-sentence curated enrichment", () => {
+test("accepts a natural two-sentence curated enrichment", () => {
   expect(validateEnrichmentOutput(valid, vocabularies)).toEqual({
     valid: true,
   });
@@ -33,7 +33,7 @@ test("allows ordinary parenthesized prose", () => {
       {
         ...valid,
         summary:
-          "A compact toolkit (with automation) for maintaining prompt workflows in SillyTavern projects.",
+          "A compact toolkit (with automation) maintains prompt workflows in SillyTavern projects. It keeps configuration clear, repeatable, and accessible for creators throughout complex projects today.",
       },
       vocabularies,
     ),
@@ -42,14 +42,42 @@ test("allows ordinary parenthesized prose", () => {
 
 test.each([
   ["exact fallback", "No README file found."],
-  ["overlong", "A ".repeat(70)],
-  ["too few words", "A toolkit."],
-  ["too many words", `${"A useful toolkit ".repeat(20)}for prompts.`],
-  ["newline", "A compact toolkit\nfor prompts."],
-  ["unicode newline", "A compact toolkit\u2028for prompts."],
-  ["markdown", "- A compact toolkit for prompt workflows."],
-  ["inline markdown", "A compact `toolkit` for prompt workflows."],
-  ["multiple sentences", "A compact toolkit. It automates prompts."],
+  [
+    "overlong",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects with a deliberately excessive amount of qualifying language. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout every unusually elaborate creative project.",
+  ],
+  [
+    "too few words",
+    "Fixture organizes prompt workflows. It keeps configuration clear and accessible.",
+  ],
+  [
+    "too many words",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects while coordinating many different types of detailed configuration across numerous creator tools. It automates routine setup, preserves every creator-facing control, clarifies complicated options, maintains project structure, and supports unusually elaborate long-running creative work.",
+  ],
+  [
+    "newline",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects.\nIt automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+  ],
+  [
+    "unicode newline",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects.\u2028It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+  ],
+  [
+    "markdown",
+    "- Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+  ],
+  [
+    "inline markdown",
+    "Fixture organizes repeatable `prompt` workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+  ],
+  [
+    "one sentence",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects while automating routine setup, preserving creator-facing controls, and keeping complex configuration work clear and accessible throughout.",
+  ],
+  [
+    "three sentences",
+    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup and preserves creator-facing controls. Complex configuration stays clear and accessible throughout.",
+  ],
 ] as const)("rejects invalid summary: %s", (_name, summary) => {
   const result = validateEnrichmentOutput({ ...valid, summary }, vocabularies);
   if (_name === "exact fallback") {

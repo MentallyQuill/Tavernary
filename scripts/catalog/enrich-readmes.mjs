@@ -16,6 +16,12 @@ import {
   validateProviderConfiguration,
 } from "./enrichment-provider.mjs";
 import {
+  MANUAL_ENRICHMENT_REASON_CODE,
+  assertAutomaticEnrichment,
+  isAutomaticEnrichment,
+  manualEnrichmentExclusions,
+} from "./enrichment-policy.mjs";
+import {
   createEnrichmentReport,
   isPreHardeningTerminalFullReport,
   validateEnrichmentReport,
@@ -46,17 +52,38 @@ function sourceBackedPrimaryFunctions(entries) {
   );
 }
 
+const genericSummaries = new Set([
+  "Generic intake details.",
+  "Provisional project description.",
+  "No description found.",
+  "No README file found.",
+]);
+
+function forceForSelectionMode(selectionMode) {
+  if (!["pending", "all-automatic"].includes(selectionMode)) {
+    throw new Error(`unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  return selectionMode === "all-automatic";
+}
+
+function durableManualExclusions(records) {
+  return manualEnrichmentExclusions(records).map((entry) => ({
+    id: entry.projectId,
+    reason_code: entry.reason,
+    enrichment_note: entry.note,
+  }));
+}
+
 function isEligible(record, force = false) {
-  if (record.visibility !== "published" || record.source?.type !== "github") {
+  if (
+    !isAutomaticEnrichment(record) ||
+    record.visibility !== "published" ||
+    record.source?.type !== "github"
+  ) {
     return false;
   }
   if (force || record.metadata_status === "provisional") return true;
-  return new Set([
-    "Generic intake details.",
-    "Provisional project description.",
-    "No description found.",
-    "No README file found.",
-  ]).has(record.summary);
+  return genericSummaries.has(record.summary);
 }
 
 export function selectEnrichmentRecords(records, options = {}) {
@@ -66,19 +93,14 @@ export function selectEnrichmentRecords(records, options = {}) {
 }
 
 export async function enrichRecord(record, snapshot, provider, options = {}) {
+  if (!isAutomaticEnrichment(record)) return null;
   if (record.visibility !== "published") return null;
   if (record.source?.type !== "github") return null;
   if (record.metadata_status === "curated" && !options.force) return null;
-  const genericSummary = new Set([
-    "Generic intake details.",
-    "Provisional project description.",
-    "No description found.",
-    "No README file found.",
-  ]);
   if (
     !options.force &&
     record.metadata_status !== "provisional" &&
-    !genericSummary.has(record.summary)
+    !genericSummaries.has(record.summary)
   ) {
     return null;
   }
@@ -178,6 +200,7 @@ export async function writeEnrichedRecord(
   });
   if (!validation.valid) throw new Error(validation.errors.join("; "));
   const current = JSON.parse(await readFile(path, "utf8"));
+  assertAutomaticEnrichment(current);
   const updated = {
     ...current,
     summary: output.summary,
@@ -233,11 +256,11 @@ function validateOutput(output, vocabularies, sourceBacked) {
       if (error === "summary must be a non-empty string") {
         return "Summary must be a non-empty string.";
       }
-      if (error === "summary must be 140 characters or fewer") {
-        return "Summary must be at most 140 characters.";
+      if (error === "summary must be 220 characters or fewer") {
+        return "Summary must be at most 220 characters.";
       }
-      if (error === "summary must contain between 12 and 24 words") {
-        return "Summary must contain 12-24 words.";
+      if (error === "summary must contain between 24 and 36 words") {
+        return "Summary must contain 24-36 words.";
       }
       if (error === "summary must not contain line breaks") {
         return "Summary must not contain line breaks.";
@@ -245,8 +268,8 @@ function validateOutput(output, vocabularies, sourceBacked) {
       if (error === "summary must not contain markdown or list syntax") {
         return "Summary must not contain Markdown or list syntax.";
       }
-      if (error === "summary must be exactly one sentence") {
-        return "Summary must be exactly one sentence.";
+      if (error === "summary must be exactly two sentences") {
+        return "Summary must be exactly two sentences.";
       }
       if (error === "metadata_status must be curated") {
         return "Set metadata_status to curated.";
@@ -312,9 +335,20 @@ async function processProject(input, id) {
     loadSource,
     writeRecord,
     previousEntries,
+    force = false,
   } = input;
   const record = recordsById[id];
-  if (!record || !isEligible(record)) {
+  if (record && !isAutomaticEnrichment(record)) {
+    return {
+      id,
+      phase,
+      outcome: "skipped",
+      reasonCode: MANUAL_ENRICHMENT_REASON_CODE,
+      enrichmentNote: record.enrichment_note,
+      message: "Registry record requires manual enrichment.",
+    };
+  }
+  if (!record || !isEligible(record, force)) {
     return {
       id,
       phase,
@@ -414,7 +448,18 @@ async function processProject(input, id) {
   }
   try {
     await writeRecord(record, output, vocabularies);
-  } catch {
+  } catch (error) {
+    if (error?.code === MANUAL_ENRICHMENT_REASON_CODE) {
+      return {
+        id,
+        phase,
+        outcome: "skipped",
+        reasonCode: MANUAL_ENRICHMENT_REASON_CODE,
+        enrichmentNote: error.enrichmentNote,
+        message: "Registry record requires manual enrichment.",
+        ...sourceProvenance(source),
+      };
+    }
     return {
       id,
       phase,
@@ -461,6 +506,7 @@ export async function runEnrichmentBatch(input) {
       );
     },
     previousEntries = {},
+    force = false,
   } = input;
   if (!["primary", "retry"].includes(phase)) {
     throw new Error("batch phase must be primary or retry");
@@ -478,6 +524,7 @@ export async function runEnrichmentBatch(input) {
           loadSource,
           writeRecord,
           previousEntries,
+          force,
         },
         id,
       );
@@ -582,6 +629,8 @@ export async function runCli(options = {}) {
   ) {
     throw new Error(`unsupported enrichment mode: ${mode}`);
   }
+  const requestedSelectionMode = options.selectionMode ?? "pending";
+  forceForSelectionMode(requestedSelectionMode);
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const fullReportPath =
     options.reportPath === undefined
@@ -679,7 +728,11 @@ export async function runCli(options = {}) {
           ? await readOptionalJson(canaryReportPath)
           : null;
     const canary = validateEnrichmentReport(canaryReport);
-    assertFullRolloutAllowed(canary, configuration.model);
+    assertFullRolloutAllowed(
+      canary,
+      configuration.model,
+      requestedSelectionMode,
+    );
     return {
       mode: "authorize-full",
       status: "passed",
@@ -768,6 +821,14 @@ export async function runCli(options = {}) {
         );
       }
       if (
+        options.selectionMode !== undefined &&
+        previousState.selection_mode !== requestedSelectionMode
+      ) {
+        throw new Error(
+          "selection mode does not match the running enrichment report",
+        );
+      }
+      if (
         options.projectIds &&
         JSON.stringify([...options.projectIds].sort()) !==
           JSON.stringify(previousState.manifest)
@@ -784,10 +845,16 @@ export async function runCli(options = {}) {
         model: configuration.model,
         batchSize: options.batchSize,
         concurrency: options.concurrency,
+        selectionMode: requestedSelectionMode,
+        manualExclusions: durableManualExclusions(records),
       });
     }
   } else if (mode === "start") {
-    assertFullRolloutAllowed(previousState, configuration.model);
+    assertFullRolloutAllowed(
+      previousState,
+      configuration.model,
+      requestedSelectionMode,
+    );
     const previousFullReport =
       options.previousFullReport !== undefined
         ? options.previousFullReport
@@ -804,10 +871,14 @@ export async function runCli(options = {}) {
         replacingLegacyFullReport = true;
       }
     }
-    const eligibleIds = selectEnrichmentRecords(records).map(({ id }) => id);
+    const force = forceForSelectionMode(requestedSelectionMode);
+    const eligibleIds = selectEnrichmentRecords(records, { force }).map(
+      ({ id }) => id,
+    );
     const canaryBoundaryAlreadyApplied =
       previousFullState?.mode === "full" &&
       previousFullState.phase === "complete" &&
+      previousFullState.selection_mode === requestedSelectionMode &&
       previousFullState.authorized_canary_run_id === previousState.run_id;
     const canaryIds = new Set(previousState.manifest);
     const deferredIds = canaryBoundaryAlreadyApplied
@@ -824,6 +895,8 @@ export async function runCli(options = {}) {
       model: configuration.model,
       batchSize: options.batchSize,
       concurrency: options.concurrency,
+      selectionMode: requestedSelectionMode,
+      manualExclusions: durableManualExclusions(records),
     });
     if (replacingLegacyFullReport) {
       const replacement = createEnrichmentReport(state);
@@ -841,6 +914,14 @@ export async function runCli(options = {}) {
     if (previousState.expected_model !== configuration.model) {
       throw new Error(
         "configured model does not match the running enrichment report",
+      );
+    }
+    if (
+      options.selectionMode !== undefined &&
+      previousState.selection_mode !== requestedSelectionMode
+    ) {
+      throw new Error(
+        "selection mode does not match the running enrichment report",
       );
     }
     state = previousState;
@@ -876,6 +957,7 @@ export async function runCli(options = {}) {
           allowedVocabularies,
         )),
     previousEntries: state.entries,
+    force: forceForSelectionMode(state.selection_mode),
   });
   state = applyAttemptResults(state, results, timestamp);
   const report = createEnrichmentReport(state);
@@ -899,6 +981,7 @@ export function cliOptions(argv) {
     deploymentRunId: Number(value("--deployment-run-id", Number.NaN)),
     reportPath: value("--report-path", undefined),
     canaryReportPath: value("--canary-report-path", undefined),
+    selectionMode: value("--selection-mode", "pending"),
   };
 }
 

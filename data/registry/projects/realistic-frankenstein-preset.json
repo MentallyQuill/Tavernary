@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "id": "realistic-frankenstein-preset",
   "name": "Realistic Frankenstein",
   "kind": "preset",
@@ -25,5 +25,7 @@
   "catalog_cohort": "seed",
   "visibility": "published",
   "refresh_policy": "paused",
-  "visibility_reason": null
+  "visibility_reason": null,
+  "enrichment_policy": "manual",
+  "enrichment_note": "External URL source; requires manual curation."
 }

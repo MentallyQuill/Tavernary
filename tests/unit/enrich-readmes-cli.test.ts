@@ -28,7 +28,7 @@ const vocabularies = {
 const providerOutput = {
   output: {
     summary:
-      "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
     metadata_status: "curated" as const,
     primary_function: "developer-infrastructure",
     capabilities: ["automation"],
@@ -47,6 +47,7 @@ function record(id: string) {
     kind: "extension",
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic" as const,
     visibility: "published",
     frontends: [],
     source: {
@@ -309,8 +310,8 @@ test("a retry tells the provider which validation defect to correct", async () =
       ...(id === "e"
         ? {
             reasonCode: "output-invalid",
-            message: "Summary must contain 12-24 words.",
-            repairHint: "Summary must contain 12-24 words.",
+            message: "Summary must contain 24-36 words.",
+            repairHint: "Summary must contain 24-36 words.",
           }
         : {}),
     })),
@@ -332,7 +333,7 @@ test("a retry tells the provider which validation defect to correct", async () =
     id: "e",
     repair: {
       reasonCode: "output-invalid",
-      message: "Summary must contain 12-24 words.",
+      message: "Summary must contain 24-36 words.",
     },
   });
 });
@@ -609,11 +610,14 @@ test("CLI report flags keep canary authorization and full progress separate", ()
       "full.json",
       "--canary-report-path",
       "canary.json",
+      "--selection-mode",
+      "all-automatic",
     ]),
   ).toMatchObject({
     mode: "authorize-full",
     reportPath: "full.json",
     canaryReportPath: "canary.json",
+    selectionMode: "all-automatic",
   });
 });
 
@@ -824,6 +828,57 @@ test("resume uses the next state batch and rejects terminal or canary state", as
       previousReport: report,
     }),
   ).rejects.toThrow("running full");
+});
+
+test("resume uses the frozen all-automatic selection mode", async () => {
+  const full = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["curated"],
+    runId: "all-automatic-full",
+    now,
+    model,
+    selectionMode: "all-automatic",
+  });
+  const options = executionOptions(["curated"]);
+  options.records = [
+    {
+      ...record("curated"),
+      metadata_status: "curated",
+      summary: "A complete editorial description.",
+    },
+  ];
+
+  const report = await runCli({
+    ...options,
+    mode: "resume",
+    previousReport: full,
+  });
+
+  expect(options.writeRecord).toHaveBeenCalledOnce();
+  expect(report).toMatchObject({
+    status: "complete",
+    selection_mode: "all-automatic",
+  });
+});
+
+test("rejects a supplied selection mode that differs from a running report", async () => {
+  const full = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "scope-mismatch",
+    now,
+    model,
+    selectionMode: "all-automatic",
+  });
+
+  await expect(
+    runCli({
+      ...executionOptions(["a"]),
+      mode: "resume",
+      selectionMode: "pending",
+      previousReport: full,
+    }),
+  ).rejects.toThrow("selection mode");
 });
 
 test("canary retry and full resume reject a changed configured model", async () => {

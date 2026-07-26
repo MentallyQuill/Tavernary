@@ -8,6 +8,14 @@ export type AttemptOutcome =
   | "final-failure"
   | "skipped";
 
+export type EnrichmentSelectionMode = "pending" | "all-automatic";
+
+export type ManualEnrichmentExclusion = {
+  id: string;
+  reason_code: "manual-enrichment-policy";
+  enrichment_note: string;
+};
+
 export type ProjectAttemptResult = {
   id: string;
   phase: "primary" | "retry";
@@ -23,6 +31,7 @@ export type ProjectAttemptResult = {
     latencyMs: number;
   };
   reasonCode?: string;
+  enrichmentNote?: string;
   diagnosticCode?: string | null;
   repairHint?: string;
   message?: string;
@@ -50,6 +59,8 @@ export type EnrichmentRunState = {
     | "complete-with-errors";
   phase: "primary" | "retry" | "complete";
   expected_model: string;
+  selection_mode: EnrichmentSelectionMode;
+  manual_exclusions: readonly ManualEnrichmentExclusion[];
   batch_size: number;
   concurrency: number;
   created_at: string;
@@ -84,6 +95,8 @@ export function createEnrichmentRunState(input: {
   concurrency?: number;
   deferredIds?: string[];
   authorizedCanaryRunId?: string;
+  selectionMode?: EnrichmentSelectionMode;
+  manualExclusions?: ManualEnrichmentExclusion[];
 }): EnrichmentRunState;
 
 export function selectNextRunBatch(state: EnrichmentRunState): {
@@ -133,4 +146,5 @@ export function approveCanaryDeployment(
 export function assertFullRolloutAllowed(
   previous: EnrichmentRunState,
   model: string,
+  selectionMode?: EnrichmentSelectionMode,
 ): void;

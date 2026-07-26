@@ -40,7 +40,7 @@ test("keeps summaries clamped at standard and compact card widths", async ({
   page,
 }) => {
   const expectedSummary =
-    "Coordinates persistent character memories, reviews relevant context, and supplies concise guidance for consistent SillyTavern conversations.";
+    "Fixture coordinates persistent memories for SillyTavern conversations. It reviews recent context, selects useful details, and supplies focused guidance that keeps characters and unfolding scenes consistent over time.";
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     const summary = page.locator(".project-card .card-summary").first();
@@ -58,6 +58,17 @@ test("keeps summaries clamped at standard and compact card widths", async ({
       dimensions.clientHeight,
     );
   }
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+  const compactSummary = page.locator(".project-card .card-summary").first();
+  await compactSummary.evaluate((element, text) => {
+    element.textContent = text;
+  }, expectedSummary);
+  await expect(compactSummary).toHaveText(expectedSummary);
+  await expect(compactSummary).toHaveCSS("white-space", "nowrap");
+  await expect(compactSummary).toHaveCSS("text-overflow", "ellipsis");
+  await expect(compactSummary).toHaveCSS("overflow", "hidden");
 });
 
 async function expectTooltipInsideViewport(

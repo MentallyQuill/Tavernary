@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { validateCatalog } from "../../scripts/catalog/validate.mjs";
 
 const validRecord = {
-  schema_version: 3,
+  schema_version: 4,
   id: "valid-preset",
   name: "Valid Preset",
   kind: "preset",
@@ -22,6 +22,7 @@ const validRecord = {
   visibility: "published",
   visibility_reason: null,
   refresh_policy: "automatic",
+  enrichment_policy: "automatic",
 };
 
 const validSnapshotV2: Record<string, any> = {
@@ -79,6 +80,68 @@ describe("catalog validation", () => {
     expect(result.kitSnapshotCount).toBe(0);
   });
 
+  test("requires an explicit enrichment policy", async () => {
+    const { enrichment_policy: _removed, ...record } = validRecord;
+    const result = await validateCatalog({ records: [record] });
+
+    expect(result.errors.join("\n")).toContain("enrichment_policy");
+  });
+
+  test("requires a note only for manual enrichment", async () => {
+    const missingNote = await validateCatalog({
+      records: [{ ...validRecord, enrichment_policy: "manual" }],
+    });
+    expect(missingNote.errors.join("\n")).toContain("enrichment_note");
+
+    const automaticWithNote = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          enrichment_policy: "automatic",
+          enrichment_note: "This note must not be retained.",
+        },
+      ],
+    });
+    expect(automaticWithNote.errors.join("\n")).toContain("must NOT be valid");
+  });
+
+  test("requires non-GitHub sources to remain manual", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          source: {
+            type: "url",
+            url: "https://example.com/preset",
+            published_at: null,
+            version: null,
+            artifact_size_bytes: null,
+            license_status: "missing",
+            license_spdx_id: null,
+          },
+          refresh_policy: "paused",
+          enrichment_policy: "automatic",
+        },
+      ],
+    });
+
+    expect(result.errors.join("\n")).toContain("enrichment_policy");
+  });
+
+  test("allows a documented manual GitHub exception", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          enrichment_policy: "manual",
+          enrichment_note: "Bundled repository requires manual curation.",
+        },
+      ],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("rejects an invalid global refresh manifest", async () => {
     const result = await validateCatalog({
       records: [validRecord],
@@ -95,7 +158,7 @@ describe("catalog validation", () => {
     const result = await validateCatalog({
       records: [
         {
-          schema_version: 3,
+          schema_version: 4,
           id: "bad-extension",
           name: "Bad Extension",
           kind: "extension",
@@ -110,6 +173,8 @@ describe("catalog validation", () => {
           visibility: "published",
           visibility_reason: null,
           refresh_policy: "automatic",
+          enrichment_policy: "manual",
+          enrichment_note: "External URL source; requires manual curation.",
         },
       ],
     });
@@ -229,6 +294,8 @@ describe("catalog validation", () => {
             "model-routing",
           ],
           refresh_policy: "paused",
+          enrichment_policy: "manual",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -254,6 +321,8 @@ describe("catalog validation", () => {
           primary_function: "rpg-systems",
           capabilities: ["automation"],
           refresh_policy: "automatic",
+          enrichment_policy: "manual",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -265,7 +334,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "tavern-rpg-suite: github-organization requires paused extension",
+      "tavern-rpg-suite: github-organization requires paused extension with manual enrichment policy",
     );
   });
 
@@ -280,6 +349,8 @@ describe("catalog validation", () => {
           metadata_status: "provisional",
           primary_function: "uncategorized",
           refresh_policy: "paused",
+          enrichment_policy: "manual",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "tavern-rpg-suite",
@@ -306,6 +377,8 @@ describe("catalog validation", () => {
           metadata_status: "provisional",
           primary_function: "uncategorized",
           refresh_policy: "paused",
+          enrichment_policy: "manual",
+          enrichment_note: "Multi-repository suite; requires manual curation.",
           source: {
             type: "github-organization",
             organization: "someone-else",

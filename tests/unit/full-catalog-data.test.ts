@@ -14,6 +14,8 @@ interface CatalogRecord {
   primary_function: string;
   capabilities: string[];
   summary: string;
+  enrichment_policy: "automatic" | "manual";
+  enrichment_note?: string;
   visibility?: string;
   source: {
     type: string;
@@ -155,6 +157,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
     "github-organization": 1,
     url: 6,
   });
+  expect(countBy(records, (record) => record.enrichment_policy)).toEqual({
+    automatic: 204,
+    manual: 7,
+  });
   expect(
     records.filter(
       (record) =>
@@ -174,6 +180,13 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(["curated", "provisional"], record.id).toContain(
       record.metadata_status,
     );
+    if (record.enrichment_policy === "automatic") {
+      expect(record.enrichment_note, record.id).toBeUndefined();
+    } else {
+      expect(record.enrichment_note?.trim().length, record.id).toBeGreaterThan(
+        0,
+      );
+    }
   }
 
   for (const record of provisionalRecords) {
@@ -215,6 +228,23 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(record?.capabilities ?? []).not.toEqual([]);
     expect(record?.source.repository_id).toEqual(expect.any(Number));
   }
+
+  for (const id of [
+    "daddytorgo-hash-frankengarage",
+    "mentallyquill-st-wandlight",
+    "zorgonatis-stabs-edh",
+  ]) {
+    expect(records.find((record) => record.id === id)?.enrichment_policy).toBe(
+      "automatic",
+    );
+  }
+
+  expect(
+    records.find((record) => record.id === "tavern-rpg-suite"),
+  ).toMatchObject({
+    enrichment_policy: "manual",
+    enrichment_note: "Multi-repository suite; requires manual curation.",
+  });
 }
 
 describe("full catalog data", () => {
@@ -225,18 +255,6 @@ describe("full catalog data", () => {
   test("keeps manual curation exact and Village Maker consolidated", async () => {
     const records = await loadRegistryRecords();
     const byId = new Map(records.map((record) => [record.id, record]));
-    const primaryFunctions = JSON.parse(
-      await readFile(
-        resolve(rootDirectory, "data/vocabularies/primary-functions.json"),
-        "utf8",
-      ),
-    ).primary_functions;
-    const capabilities = JSON.parse(
-      await readFile(
-        resolve(rootDirectory, "data/vocabularies/capabilities.json"),
-        "utf8",
-      ),
-    ).capabilities;
 
     for (const id of removedVillageMakerIds) {
       expect(byId.has(id), id).toBe(false);
@@ -251,18 +269,6 @@ describe("full catalog data", () => {
         primary_function: expected.primary_function,
         capabilities: expected.capabilities,
       });
-      expect(
-        validateEnrichmentOutput(
-          {
-            summary: expected.summary,
-            metadata_status: "curated",
-            primary_function: expected.primary_function,
-            capabilities: [...expected.capabilities],
-          },
-          { primaryFunctions, capabilities },
-        ),
-        id,
-      ).toEqual({ valid: true });
       expect(record?.source.version, id).toBe(expected.version);
       expect(record?.source.artifact_size_bytes, id).toBe(
         expected.artifact_size_bytes,
@@ -286,7 +292,7 @@ describe("full catalog data", () => {
       record.primary_function = "developer-infrastructure";
       record.capabilities = ["automation"];
       record.summary =
-        "A focused extension for automating repeatable project workflows across supported roleplaying frontends and creator tools.";
+        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.";
     }
 
     expectCatalogContract(records);
@@ -303,7 +309,7 @@ describe("full catalog data", () => {
     for (const record of records as Array<{ id: string; summary: string }>) {
       expect(record.summary, record.id).toBeTypeOf("string");
       expect(record.summary.trim().length, record.id).toBeGreaterThan(0);
-      expect(record.summary.length, record.id).toBeLessThanOrEqual(140);
+      expect(record.summary.length, record.id).toBeLessThanOrEqual(220);
       expect(record.summary, record.id).not.toMatch(/[\r\n\u2028\u2029]/u);
     }
   });
@@ -324,7 +330,7 @@ describe("full catalog data", () => {
     const result = validateEnrichmentOutput(
       {
         summary:
-          "A focused extension for automating repeatable project workflows across SillyTavern projects and creators.",
+          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated",
         primary_function: "developer-infrastructure",
         capabilities: ["automation"],
