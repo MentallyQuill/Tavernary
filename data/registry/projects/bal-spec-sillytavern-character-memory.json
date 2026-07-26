@@ -3,7 +3,7 @@
   "id": "bal-spec-sillytavern-character-memory",
   "name": "SillyTavern Character Memory",
   "kind": "extension",
-  "summary": "SillyTavern extension that automatically extracts structured character memories from chat and stores them in Data Bank for vector retrieval.",
+  "summary": "A SillyTavern extension that automatically extracts structured character memories from ongoing chat conversations. The extracted entries are stored in the Data Bank for vector-based retrieval at generation time.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation", "instruction-control"],
+  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

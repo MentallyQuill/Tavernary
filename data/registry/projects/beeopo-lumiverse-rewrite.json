@@ -3,7 +3,7 @@
   "id": "beeopo-lumiverse-rewrite",
   "name": "Lumiverse Rewrite",
   "kind": "extension",
-  "summary": "Lumiverse Rewrite is an extension for the Lumiverse frontend repository, described as an ME Port.",
+  "summary": "Lumiverse Rewrite is a Lumiverse frontend extension that ports additional functionality into the roleplay environment. It extends the platform by integrating custom workflow features tailored for Lumiverse users.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

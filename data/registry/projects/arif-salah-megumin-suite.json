@@ -3,7 +3,7 @@
   "id": "arif-salah-megumin-suite",
   "name": "Megumin Suite",
   "kind": "extension",
-  "summary": "Megumin Suite is a SillyTavern extension that combines preset management, memory, NPC tracking, and ComfyUI image generation.",
+  "summary": "Megumin Suite is a SillyTavern extension replacing the default preset, memory, and NPC tooling with a unified workflow. It bundles chain-of-thought reasoning, automated character tracking, and ComfyUI image generation.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -16,9 +16,8 @@
     "automation",
     "character-worldbuilding",
     "image-generation",
-    "instruction-control",
-    "prompt-engineering",
-    "review-validation"
+    "planning-reasoning",
+    "prompt-engineering"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

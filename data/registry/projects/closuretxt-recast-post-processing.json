@@ -3,7 +3,7 @@
   "id": "closuretxt-recast-post-processing",
   "name": "Recast Post-Processing",
   "kind": "extension",
-  "summary": "A SillyTavern extension that performs post-processing on generated prose for quality and consistency.",
+  "summary": "A SillyTavern extension that performs prose post-processing on generated roleplay text. It runs configurable transformations to refine and clean up model output after generation.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1188318311
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
-  "capabilities": ["review-validation"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

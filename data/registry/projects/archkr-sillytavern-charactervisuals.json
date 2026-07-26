@@ -3,7 +3,7 @@
   "id": "archkr-sillytavern-charactervisuals",
   "name": "SillyTavern Character Visuals",
   "kind": "extension",
-  "summary": "SillyTavern extension that enhances Character Expressions by automatically switching active costume images in realtime during roleplay.",
+  "summary": "This SillyTavern extension enhances the Character Expressions add-on by automatically managing costume changes during chat sessions. It switches the active costume in realtime to match the conversation context.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "automation", "image-generation"],
+  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

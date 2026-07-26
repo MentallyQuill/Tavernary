@@ -3,7 +3,7 @@
   "id": "bmen25124-sillytavern-character-creator",
   "name": "SillyTavern Character Creator",
   "kind": "extension",
-  "summary": "SillyTavern extension that creates character cards and profiles by leveraging LLMs to automate character generation workflows.",
+  "summary": "SillyTavern Character Creator is a SillyTavern extension that uses LLMs to generate character profiles. It streamlines character creation by automating the drafting process within the SillyTavern interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
