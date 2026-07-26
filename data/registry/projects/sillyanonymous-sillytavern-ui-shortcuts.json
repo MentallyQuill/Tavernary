@@ -3,15 +3,15 @@
   "id": "sillyanonymous-sillytavern-ui-shortcuts",
   "name": "SillyTavern UI Shortcuts",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "A modular SillyTavern extension providing UI enhancements, quality-of-life tweaks, and integrations with toggleable standalone modules.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Sillyanonymous/SillyTavern-UIShortcuts",
     "repository_id": 1174672121
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

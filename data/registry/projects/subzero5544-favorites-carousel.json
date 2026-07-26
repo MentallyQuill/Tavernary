@@ -3,15 +3,15 @@
   "id": "subzero5544-favorites-carousel",
   "name": "Favorites Carousel",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Favorites Carousel is a SillyTavern extension that displays favorited items in a carousel interface for easier browsing and selection.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "subzero5544/favorites-carousel",
     "repository_id": 999164615
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
