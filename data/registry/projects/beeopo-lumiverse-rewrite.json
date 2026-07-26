@@ -3,15 +3,15 @@
   "id": "beeopo-lumiverse-rewrite",
   "name": "Lumiverse Rewrite",
   "kind": "extension",
-  "summary": "An extension for Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "Lumiverse Rewrite is an extension for the Lumiverse frontend repository, described as an ME Port.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Beeopo/Lumiverse-Rewrite",
     "repository_id": 1281629987
   },
   "frontends": ["lumiverse"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

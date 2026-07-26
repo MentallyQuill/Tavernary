@@ -3,15 +3,15 @@
   "id": "amousepad-lumibooks",
   "name": "LumiBooks",
   "kind": "extension",
-  "summary": "An extension for Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "LumiBooks is a Lumiverse frontend extension providing a simple memory storage system.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "AMousePad/LumiBooks",
     "repository_id": 1248922425
   },
   "frontends": ["lumiverse"],
-  "primary_function": "uncategorized",
+  "primary_function": "memory-retrieval",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

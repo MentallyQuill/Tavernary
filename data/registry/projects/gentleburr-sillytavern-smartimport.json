@@ -3,16 +3,20 @@
   "id": "gentleburr-sillytavern-smartimport",
   "name": "SillyTavern SmartImport",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern SmartImport is a frontend extension that batch-imports characters from URLs and prevents duplicates via metadata matching.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "GentleBurr/SillyTavern-SmartImport",
     "repository_id": 1184263874
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "automation",
+    "review-validation",
+    "character-worldbuilding"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

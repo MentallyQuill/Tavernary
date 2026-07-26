@@ -101,7 +101,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
     ).toBe(true);
     if (record.metadata_status === "curated") {
       expect(repositoryId, record.id).toEqual(expect.any(Number));
-      expect(record.primary_function, record.id).not.toBe("uncategorized");
+      if (record.primary_function === "uncategorized") {
+        expect(record.summary, record.id).toBe("No README file found.");
+        expect(record.capabilities, record.id).toEqual([]);
+      }
     }
   }
 

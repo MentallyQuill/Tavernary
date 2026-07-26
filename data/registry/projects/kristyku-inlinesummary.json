@@ -3,15 +3,15 @@
   "id": "kristyku-inlinesummary",
   "name": "InlineSummary",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "InlineSummary is a SillyTavern extension that provides inline summary functionality within the frontend interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Kristyku/InlineSummary",
     "repository_id": 1113293446
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "frontend",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

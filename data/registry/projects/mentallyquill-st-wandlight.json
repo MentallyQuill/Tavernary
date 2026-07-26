@@ -3,16 +3,20 @@
   "id": "mentallyquill-st-wandlight",
   "name": "Wandlight",
   "kind": "preset",
-  "summary": "A System Preset for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Wandlight is a SillyTavern preset configured for Harry Potter themed roleplay, managing prompts and instructions sent to language models.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "MentallyQuill/ST-Wandlight",
     "repository_id": 1246232030
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "prompt-engineering",
+    "instruction-control",
+    "character-worldbuilding"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

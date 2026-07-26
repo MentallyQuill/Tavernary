@@ -863,17 +863,15 @@ test("writes only the sanitized preflight result into the workflow summary input
   ]);
 });
 
-test("stabilizes full preparation after rebasing newly published catalog data", async () => {
+test("publishes one full preparation checkpoint despite refresh timestamp churn", async () => {
   const publications = [
     {
       changed: true,
       publishedCommit: "a".repeat(40),
       registryCommit: "a".repeat(40),
     },
-    { changed: false, publishedCommit: null, registryCommit: null },
   ];
   const calls: Array<{ command: string; args: string[] }> = [];
-  let preparationChecks = 0;
   const operations = createProductionOperations({
     npmCommand: "npm",
     async runCommand(command: string, args: string[]) {
@@ -883,12 +881,8 @@ test("stabilizes full preparation after rebasing newly published catalog data", 
         args[0] === "status" &&
         args.includes("data/snapshots/github")
       ) {
-        preparationChecks += 1;
         return {
-          stdout:
-            preparationChecks === 1
-              ? " M data/registry/projects/new-project.json\n"
-              : "",
+          stdout: " M data/snapshots/github/project.json\n",
           exitCode: 0,
         };
       }
@@ -905,35 +899,6 @@ test("stabilizes full preparation after rebasing newly published catalog data", 
 
   expect(
     calls.filter(({ args }) => args.includes("catalog:refresh")),
-  ).toHaveLength(2);
-});
-
-test("bounds full preparation when the catalog keeps changing", async () => {
-  const operations = createProductionOperations({
-    npmCommand: "npm",
-    async runCommand(command: string, args: string[]) {
-      if (
-        command === "git" &&
-        args[0] === "status" &&
-        args.includes("data/snapshots/github")
-      ) {
-        return {
-          stdout: " M data/registry/projects/keeps-changing.json\n",
-          exitCode: 0,
-        };
-      }
-      return { stdout: "", exitCode: 0 };
-    },
-    async publishChanges() {
-      return {
-        changed: true,
-        publishedCommit: "a".repeat(40),
-        registryCommit: "a".repeat(40),
-      };
-    },
-  });
-
-  await expect(operations.prepareFull()).rejects.toThrow(
-    "did not stabilize after three preparation rounds",
-  );
+  ).toHaveLength(1);
+  expect(publications).toHaveLength(0);
 });

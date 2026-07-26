@@ -3,16 +3,20 @@
   "id": "cfigure-lumiverse-prompt-viewer",
   "name": "Lumiverse Prompt Viewer",
   "kind": "extension",
-  "summary": "An extension for Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "Lumiverse Prompt Viewer is a Spindle extension that captures and displays assembled prompts, World Info, and token counts from generations.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "cfigure/Lumiverse-prompt-viewer",
     "repository_id": 1206930287
   },
   "frontends": ["lumiverse"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "prompt-engineering",
+    "review-validation",
+    "instruction-control"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

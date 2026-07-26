@@ -3,15 +3,15 @@
   "id": "decidetto-me-accent-color-changer",
   "name": "ME Accent Color Changer",
   "kind": "extension",
-  "summary": "An extension for Marinara Engine.",
-  "metadata_status": "provisional",
+  "summary": "A Marinara Engine extension that changes accent colors for built-in and compatible themes.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Decidetto/ME-accent-color-changer",
     "repository_id": 1221907257
   },
   "frontends": ["marinara-engine"],
-  "primary_function": "uncategorized",
+  "primary_function": "frontend",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
