@@ -3,15 +3,15 @@
   "id": "p-e-w-sorcery",
   "name": "Sorcery",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Sorcery is a SillyTavern extension described as the future of AI roleplay.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "p-e-w/sorcery",
     "repository_id": 933528919
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
