@@ -11,6 +11,7 @@ const pinnedActions = {
   "actions/configure-pages": "45bfe0192ca1faeb007ade9deae92b16b8254a0d",
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128",
+  "actions/upload-artifact": "ea165f8d65b6e75b540449e92b4886f43607fa02",
 };
 
 async function workflow(name: string) {
@@ -36,6 +37,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "backfill-repository-identities",
     "admit-issue",
     "triage-submission",
+    "generate-project-submission",
     "triage-kit-submission",
     "apply-kit-submission",
     "apply-kit-withdrawal",
@@ -397,30 +399,80 @@ test("runs enrichment through one tested durable orchestrator", async () => {
   expect(source).not.toContain("publish_changes()");
 });
 
-test("triage validates admitted submissions without installing dependencies", async () => {
-  for (const name of ["triage-submission", "triage-kit-submission"]) {
-    const document = await workflow(name);
-    const source = await readFile(
-      resolve(workflowDirectory, `${name}.yml`),
-      "utf8",
-    );
+test("triage dispatches admitted projects without repository write access", async () => {
+  const triage = await workflow("triage-submission");
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-submission.yml"),
+    "utf8",
+  );
 
-    expect(document.on.issues.types).toEqual(["labeled", "edited"]);
-    expect(document.permissions).toEqual({
-      contents: "read",
-      issues: "write",
-    });
-    expect(document.concurrency["cancel-in-progress"]).toBe(true);
-    expect(document.concurrency.group).toContain(
-      "${{ github.event.issue.number }}",
-    );
-    expect(source).toContain("issue-admitted");
-    expect(source).toContain("github.event.issue.state == 'open'");
-    expect(source).toContain("github.event.label.name == 'issue-admitted'");
-    expect(source).toContain("github.event.action == 'edited'");
-    expect(source).not.toContain("npm ci");
-    expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
-  }
+  expect(triage.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(triage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+    actions: "write",
+  });
+  expect(triage.concurrency["cancel-in-progress"]).toBe(true);
+  expect(triage.concurrency.group).toContain(
+    "${{ github.event.issue.number }}",
+  );
+  expect(source).toContain("issue-admitted");
+  expect(source).toContain("github.event.issue.state == 'open'");
+  expect(source).toContain("github.event.label.name == 'issue-admitted'");
+  expect(source).toContain("github.event.action == 'edited'");
+  expect(source).toContain("steps.triage.outputs.admitted == 'true'");
+  expect(source).toContain("gh workflow run generate-project-submission.yml");
+  expect(source).not.toContain("npm ci");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
+test("keeps Kit triage read-only and dependency-free", async () => {
+  const document = await workflow("triage-kit-submission");
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-kit-submission.yml"),
+    "utf8",
+  );
+
+  expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(document.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+  });
+  expect(document.concurrency["cancel-in-progress"]).toBe(true);
+  expect(source).not.toContain("npm ci");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
+test("generates submission PRs with scoped permissions and manual recovery", async () => {
+  const generation = await workflow("generate-project-submission");
+  const source = await readFile(
+    resolve(workflowDirectory, "generate-project-submission.yml"),
+    "utf8",
+  );
+
+  expect(generation.permissions).toEqual({
+    contents: "write",
+    issues: "write",
+    "pull-requests": "write",
+    actions: "write",
+  });
+  expect(generation.on.workflow_dispatch.inputs.issue_number.required).toBe(
+    true,
+  );
+  expect(
+    generation.on.workflow_dispatch.inputs.force_regeneration.default,
+  ).toBe(false);
+  expect(generation.concurrency.group).toContain(
+    "project-submission-${{ inputs.issue_number }}",
+  );
+  expect(source).toContain("git push --force-with-lease=");
+  expect(source).toContain("git rebase origin/main");
+  expect(source).toContain("previous-generated-paths.txt");
+  expect(source).toContain("Refusing unsafe generated path");
+  expect(source).not.toMatch(/git push (?:--force|-f)(?!-with-lease)/);
+  expect(source).not.toMatch(
+    /(?:npm|pnpm|yarn|bun|node)\s+(?:--prefix\s+)?(?:https?:\/\/|\.\/submitted)/,
+  );
 });
 
 test("admits opened and reopened issues before submission triage", async () => {

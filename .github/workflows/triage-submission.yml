@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: write
 
 concurrency:
   group: triage-project-${{ github.event.issue.number }}
@@ -17,7 +18,7 @@ concurrency:
 jobs:
   validate:
     if: >-
-      startsWith(github.event.issue.title, '[Project submission]') &&
+      contains(github.event.issue.labels.*.name, 'project-submission') &&
       github.event.issue.state == 'open' &&
       contains(github.event.issue.labels.*.name, 'issue-admitted') &&
       (
@@ -36,6 +37,17 @@ jobs:
         with:
           node-version: 24
       - name: Validate and label submission
+        id: triage
         run: node scripts/submissions/triage-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate admitted submission
+        if: steps.triage.outputs.admitted == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.triage.outputs.issue_number }}
+        run: >
+          gh workflow run generate-project-submission.yml
+          --ref main
+          -f issue_number="$ISSUE_NUMBER"
+          -f force_regeneration=false

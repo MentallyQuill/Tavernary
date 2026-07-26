@@ -1,0 +1,256 @@
+name: Generate project submission review
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Project submission issue number
+        required: true
+        type: number
+      force_regeneration:
+        description: Replace generated paths after acknowledged maintainer edits
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: project-submission-${{ inputs.issue_number }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      ISSUE_NUMBER: ${{ inputs.issue_number }}
+      FORCE_REGENERATION: ${{ inputs.force_regeneration }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+    steps:
+      - name: Check out full main history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Inspect existing generated state
+        id: state
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="automation/project-submission-${ISSUE_NUMBER}"
+          issue_path="${RUNNER_TEMP}/project-submission-issue.json"
+          pr_path="${RUNNER_TEMP}/project-submission-pr.json"
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "$issue_path"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const issue = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const labels = issue.labels.map((label) => label.name);
+            if (issue.state !== 'open' || !labels.includes('project-submission') ||
+                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+              throw new Error('Submission issue is no longer admitted.');
+            }
+          " "$issue_path"
+          gh pr list --state open --head "$branch" --limit 1 \
+            --json number,body,headRefOid > "$pr_path"
+          remote_sha="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { parseSubmissionPullRequestMarker } from './scripts/submissions/project-submission-pr.mjs';
+            const pull = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'))[0] ?? null;
+            const marker = pull ? parseSubmissionPullRequestMarker(pull.body ?? '') : null;
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/previous-generated-paths.txt',
+              (marker?.generated_paths ?? []).join('\n'),
+            );
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, [
+              'pr_number=' + (pull?.number ?? ''),
+              'marker_sha=' + (marker?.generated_head_sha ?? ''),
+            ].join('\n') + '\n');
+          " "$pr_path"
+          {
+            echo "branch=$branch"
+            echo "remote_sha=$remote_sha"
+          } >> "$GITHUB_OUTPUT"
+      - name: Protect maintainer corrections
+        shell: bash
+        env:
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          MARKER_SHA: ${{ steps.state.outputs.marker_sha }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$PR_NUMBER" && ( -z "$MARKER_SHA" || "$REMOTE_SHA" != "$MARKER_SHA" ) && "$FORCE_REGENERATION" != "true" ]]; then
+            echo "::error::Generated PR contains maintainer changes. Re-run with force_regeneration only after reviewing those edits."
+            exit 1
+          fi
+      - name: Regenerate declared project files
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          MARKER_SHA: ${{ steps.state.outputs.marker_sha }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then
+            git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+            git rebase origin/main
+            while IFS= read -r generated_path; do
+              [[ -z "$generated_path" ]] && continue
+              case "$generated_path" in
+                data/registry/projects/*.json|data/snapshots/github/*.json|data/vocabularies/frontends.json) ;;
+                *)
+                  echo "::error::Refusing unsafe generated path: $generated_path"
+                  exit 1
+                  ;;
+              esac
+              if git cat-file -e "origin/main:$generated_path" 2>/dev/null; then
+                git checkout origin/main -- "$generated_path"
+              else
+                git rm -f --ignore-unmatch -- "$generated_path"
+              fi
+            done < "${RUNNER_TEMP}/previous-generated-paths.txt"
+          else
+            git checkout -B "$BRANCH" origin/main
+          fi
+          node scripts/submissions/generate-project-submission.mjs \
+            --issue-number "$ISSUE_NUMBER" \
+            --output-directory "$GITHUB_WORKSPACE" \
+            --report-path "${RUNNER_TEMP}/admission-report.json"
+      - name: Validate proposed catalog and card
+        run: |
+          npm run catalog:validate
+          npm run catalog:build
+      - name: Commit generated paths
+        id: commit
+        shell: bash
+        env:
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+          BRANCH: ${{ steps.state.outputs.branch }}
+        run: |
+          set -euo pipefail
+          project_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).project_id")"
+          generated_paths=("data/registry/projects/${project_id}.json")
+          if [[ -f "data/snapshots/github/${project_id}.json" ]]; then
+            generated_paths+=("data/snapshots/github/${project_id}.json")
+          fi
+          if [[ -n "$(git status --porcelain -- data/vocabularies/frontends.json)" ]]; then
+            generated_paths+=("data/vocabularies/frontends.json")
+          fi
+          while IFS= read -r previous_path; do
+            [[ -z "$previous_path" ]] && continue
+            case "$previous_path" in
+              data/registry/projects/*.json|data/snapshots/github/*.json|data/vocabularies/frontends.json)
+                generated_paths+=("$previous_path")
+                ;;
+              *)
+                echo "::error::Refusing unsafe generated path: $previous_path"
+                exit 1
+                ;;
+            esac
+          done < "${RUNNER_TEMP}/previous-generated-paths.txt"
+          mapfile -t generated_paths < <(printf '%s\n' "${generated_paths[@]}" | sort -u)
+          printf '%s\n' "${generated_paths[@]}" > "${RUNNER_TEMP}/generated-paths.txt"
+          git add -- "${generated_paths[@]}"
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "feat(catalog): propose project from issue #${ISSUE_NUMBER}"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ -z "$REMOTE_SHA" ]]; then
+            git push origin "HEAD:refs/heads/$BRANCH"
+          else
+            git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" origin "HEAD:refs/heads/$BRANCH"
+          fi
+          {
+            echo "changed=true"
+            echo "head_sha=$head_sha"
+            echo "project_id=$project_id"
+          } >> "$GITHUB_OUTPUT"
+      - name: Create or update maintainer review PR
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          PROJECT_ID: ${{ steps.commit.outputs.project_id }}
+        run: |
+          set -euo pipefail
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { renderSubmissionPullRequest } from './scripts/submissions/project-submission-pr.mjs';
+            const report = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/admission-report.json', 'utf8'));
+            const paths = fs.readFileSync(process.env.RUNNER_TEMP + '/generated-paths.txt', 'utf8').trim().split(/\r?\n/u).filter(Boolean);
+            const body = renderSubmissionPullRequest({
+              issueNumber: Number(process.env.ISSUE_NUMBER),
+              projectName: report.inferred.name ?? report.project_id,
+              report,
+              marker: {
+                schema_version: 1,
+                issue_number: Number(process.env.ISSUE_NUMBER),
+                generated_head_sha: process.env.HEAD_SHA,
+                generated_paths: paths,
+              },
+            });
+            fs.writeFileSync(process.env.RUNNER_TEMP + '/project-submission-pr.md', body);
+          "
+          title="[Project submission] ${PROJECT_ID}"
+          if [[ -n "$PR_NUMBER" ]]; then
+            gh pr edit "$PR_NUMBER" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$title" --body-file "${RUNNER_TEMP}/project-submission-pr.md"
+          fi
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const issue = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/project-submission-issue.json', 'utf8'));
+            const owned = new Set([
+              'needs-maintainer-review',
+              'needs-information',
+              'duplicate-candidate',
+              'submission-retryable',
+              'submission-pr-open',
+              'submission-declined',
+            ]);
+            const labels = issue.labels.map((label) => label.name).filter((label) => !owned.has(label));
+            labels.push('submission-pr-open');
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/project-submission-labels.json',
+              JSON.stringify({ labels: [...new Set(labels)] }),
+            );
+          "
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
+            --input "${RUNNER_TEMP}/project-submission-labels.json"
+      - name: Upload admission report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: project-submission-${{ inputs.issue_number }}-admission
+          path: ${{ runner.temp }}/admission-report.json
+          if-no-files-found: error
+      - name: Dispatch CI for generated branch
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+        run: gh workflow run ci.yml --ref "$BRANCH"

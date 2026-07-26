@@ -1,4 +1,9 @@
-import type { ProjectSubmissionDecision } from "./admission.mjs";
+import type { ProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
+import type {
+  ExistingSubmissionProject,
+  ProjectSubmissionDecision,
+  SourceProbeDecision,
+} from "./admission.mjs";
 import type {
   FrontendProject,
   FrontendVocabulary,
@@ -7,6 +12,7 @@ import type {
   SafeProbeOptions,
   SafeProbeResult,
 } from "./safe-source-fetch.mjs";
+import type { SourceIdentity } from "./source-identity.mjs";
 import type { SubmissionValidation } from "./validate-submission.mjs";
 
 export function parseIssueFields(body: string): {
@@ -107,3 +113,38 @@ export function processProjectSubmissionTriage(input: {
   };
   writeOutput?: (name: string, value: string) => Promise<unknown>;
 }): Promise<ProjectSubmissionDecision>;
+
+export function loadProjectSubmissionCatalogData(): Promise<{
+  vocabulary: FrontendVocabulary;
+  projects: FrontendProject[];
+}>;
+
+export function projectSubmissionExistingProject(
+  record: FrontendProject & {
+    source?: {
+      type: string;
+      repository?: string;
+      repository_id?: number | null;
+      url?: string;
+    };
+  },
+): ExistingSubmissionProject | null;
+
+export function inspectProjectSubmissionSource(
+  manifest: ProjectSubmissionManifest,
+  options: {
+    request: ProjectSubmissionGitHubRequest;
+    probe: (
+      url: string,
+      options?: SafeProbeOptions,
+    ) => Promise<SafeProbeResult>;
+  },
+): Promise<{
+  identity: SourceIdentity | null;
+  sourceProbe: SourceProbeDecision;
+  repository?: {
+    visibility: "public" | "private" | "internal";
+    archived: boolean;
+  };
+  errors?: string[];
+}>;

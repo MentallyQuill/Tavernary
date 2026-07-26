@@ -226,7 +226,7 @@ export async function synchronizeProjectSubmissionTriage(
   }
 }
 
-async function loadCatalogData() {
+export async function loadProjectSubmissionCatalogData() {
   const directory = resolve("data/registry/projects");
   const files = (await readdir(directory))
     .filter((file) => file.endsWith(".json"))
@@ -283,7 +283,7 @@ function labelsFromIssue(issue) {
   );
 }
 
-function existingProject(record) {
+export function projectSubmissionExistingProject(record) {
   try {
     const parsed =
       record.source.type === "github"
@@ -316,7 +316,10 @@ function retryableError(error) {
   );
 }
 
-async function inspectSource(manifest, { request, probe }) {
+export async function inspectProjectSubmissionSource(
+  manifest,
+  { request, probe },
+) {
   let parsed;
   try {
     parsed = parseSourceIdentity(manifest.source_url);
@@ -493,7 +496,7 @@ export async function processProjectSubmissionTriage({
     ...event.issue,
     labels: labelsFromIssue(event.issue),
   };
-  const data = catalogData ?? (await loadCatalogData());
+  const data = catalogData ?? (await loadProjectSubmissionCatalogData());
   const parsed = parseProjectSubmissionIssue(issue.body ?? "");
   let decision;
   let identity = null;
@@ -516,7 +519,7 @@ export async function processProjectSubmissionTriage({
       errors: parsed.errors,
     });
   } else {
-    const inspection = await inspectSource(parsed.manifest, {
+    const inspection = await inspectProjectSubmissionSource(parsed.manifest, {
       request,
       probe,
     });
@@ -538,7 +541,7 @@ export async function processProjectSubmissionTriage({
       sourceProbe: inspection.sourceProbe,
       repository: inspection.repository,
       existingProjects: data.projects
-        .map(existingProject)
+        .map(projectSubmissionExistingProject)
         .filter((project) => project !== null),
       frontendResolution,
       errors: inspection.errors,
