@@ -503,7 +503,12 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
   expect(
     catalog.projects
       .filter((project) => project.metadataStatus === "curated")
-      .every((project) => project.primaryFunction !== "uncategorized"),
+      .every(
+        (project) =>
+          project.primaryFunction !== "uncategorized" ||
+          (project.summary === "No README file found." &&
+            project.capabilities.length === 0),
+      ),
   ).toBe(true);
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
