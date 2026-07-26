@@ -3,15 +3,15 @@
   "id": "chesswoodspixel-sillytavern-lorebookstickysort",
   "name": "SillyTavern Lorebook Sticky Sort",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that remembers the user's preferred sort order for each lorebook.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "chesswoodspixel/SillyTavern-LorebookStickySort",
     "repository_id": 1095739220
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
