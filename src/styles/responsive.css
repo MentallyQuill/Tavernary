@@ -75,9 +75,9 @@
     position: relative;
     z-index: 18;
     display: block;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border-default);
     padding: 9px 13px;
-    background: var(--color-surface-primary);
+    background: var(--color-bg-sidebar);
   }
 
   .mobile-category-trigger,
@@ -92,7 +92,7 @@
     border-radius: 7px;
     padding: 0 12px;
     color: var(--color-text-primary);
-    background: var(--color-surface-raised);
+    background: var(--color-bg-surface-raised);
     text-align: left;
   }
 
@@ -114,7 +114,7 @@
   }
 
   .mobile-category-trigger small {
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     font-size: 8px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -123,13 +123,13 @@
 
   .mobile-category-trigger b,
   .mobile-category-menu b {
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     font-size: 10px;
   }
 
   .mobile-category-trigger > svg:last-child {
     width: 17px;
-    color: var(--color-muted);
+    color: var(--color-text-muted);
   }
 
   .mobile-category-menu {
@@ -143,8 +143,8 @@
     border: 1px solid var(--color-border-strong);
     border-radius: 7px;
     padding: 7px;
-    background: var(--color-surface-primary);
-    box-shadow: var(--shadow-raised);
+    background: var(--color-bg-sidebar);
+    box-shadow: var(--shadow-overlay);
   }
 
   .mobile-category-menu button {
@@ -153,7 +153,7 @@
     border: 0;
     border-radius: 5px;
     padding: 7px 9px;
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     background: transparent;
     cursor: pointer;
     font-size: 11px;
@@ -168,7 +168,7 @@
   .mobile-category-menu button.active,
   .mobile-category-menu button:hover {
     color: var(--color-text-primary);
-    background: var(--color-surface-raised);
+    background: var(--color-bg-surface-raised);
   }
 
   .catalog-layout {
@@ -249,7 +249,7 @@
     border-radius: 6px;
     padding: 0 12px;
     color: var(--color-text-primary);
-    background: var(--color-surface-raised);
+    background: var(--color-bg-surface-raised);
   }
 
   .sort-projects {
@@ -283,8 +283,8 @@
     padding: 0;
     overflow: hidden;
     border-left: 0;
-    background: var(--color-surface-primary);
-    box-shadow: var(--shadow-raised);
+    background: var(--color-bg-sidebar);
+    box-shadow: var(--shadow-overlay);
   }
 
   .kit-builder-panel-header {
@@ -295,8 +295,8 @@
     padding: calc(10px + env(safe-area-inset-top))
       calc(14px + env(safe-area-inset-right)) 10px
       calc(14px + env(safe-area-inset-left));
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-surface-primary);
+    border-bottom: 1px solid var(--color-border-default);
+    background: var(--color-bg-sidebar);
   }
 
   .kit-builder-panel-header button {
@@ -385,8 +385,8 @@
     padding: 12px calc(14px + env(safe-area-inset-right))
       calc(12px + env(safe-area-inset-bottom))
       calc(14px + env(safe-area-inset-left));
-    border-top: 1px solid var(--color-border);
-    background: var(--color-surface-primary);
+    border-top: 1px solid var(--color-border-default);
+    background: var(--color-bg-sidebar);
   }
 
   .kit-builder-footer > button {
@@ -548,8 +548,8 @@
     border: 0;
     background: radial-gradient(
       circle,
-      var(--color-kind-preset) 0 7px,
-      var(--color-page) 7px 9px,
+      var(--color-preset) 0 7px,
+      var(--color-bg-canvas) 7px 9px,
       transparent 9px
     );
     box-shadow: none;
@@ -561,8 +561,8 @@
     border: 0;
     background: radial-gradient(
       circle,
-      var(--color-kind-preset) 0 7px,
-      var(--color-page) 7px 9px,
+      var(--color-preset) 0 7px,
+      var(--color-bg-canvas) 7px 9px,
       transparent 9px
     );
     box-shadow: none;
@@ -572,9 +572,9 @@
   .dual-range input[type="range"]:focus-visible::-moz-range-thumb {
     background: radial-gradient(
       circle,
-      var(--color-kind-preset) 0 7px,
-      var(--color-page) 7px 10px,
-      var(--color-kind-preset) 10px 12px,
+      var(--color-preset) 0 7px,
+      var(--color-bg-canvas) 7px 10px,
+      var(--color-preset) 10px 12px,
       transparent 12px
     );
     box-shadow: none;

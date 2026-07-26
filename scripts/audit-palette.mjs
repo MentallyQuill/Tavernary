@@ -5,19 +5,79 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import colorNames from "color-name";
 
 export const APPROVED_HEX = [
-  "#07181D",
-  "#0B2229",
-  "#102B33",
-  "#173740",
-  "#284A52",
-  "#3B6068",
-  "#FFFFFF",
-  "#F3F1E8",
-  "#CBD6D3",
-  "#849A9E",
+  "#0D1117",
+  "#101820",
+  "#121A1F",
+  "#182228",
+  "#1C282E",
+  "#223138",
+  "#153B39",
+  "#10191E",
+  "#202C32",
+  "#171F23",
+  "#223038",
+  "#2B3A40",
+  "#3E535B",
+  "#506870",
+  "#26363D",
+  "#E6EDF3",
+  "#A8B3BA",
+  "#829099",
+  "#5F6B72",
+  "#F0F5F7",
+  "#6EE7D8",
+  "#99F6E4",
+  "#2DD4BF",
+  "#5EEAD4",
+  "#14B8A6",
+  "#238F85",
+  "#1B4A46",
+  "#28635E",
+  "#8CE9DE",
   "#D62839",
+  "#E33B4C",
+  "#B71F30",
+  "#35181F",
+  "#431D25",
+  "#7C2936",
+  "#FF8B95",
   "#57C5A3",
+  "#72D4B6",
+  "#3EAC8C",
+  "#15352E",
+  "#1B443A",
+  "#347A67",
+  "#8BE0C5",
   "#E18A24",
+  "#F0A145",
+  "#C87416",
+  "#3B2814",
+  "#4A3217",
+  "#8A5720",
+  "#FFC171",
+  "#161008",
+  "#172329",
+  "#304249",
+  "#486068",
+  "#718087",
+  "#506168",
+  "#071413",
+  "#3FB950",
+  "#16351F",
+  "#2E6B3D",
+  "#7EE787",
+  "#D29922",
+  "#3A2D12",
+  "#7A5B18",
+  "#E3B341",
+  "#F85149",
+  "#3D1B1F",
+  "#8C2F35",
+  "#FF7B72",
+  "#58A6FF",
+  "#162B45",
+  "#315F91",
+  "#79C0FF",
 ];
 
 const APPROVED_HEX_SET = new Set(
@@ -28,7 +88,7 @@ const REPOSITORY_ROOT = import.meta.url.startsWith("file:")
   ? resolve(fileURLToPath(import.meta.url), "..", "..")
   : process.cwd();
 const ALLOWED_COLOR_MIX =
-  /color-mix\(\s*in\s+srgb\s*,\s*var\(\s*--color-kind-preset\s*\)\s+var\(\s*--commit-freshness\s*\)\s*,\s*var\(\s*--color-muted\s*\)\s*\)/gi;
+  /color-mix\(\s*in\s+srgb\s*,\s*var\(\s*--color-activity-current\s*\)\s+var\(\s*--commit-freshness\s*\)\s*,\s*var\(\s*--color-activity-recent\s*\)\s*\)/gi;
 const NEUTRAL_KEYWORDS = new Set(["transparent", "currentcolor", "inherit"]);
 const NAMED_COLORS = Object.keys(colorNames).sort(
   (left, right) => right.length - left.length,
@@ -181,9 +241,23 @@ function addOpacityMatches(violations, file, source) {
   }
 }
 
+function withoutCanonicalShadows(file, source) {
+  if (!file.replaceAll("\\", "/").endsWith("src/styles/tokens.css")) {
+    return source;
+  }
+
+  return source.replace(
+    /--shadow-card:\s*0 1px 2px rgb\(0 0 0 \/ 24%\),\s*0 4px 12px rgb\(0 0 0 \/ 12%\);|--shadow-overlay:\s*0 12px 32px rgb\(0 0 0 \/ 40%\);/g,
+    (declaration) => declaration.replace(/[^\n]/g, " "),
+  );
+}
+
 export function auditSource(file, source) {
   const violations = [];
-  const authoredSource = withoutComments(file, source);
+  const authoredSource = withoutCanonicalShadows(
+    file,
+    withoutComments(file, source),
+  );
 
   addMatches(violations, file, authoredSource, /#[\da-f]{3,8}\b/gi, (match) =>
     APPROVED_HEX_SET.has(match[0].toLowerCase())

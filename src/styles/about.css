@@ -1,7 +1,7 @@
 .about-page {
   min-height: 100vh;
   padding: 28px clamp(20px, 6vw, 72px) 72px;
-  background: var(--color-page);
+  background: var(--color-bg-canvas);
 }
 
 .about-nav {
@@ -11,13 +11,14 @@
 
 .about-nav a,
 .about-actions a {
-  color: var(--color-accent);
+  color: var(--color-link);
   font-weight: 650;
   text-decoration: none;
 }
 
 .about-nav a:hover,
 .about-actions a:hover {
+  color: var(--color-link-hover);
   text-decoration: underline;
 }
 
@@ -28,7 +29,7 @@
 
 .about-kicker {
   margin: 0 0 8px;
-  color: var(--color-kind-preset);
+  color: var(--color-preset);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -55,7 +56,7 @@
 
 .about-content section {
   padding: 28px 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border-default);
 }
 
 .about-content h2 {
@@ -74,12 +75,12 @@
   align-items: center;
   gap: 24px;
   padding-top: 30px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border-default);
 }
 
 .about-actions .primary-action {
   padding: 12px 18px;
-  border: 1px solid var(--color-kind-preset);
+  border: 1px solid var(--color-preset);
   border-radius: 6px;
   color: var(--color-text-primary);
 }

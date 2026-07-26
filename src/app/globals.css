@@ -8,12 +8,16 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  background: var(--color-bg-canvas);
+}
+
 html {
   min-width: 320px;
   min-height: 100%;
   overflow-x: clip;
   color-scheme: dark;
-  background: var(--color-page);
 }
 
 body {
@@ -21,7 +25,6 @@ body {
   margin: 0;
   overflow-x: clip;
   color: var(--color-text-primary);
-  background: var(--color-page);
   font-family: "Inter Variable", Inter, system-ui, sans-serif;
   font-size: 14px;
   text-rendering: optimizeLegibility;
@@ -38,7 +41,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--color-kind-preset);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 

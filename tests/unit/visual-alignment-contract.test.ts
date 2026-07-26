@@ -39,7 +39,7 @@ describe("catalog visual alignment", () => {
     const responsive = read("src/styles/responsive.css");
 
     expect(css).toMatch(
-      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-kind-preset\)/s,
+      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-preset\)/s,
     );
     expect(css).toMatch(
       /\.dual-range input\[type="range"\]\s*\{[^}]*position:\s*absolute[^}]*background:\s*transparent/s,
@@ -61,18 +61,18 @@ describe("catalog visual alignment", () => {
     const motion = read("src/styles/motion.css");
     const tokens = read("src/styles/tokens.css");
 
-    expect(tokens).toContain("--color-filled-control-text: #07181d;");
+    expect(tokens).toContain("--color-action-primary-text: #161008;");
     expect(css).toMatch(
-      /\.control-primary\s*\{[^}]*color:\s*var\(--color-filled-control-text\)/s,
+      /\.control-primary\s*\{[^}]*color:\s*var\(--color-action-primary-text\)/s,
     );
     expect(css).toMatch(
-      /\.header-actions \.submit-link\s*\{[^}]*color:\s*var\(--color-filled-control-text\)/s,
+      /\.header-actions \.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-kind-preset\)/s,
+      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-preset\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-kind-extension\)/s,
+      /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
       /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
@@ -90,19 +90,19 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell:has\(\.project-card:active\),\s*\.project-card-shell:has\(\.project-kit-control:active\)\s*\{[^}]*transform:\s*scale\(0\.98\)/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*aspect-ratio:\s*1[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)[^}]*box-shadow:\s*none/s,
+      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*aspect-ratio:\s*1[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)[^}]*box-shadow:\s*none/s,
     );
     expect(css).toMatch(
       /\.project-kit-control\[aria-pressed="true"\] \.project-kit-control-face\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
       /\.kit-builder-remove\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-muted\)/s,
+      /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-text-muted\)/s,
     );
     expect(responsive).toMatch(
       /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control-hit\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
@@ -175,12 +175,12 @@ describe("catalog visual alignment", () => {
     expect(icons).toContain(
       "M29,5a2,2,0,0,0-2-2H5A2,2,0,0,0,3,5V27a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2ZM27,5V9H5V5Zm0,22H5V23H27Zm0-6H5V17H27Zm0-6H5V11H27Z",
     );
-    expect(tokens).toContain("--color-navigation-primary: #ffffff;");
+    expect(tokens).toContain("--color-accent-teal: #2DD4BF;");
     expect(css).toMatch(
-      /\.category-navigation button:is\(\[data-category="kits"\], \[data-category="all"\]\)\s*\{[^}]*color:\s*var\(--color-navigation-primary\)/s,
+      /\.category-navigation button:is\(\[data-category="kits"\], \[data-category="all"\]\)\s*\{[^}]*color:\s*var\(--color-accent-teal\)/s,
     );
     expect(css).toMatch(
-      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation button\[data-category="all"\] \.all-symbol\s*\{[^}]*color:\s*var\(--color-navigation-primary\)/s,
+      /\.category-navigation button\[data-category="kits"\] svg,\s*\.category-navigation button\[data-category="all"\] \.all-symbol\s*\{[^}]*color:\s*var\(--color-accent-teal\)/s,
     );
     expect(css).toContain(
       'button:not([data-category="all"]):not([data-category="kits"]):not(',
@@ -297,7 +297,7 @@ describe("catalog visual alignment", () => {
     const css = read("src/styles/catalog.css");
 
     expect(css).toMatch(
-      /\.kit-frontend-slot\s*\{[^}]*border-color:\s*var\(--color-kind-frontend\)/s,
+      /\.kit-frontend-slot\s*\{[^}]*border-color:\s*var\(--color-frontend\)/s,
     );
     expect(css).toMatch(
       /\.kit-composition-section h3\s*\{[^}]*text-transform:\s*uppercase/s,
@@ -376,7 +376,7 @@ describe("catalog visual alignment", () => {
       "https://github.com/MentallyQuill/Tavernary/blob/main/LICENSE",
     );
     expect(css).toMatch(
-      /\.filter-legal\s*\{[^}]*color:\s*var\(--color-muted\)[^}]*white-space:\s*nowrap/s,
+      /\.filter-legal\s*\{[^}]*color:\s*var\(--color-text-muted\)[^}]*white-space:\s*nowrap/s,
     );
   });
 
@@ -384,33 +384,33 @@ describe("catalog visual alignment", () => {
     const tokens = read("src/styles/tokens.css");
     const css = read("src/styles/catalog.css");
 
-    expect(tokens).toContain("--color-muted: #849a9e");
+    expect(tokens).toContain("--color-text-muted: #829099");
     expect(css).toMatch(
       /\.category-navigation button\s*\{[^}]*color:\s*var\(--color-text-primary\)/s,
     );
     expect(css).toMatch(
-      /button\[data-category="frontend"\][\s\S]*?color:\s*var\(--color-kind-frontend\)/s,
+      /button\[data-category="frontend"\][\s\S]*?color:\s*var\(--color-frontend\)/s,
     );
     expect(css).toMatch(
       /\.card-identity\s*\{[^}]*color:\s*var\(--kind-color\)/s,
     );
     expect(css).toMatch(
-      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-kind-preset\)/s,
+      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-preset\)/s,
     );
     expect(css).toMatch(
-      /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-kind-preset\)/s,
+      /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-preset\)/s,
     );
     expect(css).toMatch(
-      /\.frontend-chip\s*\{[^}]*border-color:\s*var\(--color-kind-frontend\)[^}]*color:\s*var\(--color-kind-frontend\)/s,
+      /\.frontend-chip\s*\{[^}]*border-color:\s*var\(--color-frontend\)[^}]*color:\s*var\(--color-frontend\)/s,
     );
     expect(css).toMatch(
       /\.chip,[\s\S]*?\.license\s*\{[^}]*border:\s*1px solid var\(--color-border-strong\)[^}]*color:\s*var\(--color-text-secondary\)/s,
     );
     expect(css).toMatch(
-      /\.brand-name\s*\{[^}]*color:\s*var\(--color-kind-extension\)/s,
+      /\.brand-name\s*\{[^}]*color:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
-      /\.submit-link\s*\{[^}]*color:\s*var\(--color-filled-control-text\)[^}]*background:\s*var\(--color-kind-extension\)/s,
+      /\.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
       /\.site-search input\s*\{[^}]*appearance:\s*none[^}]*outline:\s*0[^}]*box-shadow:\s*none/s,
