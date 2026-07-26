@@ -3,7 +3,7 @@
   "id": "daddytorgo-hash-frankengarage",
   "name": "FrankenGarage",
   "kind": "preset",
-  "summary": "FrankenGarage is a SillyTavern preset collection providing LLM roleplay presets and trackers for configuring frontend behavior.",
+  "summary": "FrankenGarage provides LLM roleplay presets and trackers tailored for the SillyTavern frontend environment. This collection helps streamline character-based interactions via configurable prompt and tracker setups.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "frontend",
-  "capabilities": ["prompt-engineering", "instruction-control"],
+  "capabilities": ["prompt-engineering", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

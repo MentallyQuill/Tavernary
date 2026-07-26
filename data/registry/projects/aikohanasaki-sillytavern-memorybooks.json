@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-memorybooks",
   "name": "SillyTavern MemoryBooks",
   "kind": "extension",
-  "summary": "SillyTavern MemoryBooks is an extension that saves SillyTavern chat memories to lorebooks.",
+  "summary": "SillyTavern MemoryBooks saves chat memories into lorebooks for later retrieval. It automates transferring conversation history into structured lore entries the AI can reference during roleplay.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation", "character-worldbuilding"],
+  "capabilities": ["automation", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

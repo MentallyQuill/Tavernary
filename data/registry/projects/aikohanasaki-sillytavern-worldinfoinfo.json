@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-worldinfoinfo",
   "name": "SillyTavern WorldInfoInfo",
   "kind": "extension",
-  "summary": "SillyTavern extension that displays which WorldInfo lorebook entries were active in the most recent generated message.",
+  "summary": "SillyTavern WorldInfoInfo is a frontend extension that displays which WorldInfo entries were active during the last generated message. It helps users verify the lorebook context that influenced each AI response.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1073960658
   },
   "frontends": ["sillytavern"],
-  "primary_function": "memory-retrieval",
+  "primary_function": "interface-workflow",
   "capabilities": ["review-validation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

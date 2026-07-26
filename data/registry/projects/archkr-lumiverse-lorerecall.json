@@ -3,7 +3,7 @@
   "id": "archkr-lumiverse-lorerecall",
   "name": "Lumiverse LoreRecall",
   "kind": "extension",
-  "summary": "Lore Recall builds a tree-aware index of Lumiverse worldbook entries and retrieves character-scoped lore slices for the current scene.",
+  "summary": "Lore Recall transforms flat Lumiverse worldbook entries into a navigable character-scoped knowledge tree. It retrieves only relevant slices per scene via fast collapsed lookup or controller-guided traversal.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,11 +12,7 @@
   },
   "frontends": ["lumiverse"],
   "primary_function": "memory-retrieval",
-  "capabilities": [
-    "character-worldbuilding",
-    "prompt-engineering",
-    "instruction-control"
-  ],
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

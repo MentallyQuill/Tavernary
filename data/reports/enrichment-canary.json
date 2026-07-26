@@ -2,8 +2,8 @@
   "schema_version": 1,
   "run_id": "6e135938-e022-4cf7-a49b-85bc0a5b07a9",
   "mode": "canary",
-  "status": "running",
-  "phase": "retry",
+  "status": "awaiting-deployment",
+  "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "selection_mode": "all-automatic",
   "manual_exclusions": [
@@ -46,7 +46,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-26T13:57:57.942Z",
-  "updated_at": "2026-07-26T13:59:58.454Z",
+  "updated_at": "2026-07-26T14:00:00.221Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -67,22 +67,22 @@
     "archkr-lumiverse-lorerecall",
     "daddytorgo-hash-frankengarage"
   ],
-  "retry_cursor": 0,
+  "retry_cursor": 6,
   "attempts": {
-    "aikohanasaki-sillytavern-characterlocks": 1,
-    "aikohanasaki-sillytavern-memorybooks": 1,
-    "aikohanasaki-sillytavern-modelinjection": 1,
-    "aikohanasaki-sillytavern-worldinfoinfo": 1,
+    "aikohanasaki-sillytavern-characterlocks": 2,
+    "aikohanasaki-sillytavern-memorybooks": 2,
+    "aikohanasaki-sillytavern-modelinjection": 2,
+    "aikohanasaki-sillytavern-worldinfoinfo": 2,
     "aimicrocot-scenarios-extension": 1,
-    "archkr-lumiverse-lorerecall": 1,
-    "daddytorgo-hash-frankengarage": 1
+    "archkr-lumiverse-lorerecall": 2,
+    "daddytorgo-hash-frankengarage": 2
   },
   "entries": {
     "aikohanasaki-sillytavern-characterlocks": {
       "id": "aikohanasaki-sillytavern-characterlocks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "description",
       "repository_id": 998536860,
       "head_sha": "208ec33a8828decdd9d7459904baabfc79e3084a",
@@ -90,17 +90,17 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 6905,
+      "latency_ms": 9676,
       "reason_code": "output-invalid",
       "repair_hint": "Summary must be at most 220 characters.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "completed_at": "2026-07-26T14:00:00.221Z"
     },
     "aikohanasaki-sillytavern-memorybooks": {
       "id": "aikohanasaki-sillytavern-memorybooks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1001051404,
       "head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f",
@@ -108,17 +108,14 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 14462,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "latency_ms": 21744,
+      "completed_at": "2026-07-26T14:00:00.221Z"
     },
     "aikohanasaki-sillytavern-modelinjection": {
       "id": "aikohanasaki-sillytavern-modelinjection",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1081424481,
       "head_sha": "4e4c3d0c6cf1bf2f4f5a3fa2c805221ddeccf197",
@@ -126,17 +123,14 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 12540,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "latency_ms": 15714,
+      "completed_at": "2026-07-26T14:00:00.221Z"
     },
     "aikohanasaki-sillytavern-worldinfoinfo": {
       "id": "aikohanasaki-sillytavern-worldinfoinfo",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1073960658,
       "head_sha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
@@ -144,11 +138,8 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 19076,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "latency_ms": 7194,
+      "completed_at": "2026-07-26T14:00:00.221Z"
     },
     "aimicrocot-scenarios-extension": {
       "id": "aimicrocot-scenarios-extension",
@@ -167,9 +158,9 @@
     },
     "archkr-lumiverse-lorerecall": {
       "id": "archkr-lumiverse-lorerecall",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "repository_id": 1213004871,
       "head_sha": "61d93e73117f7328b3ceac9153ea4a7612b05326",
@@ -177,17 +168,14 @@
       "readme_ref": "61d93e73117f7328b3ceac9153ea4a7612b05326",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 11891,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "latency_ms": 22214,
+      "completed_at": "2026-07-26T14:00:00.221Z"
     },
     "daddytorgo-hash-frankengarage": {
       "id": "daddytorgo-hash-frankengarage",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1297772483,
       "head_sha": "36a3586144c050eacb90afe36d82d73068ec25d8",
@@ -195,11 +183,8 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 25051,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-26T13:57:57.942Z"
+      "latency_ms": 10609,
+      "completed_at": "2026-07-26T14:00:00.221Z"
     }
   },
   "publication": {
@@ -211,10 +196,10 @@
     "enriched": 1,
     "fallback": 0,
     "source-not-ready": 0,
-    "retry-pending": 6,
-    "retry-enriched": 0,
+    "retry-pending": 0,
+    "retry-enriched": 5,
     "retry-fallback": 0,
-    "final-failure": 0,
+    "final-failure": 1,
     "skipped": 0
   }
 }
