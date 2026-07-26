@@ -17,6 +17,7 @@ import {
 } from "./enrichment-provider.mjs";
 import {
   createEnrichmentReport,
+  isPreHardeningTerminalFullReport,
   validateEnrichmentReport,
 } from "./enrichment-report.mjs";
 import { formatJson } from "./json-format.mjs";
@@ -793,10 +794,16 @@ export async function runCli(options = {}) {
         : fullReportPath
           ? await readOptionalJson(fullReportPath)
           : null;
-    const previousFullState =
-      previousFullReport === null
-        ? null
-        : validateEnrichmentReport(previousFullReport);
+    let previousFullState = null;
+    let replacingLegacyFullReport = false;
+    if (previousFullReport !== null) {
+      try {
+        previousFullState = validateEnrichmentReport(previousFullReport);
+      } catch (error) {
+        if (!isPreHardeningTerminalFullReport(previousFullReport)) throw error;
+        replacingLegacyFullReport = true;
+      }
+    }
     const eligibleIds = selectEnrichmentRecords(records).map(({ id }) => id);
     const canaryBoundaryAlreadyApplied =
       previousFullState?.mode === "full" &&
@@ -818,6 +825,11 @@ export async function runCli(options = {}) {
       batchSize: options.batchSize,
       concurrency: options.concurrency,
     });
+    if (replacingLegacyFullReport) {
+      const replacement = createEnrichmentReport(state);
+      if (options.writeReport) await options.writeReport(replacement);
+      if (reportPath) await writeJsonAtomic(reportPath, replacement);
+    }
   } else {
     if (
       previousState?.mode !== "full" ||

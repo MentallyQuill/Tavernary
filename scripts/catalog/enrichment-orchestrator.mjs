@@ -123,9 +123,28 @@ export async function runEnrichmentRollout(operations) {
   return finishFull(operations, () => operations.startFull());
 }
 
-function commandError(command, args, exitCode) {
+function sanitizeCommandDiagnostic(stderr) {
+  let diagnostic = String(stderr ?? "").trim();
+  if (diagnostic.length === 0) return "";
+  diagnostic = diagnostic
+    .replace(/(authorization\s*:\s*bearer\s+)\S+/giu, "$1[REDACTED]")
+    .replace(
+      /\b(?:github_pat|gh[pousr]|sk-or-v1)_[a-z0-9_-]+\b/giu,
+      "[REDACTED]",
+    )
+    .replace(
+      /((?:api[_-]?key|token|secret|password)\s*[=:]\s*)\S+/giu,
+      "$1[REDACTED]",
+    );
+  const limit = 4_000;
+  if (diagnostic.length <= limit) return diagnostic;
+  return `${diagnostic.slice(0, 1_950)}\n...[stderr truncated]...\n${diagnostic.slice(-1_950)}`;
+}
+
+function commandError(command, args, exitCode, stderr) {
+  const diagnostic = sanitizeCommandDiagnostic(stderr);
   return new Error(
-    `${command} ${args.join(" ")} failed with exit code ${exitCode}.`,
+    `${command} ${args.join(" ")} failed with exit code ${exitCode}.${diagnostic ? `\n${diagnostic}` : ""}`,
   );
 }
 
@@ -138,16 +157,18 @@ export async function executeCommand(command, args, options = {}) {
       stdio: ["ignore", "pipe", "pipe"],
     });
     let stdout = "";
+    let stderr = "";
     child.stdout.on("data", (chunk) => {
       stdout += chunk;
       if (!options.silent) process.stdout.write(chunk);
     });
     child.stderr.on("data", (chunk) => {
+      stderr += chunk;
       if (!options.silent) process.stderr.write(chunk);
     });
     child.on("error", reject);
     child.on("close", (exitCode) => {
-      resolve({ stdout, exitCode: exitCode ?? 1 });
+      resolve({ stdout, stderr, exitCode: exitCode ?? 1 });
     });
   });
 }
@@ -177,7 +198,7 @@ export function createGitPublisher({ runCommand, npmCommand }) {
   const checked = async (command, args, options = {}) => {
     const result = await raw(command, args, options);
     if (result.exitCode !== 0) {
-      throw commandError(command, args, result.exitCode);
+      throw commandError(command, args, result.exitCode, result.stderr);
     }
     return result;
   };
@@ -213,6 +234,7 @@ export function createGitPublisher({ runCommand, npmCommand }) {
             "git",
             ["fetch", "origin", "main"],
             fetched.exitCode,
+            fetched.stderr,
           );
         }
         continue;
@@ -235,6 +257,7 @@ export function createGitPublisher({ runCommand, npmCommand }) {
             "git",
             ["rebase", "origin/main"],
             rebased.exitCode,
+            rebased.stderr,
           );
         }
         continue;
@@ -259,6 +282,7 @@ export function createGitPublisher({ runCommand, npmCommand }) {
           "git",
           ["push", "origin", "HEAD:main"],
           pushed.exitCode,
+          pushed.stderr,
         );
       }
     }
@@ -296,7 +320,7 @@ export function createProductionOperations(options = {}) {
   const checked = async (command, args, commandOptions = {}) => {
     const result = await raw(command, args, commandOptions);
     if (result.exitCode !== 0) {
-      throw commandError(command, args, result.exitCode);
+      throw commandError(command, args, result.exitCode, result.stderr);
     }
     return result;
   };
@@ -312,6 +336,7 @@ export function createProductionOperations(options = {}) {
             "git",
             ["fetch", "origin", "main"],
             fetched.exitCode,
+            fetched.stderr,
           );
         }
         continue;

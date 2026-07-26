@@ -309,6 +309,109 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
   ).resolves.toEqual({ action: "start-canary", eligible_count: 5 });
 });
 
+test("planner CLI quarantines a pre-hardening terminal full ledger", async () => {
+  const records = Array.from({ length: 5 }, (_, index) => ({
+    id: `project-${index}`,
+    summary: "Generic intake details.",
+    metadata_status: "provisional",
+    visibility: "published",
+    source: { type: "github", repository: `Creator/project-${index}` },
+  }));
+  const manifest = records.map(({ id }) => id);
+  const entries = Object.fromEntries(
+    manifest.map((id, index) => [
+      id,
+      {
+        id,
+        attempt: 1,
+        phase: "primary",
+        outcome: index === 0 ? "enriched" : "source-not-ready",
+        completed_at: now,
+      },
+    ]),
+  );
+
+  await expect(
+    runPlannerCli({
+      model,
+      records,
+      fullReport: {
+        schema_version: 1,
+        run_id: "legacy-full",
+        mode: "full",
+        status: "complete",
+        phase: "complete",
+        expected_model: model,
+        batch_size: 20,
+        concurrency: 4,
+        created_at: now,
+        updated_at: now,
+        manifest,
+        primary_cursor: manifest.length,
+        retry_queue: [],
+        retry_cursor: 0,
+        attempts: Object.fromEntries(manifest.map((id) => [id, 1])),
+        entries,
+        deployment: null,
+      },
+      canaryReport: null,
+    }),
+  ).resolves.toEqual({ action: "start-canary", eligible_count: 5 });
+});
+
+test("planner CLI still rejects corrupt current-format terminal ledgers", async () => {
+  const records = Array.from({ length: 5 }, (_, index) => ({
+    id: `project-${index}`,
+    summary: "Generic intake details.",
+    metadata_status: "provisional",
+    visibility: "published",
+    source: { type: "github", repository: `Creator/project-${index}` },
+  }));
+  const manifest = records.map(({ id }) => id);
+  const entries = Object.fromEntries(
+    manifest.map((id, index) => [
+      id,
+      {
+        id,
+        attempt: 1,
+        phase: "primary",
+        outcome: index === 0 ? "enriched" : "source-not-ready",
+        completed_at: now,
+      },
+    ]),
+  );
+
+  await expect(
+    runPlannerCli({
+      model,
+      records,
+      fullReport: {
+        schema_version: 1,
+        run_id: "current-full",
+        mode: "full",
+        status: "complete",
+        phase: "complete",
+        expected_model: model,
+        batch_size: 20,
+        concurrency: 4,
+        created_at: now,
+        updated_at: now,
+        manifest,
+        deferred_ids: [],
+        authorized_canary_run_id: null,
+        primary_cursor: manifest.length,
+        retry_queue: [],
+        retry_cursor: 0,
+        attempts: Object.fromEntries(manifest.map((id) => [id, 1])),
+        entries,
+        publication: null,
+        deployment: null,
+      },
+      canaryReport: null,
+    }),
+  ).rejects.toThrow("terminal full report accounting is invalid");
+});
+
 test("planner CLI rejects a corrupt durable ledger before taking action", async () => {
   const records = Array.from({ length: 5 }, (_, index) => ({
     id: `project-${index}`,

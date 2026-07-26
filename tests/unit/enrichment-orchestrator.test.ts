@@ -4,6 +4,7 @@ import { join } from "node:path";
 import {
   createGitPublisher,
   createProductionOperations,
+  executeCommand,
   requiresFullCheck,
   runEnrichmentRollout,
 } from "../../scripts/catalog/enrichment-orchestrator.mjs";
@@ -31,6 +32,49 @@ function commandQueue(
     },
   };
 }
+
+test("captures stderr from silent child commands", async () => {
+  const result = await executeCommand(
+    process.execPath,
+    [
+      "-e",
+      "process.stderr.write('planner ledger invalid\\n'); process.exit(2)",
+    ],
+    { silent: true },
+  );
+
+  expect(result).toEqual({
+    stdout: "",
+    stderr: "planner ledger invalid\n",
+    exitCode: 2,
+  });
+});
+
+test("surfaces sanitized stderr when a silent planner command fails", async () => {
+  const operations = createProductionOperations({
+    npmCommand: "npm",
+    async runCommand() {
+      return {
+        stdout: "",
+        stderr:
+          "Error: terminal full report accounting is invalid\nAuthorization: Bearer top-secret\n",
+        exitCode: 1,
+      };
+    },
+    async publishChanges() {
+      return { changed: false, publishedCommit: null, registryCommit: null };
+    },
+  });
+
+  const error = await operations.plan().catch((reason) => reason);
+
+  expect(error).toBeInstanceOf(Error);
+  expect(error.message).toContain(
+    "Error: terminal full report accounting is invalid",
+  );
+  expect(error.message).toContain("Authorization: Bearer [REDACTED]");
+  expect(error.message).not.toContain("top-secret");
+});
 
 test("runs the repository gate for source or registry publications only", () => {
   expect(

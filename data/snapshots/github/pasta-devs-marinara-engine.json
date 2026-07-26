@@ -12,7 +12,7 @@
     "head_committed_at": "2026-07-23T00:11:48.000Z",
     "archived": false,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 223691
+    "size_kb": 223729
   },
   "source_health": "healthy",
   "activity": {
@@ -97,7 +97,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-25T21:20:33.057Z",
+  "refreshed_at": "2026-07-26T00:04:22.956Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -157,7 +157,7 @@
       { "login": "DarthTheMonster", "type": "User" },
       { "login": "Anarchistcowboy", "type": "User" }
     ],
-    "refreshed_at": "2026-07-25T21:20:33.057Z",
+    "refreshed_at": "2026-07-26T00:04:22.956Z",
     "stale_since": null
   }
 }

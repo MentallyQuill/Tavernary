@@ -3,7 +3,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { assertFullRolloutAllowed } from "./enrichment-run-state.mjs";
-import { validateEnrichmentReport } from "./enrichment-report.mjs";
+import {
+  isPreHardeningTerminalFullReport,
+  validateEnrichmentReport,
+} from "./enrichment-report.mjs";
 import { selectEnrichmentRecords } from "./enrich-readmes.mjs";
 
 export function planEnrichmentRollout(input) {
@@ -101,6 +104,16 @@ async function readOptionalJson(path) {
   }
 }
 
+function validateFullReportForPlanning(fullReport) {
+  if (fullReport === null) return null;
+  try {
+    return validateEnrichmentReport(fullReport);
+  } catch (error) {
+    if (!isPreHardeningTerminalFullReport(fullReport)) throw error;
+    return null;
+  }
+}
+
 export async function runPlannerCli(options = {}) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const model = options.model ?? process.env.TAVERNARY_ENRICHMENT_MODEL;
@@ -130,8 +143,7 @@ export async function runPlannerCli(options = {}) {
           options.canaryReportPath ??
             resolve(root, "data/reports/enrichment-canary.json"),
         );
-  const validatedFullReport =
-    fullReport === null ? null : validateEnrichmentReport(fullReport);
+  const validatedFullReport = validateFullReportForPlanning(fullReport);
   const validatedCanaryReport =
     canaryReport === null ? null : validateEnrichmentReport(canaryReport);
   return createEnrichmentRolloutPlan({

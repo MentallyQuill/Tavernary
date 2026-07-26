@@ -1,4 +1,4 @@
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -130,6 +130,40 @@ function deployedCanary(canaryModel = model) {
     deploymentRunId: 12345,
     now,
   });
+}
+
+function legacyMixedOutcomeFullReport() {
+  const manifest = ["legacy-a", "legacy-b", "legacy-c", "legacy-d", "legacy-e"];
+  return {
+    schema_version: 1,
+    run_id: "legacy-full",
+    mode: "full",
+    status: "complete",
+    phase: "complete",
+    expected_model: model,
+    batch_size: 20,
+    concurrency: 4,
+    created_at: now,
+    updated_at: now,
+    manifest,
+    primary_cursor: manifest.length,
+    retry_queue: [],
+    retry_cursor: 0,
+    attempts: Object.fromEntries(manifest.map((id) => [id, 1])),
+    entries: Object.fromEntries(
+      manifest.map((id, index) => [
+        id,
+        {
+          id,
+          attempt: 1,
+          phase: "primary",
+          outcome: index === 0 ? "enriched" : "source-not-ready",
+          completed_at: now,
+        },
+      ]),
+    ),
+    deployment: null,
+  };
 }
 
 test.each([
@@ -637,6 +671,41 @@ test("start requires a deployed canary and freezes the complete eligible manifes
   expect(report.manifest).toEqual([...ids].sort());
   expect(report.primary_cursor).toBe(20);
   expect(report.status).toBe("running");
+});
+
+test("start replaces a valid legacy ledger before the first full provider call", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-legacy-full-"));
+  const reportPath = join(directory, "enrichment-report.json");
+  await writeFile(
+    reportPath,
+    `${JSON.stringify(legacyMixedOutcomeFullReport(), null, 2)}\n`,
+    "utf8",
+  );
+  const generate = vi.fn(async () => {
+    const checkpoint = JSON.parse(await readFile(reportPath, "utf8"));
+    expect(checkpoint).toMatchObject({
+      mode: "full",
+      status: "running",
+      run_id: "run-1",
+      primary_cursor: 0,
+    });
+    return providerOutput;
+  });
+
+  await expect(
+    runCli({
+      ...executionOptions(["fresh-project"]),
+      mode: "start",
+      previousReport: deployedCanary(),
+      reportPath,
+      provider: { generate },
+    }),
+  ).resolves.toMatchObject({
+    mode: "full",
+    status: "complete",
+    run_id: "run-1",
+  });
+  expect(generate).toHaveBeenCalledOnce();
 });
 
 test("defers unsuccessful canary members until the next dispatch", async () => {

@@ -331,3 +331,23 @@ export function validateEnrichmentReport(value) {
   }
   return createEnrichmentReport(value);
 }
+
+export function isPreHardeningTerminalFullReport(value) {
+  if (
+    value?.schema_version !== 1 ||
+    value.mode !== "full" ||
+    value.status !== "complete" ||
+    value.phase !== "complete" ||
+    Object.hasOwn(value, "deferred_ids") ||
+    Object.hasOwn(value, "authorized_canary_run_id") ||
+    Object.hasOwn(value, "publication")
+  ) {
+    return false;
+  }
+  try {
+    validateEnrichmentReport({ ...value, status: "complete-with-errors" });
+    return true;
+  } catch {
+    return false;
+  }
+}

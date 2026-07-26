@@ -3,16 +3,21 @@
   "id": "aikohanasaki-sillytavern-modelinjection",
   "name": "SillyTavern Model Injection",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that injects World Info content when the /model command is used for model-specific prompts.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "aikohanasaki/SillyTavern-ModelInjection",
     "repository_id": 1081424481
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "instruction-control",
+    "prompt-engineering",
+    "model-routing",
+    "automation"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
