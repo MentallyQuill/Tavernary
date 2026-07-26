@@ -483,7 +483,9 @@ test("desktop Kit inspection keeps fixed actions reachable with a 600-character 
   });
 
   await expect(description).toHaveCSS("-webkit-line-clamp", "4");
-  await expect(panel.getByRole("link", { name: "Report Kit" })).toBeInViewport();
+  await expect(
+    panel.getByRole("link", { name: "Report Kit" }),
+  ).toBeInViewport();
   await expect(
     panel.getByRole("link", { name: "Request withdrawal" }),
   ).toBeInViewport();
@@ -760,9 +762,7 @@ test("scrolls one desktop inspector body without a nested project scroll", async
     .toBeCloseTo(316.8, 0);
 
   const geometry = await panel.evaluate((element) => {
-    const body = element.querySelector<HTMLElement>(
-      ".kit-builder-panel-body",
-    );
+    const body = element.querySelector<HTMLElement>(".kit-builder-panel-body");
     const stack = element.querySelector<HTMLElement>(".kit-project-stack");
     const card = stack?.querySelector<HTMLElement>(".project-card");
     if (!body || !stack || !card) {
@@ -780,9 +780,7 @@ test("scrolls one desktop inspector body without a nested project scroll", async
 
   expect(geometry.panelWidth).toBeCloseTo(316.8, 0);
   expect(geometry.cardWidth).toBeGreaterThanOrEqual(280);
-  expect(geometry.bodyScrollHeight).toBeGreaterThan(
-    geometry.bodyClientHeight,
-  );
+  expect(geometry.bodyScrollHeight).toBeGreaterThan(geometry.bodyClientHeight);
   expect(geometry.stackScrollHeight).toBe(geometry.stackClientHeight);
   await expect(firstCard).toBeVisible();
 

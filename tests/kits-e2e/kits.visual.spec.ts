@@ -262,10 +262,9 @@ test("Kit inspector withdrawal link has restrained danger affordance", async ({
 
   const panel = page.getByRole("complementary", { name: "Kit Builder" });
   await panel.getByRole("link", { name: "Request withdrawal" }).hover();
-  await expect(panel).toHaveScreenshot(
-    "kit-inspector-withdrawal-hover.png",
-    { animations: "disabled" },
-  );
+  await expect(panel).toHaveScreenshot("kit-inspector-withdrawal-hover.png", {
+    animations: "disabled",
+  });
 });
 
 test("flagged unavailable project retains compact card anatomy", async ({

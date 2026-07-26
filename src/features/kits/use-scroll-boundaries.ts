@@ -16,8 +16,7 @@ export function readScrollBoundaries(
   const epsilon = 1;
   return {
     canScrollDown:
-      element.scrollTop + element.clientHeight <
-      element.scrollHeight - epsilon,
+      element.scrollTop + element.clientHeight < element.scrollHeight - epsilon,
     canScrollUp: element.scrollTop > epsilon,
   };
 }

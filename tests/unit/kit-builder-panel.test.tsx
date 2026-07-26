@@ -673,9 +673,7 @@ describe("Kit Builder", () => {
 
   test("exposes truthful desktop inspector scroll boundaries", () => {
     renderInspectPanel();
-    const body = document.querySelector<HTMLElement>(
-      ".kit-builder-panel-body",
-    );
+    const body = document.querySelector<HTMLElement>(".kit-builder-panel-body");
     const frame = document.querySelector<HTMLElement>(
       ".kit-builder-panel-body-frame",
     );
