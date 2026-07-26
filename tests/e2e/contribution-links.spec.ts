@@ -20,7 +20,7 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
     page.getByRole("heading", { name: "About Tavernary" }),
   ).toBeVisible();
   await expect(
-    page.getByText(/does not host, mirror, redistribute, or install/i),
+    page.getByText(/does not host, mirror, redistribute, or maintain/i),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Submit a project" }),

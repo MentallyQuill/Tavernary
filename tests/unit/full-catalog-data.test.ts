@@ -145,20 +145,20 @@ function expectCatalogContract(records: CatalogRecord[]) {
     (record) => record.metadata_status === "provisional",
   );
 
-  expect(records).toHaveLength(211);
-  expect(ids.size).toBe(211);
+  expect(records).toHaveLength(212);
+  expect(ids.size).toBe(212);
   expect(countBy(records, (record) => record.kind)).toEqual({
     extension: 198,
-    frontend: 4,
+    frontend: 5,
     preset: 9,
   });
   expect(countBy(records, (record) => record.source.type)).toEqual({
-    github: 204,
+    github: 205,
     "github-organization": 1,
     url: 6,
   });
   expect(countBy(records, (record) => record.enrichment_policy)).toEqual({
-    automatic: 204,
+    automatic: 205,
     manual: 7,
   });
   expect(
@@ -248,7 +248,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
 }
 
 describe("full catalog data", () => {
-  test("matches the consolidated 211-record contract", async () => {
+  test("matches the consolidated 212-record contract", async () => {
     expectCatalogContract(await loadRegistryRecords());
   });
 

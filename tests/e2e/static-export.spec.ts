@@ -5,9 +5,9 @@ import { sitePath } from "../helpers/site-path";
 test("serves the catalog from the configured base path", async ({ page }) => {
   await page.goto(sitePath());
   await expect(
-    page.getByRole("heading", { name: "211 projects" }),
+    page.getByRole("heading", { name: "212 projects" }),
   ).toBeVisible();
-  await expect(page.locator(".project-card")).toHaveCount(211);
+  await expect(page.locator(".project-card")).toHaveCount(212);
   await expect(page).not.toHaveTitle(/404/);
 });
 
@@ -46,7 +46,7 @@ test("exports canonical project links without intake-only metadata", async ({
 }) => {
   await page.goto(sitePath());
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    211,
+    212,
   );
   await expect(page.locator("body")).not.toContainText("submitted_at");
   await expect(page.locator("body")).not.toContainText("catalog_intake");

@@ -291,11 +291,14 @@ test("keeps canonical frontends ordered and expands the remainder", async ({
   const labels = await group.locator("label").allTextContents();
   expect(
     labels.slice(0, 3).map((label) => label.replace(/\d+$/, "").trim()),
-  ).toEqual(["SillyTavern", "Lumiverse", "Marinara Engine"]);
+  ).toEqual(["Aikobots", "Lumiverse", "Marinara Engine"]);
+  await expect(group.getByLabel("Aikobots")).toBeVisible();
   await expect(group.getByLabel("Lumiverse")).toBeVisible();
   await expect(group.getByLabel("Lumiverse").locator("..")).toContainText("26");
+  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeHidden();
   await expect(group.getByLabel("Sonder Engine")).toBeHidden();
-  await group.getByRole("button", { name: "Show 1 more" }).click();
+  await group.getByRole("button", { name: "Show 2 more" }).click();
+  await expect(group.getByLabel("SillyTavern", { exact: true })).toBeVisible();
   await expect(group.getByLabel("Sonder Engine")).toBeVisible();
   await expect(group.getByRole("button", { name: "Show fewer" })).toBeVisible();
 });
@@ -331,9 +334,9 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   page,
 }) => {
   await expect(
-    page.getByRole("heading", { name: "211 projects" }),
+    page.getByRole("heading", { name: "212 projects" }),
   ).toBeVisible();
-  await expect(page.locator(".project-card")).toHaveCount(211);
+  await expect(page.locator(".project-card")).toHaveCount(212);
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
@@ -380,7 +383,11 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     page.getByRole("searchbox", { name: "Search projects" }),
   ).toBeFocused();
   await page.getByLabel("Extension", { exact: true }).check();
-  await page.getByLabel("SillyTavern", { exact: true }).check();
+  const frontendGroup = page.locator(".filter-panel").getByRole("group", {
+    name: "Compatible frontend",
+  });
+  await frontendGroup.getByRole("button", { name: "Show 2 more" }).click();
+  await frontendGroup.getByLabel("SillyTavern", { exact: true }).check();
   await expect(
     page.getByRole("button", { name: "Remove Extension" }),
   ).toBeVisible();
@@ -391,7 +398,7 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
     .click();
   await expect(page).toHaveURL(/\/$/);
   await expect(
-    page.getByRole("heading", { name: "211 projects" }),
+    page.getByRole("heading", { name: "212 projects" }),
   ).toBeVisible();
 });
 
@@ -418,9 +425,9 @@ test("shows the full launch catalog without default-query hidden records", async
   page,
 }) => {
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.locator(".project-card")).toHaveCount(211);
+  await expect(page.locator(".project-card")).toHaveCount(212);
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    211,
+    212,
   );
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
@@ -469,7 +476,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
     .getByRole("button", { name: "Remove Pending verification" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "211 projects" }),
+    page.getByRole("heading", { name: "212 projects" }),
   ).toBeVisible();
   await expect(page).not.toHaveURL(/license=/);
 
@@ -484,7 +491,7 @@ test("matches the approved card anatomy", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const card = page.locator(".project-card").first();
 
-  await expect(page.locator(".project-card")).toHaveCount(211);
+  await expect(page.locator(".project-card")).toHaveCount(212);
   await expect(card.locator("h2")).toHaveCSS("font-family", /Inter/);
   await expect(card.locator(".card-bottom")).toHaveCSS(
     "border-top-style",
@@ -624,10 +631,14 @@ test("explains every card fact with hover help", async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(repositoryCard.locator(".card-summary-tooltip")).toHaveCount(0);
+  const summaryText = (
+    await repositoryCard.locator(".card-summary").textContent()
+  )?.trim();
+  expect(summaryText).toBeTruthy();
   await repositoryCard.locator(".card-title").hover();
   await expect(
     page.getByRole("tooltip", {
-      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+      name: summaryText!,
     }),
   ).toBeVisible();
   await expect(
@@ -636,14 +647,14 @@ test("explains every card fact with hover help", async ({ page }) => {
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("tooltip", {
-      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+      name: summaryText!,
     }),
   ).toBeHidden();
   await page.mouse.move(0, 0);
   await repositoryCard.focus();
   await expect(
     page.getByRole("tooltip", {
-      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+      name: summaryText!,
     }),
   ).toBeVisible();
   await repositoryCard.locator(".chip").first().hover();
@@ -668,9 +679,8 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
 
   const summary = repositoryCard.locator(".card-summary");
   await expect(summary).toBeVisible();
-  await expect(summary).toHaveText(
-    "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
-  );
+  await expect(summary).toHaveText(/\S+/);
+  const summaryText = (await summary.textContent())!.trim();
   await expect(summary).toHaveCSS("white-space", "nowrap");
   await expect(summary).toHaveCSS("text-overflow", "ellipsis");
   await expect(summary).toHaveCSS("overflow", "hidden");
@@ -702,7 +712,7 @@ test("substantially reduces cards in compact mode", async ({ page }) => {
   await repositoryCard.locator(".card-title").hover();
   await expect(
     page.getByRole("tooltip", {
-      name: "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+      name: summaryText,
     }),
   ).toBeVisible();
 });

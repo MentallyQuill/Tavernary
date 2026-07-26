@@ -464,9 +464,9 @@ test("keeps URL presets public with manual source and pending license display", 
   ]);
 });
 
-test("builds 211 public cards with consolidated manual sources", async () => {
+test("builds 212 public cards with consolidated manual sources", async () => {
   const catalog = await buildCatalog({ write: false });
-  expect(catalog.projects).toHaveLength(211);
+  expect(catalog.projects).toHaveLength(212);
   expect(
     catalog.projects.every((project) =>
       ["curated", "provisional"].includes(project.metadataStatus),
@@ -497,7 +497,7 @@ test("builds 211 public cards with consolidated manual sources", async () => {
     (sourceStatuses.healthy ?? 0) +
       (sourceStatuses.pending ?? 0) +
       (sourceStatuses.stale ?? 0),
-  ).toBe(204);
+  ).toBe(205);
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
   const manualIds = catalog.projects
     .filter(({ sourceStatus }) => sourceStatus === "manual")
