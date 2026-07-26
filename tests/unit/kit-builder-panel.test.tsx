@@ -667,6 +667,32 @@ describe("Kit Builder", () => {
     ).not.toBeNull();
   });
 
+  test("exposes truthful desktop inspector scroll boundaries", () => {
+    renderInspectPanel();
+    const body = document.querySelector<HTMLElement>(
+      ".kit-builder-panel-body",
+    );
+    const frame = document.querySelector<HTMLElement>(
+      ".kit-builder-panel-body-frame",
+    );
+    expect(body).not.toBeNull();
+    expect(frame).not.toBeNull();
+
+    Object.defineProperties(body!, {
+      clientHeight: { configurable: true, value: 300 },
+      scrollHeight: { configurable: true, value: 900 },
+      scrollTop: { configurable: true, writable: true, value: 0 },
+    });
+    fireEvent.scroll(body!);
+    expect(frame).not.toHaveAttribute("data-can-scroll-up");
+    expect(frame).toHaveAttribute("data-can-scroll-down", "true");
+
+    body!.scrollTop = 600;
+    fireEvent.scroll(body!);
+    expect(frame).toHaveAttribute("data-can-scroll-up", "true");
+    expect(frame).not.toHaveAttribute("data-can-scroll-down");
+  });
+
   test("maps inspect actions to shared control treatments", () => {
     render(
       <KitBuilderPanel

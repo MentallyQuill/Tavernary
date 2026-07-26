@@ -44,6 +44,12 @@ describe("catalog visual alignment", () => {
       /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
     );
     expect(css).toMatch(
+      /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*calc\(var\(--kit-builder-expanded-width\) - 37px\)/s,
+    );
+    expect(responsive).toMatch(
+      /\.kit-builder-panel-header,\s*\.kit-builder-panel-body-frame\s*\{[^}]*width:\s*auto[^}]*min-width:\s*0/s,
+    );
+    expect(css).toMatch(
       /\.kit-builder-panel-inspect-header > p\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
     );
     expect(css).toMatch(

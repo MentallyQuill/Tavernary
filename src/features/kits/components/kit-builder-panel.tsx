@@ -14,6 +14,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
@@ -85,6 +86,7 @@ export function KitBuilderPanel({
   const [discardOpen, setDiscardOpen] = useState(false);
   const { phone } = useResponsiveCapabilities();
   const workspaceRef = useRef<HTMLElement>(null);
+  const panelBodyRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const discardRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
@@ -112,6 +114,13 @@ export function KitBuilderPanel({
           draftCount: state.draft.projectIds.length,
         })
       : null;
+  const inspectScrollActive =
+    !phone && state.mode === "inspect" && kit !== null;
+  const scrollBoundaries = useScrollBoundaries(
+    panelBodyRef,
+    inspectScrollActive,
+    `${state.mode}:${kit?.id ?? "none"}:${kit?.components.length ?? 0}`,
+  );
   const openCollapsedBuilder = () => {
     const activeElement = document.activeElement;
     if (activeElement instanceof HTMLElement) {
@@ -292,7 +301,16 @@ export function KitBuilderPanel({
           </Tooltip>
         )}
       </header>
-      <div className="kit-builder-panel-body">
+      <div
+        className="kit-builder-panel-body-frame"
+        data-can-scroll-up={
+          scrollBoundaries.canScrollUp ? "true" : undefined
+        }
+        data-can-scroll-down={
+          scrollBoundaries.canScrollDown ? "true" : undefined
+        }
+      >
+        <div ref={panelBodyRef} className="kit-builder-panel-body">
         {state.mode === "intro" ? (
           <div className="kit-builder-panel-intro">
             <h2>Build and inspect Kits</h2>
@@ -424,6 +442,19 @@ export function KitBuilderPanel({
         ) : (
           <div />
         )}
+        </div>
+        {inspectScrollActive && scrollBoundaries.canScrollUp ? (
+          <span
+            className="kit-builder-scroll-fade kit-builder-scroll-fade-top"
+            aria-hidden="true"
+          />
+        ) : null}
+        {inspectScrollActive && scrollBoundaries.canScrollDown ? (
+          <span
+            className="kit-builder-scroll-fade kit-builder-scroll-fade-bottom"
+            aria-hidden="true"
+          />
+        ) : null}
       </div>
       {discardOpen && state.mode === "build" ? (
         <KitDiscardDialog

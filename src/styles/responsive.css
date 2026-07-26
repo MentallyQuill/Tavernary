@@ -378,7 +378,7 @@
   }
 
   .kit-builder-panel-header,
-  .kit-builder-panel-body {
+  .kit-builder-panel-body-frame {
     width: auto;
     min-width: 0;
     align-self: stretch;
