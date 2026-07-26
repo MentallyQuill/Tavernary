@@ -23,7 +23,7 @@ manual-review discussion, reports, and community reactions.
 
 ## V1 Decisions
 
-1. A Kit contains a title, a description of no more than 100 words, and an
+1. A Kit contains a title, a description of no more than 600 characters, and an
    ordered list of canonical Tavernary project IDs.
 2. A Kit contains between 3 and 50 unique projects. It must contain exactly
    one Frontend, pinned first, and at least two non-Frontend projects.
@@ -523,16 +523,11 @@ the card grid. It must provide:
 - Title is required, plain text, and 3–60 characters after trimming.
 - Duplicate titles are allowed because author and immutable Kit ID distinguish
   them.
-- Description is required, plain text, and 1–100 words.
+- Description is required, plain text, and 1–600 characters.
 - Markdown, HTML, and links are prohibited in Kit-authored text.
 - React renders the strings as text; no `dangerouslySetInnerHTML` path exists.
 
 ```ts
-export function countWords(value: string): number {
-  const normalized = value.trim();
-  return normalized ? normalized.split(/\s+/u).length : 0;
-}
-
 export function validateKitDraft(draft: KitDraft, projects: CatalogProject[]) {
   const byId = new Map(projects.map((project) => [project.id, project]));
   const resolved = draft.projectIds.map((id) => byId.get(id));
@@ -547,8 +542,8 @@ export function validateKitDraft(draft: KitDraft, projects: CatalogProject[]) {
     titleValid:
       draft.title.trim().length >= 3 && draft.title.trim().length <= 60,
     descriptionValid:
-      countWords(draft.description) >= 1 &&
-      countWords(draft.description) <= 100,
+      draft.description.trim().length >= 1 &&
+      draft.description.length <= 600,
     sizeValid:
       draft.projectIds.length >= 3 && draft.projectIds.length <= 50,
     unique: new Set(draft.projectIds).size === draft.projectIds.length,
@@ -1172,7 +1167,7 @@ existing `CatalogPage` to accumulate every Kit interaction.
 - Kit schema accepts only the canonical fields and statuses.
 - Every published project ID resolves against the registry.
 - 3–50, unique IDs, one Frontend, and two non-Frontends are enforced.
-- title, description, plain-text, and 100-word limits are enforced.
+- title, description, plain-text, and 600-character limits are enforced.
 - derived frontend and all-represented-purpose values are deterministic.
 - generated catalog schema version 2 contains projects and Kits.
 - quarantined and disabled projects become Kit tombstones but remain absent

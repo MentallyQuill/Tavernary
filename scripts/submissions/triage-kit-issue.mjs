@@ -32,7 +32,9 @@ export function parseKitIssueFields(body) {
         .replace(/^_No response_$/i, ""),
     );
   }
-  return { manifest: fields.get("Kit manifest") ?? "" };
+  const manifest = fields.get("Kit manifest") ?? "";
+  const renderedJson = manifest.match(/^```json\s*\r?\n([\s\S]*?)\r?\n```$/i);
+  return { manifest: renderedJson?.[1] ?? manifest };
 }
 
 export function buildKitValidationComment(validation) {

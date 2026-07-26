@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv from "ajv";
 
-import { countWords, kitSetKey } from "../../src/features/kits/kit-domain.mjs";
+import { kitSetKey } from "../../src/features/kits/kit-domain.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -70,11 +70,9 @@ export async function validateKitData({
     } else {
       kitsById.set(id, kit);
     }
-    if (
-      countWords(kit.description ?? "") < 1 ||
-      countWords(kit.description ?? "") > 100
-    ) {
-      errors.push(`${id}: description must contain 1–100 words`);
+    const description = kit.description ?? "";
+    if (description.trim().length < 1 || description.length > 600) {
+      errors.push(`${id}: description must contain 1–600 characters`);
     }
     if (kit.status === "withdrawn" && !kit.withdrawn_at) {
       errors.push(`${id}: withdrawn record requires withdrawn_at`);

@@ -5,11 +5,7 @@ import { createPortal } from "react-dom";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import {
-  countWords,
-  kitSetKey,
-  validateKitDraft,
-} from "@/features/kits/kit-domain.mjs";
+import { kitSetKey, validateKitDraft } from "@/features/kits/kit-domain.mjs";
 import { removeProject } from "@/features/kits/project-stack-order";
 import type { KitDraft } from "@/features/kits/kit-types";
 import { splitKitProjectIds } from "@/features/kits/kit-project-layout";
@@ -209,6 +205,7 @@ export function KitBuilder({
         <textarea
           ref={descriptionRef}
           id={descriptionId}
+          maxLength={600}
           value={draft.description}
           aria-describedby={[
             descriptionCountId,
@@ -223,7 +220,7 @@ export function KitBuilder({
           }
         />
         <small id={descriptionCountId}>
-          {countWords(draft.description)}/100 words
+          {draft.description.length}/600 characters
         </small>
         {showDescriptionError ? (
           <span id={descriptionErrorId} className="kit-builder-field-error">

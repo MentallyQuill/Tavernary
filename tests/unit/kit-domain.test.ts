@@ -1,10 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import {
-  countWords,
-  kitSetKey,
-  validateKitDraft,
-} from "@/features/kits/kit-domain.mjs";
+import { kitSetKey, validateKitDraft } from "@/features/kits/kit-domain.mjs";
 
 const projects = [
   { id: "frontend", kind: "frontend", visibility: "published" },
@@ -15,11 +11,6 @@ const projects = [
 ];
 
 describe("Kit domain", () => {
-  test("counts whitespace-separated words", () => {
-    expect(countWords(" one\n two   three ")).toBe(3);
-    expect(countWords(" \n ")).toBe(0);
-  });
-
   test("treats reordered project sets as exact duplicates", () => {
     expect(kitSetKey(["preset", "frontend", "memory"])).toBe(
       kitSetKey(["memory", "preset", "frontend"]),
@@ -116,7 +107,30 @@ describe("Kit domain", () => {
     );
   });
 
-  test("enforces the 100-word description and 50-project ceiling", () => {
+  test("accepts 600 description characters and rejects 601", () => {
+    const baseDraft = {
+      operation: "create" as const,
+      kitId: null,
+      title: "Character Boundary Kit",
+      projectIds: ["frontend", "memory", "preset"],
+    };
+
+    expect(
+      validateKitDraft({ ...baseDraft, description: "a".repeat(600) }, projects)
+        .valid,
+    ).toBe(true);
+
+    const result = validateKitDraft(
+      { ...baseDraft, description: "a".repeat(601) },
+      projects,
+    );
+
+    expect(result.errors).toContain(
+      "Description must contain 1–600 characters.",
+    );
+  });
+
+  test("enforces the 50-project ceiling", () => {
     const manyProjects = [
       ...projects,
       ...Array.from({ length: 48 }, (_, index) => ({
@@ -130,13 +144,12 @@ describe("Kit domain", () => {
         operation: "create",
         kitId: null,
         title: "Oversized Kit",
-        description: Array.from({ length: 101 }, () => "word").join(" "),
+        description: "A compact story stack.",
         projectIds: manyProjects.map(({ id }) => id),
       },
       manyProjects,
     );
 
-    expect(result.errors).toContain("Description must contain 1–100 words.");
     expect(result.errors).toContain("A Kit must contain 3–50 projects.");
   });
 });

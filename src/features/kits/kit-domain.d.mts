@@ -17,7 +17,6 @@ export interface KitDraftValidation {
   errors: string[];
 }
 
-export function countWords(value: string): number;
 export function kitSetKey(projectIds: string[]): string;
 export function validateKitDraft(
   draft: KitDomainDraft,

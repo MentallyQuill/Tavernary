@@ -760,7 +760,8 @@ describe("Kit builder controls", () => {
       name: "Description",
     });
     expect(title).toHaveAccessibleDescription("2/60 characters");
-    expect(description).toHaveAccessibleDescription("0/100 words");
+    expect(description).toHaveAttribute("maxlength", "600");
+    expect(description).toHaveAccessibleDescription("0/600 characters");
     expect(
       screen.queryByRole("list", { name: "Kit validation" }),
     ).not.toBeInTheDocument();

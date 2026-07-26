@@ -129,7 +129,7 @@ describe("Kit registry validation", () => {
         kitRecord({
           id: "broken",
           title: "No",
-          description: Array.from({ length: 101 }, () => "word").join(" "),
+          description: "a".repeat(601),
           author: { github_user_id: "123", login: "" },
           source_issue_number: 0,
           status: "withdrawn",
@@ -144,7 +144,9 @@ describe("Kit registry validation", () => {
     expect(errors.some((error) => error.startsWith("broken: schema"))).toBe(
       true,
     );
-    expect(errors).toContain("broken: description must contain 1–100 words");
+    expect(errors).toContain(
+      "broken: description must contain 1–600 characters",
+    );
     expect(errors).toContain("broken: withdrawn record requires withdrawn_at");
   });
 

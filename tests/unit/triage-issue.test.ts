@@ -68,3 +68,31 @@ test("parses Kit manifests and builds a stable success comment", () => {
     "Automated validation now passes. This Kit is ready for maintainer review.",
   );
 });
+
+test("unwraps GitHub's rendered JSON fence from a Kit manifest", () => {
+  expect(
+    parseKitIssueFields(`
+### Kit title
+
+Ultimate Harry Potter
+
+### Kit manifest
+
+\`\`\`json
+{
+  "operation": "create",
+  "kit_id": null,
+  "project_ids": ["sillytavern-sillytavern"]
+}
+\`\`\`
+`),
+  ).toEqual({
+    manifest: [
+      "{",
+      '  "operation": "create",',
+      '  "kit_id": null,',
+      '  "project_ids": ["sillytavern-sillytavern"]',
+      "}",
+    ].join("\n"),
+  });
+});

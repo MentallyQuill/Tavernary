@@ -1,8 +1,3 @@
-export function countWords(value) {
-  const normalized = value.trim();
-  return normalized ? normalized.split(/\s+/u).length : 0;
-}
-
 export function kitSetKey(projectIds) {
   return [...new Set(projectIds)].sort().join("\n");
 }
@@ -24,11 +19,8 @@ export function validateKitDraft(draft, projects) {
   if (title.length < 3 || title.length > 60) {
     errors.push("Title must contain 3–60 characters.");
   }
-  if (
-    countWords(draft.description) < 1 ||
-    countWords(draft.description) > 100
-  ) {
-    errors.push("Description must contain 1–100 words.");
+  if (draft.description.trim().length < 1 || draft.description.length > 600) {
+    errors.push("Description must contain 1–600 characters.");
   }
   if (markupOrLink.test(title) || markupOrLink.test(draft.description)) {
     errors.push("Kit text cannot contain links or markup.");
