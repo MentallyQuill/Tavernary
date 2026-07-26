@@ -3,7 +3,7 @@
   "id": "mechamarmot-sillytavern-mazemaster",
   "name": "SillyTavern MazeMaster",
   "kind": "extension",
-  "summary": "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit extension for SillyTavern that provides game systems and worldbuilding tools.",
+  "summary": "SillyTavern MazeMaster is a 2.5D roguelike RPG toolkit that extends the SillyTavern frontend with roleplay game systems. It provides structured mechanics for running roguelike adventures within the chat environment.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

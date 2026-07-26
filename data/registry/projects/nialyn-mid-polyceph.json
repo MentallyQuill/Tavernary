@@ -3,7 +3,7 @@
   "id": "nialyn-mid-polyceph",
   "name": "Polyceph",
   "kind": "extension",
-  "summary": "Polyceph is a SillyTavern extension enabling user-defined multi-step chain-of-thought and multi-agent response generation.",
+  "summary": "Polyceph is a SillyTavern extension that enables user-defined multi-step chain-of-thought and multi-agent response generation. It allows chaining multiple AI agents together to produce structured, reasoned outputs.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,13 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "capabilities": ["planning-reasoning", "prompt-engineering"],
+  "capabilities": [
+    "planning-reasoning",
+    "model-routing",
+    "extension-development",
+    "prompt-engineering",
+    "automation"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

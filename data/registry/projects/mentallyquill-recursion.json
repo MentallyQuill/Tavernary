@@ -3,7 +3,7 @@
   "id": "mentallyquill-recursion",
   "name": "Recursion",
   "kind": "extension",
-  "summary": "Adds structured planning and review stages to SillyTavern generation, with model routing for specialized reasoning lanes.",
+  "summary": "Recursion is a SillyTavern extension that adds recursive multi-step thinking to language model responses. It applies context-aware bounded guidance to chain intermediate reasoning steps within a controlled loop.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,12 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "capabilities": [
-    "planning-reasoning",
-    "model-routing",
-    "review-validation",
-    "automation"
-  ],
+  "capabilities": ["planning-reasoning", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

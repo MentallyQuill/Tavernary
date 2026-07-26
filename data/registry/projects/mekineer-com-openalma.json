@@ -3,7 +3,7 @@
   "id": "mekineer-com-openalma",
   "name": "OpenAlma",
   "kind": "extension",
-  "summary": "OpenAlma is a local-first SillyTavern extension that provides AI companion memory functionality.",
+  "summary": "OpenAlma is a SillyTavern extension providing local-first AI companion memory for chat experiences. It manages conversation context and character information while keeping all data stored locally on the user's device.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": [],
+  "capabilities": ["instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

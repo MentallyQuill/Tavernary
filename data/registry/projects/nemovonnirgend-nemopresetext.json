@@ -3,7 +3,7 @@
   "id": "nemovonnirgend-nemopresetext",
   "name": "NemoPresetExt",
   "kind": "extension",
-  "summary": "NemoPresetExt is a Sillytavern extension that adds dropdown interfaces for selecting ChatCompletion presets within the frontend.",
+  "summary": "NemoPresetExt is a Sillytavern extension that adds dropdown menus for selecting ChatCompletion presets. It streamlines preset switching by organizing multiple configurations into an accessible interface control.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
+  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

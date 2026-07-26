@@ -3,7 +3,7 @@
   "id": "n0819-sonder-engine",
   "name": "Sonder Engine",
   "kind": "frontend",
-  "summary": "Sonder Engine is a frontend engine for creating coherent fiction with large language models.",
+  "summary": "Sonder Engine is a frontend for creating coherent fiction with large language models. It manages prompts and narrative context to keep generated stories consistent.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sonder-engine"],
   "primary_function": "frontend",
-  "capabilities": ["character-worldbuilding", "planning-reasoning"],
+  "capabilities": ["prompt-engineering", "planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

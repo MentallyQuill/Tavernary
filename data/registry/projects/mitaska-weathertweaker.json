@@ -3,7 +3,7 @@
   "id": "mitaska-weathertweaker",
   "name": "WeatherTweaker",
   "kind": "extension",
-  "summary": "Marinara Engine extension that tweaks weather effects like opacity, speed, size, and tint in real-time via a chat toolbar popup.",
+  "summary": "WeatherTweaker is a Marinara Engine extension for adjusting weather effect visuals during chat. A toolbar popup lets users tweak opacity, speed, size, count, brightness, contrast, and tint live.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

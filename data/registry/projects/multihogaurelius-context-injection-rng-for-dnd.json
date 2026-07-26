@@ -3,7 +3,7 @@
   "id": "multihogaurelius-context-injection-rng-for-dnd",
   "name": "Context Injection RNG for DnD",
   "kind": "extension",
-  "summary": "A deterministic context-injected RNG engine that provides repeatable random number generation for DnD gameplay within SillyTavern.",
+  "summary": "A deterministic, context-injected RNG engine for SillyTavern enables random number generation for DnD roleplay. It injects seeded values into the context stream so results remain reproducible across playthroughs.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
