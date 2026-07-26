@@ -68,7 +68,10 @@ function project({
   };
 }
 
-function component(value: CatalogProject): CatalogKitComponent {
+function component(
+  value: CatalogProject,
+  canonicalUrl = value.canonicalUrl,
+): CatalogKitComponent {
   return {
     projectId: value.id,
     name: value.name,
@@ -76,7 +79,7 @@ function component(value: CatalogProject): CatalogKitComponent {
     primaryFunction: value.primaryFunction,
     availability: "available",
     unavailableReason: null,
-    canonicalUrl: value.canonicalUrl,
+    canonicalUrl,
     project: value,
   };
 }
@@ -86,7 +89,10 @@ test("renders available projects as ordinary compact project cards in order", ()
     <KitProjectStack
       now="2026-07-24T00:00:00.000Z"
       components={[
-        component(project({ id: "frontend", name: "Frontend" })),
+        component(
+          project({ id: "frontend", name: "Frontend" }),
+          "https://example.com/kits/frontend",
+        ),
         component(project({ id: "memory", name: "Memory" })),
       ]}
     />,
@@ -98,10 +104,7 @@ test("renders available projects as ordinary compact project cards in order", ()
     "Memory",
   ]);
   expect(links[0]).toHaveClass("project-card", "kind-extension");
-  expect(links[0]).toHaveAttribute(
-    "href",
-    "https://example.com/projects/frontend",
-  );
+  expect(links[0]).toHaveAttribute("href", "https://example.com/kits/frontend");
   expect(links[0]).toHaveAttribute("target", "_blank");
   expect(links[0]).toHaveAttribute("rel", "noopener noreferrer");
   expect(screen.queryByRole("button")).not.toBeInTheDocument();
