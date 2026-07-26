@@ -46,7 +46,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-26T14:06:09.431Z",
-  "updated_at": "2026-07-26T15:03:31.855Z",
+  "updated_at": "2026-07-26T15:06:36.745Z",
   "manifest": [
     "alatheus1-marinara-engine-game-sessions",
     "amousepad-hone",
@@ -3648,8 +3648,8 @@
     }
   },
   "publication": {
-    "checkpoint_commit_sha": "e2c5cd8cef91f60ce7810955d4679176fe62716d",
-    "recorded_at": "2026-07-26T15:03:29.993Z"
+    "checkpoint_commit_sha": "46773db55efaa09625e3f6b53a2337e87dac61b3",
+    "recorded_at": "2026-07-26T15:06:36.745Z"
   },
   "deployment": null,
   "aggregates": {
