@@ -889,7 +889,7 @@
 }
 
 .project-card:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-preset);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 .card-top {
@@ -1410,8 +1410,8 @@
 }
 
 .kit-card.selected {
-  border-color: var(--color-preset);
-  box-shadow: 0 0 0 2px var(--color-border-strong);
+  border-color: var(--color-accent-teal-border);
+  box-shadow: 0 0 0 2px var(--color-accent-teal-bg);
 }
 
 .kit-card-select {
@@ -1938,9 +1938,9 @@
 }
 
 .project-card-shell.selected .project-card {
-  outline: 2px solid var(--color-preset);
+  outline: 2px solid var(--color-accent-teal-border);
   outline-offset: 2px;
-  background: var(--color-bg-surface-raised);
+  background: var(--color-accent-teal-bg);
   box-shadow: var(--shadow-overlay);
 }
 
@@ -1950,7 +1950,7 @@
 }
 
 .project-card-shell:focus-visible {
-  outline: 2px solid var(--color-text-primary);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 4px;
 }
 
@@ -2028,8 +2028,8 @@
   transform: translateY(1px);
 }
 
-.project-kit-control:is(:hover, :focus-visible) .project-kit-control-face {
-  border-color: var(--color-text-primary);
+.project-kit-control:hover .project-kit-control-face {
+  border-color: var(--color-action-primary-hover);
 }
 
 .project-kit-control:focus-visible {
@@ -2037,7 +2037,8 @@
 }
 
 .project-kit-control:focus-visible .project-kit-control-face {
-  outline: 2px solid var(--color-preset);
+  border-color: var(--color-focus-ring);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
@@ -2378,8 +2379,8 @@
   background: var(--color-bg-sidebar);
 }
 
-.kit-builder-remove:is(:hover, :focus-visible) > span {
-  border-color: var(--color-text-primary);
+.kit-builder-remove:hover > span {
+  border-color: var(--color-action-primary-hover);
 }
 
 .kit-builder-remove:focus-visible {
@@ -2387,7 +2388,8 @@
 }
 
 .kit-builder-remove:focus-visible > span {
-  outline: 2px solid var(--color-preset);
+  border-color: var(--color-focus-ring);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 

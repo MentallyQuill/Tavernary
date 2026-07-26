@@ -69,7 +69,7 @@ describe("catalog visual alignment", () => {
       /\.header-actions \.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-preset\)/s,
+      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-accent-teal-border\)/s,
     );
     expect(css).toMatch(
       /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-functional\)/s,

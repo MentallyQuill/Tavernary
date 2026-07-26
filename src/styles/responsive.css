@@ -167,11 +167,48 @@
     height: 22px;
   }
 
-  .mobile-category-menu button.active,
-  .mobile-category-menu button:hover {
+  .mobile-category-menu button.active {
     border-color: var(--color-accent-teal-border);
     color: var(--color-accent-teal-text);
     background: var(--color-accent-teal-bg);
+  }
+
+  .mobile-category-menu button:hover {
+    border-color: var(--color-accent-teal-border);
+    color: var(--color-accent-teal-text);
+    background: var(--color-accent-teal-bg-hover);
+  }
+
+  .mobile-category-trigger[data-category="frontend"] > svg:first-child,
+  .mobile-category-menu button[data-category="frontend"] svg {
+    color: var(--color-frontend);
+  }
+
+  .mobile-category-trigger[data-category="preset"] > svg:first-child,
+  .mobile-category-menu button[data-category="preset"] svg {
+    color: var(--color-preset);
+  }
+
+  .mobile-category-trigger:not([data-category="all"]):not(
+      [data-category="kits"]
+    ):not([data-category="frontend"]):not([data-category="preset"])
+    > svg:first-child,
+  .mobile-category-menu
+    button:not([data-category="all"]):not([data-category="kits"]):not(
+      [data-category="frontend"]
+    ):not([data-category="preset"])
+    svg {
+    color: var(--color-functional);
+  }
+
+  .mobile-category-trigger:is([data-category="kits"], [data-category="all"])
+    > svg:first-child,
+  .mobile-category-menu
+    button:is([data-category="kits"], [data-category="all"])
+    svg,
+  .mobile-category-trigger[data-category="all"] .all-symbol,
+  .mobile-category-menu button[data-category="all"] .all-symbol {
+    color: var(--color-accent-teal);
   }
 
   .catalog-layout {
