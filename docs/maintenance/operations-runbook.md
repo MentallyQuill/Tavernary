@@ -91,10 +91,17 @@ Baseline mode loops while provisional queue remains > 0 by reading
 
 Workflow: `.github/workflows/enrich-catalog.yml`
 
-- Manual modes: `preflight`, `canary`, `start`, `resume`.
+- One manual action owns preflight, canary, deployment approval, full-run
+  preparation, batching, and resume behavior through the tested durable
+  orchestrator.
+- `enrichment_scope` controls selection:
+  - `pending` (default) processes automatic records that still need enrichment.
+  - `all-automatic` re-enriches every automatic record and is intended for
+    provider-contract migrations such as a one-time summary rewrite.
+- Neither scope overrides a record's manual enrichment policy.
 - Canary:
-  - exact 5 unique project IDs required
-  - randomly selected via `npm run catalog:select-canary` if no IDs provided
+  - a representative pool of 5-7 unique project IDs is selected within the
+    chosen scope
   - preps snapshot and registry writes in one gated commit
   - waits deployment (`gh run watch`) before approval transition
   - requires `--mode approve-canary` after deployment to mark pass
@@ -104,12 +111,38 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   - required gate `npm run check` between batches
 - `concurrency` also `catalog-refresh`.
 - Deployment summary writes include manifest mode/phase/cursor checkpoints.
+- Durable reports freeze `selection_mode` and list `manual_exclusions`, so a
+  resumed run cannot silently change scope.
 
 Provider mode uses environment secrets:
 
 - `TAVERNARY_ENRICHMENT_API_URL`
 - `TAVERNARY_ENRICHMENT_API_KEY`
 - `TAVERNARY_ENRICHMENT_MODEL`
+
+### Excluding a project from model enrichment
+
+The canonical toggle lives on the project record in
+`data/registry/projects/<id>.json`. To require manual processing, set:
+
+```json
+"enrichment_policy": "manual",
+"enrichment_note": "Multi-repository suite; requires manual curation."
+```
+
+Use a short, maintainer-facing note that explains why automation is unsafe or
+insufficient. Selection, direct execution, and atomic writes all enforce the
+manual lock.
+
+To return the project to automatic enrichment, set:
+
+```json
+"enrichment_policy": "automatic"
+```
+
+Remove `enrichment_note` at the same time; automatic records must not retain
+one. This setting is independent of `refresh_policy`: refresh controls GitHub
+evidence collection, while enrichment controls model-written editorial fields.
 
 ## Kit workflow
 

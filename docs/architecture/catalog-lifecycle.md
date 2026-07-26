@@ -18,6 +18,8 @@ Each record includes:
 - `visibility` (`published`/`quarantined`/`disabled`)
 - `visibility_reason` (only nullable when visible)
 - `refresh_policy` (`automatic`/`paused`)
+- `enrichment_policy` (`automatic`/`manual`)
+- `enrichment_note` (required only for manual enrichment)
 
 Project kinds:
 
@@ -34,6 +36,26 @@ Project kinds:
    - `url` is restricted to preset/source-like entries.
 3. Record can be in `published` visibility and still be provisional for metadata, as long as required source constraints pass.
 4. Curated metadata is still expected to evolve after merge if maintainers update summary/function/capabilities/visibility.
+
+## Enrichment eligibility and durable scope
+
+Regular GitHub repositories default to `enrichment_policy: automatic`,
+including GitHub-hosted presets. External URL sources and GitHub organization
+collections default to `manual` with a required reason. A maintainer may also
+lock a GitHub repository to manual when its structure requires human review.
+
+The enrichment action offers two selection scopes:
+
+- `pending`: automatic records whose editorial metadata still needs work.
+- `all-automatic`: every automatic record, including already curated records.
+
+Manual records are excluded from both. A run persists its `selection_mode` and
+`manual_exclusions` in the canary and full reports, then uses that frozen scope
+for every resume. The write boundary re-reads the canonical record before
+replacement, so a newly added manual lock wins even after selection.
+
+`refresh_policy` remains separate: it controls GitHub observation and snapshot
+updates, not permission to overwrite editorial enrichment.
 
 ## Source-health and snapshot layer
 
@@ -89,4 +111,3 @@ When snapshot is missing or stale, curated records can still render as pending-d
 - `npm run catalog:backfill-identities -- --write` copies repository IDs after successful observation.
 - Recovering from transient failure is usually a refresh + validation + visibility decision.
 - Source identity mismatch requires explicit curator repair path (record identity check, fix, refresh, validate, then writeback).
-
