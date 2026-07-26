@@ -85,6 +85,21 @@ test("restores admission when an older issue closes", () => {
   });
 });
 
+test("admits the current issue when GitHub's open listing briefly omits it", () => {
+  expect(
+    decideIssueAdmission({
+      currentIssue: issue(1),
+      openItems: [],
+      authorAssociation: "NONE",
+    }),
+  ).toMatchObject({
+    admitted: true,
+    reason: "within-limit",
+    openIssueCount: 1,
+    admittedIssueNumbers: [1],
+  });
+});
+
 test.each(["OWNER", "MEMBER", "COLLABORATOR"])(
   "exempts trusted association %s",
   (authorAssociation) => {

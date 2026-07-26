@@ -19,7 +19,12 @@ export function decideIssueAdmission({
     };
   }
 
-  const authorIssues = openItems
+  const candidateItems = openItems.some(
+    (item) => item.number === currentIssue.number,
+  )
+    ? openItems
+    : [...openItems, currentIssue];
+  const authorIssues = candidateItems
     .filter(
       (item) => !item.pull_request && item.user?.id === currentIssue.user?.id,
     )
