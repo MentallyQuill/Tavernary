@@ -209,7 +209,7 @@ describe("catalog validation", () => {
     );
   });
 
-  test("accepts the paused provisional Tavern RPG Suite organization", async () => {
+  test("accepts curated metadata for the paused Tavern RPG Suite organization", async () => {
     const result = await validateCatalog({
       records: [
         {
@@ -217,8 +217,17 @@ describe("catalog validation", () => {
           id: "tavern-rpg-suite",
           name: "Tavern RPG Suite",
           kind: "extension",
-          metadata_status: "provisional",
-          primary_function: "uncategorized",
+          summary:
+            "A SillyTavern extension suite adding maps, inventory, vitals, equipment, memory, minigames, and secondary-model roleplay tools.",
+          metadata_status: "curated",
+          primary_function: "rpg-systems",
+          capabilities: [
+            "automation",
+            "character-worldbuilding",
+            "image-generation",
+            "instruction-control",
+            "model-routing",
+          ],
           refresh_policy: "paused",
           source: {
             type: "github-organization",
@@ -231,6 +240,33 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toEqual([]);
+  });
+
+  test("requires the Tavern RPG Suite organization to remain paused", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "tavern-rpg-suite",
+          name: "Tavern RPG Suite",
+          kind: "extension",
+          metadata_status: "curated",
+          primary_function: "rpg-systems",
+          capabilities: ["automation"],
+          refresh_policy: "automatic",
+          source: {
+            type: "github-organization",
+            organization: "tavern-rpg-suite",
+            url: "https://github.com/tavern-rpg-suite",
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toContain(
+      "tavern-rpg-suite: github-organization requires paused extension",
+    );
   });
 
   test("rejects the reserved organization when the exact pair does not match", async () => {

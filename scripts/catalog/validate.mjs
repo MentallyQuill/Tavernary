@@ -292,12 +292,9 @@ export async function validateCatalog(options = {}) {
       }
       if (
         record.kind !== "extension" ||
-        record.metadata_status !== "provisional" ||
         record.refresh_policy !== "paused"
       ) {
-        errors.push(
-          `${id}: github-organization requires provisional paused extension`,
-        );
+        errors.push(`${id}: github-organization requires paused extension`);
       }
     } else if (record.source?.type === "url") {
       let protocol;
