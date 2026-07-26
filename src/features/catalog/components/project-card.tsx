@@ -229,6 +229,12 @@ export function ProjectCard({
     project.capabilities.length
       ? `Capabilities: ${project.capabilities.map(({ label }) => label).join(", ")}.`
       : null,
+    project.preset?.modelFamilies?.length
+      ? `Supported model families: ${project.preset.modelFamilies.map(({ label }) => label).join(", ")}.`
+      : null,
+    project.preset?.completionFormats?.length
+      ? `Supported completion formats: ${project.preset.completionFormats.map(({ label }) => label).join(", ")}.`
+      : null,
     project.attribution ? attributionAccessibleText(project.attribution) : null,
     `License: ${project.license.label}.`,
   ]
@@ -405,6 +411,26 @@ export function ProjectCard({
               key={capability.id}
             >
               {capability.label}
+            </Tooltip>
+          ))}
+          {project.preset?.modelFamilies?.map((family) => (
+            <Tooltip
+              id={`${project.id}-model-${family.id}`}
+              label={family.description}
+              className="chip"
+              key={family.id}
+            >
+              {family.label}
+            </Tooltip>
+          ))}
+          {project.preset?.completionFormats?.map((format) => (
+            <Tooltip
+              id={`${project.id}-completion-${format.id}`}
+              label={format.description}
+              className="chip"
+              key={format.id}
+            >
+              {format.label}
             </Tooltip>
           ))}
         </span>

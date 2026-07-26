@@ -8,6 +8,7 @@ import {
   type ProjectSubmissionType,
 } from "../project-submission-manifest.mjs";
 import { openProjectSubmission } from "../submission-transport";
+import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
 
 const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
@@ -24,7 +25,9 @@ type SubmissionField =
   | "project-description"
   | "frontend-selection"
   | "other-frontend-name"
-  | "other-frontend-url";
+  | "other-frontend-url"
+  | "other-model-family"
+  | "preset-compatibility";
 
 interface SubmissionError {
   field: SubmissionField;
@@ -70,6 +73,13 @@ function manifestErrorField(message: string): SubmissionField {
   ) {
     return "frontend-selection";
   }
+  if (
+    message.includes("model family") ||
+    message.includes("completion format") ||
+    message.includes("Model-Agnostic")
+  ) {
+    return "preset-compatibility";
+  }
   return "project-url";
 }
 
@@ -104,6 +114,10 @@ export function ProjectSubmissionBuilder({
   const [otherFrontendName, setOtherFrontendName] = useState("");
   const [otherFrontendUrl, setOtherFrontendUrl] = useState("");
   const [frontendIndependent, setFrontendIndependent] = useState(false);
+  const [modelFamilies, setModelFamilies] = useState<string[]>([]);
+  const [includeOtherModelFamily, setIncludeOtherModelFamily] = useState(false);
+  const [otherModelFamily, setOtherModelFamily] = useState("");
+  const [completionFormats, setCompletionFormats] = useState<string[]>([]);
   const [errors, setErrors] = useState<SubmissionError[]>([]);
   const [status, setStatus] = useState("");
   const [statusKind, setStatusKind] = useState<"success" | "error" | null>(
@@ -140,6 +154,27 @@ export function ProjectSubmissionBuilder({
     );
   }
 
+  function toggleModelFamily(id: string) {
+    setModelFamilies((current) => {
+      if (current.includes(id)) return current.filter((item) => item !== id);
+      return id === "model-agnostic"
+        ? ["model-agnostic"]
+        : [...current.filter((item) => item !== "model-agnostic"), id];
+    });
+    if (id === "model-agnostic") {
+      setIncludeOtherModelFamily(false);
+      setOtherModelFamily("");
+    }
+  }
+
+  function toggleCompletionFormat(id: string) {
+    setCompletionFormats((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
+  }
+
   function buildManifest(): ProjectSubmissionManifest | null {
     const activeFrontends =
       projectType === "frontend" || frontendIndependent
@@ -151,7 +186,7 @@ export function ProjectSubmissionBuilder({
               : [],
           };
     const validation = normalizeProjectSubmissionManifest({
-      schema_version: 1,
+      schema_version: 2,
       project_type: projectType,
       source_url: sourceUrl,
       name,
@@ -159,6 +194,20 @@ export function ProjectSubmissionBuilder({
       frontends: activeFrontends,
       frontend_independent: projectType === "preset" && frontendIndependent,
       additional_context: additionalContext,
+      ...(projectType === "preset"
+        ? {
+            preset_compatibility: {
+              model_families: {
+                known_ids: modelFamilies,
+                other:
+                  includeOtherModelFamily && otherModelFamily.trim()
+                    ? [otherModelFamily]
+                    : [],
+              },
+              completion_formats: completionFormats,
+            },
+          }
+        : {}),
     });
     const nextErrors: SubmissionError[] = validation.valid
       ? []
@@ -196,6 +245,13 @@ export function ProjectSubmissionBuilder({
           "Other frontend URL must be an exact public GitHub owner/repository URL.",
         );
       }
+    }
+    if (
+      projectType === "preset" &&
+      includeOtherModelFamily &&
+      !otherModelFamily.trim()
+    ) {
+      addError("other-model-family", "Other model family name is required.");
     }
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
@@ -243,6 +299,10 @@ export function ProjectSubmissionBuilder({
             onChange={(event) => {
               setProjectType(event.target.value as ProjectSubmissionType);
               setFrontendIndependent(false);
+              setModelFamilies([]);
+              setIncludeOtherModelFamily(false);
+              setOtherModelFamily("");
+              setCompletionFormats([]);
               setErrors([]);
               setStatus("");
               setStatusKind(null);
@@ -344,6 +404,107 @@ export function ProjectSubmissionBuilder({
               No frontend selection required.
             </p>
           ) : null}
+        </section>
+      ) : null}
+
+      {projectType === "preset" ? (
+        <section className="submission-section">
+          <div className="submission-section-heading">
+            <div>
+              <h2>Supported model families</h2>
+              <p>Select every model family this Preset supports.</p>
+            </div>
+            <span>{modelFamilies.length} selected</span>
+          </div>
+          <fieldset className="submission-options">
+            <legend className="visually-hidden">
+              Supported model families
+            </legend>
+            {modelFamilyVocabulary.model_families.map((family) => (
+              <label key={family.id}>
+                <input
+                  type="checkbox"
+                  aria-label={family.label}
+                  checked={modelFamilies.includes(family.id)}
+                  onChange={() => toggleModelFamily(family.id)}
+                />
+                <span>
+                  <strong>{family.label}</strong>
+                  <small>{family.description}</small>
+                </span>
+              </label>
+            ))}
+          </fieldset>
+          <label className="submission-toggle">
+            <input
+              type="checkbox"
+              aria-label="Other model family"
+              checked={includeOtherModelFamily}
+              onChange={(event) => {
+                const checked = event.target.checked;
+                setIncludeOtherModelFamily(checked);
+                if (checked) {
+                  setModelFamilies((current) =>
+                    current.filter((item) => item !== "model-agnostic"),
+                  );
+                } else {
+                  setOtherModelFamily("");
+                }
+              }}
+            />
+            <span>
+              <strong>Other or not listed</strong>
+              <small>
+                Request maintainer review for a family missing from this list.
+              </small>
+            </span>
+          </label>
+          {includeOtherModelFamily ? (
+            <div className="submission-field">
+              <label htmlFor="other-model-family">
+                Other model family name
+              </label>
+              <input
+                id="other-model-family"
+                value={otherModelFamily}
+                maxLength={60}
+                aria-invalid={Boolean(errorFor("other-model-family"))}
+                aria-describedby={
+                  errorFor("other-model-family")
+                    ? "other-model-family-error"
+                    : undefined
+                }
+                onChange={(event) => setOtherModelFamily(event.target.value)}
+              />
+              <InlineError
+                id="other-model-family-error"
+                message={errorFor("other-model-family")}
+              />
+            </div>
+          ) : null}
+          <fieldset className="submission-options">
+            <legend>Completion format</legend>
+            {[
+              ["chat-completion", "Chat Completion"],
+              ["text-completion", "Text Completion"],
+            ].map(([id, label]) => (
+              <label key={id}>
+                <input
+                  type="checkbox"
+                  aria-label={label}
+                  checked={completionFormats.includes(id)}
+                  onChange={() => toggleCompletionFormat(id)}
+                />
+                <span>
+                  <strong>{label}</strong>
+                </span>
+              </label>
+            ))}
+          </fieldset>
+          <InlineError
+            id="preset-compatibility-error"
+            message={errorFor("preset-compatibility")}
+          />
         </section>
       ) : null}
 

@@ -3,6 +3,7 @@ export type KitSort = "trending" | "newest" | "updated" | "alphabetical";
 export interface KitQuery {
   frontends: string[];
   purposes: string[];
+  modelFamilies?: string[];
   includesProjectId: string;
   minProjects: number;
   maxProjects: number;
@@ -13,6 +14,7 @@ export interface KitQuery {
 export const DEFAULT_KIT_QUERY: KitQuery = {
   frontends: [],
   purposes: [],
+  modelFamilies: [],
   includesProjectId: "",
   minProjects: 3,
   maxProjects: 50,

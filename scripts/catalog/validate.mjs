@@ -182,6 +182,8 @@ export async function validateCatalog(options = {}) {
     frontendVocabulary,
     functionVocabulary,
     capabilityVocabulary,
+    modelFamilyVocabulary,
+    completionFormatVocabulary,
   ] = await Promise.all([
     readJson("data/schemas/project.schema.json"),
     readJson("data/schemas/repository-snapshot.schema.json"),
@@ -189,6 +191,8 @@ export async function validateCatalog(options = {}) {
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
+    readJson("data/vocabularies/model-families.json"),
+    readJson("data/vocabularies/completion-formats.json"),
   ]);
 
   const ajv = new Ajv({ allErrors: true, strict: false });
@@ -232,6 +236,11 @@ export async function validateCatalog(options = {}) {
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
+  const modelFamilyIds = vocabularyIds(modelFamilyVocabulary, "model_families");
+  const completionFormatIds = vocabularyIds(
+    completionFormatVocabulary,
+    "completion_formats",
+  );
   const ids = new Set();
   const sources = new Set();
   const errors = [];
@@ -347,6 +356,24 @@ export async function validateCatalog(options = {}) {
     for (const capability of record.capabilities ?? []) {
       if (!capabilityIds.has(capability)) {
         errors.push(`${id}: unknown capability ${capability}`);
+      }
+    }
+    for (const family of record.model_families ?? []) {
+      if (!modelFamilyIds.has(family)) {
+        errors.push(`${id}: unknown model family ${family}`);
+      }
+    }
+    if (
+      record.model_families?.includes("model-agnostic") &&
+      record.model_families.length > 1
+    ) {
+      errors.push(
+        `${id}: model-agnostic cannot be combined with named model families`,
+      );
+    }
+    for (const format of record.completion_formats ?? []) {
+      if (!completionFormatIds.has(format)) {
+        errors.push(`${id}: unknown completion format ${format}`);
       }
     }
   }

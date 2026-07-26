@@ -243,3 +243,50 @@ test("requires frontends and extensions to use GitHub repositories", () => {
     frontendDependencies: [],
   });
 });
+
+test("keeps legacy preset submissions open until compatibility is supplied", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          schema_version: 1,
+          project_type: "preset",
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "needs-information",
+    errors: [
+      "System Presets require supported model families and completion formats.",
+    ],
+    suggestions: [],
+  });
+});
+
+test("keeps unlisted model families out of canonical project drafts", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          schema_version: 2,
+          project_type: "preset",
+          preset_compatibility: {
+            model_families: {
+              known_ids: ["claude"],
+              other: ["FutureModel"],
+            },
+            completion_formats: ["chat-completion"],
+          },
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "needs-information",
+    errors: [
+      'Unlisted model family "FutureModel" requires maintainer reconciliation before publication.',
+    ],
+    suggestions: [],
+  });
+});

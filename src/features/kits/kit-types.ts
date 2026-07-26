@@ -30,6 +30,7 @@ export interface CatalogKit {
   updatedAt: string;
   frontends: CatalogLabel[];
   purposes: CatalogLabel[];
+  modelFamilies: CatalogLabel[];
   components: CatalogKitComponent[];
   supporterCount: number | null;
   trendingScore: number | null;

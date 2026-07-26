@@ -18,6 +18,8 @@ export interface CatalogQuery {
   frontends: string[];
   kinds: CatalogKind[];
   capabilities: string[];
+  modelFamilies?: string[];
+  completionFormats?: string[];
   development: DevelopmentFilter[];
   licenses: LicenseFilter[];
   kits: KitQuery;
@@ -34,6 +36,8 @@ export const DEFAULT_QUERY: CatalogQuery = {
   frontends: [],
   kinds: [],
   capabilities: [],
+  modelFamilies: [],
+  completionFormats: [],
   development: [],
   licenses: [],
   kits: DEFAULT_KIT_QUERY,
@@ -122,6 +126,22 @@ const validCapabilities = new Set([
   "prompt-engineering",
   "review-validation",
 ]);
+const validModelFamilies = new Set([
+  "model-agnostic",
+  "claude",
+  "gpt",
+  "gemini",
+  "gemma",
+  "deepseek",
+  "glm",
+  "minimax",
+  "mimo",
+  "kimi",
+  "qwen",
+  "llama",
+  "mistral",
+]);
+const validCompletionFormats = new Set(["chat-completion", "text-completion"]);
 const validViews = new Set<CatalogView>(["all", "active", "new", "released"]);
 const validSorts = new Set<CatalogSort>([
   "recent",
@@ -174,6 +194,7 @@ export function parseCatalogQuery(search: string): CatalogQuery {
   const parsedKitQuery: KitQuery = {
     frontends: manyOf(parameters.getAll("frontend"), validFrontends),
     purposes: manyOf(parameters.getAll("purpose"), validPurposes),
+    modelFamilies: manyOf(parameters.getAll("model"), validModelFamilies),
     includesProjectId: parameters.get("includes")?.trim() ?? "",
     minProjects,
     maxProjects,
@@ -209,6 +230,14 @@ export function parseCatalogQuery(search: string): CatalogQuery {
     capabilities:
       mode === "projects"
         ? manyOf(parameters.getAll("capability"), validCapabilities)
+        : [],
+    modelFamilies:
+      mode === "projects"
+        ? manyOf(parameters.getAll("model"), validModelFamilies)
+        : [],
+    completionFormats:
+      mode === "projects"
+        ? manyOf(parameters.getAll("completion"), validCompletionFormats)
         : [],
     development:
       mode === "projects"
@@ -250,6 +279,7 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     }
     appendMany(parameters, "frontend", query.kits.frontends);
     appendMany(parameters, "purpose", query.kits.purposes);
+    appendMany(parameters, "model", query.kits.modelFamilies ?? []);
     if (query.kits.includesProjectId) {
       parameters.set("includes", query.kits.includesProjectId);
     }
@@ -278,6 +308,8 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     appendMany(parameters, "frontend", query.frontends);
     appendMany(parameters, "kind", query.kinds);
     appendMany(parameters, "capability", query.capabilities);
+    appendMany(parameters, "model", query.modelFamilies ?? []);
+    appendMany(parameters, "completion", query.completionFormats ?? []);
     appendMany(parameters, "development", query.development);
     appendMany(parameters, "license", query.licenses);
   }

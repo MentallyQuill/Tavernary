@@ -630,6 +630,8 @@ test("builds Kits from complete project records and nullable support", async () 
       name: "Preset",
       kind: "preset",
       primary_function: "generation-reasoning",
+      model_families: ["claude"],
+      completion_formats: ["chat-completion"],
     }),
     fixtureProject({
       id: "flagged",
@@ -690,6 +692,7 @@ test("builds Kits from complete project records and nullable support", async () 
       {
         id: "story-kit-41",
         frontends: [expect.objectContaining({ id: "sillytavern" })],
+        modelFamilies: [expect.objectContaining({ id: "claude" })],
         purposes: [
           expect.objectContaining({ id: "memory-retrieval" }),
           expect.objectContaining({ id: "generation-reasoning" }),

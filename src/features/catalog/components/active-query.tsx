@@ -3,6 +3,15 @@ import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { CATEGORY_OPTIONS, type CatalogQuery } from "../catalog-query";
 import type { CatalogProject } from "../catalog-types";
+import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
+import completionFormatVocabulary from "../../../../data/vocabularies/completion-formats.json";
+
+const compatibilityLabels = new Map(
+  [
+    ...modelFamilyVocabulary.model_families,
+    ...completionFormatVocabulary.completion_formats,
+  ].map(({ id, label }) => [id, label] as const),
+);
 
 function labelMaps(projects: CatalogProject[]) {
   const frontends = new Map<string, string>();
@@ -71,6 +80,12 @@ export function ActiveQuery({
         key: "purposes",
         value,
         label: kitLabels.get(value) ?? value,
+      });
+    for (const value of query.kits.modelFamilies ?? [])
+      tokens.push({
+        key: "modelFamilies",
+        value,
+        label: compatibilityLabels.get(value) ?? value,
       });
     if (query.kits.includesProjectId)
       tokens.push({
@@ -148,6 +163,18 @@ export function ActiveQuery({
       key: "capabilities",
       value,
       label: maps.capabilities.get(value) ?? value,
+    });
+  for (const value of query.modelFamilies ?? [])
+    tokens.push({
+      key: "modelFamilies",
+      value,
+      label: compatibilityLabels.get(value) ?? value,
+    });
+  for (const value of query.completionFormats ?? [])
+    tokens.push({
+      key: "completionFormats",
+      value,
+      label: compatibilityLabels.get(value) ?? value,
     });
   for (const value of query.development)
     tokens.push({

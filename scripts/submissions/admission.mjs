@@ -95,6 +95,30 @@ export function evaluateProjectSubmission(input) {
       frontendDependencies: input.frontendResolution.dependencies ?? [],
     };
   }
+  if (
+    input.manifest.project_type === "preset" &&
+    !input.manifest.preset_compatibility
+  ) {
+    return {
+      status: "needs-information",
+      errors: [
+        "System Presets require supported model families and completion formats.",
+      ],
+      suggestions: [],
+    };
+  }
+  const unlistedModelFamilies =
+    input.manifest.preset_compatibility?.model_families.other ?? [];
+  if (unlistedModelFamilies.length > 0) {
+    return {
+      status: "needs-information",
+      errors: unlistedModelFamilies.map(
+        (family) =>
+          `Unlisted model family "${family}" requires maintainer reconciliation before publication.`,
+      ),
+      suggestions: [],
+    };
+  }
 
   const warnings = [
     ...(input.warnings ?? []),
