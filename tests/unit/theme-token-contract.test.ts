@@ -4,7 +4,14 @@ import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
 
 const root = resolve(import.meta.dirname, "../..");
-const tokensSource = readFileSync(resolve(root, "src/styles/tokens.css"), "utf8");
+const tokensSource = readFileSync(
+  resolve(root, "src/styles/tokens.css"),
+  "utf8",
+);
+const themeTokenContractSource = readFileSync(
+  resolve(root, "tests/unit/theme-token-contract.test.ts"),
+  "utf8",
+);
 
 function declarations(source: string) {
   return Object.fromEntries(
@@ -15,6 +22,7 @@ function declarations(source: string) {
   );
 }
 
+// prettier-ignore
 const EXPECTED_THEME_TOKENS = {
   "color-bg-canvas": "#0D1117",
   "color-bg-header": "#101820",
@@ -133,6 +141,13 @@ const LEGACY_TOKENS = [
 ] as const;
 
 describe("Graphite Teal token contract", () => {
+  test("uses local formatter boundaries for case-sensitive token literals", () => {
+    expect(tokensSource).toMatch(/^\/\* prettier-ignore \*\/\r?\n:root \{/);
+    expect(themeTokenContractSource).toContain(
+      "// prettier-ignore\nconst EXPECTED_THEME_TOKENS = {",
+    );
+  });
+
   test("defines every approved theme token with its exact value", () => {
     const actual = declarations(tokensSource);
     expect(
