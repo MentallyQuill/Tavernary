@@ -3,15 +3,15 @@
   "id": "rivelledays-sillytavern-moonlitechoestheme",
   "name": "SillyTavern Moonlit Echoes Theme",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern Moonlit Echoes Theme is a modern, minimalist frontend theme extension for SillyTavern inspired by moonlit nights.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "RivelleDays/SillyTavern-MoonlitEchoesTheme",
     "repository_id": 932766847
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "frontend",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

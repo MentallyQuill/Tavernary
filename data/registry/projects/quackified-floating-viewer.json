@@ -3,15 +3,15 @@
   "id": "quackified-floating-viewer",
   "name": "Floating Viewer",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "A SillyTavern extension that replaces the default image popup with a draggable and resizable floating window.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Quackified/Floating-Viewer",
     "repository_id": 1111979731
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

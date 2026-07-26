@@ -3,15 +3,15 @@
   "id": "qvink-sillytavern-rightclickmessagemenu",
   "name": "SillyTavern Right-Click Message Menu",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern UI extension that adds a right-click context menu for message buttons.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "qvink/SillyTavern-RightClickMessageMenu",
     "repository_id": 1069373058
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
