@@ -61,27 +61,76 @@ Other public issue flows are queue-only and reviewed manually:
 - `[Other]` (`04-other.yml`) is a catch-all maintainer queue.
 - `[Kit withdrawal]` (`07-kit-withdrawal.yml`) uses apply workflow after maintainer review.
 
-`triage-issue.mjs` and `triage-kit-issue.mjs` enforce:
+`triage-issue.mjs` enforces project states:
 
-- `needs-maintainer-review` when automation passes
-- `needs-information` when required source fields are invalid or missing
-- `duplicate-candidate` on clear duplicate risk
+- `needs-maintainer-review` while an admitted proposal is ready to generate
+- `needs-information` when a correctable source or metadata problem remains
+- `duplicate-candidate` before automatically closing a confirmed duplicate
+- `submission-retryable` when an external dependency failed transiently
+- `submission-pr-open` while the generated PR is the active review surface
+- `submission-declined` after that PR is closed without merging
+
+`triage-kit-issue.mjs` retains the Kit-specific
+`needs-maintainer-review`/`needs-information`/`duplicate-candidate` flow.
 
 The triage workflow posts/updates one comment marker:
 
 - `<!-- tavernary-submission-validation -->`
 - `<!-- tavernary-kit-submission-validation -->`
 
-It does not publish any catalog record.
+Project triage does not publish a catalog record. An admitted decision
+dispatches the separate generation workflow.
 
 ## Project submission path
 
-1. Submitter opens issue through `01-project-submission.yml`.
-2. Triage labels + comment run automatically.
-3. If labeled `needs-maintainer-review`, maintainer:
-   - updates canonical record in `data/registry/projects/<id>.json`
-   - runs normal project change PR flow
-   - validates catalog and build gates before merge
+Repository Actions settings must permit **Allow GitHub Actions to create and
+approve pull requests** so the workflow token can create the review PR.
+Automation creates but never approves its own PR; branch protection and the
+normal maintainer review still apply.
+
+1. The static Tavernary builder or `01-project-submission.yml` creates an issue
+   carrying `project-submission`.
+2. `triage-submission.yml` normalizes the URL, maintains the generated title,
+   inspects source facts, reconciles frontend vocabulary, and checks duplicates.
+3. A duplicate receives the triage explanation and closes before generation. A
+   correctable failure remains open with `needs-information`; edit the issue to
+   rerun triage.
+4. An admitted issue dispatches `generate-project-submission.yml` with its issue
+   number. The workflow creates
+   `automation/project-submission-<issue-number>`, writes only declared registry,
+   snapshot, and optional frontend-vocabulary files, validates/builds them, and
+   opens one PR marked with `Closes #<issue-number>`.
+5. The issue changes to `submission-pr-open`. Treat that PR as the sole
+   maintainer review surface. Correct proposed generated files directly on the
+   branch; do not separately approve the issue.
+6. Merge publishes through the normal `main` build and closes the linked issue.
+   `project-submission-lifecycle.yml` removes transient review labels and deletes
+   the generated branch only when its SHA still matches the closed PR.
+7. Close without merging only when declining the submission. Lifecycle
+   automation applies `submission-declined`, posts one marked explanation,
+   closes the issue as not planned, and performs the same guarded branch cleanup.
+
+### Manual generation and recovery
+
+Run **Generate project submission review** manually when an admitted issue did
+not dispatch or a retryable dependency has recovered:
+
+1. Open Actions -> **Generate project submission review** -> **Run workflow** on
+   `main`.
+2. Enter `issue_number`.
+3. Leave `force_regeneration` false for the normal non-destructive path.
+
+The branch and PR are deterministic, so a safe rerun updates the existing
+proposal rather than creating a second review. If the PR head no longer matches
+the generation marker, the workflow stops because a maintainer changed the
+branch. Keep those corrections and continue review without regeneration.
+
+Set `force_regeneration: true` only after reviewing the PR and deciding that
+automation may replace every marker-owned generated path. Forced regeneration
+rebases the branch onto current `main`, replaces only the declared generated
+paths, preserves unrelated branch files, and pushes with `--force-with-lease`.
+It never uses an unguarded force push. If the generated branch moved after PR
+closure, lifecycle cleanup leaves it intact for manual inspection.
 
 ## Project information + website bug
 

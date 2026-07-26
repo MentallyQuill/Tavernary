@@ -29,13 +29,31 @@ Project kinds:
 
 ## Draft -> reviewed -> public
 
-1. Project can begin as curated or provisional.
-2. `source` must satisfy rules:
+1. A submission issue is intake, not a second approval surface. URL
+   normalization, duplicate identity, source probing, and frontend
+   reconciliation run before any catalog proposal is created.
+2. Confirmed duplicates close before PR generation. Correctable failures remain
+   open with `needs-information`.
+3. An admitted issue creates one deterministic
+   `automation/project-submission-<issue-number>` branch and one generated pull
+   request. The PR is the sole human review and may be corrected directly by
+   maintainers.
+4. A generated project can begin as curated or provisional.
+5. `source` must satisfy rules:
    - `github` requires `repository` and optional `repository_id` (nullable before identity confirmed).
    - `github-organization` identifies collection-style sources.
    - `url` is restricted to preset/source-like entries.
-3. Record can be in `published` visibility and still be provisional for metadata, as long as required source constraints pass.
-4. Curated metadata is still expected to evolve after merge if maintainers update summary/function/capabilities/visibility.
+6. A record can be in `published` visibility and still be provisional for
+   metadata, as long as required source constraints pass.
+7. Merge places the reviewed record on `main`, closes the linked issue, and
+   publishes through the normal static build. Closing the generated PR without
+   merge declines the submission and does not publish it.
+8. Curated metadata is still expected to evolve after merge if maintainers
+   update summary/function/capabilities/visibility.
+
+External System Presets follow the same PR review boundary but remain manually
+curated after acceptance: their source refresh is paused because Tavernary
+cannot verify a non-GitHub source through repository identity.
 
 ## Enrichment eligibility and durable scope
 
