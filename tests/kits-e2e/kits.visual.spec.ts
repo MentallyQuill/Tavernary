@@ -48,6 +48,7 @@ test("desktop Kit workspace and catalog do not overlap", async ({ page }) => {
 
 test("tablet collapsed Kit Builder remains bounded", async ({ page }) => {
   await openKits(page, { width: 1024, height: 900 });
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
   await page.getByRole("button", { name: "Create new Kit" }).click();
   await page.getByRole("button", { name: "Collapse Kit Builder" }).click();
 

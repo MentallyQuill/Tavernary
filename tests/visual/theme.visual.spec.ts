@@ -258,12 +258,22 @@ test("mobile category selection retains the teal navigation border", async ({
   await expectStyle(preset, "background-color", graphiteTeal.tealHover);
 });
 
-test("desktop generation and reasoning category retains its orange mark", async ({
+test("desktop category marks retain their semantic colors", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
 
+  await expectStyle(
+    page.locator('[data-category="frontend"] svg'),
+    "color",
+    graphiteTeal.frontend,
+  );
+  await expectStyle(
+    page.locator('[data-category="preset"] svg'),
+    "color",
+    graphiteTeal.preset,
+  );
   await expectStyle(
     page.locator('[data-category="generation-reasoning"] svg'),
     "color",
@@ -271,7 +281,7 @@ test("desktop generation and reasoning category retains its orange mark", async 
   );
 });
 
-test("dual-range keeps its rendered minimum thumb interactive", async ({
+test("dual-range host exposes its rendered minimum hit area", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -284,8 +294,8 @@ test("dual-range keeps its rendered minimum thumb interactive", async ({
   expect(box).not.toBeNull();
 
   // Chromium exposes host styles for its native range-thumb pseudo-element.
-  // A hit test still verifies that the rendered thumb, rather than its
-  // pointer-events-disabled host, receives interaction at the minimum value.
+  // This verifies only the host input hit area at its rendered minimum value;
+  // it does not establish native thumb styling or geometry.
   await expect
     .poll(() =>
       page.evaluate(
