@@ -1723,6 +1723,7 @@
   height: 100%;
   min-width: 0;
   min-height: 0;
+  padding-inline: 4px;
   overflow-y: auto;
 }
 
