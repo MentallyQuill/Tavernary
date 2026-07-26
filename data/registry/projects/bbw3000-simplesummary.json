@@ -3,7 +3,7 @@
   "id": "bbw3000-simplesummary",
   "name": "SimpleSummary",
   "kind": "extension",
-  "summary": "SimpleSummary is a SillyTavern extension for summarizing conversation content within the frontend.",
+  "summary": "SimpleSummary is a SillyTavern extension that generates summaries of chat conversations. It automates condensing long roleplay exchanges into concise overviews to help users keep track of context.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1224601278
   },
   "frontends": ["sillytavern"],
-  "primary_function": "memory-retrieval",
+  "primary_function": "interface-workflow",
   "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

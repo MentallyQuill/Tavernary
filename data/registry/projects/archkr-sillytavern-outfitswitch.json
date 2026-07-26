@@ -3,7 +3,7 @@
   "id": "archkr-sillytavern-outfitswitch",
   "name": "SillyTavern OutfitSwitch",
   "kind": "extension",
-  "summary": "SillyTavern extension that switches a character's outfit in response to specific keywords detected during roleplay.",
+  "summary": "SillyTavern OutfitSwitch changes a character's outfit by watching for keywords in their dialogue. Unlike sibling Costume Switcher, it tracks wardrobe rather than speaker identity in multi-character scenes.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1087458216
   },
   "frontends": ["sillytavern"],
-  "primary_function": "character-worldbuilding",
-  "capabilities": ["automation", "instruction-control"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "image-generation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

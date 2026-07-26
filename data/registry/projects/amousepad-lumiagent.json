@@ -3,7 +3,7 @@
   "id": "amousepad-lumiagent",
   "name": "LumiAgent",
   "kind": "extension",
-  "summary": "LumiAgent is a Lumiverse extension providing helpful capabilities as a capable assistant for the frontend.",
+  "summary": "LumiAgent is an extension that functions as a capable helper for the Lumiverse frontend. It integrates with Lumiverse to provide additional assistance and support for its users.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

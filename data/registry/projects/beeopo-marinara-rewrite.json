@@ -3,7 +3,7 @@
   "id": "beeopo-marinara-rewrite",
   "name": "Marinara Rewrite",
   "kind": "extension",
-  "summary": "Marinara Rewrite is a highlight-to-rewrite AI extension that adds text rewriting functionality to the Marinara Engine frontend.",
+  "summary": "Marinara Rewrite is an extension for the Marinara Engine that rewrites highlighted text using AI. Users select passages to send to an AI model and receive rewritten versions through the extension.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
+  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

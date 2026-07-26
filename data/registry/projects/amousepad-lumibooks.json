@@ -3,7 +3,7 @@
   "id": "amousepad-lumibooks",
   "name": "LumiBooks",
   "kind": "extension",
-  "summary": "LumiBooks is a Lumiverse frontend extension providing a simple memory storage system.",
+  "summary": "LumiBooks is a simple memory extension for the Lumiverse frontend that adds memory functionality for roleplay sessions. It extends Lumiverse with straightforward features for recalling conversation context.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
