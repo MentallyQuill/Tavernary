@@ -46,7 +46,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-26T13:57:57.942Z",
-  "updated_at": "2026-07-26T13:57:57.942Z",
+  "updated_at": "2026-07-26T13:59:58.454Z",
   "manifest": [
     "aikohanasaki-sillytavern-characterlocks",
     "aikohanasaki-sillytavern-memorybooks",
@@ -202,7 +202,10 @@
       "completed_at": "2026-07-26T13:57:57.942Z"
     }
   },
-  "publication": null,
+  "publication": {
+    "checkpoint_commit_sha": "d781b970cc403112b9384d613daf0ed627cdee31",
+    "recorded_at": "2026-07-26T13:59:58.454Z"
+  },
   "deployment": null,
   "aggregates": {
     "enriched": 1,
