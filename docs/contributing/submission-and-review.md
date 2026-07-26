@@ -33,25 +33,47 @@ same rule.
 
 ### Projects
 
-1. The submitter provides the Project Type, Project URL, and any optional
-   context. Automation checks URL validity, source eligibility, and obvious
-   duplicates.
-2. A maintainer derives and validates the catalog metadata:
-   - Frontends and Extensions require a public GitHub repo.
-   - System Presets may use another stable public HTTPS page.
-   - `id`, `kind`, `summary`, `capabilities`, and `frontends` must be internally
-     consistent.
-3. The maintainer updates the canonical record in
-   `data/registry/projects/<project-id>.json`.
-4. A maintainer PR is created with generated artifact updates as needed.
-5. `npm run catalog:validate` and `npm run catalog:build` run before merge when
-   registry data changed.
+1. The submitter uses Tavernary's static builder or the native GitHub fallback
+   form. The builder's frontend choices come from the current catalog rather
+   than a separately maintained dropdown.
+2. Automation normalizes the source, updates an automatically generated issue
+   title, checks URL and source eligibility, reconciles supported frontends,
+   probes public source facts, and checks duplicate URL/repository identity.
+3. An obvious duplicate is labeled and closed before a pull request is created.
+   A correctable problem remains open with `needs-information` and an exact
+   explanation.
+4. An admitted issue creates one deterministic branch and one generated review
+   PR containing the proposed registry record, initial snapshot when available,
+   and any required frontend-vocabulary addition.
+5. The generated PR is the sole human review. Maintainers verify the source,
+   project type, frontends, factual summary, classification, and warnings. They
+   may correct the generated files directly in the PR.
+6. Merging publishes through the normal catalog and Pages path. The PR's
+   `Closes #<issue-number>` link closes the intake issue.
+7. Closing the generated PR without merging marks the issue
+   `submission-declined`, closes it as not planned, and safely removes the
+   unchanged automation branch.
+
+Contributors should edit the issue only until its generated PR exists. Once the
+issue carries `submission-pr-open`, corrections belong on the PR so its review
+state remains authoritative. Maintainers do not perform a second issue review.
 
 Implementation path:
 
-- `01-project-submission.yml` and `triage-submission.yml` handle intake validation.
-- Project publication remains a maintainer-owned manual review, then PR workflow;
-  there is no automatic publish workflow for project entries.
+- `01-project-submission.yml` accepts the stable manifest or readable fallback
+  fields.
+- `triage-submission.yml` handles idempotent validation, title updates,
+  duplicate closure, and dispatch.
+- `generate-project-submission.yml` creates or updates
+  `automation/project-submission-<issue-number>` and its review PR.
+- `project-submission-lifecycle.yml` synchronizes merge or decline back to the
+  issue and deletes only the unchanged generated branch.
+
+Frontends and Extensions require an exact public GitHub repository. A System
+Preset may use another stable public HTTPS page; external presets remain
+manually curated and use paused source refresh. Selecting **Other or not
+listed** intentionally pauses admission until that frontend can be reconciled
+with current catalog vocabulary.
 
 ### Website issues
 
@@ -75,9 +97,11 @@ Withdrawals are submitted with `07-kit-withdrawal.yml` and applied via
 
 ## Labels and maintainer actions
 
-Issue labels indicate the maintainer queue bucket (`project-submission`,
-`project-information`, `website-bug`, `kit-submission`, `kit-report`, `kit-withdrawal`).
-They do not represent final publication state.
+Issue labels include both queue ownership (`project-submission`,
+`project-information`, `website-bug`, `kit-submission`, `kit-report`,
+`kit-withdrawal`) and automation state (`needs-information`,
+`submission-pr-open`, `submission-declined`). Publication still occurs only
+through a maintainer merge.
 
 For full Kit maintainer constraints and safety paths, see
 [Kit submission and moderation](kits.md) and

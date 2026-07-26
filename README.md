@@ -183,9 +183,26 @@ Before clearing a quarantine:
 
 ## Submissions and moderation
 
-The **Submit Project** link opens a structured GitHub issue. Automation checks
-source eligibility and obvious duplicates, but never creates or edits a
-production record. A maintainer must vet and add every accepted entry.
+The **Submit Project** link opens Tavernary's static submission builder. Its
+frontend choices come from the current catalog, and it prepares a structured
+GitHub issue with a stable manifest. The native GitHub issue form remains
+available as a free-text fallback.
+
+Automation normalizes the source, checks eligibility and obvious duplicates,
+and prepares admitted submissions as a generated pull request. Duplicates close
+before a PR is created, while correctable problems remain open with
+`needs-information`. The generated PR is the sole maintainer review: maintainers
+may correct the proposed registry record and snapshot directly, then merge to
+publish and close the issue. Closing that PR without merging declines the
+submission and applies `submission-declined`. No account, database service, or
+runtime API is involved.
+
+Frontend and Extension submissions require an exact public GitHub repository.
+External System Presets remain manually curated and publish with automatic
+refresh paused. See the
+[submission and review flow](docs/contributing/submission-and-review.md) and
+[maintainer runbook](docs/maintenance/operations-runbook.md) for the complete
+lifecycle and recovery procedure.
 
 Kits are community-authored, ordered collections of 3-50 catalog projects.
 The browser builder keeps drafts only in memory and hands a stable JSON

@@ -163,3 +163,22 @@ test("shows a noninteractive creator byline only on standard cards", async ({
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(attribution).toBeHidden();
 });
+
+test("keeps the project submission builder inside a 320px viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(sitePath("/submit/project/"));
+  await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page.getByLabel("Other or not listed").check();
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - window.innerWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
+  expect(
+    await page
+      .getByRole("button", { name: "Continue to GitHub" })
+      .evaluate((element) => element.getBoundingClientRect().height),
+  ).toBeGreaterThanOrEqual(44);
+});

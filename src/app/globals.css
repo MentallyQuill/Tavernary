@@ -3,6 +3,7 @@
 @import "../styles/responsive.css";
 @import "../styles/motion.css";
 @import "../styles/about.css";
+@import "../styles/submission.css";
 
 * {
   box-sizing: border-box;

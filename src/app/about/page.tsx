@@ -1,8 +1,6 @@
 import Link from "next/link";
 
 const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
-const submissionUrl =
-  "https://github.com/MentallyQuill/Tavernary/issues/new?template=01-project-submission.yml";
 
 export const metadata = {
   title: "About Tavernary",
@@ -72,9 +70,9 @@ export default function AboutPage() {
         </section>
 
         <div className="about-actions">
-          <a className="primary-action" href={submissionUrl}>
+          <Link className="primary-action" href="/submit/project/">
             Submit a project
-          </a>
+          </Link>
           <a href={helpUrl}>Get help</a>
         </div>
       </article>

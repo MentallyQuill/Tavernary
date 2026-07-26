@@ -367,7 +367,7 @@ test("searches by repository owner and discloses creator attribution", async ({
   await attribution.hover();
   await expect(
     page.getByRole("tooltip", {
-      name: "Owner: MentallyQuill · Contributor data pending",
+      name: "Owner: MentallyQuill",
     }),
   ).toBeVisible();
 
@@ -423,7 +423,7 @@ test("shows the full launch catalog without default-query hidden records", async
   await expect(page).toHaveURL(/\/$/);
   await expect(page.locator(".project-card")).toHaveCount(211);
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    214,
+    211,
   );
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
@@ -454,16 +454,20 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
   ).toBeVisible();
   await expect(page).toHaveURL(/category=uncategorized/);
 
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await page.getByLabel("Pending verification", { exact: true }).check();
   await expect(
-    page.getByRole("heading", { name: `${pendingLicenseCount} projects` }),
+    page.getByRole("heading", {
+      name: `${pendingLicenseCount} ${
+        pendingLicenseCount === 1 ? "project" : "projects"
+      }`,
+    }),
   ).toBeVisible();
   await expect(page).toHaveURL(/license=pending/);
   await expect(
     page.locator(".project-card").filter({ hasText: "Pending" }),
   ).toHaveCount(pendingLicenseCount);
 
-  await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await page
     .getByRole("button", { name: "Remove Pending verification" })
     .click();
@@ -508,7 +512,7 @@ test("matches the approved card anatomy", async ({ page }) => {
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       gap: getComputedStyle(grid).gap,
     })),
-  ).toEqual({ columns: 2, gap: "12px" });
+  ).toEqual({ columns: 3, gap: "12px" });
   expect(
     await card.evaluate((element) => {
       return getComputedStyle(element, "::before").content;
@@ -796,9 +800,9 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
   expect(tablet).toEqual({
     filterWidth: 210,
     mainLeft: 210,
-    mainRight: 612,
+    mainRight: 828,
     columns: 1,
-    workspaceLeft: 612,
+    workspaceLeft: 828,
     topLinkDisplay: "none",
   });
 

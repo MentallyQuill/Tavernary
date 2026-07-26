@@ -28,12 +28,15 @@ test("mobile Kits builder stays browse-first and retains its draft pill", async 
   ).toBeVisible();
   await page.getByRole("button", { name: "Browse categories" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  for (const name of [
-    "Fixture Tool 02",
-    "Fixture Tool 03",
-    "Fixture Tool 04",
-  ]) {
-    await page.getByRole("button", { name: `Add ${name} to Kit` }).click();
+  const catalog = page.getByRole("region", { name: "Project catalog" });
+  const extensions = catalog.locator(
+    ".project-card-shell:has(.project-card.kind-extension)",
+  );
+  for (let index = 0; index < 3; index += 1) {
+    await extensions
+      .getByRole("button", { name: /^Add .+ to Kit$/ })
+      .first()
+      .click();
   }
   const dock = page.getByRole("region", { name: "3 projects selected" });
   await expectTouchTarget(dock.getByRole("button", { name: "Cancel" }));
@@ -125,5 +128,6 @@ test("mobile Kits controls meet the touch-target and overflow contract", async (
         .getByRole("dialog", { name: "Kit Builder" })
         .evaluate((element) => element.scrollWidth <= element.clientWidth),
     ).toBe(true);
+    await page.getByRole("button", { name: "Close Kit Builder" }).click();
   }
 });

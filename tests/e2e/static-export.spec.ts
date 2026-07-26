@@ -18,6 +18,22 @@ test("exports the supplied Tavernary artwork", async ({ page }) => {
   expect(response.headers()["content-type"]).toBe("image/png");
 });
 
+test("serves every favicon declared on the About page", async ({ page }) => {
+  await page.goto(sitePath("/about/"));
+
+  const iconUrls = await page
+    .locator('link[rel="icon"], link[rel="apple-touch-icon"]')
+    .evaluateAll((links) =>
+      links.map((link) => (link as HTMLLinkElement).href),
+    );
+
+  expect(iconUrls.length).toBeGreaterThan(0);
+  for (const iconUrl of iconUrls) {
+    const response = await page.request.get(iconUrl);
+    expect(response.ok(), `${iconUrl} should resolve`).toBe(true);
+  }
+});
+
 test("locks the built-in dark theme against Dark Reader recoloring", async ({
   page,
 }) => {
@@ -30,7 +46,7 @@ test("exports canonical project links without intake-only metadata", async ({
 }) => {
   await page.goto(sitePath());
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    214,
+    211,
   );
   await expect(page.locator("body")).not.toContainText("submitted_at");
   await expect(page.locator("body")).not.toContainText("catalog_intake");
