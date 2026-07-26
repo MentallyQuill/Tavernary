@@ -39,7 +39,7 @@ describe("catalog visual alignment", () => {
     const responsive = read("src/styles/responsive.css");
 
     expect(css).toMatch(
-      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-control-border-focus\)/s,
+      /\.dual-range-track::before\s*\{[^}]*left:\s*var\(--range-start\)[^}]*right:\s*calc\(100% - var\(--range-end\)\)[^}]*background:\s*var\(--color-progress-fill\)/s,
     );
     expect(css).toMatch(
       /\.dual-range input\[type="range"\]\s*\{[^}]*position:\s*absolute[^}]*background:\s*transparent/s,
@@ -69,7 +69,7 @@ describe("catalog visual alignment", () => {
       /\.header-actions \.submit-link\s*\{[^}]*color:\s*var\(--color-action-primary-text\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-accent-teal-border\)/s,
+      /\.project-card-shell\.selected \.project-card\s*\{[^}]*outline:\s*2px solid var\(--color-accent-teal\)/s,
     );
     expect(css).toMatch(
       /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-functional\)/s,
@@ -90,19 +90,19 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell:has\(\.project-card:active\),\s*\.project-card-shell:has\(\.project-kit-control:active\)\s*\{[^}]*transform:\s*scale\(0\.98\)/s,
     );
     expect(css).toMatch(
-      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*aspect-ratio:\s*1[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)[^}]*box-shadow:\s*none/s,
+      /\.project-kit-control-face\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*aspect-ratio:\s*1[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-action-primary-bg\)[^}]*box-shadow:\s*none/s,
     );
     expect(css).toMatch(
       /\.project-kit-control\[aria-pressed="true"\] \.project-kit-control-face\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-functional\)/s,
+      /\.kit-builder-remove > span\s*\{[^}]*width:\s*28px[^}]*height:\s*28px[^}]*color:\s*var\(--color-action-primary-text\)[^}]*background:\s*var\(--color-action-primary-bg\)/s,
     );
     expect(css).toMatch(
       /\.kit-builder-remove\[aria-pressed="true"\] > span\s*\{[^}]*box-shadow:\s*inset/s,
     );
     expect(css).toMatch(
-      /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-text-muted\)/s,
+      /\.project-in-draft\s*\{[^}]*color:\s*var\(--color-functional-text\)/s,
     );
     expect(responsive).toMatch(
       /@media \(pointer:\s*coarse\)[\s\S]*?\.project-kit-control-hit\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
@@ -297,7 +297,7 @@ describe("catalog visual alignment", () => {
     const css = read("src/styles/catalog.css");
 
     expect(css).toMatch(
-      /\.kit-frontend-slot\s*\{[^}]*border-color:\s*var\(--color-frontend\)/s,
+      /\.kit-frontend-slot\s*\{[^}]*border-color:\s*var\(--color-frontend-border\)/s,
     );
     expect(css).toMatch(
       /\.kit-composition-section h3\s*\{[^}]*text-transform:\s*uppercase/s,
@@ -395,10 +395,10 @@ describe("catalog visual alignment", () => {
       /\.card-identity\s*\{[^}]*color:\s*var\(--kind-color\)/s,
     );
     expect(css).toMatch(
-      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-preset\)/s,
+      /\.activity-weeks i\.active\s*\{[^}]*background:\s*var\(--color-activity-current\)/s,
     );
     expect(css).toMatch(
-      /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-preset\)/s,
+      /\.license-osi-approved\s*\{[^}]*color:\s*var\(--color-license-open\)/s,
     );
     expect(css).toMatch(
       /\.frontend-chip\s*\{[^}]*border-color:\s*var\(--color-frontend\)[^}]*color:\s*var\(--color-frontend\)/s,

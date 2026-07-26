@@ -25,6 +25,7 @@ export function KitBuilderRow({
     <li
       className={`kit-builder-row${dragging ? " dragging" : ""}${placement ? ` drag-${placement}` : ""}`}
       data-project-id={project.id}
+      data-kind={project.kind}
       style={
         dragOffset === 0
           ? undefined

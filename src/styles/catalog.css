@@ -862,9 +862,9 @@
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius);
   padding: 15px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   background: var(--color-bg-surface);
-  box-shadow: 0 7px 18px var(--color-bg-canvas);
+  box-shadow: var(--shadow-card);
   text-decoration: none;
   transition:
     border-color var(--kit-motion-card) var(--kit-motion-ease),
@@ -883,13 +883,14 @@
 .project-card:focus-visible {
   z-index: auto;
   overflow: hidden;
-  border-color: var(--color-border-strong);
-  background: var(--color-bg-surface-raised);
-  outline: 0;
+  border-color: var(--color-accent-teal);
+  outline: 2px solid var(--color-accent-teal-bg);
+  outline-offset: 2px;
 }
 
-.project-card:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-focus-ring);
+.project-card:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-bg-surface-hover);
 }
 
 .card-top {
@@ -974,15 +975,19 @@
   width: 100%;
   height: 7px;
   border-radius: 1px;
-  background: var(--color-border-default);
+  background: var(--color-activity-dormant);
 }
 
 .activity-weeks i.active {
-  background: var(--color-preset);
+  background: var(--color-activity-current);
+}
+
+.activity-weeks i.recent {
+  background: var(--color-activity-recent);
 }
 
 .evidence-provisional .activity-weeks i.active {
-  background: var(--color-border-strong);
+  background: var(--color-activity-recent);
 }
 
 .evidence-degraded .activity-weeks {
@@ -1181,21 +1186,21 @@
 }
 
 .license-osi-approved {
-  color: var(--color-preset);
+  color: var(--color-license-open);
 }
 
 .license-proprietary {
-  color: var(--color-text-muted);
+  color: var(--color-license-proprietary);
 }
 
 .license-missing {
-  color: var(--color-text-muted);
+  color: var(--color-license-missing);
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
 
 .license-pending {
-  color: var(--color-preset);
+  color: var(--color-license-open);
 }
 
 .tooltip-anchor {
@@ -1549,14 +1554,14 @@
 .dual-range-track::after {
   right: 0;
   left: 0;
-  background: var(--color-control-border);
+  background: var(--color-progress-track);
 }
 
 .dual-range-track::before {
   z-index: 1;
   left: var(--range-start);
   right: calc(100% - var(--range-end));
-  background: var(--color-control-border-focus);
+  background: var(--color-progress-fill);
 }
 
 .dual-range input[type="range"] {
@@ -1593,7 +1598,7 @@
   appearance: none;
   border: 2px solid var(--color-control-bg);
   border-radius: 50%;
-  background: var(--color-control-border-focus);
+  background: var(--color-progress-fill);
   box-shadow: 0 0 0 1px var(--color-control-border);
   cursor: grab;
   pointer-events: auto;
@@ -1604,7 +1609,7 @@
   height: 18px;
   border: 2px solid var(--color-control-bg);
   border-radius: 50%;
-  background: var(--color-control-border-focus);
+  background: var(--color-progress-fill);
   box-shadow: 0 0 0 1px var(--color-control-border);
   cursor: grab;
   pointer-events: auto;
@@ -1826,10 +1831,10 @@
 }
 
 .kit-draft-restore-notice {
-  border-left: 3px solid var(--color-functional);
+  border-left: 3px solid var(--color-info-border);
   padding: 8px 10px;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-surface);
+  color: var(--color-info-text);
+  background: var(--color-info-bg);
   font-size: 11px;
   line-height: 1.45;
 }
@@ -1938,10 +1943,9 @@
 }
 
 .project-card-shell.selected .project-card {
-  outline: 2px solid var(--color-accent-teal-border);
+  outline: 2px solid var(--color-accent-teal);
   outline-offset: 2px;
-  background: var(--color-accent-teal-bg);
-  box-shadow: var(--shadow-overlay);
+  background: var(--color-bg-surface-active);
 }
 
 .project-card-shell.in-draft .project-card {
@@ -1967,10 +1971,10 @@
 
 .project-in-draft {
   left: 8px;
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-functional-border);
   padding: 0 7px;
-  color: var(--color-text-muted);
-  background: var(--color-bg-sidebar);
+  color: var(--color-functional-text);
+  background: var(--color-functional-bg);
   font-size: 9px;
 }
 
@@ -2008,7 +2012,7 @@
   border: 1px solid var(--color-functional);
   border-radius: 5px;
   color: var(--color-action-primary-text);
-  background: var(--color-functional);
+  background: var(--color-action-primary-bg);
   box-shadow: none;
   place-items: center;
   transition:
@@ -2028,8 +2032,9 @@
   transform: translateY(1px);
 }
 
-.project-kit-control:hover .project-kit-control-face {
+.project-kit-control:is(:hover, :focus-visible) .project-kit-control-face {
   border-color: var(--color-action-primary-hover);
+  background: var(--color-action-primary-hover);
 }
 
 .project-kit-control:focus-visible {
@@ -2140,7 +2145,7 @@
 }
 
 .kit-builder-field-error {
-  color: var(--color-functional);
+  color: var(--color-danger-text);
 }
 
 .kit-builder-footer {
@@ -2243,7 +2248,7 @@
 }
 
 .kit-frontend-slot {
-  border-color: var(--color-frontend);
+  border-color: var(--color-frontend-border);
 }
 
 .kit-frontend-slot > span {
@@ -2266,6 +2271,22 @@
 .kit-builder-row-identity {
   display: grid;
   min-width: 0;
+}
+
+.kit-builder-row[data-kind="preset"] {
+  border-color: var(--color-preset-border);
+}
+
+.kit-builder-row[data-kind="preset"] .kit-builder-row-identity small {
+  color: var(--color-preset-text);
+}
+
+.kit-builder-row[data-kind="extension"] {
+  border-color: var(--color-functional-border);
+}
+
+.kit-builder-row[data-kind="extension"] .kit-builder-row-identity small {
+  color: var(--color-functional-text);
 }
 
 .kit-drag-handle svg {
@@ -2305,7 +2326,7 @@
   border: 1px solid var(--color-functional);
   border-radius: 5px;
   color: var(--color-action-primary-text);
-  background: var(--color-functional);
+  background: var(--color-action-primary-bg);
   font-size: 18px;
   line-height: 1;
   place-items: center;
@@ -2379,8 +2400,9 @@
   background: var(--color-bg-sidebar);
 }
 
-.kit-builder-remove:hover > span {
+.kit-builder-remove:is(:hover, :focus-visible) > span {
   border-color: var(--color-action-primary-hover);
+  background: var(--color-action-primary-hover);
 }
 
 .kit-builder-remove:focus-visible {
@@ -2412,6 +2434,7 @@
 
 .kit-builder-remove:active > span,
 .project-kit-control:active .project-kit-control-face {
+  background: var(--color-action-primary-pressed);
   transform: scale(0.98);
   transition-duration: var(--kit-motion-press);
 }
@@ -2422,8 +2445,6 @@
     transform: translateY(-2px);
   }
 
-  .project-card:hover,
-  .project-card:focus-visible,
   .kit-card:hover,
   .kit-card:focus-within {
     border-color: var(--color-border-strong);
@@ -2434,6 +2455,6 @@
 .kit-builder-errors {
   margin: 0;
   padding-left: 18px;
-  color: var(--color-functional);
+  color: var(--color-danger-text);
   font-size: 11px;
 }

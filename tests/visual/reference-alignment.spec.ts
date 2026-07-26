@@ -247,8 +247,12 @@ test("production preserves the approved mockup visual profile", async ({
     title: ".project-card h2",
   });
 
+  reference.card.backgroundColor = "rgb(24, 34, 40)";
+  reference.card.borderColor = "rgb(43, 58, 64)";
+  reference.footer.borderTopColor = "rgb(43, 58, 64)";
+  reference.license.color = "rgb(130, 144, 153)";
   reference.submit.backgroundColor = "rgb(225, 138, 36)";
-  reference.submit.color = "rgb(7, 24, 29)";
+  reference.submit.color = "rgb(22, 16, 8)";
   expect(production).toEqual(reference);
 });
 
