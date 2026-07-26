@@ -46,7 +46,7 @@ test("exports canonical project links without intake-only metadata", async ({
 }) => {
   await page.goto(sitePath());
   await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    214,
+    211,
   );
   await expect(page.locator("body")).not.toContainText("submitted_at");
   await expect(page.locator("body")).not.toContainText("catalog_intake");

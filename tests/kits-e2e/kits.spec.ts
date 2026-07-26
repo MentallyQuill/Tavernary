@@ -82,11 +82,9 @@ async function verifyUnifiedSelectionFlow(
     page.getByRole("button", { name: "Add Fixture Tool 02 to Kit" }),
   ).toBeVisible();
 
-  if (phone) {
-    await page
-      .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
-      .click();
-  }
+  await page
+    .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
+    .click();
   await page
     .getByRole("region", { name: "Frontend" })
     .getByRole("button", { name: "Remove Fixture Frontend from Kit" })
@@ -188,6 +186,7 @@ test("filled desktop actions use dark ink and card Kit glyphs are centered in a 
 
   const expectedInk = "rgb(7, 24, 29)";
   const submitProject = page.getByRole("link", { name: "Submit Project" });
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
   const createKit = page.getByRole("button", { name: "Create new Kit" });
   const addProject = page.locator(".project-kit-control").first();
   const face = addProject.locator(".project-kit-control-face");
@@ -239,6 +238,7 @@ test("desktop Kit Builder open and close controls share one 36-pixel geometry", 
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
 
   const collapse = page.getByRole("button", {
     name: "Collapse Kit Builder",
@@ -657,16 +657,23 @@ test("batches projects without interrupting browse state and preserves draft acc
         ?.contains(document.activeElement),
     ),
   ).toBe(false);
-  await expect(page.locator(".kit-project-count")).toHaveText("3 projects");
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    }),
+  ).toBeVisible();
 
   const search = page.getByRole("searchbox", { name: "Search projects" });
   await search.fill("Fixture Tool 10");
   await selectProject(page, "Fixture Tool 10");
   await page.getByRole("button", { name: "Add 1 project to Kit" }).click();
   await expect(search).toHaveValue("Fixture Tool 10");
-  await expect(page.locator(".kit-project-count")).toHaveText("4 projects");
+  await expect(
+    page.getByRole("button", {
+      name: "Open Kit Builder, 4 projects in draft",
+    }),
+  ).toBeVisible();
 
-  await page.getByRole("button", { name: "Collapse Kit Builder" }).click();
   await search.fill("");
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
@@ -719,6 +726,7 @@ test("complete desktop direct-manipulation workflow keeps every card reachable",
   page,
 }) => {
   await openKits(page);
+  await page.getByRole("button", { name: "Open Kit Builder" }).click();
   await page.getByRole("button", { name: "Create new Kit" }).click();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
 
