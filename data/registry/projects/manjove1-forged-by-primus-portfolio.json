@@ -3,16 +3,20 @@
   "id": "manjove1-forged-by-primus-portfolio",
   "name": "Forged by Primus",
   "kind": "extension",
-  "summary": "An extension for SillyTavern.",
-  "metadata_status": "provisional",
+  "summary": "Modular AI Dungeon Master extension for SillyTavern demonstrating prompt engineering for stateful RPG experiences.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Manjove1/forged-by-primus-portfolio",
     "repository_id": 1305418059
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "rpg-systems",
+  "capabilities": [
+    "prompt-engineering",
+    "character-worldbuilding",
+    "planning-reasoning"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

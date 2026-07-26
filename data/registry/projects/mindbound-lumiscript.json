@@ -3,16 +3,21 @@
   "id": "mindbound-lumiscript",
   "name": "Lumiscript",
   "kind": "extension",
-  "summary": "An extension for Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "JavaScript scripting platform for Lumiverse that automates behavior, injects prompt context, and builds interactive UIs.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "mindbound/lumiscript",
     "repository_id": 1180932701
   },
   "frontends": ["lumiverse"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "automation",
+    "extension-development",
+    "prompt-engineering",
+    "instruction-control"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
