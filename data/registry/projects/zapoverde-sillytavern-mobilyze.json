@@ -3,7 +3,7 @@
   "id": "zapoverde-sillytavern-mobilyze",
   "name": "SillyTavern Mobilyze",
   "kind": "extension",
-  "summary": "SillyTavern extension that applies full-screen mobile layout and auto-hiding top bar to maximize usable chat area on phones.",
+  "summary": "SillyTavern Mobilyze is a mobile-focused extension that applies a full-screen layout to the SillyTavern interface on phones. It includes an auto-hiding top bar designed to maximize usable chat area on mobile devices.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

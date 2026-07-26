@@ -3,7 +3,7 @@
   "id": "zapoverde-sillytavern-canonize",
   "name": "SillyTavern Canonize",
   "kind": "extension",
-  "summary": "SillyTavern extension that updates narrative hooks, lore-book entries, and vector files at scheduled intervals.",
+  "summary": "It periodically refreshes SillyTavern's narrative hooks, lorebook entries, and vector storage files. The extension keeps those worldbuilding and memory resources synchronized through scheduled background updates.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

@@ -3,7 +3,7 @@
   "id": "virgilianshailer-autobackgound",
   "name": "AutoBackgound",
   "kind": "extension",
-  "summary": "AutoBackgound is a SillyTavern extension that detects chat scene changes and automatically triggers background image generation.",
+  "summary": "AutoBackgound is a SillyTavern extension that automatically detects scene and location changes during roleplay. It triggers background image generation through the Image Generation extension to match the current setting.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
