@@ -19,14 +19,15 @@
     "catalog_cohort",
     "visibility",
     "visibility_reason",
-    "refresh_policy"
+    "refresh_policy",
+    "enrichment_policy"
   ],
   "properties": {
-    "schema_version": { "const": 3 },
+    "schema_version": { "const": 4 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
-    "summary": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 220 },
     "metadata_status": { "enum": ["provisional", "curated"] },
     "source": {
       "oneOf": [
@@ -135,7 +136,13 @@
         null
       ]
     },
-    "refresh_policy": { "enum": ["automatic", "paused"] }
+    "refresh_policy": { "enum": ["automatic", "paused"] },
+    "enrichment_policy": { "enum": ["automatic", "manual"] },
+    "enrichment_note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    }
   },
   "allOf": [
     {
@@ -158,6 +165,44 @@
               "safety-review"
             ]
           }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "enrichment_policy": { "const": "manual" }
+        },
+        "required": ["enrichment_policy"]
+      },
+      "then": { "required": ["enrichment_note"] }
+    },
+    {
+      "if": {
+        "properties": {
+          "enrichment_policy": { "const": "automatic" }
+        },
+        "required": ["enrichment_policy"]
+      },
+      "then": {
+        "not": { "required": ["enrichment_note"] }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "type": { "enum": ["url", "github-organization"] }
+            },
+            "required": ["type"]
+          }
+        },
+        "required": ["source"]
+      },
+      "then": {
+        "properties": {
+          "enrichment_policy": { "const": "manual" }
         }
       }
     }

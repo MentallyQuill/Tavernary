@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "id": "flaxify-st-hands-free-voice",
   "name": "ST Hands-Free Voice",
   "kind": "extension",
@@ -17,5 +17,6 @@
   "catalog_cohort": "seed",
   "visibility": "published",
   "refresh_policy": "automatic",
-  "visibility_reason": null
+  "visibility_reason": null,
+  "enrichment_policy": "automatic"
 }

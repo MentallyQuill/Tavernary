@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "id": "sillytavern-extension-promptinspector",
   "name": "SillyTavern Extension PromptInspector",
   "kind": "extension",
@@ -21,5 +21,6 @@
   "catalog_cohort": "seed",
   "visibility": "published",
   "refresh_policy": "automatic",
-  "visibility_reason": null
+  "visibility_reason": null,
+  "enrichment_policy": "automatic"
 }

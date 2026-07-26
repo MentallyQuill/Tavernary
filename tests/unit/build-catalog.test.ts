@@ -574,6 +574,8 @@ test("builds 211 public cards with consolidated manual sources", async () => {
   expect(JSON.stringify(catalog)).not.toContain("submission");
   expect(JSON.stringify(catalog)).not.toContain('"status":"candidate"');
   expect(JSON.stringify(catalog)).not.toContain("catalog_intake");
+  expect(catalog.projects[0]).not.toHaveProperty("enrichmentPolicy");
+  expect(catalog.projects[0]).not.toHaveProperty("enrichmentNote");
 });
 
 test("excludes curator and source quarantine states", async () => {

@@ -14,6 +14,8 @@ interface CatalogRecord {
   primary_function: string;
   capabilities: string[];
   summary: string;
+  enrichment_policy: "automatic" | "manual";
+  enrichment_note?: string;
   visibility?: string;
   source: {
     type: string;
@@ -155,6 +157,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
     "github-organization": 1,
     url: 6,
   });
+  expect(countBy(records, (record) => record.enrichment_policy)).toEqual({
+    automatic: 204,
+    manual: 7,
+  });
   expect(
     records.filter(
       (record) =>
@@ -174,6 +180,13 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(["curated", "provisional"], record.id).toContain(
       record.metadata_status,
     );
+    if (record.enrichment_policy === "automatic") {
+      expect(record.enrichment_note, record.id).toBeUndefined();
+    } else {
+      expect(record.enrichment_note?.trim().length, record.id).toBeGreaterThan(
+        0,
+      );
+    }
   }
 
   for (const record of provisionalRecords) {
@@ -215,6 +228,23 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(record?.capabilities ?? []).not.toEqual([]);
     expect(record?.source.repository_id).toEqual(expect.any(Number));
   }
+
+  for (const id of [
+    "daddytorgo-hash-frankengarage",
+    "mentallyquill-st-wandlight",
+    "zorgonatis-stabs-edh",
+  ]) {
+    expect(records.find((record) => record.id === id)?.enrichment_policy).toBe(
+      "automatic",
+    );
+  }
+
+  expect(
+    records.find((record) => record.id === "tavern-rpg-suite"),
+  ).toMatchObject({
+    enrichment_policy: "manual",
+    enrichment_note: "Multi-repository suite; requires manual curation.",
+  });
 }
 
 describe("full catalog data", () => {
@@ -303,7 +333,7 @@ describe("full catalog data", () => {
     for (const record of records as Array<{ id: string; summary: string }>) {
       expect(record.summary, record.id).toBeTypeOf("string");
       expect(record.summary.trim().length, record.id).toBeGreaterThan(0);
-      expect(record.summary.length, record.id).toBeLessThanOrEqual(140);
+      expect(record.summary.length, record.id).toBeLessThanOrEqual(220);
       expect(record.summary, record.id).not.toMatch(/[\r\n\u2028\u2029]/u);
     }
   });
