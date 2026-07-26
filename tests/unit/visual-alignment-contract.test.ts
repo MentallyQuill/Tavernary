@@ -19,8 +19,14 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(
       /\.kit-share-notice\[data-tone="copied"\]\s*\{[^}]*animation:\s*kit-share-notice-life\s+2000ms/s,
     );
+    expect(css).toMatch(
+      /\.catalog-shell:has\(\.project-selection-dock\) \.kit-share-notice\s*\{[^}]*bottom:\s*max\(92px,\s*calc\(env\(safe-area-inset-bottom\) \+ 92px\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-share-notice\[data-tone="fallback"\]\s*\{[^}]*animation:\s*kit-share-notice-enter\s+150ms/s,
+    );
     expect(responsive).toMatch(
-      /\.kit-share-notice[^}]*\{[^}]*animation:\s*none/s,
+      /\.kit-share-notice\s*\{[^}]*animation:\s*none[^}]*transform:\s*none/s,
     );
   });
 
