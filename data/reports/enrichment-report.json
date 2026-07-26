@@ -3,12 +3,12 @@
   "run_id": "6b8d6ed0-36c1-430a-87d6-14d2434574a4",
   "mode": "full",
   "status": "running",
-  "phase": "primary",
+  "phase": "retry",
   "expected_model": "minimax/minimax-m3:thinking",
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-26T00:11:19.262Z",
-  "updated_at": "2026-07-26T00:33:23.138Z",
+  "updated_at": "2026-07-26T00:33:24.530Z",
   "manifest": [
     "alatheus1-marinara-engine-game-sessions",
     "amousepad-hone",
@@ -196,7 +196,7 @@
   ],
   "deferred_ids": [],
   "authorized_canary_run_id": "b25c315d-60d3-47be-bc73-edcc9cac33b5",
-  "primary_cursor": 180,
+  "primary_cursor": 183,
   "retry_queue": [
     "alatheus1-marinara-engine-game-sessions",
     "archkr-lumiverse-lumistate",
@@ -242,7 +242,10 @@
     "virgilianshailer-autobackgound",
     "virgilianshailer-automusic",
     "zapoverde-sillytavern-mobilyze",
-    "zapoverde-sillytavern-triggeryze"
+    "zapoverde-sillytavern-triggeryze",
+    "zapoverde-sillytavern-vistalyze",
+    "zdost-story-engine",
+    "zhenyapav-sillytavern-namegen"
   ],
   "retry_cursor": 0,
   "attempts": {
@@ -425,7 +428,10 @@
     "wanderingmonk8-lummate": 1,
     "zapoverde-sillytavern-canonize": 1,
     "zapoverde-sillytavern-mobilyze": 1,
-    "zapoverde-sillytavern-triggeryze": 1
+    "zapoverde-sillytavern-triggeryze": 1,
+    "zapoverde-sillytavern-vistalyze": 1,
+    "zdost-story-engine": 1,
+    "zhenyapav-sillytavern-namegen": 1
   },
   "entries": {
     "alatheus1-marinara-engine-game-sessions": {
@@ -3247,6 +3253,60 @@
       "repair_hint": "Summary must be at most 140 characters.",
       "message": "The enrichment provider output failed validation.",
       "completed_at": "2026-07-26T00:31:12.115Z"
+    },
+    "zapoverde-sillytavern-vistalyze": {
+      "id": "zapoverde-sillytavern-vistalyze",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "retry-pending",
+      "source_kind": "description",
+      "repository_id": 1195030528,
+      "head_sha": "0aeac04395724f93b813333bfd8a52520fb8588b",
+      "readme_path": null,
+      "readme_ref": null,
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 6045,
+      "reason_code": "output-invalid",
+      "repair_hint": "Summary must be at most 140 characters.",
+      "message": "The enrichment provider output failed validation.",
+      "completed_at": "2026-07-26T00:33:24.530Z"
+    },
+    "zdost-story-engine": {
+      "id": "zdost-story-engine",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "retry-pending",
+      "source_kind": "readme",
+      "repository_id": 1225640741,
+      "head_sha": "033809cd419bc7b7073adfa8ce1a2e51414f7c12",
+      "readme_path": "README.md",
+      "readme_ref": "033809cd419bc7b7073adfa8ce1a2e51414f7c12",
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 10933,
+      "reason_code": "output-invalid",
+      "repair_hint": "Summary must be at most 140 characters.",
+      "message": "The enrichment provider output failed validation.",
+      "completed_at": "2026-07-26T00:33:24.530Z"
+    },
+    "zhenyapav-sillytavern-namegen": {
+      "id": "zhenyapav-sillytavern-namegen",
+      "attempt": 1,
+      "phase": "primary",
+      "outcome": "retry-pending",
+      "source_kind": "readme",
+      "repository_id": 1049754491,
+      "head_sha": "00c80b53b5a81ccd7d59d8935e605618f226ea28",
+      "readme_path": "README.md",
+      "readme_ref": "00c80b53b5a81ccd7d59d8935e605618f226ea28",
+      "requested_model": "minimax/minimax-m3:thinking",
+      "returned_model": "minimax/minimax-m3:thinking",
+      "latency_ms": 15019,
+      "reason_code": "output-invalid",
+      "repair_hint": "Summary must be at most 140 characters.",
+      "message": "The enrichment provider output failed validation.",
+      "completed_at": "2026-07-26T00:33:24.530Z"
     }
   },
   "publication": {
@@ -3258,7 +3318,7 @@
     "enriched": 133,
     "fallback": 2,
     "source-not-ready": 0,
-    "retry-pending": 45,
+    "retry-pending": 48,
     "retry-enriched": 0,
     "retry-fallback": 0,
     "final-failure": 0,
