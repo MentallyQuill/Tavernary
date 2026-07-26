@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "mode": "incremental",
-  "started_at": "2026-07-26T04:48:30.967Z",
-  "completed_at": "2026-07-26T04:49:07.033Z",
+  "started_at": "2026-07-26T12:53:44.928Z",
+  "completed_at": "2026-07-26T12:54:21.423Z",
   "counts": {
     "total": 204,
     "checked": 204,
     "changed": 204,
-    "unchanged": 203,
+    "unchanged": 201,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 1,
+    "compared": 3,
     "baseline": 0,
     "fallback": 0
   },
@@ -20,20 +20,20 @@
     "graphql_requests": 9,
     "graphql_points": 9,
     "graphql_remaining": 4991,
-    "rest_requests": 208
+    "rest_requests": 210
   },
-  "duration_ms": 36066,
+  "duration_ms": 36495,
   "project_timings": [
     {
       "project_id": "aikohanasaki-sillytavern-characterlocks",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
       "project_id": "aikohanasaki-sillytavern-memorybooks",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 607,
       "error_code": null
     },
     {
@@ -63,7 +63,7 @@
     {
       "project_id": "amousepad-hone",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -74,14 +74,14 @@
     },
     {
       "project_id": "amousepad-lumibooks",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 323,
       "error_code": null
     },
     {
       "project_id": "amousepad-lumirealm",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -111,7 +111,7 @@
     {
       "project_id": "archkr-lumiverse-lumiworld",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -207,7 +207,7 @@
     {
       "project_id": "bmen25124-sillytavern-wtracker",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -249,7 +249,7 @@
     {
       "project_id": "cgstever-statefullore",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -357,7 +357,7 @@
     {
       "project_id": "enclave0775-intiface-central-sillytavern-plugin",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -399,7 +399,7 @@
     {
       "project_id": "forgottenglory-st-superobjective",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -507,7 +507,7 @@
     {
       "project_id": "inspectorcaracal-sillytavern-rememory",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -543,7 +543,7 @@
     {
       "project_id": "kenhito-marinara-rpg-extension",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -645,7 +645,7 @@
     {
       "project_id": "manjove1-forged-by-primus-portfolio",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -681,7 +681,7 @@
     {
       "project_id": "mentallyquill-directive",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -752,8 +752,8 @@
     },
     {
       "project_id": "n0819-sonder-engine",
-      "outcome": "unchanged",
-      "duration_ms": 0,
+      "outcome": "compare-source",
+      "duration_ms": 416,
       "error_code": null
     },
     {
@@ -921,7 +921,7 @@
     {
       "project_id": "rivelledays-sillytavern-moonlitechoestheme",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -951,7 +951,7 @@
     {
       "project_id": "selinawynters-ops-st-threadkeeper",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1011,7 +1011,7 @@
     {
       "project_id": "sillytavern-sillytavern",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1023,7 +1023,7 @@
     {
       "project_id": "sillytavern-sillytavern-nicknames",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1089,7 +1089,7 @@
     {
       "project_id": "sulphuratum-marinara-neural-memory",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1149,7 +1149,7 @@
     {
       "project_id": "tyranomaster-expressions-plus",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1215,7 +1215,7 @@
     {
       "project_id": "zapoverde-sillytavern-mobilyze",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1232,8 +1232,8 @@
     },
     {
       "project_id": "zdost-story-engine",
-      "outcome": "compare-source",
-      "duration_ms": 351,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
