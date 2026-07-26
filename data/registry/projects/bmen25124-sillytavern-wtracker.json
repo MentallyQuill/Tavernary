@@ -3,7 +3,7 @@
   "id": "bmen25124-sillytavern-wtracker",
   "name": "SillyTavern WTracker",
   "kind": "extension",
-  "summary": "SillyTavern WTracker is a SillyTavern extension that automates stat tracking by using LLMs to process and record gameplay statistics.",
+  "summary": "SillyTavern WTracker is a SillyTavern extension that tracks roleplay statistics using large language models. It automates stat monitoring during sessions to keep consistent records across conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

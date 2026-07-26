@@ -3,7 +3,7 @@
   "id": "chesswoodspixel-sillytavern-lorebookstickysort",
   "name": "SillyTavern Lorebook Sticky Sort",
   "kind": "extension",
-  "summary": "SillyTavern extension that remembers the user's preferred sort order for each lorebook.",
+  "summary": "SillyTavern extension that preserves your chosen sort order for each lorebook across sessions. It automatically restores your preferred ordering whenever you reopen the lorebook interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

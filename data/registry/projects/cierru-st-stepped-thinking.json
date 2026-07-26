@@ -3,7 +3,7 @@
   "id": "cierru-st-stepped-thinking",
   "name": "ST Stepped Thinking",
   "kind": "extension",
-  "summary": "SillyTavern extension that lets characters think step by step before generating their responses.",
+  "summary": "This SillyTavern extension lets characters think step by step before generating their responses. It adds structured internal reasoning so characters produce more deliberate and context-aware replies.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 871361642
   },
   "frontends": ["sillytavern"],
-  "primary_function": "generation-reasoning",
-  "capabilities": ["planning-reasoning"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["planning-reasoning", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

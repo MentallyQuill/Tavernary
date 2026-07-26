@@ -3,7 +3,7 @@
   "id": "cfigure-lumiverse-shutter",
   "name": "Lumiverse Shutter",
   "kind": "extension",
-  "summary": "Lumiverse Shutter extension provides a widget and automation layer for native ImageGen with configurable inline insertion and prompt labels.",
+  "summary": "Lumiverse Shutter is a Lumiverse extension providing a quick-access widget and automation layer for native ImageGen. The tool adds configurable inline insertion, layout controls, and metadata-only prompt labels.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

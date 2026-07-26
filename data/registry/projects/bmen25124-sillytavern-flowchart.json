@@ -3,7 +3,7 @@
   "id": "bmen25124-sillytavern-flowchart",
   "name": "SillyTavern Flowchart",
   "kind": "extension",
-  "summary": "SillyTavern Flowchart is a SillyTavern extension that automates tasks and visualizes workflow flows within the frontend.",
+  "summary": "SillyTavern Flowchart is a SillyTavern extension that automates tasks through visualized flow diagrams. Users build flowcharts to configure and manage workflow sequences within roleplay sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["automation", "planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
