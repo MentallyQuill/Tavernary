@@ -1964,8 +1964,15 @@
 }
 
 .kit-project-card-unavailable {
+  --kind-color: var(--color-muted);
   cursor: not-allowed;
-  opacity: 0.72;
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
+}
+
+.kit-project-card-unavailable h2 {
+  color: var(--color-muted);
 }
 
 .project-card-shell {

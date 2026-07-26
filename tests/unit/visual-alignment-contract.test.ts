@@ -51,6 +51,23 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("uses palette-safe semantic styling for unavailable Kit projects", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*cursor:\s*not-allowed[^}]*border-color:\s*var\(--color-border\)[^}]*color:\s*var\(--color-muted\)[^}]*background:\s*var\(--color-surface-primary\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*--kind-color:\s*var\(--color-muted\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable h2\s*\{[^}]*color:\s*var\(--color-muted\)/s,
+    );
+    expect(css).not.toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*opacity:\s*(?!0(?:;|\s*\}))/s,
+    );
+  });
+
   test("locks Kit count and action motion", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");
