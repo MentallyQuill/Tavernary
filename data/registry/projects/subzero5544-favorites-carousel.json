@@ -3,7 +3,7 @@
   "id": "subzero5544-favorites-carousel",
   "name": "Favorites Carousel",
   "kind": "extension",
-  "summary": "Favorites Carousel is a SillyTavern extension that displays favorited items in a carousel interface for easier browsing and selection.",
+  "summary": "Favorites Carousel is a SillyTavern extension that displays saved favorites in a rotating carousel interface. It provides a more visual way to browse and select favorite items within the chat frontend.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

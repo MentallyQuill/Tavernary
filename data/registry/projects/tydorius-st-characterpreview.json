@@ -3,7 +3,7 @@
   "id": "tydorius-st-characterpreview",
   "name": "ST CharacterPreview",
   "kind": "extension",
-  "summary": "ST CharacterPreview is a Sillytavern extension that provides a preview interface for character data.",
+  "summary": "ST CharacterPreview is a SillyTavern extension that previews character cards for users. It enhances the interface workflow by displaying character details directly within the SillyTavern environment.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

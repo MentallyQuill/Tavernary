@@ -3,7 +3,7 @@
   "id": "spicymarinara-sillytavern-spotify-music-extension",
   "name": "SillyTavern Spotify Music Extension",
   "kind": "extension",
-  "summary": "A SillyTavern extension enabling models to select and play songs on the user's Spotify account.",
+  "summary": "This SillyTavern extension lets AI models select and play songs on your connected Spotify account. It integrates music playback into roleplay conversations, so characters can choose tracks while chatting.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1058915463
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "primary_function": "frontend",
+  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

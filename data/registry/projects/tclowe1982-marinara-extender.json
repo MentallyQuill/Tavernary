@@ -3,7 +3,7 @@
   "id": "tclowe1982-marinara-extender",
   "name": "Marinara Extender",
   "kind": "extension",
-  "summary": "Marinara Extender provides persistent scoped memory functionality for characters within the Marinara Engine frontend.",
+  "summary": "Marinara Extender provides persistent scoped memory for characters used with the Marinara Engine frontend. It stores character-specific memories across sessions, enabling continuity in ongoing roleplay interactions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

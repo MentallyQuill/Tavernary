@@ -3,7 +3,7 @@
   "id": "supker-st-copilot",
   "name": "ST-Copilot",
   "kind": "extension",
-  "summary": "SillyTavern extension functioning as a meta-assistant to help automate and manage tasks within the frontend.",
+  "summary": "ST-Copilot is a SillyTavern extension that serves as a meta-assistant for the roleplay frontend. It provides utilities to help users manage operational tasks during their sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

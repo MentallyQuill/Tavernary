@@ -3,7 +3,7 @@
   "id": "thexyzzyone-stgroupresponderselector",
   "name": "ST Group Responder Selector",
   "kind": "extension",
-  "summary": "A SillyTavern extension that adds a button next to the message box for manually selecting which group character responds next.",
+  "summary": "A SillyTavern extension for group chats that adds a button beside the message box displaying every character's avatar. Users manually select the next responder, overriding the group's automatic activation strategy.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

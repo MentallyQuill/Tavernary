@@ -3,7 +3,7 @@
   "id": "sillytavern-sillytavern-pronouns",
   "name": "SillyTavern Pronouns",
   "kind": "extension",
-  "summary": "SillyTavern Pronouns extension adds pronouns functionality to personas and characters in the SillyTavern frontend interface.",
+  "summary": "SillyTavern Pronouns is a SillyTavern extension that adds pronoun fields to personas and characters. It enriches character identity by allowing explicit pronoun designation for roleplay scenarios.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1068908642
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
+  "primary_function": "character-worldbuilding",
   "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

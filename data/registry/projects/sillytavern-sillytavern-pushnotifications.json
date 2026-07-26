@@ -3,7 +3,7 @@
   "id": "sillytavern-sillytavern-pushnotifications",
   "name": "SillyTavern Push Notifications",
   "kind": "extension",
-  "summary": "SillyTavern extension that delivers push notifications for incoming chat messages to alert users.",
+  "summary": "SillyTavern Push Notifications is a SillyTavern extension that delivers push notifications for incoming chat messages. It alerts users to new messages even when the interface is not actively focused.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

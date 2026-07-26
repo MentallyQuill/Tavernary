@@ -3,7 +3,7 @@
   "id": "subzero5544-preset-search",
   "name": "Preset Search",
   "kind": "extension",
-  "summary": "Preset Search is a SillyTavern extension that adds a simple search function to locate presets within the interface.",
+  "summary": "Preset Search is a SillyTavern extension that adds a simple search function for finding presets. It provides a quick way to locate preset configurations without manual browsing through the interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
