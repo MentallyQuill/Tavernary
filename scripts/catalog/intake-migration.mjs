@@ -159,7 +159,7 @@ function toRecord(record) {
   const { source, normalizedChange } = normalizeSource(record);
   return {
     record: {
-      schema_version: 4,
+      schema_version: 5,
       id: assertString(record.id, "id"),
       name: assertString(record.name, "name"),
       kind,

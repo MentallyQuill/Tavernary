@@ -49,6 +49,7 @@ const kit: CatalogKit = {
   updatedAt: "2026-07-01T00:00:00.000Z",
   frontends: [label("sillytavern")],
   purposes: [label("generation-reasoning")],
+  modelFamilies: [],
   components: [
     {
       projectId: "frontend",
@@ -151,7 +152,7 @@ describe("KitFilterPanel", () => {
     ).toHaveTextContent("Routing Extension0");
   });
 
-  test("renders only the five approved Kit filters in order", () => {
+  test("renders the approved Kit filters in order", () => {
     render(
       <KitFilterPanel
         query={DEFAULT_KIT_QUERY}
@@ -167,6 +168,7 @@ describe("KitFilterPanel", () => {
     ).toEqual([
       expect.stringMatching(/^Compatible frontend/),
       expect.stringMatching(/^Purpose/),
+      expect.stringMatching(/^Model family/),
       expect.stringMatching(/^Includes project/),
       expect.stringMatching(/^Kit size/),
       expect.stringMatching(/^Kit status/),

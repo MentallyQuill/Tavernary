@@ -1,6 +1,11 @@
 {
   "frontends": [
     {
+      "id": "aikobots",
+      "label": "Aikobots",
+      "description": "Works with the Aikobots roleplay frontend."
+    },
+    {
       "id": "crossroads",
       "label": "CrossRoads",
       "description": "Works with the CrossRoads roleplay frontend."

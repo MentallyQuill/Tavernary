@@ -28,6 +28,59 @@ function allSteps(document: Record<string, unknown>) {
   return Object.values(jobs).flatMap((job) => job.steps ?? []);
 }
 
+test("uses category-prefixed workflow display names", async () => {
+  const expectedNames = {
+    "admit-issue": "Submission intake: Check issue eligibility",
+    "triage-submission": "Project submissions: Validate submission",
+    "generate-project-submission": "Project submissions: Create review PR",
+    "project-submission-lifecycle":
+      "Project submissions: Process review result",
+    "retry-frontend-dependencies":
+      "Project submissions: Retry frontend dependencies",
+    "triage-kit-submission": "Kit submissions: Validate submission",
+    "apply-kit-submission": "Kit submissions: Publish approved Kit",
+    "apply-kit-withdrawal": "Kit submissions: Withdraw published Kit",
+    "refresh-catalog": "Catalog maintenance: Refresh source data",
+    "enrich-catalog": "Catalog maintenance: Enrich project metadata",
+    "backfill-repository-identities":
+      "Catalog maintenance: Backfill repository IDs",
+    ci: "Site: Validate changes",
+    "deploy-pages": "Site: Deploy to GitHub Pages",
+  } as const;
+
+  for (const [file, expectedName] of Object.entries(expectedNames)) {
+    expect((await workflow(file)).name).toBe(expectedName);
+  }
+});
+
+test("identifies the object and action in every workflow run name", async () => {
+  const expectedRunNameParts = {
+    "admit-issue": ["Issue #", "Check submission eligibility"],
+    "triage-submission": ["Project #", "Validate submission"],
+    "generate-project-submission": ["Project #", "Create review PR"],
+    "project-submission-lifecycle": ["Project review PR #", "Process result"],
+    "retry-frontend-dependencies": [
+      "Project submissions:",
+      "Retry merged frontend dependencies",
+    ],
+    "triage-kit-submission": ["Kit #", "Validate submission"],
+    "apply-kit-submission": ["Kit #", "Publish approved Kit"],
+    "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
+    "refresh-catalog": ["Catalog:", "Refresh"],
+    "enrich-catalog": ["Catalog:", "Enrich", "project metadata"],
+    "backfill-repository-identities": ["Catalog:", "Backfill repository IDs"],
+    ci: ["Site:", "Validate"],
+    "deploy-pages": ["Site:", "Deploy"],
+  } as const;
+
+  for (const [file, expectedParts] of Object.entries(expectedRunNameParts)) {
+    const runName = String((await workflow(file))["run-name"] ?? "");
+    for (const expectedPart of expectedParts) {
+      expect(runName).toContain(expectedPart);
+    }
+  }
+});
+
 test("pins every first-party action to its resolved commit", async () => {
   for (const name of [
     "ci",
@@ -39,6 +92,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "triage-submission",
     "generate-project-submission",
     "project-submission-lifecycle",
+    "retry-frontend-dependencies",
     "triage-kit-submission",
     "apply-kit-submission",
     "apply-kit-withdrawal",
@@ -331,7 +385,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   ]);
   expect(inputs.batch_size.default).toBe(12);
   expect(inputs).not.toHaveProperty("start_index");
-  expect(refresh["run-name"]).toContain("Baseline queue");
+  expect(refresh["run-name"]).toContain("Catalog: Refresh baseline queue");
   const refreshSteps = refresh.jobs.refresh.steps;
   expect(refreshSteps.map(({ name }) => name)).toEqual(
     expect.arrayContaining([
@@ -432,6 +486,38 @@ test("triage dispatches admitted projects without repository write access", asyn
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run generate-project-submission.yml");
   expect(source).not.toContain("npm ci");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
+test("retries frontend dependencies from read-only catalog changes", async () => {
+  const retry = await workflow("retry-frontend-dependencies");
+  const source = await readFile(
+    resolve(workflowDirectory, "retry-frontend-dependencies.yml"),
+    "utf8",
+  );
+
+  expect(retry.name).toBe("Project submissions: Retry frontend dependencies");
+  expect(retry["run-name"]).toContain("Retry merged frontend dependencies");
+  expect(retry.on.push.branches).toEqual(["main"]);
+  expect(retry.on.push.paths).toEqual(
+    expect.arrayContaining([
+      "data/registry/projects/**",
+      "data/vocabularies/frontends.json",
+    ]),
+  );
+  expect(retry.on.workflow_dispatch).toBeDefined();
+  expect(retry.permissions).toEqual({
+    contents: "read",
+    issues: "read",
+    actions: "write",
+  });
+  expect(retry.concurrency).toEqual({
+    group: "retry-frontend-dependencies",
+    "cancel-in-progress": false,
+  });
+  expect(source).toContain(
+    "node scripts/submissions/retry-frontend-dependencies.mjs",
+  );
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 

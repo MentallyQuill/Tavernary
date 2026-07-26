@@ -98,6 +98,7 @@ test("keeps malformed submissions open for correction", () => {
     status: "needs-information",
     errors: ["Canonical source URL must be a valid HTTPS URL."],
     suggestions: [],
+    frontendDependencies: [],
   });
 });
 
@@ -116,6 +117,7 @@ test("treats a definitive missing source as correctable information", () => {
     status: "needs-information",
     errors: ["The submitted source returned HTTP 404."],
     suggestions: [],
+    frontendDependencies: [],
   });
 });
 
@@ -130,6 +132,7 @@ test("requires GitHub repositories to be public", () => {
     status: "needs-information",
     errors: ["GitHub project repositories must be public and accessible."],
     suggestions: [],
+    frontendDependencies: [],
   });
 });
 
@@ -158,6 +161,41 @@ test("keeps unknown frontend selections open with suggestions", () => {
     status: "needs-information",
     errors: ["Unknown frontend: Tavern."],
     suggestions,
+    frontendDependencies: [],
+  });
+});
+
+test("preserves missing frontend dependencies for triage", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        frontendResolution: {
+          status: "needs-information",
+          errors: [
+            "Aikobots is not currently indexed as a Tavernary frontend.",
+          ],
+          suggestions: [],
+          dependencies: [
+            {
+              name: "Aikobots",
+              canonicalUrl: "https://github.com/aikohanasaki/Aikobots",
+              repository: "aikohanasaki/Aikobots",
+            },
+          ],
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "needs-information",
+    errors: ["Aikobots is not currently indexed as a Tavernary frontend."],
+    suggestions: [],
+    frontendDependencies: [
+      {
+        name: "Aikobots",
+        canonicalUrl: "https://github.com/aikohanasaki/Aikobots",
+        repository: "aikohanasaki/Aikobots",
+      },
+    ],
   });
 });
 
@@ -201,6 +239,54 @@ test("requires frontends and extensions to use GitHub repositories", () => {
   ).toEqual({
     status: "needs-information",
     errors: ["Frontends and Extensions require a public GitHub repository."],
+    suggestions: [],
+    frontendDependencies: [],
+  });
+});
+
+test("keeps legacy preset submissions open until compatibility is supplied", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          schema_version: 1,
+          project_type: "preset",
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "needs-information",
+    errors: [
+      "System Presets require supported model families and completion formats.",
+    ],
+    suggestions: [],
+  });
+});
+
+test("keeps unlisted model families out of canonical project drafts", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          schema_version: 2,
+          project_type: "preset",
+          preset_compatibility: {
+            model_families: {
+              known_ids: ["claude"],
+              other: ["FutureModel"],
+            },
+            completion_formats: ["chat-completion"],
+          },
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "needs-information",
+    errors: [
+      'Unlisted model family "FutureModel" requires maintainer reconciliation before publication.',
+    ],
     suggestions: [],
   });
 });

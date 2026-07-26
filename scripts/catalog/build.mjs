@@ -37,6 +37,23 @@ function labeled(ids, entries) {
   });
 }
 
+function presetCompatibility(record, vocabularies) {
+  return {
+    modelFamilies: labeled(
+      record.model_families ?? [],
+      vocabularies.modelFamilies,
+    ),
+    completionFormats: labeled(
+      record.completion_formats ?? [],
+      vocabularies.completionFormats,
+    ),
+  };
+}
+
+function vocabularyAliases(ids, entries) {
+  return ids.flatMap((id) => entries.get(id)?.aliases ?? []);
+}
+
 function unique(items) {
   return [...new Set(items)];
 }
@@ -95,6 +112,7 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
 function githubProject(record, snapshot, vocabularies, now) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
     label:
@@ -111,6 +129,12 @@ function githubProject(record, snapshot, vocabularies, now) {
     primaryFunction.label,
     ...frontends.map(({ label }) => label),
     ...capabilities.map(({ label }) => label),
+    ...compatibility.modelFamilies.map(({ label }) => label),
+    ...compatibility.completionFormats.map(({ label }) => label),
+    ...vocabularyAliases(
+      record.model_families ?? [],
+      vocabularies.modelFamilies,
+    ),
     attribution.owner,
     ...attribution.contributors.map(({ login }) => login),
   ]
@@ -179,6 +203,7 @@ function githubProject(record, snapshot, vocabularies, now) {
             version: null,
             publishedAt: null,
             artifactSizeBytes: null,
+            ...compatibility,
           }
         : null,
     refreshedAt: snapshot?.refreshed_at ?? null,
@@ -189,6 +214,7 @@ function githubProject(record, snapshot, vocabularies, now) {
 function urlPreset(record, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
     label:
@@ -221,6 +247,12 @@ function urlPreset(record, vocabularies) {
       primaryFunction.label,
       ...frontends.map(({ label }) => label),
       ...capabilities.map(({ label }) => label),
+      ...compatibility.modelFamilies.map(({ label }) => label),
+      ...compatibility.completionFormats.map(({ label }) => label),
+      ...vocabularyAliases(
+        record.model_families ?? [],
+        vocabularies.modelFamilies,
+      ),
     ]
       .join(" ")
       .toLowerCase(),
@@ -234,6 +266,7 @@ function urlPreset(record, vocabularies) {
       version: record.source.version,
       publishedAt: record.source.published_at,
       artifactSizeBytes: record.source.artifact_size_bytes,
+      ...compatibility,
     },
     refreshedAt: null,
     staleSince: null,
@@ -296,6 +329,8 @@ export async function buildCatalog(options = {}) {
     frontendVocabulary,
     primaryFunctionVocabulary,
     capabilityVocabulary,
+    modelFamilyVocabulary,
+    completionFormatVocabulary,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
     options.snapshots ?? readJsonDirectory("data/snapshots/github"),
@@ -311,6 +346,8 @@ export async function buildCatalog(options = {}) {
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
+    readJson("data/vocabularies/model-families.json"),
+    readJson("data/vocabularies/completion-formats.json"),
   ]);
   const vocabularies = {
     frontends: entriesById(frontendVocabulary, "frontends"),
@@ -319,6 +356,11 @@ export async function buildCatalog(options = {}) {
       "primary_functions",
     ),
     capabilities: entriesById(capabilityVocabulary, "capabilities"),
+    modelFamilies: entriesById(modelFamilyVocabulary, "model_families"),
+    completionFormats: entriesById(
+      completionFormatVocabulary,
+      "completion_formats",
+    ),
   };
   const snapshotsByProject = new Map(
     snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
@@ -422,6 +464,15 @@ export async function buildCatalog(options = {}) {
         ),
         vocabularies.primaryFunctions,
       );
+      const modelFamilies = labeled(
+        unique(
+          components.flatMap(
+            ({ project }) =>
+              project?.preset?.modelFamilies.map(({ id }) => id) ?? [],
+          ),
+        ),
+        vocabularies.modelFamilies,
+      );
       const support = kitSnapshotsById.get(kit.id);
       const activeSupporters = (support?.supporters ?? []).filter(
         (supporter) =>
@@ -440,6 +491,7 @@ export async function buildCatalog(options = {}) {
         ...components.map(({ name }) => name),
         ...frontends.map(({ label }) => label),
         ...purposes.map(({ label }) => label),
+        ...modelFamilies.map(({ label }) => label),
       ]
         .join(" ")
         .toLowerCase();
@@ -457,6 +509,7 @@ export async function buildCatalog(options = {}) {
         updatedAt: kit.updated_at,
         frontends,
         purposes,
+        modelFamilies,
         components,
         supporterCount: support ? activeSupporters.length : null,
         trendingScore: support ? trendingScore(votes, generatedAtIso) : null,
