@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "project_id": "aikohanasaki-sillytavern-lorebookordering",
+  "repository": {
+    "id": 1059754623,
+    "owner": "aikohanasaki",
+    "name": "SillyTavern-LorebookOrdering",
+    "url": "https://github.com/aikohanasaki/SillyTavern-LorebookOrdering",
+    "description": "Gives lorebook-level control over activation priority.",
+    "default_branch": "main",
+    "head_sha": "9243b9c1ab54269f830d79b1aa0af3052be6ef54",
+    "head_committed_at": "2025-12-24T06:02:51.000Z",
+    "archived": false,
+    "created_at": "2025-09-18T22:37:59.000Z",
+    "size_kb": 217
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-26T19:31:48.440Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9243b9c1ab54269f830d79b1aa0af3052be6ef54"
+  },
+  "community": {
+    "stargazers_count": 32,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 33
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-26T19:31:48.440Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "aikohanasaki", "type": "User" }],
+    "refreshed_at": "2026-07-26T19:31:48.440Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
