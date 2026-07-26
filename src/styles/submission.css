@@ -1,13 +1,7 @@
 .submission-page {
   min-height: 100vh;
   padding: 28px clamp(20px, 6vw, 72px) 72px;
-  background:
-    radial-gradient(
-      circle at 85% 5%,
-      color-mix(in srgb, var(--color-kind-preset) 9%, transparent),
-      transparent 34rem
-    ),
-    var(--color-page);
+  background: var(--color-page);
 }
 
 .submission-nav,
@@ -274,7 +268,9 @@
 
 .submission-actions button:disabled {
   cursor: wait;
-  opacity: 0.65;
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-surface-primary);
 }
 
 .submission-status {
