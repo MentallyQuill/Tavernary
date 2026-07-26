@@ -3,7 +3,7 @@
   "id": "maiky93-image-generation-suite",
   "name": "Image Generation Suite",
   "kind": "extension",
-  "summary": "Sillytavern extension that provides an image generation suite to create images during roleplay sessions.",
+  "summary": "The Image Generation Suite is a SillyTavern extension that adds image creation capabilities to roleplay sessions. It streamlines how users generate and manage visuals alongside character interactions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

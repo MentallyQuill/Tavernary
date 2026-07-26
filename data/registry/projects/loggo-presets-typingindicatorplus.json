@@ -3,7 +3,7 @@
   "id": "loggo-presets-typingindicatorplus",
   "name": "TypingIndicatorPlus",
   "kind": "extension",
-  "summary": "TypingIndicatorPlus enhances SillyTavern's typing indicator with multiple visual styles, sound effects, and customization options.",
+  "summary": "TypingIndicatorPlus is a SillyTavern extension that enhances the typing indicator with multiple visual styles and sound effects. Users can customize how the typing state appears and sounds during conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

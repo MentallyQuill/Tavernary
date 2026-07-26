@@ -3,7 +3,7 @@
   "id": "maxipawlowski-story-orchestrator",
   "name": "Story Orchestrator",
   "kind": "extension",
-  "summary": "A SillyTavern extension that orchestrates stories as deterministic checkpoint graphs with off-path memory extraction and pacing tracking.",
+  "summary": "Story Orchestrator runs SillyTavern stories as deterministic checkpoint graphs over a live chat. It tracks typed qualities on a blackboard and extracts state off the response path to steer pacing without AI calls.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

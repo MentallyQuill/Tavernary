@@ -3,7 +3,7 @@
   "id": "lukasstraub2-sillytavern-imagepdf",
   "name": "SillyTavern ImagePdf",
   "kind": "extension",
-  "summary": "SillyTavern extension that converts each page of an attached PDF file into an image for chat use.",
+  "summary": "SillyTavern ImagePdf is a SillyTavern extension that attaches PDF files by converting each page into an image. It lets users share PDF content as readable page images directly within roleplay chats.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1292206739
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": ["image-generation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

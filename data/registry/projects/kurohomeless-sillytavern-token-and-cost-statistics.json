@@ -3,7 +3,7 @@
   "id": "kurohomeless-sillytavern-token-and-cost-statistics",
   "name": "SillyTavern Token and Cost Statistics",
   "kind": "extension",
-  "summary": "SillyTavern extension that tracks and visualizes token usage statistics for chat conversations.",
+  "summary": "A SillyTavern extension that automatically tracks and visualizes token usage across chat sessions. It surfaces cost statistics so you can monitor spending patterns alongside your prompt consumption.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["review-validation"],
+  "capabilities": ["automation", "review-validation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -3,7 +3,7 @@
   "id": "mindbound-lumiscript",
   "name": "Lumiscript",
   "kind": "extension",
-  "summary": "JavaScript scripting platform for Lumiverse that automates behavior, injects prompt context, and builds interactive UIs.",
+  "summary": "LumiScript is a JavaScript scripting platform for Lumiverse that reacts to chat events and automates behavior. Users can inject prompt context and build interactive UIs without modifying core code.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,12 +12,7 @@
   },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "automation",
-    "extension-development",
-    "prompt-engineering",
-    "instruction-control"
-  ],
+  "capabilities": ["automation", "extension-development", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

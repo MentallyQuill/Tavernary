@@ -3,7 +3,7 @@
   "id": "lukathehero-sillytavern-claudesubscription",
   "name": "SillyTavern Claude Subscription",
   "kind": "extension",
-  "summary": "A SillyTavern server plugin that routes chat through the Claude Agent SDK so it bills against your Anthropic Pro/Max subscription instead of an API key. It acts as a backend connection layer replacing direct API access.",
+  "summary": "SillyTavern extension that routes chat messages through the Claude Agent SDK. The plugin bills responses against the user's Anthropic Pro or Max subscription instead of requiring a separate API key.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "extension-development"],
+  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
