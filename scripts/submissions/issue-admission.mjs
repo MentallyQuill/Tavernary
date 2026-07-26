@@ -21,8 +21,7 @@ export function decideIssueAdmission({
 
   const authorIssues = openItems
     .filter(
-      (item) =>
-        !item.pull_request && item.user?.id === currentIssue.user?.id,
+      (item) => !item.pull_request && item.user?.id === currentIssue.user?.id,
     )
     .sort(
       (left, right) =>
