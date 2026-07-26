@@ -169,10 +169,11 @@ test("Kit card Copy link hover has a deterministic tooltip treatment", async ({
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
   await card.getByRole("button", { name: "Copy link" }).hover();
-  await expect(
-    page.getByRole("tooltip", { name: "Copy a direct link to this Kit" }),
-  ).toBeVisible();
-  await expect(page).toHaveScreenshot("kit-card-copy-hover.png", {
+  const tooltip = page.getByRole("tooltip", {
+    name: "Copy a direct link to this Kit",
+  });
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveScreenshot("kit-card-copy-hover.png", {
     animations: "disabled",
   });
 });
@@ -184,10 +185,11 @@ test("Kit card Report hover has a deterministic tooltip treatment", async ({
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
   await card.getByRole("button", { name: "Report Kit" }).hover();
-  await expect(
-    page.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
-  ).toBeVisible();
-  await expect(page).toHaveScreenshot("kit-card-report-hover.png", {
+  const tooltip = page.getByRole("tooltip", {
+    name: "Report this Kit on GitHub",
+  });
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveScreenshot("kit-card-report-hover.png", {
     animations: "disabled",
   });
 });
@@ -201,10 +203,11 @@ test("Kit card copy success notice remains visible long enough to inspect", asyn
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
   await card.getByRole("button", { name: "Copy link" }).click();
-  await expect(
-    page.getByRole("status", { name: "Kit URL copied to clipboard" }),
-  ).toBeVisible();
-  await expect(page).toHaveScreenshot("kit-card-copy-success.png", {
+  const status = page.getByRole("status", {
+    name: "Kit URL copied to clipboard",
+  });
+  await expect(status).toBeVisible();
+  await expect(status).toHaveScreenshot("kit-card-copy-success.png", {
     animations: "disabled",
   });
 });
