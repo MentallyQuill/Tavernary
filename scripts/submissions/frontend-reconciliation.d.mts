@@ -28,12 +28,19 @@ export interface FrontendSuggestion {
   candidates: Array<{ id: string; label: string }>;
 }
 
+export interface MissingFrontendDependency {
+  name: string;
+  canonicalUrl: string;
+  repository: string;
+}
+
 export type FrontendResolution =
   | { status: "resolved"; ids: string[]; warnings: string[] }
   | {
       status: "needs-information";
       errors: string[];
       suggestions: FrontendSuggestion[];
+      dependencies: MissingFrontendDependency[];
     };
 
 export interface FrontendReconciliationInput {

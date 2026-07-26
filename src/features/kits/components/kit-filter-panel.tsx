@@ -17,6 +17,7 @@ import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
 import type { KitQuery } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { useModalSurface } from "@/hooks/use-modal-surface";
+import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
 
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
@@ -112,7 +113,7 @@ export function KitFilterPanel({
     inertSelectors: modalBackground,
   });
   const updateArray = (property: KitArrayFilter, value: string) => {
-    const current = query[property] as string[];
+    const current = (query[property] ?? []) as string[];
     onChange({
       ...query,
       [property]: current.includes(value)
@@ -168,6 +169,19 @@ export function KitFilterPanel({
         search={purposeSearch}
         onSearch={setPurposeSearch}
         searchLabel="Search Kit purposes"
+        presentation="chips"
+      />
+      <FilterGroup
+        title="Model family"
+        options={countedOptions(
+          modelFamilyVocabulary.model_families,
+          kits,
+          query,
+          "modelFamilies",
+          search,
+        )}
+        selected={query.modelFamilies ?? []}
+        onToggle={(value) => updateArray("modelFamilies", value)}
         presentation="chips"
       />
       <FilterGroup

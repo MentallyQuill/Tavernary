@@ -1,4 +1,6 @@
 import { normalizeProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
+import completionFormatVocabulary from "../../data/vocabularies/completion-formats.json" with { type: "json" };
+import modelFamilyVocabulary from "../../data/vocabularies/model-families.json" with { type: "json" };
 
 function issueFields(body) {
   const fields = new Map();
@@ -35,6 +37,26 @@ function fallbackFrontends(value) {
   );
 }
 
+function checkedValues(value) {
+  return value
+    .split(/\r?\n/u)
+    .flatMap((line) => line.match(/^-\s+\[[xX]\]\s+(.+)$/u)?.[1] ?? [])
+    .map((entry) => entry.trim());
+}
+
+function checkedIds(value, options) {
+  const byLabel = new Map(
+    options.flatMap((option) => [
+      [option.id.toLocaleLowerCase(), option.id],
+      [option.label.toLocaleLowerCase(), option.id],
+    ]),
+  );
+  return checkedValues(value).flatMap((label) => {
+    const id = byLabel.get(label.toLocaleLowerCase());
+    return id ? [id] : [];
+  });
+}
+
 export function parseProjectSubmissionIssue(body) {
   const fields = issueFields(body);
   const embedded = fields.get("Project manifest") ?? "";
@@ -54,7 +76,7 @@ export function parseProjectSubmissionIssue(body) {
   }
 
   const result = normalizeProjectSubmissionManifest({
-    schema_version: 1,
+    schema_version: 2,
     project_type: projectType(fields.get("Project Type") ?? ""),
     source_url: fields.get("Project URL") ?? "",
     name: fields.get("Project Name") ?? "",
@@ -66,6 +88,19 @@ export function parseProjectSubmissionIssue(body) {
     frontend_independent:
       (fields.get("Frontend-independent") ?? "").toLowerCase() === "yes",
     additional_context: fields.get("Anything we should know?") ?? "",
+    preset_compatibility: {
+      model_families: {
+        known_ids: checkedIds(
+          fields.get("Supported model families") ?? "",
+          modelFamilyVocabulary.model_families,
+        ),
+        other: [fields.get("Other model family") ?? ""].filter(Boolean),
+      },
+      completion_formats: checkedIds(
+        fields.get("Completion formats") ?? "",
+        completionFormatVocabulary.completion_formats,
+      ),
+    },
   });
   return { ...result, source: "headings" };
 }

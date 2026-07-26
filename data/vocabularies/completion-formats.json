@@ -1,0 +1,14 @@
+{
+  "completion_formats": [
+    {
+      "id": "chat-completion",
+      "label": "Chat Completion",
+      "description": "Uses role-based chat messages."
+    },
+    {
+      "id": "text-completion",
+      "label": "Text Completion",
+      "description": "Uses a serialized text prompt."
+    }
+  ]
+}

@@ -107,7 +107,7 @@ test("drafts a schema-v4 GitHub project with permanent identity", async () => {
   });
 
   expect(result.record).toMatchObject({
-    schema_version: 4,
+    schema_version: 5,
     id: "owner-repo",
     name: "Repository Tool",
     kind: "extension",

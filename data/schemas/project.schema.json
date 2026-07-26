@@ -23,7 +23,7 @@
     "enrichment_policy"
   ],
   "properties": {
-    "schema_version": { "const": 4 },
+    "schema_version": { "const": 5 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "name": { "type": "string", "minLength": 1 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
@@ -124,6 +124,18 @@
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
     },
+    "model_families": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "completion_formats": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
     "cataloged_at": { "type": "string", "format": "date-time" },
     "catalog_cohort": { "enum": ["seed", "standard"] },
     "visibility": { "enum": ["published", "quarantined", "disabled"] },
@@ -145,6 +157,23 @@
     }
   },
   "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "preset" } },
+        "required": ["kind"]
+      },
+      "then": {
+        "required": ["model_families", "completion_formats"]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            { "required": ["model_families"] },
+            { "required": ["completion_formats"] }
+          ]
+        }
+      }
+    },
     {
       "if": { "properties": { "visibility": { "const": "published" } } },
       "then": { "properties": { "visibility_reason": { "type": "null" } } }
