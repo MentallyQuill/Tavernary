@@ -3,7 +3,7 @@
   "id": "hans123m12m1-lumiverse-notehaven",
   "name": "Lumiverse NoteHaven",
   "kind": "extension",
-  "summary": "Lumiverse NoteHaven extension adds a notes drawer, file tree navigator, tabs with split panes, and a movable workspace window.",
+  "summary": "Lumiverse NoteHaven is a Lumiverse extension that adds an Obsidian-style notebook to the sidebar drawer. It bundles a draggable Halo logo, nested file tree, tabbed split panes, and a multi-view workspace window.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

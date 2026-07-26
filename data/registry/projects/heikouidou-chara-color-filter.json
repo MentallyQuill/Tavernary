@@ -3,7 +3,7 @@
   "id": "heikouidou-chara-color-filter",
   "name": "Chara Color Filter",
   "kind": "extension",
-  "summary": "A SillyTavern extension that automatically applies color filters to character sprites based on the background's average color. It helps characters blend into scenes naturally for a more immersive visual experience.",
+  "summary": "A SillyTavern extension that automatically applies a color filter to character sprites based on the background's average color. It helps characters blend into the scene for a more immersive experience.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["automation", "image-generation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

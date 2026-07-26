@@ -3,7 +3,7 @@
   "id": "flaxify-st-hands-free-voice",
   "name": "ST Hands-Free Voice",
   "kind": "extension",
-  "summary": "SillyTavern extension providing hands-free voice interaction through automated TTS/STT sequencing with silence detection.",
+  "summary": "ST Hands-Free Voice adds hands-free voice interaction to SillyTavern by sequencing text-to-speech and speech-to-text. It uses silence detection to manage conversational flow automatically without manual input.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

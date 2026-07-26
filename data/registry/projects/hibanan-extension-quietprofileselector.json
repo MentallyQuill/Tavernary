@@ -3,7 +3,7 @@
   "id": "hibanan-extension-quietprofileselector",
   "name": "Quiet Profile Selector",
   "kind": "extension",
-  "summary": "Quiet Profile Selector switches SillyTavern quiet generations to a chosen connection profile and restores the previous one afterward.",
+  "summary": "Quiet Profile Selector is a SillyTavern extension that routes quiet and background generations to a chosen connection profile. It switches profiles for quiet prompts and restores the previous one when done.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

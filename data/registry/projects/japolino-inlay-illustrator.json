@@ -3,7 +3,7 @@
   "id": "japolino-inlay-illustrator",
   "name": "Inlay Illustrator",
   "kind": "extension",
-  "summary": "Frontend extension providing persistent character image generation with visual memory and ComfyUI output for Lumiverse.",
+  "summary": "Inlay Illustrator adds persistent character image generation with dynamic visual memory to the Lumiverse frontend. It parses context-aware prompts inline and outputs Anima or ComfyUI prompts with optional tag cleanup.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,12 +11,11 @@
     "repository_id": 1294022879
   },
   "frontends": ["lumiverse"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": [
     "image-generation",
-    "character-worldbuilding",
-    "extension-development",
-    "prompt-engineering"
+    "prompt-engineering",
+    "character-worldbuilding"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
