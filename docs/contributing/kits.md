@@ -17,6 +17,10 @@ Use the in-browser builder and send it through issue form:
 
 - `[Kit submission]` (`05-kit-submission.yml`)
 
+Kit submissions share Tavernary's repository-wide open-issue limit with every
+other public issue type. Editing an admitted Kit submission does not consume
+another slot.
+
 Required safety gates in the submission path:
 
 - `id` uniqueness and duplicate-detection checks;

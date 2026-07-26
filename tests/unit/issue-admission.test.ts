@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+
 import { expect, test } from "vitest";
 
 import {
@@ -123,4 +125,25 @@ test("publishes stable admission constants and neutral recovery copy", () => {
       "This issue was closed because this account already has 10 older open issues. Close or resolve one of those issues, then reopen this issue to use the available slot.",
     ].join("\n"),
   );
+});
+
+test("documents the shared public issue cap and maintainer recovery", async () => {
+  const contributing = await readFile(
+    "docs/contributing/submission-and-review.md",
+    "utf8",
+  );
+  const kits = await readFile("docs/contributing/kits.md", "utf8");
+  const operations = await readFile(
+    "docs/maintenance/operations-runbook.md",
+    "utf8",
+  );
+
+  expect(contributing).toContain("10 open issues");
+  expect(contributing).toContain("all public issue types");
+  expect(contributing).toContain("Closing an issue restores one slot");
+  expect(kits).toContain("repository-wide open-issue limit");
+  expect(operations).toContain("issue-admitted");
+  expect(operations).toContain("issue-limit-reached");
+  expect(operations).toContain("opened` and `reopened");
+  expect(operations).toContain("fails open");
 });

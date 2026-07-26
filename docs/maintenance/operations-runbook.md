@@ -21,7 +21,32 @@ Do not edit generated artifacts manually.
 
 ## Issue intake and triage
 
-Two workflow handlers run on `issues.opened`/`issues.edited` for dedicated triage automation:
+### Issue admission
+
+`.github/workflows/admit-issue.yml` runs on `opened` and `reopened` issue
+events. External accounts may keep their oldest 10 issues open across every
+public issue type. Ordering uses creation time and then issue number; pull
+requests do not count. Repository owners, members, and collaborators bypass
+this public-intake cap.
+
+Admission labels are workflow state:
+
+- `issue-admitted` allows initial Project or Kit submission triage.
+- `issue-limit-reached` records a per-issue queue decision, not an account
+  block.
+
+Closing an issue restores capacity immediately; there are no stored counters to
+reset. Reopening a limited issue reruns admission. If the open-issue lookup
+fails, admission fails open so a legitimate report is not discarded or
+stranded.
+
+After a GitHub API outage, rerun failed admission workflows. Do not manually
+publish a submission that has not passed its normal Project or Kit validation.
+
+### Submission triage
+
+Two workflow handlers run on admitted-label and edited events for dedicated
+triage automation:
 
 - `.github/workflows/triage-submission.yml`
   - `[Project submission]` only (title-prefixed project submission issues)
