@@ -1,4 +1,4 @@
-name: Triage project submission
+name: "Project submissions: Validate submission"
 
 on:
   issues:

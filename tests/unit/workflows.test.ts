@@ -28,6 +28,29 @@ function allSteps(document: Record<string, unknown>) {
   return Object.values(jobs).flatMap((job) => job.steps ?? []);
 }
 
+test("uses category-prefixed workflow display names", async () => {
+  const expectedNames = {
+    "admit-issue": "Submission intake: Check issue eligibility",
+    "triage-submission": "Project submissions: Validate submission",
+    "generate-project-submission": "Project submissions: Create review PR",
+    "project-submission-lifecycle":
+      "Project submissions: Process review result",
+    "triage-kit-submission": "Kit submissions: Validate submission",
+    "apply-kit-submission": "Kit submissions: Publish approved Kit",
+    "apply-kit-withdrawal": "Kit submissions: Withdraw published Kit",
+    "refresh-catalog": "Catalog maintenance: Refresh source data",
+    "enrich-catalog": "Catalog maintenance: Enrich project metadata",
+    "backfill-repository-identities":
+      "Catalog maintenance: Backfill repository IDs",
+    ci: "Site: Validate changes",
+    "deploy-pages": "Site: Deploy to GitHub Pages",
+  } as const;
+
+  for (const [file, expectedName] of Object.entries(expectedNames)) {
+    expect((await workflow(file)).name).toBe(expectedName);
+  }
+});
+
 test("pins every first-party action to its resolved commit", async () => {
   for (const name of [
     "ci",

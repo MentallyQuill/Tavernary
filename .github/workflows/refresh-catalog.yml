@@ -1,4 +1,4 @@
-name: Refresh catalog
+name: "Catalog maintenance: Refresh source data"
 
 run-name: >-
   ${{ github.event_name == 'schedule'

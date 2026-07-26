@@ -1,4 +1,4 @@
-name: Deploy Pages
+name: "Site: Deploy to GitHub Pages"
 
 run-name: Deploy Pages - ${{ inputs.source_sha || github.sha }}
 

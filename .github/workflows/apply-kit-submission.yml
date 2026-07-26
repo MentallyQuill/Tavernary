@@ -1,4 +1,4 @@
-name: Apply approved Kit submission
+name: "Kit submissions: Publish approved Kit"
 
 on:
   workflow_dispatch:

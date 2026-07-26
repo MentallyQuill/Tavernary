@@ -1,4 +1,4 @@
-name: Close reviewed project submission
+name: "Project submissions: Process review result"
 
 on:
   pull_request:

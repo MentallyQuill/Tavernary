@@ -1,4 +1,4 @@
-name: CI
+name: "Site: Validate changes"
 
 on:
   pull_request:

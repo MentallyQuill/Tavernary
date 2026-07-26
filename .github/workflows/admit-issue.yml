@@ -1,4 +1,4 @@
-name: Admit public issue
+name: "Submission intake: Check issue eligibility"
 
 on:
   issues:

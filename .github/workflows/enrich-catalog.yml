@@ -1,4 +1,4 @@
-name: Enrich catalog
+name: "Catalog maintenance: Enrich project metadata"
 
 on:
   workflow_dispatch:

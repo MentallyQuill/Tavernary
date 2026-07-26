@@ -1,4 +1,4 @@
-name: Apply verified Kit withdrawal
+name: "Kit submissions: Withdraw published Kit"
 
 on:
   issues:

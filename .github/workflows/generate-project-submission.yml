@@ -1,4 +1,4 @@
-name: Generate project submission review
+name: "Project submissions: Create review PR"
 
 on:
   workflow_dispatch:
