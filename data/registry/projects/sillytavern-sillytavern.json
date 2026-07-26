@@ -3,7 +3,7 @@
   "id": "sillytavern-sillytavern",
   "name": "SillyTavern",
   "kind": "frontend",
-  "summary": "A locally installed interface for text generation, character chat, and AI-assisted roleplay.",
+  "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,11 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "frontend",
-  "capabilities": [
-    "character-worldbuilding",
-    "extension-development",
-    "prompt-engineering"
-  ],
+  "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -3,7 +3,7 @@
   "id": "rossascends-st-samplerkillswitches",
   "name": "ST Sampler Kill Switches",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds kill switches to samplers, preventing selected samplers from being included in API calls.",
+  "summary": "ST Sampler Kill Switches is a SillyTavern extension that lets users toggle individual samplers off. Disabled samplers are blocked before reaching the API, preventing them from affecting generation requests.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

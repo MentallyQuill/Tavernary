@@ -3,7 +3,7 @@
   "id": "sca255-lumiverse-autoimg",
   "name": "Lumiverse AutoImg",
   "kind": "extension",
-  "summary": "Lumiverse AutoImg is a Lumiverse frontend extension that automatically generates images on demand.",
+  "summary": "Lumiverse AutoImg is a Lumiverse extension that automatically generates images when triggered by AI demand. It streamlines visual content creation by producing images on demand without manual prompting.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1289855929
   },
   "frontends": ["lumiverse"],
-  "primary_function": "frontend",
-  "capabilities": ["image-generation", "automation"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "image-generation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

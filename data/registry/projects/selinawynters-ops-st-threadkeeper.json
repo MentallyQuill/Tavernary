@@ -3,7 +3,7 @@
   "id": "selinawynters-ops-st-threadkeeper",
   "name": "ST ThreadKeeper",
   "kind": "extension",
-  "summary": "ST ThreadKeeper is a SillyTavern extension that stores and retrieves LLM-based memory for long roleplays at reduced cost.",
+  "summary": "ST ThreadKeeper is a SillyTavern extension that adds LLM-powered memory to long roleplay sessions. It preserves conversation facts and lore over time while reducing the cost of feeding context back to the model.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

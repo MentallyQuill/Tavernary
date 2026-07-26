@@ -3,7 +3,7 @@
   "id": "rivelledays-sillytavern-chatcompletiontabs",
   "name": "SillyTavern ChatCompletionTabs",
   "kind": "extension",
-  "summary": "SillyTavern extension that adds tabbed navigation to the Chat Completion presets settings panel for SillyTavern.",
+  "summary": "SillyTavern ChatCompletionTabs adds tabbed navigation to the Chat Completion presets settings in SillyTavern. It organizes preset configurations into separate panels for easier access and streamlined management.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
