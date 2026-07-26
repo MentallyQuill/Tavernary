@@ -12,7 +12,7 @@ import {
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
+import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import { useModalSurface } from "@/hooks/use-modal-surface";
@@ -46,6 +46,7 @@ export function availableBuilderHeight(viewportHeight: number, top: number) {
 export function KitBuilderPanel({
   state,
   kit,
+  onCopyLink,
   onCollapse,
   onDuplicate,
   onEdit,
@@ -62,6 +63,8 @@ export function KitBuilderPanel({
 }: {
   state: KitBuilderState;
   kit: CatalogKit | null;
+  now: string;
+  onCopyLink: (kitId: string) => void | Promise<void>;
   onCollapse: () => void;
   onDuplicate?: (kit: CatalogKit) => void;
   onEdit?: (kit: CatalogKit) => void;
@@ -78,10 +81,8 @@ export function KitBuilderPanel({
   draftAccessStatus?: DraftAccessStatus;
   hidePhoneDraftAccess?: boolean;
 }) {
-  const [fallbackUrl, setFallbackUrl] = useState("");
   const [discardOpen, setDiscardOpen] = useState(false);
   const { phone } = useResponsiveCapabilities();
-  const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const discardRef = useRef<HTMLButtonElement>(null);
@@ -98,10 +99,6 @@ export function KitBuilderPanel({
       }
     }, 0);
   }, []);
-
-  useEffect(() => {
-    if (fallbackUrl) fallbackRef.current?.select();
-  }, [fallbackUrl]);
 
   const phoneSheetVisible =
     phone && active && !state.collapsed && state.mode !== "intro";
@@ -341,12 +338,7 @@ export function KitBuilderPanel({
                 type="button"
                 className="control-secondary"
                 aria-label="Copy link"
-                onClick={async () => {
-                  const result = await copyKitLink(kit.id);
-                  setFallbackUrl(
-                    result === "fallback" ? kitShareUrl(kit.id) : "",
-                  );
-                }}
+                onClick={() => void onCopyLink(kit.id)}
               >
                 <CategoryIcon name="copy-link" />
                 Copy link
@@ -366,15 +358,6 @@ export function KitBuilderPanel({
                 Request withdrawal
               </a>
             </div>
-            {fallbackUrl ? (
-              <input
-                ref={fallbackRef}
-                aria-label="Kit link"
-                readOnly
-                value={fallbackUrl}
-                onFocus={(event) => event.currentTarget.select()}
-              />
-            ) : null}
             <KitProjectStack components={kit.components} />
           </div>
         ) : state.mode === "build" ? (

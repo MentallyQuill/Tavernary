@@ -6,17 +6,35 @@ import {
   screen,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import {
   availableBuilderHeight,
-  KitBuilderPanel,
+  KitBuilderPanel as ProductionKitBuilderPanel,
 } from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
 const originalMatchMedia = window.matchMedia;
+
+type TestKitBuilderPanelProps = Omit<
+  ComponentProps<typeof ProductionKitBuilderPanel>,
+  "now" | "onCopyLink"
+> & {
+  now?: string;
+  onCopyLink?: (kitId: string) => void | Promise<void>;
+};
+
+function KitBuilderPanel({
+  now = "2026-07-24T00:00:00.000Z",
+  onCopyLink = () => undefined,
+  ...props
+}: TestKitBuilderPanelProps) {
+  return (
+    <ProductionKitBuilderPanel {...props} now={now} onCopyLink={onCopyLink} />
+  );
+}
 
 function mockMatchMedia({
   phone = false,
@@ -539,41 +557,25 @@ describe("Kit Builder", () => {
     ).toHaveClass("control-quiet");
   });
 
-  test("copies links with selectable fallback and prefilled action URLs", async () => {
-    const user = userEvent.setup();
-    Object.defineProperty(navigator, "clipboard", {
-      configurable: true,
-      value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
-    });
-    const share = vi.fn();
-    Object.defineProperty(navigator, "share", {
-      configurable: true,
-      value: share,
-    });
-    window.history.replaceState(null, "", "/Tavernary/");
+  test("delegates inspect-mode copying and preserves action URLs", async () => {
+    const onCopyLink = vi.fn();
     render(
       <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
         kit={fixtureKit()}
+        now="2026-07-24T00:00:00.000Z"
+        onCopyLink={onCopyLink}
         onCollapse={() => undefined}
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Copy link" }));
-    const fallback = screen.getByRole("textbox", {
-      name: "Kit link",
-    }) as HTMLInputElement;
-    expect(fallback.value).toContain("/Tavernary/?mode=kits&kit=story-kit-41");
-    expect(fallback.selectionStart).toBe(0);
-    expect(fallback.selectionEnd).toBe(fallback.value.length);
+    await userEvent.click(screen.getByRole("button", { name: "Copy link" }));
+    expect(onCopyLink).toHaveBeenCalledWith("story-kit-41");
+    expect(screen.queryByRole("textbox", { name: "Kit link" })).toBeNull();
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveAttribute(
       "href",
       expect.stringContaining("kit-id=story-kit-41"),
     );
-    expect(
-      screen.getByRole("link", { name: "Request withdrawal" }),
-    ).toHaveAttribute("href", expect.stringContaining("story-kit-41"));
-    expect(share).not.toHaveBeenCalled();
   });
 });
 

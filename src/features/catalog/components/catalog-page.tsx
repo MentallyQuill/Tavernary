@@ -13,10 +13,12 @@ import { KitGrid } from "@/features/kits/components/kit-grid";
 import { ProjectSelectionDock } from "@/features/kits/components/project-selection-dock";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
-import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
+import { kitShareUrl } from "@/features/kits/share-kit";
 import { openKitSubmission } from "@/features/kits/submission-transport";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
+import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
+import { useKitShareFeedback } from "@/features/kits/use-kit-share-feedback";
 import { useProjectBatchSelection } from "@/features/kits/use-project-batch-selection";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
@@ -53,6 +55,7 @@ type AddedStatus = {
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { query, setQuery } = useCatalogQuery();
+  const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
     CatalogQuery["mode"] | null
@@ -386,7 +389,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               now={catalog.generatedAt}
               selectedKitId={query.selectedKitId}
               onSelect={workspace.selectKit}
-              onCopyLink={(kitId) => void copyKitLink(kitId)}
+              onCopyLink={kitShare.copy}
               onReport={reportKit}
             />
           ) : (
@@ -409,6 +412,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               ? (catalog.kits.find(({ id }) => id === inspectedKitId) ?? null)
               : null
           }
+          now={catalog.generatedAt}
+          onCopyLink={kitShare.copy}
           onCollapse={workspace.toggleCollapsed}
           onDuplicate={workspace.startDuplicate}
           onEdit={workspace.startEdit}
@@ -451,6 +456,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       <p className="visually-hidden" aria-live="polite" aria-atomic="true">
         {selectionAnnouncement}
       </p>
+      <KitShareNotice feedback={kitShare.feedback} />
       {filterPresence.present ? (
         (openFilterMode ?? query.mode) === "kits" ? (
           <KitFilterPanel
