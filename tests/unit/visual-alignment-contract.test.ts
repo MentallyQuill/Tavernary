@@ -7,6 +7,21 @@ const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
 describe("catalog visual alignment", () => {
+  test("gives desktop Kit inspection one bounded project scroll", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-builder-panel-inspect\s*\{[^}]*grid-template-rows:\s*auto minmax\(0,\s*1fr\)[^}]*min-height:\s*0/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-stack\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
+    );
+    expect(responsive).toMatch(
+      /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
+    );
+  });
+
   test("locks Kit count and action motion", () => {
     const css = read("src/styles/catalog.css");
     const responsive = read("src/styles/responsive.css");

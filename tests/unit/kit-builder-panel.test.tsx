@@ -647,6 +647,26 @@ describe("Kit Builder", () => {
     ).not.toBeInTheDocument();
   });
 
+  test("separates the inspect header from its project list", () => {
+    renderInspectPanel();
+
+    const builder = screen.getByRole("complementary", {
+      name: "Kit Builder",
+    });
+    expect(builder).toHaveAttribute("data-mode", "inspect");
+    expect(screen.getByRole("heading", { name: "4 Projects" })).toHaveClass(
+      "kit-project-list-heading",
+    );
+    expect(screen.getByRole("list", { name: "Kit projects" })).toHaveClass(
+      "kit-project-stack",
+    );
+    expect(
+      screen
+        .getByRole("heading", { name: "Story Kit" })
+        .closest(".kit-builder-panel-inspect-header"),
+    ).not.toBeNull();
+  });
+
   test("maps inspect actions to shared control treatments", () => {
     render(
       <KitBuilderPanel

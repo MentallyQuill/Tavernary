@@ -260,6 +260,7 @@ export function KitBuilderPanel({
       role={phone ? "dialog" : "complementary"}
       aria-modal={phone ? true : undefined}
       data-motion-phase={phone ? phonePresence.phase : undefined}
+      data-mode={state.mode}
     >
       <header className="kit-builder-panel-header">
         <h2 ref={headingRef} tabIndex={-1}>
@@ -314,58 +315,72 @@ export function KitBuilderPanel({
           </div>
         ) : state.mode === "inspect" && kit ? (
           <div className="kit-builder-panel-inspect">
-            <header>
-              <h2>{kit.title}</h2>
-              <p>@{kit.author.login}</p>
-            </header>
-            <p>{kit.description}</p>
-            <div className="kit-builder-panel-actions">
-              <button
-                type="button"
-                className="control-secondary"
-                onClick={() => onDuplicate?.(kit)}
-              >
-                <CategoryIcon name="duplicate" />
-                Duplicate
-              </button>
-              <button
-                type="button"
-                className="control-secondary"
-                onClick={() => onEdit?.(kit)}
-              >
-                Edit
-              </button>
-              <Tooltip
-                id={`${tooltipId}-copy-kit-link-tooltip`}
-                label="Copy a direct link to this Kit"
-                className="control-tooltip"
-              >
+            <div className="kit-builder-panel-inspect-header">
+              <header>
+                <h2>{kit.title}</h2>
+                <p>@{kit.author.login}</p>
+              </header>
+              <p>{kit.description}</p>
+              <div className="kit-builder-panel-actions">
                 <button
                   type="button"
                   className="control-secondary"
-                  aria-label="Copy link"
-                  onClick={() => void onCopyLink(kit.id)}
+                  onClick={() => onDuplicate?.(kit)}
                 >
-                  <CategoryIcon name="copy-link" />
-                  Copy link
+                  <CategoryIcon name="duplicate" />
+                  Duplicate
                 </button>
-              </Tooltip>
-              <a
-                className="control-quiet"
-                href={issueUrl("06-kit-report.yml", kit)}
-                target="_blank"
-              >
-                Report Kit
-              </a>
-              <a
-                className="control-quiet"
-                href={issueUrl("07-kit-withdrawal.yml", kit)}
-                target="_blank"
-              >
-                Request withdrawal
-              </a>
+                <button
+                  type="button"
+                  className="control-secondary"
+                  onClick={() => onEdit?.(kit)}
+                >
+                  Edit
+                </button>
+                <Tooltip
+                  id={`${tooltipId}-copy-kit-link-tooltip`}
+                  label="Copy a direct link to this Kit"
+                  className="control-tooltip"
+                >
+                  <button
+                    type="button"
+                    className="control-secondary"
+                    aria-label="Copy link"
+                    onClick={() => void onCopyLink(kit.id)}
+                  >
+                    <CategoryIcon name="copy-link" />
+                    Copy link
+                  </button>
+                </Tooltip>
+                <a
+                  className="control-quiet"
+                  href={issueUrl("06-kit-report.yml", kit)}
+                  target="_blank"
+                >
+                  Report Kit
+                </a>
+                <a
+                  className="control-quiet"
+                  href={issueUrl("07-kit-withdrawal.yml", kit)}
+                  target="_blank"
+                >
+                  Request withdrawal
+                </a>
+              </div>
             </div>
-            <KitProjectStack components={kit.components} now={now} />
+            <section
+              className="kit-project-list"
+              aria-labelledby={`${kit.id}-project-list-heading`}
+            >
+              <h3
+                id={`${kit.id}-project-list-heading`}
+                className="kit-project-list-heading"
+              >
+                {kit.components.length}{" "}
+                {kit.components.length === 1 ? "Project" : "Projects"}
+              </h3>
+              <KitProjectStack components={kit.components} now={now} />
+            </section>
           </div>
         ) : state.mode === "build" ? (
           <div className="kit-builder-panel-build">

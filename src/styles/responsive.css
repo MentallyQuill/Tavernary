@@ -329,6 +329,10 @@
       calc(14px + env(safe-area-inset-left));
   }
 
+  .kit-builder-panel[data-mode="inspect"] .kit-builder-panel-body {
+    overflow-y: auto;
+  }
+
   .kit-builder-panel-header,
   .kit-builder-panel-body {
     width: auto;
@@ -340,6 +344,20 @@
   .kit-builder-panel-inspect,
   .kit-builder {
     min-width: 0;
+  }
+
+  .kit-builder-panel-inspect {
+    display: block;
+    height: auto;
+  }
+
+  .kit-project-list {
+    display: grid;
+    margin-top: 16px;
+  }
+
+  .kit-project-stack {
+    overflow: visible;
   }
 
   .kit-builder-panel-actions {
@@ -357,7 +375,6 @@
   }
 
   .kit-builder-panel-inspect > input,
-  .kit-project-row,
   .kit-builder input {
     min-height: 44px;
   }
@@ -365,10 +382,6 @@
   .kit-card-actions button {
     min-width: 44px;
     min-height: 44px;
-  }
-
-  .kit-project-row {
-    padding-block: 11px;
   }
 
   .kit-builder textarea {
