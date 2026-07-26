@@ -8,16 +8,16 @@ describe("verifyStaticExport", () => {
   test("accepts a catalog heading split by React server-rendering comments", () => {
     expect(() =>
       verifyStaticExport(
-        '<h1>214<!-- --> <!-- -->projects</h1><script src="/_next/static/app.js"></script>',
+        '<h1>211<!-- --> <!-- -->projects</h1><script src="/_next/static/app.js"></script>',
         "",
       ),
     ).not.toThrow();
   });
 
-  test("accepts the full 214-project launch heading", () => {
+  test("accepts the full 211-project launch heading", () => {
     expect(() =>
       verifyStaticExport(
-        `${heading(214)}<script src="/_next/static/app.js"></script>`,
+        `${heading(211)}<script src="/_next/static/app.js"></script>`,
         "",
       ),
     ).not.toThrow();
@@ -26,7 +26,7 @@ describe("verifyStaticExport", () => {
   test("accepts root Next assets when no base path is configured", () => {
     expect(() =>
       verifyStaticExport(
-        `${heading(214)}<script src=\"/_next/static/app.js\"></script>`,
+        `${heading(211)}<script src=\"/_next/static/app.js\"></script>`,
         "",
       ),
     ).not.toThrow();
@@ -40,7 +40,7 @@ describe("verifyStaticExport", () => {
       ),
     ).toThrow("root-relative Next.js asset URLs");
 
-    expect(() => verifyStaticExport(heading(214), "")).toThrow(
+    expect(() => verifyStaticExport(heading(211), "")).toThrow(
       "root-relative Next.js asset URLs",
     );
   });
@@ -48,19 +48,19 @@ describe("verifyStaticExport", () => {
   test("requires prefixed Next assets and rejects root-only assets for a project page", () => {
     expect(() =>
       verifyStaticExport(
-        `${heading(214)}<script src=\"/Tavernary/_next/static/app.js\"></script>`,
+        `${heading(211)}<script src=\"/Tavernary/_next/static/app.js\"></script>`,
         "/Tavernary",
       ),
     ).not.toThrow();
 
     expect(() =>
       verifyStaticExport(
-        `${heading(214)}<script src=\"/_next/static/app.js\"></script>`,
+        `${heading(211)}<script src=\"/_next/static/app.js\"></script>`,
         "/Tavernary",
       ),
     ).toThrow("root-only Next.js asset URLs");
 
-    expect(() => verifyStaticExport(heading(214), "/Tavernary")).toThrow(
+    expect(() => verifyStaticExport(heading(211), "/Tavernary")).toThrow(
       "configured base path",
     );
   });
@@ -68,7 +68,7 @@ describe("verifyStaticExport", () => {
   test("rejects exports that leak intake-only metadata", () => {
     expect(() =>
       verifyStaticExport(
-        `${heading(214)}<div data-debug="submitted_at catalog_intake"></div><script src="/_next/static/app.js"></script>`,
+        `${heading(211)}<div data-debug="submitted_at catalog_intake"></div><script src="/_next/static/app.js"></script>`,
         "",
       ),
     ).toThrow("intake-only metadata");

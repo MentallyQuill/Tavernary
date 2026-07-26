@@ -14,5 +14,5 @@ test("switches between projects and the empty Kits catalog", async ({
     "trending",
   );
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.locator(".project-card")).toHaveCount(214);
+  await expect(page.locator(".project-card")).toHaveCount(211);
 });

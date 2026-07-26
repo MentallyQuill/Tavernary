@@ -71,10 +71,10 @@ const validSnapshotV2: Record<string, any> = {
 };
 
 describe("catalog validation", () => {
-  test("accepts the 214-project launch catalog", async () => {
+  test("accepts the 211-project launch catalog", async () => {
     const result = await validateCatalog();
     expect(result.errors).toEqual([]);
-    expect(result.projectCount).toBe(214);
+    expect(result.projectCount).toBe(211);
     expect(result.kitCount).toBe(0);
     expect(result.kitSnapshotCount).toBe(0);
   });

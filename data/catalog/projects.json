@@ -1818,39 +1818,6 @@
         "submitted_at": "2026-07-23"
     },
     {
-        "id": "village-maker-thornbeck-prompt",
-        "name": "Village Maker — Thornbeck",
-        "source_url": "https://botbooru.com/character/68693",
-        "tags": ["Prompts"],
-        "frontends": ["SillyTavern"],
-        "status": "candidate",
-        "submission": "reddit",
-        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
-        "submitted_at": "2026-07-23"
-    },
-    {
-        "id": "village-maker-harrow-hundred-prompt",
-        "name": "Village Maker — Harrow Hundred",
-        "source_url": "https://botbooru.com/character/68657",
-        "tags": ["Prompts"],
-        "frontends": ["SillyTavern"],
-        "status": "candidate",
-        "submission": "reddit",
-        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
-        "submitted_at": "2026-07-23"
-    },
-    {
-        "id": "village-maker-anonpaste-prompt",
-        "name": "Village Maker — Supplementary Paste",
-        "source_url": "https://anonpaste.org/?2608a3f2908984b1#E9ugSnHiWnu8b81dgKBQs7BYs26QXFu7n9QgBWeRHRiV",
-        "tags": ["Prompts"],
-        "frontends": ["SillyTavern"],
-        "status": "candidate",
-        "submission": "reddit",
-        "source_post": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
-        "submitted_at": "2026-07-23"
-    },
-    {
         "id": "mangkoodkung-another-universe",
         "name": "Another Universe",
         "repository": {"owner": "mangkoodkung", "name": "another-universe", "url": "https://github.com/mangkoodkung/another-universe"},

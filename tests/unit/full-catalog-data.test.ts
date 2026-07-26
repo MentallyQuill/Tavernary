@@ -19,10 +19,101 @@ interface CatalogRecord {
     type: string;
     repository_id?: number | null;
     license_status?: string | null;
+    version?: string | null;
+    artifact_size_bytes?: number | null;
   };
 }
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+
+const removedVillageMakerIds = [
+  "village-maker-anonpaste-prompt",
+  "village-maker-harrow-hundred-prompt",
+  "village-maker-thornbeck-prompt",
+];
+
+const manualCuratedRecords = {
+  "le-emotionalism-1-1-5-prompt": {
+    summary:
+      "A modular SillyTavern preset for grounded roleplay, autonomous NPCs, deliberate reasoning, continuity, pacing, and expressive prose.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "planning-reasoning",
+      "character-worldbuilding",
+    ],
+    version: "1.1.5",
+    artifact_size_bytes: 146359,
+  },
+  "puras-director-v15": {
+    summary:
+      "A customizable SillyTavern preset combining director-style scene control, grounded prose, reasoning aids, trackers, and RPG systems.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "planning-reasoning",
+      "character-worldbuilding",
+    ],
+    version: "15.0",
+    artifact_size_bytes: null,
+  },
+  "purrfect-logic-4-max-mini": {
+    summary:
+      "A streamlined SillyTavern roleplay preset reducing prompt overhead while strengthening structure, instruction following, and prose.",
+    primary_function: "generation-reasoning",
+    capabilities: ["prompt-engineering", "instruction-control"],
+    version: "4 Max Mini",
+    artifact_size_bytes: null,
+  },
+  "realistic-frankenstein-preset": {
+    summary:
+      "A three-tier SillyTavern preset family promoting character autonomy, realistic behavior, living-world continuity, and scalable prompting.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "planning-reasoning",
+    ],
+    version: null,
+    artifact_size_bytes: null,
+  },
+  "writers-block-4": {
+    summary:
+      "A SillyTavern co-writing preset with director modes, adaptive pacing, structured reasoning, prose styles, character agency, and subtext.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "planning-reasoning",
+    ],
+    version: "4",
+    artifact_size_bytes: null,
+  },
+  "village-maker-google-drive-prompt": {
+    summary:
+      "An interview-driven guide for creating village-as-character cards with communities, locations, events, lore, and roleplay structure.",
+    primary_function: "character-worldbuilding",
+    capabilities: ["character-worldbuilding", "prompt-engineering"],
+    version: "1.0",
+    artifact_size_bytes: null,
+  },
+  "tavern-rpg-suite": {
+    summary:
+      "A SillyTavern extension suite adding maps, inventory, vitals, equipment, memory, minigames, and secondary-model roleplay tools.",
+    primary_function: "rpg-systems",
+    capabilities: [
+      "automation",
+      "character-worldbuilding",
+      "image-generation",
+      "instruction-control",
+      "model-routing",
+    ],
+    version: undefined,
+    artifact_size_bytes: undefined,
+  },
+} as const;
 
 async function loadRegistryRecords(): Promise<CatalogRecord[]> {
   const directory = resolve(rootDirectory, "data/registry/projects");
@@ -52,17 +143,17 @@ function expectCatalogContract(records: CatalogRecord[]) {
     (record) => record.metadata_status === "provisional",
   );
 
-  expect(records).toHaveLength(214);
-  expect(ids.size).toBe(214);
+  expect(records).toHaveLength(211);
+  expect(ids.size).toBe(211);
   expect(countBy(records, (record) => record.kind)).toEqual({
     extension: 198,
     frontend: 4,
-    preset: 12,
+    preset: 9,
   });
   expect(countBy(records, (record) => record.source.type)).toEqual({
     github: 204,
     "github-organization": 1,
-    url: 9,
+    url: 6,
   });
   expect(
     records.filter(
@@ -70,14 +161,14 @@ function expectCatalogContract(records: CatalogRecord[]) {
         record.source.type === "url" &&
         record.source.license_status === "pending",
     ),
-  ).toHaveLength(8);
+  ).toHaveLength(0);
   expect(
     records.filter(
       (record) =>
         record.source.type === "url" &&
         record.source.license_status === "missing",
     ),
-  ).toHaveLength(1);
+  ).toHaveLength(6);
 
   for (const record of records) {
     expect(["curated", "provisional"], record.id).toContain(
@@ -127,8 +218,56 @@ function expectCatalogContract(records: CatalogRecord[]) {
 }
 
 describe("full catalog data", () => {
-  test("matches the stable 214-record contract", async () => {
+  test("matches the consolidated 211-record contract", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("keeps manual curation exact and Village Maker consolidated", async () => {
+    const records = await loadRegistryRecords();
+    const byId = new Map(records.map((record) => [record.id, record]));
+    const primaryFunctions = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/primary-functions.json"),
+        "utf8",
+      ),
+    ).primary_functions;
+    const capabilities = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/capabilities.json"),
+        "utf8",
+      ),
+    ).capabilities;
+
+    for (const id of removedVillageMakerIds) {
+      expect(byId.has(id), id).toBe(false);
+    }
+
+    for (const [id, expected] of Object.entries(manualCuratedRecords)) {
+      const record = byId.get(id);
+      expect(record, id).toBeDefined();
+      expect(record).toMatchObject({
+        summary: expected.summary,
+        metadata_status: "curated",
+        primary_function: expected.primary_function,
+        capabilities: expected.capabilities,
+      });
+      expect(
+        validateEnrichmentOutput(
+          {
+            summary: expected.summary,
+            metadata_status: "curated",
+            primary_function: expected.primary_function,
+            capabilities: [...expected.capabilities],
+          },
+          { primaryFunctions, capabilities },
+        ),
+        id,
+      ).toEqual({ valid: true });
+      expect(record?.source.version, id).toBe(expected.version);
+      expect(record?.source.artifact_size_bytes, id).toBe(
+        expected.artifact_size_bytes,
+      );
+    }
   });
 
   test("allows identity preparation and progressive enrichment", async () => {

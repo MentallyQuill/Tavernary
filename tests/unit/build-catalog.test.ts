@@ -464,9 +464,9 @@ test("keeps URL presets public with manual source and pending license display", 
   ]);
 });
 
-test("builds 214 public cards without leaking intake-only metadata", async () => {
+test("builds 211 public cards with consolidated manual sources", async () => {
   const catalog = await buildCatalog({ write: false });
-  expect(catalog.projects).toHaveLength(214);
+  expect(catalog.projects).toHaveLength(211);
   expect(
     catalog.projects.every((project) =>
       ["curated", "provisional"].includes(project.metadataStatus),
@@ -492,13 +492,52 @@ test("builds 214 public cards without leaking intake-only metadata", async () =>
       supportedSourceStatuses.includes(status),
     ),
   ).toBe(true);
-  expect(sourceStatuses.manual).toBe(10);
+  expect(sourceStatuses.manual).toBe(7);
   expect(
     (sourceStatuses.healthy ?? 0) +
       (sourceStatuses.pending ?? 0) +
       (sourceStatuses.stale ?? 0),
   ).toBe(204);
   expect(sourceStatuses.healthy ?? 0).toBeGreaterThanOrEqual(4);
+  const manualIds = catalog.projects
+    .filter(({ sourceStatus }) => sourceStatus === "manual")
+    .map(({ id }) => id)
+    .sort();
+  expect(manualIds).toEqual(
+    [
+      "le-emotionalism-1-1-5-prompt",
+      "puras-director-v15",
+      "purrfect-logic-4-max-mini",
+      "realistic-frankenstein-preset",
+      "tavern-rpg-suite",
+      "village-maker-google-drive-prompt",
+      "writers-block-4",
+    ].sort(),
+  );
+  expect(catalog.projects.map(({ id }) => id)).not.toEqual(
+    expect.arrayContaining([
+      "village-maker-anonpaste-prompt",
+      "village-maker-harrow-hundred-prompt",
+      "village-maker-thornbeck-prompt",
+    ]),
+  );
+  expect(
+    catalog.projects.find(
+      ({ id }) => id === "village-maker-google-drive-prompt",
+    ),
+  ).toMatchObject({
+    canonicalUrl:
+      "https://drive.google.com/file/d/1Q6-tNRgEsp3jwDmrZeSVyPbbsf_xckp5/view?usp=sharing",
+    metadataStatus: "curated",
+    primaryFunction: "character-worldbuilding",
+  });
+  expect(
+    catalog.projects.find(({ id }) => id === "tavern-rpg-suite"),
+  ).toMatchObject({
+    canonicalUrl: "https://github.com/tavern-rpg-suite",
+    metadataStatus: "curated",
+    primaryFunction: "rpg-systems",
+  });
   expect(
     catalog.projects
       .filter((project) => project.metadataStatus === "curated")
