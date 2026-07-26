@@ -5,10 +5,18 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { selectEnrichmentRecords } from "./enrich-readmes.mjs";
 
+function forceForSelectionMode(selectionMode) {
+  if (!["pending", "all-automatic"].includes(selectionMode)) {
+    throw new Error(`Unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  return selectionMode === "all-automatic";
+}
+
 export function selectRandomCanaryIds(records, options = {}) {
   const count = options.count ?? 5;
   const draw = options.randomInt ?? randomInt;
-  const candidates = selectEnrichmentRecords(records)
+  const force = forceForSelectionMode(options.selectionMode ?? "pending");
+  const candidates = selectEnrichmentRecords(records, { force })
     .filter((record) => record.refresh_policy === "automatic")
     .map(({ id }) => id);
 
@@ -35,7 +43,8 @@ export function selectRepresentativeCanaryIds(
   options = {},
 ) {
   const count = options.count ?? 7;
-  const candidates = selectEnrichmentRecords(records)
+  const force = forceForSelectionMode(options.selectionMode ?? "pending");
+  const candidates = selectEnrichmentRecords(records, { force })
     .filter((record) => record.refresh_policy === "automatic")
     .sort((left, right) => left.id.localeCompare(right.id));
   if (candidates.length < 5) {
@@ -116,7 +125,9 @@ async function loadCatalog() {
 
 async function main() {
   const { records, snapshots } = await loadCatalog();
-  const selected = selectRepresentativeCanaryIds(records, snapshots);
+  const selected = selectRepresentativeCanaryIds(records, snapshots, {
+    selectionMode: process.env.ENRICHMENT_SELECTION_MODE ?? "pending",
+  });
   process.stdout.write(`${selected.join("\n")}\n`);
 }
 

@@ -15,6 +15,7 @@ export interface ManualEnrichmentExclusion {
 
 export function defaultEnrichmentFields(source: {
   type?: string;
+  [key: string]: unknown;
 }): {
   enrichment_policy: "automatic" | "manual";
   enrichment_note?: string;

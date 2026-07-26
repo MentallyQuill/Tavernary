@@ -5,11 +5,14 @@ export function selectRandomCanaryIds(
     metadata_status?: string;
     summary?: string;
     refresh_policy?: string;
+    enrichment_policy?: "automatic" | "manual";
+    enrichment_note?: string;
     source?: { type?: string };
   }>,
   options?: {
     count?: number;
     randomInt?: (maximum: number) => number;
+    selectionMode?: "pending" | "all-automatic";
   },
 ): string[];
 
@@ -21,6 +24,8 @@ export function selectRepresentativeCanaryIds(
     metadata_status?: string;
     summary?: string;
     refresh_policy?: string;
+    enrichment_policy?: "automatic" | "manual";
+    enrichment_note?: string;
     source?: { type?: string };
   }>,
   snapshots:
@@ -39,5 +44,8 @@ export function selectRepresentativeCanaryIds(
         stale_since?: string | null;
         repository?: { description?: string | null };
       }>,
-  options?: { count?: number },
+  options?: {
+    count?: number;
+    selectionMode?: "pending" | "all-automatic";
+  },
 ): string[];

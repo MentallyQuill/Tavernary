@@ -47,16 +47,16 @@ describe("enrichment policy", () => {
   test("identifies automatic records and sorted manual exclusions", () => {
     const automatic = {
       id: "automatic-project",
-      enrichment_policy: "automatic",
+      enrichment_policy: "automatic" as const,
     };
     const manualB = {
       id: "manual-b",
-      enrichment_policy: "manual",
+      enrichment_policy: "manual" as const,
       enrichment_note: "Requires a maintainer review.",
     };
     const manualA = {
       id: "manual-a",
-      enrichment_policy: "manual",
+      enrichment_policy: "manual" as const,
       enrichment_note: "External URL source; requires manual curation.",
     };
 
@@ -79,7 +79,7 @@ describe("enrichment policy", () => {
   test("throws a typed error when automatic enrichment is required", () => {
     const record = {
       id: "manual-project",
-      enrichment_policy: "manual",
+      enrichment_policy: "manual" as const,
       enrichment_note: "Requires a maintainer review.",
     };
 

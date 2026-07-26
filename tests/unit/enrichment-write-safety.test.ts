@@ -22,7 +22,7 @@ const record = {
   catalog_cohort: "seed",
   visibility: "published",
   refresh_policy: "automatic",
-  enrichment_policy: "automatic",
+  enrichment_policy: "automatic" as const,
 };
 
 const output = {

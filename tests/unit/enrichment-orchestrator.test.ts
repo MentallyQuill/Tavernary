@@ -637,6 +637,48 @@ test("passes the dispatch batch size and concurrency into enrichment batches", a
   );
 });
 
+test("propagates one enrichment selection mode through planner, canary, and execution commands", async () => {
+  const calls: Array<{
+    command: string;
+    args: string[];
+    options?: { env?: NodeJS.ProcessEnv };
+  }> = [];
+  const ids = ["a", "b", "c", "d", "e"];
+  const operations = createProductionOperations({
+    npmCommand: "npm",
+    selectionMode: "all-automatic",
+    async runCommand(command: string, args: string[], options) {
+      calls.push({ command, args, options });
+      if (args.includes("catalog:enrichment-plan")) {
+        return { stdout: '{"action":"complete"}', exitCode: 0 };
+      }
+      if (args.includes("catalog:select-canary")) {
+        return { stdout: `${ids.join("\n")}\n`, exitCode: 0 };
+      }
+      return { stdout: "", exitCode: 0 };
+    },
+    async publishChanges() {
+      return { changed: false, publishedCommit: null, registryCommit: null };
+    },
+  });
+
+  await operations.plan();
+  await operations.startCanary();
+  await operations.authorizeFull();
+
+  expect(
+    calls.find(({ args }) => args.includes("catalog:enrichment-plan"))?.options
+      ?.env,
+  ).toMatchObject({ ENRICHMENT_SELECTION_MODE: "all-automatic" });
+  expect(
+    calls.find(({ args }) => args.includes("catalog:select-canary"))?.options
+      ?.env,
+  ).toMatchObject({ ENRICHMENT_SELECTION_MODE: "all-automatic" });
+  expect(
+    calls.find(({ args }) => args.includes("authorize-full"))?.args,
+  ).toEqual(expect.arrayContaining(["--selection-mode", "all-automatic"]));
+});
+
 test("persists the exact canary checkpoint before returning batch progress", async () => {
   const calls: Array<{ command: string; args: string[] }> = [];
   const publications: Array<{

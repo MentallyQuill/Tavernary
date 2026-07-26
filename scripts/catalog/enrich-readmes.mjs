@@ -19,6 +19,7 @@ import {
   MANUAL_ENRICHMENT_REASON_CODE,
   assertAutomaticEnrichment,
   isAutomaticEnrichment,
+  manualEnrichmentExclusions,
 } from "./enrichment-policy.mjs";
 import {
   createEnrichmentReport,
@@ -57,6 +58,21 @@ const genericSummaries = new Set([
   "No description found.",
   "No README file found.",
 ]);
+
+function forceForSelectionMode(selectionMode) {
+  if (!["pending", "all-automatic"].includes(selectionMode)) {
+    throw new Error(`unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  return selectionMode === "all-automatic";
+}
+
+function durableManualExclusions(records) {
+  return manualEnrichmentExclusions(records).map((entry) => ({
+    id: entry.projectId,
+    reason_code: entry.reason,
+    enrichment_note: entry.note,
+  }));
+}
 
 function isEligible(record, force = false) {
   if (
@@ -613,6 +629,8 @@ export async function runCli(options = {}) {
   ) {
     throw new Error(`unsupported enrichment mode: ${mode}`);
   }
+  const requestedSelectionMode = options.selectionMode ?? "pending";
+  forceForSelectionMode(requestedSelectionMode);
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const fullReportPath =
     options.reportPath === undefined
@@ -710,7 +728,11 @@ export async function runCli(options = {}) {
           ? await readOptionalJson(canaryReportPath)
           : null;
     const canary = validateEnrichmentReport(canaryReport);
-    assertFullRolloutAllowed(canary, configuration.model);
+    assertFullRolloutAllowed(
+      canary,
+      configuration.model,
+      requestedSelectionMode,
+    );
     return {
       mode: "authorize-full",
       status: "passed",
@@ -799,6 +821,14 @@ export async function runCli(options = {}) {
         );
       }
       if (
+        options.selectionMode !== undefined &&
+        previousState.selection_mode !== requestedSelectionMode
+      ) {
+        throw new Error(
+          "selection mode does not match the running enrichment report",
+        );
+      }
+      if (
         options.projectIds &&
         JSON.stringify([...options.projectIds].sort()) !==
           JSON.stringify(previousState.manifest)
@@ -815,10 +845,16 @@ export async function runCli(options = {}) {
         model: configuration.model,
         batchSize: options.batchSize,
         concurrency: options.concurrency,
+        selectionMode: requestedSelectionMode,
+        manualExclusions: durableManualExclusions(records),
       });
     }
   } else if (mode === "start") {
-    assertFullRolloutAllowed(previousState, configuration.model);
+    assertFullRolloutAllowed(
+      previousState,
+      configuration.model,
+      requestedSelectionMode,
+    );
     const previousFullReport =
       options.previousFullReport !== undefined
         ? options.previousFullReport
@@ -835,10 +871,14 @@ export async function runCli(options = {}) {
         replacingLegacyFullReport = true;
       }
     }
-    const eligibleIds = selectEnrichmentRecords(records).map(({ id }) => id);
+    const force = forceForSelectionMode(requestedSelectionMode);
+    const eligibleIds = selectEnrichmentRecords(records, { force }).map(
+      ({ id }) => id,
+    );
     const canaryBoundaryAlreadyApplied =
       previousFullState?.mode === "full" &&
       previousFullState.phase === "complete" &&
+      previousFullState.selection_mode === requestedSelectionMode &&
       previousFullState.authorized_canary_run_id === previousState.run_id;
     const canaryIds = new Set(previousState.manifest);
     const deferredIds = canaryBoundaryAlreadyApplied
@@ -855,6 +895,8 @@ export async function runCli(options = {}) {
       model: configuration.model,
       batchSize: options.batchSize,
       concurrency: options.concurrency,
+      selectionMode: requestedSelectionMode,
+      manualExclusions: durableManualExclusions(records),
     });
     if (replacingLegacyFullReport) {
       const replacement = createEnrichmentReport(state);
@@ -872,6 +914,14 @@ export async function runCli(options = {}) {
     if (previousState.expected_model !== configuration.model) {
       throw new Error(
         "configured model does not match the running enrichment report",
+      );
+    }
+    if (
+      options.selectionMode !== undefined &&
+      previousState.selection_mode !== requestedSelectionMode
+    ) {
+      throw new Error(
+        "selection mode does not match the running enrichment report",
       );
     }
     state = previousState;
@@ -907,6 +957,7 @@ export async function runCli(options = {}) {
           allowedVocabularies,
         )),
     previousEntries: state.entries,
+    force: forceForSelectionMode(state.selection_mode),
   });
   state = applyAttemptResults(state, results, timestamp);
   const report = createEnrichmentReport(state);
@@ -930,6 +981,7 @@ export function cliOptions(argv) {
     deploymentRunId: Number(value("--deployment-run-id", Number.NaN)),
     reportPath: value("--report-path", undefined),
     canaryReportPath: value("--canary-report-path", undefined),
+    selectionMode: value("--selection-mode", "pending"),
   };
 }
 

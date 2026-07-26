@@ -13,6 +13,7 @@ function record(
     id,
     visibility: "published",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     summary: "An extension for SillyTavern.",
     refresh_policy: "automatic",
     source: {
@@ -100,4 +101,50 @@ test("deterministically selects a representative seven-project pool", () => {
     "e-fill",
   ]);
   expect(second).toEqual(first);
+});
+
+test("honors pending versus all-automatic selection without weakening manual locks", () => {
+  const records = [
+    ...Array.from({ length: 5 }, (_, index) =>
+      record(`pending-${index}`, { kind: "extension" }),
+    ),
+    record("curated-preset", {
+      kind: "preset",
+      metadata_status: "curated",
+      summary: "A complete editorial description.",
+    }),
+    record("manual-github", {
+      kind: "preset",
+      metadata_status: "curated",
+      enrichment_policy: "manual",
+      enrichment_note: "Requires review.",
+    }),
+  ];
+  const snapshots = Object.fromEntries(
+    records.map(({ id }) => [
+      id,
+      {
+        project_id: id,
+        source_health: "healthy",
+        stale_since: null,
+        repository: { description: `Description for ${id}.` },
+      },
+    ]),
+  );
+
+  expect(
+    selectRepresentativeCanaryIds(records, snapshots, {
+      selectionMode: "pending",
+    }),
+  ).not.toContain("curated-preset");
+  expect(
+    selectRepresentativeCanaryIds(records, snapshots, {
+      selectionMode: "all-automatic",
+    }),
+  ).toContain("curated-preset");
+  expect(
+    selectRepresentativeCanaryIds(records, snapshots, {
+      selectionMode: "all-automatic",
+    }),
+  ).not.toContain("manual-github");
 });

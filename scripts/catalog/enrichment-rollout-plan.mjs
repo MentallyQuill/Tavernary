@@ -8,12 +8,21 @@ import {
   validateEnrichmentReport,
 } from "./enrichment-report.mjs";
 import { selectEnrichmentRecords } from "./enrich-readmes.mjs";
+import { manualEnrichmentExclusions } from "./enrichment-policy.mjs";
 
 export function planEnrichmentRollout(input) {
+  const selectionMode = input.selectionMode ?? "pending";
+  if (!["pending", "all-automatic"].includes(selectionMode)) {
+    throw new Error(`unsupported enrichment selection mode: ${selectionMode}`);
+  }
+  const reportSelectionMode = (report) => report?.selection_mode ?? "pending";
   if (
     input.fullReport?.mode === "full" &&
     input.fullReport.status === "running"
   ) {
+    if (reportSelectionMode(input.fullReport) !== selectionMode) {
+      throw new Error("selection mode does not match the running full rollout");
+    }
     if (input.fullReport.expected_model !== input.model) {
       throw new Error(
         "configured model does not match the running full rollout",
@@ -23,7 +32,8 @@ export function planEnrichmentRollout(input) {
   }
   if (
     input.fullReport?.mode === "full" &&
-    input.fullReport.status === "failed"
+    input.fullReport.status === "failed" &&
+    reportSelectionMode(input.fullReport) === selectionMode
   ) {
     if (input.fullReport.expected_model !== input.model) {
       throw new Error(
@@ -33,12 +43,13 @@ export function planEnrichmentRollout(input) {
     if (input.eligibleCount === 0) {
       throw new Error("failed full rollout has no recoverable candidates");
     }
-    assertFullRolloutAllowed(input.canaryReport, input.model);
+    assertFullRolloutAllowed(input.canaryReport, input.model, selectionMode);
     return { action: "restart-full" };
   }
   if (
     input.fullReport?.mode === "full" &&
-    ["complete", "complete-with-errors"].includes(input.fullReport.status)
+    ["complete", "complete-with-errors"].includes(input.fullReport.status) &&
+    reportSelectionMode(input.fullReport) === selectionMode
   ) {
     if (input.fullReport.expected_model !== input.model) {
       throw new Error(
@@ -62,15 +73,21 @@ export function planEnrichmentRollout(input) {
     return { action: "complete" };
   }
   try {
-    assertFullRolloutAllowed(input.canaryReport, input.model);
+    assertFullRolloutAllowed(input.canaryReport, input.model, selectionMode);
     return { action: "start-full" };
   } catch (error) {
-    if (input.canaryReport?.status === "passed") throw error;
+    if (
+      input.canaryReport?.status === "passed" &&
+      reportSelectionMode(input.canaryReport) === selectionMode
+    ) {
+      throw error;
+    }
     // A missing or stale authorization falls through to canary recovery.
   }
   if (
     input.canaryReport?.mode === "canary" &&
-    input.canaryReport.expected_model === input.model
+    input.canaryReport.expected_model === input.model &&
+    reportSelectionMode(input.canaryReport) === selectionMode
   ) {
     if (input.canaryReport.status === "running") {
       return { action: "continue-canary" };
@@ -78,6 +95,13 @@ export function planEnrichmentRollout(input) {
     if (input.canaryReport.status === "awaiting-deployment") {
       return { action: "deploy-canary" };
     }
+  }
+  if (
+    input.canaryReport?.mode === "canary" &&
+    input.canaryReport.status === "running" &&
+    reportSelectionMode(input.canaryReport) !== selectionMode
+  ) {
+    throw new Error("selection mode does not match the running canary rollout");
   }
   if (input.eligibleCount >= 5) {
     return { action: "start-canary" };
@@ -88,10 +112,16 @@ export function planEnrichmentRollout(input) {
 }
 
 export function createEnrichmentRolloutPlan(input) {
-  const eligibleCount = selectEnrichmentRecords(input.records).length;
+  const selectionMode = input.selectionMode ?? "pending";
+  const force = selectionMode === "all-automatic";
+  const eligibleCount = selectEnrichmentRecords(input.records, {
+    force,
+  }).length;
+  const manualExclusionCount = manualEnrichmentExclusions(input.records).length;
   return {
-    ...planEnrichmentRollout({ ...input, eligibleCount }),
+    ...planEnrichmentRollout({ ...input, selectionMode, eligibleCount }),
     eligible_count: eligibleCount,
+    manual_exclusion_count: manualExclusionCount,
   };
 }
 
@@ -117,6 +147,8 @@ function validateFullReportForPlanning(fullReport) {
 export async function runPlannerCli(options = {}) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const model = options.model ?? process.env.TAVERNARY_ENRICHMENT_MODEL;
+  const selectionMode =
+    options.selectionMode ?? process.env.ENRICHMENT_SELECTION_MODE ?? "pending";
   if (typeof model !== "string" || model.length === 0 || /\s/u.test(model)) {
     throw new Error("configured model is required");
   }
@@ -148,6 +180,7 @@ export async function runPlannerCli(options = {}) {
     canaryReport === null ? null : validateEnrichmentReport(canaryReport);
   return createEnrichmentRolloutPlan({
     model,
+    selectionMode,
     records,
     fullReport: validatedFullReport,
     canaryReport: validatedCanaryReport,

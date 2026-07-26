@@ -45,8 +45,7 @@ const safeMessages = {
   "source-load-failed": "Enrichment source loading failed.",
   "record-missing": "Registry record is missing.",
   "record-ineligible": "Registry record is no longer eligible.",
-  "manual-enrichment-policy":
-    "Registry record requires manual enrichment.",
+  "manual-enrichment-policy": "Registry record requires manual enrichment.",
 };
 
 function sanitizedEntry(entry) {
@@ -103,6 +102,12 @@ export function createEnrichmentReport(state) {
     status: state.status,
     phase: state.phase,
     expected_model: state.expected_model,
+    selection_mode: state.selection_mode ?? "pending",
+    manual_exclusions: (state.manual_exclusions ?? []).map((entry) => ({
+      id: entry.id,
+      reason_code: entry.reason_code,
+      enrichment_note: entry.enrichment_note,
+    })),
     batch_size: state.batch_size,
     concurrency: state.concurrency,
     created_at: state.created_at,
@@ -212,8 +217,33 @@ export function validateEnrichmentReport(value) {
   }
   value = structuredClone(value);
   value.deferred_ids ??= [];
+  value.selection_mode ??= "pending";
+  value.manual_exclusions ??= [];
   value.authorized_canary_run_id ??= null;
   value.publication ??= null;
+  if (!["pending", "all-automatic"].includes(value.selection_mode)) {
+    throw new Error("enrichment report selection mode is invalid");
+  }
+  if (
+    !Array.isArray(value.manual_exclusions) ||
+    new Set(value.manual_exclusions.map((entry) => entry?.id)).size !==
+      value.manual_exclusions.length ||
+    value.manual_exclusions.some(
+      (entry) =>
+        !entry ||
+        typeof entry.id !== "string" ||
+        entry.id.length === 0 ||
+        entry.reason_code !== "manual-enrichment-policy" ||
+        typeof entry.enrichment_note !== "string" ||
+        entry.enrichment_note.trim().length === 0 ||
+        value.manifest.includes(entry.id),
+    )
+  ) {
+    throw new Error("enrichment report manual exclusions are invalid");
+  }
+  value.manual_exclusions.sort((left, right) =>
+    left.id.localeCompare(right.id),
+  );
   if (
     typeof value.expected_model !== "string" ||
     value.expected_model.length === 0 ||

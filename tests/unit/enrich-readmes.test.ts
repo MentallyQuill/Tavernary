@@ -12,7 +12,7 @@ const record = {
   name: "Fixture",
   kind: "extension",
   metadata_status: "provisional",
-  enrichment_policy: "automatic",
+  enrichment_policy: "automatic" as const,
   summary: "Generic intake details.",
   visibility: "published",
   frontends: ["sillytavern"],
@@ -163,13 +163,13 @@ test("includes an automatic GitHub preset and excludes manual GitHub records eve
     ...record,
     id: "preset",
     kind: "preset",
-    enrichment_policy: "automatic",
+    enrichment_policy: "automatic" as const,
   };
   const manual = {
     ...record,
     id: "manual",
     metadata_status: "curated",
-    enrichment_policy: "manual",
+    enrichment_policy: "manual" as const,
     enrichment_note: "Bundled repository requires manual curation.",
   };
 

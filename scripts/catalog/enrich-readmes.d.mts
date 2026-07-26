@@ -71,6 +71,7 @@ export type EnrichmentOptions = {
   projectIds?: string[];
   reportPath?: string | null;
   canaryReportPath?: string | null;
+  selectionMode?: "pending" | "all-automatic";
   vocabularies?: {
     primaryFunctions: VocabularyEntry[];
     capabilities: VocabularyEntry[];

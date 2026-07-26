@@ -132,6 +132,25 @@ test("rejects malformed or contradictory durable reports", () => {
   ).toThrow("successful entries");
 });
 
+test("hydrates old reports as pending with no manual exclusions", () => {
+  const legacy = createEnrichmentReport(
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "legacy-run",
+      now,
+      model,
+    }),
+  ) as Record<string, unknown>;
+  delete legacy.selection_mode;
+  delete legacy.manual_exclusions;
+
+  expect(validateEnrichmentReport(legacy)).toMatchObject({
+    selection_mode: "pending",
+    manual_exclusions: [],
+  });
+});
+
 test("round-trips a full report completed with isolated errors", () => {
   let state = createEnrichmentRunState({
     mode: "full",
