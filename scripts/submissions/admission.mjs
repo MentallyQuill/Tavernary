@@ -24,6 +24,7 @@ export function evaluateProjectSubmission(input) {
         "Project source identity could not be resolved.",
       ],
       suggestions: input.suggestions ?? [],
+      frontendDependencies: [],
     };
   }
 
@@ -45,6 +46,7 @@ export function evaluateProjectSubmission(input) {
       status: "needs-information",
       errors: input.errors,
       suggestions: input.suggestions ?? [],
+      frontendDependencies: [],
     };
   }
 
@@ -60,6 +62,7 @@ export function evaluateProjectSubmission(input) {
       status: "needs-information",
       errors: [input.sourceProbe.message],
       suggestions: [],
+      frontendDependencies: [],
     };
   }
   if (
@@ -70,6 +73,7 @@ export function evaluateProjectSubmission(input) {
       status: "needs-information",
       errors: ["Frontends and Extensions require a public GitHub repository."],
       suggestions: [],
+      frontendDependencies: [],
     };
   }
   if (
@@ -80,6 +84,7 @@ export function evaluateProjectSubmission(input) {
       status: "needs-information",
       errors: ["GitHub project repositories must be public and accessible."],
       suggestions: [],
+      frontendDependencies: [],
     };
   }
   if (input.frontendResolution.status === "needs-information") {
@@ -87,6 +92,7 @@ export function evaluateProjectSubmission(input) {
       status: "needs-information",
       errors: input.frontendResolution.errors,
       suggestions: input.frontendResolution.suggestions,
+      frontendDependencies: input.frontendResolution.dependencies ?? [],
     };
   }
 
