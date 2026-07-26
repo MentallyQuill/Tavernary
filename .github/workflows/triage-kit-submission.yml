@@ -3,16 +3,30 @@ name: Triage Kit submission
 on:
   issues:
     types:
-      - opened
+      - labeled
       - edited
 
 permissions:
   contents: read
   issues: write
 
+concurrency:
+  group: triage-kit-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    if: startsWith(github.event.issue.title, '[Kit submission]')
+    if: >-
+      startsWith(github.event.issue.title, '[Kit submission]') &&
+      github.event.issue.state == 'open' &&
+      contains(github.event.issue.labels.*.name, 'issue-admitted') &&
+      (
+        github.event.action == 'edited' ||
+        (
+          github.event.action == 'labeled' &&
+          github.event.label.name == 'issue-admitted'
+        )
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -21,9 +35,6 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
       - name: Validate and label Kit submission
         run: node scripts/submissions/triage-kit-issue.mjs
         env:

@@ -296,24 +296,30 @@ test("runs enrichment through one tested durable orchestrator", async () => {
   expect(source).not.toContain("publish_changes()");
 });
 
-test("triage can label issues but cannot write repository content", async () => {
-  const triage = await workflow("triage-submission");
-  expect(triage.permissions).toEqual({
-    contents: "read",
-    issues: "write",
-  });
-  const kitTriage = await workflow("triage-kit-submission");
-  expect(kitTriage.permissions).toEqual({
-    contents: "read",
-    issues: "write",
-  });
-  const source = await readFile(
-    resolve(workflowDirectory, "triage-kit-submission.yml"),
-    "utf8",
-  );
-  expect(source).toContain("opened");
-  expect(source).toContain("edited");
-  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+test("triage validates admitted submissions without installing dependencies", async () => {
+  for (const name of ["triage-submission", "triage-kit-submission"]) {
+    const document = await workflow(name);
+    const source = await readFile(
+      resolve(workflowDirectory, `${name}.yml`),
+      "utf8",
+    );
+
+    expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+    expect(document.permissions).toEqual({
+      contents: "read",
+      issues: "write",
+    });
+    expect(document.concurrency["cancel-in-progress"]).toBe(true);
+    expect(document.concurrency.group).toContain(
+      "${{ github.event.issue.number }}",
+    );
+    expect(source).toContain("issue-admitted");
+    expect(source).toContain("github.event.issue.state == 'open'");
+    expect(source).toContain("github.event.label.name == 'issue-admitted'");
+    expect(source).toContain("github.event.action == 'edited'");
+    expect(source).not.toContain("npm ci");
+    expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+  }
 });
 
 test("admits opened and reopened issues before submission triage", async () => {
