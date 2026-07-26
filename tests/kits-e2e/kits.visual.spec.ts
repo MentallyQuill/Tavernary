@@ -135,3 +135,145 @@ test("320px card footer gives two metadata rows full width above utility actions
   );
   await expectNoHorizontalOverflow(page);
 });
+
+test("supported Kit card keeps numeric support and its project count in the heading", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  await expect(card).toContainText("5 supporters");
+  await expect(card.getByText("3 Projects", { exact: true })).toBeVisible();
+  await expect(card).toHaveScreenshot("kit-card-supported.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit card without support data omits a support placeholder", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Large Stack" });
+  await expect(card).not.toContainText(/supporter/i);
+  await expect(card).toHaveScreenshot("kit-card-no-support.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit card Copy link hover has a deterministic tooltip treatment", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  await card.getByRole("button", { name: "Copy link" }).hover();
+  await expect(
+    page.getByRole("tooltip", { name: "Copy a direct link to this Kit" }),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot("kit-card-copy-hover.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit card Report hover has a deterministic tooltip treatment", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  await card.getByRole("button", { name: "Report Kit" }).hover();
+  await expect(
+    page.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot("kit-card-report-hover.png", {
+    animations: "disabled",
+  });
+});
+
+test("Kit card copy success notice remains visible long enough to inspect", async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  await card.getByRole("button", { name: "Copy link" }).click();
+  await expect(
+    page.getByRole("status", { name: "Kit URL copied to clipboard" }),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot("kit-card-copy-success.png", {
+    animations: "disabled",
+  });
+});
+
+test("Alpha Kit inspector renders compact direct project cards", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const inspector = page.getByRole("complementary", { name: "Kit Builder" });
+  await expect(
+    inspector.getByRole("link", { name: "Fixture Frontend", exact: true }),
+  ).toBeVisible();
+  await expect(inspector).toHaveScreenshot("alpha-kit-inspector.png", {
+    animations: "disabled",
+  });
+});
+
+test("large Kit inspector stays visually coherent after stack scrolling", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Large Stack" }).click();
+
+  const panel = page.locator(".kit-builder-panel");
+  const stack = panel.locator(".kit-project-stack");
+  await stack.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(
+    stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
+  ).toBeInViewport();
+  await expect(panel).toHaveScreenshot("large-kit-inspector-scrolled.png", {
+    animations: "disabled",
+  });
+});
+
+test("flagged unavailable project retains compact card anatomy", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 800 });
+  await page.getByRole("button", { name: "Open Flagged Stack" }).click();
+
+  const unavailable = page.getByRole("group", {
+    name: "Fixture Flagged Tool unavailable",
+  });
+  await expect(unavailable).toBeVisible();
+  await expect(unavailable).toHaveScreenshot(
+    "flagged-unavailable-project.png",
+    {
+      animations: "disabled",
+    },
+  );
+});
+
+for (const width of [390, 320]) {
+  test(`${width}px phone inspector keeps direct project cards in its sheet`, async ({
+    page,
+  }) => {
+    await openKits(page, { width, height: 844 });
+    await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+    const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+    await expect(
+      sheet.getByRole("link", { name: "Fixture Frontend", exact: true }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    await expect(sheet).toHaveScreenshot(`alpha-kit-inspector-${width}px.png`, {
+      animations: "disabled",
+    });
+  });
+}

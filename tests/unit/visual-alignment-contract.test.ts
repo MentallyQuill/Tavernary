@@ -7,6 +7,83 @@ const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
 describe("catalog visual alignment", () => {
+  test("positions one animated Kit share notice above safe areas", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-share-notice\s*\{[^}]*position:\s*fixed[^}]*z-index:\s*120[^}]*bottom:\s*max\(22px,\s*env\(safe-area-inset-bottom\)\)/s,
+    );
+    expect(css).toContain("@keyframes kit-share-notice-enter");
+    expect(css).toContain("@keyframes kit-share-notice-life");
+    expect(css).toMatch(
+      /\.kit-share-notice\[data-tone="copied"\]\s*\{[^}]*animation:\s*kit-share-notice-life\s+2000ms/s,
+    );
+    expect(css).toMatch(
+      /\.catalog-shell:has\(\.project-selection-dock\) \.kit-share-notice\s*\{[^}]*bottom:\s*max\(92px,\s*calc\(env\(safe-area-inset-bottom\) \+ 92px\)\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-share-notice\[data-tone="fallback"\]\s*\{[^}]*animation:\s*kit-share-notice-enter\s+150ms/s,
+    );
+    expect(responsive).toMatch(
+      /\.kit-share-notice\s*\{[^}]*animation:\s*none[^}]*transform:\s*none/s,
+    );
+  });
+
+  test("gives desktop Kit inspection one bounded project scroll", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-builder-panel-inspect\s*\{[^}]*grid-template-rows:\s*auto minmax\(0,\s*1fr\)[^}]*min-height:\s*0/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-stack\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*contain/s,
+    );
+    expect(responsive).toMatch(
+      /\.kit-project-stack\s*\{[^}]*overflow:\s*visible/s,
+    );
+    expect(css).toMatch(
+      /\.kit-builder-panel-inspect-header > p\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-description\s*\{[^}]*display:\s*-webkit-box[^}]*overflow:\s*hidden[^}]*-webkit-box-orient:\s*vertical[^}]*-webkit-line-clamp:\s*4/s,
+    );
+  });
+
+  test("uses palette-safe semantic styling for unavailable Kit projects", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*cursor:\s*not-allowed[^}]*border-color:\s*var\(--color-border-default\)[^}]*color:\s*var\(--color-text-muted\)[^}]*background:\s*var\(--color-bg-surface\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*--kind-color:\s*var\(--color-text-muted\)/s,
+    );
+    expect(css).toMatch(
+      /\.kit-project-card-unavailable h2\s*\{[^}]*color:\s*var\(--color-text-muted\)/s,
+    );
+    expect(css).not.toMatch(
+      /\.kit-project-card-unavailable\s*\{[^}]*opacity:\s*(?!0(?:;|\s*\}))/s,
+    );
+  });
+
+  test("locks Kit count and action motion", () => {
+    const css = read("src/styles/catalog.css");
+    const responsive = read("src/styles/responsive.css");
+
+    expect(css).toMatch(
+      /\.kit-project-count-tag\s*\{[^}]*border-radius:\s*999px[^}]*white-space:\s*nowrap/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-action\s*\{[^}]*150ms[^}]*transform\s+150ms/s,
+    );
+    expect(css).toMatch(/\.kit-card-action:active\s*\{[^}]*scale\(0\.98\)/s);
+    expect(responsive).toMatch(
+      /\.kit-card-action:active[^}]*\{[^}]*transform:\s*none/s,
+    );
+  });
+
   test("uses Kit Builder module names", () => {
     expect(() =>
       read("src/features/kits/components/kit-builder-panel.tsx"),

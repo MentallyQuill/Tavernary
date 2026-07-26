@@ -12,7 +12,7 @@ import {
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import { copyKitLink, kitShareUrl } from "@/features/kits/share-kit";
+import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import { useModalSurface } from "@/hooks/use-modal-surface";
@@ -46,6 +46,8 @@ export function availableBuilderHeight(viewportHeight: number, top: number) {
 export function KitBuilderPanel({
   state,
   kit,
+  now,
+  onCopyLink,
   onCollapse,
   onDuplicate,
   onEdit,
@@ -62,6 +64,8 @@ export function KitBuilderPanel({
 }: {
   state: KitBuilderState;
   kit: CatalogKit | null;
+  now: string;
+  onCopyLink: (kitId: string) => void | Promise<void>;
   onCollapse: () => void;
   onDuplicate?: (kit: CatalogKit) => void;
   onEdit?: (kit: CatalogKit) => void;
@@ -78,10 +82,8 @@ export function KitBuilderPanel({
   draftAccessStatus?: DraftAccessStatus;
   hidePhoneDraftAccess?: boolean;
 }) {
-  const [fallbackUrl, setFallbackUrl] = useState("");
   const [discardOpen, setDiscardOpen] = useState(false);
   const { phone } = useResponsiveCapabilities();
-  const fallbackRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const discardRef = useRef<HTMLButtonElement>(null);
@@ -98,10 +100,6 @@ export function KitBuilderPanel({
       }
     }, 0);
   }, []);
-
-  useEffect(() => {
-    if (fallbackUrl) fallbackRef.current?.select();
-  }, [fallbackUrl]);
 
   const phoneSheetVisible =
     phone && active && !state.collapsed && state.mode !== "intro";
@@ -262,6 +260,7 @@ export function KitBuilderPanel({
       role={phone ? "dialog" : "complementary"}
       aria-modal={phone ? true : undefined}
       data-motion-phase={phone ? phonePresence.phase : undefined}
+      data-mode={state.mode}
     >
       <header className="kit-builder-panel-header">
         <h2 ref={headingRef} tabIndex={-1}>
@@ -316,66 +315,72 @@ export function KitBuilderPanel({
           </div>
         ) : state.mode === "inspect" && kit ? (
           <div className="kit-builder-panel-inspect">
-            <header>
-              <h2>{kit.title}</h2>
-              <p>@{kit.author.login}</p>
-            </header>
-            <p>{kit.description}</p>
-            <div className="kit-builder-panel-actions">
-              <button
-                type="button"
-                className="control-secondary"
-                onClick={() => onDuplicate?.(kit)}
-              >
-                <CategoryIcon name="duplicate" />
-                Duplicate
-              </button>
-              <button
-                type="button"
-                className="control-secondary"
-                onClick={() => onEdit?.(kit)}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="control-secondary"
-                aria-label="Copy link"
-                onClick={async () => {
-                  const result = await copyKitLink(kit.id);
-                  setFallbackUrl(
-                    result === "fallback" ? kitShareUrl(kit.id) : "",
-                  );
-                }}
-              >
-                <CategoryIcon name="copy-link" />
-                Copy link
-              </button>
-              <a
-                className="control-quiet"
-                href={issueUrl("06-kit-report.yml", kit)}
-                target="_blank"
-              >
-                Report Kit
-              </a>
-              <a
-                className="control-quiet"
-                href={issueUrl("07-kit-withdrawal.yml", kit)}
-                target="_blank"
-              >
-                Request withdrawal
-              </a>
+            <div className="kit-builder-panel-inspect-header">
+              <header>
+                <h2>{kit.title}</h2>
+                <p>@{kit.author.login}</p>
+              </header>
+              <p>{kit.description}</p>
+              <div className="kit-builder-panel-actions">
+                <button
+                  type="button"
+                  className="control-secondary"
+                  onClick={() => onDuplicate?.(kit)}
+                >
+                  <CategoryIcon name="duplicate" />
+                  Duplicate
+                </button>
+                <button
+                  type="button"
+                  className="control-secondary"
+                  onClick={() => onEdit?.(kit)}
+                >
+                  Edit
+                </button>
+                <Tooltip
+                  id={`${tooltipId}-copy-kit-link-tooltip`}
+                  label="Copy a direct link to this Kit"
+                  className="control-tooltip"
+                >
+                  <button
+                    type="button"
+                    className="control-secondary"
+                    aria-label="Copy link"
+                    onClick={() => void onCopyLink(kit.id)}
+                  >
+                    <CategoryIcon name="copy-link" />
+                    Copy link
+                  </button>
+                </Tooltip>
+                <a
+                  className="control-quiet"
+                  href={issueUrl("06-kit-report.yml", kit)}
+                  target="_blank"
+                >
+                  Report Kit
+                </a>
+                <a
+                  className="control-quiet"
+                  href={issueUrl("07-kit-withdrawal.yml", kit)}
+                  target="_blank"
+                >
+                  Request withdrawal
+                </a>
+              </div>
             </div>
-            {fallbackUrl ? (
-              <input
-                ref={fallbackRef}
-                aria-label="Kit link"
-                readOnly
-                value={fallbackUrl}
-                onFocus={(event) => event.currentTarget.select()}
-              />
-            ) : null}
-            <KitProjectStack components={kit.components} />
+            <section
+              className="kit-project-list"
+              aria-labelledby={`${kit.id}-project-list-heading`}
+            >
+              <h3
+                id={`${kit.id}-project-list-heading`}
+                className="kit-project-list-heading"
+              >
+                {kit.components.length}{" "}
+                {kit.components.length === 1 ? "Project" : "Projects"}
+              </h3>
+              <KitProjectStack components={kit.components} now={now} />
+            </section>
           </div>
         ) : state.mode === "build" ? (
           <div className="kit-builder-panel-build">

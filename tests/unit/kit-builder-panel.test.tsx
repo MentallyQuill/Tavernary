@@ -6,17 +6,36 @@ import {
   screen,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { type ComponentProps, useState } from "react";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import {
   availableBuilderHeight,
-  KitBuilderPanel,
+  KitBuilderPanel as ProductionKitBuilderPanel,
 } from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
+import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit } from "@/features/kits/kit-types";
 
 const originalMatchMedia = window.matchMedia;
+
+type TestKitBuilderPanelProps = Omit<
+  ComponentProps<typeof ProductionKitBuilderPanel>,
+  "now" | "onCopyLink"
+> & {
+  now?: string;
+  onCopyLink?: (kitId: string) => void | Promise<void>;
+};
+
+function KitBuilderPanel({
+  now = "2026-07-24T00:00:00.000Z",
+  onCopyLink = () => undefined,
+  ...props
+}: TestKitBuilderPanelProps) {
+  return (
+    <ProductionKitBuilderPanel {...props} now={now} onCopyLink={onCopyLink} />
+  );
+}
 
 function mockMatchMedia({
   phone = false,
@@ -45,6 +64,76 @@ function mockMatchMedia({
   });
 }
 
+function fixtureProject({
+  id,
+  name,
+  kind,
+  primaryFunction,
+}: Pick<
+  CatalogProject,
+  "id" | "name" | "kind" | "primaryFunction"
+>): CatalogProject {
+  return {
+    id,
+    name,
+    kind,
+    metadataStatus: "curated",
+    sourceStatus: "healthy",
+    primaryFunction,
+    summary: `${name} summary`,
+    canonicalUrl: `https://example.com/${id}`,
+    catalogedAt: "2026-07-01T00:00:00.000Z",
+    catalogCohort: "standard",
+    frontends: [],
+    capabilities: [],
+    searchableText: name.toLocaleLowerCase(),
+    attribution: {
+      owner: "example-owner",
+      contributors: [],
+      humanContributorCount: 1,
+      status: "current",
+    },
+    activity: {
+      latestSourceActivityAt: "2026-07-24T00:00:00.000Z",
+      activeWeeks12: 12,
+      weeklyActivity: [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+      ],
+      evidenceStatus: "complete",
+      dormant: false,
+    },
+    latestReleaseAt: null,
+    community: null,
+    repositorySizeKb: null,
+    license: {
+      status: "osi-approved",
+      label: "MIT",
+      tooltip: "MIT License",
+    },
+    preset:
+      kind === "preset"
+        ? {
+            version: "1.0.0",
+            publishedAt: "2026-07-24T00:00:00.000Z",
+            artifactSizeBytes: 1024,
+          }
+        : null,
+    refreshedAt: "2026-07-24T00:00:00.000Z",
+    staleSince: null,
+  };
+}
+
 function fixtureKit(): CatalogKit {
   return {
     id: "story-kit-41",
@@ -65,7 +154,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/frontend",
-        project: null,
+        project: fixtureProject({
+          id: "frontend",
+          name: "Frontend",
+          kind: "frontend",
+          primaryFunction: "frontend",
+        }),
       },
       {
         projectId: "memory",
@@ -75,7 +169,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/memory",
-        project: null,
+        project: fixtureProject({
+          id: "memory",
+          name: "Memory",
+          kind: "extension",
+          primaryFunction: "memory-retrieval",
+        }),
       },
       {
         projectId: "preset",
@@ -85,7 +184,12 @@ function fixtureKit(): CatalogKit {
         availability: "available",
         unavailableReason: null,
         canonicalUrl: "https://example.com/preset",
-        project: null,
+        project: fixtureProject({
+          id: "preset",
+          name: "Preset",
+          kind: "preset",
+          primaryFunction: "generation-reasoning",
+        }),
       },
       {
         projectId: "flagged",
@@ -107,6 +211,18 @@ function fixtureKit(): CatalogKit {
   };
 }
 
+function renderInspectPanel() {
+  return render(
+    <KitBuilderPanel
+      state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
+      kit={fixtureKit()}
+      now="2026-07-24T00:00:00.000Z"
+      onCopyLink={() => undefined}
+      onCollapse={() => undefined}
+    />,
+  );
+}
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
@@ -117,7 +233,21 @@ afterEach(() => {
   });
 });
 
+beforeEach(() => mockMatchMedia({}));
+
 describe("Kit Builder", () => {
+  test("explains inspect-mode Copy link on hover and focus", async () => {
+    renderInspectPanel();
+    const copy = screen.getByRole("button", { name: "Copy link" });
+
+    await userEvent.hover(copy);
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Copy a direct link to this Kit",
+      }),
+    ).toBeVisible();
+  });
+
   test("keeps phone entry browse-first but opens explicit inspections", () => {
     mockMatchMedia({ phone: true, touchLayout: true });
     const { rerender } = render(
@@ -487,8 +617,7 @@ describe("Kit Builder", () => {
     expect(screen.getByText("Unknown Kit")).toBeVisible();
   });
 
-  test("expands one project at a time and disables flagged rows", async () => {
-    const user = userEvent.setup();
+  test("links available projects directly and keeps flagged projects noninteractive", () => {
     render(
       <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
@@ -498,23 +627,44 @@ describe("Kit Builder", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Story Kit" })).toBeVisible();
-    expect(
-      screen.getAllByRole("button", { name: /project details/i }),
-    ).toHaveLength(3);
-    await user.click(
-      screen.getByRole("button", { name: "Memory project details" }),
+    expect(screen.getByRole("link", { name: "Frontend" })).toHaveAttribute(
+      "href",
+      "https://example.com/frontend",
     );
-    expect(screen.getByRole("link", { name: "Memory" })).toBeVisible();
-    await user.click(
-      screen.getByRole("button", { name: "Preset project details" }),
+    expect(screen.getByRole("link", { name: "Memory" })).toHaveAttribute(
+      "href",
+      "https://example.com/memory",
     );
-    expect(
-      screen.queryByRole("link", { name: "Memory" }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Preset" })).toHaveAttribute(
+      "href",
+      "https://example.com/preset",
+    );
+    expect(screen.queryByText("project details")).not.toBeInTheDocument();
+    expect(document.querySelector("[aria-expanded]")).toBeNull();
     expect(screen.getByText("safety-review")).toBeVisible();
     expect(
       screen.queryByRole("link", { name: "Flagged" }),
     ).not.toBeInTheDocument();
+  });
+
+  test("separates the inspect header from its project list", () => {
+    renderInspectPanel();
+
+    const builder = screen.getByRole("complementary", {
+      name: "Kit Builder",
+    });
+    expect(builder).toHaveAttribute("data-mode", "inspect");
+    expect(screen.getByRole("heading", { name: "4 Projects" })).toHaveClass(
+      "kit-project-list-heading",
+    );
+    expect(screen.getByRole("list", { name: "Kit projects" })).toHaveClass(
+      "kit-project-stack",
+    );
+    expect(
+      screen
+        .getByRole("heading", { name: "Story Kit" })
+        .closest(".kit-builder-panel-inspect-header"),
+    ).not.toBeNull();
   });
 
   test("maps inspect actions to shared control treatments", () => {
@@ -539,41 +689,25 @@ describe("Kit Builder", () => {
     ).toHaveClass("control-quiet");
   });
 
-  test("copies links with selectable fallback and prefilled action URLs", async () => {
-    const user = userEvent.setup();
-    Object.defineProperty(navigator, "clipboard", {
-      configurable: true,
-      value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
-    });
-    const share = vi.fn();
-    Object.defineProperty(navigator, "share", {
-      configurable: true,
-      value: share,
-    });
-    window.history.replaceState(null, "", "/Tavernary/");
+  test("delegates inspect-mode copying and preserves action URLs", async () => {
+    const onCopyLink = vi.fn();
     render(
       <KitBuilderPanel
         state={{ mode: "inspect", collapsed: false, kitId: "story-kit-41" }}
         kit={fixtureKit()}
+        now="2026-07-24T00:00:00.000Z"
+        onCopyLink={onCopyLink}
         onCollapse={() => undefined}
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Copy link" }));
-    const fallback = screen.getByRole("textbox", {
-      name: "Kit link",
-    }) as HTMLInputElement;
-    expect(fallback.value).toContain("/Tavernary/?mode=kits&kit=story-kit-41");
-    expect(fallback.selectionStart).toBe(0);
-    expect(fallback.selectionEnd).toBe(fallback.value.length);
+    await userEvent.click(screen.getByRole("button", { name: "Copy link" }));
+    expect(onCopyLink).toHaveBeenCalledWith("story-kit-41");
+    expect(screen.queryByRole("textbox", { name: "Kit link" })).toBeNull();
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveAttribute(
       "href",
       expect.stringContaining("kit-id=story-kit-41"),
     );
-    expect(
-      screen.getByRole("link", { name: "Request withdrawal" }),
-    ).toHaveAttribute("href", expect.stringContaining("story-kit-41"));
-    expect(share).not.toHaveBeenCalled();
   });
 });
 

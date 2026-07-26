@@ -86,7 +86,7 @@ async function verifyUnifiedSelectionFlow(
     .getByRole("button", { name: /Open Kit Builder, 1 project in draft/ })
     .click();
   await page
-    .getByRole("region", { name: "Frontend" })
+    .locator(".kit-frontend-foundation")
     .getByRole("button", { name: "Remove Fixture Frontend from Kit" })
     .click();
   await expect(
@@ -396,7 +396,11 @@ test("navigates, restores URLs, searches every indexed Kit field, and sorts", as
     page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "All Projects", exact: true }).click();
-  await expect(page.locator(".project-card")).toHaveCount(50);
+  await expect(
+    page
+      .getByRole("region", { name: "Project catalog" })
+      .locator(".project-card"),
+  ).toHaveCount(50);
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   await expect(
     page.getByLabel("Kit Builder").getByRole("heading", { name: "Alpha Kit" }),
@@ -463,6 +467,28 @@ test("desktop long Kit stacks scroll through the final row and submit controls",
   await expect(panel.locator(".kit-builder-row").last()).toBeInViewport();
   await expect(panel.locator(".kit-builder-footer")).toBeInViewport();
   await expect(panel.getByRole("button", { name: "Submit Kit" })).toBeVisible();
+});
+
+test("desktop Kit inspection keeps fixed actions reachable with a 600-character description", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 500 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+  const panel = page.getByRole("complementary", { name: "Kit Builder" });
+  const description = panel.locator(".kit-builder-panel-inspect-header > p");
+  await description.evaluate((element) => {
+    element.textContent = "Long Kit description ".repeat(30).slice(0, 600);
+  });
+
+  await expect(description).toHaveCSS("-webkit-line-clamp", "4");
+  await expect(
+    panel.getByRole("button", { name: "Copy link" }),
+  ).toBeInViewport();
+  await expect(
+    panel.getByRole("link", { name: "Request withdrawal" }),
+  ).toBeInViewport();
 });
 
 test("compact cards keep the Kit control right-aligned and reserve an ellipsis gutter", async ({
@@ -598,16 +624,51 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     .getByRole("article")
     .filter({ hasText: "Five Line Kit" })
     .locator(".kit-card-description");
-  expect(
-    await longDescription.evaluate(
-      (element) => getComputedStyle(element).webkitLineClamp,
-    ),
-  ).toBe("4");
+  const descriptionClamp = await longDescription.evaluate((element) => {
+    element.textContent = "Long Kit description ".repeat(30);
+    const oneLine = element.cloneNode() as HTMLElement;
+    oneLine.textContent = "M";
+    oneLine.style.cssText =
+      "position:absolute;visibility:hidden;display:block;overflow:visible;white-space:nowrap;-webkit-line-clamp:unset;";
+    document.body.append(oneLine);
+    const lineHeight = oneLine.getBoundingClientRect().height;
+    oneLine.remove();
 
-  await page
-    .getByRole("article", { name: "Alpha Kit" })
-    .getByRole("button", { name: "Report Kit" })
-    .click();
+    const style = getComputedStyle(element);
+    return {
+      clientHeight: element.clientHeight,
+      lineClamp: style.webkitLineClamp,
+      lineHeight,
+      overflow: style.overflow,
+      scrollHeight: element.scrollHeight,
+    };
+  });
+  expect(descriptionClamp.lineClamp).toBe("4");
+  expect(descriptionClamp.overflow).toBe("hidden");
+  expect(descriptionClamp.scrollHeight).toBeGreaterThan(
+    descriptionClamp.clientHeight,
+  );
+  expect(descriptionClamp.clientHeight).toBeLessThanOrEqual(
+    descriptionClamp.lineHeight * 4 + 1,
+  );
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  const cardCopy = card.getByRole("button", { name: "Copy link" });
+  await cardCopy.hover();
+  await expect(
+    page.getByRole("tooltip", { name: "Copy a direct link to this Kit" }),
+  ).toBeVisible();
+  await cardCopy.click();
+  await expect(
+    page.getByRole("status", { name: "Kit URL copied to clipboard" }),
+  ).toBeVisible();
+
+  const cardReportButton = card.getByRole("button", { name: "Report Kit" });
+  await cardReportButton.hover();
+  await expect(
+    page.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
+  ).toBeVisible();
+  await cardReportButton.click();
   const cardReport = new URL(
     (await page.evaluate(() => sessionStorage.getItem("opened-url")))!,
   );
@@ -617,16 +678,40 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   );
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
-  const first = page.getByRole("button", {
-    name: "Fixture Frontend project details",
+  const inspector = page.getByRole("complementary", { name: "Kit Builder" });
+  const frontend = inspector.getByRole("link", {
+    name: "Fixture Frontend",
+    exact: true,
   });
-  const second = page.getByRole("button", {
-    name: "Fixture Tool 02 project details",
+  const tool = inspector.getByRole("link", {
+    name: "Fixture Tool 02",
+    exact: true,
   });
-  await first.click();
-  await second.click();
-  await expect(first).toHaveAttribute("aria-expanded", "false");
-  await expect(second).toHaveAttribute("aria-expanded", "true");
+  await expect(frontend).toHaveAttribute(
+    "href",
+    "https://github.com/fixture/fixture-frontend",
+  );
+  await expect(tool).toHaveAttribute(
+    "href",
+    "https://github.com/fixture/fixture-tool-02",
+  );
+  await expect(frontend).toHaveAttribute("target", "_blank");
+  await expect(inspector.locator("[aria-expanded]")).toHaveCount(0);
+  await expect(inspector.locator(".project-kit-control")).toHaveCount(0);
+
+  await tool.evaluate((element) => {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      sessionStorage.setItem(
+        "inspector-project-url",
+        (event.currentTarget as HTMLAnchorElement).href,
+      );
+    });
+  });
+  await tool.click();
+  expect(
+    await page.evaluate(() => sessionStorage.getItem("inspector-project-url")),
+  ).toBe("https://github.com/fixture/fixture-tool-02");
 
   await page
     .getByRole("button", { name: "Copy link", exact: true })
@@ -656,6 +741,117 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const flagged = page.locator(".kit-project-stack li.flagged");
   await expect(flagged).toContainText("Fixture Flagged Tool");
   await expect(flagged.locator("a")).toHaveCount(0);
+});
+
+test("scrolls a large desktop project stack under a fixed Kit header", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 800 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Large Stack" }).click();
+
+  const panel = page.locator(".kit-builder-panel");
+  const header = panel.locator(".kit-builder-panel-header");
+  const actions = panel.locator(".kit-builder-panel-actions");
+  const stack = panel.locator(".kit-project-stack");
+  await expect(header).toBeVisible();
+  await expect(actions).toBeVisible();
+  const before = await panel.evaluate((element) => {
+    const headerElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-header",
+    );
+    const actionsElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-actions",
+    );
+    if (!headerElement || !actionsElement) {
+      throw new Error("Kit inspector chrome is missing");
+    }
+    return {
+      actions: actionsElement.getBoundingClientRect().toJSON(),
+      header: headerElement.getBoundingClientRect().toJSON(),
+      viewport: {
+        bottom: window.innerHeight,
+        left: 0,
+        right: window.innerWidth,
+        top: 0,
+      },
+    };
+  });
+  for (const chrome of [before.header, before.actions]) {
+    expect(chrome.left).toBeGreaterThanOrEqual(before.viewport.left);
+    expect(chrome.right).toBeLessThanOrEqual(before.viewport.right);
+    expect(chrome.top).toBeGreaterThanOrEqual(before.viewport.top);
+    expect(chrome.bottom).toBeLessThanOrEqual(before.viewport.bottom);
+  }
+  const scroll = await stack.evaluate((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+  }));
+  expect(scroll.scrollHeight).toBeGreaterThan(scroll.clientHeight);
+
+  await stack.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(
+    stack.getByRole("link", { name: "Fixture Tool 49", exact: true }),
+  ).toBeInViewport();
+  await expect(
+    stack.getByRole("group", { name: "Fixture Flagged Tool unavailable" }),
+  ).toBeVisible();
+  await expect(header).toBeVisible();
+  await expect(actions).toBeVisible();
+  const after = await panel.evaluate((element) => {
+    const headerElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-header",
+    );
+    const actionsElement = element.querySelector<HTMLElement>(
+      ".kit-builder-panel-actions",
+    );
+    if (!headerElement || !actionsElement) {
+      throw new Error("Kit inspector chrome is missing after scrolling");
+    }
+    return {
+      actions: actionsElement.getBoundingClientRect().toJSON(),
+      header: headerElement.getBoundingClientRect().toJSON(),
+      viewport: {
+        bottom: window.innerHeight,
+        left: 0,
+        right: window.innerWidth,
+        top: 0,
+      },
+    };
+  });
+  for (const chrome of [after.header, after.actions]) {
+    expect(chrome.left).toBeGreaterThanOrEqual(after.viewport.left);
+    expect(chrome.right).toBeLessThanOrEqual(after.viewport.right);
+    expect(chrome.top).toBeGreaterThanOrEqual(after.viewport.top);
+    expect(chrome.bottom).toBeLessThanOrEqual(after.viewport.bottom);
+  }
+  expect(after.header.y).toBe(before.header.y);
+  expect(after.actions.y).toBe(before.actions.y);
+});
+
+test("phone inspectors expose direct project links without horizontal overflow", async ({
+  page,
+}) => {
+  for (const width of [390, 360, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Browse categories" }).click();
+    await page.getByRole("button", { name: "Kits", exact: true }).click();
+    await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+
+    const sheet = page.getByRole("dialog", { name: "Kit Builder" });
+    await expect(
+      sheet.getByRole("link", { name: "Fixture Frontend", exact: true }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    await page.getByRole("button", { name: "Close Kit Builder" }).click();
+  }
 });
 
 test("batches projects without interrupting browse state and preserves draft access", async ({
@@ -1007,9 +1203,7 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
     await expectMobileTarget(dialog.getByRole("link", { name: action }));
   }
   await expectMobileTarget(
-    dialog.getByRole("button", {
-      name: "Fixture Frontend project details",
-    }),
+    dialog.getByRole("link", { name: "Fixture Frontend", exact: true }),
   );
   expect(
     await dialog.evaluate(

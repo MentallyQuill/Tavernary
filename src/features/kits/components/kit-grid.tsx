@@ -13,7 +13,7 @@ export function KitGrid({
   now: string;
   selectedKitId: string;
   onSelect: (kitId: string) => void;
-  onCopyLink: (kitId: string) => void;
+  onCopyLink: (kitId: string) => void | Promise<void>;
   onReport: (kitId: string) => void;
 }) {
   if (kits.length === 0) {
