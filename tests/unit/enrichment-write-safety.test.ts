@@ -8,7 +8,7 @@ import { expect, test } from "vitest";
 import { writeEnrichedRecord } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
-  schema_version: 2,
+  schema_version: 4,
   id: "fixture",
   name: "Fixture",
   kind: "extension",
@@ -22,6 +22,7 @@ const record = {
   catalog_cohort: "seed",
   visibility: "published",
   refresh_policy: "automatic",
+  enrichment_policy: "automatic",
 };
 
 const output = {
@@ -63,6 +64,24 @@ test("refuses invalid output without changing the record", async () => {
       metadata_status: "provisional",
     } as never),
   ).rejects.toThrow();
+  expect(await readFile(path, "utf8")).toBe(original);
+});
+
+test("re-reads and refuses a record changed to manual after selection", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
+  const path = join(root, "fixture.json");
+  const manual = {
+    ...record,
+    enrichment_policy: "manual",
+    enrichment_note: "Maintainer locked this record.",
+  };
+  const original = JSON.stringify(manual, null, 2);
+  await writeFile(path, original);
+
+  await expect(writeEnrichedRecord(path, record, output)).rejects.toMatchObject({
+    code: "manual-enrichment-policy",
+    enrichmentNote: "Maintainer locked this record.",
+  });
   expect(await readFile(path, "utf8")).toBe(original);
 });
 

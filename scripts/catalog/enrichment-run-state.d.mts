@@ -23,6 +23,7 @@ export type ProjectAttemptResult = {
     latencyMs: number;
   };
   reasonCode?: string;
+  enrichmentNote?: string;
   diagnosticCode?: string | null;
   repairHint?: string;
   message?: string;

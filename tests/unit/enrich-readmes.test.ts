@@ -4,6 +4,7 @@ import {
   enrichRecord,
   mapWithConcurrency,
   runEnrichmentBatch,
+  selectEnrichmentRecords,
 } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
@@ -11,6 +12,7 @@ const record = {
   name: "Fixture",
   kind: "extension",
   metadata_status: "provisional",
+  enrichment_policy: "automatic",
   summary: "Generic intake details.",
   visibility: "published",
   frontends: ["sillytavern"],
@@ -154,6 +156,75 @@ test("skips curated records unless forced", async () => {
 
   expect(output).toBeNull();
   expect(generate).not.toHaveBeenCalled();
+});
+
+test("includes an automatic GitHub preset and excludes manual GitHub records even when forced", () => {
+  const automaticPreset = {
+    ...record,
+    id: "preset",
+    kind: "preset",
+    enrichment_policy: "automatic",
+  };
+  const manual = {
+    ...record,
+    id: "manual",
+    metadata_status: "curated",
+    enrichment_policy: "manual",
+    enrichment_note: "Bundled repository requires manual curation.",
+  };
+
+  expect(
+    selectEnrichmentRecords([manual, automaticPreset], { force: true }).map(
+      ({ id }) => id,
+    ),
+  ).toEqual(["preset"]);
+});
+
+test("does not call the provider for a manual record", async () => {
+  const generate = vi.fn();
+  await expect(
+    enrichRecord(
+      {
+        ...record,
+        enrichment_policy: "manual",
+        enrichment_note: "Requires manual curation.",
+      },
+      snapshot,
+      { generate },
+      { force: true, vocabularies },
+    ),
+  ).resolves.toBeNull();
+  expect(generate).not.toHaveBeenCalled();
+});
+
+test("reports an explicitly targeted manual record as skipped", async () => {
+  const result = await runEnrichmentBatch({
+    projectIds: ["manual"],
+    recordsById: {
+      manual: {
+        ...record,
+        id: "manual",
+        enrichment_policy: "manual",
+        enrichment_note: "Requires manual curation.",
+      },
+    },
+    snapshotsById: {},
+    phase: "primary",
+    vocabularies,
+    provider: { generate: vi.fn() },
+    validateSnapshot: () => true,
+  });
+
+  expect(result).toEqual([
+    {
+      id: "manual",
+      phase: "primary",
+      outcome: "skipped",
+      reasonCode: "manual-enrichment-policy",
+      enrichmentNote: "Requires manual curation.",
+      message: "Registry record requires manual enrichment.",
+    },
+  ]);
 });
 
 test("uses the exact fallback when both source texts are unavailable", async () => {

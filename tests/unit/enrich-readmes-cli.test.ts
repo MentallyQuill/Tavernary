@@ -47,6 +47,7 @@ function record(id: string) {
     kind: "extension",
     summary: "Generic intake details.",
     metadata_status: "provisional",
+    enrichment_policy: "automatic",
     visibility: "published",
     frontends: [],
     source: {

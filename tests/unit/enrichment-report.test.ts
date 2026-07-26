@@ -163,6 +163,39 @@ test("round-trips a full report completed with isolated errors", () => {
   expect(validateEnrichmentReport(report)).toEqual(report);
 });
 
+test("preserves a manual enrichment note with a sanitized skip message", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["manual"],
+    runId: "manual-run",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "manual",
+        phase: "primary",
+        outcome: "skipped",
+        reasonCode: "manual-enrichment-policy",
+        enrichmentNote: "Requires manual curation.",
+        message: "Untrusted message must not survive.",
+      },
+    ],
+    now,
+  );
+
+  const report = createEnrichmentReport(state);
+  expect(report.entries.manual).toMatchObject({
+    outcome: "skipped",
+    reason_code: "manual-enrichment-policy",
+    enrichment_note: "Requires manual curation.",
+    message: "Registry record requires manual enrichment.",
+  });
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
 test("round-trips durable publication and deferred canary IDs", () => {
   const state = createEnrichmentRunState({
     mode: "full",

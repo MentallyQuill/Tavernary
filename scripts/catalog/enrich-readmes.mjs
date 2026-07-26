@@ -16,6 +16,11 @@ import {
   validateProviderConfiguration,
 } from "./enrichment-provider.mjs";
 import {
+  MANUAL_ENRICHMENT_REASON_CODE,
+  assertAutomaticEnrichment,
+  isAutomaticEnrichment,
+} from "./enrichment-policy.mjs";
+import {
   createEnrichmentReport,
   isPreHardeningTerminalFullReport,
   validateEnrichmentReport,
@@ -46,17 +51,23 @@ function sourceBackedPrimaryFunctions(entries) {
   );
 }
 
+const genericSummaries = new Set([
+  "Generic intake details.",
+  "Provisional project description.",
+  "No description found.",
+  "No README file found.",
+]);
+
 function isEligible(record, force = false) {
-  if (record.visibility !== "published" || record.source?.type !== "github") {
+  if (
+    !isAutomaticEnrichment(record) ||
+    record.visibility !== "published" ||
+    record.source?.type !== "github"
+  ) {
     return false;
   }
   if (force || record.metadata_status === "provisional") return true;
-  return new Set([
-    "Generic intake details.",
-    "Provisional project description.",
-    "No description found.",
-    "No README file found.",
-  ]).has(record.summary);
+  return genericSummaries.has(record.summary);
 }
 
 export function selectEnrichmentRecords(records, options = {}) {
@@ -66,19 +77,14 @@ export function selectEnrichmentRecords(records, options = {}) {
 }
 
 export async function enrichRecord(record, snapshot, provider, options = {}) {
+  if (!isAutomaticEnrichment(record)) return null;
   if (record.visibility !== "published") return null;
   if (record.source?.type !== "github") return null;
   if (record.metadata_status === "curated" && !options.force) return null;
-  const genericSummary = new Set([
-    "Generic intake details.",
-    "Provisional project description.",
-    "No description found.",
-    "No README file found.",
-  ]);
   if (
     !options.force &&
     record.metadata_status !== "provisional" &&
-    !genericSummary.has(record.summary)
+    !genericSummaries.has(record.summary)
   ) {
     return null;
   }
@@ -178,6 +184,7 @@ export async function writeEnrichedRecord(
   });
   if (!validation.valid) throw new Error(validation.errors.join("; "));
   const current = JSON.parse(await readFile(path, "utf8"));
+  assertAutomaticEnrichment(current);
   const updated = {
     ...current,
     summary: output.summary,
@@ -312,9 +319,20 @@ async function processProject(input, id) {
     loadSource,
     writeRecord,
     previousEntries,
+    force = false,
   } = input;
   const record = recordsById[id];
-  if (!record || !isEligible(record)) {
+  if (record && !isAutomaticEnrichment(record)) {
+    return {
+      id,
+      phase,
+      outcome: "skipped",
+      reasonCode: MANUAL_ENRICHMENT_REASON_CODE,
+      enrichmentNote: record.enrichment_note,
+      message: "Registry record requires manual enrichment.",
+    };
+  }
+  if (!record || !isEligible(record, force)) {
     return {
       id,
       phase,
@@ -414,7 +432,18 @@ async function processProject(input, id) {
   }
   try {
     await writeRecord(record, output, vocabularies);
-  } catch {
+  } catch (error) {
+    if (error?.code === MANUAL_ENRICHMENT_REASON_CODE) {
+      return {
+        id,
+        phase,
+        outcome: "skipped",
+        reasonCode: MANUAL_ENRICHMENT_REASON_CODE,
+        enrichmentNote: error.enrichmentNote,
+        message: "Registry record requires manual enrichment.",
+        ...sourceProvenance(source),
+      };
+    }
     return {
       id,
       phase,
@@ -461,6 +490,7 @@ export async function runEnrichmentBatch(input) {
       );
     },
     previousEntries = {},
+    force = false,
   } = input;
   if (!["primary", "retry"].includes(phase)) {
     throw new Error("batch phase must be primary or retry");
@@ -478,6 +508,7 @@ export async function runEnrichmentBatch(input) {
           loadSource,
           writeRecord,
           previousEntries,
+          force,
         },
         id,
       );

@@ -32,6 +32,7 @@ export class ManualEnrichmentPolicyError extends Error {
   projectId: string;
   code: typeof MANUAL_ENRICHMENT_REASON_CODE;
   note: string;
+  enrichmentNote: string;
   constructor(record: EnrichmentPolicyRecord);
 }
 

@@ -49,6 +49,7 @@ export class ManualEnrichmentPolicyError extends Error {
     this.projectId = projectId;
     this.code = MANUAL_ENRICHMENT_REASON_CODE;
     this.note = note;
+    this.enrichmentNote = note;
   }
 }
 

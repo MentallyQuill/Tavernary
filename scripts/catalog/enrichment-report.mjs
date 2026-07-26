@@ -45,6 +45,8 @@ const safeMessages = {
   "source-load-failed": "Enrichment source loading failed.",
   "record-missing": "Registry record is missing.",
   "record-ineligible": "Registry record is no longer eligible.",
+  "manual-enrichment-policy":
+    "Registry record requires manual enrichment.",
 };
 
 function sanitizedEntry(entry) {
@@ -64,6 +66,7 @@ function sanitizedEntry(entry) {
     "returned_model",
     "latency_ms",
     "reason_code",
+    "enrichment_note",
     "diagnostic_code",
     "repair_hint",
   ]) {

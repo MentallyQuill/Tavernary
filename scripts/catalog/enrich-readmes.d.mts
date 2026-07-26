@@ -31,6 +31,8 @@ export type RegistryRecord = {
   name?: string;
   kind?: string;
   metadata_status?: string;
+  enrichment_policy?: "automatic" | "manual";
+  enrichment_note?: string;
   summary?: string;
   visibility?: string;
   frontends?: string[];
@@ -156,6 +158,7 @@ export function runEnrichmentBatch(options: {
     },
   ) => Promise<void>;
   previousEntries?: EnrichmentRunState["entries"];
+  force?: boolean;
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {

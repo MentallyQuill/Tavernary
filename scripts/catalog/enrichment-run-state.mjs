@@ -139,6 +139,7 @@ function entryForResult(result, attempt, outcome, now) {
     ["readmePath", "readme_path"],
     ["readmeRef", "readme_ref"],
     ["reasonCode", "reason_code"],
+    ["enrichmentNote", "enrichment_note"],
     ["diagnosticCode", "diagnostic_code"],
     ["repairHint", "repair_hint"],
     ["message", "message"],
