@@ -1,11 +1,12 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 async function openKits(
   page: Page,
   viewport: { width: number; height: number },
 ) {
   await page.setViewportSize(viewport);
-  await page.goto("/");
+  await page.goto(sitePath());
   if (viewport.width <= 760) {
     await page.getByRole("button", { name: "Browse categories" }).click();
   }
@@ -77,7 +78,7 @@ test("320px card footer gives two metadata rows full width above utility actions
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const shell = page.locator(".project-card-shell").first();
   const footer = shell.locator(".card-bottom");

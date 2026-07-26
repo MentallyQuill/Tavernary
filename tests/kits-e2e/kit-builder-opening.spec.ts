@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { sitePath } from "../helpers/site-path";
 
 test("desktop Builder toggle stays anchored between collapsed and expanded states", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   const open = page.getByRole("button", {
     name: "Open Kit Builder",
@@ -30,7 +31,7 @@ test("desktop Builder reveals stable final-width content while its track expands
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   await page
     .getByRole("button", { name: "Open Kit Builder", exact: true })
@@ -102,7 +103,7 @@ test("desktop Builder folds inward while its collapsed rail stays at the edge", 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto(sitePath());
 
   await page
     .getByRole("button", { name: "Open Kit Builder", exact: true })
