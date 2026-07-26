@@ -682,50 +682,44 @@ export function createProductionOperations(options = {}) {
       ]);
     },
     async prepareFull() {
-      for (let round = 1; round <= 3; round += 1) {
-        await syncMain();
-        await npm([
-          "run",
-          "catalog:refresh",
+      await syncMain();
+      await npm([
+        "run",
+        "catalog:refresh",
+        "--",
+        "--mode",
+        "incremental",
+        "--deployment-requested",
+      ]);
+      await npm(["run", "catalog:backfill-identities", "--", "--write"]);
+      await npm(["run", "catalog:validate"]);
+      const meaningfulChanges = await checked(
+        "git",
+        [
+          "status",
+          "--porcelain",
           "--",
-          "--mode",
-          "incremental",
-          "--deployment-requested",
-        ]);
-        await npm(["run", "catalog:backfill-identities", "--", "--write"]);
-        await npm(["run", "catalog:validate"]);
-        const meaningfulChanges = await checked(
-          "git",
-          [
-            "status",
-            "--porcelain",
-            "--",
-            "data/snapshots/github",
-            "data/registry/projects",
-          ],
-          { silent: true },
-        );
-        if (meaningfulChanges.stdout.trim().length === 0) {
-          await checked("git", [
-            "restore",
-            "--",
-            "data/snapshots/github-refresh.json",
-          ]);
-          return;
-        }
-        const publication = await publishChanges({
-          paths: [
-            "data/snapshots/github",
-            "data/snapshots/github-refresh.json",
-            "data/registry/projects",
-          ],
-          message: "chore(catalog): prepare full enrichment rollout",
-        });
-        if (!publication.changed) return;
-      }
-      throw new Error(
-        "Full catalog did not stabilize after three preparation rounds.",
+          "data/snapshots/github",
+          "data/registry/projects",
+        ],
+        { silent: true },
       );
+      if (meaningfulChanges.stdout.trim().length === 0) {
+        await checked("git", [
+          "restore",
+          "--",
+          "data/snapshots/github-refresh.json",
+        ]);
+        return;
+      }
+      await publishChanges({
+        paths: [
+          "data/snapshots/github",
+          "data/snapshots/github-refresh.json",
+          "data/registry/projects",
+        ],
+        message: "chore(catalog): prepare full enrichment rollout",
+      });
     },
     async startFull() {
       await npm([
