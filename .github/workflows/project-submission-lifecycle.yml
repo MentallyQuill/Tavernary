@@ -81,7 +81,7 @@ jobs:
             labels.push(...(plan.addLabels ?? []));
             fs.writeFileSync(process.argv[2], JSON.stringify({ labels: [...new Set(labels)] }));
           " "$issue_path" "$labels_path"
-          gh api --method POST \
+          gh api --method PUT \
             "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
             --input "$labels_path"
           if [[ "$ACTION" == "decline" ]]; then

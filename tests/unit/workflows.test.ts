@@ -693,6 +693,10 @@ test("handles submission closure from default-branch code only", async () => {
   expect(source).toContain("github.event.pull_request.head.sha");
   expect(source).toContain("submission-declined");
   expect(source).toContain("state_reason");
+  expect(source).toContain("gh api --method PUT");
+  expect(source).not.toMatch(
+    /gh api --method POST\s+\\\s+"repos\/\$\{GITHUB_REPOSITORY\}\/issues\/\$\{ISSUE_NUMBER\}\/labels"/,
+  );
   expect(source).not.toContain("github.event.pull_request.head.ref }}");
 });
 
