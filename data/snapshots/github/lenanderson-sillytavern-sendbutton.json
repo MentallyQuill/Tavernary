@@ -21,7 +21,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T00:00:56.619Z",
+    "baseline_completed_at": "2026-07-27T04:33:27.457Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "1d70c49df54e26ea669759444b0c2a2a1e9c1cf4"
   },
@@ -32,11 +32,11 @@
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T00:00:56.619Z",
+  "refreshed_at": "2026-07-27T04:33:27.457Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "LenAnderson", "type": "User" }],
-    "refreshed_at": "2026-07-27T00:00:56.619Z",
+    "refreshed_at": "2026-07-27T04:33:27.457Z",
     "stale_since": null
   },
   "activity_scan": null
