@@ -61,7 +61,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-27T06:49:19.331Z",
-  "updated_at": "2026-07-27T06:49:19.331Z",
+  "updated_at": "2026-07-27T06:53:16.730Z",
   "manifest": [
     "bmen25124-sillytavern-custom-scenario",
     "bmen25124-sillytavern-magic-translation",
@@ -469,7 +469,10 @@
       "completed_at": "2026-07-27T06:49:19.331Z"
     }
   },
-  "publication": null,
+  "publication": {
+    "checkpoint_commit_sha": "f4c26917da4fb1451e45022fa8e00295b5860208",
+    "recorded_at": "2026-07-27T06:53:16.730Z"
+  },
   "deployment": null,
   "aggregates": {
     "enriched": 11,
