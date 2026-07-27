@@ -7,9 +7,22 @@ import {
   generatedCatalog as catalog,
   generatedProjectCount,
   initiallyVisibleFrontendOptions,
+  metadataFilterChipCount,
+  projectCountLabel,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
+const claudePresetCount = catalog.projects.filter(
+  ({ kind, preset }) =>
+    kind === "preset" &&
+    (preset?.modelFamilies.some(
+      ({ id }) => id === "claude" || id === "model-agnostic",
+    ) ??
+      false),
+).length;
+const recursionSearchCount = catalog.projects.filter(({ searchableText }) =>
+  searchableText.includes("recursion"),
+).length;
 const provisionalCount = catalog.projects.filter(
   ({ metadataStatus }) => metadataStatus === "provisional",
 ).length;
@@ -240,7 +253,9 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     page.getByText("Completion format", { exact: true }),
   ).toBeVisible();
-  await expect(page.locator(".metadata-filter-chip")).toHaveCount(25);
+  await expect(page.locator(".metadata-filter-chip")).toHaveCount(
+    metadataFilterChipCount,
+  );
 
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
@@ -266,14 +281,18 @@ test("filters Presets and Kits by model family with shareable state", async ({
     presetModelGroup.getByLabel("Claude", { exact: true }),
   ).toBeChecked();
 
-  await expect(page.getByRole("heading", { name: "6 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: projectCountLabel(claudePresetCount) }),
+  ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Wandlight", exact: true }),
   ).toBeVisible();
   await expect(page).toHaveURL(/model=claude/u);
 
   await page.reload();
-  await expect(page.getByRole("heading", { name: "6 projects" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: projectCountLabel(claudePresetCount) }),
+  ).toBeVisible();
 
   await page.getByRole("button", { name: "Kits", exact: true }).click();
   const kitModelGroup = page
@@ -398,7 +417,11 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
-  await expect(page.getByRole("heading", { name: "1 project" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: projectCountLabel(recursionSearchCount),
+    }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
   await expect(
@@ -484,7 +507,11 @@ test("supports every sort and restores query state after reload", async ({
   await expect(
     page.getByRole("searchbox", { name: "Search projects" }),
   ).toHaveValue("Recursion");
-  await expect(page.getByRole("heading", { name: "1 project" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: projectCountLabel(recursionSearchCount),
+    }),
+  ).toBeVisible();
 });
 
 test("shows the full launch catalog without default-query hidden records", async ({
@@ -522,7 +549,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
     .getByRole("button", { name: "Uncategorized", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: `${uncategorizedCount} projects` }),
+    page.getByRole("heading", { name: projectCountLabel(uncategorizedCount) }),
   ).toBeVisible();
   await expect(page).toHaveURL(/category=uncategorized/);
 
@@ -530,9 +557,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
   await page.getByLabel("Pending verification", { exact: true }).check();
   await expect(
     page.getByRole("heading", {
-      name: `${pendingLicenseCount} ${
-        pendingLicenseCount === 1 ? "project" : "projects"
-      }`,
+      name: projectCountLabel(pendingLicenseCount),
     }),
   ).toBeVisible();
   await expect(page).toHaveURL(/license=pending/);
@@ -552,7 +577,7 @@ test("supports uncategorized, pending-license, and missing-license catalog filte
 
   await page.getByLabel("Missing license", { exact: true }).check();
   await expect(
-    page.getByRole("heading", { name: `${missingLicenseCount} projects` }),
+    page.getByRole("heading", { name: projectCountLabel(missingLicenseCount) }),
   ).toBeVisible();
   await expect(page).toHaveURL(/license=missing/);
 });

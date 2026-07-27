@@ -2,11 +2,17 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 interface GeneratedCatalogProject {
+  kind: string;
   metadataStatus: string;
   sourceStatus: string;
   primaryFunction: string;
   license: { status: string };
   frontends: Array<{ id: string; label: string }>;
+  capabilities: Array<{ id: string; label: string }>;
+  searchableText: string;
+  preset: {
+    modelFamilies: Array<{ id: string; label: string }>;
+  } | null;
 }
 
 export const generatedCatalog = JSON.parse(
@@ -16,6 +22,29 @@ export const generatedCatalog = JSON.parse(
 };
 
 export const generatedProjectCount = generatedCatalog.projects.length;
+
+export function projectCountLabel(count: number) {
+  return `${count} ${count === 1 ? "project" : "projects"}`;
+}
+
+function vocabularyLength(path: string, property: string) {
+  const vocabulary = JSON.parse(
+    readFileSync(resolve(process.cwd(), path), "utf8"),
+  ) as Record<string, unknown[]>;
+  return vocabulary[property]?.length ?? 0;
+}
+
+export const metadataFilterChipCount =
+  new Set(
+    generatedCatalog.projects.flatMap(({ capabilities }) =>
+      capabilities.map(({ id }) => id),
+    ),
+  ).size +
+  vocabularyLength("data/vocabularies/model-families.json", "model_families") +
+  vocabularyLength(
+    "data/vocabularies/completion-formats.json",
+    "completion_formats",
+  );
 
 const frontendVocabulary = JSON.parse(
   readFileSync(
