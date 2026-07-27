@@ -3,15 +3,15 @@
   "id": "sillytavern-extension-notebook",
   "name": "Extension-Notebook",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "Extension-Notebook adds a dedicated notes panel to SillyTavern for storing user-written content. It supports rich text formatting, letting users style and organize their notes directly within the frontend.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "SillyTavern/Extension-Notebook",
     "repository_id": 794692686
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
