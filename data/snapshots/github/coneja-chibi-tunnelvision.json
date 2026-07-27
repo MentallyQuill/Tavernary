@@ -8,17 +8,22 @@
     "url": "https://github.com/Coneja-Chibi/TunnelVision",
     "description": "Fully autonomous and agentic lorebook, tracker, and summary retrieval for SillyTavern!",
     "default_branch": "main",
-    "head_sha": "882a40e35f1c9677c84df1523a4cceb5f52c3364",
-    "head_committed_at": "2026-07-20T03:32:37.000Z",
+    "head_sha": "58847fd6f77d1d473357c0c847f089586f55f4e5",
+    "head_committed_at": "2026-07-27T13:43:48.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2026-03-06T01:22:24.000Z",
-    "size_kb": 415
+    "size_kb": 506
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-19T04:36:03.000Z",
+    "latest_source_activity_at": "2026-07-27T12:43:17.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T12:43:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-19T04:36:03.000Z",
@@ -28,18 +33,14 @@
         "week_start": "2026-05-11",
         "latest_at": "2026-05-15T23:21:55.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-09T02:46:52.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "58847fd6f77d1d473357c0c847f089586f55f4e5"
   },
   "community": {
     "stargazers_count": 113,
@@ -52,19 +53,21 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "mozophe", "type": "User" },
       { "login": "Coneja-Chibi", "type": "User" },
+      { "login": "mozophe", "type": "User" },
       { "login": "phampyk", "type": "User" },
+      { "login": "DrMagisto", "type": "User" },
       { "login": "erratos", "type": "User" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

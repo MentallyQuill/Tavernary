@@ -32,17 +32,17 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 31200,
-    "forks_count": 5896,
+    "stargazers_count": 31212,
+    "forks_count": 5898,
     "subscribers_count": 145,
-    "aggregate": 37241
+    "aggregate": 37255
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -397,7 +397,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   }
 }

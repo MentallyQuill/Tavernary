@@ -1,0 +1,105 @@
+{
+  "schema_version": 2,
+  "project_id": "kritblade-vectfox",
+  "repository": {
+    "id": 1226349225,
+    "owner": "KritBlade",
+    "name": "VectFox",
+    "url": "https://github.com/KritBlade/VectFox",
+    "description": "Vector database driven Sillytavern Memory System",
+    "default_branch": "main",
+    "head_sha": "706bd208c9d14ba8b33387798eefd61ef3168803",
+    "head_committed_at": "2026-07-18T17:48:08.000Z",
+    "archived": false,
+    "fork": true,
+    "created_at": "2026-05-01T09:26:16.000Z",
+    "size_kb": 8798
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-18T17:48:08.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T17:48:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T22:06:02.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T16:49:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-25T21:19:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T20:25:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T16:33:46.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-02T19:31:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T21:59:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T23:39:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T13:39:33.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T16:20:49.192Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "706bd208c9d14ba8b33387798eefd61ef3168803"
+  },
+  "community": {
+    "stargazers_count": 46,
+    "forks_count": 4,
+    "subscribers_count": 2,
+    "aggregate": 52
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SirEdvin", "type": "User" },
+      { "login": "ZapoVerde", "type": "User" }
+    ],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T16:20:49.192Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "stale_since": null
+  }
+}

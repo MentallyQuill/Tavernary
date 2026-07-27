@@ -8,20 +8,20 @@
     "url": "https://github.com/platberlitz/sillytavern-character-colors",
     "description": "LLM-powered dialogue and thought coloring with auto-regex-install for SillyTavern",
     "default_branch": "main",
-    "head_sha": "6c5af7fc8ee0aa72f04089d7111d269130a4824e",
-    "head_committed_at": "2026-07-27T03:30:14.000Z",
+    "head_sha": "0eb1cf6933ac21a943def607201674bf8dabc952",
+    "head_committed_at": "2026-07-27T15:34:32.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2026-01-13T13:14:46.000Z",
-    "size_kb": 949
+    "size_kb": 1055
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T03:30:14.000Z",
+    "latest_source_activity_at": "2026-07-27T15:34:32.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T03:30:14.000Z",
+        "latest_at": "2026-07-27T15:34:32.000Z",
         "precision": "exact"
       },
       {
@@ -75,7 +75,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6c5af7fc8ee0aa72f04089d7111d269130a4824e"
+    "evidence_head_sha": "0eb1cf6933ac21a943def607201674bf8dabc952"
   },
   "community": {
     "stargazers_count": 19,
@@ -84,7 +84,7 @@
     "aggregate": 22
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -96,7 +96,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   }
 }
