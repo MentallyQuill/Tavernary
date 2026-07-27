@@ -16,6 +16,12 @@ function repositorySelection(index) {
       diskUsage
       isArchived
       isFork
+      parent {
+        databaseId
+        name
+        nameWithOwner
+        url
+      }
       forkCount
       stargazerCount
       watchers { totalCount }
@@ -229,6 +235,34 @@ function parseObservation(record, repository) {
   ) {
     throw new Error("GitHub GraphQL returned malformed repository data");
   }
+  const parent = repository.parent;
+  let parentObservation = null;
+  if (parent !== null && parent !== undefined) {
+    const [parentOwner, parentName, parentExtra] =
+      typeof parent.nameWithOwner === "string"
+        ? parent.nameWithOwner.split("/")
+        : [];
+    if (
+      repository.isFork !== true ||
+      !parentOwner ||
+      !parentName ||
+      parentExtra ||
+      !Number.isInteger(parent.databaseId) ||
+      parent.databaseId <= 0 ||
+      parent.databaseId === repository.databaseId ||
+      typeof parent.name !== "string" ||
+      parent.name !== parentName ||
+      typeof parent.url !== "string"
+    ) {
+      throw new Error("GitHub GraphQL returned malformed repository data");
+    }
+    parentObservation = {
+      id: parent.databaseId,
+      owner: parentOwner,
+      name: parent.name,
+      url: parent.url,
+    };
+  }
 
   return {
     observation: {
@@ -247,6 +281,7 @@ function parseObservation(record, repository) {
         ),
         archived: repository.isArchived,
         fork: repository.isFork,
+        parent: parentObservation,
         createdAt: isoTimestamp(repository.createdAt, "repository timestamp"),
         sizeKb: repository.diskUsage,
       },

@@ -97,6 +97,13 @@ function validateSnapshotEvidence(snapshot) {
   const { activity, repository } = snapshot;
   const errors = [];
 
+  if (repository.parent?.id === repository.id) {
+    errors.push(`${id}: repository cannot be its own fork parent`);
+  }
+  if (repository.parent && repository.fork !== true) {
+    errors.push(`${id}: non-fork repository cannot have a fork parent`);
+  }
+
   if (
     repository.head_committed_at === null &&
     activity.evidence_status !== "provisional"

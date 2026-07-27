@@ -51,6 +51,30 @@
         },
         "archived": { "type": "boolean" },
         "fork": { "type": "boolean" },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "owner", "name", "url"],
+              "properties": {
+                "id": { "type": "integer", "minimum": 1 },
+                "owner": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^[^/\\s]+$"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^[^/\\s]+$"
+                },
+                "url": { "type": "string", "format": "uri" }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
         "created_at": { "type": "string", "format": "date-time" },
         "size_kb": { "type": "integer", "minimum": 0 }
       }

@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { createInitialRepositorySnapshot } from "../../scripts/catalog/repository-snapshot.mjs";
+import {
+  createInitialRepositorySnapshot,
+  snapshotFromObservation,
+} from "../../scripts/catalog/repository-snapshot.mjs";
 
 const observation = {
   projectId: "owner-repo",
@@ -17,6 +20,12 @@ const observation = {
     createdAt: "2026-01-01T00:00:00.000Z",
     sizeKb: 12,
     fork: true,
+    parent: {
+      id: 41,
+      owner: "Upstream",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+    },
   },
   community: {
     stargazersCount: 3,
@@ -71,6 +80,12 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
       id: observation.repository.id,
       head_sha: observation.repository.headSha,
       fork: true,
+      parent: {
+        id: 41,
+        owner: "Upstream",
+        name: "Parent",
+        url: "https://github.com/Upstream/Parent",
+      },
     },
     activity: { evidence_status: "complete" },
     contributors: {
@@ -95,6 +110,27 @@ test("defaults a legacy observation without a fork fact to false", () => {
   });
 
   expect(snapshot.repository.fork).toBe(false);
+});
+
+test("retains a last-known fork parent when refresh omits it", () => {
+  const refreshedObservation = structuredClone(observation);
+  refreshedObservation.repository.parent = undefined as never;
+  const previous = createInitialRepositorySnapshot({
+    projectId: "owner-repo",
+    observation,
+    activityInspection,
+    contributors: [],
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  const snapshot = snapshotFromObservation({
+    projectId: "owner-repo",
+    observation: refreshedObservation,
+    previous,
+    now: "2026-07-26T18:00:00.000Z",
+  });
+
+  expect(snapshot.repository.parent).toEqual(previous.repository.parent);
 });
 
 test("retains an incomplete API activity continuation as provisional", () => {
