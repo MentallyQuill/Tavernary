@@ -8,22 +8,29 @@
     "url": "https://github.com/Coneja-Chibi/VectHare",
     "description": "A Powerful tool meant to revolutionize RAG as you know it!",
     "default_branch": "main",
-    "head_sha": "7924a57731023b886f8db017852db03607870e04",
-    "head_committed_at": "2025-12-23T17:12:56.000Z",
+    "head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a",
+    "head_committed_at": "2026-07-27T13:40:12.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2025-10-28T22:35:40.000Z",
-    "size_kb": 2177
+    "size_kb": 1356
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-07-27T11:38:49.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T11:38:49.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a"
   },
   "community": {
     "stargazers_count": 65,
@@ -32,7 +39,7 @@
     "aggregate": 87
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -40,13 +47,15 @@
       { "login": "Coneja-Chibi", "type": "User" },
       { "login": "prolix-oc", "type": "User" },
       { "login": "Promansis", "type": "User" },
+      { "login": "DrMagisto", "type": "User" },
       { "login": "r-t-k", "type": "User" },
       { "login": "TheLiquorPriest", "type": "User" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

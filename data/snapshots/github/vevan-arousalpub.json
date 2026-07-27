@@ -8,20 +8,20 @@
     "url": "https://github.com/vevan/arousalPub",
     "description": "LLM RP client",
     "default_branch": "main",
-    "head_sha": "f21966597d7667b82ae4a56219ebb27f56cac7c2",
-    "head_committed_at": "2026-07-27T07:23:21.000Z",
+    "head_sha": "43e63f311876c86324aab299b66d64d65f911327",
+    "head_committed_at": "2026-07-27T10:44:58.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2026-05-25T08:43:02.000Z",
-    "size_kb": 12425
+    "size_kb": 12527
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T05:17:51.000Z",
+    "latest_source_activity_at": "2026-07-27T10:44:58.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T05:17:51.000Z",
+        "latest_at": "2026-07-27T10:44:58.000Z",
         "precision": "exact"
       },
       {
@@ -80,7 +80,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T08:10:45.746Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f21966597d7667b82ae4a56219ebb27f56cac7c2"
+    "evidence_head_sha": "43e63f311876c86324aab299b66d64d65f911327"
   },
   "community": {
     "stargazers_count": 0,
@@ -93,15 +93,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T08:10:45.746Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "vevan", "type": "User" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T08:10:45.746Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

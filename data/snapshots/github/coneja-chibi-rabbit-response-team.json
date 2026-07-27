@@ -8,42 +8,53 @@
     "url": "https://github.com/Coneja-Chibi/Rabbit-Response-Team",
     "description": "A random word generator to try and destabilize standard LLM pattern/probability prone thinking!",
     "default_branch": "main",
-    "head_sha": "05ba6e5249a153b84782922f5ab702fc92338bf9",
-    "head_committed_at": "2025-10-22T23:58:55.000Z",
+    "head_sha": "45097b492f80232aa9e78fd6a4feced1ba1b2df6",
+    "head_committed_at": "2026-07-27T13:44:22.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2025-10-22T07:52:45.000Z",
-    "size_kb": 112
+    "size_kb": 116
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-07-27T10:58:05.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T10:58:05.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "45097b492f80232aa9e78fd6a4feced1ba1b2df6"
   },
   "community": {
-    "stargazers_count": 25,
+    "stargazers_count": 26,
     "forks_count": 5,
     "subscribers_count": 0,
-    "aggregate": 30
+    "aggregate": 31
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Coneja-Chibi", "type": "User" }],
+    "accounts": [
+      { "login": "Coneja-Chibi", "type": "User" },
+      { "login": "DrMagisto", "type": "User" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

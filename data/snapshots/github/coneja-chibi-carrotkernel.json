@@ -8,17 +8,22 @@
     "url": "https://github.com/Coneja-Chibi/CarrotKernel",
     "description": "The helper extension for BunnyMo Packs! (Electric Boogaloo)",
     "default_branch": "main",
-    "head_sha": "c736e771449562be5a9c842315d65dabf9a92f6f",
-    "head_committed_at": "2026-07-20T03:36:23.000Z",
+    "head_sha": "145c273768bfaba437626c0178d8d8cad17db4df",
+    "head_committed_at": "2026-07-27T13:38:44.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2025-09-11T15:17:29.000Z",
-    "size_kb": 1849
+    "size_kb": 2090
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-20T03:36:23.000Z",
+    "latest_source_activity_at": "2026-07-27T11:05:23.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T11:05:23.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-20T03:36:23.000Z",
@@ -28,8 +33,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "145c273768bfaba437626c0178d8d8cad17db4df"
   },
   "community": {
     "stargazers_count": 50,
@@ -38,14 +44,18 @@
     "aggregate": 60
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Coneja-Chibi", "type": "User" }],
+    "accounts": [
+      { "login": "Coneja-Chibi", "type": "User" },
+      { "login": "DrMagisto", "type": "User" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }
