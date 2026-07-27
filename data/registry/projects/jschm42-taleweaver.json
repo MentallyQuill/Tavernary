@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "jschm42-taleweaver",
+  "name": "TaleWeaver",
+  "kind": "frontend",
+  "summary": "Self-hosted, browser-based AI roleplaying game with procedurally generated worlds, a two-pass mechanics-and-narration system, persistent RPG state, quests, inventory, tactical combat, interactive maps, an adventure",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "jschm42/taleweaver",
+    "repository_id": 1208471920
+  },
+  "frontends": ["taleweaver"],
+  "primary_function": "frontend",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T21:35:11.266Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "project_id": "jschm42-taleweaver",
+  "repository": {
+    "id": 1208471920,
+    "owner": "jschm42",
+    "name": "taleweaver",
+    "url": "https://github.com/jschm42/taleweaver",
+    "description": "A next-generation AI-powered text adventure engine featuring dynamic storytelling, procedural world-building, and immersive visual/auditory generation.",
+    "default_branch": "main",
+    "head_sha": "f5d4b1eb3a5cc49aedf2de242f873aa206262f08",
+    "head_committed_at": "2026-07-03T08:21:46.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2026-04-12T10:29:44.000Z",
+    "size_kb": 230445
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-03T08:15:58.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T08:15:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-26T20:53:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-18T09:14:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-12T19:26:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-05T22:23:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T22:11:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T21:16:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-13T06:21:43.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-06-24T15:21:23.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T21:35:11.266Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "f5d4b1eb3a5cc49aedf2de242f873aa206262f08"
+  },
+  "community": {
+    "stargazers_count": 8,
+    "forks_count": 2,
+    "subscribers_count": 1,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T21:35:11.266Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "jschm42", "type": "User" },
+      { "login": "dependabot[bot]", "type": "Bot" },
+      { "login": "Copilot", "type": "Bot" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T21:35:11.266Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
