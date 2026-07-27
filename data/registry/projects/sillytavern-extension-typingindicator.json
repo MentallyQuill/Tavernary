@@ -3,15 +3,15 @@
   "id": "sillytavern-extension-typingindicator",
   "name": "Extension-TypingIndicator",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern extension that displays a typing indicator while AI message generation is in progress. It signals active processing to users, providing immediate visual feedback that the system is working on a response.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "SillyTavern/Extension-TypingIndicator",
     "repository_id": 925891884
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
