@@ -115,9 +115,12 @@ After regeneration determines the intended path set, but before `git commit` or
    Tavernary and whose head branch matches
    `automation/project-submission-<marker issue number>`.
 3. Ignores the PR belonging to the current issue.
-4. Compares the marker's `generated_paths` with the current intended paths.
-5. Stops with an explicit error linking the conflicting issue and PR when any
-   path overlaps.
+4. Compares only source-owned `data/registry/projects/*.json` and
+   `data/snapshots/github/*.json` marker paths with the current intended paths.
+   Shared paths such as `data/vocabularies/frontends.json` are not identity
+   claims and do not constitute a collision.
+5. Stops with an explicit error linking the conflicting issue and PR when a
+   source-owned path overlaps.
 
 This guard performs no issue mutation. It exists for timing races, older
 workflow versions, and unexpected identity-resolution gaps. A guard failure
@@ -152,7 +155,8 @@ Focused tests cover:
 - deterministic lowest-issue selection;
 - duplicate comment and label lifecycle with and without an existing PR;
 - no generation dispatch for an in-flight duplicate;
-- overlapping generated paths stopping before commit or push;
+- overlapping source-owned generated paths stopping before commit or push;
+- shared vocabulary paths not producing false collisions;
 - current-issue PR markers being ignored on regeneration;
 - fork and malformed marker spoofing being ignored;
 - paginated issue and PR inventories.
