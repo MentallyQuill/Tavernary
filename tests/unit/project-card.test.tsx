@@ -607,6 +607,172 @@ describe("project card", () => {
     expect(screen.queryByText("No activity")).not.toBeInTheDocument();
   });
 
+  test("omits inapplicable unavailable facts from curated external presets", () => {
+    render(
+      <ProjectCard
+        project={project("puras-director-v15", {
+          name: "Pura's Director v15.0",
+          kind: "preset",
+          metadataStatus: "curated",
+          sourceStatus: "manual",
+          activity: {
+            latestSourceActivityAt: null,
+            activeWeeks12: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
+            dormant: false,
+          },
+          latestReleaseAt: null,
+          community: null,
+          repositorySizeKb: null,
+          license: {
+            status: "missing",
+            label: "Missing",
+            tooltip: "No license information is published for this source.",
+          },
+          preset: {
+            version: "15.0",
+            publishedAt: null,
+            artifactSizeBytes: null,
+            modelFamilies: [],
+            completionFormats: [],
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    const card = screen.getByRole("link", {
+      name: "Pura's Director v15.0",
+    });
+    const descriptionId = card.getAttribute("aria-describedby");
+    const description = document.getElementById(descriptionId!);
+
+    expect(card.querySelector(".preset-version")).toHaveTextContent("v15.0");
+    expect(card.querySelector(".preset-publication")).toBeNull();
+    expect(card.querySelector(".preset-size")).toBeNull();
+    expect(card.querySelector(".card-state-list")).toBeNull();
+    expect(card).toHaveTextContent("Missing");
+
+    for (const label of [
+      "Manual source",
+      "Activity unavailable",
+      "Release unavailable",
+      "Popularity unavailable",
+      "Repository size unavailable",
+    ]) {
+      expect(card).not.toHaveTextContent(label);
+      expect(description).not.toHaveTextContent(label);
+    }
+  });
+
+  test("renders only known preset facts", () => {
+    render(
+      <ProjectCard
+        project={project("known-preset", {
+          kind: "preset",
+          sourceStatus: "manual",
+          activity: {
+            latestSourceActivityAt: null,
+            activeWeeks12: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
+            dormant: false,
+          },
+          community: null,
+          repositorySizeKb: null,
+          preset: {
+            version: "2.1",
+            publishedAt: "2026-07-20T00:00:00Z",
+            artifactSizeBytes: 2048,
+            modelFamilies: [],
+            completionFormats: [],
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    expect(document.querySelector(".preset-version")).toHaveTextContent("v2.1");
+    expect(document.querySelector(".preset-publication")).toHaveTextContent(
+      "Published 3d ago",
+    );
+    expect(document.querySelector(".preset-size")).toHaveTextContent(
+      "2 KB file",
+    );
+    expect(document.querySelector(".card-state-list")).toBeNull();
+  });
+
+  test("keeps actionable preset state without unavailable-field noise", () => {
+    const { rerender } = render(
+      <ProjectCard
+        project={project("pending-preset", {
+          kind: "preset",
+          metadataStatus: "provisional",
+          sourceStatus: "pending",
+          activity: {
+            latestSourceActivityAt: null,
+            activeWeeks12: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
+            dormant: false,
+          },
+          community: null,
+          repositorySizeKb: null,
+          preset: {
+            version: null,
+            publishedAt: null,
+            artifactSizeBytes: null,
+            modelFamilies: [],
+            completionFormats: [],
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    const notes = document.querySelectorAll(".card-state-note");
+    expect([...notes].map((note) => note.textContent)).toEqual([
+      "Provisional details",
+      "Source pending",
+    ]);
+    expect(document.querySelector(".preset-development")).toBeNull();
+
+    rerender(
+      <ProjectCard
+        project={project("stale-preset", {
+          kind: "preset",
+          metadataStatus: "curated",
+          sourceStatus: "stale",
+          staleSince: "2026-07-22T00:00:00Z",
+          activity: {
+            latestSourceActivityAt: null,
+            activeWeeks12: null,
+            weeklyActivity: null,
+            evidenceStatus: null,
+            dormant: false,
+          },
+          community: null,
+          repositorySizeKb: null,
+          preset: {
+            version: null,
+            publishedAt: null,
+            artifactSizeBytes: null,
+            modelFamilies: [],
+            completionFormats: [],
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    expect(
+      [...document.querySelectorAll(".card-state-note")].map(
+        (note) => note.textContent,
+      ),
+    ).toEqual(["Source stale"]);
+  });
+
   test("keeps known community and repository size facts visible when only activity is missing", () => {
     render(
       <ProjectCard
