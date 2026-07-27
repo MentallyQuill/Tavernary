@@ -61,7 +61,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-27T06:18:55.869Z",
-  "updated_at": "2026-07-27T06:21:01.216Z",
+  "updated_at": "2026-07-27T06:23:08.387Z",
   "manifest": [
     "aikohanasaki-sillytavern-bookmarks",
     "aikohanasaki-sillytavern-ccpromptmanager",
@@ -201,8 +201,8 @@
     }
   },
   "publication": {
-    "checkpoint_commit_sha": "86546e43be7c0b9c4cc4ceedfafa600088c55f25",
-    "recorded_at": "2026-07-27T06:20:58.358Z"
+    "checkpoint_commit_sha": "235e3848d3466b57ce6a884cd1a92f575b68fcb9",
+    "recorded_at": "2026-07-27T06:23:08.387Z"
   },
   "deployment": null,
   "aggregates": {
