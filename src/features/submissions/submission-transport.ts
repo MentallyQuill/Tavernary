@@ -39,10 +39,7 @@ function readablePrefills(
         "supported-model-families",
         compatibility?.model_families.known_ids.join("\n") ?? "",
       ],
-      [
-        "other-model-family",
-        compatibility?.model_families.other[0] ?? "",
-      ],
+      ["other-model-family", compatibility?.model_families.other[0] ?? ""],
       [
         "completion-formats",
         compatibility?.completion_formats.join("\n") ?? "",

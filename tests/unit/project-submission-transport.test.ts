@@ -167,14 +167,11 @@ test("keeps short identity and compatibility fields in oversized handoffs", asyn
     value: { writeText: vi.fn().mockResolvedValue(undefined) },
   });
 
-  await openProjectSubmission(
-    "https://github.com/example/repo/issues/new",
-    {
-      ...presetManifest,
-      description: "x".repeat(7_100),
-      additional_context: "y".repeat(7_100),
-    },
-  );
+  await openProjectSubmission("https://github.com/example/repo/issues/new", {
+    ...presetManifest,
+    description: "x".repeat(7_100),
+    additional_context: "y".repeat(7_100),
+  });
 
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(opened.searchParams.get("project-type")).toBe("System Preset");
