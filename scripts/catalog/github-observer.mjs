@@ -15,6 +15,7 @@ function repositorySelection(index) {
       createdAt
       diskUsage
       isArchived
+      isFork
       forkCount
       stargazerCount
       watchers { totalCount }
@@ -215,12 +216,13 @@ function parseObservation(record, repository) {
     typeof repository.name !== "string" ||
     typeof repository.url !== "string" ||
     !(
-      repository.description === null ||
+    repository.description === null ||
       typeof repository.description === "string"
     ) ||
     !Number.isInteger(repository.diskUsage) ||
     repository.diskUsage < 0 ||
     typeof repository.isArchived !== "boolean" ||
+    typeof repository.isFork !== "boolean" ||
     !Number.isInteger(repository.forkCount) ||
     !Number.isInteger(repository.stargazerCount) ||
     !Number.isInteger(repository.watchers?.totalCount)
@@ -244,6 +246,7 @@ function parseObservation(record, repository) {
           "head commit timestamp",
         ),
         archived: repository.isArchived,
+        fork: repository.isFork,
         createdAt: isoTimestamp(repository.createdAt, "repository timestamp"),
         sizeKb: repository.diskUsage,
       },

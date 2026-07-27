@@ -50,6 +50,7 @@
           ]
         },
         "archived": { "type": "boolean" },
+        "fork": { "type": "boolean" },
         "created_at": { "type": "string", "format": "date-time" },
         "size_kb": { "type": "integer", "minimum": 0 }
       }

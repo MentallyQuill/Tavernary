@@ -16,6 +16,7 @@ const observation = {
     archived: false,
     createdAt: "2026-01-01T00:00:00.000Z",
     sizeKb: 12,
+    fork: true,
   },
   community: {
     stargazersCount: 3,
@@ -69,6 +70,7 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
     repository: {
       id: observation.repository.id,
       head_sha: observation.repository.headSha,
+      fork: true,
     },
     activity: { evidence_status: "complete" },
     contributors: {

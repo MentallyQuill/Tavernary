@@ -474,6 +474,18 @@ describe("catalog validation", () => {
     expect(result.snapshotCount).toBe(1);
   });
 
+  test("accepts an optional repository fork fact", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("accepts optional contributor facts in a version two snapshot", async () => {
     const snapshot = structuredClone(validSnapshotV2);
     snapshot.contributors = {

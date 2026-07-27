@@ -32,6 +32,7 @@ export interface RepositorySnapshot {
     head_sha: string;
     head_committed_at: string;
     archived: boolean;
+    fork?: boolean;
     created_at: string;
     size_kb: number;
   };

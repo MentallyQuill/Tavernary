@@ -11,6 +11,7 @@ export function repositoryFacts(observation) {
     head_sha: observation.headSha,
     head_committed_at: observation.headCommittedAt,
     archived: observation.archived,
+    fork: observation.fork,
     created_at: observation.createdAt,
     size_kb: observation.sizeKb,
   };
