@@ -1,10 +1,26 @@
+import { parseSourceIdentity } from "../submissions/source-identity.mjs";
+
 export const MANUAL_ENRICHMENT_REASON_CODE = "manual-enrichment-policy";
 
 const URL_NOTE = "External URL source; requires manual curation.";
 const ORGANIZATION_NOTE = "Multi-repository suite; requires manual curation.";
 
+export function automaticEnrichmentAdapter(source) {
+  if (source?.type === "github") return "github";
+  if (source?.type !== "url" || typeof source.url !== "string") return null;
+  try {
+    return parseSourceIdentity(source.url).kind === "reddit" ? "reddit" : null;
+  } catch {
+    return null;
+  }
+}
+
+export function supportsAutomaticEnrichmentSource(source) {
+  return automaticEnrichmentAdapter(source) !== null;
+}
+
 export function defaultEnrichmentFields(source) {
-  if (source?.type === "github") {
+  if (supportsAutomaticEnrichmentSource(source)) {
     return {
       enrichment_policy: "automatic",
     };

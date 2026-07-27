@@ -222,7 +222,7 @@
         "properties": {
           "source": {
             "properties": {
-              "type": { "enum": ["url", "github-organization"] }
+              "type": { "const": "github-organization" }
             },
             "required": ["type"]
           }

@@ -4,6 +4,7 @@ import {
   MANUAL_ENRICHMENT_REASON_CODE,
   ManualEnrichmentPolicyError,
   assertAutomaticEnrichment,
+  automaticEnrichmentAdapter,
   defaultEnrichmentFields,
   isAutomaticEnrichment,
   manualEnrichmentExclusions,
@@ -42,6 +43,36 @@ describe("enrichment policy", () => {
       enrichment_policy: "manual",
       enrichment_note: "Multi-repository suite; requires manual curation.",
     });
+  });
+
+  test("defaults canonical Reddit posts to automatic enrichment", () => {
+    expect(
+      defaultEnrichmentFields({
+        type: "url",
+        url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+      }),
+    ).toEqual({ enrichment_policy: "automatic" });
+  });
+
+  test("reports supported automatic adapters", () => {
+    expect(
+      automaticEnrichmentAdapter({
+        type: "github",
+        repository: "Owner/Repo",
+      }),
+    ).toBe("github");
+    expect(
+      automaticEnrichmentAdapter({
+        type: "url",
+        url: "https://old.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+      }),
+    ).toBe("reddit");
+    expect(
+      automaticEnrichmentAdapter({
+        type: "url",
+        url: "https://example.com/preset",
+      }),
+    ).toBeNull();
   });
 
   test("identifies automatic records and sorted manual exclusions", () => {

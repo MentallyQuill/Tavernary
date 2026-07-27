@@ -119,7 +119,7 @@ describe("catalog validation", () => {
     expect(automaticWithNote.errors.join("\n")).toContain("must NOT be valid");
   });
 
-  test("requires non-GitHub sources to remain manual", async () => {
+  test("requires unsupported external sources to remain manual", async () => {
     const result = await validateCatalog({
       records: [
         {
@@ -139,7 +139,9 @@ describe("catalog validation", () => {
       ],
     });
 
-    expect(result.errors.join("\n")).toContain("enrichment_policy");
+    expect(result.errors).toContain(
+      "valid-preset: automatic enrichment requires a supported source adapter",
+    );
   });
 
   test("allows a documented manual GitHub exception", async () => {
@@ -459,6 +461,56 @@ describe("catalog validation", () => {
 
     expect(result.errors).toContain(
       "unsafe-url: URL source requires https protocol",
+    );
+  });
+
+  test("allows automatic enrichment for a canonical Reddit post", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "reddit-preset",
+          refresh_policy: "paused",
+          source: {
+            type: "url",
+            url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+            published_at: null,
+            version: null,
+            artifact_size_bytes: null,
+            license_status: "pending",
+            license_spdx_id: null,
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
+  test("rejects automatic enrichment for an unsupported external URL", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecord,
+          id: "external-preset",
+          refresh_policy: "paused",
+          source: {
+            type: "url",
+            url: "https://example.com/preset",
+            published_at: null,
+            version: null,
+            artifact_size_bytes: null,
+            license_status: "pending",
+            license_spdx_id: null,
+          },
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toContain(
+      "external-preset: automatic enrichment requires a supported source adapter",
     );
   });
 

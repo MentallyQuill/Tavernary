@@ -13,6 +13,20 @@ export interface ManualEnrichmentExclusion {
   note?: string;
 }
 
+export type AutomaticEnrichmentAdapter = "github" | "reddit";
+
+export function automaticEnrichmentAdapter(source: {
+  type?: string;
+  url?: string;
+  [key: string]: unknown;
+}): AutomaticEnrichmentAdapter | null;
+
+export function supportsAutomaticEnrichmentSource(source: {
+  type?: string;
+  url?: string;
+  [key: string]: unknown;
+}): boolean;
+
 export function defaultEnrichmentFields(source: {
   type?: string;
   [key: string]: unknown;

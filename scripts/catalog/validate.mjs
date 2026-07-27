@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv from "ajv";
 
 import { validateKitData } from "../kits/validation.mjs";
+import { supportsAutomaticEnrichmentSource } from "./enrichment-policy.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const approvedOrganizationRecord = {
@@ -335,6 +336,16 @@ export async function validateCatalog(options = {}) {
       !repositoryBacked
     ) {
       errors.push(`${id}: ${record.kind} requires a GitHub source`);
+    }
+
+    if (
+      record.enrichment_policy === "automatic" &&
+      record.source &&
+      !supportsAutomaticEnrichmentSource(record.source)
+    ) {
+      errors.push(
+        `${id}: automatic enrichment requires a supported source adapter`,
+      );
     }
 
     if (record.source) {
