@@ -175,13 +175,15 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
   ).toBeVisible();
 });
 
-test("requires a name when the unlisted model-family option is enabled", async () => {
+test("requires an enabled unlisted model family without clearing Model-Agnostic", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
+  await user.click(screen.getByLabelText("Model-Agnostic"));
   await user.click(screen.getByLabelText("Other model family"));
 
+  expect(screen.getByLabelText("Model-Agnostic")).toBeChecked();
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://example.com/preset",

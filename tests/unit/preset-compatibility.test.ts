@@ -9,7 +9,7 @@ test("named filters do not expand Model-Agnostic metadata", () => {
   expect(matchesModelFamilies(["claude"], ["model-agnostic"])).toBe(false);
 });
 
-test("the explicit Model-Agnostic filter remains specific", () => {
+test("the Model-Agnostic filter requires its explicit tag", () => {
   expect(matchesModelFamilies(["model-agnostic"], ["claude"])).toBe(false);
 });
 

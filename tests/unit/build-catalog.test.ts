@@ -556,7 +556,7 @@ test("builds every eligible public card with consolidated manual sources", async
     ),
   ).toMatchObject({
     canonicalUrl:
-      "https://drive.google.com/file/d/1Q6-tNRgEsp3jwDmrZeSVyPbbsf_xckp5/view?usp=sharing",
+      "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
     metadataStatus: "curated",
     primaryFunction: "character-worldbuilding",
   });

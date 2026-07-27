@@ -265,7 +265,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
   expect(
     records.find((record) => record.id === "mentallyquill-st-wandlight")
       ?.model_families,
-  ).toEqual(["model-agnostic", "claude", "glm", "deepseek"]);
+  ).toEqual(["model-agnostic", "claude", "gpt", "glm", "deepseek"]);
 
   expect(
     records.find((record) => record.id === "tavern-rpg-suite"),

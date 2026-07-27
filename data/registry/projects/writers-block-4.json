@@ -21,7 +21,7 @@
     "instruction-control",
     "planning-reasoning"
   ],
-  "model_families": ["glm", "gemma", "deepseek"],
+  "model_families": ["model-agnostic", "glm", "deepseek", "mimo"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

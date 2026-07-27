@@ -7,7 +7,7 @@
   "metadata_status": "curated",
   "source": {
     "type": "url",
-    "url": "https://www.mediafire.com/file/okz25rrg98i8hdx/%25E2%2580%25BC%25EF%25B8%258F%25F0%259F%2592%25A5_LE_EMOTIONALISM%2521_Version_1.1.5%25F0%259F%2592%25A5%25E2%2580%25BC%25EF%25B8%258F.json/file",
+    "url": "https://www.reddit.com/r/SillyTavernAI/comments/1v46vqe/le_emotionalism_version_115_emotionalbased_preset/",
     "published_at": null,
     "version": "1.1.5",
     "artifact_size_bytes": 146359,
@@ -22,7 +22,7 @@
     "planning-reasoning",
     "character-worldbuilding"
   ],
-  "model_families": ["glm", "claude", "kimi", "mimo"],
+  "model_families": ["model-agnostic", "glm", "claude", "kimi", "mimo"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

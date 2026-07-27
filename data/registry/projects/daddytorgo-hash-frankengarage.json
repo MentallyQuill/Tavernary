@@ -13,7 +13,7 @@
   "frontends": ["sillytavern"],
   "primary_function": "frontend",
   "capabilities": ["prompt-engineering", "character-worldbuilding"],
-  "model_families": ["claude", "gemini", "deepseek", "glm"],
+  "model_families": ["model-agnostic", "claude", "gemini", "deepseek", "glm"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

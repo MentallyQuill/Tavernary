@@ -17,7 +17,7 @@
   "frontends": ["sillytavern"],
   "primary_function": "uncategorized",
   "capabilities": [],
-  "model_families": ["model-agnostic"],
+  "model_families": ["model-agnostic", "glm", "deepseek", "mimo"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-27T03:54:16.526Z",
   "catalog_cohort": "standard",

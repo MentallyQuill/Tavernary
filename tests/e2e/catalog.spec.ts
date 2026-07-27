@@ -293,11 +293,17 @@ test("filters Presets and Kits by model family with shareable state", async ({
     name: "Wandlight",
     exact: true,
   });
-  for (const label of ["Model-Agnostic", "Claude", "GLM", "DeepSeek"]) {
+  for (const label of [
+    "Model-Agnostic",
+    "Claude",
+    "GPT",
+    "GLM",
+    "DeepSeek",
+  ]) {
     await expect(wandlightCard.getByText(label, { exact: true })).toBeVisible();
   }
   await expect(wandlightCard).toHaveAccessibleDescription(
-    /Supported model families: Model-Agnostic, Claude, GLM, DeepSeek\./u,
+    /Supported model families: Model-Agnostic, Claude, GPT, GLM, DeepSeek\./u,
   );
   await expect(page).toHaveURL(/model=claude/u);
 

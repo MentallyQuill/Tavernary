@@ -22,7 +22,17 @@
     "planning-reasoning",
     "character-worldbuilding"
   ],
-  "model_families": ["model-agnostic"],
+  "model_families": [
+    "model-agnostic",
+    "claude",
+    "gemini",
+    "gpt",
+    "glm",
+    "kimi",
+    "qwen",
+    "mimo",
+    "gemma"
+  ],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
