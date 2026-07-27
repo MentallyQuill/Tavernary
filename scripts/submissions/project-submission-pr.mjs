@@ -13,13 +13,17 @@ function safeText(value, limit = 320) {
   return bounded.replace(/\\/gu, "\\\\").replace(/([[\]()*_`#<>|])/gu, "\\$1");
 }
 
-const urlFieldKeys = new Set(["source_url"]);
+const urlFieldKeys = new Set(["canonical_url", "source_url"]);
 
 function renderUrlValue(value) {
   if (typeof value !== "string") return safeText(value);
-  const url = new URL(value);
-  if (url.protocol !== "https:") return safeText(value);
-  return `[${safeText(url.href)}](<${url.href}>)`;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") return safeText(value);
+    return `[${safeText(url.href)}](<${url.href}>)`;
+  } catch {
+    return safeText(value);
+  }
 }
 
 function renderGroupValue(key, value) {
