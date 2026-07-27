@@ -429,6 +429,12 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(
       /\.compact-cards \.project-relationship-control\s*\{[^}]*font-size:\s*10px/s,
     );
+    expect(css).toMatch(
+      /\.compact-cards \.relationship-pair\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /@media \(max-width:\s*760px\)[\s\S]*?\.compact-cards \.relationship-pair\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/s,
+    );
   });
 
   test("distinguishes builder sections and uses one desktop toggle size", () => {
