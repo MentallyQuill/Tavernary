@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-quickrepliesdrawer",
   "name": "SillyTavern-QuickRepliesDrawer",
   "kind": "extension",
-  "summary": "This SillyTavern extension moves Quick Replies into a separate drawer for better organization. It frees the main chat panel from shortcut clutter by relocating quick response buttons to a dedicated UI section.",
+  "summary": "SillyTavern-QuickRepliesDrawer is a frontend extension that organizes Quick Replies into a separate drawer panel. It declutters the main interface by relocating Quick Replies to their own accessible section.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -13,7 +13,7 @@
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "capabilities": [],
-  "cataloged_at": "2026-07-26T23:47:53.272Z",
+  "cataloged_at": "2026-07-27T04:33:31.378Z",
   "catalog_cohort": "standard",
   "visibility": "published",
   "visibility_reason": null,
