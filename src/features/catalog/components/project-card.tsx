@@ -42,7 +42,9 @@ function licenseTooltip(project: CatalogProject) {
 }
 
 function sourceStatusLabel(project: CatalogProject) {
-  if (project.sourceStatus === "manual") return "Manual source";
+  if (project.sourceStatus === "manual") {
+    return project.kind === "preset" ? null : "Manual source";
+  }
   if (project.sourceStatus === "pending") return "Source pending";
   if (project.sourceStatus === "stale") return "Source stale";
   return null;
@@ -60,14 +62,11 @@ function detailItems(project: CatalogProject) {
   if (sourceLabel) {
     items.push(sourceLabel);
   }
-  if (
-    shouldExplainUnknownFacts &&
-    project.kind === "preset" &&
-    (project.activity.activeWeeks12 === null ||
-      !project.activity.weeklyActivity)
-  ) {
-    items.push("Activity unavailable");
+
+  if (project.kind === "preset") {
+    return items;
   }
+
   if (
     shouldExplainUnknownFacts &&
     !project.latestReleaseAt &&
@@ -182,10 +181,11 @@ export function ProjectCard({
   const repositorySize = formatSize(project.repositorySizeKb);
   const presetVersion = project.preset?.version
     ? formatVersion(project.preset.version)
-    : "Preset";
-  const presetPublication = project.preset?.publishedAt
-    ? `Published ${relativeTime(project.preset.publishedAt, now)}`
-    : "Source linked";
+    : null;
+  const presetPublishedAt = project.preset?.publishedAt ?? null;
+  const presetPublication = presetPublishedAt
+    ? `Published ${relativeTime(presetPublishedAt, now)}`
+    : null;
   const presetSize = formatBytes(project.preset?.artifactSizeBytes ?? null);
   const details = detailItems(project);
   const {
@@ -265,33 +265,37 @@ export function ProjectCard({
           <span>{kindLabels[project.kind]}</span>
         </Tooltip>
         {project.kind === "preset" ? (
-          <span className="development preset-development">
-            <Tooltip
-              id={`${project.id}-preset-version`}
-              label={`Preset version ${presetVersion}`}
-              className="preset-version"
-            >
-              {presetVersion}
-            </Tooltip>
-            <Tooltip
-              id={`${project.id}-preset-publication`}
-              label={
-                project.preset?.publishedAt
-                  ? `Published ${formatDate(project.preset.publishedAt)}`
-                  : "Published source"
-              }
-              className="preset-publication"
-            >
-              {presetPublication}
-            </Tooltip>
-            <Tooltip
-              id={`${project.id}-preset-size`}
-              label={presetSize ? presetSize : "File size unavailable"}
-              className="preset-size"
-            >
-              {presetSize}
-            </Tooltip>
-          </span>
+          presetVersion || presetPublication || presetSize ? (
+            <span className="development preset-development">
+              {presetVersion ? (
+                <Tooltip
+                  id={`${project.id}-preset-version`}
+                  label={`Preset version ${presetVersion}`}
+                  className="preset-version"
+                >
+                  {presetVersion}
+                </Tooltip>
+              ) : null}
+              {presetPublishedAt && presetPublication ? (
+                <Tooltip
+                  id={`${project.id}-preset-publication`}
+                  label={`Published ${formatDate(presetPublishedAt)}`}
+                  className="preset-publication"
+                >
+                  {presetPublication}
+                </Tooltip>
+              ) : null}
+              {presetSize ? (
+                <Tooltip
+                  id={`${project.id}-preset-size`}
+                  label={presetSize}
+                  className="preset-size"
+                >
+                  {presetSize}
+                </Tooltip>
+              ) : null}
+            </span>
+          ) : null
         ) : (
           <span className="development">
             {hasActivityMetrics ? (

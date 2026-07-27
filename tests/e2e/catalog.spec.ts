@@ -652,13 +652,45 @@ test("keeps dense project-card header facts from overlapping", async ({
   ).toBe(true);
 });
 
+test("omits inapplicable metadata from curated external preset cards", async ({
+  page,
+}) => {
+  const presetCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", {
+      name: "Pura's Director v15.0",
+      exact: true,
+    }),
+  });
+
+  await expect(presetCard.locator(".preset-version")).toHaveText("v15.0");
+  await expect(presetCard.locator(".preset-publication")).toHaveCount(0);
+  await expect(presetCard.locator(".preset-size")).toHaveCount(0);
+  await expect(presetCard.locator(".card-state-list")).toHaveCount(0);
+  await expect(presetCard.locator(".license")).toHaveText("Missing");
+
+  const descriptionId = await presetCard.getAttribute("aria-describedby");
+  expect(descriptionId).toBeTruthy();
+  const description = page.locator(`#${descriptionId}`);
+
+  for (const label of [
+    "Manual source",
+    "Activity unavailable",
+    "Release unavailable",
+    "Popularity unavailable",
+    "Repository size unavailable",
+  ]) {
+    await expect(presetCard).not.toContainText(label);
+    await expect(description).not.toContainText(label);
+  }
+});
+
 test("explains every card fact with hover help", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const repositoryCard = page.locator(".project-card").filter({
     has: page.getByRole("heading", { name: "Recursion" }),
   });
   const presetCard = page.locator(".project-card").filter({
-    has: page.getByRole("heading", { name: "Purrfect Logic 4 Max Mini" }),
+    has: page.getByRole("heading", { name: "LE_EMOTIONALISM 1.1.5" }),
   });
 
   for (const selector of [
@@ -694,16 +726,13 @@ test("explains every card fact with hover help", async ({ page }) => {
     ),
   ).toBeGreaterThanOrEqual(700);
 
-  for (const selector of [
-    ".preset-version",
-    ".preset-publication",
-    ".preset-size",
-  ]) {
+  for (const selector of [".preset-version", ".preset-size"]) {
     await expect(presetCard.locator(selector)).toHaveAttribute(
       "aria-describedby",
       /.+/,
     );
   }
+  await expect(presetCard.locator(".preset-publication")).toHaveCount(0);
 
   const activityScore = repositoryCard.locator(".activity-score");
   const activityLabel = await activityScore.getAttribute("aria-label");
