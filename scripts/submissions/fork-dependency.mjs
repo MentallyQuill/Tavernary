@@ -28,21 +28,39 @@ export function parseForkUpstreamMarker(body) {
   const marker = markerJson(body, upstreamMarker);
   if (!marker || typeof marker !== "object") return null;
   const keys = Object.keys(marker).sort();
-  const expectedKeys = [
+  const issueKeys = [
     "ancestry_repository_ids",
     "dependent_issue_number",
     "repository_id",
     "schema_version",
   ];
+  const projectKeys = [
+    "ancestry_repository_ids",
+    "dependent_project_ids",
+    "repository_id",
+    "schema_version",
+  ];
   const ancestry = marker.ancestry_repository_ids;
+  const dependentProjectIds = marker.dependent_project_ids;
+  const issueMarker =
+    keys.length === issueKeys.length &&
+    keys.every((key, index) => key === issueKeys[index]) &&
+    Number.isInteger(marker.dependent_issue_number) &&
+    marker.dependent_issue_number > 0;
+  const projectMarker =
+    keys.length === projectKeys.length &&
+    keys.every((key, index) => key === projectKeys[index]) &&
+    Array.isArray(dependentProjectIds) &&
+    dependentProjectIds.length > 0 &&
+    dependentProjectIds.every(
+      (id) => typeof id === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id),
+    ) &&
+    new Set(dependentProjectIds).size === dependentProjectIds.length;
   if (
-    keys.length !== expectedKeys.length ||
-    keys.some((key, index) => key !== expectedKeys[index]) ||
+    (!issueMarker && !projectMarker) ||
     marker.schema_version !== 1 ||
     !Number.isInteger(marker.repository_id) ||
     marker.repository_id <= 0 ||
-    !Number.isInteger(marker.dependent_issue_number) ||
-    marker.dependent_issue_number <= 0 ||
     !Array.isArray(ancestry) ||
     ancestry.length < 2 ||
     ancestry.length > 16 ||
@@ -78,6 +96,7 @@ function extendAncestry(ancestryRepositoryIds, repositoryId) {
 export function renderForkParentIssue({
   dependency,
   dependentIssueNumber,
+  dependentProjectIds,
   manifest,
   ancestryRepositoryIds,
 }) {
@@ -85,19 +104,33 @@ export function renderForkParentIssue({
     ancestryRepositoryIds,
     dependency.repositoryId,
   );
+  const hasDependentIssue =
+    Number.isInteger(dependentIssueNumber) && dependentIssueNumber > 0;
+  const hasDependentProjects =
+    Array.isArray(dependentProjectIds) && dependentProjectIds.length > 0;
+  if (hasDependentIssue === hasDependentProjects) {
+    throw new Error(
+      "Fork upstream provenance requires one dependent issue or project list.",
+    );
+  }
   const marker = {
     schema_version: 1,
     repository_id: dependency.repositoryId,
-    dependent_issue_number: dependentIssueNumber,
+    ...(hasDependentIssue
+      ? { dependent_issue_number: dependentIssueNumber }
+      : { dependent_project_ids: uniqueProjectIds(dependentProjectIds) }),
     ancestry_repository_ids: ancestry,
   };
+  const dependentDescription = hasDependentIssue
+    ? `#${dependentIssueNumber}`
+    : `catalog project${dependentProjectIds.length === 1 ? "" : "s"} ${dependentProjectIds.join(", ")}`;
   const upstreamManifest = {
     ...manifest,
     source_url: dependency.canonicalUrl,
     name: dependency.name,
     description: null,
     additional_context:
-      `This project was automatically discovered as the immediate upstream of #${dependentIssueNumber}. ` +
+      `This project was automatically discovered as the immediate upstream of ${dependentDescription}. ` +
       "Its classification was inherited from the dependent fork for review.",
   };
   return {
@@ -106,7 +139,7 @@ export function renderForkParentIssue({
       upstreamMarker,
       JSON.stringify(marker),
       "-->",
-      `This project was automatically discovered as the immediate upstream of #${dependentIssueNumber}.`,
+      `This project was automatically discovered as the immediate upstream of ${dependentDescription}.`,
       "Maintainers must correct any inherited classification before merge.",
       "",
       "### Project manifest",
@@ -117,6 +150,19 @@ export function renderForkParentIssue({
     ].join("\n"),
     labels: ["issue-admitted", "project-submission"],
   };
+}
+
+function uniqueProjectIds(projectIds) {
+  const unique = [...new Set(projectIds)];
+  if (
+    unique.length !== projectIds.length ||
+    unique.some(
+      (id) => typeof id !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id),
+    )
+  ) {
+    throw new Error("Fork dependent project IDs are malformed.");
+  }
+  return unique.sort((left, right) => left.localeCompare(right));
 }
 
 function labelsFromIssue(issue) {
@@ -175,6 +221,7 @@ export async function ensureForkParentSubmission({
   repository,
   dependency,
   dependentIssueNumber,
+  dependentProjectIds,
   manifest,
   ancestryRepositoryIds,
   request,
@@ -223,6 +270,7 @@ export async function ensureForkParentSubmission({
   const rendered = renderForkParentIssue({
     dependency,
     dependentIssueNumber,
+    dependentProjectIds,
     manifest,
     ancestryRepositoryIds,
   });
