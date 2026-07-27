@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "aiko-s-loadout-30",
+  "status": "published",
+  "title": "Aiko's Loadout",
+  "description": "Aiko's daily in-use plugins... pending some additions (projects submitted)",
+  "author": {
+    "github_user_id": 215114633,
+    "login": "aikohanasaki"
+  },
+  "source_issue_number": 30,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "aikohanasaki-sillytavern-memorybooks",
+    "aikohanasaki-sillytavern-modelinjection",
+    "aikohanasaki-sillytavern-worldinfoinfo",
+    "aikohanasaki-sillytavern-characterlocks",
+    "sillytavern-extension-topinfobar",
+    "subzero5544-favorites-carousel"
+  ],
+  "published_at": "2026-07-26T23:23:57.490Z",
+  "updated_at": "2026-07-26T23:23:57.490Z"
+}

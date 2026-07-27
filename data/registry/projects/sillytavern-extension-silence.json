@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "sillytavern-extension-silence",
+  "name": "Extension-Silence",
+  "kind": "extension",
+  "summary": "Extension-Silence is a SillyTavern frontend extension that mutes the audio player. It automatically prevents audio playback during the roleplay session without requiring manual volume adjustments.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "SillyTavern/Extension-Silence",
+    "repository_id": 752014538
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
+  "cataloged_at": "2026-07-26T19:32:09.554Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

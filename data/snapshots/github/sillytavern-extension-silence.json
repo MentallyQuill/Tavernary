@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "project_id": "sillytavern-extension-silence",
+  "repository": {
+    "id": 752014538,
+    "owner": "SillyTavern",
+    "name": "Extension-Silence",
+    "url": "https://github.com/SillyTavern/Extension-Silence",
+    "description": "Silence audio player.",
+    "default_branch": "main",
+    "head_sha": "d56a64c91d69f2ad990271a21b15b9a8a0e80c75",
+    "head_committed_at": "2024-06-24T19:45:01.000Z",
+    "archived": false,
+    "created_at": "2024-02-02T20:28:04.000Z",
+    "size_kb": 412
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-26T19:32:09.554Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "d56a64c91d69f2ad990271a21b15b9a8a0e80c75"
+  },
+  "community": {
+    "stargazers_count": 33,
+    "forks_count": 8,
+    "subscribers_count": 1,
+    "aggregate": 42
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-26T19:32:09.554Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Cohee1207", "type": "User" }],
+    "refreshed_at": "2026-07-26T19:32:09.554Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

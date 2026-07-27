@@ -3,6 +3,7 @@ import { expect, test, vi } from "vitest";
 import {
   buildProjectSubmissionTriage,
   buildValidationComment,
+  inspectProjectSubmissionSource,
   parseIssueFields,
   parseProjectSubmissionStateMarker,
   processProjectSubmissionTriage,
@@ -444,6 +445,38 @@ test("rejects malformed frontend dependencies in the state marker", () => {
       ].join("\n"),
     ),
   ).toBeNull();
+});
+
+test("accepts Reddit permalinks without an anonymous availability probe", async () => {
+  const result = await inspectProjectSubmissionSource(
+    {
+      schema_version: 1,
+      project_type: "preset",
+      source_url:
+        "https://old.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
+      name: "Writer's Block 5",
+      description: "A narrative-focused preset.",
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    },
+    {
+      request: vi.fn(),
+      probe: async () => {
+        throw new Error("Reddit availability probe must not run.");
+      },
+    },
+  );
+
+  expect(result).toMatchObject({
+    identity: {
+      kind: "reddit",
+      postId: "1v64r6z",
+      canonicalUrl:
+        "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
+    },
+    sourceProbe: { status: "ok", httpStatus: null },
+  });
 });
 
 test("processes an admitted issue through injected GitHub mutations", async () => {
