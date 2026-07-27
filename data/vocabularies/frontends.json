@@ -21,6 +21,11 @@
       "description": "Works with the Marinara Engine roleplay frontend."
     },
     {
+      "id": "pyre",
+      "label": "Pyre",
+      "description": "Works with the Pyre roleplay frontend."
+    },
+    {
       "id": "sillytavern",
       "label": "SillyTavern",
       "description": "Works with the SillyTavern roleplay frontend."

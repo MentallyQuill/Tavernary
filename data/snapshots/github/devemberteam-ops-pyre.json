@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "project_id": "devemberteam-ops-pyre",
+  "repository": {
+    "id": 1257302750,
+    "owner": "devemberteam-ops",
+    "name": "Pyre",
+    "url": "https://github.com/devemberteam-ops/Pyre",
+    "description": "Private, local-first, bring-your-own-key AI roleplay client for Android, Windows, Linux & web. No backend, no account, no cloud — your characters and chats stay on your device. AGPL-3.0.",
+    "default_branch": "main",
+    "head_sha": "17148f5b60d13e1f2f7b901c99a57fa99cff866a",
+    "head_committed_at": "2026-07-17T12:11:45.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2026-06-02T14:51:13.000Z",
+    "size_kb": 213220
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-17T12:11:45.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T12:11:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-10T00:50:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T22:51:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-17T17:10:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T22:59:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T11:41:21.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-17T12:10:36.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T15:18:17.769Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "17148f5b60d13e1f2f7b901c99a57fa99cff866a"
+  },
+  "community": {
+    "stargazers_count": 55,
+    "forks_count": 2,
+    "subscribers_count": 2,
+    "aggregate": 59
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T15:18:17.769Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "devemberteam-ops", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T15:18:17.769Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
