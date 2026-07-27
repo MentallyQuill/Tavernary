@@ -61,12 +61,6 @@ export function KitCard({
         <p className="kit-card-description">{kit.description}</p>
       </button>
       <div className="kit-card-metadata">
-        {kit.supporterCount === null ? null : (
-          <span>
-            {kit.supporterCount}{" "}
-            {kit.supporterCount === 1 ? "supporter" : "supporters"}
-          </span>
-        )}
         <span>Published {relativeTime(kit.publishedAt, now)}</span>
         {wasUpdated ? (
           <span>Updated {relativeTime(kit.updatedAt, now)}</span>
@@ -112,8 +106,11 @@ export function KitCard({
           </button>
         </Tooltip>
       </div>
-      <span className="kit-upvote-control-hit">
-        <KitUpvoteControl sourceIssueNumber={kit.sourceIssueNumber} />
+      <span className="kit-upvote-cluster">
+        <KitUpvoteControl
+          sourceIssueUrl={kit.sourceIssueUrl}
+          supporterCount={kit.supporterCount}
+        />
       </span>
     </article>
   );

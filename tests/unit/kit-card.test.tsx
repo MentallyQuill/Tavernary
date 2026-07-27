@@ -101,7 +101,8 @@ describe("Kit card", () => {
       screen.getByRole("heading", { name: "Long-Form Storyteller" }),
     ).toBeVisible();
     expect(screen.getByText("@example-author")).toBeVisible();
-    expect(screen.getByText("12 supporters")).toBeVisible();
+    expect(screen.getByText("12")).toHaveClass("kit-upvote-count");
+    expect(screen.queryByText(/supporters?/i)).not.toBeInTheDocument();
     const count = screen.getByText("8 Projects");
     expect(count).toHaveClass("kit-project-count-tag");
     expect(screen.queryByText("8 projects")).not.toBeInTheDocument();
@@ -149,12 +150,35 @@ describe("Kit card", () => {
     expect(screen.getByText("1 Project")).toHaveClass("kit-project-count-tag");
   });
 
+  test.each([
+    { supporterCount: 0, visibleCount: "0" },
+    { supporterCount: null, visibleCount: null },
+  ])(
+    "renders support value $supporterCount without a label",
+    ({ supporterCount, visibleCount }) => {
+      renderCard(kit({ supporterCount }));
+
+      if (visibleCount === null) {
+        expect(
+          document.querySelector(".kit-upvote-count"),
+        ).not.toBeInTheDocument();
+      } else {
+        expect(screen.getByText(visibleCount)).toHaveClass("kit-upvote-count");
+      }
+      expect(screen.queryByText(/supporters?|votes?/i)).not.toBeInTheDocument();
+    },
+  );
+
   test("links the upvote arrow to the canonical GitHub issue without selecting the Kit", async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
       <KitCard
-        kit={kit({ sourceIssueNumber: 241 })}
+        kit={kit({
+          sourceIssueNumber: 241,
+          sourceIssueUrl: "https://github.com/fixture/catalog/issues/241",
+          supporterCount: 12,
+        })}
         now="2026-07-24T00:00:00.000Z"
         selected={false}
         onSelect={onSelect}
@@ -166,8 +190,12 @@ describe("Kit card", () => {
     const upvote = screen.getByRole("link", { name: "Upvote on GitHub" });
     expect(upvote).toHaveAttribute(
       "href",
-      "https://github.com/MentallyQuill/Tavernary/issues/241",
+      "https://github.com/fixture/catalog/issues/241",
     );
+    const supporterCount = screen.getByText("12");
+    expect(supporterCount).toHaveClass("kit-upvote-count");
+    expect(supporterCount.parentElement).toContainElement(upvote);
+    expect(screen.queryByText(/supporters?/i)).not.toBeInTheDocument();
     expect(upvote).toHaveAttribute("target", "_blank");
     expect(upvote).toHaveAttribute("rel", "noopener noreferrer");
     expect(upvote).not.toHaveAttribute("aria-pressed");
