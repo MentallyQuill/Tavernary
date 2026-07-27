@@ -98,9 +98,7 @@ export function validateKitSubmission({
         nearDuplicate(kit.project_ids, parsed.project_ids),
       )
     ) {
-      warnings.push(
-        "This composition is a near-duplicate of an existing Kit and requires maintainer judgment.",
-      );
+      warnings.push("This composition is a near-duplicate of an existing Kit.");
     }
   }
 
@@ -110,7 +108,7 @@ export function validateKitSubmission({
   const labels = errors.length
     ? [duplicate ? "duplicate-candidate" : "needs-information"]
     : [
-        "needs-maintainer-review",
+        "kit-publication-ready",
         ...(warnings.length ? ["duplicate-candidate"] : []),
       ];
   return {

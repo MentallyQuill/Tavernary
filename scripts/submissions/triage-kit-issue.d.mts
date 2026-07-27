@@ -16,6 +16,10 @@ export function buildKitValidationComment(
 export function assertKitSubmissionEligible(
   issue: Pick<KitSubmissionIssue, "title" | "state" | "labels">,
 ): void;
+export function kitTriageOutputs(
+  validation: KitSubmissionValidation,
+  issue: { number: number },
+): { publish: string; issue_number: string };
 export function synchronizeKitSubmission(
   repository: string,
   issueNumber: number,

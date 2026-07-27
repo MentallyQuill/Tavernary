@@ -13,6 +13,7 @@ import {
 import {
   assertKitSubmissionEligible,
   buildKitValidationComment,
+  kitTriageOutputs,
   parseKitIssueFields,
   resolveKitSubmissionEvent,
   synchronizeKitSubmission,
@@ -69,13 +70,45 @@ test("parses Kit manifests and builds a stable success comment", () => {
     buildKitValidationComment({
       valid: true,
       manifest: null,
-      labels: ["needs-maintainer-review"],
+      labels: ["kit-publication-ready"],
       errors: [],
       warnings: [],
     }),
-  ).toContain(
-    "Automated validation now passes. This Kit is ready for maintainer review.",
-  );
+  ).toContain("Automated validation passes. Tavernary is publishing this Kit.");
+});
+
+test("emits publication outputs only for a valid Kit", () => {
+  const manifest = {
+    operation: "create" as const,
+    kit_id: null,
+    title: "Story Kit",
+    description: "A complete storytelling stack.",
+    project_ids: ["frontend", "memory", "writer"],
+  };
+  expect(
+    kitTriageOutputs(
+      {
+        valid: true,
+        manifest,
+        labels: ["kit-publication-ready"],
+        errors: [],
+        warnings: [],
+      },
+      { number: 241 },
+    ),
+  ).toEqual({ publish: "true", issue_number: "241" });
+  expect(
+    kitTriageOutputs(
+      {
+        valid: false,
+        manifest: null,
+        labels: ["needs-information"],
+        errors: ["Title contains language Tavernary doesn't allow."],
+        warnings: [],
+      },
+      { number: 241 },
+    ),
+  ).toEqual({ publish: "false", issue_number: "241" });
 });
 
 test("unwraps GitHub's rendered JSON fence from a Kit manifest", () => {
@@ -785,7 +818,11 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
         number: 132,
         title: "[Kit submission]: Example",
         state: "open",
-        labels: ["issue-admitted", "needs-information"],
+        labels: [
+          "issue-admitted",
+          "needs-information",
+          "needs-maintainer-review",
+        ],
       };
     }
     if (path.endsWith("/labels/needs-information")) {
@@ -806,7 +843,7 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
         manifest: null,
         errors: [],
         warnings: [],
-        labels: ["needs-maintainer-review"],
+        labels: ["kit-publication-ready"],
       },
       request,
     ),
@@ -815,8 +852,12 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
     "/repos/Tavernary/Tavernary/issues/132/labels",
     {
       method: "POST",
-      body: JSON.stringify({ labels: ["needs-maintainer-review"] }),
+      body: JSON.stringify({ labels: ["kit-publication-ready"] }),
     },
+  );
+  expect(request).toHaveBeenCalledWith(
+    "/repos/Tavernary/Tavernary/issues/132/labels/needs-maintainer-review",
+    { method: "DELETE" },
   );
 });
 

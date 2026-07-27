@@ -41,7 +41,7 @@ function validate(
 test("accepts valid create and matching-author edit manifests", () => {
   expect(validate()).toMatchObject({
     valid: true,
-    labels: ["needs-maintainer-review"],
+    labels: ["kit-publication-ready"],
     errors: [],
   });
   expect(
@@ -54,7 +54,7 @@ test("accepts valid create and matching-author edit manifests", () => {
         project_ids: ["frontend", "memory", "writer"],
       }),
     ),
-  ).toMatchObject({ valid: true, labels: ["needs-maintainer-review"] });
+  ).toMatchObject({ valid: true, labels: ["kit-publication-ready"] });
 });
 
 test("rejects malformed manifests and blocked actors", () => {
@@ -101,9 +101,9 @@ test("blocks exact project sets and warns on near duplicates", () => {
   );
   expect(near).toMatchObject({
     valid: true,
-    labels: ["needs-maintainer-review", "duplicate-candidate"],
+    labels: ["kit-publication-ready", "duplicate-candidate"],
     warnings: expect.arrayContaining([
-      expect.stringContaining("near-duplicate"),
+      "This composition is a near-duplicate of an existing Kit.",
     ]),
   });
 });
@@ -126,7 +126,7 @@ test("allows an identical create retry from its already-published source issue",
 
   expect(retry).toMatchObject({
     valid: true,
-    labels: ["needs-maintainer-review"],
+    labels: ["kit-publication-ready"],
     errors: [],
   });
 });
@@ -178,3 +178,48 @@ test("rejects edits to a withdrawn Kit", () => {
     errors: expect.arrayContaining(["A withdrawn Kit cannot be edited."]),
   });
 });
+
+test("rechecks severe language from the GitHub manifest", () => {
+  expect(
+    validate(
+      JSON.stringify({
+        ...JSON.parse(create),
+        title: "N1gg3r Story Kit",
+      }),
+    ),
+  ).toMatchObject({
+    valid: false,
+    labels: ["needs-information"],
+    errors: expect.arrayContaining([
+      "Title contains language Tavernary doesn't allow.",
+    ]),
+  });
+  expect(
+    validate(
+      JSON.stringify({
+        ...JSON.parse(create),
+        description: "A f.a.g.g.o.t story stack.",
+      }),
+    ),
+  ).toMatchObject({
+    valid: false,
+    errors: expect.arrayContaining([
+      "Description contains language Tavernary doesn't allow.",
+    ]),
+  });
+});
+
+test.each(["Damn Good Kit", "Badass Kit", "This shit works."])(
+  "keeps common profanity valid on GitHub: %s",
+  (text) => {
+    expect(
+      validate(
+        JSON.stringify({
+          ...JSON.parse(create),
+          title: text,
+          description: text,
+        }),
+      ).valid,
+    ).toBe(true);
+  },
+);

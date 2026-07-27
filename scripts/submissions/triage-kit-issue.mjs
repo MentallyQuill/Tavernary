@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { appendFile, readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -6,9 +6,9 @@ import { validateKitSubmission } from "./validate-kit-submission.mjs";
 
 const validationMarker = "<!-- tavernary-kit-submission-validation -->";
 const triageLabels = {
-  "needs-maintainer-review": {
+  "kit-publication-ready": {
     color: "0e8a16",
-    description: "Kit passed automation and awaits maintainer review.",
+    description: "Kit passed automation and is queued for publication.",
   },
   "needs-information": {
     color: "d93f0b",
@@ -19,6 +19,10 @@ const triageLabels = {
     description: "Kit duplicates or closely overlaps an existing Kit.",
   },
 };
+const ownedTriageLabels = [
+  ...Object.keys(triageLabels),
+  "needs-maintainer-review",
+];
 
 export function parseKitIssueFields(body) {
   const fields = new Map();
@@ -41,7 +45,7 @@ export function buildKitValidationComment(validation) {
   if (validation.errors.length === 0) {
     return [
       validationMarker,
-      "Automated validation now passes. This Kit is ready for maintainer review.",
+      "Automated validation passes. Tavernary is publishing this Kit.",
       ...(validation.warnings.length
         ? ["", ...validation.warnings.map((warning) => `- ${warning}`)]
         : []),
@@ -117,7 +121,7 @@ export async function synchronizeKitSubmission(
       typeof label === "string" ? label : label.name,
     ),
   );
-  for (const name of Object.keys(triageLabels)) {
+  for (const name of ownedTriageLabels) {
     if (current.has(name) && !validation.labels.includes(name)) {
       try {
         await request(
@@ -190,6 +194,13 @@ export function assertKitSubmissionEligible(issue) {
   }
 }
 
+export function kitTriageOutputs(validation, issue) {
+  return {
+    publish: String(validation.valid),
+    issue_number: String(issue.number),
+  };
+}
+
 async function main() {
   const rawEvent = JSON.parse(
     await readFile(process.env.GITHUB_EVENT_PATH, "utf8"),
@@ -217,6 +228,16 @@ async function main() {
     event.issue.number,
     validation,
   );
+  if (process.env.GITHUB_OUTPUT) {
+    const outputs = kitTriageOutputs(validation, event.issue);
+    await appendFile(
+      process.env.GITHUB_OUTPUT,
+      `${Object.entries(outputs)
+        .map(([name, value]) => `${name}=${value}`)
+        .join("\n")}\n`,
+      "utf8",
+    );
+  }
 }
 
 if (
