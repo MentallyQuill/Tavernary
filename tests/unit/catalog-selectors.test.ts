@@ -6,7 +6,10 @@ import {
   parseCatalogQuery,
   serializeCatalogQuery,
 } from "@/features/catalog/catalog-query";
-import { selectProjects } from "@/features/catalog/catalog-selectors";
+import {
+  selectForkRelationship,
+  selectProjects,
+} from "@/features/catalog/catalog-selectors";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 
 const label = (id: string) => ({ id, label: id, description: id });
@@ -174,6 +177,86 @@ const recommendedPreset = project("recommended-preset", {
 const context = { now: "2026-07-23T00:00:00Z" };
 
 describe("catalog selectors", () => {
+  test("selects only the immediate published parent and child in relationship order", () => {
+    const grandparent = project("grandparent", { name: "Grandparent" });
+    const parent = project("parent", {
+      name: "Parent",
+      fork: {
+        parentName: "Grandparent",
+        parentProjectId: "grandparent",
+        status: "published",
+      },
+    });
+    const child = project("child", {
+      name: "Child",
+      fork: {
+        parentName: "Parent",
+        parentProjectId: "parent",
+        status: "published",
+      },
+    });
+
+    expect(
+      selectForkRelationship([child, grandparent, parent], "child"),
+    ).toEqual([parent, child]);
+    expect(
+      selectForkRelationship([child, grandparent, parent], "parent"),
+    ).toEqual([grandparent, parent]);
+  });
+
+  test("relationship selection ignores ordinary filters and rejects broken links", () => {
+    const parent = project("parent", { searchableText: "upstream" });
+    const child = project("child", {
+      searchableText: "downstream",
+      fork: {
+        parentName: "Parent",
+        parentProjectId: "parent",
+        status: "published",
+      },
+    });
+
+    expect(selectForkRelationship([child, parent], "child")).toEqual([
+      parent,
+      child,
+    ]);
+    expect(selectForkRelationship([parent], "child")).toBeNull();
+    expect(
+      selectForkRelationship(
+        [
+          parent,
+          {
+            ...child,
+            fork: { ...child.fork!, status: "not-listed" },
+          },
+        ],
+        "child",
+      ),
+    ).toBeNull();
+    expect(
+      selectForkRelationship(
+        [
+          {
+            ...child,
+            fork: { ...child.fork!, parentProjectId: "missing" },
+          },
+          parent,
+        ],
+        "child",
+      ),
+    ).toBeNull();
+    expect(
+      selectForkRelationship(
+        [
+          {
+            ...child,
+            fork: { ...child.fork!, parentProjectId: "child" },
+          },
+        ],
+        "child",
+      ),
+    ).toBeNull();
+  });
+
   test("matches repository owners, human contributors, and bot contributors", () => {
     const attributed = project("directive", {
       searchableText: "directive mentallyquill alice claude dependabot[bot]",
@@ -532,6 +615,48 @@ describe("catalog query URLs", () => {
       frontends: ["marinara-engine", "sillytavern"],
       kinds: ["extension", "preset"],
     });
+  });
+
+  test("round-trips relationship scope alongside ordinary project filters", () => {
+    const serialized = serializeCatalogQuery({
+      ...DEFAULT_QUERY,
+      search: "memory",
+      frontends: ["sillytavern"],
+      relationship: "vectfox",
+    });
+
+    expect(serialized).toBe(
+      "q=memory&relationship=vectfox&frontend=sillytavern",
+    );
+    expect(parseCatalogQuery(`?${serialized}`)).toEqual({
+      ...DEFAULT_QUERY,
+      search: "memory",
+      frontends: ["sillytavern"],
+      relationship: "vectfox",
+    });
+  });
+
+  test("normalizes invalid relationship IDs and discards them in Kit mode", () => {
+    for (const relationship of ["", " ", "Unsafe_ID", "../parent"]) {
+      expect(
+        parseCatalogQuery(`?relationship=${encodeURIComponent(relationship)}`)
+          .relationship,
+      ).toBe("");
+      expect(
+        serializeCatalogQuery({ ...DEFAULT_QUERY, relationship }),
+      ).not.toContain("relationship=");
+    }
+
+    expect(
+      parseCatalogQuery("?mode=kits&relationship=child").relationship,
+    ).toBe("");
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        mode: "kits",
+        relationship: "child",
+      }),
+    ).not.toContain("relationship=");
   });
 
   test("discards invalid URL values", () => {
