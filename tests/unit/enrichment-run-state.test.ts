@@ -287,6 +287,35 @@ test("maps retry outcomes and completes with isolated errors", () => {
   expect(selectNextRunBatch(state).projectIds).toEqual([]);
 });
 
+test("persists normalized Reddit source provenance", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["reddit-1v64r6z"],
+    runId: "reddit-run",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "reddit-1v64r6z",
+        phase: "primary",
+        outcome: "enriched",
+        sourceKind: "reddit-body",
+        sourceIdentity: "reddit:1v64r6z",
+        redditPostId: "1v64r6z",
+      },
+    ],
+    later,
+  );
+
+  expect(state.entries["reddit-1v64r6z"]).toMatchObject({
+    source_kind: "reddit-body",
+    source_identity: "reddit:1v64r6z",
+    reddit_post_id: "1v64r6z",
+  });
+});
+
 test("completes with errors when a full rollout has an isolated source exception", () => {
   const initial = createEnrichmentRunState({
     mode: "full",

@@ -8,7 +8,7 @@ const redditHosts = new Set([
   "new.reddit.com",
   "m.reddit.com",
 ]);
-const redditRedirectHosts = new Set([...redditHosts, "redd.it"]);
+export const REDDIT_SOURCE_HOSTS = new Set([...redditHosts, "redd.it"]);
 
 function githubIdentity(url) {
   if (url.hostname.toLowerCase() !== "github.com") return null;
@@ -107,7 +107,7 @@ export async function resolveRedditShareIdentity(identity, options) {
   if (identity.kind !== "reddit-share") return identity;
   try {
     const result = await options.probe(identity.shareUrl, {
-      allowedRedirectHosts: redditRedirectHosts,
+      allowedRedirectHosts: REDDIT_SOURCE_HOSTS,
     });
     const resolved = parseSourceIdentity(result.finalUrl);
     if (resolved.kind !== "reddit") {

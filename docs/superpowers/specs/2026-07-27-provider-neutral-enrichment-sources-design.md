@@ -131,6 +131,8 @@ It will:
 - fetch only the canonical Reddit post through a fixed Reddit origin;
 - use a bounded machine-readable post response rather than scrape arbitrary
   rendered HTML;
+- if Reddit denies the post-listing request, use a separately bounded official
+  oEmbed response only as an identity-checked title fallback;
 - validate that the returned post ID matches the canonical registry identity;
 - normalize the post's self-text and title as plain untrusted text;
 - use substantive self-text as `reddit-body`;
@@ -144,6 +146,8 @@ It will:
   transient responses with explicit reason codes.
 
 A post with no usable body but a usable title may be enriched from the title.
+A title recovered from oEmbed is treated the same way; oEmbed HTML is inspected
+only for the canonical post ID and is never passed to the provider.
 A confirmed post with neither usable body nor title produces a source failure,
 not the repository-specific `No README file found.` fallback.
 

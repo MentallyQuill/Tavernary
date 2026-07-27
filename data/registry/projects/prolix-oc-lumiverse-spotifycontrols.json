@@ -15,8 +15,8 @@
   "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
+  "visibility": "disabled",
   "refresh_policy": "automatic",
-  "visibility_reason": null,
+  "visibility_reason": "removed",
   "enrichment_policy": "automatic"
 }

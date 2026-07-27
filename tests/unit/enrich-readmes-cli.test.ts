@@ -79,6 +79,7 @@ function sources(id: string) {
   return {
     status: "ready" as const,
     sourceKind: "description" as const,
+    sourceIdentity: `github:creator/${id}`,
     text: `Description for ${id}.`,
     repositoryDescription: `Description for ${id}.`,
     readmeText: null,
@@ -205,8 +206,11 @@ test("preflight performs one synthetic call without loading or writing catalog d
   expect(generate).toHaveBeenCalledOnce();
   expect(generate.mock.calls[0][0]).toMatchObject({
     id: "provider-preflight",
-    repositoryDescription:
-      "A synthetic source used only to verify structured catalog enrichment.",
+    source: {
+      kind: "description",
+      identity: "github:tavernary/provider-preflight",
+      text: "A synthetic source used only to verify structured catalog enrichment.",
+    },
   });
   expect(loadSource).not.toHaveBeenCalled();
   expect(writeRecord).not.toHaveBeenCalled();
@@ -465,6 +469,7 @@ test("a canary retry resumes only its failed IDs", async () => {
     loadSource: async () => ({
       status: "fallback" as const,
       sourceKind: "confirmed-fallback" as const,
+      sourceIdentity: "github:creator/fallback",
       readmePath: null,
       readmeRef: "a".repeat(40),
       repositoryId: 42,

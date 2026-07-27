@@ -13,6 +13,7 @@ export interface SafeProbeOptions {
   maxRedirects?: number;
   maxBytes?: number;
   allowedRedirectHosts?: Set<string>;
+  headers?: Record<string, string>;
 }
 
 export interface SafeProbeResult {
@@ -23,7 +24,16 @@ export interface SafeProbeResult {
   redirects: string[];
 }
 
+export interface SafeReadResult extends SafeProbeResult {
+  body: Uint8Array;
+}
+
 export function safeProbe(
   value: string,
   options?: SafeProbeOptions,
 ): Promise<SafeProbeResult>;
+
+export function safeReadSource(
+  value: string,
+  options?: SafeProbeOptions,
+): Promise<SafeReadResult>;

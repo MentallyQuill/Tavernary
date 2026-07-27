@@ -189,19 +189,6 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     headSha: repository.head_sha,
   };
   const description = repositoryDescription(snapshot);
-  if (description) {
-    return {
-      status: "ready",
-      sourceKind: "description",
-      text: description,
-      repositoryDescription: description,
-      readmeText: null,
-      readmePath: null,
-      readmeRef: null,
-      ...common,
-    };
-  }
-
   const github = options.github ?? defaultGithub;
   let readme;
   try {
@@ -213,33 +200,47 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     return readmeFailure(error);
   }
 
-  if (readme === null) {
+  if (readme !== null) {
+    const decoded = decodeReadme(readme);
+    const readmeText = decoded === null ? null : prepareReadmeText(decoded);
+    if (readmeText) {
+      return {
+        status: "ready",
+        sourceKind: "readme",
+        text: readmeText,
+        repositoryDescription: description,
+        readmeText,
+        readmePath: typeof readme.path === "string" ? readme.path : null,
+        readmeRef: repository.head_sha,
+        ...common,
+      };
+    }
+    if (!description) {
+      return {
+        status: "failed",
+        reasonCode: "readme-unusable",
+        message: "GitHub README content is unusable.",
+      };
+    }
+  }
+
+  if (description) {
     return {
-      status: "fallback",
-      sourceKind: "confirmed-fallback",
+      status: "ready",
+      sourceKind: "description",
+      text: description,
+      repositoryDescription: description,
+      readmeText: null,
       readmePath: null,
       readmeRef: repository.head_sha,
       ...common,
     };
   }
 
-  const decoded = decodeReadme(readme);
-  const readmeText = decoded === null ? null : prepareReadmeText(decoded);
-  if (!readmeText) {
-    return {
-      status: "failed",
-      reasonCode: "readme-unusable",
-      message: "GitHub README content is unusable.",
-    };
-  }
-
   return {
-    status: "ready",
-    sourceKind: "readme",
-    text: readmeText,
-    repositoryDescription: null,
-    readmeText,
-    readmePath: typeof readme.path === "string" ? readme.path : null,
+    status: "fallback",
+    sourceKind: "confirmed-fallback",
+    readmePath: null,
     readmeRef: repository.head_sha,
     ...common,
   };

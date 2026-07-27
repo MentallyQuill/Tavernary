@@ -59,6 +59,7 @@
 - Modify `scripts/catalog/validate.mjs` and `.d.mts`: validate both directories and reject provider/source mismatches.
 - Modify `scripts/catalog/enrichment-policy.mjs` and `.d.mts`: treat GitHub and Codeberg repository sources as automatic-enrichment sources.
 - Modify `scripts/catalog/readme-source.mjs` and `.d.mts`: fetch README evidence through the selected repository provider.
+- Modify `scripts/catalog/enrichment-source.mjs` and `.d.mts`: register Codeberg as a repository enrichment adapter and preserve the normalized `{ kind, identity, text }` provider contract.
 - Modify `scripts/catalog/enrich-readmes.mjs` and `.d.mts`: load snapshots from both provider directories.
 - Modify `scripts/catalog/select-enrichment-canary.mjs`: select eligible snapshots across both providers.
 - Modify `scripts/catalog/enrichment-orchestrator.mjs` and `.d.mts`: recognize Codeberg snapshot changes and preserve provider-aware enrichment staging.
@@ -728,7 +729,10 @@ git commit -m "refactor(catalog): add repository providers"
 - Create: `tests/unit/codeberg-repository-provider.test.ts`
 - Modify: `scripts/catalog/readme-source.mjs`
 - Modify: `scripts/catalog/readme-source.d.mts`
+- Modify: `scripts/catalog/enrichment-source.mjs`
+- Modify: `scripts/catalog/enrichment-source.d.mts`
 - Modify: `tests/unit/readme-source.test.ts`
+- Modify: `tests/unit/enrichment-source.test.ts`
 - Create: `tests/fixtures/codeberg/repository.json`
 - Create: `tests/fixtures/codeberg/commits.json`
 - Create: `tests/fixtures/codeberg/commit-detail.json`
@@ -746,7 +750,8 @@ git commit -m "refactor(catalog): add repository providers"
   `parseCodebergRateLimit(headers)`,
   `CodebergRepositoryProvider`,
   bounded Codeberg contributor evidence, normalized Codeberg observations, and
-  provider-routed README evidence.
+  provider-routed README evidence, and a Codeberg route through the existing
+  normalized enrichment-source dispatcher.
 
 - [ ] **Step 1: Write failing fixed-origin client tests**
 
@@ -860,10 +865,22 @@ test("loads a Codeberg README through the repository provider", async () => {
 });
 ```
 
+Add to `tests/unit/enrichment-source.test.ts` a Codeberg record whose provider
+adapter returns README text. Assert `loadEnrichmentSource` returns:
+
+```ts
+{
+  status: "ready",
+  sourceKind: "readme",
+  sourceIdentity: "codeberg:targren/lumiverse-swipescrubber",
+  text: expect.stringContaining("Swipe Scrubber"),
+}
+```
+
 - [ ] **Step 4: Run Codeberg tests and verify the red state**
 
 ```powershell
-npm.cmd test -- tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/readme-source.test.ts
+npm.cmd test -- tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts
 ```
 
 Expected: FAIL because the Codeberg client and provider do not exist.
@@ -919,10 +936,15 @@ Change `loadReadmeSource` to select a provider by `record.source.type` and call
 but replace user-facing failure messages with provider-neutral `Repository
 README ...` wording.
 
+Register `source.type: "codeberg"` in `loadEnrichmentSource`. The repository
+loader must preserve README-first selection and return a provider-qualified
+`sourceIdentity`; `enrich-readmes.mjs` must continue to consume only the
+normalized source contract rather than branch on Codeberg directly.
+
 - [ ] **Step 7: Run Codeberg and shared contract tests**
 
 ```powershell
-npm.cmd test -- tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/repository-provider.test.ts tests/unit/repository-snapshot.test.ts tests/unit/readme-source.test.ts
+npm.cmd test -- tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/repository-provider.test.ts tests/unit/repository-snapshot.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts
 ```
 
 Expected: PASS.
@@ -930,7 +952,7 @@ Expected: PASS.
 - [ ] **Step 8: Commit the Codeberg adapter**
 
 ```powershell
-git add -- scripts/catalog/codeberg-client.mjs scripts/catalog/codeberg-client.d.mts scripts/catalog/codeberg-repository-provider.mjs scripts/catalog/codeberg-repository-provider.d.mts scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/readme-source.test.ts tests/fixtures/codeberg
+git add -- scripts/catalog/codeberg-client.mjs scripts/catalog/codeberg-client.d.mts scripts/catalog/codeberg-repository-provider.mjs scripts/catalog/codeberg-repository-provider.d.mts scripts/catalog/readme-source.mjs scripts/catalog/readme-source.d.mts scripts/catalog/enrichment-source.mjs scripts/catalog/enrichment-source.d.mts tests/unit/codeberg-client.test.ts tests/unit/codeberg-repository-provider.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts tests/fixtures/codeberg
 git commit -m "feat(catalog): inspect Codeberg repositories"
 ```
 
@@ -1081,6 +1103,8 @@ git commit -m "feat(submissions): generate Codeberg reviews"
 - Modify: `scripts/catalog/validate.d.mts`
 - Modify: `scripts/catalog/enrich-readmes.mjs`
 - Modify: `scripts/catalog/enrich-readmes.d.mts`
+- Modify: `scripts/catalog/enrichment-source.mjs`
+- Modify: `scripts/catalog/enrichment-source.d.mts`
 - Modify: `scripts/catalog/select-enrichment-canary.mjs`
 - Modify: `src/features/catalog/catalog-types.ts`
 - Modify: `src/features/catalog/project-attribution.ts`
@@ -1092,6 +1116,7 @@ git commit -m "feat(submissions): generate Codeberg reviews"
 - Test: `tests/unit/catalog-selectors.test.ts`
 - Test: `tests/unit/readme-source.test.ts`
 - Test: `tests/unit/enrich-readmes.test.ts`
+- Test: `tests/unit/enrichment-source.test.ts`
 - Test: `tests/unit/select-enrichment-canary.test.ts`
 - Test: `tests/e2e/catalog.spec.ts`
 
@@ -1133,7 +1158,9 @@ Validation must reject:
 
 In `tests/unit/enrich-readmes.test.ts`, add an enrichment-loading test that
 provides one GitHub and one Codeberg automatic record and asserts both
-snapshots reach `enrichRecord`.
+snapshots reach `enrichRecord`. Assert both provider calls receive only the
+normalized `source: { kind, identity, text }` object rather than
+provider-specific README or description fields.
 
 In `tests/unit/select-enrichment-canary.test.ts`, assert a healthy automatic
 Codeberg record is eligible and a stale Codeberg snapshot is excluded under the
@@ -1156,7 +1183,7 @@ targren` and search matches `targren` and Codeberg contributors.
 - [ ] **Step 3: Run focused tests and verify the red state**
 
 ```powershell
-npm.cmd test -- tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts
+npm.cmd test -- tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts
 ```
 
 Expected: FAIL on GitHub-only snapshot loading and runtime fields.
@@ -1185,9 +1212,10 @@ const snapshots = [...githubSnapshots, ...codebergSnapshots];
 Exclude the GitHub `kits` subdirectory as today. Validate unique project IDs and
 `snapshot.provider === record.source.type`.
 
-Apply the same two-directory load to `enrich-readmes.mjs` and
-`select-enrichment-canary.mjs`. Preserve automatic-enrichment policy and select
-the snapshot directory from the validated record source.
+Apply the same two-directory snapshot load to `enrich-readmes.mjs` and
+`select-enrichment-canary.mjs`. Preserve automatic-enrichment policy, select
+the snapshot directory from the validated record source, and keep
+`loadEnrichmentSource` as the sole source-adapter dispatch point.
 
 - [ ] **Step 5: Generate provider-neutral runtime fields**
 
@@ -1209,7 +1237,7 @@ repositories`.
 - [ ] **Step 7: Run focused unit and catalog E2E tests**
 
 ```powershell
-npm.cmd test -- tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/full-catalog-data.test.ts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts
+npm.cmd test -- tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/full-catalog-data.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts
 npm.cmd run catalog:validate
 npm.cmd run catalog:build
 npm.cmd run test:e2e -- catalog.spec.ts
@@ -1220,7 +1248,7 @@ Expected: PASS.
 - [ ] **Step 8: Commit mixed-provider catalog support**
 
 ```powershell
-git add -- scripts/catalog/build.mjs scripts/catalog/build.d.mts scripts/catalog/validate.mjs scripts/catalog/validate.d.mts scripts/catalog/enrich-readmes.mjs scripts/catalog/enrich-readmes.d.mts scripts/catalog/select-enrichment-canary.mjs src/features/catalog/catalog-types.ts src/features/catalog/project-attribution.ts src/features/catalog/components/project-card.tsx src/app/about/page.tsx src/generated/catalog.json tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/full-catalog-data.test.ts tests/unit/readme-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts tests/e2e/catalog.spec.ts
+git add -- scripts/catalog/build.mjs scripts/catalog/build.d.mts scripts/catalog/validate.mjs scripts/catalog/validate.d.mts scripts/catalog/enrich-readmes.mjs scripts/catalog/enrich-readmes.d.mts scripts/catalog/enrichment-source.mjs scripts/catalog/enrichment-source.d.mts scripts/catalog/select-enrichment-canary.mjs src/features/catalog/catalog-types.ts src/features/catalog/project-attribution.ts src/features/catalog/components/project-card.tsx src/app/about/page.tsx src/generated/catalog.json tests/unit/build-catalog.test.ts tests/unit/validate-catalog.test.ts tests/unit/project-attribution.test.ts tests/unit/catalog-selectors.test.ts tests/unit/full-catalog-data.test.ts tests/unit/readme-source.test.ts tests/unit/enrichment-source.test.ts tests/unit/enrich-readmes.test.ts tests/unit/select-enrichment-canary.test.ts tests/e2e/catalog.spec.ts
 git commit -m "feat(catalog): publish Codeberg evidence"
 ```
 

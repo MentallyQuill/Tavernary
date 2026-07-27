@@ -20,6 +20,7 @@ interface CatalogRecord {
   visibility?: string;
   source: {
     type: string;
+    url?: string;
     repository_id?: number | null;
     license_status?: string | null;
     version?: string | null;
@@ -204,7 +205,9 @@ function expectCatalogContract(records: CatalogRecord[]) {
     provisionalUrlRecords.every(
       (record) =>
         record.metadata_status === "provisional" &&
-        record.enrichment_policy === "manual" &&
+        (record.id === "reddit-1v64r6z"
+          ? record.enrichment_policy === "automatic"
+          : record.enrichment_policy === "manual") &&
         record.source.license_status === "pending",
     ),
   ).toBe(true);
@@ -303,6 +306,38 @@ function expectCatalogContract(records: CatalogRecord[]) {
 describe("full catalog data", () => {
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("applies the requested delist and automatic Reddit enrichment decisions", async () => {
+    const records = await loadRegistryRecords();
+    const byId = new Map(records.map((record) => [record.id, record]));
+
+    for (const id of [
+      "prolix-oc-lumiverse-chatroom",
+      "prolix-oc-lumiverse-spotifycontrols",
+    ]) {
+      expect(byId.get(id), id).toMatchObject({
+        visibility: "disabled",
+        visibility_reason: "removed",
+      });
+    }
+
+    expect(byId.get("reddit-1v64r6z")).toMatchObject({
+      enrichment_policy: "automatic",
+      source: {
+        type: "url",
+        url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
+      },
+    });
+    expect(byId.get("reddit-1v64r6z")).not.toHaveProperty("enrichment_note");
+
+    const catalog = await buildCatalog({ write: false });
+    expect(catalog.projects.map(({ id }) => id)).not.toEqual(
+      expect.arrayContaining([
+        "prolix-oc-lumiverse-chatroom",
+        "prolix-oc-lumiverse-spotifycontrols",
+      ]),
+    );
   });
 
   test("keeps manual curation exact and Village Maker consolidated", async () => {

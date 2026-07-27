@@ -41,6 +41,8 @@ export interface SourceProbeResult {
   redirects: string[];
 }
 
+export const REDDIT_SOURCE_HOSTS: ReadonlySet<string>;
+
 export type SourceProbe = (
   url: string,
   options: { allowedRedirectHosts: Set<string> },

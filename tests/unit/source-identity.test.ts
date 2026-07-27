@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 
 import {
+  REDDIT_SOURCE_HOSTS,
   parseSourceIdentity,
   projectSubmissionTitle,
   resolveRedditShareIdentity,
@@ -8,6 +9,17 @@ import {
   sourceDuplicateKeys,
 } from "../../scripts/submissions/source-identity.mjs";
 import { safeProbe } from "../../scripts/submissions/safe-source-fetch.mjs";
+
+test("exports the exact Reddit redirect host allowlist", () => {
+  expect([...REDDIT_SOURCE_HOSTS].sort()).toEqual([
+    "m.reddit.com",
+    "new.reddit.com",
+    "old.reddit.com",
+    "redd.it",
+    "reddit.com",
+    "www.reddit.com",
+  ]);
+});
 
 test("normalizes GitHub repository identity and title", () => {
   const identity = parseSourceIdentity(

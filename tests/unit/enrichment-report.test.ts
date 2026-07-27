@@ -94,6 +94,81 @@ test("does not hard-code a timeout duration in durable report messages", () => {
   );
 });
 
+test("sanitizes and preserves Reddit source provenance", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["reddit-1v64r6z"],
+    runId: "reddit-run",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "reddit-1v64r6z",
+        phase: "primary",
+        outcome: "enriched",
+        sourceKind: "reddit-body",
+        sourceIdentity: "reddit:1v64r6z",
+        redditPostId: "1v64r6z",
+      },
+    ],
+    now,
+  );
+  state.entries["reddit-1v64r6z"].source_text = "must not survive";
+
+  const report = createEnrichmentReport(state);
+  expect(report.entries["reddit-1v64r6z"]).toMatchObject({
+    source_kind: "reddit-body",
+    source_identity: "reddit:1v64r6z",
+    reddit_post_id: "1v64r6z",
+  });
+  expect(JSON.stringify(report)).not.toContain("must not survive");
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
+test.each([
+  [
+    "unsupported-enrichment-source",
+    "No automatic enrichment adapter supports this source.",
+  ],
+  ["reddit-post-unavailable", "The Reddit post is unavailable."],
+  [
+    "reddit-identity-mismatch",
+    "The Reddit response does not match the catalog source.",
+  ],
+  ["reddit-rate-limited", "The Reddit source request was rate limited."],
+  ["reddit-server-error", "The Reddit source service is unavailable."],
+  ["reddit-response-invalid", "The Reddit source response is invalid."],
+  ["reddit-fetch-failed", "The Reddit source request failed."],
+] as const)("uses a controlled message for %s", (reasonCode, message) => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["reddit-1v64r6z"],
+    runId: `reddit-${reasonCode}`,
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "reddit-1v64r6z",
+        phase: "primary",
+        outcome: "failed",
+        reasonCode,
+        message: "raw upstream content",
+      },
+    ],
+    now,
+  );
+
+  expect(createEnrichmentReport(state).entries["reddit-1v64r6z"].message).toBe(
+    message,
+  );
+});
+
 test("rejects malformed or contradictory durable reports", () => {
   const report = createEnrichmentReport(
     createEnrichmentRunState({
