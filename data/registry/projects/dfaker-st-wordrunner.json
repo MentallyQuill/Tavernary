@@ -3,15 +3,15 @@
   "id": "dfaker-st-wordrunner",
   "name": "st-wordrunner",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "st-wordrunner is a SillyTavern extension that displays generated chat responses word by word. The extension reveals output progressively as it streams, creating an animated typing effect in the interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "dfaker/st-wordrunner",
     "repository_id": 1047697678
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",

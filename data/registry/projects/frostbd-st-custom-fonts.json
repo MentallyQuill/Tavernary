@@ -3,15 +3,15 @@
   "id": "frostbd-st-custom-fonts",
   "name": "st-custom-fonts",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern users can apply custom fonts through this extension to personalize their chat interface appearance. The extension adds typography options that let roleplayers adjust visual styling for their sessions.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "FrostBD/st-custom-fonts",
     "repository_id": 686411772
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
