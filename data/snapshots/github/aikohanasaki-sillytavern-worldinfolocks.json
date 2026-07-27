@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "project_id": "aikohanasaki-sillytavern-worldinfolocks",
+  "repository": {
+    "id": 1015688972,
+    "owner": "aikohanasaki",
+    "name": "SillyTavern-WorldInfoLocks",
+    "url": "https://github.com/aikohanasaki/SillyTavern-WorldInfoLocks",
+    "description": "Thank you LenAnderson I am yoinking this!",
+    "default_branch": "master",
+    "head_sha": "91cb6afba44748d5ddb5e633f56583db8c7c9adc",
+    "head_committed_at": "2026-01-13T17:44:18.000Z",
+    "archived": false,
+    "created_at": "2025-07-07T22:26:43.000Z",
+    "size_kb": 423
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T01:04:02.183Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "91cb6afba44748d5ddb5e633f56583db8c7c9adc"
+  },
+  "community": {
+    "stargazers_count": 30,
+    "forks_count": 0,
+    "subscribers_count": 1,
+    "aggregate": 31
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T01:04:02.183Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User" },
+      { "login": "LenAnderson", "type": "User" }
+    ],
+    "refreshed_at": "2026-07-27T01:04:02.183Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

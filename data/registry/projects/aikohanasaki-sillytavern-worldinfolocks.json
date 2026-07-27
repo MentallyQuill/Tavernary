@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "aikohanasaki-sillytavern-worldinfolocks",
+  "name": "SillyTavern-WorldInfoLocks",
+  "kind": "extension",
+  "summary": "SillyTavern-WorldInfoLocks adds locking controls to World Info entries in the SillyTavern roleplay frontend. It also extends those world info locks to the aikobots interface for cross-platform lore management.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "aikohanasaki/SillyTavern-WorldInfoLocks",
+    "repository_id": 1015688972
+  },
+  "frontends": ["aikobots", "sillytavern"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["character-worldbuilding", "multi-frontend"],
+  "cataloged_at": "2026-07-27T01:04:02.183Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
