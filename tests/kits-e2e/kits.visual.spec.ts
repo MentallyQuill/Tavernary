@@ -194,6 +194,20 @@ test("Kit card Report hover has a deterministic tooltip treatment", async ({
   });
 });
 
+test("Kit card Upvote on GitHub hover matches the card-control treatment", async ({
+  page,
+}) => {
+  await openKits(page, { width: 1440, height: 900 });
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  await card.getByRole("link", { name: "Upvote on GitHub" }).hover();
+  const tooltip = page.getByRole("tooltip", { name: "Upvote on GitHub" });
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveScreenshot("kit-card-upvote-hover.png", {
+    animations: "disabled",
+  });
+});
+
 test("Kit card copy success notice remains visible long enough to inspect", async ({
   page,
   context,

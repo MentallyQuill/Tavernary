@@ -312,6 +312,57 @@ test("keeps discard confirmation actions inside the phone dialog", async ({
   );
 });
 
+test("Kit upvote matches the project-card plus control and links the source issue", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+
+  const card = page.getByRole("article", { name: "Alpha Kit" });
+  const upvote = card.getByRole("link", { name: "Upvote on GitHub" });
+  await expect(upvote).toHaveAttribute(
+    "href",
+    "https://github.com/MentallyQuill/Tavernary/issues/101",
+  );
+  await expect(upvote).toHaveAttribute("target", "_blank");
+  await expect(upvote).toHaveAttribute("rel", "noopener noreferrer");
+
+  const upvoteFace = upvote.locator(".project-kit-control-face");
+  const upvoteStyle = await upvoteFace.evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    return {
+      width: bounds.width,
+      height: bounds.height,
+      color: style.color,
+      background: style.backgroundColor,
+      borderRadius: style.borderRadius,
+    };
+  });
+
+  await page.getByRole("button", { name: "All Projects", exact: true }).click();
+  const add = page.locator(".project-kit-control").first();
+  const addFace = add.locator(".project-kit-control-face");
+  const addStyle = await addFace.evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    return {
+      width: bounds.width,
+      height: bounds.height,
+      color: style.color,
+      background: style.backgroundColor,
+      borderRadius: style.borderRadius,
+    };
+  });
+
+  expect(upvoteStyle).toEqual(addStyle);
+  expect(upvoteStyle).toMatchObject({
+    width: 28,
+    height: 28,
+    color: "rgb(22, 16, 8)",
+  });
+});
+
 test("filled desktop actions use Graphite Teal ink and card Kit glyphs are centered in a square", async ({
   page,
 }) => {
@@ -1291,6 +1342,14 @@ test("mobile Kit cards, filters, and inspection meet the touch contract", async 
   await expectMobileTarget(
     alphaCard.getByRole("button", { name: "Report Kit" }),
   );
+  await expectMobileTarget(
+    alphaCard.getByRole("link", { name: "Upvote on GitHub" }),
+  );
+  expect(
+    await alphaCard.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
 
   await page.getByRole("button", { name: "Open filters" }).click();
   const filters = page.getByRole("dialog", { name: "Filters" });
