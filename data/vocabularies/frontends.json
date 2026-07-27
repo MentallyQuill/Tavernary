@@ -31,6 +31,11 @@
       "description": "Works with the Pyre roleplay frontend."
     },
     {
+      "id": "rpgraph",
+      "label": "RPGraph",
+      "description": "Works with the RPGraph roleplay frontend."
+    },
+    {
       "id": "sillytavern",
       "label": "SillyTavern",
       "description": "Works with the SillyTavern roleplay frontend."
