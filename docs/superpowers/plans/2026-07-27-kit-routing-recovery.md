@@ -777,7 +777,7 @@ Body:
 ## Verification
 - npm.cmd run check
 
-Closes #109
+Refs #109
 ```
 
 - [ ] **Step 4: Verify PR checks and merge**
