@@ -11,6 +11,7 @@
     "head_sha": "fdca3f70f84856d32babb0a1111068a5cb796b09",
     "head_committed_at": "2026-07-15T01:09:20.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-25T19:16:55.000Z",
     "size_kb": 106
   },
@@ -47,11 +48,14 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "IkarusV", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

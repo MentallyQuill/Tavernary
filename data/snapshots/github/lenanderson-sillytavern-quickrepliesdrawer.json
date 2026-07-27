@@ -11,6 +11,7 @@
     "head_sha": "0d7feb81f31717d771efebd90618d18a73bff4df",
     "head_committed_at": "2025-07-12T16:10:48.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-01-21T01:51:33.000Z",
     "size_kb": 1212
   },
@@ -32,12 +33,15 @@
     "aggregate": 11
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T04:33:31.378Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "LenAnderson", "type": "User" }],
-    "refreshed_at": "2026-07-27T04:33:31.378Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

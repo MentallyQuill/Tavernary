@@ -11,6 +11,7 @@
     "head_sha": "140f57d2df733f284ecdb437a0f23cefd572d77f",
     "head_committed_at": "2026-07-02T00:36:51.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-06-21T04:43:25.000Z",
     "size_kb": 1293
   },
@@ -61,11 +62,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "leandrojofre", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

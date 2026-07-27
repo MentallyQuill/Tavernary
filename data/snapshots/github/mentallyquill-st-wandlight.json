@@ -11,6 +11,7 @@
     "head_sha": "9686c388a860f0bda7011c9cedc3a00448e3ebe2",
     "head_committed_at": "2026-05-25T02:49:03.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-05-22T02:11:05.000Z",
     "size_kb": 4172
   },
@@ -46,11 +47,14 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "MentallyQuill", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

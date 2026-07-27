@@ -3,15 +3,15 @@
   "id": "chew1976-dynamic-vars",
   "name": "dynamic-vars",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension lets users define and use dynamic variables within the frontend. It supports creating named values that can be referenced throughout the chat session.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "chew1976/dynamic-vars",
-    "repository_id": null
+    "repository_id": 1028124712
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",

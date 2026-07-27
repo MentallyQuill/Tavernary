@@ -3,16 +3,16 @@
   "id": "hayanaga-ooba-model-reloader",
   "name": "ooba-model-reloader",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Hayanaga/ooba-model-reloader",
-    "repository_id": null
+    "repository_id": 1146891697
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

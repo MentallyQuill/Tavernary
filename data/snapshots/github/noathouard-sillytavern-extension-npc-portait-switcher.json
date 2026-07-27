@@ -11,6 +11,7 @@
     "head_sha": "9ea4112b5331516bf73f9eece4c81db22611bf20",
     "head_committed_at": "2026-06-26T00:14:34.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-06-23T22:59:51.000Z",
     "size_kb": 32
   },
@@ -37,14 +38,17 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "NoaThouard", "type": "User" },
       { "login": "Noa-Thouard-Nexxis", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

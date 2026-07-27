@@ -11,6 +11,7 @@
     "head_sha": "3ea0436609fd329c19d1dfae45dfa00f34394f99",
     "head_committed_at": "2026-05-23T07:23:41.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-05-06T05:08:09.000Z",
     "size_kb": 405
   },
@@ -47,11 +48,14 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Vectricity", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

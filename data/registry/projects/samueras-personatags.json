@@ -3,16 +3,16 @@
   "id": "samueras-personatags",
   "name": "PersonaTags",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "PersonaTags is a SillyTavern extension that adds tagging functionality to user personas for easier organization. Users can label and categorize personas, streamlining workflow management within the interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Samueras/PersonaTags",
-    "repository_id": null
+    "repository_id": 940123423
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

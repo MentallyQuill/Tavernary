@@ -11,6 +11,7 @@
     "head_sha": "f8b167e1366b3e8ad5a3d83aedf342ca2108dfd2",
     "head_committed_at": "2026-04-06T21:40:30.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-04-06T21:35:42.000Z",
     "size_kb": 55
   },
@@ -31,11 +32,14 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Iaminvisibru", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

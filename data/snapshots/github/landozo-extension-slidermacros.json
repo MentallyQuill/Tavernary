@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "project_id": "landozo-extension-slidermacros",
+  "repository": {
+    "id": 1140216653,
+    "owner": "Landozo",
+    "name": "Extension-SliderMacros",
+    "url": "https://github.com/Landozo/Extension-SliderMacros",
+    "description": "Custom Sliders but for Macros/Variables! A fork of Custom Sliders",
+    "default_branch": "main",
+    "head_sha": "9b266304b80321619f1b42983174456ff6d9c72f",
+    "head_committed_at": "2026-02-16T05:14:13.000Z",
+    "archived": false,
+    "fork": true,
+    "created_at": "2026-01-23T01:23:43.000Z",
+    "size_kb": 427
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9b266304b80321619f1b42983174456ff6d9c72f"
+  },
+  "community": {
+    "stargazers_count": 4,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

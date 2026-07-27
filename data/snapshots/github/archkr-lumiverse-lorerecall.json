@@ -11,6 +11,7 @@
     "head_sha": "61d93e73117f7328b3ceac9153ea4a7612b05326",
     "head_committed_at": "2026-07-06T17:44:24.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-04-17T00:28:59.000Z",
     "size_kb": 4768
   },
@@ -56,11 +57,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Archkr", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

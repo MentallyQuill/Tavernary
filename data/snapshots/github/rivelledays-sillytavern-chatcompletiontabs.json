@@ -11,6 +11,7 @@
     "head_sha": "a427446a7625ca19606fedfdc39891e2e3f8f3d1",
     "head_committed_at": "2025-10-09T21:35:03.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-05-29T16:46:50.000Z",
     "size_kb": 362
   },
@@ -35,11 +36,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "RivelleDays", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

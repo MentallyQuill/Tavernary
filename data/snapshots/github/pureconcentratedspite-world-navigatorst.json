@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "project_id": "pureconcentratedspite-world-navigatorst",
+  "repository": {
+    "id": 1050800660,
+    "owner": "PureConcentratedSpite",
+    "name": "world-navigatorST",
+    "url": "https://github.com/PureConcentratedSpite/world-navigatorST",
+    "description": "A 'world-navigator' extension for sillyTavern. It takes coordinate data from a x,y coordinate plane and then uses a World Info .JSON file to calculates position, distances, direction, orientation, and field of view to help ground RP",
+    "default_branch": "main",
+    "head_sha": "5554e48575c016175d48fc9a7fb37f0536041e48",
+    "head_committed_at": "2025-09-08T00:22:25.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2025-09-05T00:53:27.000Z",
+    "size_kb": 80
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "5554e48575c016175d48fc9a7fb37f0536041e48"
+  },
+  "community": {
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 1
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "PureConcentratedSpite", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

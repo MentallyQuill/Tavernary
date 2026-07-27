@@ -11,6 +11,7 @@
     "head_sha": "fae29f2137b330d60368344a5f68997af0a00dd7",
     "head_committed_at": "2026-06-02T18:59:21.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-11T18:20:54.000Z",
     "size_kb": 7
   },
@@ -37,11 +38,14 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "CarlosNahuelcoy", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

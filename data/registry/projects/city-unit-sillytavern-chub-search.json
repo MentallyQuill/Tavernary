@@ -3,16 +3,16 @@
   "id": "city-unit-sillytavern-chub-search",
   "name": "SillyTavern-Chub-Search",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern-Chub-Search is a SillyTavern extension that lets users search Character Hub directly from the interface. It brings external character discovery into the SillyTavern browsing workflow.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "city-unit/SillyTavern-Chub-Search",
-    "repository_id": null
+    "repository_id": 687155351
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

@@ -11,6 +11,7 @@
     "head_sha": "c8e352e3a005ae01d3920021d7ddaafbdc029ced",
     "head_committed_at": "2026-07-20T23:11:01.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-07-20T23:11:29.000Z",
     "size_kb": 5471
   },
@@ -32,23 +33,26 @@
   },
   "community": {
     "stargazers_count": 14,
-    "forks_count": 0,
+    "forks_count": 1,
     "subscribers_count": 0,
-    "aggregate": 14
+    "aggregate": 15
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "Jeka201216", "type": "User" },
       { "login": "YevheniiYeremenko", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

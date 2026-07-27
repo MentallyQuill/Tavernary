@@ -11,6 +11,7 @@
     "head_sha": "2587831347f26a65ca2b334811f09414268f152d",
     "head_committed_at": "2026-07-10T11:28:20.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-07-05T09:33:26.000Z",
     "size_kb": 38
   },
@@ -46,11 +47,14 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "sca255", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

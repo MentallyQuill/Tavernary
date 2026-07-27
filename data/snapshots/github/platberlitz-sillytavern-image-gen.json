@@ -8,16 +8,22 @@
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "description": "SillyTavern extension for AI image generation with multiple backend support",
     "default_branch": "main",
-    "head_sha": "eb4c484eaed99270739d7077bda1fc81eec9c3cd",
-    "head_committed_at": "2026-07-24T09:18:59.000Z",
+    "head_sha": "4cc4baa42b16e2cfcfb013416f72993c67a931c6",
+    "head_committed_at": "2026-07-27T03:01:07.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-01-12T06:21:59.000Z",
-    "size_kb": 2519
+    "size_kb": 2659
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-24T09:18:59.000Z",
+    "latest_source_activity_at": "2026-07-27T03:01:07.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T03:01:07.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-24T09:18:59.000Z",
@@ -57,18 +63,14 @@
         "week_start": "2026-05-11",
         "latest_at": "2026-05-16T08:35:57.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-06T15:00:54.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:22:39.715Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "4cc4baa42b16e2cfcfb013416f72993c67a931c6"
   },
   "community": {
     "stargazers_count": 25,
@@ -81,8 +83,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "web-flow", "type": "User" },
@@ -90,7 +93,10 @@
       { "login": "platberlitz", "type": "User" },
       { "login": "Yam0214", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

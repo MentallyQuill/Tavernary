@@ -3,16 +3,16 @@
   "id": "thejackals-sillytavern-imageembedexpressions",
   "name": "SillyTavern-ImageEmbedExpressions",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension embeds character expression images directly into chat conversations. It displays visual reactions inline with dialogue, letting characters show expressive images alongside their messages.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "THEJACKALS/SillyTavern-ImageEmbedExpressions",
-    "repository_id": null
+    "repository_id": 1111731551
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["image-generation", "extension-development"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

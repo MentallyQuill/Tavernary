@@ -3,16 +3,16 @@
   "id": "chaaruze-sillytavern-too-many-chats",
   "name": "SillyTavern-Too-Many-Chats",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "An archived SillyTavern extension that organizes chat conversations into folders for easier management. It groups chats into folder-based categories, helping users handle large collections.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "chaaruze/SillyTavern-Too-Many-Chats",
-    "repository_id": null
+    "repository_id": 1136090339
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

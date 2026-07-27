@@ -3,16 +3,16 @@
   "id": "sillytavern-extension-weather",
   "name": "Extension-Weather",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension adds a slash command that returns current weather conditions for any specified location. It lets users quickly fetch weather data inline during roleplay without leaving the chat interface.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "SillyTavern/Extension-Weather",
-    "repository_id": null
+    "repository_id": 819108745
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

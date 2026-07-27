@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "project_id": "samueras-personatags",
+  "repository": {
+    "id": 940123423,
+    "owner": "Samueras",
+    "name": "PersonaTags",
+    "url": "https://github.com/Samueras/PersonaTags",
+    "description": "Adds Tags to Personas in SillyTavern",
+    "default_branch": "main",
+    "head_sha": "bceadfdb025247b616ca76f7ede9b220cad26777",
+    "head_committed_at": "2025-02-28T18:21:13.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2025-02-27T16:47:33.000Z",
+    "size_kb": 26
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2025-02-27T21:38:38.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "bceadfdb025247b616ca76f7ede9b220cad26777"
+  },
+  "community": {
+    "stargazers_count": 11,
+    "forks_count": 0,
+    "subscribers_count": 2,
+    "aggregate": 13
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Samueras", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

@@ -3,16 +3,16 @@
   "id": "thezennou-stextension-snapshot",
   "name": "STExtension-Snapshot",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "STExtension-Snapshot is a SillyTavern extension that captures the current chat as an image for easy sharing. It streamlines conversation archiving by converting on-screen dialogue into a shareable picture format.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "TheZennou/STExtension-Snapshot",
-    "repository_id": null
+    "repository_id": 801866918
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["image-generation", "automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

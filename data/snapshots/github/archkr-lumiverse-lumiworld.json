@@ -11,6 +11,7 @@
     "head_sha": "b2d012adaf4eaadbde6b63661a16f26fda60a99c",
     "head_committed_at": "2026-07-17T01:23:21.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-07-01T05:38:22.000Z",
     "size_kb": 463
   },
@@ -51,11 +52,14 @@
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Archkr", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

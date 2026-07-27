@@ -11,6 +11,7 @@
     "head_sha": "c736e771449562be5a9c842315d65dabf9a92f6f",
     "head_committed_at": "2026-07-20T03:36:23.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-09-11T15:17:29.000Z",
     "size_kb": 1849
   },
@@ -32,16 +33,19 @@
   },
   "community": {
     "stargazers_count": 50,
-    "forks_count": 7,
+    "forks_count": 8,
     "subscribers_count": 2,
-    "aggregate": 59
+    "aggregate": 60
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Coneja-Chibi", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

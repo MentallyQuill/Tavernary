@@ -3,16 +3,16 @@
   "id": "lenanderson-sillytavern-charswitch",
   "name": "SillyTavern-CharSwitch",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension adds a context menu listing recently used characters to the Character Management button. It lets users reopen frequently accessed characters without navigating the full management list.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "LenAnderson/SillyTavern-CharSwitch",
-    "repository_id": null
+    "repository_id": 841159088
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

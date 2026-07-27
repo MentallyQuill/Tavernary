@@ -11,8 +11,9 @@
     "head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69",
     "head_committed_at": "2026-07-19T01:49:32.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-07T23:15:01.000Z",
-    "size_kb": 91963
+    "size_kb": 92052
   },
   "source_health": "healthy",
   "activity": {
@@ -83,16 +84,16 @@
   },
   "community": {
     "stargazers_count": 151,
-    "forks_count": 44,
+    "forks_count": 45,
     "subscribers_count": 1,
-    "aggregate": 196
+    "aggregate": 197
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -115,7 +116,10 @@
       { "login": "Plaguis", "type": "User" },
       { "login": "aaron-j-reeves", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

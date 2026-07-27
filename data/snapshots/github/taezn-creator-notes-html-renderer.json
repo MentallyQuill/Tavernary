@@ -11,6 +11,7 @@
     "head_sha": "bf99ff88b53b969b12bc0d6387d7f1805130f470",
     "head_committed_at": "2026-06-10T04:18:44.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-06-09T21:36:01.000Z",
     "size_kb": 3516
   },
@@ -37,11 +38,14 @@
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Taezn", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

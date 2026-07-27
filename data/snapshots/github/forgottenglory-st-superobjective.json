@@ -11,6 +11,7 @@
     "head_sha": "0510988bcce7ba4fdd1aed89c5b95fec3297e5ce",
     "head_committed_at": "2025-03-17T21:18:51.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-03-15T21:52:36.000Z",
     "size_kb": 225
   },
@@ -35,11 +36,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "ForgottenGlory", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

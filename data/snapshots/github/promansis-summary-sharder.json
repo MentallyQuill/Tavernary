@@ -11,6 +11,7 @@
     "head_sha": "17c3f9adf0ee3aac96d0dcbe4a94f71b7cff8b72",
     "head_committed_at": "2026-03-14T12:03:46.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-01-25T13:19:35.000Z",
     "size_kb": 1110
   },
@@ -31,14 +32,17 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "Promansis", "type": "User" },
       { "login": "TheLonelyDevil9", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

@@ -3,16 +3,16 @@
   "id": "oldaccountpendingdelete-sillytavern-loretips",
   "name": "Sillytavern-Loretips",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension displays tooltips of potential Lorebook entries as users type. It helps writers preview which world info entries will activate based on the current text.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "OldAccountPendingDelete/Sillytavern-Loretips",
-    "repository_id": null
+    "repository_id": 954256242
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "memory-retrieval",
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

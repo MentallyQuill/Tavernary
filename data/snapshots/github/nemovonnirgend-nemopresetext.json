@@ -11,6 +11,7 @@
     "head_sha": "8d4adc6d8834404d16235cfe93b578a05e593a3d",
     "head_committed_at": "2026-07-23T19:13:07.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-05-15T07:28:20.000Z",
     "size_kb": 17794
   },
@@ -52,7 +53,7 @@
     "aggregate": 104
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -60,7 +61,10 @@
       { "login": "prolix-oc", "type": "User" },
       { "login": "DrMagisto", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

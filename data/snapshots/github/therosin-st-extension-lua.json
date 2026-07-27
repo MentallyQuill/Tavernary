@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "project_id": "therosin-st-extension-lua",
+  "repository": {
+    "id": 826008663,
+    "owner": "Therosin",
+    "name": "ST-Extension-Lua",
+    "url": "https://github.com/Therosin/ST-Extension-Lua",
+    "description": "Provides Lua scripting support for ST",
+    "default_branch": "main",
+    "head_sha": "fc972dd8e663c6e922d56f3dc756114e7f7f2434",
+    "head_committed_at": "2025-06-04T11:41:17.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2024-07-09T00:00:44.000Z",
+    "size_kb": 6997
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "fc972dd8e663c6e922d56f3dc756114e7f7f2434"
+  },
+  "community": {
+    "stargazers_count": 2,
+    "forks_count": 1,
+    "subscribers_count": 2,
+    "aggregate": 5
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Therosin", "type": "User" },
+      { "login": "Succubyss", "type": "User" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
