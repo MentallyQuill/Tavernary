@@ -16,6 +16,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: write
 
 concurrency:
   group: triage-kit-${{ inputs.issue_number || github.event.issue.number }}
@@ -46,7 +47,17 @@ jobs:
         with:
           node-version: 24
       - name: Validate and label Kit submission
+        id: triage
         run: node scripts/submissions/triage-kit-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+      - name: Publish valid Kit
+        if: steps.triage.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.triage.outputs.issue_number }}
+        run: >
+          gh workflow run apply-kit-submission.yml
+          --ref main
+          -f issue_number="$ISSUE_NUMBER"
