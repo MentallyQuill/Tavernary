@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "sillytavern-extension-customsliders",
+  "name": "Extension-CustomSliders",
+  "kind": "extension",
+  "summary": "Adds customizable sliders for Custom (OpenAI-compatible) source of Chat Completion API.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "SillyTavern/Extension-CustomSliders",
+    "repository_id": 960096638
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T22:02:57.806Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
