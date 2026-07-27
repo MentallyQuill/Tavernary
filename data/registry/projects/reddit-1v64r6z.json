@@ -1,0 +1,29 @@
+{
+  "schema_version": 5,
+  "id": "reddit-1v64r6z",
+  "name": "Writer's Block 5",
+  "kind": "preset",
+  "summary": "A narrative focused preset with the goal of improving subtext, characters and writing close to novel quality prose with the user acting as a director giving out scene directions.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "url",
+    "url": "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
+    "published_at": null,
+    "version": null,
+    "artifact_size_bytes": null,
+    "license_status": "pending",
+    "license_spdx_id": null
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-07-27T03:54:16.526Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "paused",
+  "enrichment_policy": "manual",
+  "enrichment_note": "External URL source; requires manual curation."
+}
