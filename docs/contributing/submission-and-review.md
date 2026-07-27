@@ -69,11 +69,13 @@ Implementation path:
 - `project-submission-lifecycle.yml` synchronizes merge or decline back to the
   issue and deletes only the unchanged generated branch.
 
-Frontends and Extensions require an exact public GitHub repository. A System
-Preset may use another stable public HTTPS page; external presets remain
-manually curated and use paused source refresh. Selecting **Other or not
-listed** intentionally pauses admission until that frontend can be reconciled
-with current catalog vocabulary.
+Extensions require an exact public GitHub repository. Frontends require
+publicly accessible source code on GitHub or an equivalent source host; the
+code must be visible without signing in, but an open-source license is not
+required. Non-GitHub Frontends and external System Presets remain manually
+curated and use paused source refresh. Selecting **Other or not listed**
+intentionally pauses admission until that Frontend can be reconciled with the
+current catalog vocabulary.
 
 ### Website issues
 

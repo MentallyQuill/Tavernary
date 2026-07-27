@@ -223,7 +223,7 @@ test("admits archived repositories with a maintainer warning", () => {
   });
 });
 
-test("requires frontends and extensions to use GitHub repositories", () => {
+test("requires extensions to use GitHub repositories", () => {
   expect(
     evaluateProjectSubmission(
       admittedFixture({
@@ -238,9 +238,39 @@ test("requires frontends and extensions to use GitHub repositories", () => {
     ),
   ).toEqual({
     status: "needs-information",
-    errors: ["Frontends and Extensions require a public GitHub repository."],
+    errors: ["Extensions require a public GitHub repository."],
     suggestions: [],
     frontendDependencies: [],
+  });
+});
+
+test("admits a public external Frontend source for maintainer review", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          project_type: "frontend",
+          source_url: "https://codeberg.org/example/frontend",
+          frontends: { known_ids: [], other: [] },
+        },
+        identity: {
+          kind: "external",
+          canonicalUrl: "https://codeberg.org/example/frontend",
+          hostname: "codeberg.org",
+          pathSlug: "frontend",
+        },
+        repository: undefined,
+        frontendResolution: {
+          status: "resolved",
+          ids: [],
+          warnings: [],
+        },
+      }),
+    ),
+  ).toMatchObject({
+    status: "admitted",
+    frontendIds: [],
   });
 });
 

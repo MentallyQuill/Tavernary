@@ -13,6 +13,9 @@ import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.
 const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
 
+const frontendEligibility =
+  "Frontends must link to publicly accessible source code on GitHub or an equivalent source host. The code must be visible without signing in; an open-source license is not required.";
+
 export interface SubmissionFrontendOption {
   id: string;
   label: string;
@@ -56,11 +59,11 @@ function isGithubRepositoryUrl(value: string): boolean {
   return parts.length === 2;
 }
 
-function isExternalPreset(
+function requiresExternalMetadata(
   projectType: ProjectSubmissionType,
   sourceUrl: string,
 ) {
-  if (projectType !== "preset") return false;
+  if (!["frontend", "preset"].includes(projectType)) return false;
   return Boolean(sourceUrl.trim()) && !isGithubRepositoryUrl(sourceUrl);
 }
 
@@ -142,7 +145,10 @@ export function ProjectSubmissionBuilder({
   const showFrontendFields =
     projectType === "extension" ||
     (projectType === "preset" && !frontendIndependent);
-  const externalPreset = isExternalPreset(projectType, sourceUrl);
+  const externalMetadataRequired = requiresExternalMetadata(
+    projectType,
+    sourceUrl,
+  );
   const errorFor = (field: SubmissionField) =>
     errors.find((error) => error.field === field)?.message;
 
@@ -220,12 +226,12 @@ export function ProjectSubmissionBuilder({
       addError("project-url", "Project URL must be a public HTTPS URL.");
     } else if (
       sourceUrl &&
-      ["frontend", "extension"].includes(projectType) &&
+      projectType === "extension" &&
       !isGithubRepositoryUrl(sourceUrl)
     ) {
       addError(
         "project-url",
-        "Frontends and Extensions require an exact public GitHub owner/repository URL.",
+        "Extensions require an exact public GitHub owner/repository URL.",
       );
     }
     if (showFrontendFields && includeOtherFrontend) {
@@ -234,10 +240,10 @@ export function ProjectSubmissionBuilder({
       }
       if (!otherFrontendUrl.trim()) {
         addError("other-frontend-url", "Other frontend URL is required.");
-      } else if (!isGithubRepositoryUrl(otherFrontendUrl)) {
+      } else if (!publicHttpsUrl(otherFrontendUrl)) {
         addError(
           "other-frontend-url",
-          "Other frontend URL must be an exact public GitHub owner/repository URL.",
+          "Other frontend URL must be a public HTTPS source URL.",
         );
       }
     }
@@ -326,8 +332,11 @@ export function ProjectSubmissionBuilder({
             }
           />
           <p className="submission-hint" id="project-url-hint">
-            Frontends and Extensions require a public GitHub or Codeberg
-            repository.
+            {projectType === "frontend"
+              ? frontendEligibility
+              : projectType === "extension"
+                ? "Extensions require an exact public GitHub owner/repository URL."
+                : "System Presets may use a stable public HTTPS source URL."}
           </p>
           <InlineError
             id="project-url-error"
@@ -337,13 +346,14 @@ export function ProjectSubmissionBuilder({
 
         <div className="submission-field">
           <label htmlFor="project-name">
-            Project Name{externalPreset ? " (required)" : " (optional)"}
+            Project Name
+            {externalMetadataRequired ? " (required)" : " (optional)"}
           </label>
           <input
             id="project-name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            required={externalPreset}
+            required={externalMetadataRequired}
             aria-invalid={Boolean(errorFor("project-name"))}
             aria-describedby={
               errorFor("project-name") ? "project-name-error" : undefined
@@ -357,14 +367,15 @@ export function ProjectSubmissionBuilder({
 
         <div className="submission-field">
           <label htmlFor="project-description">
-            Short Description{externalPreset ? " (required)" : " (optional)"}
+            Short Description
+            {externalMetadataRequired ? " (required)" : " (optional)"}
           </label>
           <textarea
             id="project-description"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             rows={4}
-            required={externalPreset}
+            required={externalMetadataRequired}
             aria-invalid={Boolean(errorFor("project-description"))}
             aria-describedby={
               errorFor("project-description")
@@ -598,6 +609,7 @@ export function ProjectSubmissionBuilder({
 
           {includeOtherFrontend ? (
             <>
+              <p className="submission-hint">{frontendEligibility}</p>
               <p className="submission-hint">
                 This project will stay blocked until the missing frontend is
                 submitted, reviewed, and merged.

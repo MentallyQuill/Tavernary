@@ -10,7 +10,7 @@ function markerComment(
   dependencies: Array<{
     name: string;
     canonical_url: string;
-    repository: string;
+    repository?: string;
   }>,
 ) {
   return [
@@ -46,6 +46,34 @@ test("matches dependencies by canonical frontend repository URL", () => {
               name: "Aikobots",
               canonical_url: "https://github.com/AIKOHANASAKI/Aikobots/",
               repository: "aikohanasaki/Aikobots",
+            },
+          ]),
+        },
+      ],
+    }),
+  ).toBe(true);
+});
+
+test("matches dependencies by canonical external Frontend URL", () => {
+  const indexedUrls = indexedFrontendUrls([
+    {
+      id: "nova",
+      name: "Nova",
+      kind: "frontend",
+      source: { type: "url", url: "https://codeberg.org/example/nova" },
+      frontends: ["nova"],
+    },
+  ]);
+
+  expect(
+    hasResolvableFrontendDependency({
+      indexedUrls,
+      comments: [
+        {
+          body: markerComment([
+            {
+              name: "Nova",
+              canonical_url: "https://codeberg.org/example/nova/",
             },
           ]),
         },

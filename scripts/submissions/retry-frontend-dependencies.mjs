@@ -9,16 +9,17 @@ import { parseSourceIdentity } from "./source-identity.mjs";
 export function indexedFrontendUrls(projects) {
   const urls = new Set();
   for (const project of projects) {
-    if (
-      project.kind !== "frontend" ||
-      project.source?.type !== "github" ||
-      typeof project.source.repository !== "string"
-    ) {
-      continue;
-    }
-    const identity = parseSourceIdentity(
-      `https://github.com/${project.source.repository}`,
-    );
+    if (project.kind !== "frontend") continue;
+    const sourceUrl =
+      project.source?.type === "github" &&
+      typeof project.source.repository === "string"
+        ? `https://github.com/${project.source.repository}`
+        : project.source?.type === "url" &&
+            typeof project.source.url === "string"
+          ? project.source.url
+          : null;
+    if (!sourceUrl) continue;
+    const identity = parseSourceIdentity(sourceUrl);
     urls.add(identity.canonicalUrl.toLowerCase());
   }
   return urls;

@@ -57,6 +57,28 @@ test("requires name and description for an external preset", () => {
   );
 });
 
+test("requires name and description for an external Frontend", () => {
+  const result = normalizeProjectSubmissionManifest({
+    schema_version: 2,
+    project_type: "frontend",
+    source_url: "https://codeberg.org/example/frontend",
+    name: null,
+    description: null,
+    frontends: { known_ids: [], other: [] },
+    frontend_independent: false,
+    additional_context: null,
+  });
+
+  expect(result).toMatchObject({ valid: false });
+  if (result.valid) throw new Error("Expected invalid manifest");
+  expect(result.errors).toEqual(
+    expect.arrayContaining([
+      "External Frontends require a project name.",
+      "External Frontends require a short description.",
+    ]),
+  );
+});
+
 test("serializes the stable submission manifest with a trailing newline", () => {
   expect(
     serializeProjectSubmissionManifest({

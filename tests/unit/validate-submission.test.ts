@@ -11,7 +11,7 @@ test("rejects an extension without GitHub", () => {
     }),
   ).toEqual({
     labels: ["needs-information"],
-    errors: ["Frontends and Extensions require a public GitHub repository."],
+    errors: ["Extensions require a public GitHub repository."],
   });
 });
 
@@ -20,6 +20,16 @@ test("accepts a non-GitHub System Preset for maintainer review", () => {
     validateSubmission({
       kind: "System Preset",
       sourceUrl: "https://example.com/preset",
+      existingSources: [],
+    }),
+  ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
+});
+
+test("accepts a non-GitHub Frontend for maintainer review", () => {
+  expect(
+    validateSubmission({
+      kind: "Frontend",
+      sourceUrl: "https://codeberg.org/example/frontend",
       existingSources: [],
     }),
   ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
@@ -55,14 +65,14 @@ test("rejects invalid and non-HTTPS source URLs", () => {
   ).toContain("Canonical source URL must be a valid HTTPS URL.");
 });
 
-test("requires an exact GitHub owner and repository path", () => {
+test("requires an exact GitHub owner and repository path for Extensions", () => {
   expect(
     validateSubmission({
-      kind: "Frontend",
+      kind: "Extension",
       sourceUrl: "https://github.com/owner/repository/issues",
       existingSources: [],
     }).errors,
-  ).toContain("Frontends and Extensions require a public GitHub repository.");
+  ).toContain("Extensions require a public GitHub repository.");
 });
 
 test("ignores malformed existing source values during duplicate checks", () => {

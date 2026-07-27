@@ -139,6 +139,20 @@ export function normalizeProjectSubmissionManifest(value) {
   ) {
     errors.push("External System Presets require a short description.");
   }
+  if (
+    projectType === "frontend" &&
+    !githubRepositoryShape(sourceUrl) &&
+    !name
+  ) {
+    errors.push("External Frontends require a project name.");
+  }
+  if (
+    projectType === "frontend" &&
+    !githubRepositoryShape(sourceUrl) &&
+    !description
+  ) {
+    errors.push("External Frontends require a short description.");
+  }
 
   if (errors.length > 0) {
     return { valid: false, errors: [...new Set(errors)] };

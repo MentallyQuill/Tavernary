@@ -1,4 +1,7 @@
-import type { GithubSourceIdentity } from "./source-identity.mjs";
+import type {
+  ExternalSourceIdentity,
+  GithubSourceIdentity,
+} from "./source-identity.mjs";
 
 export interface FrontendVocabularyEntry {
   id: string;
@@ -18,7 +21,8 @@ export interface FrontendProject {
   source?: {
     type: string;
     repository?: string;
-    repository_id?: number;
+    repository_id?: number | null;
+    url?: string;
   };
   frontends?: string[];
 }
@@ -31,7 +35,7 @@ export interface FrontendSuggestion {
 export interface MissingFrontendDependency {
   name: string;
   canonicalUrl: string;
-  repository: string;
+  repository?: string;
 }
 
 export type FrontendResolution =
@@ -63,7 +67,7 @@ export function reconcileFrontends(
 
 export function proposeFrontendVocabularyEntry(input: {
   displayName: string;
-  sourceIdentity: GithubSourceIdentity;
+  sourceIdentity: GithubSourceIdentity | ExternalSourceIdentity;
   vocabulary: FrontendVocabulary | FrontendVocabularyEntry[];
   frontendProjects: FrontendProject[];
 }): FrontendVocabularyProposal;

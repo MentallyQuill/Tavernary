@@ -23,6 +23,11 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
     page.getByText(/does not host, mirror, redistribute, or maintain/i),
   ).toBeVisible();
   await expect(
+    page.getByText(
+      /Non-GitHub Frontends are reviewed manually and do not receive GitHub-derived activity or popularity metadata/i,
+    ),
+  ).toBeVisible();
+  await expect(
     page.getByRole("link", { name: "Submit a project" }),
   ).toHaveAttribute("href", /\/submit\/project\/$/);
   await expect(page.getByRole("link", { name: "Get help" })).toHaveAttribute(

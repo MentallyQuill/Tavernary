@@ -14,6 +14,13 @@ test("exports and renders the project submission builder", async ({ page }) => {
   await expect(
     page.getByRole("combobox", { name: "Search supported frontends" }),
   ).toHaveCount(0);
+  const eligibility = page.getByText(
+    /Frontends must link to publicly accessible source code/u,
+  );
+  await expect(eligibility).toBeVisible();
+
+  await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await expect(eligibility).toHaveCount(0);
 });
 
 test("selects multiple current frontends for an Extension", async ({
@@ -65,6 +72,9 @@ test("supports frontend-independent and not-listed submission paths", async ({
     .locator("..");
   await expect(frontendSection.getByText("0 selected")).toBeVisible();
   await page.getByLabel("Other or not listed").check();
+  await expect(
+    page.getByText(/Frontends must link to publicly accessible source code/u),
+  ).toBeVisible();
   await expect(
     page.getByText(
       "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",

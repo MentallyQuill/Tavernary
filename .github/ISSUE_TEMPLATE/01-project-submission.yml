@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        GitHub repository URL required for Extensions and Frontends, not for Presets. The Tavernary submission builder fills these fields automatically; this form remains available as a structured fallback.
+        Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type. This form remains available as a structured fallback.
   - type: dropdown
     id: project-type
     attributes:
@@ -29,7 +29,7 @@ body:
     id: project-name
     attributes:
       label: Project Name
-      description: Optional for GitHub sources; required for external System Presets.
+      description: Optional for GitHub sources; required for external Frontends and System Presets.
     validations:
       required: false
   - type: textarea
@@ -37,10 +37,10 @@ body:
     attributes:
       label: Short Description
       description: >-
-        Optional for GitHub sources; required for external System Presets. This
-        helps us understand the project and may be adapted into Tavernary's
-        catalog summary for clarity and consistency. The published summary may
-        be shortened or rewritten.
+        Optional for GitHub sources; required for external Frontends and System
+        Presets. This helps us understand the project and may be adapted into
+        Tavernary's catalog summary for clarity and consistency. The published
+        summary may be shortened or rewritten.
     validations:
       required: false
   - type: textarea

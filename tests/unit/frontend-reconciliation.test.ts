@@ -42,6 +42,16 @@ const frontendProjects = [
     },
     frontends: ["lumiverse"],
   },
+  {
+    id: "example-nova",
+    name: "Nova",
+    kind: "frontend",
+    source: {
+      type: "url",
+      url: "https://codeberg.org/example/nova",
+    },
+    frontends: ["nova"],
+  },
 ];
 
 test("matches IDs, labels, aliases, and frontend repository URLs", () => {
@@ -115,23 +125,57 @@ test("classifies an unknown GitHub frontend as a dependency", () => {
   });
 });
 
-test("requires an exact GitHub repository for an unknown frontend", () => {
+test("matches an indexed external Frontend by canonical source URL", () => {
   expect(
     reconcileFrontends({
       projectType: "extension",
       knownIds: [],
-      other: [{ name: "Aikobots", url: "https://www.aikobots.com/" }],
+      other: [
+        {
+          name: "",
+          url: "https://codeberg.org/example/nova/",
+        },
+      ],
+      frontendIndependent: false,
+      vocabulary: {
+        frontends: [
+          ...vocabulary.frontends,
+          {
+            id: "nova",
+            label: "Nova",
+            description: "Works with the Nova roleplay frontend.",
+          },
+        ],
+      },
+      frontendProjects,
+    }),
+  ).toEqual({
+    status: "resolved",
+    ids: ["nova"],
+    warnings: [],
+  });
+});
+
+test("classifies an unknown public source Frontend as a dependency", () => {
+  expect(
+    reconcileFrontends({
+      projectType: "extension",
+      knownIds: [],
+      other: [{ name: "New UI", url: "https://codeberg.org/example/new-ui/" }],
       frontendIndependent: false,
       vocabulary,
       frontendProjects,
     }),
   ).toEqual({
     status: "needs-information",
-    errors: [
-      "Aikobots needs an exact public GitHub owner/repository URL before it can be submitted as a frontend.",
-    ],
+    errors: ["New UI is not currently indexed as a Tavernary frontend."],
     suggestions: [],
-    dependencies: [],
+    dependencies: [
+      {
+        name: "New UI",
+        canonicalUrl: "https://codeberg.org/example/new-ui",
+      },
+    ],
   });
 });
 
@@ -231,5 +275,25 @@ test("adds the GitHub owner when a proposed frontend ID collides", () => {
     entry: { id: "lumiverse-otherorg", label: "Lumiverse" },
     warning:
       "Frontend ID lumiverse was already used; proposed lumiverse-otherorg.",
+  });
+});
+
+test("adds the source host when an external Frontend ID collides", () => {
+  const proposal = proposeFrontendVocabularyEntry({
+    displayName: "Lumiverse",
+    sourceIdentity: {
+      kind: "external",
+      canonicalUrl: "https://codeberg.org/example/lumiverse",
+      hostname: "codeberg.org",
+      pathSlug: "lumiverse",
+    },
+    vocabulary,
+    frontendProjects,
+  });
+
+  expect(proposal).toMatchObject({
+    entry: { id: "lumiverse-codeberg-org", label: "Lumiverse" },
+    warning:
+      "Frontend ID lumiverse was already used; proposed lumiverse-codeberg-org.",
   });
 });

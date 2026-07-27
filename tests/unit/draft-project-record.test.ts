@@ -183,7 +183,7 @@ test("drafts external presets with manual source policy", async () => {
   });
 
   expect(result.record).toMatchObject({
-    id: "example-com-nova",
+    id: "example-com-presets-nova",
     kind: "preset",
     source: {
       type: "url",
@@ -243,6 +243,98 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
     label: "Nova Frontend",
     description: "Works with the Nova Frontend roleplay frontend.",
   });
+});
+
+test("drafts an external Frontend with manual source policy", async () => {
+  const result = await draftProjectRecord({
+    admitted: {
+      status: "admitted",
+      manifest: {
+        schema_version: 2,
+        project_type: "frontend",
+        source_url: "https://codeberg.org/example/nova",
+        name: "Nova Frontend",
+        description: "A public-source roleplay frontend.",
+        frontends: { known_ids: [], other: [] },
+        frontend_independent: false,
+        additional_context: null,
+      },
+      identity: {
+        kind: "external",
+        canonicalUrl: "https://codeberg.org/example/nova",
+        hostname: "codeberg.org",
+        pathSlug: "nova",
+      },
+      frontendIds: [],
+      warnings: [],
+    },
+    observation: null,
+    snapshot: null,
+    enrichment: null,
+    frontendVocabulary: {
+      frontends: [
+        {
+          id: "sillytavern",
+          label: "SillyTavern",
+          description: "Works with the SillyTavern roleplay frontend.",
+        },
+      ],
+    },
+    frontendProjects: [],
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    id: "codeberg-org-example-nova",
+    kind: "frontend",
+    source: {
+      type: "url",
+      url: "https://codeberg.org/example/nova",
+      license_status: "pending",
+    },
+    frontends: ["nova-frontend"],
+    primary_function: "frontend",
+    refresh_policy: "paused",
+    enrichment_policy: "manual",
+  });
+});
+
+test("keeps external project IDs distinct across source owners", async () => {
+  const draft = async (owner: string) =>
+    draftProjectRecord({
+      admitted: {
+        status: "admitted",
+        manifest: {
+          schema_version: 2,
+          project_type: "frontend",
+          source_url: `https://codeberg.org/${owner}/nova`,
+          name: "Nova Frontend",
+          description: "A public-source roleplay frontend.",
+          frontends: { known_ids: [], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+        },
+        identity: {
+          kind: "external",
+          canonicalUrl: `https://codeberg.org/${owner}/nova`,
+          hostname: "codeberg.org",
+          pathSlug: "nova",
+        },
+        frontendIds: [],
+        warnings: [],
+      },
+      observation: null,
+      snapshot: null,
+      enrichment: null,
+      frontendVocabulary: { frontends: [] },
+      frontendProjects: [],
+      now: "2026-07-25T18:00:00.000Z",
+    });
+
+  const [alice, bob] = await Promise.all([draft("alice"), draft("bob")]);
+
+  expect(alice.record.id).toBe("codeberg-org-alice-nova");
+  expect(bob.record.id).toBe("codeberg-org-bob-nova");
 });
 
 test("refuses to draft a GitHub record when permanent identity changed", async () => {

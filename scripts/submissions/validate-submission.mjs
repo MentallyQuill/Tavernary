@@ -15,11 +15,14 @@ function validateResolvedSubmission({
   existingIdentities,
 }) {
   const errors = [];
+  if (projectType === "extension" && identity.kind !== "github") {
+    errors.push("Extensions require a public GitHub repository.");
+  }
   if (
-    (projectType === "frontend" || projectType === "extension") &&
-    identity.kind !== "github"
+    projectType === "frontend" &&
+    !["github", "external"].includes(identity.kind)
   ) {
-    errors.push("Frontends and Extensions require a public GitHub repository.");
+    errors.push("Frontends require a public source repository.");
   }
   const existingKeys = new Set(
     existingIdentities.flatMap((candidate) => sourceDuplicateKeys(candidate)),
@@ -54,8 +57,8 @@ export function validateSubmission(input) {
   const githubRepository =
     parsed.hostname.toLowerCase() === "github.com" && parts.length === 2;
 
-  if ((kind === "Frontend" || kind === "Extension") && !githubRepository) {
-    errors.push("Frontends and Extensions require a public GitHub repository.");
+  if (kind === "Extension" && !githubRepository) {
+    errors.push("Extensions require a public GitHub repository.");
   }
 
   const canonical = canonicalSource(sourceUrl);

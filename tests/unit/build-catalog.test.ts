@@ -530,6 +530,39 @@ test("keeps URL presets public with manual source and pending license display", 
   ]);
 });
 
+test("keeps URL Frontends public with manual source metadata", async () => {
+  const catalog = await buildCatalog({
+    write: false,
+    records: [
+      fixtureProject({
+        kind: "frontend",
+        frontends: ["sillytavern"],
+        primary_function: "frontend",
+        source: {
+          type: "url",
+          url: "https://codeberg.org/example/frontend",
+          published_at: null,
+          version: null,
+          artifact_size_bytes: null,
+          license_status: "missing",
+          license_spdx_id: null,
+        },
+      }),
+    ],
+    snapshots: [],
+  });
+
+  expect(catalog.projects).toEqual([
+    expect.objectContaining({
+      id: "fixture",
+      kind: "frontend",
+      canonicalUrl: "https://codeberg.org/example/frontend",
+      sourceStatus: "manual",
+      preset: null,
+    }),
+  ]);
+});
+
 test("builds every eligible public card with consolidated manual sources", async () => {
   const catalog = await buildCatalog({ write: false });
   const [records, snapshots] = await Promise.all([
@@ -553,7 +586,9 @@ test("builds every eligible public card with consolidated manual sources", async
       return (
         record.visibility === "published" &&
         !(snapshot && hiddenSourceStates.has(snapshot.source_health)) &&
-        (record.source.type !== "url" || record.kind === "preset")
+        (record.source.type !== "url" ||
+          record.kind === "preset" ||
+          record.kind === "frontend")
       );
     })
     .map(({ id }) => id)

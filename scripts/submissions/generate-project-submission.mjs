@@ -216,6 +216,8 @@ export async function prepareProjectSubmissionDraft({
       observation: null,
       snapshot: null,
       enrichment: null,
+      frontendVocabulary: data.vocabulary,
+      frontendProjects: data.projects,
       now,
     });
   }

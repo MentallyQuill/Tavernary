@@ -211,7 +211,7 @@ function githubProject(record, snapshot, vocabularies, now) {
   };
 }
 
-function urlPreset(record, vocabularies) {
+function urlProject(record, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const capabilities = labeled(record.capabilities, vocabularies.capabilities);
   const compatibility = presetCompatibility(record, vocabularies);
@@ -262,12 +262,15 @@ function urlPreset(record, vocabularies) {
     repositorySizeKb: null,
     license,
     attribution: null,
-    preset: {
-      version: record.source.version,
-      publishedAt: record.source.published_at,
-      artifactSizeBytes: record.source.artifact_size_bytes,
-      ...compatibility,
-    },
+    preset:
+      record.kind === "preset"
+        ? {
+            version: record.source.version,
+            publishedAt: record.source.published_at,
+            artifactSizeBytes: record.source.artifact_size_bytes,
+            ...compatibility,
+          }
+        : null,
     refreshedAt: null,
     staleSince: null,
   };
@@ -384,8 +387,8 @@ export async function buildCatalog(options = {}) {
       continue;
     }
     if (record.source.type === "url") {
-      if (record.kind === "preset") {
-        projects.push(urlPreset(record, vocabularies));
+      if (record.kind === "preset" || record.kind === "frontend") {
+        projects.push(urlProject(record, vocabularies));
       }
       continue;
     }

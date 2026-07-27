@@ -76,19 +76,22 @@ function frontendIndexes(vocabulary, frontendProjects) {
     if (byId.has(id)) byLabel.set(alias, id);
   }
 
-  const byRepository = new Map();
+  const bySourceUrl = new Map();
   for (const project of frontendProjects) {
-    if (project.kind !== "frontend" || project.source?.type !== "github") {
-      continue;
-    }
+    if (project.kind !== "frontend") continue;
     const frontendId = project.frontends?.[0];
     if (!byId.has(frontendId)) continue;
-    const identity = parseSourceIdentity(
-      `https://github.com/${project.source.repository}`,
-    );
-    byRepository.set(identity.canonicalUrl.toLowerCase(), frontendId);
+    const sourceUrl =
+      project.source?.type === "github"
+        ? `https://github.com/${project.source.repository}`
+        : project.source?.type === "url"
+          ? project.source.url
+          : null;
+    if (!sourceUrl) continue;
+    const identity = parseSourceIdentity(sourceUrl);
+    bySourceUrl.set(identity.canonicalUrl.toLowerCase(), frontendId);
   }
-  return { entries, byId, byLabel, byRepository };
+  return { entries, byId, byLabel, bySourceUrl };
 }
 
 export function reconcileFrontends(input) {
@@ -137,11 +140,9 @@ export function reconcileFrontends(input) {
     if (submitted.url?.trim()) {
       try {
         const identity = parseSourceIdentity(submitted.url.trim());
-        if (identity.kind === "github") {
-          resolvedByUrl = indexes.byRepository.get(
-            identity.canonicalUrl.toLowerCase(),
-          );
-        }
+        resolvedByUrl = indexes.bySourceUrl.get(
+          identity.canonicalUrl.toLowerCase(),
+        );
       } catch {
         // The admission layer reports malformed submitted URLs.
       }
@@ -165,11 +166,16 @@ export function reconcileFrontends(input) {
         if (submitted.url?.trim()) {
           try {
             const identity = parseSourceIdentity(submitted.url.trim());
-            if (identity.kind === "github") {
+            if (["github", "external"].includes(identity.kind)) {
               dependency = {
-                name: submitted.name?.trim() || identity.repository,
+                name:
+                  submitted.name?.trim() ||
+                  identity.repository ||
+                  identity.pathSlug,
                 canonicalUrl: identity.canonicalUrl,
-                repository: identity.repository,
+                ...(identity.kind === "github"
+                  ? { repository: identity.repository }
+                  : {}),
               };
             }
           } catch {
@@ -186,7 +192,7 @@ export function reconcileFrontends(input) {
           );
         } else {
           errors.push(
-            `${submitted.name || "Unknown frontend"} needs an exact public GitHub owner/repository URL before it can be submitted as a frontend.`,
+            `${submitted.name || "Unknown frontend"} needs a public source repository URL before it can be submitted as a frontend.`,
           );
         }
       }
@@ -219,8 +225,8 @@ export function proposeFrontendVocabularyEntry(input) {
   const displayName = input.displayName.trim().replace(/\s+/gu, " ");
   const baseId = frontendId(displayName);
   if (!baseId) throw new Error("Frontend display name is required.");
-  if (input.sourceIdentity.kind !== "github") {
-    throw new Error("Frontend submissions require a GitHub repository.");
+  if (!["github", "external"].includes(input.sourceIdentity.kind)) {
+    throw new Error("Frontend submissions require a public source repository.");
   }
 
   const entries = vocabularyEntries(input.vocabulary);
@@ -232,11 +238,15 @@ export function proposeFrontendVocabularyEntry(input) {
     usedIds.has(baseId) || usedLabels.has(normalizeLabel(displayName));
   let id = baseId;
   if (collided) {
-    const ownerSuffix = frontendId(input.sourceIdentity.owner);
-    id = `${baseId}-${ownerSuffix}`;
+    const sourceSuffix = frontendId(
+      input.sourceIdentity.kind === "github"
+        ? input.sourceIdentity.owner
+        : input.sourceIdentity.hostname,
+    );
+    id = `${baseId}-${sourceSuffix}`;
     let discriminator = 2;
     while (usedIds.has(id)) {
-      id = `${baseId}-${ownerSuffix}-${discriminator}`;
+      id = `${baseId}-${sourceSuffix}-${discriminator}`;
       discriminator += 1;
     }
   }

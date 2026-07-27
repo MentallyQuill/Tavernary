@@ -15,7 +15,8 @@ function projectId(identity) {
     return `${slug(identity.owner)}-${slug(identity.name)}`;
   }
   if (identity.kind === "reddit") return `reddit-${slug(identity.postId)}`;
-  return slug(`${identity.hostname}-${identity.pathSlug}`);
+  const source = new URL(identity.canonicalUrl);
+  return slug(`${source.hostname}-${source.pathname}`);
 }
 
 function projectSource(identity, observation) {

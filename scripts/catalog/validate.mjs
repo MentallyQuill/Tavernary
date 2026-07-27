@@ -321,8 +321,19 @@ export async function validateCatalog(options = {}) {
       if (protocol !== "https:") {
         errors.push(`${id}: URL source requires https protocol`);
       }
-      if (record.kind !== "preset") {
-        errors.push(`${id}: only presets may use source.type url`);
+      if (!["frontend", "preset"].includes(record.kind)) {
+        errors.push(
+          `${id}: only frontends and presets may use source.type url`,
+        );
+      }
+      if (
+        record.kind === "frontend" &&
+        (record.refresh_policy !== "paused" ||
+          record.enrichment_policy !== "manual")
+      ) {
+        errors.push(
+          `${id}: URL frontends require paused refresh and manual enrichment`,
+        );
       }
     }
 
@@ -331,11 +342,15 @@ export async function validateCatalog(options = {}) {
       (record.id === approvedOrganizationRecord.id &&
         record.source?.type === "github-organization");
 
+    if (record.kind === "extension" && !repositoryBacked) {
+      errors.push(`${id}: extension requires a GitHub source`);
+    }
     if (
-      (record.kind === "frontend" || record.kind === "extension") &&
-      !repositoryBacked
+      record.kind === "frontend" &&
+      !repositoryBacked &&
+      record.source?.type !== "url"
     ) {
-      errors.push(`${id}: ${record.kind} requires a GitHub source`);
+      errors.push(`${id}: frontend requires a GitHub or URL source`);
     }
 
     if (

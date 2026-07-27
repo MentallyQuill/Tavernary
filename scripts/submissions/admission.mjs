@@ -66,12 +66,23 @@ export function evaluateProjectSubmission(input) {
     };
   }
   if (
-    ["frontend", "extension"].includes(input.manifest.project_type) &&
+    input.manifest.project_type === "extension" &&
     input.identity.kind !== "github"
   ) {
     return {
       status: "needs-information",
-      errors: ["Frontends and Extensions require a public GitHub repository."],
+      errors: ["Extensions require a public GitHub repository."],
+      suggestions: [],
+      frontendDependencies: [],
+    };
+  }
+  if (
+    input.manifest.project_type === "frontend" &&
+    !["github", "external"].includes(input.identity.kind)
+  ) {
+    return {
+      status: "needs-information",
+      errors: ["Frontends require a public source repository."],
       suggestions: [],
       frontendDependencies: [],
     };

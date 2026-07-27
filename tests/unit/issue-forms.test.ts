@@ -164,6 +164,8 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[3].attributes.description).toContain(
     "may be adapted into Tavernary's catalog summary",
   );
+  expect(fields[2].attributes.description).toContain("external Frontends");
+  expect(fields[3].attributes.description).toContain("external Frontends");
   expect(fields[5].attributes.options).toEqual(["No", "Yes"]);
   expect(fields[7].validations?.required ?? false).toBe(false);
   expect(fields[7].attributes.description).toContain(
@@ -173,7 +175,7 @@ test("project submission is a structured fallback for automated intake", async (
     "must be selected alone",
   );
   expect(submission.body[0].attributes.value).toContain(
-    "GitHub repository URL required for Extensions and Frontends, not for Presets.",
+    "Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type.",
   );
   expect(submission.body[0].attributes.value).toContain(
     "Tavernary submission builder",

@@ -107,8 +107,9 @@ export function parseProjectSubmissionStateMarker(body) {
               dependency.name.trim().length === 0 ||
               typeof dependency?.canonical_url !== "string" ||
               dependency.canonical_url.trim().length === 0 ||
-              typeof dependency?.repository !== "string" ||
-              dependency.repository.trim().length === 0,
+              (dependency?.repository !== undefined &&
+                (typeof dependency.repository !== "string" ||
+                  dependency.repository.trim().length === 0)),
           )))
     ) {
       return null;
@@ -220,7 +221,9 @@ export function buildProjectSubmissionTriage(decision, context) {
             (dependency) => ({
               name: dependency.name,
               canonical_url: dependency.canonicalUrl,
-              repository: dependency.repository,
+              ...(dependency.repository
+                ? { repository: dependency.repository }
+                : {}),
             }),
           ),
         }

@@ -200,6 +200,40 @@ describe("catalog validation", () => {
     );
   });
 
+  test("accepts a manually curated Frontend from a public URL source", async () => {
+    const {
+      model_families: _modelFamilies,
+      completion_formats: _completionFormats,
+      ...frontend
+    } = validRecord;
+    const result = await validateCatalog({
+      records: [
+        {
+          ...frontend,
+          id: "codeberg-frontend",
+          name: "Codeberg Frontend",
+          kind: "frontend",
+          source: {
+            type: "url",
+            url: "https://codeberg.org/example/frontend",
+            published_at: null,
+            version: null,
+            artifact_size_bytes: null,
+            license_status: "missing",
+            license_spdx_id: null,
+          },
+          primary_function: "frontend",
+          refresh_policy: "paused",
+          enrichment_policy: "manual",
+          enrichment_note: "External URL source; requires manual curation.",
+        },
+      ],
+      snapshots: [],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("rejects duplicate identities and canonical sources", async () => {
     const result = await validateCatalog({
       records: [
@@ -440,7 +474,7 @@ describe("catalog validation", () => {
     );
   });
 
-  test("allows URL sources only for presets and only over https", async () => {
+  test("requires URL sources to use https", async () => {
     const result = await validateCatalog({
       records: [
         {

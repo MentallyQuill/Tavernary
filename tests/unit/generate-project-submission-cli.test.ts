@@ -246,3 +246,71 @@ test("prepares a GitHub draft through injected source clients", async () => {
     { now: "2026-07-25T18:00:00.000Z", previous: undefined },
   );
 });
+
+test("prepares an external Frontend draft with its vocabulary entry", async () => {
+  const draft = await prepareProjectSubmissionDraft({
+    issue: {
+      number: 129,
+      state: "open",
+      labels: [{ name: "needs-maintainer-review" }],
+      body: [
+        "### Project manifest",
+        "",
+        "```json",
+        JSON.stringify({
+          schema_version: 2,
+          project_type: "frontend",
+          source_url: "https://codeberg.org/example/nova",
+          name: "Nova Frontend",
+          description: "A public-source roleplay frontend.",
+          frontends: { known_ids: [], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+        }),
+        "```",
+      ].join("\n"),
+    },
+    now: "2026-07-25T18:00:00.000Z",
+    sourceClients: {
+      request: async () => {
+        throw new Error("GitHub should not be requested.");
+      },
+      probe: async () => ({
+        status: 200,
+        finalUrl: "https://codeberg.org/example/nova",
+      }),
+      catalogData: {
+        vocabulary: {
+          frontends: [
+            {
+              id: "sillytavern",
+              label: "SillyTavern",
+              description: "Works with the SillyTavern roleplay frontend.",
+            },
+          ],
+        },
+        projects: [],
+      },
+    },
+  });
+
+  expect(draft).toMatchObject({
+    record: {
+      id: "codeberg-org-example-nova",
+      kind: "frontend",
+      source: {
+        type: "url",
+        url: "https://codeberg.org/example/nova",
+      },
+      frontends: ["nova-frontend"],
+    },
+    frontendVocabulary: {
+      frontends: expect.arrayContaining([
+        expect.objectContaining({
+          id: "nova-frontend",
+          label: "Nova Frontend",
+        }),
+      ]),
+    },
+  });
+});
