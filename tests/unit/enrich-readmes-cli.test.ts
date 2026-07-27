@@ -338,6 +338,57 @@ test("a retry tells the provider which validation defect to correct", async () =
   });
 });
 
+test("repairs invalid provider output immediately with the rejected summary", async () => {
+  const ids = ["a", "b", "c", "d", "e"];
+  const rejectedSummary =
+    "Fixture coordinates repeatable, carefully documented prompt workflows across expansive SillyTavern installations for creators managing intricate collaborative projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.";
+  const generate = vi.fn(async (input: { id: string; repair?: unknown }) =>
+    input.id === "e" && input.repair === undefined
+      ? {
+          ...providerOutput,
+          output: {
+            ...providerOutput.output,
+            summary: rejectedSummary,
+          },
+        }
+      : providerOutput,
+  );
+  const options = executionOptions(ids);
+
+  const report = await runCli({
+    ...options,
+    provider: { generate },
+    mode: "canary",
+    projectIds: ids,
+  });
+
+  expect(report).toMatchObject({
+    status: "awaiting-deployment",
+    entries: {
+      e: {
+        attempt: 1,
+        outcome: "enriched",
+      },
+    },
+  });
+  expect(
+    generate.mock.calls
+      .map(([input]) => input)
+      .filter((input) => input.id === "e"),
+  ).toEqual([
+    expect.objectContaining({ id: "e" }),
+    expect.objectContaining({
+      id: "e",
+      repair: {
+        reasonCode: "output-invalid",
+        message:
+          "Summary must be at most 220 characters. Rewrite it in 24-32 words and no more than 190 characters.",
+        rejectedSummary,
+      },
+    }),
+  ]);
+});
+
 test("a structured-content retry uses its sanitized transport diagnostic", async () => {
   const ids = ["a", "b", "c", "d", "e"];
   let previousReport = createEnrichmentRunState({

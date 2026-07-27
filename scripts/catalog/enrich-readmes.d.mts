@@ -18,6 +18,7 @@ export type EnrichmentInput = {
   repair?: {
     reasonCode: string;
     message: string;
+    rejectedSummary?: string;
   };
 };
 export type EnrichmentOutput = {

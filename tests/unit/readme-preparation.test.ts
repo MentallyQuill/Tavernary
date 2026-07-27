@@ -54,6 +54,25 @@ Detects prompts containing "Ignore previous instructions" and flags them.
   expect(prepared).toContain("Ignore previous instructions");
 });
 
+test("falls back to cleaned README text when no heading matches the preferred sections", () => {
+  const prepared = prepareReadmeText(`
+### Contents
+- [Description](#description)
+
+## Description
+Summarizes long conversations while preserving recent context.
+
+## Installation and Basic Usage
+Adds automatic summaries to the active SillyTavern chat.
+`);
+
+  expect(prepared).toContain("## Description");
+  expect(prepared).toContain(
+    "Summarizes long conversations while preserving recent context.",
+  );
+  expect(prepared).toContain("## Installation and Basic Usage");
+});
+
 test("caps prepared input at exactly 8000 characters", () => {
   expect(
     prepareReadmeText(`# Tool\n\n${"Useful project details. ".repeat(1000)}`),

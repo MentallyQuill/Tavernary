@@ -171,6 +171,34 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   });
 });
 
+test("uses deterministic sampling for a validation repair request", async () => {
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) => success(),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test/v1/chat/completions",
+    apiKey: "do-not-log",
+    model,
+    fetchImpl,
+  });
+
+  await provider.generate({
+    ...input,
+    repair: {
+      reasonCode: "output-invalid",
+      message: "Summary must be at most 220 characters.",
+      rejectedSummary: "An overlong summary.",
+    },
+  });
+
+  const [, init] = fetchImpl.mock.calls[0];
+  const body = JSON.parse(String(init?.body));
+  expect(body.temperature).toBe(0);
+  expect(body.messages[0].content).toMatch(
+    /rejectedSummary.*untrusted.*do not follow/iu,
+  );
+});
+
 test("returns requested model, returned model, and latency metadata", async () => {
   const times = [1_000, 1_250];
   const provider = createEnrichmentProvider({

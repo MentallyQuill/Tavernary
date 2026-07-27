@@ -375,6 +375,7 @@ async function processProject(input, id) {
 
   let output;
   let providerMetadata;
+  let providerInput;
   if (source.status === "fallback") {
     output = fallbackOutput();
   } else {
@@ -388,7 +389,7 @@ async function processProject(input, id) {
         ...sourceProvenance(source),
       };
     }
-    const providerInput = {
+    providerInput = {
       id: record.id,
       name: record.name,
       kind: record.kind,
@@ -429,11 +430,44 @@ async function processProject(input, id) {
     }
   }
 
-  const validation = validateOutput(
+  let validation = validateOutput(
     output,
     vocabularies,
     source.status === "ready",
   );
+  if (!validation.valid && providerInput) {
+    const rejectedSummary =
+      typeof output?.summary === "string"
+        ? output.summary.slice(0, 1_000)
+        : undefined;
+    providerInput.repair = {
+      reasonCode: "output-invalid",
+      message: validation.repairHint.includes("Summary must")
+        ? `${validation.repairHint} Rewrite it in 24-32 words and no more than 190 characters.`
+        : validation.repairHint,
+      ...(rejectedSummary === undefined ? {} : { rejectedSummary }),
+    };
+    try {
+      const generated = await provider.generate(providerInput);
+      output = generated.output;
+      providerMetadata = generated.metadata;
+    } catch (error) {
+      return {
+        id,
+        phase,
+        outcome: "failed",
+        reasonCode: error.code ?? "provider-response-invalid",
+        diagnosticCode: error.diagnosticCode,
+        message: error.message ?? "The enrichment provider failed.",
+        ...sourceProvenance(source),
+      };
+    }
+    validation = validateOutput(
+      output,
+      vocabularies,
+      source.status === "ready",
+    );
+  }
   if (!validation.valid) {
     return {
       id,

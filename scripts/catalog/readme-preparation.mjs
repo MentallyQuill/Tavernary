@@ -44,6 +44,14 @@ function selectDescriptiveSections(text) {
   return selected.join("\n");
 }
 
+function compactText(text) {
+  return text
+    .replace(/[ \t]+$/gmu, "")
+    .replace(/[ \t]{2,}/gu, " ")
+    .replace(/\n{3,}/gu, "\n\n")
+    .trim();
+}
+
 export function prepareReadmeText(raw, options = {}) {
   if (typeof raw !== "string") return null;
   const maximum = options.maxCharacters ?? defaultMaxCharacters;
@@ -51,11 +59,8 @@ export function prepareReadmeText(raw, options = {}) {
     throw new Error("README maximum must be a positive integer");
   }
 
-  const selected = selectDescriptiveSections(removeNoise(raw));
-  const compact = selected
-    .replace(/[ \t]+$/gmu, "")
-    .replace(/[ \t]{2,}/gu, " ")
-    .replace(/\n{3,}/gu, "\n\n")
-    .trim();
+  const cleaned = removeNoise(raw);
+  const selected = compactText(selectDescriptiveSections(cleaned));
+  const compact = selected.length > 0 ? selected : compactText(cleaned);
   return compact.length === 0 ? null : compact.slice(0, maximum);
 }
