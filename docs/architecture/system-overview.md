@@ -79,6 +79,10 @@ Canonical source-of-truth intent:
 - Daily scheduled refresh runs `catalog:refresh -- --mode incremental`.
 - Baseline mode is queue-driven and continues across manifest state while provisional snapshots remain.
 - Enrichment runs separately through `catalog:enrich`.
+- Repository enrichment prefers bounded README content, then uses the
+  repository description as fallback. Registered external adapters such as
+  Reddit follow the same normalized source contract; arbitrary URLs remain
+  manual.
 - Pages deployment is static export only; content changes only through committed generated output and workflow-triggered commits.
 
 ## Why static-first
@@ -86,4 +90,3 @@ Canonical source-of-truth intent:
 - No accounts, no server-side session state.
 - No search API, no recommendation service, no usage telemetry backend.
 - Reproducible catalog from repository inputs and scripts.
-

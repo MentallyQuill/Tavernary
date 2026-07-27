@@ -51,16 +51,18 @@ Project kinds:
 8. Curated metadata is still expected to evolve after merge if maintainers
    update summary/function/capabilities/visibility.
 
-External System Presets follow the same PR review boundary but remain manually
-curated after acceptance: their source refresh is paused because Tavernary
-cannot verify a non-GitHub source through repository identity.
+External System Presets follow the same PR review boundary. Their source
+refresh can remain paused, while editorial enrichment may be automatic only
+when a registered adapter recognizes the canonical source.
 
 ## Enrichment eligibility and durable scope
 
 Regular GitHub repositories default to `enrichment_policy: automatic`,
-including GitHub-hosted presets. External URL sources and GitHub organization
-collections default to `manual` with a required reason. A maintainer may also
-lock a GitHub repository to manual when its structure requires human review.
+including GitHub-hosted presets. Canonical Reddit post sources also default to
+automatic because Tavernary has a bounded allowlisted adapter for them.
+Unsupported external URLs and GitHub organization collections default to
+`manual` with a required reason. A maintainer may also lock an otherwise
+supported source to manual when it requires human review.
 
 The enrichment action offers two selection scopes:
 
@@ -72,8 +74,14 @@ Manual records are excluded from both. A run persists its `selection_mode` and
 for every resume. The write boundary re-reads the canonical record before
 replacement, so a newly added manual lock wins even after selection.
 
-`refresh_policy` remains separate: it controls GitHub observation and snapshot
+`refresh_policy` remains separate: it controls source observation and snapshot
 updates, not permission to overwrite editorial enrichment.
+
+For repository sources, enrichment selects a usable README before considering
+the short repository description. Reddit enrichment uses only the canonical
+post body or title. Both paths normalize the selected input to source kind,
+canonical identity, and bounded untrusted text before provider invocation.
+Arbitrary external URLs are never fetched automatically.
 
 ## Source-health and snapshot layer
 
