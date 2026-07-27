@@ -8,6 +8,8 @@ import {
 import { selectProjects } from "@/features/catalog/catalog-selectors";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 
+const label = (id: string) => ({ id, label: id, description: id });
+
 function project(
   id: string,
   overrides: Partial<CatalogProject> = {},
@@ -147,6 +149,26 @@ const projects = [
     },
   }),
 ];
+const agnosticPreset = project("agnostic-preset", {
+  kind: "preset",
+  preset: {
+    version: null,
+    publishedAt: null,
+    artifactSizeBytes: null,
+    modelFamilies: [label("model-agnostic")],
+    completionFormats: [label("chat-completion")],
+  },
+});
+const recommendedPreset = project("recommended-preset", {
+  kind: "preset",
+  preset: {
+    version: null,
+    publishedAt: null,
+    artifactSizeBytes: null,
+    modelFamilies: [label("model-agnostic"), label("claude")],
+    completionFormats: [label("chat-completion")],
+  },
+});
 const context = { now: "2026-07-23T00:00:00Z" };
 
 describe("catalog selectors", () => {
@@ -432,6 +454,24 @@ describe("catalog selectors", () => {
         context,
       ).map(({ id }) => id),
     ).toEqual(["preset"]);
+  });
+
+  test("filters Presets by explicit model recommendation tags", () => {
+    expect(
+      selectProjects(
+        [agnosticPreset, recommendedPreset],
+        { ...DEFAULT_QUERY, modelFamilies: ["claude"] },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["recommended-preset"]);
+
+    expect(
+      selectProjects(
+        [agnosticPreset, recommendedPreset],
+        { ...DEFAULT_QUERY, modelFamilies: ["model-agnostic"] },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["agnostic-preset", "recommended-preset"]);
   });
 
   test("keeps uncategorized results visible with deterministic alphabetical ties", () => {

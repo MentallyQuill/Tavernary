@@ -138,6 +138,39 @@ describe("Kit selectors", () => {
     ).toBe(1);
   });
 
+  test("filters and counts Kits by explicit model recommendation tags", () => {
+    const agnostic = kit("agnostic", {
+      modelFamilies: [label("model-agnostic")],
+    });
+    const recommended = kit("recommended", {
+      modelFamilies: [label("model-agnostic"), label("claude")],
+    });
+    const modelKits = [agnostic, recommended];
+
+    expect(
+      selectKits(modelKits, {
+        ...DEFAULT_KIT_QUERY,
+        modelFamilies: ["claude"],
+      }).map(({ id }) => id),
+    ).toEqual(["recommended"]);
+    expect(
+      countKitsForFilter(
+        modelKits,
+        DEFAULT_KIT_QUERY,
+        "modelFamilies",
+        "claude",
+      ),
+    ).toBe(1);
+    expect(
+      countKitsForFilter(
+        modelKits,
+        DEFAULT_KIT_QUERY,
+        "modelFamilies",
+        "model-agnostic",
+      ),
+    ).toBe(2);
+  });
+
   test("sorts Trending nulls last with published, title, and ID tie-breaks", () => {
     expect(selectKits(kits, DEFAULT_KIT_QUERY).map(({ id }) => id)).toEqual([
       "alpha-id",
