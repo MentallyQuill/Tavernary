@@ -7,5 +7,7 @@ coverage/
 playwright-report/
 test-results/
 /tests/**/*-snapshots/
+!/tests/visual/catalog.visual.spec.ts-snapshots/
+!/tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-*.png
 *.tsbuildinfo
 /src/generated/catalog.json

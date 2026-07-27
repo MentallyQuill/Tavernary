@@ -20,6 +20,18 @@ const claudePresetCount = catalog.projects.filter(
 const recursionSearchCount = catalog.projects.filter(({ searchableText }) =>
   searchableText.includes("recursion"),
 ).length;
+const newViewCount = catalog.projects.filter(
+  ({ catalogedAt, catalogCohort }) => {
+    const age =
+      new Date(catalog.generatedAt).getTime() - new Date(catalogedAt).getTime();
+    return (
+      catalogCohort === "standard" &&
+      Number.isFinite(age) &&
+      age >= 0 &&
+      age <= 30 * 24 * 60 * 60 * 1000
+    );
+  },
+).length;
 const provisionalCount = catalog.projects.filter(
   ({ metadataStatus }) => metadataStatus === "provisional",
 ).length;
@@ -35,6 +47,29 @@ const pendingLicenseCount = catalog.projects.filter(
 const missingLicenseCount = catalog.projects.filter(
   ({ license }) => license.status === "missing",
 ).length;
+const forkRelationshipChild =
+  catalog.projects.find(({ id }) => id === "kritblade-vectfox") ??
+  catalog.projects.find(
+    ({ fork }) => fork?.status === "published" && fork.parentProjectId,
+  );
+const forkRelationshipParent = forkRelationshipChild?.fork?.parentProjectId
+  ? catalog.projects.find(
+      ({ id }) => id === forkRelationshipChild.fork?.parentProjectId,
+    )
+  : null;
+const delistedForkChild =
+  catalog.projects.find(
+    ({ id }) => id === "aikohanasaki-sillytavern-worldinfolocks",
+  ) ??
+  catalog.projects.find(
+    ({ fork }) =>
+      fork?.status === "not-listed" && fork.parentProjectId === null,
+  );
+
+function displayedProjectName(name: string) {
+  const withoutPrefix = name.replace(/^sillytavern[\s_-]+/i, "");
+  return withoutPrefix || name;
+}
 
 test.beforeEach(async ({ page }) => {
   await page.goto(sitePath());
@@ -440,7 +475,13 @@ test("searches, changes density, and accepts legacy view URLs", async ({
     page.getByRole("button", { name: "New", exact: true }),
   ).toHaveCount(0);
   await page.goto(`${sitePath()}?view=new&search=Recursion`);
-  await expect(page.getByText("No projects match this view")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: projectCountLabel(newViewCount) }),
+  ).toBeVisible();
+  await expect(page.locator(".project-card")).toHaveCount(newViewCount);
+  await expect(
+    page.getByRole("searchbox", { name: "Search projects" }),
+  ).toHaveValue("");
 });
 
 test("searches by repository owner and discloses creator attribution", async ({
@@ -501,6 +542,134 @@ test("supports keyboard focus, composed filters, chip removal, and clear all", a
       name: `${generatedProjectCount} projects`,
     }),
   ).toBeVisible();
+});
+
+test("fork relationship preserves filters and keeps parent-first order", async ({
+  page,
+}) => {
+  test.skip(
+    !forkRelationshipChild || !forkRelationshipParent,
+    "The controlled fork backfill has not been applied.",
+  );
+  const child = forkRelationshipChild!;
+  const parent = forkRelationshipParent!;
+  const childName = displayedProjectName(child.name);
+  const parentName = displayedProjectName(parent.name);
+  const frontend = child.frontends[0];
+  if (!frontend) throw new Error("Fork fixture needs a frontend.");
+
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill(childName);
+  if (collapsedFrontendOptions.some(({ id }) => id === frontend.id)) {
+    await page
+      .locator(".filter-panel")
+      .getByRole("button", { name: frontendExpansionLabel })
+      .click();
+  }
+  await page
+    .locator(".filter-panel")
+    .getByLabel(frontend.label, { exact: true })
+    .check();
+  const preservedSearch = page.url();
+
+  await page
+    .getByRole("button", {
+      name: `View relationship between ${parentName} and ${childName}`,
+    })
+    .click();
+
+  await expect(page.locator(".project-grid")).toHaveClass(/relationship-pair/);
+  await expect(page.locator(".project-card h2")).toHaveText([
+    parentName,
+    childName,
+  ]);
+  const relationshipToken = page.getByRole("button", {
+    name: `Remove fork relationship between ${parentName} and ${childName}`,
+  });
+  await expect(relationshipToken).toHaveText(
+    `Fork: ${parentName} → ${childName}`,
+  );
+  await expect(
+    page.getByRole("button", { name: `Remove Search: ${childName}` }),
+  ).toHaveCount(0);
+
+  await relationshipToken.click();
+  await expect(page).toHaveURL(preservedSearch);
+  await expect(
+    page.getByRole("searchbox", { name: "Search projects" }),
+  ).toHaveValue(childName);
+  await expect(
+    page.locator(".filter-panel").getByLabel(frontend.label, { exact: true }),
+  ).toBeChecked();
+
+  await page
+    .getByRole("button", {
+      name: `View relationship between ${parentName} and ${childName}`,
+    })
+    .click();
+  await page
+    .getByLabel("Active filters")
+    .getByRole("button", { name: "Clear all" })
+    .click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator(".project-card")).toHaveCount(
+    generatedProjectCount,
+  );
+
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill(childName);
+  await page
+    .getByRole("button", {
+      name: `View relationship between ${parentName} and ${childName}`,
+    })
+    .click();
+  await page
+    .locator(".filter-panel")
+    .getByRole("button", {
+      name: "Clear all",
+    })
+    .click();
+  await expect(page).toHaveURL(/\/$/);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${sitePath()}?relationship=${child.id}`);
+  await expect(page.locator(".project-card h2")).toHaveText([
+    parentName,
+    childName,
+  ]);
+});
+
+test("delisted fork parent remains name-only and stale scope normalizes", async ({
+  page,
+}) => {
+  test.skip(
+    !delistedForkChild?.fork,
+    "The controlled fork backfill has not been applied.",
+  );
+  const child = delistedForkChild!;
+  const parentName = child.fork!.parentName;
+  const childName = displayedProjectName(child.name);
+  const card = page.locator(".project-card-shell").filter({
+    has: page.getByRole("heading", { name: childName, exact: true }),
+  });
+
+  await expect(card).toContainText(`Fork of ${parentName}`);
+  await expect(card).toContainText("Upstream not listed");
+  await expect(
+    card.getByRole("button", { name: /View relationship/ }),
+  ).toHaveCount(0);
+  await expect(page.getByRole("link", { name: parentName })).toHaveCount(0);
+
+  await page.goto(
+    `${sitePath()}?q=${encodeURIComponent(childName)}&relationship=${child.id}`,
+  );
+  await expect(page).toHaveURL(
+    new RegExp(`\\?q=${encodeURIComponent(childName)}$`),
+  );
+  await expect(page.getByRole("heading", { name: childName })).toBeVisible();
+  await expect(page.locator(".relationship-pair")).toHaveCount(0);
 });
 
 test("supports every sort and restores query state after reload", async ({
