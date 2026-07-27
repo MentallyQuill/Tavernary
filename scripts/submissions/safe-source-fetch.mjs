@@ -84,7 +84,36 @@ async function assertPublicResolution(url, lookup) {
   }
 }
 
-export async function safeProbe(value, options = {}) {
+async function readBoundedBody(response, maxBytes) {
+  if (!response.body) return new Uint8Array();
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) {
+        await reader.cancel();
+        throw new Error("Project source response exceeds the safe size limit.");
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const body = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return body;
+}
+
+async function safeRequest(value, options, readBody) {
   const maxBytes = options.maxBytes ?? 262_144;
   const maxRedirects = options.maxRedirects ?? 3;
   const lookup = options.lookup ?? dnsLookup;
@@ -101,7 +130,10 @@ export async function safeProbe(value, options = {}) {
     const response = await fetchImpl(current.toString(), {
       method: "GET",
       redirect: "manual",
-      headers: { Range: `bytes=0-${maxBytes - 1}` },
+      headers: {
+        Range: `bytes=0-${maxBytes - 1}`,
+        ...(options.headers ?? {}),
+      },
       signal: AbortSignal.timeout(options.timeoutMs ?? 5_000),
     });
     if ([301, 302, 303, 307, 308].includes(response.status)) {
@@ -129,13 +161,24 @@ export async function safeProbe(value, options = {}) {
     if (contentLength !== null && contentLength > maxBytes) {
       throw new Error("Project source response exceeds the safe size limit.");
     }
-    return {
+    const result = {
       finalUrl: current.toString(),
       status: response.status,
       contentType: response.headers.get("content-type"),
       contentLength,
       redirects,
     };
+    return readBody
+      ? { ...result, body: await readBoundedBody(response, maxBytes) }
+      : result;
   }
   throw new Error("Project source exceeded the safe redirect limit.");
+}
+
+export async function safeProbe(value, options = {}) {
+  return safeRequest(value, options, false);
+}
+
+export async function safeReadSource(value, options = {}) {
+  return safeRequest(value, options, true);
 }

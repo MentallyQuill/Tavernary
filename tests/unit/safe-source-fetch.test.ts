@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { safeProbe } from "../../scripts/submissions/safe-source-fetch.mjs";
+import {
+  safeProbe,
+  safeReadSource,
+} from "../../scripts/submissions/safe-source-fetch.mjs";
 
 test.each([
   "http://example.com/file",
@@ -91,4 +94,45 @@ test("revalidates every allowed redirect destination", async () => {
     status: 200,
     redirects: ["https://new.example/canonical"],
   });
+});
+
+test("reads a bounded body with caller headers", async () => {
+  const result = await safeReadSource("https://www.reddit.com/post.json", {
+    maxBytes: 32,
+    headers: {
+      accept: "application/json",
+      "user-agent": "Tavernary-catalog-enrichment",
+    },
+    lookup: async () => [{ address: "151.101.1.140", family: 4 }],
+    fetchImpl: async (_url, init) => {
+      expect(init?.headers).toMatchObject({
+        accept: "application/json",
+        "user-agent": "Tavernary-catalog-enrichment",
+      });
+      return new Response('{"ok":true}', {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+
+  expect(new TextDecoder().decode(result.body)).toBe('{"ok":true}');
+});
+
+test("cancels a streamed body after the safe byte limit", async () => {
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array(20));
+      controller.enqueue(new Uint8Array(20));
+      controller.close();
+    },
+  });
+
+  await expect(
+    safeReadSource("https://www.reddit.com/post.json", {
+      maxBytes: 32,
+      lookup: async () => [{ address: "151.101.1.140", family: 4 }],
+      fetchImpl: async () => new Response(stream, { status: 200 }),
+    }),
+  ).rejects.toThrow("safe size limit");
 });
