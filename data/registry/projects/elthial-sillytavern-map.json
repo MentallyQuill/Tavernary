@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "elthial-sillytavern-map",
+  "name": "SillyTavern-Map",
+  "kind": "extension",
+  "summary": "Map Extension for SillyTavern",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "Elthial/SillyTavern-Map",
+    "repository_id": 711475454
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T22:02:20.492Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
