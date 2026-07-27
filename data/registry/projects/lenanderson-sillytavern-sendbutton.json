@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-sendbutton",
   "name": "SillyTavern-SendButton",
   "kind": "extension",
-  "summary": "SillyTavern-SendButton is a SillyTavern extension that introduces custom send buttons to the chat interface. It provides alternative send controls to replace the default submission button during roleplay conversations.",
+  "summary": "SillyTavern-SendButton is a SillyTavern extension that introduces custom send buttons to the chat interface. It provides alternative send controls for roleplay conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
