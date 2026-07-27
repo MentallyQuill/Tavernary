@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "mattjaybe-sillytavern-pathweaver",
+  "name": "SillyTavern-Pathweaver by mattjaybe",
+  "kind": "extension",
+  "summary": "Pathweaver is an extension for SillyTavern designed to manage and visualize branching narratives and interactive stories using a decision tree or node-based graph. It is an excellent solution for situations where LLMs",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "mattjaybe/SillyTavern-Pathweaver",
+    "repository_id": 1133781448
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T20:42:50.977Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
