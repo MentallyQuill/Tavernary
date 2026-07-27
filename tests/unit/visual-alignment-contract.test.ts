@@ -589,17 +589,20 @@ describe("catalog visual alignment", () => {
     );
   });
 
-  test("positions the Kit upvote in the plus control's bottom-right frame", () => {
+  test("positions the orange Kit count beside the plus-sized upvote", () => {
     const css = read("src/styles/catalog.css");
 
     expect(css).toMatch(
       /\.kit-card\s*\{[^}]*position:\s*relative[^}]*display:\s*grid/s,
     );
     expect(css).toMatch(
-      /\.kit-upvote-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px[^}]*place-items:\s*center/s,
+      /\.kit-upvote-cluster\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*display:\s*flex[^}]*align-items:\s*center/s,
     );
     expect(css).toMatch(
-      /\.kit-card-actions\s*\{[^}]*padding-right:\s*40px[^}]*padding-top:\s*10px/s,
+      /\.kit-upvote-count\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--color-functional\)[^}]*background:\s*transparent[^}]*font-variant-numeric:\s*tabular-nums/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-actions\s*\{[^}]*padding-right:\s*88px[^}]*padding-top:\s*10px/s,
     );
   });
 });

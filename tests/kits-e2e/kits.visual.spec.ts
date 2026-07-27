@@ -143,7 +143,8 @@ test("supported Kit card keeps numeric support and its project count in the head
   await openKits(page, { width: 1440, height: 900 });
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
-  await expect(card).toContainText("5 supporters");
+  await expect(card.locator(".kit-upvote-count")).toHaveText("5");
+  await expect(card).not.toContainText(/supporter/i);
   await expect(card.getByText("3 Projects", { exact: true })).toBeVisible();
   await expect(card).toHaveScreenshot("kit-card-supported.png", {
     animations: "disabled",
@@ -156,6 +157,7 @@ test("Kit card without support data omits a support placeholder", async ({
   await openKits(page, { width: 1440, height: 900 });
 
   const card = page.getByRole("article", { name: "Large Stack" });
+  await expect(card.locator(".kit-upvote-count")).toHaveCount(0);
   await expect(card).not.toContainText(/supporter/i);
   await expect(card).toHaveScreenshot("kit-card-no-support.png", {
     animations: "disabled",

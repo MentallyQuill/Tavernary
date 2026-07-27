@@ -320,12 +320,22 @@ test("Kit upvote matches the project-card plus control and links the source issu
 
   const card = page.getByRole("article", { name: "Alpha Kit" });
   const upvote = card.getByRole("link", { name: "Upvote on GitHub" });
+  const supporterCount = card.locator(".kit-upvote-count");
   await expect(upvote).toHaveAttribute(
     "href",
     "https://github.com/MentallyQuill/Tavernary/issues/101",
   );
   await expect(upvote).toHaveAttribute("target", "_blank");
   await expect(upvote).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(supporterCount).toHaveText("5");
+  await expect(supporterCount).toHaveCSS("color", "rgb(225, 138, 36)");
+  await expect(supporterCount).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+
+  const supporterCountBox = (await supporterCount.boundingBox())!;
+  const upvoteBox = (await upvote.boundingBox())!;
+  expect(supporterCountBox.x + supporterCountBox.width).toBeLessThanOrEqual(
+    upvoteBox.x,
+  );
 
   const upvoteFace = upvote.locator(".project-kit-control-face");
   const upvoteStyle = await upvoteFace.evaluate((element) => {
