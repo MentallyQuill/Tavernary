@@ -104,6 +104,40 @@ export function parseSubmissionPullRequestMarker(body) {
   }
 }
 
+export function findSubmissionPathCollision({
+  repository,
+  issueNumber,
+  generatedPaths,
+  pulls,
+}) {
+  const sourceOwnedPath = (path) =>
+    /^data\/registry\/projects\/[^/]+\.json$/u.test(path) ||
+    /^data\/snapshots\/github\/[^/]+\.json$/u.test(path);
+  const intended = new Set(generatedPaths.filter(sourceOwnedPath));
+  for (const pull of pulls) {
+    const marker = parseSubmissionPullRequestMarker(pull.body ?? "");
+    if (
+      !marker ||
+      marker.issue_number === issueNumber ||
+      pull.head?.repo?.full_name?.toLowerCase() !== repository.toLowerCase() ||
+      pull.head?.ref !== submissionBranch(marker.issue_number)
+    ) {
+      continue;
+    }
+    const paths = marker.generated_paths.filter(
+      (path) => sourceOwnedPath(path) && intended.has(path),
+    );
+    if (paths.length === 0) continue;
+    return {
+      issueNumber: marker.issue_number,
+      prNumber: pull.number,
+      prUrl: pull.html_url,
+      paths,
+    };
+  }
+  return null;
+}
+
 export function planSubmissionPrUpdate(input) {
   if (input.remoteHeadSha === null) {
     return {

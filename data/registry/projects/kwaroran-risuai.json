@@ -1,0 +1,27 @@
+{
+  "schema_version": 5,
+  "id": "kwaroran-risuai",
+  "name": "Narrative Engine",
+  "kind": "frontend",
+  "summary": "Risu is a cross-platform AI chat application supporting multiple APIs, group chats, and themes for roleplay. It features regex output modification and memory systems like HypaMemory for long-term conversations.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "kwaroran/Risuai",
+    "repository_id": 626937684
+  },
+  "frontends": ["narrative-engine"],
+  "primary_function": "frontend",
+  "capabilities": [
+    "character-worldbuilding",
+    "instruction-control",
+    "model-routing",
+    "prompt-engineering"
+  ],
+  "cataloged_at": "2026-07-27T21:29:13.485Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

@@ -12,6 +12,7 @@ export type LicenseFilter =
 export interface CatalogQuery {
   mode: CatalogMode;
   selectedKitId: string;
+  relationship: string;
   search: string;
   category: string;
   view: CatalogView;
@@ -30,6 +31,7 @@ export interface CatalogQuery {
 export const DEFAULT_QUERY: CatalogQuery = {
   mode: "projects",
   selectedKitId: "",
+  relationship: "",
   search: "",
   category: "",
   view: "all",
@@ -161,6 +163,12 @@ const validLicenses = new Set<LicenseFilter>([
   "missing",
   "pending",
 ]);
+const projectIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function projectId(value: string | null) {
+  const normalized = value?.trim() ?? "";
+  return projectIdPattern.test(normalized) ? normalized : "";
+}
 
 function oneOf<T extends string>(
   value: string | null,
@@ -207,6 +215,8 @@ export function parseCatalogQuery(search: string): CatalogQuery {
   return {
     mode,
     selectedKitId,
+    relationship:
+      mode === "projects" ? projectId(parameters.get("relationship")) : "",
     search: parameters.get("q")?.trim() ?? "",
     category:
       category !== null && validCategories.has(category) ? category : "",
@@ -295,6 +305,10 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
       parameters.set("sort", query.kits.sort);
     }
   } else {
+    const relationship = projectId(query.relationship);
+    if (relationship) {
+      parameters.set("relationship", relationship);
+    }
     if (query.category) {
       parameters.set("category", query.category);
     }

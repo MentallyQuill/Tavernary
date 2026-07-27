@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "lenanderson-sillytavern-worldinfopresets",
+  "name": "SillyTavern-WorldInfoPresets",
+  "kind": "extension",
+  "summary": "SillyTavern-WorldInfoPresets is an extension that saves and manages preset configurations of world info entries for SillyTavern. It lets users quickly switch between curated lorebook setups across supported frontends.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "LenAnderson/SillyTavern-WorldInfoPresets",
+    "repository_id": 783765890
+  },
+  "frontends": ["aikobots", "sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "capabilities": ["character-worldbuilding", "multi-frontend"],
+  "cataloged_at": "2026-07-27T22:02:20.530Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

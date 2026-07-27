@@ -9,6 +9,25 @@ import {
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
+export function selectForkRelationship(
+  projects: CatalogProject[],
+  childProjectId: string,
+): [parent: CatalogProject, child: CatalogProject] | null {
+  const child = projects.find(({ id }) => id === childProjectId);
+  const parentProjectId = child?.fork?.parentProjectId;
+  if (
+    !child ||
+    child.fork?.status !== "published" ||
+    !parentProjectId ||
+    parentProjectId === child.id
+  ) {
+    return null;
+  }
+
+  const parent = projects.find(({ id }) => id === parentProjectId);
+  return parent ? [parent, child] : null;
+}
+
 function matchesAny(selected: string[], values: string[]) {
   return (
     selected.length === 0 || selected.some((value) => values.includes(value))

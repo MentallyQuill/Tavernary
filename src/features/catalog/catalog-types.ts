@@ -37,6 +37,12 @@ export interface CatalogAttribution {
   status: "current" | "partial" | "stale" | "pending";
 }
 
+export interface CatalogForkRelationship {
+  parentName: string;
+  parentProjectId: string | null;
+  status: "published" | "not-listed" | "unavailable";
+}
+
 export interface CatalogProject {
   id: string;
   name: string;
@@ -51,6 +57,7 @@ export interface CatalogProject {
   frontends: CatalogLabel[];
   capabilities: CatalogLabel[];
   searchableText: string;
+  fork: CatalogForkRelationship | null;
   attribution: CatalogAttribution | null;
   activity: {
     latestSourceActivityAt: string | null;

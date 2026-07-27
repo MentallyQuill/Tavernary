@@ -8,12 +8,18 @@
     "url": "https://github.com/aikohanasaki/Aikobots",
     "description": "Aikobots fork of ST",
     "default_branch": "v4",
-    "head_sha": "057f1aa998e1d896af760d91785221b9f61c6a8c",
-    "head_committed_at": "2026-07-27T02:39:06.000Z",
+    "head_sha": "2eb21e34f7018ddf81bcccbb14ebc369ca871f15",
+    "head_committed_at": "2026-07-27T18:16:19.000Z",
     "archived": false,
     "fork": true,
+    "parent": {
+      "id": 599524116,
+      "owner": "SillyTavern",
+      "name": "SillyTavern",
+      "url": "https://github.com/SillyTavern/SillyTavern"
+    },
     "created_at": "2025-06-09T15:14:49.000Z",
-    "size_kb": 249210
+    "size_kb": 249712
   },
   "source_health": "healthy",
   "activity": {
@@ -88,17 +94,17 @@
     "evidence_head_sha": "057f1aa998e1d896af760d91785221b9f61c6a8c"
   },
   "community": {
-    "stargazers_count": 16,
+    "stargazers_count": 17,
     "forks_count": 1,
     "subscribers_count": 0,
-    "aggregate": 17
+    "aggregate": 18
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-27T22:01:07.175Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {

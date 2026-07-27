@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "aventurasteam-aventuras",
+  "name": "Aventuras",
+  "kind": "frontend",
+  "summary": "Desktop and mobile interactive-fiction frontend with adventure and creative-writing modes, automatic memory, lorebooks, world-state tracking and support for OpenAI-compatible providers",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "AventurasTeam/Aventuras",
+    "repository_id": 1126279204
+  },
+  "frontends": ["aventuras"],
+  "primary_function": "frontend",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T21:24:49.899Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

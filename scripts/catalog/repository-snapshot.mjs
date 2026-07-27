@@ -1,6 +1,16 @@
 import { calculateCommunity } from "../../src/lib/github/repository-metrics.ts";
 
-export function repositoryFacts(observation) {
+export function repositoryFacts(observation, previous = null) {
+  const parent = observation.parent
+    ? {
+        id: observation.parent.id,
+        owner: observation.parent.owner,
+        name: observation.parent.name,
+        url: observation.parent.url,
+      }
+    : observation.fork
+      ? (previous?.parent ?? null)
+      : null;
   return {
     id: observation.id,
     owner: observation.owner,
@@ -12,6 +22,7 @@ export function repositoryFacts(observation) {
     head_committed_at: observation.headCommittedAt,
     archived: observation.archived,
     fork: observation.fork ?? false,
+    parent,
     created_at: observation.createdAt,
     size_kb: observation.sizeKb,
   };
@@ -90,7 +101,10 @@ export function snapshotFromObservation({
   const snapshot = {
     schema_version: 2,
     project_id: projectId,
-    repository: repositoryFacts(observation.repository),
+    repository: repositoryFacts(
+      observation.repository,
+      previous?.repository ?? null,
+    ),
     source_health: "healthy",
     activity,
     community: calculateCommunity(observation.community),

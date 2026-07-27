@@ -27,6 +27,7 @@ function project({
     frontends: [],
     capabilities: [],
     searchableText: name.toLocaleLowerCase(),
+    fork: null,
     attribution: {
       owner: "example-owner",
       contributors: [],

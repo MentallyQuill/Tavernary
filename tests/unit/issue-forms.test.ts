@@ -148,11 +148,25 @@ test("project submission is a structured fallback for automated intake", async (
     "Completion formats",
     "Project manifest",
   ]);
-  expect(fields[0].attributes.options).toEqual([
-    "Frontend",
-    "Extension",
-    "System Preset",
+  expect(fields.map((field: { type: string }) => field.type)).toEqual([
+    "input",
+    "input",
+    "input",
+    "textarea",
+    "textarea",
+    "input",
+    "textarea",
+    "textarea",
+    "input",
+    "textarea",
+    "textarea",
   ]);
+  expect(fields[0].attributes.placeholder).toBe(
+    "Frontend, Extension, or System Preset",
+  );
+  expect(fields[0].attributes.description).toContain(
+    "Frontend, Extension, or System Preset",
+  );
   expect(fields[0].validations.required).toBe(true);
   expect(fields[1].validations.required).toBe(true);
   expect(fields[1].attributes.placeholder).toBe(
@@ -166,13 +180,14 @@ test("project submission is a structured fallback for automated intake", async (
   );
   expect(fields[2].attributes.description).toContain("external Frontends");
   expect(fields[3].attributes.description).toContain("external Frontends");
-  expect(fields[5].attributes.options).toEqual(["No", "Yes"]);
+  expect(fields[5].attributes.placeholder).toBe("Yes or No");
+  expect(fields[5].validations.required).toBe(true);
   expect(fields[7].validations?.required ?? false).toBe(false);
   expect(fields[7].attributes.description).toContain(
-    "Model-Agnostic may be combined with tested or recommended families",
+    "one canonical family ID per line",
   );
-  expect(fields[7].attributes.description).not.toContain(
-    "must be selected alone",
+  expect(fields[9].attributes.description).toContain(
+    "one canonical format ID per line",
   );
   expect(submission.body[0].attributes.value).toContain(
     "Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type.",

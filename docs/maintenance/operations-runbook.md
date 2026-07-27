@@ -64,6 +64,7 @@ Other public issue flows are queue-only and reviewed manually:
 `triage-issue.mjs` enforces project states:
 
 - `needs-maintainer-review` while an admitted proposal is ready to generate
+- `waiting-on-fork-parent` while its immediate upstream submission is open
 - `needs-information` when a correctable source or metadata problem remains
 - `duplicate-candidate` before automatically closing a confirmed duplicate
 - `submission-retryable` when an external dependency failed transiently
@@ -136,6 +137,62 @@ rebases the branch onto current `main`, replaces only the declared generated
 paths, preserves unrelated branch files, and pushes with `--force-with-lease`.
 It never uses an unguarded force push. If the generated branch moved after PR
 closure, lifecycle cleanup leaves it intact for manual inspection.
+
+### Fork dependency recovery
+
+For a child labeled `waiting-on-fork-parent`, inspect the marked validation
+comment for the upstream issue number. If that upstream is still open, review
+its generated PR normally; do not remove the waiting label or generate the
+child early.
+
+When the upstream PR merges, `project-submission-lifecycle.yml` dispatches
+`retry-fork-dependencies.yml`. If the upstream is declined, deleted, private,
+or otherwise terminal, the same retry admits the child with name-only upstream
+provenance. The child is not blocked by the parent's publication outcome.
+
+If the retry workflow fails:
+
+1. inspect the failed `retry-fork-dependencies.yml` run;
+2. fix the transient GitHub/API or workflow problem;
+3. rerun **Retry fork-dependent submissions** on `main`;
+4. confirm the child moves from `waiting-on-fork-parent` to either another
+   immediate-parent wait or `needs-maintainer-review`.
+
+If two system-created upstream issues exist for one repository identity, keep
+the oldest valid issue, close the duplicate as a duplicate, and rerun the retry
+workflow. Do not manually copy the child to a different issue; the ancestry
+marker and stable repository ID are the deduplication authority.
+
+A cycle or a chain reaching the 16-repository limit intentionally stops at
+`needs-maintainer-review`. Inspect the ancestry marker, correct a bad repository
+identity if present, or review the affected project manually. Do not raise the
+bound to force automation through an unverified graph.
+
+### Fork dependency backfill
+
+Preview the exact snapshot paths and missing-upstream candidates:
+
+```powershell
+$env:GITHUB_TOKEN = gh auth token
+npm run submissions:backfill-forks
+Remove-Item Env:GITHUB_TOKEN
+```
+
+The default is read-only. After reviewing that report and explicitly approving
+the mutation, apply it with:
+
+```powershell
+$env:GITHUB_TOKEN = gh auth token
+$env:GITHUB_REPOSITORY = gh repo view --json nameWithOwner --jq .nameWithOwner
+npm run submissions:backfill-forks -- --apply
+Remove-Item Env:GITHUB_TOKEN
+Remove-Item Env:GITHUB_REPOSITORY
+```
+
+The apply path updates only the reported GitHub snapshots, creates or reuses
+normal upstream submission issues, and dispatches their triage. Run
+`npm run catalog:build`, inspect the resulting public relationships, then use
+the manual catalog verification checklist below before committing.
 
 ## Project information + website bug
 

@@ -7,6 +7,13 @@ export interface GeneratedPrMarker {
   generated_paths: string[];
 }
 
+export interface GeneratedPathCollision {
+  issueNumber: number;
+  prNumber: number;
+  prUrl: string;
+  paths: string[];
+}
+
 export type SubmissionPrPlan =
   | { action: "create"; replacePaths: string[] }
   | { action: "update"; replacePaths: string[]; forced: boolean }
@@ -25,6 +32,18 @@ export function renderSubmissionPullRequest(input: {
 export function parseSubmissionPullRequestMarker(
   body: string,
 ): GeneratedPrMarker | null;
+
+export function findSubmissionPathCollision(input: {
+  repository: string;
+  issueNumber: number;
+  generatedPaths: string[];
+  pulls: Array<{
+    number: number;
+    html_url: string;
+    body?: string | null;
+    head?: { ref?: string; repo?: { full_name?: string | null } | null };
+  }>;
+}): GeneratedPathCollision | null;
 
 export function planSubmissionPrUpdate(input: {
   remoteHeadSha: string | null;

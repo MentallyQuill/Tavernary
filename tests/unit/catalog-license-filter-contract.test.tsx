@@ -1,5 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 
 import { DEFAULT_QUERY } from "@/features/catalog/catalog-query";
 import { selectProjects } from "@/features/catalog/catalog-selectors";
@@ -37,6 +37,7 @@ function project(
       },
     ],
     searchableText: `${id} extension automation`,
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",
@@ -149,6 +150,44 @@ describe("catalog license filter contract", () => {
     expect(
       screen.getByRole("button", { name: "Remove Pending verification" }),
     ).toBeInTheDocument();
+  });
+
+  test("relationship scope replaces suspended filters with one removable token", () => {
+    const onRemoveRelationship = vi.fn();
+    render(
+      <ActiveQuery
+        query={{
+          ...DEFAULT_QUERY,
+          relationship: "vectfox",
+          search: "memory",
+          frontends: ["sillytavern"],
+        }}
+        projects={[project("vecthare"), project("vectfox")]}
+        relationship={{
+          childId: "vectfox",
+          childName: "VectFox",
+          parentName: "VectHare",
+        }}
+        onRemoveRelationship={onRemoveRelationship}
+        onRemove={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    const token = screen.getByRole("button", {
+      name: "Remove fork relationship between VectHare and VectFox",
+    });
+    expect(token).toHaveTextContent("Fork: VectHare → VectFox");
+    expect(
+      screen.queryByRole("button", { name: "Remove Search: memory" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Remove SillyTavern" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(token);
+    expect(onRemoveRelationship).toHaveBeenCalledOnce();
+    expect(screen.getByRole("button", { name: "Clear all" })).toBeVisible();
   });
 
   test("development facet counts match selector semantics", () => {
