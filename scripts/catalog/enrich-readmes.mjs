@@ -324,6 +324,23 @@ function retryRepairMessage(entry) {
   return diagnostics[entry.diagnostic_code] ?? entry.message;
 }
 
+function validationRepairInput(providerInput, validation, output) {
+  const rejectedSummary =
+    typeof output?.summary === "string"
+      ? output.summary.slice(0, 1_000)
+      : undefined;
+  return {
+    ...providerInput,
+    repair: {
+      reasonCode: "output-invalid",
+      message: validation.repairHint.includes("Summary must")
+        ? `${validation.repairHint} Rewrite it in 24-32 words and no more than 190 characters.`
+        : validation.repairHint,
+      ...(rejectedSummary === undefined ? {} : { rejectedSummary }),
+    },
+  };
+}
+
 async function processProject(input, id) {
   const {
     recordsById,
@@ -436,17 +453,7 @@ async function processProject(input, id) {
     source.status === "ready",
   );
   if (!validation.valid && providerInput) {
-    const rejectedSummary =
-      typeof output?.summary === "string"
-        ? output.summary.slice(0, 1_000)
-        : undefined;
-    providerInput.repair = {
-      reasonCode: "output-invalid",
-      message: validation.repairHint.includes("Summary must")
-        ? `${validation.repairHint} Rewrite it in 24-32 words and no more than 190 characters.`
-        : validation.repairHint,
-      ...(rejectedSummary === undefined ? {} : { rejectedSummary }),
-    };
+    providerInput = validationRepairInput(providerInput, validation, output);
     try {
       const generated = await provider.generate(providerInput);
       output = generated.output;
@@ -618,13 +625,22 @@ const preflightInput = {
 };
 
 async function runPreflight(provider) {
-  const result = await provider.generate(preflightInput);
-  const validation = validateEnrichmentOutput(result.output, {
+  let result = await provider.generate(preflightInput);
+  const vocabularies = {
     primaryFunctions: preflightInput.allowedPrimaryFunctions,
     capabilities: preflightInput.allowedCapabilities,
-  });
-  if (!validation.valid || result.output.primary_function === "uncategorized") {
-    throw new Error("provider preflight output failed validation");
+  };
+  let validation = validateOutput(result.output, vocabularies, true);
+  if (!validation.valid) {
+    result = await provider.generate(
+      validationRepairInput(preflightInput, validation, result.output),
+    );
+    validation = validateOutput(result.output, vocabularies, true);
+  }
+  if (!validation.valid) {
+    throw new Error(
+      `provider preflight output failed validation: ${validation.repairHint}`,
+    );
   }
   return {
     mode: "preflight",

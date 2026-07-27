@@ -219,6 +219,70 @@ test("preflight performs one synthetic call without loading or writing catalog d
   });
 });
 
+test("preflight repairs one invalid structured response before failing", async () => {
+  const rejectedSummary =
+    "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.";
+  const generate = vi.fn(async (input: { repair?: unknown }) =>
+    input.repair === undefined
+      ? {
+          ...providerOutput,
+          output: {
+            ...providerOutput.output,
+            summary: rejectedSummary,
+          },
+        }
+      : providerOutput,
+  );
+
+  const result = await runCli({
+    mode: "preflight",
+    providerConfiguration,
+    provider: { generate },
+    reportPath: null,
+    now,
+  });
+
+  expect(result).toMatchObject({
+    mode: "preflight",
+    status: "passed",
+    validation_status: "passed",
+  });
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate.mock.calls[1][0]).toMatchObject({
+    repair: {
+      reasonCode: "output-invalid",
+      message:
+        "Summary must be at most 220 characters. Rewrite it in 24-32 words and no more than 190 characters.",
+      rejectedSummary,
+    },
+  });
+});
+
+test("preflight reports the sanitized defect when its repair remains invalid", async () => {
+  const invalid = {
+    ...providerOutput,
+    output: {
+      ...providerOutput.output,
+      summary:
+        "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+    },
+  };
+  const generate = vi.fn(async (_input: unknown) => invalid);
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      reportPath: null,
+      now,
+    }),
+  ).rejects.toThrow(
+    "provider preflight output failed validation: Summary must be at most 220 characters.",
+  );
+  expect(generate).toHaveBeenCalledTimes(2);
+});
+
 test("canary requires exactly five unique explicit IDs", async () => {
   await expect(
     runCli({
