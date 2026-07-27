@@ -4,7 +4,10 @@ import { pathToFileURL } from "node:url";
 
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
-import { fetchRepositoryContributors } from "../catalog/github-contributors.mjs";
+import {
+  fetchForkContributors,
+  fetchRepositoryContributors,
+} from "../catalog/github-contributors.mjs";
 import { inspectApiActivity } from "../catalog/github-inspector.mjs";
 import { observeRepositories } from "../catalog/github-observer.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
@@ -264,19 +267,31 @@ export async function prepareProjectSubmissionDraft({
   });
   const fetchContributors =
     sourceClients.fetchContributors ??
-    ((repository) =>
-      fetchRepositoryContributors(repository, {
-        token: process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN,
-      }));
-  const contributorResult = await fetchContributors({
-    owner: observation.repository.owner,
-    name: observation.repository.name,
+    (async (repository, context) => {
+      const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+      if (repository.fork) {
+        return {
+          ...(await fetchForkContributors(repository, {
+            token,
+            now: context.now,
+          })),
+          method: "merged-pull-requests",
+        };
+      }
+      return {
+        ...(await fetchRepositoryContributors(repository, { token })),
+        method: "repository-contributors",
+      };
+    });
+  const contributorResult = await fetchContributors(observation.repository, {
+    now,
+    previous: undefined,
   });
   const snapshot = createInitialRepositorySnapshot({
     projectId: preliminary.record.id,
     observation,
     activityInspection,
-    contributors: contributorResult.accounts,
+    contributors: contributorResult,
     now,
   });
 

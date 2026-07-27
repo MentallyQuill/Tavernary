@@ -2,7 +2,7 @@ import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import {
   parseGenerateProjectSubmissionCli,
@@ -87,6 +87,21 @@ test("writes only declared repository files and the external report", async () =
 
 test("prepares a GitHub draft through injected source clients", async () => {
   const headSha = "a".repeat(40);
+  const fetchContributors = vi.fn(async () => ({
+    accounts: [
+      { login: "Owner", type: "User" },
+      { login: "LeRobber", type: "User" },
+    ],
+    requestCount: 1,
+    method: "merged-pull-requests",
+    baselineCompletedAt: null,
+    refreshedAt: null,
+    scan: {
+      nextPage: 3,
+      cutoffAt: null,
+      targetWatermark: "2026-07-25T18:00:00.000Z",
+    },
+  }));
   const draft = await prepareProjectSubmissionDraft({
     issue: {
       number: 128,
@@ -146,6 +161,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
               headSha,
               headCommittedAt: "2026-07-25T17:00:00.000Z",
               archived: false,
+              fork: true,
               createdAt: "2026-01-01T00:00:00.000Z",
               sizeKb: 12,
             },
@@ -187,10 +203,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
           resolved_weeks: [],
         },
       }),
-      fetchContributors: async () => ({
-        accounts: [{ login: "Owner", type: "User" }],
-        requestCount: 1,
-      }),
+      fetchContributors,
       enrich: async () => ({
         status: "curated",
         summary:
@@ -210,5 +223,26 @@ test("prepares a GitHub draft through injected source clients", async () => {
     schema_version: 2,
     project_id: "owner-repo",
     activity: { evidence_status: "provisional" },
+    contributors: {
+      accounts: [
+        { login: "Owner", type: "User" },
+        { login: "LeRobber", type: "User" },
+      ],
+      method: "merged-pull-requests",
+      baseline_completed_at: null,
+      scan: {
+        next_page: 3,
+        cutoff_at: null,
+        target_watermark: "2026-07-25T18:00:00.000Z",
+      },
+    },
   });
+  expect(fetchContributors).toHaveBeenCalledWith(
+    expect.objectContaining({
+      owner: "Owner",
+      name: "Repo",
+      fork: true,
+    }),
+    { now: "2026-07-25T18:00:00.000Z", previous: undefined },
+  );
 });
