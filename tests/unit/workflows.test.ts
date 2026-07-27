@@ -121,7 +121,11 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
     true,
   );
   expect(publication.on.issues).toBeUndefined();
-  expect(withdrawal.on.issues.types).toEqual(["opened", "edited"]);
+  expect(withdrawal.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
+  expect(withdrawal.on.issues).toBeUndefined();
   for (const document of [publication, withdrawal]) {
     expect(document.permissions).toEqual({
       contents: "write",
@@ -141,7 +145,12 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
   expect(publicationSource).toContain("kit-published");
   expect(publicationSource).toContain("workflow run deploy-pages.yml");
-  expect(withdrawalSource).toContain("github.event.issue.user.id");
+  expect(withdrawalSource).toContain(
+    "ISSUE_NUMBER: ${{ inputs.issue_number }}",
+  );
+  expect(withdrawalSource).toContain(
+    "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+  );
   expect(withdrawalSource).not.toMatch(
     /github\.event\.issue\.user\.login\s*==/,
   );
@@ -608,7 +617,7 @@ test("triage dispatches admitted projects without repository write access", asyn
     "utf8",
   );
 
-  expect(triage.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
   expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
     required: true,
     type: "number",
@@ -619,17 +628,8 @@ test("triage dispatches admitted projects without repository write access", asyn
     actions: "write",
   });
   expect(triage.concurrency["cancel-in-progress"]).toBe(true);
-  expect(triage.concurrency.group).toContain(
-    "${{ inputs.issue_number || github.event.issue.number }}",
-  );
-  expect(source).toContain("issue-admitted");
-  expect(source).toContain("github.event.issue.state == 'open'");
-  expect(source).toContain("github.event.label.name == 'issue-admitted'");
-  expect(source).toContain("github.event.action == 'edited'");
-  expect(source).toContain("github.event_name == 'workflow_dispatch'");
-  expect(source).toContain(
-    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
-  );
+  expect(triage.concurrency.group).toContain("${{ inputs.issue_number }}");
+  expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run generate-project-submission.yml");
   expect(source).not.toContain("npm ci");
@@ -675,7 +675,7 @@ test("keeps Kit triage registry-read-only and dependency-free", async () => {
     "utf8",
   );
 
-  expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(Object.keys(document.on)).toEqual(["workflow_dispatch"]);
   expect(document.on.workflow_dispatch.inputs.issue_number).toMatchObject({
     required: true,
     type: "number",
@@ -686,10 +686,7 @@ test("keeps Kit triage registry-read-only and dependency-free", async () => {
     actions: "write",
   });
   expect(document.concurrency["cancel-in-progress"]).toBe(true);
-  expect(source).toContain("github.event_name == 'workflow_dispatch'");
-  expect(source).toContain(
-    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
-  );
+  expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source).not.toContain("npm ci");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -789,7 +786,7 @@ test("continues admitted submissions in the admission run", async () => {
     "utf8",
   );
 
-  expect(admission.on.issues.types).toEqual(["opened", "reopened"]);
+  expect(admission.on.issues.types).toEqual(["opened", "reopened", "edited"]);
   expect(admission.permissions).toEqual({
     contents: "read",
     issues: "write",
@@ -803,6 +800,12 @@ test("continues admitted submissions in the admission run", async () => {
   expect(source).toContain("steps.admission.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run triage-submission.yml");
   expect(source).toContain("gh workflow run triage-kit-submission.yml");
+  expect(source).toContain("gh workflow run apply-kit-withdrawal.yml");
+  expect(source).toContain("steps.admission.outputs.route == 'project'");
+  expect(source).toContain("steps.admission.outputs.route == 'kit'");
+  expect(source).toContain("steps.admission.outputs.route == 'kit-withdrawal'");
+  expect(source).toContain("steps.admission.outputs.route == 'conflict'");
+  expect(source).not.toContain("startsWith(github.event.issue.title");
   expect(source).not.toContain("npm ci");
 });
 

@@ -14,7 +14,7 @@ export function buildKitValidationComment(
   validation: KitSubmissionValidation,
 ): string;
 export function assertKitSubmissionEligible(
-  issue: Pick<KitSubmissionIssue, "title" | "state" | "labels">,
+  issue: Pick<KitSubmissionIssue, "state" | "labels">,
 ): void;
 export function kitTriageOutputs(
   validation: KitSubmissionValidation,

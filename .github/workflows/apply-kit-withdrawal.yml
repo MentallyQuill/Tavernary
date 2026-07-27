@@ -1,11 +1,13 @@
 name: "Kit submissions: Withdraw published Kit"
-run-name: "Kit #${{ github.event.issue.number }}: Withdraw published Kit"
+run-name: "Kit #${{ inputs.issue_number }}: Withdraw published Kit"
 
 on:
-  issues:
-    types:
-      - opened
-      - edited
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Kit withdrawal issue number
+        required: true
+        type: number
 
 permissions:
   contents: write
@@ -18,9 +20,7 @@ concurrency:
 
 jobs:
   withdraw:
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      startsWith(github.event.issue.title, '[Kit withdrawal]')
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -41,7 +41,8 @@ jobs:
       - name: Verify numeric author and write tombstone
         run: node scripts/kits/apply-withdrawal.mjs
         env:
-          WITHDRAWAL_ACTOR_ID: ${{ github.event.issue.user.id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
       - name: Validate withdrawal
         run: |
           npm run catalog:validate
@@ -55,7 +56,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "feat(kits): withdraw issue #${{ github.event.issue.number }}"
+            git commit -m "feat(kits): withdraw issue #${{ inputs.issue_number }}"
           fi
           for attempt in 1 2 3; do
             if git fetch origin main &&
@@ -74,7 +75,7 @@ jobs:
           done
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Close withdrawal request
-        run: gh issue close "${{ github.event.issue.number }}" --comment "Verified author withdrawal applied."
+        run: gh issue close "${{ inputs.issue_number }}" --comment "Verified author withdrawal applied."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy updated catalog

@@ -187,8 +187,8 @@ export function assertKitSubmissionEligible(issue) {
   );
   if (
     issue.state !== "open" ||
-    !issue.title?.startsWith("[Kit submission]") ||
-    !labels.includes("issue-admitted")
+    !labels.includes("issue-admitted") ||
+    !labels.includes("kit-submission")
   ) {
     throw new Error("Kit submission issue is not open and admitted.");
   }
