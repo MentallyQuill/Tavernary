@@ -101,6 +101,8 @@ describe("fork dependency backfill planning", () => {
         dependentProjectIds: ["child-a", "child-b"],
         manifest: expect.objectContaining({
           project_type: "extension",
+          source_url: "https://github.com/upstream/parent",
+          name: "parent",
           frontends: { known_ids: ["sillytavern"], other: [] },
         }),
       }),

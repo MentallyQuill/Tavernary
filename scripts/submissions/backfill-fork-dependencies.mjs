@@ -14,7 +14,7 @@ function uniqueSorted(values) {
   return [...new Set(values)].sort((left, right) => left.localeCompare(right));
 }
 
-function candidateManifest(children) {
+function candidateManifest(children, parentRepository, parentName) {
   const first = children[0];
   const frontends = uniqueSorted(
     children.flatMap((child) => child.frontends ?? []),
@@ -22,8 +22,8 @@ function candidateManifest(children) {
   const manifest = {
     schema_version: first.kind === "preset" ? 2 : 1,
     project_type: first.kind,
-    source_url: `https://github.com/${first.source.repository}`,
-    name: first.name,
+    source_url: `https://github.com/${parentRepository}`,
+    name: parentName,
     description: null,
     frontends: { known_ids: frontends, other: [] },
     frontend_independent: first.kind === "preset" && frontends.length === 0,
@@ -120,7 +120,11 @@ export function planForkDependencyBackfill({ projects, snapshots }) {
         dependentRepositoryIds: [...group.dependentRepositoryIds].sort(
           (left, right) => left - right,
         ),
-        manifest: candidateManifest(children),
+        manifest: candidateManifest(
+          children,
+          group.parentRepository,
+          group.parentName,
+        ),
       };
     });
 }
