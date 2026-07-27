@@ -33,6 +33,8 @@
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "submissions:backfill-forks": "node scripts/submissions/backfill-fork-dependencies.mjs",
+    "submissions:reconcile-kits": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary",
+    "submissions:reconcile-kits:apply": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary --apply",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export",
