@@ -1,3 +1,5 @@
+import { containsDisallowedKitLanguage } from "./severe-language-policy.mjs";
+
 export function kitSetKey(projectIds) {
   return [...new Set(projectIds)].sort().join("\n");
 }
@@ -21,6 +23,12 @@ export function validateKitDraft(draft, projects) {
   }
   if (draft.description.trim().length < 1 || draft.description.length > 600) {
     errors.push("Description must contain 1–600 characters.");
+  }
+  if (containsDisallowedKitLanguage(title)) {
+    errors.push("Title contains language Tavernary doesn't allow.");
+  }
+  if (containsDisallowedKitLanguage(draft.description)) {
+    errors.push("Description contains language Tavernary doesn't allow.");
   }
   if (markupOrLink.test(title) || markupOrLink.test(draft.description)) {
     errors.push("Kit text cannot contain links or markup.");

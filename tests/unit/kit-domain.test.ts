@@ -130,6 +130,58 @@ describe("Kit domain", () => {
     );
   });
 
+  test("rejects severe language in title and description", () => {
+    const titleResult = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "N1gg3r Story Kit",
+        description: "A compact story stack.",
+        projectIds: ["frontend", "memory", "preset"],
+      },
+      projects,
+    );
+    const descriptionResult = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "Story Kit",
+        description: "A f.a.g.g.o.t story stack.",
+        projectIds: ["frontend", "memory", "preset"],
+      },
+      projects,
+    );
+
+    expect(titleResult.errors).toContain(
+      "Title contains language Tavernary doesn't allow.",
+    );
+    expect(descriptionResult.errors).toContain(
+      "Description contains language Tavernary doesn't allow.",
+    );
+  });
+
+  test.each(["Damn Good Kit", "Badass Kit", "This shit works."])(
+    "allows common profanity in Kit text: %s",
+    (text) => {
+      expect(
+        validateKitDraft(
+          {
+            operation: "create",
+            kitId: null,
+            title: text,
+            description: text,
+            projectIds: ["frontend", "memory", "preset"],
+          },
+          projects,
+        ).errors,
+      ).not.toEqual(
+        expect.arrayContaining([
+          expect.stringContaining("language Tavernary doesn't allow"),
+        ]),
+      );
+    },
+  );
+
   test("enforces the 50-project ceiling", () => {
     const manyProjects = [
       ...projects,
