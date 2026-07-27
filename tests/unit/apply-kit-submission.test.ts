@@ -157,6 +157,27 @@ test("edits only author-controlled fields and preserves canonical identity", () 
   });
 });
 
+test("treats an unchanged edit retry as a timestamp-preserving no-op", () => {
+  const result = applyKitSubmission({
+    manifest: {
+      operation: "edit",
+      kit_id: existing.id,
+      title: existing.title,
+      description: existing.description,
+      project_ids: existing.project_ids,
+    },
+    issue: {
+      ...issue,
+      user: { ...issue.user, login: existing.author.login },
+    },
+    existingKit: existing,
+    now,
+  });
+
+  expect(result).toBe(existing);
+  expect(result.updated_at).toBe("2026-07-01T00:00:00.000Z");
+});
+
 test("rejects edits by a different numeric actor and exact duplicate creates", () => {
   expect(() =>
     applyKitSubmission({

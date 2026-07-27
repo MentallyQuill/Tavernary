@@ -155,6 +155,44 @@ test("a stale create rerun fast-forwards before applying the issue again", async
   expect(retried.published_at).toBe("2026-07-24T17:00:00.000Z");
 });
 
+test("an unchanged edit retry leaves the registry and timestamp untouched", async () => {
+  const published = applyKitSubmission({
+    manifest,
+    issue,
+    now: "2026-07-24T17:00:00.000Z",
+  });
+  const repository = await createRemote(published);
+  const rerun = await cloneAt(
+    repository.root,
+    repository.remote,
+    "rerun-edit",
+    repository.initialSha,
+  );
+  synchronizeCurrentMain(rerun);
+  const current = JSON.parse(
+    await readFile(
+      resolve(rerun, "data/registry/kits/long-form-storyteller-241.json"),
+      "utf8",
+    ),
+  );
+  const retried = applyKitSubmission({
+    manifest: {
+      operation: "edit",
+      kit_id: published.id,
+      title: published.title,
+      description: published.description,
+      project_ids: published.project_ids,
+    },
+    issue,
+    existingKit: current,
+    now: "2026-07-25T17:00:00.000Z",
+  });
+  await writeKit(rerun, retried);
+
+  expect(git(rerun, "status", "--porcelain")).toBe("");
+  expect(retried.updated_at).toBe(published.updated_at);
+});
+
 test("a stale withdrawal rerun preserves the original tombstone", async () => {
   const published = applyKitSubmission({
     manifest,

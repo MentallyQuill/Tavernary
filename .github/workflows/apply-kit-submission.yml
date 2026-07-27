@@ -78,7 +78,7 @@ jobs:
         run: gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Mark issue published
+      - name: Finalize published issue
         shell: bash
         run: |
           if ! gh label view kit-published >/dev/null 2>&1; then
@@ -91,6 +91,9 @@ jobs:
             echo "::warning title=Kit publication bookkeeping::The Kit was published and deployment was requested, but the kit-published label could not be ensured."
           elif ! gh issue edit "${{ inputs.issue_number }}" --add-label kit-published; then
             echo "::warning title=Kit publication bookkeeping::The Kit was published and deployment was requested, but issue #${{ inputs.issue_number }} could not be labeled."
+          fi
+          if ! gh issue close "${{ inputs.issue_number }}" --reason completed; then
+            echo "::warning title=Kit publication bookkeeping::The Kit was published and deployment was requested, but issue #${{ inputs.issue_number }} could not be closed."
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

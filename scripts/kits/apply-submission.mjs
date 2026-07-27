@@ -68,10 +68,21 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
   if (existingKit.author.github_user_id !== issue.user.id) {
     throw new Error("Only the Kit author may publish an edit.");
   }
+  const title = manifest.title.trim();
+  const description = manifest.description.trim();
+  const unchanged =
+    existingKit.title === title &&
+    existingKit.description === description &&
+    existingKit.author.login === issue.user.login &&
+    JSON.stringify(existingKit.project_ids) ===
+      JSON.stringify(manifest.project_ids);
+  if (unchanged) {
+    return existingKit;
+  }
   return {
     ...existingKit,
-    title: manifest.title.trim(),
-    description: manifest.description.trim(),
+    title,
+    description,
     author: { ...existingKit.author, login: issue.user.login },
     project_ids: [...manifest.project_ids],
     updated_at: now,

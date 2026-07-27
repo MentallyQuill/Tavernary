@@ -29,7 +29,7 @@ test("dispatches the exact published Kit commit before issue bookkeeping", async
     (step) => step.name === "Deploy updated catalog",
   );
   const bookkeeping = steps.findIndex(
-    (step) => step.name === "Mark issue published",
+    (step) => step.name === "Finalize published issue",
   );
 
   expect(deploy).toBeGreaterThanOrEqual(0);
@@ -43,7 +43,7 @@ test("dispatches the exact published Kit commit before issue bookkeeping", async
 test("treats Kit issue labeling as warning-only bookkeeping", async () => {
   const steps = await publicationSteps();
   const bookkeeping = steps.find(
-    (step) => step.name === "Mark issue published",
+    (step) => step.name === "Finalize published issue",
   );
 
   expect(bookkeeping?.run).toContain("gh label view kit-published");
@@ -59,5 +59,23 @@ test("treats Kit issue labeling as warning-only bookkeeping", async () => {
   );
   expect(bookkeeping?.run).toMatch(
     /if ! gh issue edit[\s\S]*then[\s\S]*::warning/,
+  );
+});
+
+test("closes a published Kit issue only after exact-SHA deployment dispatch", async () => {
+  const steps = await publicationSteps();
+  const deploy = steps.findIndex(
+    (step) => step.name === "Deploy updated catalog",
+  );
+  const finalize = steps.findIndex(
+    (step) => step.name === "Finalize published issue",
+  );
+
+  expect(finalize).toBeGreaterThan(deploy);
+  expect(steps[finalize]?.run).toContain(
+    'gh issue close "${{ inputs.issue_number }}" --reason completed',
+  );
+  expect(steps[finalize]?.run).toContain(
+    "::warning title=Kit publication bookkeeping::",
   );
 });
