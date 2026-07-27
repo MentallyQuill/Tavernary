@@ -39,6 +39,13 @@ function forkPullsUrl({ owner, name }, page, perPage) {
   );
 }
 
+function repositoryUrl({ owner, name }) {
+  return (
+    `${githubApi}/repos/${encodeURIComponent(owner)}/` +
+    encodeURIComponent(name)
+  );
+}
+
 function safeForkPage(value, repository, requestCount) {
   if (!value) return null;
   let parsed;
@@ -76,6 +83,25 @@ function githubHeaders(token) {
     "User-Agent": "Tavernary-catalog-refresh",
     "X-GitHub-Api-Version": "2022-11-28",
   };
+}
+
+async function pullRequestsDisabled(repository, options) {
+  let response;
+  try {
+    response = await (options.fetchImpl ?? fetch)(repositoryUrl(repository), {
+      headers: githubHeaders(options.token),
+    });
+  } catch {
+    return false;
+  }
+  if (!response.ok) return false;
+  let metadata;
+  try {
+    metadata = await response.json();
+  } catch {
+    return false;
+  }
+  return metadata?.has_pull_requests === false;
 }
 
 export async function fetchRepositoryContributors({ owner, name }, options) {
@@ -165,6 +191,23 @@ export async function fetchForkContributors({ owner, name }, options) {
       { headers: githubHeaders(options.token) },
     );
     if (!response.ok) {
+      if (response.status === 404) {
+        requestCount += 1;
+        if (
+          await pullRequestsDisabled(repository, {
+            token: options.token,
+            fetchImpl: options.fetchImpl,
+          })
+        ) {
+          return {
+            accounts: [...accounts.values()],
+            requestCount,
+            baselineCompletedAt: baselineCompletedAt ?? targetWatermark,
+            refreshedAt: targetWatermark,
+            scan: null,
+          };
+        }
+      }
       throw contributorError(response, requestCount);
     }
     let rows;
