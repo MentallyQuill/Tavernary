@@ -34,6 +34,11 @@
       "id": "sonder-engine",
       "label": "Sonder Engine",
       "description": "Works with the Sonder Engine roleplay frontend."
+    },
+    {
+      "id": "taleweaver",
+      "label": "TaleWeaver",
+      "description": "Works with the TaleWeaver roleplay frontend."
     }
   ]
 }
