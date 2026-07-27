@@ -26,6 +26,7 @@ export interface CatalogKit {
   description: string;
   author: KitAuthor;
   sourceIssueNumber: number;
+  sourceIssueUrl: string;
   publishedAt: string;
   updatedAt: string;
   frontends: CatalogLabel[];

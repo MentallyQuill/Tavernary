@@ -326,6 +326,7 @@ export async function buildCatalog(options = {}) {
     kitRecords,
     kitSnapshots,
     blockedUsers,
+    siteConfig,
     frontendVocabulary,
     primaryFunctionVocabulary,
     capabilityVocabulary,
@@ -343,6 +344,7 @@ export async function buildCatalog(options = {}) {
       (options.records
         ? { schema_version: 1, blocked: [] }
         : readJson("data/moderation/blocked-github-users.json")),
+    options.siteConfig ?? readJson("data/site.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
     readJson("data/vocabularies/capabilities.json"),
@@ -505,6 +507,9 @@ export async function buildCatalog(options = {}) {
           login: kit.author.login,
         },
         sourceIssueNumber: kit.source_issue_number,
+        sourceIssueUrl:
+          `https://github.com/${siteConfig.github_repository}` +
+          `/issues/${kit.source_issue_number}`,
         publishedAt: kit.published_at,
         updatedAt: kit.updated_at,
         frontends,

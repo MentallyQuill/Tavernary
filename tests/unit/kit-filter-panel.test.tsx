@@ -45,6 +45,7 @@ const kit: CatalogKit = {
   description: "Routing",
   author: { githubUserId: 42, login: "routing-author" },
   sourceIssueNumber: 42,
+  sourceIssueUrl: "https://github.com/fixture/catalog/issues/42",
   publishedAt: "2026-07-01T00:00:00.000Z",
   updatedAt: "2026-07-01T00:00:00.000Z",
   frontends: [label("sillytavern")],

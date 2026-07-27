@@ -31,6 +31,7 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
     description: "A durable narrative stack.",
     author: { githubUserId: 123, login: "example-author" },
     sourceIssueNumber: 41,
+    sourceIssueUrl: "https://github.com/fixture/catalog/issues/41",
     publishedAt: "2026-07-22T00:00:00.000Z",
     updatedAt: "2026-07-22T00:00:00.000Z",
     frontends: [label("sillytavern")],

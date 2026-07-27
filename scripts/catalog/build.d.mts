@@ -9,6 +9,7 @@ export interface BuildCatalogOptions {
   kitRecords?: unknown[];
   kitSnapshots?: unknown[];
   blockedUsers?: unknown;
+  siteConfig?: { github_repository: string };
 }
 
 export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;

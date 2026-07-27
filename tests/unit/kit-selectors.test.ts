@@ -13,6 +13,7 @@ function kit(id: string, overrides: Partial<CatalogKit> = {}): CatalogKit {
     description: `${id} description`,
     author: { githubUserId: 1, login: `${id}-author` },
     sourceIssueNumber: 1,
+    sourceIssueUrl: `https://github.com/fixture/catalog/issues/${id}`,
     publishedAt: "2026-07-01T00:00:00.000Z",
     updatedAt: "2026-07-01T00:00:00.000Z",
     frontends: [label("sillytavern")],

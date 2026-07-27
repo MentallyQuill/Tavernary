@@ -99,6 +99,7 @@ const kit: CatalogKit = {
   description: "A compact story stack.",
   author: { githubUserId: 123, login: "author" },
   sourceIssueNumber: 41,
+  sourceIssueUrl: "https://github.com/fixture/catalog/issues/41",
   publishedAt: "2026-07-24T00:00:00.000Z",
   updatedAt: "2026-07-24T00:00:00.000Z",
   frontends: [],

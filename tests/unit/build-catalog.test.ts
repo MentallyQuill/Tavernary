@@ -726,6 +726,7 @@ test("builds Kits from complete project records and nullable support", async () 
   const catalog = await buildCatalog({
     write: false,
     now: "2026-07-25T00:00:00.000Z",
+    siteConfig: { github_repository: "fixture-owner/fixture-repository" },
     records,
     snapshots: [],
     kitRecords: [
@@ -768,6 +769,9 @@ test("builds Kits from complete project records and nullable support", async () 
       },
       {
         id: "story-kit-41",
+        sourceIssueNumber: 41,
+        sourceIssueUrl:
+          "https://github.com/fixture-owner/fixture-repository/issues/41",
         frontends: [expect.objectContaining({ id: "sillytavern" })],
         modelFamilies: [expect.objectContaining({ id: "claude" })],
         purposes: [
