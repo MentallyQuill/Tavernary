@@ -82,7 +82,7 @@ const previousSnapshot = {
     spdx_id: "MIT",
     source_path: "LICENSE",
   },
-    contributors: {
+  contributors: {
     accounts: [{ login: "Alice", type: "User" }],
     refreshed_at: "2026-07-24T00:00:00.000Z",
     stale_since: null,

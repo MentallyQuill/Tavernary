@@ -83,9 +83,7 @@ describe("project attribution copy", () => {
         status: "pending",
       }),
     ).toBe("Repository owner: Solo. Contributor data pending.");
-    expect(
-      attributionAccessibleText({ ...current, status: "partial" }),
-    ).toBe(
+    expect(attributionAccessibleText({ ...current, status: "partial" })).toBe(
       "Repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot]. Contributor history still scanning.",
     );
   });

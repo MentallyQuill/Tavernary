@@ -146,8 +146,7 @@ export async function fetchForkContributors({ owner, name }, options) {
   const resumedScan = previous?.scan ?? null;
   const baselineCompletedAt = previous?.baselineCompletedAt ?? null;
   const cutoffAt = resumedScan?.cutoffAt ?? previous?.refreshedAt ?? null;
-  const targetWatermark =
-    resumedScan?.targetWatermark ?? options.now;
+  const targetWatermark = resumedScan?.targetWatermark ?? options.now;
   let page = resumedScan?.nextPage ?? 1;
   let requestCount = 0;
   let stoppedAtWatermark = false;
@@ -250,9 +249,7 @@ export async function fetchForkContributors({ owner, name }, options) {
     accounts: [...accounts.values()],
     requestCount,
     baselineCompletedAt: completedBaselineAt,
-    refreshedAt: complete
-      ? targetWatermark
-      : (previous?.refreshedAt ?? null),
+    refreshedAt: complete ? targetWatermark : (previous?.refreshedAt ?? null),
     scan: complete
       ? null
       : {

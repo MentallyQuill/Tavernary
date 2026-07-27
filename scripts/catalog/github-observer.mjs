@@ -216,7 +216,7 @@ function parseObservation(record, repository) {
     typeof repository.name !== "string" ||
     typeof repository.url !== "string" ||
     !(
-    repository.description === null ||
+      repository.description === null ||
       typeof repository.description === "string"
     ) ||
     !Number.isInteger(repository.diskUsage) ||

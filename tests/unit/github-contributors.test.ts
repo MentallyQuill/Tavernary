@@ -293,15 +293,12 @@ test("rejects unsafe fork pull-request pagination", async () => {
         token: "test-token",
         now: "2026-07-27T00:00:00.000Z",
         fetchImpl: async () =>
-          new Response(
-            JSON.stringify([pullRequest({ login: "Author" })]),
-            {
-              status: 200,
-              headers: {
-                link: '<https://example.com/steal-token?page=2>; rel="next"',
-              },
+          new Response(JSON.stringify([pullRequest({ login: "Author" })]), {
+            status: 200,
+            headers: {
+              link: '<https://example.com/steal-token?page=2>; rel="next"',
             },
-          ),
+          }),
       },
     );
   } catch (error) {
