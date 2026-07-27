@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "vevan-arousalpub",
+  "name": "Arousal Pub",
+  "kind": "frontend",
+  "summary": "Arousal Pub is a frontend client for LLM-driven roleplay sessions. It provides a dedicated interface to manage and interact with characters through language models.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "vevan/arousalPub",
+    "repository_id": 1248993662
+  },
+  "frontends": ["arousal-pub"],
+  "primary_function": "frontend",
+  "capabilities": ["character-worldbuilding"],
+  "cataloged_at": "2026-07-27T08:10:45.746Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
