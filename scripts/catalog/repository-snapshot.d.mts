@@ -9,6 +9,13 @@ export interface ContributorAccount {
 
 export interface ContributorSnapshot {
   accounts: ContributorAccount[];
+  method?: "repository-contributors" | "merged-pull-requests";
+  baseline_completed_at?: string | null;
+  scan?: {
+    next_page: number;
+    cutoff_at: string | null;
+    target_watermark: string;
+  } | null;
   refreshed_at: string;
   stale_since: string | null;
 }
@@ -78,7 +85,19 @@ export function normalizedLicense(
 ): NormalizedLicense;
 
 export function contributorSnapshotForSuccess(
-  accounts: ContributorAccount[],
+  collection:
+    | ContributorAccount[]
+    | {
+        accounts: ContributorAccount[];
+        method?: "repository-contributors" | "merged-pull-requests";
+        baselineCompletedAt?: string | null;
+        refreshedAt?: string | null;
+        scan?: {
+          nextPage: number;
+          cutoffAt: string | null;
+          targetWatermark: string;
+        } | null;
+      },
   now: string,
 ): ContributorSnapshot;
 

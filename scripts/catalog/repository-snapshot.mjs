@@ -11,7 +11,7 @@ export function repositoryFacts(observation) {
     head_sha: observation.headSha,
     head_committed_at: observation.headCommittedAt,
     archived: observation.archived,
-    fork: observation.fork,
+    fork: observation.fork ?? false,
     created_at: observation.createdAt,
     size_kb: observation.sizeKb,
   };
@@ -47,10 +47,23 @@ export function normalizedLicense(license) {
   };
 }
 
-export function contributorSnapshotForSuccess(accounts, now) {
+export function contributorSnapshotForSuccess(collection, now) {
+  const normalized = Array.isArray(collection)
+    ? { accounts: collection, method: "repository-contributors" }
+    : collection;
+  const scan = normalized.scan
+    ? {
+        next_page: normalized.scan.nextPage,
+        cutoff_at: normalized.scan.cutoffAt,
+        target_watermark: normalized.scan.targetWatermark,
+      }
+    : null;
   return {
-    accounts,
-    refreshed_at: now,
+    accounts: normalized.accounts,
+    method: normalized.method ?? "repository-contributors",
+    baseline_completed_at: normalized.baselineCompletedAt ?? null,
+    scan,
+    refreshed_at: normalized.refreshedAt ?? now,
     stale_since: null,
   };
 }

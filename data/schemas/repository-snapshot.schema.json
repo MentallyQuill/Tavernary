@@ -72,6 +72,38 @@
             }
           }
         },
+        "method": {
+          "enum": ["repository-contributors", "merged-pull-requests"]
+        },
+        "baseline_completed_at": {
+          "anyOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        },
+        "scan": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["next_page", "cutoff_at", "target_watermark"],
+              "properties": {
+                "next_page": { "type": "integer", "minimum": 1 },
+                "cutoff_at": {
+                  "anyOf": [
+                    { "type": "string", "format": "date-time" },
+                    { "type": "null" }
+                  ]
+                },
+                "target_watermark": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
         "refreshed_at": { "type": "string", "format": "date-time" },
         "stale_since": {
           "anyOf": [

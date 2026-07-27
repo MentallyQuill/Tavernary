@@ -10,7 +10,7 @@ export interface RepositoryObservation {
     headSha: string;
     headCommittedAt: string;
     archived: boolean;
-    fork: boolean;
+    fork?: boolean;
     createdAt: string;
     sizeKb: number;
   };
