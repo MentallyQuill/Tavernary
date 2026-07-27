@@ -13,6 +13,19 @@ function safeText(value, limit = 320) {
   return bounded.replace(/\\/gu, "\\\\").replace(/([[\]()*_`#<>|])/gu, "\\$1");
 }
 
+const urlFieldKeys = new Set(["source_url"]);
+
+function renderUrlValue(value) {
+  if (typeof value !== "string") return safeText(value);
+  const url = new URL(value);
+  if (url.protocol !== "https:") return safeText(value);
+  return `[${safeText(url.href)}](<${url.href}>)`;
+}
+
+function renderGroupValue(key, value) {
+  return urlFieldKeys.has(key) ? renderUrlValue(value) : safeText(value);
+}
+
 function labelFor(key) {
   const words = key.replace(/_/gu, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
@@ -24,7 +37,10 @@ function renderGroup(values) {
   );
   if (entries.length === 0) return "- None.";
   return entries
-    .map(([key, value]) => `- **${labelFor(key)}:** ${safeText(value)}`)
+    .map(
+      ([key, value]) =>
+        `- **${labelFor(key)}:** ${renderGroupValue(key, value)}`,
+    )
     .join("\n");
 }
 

@@ -28,6 +28,7 @@ const reviewFixture = {
     submitted: {
       name: "Owner [Repo]",
       description: "Submitted description.",
+      source_url: "https://github.com/envy-ai/ai_rpg",
     },
     observed: {
       repository: "Owner/Repo",
@@ -91,6 +92,9 @@ test("renders the issue link, evidence groups, warnings, checklist, and marker",
     "- [ ] Canonical source and permanent identity are correct",
   );
   expect(body).toContain("Owner \\[Repo\\]");
+  expect(body).toContain(
+    "- **Source url:** [https://github.com/envy-ai/ai\\_rpg](<https://github.com/envy-ai/ai_rpg>)",
+  );
   expect(parseSubmissionPullRequestMarker(body)).toEqual(marker);
 });
 
