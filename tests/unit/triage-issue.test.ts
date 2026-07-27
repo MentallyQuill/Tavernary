@@ -267,6 +267,93 @@ test("links the existing project and closes duplicate issues", () => {
   );
 });
 
+test("closes a later in-flight duplicate and links its surviving review", () => {
+  const identity = {
+    kind: "github" as const,
+    canonicalUrl: "https://github.com/owner/repo",
+    repository: "owner/repo",
+    repositoryId: 42,
+    owner: "owner",
+    name: "repo",
+  };
+  const mutation = buildProjectSubmissionTriage(
+    {
+      status: "inflight-duplicate",
+      identity,
+      existingSubmission: {
+        issueNumber: 72,
+        issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+        prNumber: 73,
+        prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
+        identity,
+      },
+    },
+    {
+      issueNumber: 74,
+      currentTitle: "[Project submission]",
+      currentLabels: [
+        "issue-admitted",
+        "needs-maintainer-review",
+        "submission-pr-open",
+      ],
+      generatedTitle: "[Project submission] owner/repo",
+      previousMarker: null,
+    },
+  );
+
+  expect(mutation).toMatchObject({
+    labels: expect.arrayContaining([
+      "project-submission",
+      "duplicate-candidate",
+    ]),
+    close: true,
+    closeReason: "not_planned",
+    dispatchGeneration: false,
+  });
+  expect(mutation.labels).not.toContain("needs-maintainer-review");
+  expect(mutation.labels).not.toContain("submission-pr-open");
+  expect(mutation.commentBody).toContain("issue #72");
+  expect(mutation.commentBody).toContain("PR #73");
+  expect(mutation.commentBody).toContain("review continues");
+});
+
+test("links only the surviving issue when its PR has not started", () => {
+  const identity = {
+    kind: "github" as const,
+    canonicalUrl: "https://github.com/owner/repo",
+    repository: "owner/repo",
+    repositoryId: 42,
+    owner: "owner",
+    name: "repo",
+  };
+  const mutation = buildProjectSubmissionTriage(
+    {
+      status: "inflight-duplicate",
+      identity,
+      existingSubmission: {
+        issueNumber: 72,
+        issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+        prNumber: null,
+        prUrl: null,
+        identity,
+      },
+    },
+    {
+      issueNumber: 74,
+      currentTitle: "[Project submission]",
+      currentLabels: ["issue-admitted"],
+      generatedTitle: "[Project submission] owner/repo",
+      previousMarker: null,
+    },
+  );
+
+  expect(mutation.commentBody).toContain(
+    "[issue #72](https://github.com/Tavernary/Tavernary/issues/72)",
+  );
+  expect(mutation.commentBody).not.toContain("PR #");
+  expect(mutation.commentBody).not.toContain("undefined");
+});
+
 test("keeps missing frontend dependencies open with an actionable response", () => {
   const mutation = buildProjectSubmissionTriage(
     {
@@ -538,6 +625,13 @@ test("processes an admitted issue through injected GitHub mutations", async () =
   const request = vi.fn(async (path: string, options = {}) => {
     const method = options.method ?? "GET";
     requests.push({ path, method, body: options.body });
+    if (
+      path.startsWith(
+        "/repos/Tavernary/Tavernary/issues?state=open&labels=project-submission%2Cissue-admitted",
+      )
+    ) {
+      return [];
+    }
     if (path === "/repos/Tavernary/Tavernary/issues/127" && method === "GET") {
       issueReads += 1;
       return {
@@ -636,6 +730,207 @@ test("processes an admitted issue through injected GitHub mutations", async () =
   });
 });
 
+test("closes a later issue when an earlier admitted submission has the same source", async () => {
+  const projectBody = [
+    "### Project manifest",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/repo",
+      name: "Example",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
+  const requests: Array<{
+    path: string;
+    method: string;
+    body?: string;
+  }> = [];
+  const request = vi.fn(async (path: string, options = {}) => {
+    const method = options.method ?? "GET";
+    requests.push({ path, method, body: options.body });
+    if (path === "/repos/Tavernary/Tavernary/issues/74" && method === "GET") {
+      return {
+        number: 74,
+        title: "[Project submission] owner/repo",
+        body: projectBody,
+        labels: ["issue-admitted", "project-submission"],
+        state: "open",
+      };
+    }
+    if (
+      path.startsWith(
+        "/repos/Tavernary/Tavernary/issues?state=open&labels=project-submission%2Cissue-admitted",
+      )
+    ) {
+      return [
+        {
+          number: 72,
+          html_url: "https://github.com/Tavernary/Tavernary/issues/72",
+          state: "open",
+          title: "[Project submission] owner/repo",
+          body: projectBody,
+          labels: [{ name: "project-submission" }, { name: "issue-admitted" }],
+        },
+      ];
+    }
+    if (path === "/repos/owner/repo") {
+      return {
+        id: 42,
+        owner: { login: "owner" },
+        name: "repo",
+        html_url: "https://github.com/owner/repo",
+        visibility: "public",
+        private: false,
+        archived: false,
+      };
+    }
+    if (path.includes("/pulls?")) {
+      return [
+        {
+          number: 73,
+          html_url: "https://github.com/Tavernary/Tavernary/pull/73",
+        },
+      ];
+    }
+    if (path.endsWith("/comments?per_page=100")) return [];
+    return {};
+  });
+  const outputs: Record<string, string> = {};
+
+  const decision = await processProjectSubmissionTriage({
+    event: {
+      repository: { full_name: "Tavernary/Tavernary" },
+      issue: { number: 74 },
+    },
+    request,
+    catalogData: {
+      vocabulary: {
+        frontends: [
+          {
+            id: "sillytavern",
+            label: "SillyTavern",
+            description: "Works with the SillyTavern roleplay frontend.",
+          },
+        ],
+      },
+      projects: [],
+    },
+    writeOutput: async (name, value) => {
+      outputs[name] = value;
+    },
+  });
+
+  expect(decision.status).toBe("inflight-duplicate");
+  expect(outputs).toEqual({ admitted: "false", issue_number: "74" });
+  expect(requests).toContainEqual(
+    expect.objectContaining({
+      path: "/repos/Tavernary/Tavernary/issues/74",
+      method: "PATCH",
+      body: JSON.stringify({
+        state: "closed",
+        state_reason: "not_planned",
+      }),
+    }),
+  );
+  expect(requests).toContainEqual(
+    expect.objectContaining({
+      path: "/repos/Tavernary/Tavernary/issues/74/labels",
+      method: "POST",
+      body: JSON.stringify({ labels: ["duplicate-candidate"] }),
+    }),
+  );
+});
+
+test("keeps the issue retryable when the admitted submission inventory is unavailable", async () => {
+  const body = [
+    "### Project manifest",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/repo",
+      name: "Example",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
+  const request = vi.fn(async (path: string, options = {}) => {
+    if (
+      path === "/repos/Tavernary/Tavernary/issues/75" &&
+      (options.method ?? "GET") === "GET"
+    ) {
+      return {
+        number: 75,
+        title: "[Project submission]",
+        body,
+        labels: ["issue-admitted", "project-submission"],
+        state: "open",
+      };
+    }
+    if (
+      path.startsWith(
+        "/repos/Tavernary/Tavernary/issues?state=open&labels=project-submission%2Cissue-admitted",
+      )
+    ) {
+      throw new Error("GitHub 503");
+    }
+    if (path === "/repos/owner/repo") {
+      return {
+        id: 42,
+        owner: { login: "owner" },
+        name: "repo",
+        html_url: "https://github.com/owner/repo",
+        visibility: "public",
+        private: false,
+        archived: false,
+      };
+    }
+    if (path.endsWith("/comments?per_page=100")) return [];
+    return {};
+  });
+  const outputs: Record<string, string> = {};
+
+  const decision = await processProjectSubmissionTriage({
+    event: {
+      repository: { full_name: "Tavernary/Tavernary" },
+      issue: { number: 75 },
+    },
+    request,
+    catalogData: {
+      vocabulary: {
+        frontends: [
+          {
+            id: "sillytavern",
+            label: "SillyTavern",
+            description: "Works with the SillyTavern roleplay frontend.",
+          },
+        ],
+      },
+      projects: [],
+    },
+    writeOutput: async (name, value) => {
+      outputs[name] = value;
+    },
+  });
+
+  expect(decision).toEqual({
+    status: "retryable",
+    code: "submission-inventory-unavailable",
+    message: "GitHub 503",
+  });
+  expect(outputs).toEqual({ admitted: "false", issue_number: "75" });
+  expect(outputs.admitted).not.toBe("true");
+});
+
 test("accepts a manually customized project title after routing", async () => {
   const body = [
     "### Project manifest",
@@ -654,6 +949,13 @@ test("accepts a manually customized project title after routing", async () => {
   ].join("\n");
   const updates: unknown[] = [];
   const request = vi.fn(async (path: string, options = {}) => {
+    if (
+      path.startsWith(
+        "/repos/Tavernary/Tavernary/issues?state=open&labels=project-submission%2Cissue-admitted",
+      )
+    ) {
+      return [];
+    }
     if (path === "/repos/Tavernary/Tavernary/issues/128") {
       if ((options.method ?? "GET") === "PATCH") updates.push(options);
       return {
@@ -704,6 +1006,13 @@ test("does not apply a stale decision after the issue body changes", async () =>
   ].join("\n");
   let reads = 0;
   const request = vi.fn(async (path: string, options = {}) => {
+    if (
+      path.startsWith(
+        "/repos/Tavernary/Tavernary/issues?state=open&labels=project-submission%2Cissue-admitted",
+      )
+    ) {
+      return [];
+    }
     if (
       path === "/repos/Tavernary/Tavernary/issues/129" &&
       (options.method ?? "GET") === "GET"
@@ -820,6 +1129,7 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
         state: "open",
         labels: [
           "issue-admitted",
+          "kit-submission",
           "needs-information",
           "needs-maintainer-review",
         ],
@@ -967,20 +1277,29 @@ test.each([
   {
     title: "[Kit submission]: Example",
     state: "closed",
-    labels: ["issue-admitted"],
+    labels: ["issue-admitted", "kit-submission"],
   },
   {
     title: "[Kit submission]: Example",
     state: "open",
-    labels: [],
+    labels: ["kit-submission"],
   },
   {
     title: "[Project submission] owner/repo",
     state: "open",
-    labels: ["issue-admitted"],
+    labels: ["issue-admitted", "project-submission"],
   },
 ])("rejects ineligible workflow-dispatch Kit issues", (issue) => {
   expect(() => assertKitSubmissionEligible(issue)).toThrow(
     "Kit submission issue is not open and admitted.",
   );
+});
+
+test("accepts an admitted Kit submission after its title is edited", () => {
+  expect(() =>
+    assertKitSubmissionEligible({
+      state: "open",
+      labels: ["issue-admitted", "kit-submission"],
+    }),
+  ).not.toThrow();
 });

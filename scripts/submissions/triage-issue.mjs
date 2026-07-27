@@ -7,6 +7,7 @@ import {
   submissionQueueLabels,
 } from "./admission.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
+import { findEarlierInflightSubmission } from "./inflight-submissions.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
 import {
@@ -130,6 +131,7 @@ function decisionLabel(decision, currentLabels) {
   return {
     admitted: "needs-maintainer-review",
     duplicate: "duplicate-candidate",
+    "inflight-duplicate": "duplicate-candidate",
     "needs-information": "needs-information",
     retryable: "submission-retryable",
   }[decision.status];
@@ -152,6 +154,15 @@ function frontendDependencyComment(dependency) {
 function decisionComment(decision) {
   if (decision.status === "duplicate") {
     return `This source is already cataloged as [${decision.existingProject.name}](${decision.existingProject.canonicalUrl}). The duplicate submission has been closed.`;
+  }
+  if (decision.status === "inflight-duplicate") {
+    const existing = decision.existingSubmission;
+    const issueLink = `[issue #${existing.issueNumber}](${existing.issueUrl})`;
+    const prLink =
+      existing.prNumber && existing.prUrl
+        ? ` and [PR #${existing.prNumber}](${existing.prUrl})`
+        : "";
+    return `This source already has an earlier admitted submission at ${issueLink}${prLink}; review continues there. This later duplicate has been closed.`;
   }
   if (decision.status === "needs-information") {
     if (decision.frontendDependencies?.length) {
@@ -236,13 +247,16 @@ export function buildProjectSubmissionTriage(decision, context) {
     decisionComment(decision),
   ].join("\n");
   const prAlreadyOpen = context.currentLabels.includes("submission-pr-open");
+  const closesAsDuplicate = ["duplicate", "inflight-duplicate"].includes(
+    decision.status,
+  );
 
   return {
     desiredTitle,
     labels,
     commentBody,
-    close: decision.status === "duplicate",
-    closeReason: decision.status === "duplicate" ? "not_planned" : null,
+    close: closesAsDuplicate,
+    closeReason: closesAsDuplicate ? "not_planned" : null,
     dispatchGeneration: decision.status === "admitted" && !prAlreadyOpen,
     marker,
     issueNumber: context.issueNumber,
@@ -668,18 +682,38 @@ export async function processProjectSubmissionTriage({
             vocabulary: data.vocabulary,
             frontendProjects: data.projects,
           });
-    decision = evaluateProjectSubmission({
-      manifest: parsed.manifest,
-      identity,
-      sourceProbe: inspection.sourceProbe,
-      repository: inspection.repository,
-      existingProjects: data.projects
-        .map(projectSubmissionExistingProject)
-        .filter((project) => project !== null),
-      frontendResolution,
-      errors: inspection.errors,
-      warnings: [],
-    });
+    const inflightScan =
+      inspection.identity && inspection.sourceProbe.status === "ok"
+        ? await findEarlierInflightSubmission({
+            repository,
+            currentIssueNumber: issue.number,
+            currentIdentity: inspection.identity,
+            request,
+            probe,
+          })
+        : { status: "ok", match: null, warnings: [] };
+
+    if (inflightScan.status === "retryable") {
+      decision = {
+        status: "retryable",
+        code: inflightScan.code,
+        message: inflightScan.message,
+      };
+    } else {
+      decision = evaluateProjectSubmission({
+        manifest: parsed.manifest,
+        identity,
+        sourceProbe: inspection.sourceProbe,
+        repository: inspection.repository,
+        existingProjects: data.projects
+          .map(projectSubmissionExistingProject)
+          .filter((project) => project !== null),
+        inflightDuplicate: inflightScan.match,
+        frontendResolution,
+        errors: inspection.errors,
+        warnings: inflightScan.warnings,
+      });
+    }
   }
 
   const latestIssue = await request(

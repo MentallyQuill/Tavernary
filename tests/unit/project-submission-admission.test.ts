@@ -45,6 +45,13 @@ function admittedFixture(overrides = {}) {
 test("closes a permanent repository-ID duplicate before PR generation", () => {
   const decision = evaluateProjectSubmission(
     admittedFixture({
+      inflightDuplicate: {
+        issueNumber: 72,
+        issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+        prNumber: 73,
+        prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
+        identity: githubIdentity,
+      },
       existingProjects: [
         {
           id: "old-owner-old-name",
@@ -65,6 +72,26 @@ test("closes a permanent repository-ID duplicate before PR generation", () => {
   expect(decision).toMatchObject({
     status: "duplicate",
     existingProject: { id: "old-owner-old-name" },
+  });
+});
+
+test("recognizes an in-flight duplicate before admission", () => {
+  const inflightDuplicate = {
+    issueNumber: 72,
+    issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+    prNumber: 73,
+    prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
+    identity: githubIdentity,
+  };
+
+  expect(
+    evaluateProjectSubmission(admittedFixture({ inflightDuplicate })),
+  ).toMatchObject({
+    status: "inflight-duplicate",
+    existingSubmission: {
+      issueNumber: 72,
+      prNumber: 73,
+    },
   });
 });
 

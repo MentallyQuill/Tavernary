@@ -41,6 +41,14 @@ export function evaluateProjectSubmission(input) {
     };
   }
 
+  if (input.inflightDuplicate) {
+    return {
+      status: "inflight-duplicate",
+      identity: input.identity,
+      existingSubmission: input.inflightDuplicate,
+    };
+  }
+
   if (input.errors?.length) {
     return {
       status: "needs-information",

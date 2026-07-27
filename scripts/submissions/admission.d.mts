@@ -4,6 +4,7 @@ import type {
   FrontendSuggestion,
   MissingFrontendDependency,
 } from "./frontend-reconciliation.mjs";
+import type { InflightSubmissionMatch } from "./inflight-submissions.mjs";
 import type { SourceIdentity } from "./source-identity.mjs";
 
 export const submissionQueueLabels: string[];
@@ -29,6 +30,7 @@ export interface ProjectSubmissionAdmissionInput {
     archived: boolean;
   };
   existingProjects: ExistingSubmissionProject[];
+  inflightDuplicate?: InflightSubmissionMatch | null;
   frontendResolution: FrontendResolution;
   warnings?: string[];
   errors?: string[];
@@ -44,6 +46,11 @@ export type ProjectSubmissionDecision =
         name: string;
         canonicalUrl: string;
       };
+    }
+  | {
+      status: "inflight-duplicate";
+      identity: SourceIdentity;
+      existingSubmission: InflightSubmissionMatch;
     }
   | {
       status: "needs-information";
