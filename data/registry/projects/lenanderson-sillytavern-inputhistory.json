@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "lenanderson-sillytavern-inputhistory",
+  "name": "SillyTavern-InputHistory",
+  "kind": "extension",
+  "summary": "Use Alt+Up or Alt+Down in the input box to go through your last inputs and /commands.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "LenAnderson/SillyTavern-InputHistory",
+    "repository_id": 735181166
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T00:16:20.505Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
