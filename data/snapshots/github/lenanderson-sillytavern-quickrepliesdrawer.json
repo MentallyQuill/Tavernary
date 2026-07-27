@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "project_id": "lenanderson-sillytavern-quickrepliesdrawer",
+  "repository": {
+    "id": 919776844,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-QuickRepliesDrawer",
+    "url": "https://github.com/LenAnderson/SillyTavern-QuickRepliesDrawer",
+    "description": "Move QRs into separate drawer",
+    "default_branch": "master",
+    "head_sha": "0d7feb81f31717d771efebd90618d18a73bff4df",
+    "head_committed_at": "2025-07-12T16:10:48.000Z",
+    "archived": false,
+    "created_at": "2025-01-21T01:51:33.000Z",
+    "size_kb": 1212
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T04:33:31.378Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "0d7feb81f31717d771efebd90618d18a73bff4df"
+  },
+  "community": {
+    "stargazers_count": 9,
+    "forks_count": 1,
+    "subscribers_count": 1,
+    "aggregate": 11
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T04:33:31.378Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "LenAnderson", "type": "User" }],
+    "refreshed_at": "2026-07-27T04:33:31.378Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
