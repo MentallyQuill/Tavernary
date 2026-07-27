@@ -5,6 +5,7 @@ import {
 import { safeReadSource } from "../submissions/safe-source-fetch.mjs";
 
 const maximumResponseBytes = 524_288;
+const maximumOEmbedBytes = 65_536;
 const maximumSelectedCharacters = 8_000;
 const unavailableMarkers = new Set(["[deleted]", "[removed]"]);
 
@@ -38,6 +39,12 @@ function redditJsonUrl(identity) {
   return url.href;
 }
 
+function redditOEmbedUrl(identity) {
+  const url = new URL("https://www.reddit.com/oembed");
+  url.searchParams.set("url", identity.canonicalUrl);
+  return url.href;
+}
+
 function normalizePostText(value) {
   if (typeof value !== "string") return null;
   const text = value
@@ -62,6 +69,64 @@ function parseJsonBody(result) {
   } catch {
     return null;
   }
+}
+
+function classifiedHttpFailure(result, provenance) {
+  if (result.status === 404 || result.status === 410) {
+    return failed("reddit-post-unavailable", provenance);
+  }
+  if (result.status === 429) {
+    return failed("reddit-rate-limited", provenance);
+  }
+  if (result.status >= 500 && result.status <= 599) {
+    return failed("reddit-server-error", provenance);
+  }
+  return failed("reddit-fetch-failed", provenance);
+}
+
+async function loadOEmbedTitle(identity, provenance, readSource) {
+  let result;
+  try {
+    result = await readSource(redditOEmbedUrl(identity), {
+      allowedRedirectHosts: REDDIT_SOURCE_HOSTS,
+      maxBytes: maximumOEmbedBytes,
+      maxRedirects: 1,
+      timeoutMs: 10_000,
+      headers: {
+        accept: "application/json",
+        "user-agent": "Tavernary-catalog-enrichment",
+      },
+    });
+  } catch {
+    return failed("reddit-fetch-failed", provenance);
+  }
+  if (result.status < 200 || result.status >= 300) {
+    return classifiedHttpFailure(result, provenance);
+  }
+
+  const payload = parseJsonBody(result);
+  if (
+    payload?.provider_name?.toLowerCase() !== "reddit" ||
+    payload?.type !== "rich" ||
+    typeof payload.html !== "string"
+  ) {
+    return failed("reddit-response-invalid", provenance);
+  }
+  const postIdentityPattern = new RegExp(
+    `/comments/${identity.postId}(?:/|[?"#])`,
+    "iu",
+  );
+  if (!postIdentityPattern.test(payload.html)) {
+    return failed("reddit-identity-mismatch", provenance);
+  }
+  const title = normalizePostText(payload.title);
+  if (!title) return failed("reddit-post-unavailable", provenance);
+  return {
+    status: "ready",
+    sourceKind: "reddit-title",
+    text: title,
+    ...provenance,
+  };
 }
 
 export async function loadRedditEnrichmentSource(record, options = {}) {
@@ -96,17 +161,11 @@ export async function loadRedditEnrichmentSource(record, options = {}) {
     return failed("reddit-fetch-failed", provenance);
   }
 
-  if (result.status === 404 || result.status === 410) {
-    return failed("reddit-post-unavailable", provenance);
-  }
-  if (result.status === 429) {
-    return failed("reddit-rate-limited", provenance);
-  }
-  if (result.status >= 500 && result.status <= 599) {
-    return failed("reddit-server-error", provenance);
+  if (result.status === 403) {
+    return loadOEmbedTitle(identity, provenance, readSource);
   }
   if (result.status < 200 || result.status >= 300) {
-    return failed("reddit-fetch-failed", provenance);
+    return classifiedHttpFailure(result, provenance);
   }
 
   const payload = parseJsonBody(result);

@@ -66,7 +66,9 @@ bounded untrusted text.
 - Repository adapters select a usable README first and fall back to the short
   repository description only when the README is missing or unusable.
 - The Reddit adapter reads only the canonical post's bounded machine-readable
-  body, falling back to its title; it never reads comments or linked pages.
+  body, falling back to its title. If Reddit blocks the listing endpoint, a
+  separately bounded official oEmbed response may supply an identity-checked
+  title; the embedded HTML is never used as source text.
 - Unsupported external URLs have no automatic adapter and must remain manual.
 - Source bodies, prompts, credentials, and raw provider responses are never
   written to durable reports. Reports retain only safe provenance such as the

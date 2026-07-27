@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import { loadRedditEnrichmentSource } from "../../scripts/catalog/reddit-enrichment-source.mjs";
 
@@ -86,6 +86,65 @@ test("uses the title when a live post has no self-text", async () => {
     text: "Writer's Block 5",
     sourceIdentity: "reddit:1v64r6z",
     redditPostId: "1v64r6z",
+  });
+});
+
+test("uses a bounded oEmbed title when Reddit blocks the post listing", async () => {
+  const readSource = vi
+    .fn()
+    .mockResolvedValueOnce(
+      response([], {
+        status: 403,
+        contentType: "text/html",
+      }),
+    )
+    .mockResolvedValueOnce(
+      response({
+        type: "rich",
+        provider_name: "reddit",
+        title: "Writer's Block 5",
+        html: '<blockquote data-embed-height="316"><a href="https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/">post</a></blockquote>',
+      }),
+    );
+
+  await expect(
+    loadRedditEnrichmentSource(record, { readSource }),
+  ).resolves.toMatchObject({
+    status: "ready",
+    sourceKind: "reddit-title",
+    text: "Writer's Block 5",
+    sourceIdentity: "reddit:1v64r6z",
+    redditPostId: "1v64r6z",
+  });
+  expect(readSource).toHaveBeenNthCalledWith(
+    2,
+    expect.stringContaining("https://www.reddit.com/oembed?"),
+    expect.objectContaining({
+      maxBytes: 65_536,
+      maxRedirects: 1,
+      timeoutMs: 10_000,
+    }),
+  );
+});
+
+test("rejects an oEmbed response for another Reddit post", async () => {
+  const readSource = vi
+    .fn()
+    .mockResolvedValueOnce(response([], { status: 403 }))
+    .mockResolvedValueOnce(
+      response({
+        type: "rich",
+        provider_name: "reddit",
+        title: "Another post",
+        html: '<a href="https://www.reddit.com/comments/different/">post</a>',
+      }),
+    );
+
+  await expect(
+    loadRedditEnrichmentSource(record, { readSource }),
+  ).resolves.toMatchObject({
+    status: "failed",
+    reasonCode: "reddit-identity-mismatch",
   });
 });
 
