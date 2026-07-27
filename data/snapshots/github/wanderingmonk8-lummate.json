@@ -11,6 +11,7 @@
     "head_sha": "d9772d1dc6a9fd7b10278734b9fffbec2444cfd4",
     "head_committed_at": "2026-07-13T08:56:29.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-06-10T05:44:10.000Z",
     "size_kb": 424
   },
@@ -52,11 +53,14 @@
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "WanderingMonk8", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

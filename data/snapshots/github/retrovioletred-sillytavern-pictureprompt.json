@@ -11,6 +11,7 @@
     "head_sha": "5aa5631d31f1b8d9e0fff7da1b4e7a2b8ebe70f8",
     "head_committed_at": "2026-07-12T23:24:28.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-05-04T04:13:31.000Z",
     "size_kb": 457
   },
@@ -86,11 +87,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "RetroVioletRed", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

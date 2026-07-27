@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "project_id": "kaldigo-sillytavern-tracker",
+  "repository": {
+    "id": 884053465,
+    "owner": "kaldigo",
+    "name": "SillyTavern-Tracker",
+    "url": "https://github.com/kaldigo/SillyTavern-Tracker",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "65e0acb3cc9b53a97751132d567622d9b3ba2c2c",
+    "head_committed_at": "2025-07-26T00:54:41.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2024-11-06T03:45:57.000Z",
+    "size_kb": 5449
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 98,
+    "forks_count": 26,
+    "subscribers_count": 3,
+    "aggregate": 127
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "kaldigo", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "stale_since": null
+  }
+}

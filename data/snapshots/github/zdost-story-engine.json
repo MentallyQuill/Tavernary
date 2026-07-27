@@ -8,19 +8,25 @@
     "url": "https://github.com/ZDOSt/Story-Engine",
     "description": null,
     "default_branch": "main",
-    "head_sha": "1d1bc32e0f4c5aaffaa1510c5629abc27a962676",
-    "head_committed_at": "2026-07-26T04:20:32.000Z",
+    "head_sha": "766a4104863084b64c810941cd3d3e75d120f1d9",
+    "head_committed_at": "2026-07-27T03:33:04.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-04-30T13:40:09.000Z",
-    "size_kb": 8772
+    "size_kb": 9328
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-26T04:20:32.000Z",
+    "latest_source_activity_at": "2026-07-27T03:33:04.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T03:33:04.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-07-20",
-        "latest_at": "2026-07-26T04:20:32.000Z",
+        "latest_at": "2026-07-26T17:43:25.000Z",
         "precision": "exact"
       },
       {
@@ -72,19 +78,14 @@
         "week_start": "2026-05-11",
         "latest_at": "2026-05-17T02:35:21.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-10T22:34:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "1d1bc32e0f4c5aaffaa1510c5629abc27a962676"
+    "evidence_head_sha": "766a4104863084b64c810941cd3d3e75d120f1d9"
   },
   "community": {
     "stargazers_count": 5,
@@ -93,11 +94,15 @@
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "ZDOSt", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

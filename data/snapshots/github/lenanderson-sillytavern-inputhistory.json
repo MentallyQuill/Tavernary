@@ -11,6 +11,7 @@
     "head_sha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8",
     "head_committed_at": "2024-09-01T19:38:41.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2023-12-24T00:32:22.000Z",
     "size_kb": 15
   },
@@ -32,12 +33,15 @@
     "aggregate": 15
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T04:33:33.220Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Succubyss", "type": "User" }],
-    "refreshed_at": "2026-07-27T04:33:33.220Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

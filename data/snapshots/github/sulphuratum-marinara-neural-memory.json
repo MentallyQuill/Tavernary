@@ -11,6 +11,7 @@
     "head_sha": "fea575ad2b843ec8ab56d10ac51bff71e3381c25",
     "head_committed_at": "2026-07-08T13:20:28.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-07-08T12:48:58.000Z",
     "size_kb": 10
   },
@@ -37,11 +38,14 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Sulphuratum", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

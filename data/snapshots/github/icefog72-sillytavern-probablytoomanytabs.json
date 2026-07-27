@@ -11,6 +11,7 @@
     "head_sha": "52a7461aedfce272a5ee93d57356f3cf3bb8bb61",
     "head_committed_at": "2026-07-08T15:31:28.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-09-28T15:59:05.000Z",
     "size_kb": 1368
   },
@@ -81,14 +82,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "IceFog72", "type": "User" },
       { "login": "paradox460", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

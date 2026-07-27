@@ -11,6 +11,7 @@
     "head_sha": "ab04dfdbf8e2a011db3528512cf547d15bdae79c",
     "head_committed_at": "2026-07-11T00:13:50.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-23T23:32:48.000Z",
     "size_kb": 308
   },
@@ -81,14 +82,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "mekineer-com", "type": "User" },
       { "login": "7henix", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

@@ -11,6 +11,7 @@
     "head_sha": "aa017e07f92177616933e51c0c731b13c0432399",
     "head_committed_at": "2026-06-13T04:04:41.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-27T21:20:34.000Z",
     "size_kb": 13
   },
@@ -37,11 +38,14 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Hibanan", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

@@ -11,6 +11,7 @@
     "head_sha": "db5c9686856256b0f80fe94eff83d6b531efa940",
     "head_committed_at": "2026-07-01T01:49:55.000Z",
     "archived": false,
+    "fork": true,
     "created_at": "2025-12-31T08:08:12.000Z",
     "size_kb": 4300
   },
@@ -46,14 +47,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [
-      { "login": "Samueras", "type": "User" },
-      { "login": "the-novelist", "type": "User" }
-    ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

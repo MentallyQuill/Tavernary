@@ -11,6 +11,7 @@
     "head_sha": "c20af6d5a8dc110c84ecd44ce1e865eaaea23cf5",
     "head_committed_at": "2026-07-13T03:31:04.000Z",
     "archived": false,
+    "fork": true,
     "created_at": "2024-11-02T21:14:58.000Z",
     "size_kb": 489
   },
@@ -56,18 +57,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "leandrojofre", "type": "User" },
-      { "login": "ccgreen", "type": "User" },
-      { "login": "lackyas", "type": "User" },
-      { "login": "kaldigo", "type": "User" },
-      { "login": "cloak1505", "type": "User" },
-      { "login": "cierru", "type": "User" }
+      { "login": "cloak1505", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

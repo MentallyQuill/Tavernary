@@ -11,6 +11,7 @@
     "head_sha": "77b885b03ba2f55e7a2867dff49a5ded6d129d9b",
     "head_committed_at": "2025-05-24T09:24:55.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-02-16T07:11:52.000Z",
     "size_kb": 52
   },
@@ -35,14 +36,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "p-e-w", "type": "User" },
       { "login": "bolmin70", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

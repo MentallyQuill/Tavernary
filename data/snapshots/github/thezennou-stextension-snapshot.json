@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "project_id": "thezennou-stextension-snapshot",
+  "repository": {
+    "id": 801866918,
+    "owner": "TheZennou",
+    "name": "STExtension-Snapshot",
+    "url": "https://github.com/TheZennou/STExtension-Snapshot",
+    "description": "Takes a snapshot of the current chat and makes an image of it for easy sharing.",
+    "default_branch": "main",
+    "head_sha": "ff34ac37048964de41b077bdc3b6dd6bea37568b",
+    "head_committed_at": "2025-10-02T23:55:34.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2024-05-17T04:25:07.000Z",
+    "size_kb": 113
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 12,
+    "forks_count": 2,
+    "subscribers_count": 1,
+    "aggregate": 15
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "TheZennou", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "stale_since": null
+  }
+}

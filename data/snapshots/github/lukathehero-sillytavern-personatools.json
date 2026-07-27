@@ -11,6 +11,7 @@
     "head_sha": "d392c4d32c786608419244deebf39ab51d00b813",
     "head_committed_at": "2026-07-09T05:27:48.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-04-03T01:03:02.000Z",
     "size_kb": 86
   },
@@ -51,11 +52,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "LukaTheHero", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

@@ -11,6 +11,7 @@
     "head_sha": "c262bc50031d7df13f524a7828b29b3086fea4a2",
     "head_committed_at": "2026-07-23T07:02:13.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-06-18T08:09:47.000Z",
     "size_kb": 109006
   },
@@ -62,12 +63,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "MentallyQuill", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

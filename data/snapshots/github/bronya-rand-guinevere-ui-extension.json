@@ -11,6 +11,7 @@
     "head_sha": "d93c056ccdd7720253b167fe1a29ad0cbbe66f9d",
     "head_committed_at": "2025-09-21T22:17:34.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-02-08T07:29:20.000Z",
     "size_kb": 4977
   },
@@ -35,14 +36,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "Bronya-Rand", "type": "User" },
       { "login": "RivelleDays", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

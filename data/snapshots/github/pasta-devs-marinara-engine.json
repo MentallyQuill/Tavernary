@@ -11,8 +11,9 @@
     "head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29",
     "head_committed_at": "2026-07-23T00:11:48.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 225985
+    "size_kb": 227018
   },
   "source_health": "healthy",
   "activity": {
@@ -87,17 +88,17 @@
     "evidence_head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29"
   },
   "community": {
-    "stargazers_count": 524,
-    "forks_count": 139,
+    "stargazers_count": 526,
+    "forks_count": 141,
     "subscribers_count": 8,
-    "aggregate": 671
+    "aggregate": 675
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -157,7 +158,10 @@
       { "login": "DarthTheMonster", "type": "User" },
       { "login": "Anarchistcowboy", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

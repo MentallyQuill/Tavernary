@@ -11,6 +11,7 @@
     "head_sha": "5abdb3498716752a9a286505704513fe6b12bffb",
     "head_committed_at": "2026-07-05T10:43:50.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2026-03-13T01:45:46.000Z",
     "size_kb": 12024
   },
@@ -61,11 +62,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Giglio256", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

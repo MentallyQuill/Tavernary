@@ -11,6 +11,7 @@
     "head_sha": "8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8",
     "head_committed_at": "2026-07-07T17:36:20.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2023-02-09T10:19:24.000Z",
     "size_kb": 214814
   },
@@ -31,17 +32,17 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 31155,
-    "forks_count": 5888,
+    "stargazers_count": 31186,
+    "forks_count": 5893,
     "subscribers_count": 144,
-    "aggregate": 37187
+    "aggregate": 37223
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -393,7 +394,10 @@
       { "login": "maeeeeee", "type": "User" },
       { "login": "plumface-gcc", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

@@ -11,6 +11,7 @@
     "head_sha": "c08d3d4c2919d7c040fdbb1c45e64ddc28e80b1d",
     "head_committed_at": "2026-06-11T17:36:56.000Z",
     "archived": false,
+    "fork": true,
     "created_at": "2025-10-10T22:40:33.000Z",
     "size_kb": 374
   },
@@ -46,14 +47,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [
-      { "login": "aikohanasaki", "type": "User" },
-      { "login": "LenAnderson", "type": "User" }
-    ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

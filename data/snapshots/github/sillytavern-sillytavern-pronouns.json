@@ -11,6 +11,7 @@
     "head_sha": "c0dca691da8d36e2e8b06565b8497ca775e8cfbe",
     "head_committed_at": "2026-04-16T22:50:42.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-10-03T05:16:18.000Z",
     "size_kb": 52
   },
@@ -35,14 +36,17 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "Wolfsblvt", "type": "User" },
       { "login": "phampyk", "type": "User" }
     ],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

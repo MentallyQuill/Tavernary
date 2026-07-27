@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "project_id": "mechamarmot-sillytavern-pyrunner",
+  "repository": {
+    "id": 1114642314,
+    "owner": "mechamarmot",
+    "name": "SillyTavern-PyRunner",
+    "url": "https://github.com/mechamarmot/SillyTavern-PyRunner",
+    "description": "A SillyTavern extension for running Python scripts",
+    "default_branch": "master",
+    "head_sha": "78d8f55eb22b5892bd2d76d090fb9f19f1f83fb9",
+    "head_committed_at": "2025-12-20T17:07:10.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2025-12-11T17:04:59.000Z",
+    "size_kb": 296
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 5,
+    "forks_count": 0,
+    "subscribers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "curtisavidacct", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "stale_since": null
+  }
+}

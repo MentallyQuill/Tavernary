@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "project_id": "sakhavhyand-sillytavern-anothercharmanager",
+  "repository": {
+    "id": 732327589,
+    "owner": "sakhavhyand",
+    "name": "SillyTavern-AnotherCharManager",
+    "url": "https://github.com/sakhavhyand/SillyTavern-AnotherCharManager",
+    "description": "Another character management interface for SillyTavern.",
+    "default_branch": "main",
+    "head_sha": "fcfa71af7030ba0d7722fdc61483c1692e0acf0d",
+    "head_committed_at": "2026-05-25T23:03:47.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2023-12-16T10:03:38.000Z",
+    "size_kb": 613
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 26,
+    "forks_count": 4,
+    "subscribers_count": 1,
+    "aggregate": 31
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "sakhavhyand", "type": "User" },
+      { "login": "Copilot", "type": "Bot" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "stale_since": null
+  }
+}

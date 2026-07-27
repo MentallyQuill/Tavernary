@@ -11,6 +11,7 @@
     "head_sha": "64456d429bb67fd7a3f49e0bc4d88a7be53b51fb",
     "head_committed_at": "2026-07-21T18:04:43.000Z",
     "archived": false,
+    "fork": false,
     "created_at": "2025-03-31T06:29:38.000Z",
     "size_kb": 4009
   },
@@ -56,11 +57,14 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-26T14:04:06.615Z",
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Samueras", "type": "User" }],
-    "refreshed_at": "2026-07-26T14:04:06.615Z",
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
     "stale_since": null
   }
 }

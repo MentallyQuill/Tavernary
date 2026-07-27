@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "project_id": "oldaccountpendingdelete-sillytavern-loretips",
+  "repository": {
+    "id": 954256242,
+    "owner": "OldAccountPendingDelete",
+    "name": "Sillytavern-Loretips",
+    "url": "https://github.com/OldAccountPendingDelete/Sillytavern-Loretips",
+    "description": "Shows you a tooltip of potential Lorebook entries while typing ",
+    "default_branch": "main",
+    "head_sha": "4c7b006216f504ddc0c23d179391f40fbcdbd00f",
+    "head_committed_at": "2025-04-05T18:13:12.000Z",
+    "archived": false,
+    "fork": true,
+    "created_at": "2025-03-24T19:54:44.000Z",
+    "size_kb": 514
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "latest_release_at": null,
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stargazers_count": 7,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 8
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "stale_since": null
+  }
+}
