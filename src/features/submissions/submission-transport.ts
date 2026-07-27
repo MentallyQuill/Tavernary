@@ -26,15 +26,35 @@ function readableFrontendSelection(
 function readablePrefills(
   manifest: ProjectSubmissionManifest,
 ): Array<[string, string]> {
-  return [
+  const prefills: Array<[string, string]> = [
     ["project-type", displayKind(manifest.project_type)],
     ["project-url", manifest.source_url],
     ["project-name", manifest.name ?? ""],
-    ["project-description", manifest.description ?? ""],
-    ["supported-frontends", readableFrontendSelection(manifest)],
     ["frontend-independent", manifest.frontend_independent ? "Yes" : "No"],
-    ["additional-context", manifest.additional_context ?? ""],
   ];
+  if (manifest.project_type === "preset") {
+    const compatibility = manifest.preset_compatibility;
+    prefills.push(
+      [
+        "supported-model-families",
+        compatibility?.model_families.known_ids.join("\n") ?? "",
+      ],
+      [
+        "other-model-family",
+        compatibility?.model_families.other[0] ?? "",
+      ],
+      [
+        "completion-formats",
+        compatibility?.completion_formats.join("\n") ?? "",
+      ],
+    );
+  }
+  prefills.push(
+    ["supported-frontends", readableFrontendSelection(manifest)],
+    ["project-description", manifest.description ?? ""],
+    ["additional-context", manifest.additional_context ?? ""],
+  );
+  return prefills;
 }
 
 export async function openProjectSubmission(
