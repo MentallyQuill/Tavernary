@@ -24,6 +24,5 @@
   "visibility": "published",
   "visibility_reason": null,
   "refresh_policy": "paused",
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "enrichment_policy": "automatic"
 }
