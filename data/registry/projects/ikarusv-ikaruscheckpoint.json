@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "ikarusv-ikaruscheckpoint",
+  "name": "Ikarus-Hub(Track branch/qr/checkpoint)",
+  "kind": "extension",
+  "summary": "A lightweight floating checkpoint, branch, qr set,and swipe navigator for SillyTavern. The glass-panel interface is inspired by ST-Copilot, a floating assistant extension by Supker.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "IkarusV/IkarusCheckpoint",
+    "repository_id": 1226984172
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T11:13:33.740Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
