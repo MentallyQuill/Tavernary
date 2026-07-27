@@ -148,6 +148,42 @@ describe("Kit card", () => {
     expect(screen.getByText("1 Project")).toHaveClass("kit-project-count-tag");
   });
 
+  test("links the upvote arrow to the canonical GitHub issue without selecting the Kit", async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    render(
+      <KitCard
+        kit={kit({ sourceIssueNumber: 241 })}
+        now="2026-07-24T00:00:00.000Z"
+        selected={false}
+        onSelect={onSelect}
+        onCopyLink={() => undefined}
+        onReport={() => undefined}
+      />,
+    );
+
+    const upvote = screen.getByRole("link", { name: "Upvote on GitHub" });
+    expect(upvote).toHaveAttribute(
+      "href",
+      "https://github.com/MentallyQuill/Tavernary/issues/241",
+    );
+    expect(upvote).toHaveAttribute("target", "_blank");
+    expect(upvote).toHaveAttribute("rel", "noopener noreferrer");
+    expect(upvote).not.toHaveAttribute("aria-pressed");
+    expect(upvote).toHaveClass("project-kit-control", "kit-upvote-control");
+
+    const glyph = upvote.querySelector('[data-kit-glyph="upvote"]');
+    expect(glyph).toHaveAttribute("viewBox", "0 0 24 24");
+    expect(glyph).toHaveAttribute("fill", "currentColor");
+    expect(glyph?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z",
+    );
+
+    await user.click(upvote);
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
   test("explains Copy link and Report on hover and focus", async () => {
     const user = userEvent.setup();
     renderCard(kit());
@@ -168,5 +204,11 @@ describe("Kit card", () => {
         screen.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
       ).toBeVisible();
     });
+
+    const upvote = screen.getByRole("link", { name: "Upvote on GitHub" });
+    await user.hover(upvote);
+    expect(
+      screen.getByRole("tooltip", { name: "Upvote on GitHub" }),
+    ).toBeVisible();
   });
 });

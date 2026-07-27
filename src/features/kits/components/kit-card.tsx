@@ -3,6 +3,7 @@ import { useId } from "react";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { KitUpvoteControl } from "./kit-upvote-control";
 
 function relativeTime(timestamp: string, now: string) {
   const days = Math.max(
@@ -111,6 +112,9 @@ export function KitCard({
           </button>
         </Tooltip>
       </div>
+      <span className="kit-upvote-control-hit">
+        <KitUpvoteControl sourceIssueNumber={kit.sourceIssueNumber} />
+      </span>
     </article>
   );
 }
