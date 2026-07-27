@@ -35,6 +35,24 @@ export interface SubmissionLookup {
   state: "open" | "merged" | "declined";
 }
 
+export interface ForkUpstreamMarker {
+  schema_version: 1;
+  repository_id: number;
+  dependent_issue_number: number;
+  ancestry_repository_ids: number[];
+}
+
+export interface EnsureForkParentSubmissionResult {
+  issueNumber: number;
+  state: "created" | "open" | "merged" | "declined";
+  dispatchTriage: boolean;
+}
+
+export type ForkDependencyGithubRequest = (
+  path: string,
+  options?: { method?: string; body?: string },
+) => Promise<any>;
+
 export type ForkDependencyDecision =
   | { status: "none" }
   | { status: "published"; parentProjectId: string }
@@ -51,3 +69,23 @@ export function classifyForkDependency(input: {
   priorSubmission: SubmissionLookup | null;
   ancestryRepositoryIds: number[];
 }): ForkDependencyDecision;
+
+export function parseForkUpstreamMarker(
+  body: string,
+): ForkUpstreamMarker | null;
+
+export function renderForkParentIssue(input: {
+  dependency: ForkDependency;
+  dependentIssueNumber: number;
+  manifest: import("../../src/features/submissions/project-submission-manifest.mjs").ProjectSubmissionManifest;
+  ancestryRepositoryIds: number[];
+}): { title: string; body: string; labels: string[] };
+
+export function ensureForkParentSubmission(input: {
+  repository: string;
+  dependency: ForkDependency;
+  dependentIssueNumber: number;
+  manifest: import("../../src/features/submissions/project-submission-manifest.mjs").ProjectSubmissionManifest;
+  ancestryRepositoryIds: number[];
+  request: ForkDependencyGithubRequest;
+}): Promise<EnsureForkParentSubmissionResult>;

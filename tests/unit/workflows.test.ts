@@ -618,10 +618,10 @@ test("triage dispatches admitted projects without repository write access", asyn
     issues: "write",
     actions: "write",
   });
-  expect(triage.concurrency["cancel-in-progress"]).toBe(true);
-  expect(triage.concurrency.group).toContain(
-    "${{ inputs.issue_number || github.event.issue.number }}",
-  );
+  expect(triage.concurrency).toEqual({
+    group: "triage-project-submissions",
+    "cancel-in-progress": false,
+  });
   expect(source).toContain("issue-admitted");
   expect(source).toContain("github.event.issue.state == 'open'");
   expect(source).toContain("github.event.label.name == 'issue-admitted'");

@@ -19,8 +19,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: triage-project-${{ inputs.issue_number || github.event.issue.number }}
-  cancel-in-progress: true
+  group: triage-project-submissions
+  cancel-in-progress: false
 
 jobs:
   validate:

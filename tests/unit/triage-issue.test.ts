@@ -942,6 +942,130 @@ test("processes an admitted issue through injected GitHub mutations", async () =
   });
 });
 
+test("persists a waiting child before dispatching its newly created upstream", async () => {
+  const currentBody = [
+    "### Project manifest",
+    "",
+    "```json",
+    JSON.stringify({
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/child",
+      name: "Child",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+    "```",
+  ].join("\n");
+  const requests: Array<{
+    path: string;
+    method: string;
+    body?: string;
+  }> = [];
+  let issueReads = 0;
+  const request = vi.fn(async (path: string, options = {}) => {
+    const method = options.method ?? "GET";
+    requests.push({ path, method, body: options.body });
+    if (path === "/repos/Tavernary/Tavernary/issues/140" && method === "GET") {
+      issueReads += 1;
+      return {
+        number: 140,
+        title: "[Project submission]",
+        body: currentBody,
+        labels:
+          issueReads === 1
+            ? ["issue-admitted"]
+            : ["issue-admitted", "project-submission"],
+        state: "open",
+      };
+    }
+    if (path === "/repos/owner/child") {
+      return {
+        id: 42,
+        owner: { login: "owner" },
+        name: "child",
+        html_url: "https://github.com/owner/child",
+        visibility: "public",
+        private: false,
+        archived: false,
+        fork: true,
+        parent: {
+          id: 41,
+          name: "parent",
+          full_name: "owner/parent",
+          html_url: "https://github.com/owner/parent",
+          private: false,
+          visibility: "public",
+        },
+      };
+    }
+    if (
+      path === "/repos/Tavernary/Tavernary/issues/140/comments?per_page=100"
+    ) {
+      return [];
+    }
+    if (path.includes("/issues?state=all")) return [];
+    if (path === "/repos/Tavernary/Tavernary/issues" && method === "POST") {
+      return { number: 201 };
+    }
+    return {};
+  });
+  const outputs: Record<string, string> = {};
+
+  const decision = await processProjectSubmissionTriage({
+    event: {
+      repository: { full_name: "Tavernary/Tavernary" },
+      issue: { number: 140 },
+    },
+    request,
+    catalogData: {
+      vocabulary: {
+        frontends: [
+          {
+            id: "sillytavern",
+            label: "SillyTavern",
+            description: "Works with the SillyTavern roleplay frontend.",
+          },
+        ],
+      },
+      projects: [],
+    },
+    writeOutput: async (name, value) => {
+      outputs[name] = value;
+    },
+  });
+
+  expect(decision).toMatchObject({
+    status: "waiting-on-fork-parent",
+    dependency: { repositoryId: 41, issueNumber: 201 },
+  });
+  expect(outputs).toEqual({ admitted: "false", issue_number: "140" });
+  const createIndex = requests.findIndex(
+    ({ path, method }) =>
+      path === "/repos/Tavernary/Tavernary/issues" && method === "POST",
+  );
+  const waitingLabelIndex = requests.findIndex(
+    ({ path, body }) =>
+      path === "/repos/Tavernary/Tavernary/issues/140/labels" &&
+      body?.includes("waiting-on-fork-parent"),
+  );
+  const markerIndex = requests.findIndex(
+    ({ path, body }) =>
+      path === "/repos/Tavernary/Tavernary/issues/140/comments" &&
+      typeof body === "string" &&
+      JSON.parse(body).body.includes('"issue_number":201'),
+  );
+  const dispatchIndex = requests.findIndex(({ path }) =>
+    path.endsWith("/actions/workflows/triage-submission.yml/dispatches"),
+  );
+  expect(createIndex).toBeGreaterThanOrEqual(0);
+  expect(waitingLabelIndex).toBeGreaterThan(createIndex);
+  expect(markerIndex).toBeGreaterThan(waitingLabelIndex);
+  expect(dispatchIndex).toBeGreaterThan(markerIndex);
+});
+
 test("accepts a manually customized project title after routing", async () => {
   const body = [
     "### Project manifest",

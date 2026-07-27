@@ -6,7 +6,11 @@ import {
   evaluateProjectSubmission,
   submissionQueueLabels,
 } from "./admission.mjs";
-import { classifyForkDependency } from "./fork-dependency.mjs";
+import {
+  classifyForkDependency,
+  ensureForkParentSubmission,
+  parseForkUpstreamMarker,
+} from "./fork-dependency.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
@@ -737,8 +741,11 @@ export async function processProjectSubmissionTriage({
   assertProjectSubmissionEligible(issue, { requireRoutingLabel: true });
   const data = catalogData ?? (await loadProjectSubmissionCatalogData());
   const parsed = parseProjectSubmissionIssue(issue.body ?? "");
+  let comments = null;
+  let previousMarker = null;
   let decision;
   let identity = null;
+  let upstreamTriageIssueNumber = null;
 
   if (!parsed.valid) {
     decision = evaluateProjectSubmission({
@@ -778,12 +785,38 @@ export async function processProjectSubmissionTriage({
     const existingProjects = data.projects
       .map(projectSubmissionExistingProject)
       .filter((project) => project !== null);
-    const forkDependency = classifyForkDependency({
+    if (inspection.repository?.fork && inspection.repository.parent) {
+      comments = await request(
+        `/repos/${repository}/issues/${issue.number}/comments?per_page=100`,
+      );
+      previousMarker =
+        comments
+          .map((comment) =>
+            parseProjectSubmissionStateMarker(comment.body ?? ""),
+          )
+          .find(Boolean) ?? null;
+    }
+    const upstreamMarker = parseForkUpstreamMarker(issue.body ?? "");
+    const ancestryRepositoryIds =
+      upstreamMarker?.ancestry_repository_ids ??
+      (identity?.kind === "github" ? [identity.repositoryId] : []);
+    const previousForkDependency = previousMarker?.fork_dependency;
+    let forkDependency = classifyForkDependency({
       repository: inspection.repository,
       projects: existingProjects,
-      priorSubmission: null,
-      ancestryRepositoryIds:
-        identity?.kind === "github" ? [identity.repositoryId] : [],
+      priorSubmission:
+        previousForkDependency &&
+        inspection.repository?.parent &&
+        previousForkDependency.repository_id ===
+          inspection.repository?.parent?.repositoryId &&
+        Number.isInteger(previousForkDependency.issue_number) &&
+        previousForkDependency.issue_number > 0
+          ? {
+              issueNumber: previousForkDependency.issue_number,
+              state: "open",
+            }
+          : null,
+      ancestryRepositoryIds,
     });
     decision = evaluateProjectSubmission({
       manifest: parsed.manifest,
@@ -796,6 +829,39 @@ export async function processProjectSubmissionTriage({
       errors: inspection.errors,
       warnings: [],
     });
+    if (decision.status === "waiting-on-fork-parent") {
+      const upstream = await ensureForkParentSubmission({
+        repository,
+        dependency: decision.dependency,
+        dependentIssueNumber: issue.number,
+        manifest: parsed.manifest,
+        ancestryRepositoryIds,
+        request,
+      });
+      forkDependency = classifyForkDependency({
+        repository: inspection.repository,
+        projects: existingProjects,
+        priorSubmission: {
+          issueNumber: upstream.issueNumber,
+          state: upstream.state === "created" ? "open" : upstream.state,
+        },
+        ancestryRepositoryIds,
+      });
+      decision = evaluateProjectSubmission({
+        manifest: parsed.manifest,
+        identity,
+        sourceProbe: inspection.sourceProbe,
+        repository: inspection.repository,
+        existingProjects,
+        frontendResolution,
+        forkDependency,
+        errors: inspection.errors,
+        warnings: [],
+      });
+      if (upstream.dispatchTriage) {
+        upstreamTriageIssueNumber = upstream.issueNumber;
+      }
+    }
   }
 
   const latestIssue = await request(
@@ -810,13 +876,15 @@ export async function processProjectSubmissionTriage({
     throw new Error("Project submission changed during triage.");
   }
   issue = latest;
-  const comments = await request(
-    `/repos/${repository}/issues/${issue.number}/comments?per_page=100`,
-  );
-  const previousMarker =
-    comments
-      .map((comment) => parseProjectSubmissionStateMarker(comment.body ?? ""))
-      .find(Boolean) ?? null;
+  if (comments === null) {
+    comments = await request(
+      `/repos/${repository}/issues/${issue.number}/comments?per_page=100`,
+    );
+    previousMarker =
+      comments
+        .map((comment) => parseProjectSubmissionStateMarker(comment.body ?? ""))
+        .find(Boolean) ?? null;
+  }
   const generatedTitle =
     identity && identity.kind !== "reddit-share"
       ? projectSubmissionTitle(identity)
@@ -840,6 +908,18 @@ export async function processProjectSubmissionTriage({
     api: cachedApi,
     writeOutput,
   });
+  if (upstreamTriageIssueNumber !== null) {
+    await request(
+      `/repos/${repository}/actions/workflows/triage-submission.yml/dispatches`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ref: "main",
+          inputs: { issue_number: String(upstreamTriageIssueNumber) },
+        }),
+      },
+    );
+  }
   return decision;
 }
 
