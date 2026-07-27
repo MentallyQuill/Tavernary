@@ -117,9 +117,9 @@ export function KitBuilder({
       ? ["A duplicate must change the selected project set."]
       : []),
   ];
-  const titleError = errors.find((error) => error.startsWith("Title must"));
+  const titleError = errors.find((error) => error.startsWith("Title "));
   const descriptionError = errors.find((error) =>
-    error.startsWith("Description must"),
+    error.startsWith("Description "),
   );
   const compositionErrors = errors.filter(
     (error) => error !== titleError && error !== descriptionError,

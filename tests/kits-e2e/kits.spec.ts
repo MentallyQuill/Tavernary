@@ -176,6 +176,52 @@ test("desktop Frontend discovery reveals the visible filter and card action", as
   await expect(page).not.toHaveURL(/kind=frontend/);
 });
 
+test("blocks severe Kit text before GitHub opens", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "open", {
+      configurable: true,
+      value: (...args: unknown[]) => {
+        (
+          window as Window & { __kitOpenCalls?: unknown[][] }
+        ).__kitOpenCalls ??= [];
+        (
+          window as Window & { __kitOpenCalls: unknown[][] }
+        ).__kitOpenCalls.push(args);
+        return null;
+      },
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(sitePath());
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+  await page.getByRole("button", { name: "Add 3 projects to Kit" }).click();
+  const title = page.getByLabel("Title", { exact: true });
+  if (!(await title.isVisible())) {
+    await page
+      .getByRole("button", { name: /Open Kit Builder, 3 projects in draft/ })
+      .click();
+  }
+  await title.fill("N1gg3r Story Kit");
+  await page
+    .getByLabel("Description", { exact: true })
+    .fill("A complete storytelling stack.");
+  await page.getByRole("button", { name: "Submit Kit" }).click();
+
+  await expect(
+    page.getByText("Title contains language Tavernary doesn't allow."),
+  ).toBeVisible();
+  await expect(title).toBeFocused();
+  expect(
+    await page.evaluate(
+      () =>
+        (window as Window & { __kitOpenCalls?: unknown[][] }).__kitOpenCalls ??
+        [],
+    ),
+  ).toEqual([]);
+});
+
 test("mobile Frontend discovery returns from Kits to the filtered cards", async ({
   page,
 }) => {

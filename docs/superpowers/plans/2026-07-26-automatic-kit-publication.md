@@ -518,7 +518,7 @@ Run:
 
 ```powershell
 npm.cmd run build:test-kits
-npx.cmd playwright test --config playwright.kits.config.ts tests/kits-e2e/kits.spec.ts --grep "blocks severe"
+node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.spec.ts --grep "blocks severe"
 ```
 
 Expected: PASS with no popup or GitHub navigation.
@@ -1203,7 +1203,7 @@ Run:
 
 ```powershell
 npm.cmd run build:test-kits
-npx.cmd playwright test --config playwright.kits.config.ts tests/kits-e2e/kits.spec.ts --grep "blocks severe"
+node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.spec.ts --grep "blocks severe"
 ```
 
 Expected: PASS; field-level validation is visible, focus is correct, and

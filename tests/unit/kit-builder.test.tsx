@@ -835,6 +835,55 @@ describe("Kit builder controls", () => {
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
+  test("blocks severe title and description text with field-level focus", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const { rerender } = render(
+      <KitBuilder
+        draft={{ ...validDraft, title: "N1gg3r Story Kit" }}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={onSubmit}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    const title = screen.getByRole("textbox", { name: "Title" });
+    expect(title).toHaveFocus();
+    expect(title).toHaveAttribute("aria-invalid", "true");
+    expect(
+      screen.getByText("Title contains language Tavernary doesn't allow."),
+    ).toBeVisible();
+    expect(onSubmit).not.toHaveBeenCalled();
+
+    rerender(
+      <KitBuilder
+        draft={{
+          ...validDraft,
+          title: "Story Kit",
+          description: "A f.a.g.g.o.t story stack.",
+        }}
+        projects={projects}
+        originalProjectIds={[]}
+        onUpdate={() => undefined}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    const description = screen.getByRole("textbox", {
+      name: "Description",
+    });
+    expect(description).toHaveFocus();
+    expect(description).toHaveAttribute("aria-invalid", "true");
+    expect(
+      screen.getByText(
+        "Description contains language Tavernary doesn't allow.",
+      ),
+    ).toBeVisible();
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
   test("enforces duplicate changes before submission", async () => {
     const user = userEvent.setup();
     const onUpdate = vi.fn();
