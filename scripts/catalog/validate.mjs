@@ -251,6 +251,7 @@ export async function validateCatalog(options = {}) {
   );
   const ids = new Set();
   const sources = new Set();
+  const repositoryIds = new Set();
   const errors = [];
 
   if (!validateRefreshManifest(refreshManifest)) {
@@ -288,6 +289,11 @@ export async function validateCatalog(options = {}) {
         (!Number.isInteger(repositoryId) || repositoryId <= 0)
       ) {
         errors.push(`${id}: GitHub repository_id must be null or positive`);
+      } else if (repositoryId !== null) {
+        if (repositoryIds.has(repositoryId)) {
+          errors.push(`${id}: duplicate GitHub repository_id ${repositoryId}`);
+        }
+        repositoryIds.add(repositoryId);
       }
     } else if (record.source?.type === "github-organization") {
       if (id !== approvedOrganizationRecord.id) {

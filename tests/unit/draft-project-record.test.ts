@@ -39,6 +39,7 @@ const observation = {
     headCommittedAt: "2026-07-25T17:00:00.000Z",
     archived: false,
     fork: false,
+    parent: null,
     createdAt: "2026-01-01T00:00:00.000Z",
     sizeKb: 12,
   },

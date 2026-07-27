@@ -10,6 +10,11 @@ interface GeneratedCatalogProject {
   frontends: Array<{ id: string; label: string }>;
   capabilities: Array<{ id: string; label: string }>;
   searchableText: string;
+  fork: {
+    parentName: string;
+    parentProjectId: string | null;
+    status: "published" | "not-listed" | "unavailable";
+  } | null;
   preset: {
     modelFamilies: Array<{ id: string; label: string }>;
   } | null;

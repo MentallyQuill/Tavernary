@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
+import { resolveForkRelationship } from "./fork-relationship.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -372,7 +373,7 @@ export async function buildCatalog(options = {}) {
   const recordsByProject = new Map(
     records.map((record) => [record.id, record]),
   );
-  const projects = [];
+  let projects = [];
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
   for (const record of records) {
@@ -404,6 +405,24 @@ export async function buildCatalog(options = {}) {
   }
 
   projects.sort((left, right) => left.id.localeCompare(right.id));
+  const recordsByRepositoryId = new Map(
+    records
+      .filter(
+        (record) =>
+          record.source.type === "github" &&
+          Number.isInteger(record.source.repository_id),
+      )
+      .map((record) => [record.source.repository_id, record]),
+  );
+  const publicProjectIds = new Set(projects.map(({ id }) => id));
+  projects = projects.map((project) => ({
+    ...project,
+    fork: resolveForkRelationship({
+      snapshot: snapshotsByProject.get(project.id) ?? null,
+      recordsByRepositoryId,
+      publicProjectIds,
+    }),
+  }));
   const publicProjectsById = new Map(
     projects.map((project) => [project.id, project]),
   );

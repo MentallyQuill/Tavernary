@@ -218,6 +218,27 @@ describe("catalog validation", () => {
     expect(result.errors).toContain("valid-preset: duplicate canonical source");
   });
 
+  test("rejects duplicate permanent GitHub repository IDs", async () => {
+    const result = await validateCatalog({
+      records: [
+        validRecord,
+        {
+          ...validRecord,
+          id: "second-preset",
+          name: "Second Preset",
+          source: {
+            ...validRecord.source,
+            repository: "example/second-preset",
+          },
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      "second-preset: duplicate GitHub repository_id 1",
+    );
+  });
+
   test("rejects unknown vocabulary values and missing GitHub identity", async () => {
     const result = await validateCatalog({
       records: [

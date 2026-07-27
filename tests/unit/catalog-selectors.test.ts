@@ -33,6 +33,7 @@ function project(
       { id: "automation", label: "Automation", description: "Capability." },
     ],
     searchableText: `${id} extension automation`,
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",

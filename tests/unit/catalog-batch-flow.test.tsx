@@ -61,6 +61,7 @@ function project(): CatalogProject {
     frontends: [],
     capabilities: [],
     searchableText: "memory",
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: null,
