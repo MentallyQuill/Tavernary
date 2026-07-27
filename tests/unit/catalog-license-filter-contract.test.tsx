@@ -225,4 +225,24 @@ describe("catalog license filter contract", () => {
         .closest("label"),
     ).toHaveTextContent("Recently released1");
   });
+
+  test("links the filter footer to Tavernary legal information", () => {
+    render(
+      <FilterPanel
+        query={DEFAULT_QUERY}
+        projects={[project("legal-link")]}
+        now="2026-07-23T00:00:00Z"
+        onToggle={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    const legalLink = screen.getByRole("link", {
+      name: "Legal information",
+    });
+    expect(legalLink).toHaveAttribute("href", "/about#legal-information");
+    expect(legalLink.parentElement).toHaveTextContent(
+      "Tavernary·AGPL-3.0-only·Legal information",
+    );
+  });
 });

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
+const securityUrl = "https://github.com/MentallyQuill/Tavernary/security";
 
 export const metadata = {
   title: "About Tavernary",
@@ -84,6 +85,66 @@ export default function AboutPage() {
             extension, prompt, or frontend that is not on Tavernary, you can add
             it to the catalog and help make the next discovery easier for
             someone else.
+          </p>
+        </section>
+
+        <section id="safety-security">
+          <h2>Safety and security</h2>
+          <p>
+            Tavernary is an independent directory of third-party projects.
+            Listings are not endorsements, certifications, or safety reviews.
+            Tavernary does not host, install, execute, or security-scan listed
+            projects, and cannot guarantee their code, dependencies, releases,
+            installers, or behavior.
+          </p>
+          <p>
+            Review a project&apos;s repository, permissions, dependencies,
+            release history, and credential handling before installing or using
+            it. Never provide API keys, passwords, or other secrets to software
+            unless you understand how they are used.
+          </p>
+        </section>
+
+        <section id="reporting-removal">
+          <h2>Reporting and removal</h2>
+          <p>
+            If you are an owner, maintainer, or rights holder for a listed
+            project and want it removed, updated, or pointed to a different
+            source, use the
+            <a href={helpUrl}> Help report form</a> and include the current
+            listing and requested change.
+          </p>
+          <p>
+            Users can report inaccurate, outdated, unsafe, malicious, or abusive
+            listings. This includes suspected malware or credential theft,
+            hateful or discriminatory content, exploitative or non-consensual
+            sexual content, sexual content involving minors, threats, or other
+            clearly harmful material. Include the project URL, specific concern,
+            and useful evidence. Do not include API keys, passwords, or other
+            private information.
+          </p>
+          <p>
+            Security vulnerabilities should be reported through the
+            repository&apos;s
+            <a href={securityUrl}> private security path</a>. Tavernary may
+            correct, hide, pause, or remove a listing while a report is
+            reviewed.
+          </p>
+        </section>
+
+        <section id="legal-information">
+          <h2>Legal information</h2>
+          <p>
+            Tavernary links to creator-owned repositories and source pages. It
+            does not redistribute third-party project files or guarantee their
+            legality, safety, accuracy, availability, or suitability. Users are
+            responsible for evaluating third-party projects before using them.
+          </p>
+          <p>
+            Project names, trademarks, content, and files remain the property of
+            their respective owners. Tavernary may update or remove catalog
+            entries when information changes, a rights holder requests a
+            correction, or a listing is reported as unsafe or abusive.
           </p>
         </section>
 

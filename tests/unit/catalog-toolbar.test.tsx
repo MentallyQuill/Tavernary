@@ -100,3 +100,23 @@ test("explains the density action on desktop hover", () => {
     screen.getByRole("tooltip", { name: "Use standard cards" }),
   ).toBeVisible();
 });
+
+test("shows the project safety disclosure near the catalog controls", () => {
+  const props = {
+    count: 8,
+    refreshedLabel: "just now",
+    filterCount: 0,
+    onSort: () => undefined,
+    onKitSort: () => undefined,
+    onDensity: () => undefined,
+    onOpenFilters: () => undefined,
+  };
+
+  render(<CatalogToolbar {...props} query={DEFAULT_QUERY} />);
+
+  const disclosure = screen.getByRole("link", { name: /Safety:/i });
+  expect(disclosure).toHaveAttribute("href", "/about#safety-security");
+  expect(disclosure).toHaveTextContent(
+    "Tavernary does not security-review or guarantee listed third-party projects",
+  );
+});

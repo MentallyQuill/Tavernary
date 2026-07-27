@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 
@@ -218,6 +219,8 @@ export function FilterLegal() {
       <a href="https://github.com/MentallyQuill/Tavernary/blob/main/LICENSE">
         AGPL-3.0-only
       </a>
+      <span aria-hidden="true">·</span>
+      <Link href="/about#legal-information">Legal information</Link>
     </div>
   );
 }

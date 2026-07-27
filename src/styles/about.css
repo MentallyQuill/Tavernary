@@ -70,6 +70,17 @@
   line-height: 1.7;
 }
 
+.about-content section a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.about-content section a:hover,
+.about-content section a:focus-visible {
+  color: var(--color-link-hover);
+}
+
 .about-actions {
   display: flex;
   align-items: center;

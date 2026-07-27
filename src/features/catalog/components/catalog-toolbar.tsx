@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -34,6 +35,15 @@ export function CatalogToolbar({
   return (
     <div className="catalog-toolbar">
       <div className="catalog-heading">
+        {query.mode === "projects" ? (
+          <p className="catalog-safety-disclosure">
+            <Link href="/about#safety-security">
+              Safety: Tavernary does not security-review or guarantee listed
+              third-party projects. Review a project carefully before installing
+              it or providing credentials.
+            </Link>
+          </p>
+        ) : null}
         <div className="catalog-primary-controls">
           <h1>
             {count}{" "}
