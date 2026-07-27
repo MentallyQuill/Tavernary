@@ -332,9 +332,7 @@ describe("full catalog data", () => {
     expect(byId.get("reddit-1v64r6z")).not.toHaveProperty("enrichment_note");
 
     const catalog = await buildCatalog({ write: false });
-    expect(
-      catalog.projects.map(({ id }) => id),
-    ).not.toEqual(
+    expect(catalog.projects.map(({ id }) => id)).not.toEqual(
       expect.arrayContaining([
         "prolix-oc-lumiverse-chatroom",
         "prolix-oc-lumiverse-spotifycontrols",

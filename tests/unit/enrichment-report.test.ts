@@ -164,9 +164,9 @@ test.each([
     now,
   );
 
-  expect(
-    createEnrichmentReport(state).entries["reddit-1v64r6z"].message,
-  ).toBe(message);
+  expect(createEnrichmentReport(state).entries["reddit-1v64r6z"].message).toBe(
+    message,
+  );
 });
 
 test("rejects malformed or contradictory durable reports", () => {
