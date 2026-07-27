@@ -503,9 +503,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   const redeploy = refreshSteps.find(
     ({ name }) => name === "Redeploy refreshed catalog",
   );
-  expect(supportRefresh?.run).toBe(
-    "node scripts/kits/refresh-reactions.mjs",
-  );
+  expect(supportRefresh?.run).toBe("node scripts/kits/refresh-reactions.mjs");
   expect(validation?.run).toBe("npm run check");
   expect(commit?.run).toContain("data/snapshots/github/kits/*.json");
   expect(redeploy?.run).toBe("gh workflow run deploy-pages.yml --ref main");

@@ -117,12 +117,7 @@ async function atomicWrite(path, value) {
   await rename(temporary, path);
 }
 
-export function githubReactionUrl({
-  repository,
-  issueNumber,
-  page,
-  perPage,
-}) {
+export function githubReactionUrl({ repository, issueNumber, page, perPage }) {
   if (!repository) throw new Error("GitHub repository is required");
   return (
     `https://api.github.com/repos/${repository}/issues/${issueNumber}` +

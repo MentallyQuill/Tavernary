@@ -329,7 +329,10 @@ test("Kit upvote matches the project-card plus control and links the source issu
   await expect(upvote).toHaveAttribute("rel", "noopener noreferrer");
   await expect(supporterCount).toHaveText("5");
   await expect(supporterCount).toHaveCSS("color", "rgb(225, 138, 36)");
-  await expect(supporterCount).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(supporterCount).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
 
   const supporterCountBox = (await supporterCount.boundingBox())!;
   const upvoteBox = (await upvote.boundingBox())!;
