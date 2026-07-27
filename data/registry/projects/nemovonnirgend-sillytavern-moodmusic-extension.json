@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "nemovonnirgend-sillytavern-moodmusic-extension",
+  "name": "SIllytavern-Moodmusic-extension",
+  "kind": "extension",
+  "summary": "A Sillytavern API for Spotify interaction and automatic music selection.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "NemoVonNirgend/SIllytavern-Moodmusic-extension",
+    "repository_id": 980324649
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T22:02:58.367Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
