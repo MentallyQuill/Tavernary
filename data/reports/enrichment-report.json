@@ -2,8 +2,8 @@
   "schema_version": 1,
   "run_id": "6ad44826-8165-4b9f-a49c-344e31af7cc4",
   "mode": "full",
-  "status": "running",
-  "phase": "retry",
+  "status": "complete-with-errors",
+  "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "selection_mode": "pending",
   "manual_exclusions": [
@@ -61,7 +61,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-27T16:44:35.004Z",
-  "updated_at": "2026-07-27T16:48:49.270Z",
+  "updated_at": "2026-07-27T16:48:50.774Z",
   "manifest": [
     "aikohanasaki-sillytavern-ccpromptmanager",
     "aikohanasaki-sillytavern-lorebookordering",
@@ -94,28 +94,28 @@
     "qvink-sillytavern-messagesummarize",
     "selinawynters-ops-paramsentinel"
   ],
-  "retry_cursor": 0,
+  "retry_cursor": 5,
   "attempts": {
     "aikohanasaki-sillytavern-ccpromptmanager": 1,
     "aikohanasaki-sillytavern-lorebookordering": 1,
     "bmen25124-sillytavern-custom-scenario": 1,
     "bmen25124-sillytavern-magic-translation": 1,
-    "casus-b-casus-custom-chatfill-ii": 1,
+    "casus-b-casus-custom-chatfill-ii": 2,
     "coneja-chibi-hoplight": 1,
-    "enerccio-sillytavern-stickynote": 1,
+    "enerccio-sillytavern-stickynote": 2,
     "hikarushmz-fetch-retry": 1,
     "icefog72-sillytavern-simpleqrbartoggle": 1,
-    "ikarusv-ikaruscheckpoint": 1,
+    "ikarusv-ikaruscheckpoint": 2,
     "ledissolution-statsuite": 1,
     "mattjaybe-sillytavern-echochamber": 1,
     "mechamarmot-sillytavern-pyrunner": 1,
     "prolix-oc-lumiverse-chatroom": 1,
     "prolix-oc-lumiverse-spotifycontrols": 1,
-    "qvink-sillytavern-messagesummarize": 1,
+    "qvink-sillytavern-messagesummarize": 2,
     "rsxdalv-sillytavern-extension-tts-webui": 1,
     "sakhavhyand-sillytavern-anothercharmanager": 1,
     "samueras-sillytavern-multipersonacomposer": 1,
-    "selinawynters-ops-paramsentinel": 1
+    "selinawynters-ops-paramsentinel": 2
   },
   "entries": {
     "aikohanasaki-sillytavern-ccpromptmanager": {
@@ -180,9 +180,9 @@
     },
     "casus-b-casus-custom-chatfill-ii": {
       "id": "casus-b-casus-custom-chatfill-ii",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1245539495,
       "head_sha": "f66b4954cf063d516157c5d1e7b16748923e0fbf",
@@ -190,11 +190,8 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 11153,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-27T16:44:35.004Z"
+      "latency_ms": 17694,
+      "completed_at": "2026-07-27T16:48:50.774Z"
     },
     "coneja-chibi-hoplight": {
       "id": "coneja-chibi-hoplight",
@@ -213,9 +210,9 @@
     },
     "enerccio-sillytavern-stickynote": {
       "id": "enerccio-sillytavern-stickynote",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "repository_id": 1251549736,
       "head_sha": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
@@ -223,11 +220,8 @@
       "readme_ref": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 49294,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-27T16:44:35.004Z"
+      "latency_ms": 35936,
+      "completed_at": "2026-07-27T16:48:50.774Z"
     },
     "hikarushmz-fetch-retry": {
       "id": "hikarushmz-fetch-retry",
@@ -261,9 +255,9 @@
     },
     "ikarusv-ikaruscheckpoint": {
       "id": "ikarusv-ikaruscheckpoint",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "description",
       "repository_id": 1226984172,
       "head_sha": "164ef300abfa9ed58b6232e6488cfdc56de0f2fe",
@@ -271,11 +265,8 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 49844,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-27T16:44:35.004Z"
+      "latency_ms": 7251,
+      "completed_at": "2026-07-27T16:48:50.774Z"
     },
     "ledissolution-statsuite": {
       "id": "ledissolution-statsuite",
@@ -348,9 +339,9 @@
     },
     "qvink-sillytavern-messagesummarize": {
       "id": "qvink-sillytavern-messagesummarize",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "repository_id": 901076086,
       "head_sha": "81b3326c1d81ea3411ab057280ecd5786fbe29a1",
@@ -358,11 +349,8 @@
       "readme_ref": "81b3326c1d81ea3411ab057280ecd5786fbe29a1",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 11001,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-27T16:44:35.004Z"
+      "latency_ms": 21699,
+      "completed_at": "2026-07-27T16:48:50.774Z"
     },
     "rsxdalv-sillytavern-extension-tts-webui": {
       "id": "rsxdalv-sillytavern-extension-tts-webui",
@@ -411,9 +399,9 @@
     },
     "selinawynters-ops-paramsentinel": {
       "id": "selinawynters-ops-paramsentinel",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "description",
       "repository_id": 1311856766,
       "head_sha": "a969549292ea64f66c2567bb780efffca02afaf5",
@@ -421,11 +409,11 @@
       "readme_ref": null,
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 49290,
+      "latency_ms": 33132,
       "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters. Summary must not contain Markdown or list syntax.",
+      "repair_hint": "Summary must not contain Markdown or list syntax.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-27T16:44:35.004Z"
+      "completed_at": "2026-07-27T16:48:50.774Z"
     }
   },
   "publication": {
@@ -437,10 +425,10 @@
     "enriched": 13,
     "fallback": 2,
     "source-not-ready": 0,
-    "retry-pending": 5,
-    "retry-enriched": 0,
+    "retry-pending": 0,
+    "retry-enriched": 4,
     "retry-fallback": 0,
-    "final-failure": 0,
+    "final-failure": 1,
     "skipped": 0
   }
 }

@@ -3,16 +3,20 @@
   "id": "casus-b-casus-custom-chatfill-ii",
   "name": "Casus-Custom-Chatfill-II",
   "kind": "preset",
-  "summary": "A modified, lightweight, universal preset for Sillytavern. Also works in Lumiverse.",
-  "metadata_status": "provisional",
+  "summary": "Casus-Custom-Chatfill-II is a modified Sillytavern preset that configures chat behavior and prompt handling. It supports Lumiverse and Sillytavern frontends with customized chat-fill workflows for roleplay.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "Casus-B/Casus-custom-Chatfill-II",
     "repository_id": 1245539495
   },
   "frontends": ["lumiverse", "sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": [
+    "multi-frontend",
+    "instruction-control",
+    "prompt-engineering"
+  ],
   "model_families": ["model-agnostic"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-27T14:02:29.758Z",
