@@ -363,14 +363,6 @@ export async function validateCatalog(options = {}) {
         errors.push(`${id}: unknown model family ${family}`);
       }
     }
-    if (
-      record.model_families?.includes("model-agnostic") &&
-      record.model_families.length > 1
-    ) {
-      errors.push(
-        `${id}: model-agnostic cannot be combined with named model families`,
-      );
-    }
     for (const format of record.completion_formats ?? []) {
       if (!completionFormatIds.has(format)) {
         errors.push(`${id}: unknown completion format ${format}`);

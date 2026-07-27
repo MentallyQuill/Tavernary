@@ -68,7 +68,7 @@ body:
     id: supported-model-families
     attributes:
       label: Supported model families
-      description: System Presets only. Select every supported family; Model-Agnostic must be selected alone.
+      description: System Presets only. Model-Agnostic may be combined with tested or recommended families.
       options:
         - label: model-agnostic
         - label: claude

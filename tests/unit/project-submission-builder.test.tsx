@@ -175,15 +175,13 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
   ).toBeVisible();
 });
 
-test("requires an enabled unlisted model family and keeps it exclusive with Model-Agnostic", async () => {
+test("requires a name when the unlisted model-family option is enabled", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
-  await user.click(screen.getByLabelText("Model-Agnostic"));
   await user.click(screen.getByLabelText("Other model family"));
 
-  expect(screen.getByLabelText("Model-Agnostic")).not.toBeChecked();
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://example.com/preset",
@@ -206,6 +204,41 @@ test("requires an enabled unlisted model family and keeps it exclusive with Mode
   expect(
     screen.getByText("Other model family name is required."),
   ).toBeVisible();
+});
+
+test("serializes Model-Agnostic with recommended and unlisted families", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/preset",
+  );
+  await user.click(screen.getByLabelText("Model-Agnostic"));
+  await user.click(screen.getByLabelText("Claude"));
+  await user.click(screen.getByLabelText("Other model family"));
+  await user.type(
+    screen.getByLabelText("Other model family name"),
+    "FutureModel",
+  );
+  await user.click(screen.getByLabelText("Chat Completion"));
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(screen.getByLabelText("Model-Agnostic")).toBeChecked();
+  expect(screen.getByLabelText("Claude")).toBeChecked();
+  expect(openProjectSubmission).toHaveBeenCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["model-agnostic", "claude"],
+          other: ["FutureModel"],
+        },
+        completion_formats: ["chat-completion"],
+      },
+    }),
+  );
 });
 
 test("serializes multiple model families and both completion formats for a Preset", async () => {

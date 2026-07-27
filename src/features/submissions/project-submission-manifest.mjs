@@ -128,14 +128,6 @@ export function normalizeProjectSubmissionManifest(value) {
         errors.push(`Unknown completion format: ${format}.`);
       }
     }
-    if (
-      modelFamilies.includes("model-agnostic") &&
-      (modelFamilies.length > 1 || otherModelFamilies.length > 0)
-    ) {
-      errors.push(
-        "Model-Agnostic cannot be combined with another model family.",
-      );
-    }
   }
   if (projectType === "preset" && !githubRepositoryShape(sourceUrl) && !name) {
     errors.push("External System Presets require a project name.");

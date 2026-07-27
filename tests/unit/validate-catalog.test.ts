@@ -263,19 +263,22 @@ describe("catalog validation", () => {
     );
   });
 
-  test("rejects Model-Agnostic combined with a named family", async () => {
+  test("accepts Model-Agnostic combined with recommended families", async () => {
     const result = await validateCatalog({
       records: [
         {
           ...validRecord,
-          model_families: ["model-agnostic", "claude"],
+          model_families: [
+            "model-agnostic",
+            "claude",
+            "glm",
+            "deepseek",
+          ],
         },
       ],
     });
 
-    expect(result.errors).toContain(
-      "valid-preset: model-agnostic cannot be combined with named model families",
-    );
+    expect(result.errors).toEqual([]);
   });
 
   test("accepts provisional GitHub null identity and uncategorized metadata", async () => {

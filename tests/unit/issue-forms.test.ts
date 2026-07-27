@@ -163,6 +163,12 @@ test("project submission is a structured fallback for automated intake", async (
   );
   expect(fields[5].attributes.options).toEqual(["No", "Yes"]);
   expect(fields[7].validations?.required ?? false).toBe(false);
+  expect(fields[7].attributes.description).toContain(
+    "Model-Agnostic may be combined with tested or recommended families",
+  );
+  expect(fields[7].attributes.description).not.toContain(
+    "must be selected alone",
+  );
   expect(submission.body[0].attributes.value).toContain(
     "GitHub repository URL required for Extensions and Frontends, not for Presets.",
   );

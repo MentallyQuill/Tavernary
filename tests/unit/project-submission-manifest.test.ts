@@ -98,3 +98,35 @@ test("limits unlisted model family names to 60 characters", () => {
     errors: ["Unlisted model families must be 60 characters or fewer."],
   });
 });
+
+test("preserves Model-Agnostic with recommended and unlisted families", () => {
+  expect(
+    normalizeProjectSubmissionManifest({
+      schema_version: 2,
+      project_type: "preset",
+      source_url: "https://github.com/Owner/Preset",
+      name: "Preset",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["model-agnostic", "claude", "model-agnostic"],
+          other: ["FutureModel"],
+        },
+        completion_formats: ["chat-completion"],
+      },
+    }),
+  ).toMatchObject({
+    valid: true,
+    manifest: {
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["model-agnostic", "claude"],
+          other: ["FutureModel"],
+        },
+      },
+    },
+  });
+});

@@ -155,16 +155,11 @@ export function ProjectSubmissionBuilder({
   }
 
   function toggleModelFamily(id: string) {
-    setModelFamilies((current) => {
-      if (current.includes(id)) return current.filter((item) => item !== id);
-      return id === "model-agnostic"
-        ? ["model-agnostic"]
-        : [...current.filter((item) => item !== "model-agnostic"), id];
-    });
-    if (id === "model-agnostic") {
-      setIncludeOtherModelFamily(false);
-      setOtherModelFamily("");
-    }
+    setModelFamilies((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
   }
 
   function toggleCompletionFormat(id: string) {
@@ -412,7 +407,10 @@ export function ProjectSubmissionBuilder({
           <div className="submission-section-heading">
             <div>
               <h2>Supported model families</h2>
-              <p>Select every model family this Preset supports.</p>
+              <p>
+                Select Model-Agnostic for broad usability, plus every model
+                family this Preset is tested with or recommended for.
+              </p>
             </div>
             <span>{modelFamilies.length} selected</span>
           </div>
@@ -443,11 +441,7 @@ export function ProjectSubmissionBuilder({
               onChange={(event) => {
                 const checked = event.target.checked;
                 setIncludeOtherModelFamily(checked);
-                if (checked) {
-                  setModelFamilies((current) =>
-                    current.filter((item) => item !== "model-agnostic"),
-                  );
-                } else {
+                if (!checked) {
                   setOtherModelFamily("");
                 }
               }}
