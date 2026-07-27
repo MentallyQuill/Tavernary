@@ -326,6 +326,24 @@ describe("full catalog data", () => {
     expectCatalogContract([...records, provisionalFrontend]);
   });
 
+  test("rejects frontend primary functions for provisional non-frontends", async () => {
+    const records = await loadRegistryRecords();
+    const existingExtension = records.find(
+      (record) => record.kind === "extension",
+    );
+    expect(existingExtension).toBeDefined();
+
+    const provisionalExtension = structuredClone(existingExtension!);
+    provisionalExtension.id = "provisional-extension-contract-fixture";
+    provisionalExtension.metadata_status = "provisional";
+    provisionalExtension.primary_function = "frontend";
+    provisionalExtension.capabilities = [];
+
+    expect(() =>
+      expectCatalogContract([...records, provisionalExtension]),
+    ).toThrow(/expected 'frontend' to be 'uncategorized'/iu);
+  });
+
   test("applies the requested delist and automatic Reddit enrichment decisions", async () => {
     const records = await loadRegistryRecords();
     const byId = new Map(records.map((record) => [record.id, record]));
