@@ -13,6 +13,7 @@ interface CatalogRecord {
   metadata_status: string;
   primary_function: string;
   capabilities: string[];
+  model_families?: string[];
   summary: string;
   enrichment_policy: "automatic" | "manual";
   enrichment_note?: string;
@@ -260,6 +261,11 @@ function expectCatalogContract(records: CatalogRecord[]) {
       "automatic",
     );
   }
+
+  expect(
+    records.find((record) => record.id === "mentallyquill-st-wandlight")
+      ?.model_families,
+  ).toEqual(["model-agnostic", "claude", "glm", "deepseek"]);
 
   expect(
     records.find((record) => record.id === "tavern-rpg-suite"),

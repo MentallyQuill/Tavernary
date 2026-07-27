@@ -15,10 +15,7 @@ import { sitePath } from "../helpers/site-path";
 const claudePresetCount = catalog.projects.filter(
   ({ kind, preset }) =>
     kind === "preset" &&
-    (preset?.modelFamilies.some(
-      ({ id }) => id === "claude" || id === "model-agnostic",
-    ) ??
-      false),
+    (preset?.modelFamilies.some(({ id }) => id === "claude") ?? false),
 ).length;
 const recursionSearchCount = catalog.projects.filter(({ searchableText }) =>
   searchableText.includes("recursion"),
@@ -280,6 +277,11 @@ test("filters Presets and Kits by model family with shareable state", async ({
   await expect(
     presetModelGroup.getByLabel("Claude", { exact: true }),
   ).toBeChecked();
+  await expect(
+    presetModelGroup
+      .getByLabel("Claude", { exact: true })
+      .locator("xpath=ancestor::label"),
+  ).toContainText(`Claude${claudePresetCount}`);
 
   await expect(
     page.getByRole("heading", { name: projectCountLabel(claudePresetCount) }),
@@ -287,6 +289,16 @@ test("filters Presets and Kits by model family with shareable state", async ({
   await expect(
     page.getByRole("heading", { name: "Wandlight", exact: true }),
   ).toBeVisible();
+  const wandlightCard = page.getByRole("link", {
+    name: "Wandlight",
+    exact: true,
+  });
+  for (const label of ["Model-Agnostic", "Claude", "GLM", "DeepSeek"]) {
+    await expect(wandlightCard.getByText(label, { exact: true })).toBeVisible();
+  }
+  await expect(wandlightCard).toHaveAccessibleDescription(
+    /Supported model families: Model-Agnostic, Claude, GLM, DeepSeek\./u,
+  );
   await expect(page).toHaveURL(/model=claude/u);
 
   await page.reload();

@@ -41,7 +41,8 @@
 - `.github/ISSUE_TEMPLATE/01-project-submission.yml` gives fallback submitters the same semantics.
 - `tests/unit/issue-forms.test.ts` prevents fallback-form copy from restoring exclusivity.
 - `data/registry/projects/mentallyquill-st-wandlight.json` owns Wandlight's approved canonical tags.
-- `data/catalog/projects.json` is the deterministic generated catalog rebuilt from the registry.
+- `src/generated/catalog.json` is the ignored deterministic application
+  catalog rebuilt from the registry and verified without being committed.
 - `tests/unit/full-catalog-data.test.ts` locks Wandlight's canonical tags.
 - `tests/e2e/catalog.spec.ts` proves Claude filtering counts explicit tags and renders Wandlight's complete metadata.
 
@@ -495,7 +496,7 @@ git commit -m "feat: allow agnostic model recommendations"
 **Files:**
 - Modify: `tests/unit/full-catalog-data.test.ts`
 - Modify: `data/registry/projects/mentallyquill-st-wandlight.json`
-- Modify: `data/catalog/projects.json` (generated)
+- Verify: `src/generated/catalog.json` (generated and ignored)
 - Modify: `tests/e2e/catalog.spec.ts`
 
 **Interfaces:**
@@ -590,21 +591,23 @@ npm.cmd run catalog:validate
 npm.cmd run catalog:build
 ```
 
-Expected: both commands exit 0; `data/catalog/projects.json` changes only where
-Wandlight metadata, searchable text, and derived Kit model-family unions require
-it.
+Expected: both commands exit 0; the generated catalog changes only where
+Wandlight metadata, searchable text, and derived Kit model-family unions
+require it.
 
-- [ ] **Step 6: Inspect generated scope**
+- [ ] **Step 6: Inspect canonical and generated scope**
 
 Run:
 
 ```powershell
-git diff -- data/registry/projects/mentallyquill-st-wandlight.json data/catalog/projects.json
+git diff -- data/registry/projects/mentallyquill-st-wandlight.json
+Select-String -Path src/generated/catalog.json -Pattern '"id": "mentallyquill-st-wandlight"' -Context 0,70
 ```
 
 Expected: the registry diff contains exactly the four approved IDs. Generated
 changes contain Wandlight's four labels/aliases and any Kit unions derived from
-Wandlight; no unrelated project metadata changes.
+Wandlight; no unrelated project metadata changes. `src/generated/catalog.json`
+remains ignored and is not staged.
 
 - [ ] **Step 7: Run catalog and browser coverage**
 
@@ -612,7 +615,7 @@ Run:
 
 ```powershell
 npm.cmd test -- tests/unit/full-catalog-data.test.ts tests/unit/build-catalog.test.ts
-npm.cmd run test:e2e -- catalog.spec.ts
+node scripts/run-playwright.mjs tests/e2e/catalog.spec.ts
 ```
 
 Expected: PASS, including exact Claude counts, shareable query reload, Wandlight
@@ -621,7 +624,7 @@ visibility, all four Wandlight chips, and the derived Kit result.
 - [ ] **Step 8: Commit the Wandlight migration**
 
 ```powershell
-git add -- data/registry/projects/mentallyquill-st-wandlight.json data/catalog/projects.json tests/unit/full-catalog-data.test.ts tests/e2e/catalog.spec.ts
+git add -- data/registry/projects/mentallyquill-st-wandlight.json tests/unit/full-catalog-data.test.ts tests/e2e/catalog.spec.ts
 git commit -m "data: add Wandlight model recommendations"
 ```
 
@@ -675,7 +678,7 @@ Expected: both PASS with a valid static export.
 Run:
 
 ```powershell
-npm.cmd run test:e2e -- catalog.spec.ts
+node scripts/run-playwright.mjs tests/e2e/catalog.spec.ts
 ```
 
 Expected: PASS.
@@ -699,7 +702,7 @@ Skip this step when Step 5 is clean. If a verification failure required an
 in-scope correction, stage only its named files and commit:
 
 ```powershell
-git add -- src/features/catalog/preset-compatibility.ts tests/unit/preset-compatibility.test.ts tests/unit/catalog-selectors.test.ts tests/unit/kit-selectors.test.ts scripts/catalog/validate.mjs tests/unit/validate-catalog.test.ts src/features/submissions/project-submission-manifest.mjs tests/unit/project-submission-manifest.test.ts src/features/submissions/components/project-submission-builder.tsx tests/unit/project-submission-builder.test.tsx .github/ISSUE_TEMPLATE/01-project-submission.yml tests/unit/issue-forms.test.ts data/registry/projects/mentallyquill-st-wandlight.json data/catalog/projects.json tests/unit/full-catalog-data.test.ts tests/e2e/catalog.spec.ts
+git add -- src/features/catalog/preset-compatibility.ts tests/unit/preset-compatibility.test.ts tests/unit/catalog-selectors.test.ts tests/unit/kit-selectors.test.ts scripts/catalog/validate.mjs tests/unit/validate-catalog.test.ts src/features/submissions/project-submission-manifest.mjs tests/unit/project-submission-manifest.test.ts src/features/submissions/components/project-submission-builder.tsx tests/unit/project-submission-builder.test.tsx .github/ISSUE_TEMPLATE/01-project-submission.yml tests/unit/issue-forms.test.ts data/registry/projects/mentallyquill-st-wandlight.json tests/unit/full-catalog-data.test.ts tests/e2e/catalog.spec.ts
 git commit -m "fix: complete model recommendation filtering"
 ```
 
