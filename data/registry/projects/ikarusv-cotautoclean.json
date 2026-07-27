@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "ikarusv-cotautoclean",
+  "name": "Chain-Of-thought Auto clean",
+  "kind": "extension",
+  "summary": "This SillyTavern extension automatically removes leftover chain-of-thought blocks from AI messages. It cleans displayed output in the background to keep chat replies free of internal reasoning traces.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "IkarusV/COTAutoClean",
+    "repository_id": 1216523143
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "frontend",
+  "capabilities": ["automation"],
+  "cataloged_at": "2026-07-27T11:16:10.745Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
