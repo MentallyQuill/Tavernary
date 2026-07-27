@@ -37,12 +37,12 @@ export const severeLanguageTerms = Object.freeze([
 ]);
 
 const substitutions = Object.freeze({
-  "0": "o",
-  "1": "i",
-  "3": "e",
-  "4": "a",
-  "5": "s",
-  "7": "t",
+  0: "o",
+  1: "i",
+  3: "e",
+  4: "a",
+  5: "s",
+  7: "t",
   "@": "a",
   $: "s",
 });
@@ -62,10 +62,7 @@ function normalizeForPolicy(value) {
 const separator = String.raw`[\p{P}\p{S}\s_]*`;
 const termPatterns = severeLanguageTerms.map((term) => {
   const body = [...term].map(escapePattern).join(separator);
-  return new RegExp(
-    String.raw`(?<![\p{L}\p{N}])${body}(?![\p{L}\p{N}])`,
-    "u",
-  );
+  return new RegExp(String.raw`(?<![\p{L}\p{N}])${body}(?![\p{L}\p{N}])`, "u");
 });
 
 export function containsDisallowedKitLanguage(value) {

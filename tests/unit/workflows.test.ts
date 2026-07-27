@@ -605,7 +605,7 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
-test("keeps Kit triage read-only and dependency-free", async () => {
+test("keeps Kit triage registry-read-only and dependency-free", async () => {
   const document = await workflow("triage-kit-submission");
   const source = await readFile(
     resolve(workflowDirectory, "triage-kit-submission.yml"),
@@ -620,6 +620,7 @@ test("keeps Kit triage read-only and dependency-free", async () => {
   expect(document.permissions).toEqual({
     contents: "read",
     issues: "write",
+    actions: "write",
   });
   expect(document.concurrency["cancel-in-progress"]).toBe(true);
   expect(source).toContain("github.event_name == 'workflow_dispatch'");

@@ -13,15 +13,12 @@ describe("Kit severe-language policy", () => {
     },
   );
 
-  test.each([
-    "NIGGER",
-    "n!i!g!g!e!r",
-    "n i g g e r",
-    "n1gg3r",
-    "fa\u0301ggot",
-  ])("blocks normalized disguise %s", (text) => {
-    expect(containsDisallowedKitLanguage(text)).toBe(true);
-  });
+  test.each(["NIGGER", "n!i!g!g!e!r", "n i g g e r", "n1gg3r", "fa\u0301ggot"])(
+    "blocks normalized disguise %s",
+    (text) => {
+      expect(containsDisallowedKitLanguage(text)).toBe(true);
+    },
+  );
 
   test.each([
     "Damn Good Stories",
@@ -38,12 +35,10 @@ describe("Kit severe-language policy", () => {
     expect(severeLanguageTerms.length).toBeGreaterThan(0);
     expect(new Set(severeLanguageTerms).size).toBe(severeLanguageTerms.length);
     expect(severeLanguageTerms).toEqual(
-      [...severeLanguageTerms].sort((left, right) =>
-        left.localeCompare(right),
-      ),
+      [...severeLanguageTerms].sort((left, right) => left.localeCompare(right)),
     );
-    expect(
-      severeLanguageTerms.every((term) => /^[a-z]+$/u.test(term)),
-    ).toBe(true);
+    expect(severeLanguageTerms.every((term) => /^[a-z]+$/u.test(term))).toBe(
+      true,
+    );
   });
 });

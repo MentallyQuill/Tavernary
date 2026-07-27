@@ -181,12 +181,11 @@ test("blocks severe Kit text before GitHub opens", async ({ page }) => {
     Object.defineProperty(window, "open", {
       configurable: true,
       value: (...args: unknown[]) => {
-        (
-          window as Window & { __kitOpenCalls?: unknown[][] }
-        ).__kitOpenCalls ??= [];
-        (
-          window as Window & { __kitOpenCalls: unknown[][] }
-        ).__kitOpenCalls.push(args);
+        const trackingWindow = window as Window & {
+          __kitOpenCalls?: unknown[][];
+        };
+        trackingWindow.__kitOpenCalls ??= [];
+        trackingWindow.__kitOpenCalls.push(args);
         return null;
       },
     });
