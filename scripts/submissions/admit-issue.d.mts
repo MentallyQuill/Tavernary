@@ -1,4 +1,4 @@
-import type { AdmissionDecision, AdmissionIssue } from "./issue-admission.mjs";
+import type { AdmissionIssue } from "./issue-admission.mjs";
 
 export interface AdmissionEvent {
   action: "opened" | "reopened" | "edited";
@@ -21,6 +21,14 @@ export type GitHubRequest = (
 export type IssueRoute =
   "project" | "kit" | "kit-withdrawal" | "none" | "conflict";
 
+export interface AdmissionResult {
+  admitted: boolean;
+  reason: string;
+  openIssueCount: number;
+  admittedIssueNumbers: number[];
+  route: IssueRoute;
+}
+
 export function issueRouteFromLabels(
   labels?: Array<string | { name: string }>,
 ): IssueRoute;
@@ -42,24 +50,10 @@ export function listOpenIssues(input: {
 export function processIssueAdmission(input: {
   event: AdmissionEvent;
   request: GitHubRequest;
-}): Promise<
-  | AdmissionDecision
-  | {
-      admitted: true;
-      reason: "lookup-failed";
-      openIssueCount: 0;
-      admittedIssueNumbers: [];
-    }
-  | {
-      admitted: boolean;
-      reason: "existing-admission";
-      openIssueCount: 0;
-      admittedIssueNumbers: [];
-    }
->;
+}): Promise<AdmissionResult>;
 
 export function issueAdmissionOutputs(
-  decision: { admitted: boolean },
+  decision: { admitted: boolean; route?: IssueRoute },
   event: AdmissionEvent,
 ): {
   admitted: string;

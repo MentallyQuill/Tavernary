@@ -198,6 +198,41 @@ test("trusted collaborators bypass lookup and admission limits", async () => {
   ).toBe(false);
 });
 
+test("restores a missing Kit route label during admission", async () => {
+  const request = vi.fn(async () => null);
+  const baseEvent = event(109, "COLLABORATOR");
+  const kitEvent = {
+    ...baseEvent,
+    issue: { ...baseEvent.issue, body: kitBody },
+  };
+
+  const decision = await processIssueAdmission({ event: kitEvent, request });
+  expect(decision).toMatchObject({ admitted: true, route: "kit" });
+  expect(issueAdmissionOutputs(decision, kitEvent)).toMatchObject({
+    route: "kit",
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/109/labels",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ labels: ["kit-submission"] }),
+    }),
+  );
+  for (const name of [
+    "project-submission",
+    "kit-submission",
+    "kit-withdrawal",
+  ]) {
+    expect(request).toHaveBeenCalledWith(
+      "/repos/MentallyQuill/Tavernary/labels",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.stringContaining(`"name":"${name}"`),
+      }),
+    );
+  }
+});
+
 test("reports admission outputs for downstream workflow dispatch", () => {
   expect(
     issueAdmissionOutputs(
@@ -331,6 +366,30 @@ test("routes an admitted issue edit without changing admission state", async () 
     reason: "existing-admission",
   });
   expect(request).not.toHaveBeenCalled();
+});
+
+test("restores a missing Kit route label on an admitted issue edit", async () => {
+  const request = vi.fn(async () => null);
+  const baseEvent = event(109, "NONE", "edited", ["issue-admitted"]);
+  const kitEvent = {
+    ...baseEvent,
+    issue: { ...baseEvent.issue, body: kitBody },
+  };
+
+  await expect(
+    processIssueAdmission({ event: kitEvent, request }),
+  ).resolves.toMatchObject({
+    admitted: true,
+    reason: "existing-admission",
+    route: "kit",
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/109/labels",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ labels: ["kit-submission"] }),
+    }),
+  );
 });
 
 test("does not route an unadmitted issue edit", async () => {

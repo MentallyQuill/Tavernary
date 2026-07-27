@@ -20,6 +20,27 @@ const admissionLabels = {
   },
 };
 
+const routingLabels = {
+  "project-submission": {
+    color: "1d76db",
+    description: "Structured project submission awaiting Tavernary processing.",
+  },
+  "kit-submission": {
+    color: "1d76db",
+    description: "Structured Kit submission awaiting Tavernary processing.",
+  },
+  "kit-withdrawal": {
+    color: "6e7781",
+    description: "Structured Kit withdrawal awaiting Tavernary processing.",
+  },
+};
+
+const routeByLabel = {
+  "project-submission": "project",
+  "kit-submission": "kit",
+  "kit-withdrawal": "kit-withdrawal",
+};
+
 const trustedAssociations = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
 
 function labelNames(labels = []) {
@@ -32,11 +53,9 @@ function labelNames(labels = []) {
 
 export function issueRouteFromLabels(labels = []) {
   const names = labelNames(labels);
-  const routes = [
-    ["project-submission", "project"],
-    ["kit-submission", "kit"],
-    ["kit-withdrawal", "kit-withdrawal"],
-  ].filter(([label]) => names.has(label));
+  const routes = Object.entries(routeByLabel).filter(([label]) =>
+    names.has(label),
+  );
 
   if (routes.length > 1) return "conflict";
   return routes[0]?.[1] ?? "none";
@@ -91,8 +110,11 @@ export async function listOpenIssues({ repository, creator, request }) {
   }
 }
 
-async function ensureAdmissionLabels(repository, request) {
-  for (const [name, definition] of Object.entries(admissionLabels)) {
+async function ensureOwnedLabels(repository, request) {
+  for (const [name, definition] of Object.entries({
+    ...admissionLabels,
+    ...routingLabels,
+  })) {
     try {
       await request(`/repos/${repository}/labels`, {
         method: "POST",
@@ -120,6 +142,27 @@ async function addOwnedLabel(repository, issueNumber, label, request) {
     method: "POST",
     body: JSON.stringify({ labels: [label] }),
   });
+}
+
+async function restoreRecoveredRouteLabel({
+  repository,
+  issue,
+  route,
+  request,
+  ensureLabels,
+}) {
+  const routeLabel = Object.entries(routeByLabel).find(
+    ([, candidate]) => candidate === route,
+  )?.[0];
+  if (
+    !routeLabel ||
+    labelNames(issue.labels).has(routeLabel) ||
+    issueRouteFromLabels(issue.labels) !== "none"
+  ) {
+    return;
+  }
+  if (ensureLabels) await ensureOwnedLabels(repository, request);
+  await addOwnedLabel(repository, issue.number, routeLabel, request);
 }
 
 async function synchronizeLimitComment(repository, issueNumber, request) {
@@ -153,7 +196,7 @@ export async function processIssueAdmission({ event, request }) {
   let decision;
 
   if (event.action === "edited") {
-    return {
+    decision = {
       admitted:
         currentIssue.state === "open" &&
         labelNames(currentIssue.labels).has(ISSUE_ADMISSION_LABEL),
@@ -161,6 +204,16 @@ export async function processIssueAdmission({ event, request }) {
       openIssueCount: 0,
       admittedIssueNumbers: [],
     };
+    if (!decision.admitted) return { ...decision, route: "none" };
+    const route = effectiveIssueRoute(currentIssue);
+    await restoreRecoveredRouteLabel({
+      repository,
+      issue: currentIssue,
+      route,
+      request,
+      ensureLabels: true,
+    });
+    return { ...decision, route };
   }
 
   if (trustedAssociations.has(currentIssue.author_association)) {
@@ -193,7 +246,7 @@ export async function processIssueAdmission({ event, request }) {
     }
   }
 
-  await ensureAdmissionLabels(repository, request);
+  await ensureOwnedLabels(repository, request);
   if (decision.admitted) {
     await removeOwnedLabel(
       repository,
@@ -207,7 +260,15 @@ export async function processIssueAdmission({ event, request }) {
       ISSUE_ADMISSION_LABEL,
       request,
     );
-    return decision;
+    const route = effectiveIssueRoute(currentIssue);
+    await restoreRecoveredRouteLabel({
+      repository,
+      issue: currentIssue,
+      route,
+      request,
+      ensureLabels: false,
+    });
+    return { ...decision, route };
   }
 
   await removeOwnedLabel(
@@ -227,7 +288,7 @@ export async function processIssueAdmission({ event, request }) {
     method: "PATCH",
     body: JSON.stringify({ state: "closed", state_reason: "not_planned" }),
   });
-  return decision;
+  return { ...decision, route: "none" };
 }
 
 async function github(path, options = {}) {
@@ -256,7 +317,7 @@ export function issueAdmissionOutputs(decision, event) {
   return {
     admitted: String(decision.admitted),
     issue_number: String(event.issue.number),
-    route: issueRouteFromLabels(event.issue.labels),
+    route: decision.route ?? effectiveIssueRoute(event.issue),
   };
 }
 
