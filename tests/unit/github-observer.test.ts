@@ -26,6 +26,7 @@ function repositoryNode(
     createdAt: "2026-01-01T00:00:00Z",
     diskUsage: 100 + index,
     isArchived: false,
+    isFork: false,
     forkCount: 2,
     stargazerCount: 3,
     watchers: { totalCount: 4 },
@@ -144,6 +145,18 @@ describe("GitHub repository observer", () => {
       latestReleaseAt: null,
       coarseLicenseSpdxId: null,
     });
+  });
+
+  test("observes whether a repository is a fork", async () => {
+    const result = await observeRepositories(records(1), {
+      token: "test-token",
+      fetchImpl: async () =>
+        batchResponse(0, 1, {
+          r0: repositoryNode(0, { isFork: true }),
+        }),
+    });
+
+    expect(result.observations[0].repository.fork).toBe(true);
   });
 
   test("preserves a nullable GitHub short description", async () => {

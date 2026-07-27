@@ -15,7 +15,10 @@ import { format } from "prettier";
 
 import { recordIntervalActivity, weekStartUtc } from "./activity-evidence.mjs";
 import { buildCatalog } from "./build.mjs";
-import { fetchRepositoryContributors } from "./github-contributors.mjs";
+import {
+  fetchForkContributors,
+  fetchRepositoryContributors,
+} from "./github-contributors.mjs";
 import { buildRefreshManifest } from "./github-refresh-manifest.mjs";
 import {
   inspectApiActivity,
@@ -436,19 +439,49 @@ export async function runRefresh(options = {}) {
       : options.observe !== undefined
         ? null
         : token
-          ? (repository) => fetchRepositoryContributors(repository, { token })
+          ? async (repository, context) => {
+              if (!repository.fork) {
+                return {
+                  ...(await fetchRepositoryContributors(repository, { token })),
+                  method: "repository-contributors",
+                };
+              }
+              const previous =
+                context.previous?.method === "merged-pull-requests"
+                  ? {
+                      accounts: context.previous.accounts,
+                      baselineCompletedAt:
+                        context.previous.baseline_completed_at ?? null,
+                      refreshedAt: context.previous.refreshed_at,
+                      scan: context.previous.scan
+                        ? {
+                            nextPage: context.previous.scan.next_page,
+                            cutoffAt: context.previous.scan.cutoff_at,
+                            targetWatermark:
+                              context.previous.scan.target_watermark,
+                          }
+                        : null,
+                    }
+                  : null;
+              return {
+                ...(await fetchForkContributors(repository, {
+                  token,
+                  now: context.now,
+                  previous,
+                })),
+                method: "merged-pull-requests",
+              };
+            }
           : null;
   const contributorJobs = fetchContributors
     ? observed.observations.map((observation) => ({
         projectId: observation.projectId,
-        repository: {
-          owner: observation.repository.owner,
-          name: observation.repository.name,
-        },
+        repository: observation.repository,
+        previous: snapshotsById.get(observation.projectId)?.contributors,
       }))
     : [];
   const contributorResults = await mapConcurrent(contributorJobs, 3, (job) =>
-    fetchContributors(job.repository),
+    fetchContributors(job.repository, { previous: job.previous, now }),
   );
   const systemicContributorFailure = contributorResults.find(
     (result) =>
@@ -517,7 +550,7 @@ export async function runRefresh(options = {}) {
     const contributorResult = contributorResultsById.get(record.id);
     const contributors =
       contributorResult?.status === "fulfilled"
-        ? contributorSnapshotForSuccess(contributorResult.value.accounts, now)
+        ? contributorSnapshotForSuccess(contributorResult.value, now)
         : contributorResult?.status === "rejected"
           ? contributorSnapshotForFailure(previous?.contributors, now)
           : previous?.contributors;

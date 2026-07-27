@@ -472,6 +472,18 @@ describe("catalog validation", () => {
     expect(result.snapshotCount).toBe(1);
   });
 
+  test("accepts an optional repository fork fact", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("accepts optional contributor facts in a version two snapshot", async () => {
     const snapshot = structuredClone(validSnapshotV2);
     snapshot.contributors = {
@@ -479,6 +491,30 @@ describe("catalog validation", () => {
         { login: "Alice", type: "User" },
         { login: "Claude", type: "User" },
       ],
+      refreshed_at: "2026-07-25T00:00:00.000Z",
+      stale_since: null,
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
+  test("accepts resumable merged-pull-request contributor facts", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.contributors = {
+      accounts: [{ login: "LeRobber", type: "User" }],
+      method: "merged-pull-requests",
+      baseline_completed_at: null,
+      scan: {
+        next_page: 3,
+        cutoff_at: null,
+        target_watermark: "2026-07-25T00:00:00.000Z",
+      },
       refreshed_at: "2026-07-25T00:00:00.000Z",
       stale_since: null,
     };

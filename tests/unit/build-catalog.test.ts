@@ -358,6 +358,54 @@ test("builds searchable owner and contributor attribution from GitHub facts", as
   );
 });
 
+test("builds partial fork attribution only from observed merged PR authors", async () => {
+  const catalog = await buildCatalog({
+    write: false,
+    records: [
+      fixtureProject({
+        source: {
+          type: "github",
+          repository: "aikohanasaki/Aikobots",
+          repository_id: 123,
+        },
+      }),
+    ],
+    snapshots: [
+      fixtureSnapshot({
+        repository: {
+          ...fixtureSnapshot().repository,
+          owner: "aikohanasaki",
+          name: "Aikobots",
+          fork: true,
+        },
+        contributors: {
+          accounts: [
+            { login: "aikohanasaki", type: "User" },
+            { login: "LeRobber", type: "User" },
+          ],
+          method: "merged-pull-requests",
+          baseline_completed_at: null,
+          scan: {
+            next_page: 3,
+            cutoff_at: null,
+            target_watermark: "2026-07-27T00:00:00.000Z",
+          },
+          refreshed_at: "2026-07-27T00:00:00.000Z",
+          stale_since: null,
+        },
+      }),
+    ],
+  });
+
+  expect(catalog.projects[0].attribution).toEqual({
+    owner: "aikohanasaki",
+    contributors: [{ login: "LeRobber", botOrAi: false }],
+    humanContributorCount: 1,
+    status: "partial",
+  });
+  expect(catalog.projects[0].searchableText).not.toContain("cohee1207");
+});
+
 test("keeps stale github facts public when the snapshot is unavailable", async () => {
   const catalog = await buildCatalog({
     write: false,

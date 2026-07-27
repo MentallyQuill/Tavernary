@@ -65,3 +65,33 @@ test("marks attribution stale when the last contributor refresh failed", () => {
     }).status,
   ).toBe("stale");
 });
+
+test("marks an incomplete fork baseline as partial", () => {
+  expect(
+    catalogAttribution("aikohanasaki", {
+      accounts: [
+        { login: "aikohanasaki", type: "User" },
+        { login: "LeRobber", type: "User" },
+      ],
+      method: "merged-pull-requests",
+      baseline_completed_at: null,
+      stale_since: null,
+    }),
+  ).toEqual({
+    owner: "aikohanasaki",
+    contributors: [{ login: "LeRobber", botOrAi: false }],
+    humanContributorCount: 1,
+    status: "partial",
+  });
+});
+
+test("stale takes precedence over a partial fork baseline", () => {
+  expect(
+    catalogAttribution("aikohanasaki", {
+      accounts: [{ login: "LeRobber", type: "User" }],
+      method: "merged-pull-requests",
+      baseline_completed_at: null,
+      stale_since: "2026-07-27T00:00:00.000Z",
+    }).status,
+  ).toBe("stale");
+});

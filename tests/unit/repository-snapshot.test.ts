@@ -16,6 +16,7 @@ const observation = {
     archived: false,
     createdAt: "2026-01-01T00:00:00.000Z",
     sizeKb: 12,
+    fork: true,
   },
   community: {
     stargazersCount: 3,
@@ -69,6 +70,7 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
     repository: {
       id: observation.repository.id,
       head_sha: observation.repository.headSha,
+      fork: true,
     },
     activity: { evidence_status: "complete" },
     contributors: {
@@ -78,6 +80,21 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
     },
     stale_since: null,
   });
+});
+
+test("defaults a legacy observation without a fork fact to false", () => {
+  const legacyObservation = structuredClone(observation);
+  delete (legacyObservation.repository as { fork?: boolean }).fork;
+
+  const snapshot = createInitialRepositorySnapshot({
+    projectId: "owner-repo",
+    observation: legacyObservation,
+    activityInspection,
+    contributors: [],
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(snapshot.repository.fork).toBe(false);
 });
 
 test("retains an incomplete API activity continuation as provisional", () => {

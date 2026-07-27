@@ -19,6 +19,8 @@ export function catalogAttribution(
   contributors:
     | {
         accounts: GitHubAccount[];
+        method?: "repository-contributors" | "merged-pull-requests";
+        baseline_completed_at?: string | null;
         stale_since: string | null;
       }
     | undefined,
@@ -41,6 +43,9 @@ export function catalogAttribution(
       ? ("pending" as const)
       : contributors.stale_since
         ? ("stale" as const)
-        : ("current" as const),
+        : contributors.method === "merged-pull-requests" &&
+            contributors.baseline_completed_at == null
+          ? ("partial" as const)
+          : ("current" as const),
   };
 }

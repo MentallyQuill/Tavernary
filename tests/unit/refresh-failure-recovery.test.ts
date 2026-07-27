@@ -121,6 +121,9 @@ test("records a successful contributor observation as current", () => {
     ),
   ).toEqual({
     accounts: [{ login: "Alice", type: "User" }],
+    method: "repository-contributors",
+    baseline_completed_at: null,
+    scan: null,
     refreshed_at: "2026-07-25T00:00:00.000Z",
     stale_since: null,
   });

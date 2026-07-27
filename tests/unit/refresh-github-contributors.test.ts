@@ -26,6 +26,7 @@ const observation = {
     headSha: "a".repeat(40),
     headCommittedAt: "2026-07-23T12:00:00.000Z",
     archived: false,
+    fork: false,
     createdAt: "2026-01-01T00:00:00.000Z",
     sizeKb: 10,
   },
@@ -122,6 +123,72 @@ test("persists contributor facts and counts their REST requests", async () => {
       { login: "Alice", type: "User" },
       { login: "Claude", type: "User" },
     ],
+    method: "repository-contributors",
+    baseline_completed_at: null,
+    scan: null,
+    refreshed_at: "2026-07-25T00:00:00.000Z",
+    stale_since: null,
+  });
+  expect(result.manifest.api.rest_requests).toBe(2);
+});
+
+test("persists a bounded fork contributor continuation", async () => {
+  const forkObservation = {
+    ...observation,
+    repository: { ...observation.repository, fork: true },
+  };
+  const fetchContributors = vi.fn(async () => ({
+    accounts: [
+      { login: "Creator", type: "User" },
+      { login: "LeRobber", type: "User" },
+    ],
+    requestCount: 2,
+    method: "merged-pull-requests",
+    baselineCompletedAt: null,
+    refreshedAt: null,
+    scan: {
+      nextPage: 3,
+      cutoffAt: null,
+      targetWatermark: "2026-07-25T00:00:00.000Z",
+    },
+  }));
+
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-25T00:00:00.000Z",
+    records: [record],
+    snapshots: [],
+    observe: async () => ({
+      observations: [forkObservation],
+      failures: [],
+      usage: { requestCount: 1, pointCost: 2, remainingPoints: 4_998 },
+    }),
+    fetchContributors,
+    inspectDelta: vi.fn(),
+    inspectGit: vi.fn(),
+    write: false,
+  });
+
+  expect(fetchContributors).toHaveBeenCalledWith(
+    expect.objectContaining({
+      owner: "Creator",
+      name: "Project",
+      fork: true,
+    }),
+    { now: "2026-07-25T00:00:00.000Z", previous: undefined },
+  );
+  expect(result.snapshots[0].contributors).toEqual({
+    accounts: [
+      { login: "Creator", type: "User" },
+      { login: "LeRobber", type: "User" },
+    ],
+    method: "merged-pull-requests",
+    baseline_completed_at: null,
+    scan: {
+      next_page: 3,
+      cutoff_at: null,
+      target_watermark: "2026-07-25T00:00:00.000Z",
+    },
     refreshed_at: "2026-07-25T00:00:00.000Z",
     stale_since: null,
   });
