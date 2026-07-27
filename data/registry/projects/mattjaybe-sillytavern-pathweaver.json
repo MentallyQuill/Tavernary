@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "mattjaybe-sillytavern-pathweaver",
+  "name": "Pathweaver",
+  "kind": "extension",
+  "summary": "Elevate your stories and roleplays from good to unforgettable. Pathweaver injects fresh ideas, unexpected twists, and genre-perfect moments exactly when you need them, making every session feel like a professionally",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "mattjaybe/SillyTavern-Pathweaver",
+    "repository_id": 1133781448
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T20:36:12.198Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
