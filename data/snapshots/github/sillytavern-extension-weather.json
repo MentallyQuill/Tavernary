@@ -19,24 +19,12 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c169a3cacaefd032d2857417564e0330b516a1b3"
   },
   "community": {
     "stargazers_count": 5,
@@ -44,8 +32,12 @@
     "subscribers_count": 1,
     "aggregate": 11
   },
-  "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -55,7 +47,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

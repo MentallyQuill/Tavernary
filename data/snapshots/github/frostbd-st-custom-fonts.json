@@ -19,24 +19,12 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "78e11ff7d6adbb0d2b92ebdf26f0ced8cd295437"
   },
   "community": {
     "stargazers_count": 12,
@@ -45,7 +33,7 @@
     "aggregate": 17
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -55,7 +43,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

@@ -19,24 +19,12 @@
   "activity": {
     "latest_source_activity_at": null,
     "source_weeks": [],
-    "provisional_weeks": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
+    "provisional_weeks": null,
     "latest_release_at": null,
-    "evidence_status": "provisional",
-    "baseline_completed_at": null,
-    "baseline_attempts": 0
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "65e0acb3cc9b53a97751132d567622d9b3ba2c2c"
   },
   "community": {
     "stargazers_count": 98,
@@ -45,14 +33,15 @@
     "aggregate": 127
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "kaldigo", "type": "User" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

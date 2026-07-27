@@ -26,20 +26,20 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 66,
+    "stargazers_count": 67,
     "forks_count": 5,
     "subscribers_count": 1,
-    "aggregate": 72
+    "aggregate": 73
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "bal-spec", "type": "User" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
   }
 }

@@ -8,22 +8,29 @@
     "url": "https://github.com/Enclave0775/Intiface_Central-Sillytavern-plugin",
     "description": "A SillyTavern plugin that integrates Intiface Central and Buttplug.io for haptic device interactions during AI roleplay.",
     "default_branch": "main",
-    "head_sha": "1422c7c1a5143775f21053d15145ef179fd34501",
-    "head_committed_at": "2026-04-21T13:57:47.000Z",
+    "head_sha": "b51fe2220d567c0845cd72d114bd312705a95f59",
+    "head_committed_at": "2026-07-27T08:43:31.000Z",
     "archived": false,
     "fork": false,
     "created_at": "2025-08-08T14:09:38.000Z",
-    "size_kb": 333
+    "size_kb": 334
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-04-21T13:57:47.000Z",
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-07-27T08:43:31.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T08:43:31.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b51fe2220d567c0845cd72d114bd312705a95f59"
   },
   "community": {
     "stargazers_count": 31,
@@ -36,14 +43,15 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T06:46:55.988Z",
+  "refreshed_at": "2026-07-27T10:52:18.639Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Enclave0775", "type": "User" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:46:55.988Z",
+    "refreshed_at": "2026-07-27T10:52:18.639Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }
