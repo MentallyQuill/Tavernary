@@ -3,15 +3,15 @@
   "id": "aikohanasaki-sillytavern-bookmarks",
   "name": "SillyTavern-Bookmarks",
   "kind": "extension",
-  "summary": "No README file found.",
-  "metadata_status": "provisional",
+  "summary": "A standalone SillyTavern extension for saving and navigating to specific chat messages. Bookmarks are stored in chat metadata using async chunked loading with visual status indicators to prevent UI freezing.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "aikohanasaki/SillyTavern-Bookmarks",
     "repository_id": 1064216842
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T19:31:37.707Z",
   "catalog_cohort": "standard",

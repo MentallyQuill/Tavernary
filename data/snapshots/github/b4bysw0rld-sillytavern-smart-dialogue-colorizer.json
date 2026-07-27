@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "project_id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
+  "repository": {
+    "id": 1081942864,
+    "owner": "b4bysw0rld",
+    "name": "SillyTavern-Smart-Dialogue-Colorizer",
+    "url": "https://github.com/b4bysw0rld/SillyTavern-Smart-Dialogue-Colorizer",
+    "description": "SillyTavern extension with intelligent dialogue color extraction and quality filtering",
+    "default_branch": "main",
+    "head_sha": "3694c90b915a7afa2b1b0bdb95b0ebb2aeed48e7",
+    "head_committed_at": "2026-01-02T14:02:24.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2025-10-23T14:07:21.000Z",
+    "size_kb": 234
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T06:13:37.923Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3694c90b915a7afa2b1b0bdb95b0ebb2aeed48e7"
+  },
+  "community": {
+    "stargazers_count": 12,
+    "forks_count": 1,
+    "subscribers_count": 0,
+    "aggregate": 13
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T06:17:32.756Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "zerofata", "type": "User" },
+      { "login": "b4bysw0rld", "type": "User" },
+      { "login": "XanadusWorks", "type": "User" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:17:32.756Z",
+    "stale_since": null
+  }
+}

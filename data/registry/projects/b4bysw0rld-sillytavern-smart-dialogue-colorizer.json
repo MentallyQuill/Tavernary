@@ -3,16 +3,16 @@
   "id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
   "name": "SillyTavern-Smart-Dialogue-Colorizer",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "This SillyTavern extension automatically extracts colors from dialogue to enhance the visual chat experience. It applies intelligent quality filtering to ensure only meaningful color assignments appear in messages.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "b4bysw0rld/SillyTavern-Smart-Dialogue-Colorizer",
-    "repository_id": null
+    "repository_id": 1081942864
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "review-validation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

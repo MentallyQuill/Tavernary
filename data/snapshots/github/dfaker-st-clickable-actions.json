@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "project_id": "dfaker-st-clickable-actions",
+  "repository": {
+    "id": 1034747621,
+    "owner": "dfaker",
+    "name": "st-clickable-actions",
+    "url": "https://github.com/dfaker/st-clickable-actions",
+    "description": "Clickable actions for Silly Tavern",
+    "default_branch": "main",
+    "head_sha": "54fd0085c5f30dd057976fe7c685ff389e00c668",
+    "head_committed_at": "2025-08-16T20:45:21.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2025-08-08T23:12:30.000Z",
+    "size_kb": 31
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T06:13:37.923Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "54fd0085c5f30dd057976fe7c685ff389e00c668"
+  },
+  "community": {
+    "stargazers_count": 6,
+    "forks_count": 0,
+    "subscribers_count": 1,
+    "aggregate": 7
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T06:13:37.923Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "dfaker", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T06:13:37.923Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
