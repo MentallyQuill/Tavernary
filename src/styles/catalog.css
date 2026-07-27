@@ -874,6 +874,19 @@
   gap: 12px;
 }
 
+.relationship-pair {
+  width: 100%;
+  max-width: 900px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-inline: auto;
+}
+
+@media (max-width: 760px) {
+  .relationship-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .project-card {
   --kind-color: var(--color-functional);
   position: relative;
@@ -1353,6 +1366,14 @@
   height: auto;
   min-height: 0;
   padding: 11px 12px;
+}
+
+.compact-cards .project-card-shell.has-relationship-control .project-card {
+  padding-bottom: 44px;
+}
+
+.compact-cards .project-relationship-control {
+  font-size: 10px;
 }
 
 .compact-cards .card-top {
@@ -2302,6 +2323,57 @@
 
 .project-card-shell.has-kit-control .card-utility {
   padding-right: 40px;
+}
+
+.project-card-shell.has-relationship-control .project-card {
+  padding-bottom: 52px;
+}
+
+.project-relationship-control {
+  position: absolute;
+  z-index: 4;
+  bottom: 10px;
+  left: 15px;
+  right: 48px;
+  display: flex;
+  min-width: 0;
+  min-height: 28px;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.project-relationship-origin {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+}
+
+.project-relationship-control button {
+  flex: 0 0 auto;
+  border: 0;
+  padding: 4px 0;
+  color: var(--color-functional);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.project-relationship-control button:is(:hover, :focus-visible) {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.project-relationship-control button:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
 .project-kit-control-hit {
