@@ -120,3 +120,24 @@ test("shows the project safety disclosure near the catalog controls", () => {
     "Tavernary does not security-review or guarantee listed third-party projects",
   );
 });
+
+test("shows the same safety disclosure above the Kits controls", () => {
+  const props = {
+    count: 4,
+    refreshedLabel: "just now",
+    filterCount: 0,
+    onSort: () => undefined,
+    onKitSort: () => undefined,
+    onDensity: () => undefined,
+    onOpenFilters: () => undefined,
+  };
+
+  render(
+    <CatalogToolbar {...props} query={{ ...DEFAULT_QUERY, mode: "kits" }} />,
+  );
+
+  expect(screen.getByRole("link", { name: /Safety:/i })).toHaveAttribute(
+    "href",
+    "/about#safety-security",
+  );
+});
