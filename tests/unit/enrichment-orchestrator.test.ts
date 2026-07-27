@@ -512,7 +512,7 @@ test("reuses an existing exact deployment without dispatching a duplicate", asyn
           stdout: JSON.stringify([
             {
               databaseId: 98765,
-              displayTitle: `Deploy Pages - ${commit}`,
+              displayTitle: `Site: Deploy ${commit}`,
               status: "completed",
               conclusion: "success",
             },
@@ -574,7 +574,7 @@ test("dispatches Pages once when the exact deployment does not exist", async () 
               : JSON.stringify([
                   {
                     databaseId: 24680,
-                    displayTitle: `Deploy Pages - ${commit}`,
+                    displayTitle: `Site: Deploy ${commit}`,
                     status: "in_progress",
                     conclusion: null,
                   },

@@ -555,7 +555,7 @@ export function createProductionOperations(options = {}) {
       return checkpointCommit(FULL_REPORT, "full");
     },
     async waitForDeployment(commit) {
-      const title = `Deploy Pages - ${commit}`;
+      const title = `Site: Deploy ${commit}`;
       let dispatched = false;
       let dispatchFloor = 0;
       for (let attempt = 1; attempt <= 30; attempt += 1) {
