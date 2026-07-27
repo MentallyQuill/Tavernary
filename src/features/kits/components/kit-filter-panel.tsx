@@ -11,6 +11,7 @@ import {
   type FilterOption,
 } from "@/features/catalog/components/filter-controls";
 import { CATEGORY_OPTIONS } from "@/features/catalog/catalog-query";
+import { orderFrontendOptionsByPopularity } from "@/features/catalog/frontend-option-order";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { KitArrayFilter } from "@/features/kits/kit-selectors";
 import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
@@ -29,9 +30,7 @@ function frontendOptions(projects: CatalogProject[], kits: CatalogKit[]) {
   for (const kit of kits) {
     for (const item of kit.frontends) values.set(item.id, item.label);
   }
-  return [...values]
-    .map(([id, label]) => ({ id, label }))
-    .sort((left, right) => left.label.localeCompare(right.label));
+  return [...values].map(([id, label]) => ({ id, label }));
 }
 
 function purposeOptions(projects: CatalogProject[], kits: CatalogKit[]) {
@@ -142,7 +141,10 @@ export function KitFilterPanel({
       <FilterGroup
         title="Compatible frontend"
         options={countedOptions(
-          frontendOptions(projects, kits),
+          orderFrontendOptionsByPopularity(
+            frontendOptions(projects, kits),
+            projects,
+          ),
           kits,
           query,
           "frontends",

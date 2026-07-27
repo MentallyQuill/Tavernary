@@ -10,6 +10,7 @@ import {
   matchesCompletionFormats,
   matchesModelFamilies,
 } from "../preset-compatibility";
+import { orderFrontendOptionsByPopularity } from "../frontend-option-order";
 import type {
   CatalogKind,
   CatalogQuery,
@@ -176,7 +177,12 @@ export function FilterPanel({
       )}
       <FilterGroup
         title="Compatible frontend"
-        options={withCounts(frontendOptions, projects, "frontends", now)}
+        options={withCounts(
+          orderFrontendOptionsByPopularity(frontendOptions, projects),
+          projects,
+          "frontends",
+          now,
+        )}
         selected={query.frontends}
         onToggle={(value) => onToggle("frontends", value)}
         search={frontendSearch}
