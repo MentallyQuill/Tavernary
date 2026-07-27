@@ -588,4 +588,18 @@ describe("catalog visual alignment", () => {
       /\b(?:spring|bounce|rotate|filter:\s*blur)\b/i,
     );
   });
+
+  test("positions the Kit upvote in the plus control's bottom-right frame", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.kit-card\s*\{[^}]*position:\s*relative[^}]*display:\s*grid/s,
+    );
+    expect(css).toMatch(
+      /\.kit-upvote-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px[^}]*place-items:\s*center/s,
+    );
+    expect(css).toMatch(
+      /\.kit-card-actions\s*\{[^}]*padding-right:\s*40px[^}]*padding-top:\s*10px/s,
+    );
+  });
 });
