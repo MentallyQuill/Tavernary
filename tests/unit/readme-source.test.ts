@@ -117,25 +117,59 @@ test.each([
   },
 );
 
-test("prefers a non-empty repository description without fetching README", async () => {
-  const github = vi.fn();
+test("prefers usable README content over a repository description", async () => {
+  const github = vi.fn(async () => ({
+    path: "README.md",
+    encoding: "base64",
+    content: Buffer.from(
+      "# ParamSentinel\n\nDisables unsupported sampler parameters.",
+    ).toString("base64"),
+  }));
   const source = await loadReadmeSource(record, healthy, {
     validateSnapshot,
     github,
   });
 
-  expect(source).toEqual({
+  expect(github).toHaveBeenCalledWith("/repos/Creator/Project/readme", {
+    ref: "a".repeat(40),
+  });
+  expect(source).toMatchObject({
+    status: "ready",
+    sourceKind: "readme",
+    text: "# ParamSentinel\n\nDisables unsupported sampler parameters.",
+    repositoryDescription: "A short project description.",
+    readmeText: "# ParamSentinel\n\nDisables unsupported sampler parameters.",
+    readmePath: "README.md",
+    readmeRef: "a".repeat(40),
+  });
+});
+
+test("uses the repository description when README is confirmed missing", async () => {
+  await expect(
+    loadReadmeSource(record, healthy, {
+      validateSnapshot,
+      github: async () => null,
+    }),
+  ).resolves.toMatchObject({
     status: "ready",
     sourceKind: "description",
     text: "A short project description.",
-    repositoryDescription: "A short project description.",
-    readmeText: null,
     readmePath: null,
-    readmeRef: null,
-    repositoryId: 42,
-    headSha: "a".repeat(40),
+    readmeRef: "a".repeat(40),
   });
-  expect(github).not.toHaveBeenCalled();
+});
+
+test("uses the repository description when README content is unusable", async () => {
+  await expect(
+    loadReadmeSource(record, healthy, {
+      validateSnapshot,
+      github: async () => ({ encoding: "base64", content: "%" }),
+    }),
+  ).resolves.toMatchObject({
+    status: "ready",
+    sourceKind: "description",
+    text: "A short project description.",
+  });
 });
 
 test("loads README content at the snapshot head SHA", async () => {
