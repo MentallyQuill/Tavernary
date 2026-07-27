@@ -1,0 +1,188 @@
+{
+  "schema_version": 2,
+  "project_id": "kwaroran-risuai",
+  "repository": {
+    "id": 626937684,
+    "owner": "kwaroran",
+    "name": "Risuai",
+    "url": "https://github.com/kwaroran/Risuai",
+    "description": "Make your own story. User-friendly software for LLM roleplaying",
+    "default_branch": "main",
+    "head_sha": "3d3dd1a0efbd32c30797ae3802a4dc080d638123",
+    "head_committed_at": "2026-07-25T02:06:46.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2023-04-12T13:08:52.000Z",
+    "size_kb": 77411
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-25T02:03:09.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-25T02:03:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T04:57:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T14:21:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T08:58:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-27T15:39:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T10:25:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-11T21:08:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T14:12:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T09:48:02.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T13:10:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T06:02:49.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-10T11:12:20.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T21:29:13.485Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3d3dd1a0efbd32c30797ae3802a4dc080d638123"
+  },
+  "community": {
+    "stargazers_count": 1562,
+    "forks_count": 336,
+    "subscribers_count": 23,
+    "aggregate": 1921
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T21:29:13.485Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "kwaroran", "type": "User" },
+      { "login": "cubicj", "type": "User" },
+      { "login": "SameDesu123", "type": "User" },
+      { "login": "sub-hub", "type": "User" },
+      { "login": "random-username-423", "type": "User" },
+      { "login": "enzi221", "type": "User" },
+      { "login": "Bo26fhmC5M", "type": "User" },
+      { "login": "tasoo-oos", "type": "User" },
+      { "login": "kangjoseph90", "type": "User" },
+      { "login": "bangonicdd2", "type": "User" },
+      { "login": "poroyo", "type": "User" },
+      { "login": "HyperBlaze456", "type": "User" },
+      { "login": "hashcoko", "type": "User" },
+      { "login": "joonsoome", "type": "User" },
+      { "login": "ljh5650", "type": "User" },
+      { "login": "miladiashe", "type": "User" },
+      { "login": "bangonicdd", "type": "User" },
+      { "login": "rsyumi", "type": "User" },
+      { "login": "tammy3211", "type": "User" },
+      { "login": "aegkmq", "type": "User" },
+      { "login": "Decikingship", "type": "User" },
+      { "login": "shirosaki-hana", "type": "User" },
+      { "login": "Acet-Aminophen", "type": "User" },
+      { "login": "risuai", "type": "User" },
+      { "login": "asm6788", "type": "User" },
+      { "login": "dependabot[bot]", "type": "Bot" },
+      { "login": "sunho", "type": "User" },
+      { "login": "OnlookerRs", "type": "User" },
+      { "login": "Lenu-noipe", "type": "User" },
+      { "login": "gwahak10", "type": "User" },
+      { "login": "ModMapper", "type": "User" },
+      { "login": "mounta11n", "type": "User" },
+      { "login": "IHaBiS02", "type": "User" },
+      { "login": "escap-ade", "type": "User" },
+      { "login": "drPpZero", "type": "User" },
+      { "login": "concertypin", "type": "User" },
+      { "login": "heavycaffeiner", "type": "User" },
+      { "login": "nbsp1221", "type": "User" },
+      { "login": "HopeJourney", "type": "User" },
+      { "login": "cloak1505", "type": "User" },
+      { "login": "niceandneat", "type": "User" },
+      { "login": "justpain02", "type": "User" },
+      { "login": "RivelleDays", "type": "User" },
+      { "login": "dohyun-ko", "type": "User" },
+      { "login": "Hakjeong", "type": "User" },
+      { "login": "iicdii", "type": "User" },
+      { "login": "luyiourwong", "type": "User" },
+      { "login": "green1052", "type": "User" },
+      { "login": "misov1", "type": "User" },
+      { "login": "phyyou", "type": "User" },
+      { "login": "tiamatiramisu", "type": "User" },
+      { "login": "Amoeba1234", "type": "User" },
+      { "login": "sduoooh", "type": "User" },
+      { "login": "kamukande", "type": "User" },
+      { "login": "dootaang", "type": "User" },
+      { "login": "alattalatta", "type": "User" },
+      { "login": "rhplus0831", "type": "User" },
+      { "login": "eltociear", "type": "User" },
+      { "login": "yaa19212-droid", "type": "User" },
+      { "login": "nevaeh5379", "type": "User" },
+      { "login": "namda-on", "type": "User" },
+      { "login": "misisipir", "type": "User" },
+      { "login": "kmou424", "type": "User" },
+      { "login": "jinook518", "type": "User" },
+      { "login": "hush27", "type": "User" },
+      { "login": "donmarble", "type": "User" },
+      { "login": "diegocostares", "type": "User" },
+      { "login": "c0sogi", "type": "User" },
+      { "login": "broot5", "type": "User" },
+      { "login": "ak45231-cyber", "type": "User" },
+      { "login": "Yvonne-Aizawa", "type": "User" },
+      { "login": "SeA-luby", "type": "User" },
+      { "login": "rndka9-alt", "type": "User" },
+      { "login": "LI-NA", "type": "User" },
+      { "login": "kurohomeless", "type": "User" },
+      { "login": "Kuiprux", "type": "User" },
+      { "login": "jgreiner1024", "type": "User" },
+      { "login": "G4tsby", "type": "User" },
+      { "login": "EugenesDad", "type": "User" },
+      { "login": "claude", "type": "User" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T21:29:13.485Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
