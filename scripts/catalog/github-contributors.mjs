@@ -207,6 +207,7 @@ export async function fetchForkContributors({ owner, name }, options) {
         break;
       }
       if (row.merged_at === null) continue;
+      if (row.user === null) continue;
       if (
         typeof row.user?.login !== "string" ||
         row.user.login.length === 0 ||
@@ -237,6 +238,12 @@ export async function fetchForkContributors({ owner, name }, options) {
       requestCount,
     );
     if (nextPage === null) break;
+    if (nextPage !== page + 1) {
+      throw countedError(
+        "GitHub fork contributors returned unsafe pagination",
+        requestCount,
+      );
+    }
     page = nextPage;
   }
 

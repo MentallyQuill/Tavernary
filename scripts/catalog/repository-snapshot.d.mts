@@ -118,6 +118,18 @@ export function createInitialRepositorySnapshot(input: {
   projectId: string;
   observation: RepositoryObservation;
   activityInspection: ApiActivityInspection;
-  contributors: ContributorAccount[];
+  contributors:
+    | ContributorAccount[]
+    | {
+        accounts: ContributorAccount[];
+        method?: "repository-contributors" | "merged-pull-requests";
+        baselineCompletedAt?: string | null;
+        refreshedAt?: string | null;
+        scan?: {
+          nextPage: number;
+          cutoffAt: string | null;
+          targetWatermark: string;
+        } | null;
+      };
   now: string;
 }): RepositorySnapshot;

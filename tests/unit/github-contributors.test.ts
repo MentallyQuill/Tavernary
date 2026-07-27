@@ -182,6 +182,30 @@ test("collects only authors of pull requests merged into a fork", async () => {
   });
 });
 
+test("skips merged pull requests whose deleted author has no GitHub identity", async () => {
+  const result = await fetchForkContributors(
+    { owner: "owner", name: "fork" },
+    {
+      token: "test-token",
+      now: "2026-07-27T00:00:00.000Z",
+      fetchImpl: async () =>
+        new Response(
+          JSON.stringify([
+            {
+              merged_at: "2026-07-26T12:00:00.000Z",
+              updated_at: "2026-07-26T12:00:00.000Z",
+              user: null,
+            },
+            pullRequest({ login: "LinkedAuthor" }),
+          ]),
+          { status: 200 },
+        ),
+    },
+  );
+
+  expect(result.accounts).toEqual([{ login: "LinkedAuthor", type: "User" }]);
+});
+
 test("bounds a fork baseline to two pages and resumes its continuation", async () => {
   const calls: string[] = [];
   const first = await fetchForkContributors(
@@ -297,6 +321,33 @@ test("rejects unsafe fork pull-request pagination", async () => {
             status: 200,
             headers: {
               link: '<https://example.com/steal-token?page=2>; rel="next"',
+            },
+          }),
+      },
+    );
+  } catch (error) {
+    thrown = error;
+  }
+
+  expect(thrown).toMatchObject({
+    message: "GitHub fork contributors returned unsafe pagination",
+    requestCount: 1,
+  });
+});
+
+test("rejects fork pagination that does not advance exactly one page", async () => {
+  let thrown: any;
+  try {
+    await fetchForkContributors(
+      { owner: "owner", name: "fork" },
+      {
+        token: "test-token",
+        now: "2026-07-27T00:00:00.000Z",
+        fetchImpl: async () =>
+          new Response(JSON.stringify([pullRequest({ login: "Author" })]), {
+            status: 200,
+            headers: {
+              link: '<https://api.github.com/repos/owner/fork/pulls?state=closed&sort=updated&direction=desc&per_page=100&page=1>; rel="next"',
             },
           }),
       },
