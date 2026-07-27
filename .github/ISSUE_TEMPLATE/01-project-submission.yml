@@ -8,14 +8,12 @@ body:
     attributes:
       value: |
         Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type. This form remains available as a structured fallback.
-  - type: dropdown
+  - type: input
     id: project-type
     attributes:
       label: Project Type
-      options:
-        - Frontend
-        - Extension
-        - System Preset
+      description: Enter Frontend, Extension, or System Preset.
+      placeholder: Frontend, Extension, or System Preset
     validations:
       required: true
   - type: input
@@ -50,15 +48,12 @@ body:
       description: For Extensions and System Presets, enter comma- or newline-separated frontend names or canonical URLs.
     validations:
       required: false
-  - type: dropdown
+  - type: input
     id: frontend-independent
     attributes:
       label: Frontend-independent
-      description: Choose Yes only when a System Preset does not depend on a particular frontend.
-      options:
-        - "No"
-        - "Yes"
-      default: 0
+      description: Enter Yes only when a System Preset does not depend on a particular frontend; otherwise enter No.
+      placeholder: Yes or No
     validations:
       required: true
   - type: textarea
@@ -68,25 +63,16 @@ body:
       description: Optional context that may help us review this project.
     validations:
       required: false
-  - type: checkboxes
+  - type: textarea
     id: supported-model-families
     attributes:
       label: Supported model families
-      description: System Presets only. Model-Agnostic may be combined with tested or recommended families.
-      options:
-        - label: model-agnostic
-        - label: claude
-        - label: gpt
-        - label: gemini
-        - label: gemma
-        - label: deepseek
-        - label: glm
-        - label: minimax
-        - label: mimo
-        - label: kimi
-        - label: qwen
-        - label: llama
-        - label: mistral
+      description: >-
+        System Presets only. Enter one canonical family ID per line:
+        model-agnostic, claude, gpt, gemini, gemma, deepseek, glm, minimax,
+        mimo, kimi, qwen, llama, or mistral.
+    validations:
+      required: false
   - type: input
     id: other-model-family
     attributes:
@@ -94,14 +80,15 @@ body:
       description: System Presets only. A maintainer must reconcile this value before publication.
     validations:
       required: false
-  - type: checkboxes
+  - type: textarea
     id: completion-formats
     attributes:
       label: Completion formats
-      description: System Presets only. Select at least one.
-      options:
-        - label: chat-completion
-        - label: text-completion
+      description: >-
+        System Presets only. Enter one canonical format ID per line:
+        chat-completion or text-completion.
+    validations:
+      required: false
   - type: textarea
     id: project-manifest
     attributes:

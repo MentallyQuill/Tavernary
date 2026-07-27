@@ -241,7 +241,9 @@ function expectCatalogContract(records: CatalogRecord[]) {
   }
 
   for (const record of provisionalRecords) {
-    expect(record.primary_function).toBe("uncategorized");
+    expect(record.primary_function).toBe(
+      record.kind === "frontend" ? "frontend" : "uncategorized",
+    );
     expect(record.capabilities).toEqual([]);
   }
 
@@ -306,6 +308,40 @@ function expectCatalogContract(records: CatalogRecord[]) {
 describe("full catalog data", () => {
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("accepts structural primary functions for provisional frontends", async () => {
+    const records = await loadRegistryRecords();
+    const existingFrontend = records.find(
+      (record) => record.kind === "frontend",
+    );
+    expect(existingFrontend).toBeDefined();
+
+    const provisionalFrontend = structuredClone(existingFrontend!);
+    provisionalFrontend.id = "provisional-frontend-contract-fixture";
+    provisionalFrontend.metadata_status = "provisional";
+    provisionalFrontend.primary_function = "frontend";
+    provisionalFrontend.capabilities = [];
+
+    expectCatalogContract([...records, provisionalFrontend]);
+  });
+
+  test("rejects frontend primary functions for provisional non-frontends", async () => {
+    const records = await loadRegistryRecords();
+    const existingExtension = records.find(
+      (record) => record.kind === "extension",
+    );
+    expect(existingExtension).toBeDefined();
+
+    const provisionalExtension = structuredClone(existingExtension!);
+    provisionalExtension.id = "provisional-extension-contract-fixture";
+    provisionalExtension.metadata_status = "provisional";
+    provisionalExtension.primary_function = "frontend";
+    provisionalExtension.capabilities = [];
+
+    expect(() =>
+      expectCatalogContract([...records, provisionalExtension]),
+    ).toThrow(/expected 'frontend' to be 'uncategorized'/iu);
   });
 
   test("applies the requested delist and automatic Reddit enrichment decisions", async () => {

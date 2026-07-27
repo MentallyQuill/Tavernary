@@ -1,11 +1,7 @@
 name: "Project submissions: Validate submission"
-run-name: "Project #${{ inputs.issue_number || github.event.issue.number }}: Validate submission"
+run-name: "Project #${{ inputs.issue_number }}: Validate submission"
 
 on:
-  issues:
-    types:
-      - labeled
-      - edited
   workflow_dispatch:
     inputs:
       issue_number:
@@ -19,25 +15,11 @@ permissions:
   actions: write
 
 concurrency:
-  group: triage-project-${{ inputs.issue_number || github.event.issue.number }}
+  group: triage-project-${{ inputs.issue_number }}
   cancel-in-progress: true
 
 jobs:
   validate:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (
-        contains(github.event.issue.labels.*.name, 'project-submission') &&
-        github.event.issue.state == 'open' &&
-        contains(github.event.issue.labels.*.name, 'issue-admitted') &&
-        (
-          github.event.action == 'edited' ||
-          (
-            github.event.action == 'labeled' &&
-            github.event.label.name == 'issue-admitted'
-          )
-        )
-      )
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -51,7 +33,7 @@ jobs:
         run: node scripts/submissions/triage-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
       - name: Generate admitted submission
         if: steps.triage.outputs.admitted == 'true'
         env:

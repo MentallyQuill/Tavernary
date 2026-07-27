@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "q-atastrophe-lore-atlas",
+  "name": "Lore Atlas",
+  "kind": "extension",
+  "summary": "Lore Atlas is a SillyTavern extension providing visual organization of lorebooks, entries, worlds, and scenes. It mirrors native lorebook JSON without modification, syncing changes both ways via a floating launcher.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "Q-atastrophe/Lore-Atlas",
+    "repository_id": 1275010865
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["character-worldbuilding"],
+  "cataloged_at": "2026-07-27T22:05:12.192Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

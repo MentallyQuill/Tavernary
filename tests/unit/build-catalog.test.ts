@@ -406,6 +406,157 @@ test("builds partial fork attribution only from observed merged PR authors", asy
   expect(catalog.projects[0].searchableText).not.toContain("cohee1207");
 });
 
+test("resolves a published immediate fork parent into browser-safe data", async () => {
+  const child = fixtureProject({
+    id: "child",
+    name: "Child",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/child",
+      repository_id: 1000,
+    },
+  });
+  const parent = fixtureProject({
+    id: "parent",
+    name: "Curated Parent",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "upstream/parent",
+      repository_id: 9001,
+    },
+  });
+  const childSnapshot = fixtureSnapshot({
+    project_id: "child",
+    repository: {
+      ...fixtureSnapshot().repository,
+      id: 1000,
+      name: "child",
+      fork: true,
+      parent: {
+        id: 9001,
+        owner: "upstream",
+        name: "parent",
+        url: "https://github.com/upstream/parent",
+      },
+    },
+  });
+
+  const catalog = await buildCatalog({
+    write: false,
+    records: [child, parent],
+    snapshots: [childSnapshot],
+  });
+
+  expect(catalog.projects.find(({ id }) => id === "child")?.fork).toEqual({
+    parentName: "Curated Parent",
+    parentProjectId: "parent",
+    status: "published",
+  });
+});
+
+test("keeps a disabled fork parent name without exposing a link or coordinates", async () => {
+  const child = fixtureProject({
+    id: "child",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/child",
+      repository_id: 1000,
+    },
+  });
+  const parent = fixtureProject({
+    id: "parent",
+    name: "Curated Parent",
+    visibility: "disabled",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "private-owner/private-parent",
+      repository_id: 9001,
+    },
+  });
+  const childSnapshot = fixtureSnapshot({
+    project_id: "child",
+    repository: {
+      ...fixtureSnapshot().repository,
+      id: 1000,
+      fork: true,
+      parent: {
+        id: 9001,
+        owner: "private-owner",
+        name: "private-parent",
+        url: "https://github.com/private-owner/private-parent",
+      },
+    },
+  });
+
+  const catalog = await buildCatalog({
+    write: false,
+    records: [child, parent],
+    snapshots: [childSnapshot],
+  });
+  const relationship = catalog.projects[0].fork;
+
+  expect(relationship).toEqual({
+    parentName: "Curated Parent",
+    parentProjectId: null,
+    status: "not-listed",
+  });
+  expect(JSON.stringify(relationship)).not.toMatch(
+    /private-owner|private-parent|github\.com|9001/,
+  );
+});
+
+test("keeps unknown fork provenance name-only and emits null for non-forks", async () => {
+  const child = fixtureProject({
+    id: "child",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/child",
+      repository_id: 1000,
+    },
+  });
+  const ordinary = fixtureProject({
+    id: "ordinary",
+    kind: "extension",
+    source: {
+      type: "github",
+      repository: "example/ordinary",
+      repository_id: 2000,
+    },
+  });
+  const childSnapshot = fixtureSnapshot({
+    project_id: "child",
+    repository: {
+      ...fixtureSnapshot().repository,
+      id: 1000,
+      fork: true,
+      parent: {
+        id: 9001,
+        owner: "unknown-owner",
+        name: "Unknown Parent",
+        url: "https://github.com/unknown-owner/unknown-parent",
+      },
+    },
+  });
+
+  const catalog = await buildCatalog({
+    write: false,
+    records: [child, ordinary],
+    snapshots: [childSnapshot],
+  });
+
+  expect(catalog.projects.find(({ id }) => id === "child")?.fork).toEqual({
+    parentName: "Unknown Parent",
+    parentProjectId: null,
+    status: "not-listed",
+  });
+  expect(catalog.projects.find(({ id }) => id === "ordinary")?.fork).toBeNull();
+});
+
 test("keeps stale github facts public when the snapshot is unavailable", async () => {
   const catalog = await buildCatalog({
     write: false,

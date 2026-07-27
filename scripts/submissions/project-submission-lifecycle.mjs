@@ -18,6 +18,7 @@ export function planProjectSubmissionClosure(input) {
     issueNumber: marker.issue_number,
     removeLabels: removableLabels,
     deleteBranch: input.headRef,
+    retryForkDependents: true,
   };
   if (input.merged) {
     return {

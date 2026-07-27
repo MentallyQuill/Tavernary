@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "lackyas-sillytavern-presence",
+  "name": "SillyTavern-Presence",
+  "kind": "extension",
+  "summary": "SillyTavern-Presence is a SillyTavern extension that displays user presence status during chat sessions. The original repository is no longer maintained, with ongoing development hosted at a community fork.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "lackyas/SillyTavern-Presence",
+    "repository_id": 875709373
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T22:02:51.162Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

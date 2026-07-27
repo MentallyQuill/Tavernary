@@ -11,6 +11,12 @@ export interface RepositoryObservation {
     headCommittedAt: string;
     archived: boolean;
     fork: boolean;
+    parent: {
+      id: number;
+      owner: string;
+      name: string;
+      url: string;
+    } | null;
     createdAt: string;
     sizeKb: number;
   };

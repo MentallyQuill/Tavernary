@@ -1,0 +1,40 @@
+name: "Project submissions: Retry fork dependencies"
+run-name: "Project submissions: Retry terminal fork dependencies"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "data/registry/projects/**"
+  workflow_dispatch:
+    inputs:
+      upstream_issue_number:
+        description: Closed upstream project submission issue number
+        required: false
+        type: number
+
+permissions:
+  contents: read
+  issues: read
+  actions: write
+
+concurrency:
+  group: retry-fork-dependencies
+  cancel-in-progress: false
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - name: Retry matching fork-dependent submissions
+        run: node scripts/submissions/retry-fork-dependencies.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPSTREAM_ISSUE_NUMBER: ${{ inputs.upstream_issue_number }}

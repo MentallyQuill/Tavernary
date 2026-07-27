@@ -13,6 +13,23 @@ function safeText(value, limit = 320) {
   return bounded.replace(/\\/gu, "\\\\").replace(/([[\]()*_`#<>|])/gu, "\\$1");
 }
 
+const urlFieldKeys = new Set(["canonical_url", "source_url"]);
+
+function renderUrlValue(value) {
+  if (typeof value !== "string") return safeText(value);
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") return safeText(value);
+    return `[${safeText(url.href)}](<${url.href}>)`;
+  } catch {
+    return safeText(value);
+  }
+}
+
+function renderGroupValue(key, value) {
+  return urlFieldKeys.has(key) ? renderUrlValue(value) : safeText(value);
+}
+
 function labelFor(key) {
   const words = key.replace(/_/gu, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
@@ -24,7 +41,10 @@ function renderGroup(values) {
   );
   if (entries.length === 0) return "- None.";
   return entries
-    .map(([key, value]) => `- **${labelFor(key)}:** ${safeText(value)}`)
+    .map(
+      ([key, value]) =>
+        `- **${labelFor(key)}:** ${renderGroupValue(key, value)}`,
+    )
     .join("\n");
 }
 
@@ -102,6 +122,40 @@ export function parseSubmissionPullRequestMarker(body) {
   } catch {
     return null;
   }
+}
+
+export function findSubmissionPathCollision({
+  repository,
+  issueNumber,
+  generatedPaths,
+  pulls,
+}) {
+  const sourceOwnedPath = (path) =>
+    /^data\/registry\/projects\/[^/]+\.json$/u.test(path) ||
+    /^data\/snapshots\/github\/[^/]+\.json$/u.test(path);
+  const intended = new Set(generatedPaths.filter(sourceOwnedPath));
+  for (const pull of pulls) {
+    const marker = parseSubmissionPullRequestMarker(pull.body ?? "");
+    if (
+      !marker ||
+      marker.issue_number === issueNumber ||
+      pull.head?.repo?.full_name?.toLowerCase() !== repository.toLowerCase() ||
+      pull.head?.ref !== submissionBranch(marker.issue_number)
+    ) {
+      continue;
+    }
+    const paths = marker.generated_paths.filter(
+      (path) => sourceOwnedPath(path) && intended.has(path),
+    );
+    if (paths.length === 0) continue;
+    return {
+      issueNumber: marker.issue_number,
+      prNumber: pull.number,
+      prUrl: pull.html_url,
+      paths,
+    };
+  }
+  return null;
 }
 
 export function planSubmissionPrUpdate(input) {

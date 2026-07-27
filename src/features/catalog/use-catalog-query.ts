@@ -10,6 +10,20 @@ import {
 
 const queryChangeEvent = "tavernary-querychange";
 
+type TavernaryHistoryState = {
+  tavernaryRelationshipOrigin?: boolean;
+};
+
+export interface CatalogQueryHistory {
+  setQuery(
+    next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery),
+  ): void;
+  pushQuery(
+    next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery),
+  ): void;
+  removeRelationship(): void;
+}
+
 function subscribe(listener: () => void) {
   window.addEventListener("popstate", listener);
   window.addEventListener(queryChangeEvent, listener);
@@ -31,17 +45,49 @@ export function useCatalogQuery() {
   const search = useSyncExternalStore(subscribe, currentSearch, serverSearch);
   const query = useMemo(() => parseCatalogQuery(search), [search]);
 
-  const setQuery = useCallback(
-    (next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery)) => {
+  const updateQuery = useCallback(
+    (
+      method: "pushState" | "replaceState",
+      next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery),
+    ) => {
       const current = parseCatalogQuery(window.location.search);
       const resolved = typeof next === "function" ? next(current) : next;
       const nextSearch = serializeCatalogQuery(resolved);
       const url = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ""}${window.location.hash}`;
-      window.history.replaceState(null, "", url);
+      const state: TavernaryHistoryState | null =
+        method === "pushState" ? { tavernaryRelationshipOrigin: true } : null;
+      window.history[method](state, "", url);
       window.dispatchEvent(new Event(queryChangeEvent));
     },
     [],
   );
 
-  return { query, setQuery };
+  const setQuery = useCallback<CatalogQueryHistory["setQuery"]>(
+    (next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery)) => {
+      updateQuery("replaceState", next);
+    },
+    [updateQuery],
+  );
+
+  const pushQuery = useCallback<CatalogQueryHistory["pushQuery"]>(
+    (next) => {
+      updateQuery("pushState", next);
+    },
+    [updateQuery],
+  );
+
+  const removeRelationship = useCallback(() => {
+    const current = parseCatalogQuery(window.location.search);
+    if (!current.relationship) {
+      return;
+    }
+    const state = window.history.state as TavernaryHistoryState | null;
+    if (state?.tavernaryRelationshipOrigin) {
+      window.history.back();
+      return;
+    }
+    updateQuery("replaceState", { ...current, relationship: "" });
+  }, [updateQuery]);
+
+  return { query, setQuery, pushQuery, removeRelationship };
 }

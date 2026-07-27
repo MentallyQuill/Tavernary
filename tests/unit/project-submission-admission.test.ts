@@ -30,7 +30,10 @@ function admittedFixture(overrides = {}) {
     repository: {
       visibility: "public" as const,
       archived: false,
+      fork: false,
+      parent: null,
     },
+    forkDependency: { status: "none" as const },
     existingProjects: [],
     frontendResolution: {
       status: "resolved" as const,
@@ -42,9 +45,69 @@ function admittedFixture(overrides = {}) {
   };
 }
 
+test("waits for an immediate fork parent before admitting the child", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        forkDependency: {
+          status: "waiting",
+          dependency: {
+            repositoryId: 41,
+            name: "parent",
+            repository: "owner/parent",
+            canonicalUrl: "https://github.com/owner/parent",
+            issueNumber: 201,
+          },
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "waiting-on-fork-parent",
+    dependency: {
+      repositoryId: 41,
+      name: "parent",
+      repository: "owner/parent",
+      canonicalUrl: "https://github.com/owner/parent",
+      issueNumber: 201,
+    },
+  });
+});
+
+test("admits a cycle-safe stop with an explicit maintainer warning", () => {
+  const decision = evaluateProjectSubmission(
+    admittedFixture({
+      forkDependency: {
+        status: "not-listed",
+        dependency: {
+          repositoryId: 41,
+          name: "parent",
+          repository: "owner/parent",
+          canonicalUrl: "https://github.com/owner/parent",
+          issueNumber: null,
+        },
+        attention: "cycle",
+      },
+    }),
+  );
+
+  expect(decision).toMatchObject({
+    status: "admitted",
+    warnings: [
+      "Fork ancestry contains a repeated repository ID and requires maintainer review.",
+    ],
+  });
+});
+
 test("closes a permanent repository-ID duplicate before PR generation", () => {
   const decision = evaluateProjectSubmission(
     admittedFixture({
+      inflightDuplicate: {
+        issueNumber: 72,
+        issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+        prNumber: 73,
+        prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
+        identity: githubIdentity,
+      },
       existingProjects: [
         {
           id: "old-owner-old-name",
@@ -65,6 +128,26 @@ test("closes a permanent repository-ID duplicate before PR generation", () => {
   expect(decision).toMatchObject({
     status: "duplicate",
     existingProject: { id: "old-owner-old-name" },
+  });
+});
+
+test("recognizes an in-flight duplicate before admission", () => {
+  const inflightDuplicate = {
+    issueNumber: 72,
+    issueUrl: "https://github.com/Tavernary/Tavernary/issues/72",
+    prNumber: 73,
+    prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
+    identity: githubIdentity,
+  };
+
+  expect(
+    evaluateProjectSubmission(admittedFixture({ inflightDuplicate })),
+  ).toMatchObject({
+    status: "inflight-duplicate",
+    existingSubmission: {
+      issueNumber: 72,
+      prNumber: 73,
+    },
   });
 });
 

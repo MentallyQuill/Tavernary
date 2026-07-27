@@ -142,12 +142,9 @@ jobs:
         run: |
           npm run catalog:validate
           npm run catalog:build
-      - name: Commit generated paths
-        id: commit
+      - name: Prepare generated path set
+        id: paths
         shell: bash
-        env:
-          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
-          BRANCH: ${{ steps.state.outputs.branch }}
         run: |
           set -euo pipefail
           project_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).project_id")"
@@ -172,6 +169,45 @@ jobs:
           done < "${RUNNER_TEMP}/previous-generated-paths.txt"
           mapfile -t generated_paths < <(printf '%s\n' "${generated_paths[@]}" | sort -u)
           printf '%s\n' "${generated_paths[@]}" > "${RUNNER_TEMP}/generated-paths.txt"
+          echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
+      - name: Reject conflicting open submission paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          pulls_path="${RUNNER_TEMP}/open-project-submission-pr-pages.json"
+          gh api --paginate --slurp \
+            "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" \
+            > "$pulls_path"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { findSubmissionPathCollision } from './scripts/submissions/project-submission-pr.mjs';
+            const pages = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const generatedPaths = fs.readFileSync(process.argv[2], 'utf8')
+              .split(/\r?\n/u).filter(Boolean);
+            const collision = findSubmissionPathCollision({
+              repository: process.env.GITHUB_REPOSITORY,
+              issueNumber: Number(process.env.ISSUE_NUMBER),
+              generatedPaths,
+              pulls: pages.flat(),
+            });
+            if (collision) {
+              throw new Error(
+                'Generated paths already belong to issue #' +
+                collision.issueNumber + ' and PR #' + collision.prNumber +
+                ': ' + collision.prUrl + ' (' + collision.paths.join(', ') + ')',
+              );
+            }
+          " "$pulls_path" "${RUNNER_TEMP}/generated-paths.txt"
+      - name: Commit generated paths
+        id: commit
+        shell: bash
+        env:
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+          BRANCH: ${{ steps.state.outputs.branch }}
+          PROJECT_ID: ${{ steps.paths.outputs.project_id }}
+        run: |
+          set -euo pipefail
+          mapfile -t generated_paths < "${RUNNER_TEMP}/generated-paths.txt"
           git add -- "${generated_paths[@]}"
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -188,7 +224,7 @@ jobs:
           {
             echo "changed=true"
             echo "head_sha=$head_sha"
-            echo "project_id=$project_id"
+            echo "project_id=$PROJECT_ID"
           } >> "$GITHUB_OUTPUT"
       - name: Create or update maintainer review PR
         if: steps.commit.outputs.changed == 'true'

@@ -97,6 +97,13 @@ function validateSnapshotEvidence(snapshot) {
   const { activity, repository } = snapshot;
   const errors = [];
 
+  if (repository.parent?.id === repository.id) {
+    errors.push(`${id}: repository cannot be its own fork parent`);
+  }
+  if (repository.parent && repository.fork !== true) {
+    errors.push(`${id}: non-fork repository cannot have a fork parent`);
+  }
+
   if (
     repository.head_committed_at === null &&
     activity.evidence_status !== "provisional"
@@ -244,6 +251,7 @@ export async function validateCatalog(options = {}) {
   );
   const ids = new Set();
   const sources = new Set();
+  const repositoryIds = new Set();
   const errors = [];
 
   if (!validateRefreshManifest(refreshManifest)) {
@@ -281,6 +289,11 @@ export async function validateCatalog(options = {}) {
         (!Number.isInteger(repositoryId) || repositoryId <= 0)
       ) {
         errors.push(`${id}: GitHub repository_id must be null or positive`);
+      } else if (repositoryId !== null) {
+        if (repositoryIds.has(repositoryId)) {
+          errors.push(`${id}: duplicate GitHub repository_id ${repositoryId}`);
+        }
+        repositoryIds.add(repositoryId);
       }
     } else if (record.source?.type === "github-organization") {
       if (id !== approvedOrganizationRecord.id) {

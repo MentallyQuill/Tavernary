@@ -38,6 +38,7 @@ function project(
       },
     ],
     searchableText: `${id} extension automation`,
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",
@@ -81,6 +82,134 @@ describe("project card", () => {
       configurable: true,
       value: originalMatchMedia,
     });
+  });
+
+  test("renders a published upstream as a sibling relationship action", () => {
+    const onViewRelationship = vi.fn();
+    const child = project("vectfox", {
+      name: "VectFox",
+      fork: {
+        parentName: "VectHare",
+        parentProjectId: "vecthare",
+        status: "published",
+      },
+    });
+    const { container } = render(
+      <ProjectGrid
+        projects={[child]}
+        now="2026-07-23T00:00:00Z"
+        relationshipChildId=""
+        onViewRelationship={onViewRelationship}
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
+        }}
+      />,
+    );
+
+    const shell = container.querySelector(".project-card-shell");
+    const repositoryLink = screen.getByRole("link", { name: "VectFox" });
+    const relationshipButton = screen.getByRole("button", {
+      name: "View relationship between VectHare and VectFox",
+    });
+    const relationshipControl = shell?.querySelector(
+      ".project-relationship-control",
+    );
+    expect(relationshipControl).toHaveTextContent("Fork of VectHare");
+    expect(relationshipControl).toHaveTextContent("·");
+    expect(relationshipControl).toHaveTextContent("View relationship");
+    expect(repositoryLink).not.toContainElement(relationshipButton);
+    expect(relationshipButton.parentElement?.parentElement).toBe(shell);
+
+    fireEvent.click(relationshipButton);
+    expect(onViewRelationship).toHaveBeenCalledWith("vectfox");
+  });
+
+  test("keeps delisted upstream provenance static and private", () => {
+    render(
+      <ProjectGrid
+        projects={[
+          project("vectfox", {
+            name: "VectFox",
+            fork: {
+              parentName: "VectHare",
+              parentProjectId: null,
+              status: "not-listed",
+            },
+          }),
+        ]}
+        now="2026-07-23T00:00:00Z"
+        relationshipChildId=""
+        onViewRelationship={vi.fn()}
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Fork of VectHare")).toBeVisible();
+    expect(screen.getByText("Upstream not listed")).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: /relationship/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "VectHare" })).toBeNull();
+  });
+
+  test("omits the redundant child action while preserving a forked parent's upward action", () => {
+    const onViewRelationship = vi.fn();
+    const parent = project("parent", {
+      name: "Parent",
+      fork: {
+        parentName: "Grandparent",
+        parentProjectId: "grandparent",
+        status: "published",
+      },
+    });
+    const child = project("child", {
+      name: "Child",
+      fork: {
+        parentName: "Parent",
+        parentProjectId: "parent",
+        status: "published",
+      },
+    });
+    render(
+      <ProjectGrid
+        projects={[parent, child]}
+        now="2026-07-23T00:00:00Z"
+        relationshipChildId="child"
+        onViewRelationship={onViewRelationship}
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "View relationship between Grandparent and Parent",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("button", {
+        name: "View relationship between Parent and Child",
+      }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Fork of Parent")).toBeVisible();
   });
 
   test.each([

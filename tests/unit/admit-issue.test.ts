@@ -1,6 +1,7 @@
 import { expect, test, vi } from "vitest";
 
 import {
+  issueRouteFromLabels,
   issueAdmissionOutputs,
   listOpenIssues,
   processIssueAdmission,
@@ -9,7 +10,8 @@ import {
 function event(
   number = 11,
   association = "NONE",
-  action: "opened" | "reopened" = "opened",
+  action: "opened" | "reopened" | "edited" = "opened",
+  labels: Array<string | { name: string }> = [],
 ) {
   return {
     action,
@@ -20,7 +22,7 @@ function event(
       created_at: `2026-07-25T00:${String(number).padStart(2, "0")}:00Z`,
       author_association: association,
       user: { id: 42, login: "submitter" },
-      labels: [],
+      labels,
     },
   };
 }
@@ -180,9 +182,63 @@ test("trusted collaborators bypass lookup and admission limits", async () => {
 
 test("reports admission outputs for downstream workflow dispatch", () => {
   expect(
-    issueAdmissionOutputs({ admitted: true }, event(21, "COLLABORATOR")),
+    issueAdmissionOutputs(
+      { admitted: true },
+      event(21, "COLLABORATOR", "opened", ["kit-submission"]),
+    ),
   ).toEqual({
     admitted: "true",
     issue_number: "21",
+    route: "kit",
   });
+});
+
+test.each([
+  [["project-submission"], "project"],
+  [[{ name: "project-submission" }], "project"],
+  [["kit-submission"], "kit"],
+  [[{ name: "kit-submission" }], "kit"],
+  [["kit-withdrawal"], "kit-withdrawal"],
+  [[{ name: "kit-withdrawal" }], "kit-withdrawal"],
+  [[], "none"],
+  [["bug"], "none"],
+  [["project-submission", "kit-submission"], "conflict"],
+  [["project-submission", "kit-withdrawal"], "conflict"],
+  [["kit-submission", "kit-withdrawal"], "conflict"],
+  [["project-submission", "kit-submission", "kit-withdrawal"], "conflict"],
+])("classifies issue labels %j as route %s", (labels, expected) => {
+  expect(issueRouteFromLabels(labels)).toBe(expected);
+});
+
+test("routes an admitted issue edit without changing admission state", async () => {
+  const request = vi.fn();
+
+  await expect(
+    processIssueAdmission({
+      event: event(21, "NONE", "edited", [
+        { name: "issue-admitted" },
+        { name: "project-submission" },
+      ]),
+      request,
+    }),
+  ).resolves.toMatchObject({
+    admitted: true,
+    reason: "existing-admission",
+  });
+  expect(request).not.toHaveBeenCalled();
+});
+
+test("does not route an unadmitted issue edit", async () => {
+  const request = vi.fn();
+
+  await expect(
+    processIssueAdmission({
+      event: event(21, "NONE", "edited", ["kit-submission"]),
+      request,
+    }),
+  ).resolves.toMatchObject({
+    admitted: false,
+    reason: "existing-admission",
+  });
+  expect(request).not.toHaveBeenCalled();
 });

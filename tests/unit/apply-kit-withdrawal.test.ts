@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { applyKitWithdrawal } from "../../scripts/kits/apply-withdrawal.mjs";
+import {
+  applyKitWithdrawal,
+  fetchWithdrawalIssue,
+} from "../../scripts/kits/apply-withdrawal.mjs";
 
 const kit = {
   schema_version: 1 as const,
@@ -54,4 +57,62 @@ test("preserves the original tombstone on a withdrawal retry", () => {
       now: "2026-07-25T18:00:00.000Z",
     }),
   ).toEqual(withdrawn);
+});
+
+test("fetches an open labeled withdrawal issue for dispatched processing", async () => {
+  const issue = {
+    number: 88,
+    state: "open",
+    title: "A readable withdrawal title",
+    body: "### Kit ID\n\nstory-kit-241",
+    labels: [{ name: "kit-withdrawal" }],
+    user: { id: 42, login: "author" },
+  };
+  const requestedPaths: string[] = [];
+
+  await expect(
+    fetchWithdrawalIssue({
+      repository: "MentallyQuill/Tavernary",
+      issueNumber: 88,
+      request: async (path: string) => {
+        requestedPaths.push(path);
+        return issue;
+      },
+    }),
+  ).resolves.toEqual(issue);
+  expect(requestedPaths).toEqual(["/repos/MentallyQuill/Tavernary/issues/88"]);
+});
+
+test("rejects a dispatched issue without the withdrawal label", async () => {
+  await expect(
+    fetchWithdrawalIssue({
+      repository: "MentallyQuill/Tavernary",
+      issueNumber: 88,
+      request: async () => ({
+        number: 88,
+        state: "open",
+        labels: [{ name: "project-submission" }],
+        user: { id: 42, login: "author" },
+      }),
+    }),
+  ).rejects.toThrow("Issue is not an open Kit withdrawal request.");
+});
+
+test.each([
+  { user: { id: "42", login: "author" } },
+  { user: { id: 0, login: "author" } },
+  { user: undefined },
+])("rejects a withdrawal issue without a numeric author", async ({ user }) => {
+  await expect(
+    fetchWithdrawalIssue({
+      repository: "MentallyQuill/Tavernary",
+      issueNumber: 88,
+      request: async () => ({
+        number: 88,
+        state: "open",
+        labels: [{ name: "kit-withdrawal" }],
+        user,
+      }),
+    }),
+  ).rejects.toThrow("Kit withdrawal issue has no valid numeric author.");
 });

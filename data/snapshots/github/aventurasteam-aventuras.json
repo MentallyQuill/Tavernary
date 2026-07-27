@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "project_id": "aventurasteam-aventuras",
+  "repository": {
+    "id": 1126279204,
+    "owner": "AventurasTeam",
+    "name": "Aventuras",
+    "url": "https://github.com/AventurasTeam/Aventuras",
+    "description": "A frontend for LLM-based text adventure",
+    "default_branch": "master",
+    "head_sha": "6877c4c0038fd5ea93b61c6b6be478c0ae91f20d",
+    "head_committed_at": "2026-07-20T13:10:12.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2026-01-01T15:03:20.000Z",
+    "size_kb": 44504
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-20T13:10:12.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-20T13:10:12.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T19:50:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-15T16:39:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-11T13:21:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-27T21:57:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-16T17:22:22.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-06-10T13:01:19.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T21:24:49.899Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "6877c4c0038fd5ea93b61c6b6be478c0ae91f20d"
+  },
+  "community": {
+    "stargazers_count": 167,
+    "forks_count": 27,
+    "subscribers_count": 14,
+    "aggregate": 208
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-27T21:24:49.899Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "munimunigamer", "type": "User" },
+      { "login": "unkarelian", "type": "User" },
+      { "login": "failerko", "type": "User" },
+      { "login": "a-frazier", "type": "User" },
+      { "login": "Javedz678", "type": "User" },
+      { "login": "Pento95", "type": "User" },
+      { "login": "Fensterbank", "type": "User" },
+      { "login": "surfacecoaster", "type": "User" },
+      { "login": "EventideMiles", "type": "User" },
+      { "login": "vire70", "type": "User" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T21:24:49.899Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
