@@ -4,6 +4,8 @@ export interface AdmissionEvent {
   action: "opened" | "reopened" | "edited";
   repository: { full_name: string };
   issue: AdmissionIssue & {
+    title?: string;
+    body?: string;
     state: string;
     author_association: string;
     user: { id: number; login: string };
@@ -22,6 +24,14 @@ export type IssueRoute =
 export function issueRouteFromLabels(
   labels?: Array<string | { name: string }>,
 ): IssueRoute;
+
+export function issueRouteFromBody(body?: string): IssueRoute;
+
+export function effectiveIssueRoute(issue?: {
+  title?: string;
+  body?: string;
+  labels?: Array<string | { name: string }>;
+}): IssueRoute;
 
 export function listOpenIssues(input: {
   repository: string;

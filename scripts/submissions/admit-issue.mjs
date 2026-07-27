@@ -42,6 +42,44 @@ export function issueRouteFromLabels(labels = []) {
   return routes[0]?.[1] ?? "none";
 }
 
+function issueHeadings(body = "") {
+  return new Set(
+    String(body)
+      .split(/^### /m)
+      .slice(1)
+      .map((section) => section.split(/\r?\n/, 1)[0]?.trim())
+      .filter(Boolean),
+  );
+}
+
+export function issueRouteFromBody(body = "") {
+  const headings = issueHeadings(body);
+  const routes = [
+    {
+      route: "project",
+      headings: ["Project Type", "Project URL", "Frontend-independent"],
+    },
+    {
+      route: "kit",
+      headings: ["Kit title", "Kit description", "Kit manifest"],
+    },
+    {
+      route: "kit-withdrawal",
+      headings: ["Kit ID", "Kit share URL", "Confirmation"],
+    },
+  ];
+  const matches = routes.filter(({ headings: required }) =>
+    required.every((heading) => headings.has(heading)),
+  );
+  if (matches.length > 1) return "conflict";
+  return matches[0]?.route ?? "none";
+}
+
+export function effectiveIssueRoute(issue = {}) {
+  const explicit = issueRouteFromLabels(issue.labels);
+  return explicit === "none" ? issueRouteFromBody(issue.body) : explicit;
+}
+
 export async function listOpenIssues({ repository, creator, request }) {
   const issues = [];
   for (let page = 1; ; page += 1) {

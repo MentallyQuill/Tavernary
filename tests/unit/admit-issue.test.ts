@@ -1,11 +1,29 @@
 import { expect, test, vi } from "vitest";
 
 import {
+  effectiveIssueRoute,
+  issueRouteFromBody,
   issueRouteFromLabels,
   issueAdmissionOutputs,
   listOpenIssues,
   processIssueAdmission,
 } from "../../scripts/submissions/admit-issue.mjs";
+
+const kitBody = [
+  "### Kit title",
+  "",
+  "Super Awesome Test Kit",
+  "",
+  "### Kit description",
+  "",
+  "Testing.",
+  "",
+  "### Kit manifest",
+  "",
+  "```json",
+  '{"operation":"create","kit_id":null,"title":"Super Awesome Test Kit","description":"Testing.","project_ids":["sillytavern-sillytavern"]}',
+  "```",
+].join("\n");
 
 function event(
   number = 11,
@@ -208,6 +226,93 @@ test.each([
   [["project-submission", "kit-submission", "kit-withdrawal"], "conflict"],
 ])("classifies issue labels %j as route %s", (labels, expected) => {
   expect(issueRouteFromLabels(labels)).toBe(expected);
+});
+
+test("recovers an unlabeled Kit route from the complete structured form", () => {
+  expect(issueRouteFromBody(kitBody)).toBe("kit");
+  expect(effectiveIssueRoute({ body: kitBody, labels: [] })).toBe("kit");
+});
+
+test("recovers an unlabeled Project route from the complete structured form", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        "### Project Type",
+        "",
+        "Extension",
+        "",
+        "### Project URL",
+        "",
+        "https://github.com/example/project",
+        "",
+        "### Frontend-independent",
+        "",
+        "No",
+      ].join("\n"),
+    ),
+  ).toBe("project");
+});
+
+test("recovers an unlabeled Kit withdrawal route from the complete structured form", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        "### Kit ID",
+        "",
+        "story-kit-1",
+        "",
+        "### Kit share URL",
+        "",
+        "https://tavernary.org/?kit=story-kit-1",
+        "",
+        "### Confirmation",
+        "",
+        "- [x] I request withdrawal of this Kit.",
+      ].join("\n"),
+    ),
+  ).toBe("kit-withdrawal");
+});
+
+test("fails closed when complete structured form shapes conflict", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        kitBody,
+        "",
+        "### Kit ID",
+        "",
+        "story-kit-1",
+        "",
+        "### Kit share URL",
+        "",
+        "https://tavernary.org/?kit=story-kit-1",
+        "",
+        "### Confirmation",
+        "",
+        "- [x] I request withdrawal of this Kit.",
+      ].join("\n"),
+    ),
+  ).toBe("conflict");
+});
+
+test("does not recover a route from a partial form or title", () => {
+  expect(issueRouteFromBody("### Kit title\n\nIncomplete")).toBe("none");
+  expect(
+    effectiveIssueRoute({
+      title: "[Kit submission]: title only",
+      body: "ordinary issue body",
+      labels: [],
+    }),
+  ).toBe("none");
+});
+
+test("keeps explicit routing labels authoritative", () => {
+  expect(
+    effectiveIssueRoute({
+      body: kitBody,
+      labels: ["project-submission"],
+    }),
+  ).toBe("project");
 });
 
 test("routes an admitted issue edit without changing admission state", async () => {
