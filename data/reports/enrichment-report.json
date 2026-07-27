@@ -61,7 +61,7 @@
   "batch_size": 20,
   "concurrency": 4,
   "created_at": "2026-07-27T16:44:35.004Z",
-  "updated_at": "2026-07-27T16:44:35.004Z",
+  "updated_at": "2026-07-27T16:48:49.270Z",
   "manifest": [
     "aikohanasaki-sillytavern-ccpromptmanager",
     "aikohanasaki-sillytavern-lorebookordering",
@@ -428,7 +428,10 @@
       "completed_at": "2026-07-27T16:44:35.004Z"
     }
   },
-  "publication": null,
+  "publication": {
+    "checkpoint_commit_sha": "f0425c251f3fe26d661f979ee2d5d010705d889b",
+    "recorded_at": "2026-07-27T16:48:49.270Z"
+  },
   "deployment": null,
   "aggregates": {
     "enriched": 13,
