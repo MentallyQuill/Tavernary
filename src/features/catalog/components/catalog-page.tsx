@@ -30,6 +30,7 @@ import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
 import { CategoryNavigation } from "./category-navigation";
 import { FilterPanel, type FilterArray } from "./filter-panel";
+import { projectDisplayName } from "./project-card";
 import { ProjectGrid } from "./project-grid";
 import { SiteHeader } from "./site-header";
 
@@ -57,7 +58,7 @@ type AddedStatus = {
 };
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
-  const { query, setQuery, pushQuery } = useCatalogQuery();
+  const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery();
   const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
@@ -92,6 +93,14 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         : null,
     [catalog.projects, query.relationship],
   );
+  const relationship =
+    relationshipProjects === null
+      ? null
+      : {
+          childId: relationshipProjects[1].id,
+          childName: projectDisplayName(relationshipProjects[1].name),
+          parentName: projectDisplayName(relationshipProjects[0].name),
+        };
   const visibleProjects = relationshipProjects ?? selectedProjects;
   const selectedKits = useMemo(
     () => selectKits(catalog.kits, query.kits, query.search),
@@ -159,6 +168,12 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     );
     return () => document.body.classList.remove("compact-cards");
   }, [query.density, query.mode]);
+
+  useEffect(() => {
+    if (query.relationship && !relationshipProjects) {
+      removeRelationship();
+    }
+  }, [query.relationship, relationshipProjects, removeRelationship]);
 
   useEffect(
     () => () => {
@@ -309,7 +324,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         (query.modelFamilies?.length ?? 0) +
         (query.completionFormats?.length ?? 0) +
         query.development.length +
-        query.licenses.length;
+        query.licenses.length +
+        Number(Boolean(relationshipProjects));
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -412,8 +428,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             projects={catalog.projects}
             kits={catalog.kits}
+            relationship={relationship}
             onRemove={removeFilter}
             onRemoveKit={removeKitFilter}
+            onRemoveRelationship={removeRelationship}
             onClear={clearFilters}
           />
           {query.mode === "kits" ? (
