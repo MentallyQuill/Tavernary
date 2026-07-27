@@ -9,7 +9,7 @@ import type { SourceIdentity } from "./source-identity.mjs";
 export const submissionQueueLabels: string[];
 
 export type SourceProbeDecision =
-  | { status: "ok"; httpStatus: number }
+  | { status: "ok"; httpStatus: number | null }
   | { status: "retryable"; code: string; message: string }
   | { status: "definitive"; code: string; message: string };
 

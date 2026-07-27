@@ -471,6 +471,12 @@ export async function inspectProjectSubmissionSource(
 
   try {
     const identity = await resolveSourceIdentity(parsed, { probe });
+    if (parsed.kind === "reddit") {
+      return {
+        identity,
+        sourceProbe: { status: "ok", httpStatus: null },
+      };
+    }
     if (parsed.kind !== "reddit-share") {
       const result = await probe(identity.canonicalUrl);
       if ([404, 410].includes(result.status)) {
