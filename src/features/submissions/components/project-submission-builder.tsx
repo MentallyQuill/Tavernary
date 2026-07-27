@@ -326,7 +326,8 @@ export function ProjectSubmissionBuilder({
             }
           />
           <p className="submission-hint" id="project-url-hint">
-            Frontends and Extensions require a public GitHub repository.
+            Frontends and Extensions require a public GitHub or Codeberg
+            repository.
           </p>
           <InlineError
             id="project-url-error"
