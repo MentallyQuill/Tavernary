@@ -1,9 +1,9 @@
 # Kit Maintenance
 
-Kit publication and author edits use the issue workflows. Discovery is
-community-driven: community support feeds Trending, with no maintainer-curated
-endorsement. The following exceptional maintainer operation uses ordinary Git
-history so every change is reviewable.
+Valid Kit creates and author edits publish automatically through the issue
+workflows. Discovery is community-driven: community support feeds Trending,
+with no maintainer-curated endorsement. The following exceptional maintainer
+operation uses ordinary Git history so every change is reviewable.
 
 ## Safety repair
 

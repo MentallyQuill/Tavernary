@@ -70,8 +70,9 @@ Other public issue flows are queue-only and reviewed manually:
 - `submission-pr-open` while the generated PR is the active review surface
 - `submission-declined` after that PR is closed without merging
 
-`triage-kit-issue.mjs` retains the Kit-specific
-`needs-maintainer-review`/`needs-information`/`duplicate-candidate` flow.
+`triage-kit-issue.mjs` owns the Kit-specific
+`kit-publication-ready`/`needs-information`/`duplicate-candidate` flow. A
+near-duplicate warning does not block publication; an exact duplicate does.
 
 The triage workflow posts/updates one comment marker:
 
@@ -80,6 +81,10 @@ The triage workflow posts/updates one comment marker:
 
 Project triage does not publish a catalog record. An admitted decision
 dispatches the separate generation workflow.
+
+Valid Kit triage dispatches the separate serialized Kit publisher
+automatically. Invalid Kit issues remain open for correction; edit the issue to
+rerun triage.
 
 ## Project submission path
 
@@ -225,17 +230,32 @@ Workflow set:
 - `.github/ISSUE_TEMPLATE/05-kit-submission.yml` issues route to
   `[Kit submission]`.
 - `.github/workflows/triage-kit-submission.yml` applies labels:
-  `needs-maintainer-review`, `needs-information`, `duplicate-candidate`.
-- `.github/workflows/apply-kit-submission.yml` applies approved edit/create issues:
-  - validates issue content again
+  `kit-publication-ready`, `needs-information`, `duplicate-candidate`.
+- Valid triage dispatches `.github/workflows/apply-kit-submission.yml`
+  automatically with the issue number.
+- `.github/workflows/apply-kit-submission.yml` applies valid edit/create issues:
+  - re-fetches and validates issue content again, including the shared
+    severe-language policy
   - writes/updates `data/registry/kits/<kit-id>.json`
   - validates and builds catalog
   - commits `feat(kits): publish issue #<n>`
-  - dispatches deploy workflow
+  - serializes writes under `kit-registry` concurrency
+  - treats an unchanged edit retry as a timestamp-preserving no-op
+  - dispatches the deploy workflow for the exact pushed SHA
+  - applies `kit-published` and closes the source issue only after deployment
+    dispatch succeeds
 - `.github/workflows/apply-kit-withdrawal.yml` + `scripts/kits/apply-withdrawal.mjs`:
   - only Kit author numeric ID may withdraw
   - writes withdrawn tombstone status
   - closes withdrawal issue and deploys.
+
+If Kit validation fails, correct the manifest by editing the open issue.
+Automation reruns triage. If publication fails after valid triage, rerun the
+failed publisher from GitHub Actions; its current-`main` synchronization and
+idempotent apply rules make retries safe. Do not hand-edit generated registry
+or catalog artifacts. Label or issue-closure bookkeeping failures after the
+canonical push and exact-SHA deployment request appear as warnings and do not
+turn successful publication into a false failure.
 
 ## Identity and moderation maintenance
 

@@ -1,14 +1,14 @@
 # Kit submission and moderation workflows
 
-Kits are curated, community-authored project collections. They are submitted and
-moderated through issue forms, not direct registry edits.
+Kits are community-authored project collections. They are submitted and
+published through issue automation, not direct registry edits.
 
 ## What is a Kit
 
 - A Kit is a named ordered list of 3-50 published project IDs.
 - Community support feeds Trending; Tavernary does not assign editorial
   endorsements.
-- Kits are stable JSON records in `data/registry/kits/*.json` after maintainer
+- Kits are stable JSON records in `data/registry/kits/*.json` after automated
   publication.
 
 ## Submit a new Kit
@@ -26,19 +26,32 @@ Required safety gates in the submission path:
 - `id` uniqueness and duplicate-detection checks;
 - 3-50 project IDs and all IDs must exist in the catalog;
 - title/description/project ordering validation;
-- source issue metadata capture for review.
+- author identity and blocked-user checks;
+- severe-language checks for the title and description; and
+- source issue metadata capture.
 
-The pending draft is not published. A maintainer must review and approve before
-record publication.
+The builder prevents submission when its title or description contains a term
+from Tavernary's narrow severe-language policy. Common profanity is not the
+target of this rule, and the matched term is not repeated in the error message.
+
+After GitHub admits the issue, Kit triage revalidates the latest manifest. A
+valid issue publishes automatically: the publisher validates again, updates
+the registry, runs repository gates, pushes `main`, requests deployment for the
+exact commit SHA, and closes the issue. A correctable failure remains open with
+`needs-information`; edit the issue and automation retries without consuming
+another issue slot.
 
 ## Edit an existing Kit
 
 Use the same `05-kit-submission.yml` form with operation `edit` and the published
 Kit issue ID.
 
-- Edits produce a new pending draft version, not an immediate overwrite.
-- The published Kit file changes only after maintainer review and workflow apply.
-- Timestamps update on approved publication only.
+- The published Kit remains unchanged until server validation and publication
+  gates pass.
+- Only the Kit author's GitHub numeric identity may publish an edit.
+- Timestamps update only when canonical Kit content or the displayed author
+  login changes.
+- An unchanged retry is a no-op.
 
 ## Report unsafe or low-quality Kits
 
@@ -73,7 +86,8 @@ Withdrawal requires the issue author GitHub numeric identity to match the Kit
 - Do not edit `data/registry/kits/*.json` directly.
 - Do not share private issue details publicly.
 - Do not use Kit links as proof-of-trust or endorsement.
-- Kit publication is moderation-bound; community support is separate from safety.
+- Automated publication does not make a Kit an endorsement; community support
+  remains separate from safety.
 
 For maintainer-side actions, see:
 

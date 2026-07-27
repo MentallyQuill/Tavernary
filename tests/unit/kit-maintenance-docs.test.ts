@@ -63,3 +63,27 @@ test("documents the current Kit Builder batch-selection behavior", async () => {
     expect(legacySpec).toContain("Superseded interaction");
   }
 });
+
+test("documents automatic Kit publication and severe-language revalidation", async () => {
+  const [form, contributorGuide, submissionFlow, maintenance, runbook] =
+    await Promise.all([
+      readFile(".github/ISSUE_TEMPLATE/05-kit-submission.yml", "utf8"),
+      readFile("docs/contributing/kits.md", "utf8"),
+      readFile("docs/contributing/submission-and-review.md", "utf8"),
+      readFile("docs/maintenance/kits.md", "utf8"),
+      readFile("docs/maintenance/operations-runbook.md", "utf8"),
+    ]);
+  const publicCopy = `${form}\n${contributorGuide}\n${submissionFlow}`;
+
+  expect(publicCopy).toMatch(/publish(?:es|ed)? automatically/i);
+  expect(publicCopy).toMatch(/title and (?:description|summary)/i);
+  expect(publicCopy).toMatch(/severe language/i);
+  expect(publicCopy).toMatch(/edit the issue/i);
+  expect(publicCopy).not.toMatch(/Kit.*maintainer review/i);
+
+  expect(maintenance).toContain("## Safety repair");
+  expect(runbook).toContain("kit-publication-ready");
+  expect(runbook).toContain("apply-kit-submission.yml");
+  expect(runbook).toMatch(/closes the source issue/i);
+  expect(runbook).toMatch(/exact.*SHA/i);
+});

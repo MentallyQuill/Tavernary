@@ -1,5 +1,5 @@
 name: Submit or edit a Kit
-description: Propose a new Kit or an author revision for maintainer review.
+description: Create a new Kit or submit an author revision for automatic validation and publication.
 title: "[Kit submission]: "
 labels:
   - kit-submission
@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Build a new Kit in Tavernary, or use **Edit Kit** on a published Kit, before submitting this form. Submissions are validated automatically and published only after maintainer review. The live Kit remains unchanged while an edit is reviewed.
+        Build a new Kit in Tavernary, or use **Edit Kit** on a published Kit, before submitting this form. Valid submissions publish automatically. Tavernary checks the title and description for severe language in the builder and rechecks the manifest here. If validation fails, edit this issue to correct it and automation will retry.
   - type: input
     id: kit-title
     attributes:

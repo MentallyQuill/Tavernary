@@ -83,15 +83,21 @@ through normal gates.
 
 ### Kits
 
-- Kit edits are submitted with `05-kit-submission.yml`, validated by
-  `triage-kit-submission.yml`, then applied with `apply-kit-submission.yml` after
-  maintainer review.
+- Kit creates and author-owned edits use `05-kit-submission.yml`.
 - Kit submissions are prepared by the in-browser builder and serialized into a
-  stable JSON manifest on submit.
+  stable JSON manifest on submit. The builder blocks severe language in the
+  title and description.
+- `triage-kit-submission.yml` validates the latest manifest, including the same
+  severe-language policy used by the Kit Builder.
+- A valid issue dispatches `apply-kit-submission.yml` automatically. The
+  publisher revalidates, writes the registry record, runs repository gates,
+  pushes `main`, requests exact-SHA Pages deployment, and closes the issue.
+- A correctable validation failure remains open. Edit the issue and automation
+  reruns without consuming another issue slot.
 
-New Kits and edits are stored as pending records, while the currently published
-Kit remains unchanged.
-Maintainers review support signal, eligibility, and safety fit before publication.
+The currently published Kit remains unchanged until every publication gate
+passes. Near-duplicate composition is a non-blocking warning; exact duplicate
+project sets remain invalid.
 Withdrawals are submitted with `07-kit-withdrawal.yml` and applied via
 `apply-kit-withdrawal.yml`; GitHub identity must match the recorded author.
 
@@ -100,8 +106,9 @@ Withdrawals are submitted with `07-kit-withdrawal.yml` and applied via
 Issue labels include both queue ownership (`project-submission`,
 `project-information`, `website-bug`, `kit-submission`, `kit-report`,
 `kit-withdrawal`) and automation state (`needs-information`,
-`submission-pr-open`, `submission-declined`). Publication still occurs only
-through a maintainer merge.
+`kit-publication-ready`, `kit-published`, `submission-pr-open`,
+`submission-declined`). Project publication still occurs through a maintainer
+merge; valid Kit creates and edits publish automatically.
 
 For full Kit maintainer constraints and safety paths, see
 [Kit submission and moderation](kits.md) and
@@ -121,7 +128,7 @@ See maintainer operating flow for exact sequencing in
 
 - Keep contributions to one intent per issue.
 - Include evidence links (release notes, announcements, docs, changelog).
-- Do not bypass manual review: submission is a request, maintainer merge is
-  publication.
+- Do not bypass the Project review PR or the reviewed Kit safety-repair path.
+- Correct an automatically rejected Kit by editing its open issue.
 - Keep generated artifacts deterministic and avoid hand-editing generated files
   outside the approved scripts.
