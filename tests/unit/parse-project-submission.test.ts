@@ -129,3 +129,91 @@ _No response_
     },
   });
 });
+
+test("parses text Preset compatibility fields into manifest version 2", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+System Preset
+### Project URL
+https://github.com/Owner/Preset
+### Project Name
+Example
+### Supported frontends
+SillyTavern
+### Frontend-independent
+No
+### Supported model families
+claude
+gemini
+### Other model family
+FutureModel
+### Completion formats
+chat-completion, text-completion
+### Project manifest
+_No response_
+`);
+
+  expect(result).toMatchObject({
+    valid: true,
+    source: "headings",
+    manifest: {
+      schema_version: 2,
+      project_type: "preset",
+      frontend_independent: false,
+      preset_compatibility: {
+        model_families: {
+          known_ids: ["claude", "gemini"],
+          other: ["FutureModel"],
+        },
+        completion_formats: ["chat-completion", "text-completion"],
+      },
+    },
+  });
+});
+
+test("rejects invalid frontend-independent fallback text", () => {
+  expect(
+    parseProjectSubmissionIssue(`
+### Project Type
+Frontend
+### Project URL
+https://github.com/Owner/Frontend
+### Frontend-independent
+Sometimes
+### Project manifest
+_No response_
+`),
+  ).toEqual({
+    valid: false,
+    source: "headings",
+    errors: ["Frontend-independent must be Yes or No."],
+  });
+});
+
+test("rejects unknown text compatibility values", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+System Preset
+### Project URL
+https://github.com/Owner/Preset
+### Frontend-independent
+No
+### Supported model families
+claude
+unknown-family
+### Completion formats
+chat-completion
+unknown-format
+### Project manifest
+_No response_
+`);
+
+  expect(result).toMatchObject({
+    valid: false,
+    source: "headings",
+    errors: expect.arrayContaining([
+      "Unknown model family: unknown-family.",
+      "Unknown completion format: unknown-format.",
+    ]),
+  });
+});

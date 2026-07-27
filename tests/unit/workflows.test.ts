@@ -121,7 +121,11 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
     true,
   );
   expect(publication.on.issues).toBeUndefined();
-  expect(withdrawal.on.issues.types).toEqual(["opened", "edited"]);
+  expect(withdrawal.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
+  expect(withdrawal.on.issues).toBeUndefined();
   for (const document of [publication, withdrawal]) {
     expect(document.permissions).toEqual({
       contents: "write",
@@ -141,7 +145,12 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
   expect(publicationSource).toContain("kit-published");
   expect(publicationSource).toContain("workflow run deploy-pages.yml");
-  expect(withdrawalSource).toContain("github.event.issue.user.id");
+  expect(withdrawalSource).toContain(
+    "ISSUE_NUMBER: ${{ inputs.issue_number }}",
+  );
+  expect(withdrawalSource).toContain(
+    "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+  );
   expect(withdrawalSource).not.toMatch(
     /github\.event\.issue\.user\.login\s*==/,
   );
@@ -608,7 +617,7 @@ test("triage dispatches admitted projects without repository write access", asyn
     "utf8",
   );
 
-  expect(triage.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
   expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
     required: true,
     type: "number",
@@ -619,17 +628,8 @@ test("triage dispatches admitted projects without repository write access", asyn
     actions: "write",
   });
   expect(triage.concurrency["cancel-in-progress"]).toBe(true);
-  expect(triage.concurrency.group).toContain(
-    "${{ inputs.issue_number || github.event.issue.number }}",
-  );
-  expect(source).toContain("issue-admitted");
-  expect(source).toContain("github.event.issue.state == 'open'");
-  expect(source).toContain("github.event.label.name == 'issue-admitted'");
-  expect(source).toContain("github.event.action == 'edited'");
-  expect(source).toContain("github.event_name == 'workflow_dispatch'");
-  expect(source).toContain(
-    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
-  );
+  expect(triage.concurrency.group).toContain("${{ inputs.issue_number }}");
+  expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run generate-project-submission.yml");
   expect(source).not.toContain("npm ci");
@@ -668,6 +668,41 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
+test("retries fork dependencies after registry or upstream review changes", async () => {
+  const retry = await workflow("retry-fork-dependencies");
+  const source = await readFile(
+    resolve(workflowDirectory, "retry-fork-dependencies.yml"),
+    "utf8",
+  );
+
+  expect(retry.on.push).toEqual({
+    branches: ["main"],
+    paths: ["data/registry/projects/**"],
+  });
+  expect(retry.on.workflow_dispatch.inputs.upstream_issue_number).toMatchObject(
+    {
+      required: false,
+      type: "number",
+    },
+  );
+  expect(retry.permissions).toEqual({
+    contents: "read",
+    issues: "read",
+    actions: "write",
+  });
+  expect(retry.concurrency).toEqual({
+    group: "retry-fork-dependencies",
+    "cancel-in-progress": false,
+  });
+  expect(source).toContain(
+    "node scripts/submissions/retry-fork-dependencies.mjs",
+  );
+  expect(source).toContain(
+    "UPSTREAM_ISSUE_NUMBER: ${{ inputs.upstream_issue_number }}",
+  );
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
 test("keeps Kit triage registry-read-only and dependency-free", async () => {
   const document = await workflow("triage-kit-submission");
   const source = await readFile(
@@ -675,7 +710,7 @@ test("keeps Kit triage registry-read-only and dependency-free", async () => {
     "utf8",
   );
 
-  expect(document.on.issues.types).toEqual(["labeled", "edited"]);
+  expect(Object.keys(document.on)).toEqual(["workflow_dispatch"]);
   expect(document.on.workflow_dispatch.inputs.issue_number).toMatchObject({
     required: true,
     type: "number",
@@ -686,10 +721,7 @@ test("keeps Kit triage registry-read-only and dependency-free", async () => {
     actions: "write",
   });
   expect(document.concurrency["cancel-in-progress"]).toBe(true);
-  expect(source).toContain("github.event_name == 'workflow_dispatch'");
-  expect(source).toContain(
-    "ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}",
-  );
+  expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
   expect(source).not.toContain("npm ci");
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
@@ -727,6 +759,17 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   ).toBeLessThan(source.indexOf("git rebase origin/main"));
   expect(source).toContain("previous-generated-paths.txt");
   expect(source).toContain("Refusing unsafe generated path");
+  expect(source).toContain("Prepare generated path set");
+  expect(source).toContain("Reject conflicting open submission paths");
+  expect(source).toContain("findSubmissionPathCollision");
+  expect(source).toContain("gh api --paginate --slurp");
+  expect(source).toContain("generated-paths.txt");
+  expect(
+    source.indexOf("Reject conflicting open submission paths"),
+  ).toBeLessThan(source.indexOf("git commit -m"));
+  expect(
+    source.indexOf("Reject conflicting open submission paths"),
+  ).toBeLessThan(source.indexOf("git push origin"));
   expect(source).toContain("labels.includes('issue-admitted')");
   expect(source).toContain("Refresh and revalidate issue before PR mutation");
   expect(source).toContain("Refresh and revalidate issue before labeling");
@@ -757,6 +800,7 @@ test("handles submission closure from default-branch code only", async () => {
     contents: "write",
     issues: "write",
     "pull-requests": "read",
+    actions: "write",
   });
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
@@ -769,6 +813,11 @@ test("handles submission closure from default-branch code only", async () => {
     /gh api --method POST\s+\\\s+"repos\/\$\{GITHUB_REPOSITORY\}\/issues\/\$\{ISSUE_NUMBER\}\/labels"/,
   );
   expect(source).not.toContain("github.event.pull_request.head.ref }}");
+  expect(source).toContain("gh workflow run retry-fork-dependencies.yml");
+  expect(source).toContain('-f upstream_issue_number="$UPSTREAM_ISSUE_NUMBER"');
+  expect(source.indexOf("Synchronize issue lifecycle")).toBeLessThan(
+    source.indexOf("Retry fork dependents"),
+  );
 });
 
 test("continues admitted submissions in the admission run", async () => {
@@ -778,7 +827,7 @@ test("continues admitted submissions in the admission run", async () => {
     "utf8",
   );
 
-  expect(admission.on.issues.types).toEqual(["opened", "reopened"]);
+  expect(admission.on.issues.types).toEqual(["opened", "reopened", "edited"]);
   expect(admission.permissions).toEqual({
     contents: "read",
     issues: "write",
@@ -792,6 +841,12 @@ test("continues admitted submissions in the admission run", async () => {
   expect(source).toContain("steps.admission.outputs.admitted == 'true'");
   expect(source).toContain("gh workflow run triage-submission.yml");
   expect(source).toContain("gh workflow run triage-kit-submission.yml");
+  expect(source).toContain("gh workflow run apply-kit-withdrawal.yml");
+  expect(source).toContain("steps.admission.outputs.route == 'project'");
+  expect(source).toContain("steps.admission.outputs.route == 'kit'");
+  expect(source).toContain("steps.admission.outputs.route == 'kit-withdrawal'");
+  expect(source).toContain("steps.admission.outputs.route == 'conflict'");
+  expect(source).not.toContain("startsWith(github.event.issue.title");
   expect(source).not.toContain("npm ci");
 });
 

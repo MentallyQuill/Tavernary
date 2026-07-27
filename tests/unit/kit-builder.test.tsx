@@ -68,6 +68,7 @@ function project(
     frontends: [],
     capabilities: [],
     searchableText: id,
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: null,

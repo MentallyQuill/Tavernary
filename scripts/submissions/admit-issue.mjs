@@ -22,6 +22,26 @@ const admissionLabels = {
 
 const trustedAssociations = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
 
+function labelNames(labels = []) {
+  return new Set(
+    labels
+      .map((label) => (typeof label === "string" ? label : label?.name))
+      .filter(Boolean),
+  );
+}
+
+export function issueRouteFromLabels(labels = []) {
+  const names = labelNames(labels);
+  const routes = [
+    ["project-submission", "project"],
+    ["kit-submission", "kit"],
+    ["kit-withdrawal", "kit-withdrawal"],
+  ].filter(([label]) => names.has(label));
+
+  if (routes.length > 1) return "conflict";
+  return routes[0]?.[1] ?? "none";
+}
+
 export async function listOpenIssues({ repository, creator, request }) {
   const issues = [];
   for (let page = 1; ; page += 1) {
@@ -93,6 +113,17 @@ export async function processIssueAdmission({ event, request }) {
   const repository = event.repository.full_name;
   const currentIssue = event.issue;
   let decision;
+
+  if (event.action === "edited") {
+    return {
+      admitted:
+        currentIssue.state === "open" &&
+        labelNames(currentIssue.labels).has(ISSUE_ADMISSION_LABEL),
+      reason: "existing-admission",
+      openIssueCount: 0,
+      admittedIssueNumbers: [],
+    };
+  }
 
   if (trustedAssociations.has(currentIssue.author_association)) {
     decision = {
@@ -187,6 +218,7 @@ export function issueAdmissionOutputs(decision, event) {
   return {
     admitted: String(decision.admitted),
     issue_number: String(event.issue.number),
+    route: issueRouteFromLabels(event.issue.labels),
   };
 }
 

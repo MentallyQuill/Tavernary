@@ -12,6 +12,12 @@
     "head_committed_at": "2026-07-18T17:48:08.000Z",
     "archived": false,
     "fork": true,
+    "parent": {
+      "id": 1085333493,
+      "owner": "Coneja-Chibi",
+      "name": "VectHare",
+      "url": "https://github.com/Coneja-Chibi/VectHare"
+    },
     "created_at": "2026-05-01T09:26:16.000Z",
     "size_kb": 8798
   },
@@ -88,7 +94,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-27T22:01:07.175Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {

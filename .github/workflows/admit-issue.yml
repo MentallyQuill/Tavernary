@@ -6,6 +6,7 @@ on:
     types:
       - opened
       - reopened
+      - edited
 
 permissions:
   contents: read
@@ -31,10 +32,17 @@ jobs:
         run: node scripts/submissions/admit-issue.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Reject conflicting submission labels
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          steps.admission.outputs.route == 'conflict'
+        run: |
+          echo "::error::Issue has conflicting submission routing labels."
+          exit 1
       - name: Dispatch project submission triage
         if: >-
           steps.admission.outputs.admitted == 'true' &&
-          startsWith(github.event.issue.title, '[Project submission]')
+          steps.admission.outputs.route == 'project'
         run: >
           gh workflow run triage-submission.yml
           --ref main
@@ -44,9 +52,19 @@ jobs:
       - name: Dispatch Kit submission triage
         if: >-
           steps.admission.outputs.admitted == 'true' &&
-          startsWith(github.event.issue.title, '[Kit submission]')
+          steps.admission.outputs.route == 'kit'
         run: >
           gh workflow run triage-kit-submission.yml
+          --ref main
+          -f issue_number="${{ steps.admission.outputs.issue_number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dispatch Kit withdrawal
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          steps.admission.outputs.route == 'kit-withdrawal'
+        run: >
+          gh workflow run apply-kit-withdrawal.yml
           --ref main
           -f issue_number="${{ steps.admission.outputs.issue_number }}"
         env:

@@ -102,6 +102,7 @@ describe("GitHub repository observer", () => {
       "r0: repository(owner: $owner0, name: $name0)",
     );
     expect(calls[0].query).toMatch(/\n\s+description\n/);
+    expect(calls[0].query).toMatch(/\n\s+parent \{/);
     expect(calls[0].query).not.toContain("/readme");
     expect(calls[0].query).not.toContain("owner-0");
     expect(calls[0].variables).toMatchObject({
@@ -136,6 +137,7 @@ describe("GitHub repository observer", () => {
         description: "Description 0",
         defaultBranch: "main",
         headCommittedAt: "2026-07-23T00:00:00.000Z",
+        parent: null,
       },
       community: {
         stargazersCount: 3,
@@ -157,6 +159,70 @@ describe("GitHub repository observer", () => {
     });
 
     expect(result.observations[0].repository.fork).toBe(true);
+  });
+
+  test("observes the immediate parent of a fork", async () => {
+    const result = await observeRepositories(records(1), {
+      token: "test-token",
+      fetchImpl: async () =>
+        batchResponse(0, 1, {
+          r0: repositoryNode(0, {
+            isFork: true,
+            parent: {
+              databaseId: 9001,
+              name: "VectHare",
+              nameWithOwner: "Coneja-Chibi/VectHare",
+              url: "https://github.com/Coneja-Chibi/VectHare",
+            },
+          }),
+        }),
+    });
+
+    expect(result.observations[0].repository.parent).toEqual({
+      id: 9001,
+      owner: "Coneja-Chibi",
+      name: "VectHare",
+      url: "https://github.com/Coneja-Chibi/VectHare",
+    });
+  });
+
+  test("rejects a repository that reports itself as its parent", async () => {
+    await expect(
+      observeRepositories(records(1), {
+        token: "test-token",
+        fetchImpl: async () =>
+          batchResponse(0, 1, {
+            r0: repositoryNode(0, {
+              isFork: true,
+              parent: {
+                databaseId: 1000,
+                name: "repository-0",
+                nameWithOwner: "owner-0/repository-0",
+                url: "https://github.com/owner-0/repository-0",
+              },
+            }),
+          }),
+      }),
+    ).rejects.toThrow("GitHub GraphQL returned malformed repository data");
+  });
+
+  test("rejects a parent reported for a repository that is not a fork", async () => {
+    await expect(
+      observeRepositories(records(1), {
+        token: "test-token",
+        fetchImpl: async () =>
+          batchResponse(0, 1, {
+            r0: repositoryNode(0, {
+              parent: {
+                databaseId: 9001,
+                name: "Parent",
+                nameWithOwner: "Upstream/Parent",
+                url: "https://github.com/Upstream/Parent",
+              },
+            }),
+          }),
+      }),
+    ).rejects.toThrow("GitHub GraphQL returned malformed repository data");
   });
 
   test("preserves a nullable GitHub short description", async () => {

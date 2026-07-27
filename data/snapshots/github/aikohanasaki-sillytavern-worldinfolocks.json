@@ -12,6 +12,12 @@
     "head_committed_at": "2026-01-13T17:44:18.000Z",
     "archived": false,
     "fork": true,
+    "parent": {
+      "id": 783765890,
+      "owner": "LenAnderson",
+      "name": "SillyTavern-WorldInfoPresets",
+      "url": "https://github.com/LenAnderson/SillyTavern-WorldInfoPresets"
+    },
     "created_at": "2025-07-07T22:26:43.000Z",
     "size_kb": 423
   },
@@ -33,7 +39,7 @@
     "aggregate": 31
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-27T22:01:07.175Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {

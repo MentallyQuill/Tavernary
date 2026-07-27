@@ -252,6 +252,27 @@ describe("catalog validation", () => {
     expect(result.errors).toContain("valid-preset: duplicate canonical source");
   });
 
+  test("rejects duplicate permanent GitHub repository IDs", async () => {
+    const result = await validateCatalog({
+      records: [
+        validRecord,
+        {
+          ...validRecord,
+          id: "second-preset",
+          name: "Second Preset",
+          source: {
+            ...validRecord.source,
+            repository: "example/second-preset",
+          },
+        },
+      ],
+    });
+
+    expect(result.errors).toContain(
+      "second-preset: duplicate GitHub repository_id 1",
+    );
+  });
+
   test("rejects unknown vocabulary values and missing GitHub identity", async () => {
     const result = await validateCatalog({
       records: [
@@ -568,6 +589,123 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toEqual([]);
+  });
+
+  test("accepts an optional immediate fork parent", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.repository.parent = {
+      id: 41,
+      owner: "Upstream",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
+  test("rejects a repository that names itself as its fork parent", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.repository.parent = {
+      id: snapshot.repository.id,
+      owner: snapshot.repository.owner,
+      name: snapshot.repository.name,
+      url: snapshot.repository.url,
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: repository cannot be its own fork parent",
+    );
+  });
+
+  test("rejects a fork parent on a repository not marked as a fork", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = false;
+    snapshot.repository.parent = {
+      id: 41,
+      owner: "Upstream",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: non-fork repository cannot have a fork parent",
+    );
+  });
+
+  test("rejects malformed fork parent coordinates", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.repository.parent = {
+      id: 41,
+      owner: "Upstream/Other",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors.some((error) => error.includes("/owner"))).toBe(true);
+  });
+
+  test("rejects a non-positive fork parent repository ID", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.repository.parent = {
+      id: 0,
+      owner: "Upstream",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(result.errors.some((error) => error.includes("/id"))).toBe(true);
+  });
+
+  test("rejects extra fork parent properties", async () => {
+    const snapshot = structuredClone(validSnapshotV2);
+    snapshot.repository.fork = true;
+    snapshot.repository.parent = {
+      id: 41,
+      owner: "Upstream",
+      name: "Parent",
+      url: "https://github.com/Upstream/Parent",
+      repository: "Upstream/Parent",
+    };
+
+    const result = await validateCatalog({
+      records: [validRecord],
+      snapshots: [snapshot],
+    });
+
+    expect(
+      result.errors.some((error) =>
+        error.includes("must NOT have additional properties"),
+      ),
+    ).toBe(true);
   });
 
   test("accepts optional contributor facts in a version two snapshot", async () => {

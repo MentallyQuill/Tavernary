@@ -40,6 +40,12 @@ export interface RepositorySnapshot {
     head_committed_at: string;
     archived: boolean;
     fork?: boolean;
+    parent?: {
+      id: number;
+      owner: string;
+      name: string;
+      url: string;
+    } | null;
     created_at: string;
     size_kb: number;
   };
@@ -72,6 +78,7 @@ export interface ApiActivityInspection {
 
 export function repositoryFacts(
   observation: RepositoryObservation["repository"],
+  previous?: RepositorySnapshot["repository"] | null,
 ): RepositorySnapshot["repository"];
 
 export function provisionalActivity(): ActivityEvidence;

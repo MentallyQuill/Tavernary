@@ -32,6 +32,7 @@ test("declines a marked generated PR closed without merge", () => {
     removeLabels: ["needs-maintainer-review", "submission-pr-open"],
     closeReason: "not_planned",
     deleteBranch: "automation/project-submission-123",
+    retryForkDependents: true,
   });
 });
 
@@ -51,6 +52,7 @@ test("cleans labels and branch after a merged generated PR", () => {
     removeLabels: ["needs-maintainer-review", "submission-pr-open"],
     closeReason: null,
     deleteBranch: "automation/project-submission-123",
+    retryForkDependents: true,
   });
 });
 

@@ -2,11 +2,14 @@ import type { CatalogProject } from "../catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 import { ProjectCard, projectDisplayName } from "./project-card";
 import { ProjectKitControl } from "./project-kit-control";
+import { ProjectRelationshipControl } from "./project-relationship-control";
 
 export function ProjectGrid({
   projects,
   now,
   selection,
+  relationshipChildId = "",
+  onViewRelationship = () => undefined,
 }: {
   projects: CatalogProject[];
   now: string;
@@ -14,6 +17,8 @@ export function ProjectGrid({
     mode?: boolean;
     bindingsFor: (projectId: string) => ProjectSelectionBindings;
   };
+  relationshipChildId?: string;
+  onViewRelationship?: (childProjectId: string) => void;
 }) {
   if (projects.length === 0) {
     return (
@@ -25,15 +30,20 @@ export function ProjectGrid({
   }
 
   return (
-    <section className="project-grid" aria-label="Project catalog">
+    <section
+      className={`project-grid${relationshipChildId ? " relationship-pair" : ""}`}
+      aria-label="Project catalog"
+    >
       {projects.map((project) => {
         const bindings = selection.bindingsFor(project.id);
         const displayName = projectDisplayName(project.name);
+        const relationshipActive = project.id === relationshipChildId;
         return (
           <div
             className={[
               "project-card-shell",
               "has-kit-control",
+              project.fork ? "has-relationship-control" : "",
               bindings.state === "selected" ? "selected" : "",
               bindings.state === "in-kit" ? "in-draft" : "",
             ]
@@ -42,6 +52,18 @@ export function ProjectGrid({
             key={project.id}
           >
             <ProjectCard project={project} now={now} />
+            {project.fork ? (
+              <ProjectRelationshipControl
+                childProjectName={displayName}
+                relationship={project.fork}
+                active={relationshipActive}
+                onViewRelationship={
+                  project.fork.status === "published" && !relationshipActive
+                    ? () => onViewRelationship(project.id)
+                    : null
+                }
+              />
+            ) : null}
             <span className="project-kit-control-hit">
               <ProjectKitControl
                 projectName={displayName}

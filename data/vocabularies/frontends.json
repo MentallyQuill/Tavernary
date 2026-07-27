@@ -26,9 +26,19 @@
       "description": "Works with the Marinara Engine roleplay frontend."
     },
     {
+      "id": "narrative-engine",
+      "label": "Narrative Engine",
+      "description": "Works with the Narrative Engine roleplay frontend."
+    },
+    {
       "id": "pyre",
       "label": "Pyre",
       "description": "Works with the Pyre roleplay frontend."
+    },
+    {
+      "id": "rpgraph",
+      "label": "RPGraph",
+      "description": "Works with the RPGraph roleplay frontend."
     },
     {
       "id": "sillytavern",

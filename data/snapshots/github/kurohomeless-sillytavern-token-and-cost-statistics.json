@@ -12,6 +12,12 @@
     "head_committed_at": "2026-05-28T17:45:42.000Z",
     "archived": false,
     "fork": true,
+    "parent": {
+      "id": 1126135302,
+      "owner": "Vibecoder9000",
+      "name": "Extension-TokenUsage",
+      "url": "https://github.com/Vibecoder9000/Extension-TokenUsage"
+    },
     "created_at": "2026-05-23T22:21:45.000Z",
     "size_kb": 420
   },
@@ -42,7 +48,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-27T22:01:07.175Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "kurohomeless", "type": "User" }],
