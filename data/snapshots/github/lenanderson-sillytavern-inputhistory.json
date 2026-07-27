@@ -21,7 +21,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T00:16:20.505Z",
+    "baseline_completed_at": "2026-07-27T04:33:33.220Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8"
   },
@@ -32,11 +32,11 @@
     "aggregate": 15
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T00:16:20.505Z",
+  "refreshed_at": "2026-07-27T04:33:33.220Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Succubyss", "type": "User" }],
-    "refreshed_at": "2026-07-27T00:16:20.505Z",
+    "refreshed_at": "2026-07-27T04:33:33.220Z",
     "stale_since": null
   },
   "activity_scan": null
