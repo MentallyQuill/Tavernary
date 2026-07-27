@@ -28,10 +28,12 @@ const reviewFixture = {
     submitted: {
       name: "Owner [Repo]",
       description: "Submitted description.",
+      source_url: "https://github.com/envy-ai/ai_rpg",
     },
     observed: {
       repository: "Owner/Repo",
       repository_id: 42,
+      canonical_url: "https://example.com/a_(b)?x=1&y=2",
     },
     inferred: {
       primary_function: "generation-reasoning",
@@ -91,7 +93,28 @@ test("renders the issue link, evidence groups, warnings, checklist, and marker",
     "- [ ] Canonical source and permanent identity are correct",
   );
   expect(body).toContain("Owner \\[Repo\\]");
+  expect(body).toContain(
+    "- **Source url:** [https://github.com/envy-ai/ai\\_rpg](<https://github.com/envy-ai/ai_rpg>)",
+  );
+  expect(body).toContain(
+    "- **Canonical url:** [https://example.com/a\\_\\(b\\)?x=1&y=2](<https://example.com/a_(b)?x=1&y=2>)",
+  );
   expect(parseSubmissionPullRequestMarker(body)).toEqual(marker);
+});
+
+test("renders invalid URL diagnostics safely instead of throwing", () => {
+  const body = renderSubmissionPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      submitted: {
+        ...reviewFixture.report.submitted,
+        source_url: "not_[a]_url",
+      },
+    },
+  });
+
+  expect(body).toContain("- **Source url:** not\\_\\[a\\]\\_url");
 });
 
 test("refuses to overwrite a maintainer-edited head", () => {
