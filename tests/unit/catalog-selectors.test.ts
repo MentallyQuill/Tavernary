@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 
+import frontendVocabulary from "../../data/vocabularies/frontends.json";
 import {
   DEFAULT_QUERY,
   parseCatalogQuery,
@@ -501,6 +502,17 @@ describe("catalog selectors", () => {
 });
 
 describe("catalog query URLs", () => {
+  test("round-trips every frontend exposed by the filter vocabulary", () => {
+    for (const { id } of frontendVocabulary.frontends) {
+      const serialized = serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        frontends: [id],
+      });
+
+      expect(parseCatalogQuery(`?${serialized}`).frontends).toEqual([id]);
+    }
+  });
+
   test("round-trips valid non-default values in stable order", () => {
     const serialized = serializeCatalogQuery({
       ...DEFAULT_QUERY,

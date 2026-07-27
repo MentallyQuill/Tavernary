@@ -1,3 +1,5 @@
+import frontendVocabulary from "../../../data/vocabularies/frontends.json";
+
 export type CatalogView = "all" | "active" | "new" | "released";
 export type CatalogSort =
   "recent" | "sustained" | "popularity" | "alphabetical";
@@ -108,12 +110,9 @@ const validPurposes = new Set([
   "developer-infrastructure",
   "uncategorized",
 ]);
-const validFrontends = new Set([
-  "sillytavern",
-  "lumiverse",
-  "marinara-engine",
-  "sonder-engine",
-]);
+const validFrontends = new Set(
+  frontendVocabulary.frontends.map(({ id }) => id),
+);
 const validCapabilities = new Set([
   "automation",
   "character-worldbuilding",
