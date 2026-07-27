@@ -147,6 +147,38 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
 });
 
+test("initializes Kit support before publishing the new registry record", async () => {
+  const publication = await workflow("apply-kit-submission");
+  const steps = publication.jobs.publish.steps as Array<{
+    name?: string;
+    run?: string;
+    env?: Record<string, string>;
+  }>;
+  const applyIndex = steps.findIndex(
+    ({ name }) => name === "Re-fetch, revalidate, and apply approved issue",
+  );
+  const supportIndex = steps.findIndex(
+    ({ name }) => name === "Initialize Kit community support",
+  );
+  const validationIndex = steps.findIndex(
+    ({ name }) => name === "Validate publication",
+  );
+  const support = steps[supportIndex];
+  const commit = steps.find(({ name }) => name === "Commit canonical Kit");
+
+  expect(applyIndex).toBeGreaterThanOrEqual(0);
+  expect(supportIndex).toBeGreaterThan(applyIndex);
+  expect(validationIndex).toBeGreaterThan(supportIndex);
+  expect(support.run).toBe("node scripts/kits/refresh-reactions.mjs");
+  expect(support.env).toMatchObject({
+    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+    REQUIRED_KIT_ISSUE_NUMBER: "${{ inputs.issue_number }}",
+  });
+  expect(commit?.run).toContain(
+    "git add data/registry/kits data/snapshots/github/kits",
+  );
+});
+
 test("rebases and revalidates Kit registry commits before pushing", async () => {
   for (const name of ["apply-kit-submission", "apply-kit-withdrawal"]) {
     const source = await readFile(

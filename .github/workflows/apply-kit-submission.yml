@@ -43,6 +43,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
+      - name: Initialize Kit community support
+        run: node scripts/kits/refresh-reactions.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REQUIRED_KIT_ISSUE_NUMBER: ${{ inputs.issue_number }}
       - name: Validate publication
         run: |
           npm run catalog:validate
@@ -52,7 +57,7 @@ jobs:
         id: commit
         shell: bash
         run: |
-          git add data/registry/kits
+          git add data/registry/kits data/snapshots/github/kits
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

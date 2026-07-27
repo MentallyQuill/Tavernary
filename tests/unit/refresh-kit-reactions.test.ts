@@ -164,6 +164,19 @@ test("returns a stale prior snapshot on failure and no first snapshot", async ()
   ).resolves.toEqual([]);
 });
 
+test("fails publication when the required Kit cannot get its first snapshot", async () => {
+  await expect(
+    refreshKitReactions({
+      kits: [kit],
+      snapshots: [],
+      blockedUsers: { blocked: [] },
+      fetchPage: vi.fn().mockRejectedValue(new Error("transient")),
+      now,
+      requiredKitIssueNumber: 241,
+    }),
+  ).rejects.toThrow("Unable to initialize Kit story-kit-241 support");
+});
+
 test("re-added reactions keep their original first-observed timestamp", async () => {
   const inactive = {
     ...prior,
