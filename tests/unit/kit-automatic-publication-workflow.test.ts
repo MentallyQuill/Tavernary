@@ -32,9 +32,7 @@ test("valid Kit triage dispatches serialized publication automatically", async (
     (step) => step.name === "Publish valid Kit",
   );
   expect(publish?.if).toContain("steps.triage.outputs.publish == 'true'");
-  expect(publish?.run).toContain(
-    "gh workflow run apply-kit-submission.yml",
-  );
+  expect(publish?.run).toContain("gh workflow run apply-kit-submission.yml");
   expect(publish?.run).toContain("--ref main");
   expect(publish?.run).toContain('-f issue_number="$ISSUE_NUMBER"');
 });
