@@ -3,15 +3,15 @@
   "id": "lenanderson-sillytavern-csssnippets",
   "name": "SillyTavern-CssSnippets",
   "kind": "extension",
-  "summary": "GitHub project awaiting automatic metadata enrichment.",
-  "metadata_status": "provisional",
+  "summary": "SillyTavern-CssSnippets adds a custom CSS snippet manager to SillyTavern's user settings. Snippets can be activated globally, linked to a specific theme, or tied to individual character or group chats.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "LenAnderson/SillyTavern-CssSnippets",
     "repository_id": 739396018
   },
   "frontends": ["sillytavern"],
-  "primary_function": "uncategorized",
+  "primary_function": "interface-workflow",
   "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
