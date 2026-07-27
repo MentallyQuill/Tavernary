@@ -2,15 +2,15 @@
   "schema_version": 5,
   "id": "jeppsterrr-crossroads",
   "name": "CrossRoads",
-  "kind": "frontend",
-  "summary": "CrossRoads is a frontend that brings CYOA-style branching choices to roleplay conversations. It provides selectable story options that let users guide the narrative direction during interactive sessions.",
+  "kind": "extension",
+  "summary": "CrossRoads is a SillyTavern extension that generates CYOA-style branching choices from chat messages, letting users choose the story's next direction.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "jeppsterrr/CrossRoads",
     "repository_id": 1310212816
   },
-  "frontends": ["crossroads"],
+  "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
   "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-26T19:32:33.792Z",

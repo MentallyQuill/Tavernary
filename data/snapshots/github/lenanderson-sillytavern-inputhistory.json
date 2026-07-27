@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "project_id": "lenanderson-sillytavern-inputhistory",
+  "repository": {
+    "id": 735181166,
+    "owner": "LenAnderson",
+    "name": "SillyTavern-InputHistory",
+    "url": "https://github.com/LenAnderson/SillyTavern-InputHistory",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8",
+    "head_committed_at": "2024-09-01T19:38:41.000Z",
+    "archived": false,
+    "created_at": "2023-12-24T00:32:22.000Z",
+    "size_kb": 15
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T04:33:33.220Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8"
+  },
+  "community": {
+    "stargazers_count": 12,
+    "forks_count": 2,
+    "subscribers_count": 1,
+    "aggregate": 15
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T04:33:33.220Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Succubyss", "type": "User" }],
+    "refreshed_at": "2026-07-27T04:33:33.220Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

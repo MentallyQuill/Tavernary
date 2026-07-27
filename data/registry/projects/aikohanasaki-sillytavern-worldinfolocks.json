@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "aikohanasaki-sillytavern-worldinfolocks",
+  "name": "SillyTavern-WorldInfoLocks",
+  "kind": "extension",
+  "summary": "Thank you LenAnderson I am yoinking this!",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "aikohanasaki/SillyTavern-WorldInfoLocks",
+    "repository_id": 1015688972
+  },
+  "frontends": ["aikobots", "sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T04:33:27.992Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
