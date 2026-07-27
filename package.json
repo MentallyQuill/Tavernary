@@ -28,6 +28,7 @@
     "catalog:enrich": "node scripts/catalog/enrich-readmes.mjs",
     "catalog:enrichment-plan": "node scripts/catalog/enrichment-rollout-plan.mjs",
     "catalog:enrichment-rollout": "node scripts/catalog/enrichment-orchestrator.mjs",
+    "catalog:report-enrichment-errors": "node scripts/catalog/enrichment-issue.mjs",
     "catalog:select-canary": "node scripts/catalog/select-enrichment-canary.mjs",
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",

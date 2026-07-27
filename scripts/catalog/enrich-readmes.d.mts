@@ -4,6 +4,8 @@ import type {
   ProjectAttemptResult,
 } from "./enrichment-run-state.d.mts";
 
+export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
+
 export type VocabularyEntry = { id: string; label?: string };
 export type EnrichmentInput = {
   id: string;
@@ -171,6 +173,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   };
   provider?: EnrichmentProvider;
   timeoutMs?: number;
+  sleep?: (milliseconds: number) => Promise<void>;
   records?: RegistryRecord[];
   snapshots?: Record<string, GithubSnapshot> | GithubSnapshot[];
   snapshotSchema?: Record<string, unknown>;

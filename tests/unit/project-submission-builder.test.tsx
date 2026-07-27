@@ -34,6 +34,12 @@ test("requires supported frontends only for Extensions", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  expect(
+    screen.getByText(
+      "Frontends and Extensions require a public GitHub or Codeberg repository.",
+    ),
+  ).toBeVisible();
+
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
 
   expect(

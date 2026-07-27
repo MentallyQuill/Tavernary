@@ -13,6 +13,11 @@ export type ProviderErrorCode =
   | "provider-model-mismatch";
 
 export class EnrichmentProviderError extends Error {
+  constructor(
+    code: ProviderErrorCode,
+    diagnosticCode?: string | null,
+    details?: { timeoutMs?: number },
+  );
   code: ProviderErrorCode;
   diagnosticCode: string | null;
 }

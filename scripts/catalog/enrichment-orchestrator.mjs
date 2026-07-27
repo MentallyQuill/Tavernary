@@ -298,6 +298,12 @@ export function createProductionOperations(options = {}) {
   const concurrency = String(
     options.concurrency ?? process.env.MODEL_CONCURRENCY ?? 4,
   );
+  const timeoutSeconds = Number(
+    options.timeoutSeconds ?? process.env.MODEL_TIMEOUT_SECONDS ?? 120,
+  );
+  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0) {
+    throw new Error("model timeout seconds must be a positive number");
+  }
   const selectionMode =
     options.selectionMode ?? process.env.ENRICHMENT_SELECTION_MODE ?? "pending";
   if (!["pending", "all-automatic"].includes(selectionMode)) {
@@ -313,7 +319,10 @@ export function createProductionOperations(options = {}) {
     batchSize,
     "--concurrency",
     concurrency,
+    "--timeout-seconds",
+    String(timeoutSeconds),
   ];
+  const providerArguments = ["--timeout-seconds", String(timeoutSeconds)];
   const readJson = options.readJson ?? defaultReadJson;
   const writeText = options.writeText ?? writeFile;
   const runnerTemp = options.runnerTemp ?? process.env.RUNNER_TEMP;
@@ -455,6 +464,7 @@ export function createProductionOperations(options = {}) {
         "--",
         "--mode",
         "preflight",
+        ...providerArguments,
       ]);
       const serialized = result.stdout
         .split(/\r?\n/u)
@@ -783,6 +793,20 @@ export function createProductionOperations(options = {}) {
   };
 }
 
+export async function runMain(options = {}) {
+  const operations = options.operations ?? createProductionOperations(options);
+  const result = await runEnrichmentRollout(operations);
+  const runnerTemp = options.runnerTemp ?? process.env.RUNNER_TEMP;
+  if (runnerTemp) {
+    const writeText = options.writeText ?? writeFile;
+    await writeText(
+      join(runnerTemp, "enrichment-rollout-result.json"),
+      `${JSON.stringify(result)}\n`,
+    );
+  }
+  return result;
+}
+
 async function main() {
   if (process.argv.includes("--dry-run")) {
     console.log(
@@ -794,7 +818,7 @@ async function main() {
     );
     return;
   }
-  const result = await runEnrichmentRollout(createProductionOperations());
+  const result = await runMain();
   console.log(JSON.stringify(result));
 }
 

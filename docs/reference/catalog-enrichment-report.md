@@ -17,7 +17,8 @@ This file is a durable run-state and outcome artifact written by
 - `schema_version`: integer (`1`)
 - `run_id`: string run identifier
 - `mode`: `canary` or `full`
-- `status`: `running`, `awaiting-deployment`, `passed`, `failed`, or `complete`
+- `status`: `running`, `awaiting-deployment`, `passed`, `failed`, `complete`,
+  or `complete-with-errors`
 - `phase`: `primary`, `retry`, or `complete`
 - `expected_model`: configured model name (for example `MiniMax-M3`)
 - `batch_size`: integer
@@ -63,8 +64,13 @@ Each `entries` item includes:
   primary/retry attempts and before verified deployment approval.
 - `passed` means canary run approval has completed and deployment metadata is
   validated.
-- `failed` means the run is blocked for an unrecoverable canary outcome.
-- `complete` means full-run work finished and all IDs have been processed.
+- `failed` means a systemic error or unrecoverable canary outcome prevented a
+  trustworthy completion.
+- `complete` means full-run work finished and every selected project resolved.
+- `complete-with-errors` means full-run work finished safely, but one or more
+  selected projects remain provisional after their retries. This remains a
+  successful workflow conclusion and may contain zero enriched projects when
+  every terminal error is isolated.
 
 ## Relation to other contracts
 

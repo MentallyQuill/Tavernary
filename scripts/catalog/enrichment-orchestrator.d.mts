@@ -25,6 +25,12 @@ export function runEnrichmentRollout(
   operations: EnrichmentRolloutOperations,
 ): Promise<{ status: "complete" | "complete-with-errors" }>;
 
+export function runMain(options?: {
+  operations?: EnrichmentRolloutOperations;
+  runnerTemp?: string;
+  writeText?: (path: string, content: string) => Promise<void>;
+}): Promise<{ status: "complete" | "complete-with-errors" }>;
+
 export function executeCommand(
   command: string,
   args: string[],
@@ -50,6 +56,7 @@ export function createProductionOperations(options?: {
   npmCommand?: string;
   batchSize?: number;
   concurrency?: number;
+  timeoutSeconds?: number;
   selectionMode?: "pending" | "all-automatic";
   runCommand?: typeof executeCommand;
   readJson?: (path: string) => Promise<Record<string, any>>;

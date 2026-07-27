@@ -519,6 +519,7 @@ test("runs enrichment through one tested durable orchestrator", async () => {
   expect(enrich.permissions).toEqual({
     contents: "write",
     actions: "write",
+    issues: "write",
   });
   expect(enrich.concurrency).toEqual({
     group: "catalog-refresh",
@@ -528,6 +529,16 @@ test("runs enrichment through one tested durable orchestrator", async () => {
   expect(source).toContain(
     "ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}",
   );
+  expect(inputs.model_timeout_seconds).toEqual({
+    description: "Per-model-request timeout in seconds.",
+    type: "number",
+    default: 120,
+  });
+  expect(source).toContain(
+    "MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}",
+  );
+  expect(source).toContain("npm run catalog:report-enrichment-errors");
+  expect(source).toContain("enrichment-rollout-result.json");
   expect(source).toContain("Manual exclusions:");
   expect(source).toContain("manual_exclusions");
   expect(source).toContain("data/reports/enrichment-canary.json");

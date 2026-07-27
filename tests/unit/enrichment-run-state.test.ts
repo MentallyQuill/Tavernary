@@ -340,7 +340,7 @@ test.each([
   });
 });
 
-test("fails a full rollout that produces no successful records", () => {
+test("completes with errors when every full-rollout record remains provisional", () => {
   const initial = createEnrichmentRunState({
     mode: "full",
     manifest: ["a", "b"],
@@ -366,7 +366,11 @@ test("fails a full rollout that produces no successful records", () => {
     later,
   );
 
-  expect(state.status).toBe("failed");
+  expect(state).toMatchObject({
+    status: "complete-with-errors",
+    phase: "complete",
+    aggregates: { "source-not-ready": 2 },
+  });
 });
 
 test("fails a full rollout whose terminal entries do not cover its manifest", () => {

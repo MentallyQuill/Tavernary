@@ -9,6 +9,7 @@ import {
   approveCanaryDeployment,
   createEnrichmentRunState,
 } from "../../scripts/catalog/enrichment-run-state.mjs";
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import { cliOptions, runCli } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const now = "2026-07-24T00:00:00.000Z";
@@ -219,6 +220,98 @@ test("preflight performs one synthetic call without loading or writing catalog d
   });
 });
 
+test("preflight retries a transient timeout before succeeding", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const generate = vi
+    .fn()
+    .mockRejectedValueOnce(new EnrichmentProviderError("provider-timeout"))
+    .mockResolvedValue(providerOutput);
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      sleep,
+      reportPath: null,
+      now,
+    }),
+  ).resolves.toMatchObject({ status: "passed" });
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(sleep).toHaveBeenCalledWith(5_000);
+});
+
+test.each([
+  "provider-network-error",
+  "provider-rate-limited",
+  "provider-server-error",
+] as const)("preflight retries transient %s failures", async (code) => {
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const generate = vi
+    .fn()
+    .mockRejectedValueOnce(new EnrichmentProviderError(code))
+    .mockResolvedValue(providerOutput);
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      sleep,
+      reportPath: null,
+      now,
+    }),
+  ).resolves.toMatchObject({ status: "passed" });
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(sleep).toHaveBeenCalledWith(5_000);
+});
+
+test("preflight exhausts four transient attempts with bounded backoff", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const generate = vi.fn(async () => {
+    throw new EnrichmentProviderError("provider-timeout");
+  });
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      sleep,
+      reportPath: null,
+      now,
+    }),
+  ).rejects.toMatchObject({ code: "provider-timeout" });
+
+  expect(generate).toHaveBeenCalledTimes(4);
+  expect(sleep.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([
+    5_000, 15_000, 30_000,
+  ]);
+});
+
+test("preflight does not retry a non-transient provider failure", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const generate = vi.fn(async () => {
+    throw new EnrichmentProviderError("provider-authentication-failed");
+  });
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      sleep,
+      reportPath: null,
+      now,
+    }),
+  ).rejects.toMatchObject({ code: "provider-authentication-failed" });
+
+  expect(generate).toHaveBeenCalledOnce();
+  expect(sleep).not.toHaveBeenCalled();
+});
+
 test("preflight repairs one invalid structured response before failing", async () => {
   const rejectedSummary =
     "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.";
@@ -256,6 +349,37 @@ test("preflight repairs one invalid structured response before failing", async (
       rejectedSummary,
     },
   });
+});
+
+test("preflight retries a transient validation-repair failure", async () => {
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const invalid = {
+    ...providerOutput,
+    output: {
+      ...providerOutput.output,
+      summary:
+        "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+    },
+  };
+  const generate = vi
+    .fn()
+    .mockResolvedValueOnce(invalid)
+    .mockRejectedValueOnce(new EnrichmentProviderError("provider-timeout"))
+    .mockResolvedValue(providerOutput);
+
+  await expect(
+    runCli({
+      mode: "preflight",
+      providerConfiguration,
+      provider: { generate },
+      sleep,
+      reportPath: null,
+      now,
+    }),
+  ).resolves.toMatchObject({ status: "passed" });
+
+  expect(generate).toHaveBeenCalledTimes(3);
+  expect(sleep).toHaveBeenCalledWith(5_000);
 });
 
 test("preflight reports the sanitized defect when its repair remains invalid", async () => {
@@ -733,6 +857,15 @@ test("CLI report flags keep canary authorization and full progress separate", ()
     reportPath: "full.json",
     canaryReportPath: "canary.json",
     selectionMode: "all-automatic",
+  });
+});
+
+test("CLI converts provider timeout seconds to milliseconds", () => {
+  expect(
+    cliOptions(["--mode", "preflight", "--timeout-seconds", "180"]),
+  ).toMatchObject({
+    mode: "preflight",
+    timeoutMs: 180_000,
   });
 });
 
