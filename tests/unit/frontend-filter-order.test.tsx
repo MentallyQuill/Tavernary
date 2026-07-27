@@ -34,6 +34,7 @@ function frontendCard(
     ],
     capabilities: [],
     searchableText: name,
+    fork: null,
     attribution: null,
     activity: {
       latestSourceActivityAt: "2026-07-20T00:00:00Z",

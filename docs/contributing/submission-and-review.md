@@ -54,6 +54,15 @@ same rule.
    `submission-declined`, closes it as not planned, and safely removes the
    unchanged automation branch.
 
+If the submitted GitHub repository is a fork, Tavernary reviews its immediate
+upstream first. Automation reuses an existing open Project submission for that
+repository or creates a normal system-authored submission with explicit fork
+ancestry provenance. The downstream issue remains open with
+`waiting-on-fork-parent`; after the upstream merges or reaches a terminal
+declined/unavailable state, the retry workflow resumes the downstream review.
+This repeats root-to-leaf for a fork of a fork, one immediate parent at a time.
+A terminal upstream does not prevent the child from receiving its own review.
+
 Contributors should edit the issue only until its generated PR exists. Once the
 issue carries `submission-pr-open`, corrections belong on the PR so its review
 state remains authoritative. Maintainers do not perform a second issue review.
@@ -68,6 +77,11 @@ Implementation path:
   `automation/project-submission-<issue-number>` and its review PR.
 - `project-submission-lifecycle.yml` synchronizes merge or decline back to the
   issue and deletes only the unchanged generated branch.
+
+Fork ancestry changes sequencing, not the review boundary. Every generated
+upstream is a normal Project submission and PR; automation never auto-approves
+it. Cycles and ancestry beyond 16 repositories stop at
+`needs-maintainer-review`.
 
 Extensions require an exact public GitHub repository. Frontends require
 publicly accessible source code on GitHub or an equivalent source host; the
@@ -108,9 +122,10 @@ Withdrawals are submitted with `07-kit-withdrawal.yml` and applied via
 Issue labels include both queue ownership (`project-submission`,
 `project-information`, `website-bug`, `kit-submission`, `kit-report`,
 `kit-withdrawal`) and automation state (`needs-information`,
-`kit-publication-ready`, `kit-published`, `submission-pr-open`,
-`submission-declined`). Project publication still occurs through a maintainer
-merge; valid Kit creates and edits publish automatically.
+`kit-publication-ready`, `kit-published`, `waiting-on-fork-parent`,
+`needs-maintainer-review`, `submission-pr-open`, `submission-declined`).
+Project publication still occurs through a maintainer merge; valid Kit creates
+and edits publish automatically.
 
 For full Kit maintainer constraints and safety paths, see
 [Kit submission and moderation](kits.md) and

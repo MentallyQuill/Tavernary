@@ -12,6 +12,12 @@
     "head_committed_at": "2026-07-13T03:31:04.000Z",
     "archived": false,
     "fork": true,
+    "parent": {
+      "id": 875709373,
+      "owner": "lackyas",
+      "name": "SillyTavern-Presence",
+      "url": "https://github.com/lackyas/SillyTavern-Presence"
+    },
     "created_at": "2024-11-02T21:14:58.000Z",
     "size_kb": 489
   },
@@ -57,7 +63,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-27T22:01:07.175Z",
   "stale_since": null,
   "contributors": {
     "accounts": [

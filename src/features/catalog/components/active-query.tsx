@@ -41,15 +41,23 @@ export function ActiveQuery({
   query,
   projects,
   kits = [],
+  relationship = null,
   onRemove,
   onRemoveKit,
+  onRemoveRelationship = () => undefined,
   onClear,
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
   kits?: CatalogKit[];
+  relationship?: {
+    childId: string;
+    childName: string;
+    parentName: string;
+  } | null;
   onRemove: (key: keyof CatalogQuery, value?: string) => void;
   onRemoveKit?: (key: keyof KitQuery, value?: string) => void;
+  onRemoveRelationship?: () => void;
   onClear: () => void;
 }) {
   if (query.mode === "kits") {
@@ -123,6 +131,25 @@ export function ActiveQuery({
             <CategoryIcon name="close" />
           </button>
         ))}
+        <button className="clear-query" type="button" onClick={onClear}>
+          Clear all
+        </button>
+      </div>
+    );
+  }
+
+  if (relationship) {
+    const label = `Fork: ${relationship.parentName} → ${relationship.childName}`;
+    return (
+      <div className="active-query" aria-label="Active filters">
+        <button
+          type="button"
+          aria-label={`Remove fork relationship between ${relationship.parentName} and ${relationship.childName}`}
+          onClick={onRemoveRelationship}
+        >
+          <span>{label}</span>
+          <CategoryIcon name="close" />
+        </button>
         <button className="clear-query" type="button" onClick={onClear}>
           Clear all
         </button>

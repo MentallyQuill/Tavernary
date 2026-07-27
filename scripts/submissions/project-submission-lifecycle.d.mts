@@ -7,6 +7,7 @@ export type SubmissionClosurePlan =
       removeLabels: string[];
       closeReason: "not_planned" | null;
       deleteBranch: string;
+      retryForkDependents: true;
     };
 
 export function planProjectSubmissionClosure(input: {

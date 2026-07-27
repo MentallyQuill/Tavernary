@@ -408,6 +408,35 @@ describe("catalog visual alignment", () => {
     );
   });
 
+  test("keeps a bounded two-card relationship pair readable without overlapping Kit controls", () => {
+    const css = read("src/styles/catalog.css");
+
+    expect(css).toMatch(
+      /\.relationship-pair\s*\{[^}]*width:\s*100%[^}]*max-width:\s*900px[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /@media \(max-width:\s*760px\)[\s\S]*?\.relationship-pair\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/s,
+    );
+    expect(css).toMatch(
+      /\.project-relationship-control\s*\{[^}]*display:\s*flex/s,
+    );
+    expect(css).toMatch(
+      /\.project-relationship-control\s*\{[^}]*right:\s*48px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards\s+\.project-card-shell\.has-relationship-control\s+\.project-card\s*\{[^}]*padding-bottom:\s*44px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.project-relationship-control\s*\{[^}]*font-size:\s*10px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.relationship-pair\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
+    );
+    expect(css).toMatch(
+      /@media \(max-width:\s*760px\)[\s\S]*?\.compact-cards \.relationship-pair\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/s,
+    );
+  });
+
   test("distinguishes builder sections and uses one desktop toggle size", () => {
     const css = read("src/styles/catalog.css");
 

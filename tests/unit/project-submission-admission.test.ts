@@ -30,7 +30,10 @@ function admittedFixture(overrides = {}) {
     repository: {
       visibility: "public" as const,
       archived: false,
+      fork: false,
+      parent: null,
     },
+    forkDependency: { status: "none" as const },
     existingProjects: [],
     frontendResolution: {
       status: "resolved" as const,
@@ -41,6 +44,59 @@ function admittedFixture(overrides = {}) {
     ...overrides,
   };
 }
+
+test("waits for an immediate fork parent before admitting the child", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        forkDependency: {
+          status: "waiting",
+          dependency: {
+            repositoryId: 41,
+            name: "parent",
+            repository: "owner/parent",
+            canonicalUrl: "https://github.com/owner/parent",
+            issueNumber: 201,
+          },
+        },
+      }),
+    ),
+  ).toEqual({
+    status: "waiting-on-fork-parent",
+    dependency: {
+      repositoryId: 41,
+      name: "parent",
+      repository: "owner/parent",
+      canonicalUrl: "https://github.com/owner/parent",
+      issueNumber: 201,
+    },
+  });
+});
+
+test("admits a cycle-safe stop with an explicit maintainer warning", () => {
+  const decision = evaluateProjectSubmission(
+    admittedFixture({
+      forkDependency: {
+        status: "not-listed",
+        dependency: {
+          repositoryId: 41,
+          name: "parent",
+          repository: "owner/parent",
+          canonicalUrl: "https://github.com/owner/parent",
+          issueNumber: null,
+        },
+        attention: "cycle",
+      },
+    }),
+  );
+
+  expect(decision).toMatchObject({
+    status: "admitted",
+    warnings: [
+      "Fork ancestry contains a repeated repository ID and requires maintainer review.",
+    ],
+  });
+});
 
 test("closes a permanent repository-ID duplicate before PR generation", () => {
   const decision = evaluateProjectSubmission(

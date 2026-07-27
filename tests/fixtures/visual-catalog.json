@@ -1,6 +1,9 @@
 {
-  "description": "The visual baseline uses the five-record production catalog generated from committed curated records and repository snapshots.",
+  "description": "The visual baseline uses production catalog records, including a published immediate fork relationship and a name-only delisted upstream.",
   "project_ids": [
+    "coneja-chibi-vecthare",
+    "kritblade-vectfox",
+    "aikohanasaki-sillytavern-worldinfolocks",
     "mentallyquill-recursion",
     "platberlitz-sillytavern-image-gen",
     "purrfect-logic-4-max-mini",

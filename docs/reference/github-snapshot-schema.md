@@ -30,6 +30,9 @@ Snapshot files are machine-written evidence only (`schema_version: 2`).
 - `head_sha`: 40-char git SHA
 - `head_committed_at`: date-time or null
 - `archived`: boolean
+- `fork`: optional boolean
+- `parent`: optional immediate GitHub parent object or null, with immutable
+  repository `id`, `owner`, `name`, and `url`
 - `created_at`: date-time
 - `size_kb`: integer >= 0
 
@@ -61,5 +64,8 @@ Snapshot files are machine-written evidence only (`schema_version: 2`).
 ## Notes
 
 - Snapshot writes are gated by `npm run catalog:refresh`.
+- A transient refresh that omits a known parent retains the last-known parent
+  while GitHub still reports the repository as a fork.
+- Parent data is rejected for non-forks and cannot point back to the repository
+  itself.
 - Registry source-of-truth is independent; snapshots never rewrite registry fields.
-

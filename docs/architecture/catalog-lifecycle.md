@@ -88,6 +88,7 @@ Arbitrary external URLs are never fetched automatically.
 Snapshot records in `data/snapshots/github/*.json` include:
 
 - `source_health`: `healthy|unavailable|identity-change|deleted|private`
+- GitHub's observed `fork` flag and immediate `parent` repository identity
 - `activity` evidence and timestamps
 - `community` aggregate
 - `license` and repository metadata
@@ -98,6 +99,27 @@ Snapshot records in `data/snapshots/github/*.json` include:
 - `unavailable`: snapshot stays visible if already published, with `stale` status and `stale_since`.
 - `identity-change`: removed from public build until curator confirms identity and updates registry.
 - `deleted` / `private`: removed from public build.
+
+### Fork relationship projection
+
+The snapshot is the private observation layer: it retains the immediate
+upstream repository ID, owner/name, and URL needed for refresh and identity
+matching. The generated public catalog projects only the safe relationship:
+the upstream's display name, its Tavernary project ID when that project is
+published, and `published`, `not-listed`, or `unavailable` status.
+
+A delisted upstream therefore leaves name-only provenance on its child. Its
+repository coordinates, URL, and former public Tavernary identifier are not
+published. A published relationship opens a temporary two-card catalog scope
+with the immediate parent first and child second. The parent may offer its own
+upward relationship, but Tavernary does not expose children, fork counts, or a
+fork-family browser.
+
+The relationship URL preserves ordinary query parameters while temporarily
+suspending their rendering. Removing the `Fork: Parent -> Child` token returns
+to the prior query when the relationship was opened locally, or removes only
+the relationship parameter from a shared URL. Existing **Clear all** and
+**Clear filters** actions reset the relationship and ordinary filters together.
 
 ## Public project rendering behavior
 
@@ -135,5 +157,8 @@ When snapshot is missing or stale, curated records can still render as pending-d
 ## Backfill and recovery
 
 - `npm run catalog:backfill-identities -- --write` copies repository IDs after successful observation.
+- `npm run submissions:backfill-forks` reports fork snapshot updates and
+  missing-upstream submission candidates without writing. The same command
+  with `-- --apply` is an explicit operator-controlled mutation.
 - Recovering from transient failure is usually a refresh + validation + visibility decision.
 - Source identity mismatch requires explicit curator repair path (record identity check, fix, refresh, validate, then writeback).

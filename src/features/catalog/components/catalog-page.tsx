@@ -6,7 +6,10 @@ import {
   DEFAULT_QUERY,
   type CatalogQuery,
 } from "@/features/catalog/catalog-query";
-import { selectProjects } from "@/features/catalog/catalog-selectors";
+import {
+  selectForkRelationship,
+  selectProjects,
+} from "@/features/catalog/catalog-selectors";
 import { useCatalogQuery } from "@/features/catalog/use-catalog-query";
 import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { KitGrid } from "@/features/kits/components/kit-grid";
@@ -27,6 +30,7 @@ import { ActiveQuery } from "./active-query";
 import { CatalogToolbar } from "./catalog-toolbar";
 import { CategoryNavigation } from "./category-navigation";
 import { FilterPanel, type FilterArray } from "./filter-panel";
+import { projectDisplayName } from "./project-card";
 import { ProjectGrid } from "./project-grid";
 import { SiteHeader } from "./site-header";
 
@@ -54,7 +58,7 @@ type AddedStatus = {
 };
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
-  const { query, setQuery } = useCatalogQuery();
+  const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery();
   const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
@@ -82,6 +86,22 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     () => selectProjects(catalog.projects, query, context),
     [catalog.projects, context, query],
   );
+  const relationshipProjects = useMemo(
+    () =>
+      query.relationship
+        ? selectForkRelationship(catalog.projects, query.relationship)
+        : null,
+    [catalog.projects, query.relationship],
+  );
+  const relationship =
+    relationshipProjects === null
+      ? null
+      : {
+          childId: relationshipProjects[1].id,
+          childName: projectDisplayName(relationshipProjects[1].name),
+          parentName: projectDisplayName(relationshipProjects[0].name),
+        };
+  const visibleProjects = relationshipProjects ?? selectedProjects;
   const selectedKits = useMemo(
     () => selectKits(catalog.kits, query.kits, query.search),
     [catalog.kits, query.kits, query.search],
@@ -148,6 +168,12 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     );
     return () => document.body.classList.remove("compact-cards");
   }, [query.density, query.mode]);
+
+  useEffect(() => {
+    if (query.relationship && !relationshipProjects) {
+      removeRelationship();
+    }
+  }, [query.relationship, relationshipProjects, removeRelationship]);
 
   useEffect(
     () => () => {
@@ -298,7 +324,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         (query.modelFamilies?.length ?? 0) +
         (query.completionFormats?.length ?? 0) +
         query.development.length +
-        query.licenses.length;
+        query.licenses.length +
+        Number(Boolean(relationshipProjects));
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -380,7 +407,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             count={
               query.mode === "kits"
                 ? selectedKits.length
-                : selectedProjects.length
+                : visibleProjects.length
             }
             query={query}
             refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
@@ -401,8 +428,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             projects={catalog.projects}
             kits={catalog.kits}
+            relationship={relationship}
             onRemove={removeFilter}
             onRemoveKit={removeKitFilter}
+            onRemoveRelationship={removeRelationship}
             onClear={clearFilters}
           />
           {query.mode === "kits" ? (
@@ -416,8 +445,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             />
           ) : (
             <ProjectGrid
-              projects={selectedProjects}
+              projects={visibleProjects}
               now={catalog.generatedAt}
+              relationshipChildId={
+                relationshipProjects ? query.relationship : ""
+              }
+              onViewRelationship={(childProjectId) =>
+                pushQuery((current) => ({
+                  ...current,
+                  relationship: childProjectId,
+                }))
+              }
               selection={{
                 bindingsFor: batchSelection.bindingsFor,
               }}

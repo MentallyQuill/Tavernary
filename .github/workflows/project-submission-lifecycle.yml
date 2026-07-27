@@ -10,6 +10,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: read
+  actions: write
 
 concurrency:
   group: project-submission-lifecycle-${{ github.event.pull_request.number }}
@@ -105,6 +106,14 @@ jobs:
               -f state=closed \
               -f state_reason=not_planned
           fi
+      - name: Retry fork dependents
+        if: steps.plan.outputs.action != 'ignore'
+        env:
+          UPSTREAM_ISSUE_NUMBER: ${{ steps.plan.outputs.issue_number }}
+        run: >
+          gh workflow run retry-fork-dependencies.yml
+          --ref "${{ github.event.repository.default_branch }}"
+          -f upstream_issue_number="$UPSTREAM_ISSUE_NUMBER"
       - name: Delete unchanged generated branch
         if: steps.plan.outputs.action != 'ignore'
         shell: bash
