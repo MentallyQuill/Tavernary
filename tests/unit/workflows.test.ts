@@ -727,6 +727,17 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   ).toBeLessThan(source.indexOf("git rebase origin/main"));
   expect(source).toContain("previous-generated-paths.txt");
   expect(source).toContain("Refusing unsafe generated path");
+  expect(source).toContain("Prepare generated path set");
+  expect(source).toContain("Reject conflicting open submission paths");
+  expect(source).toContain("findSubmissionPathCollision");
+  expect(source).toContain("gh api --paginate --slurp");
+  expect(source).toContain("generated-paths.txt");
+  expect(
+    source.indexOf("Reject conflicting open submission paths"),
+  ).toBeLessThan(source.indexOf("git commit -m"));
+  expect(
+    source.indexOf("Reject conflicting open submission paths"),
+  ).toBeLessThan(source.indexOf("git push origin"));
   expect(source).toContain("labels.includes('issue-admitted')");
   expect(source).toContain("Refresh and revalidate issue before PR mutation");
   expect(source).toContain("Refresh and revalidate issue before labeling");
