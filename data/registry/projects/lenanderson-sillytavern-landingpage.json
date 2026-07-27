@@ -1,0 +1,24 @@
+{
+  "schema_version": 5,
+  "id": "lenanderson-sillytavern-landingpage",
+  "name": "SillyTavern-LandingPage",
+  "kind": "extension",
+  "summary": "GitHub project awaiting automatic metadata enrichment.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "LenAnderson/SillyTavern-LandingPage",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-26T00:00:00Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

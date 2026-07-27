@@ -36,6 +36,18 @@ const removedVillageMakerIds = [
 ];
 
 const manualCuratedRecords = {
+  "evening-truth-carrd-prompt": {
+    summary:
+      "A collection of concise, model-tailored roleplay system prompts designed for broad Chat Completion compatibility.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "character-worldbuilding",
+    ],
+    version: null,
+    artifact_size_bytes: null,
+  },
   "le-emotionalism-1-1-5-prompt": {
     summary:
       "A modular SillyTavern preset for grounded roleplay, autonomous NPCs, deliberate reasoning, continuity, pacing, and expressive prose.",
@@ -78,6 +90,19 @@ const manualCuratedRecords = {
       "prompt-engineering",
       "instruction-control",
       "planning-reasoning",
+    ],
+    version: null,
+    artifact_size_bytes: null,
+  },
+  "reddit-1v72pju": {
+    summary:
+      "A director-style roleplay preset where the user directs intent while an autonomous simulation authors the world, characters, and consequences.",
+    primary_function: "generation-reasoning",
+    capabilities: [
+      "prompt-engineering",
+      "instruction-control",
+      "planning-reasoning",
+      "character-worldbuilding",
     ],
     version: null,
     artifact_size_bytes: null,

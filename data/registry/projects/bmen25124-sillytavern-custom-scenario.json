@@ -1,0 +1,24 @@
+{
+  "schema_version": 5,
+  "id": "bmen25124-sillytavern-custom-scenario",
+  "name": "SillyTavern-Custom-Scenario",
+  "kind": "extension",
+  "summary": "GitHub project awaiting automatic metadata enrichment.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "bmen25124/SillyTavern-Custom-Scenario",
+    "repository_id": null
+  },
+  "frontends": [
+    "sillytavern"
+  ],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-26T00:00:00Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 5,
+  "id": "reddit-1v72pju",
+  "name": "Simulator Engine",
+  "kind": "preset",
+  "summary": "A director-style roleplay preset where the user directs intent while an autonomous simulation authors the world, characters, and consequences.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "url",
+    "url": "https://old.reddit.com/r/SillyTavernAI/comments/1v72pju/preset_simulator_engine_directorstyle_roleplay/",
+    "published_at": null,
+    "version": null,
+    "artifact_size_bytes": null,
+    "license_status": "missing",
+    "license_spdx_id": null
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "capabilities": [
+    "prompt-engineering",
+    "instruction-control",
+    "planning-reasoning",
+    "character-worldbuilding"
+  ],
+  "model_families": ["glm"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-07-26T00:00:00Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "paused",
+  "enrichment_policy": "manual",
+  "enrichment_note": "External URL source; requires manual curation."
+}
