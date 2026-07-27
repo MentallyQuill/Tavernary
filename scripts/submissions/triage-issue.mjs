@@ -6,6 +6,7 @@ import {
   evaluateProjectSubmission,
   submissionQueueLabels,
 } from "./admission.mjs";
+import { classifyForkDependency } from "./fork-dependency.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
@@ -48,6 +49,10 @@ const triageLabels = {
     color: "6e7781",
     description: "Submission was declined during maintainer review.",
   },
+  "waiting-on-fork-parent": {
+    color: "1d76db",
+    description: "Submission is waiting for its immediate fork parent review.",
+  },
 };
 
 export function parseIssueFields(body) {
@@ -86,6 +91,38 @@ export function buildValidationComment(validation) {
   ].join("\n");
 }
 
+function validForkDependencyMarker(dependency) {
+  if (!dependency || typeof dependency !== "object") return false;
+  const keys = Object.keys(dependency).sort();
+  const expectedKeys = [
+    "canonical_url",
+    "issue_number",
+    "name",
+    "repository",
+    "repository_id",
+  ];
+  const [owner, repositoryName, extra] =
+    typeof dependency.repository === "string"
+      ? dependency.repository.split("/")
+      : [];
+  return (
+    keys.length === expectedKeys.length &&
+    keys.every((key, index) => key === expectedKeys[index]) &&
+    Number.isInteger(dependency.repository_id) &&
+    dependency.repository_id > 0 &&
+    typeof dependency.name === "string" &&
+    dependency.name.trim().length > 0 &&
+    owner &&
+    repositoryName &&
+    !extra &&
+    dependency.canonical_url ===
+      `https://github.com/${dependency.repository}` &&
+    (dependency.issue_number === null ||
+      (Number.isInteger(dependency.issue_number) &&
+        dependency.issue_number > 0))
+  );
+}
+
 export function parseProjectSubmissionStateMarker(body) {
   const start = body.indexOf(projectSubmissionStateMarker);
   if (start < 0) return null;
@@ -99,6 +136,13 @@ export function parseProjectSubmissionStateMarker(body) {
       (marker.generated_title !== null &&
         typeof marker.generated_title !== "string") ||
       typeof marker.status !== "string" ||
+      (marker.source_repository_id !== undefined &&
+        (!Number.isInteger(marker.source_repository_id) ||
+          marker.source_repository_id <= 0)) ||
+      (marker.fork_dependency !== undefined &&
+        (!validForkDependencyMarker(marker.fork_dependency) ||
+          !Number.isInteger(marker.source_repository_id) ||
+          marker.source_repository_id <= 0)) ||
       (marker.frontend_dependencies !== undefined &&
         (!Array.isArray(marker.frontend_dependencies) ||
           marker.frontend_dependencies.some(
@@ -131,6 +175,7 @@ function decisionLabel(decision, currentLabels) {
     duplicate: "duplicate-candidate",
     "needs-information": "needs-information",
     retryable: "submission-retryable",
+    "waiting-on-fork-parent": "waiting-on-fork-parent",
   }[decision.status];
 }
 
@@ -186,6 +231,9 @@ function decisionComment(decision) {
   if (decision.status === "retryable") {
     return `Tavernary could not finish source inspection because of a temporary failure (${decision.code}): ${decision.message}`;
   }
+  if (decision.status === "waiting-on-fork-parent") {
+    return `${decision.dependency.name} is the immediate upstream of this fork and must complete Tavernary review first. This submission will resume automatically after that review.`;
+  }
   return "Automated admission passes. Tavernary will create or update the maintainer review pull request.";
 }
 
@@ -213,6 +261,25 @@ export function buildProjectSubmissionTriage(decision, context) {
     schema_version: 1,
     generated_title: generatedTitle,
     status: decision.status,
+    ...((context.sourceRepositoryId ??
+    context.previousMarker?.source_repository_id)
+      ? {
+          source_repository_id:
+            context.sourceRepositoryId ??
+            context.previousMarker.source_repository_id,
+        }
+      : {}),
+    ...(decision.status === "waiting-on-fork-parent"
+      ? {
+          fork_dependency: {
+            repository_id: decision.dependency.repositoryId,
+            name: decision.dependency.name,
+            repository: decision.dependency.repository,
+            canonical_url: decision.dependency.canonicalUrl,
+            issue_number: decision.dependency.issueNumber,
+          },
+        }
+      : {}),
     ...(decision.status === "needs-information" &&
     decision.frontendDependencies?.length
       ? {
@@ -384,6 +451,9 @@ export function projectSubmissionExistingProject(record) {
     return {
       id: record.id,
       name: record.name,
+      kind: record.kind,
+      visibility: record.visibility,
+      repositoryId: identity.kind === "github" ? identity.repositoryId : null,
       canonicalUrl: identity.canonicalUrl,
       identity,
     };
@@ -401,6 +471,45 @@ function retryableError(error) {
     error?.status === 429 ||
     error?.status >= 500
   );
+}
+
+function submissionForkFacts(observation) {
+  const fork = observation.fork === true;
+  const parent = observation.parent;
+  if (
+    !fork ||
+    !parent ||
+    parent.private === true ||
+    parent.visibility === "private"
+  ) {
+    return { fork, parent: null };
+  }
+
+  const [owner, name, extra] =
+    typeof parent.full_name === "string" ? parent.full_name.split("/") : [];
+  const canonicalUrl = `https://github.com/${parent.full_name}`;
+  if (
+    !Number.isInteger(parent.id) ||
+    parent.id <= 0 ||
+    !owner ||
+    !name ||
+    extra ||
+    typeof parent.name !== "string" ||
+    parent.name !== name ||
+    parent.html_url !== canonicalUrl
+  ) {
+    throw new Error("GitHub returned malformed fork parent metadata.");
+  }
+
+  return {
+    fork,
+    parent: {
+      repositoryId: parent.id,
+      name: parent.name,
+      repository: parent.full_name,
+      canonicalUrl: parent.html_url,
+    },
+  };
 }
 
 export async function inspectProjectSubmissionSource(
@@ -444,6 +553,7 @@ export async function inspectProjectSubmissionSource(
             ? "private"
             : (observation.visibility ?? "public"),
           archived: observation.archived === true,
+          ...submissionForkFacts(observation),
         },
       };
     } catch (error) {
@@ -665,15 +775,24 @@ export async function processProjectSubmissionTriage({
             vocabulary: data.vocabulary,
             frontendProjects: data.projects,
           });
+    const existingProjects = data.projects
+      .map(projectSubmissionExistingProject)
+      .filter((project) => project !== null);
+    const forkDependency = classifyForkDependency({
+      repository: inspection.repository,
+      projects: existingProjects,
+      priorSubmission: null,
+      ancestryRepositoryIds:
+        identity?.kind === "github" ? [identity.repositoryId] : [],
+    });
     decision = evaluateProjectSubmission({
       manifest: parsed.manifest,
       identity,
       sourceProbe: inspection.sourceProbe,
       repository: inspection.repository,
-      existingProjects: data.projects
-        .map(projectSubmissionExistingProject)
-        .filter((project) => project !== null),
+      existingProjects,
       frontendResolution,
+      forkDependency,
       errors: inspection.errors,
       warnings: [],
     });
@@ -708,6 +827,8 @@ export async function processProjectSubmissionTriage({
     currentLabels: issue.labels,
     generatedTitle,
     previousMarker,
+    sourceRepositoryId:
+      identity?.kind === "github" ? identity.repositoryId : undefined,
   });
   const api = triageApi(repository, request);
   const cachedApi = {

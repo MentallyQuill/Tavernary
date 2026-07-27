@@ -7,6 +7,7 @@ export const submissionQueueLabels = [
   "submission-retryable",
   "submission-pr-open",
   "submission-declined",
+  "waiting-on-fork-parent",
 ];
 
 function findDuplicate(identity, existingProjects) {
@@ -119,11 +120,26 @@ export function evaluateProjectSubmission(input) {
       suggestions: [],
     };
   }
+  if (input.forkDependency?.status === "waiting") {
+    return {
+      status: "waiting-on-fork-parent",
+      dependency: input.forkDependency.dependency,
+    };
+  }
 
   const warnings = [
     ...(input.warnings ?? []),
     ...input.frontendResolution.warnings,
     ...(input.repository?.archived ? ["GitHub repository is archived."] : []),
+    ...(input.forkDependency?.attention === "cycle"
+      ? [
+          "Fork ancestry contains a repeated repository ID and requires maintainer review.",
+        ]
+      : input.forkDependency?.attention === "depth-limit"
+        ? [
+            "Fork ancestry exceeds the 16-repository automation limit and requires maintainer review.",
+          ]
+        : []),
   ];
   return {
     status: "admitted",

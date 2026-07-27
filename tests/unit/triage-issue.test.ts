@@ -7,6 +7,7 @@ import {
   parseIssueFields,
   parseProjectSubmissionStateMarker,
   processProjectSubmissionTriage,
+  projectSubmissionExistingProject,
   resolveProjectSubmissionEvent,
   synchronizeProjectSubmissionTriage,
 } from "../../scripts/submissions/triage-issue.mjs";
@@ -37,6 +38,27 @@ This is an unusual installation.
   ).toEqual({
     kind: "Extension",
     sourceUrl: "https://github.com/MentallyQuill/Recursion",
+  });
+});
+
+test("retains catalog visibility, kind, and stable repository ID for fork classification", () => {
+  expect(
+    projectSubmissionExistingProject({
+      id: "parent",
+      name: "Parent",
+      kind: "extension",
+      visibility: "disabled",
+      source: {
+        type: "github",
+        repository: "owner/parent",
+        repository_id: 41,
+      },
+    }),
+  ).toMatchObject({
+    id: "parent",
+    kind: "extension",
+    visibility: "disabled",
+    repositoryId: 41,
   });
 });
 
@@ -267,6 +289,48 @@ test("links the existing project and closes duplicate issues", () => {
   );
 });
 
+test("keeps a child open while its immediate fork parent is under review", () => {
+  const mutation = buildProjectSubmissionTriage(
+    {
+      status: "waiting-on-fork-parent",
+      dependency: {
+        repositoryId: 41,
+        name: "Parent",
+        repository: "owner/parent",
+        canonicalUrl: "https://github.com/owner/parent",
+        issueNumber: 201,
+      },
+    },
+    {
+      issueNumber: 123,
+      currentTitle: "[Project submission] owner/child",
+      currentLabels: ["issue-admitted", "needs-maintainer-review"],
+      generatedTitle: "[Project submission] owner/child",
+      previousMarker: null,
+      sourceRepositoryId: 42,
+    },
+  );
+
+  expect(mutation).toMatchObject({
+    labels: ["issue-admitted", "project-submission", "waiting-on-fork-parent"],
+    close: false,
+    dispatchGeneration: false,
+    marker: {
+      source_repository_id: 42,
+      fork_dependency: {
+        repository_id: 41,
+        name: "Parent",
+        repository: "owner/parent",
+        canonical_url: "https://github.com/owner/parent",
+        issue_number: 201,
+      },
+    },
+  });
+  expect(mutation.commentBody).toContain(
+    "Parent is the immediate upstream of this fork and must complete Tavernary review first. This submission will resume automatically after that review.",
+  );
+});
+
 test("keeps missing frontend dependencies open with an actionable response", () => {
   const mutation = buildProjectSubmissionTriage(
     {
@@ -457,6 +521,111 @@ test("parses frontend dependencies from the stable state marker", () => {
   });
 });
 
+test("parses a fork dependency from the stable state marker", () => {
+  expect(
+    parseProjectSubmissionStateMarker(
+      [
+        "<!-- tavernary-project-submission-state",
+        JSON.stringify({
+          schema_version: 1,
+          generated_title: "[Project submission] owner/child",
+          status: "waiting-on-fork-parent",
+          source_repository_id: 42,
+          fork_dependency: {
+            repository_id: 41,
+            name: "Parent",
+            repository: "owner/parent",
+            canonical_url: "https://github.com/owner/parent",
+            issue_number: 201,
+          },
+        }),
+        "-->",
+      ].join("\n"),
+    ),
+  ).toMatchObject({
+    source_repository_id: 42,
+    fork_dependency: {
+      repository_id: 41,
+      name: "Parent",
+      repository: "owner/parent",
+      canonical_url: "https://github.com/owner/parent",
+      issue_number: 201,
+    },
+  });
+});
+
+test.each([
+  ["source repository ID", { source_repository_id: 0 }],
+  [
+    "fork repository ID",
+    {
+      source_repository_id: 42,
+      fork_dependency: {
+        repository_id: 0,
+        name: "Parent",
+        repository: "owner/parent",
+        canonical_url: "https://github.com/owner/parent",
+        issue_number: 201,
+      },
+    },
+  ],
+  [
+    "fork coordinate",
+    {
+      source_repository_id: 42,
+      fork_dependency: {
+        repository_id: 41,
+        name: "Parent",
+        repository: "owner",
+        canonical_url: "https://github.com/owner/parent",
+        issue_number: 201,
+      },
+    },
+  ],
+  [
+    "fork issue number",
+    {
+      source_repository_id: 42,
+      fork_dependency: {
+        repository_id: 41,
+        name: "Parent",
+        repository: "owner/parent",
+        canonical_url: "https://github.com/owner/parent",
+        issue_number: 0,
+      },
+    },
+  ],
+  [
+    "extra fork field",
+    {
+      source_repository_id: 42,
+      fork_dependency: {
+        repository_id: 41,
+        name: "Parent",
+        repository: "owner/parent",
+        canonical_url: "https://github.com/owner/parent",
+        issue_number: null,
+        url: "https://github.com/owner/parent",
+      },
+    },
+  ],
+])("rejects a malformed %s in the state marker", (_name, fields) => {
+  expect(
+    parseProjectSubmissionStateMarker(
+      [
+        "<!-- tavernary-project-submission-state",
+        JSON.stringify({
+          schema_version: 1,
+          generated_title: "[Project submission] owner/child",
+          status: "waiting-on-fork-parent",
+          ...fields,
+        }),
+        "-->",
+      ].join("\n"),
+    ),
+  ).toBeNull();
+});
+
 test("rejects malformed frontend dependencies in the state marker", () => {
   expect(
     parseProjectSubmissionStateMarker(
@@ -509,6 +678,143 @@ test("accepts Reddit permalinks without an anonymous availability probe", async 
         "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
     },
     sourceProbe: { status: "ok", httpStatus: null },
+  });
+});
+
+test("normalizes an immediate GitHub fork parent during source inspection", async () => {
+  const result = await inspectProjectSubmissionSource(
+    {
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/child",
+      name: "Child",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    },
+    {
+      request: vi.fn().mockResolvedValue({
+        id: 42,
+        owner: { login: "owner" },
+        name: "child",
+        html_url: "https://github.com/owner/child",
+        visibility: "public",
+        private: false,
+        archived: false,
+        fork: true,
+        parent: {
+          id: 41,
+          name: "parent",
+          full_name: "owner/parent",
+          html_url: "https://github.com/owner/parent",
+          private: false,
+          visibility: "public",
+        },
+      }),
+      probe: vi.fn(),
+    },
+  );
+
+  expect(result.repository).toEqual({
+    visibility: "public",
+    archived: false,
+    fork: true,
+    parent: {
+      repositoryId: 41,
+      name: "parent",
+      repository: "owner/parent",
+      canonicalUrl: "https://github.com/owner/parent",
+    },
+  });
+});
+
+test.each([
+  ["a non-fork", { fork: false }, false],
+  ["a fork with missing parent metadata", { fork: true }, true],
+  [
+    "a fork whose parent metadata is private",
+    {
+      fork: true,
+      parent: {
+        id: 41,
+        name: "parent",
+        full_name: "owner/parent",
+        html_url: "https://github.com/owner/parent",
+        private: true,
+      },
+    },
+    true,
+  ],
+])("normalizes %s without exposing a parent", async (_name, facts, fork) => {
+  const result = await inspectProjectSubmissionSource(
+    {
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/child",
+      name: "Child",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    },
+    {
+      request: vi.fn().mockResolvedValue({
+        id: 42,
+        owner: { login: "owner" },
+        name: "child",
+        html_url: "https://github.com/owner/child",
+        visibility: "public",
+        private: false,
+        archived: false,
+        ...facts,
+      }),
+      probe: vi.fn(),
+    },
+  );
+
+  expect(result.repository).toMatchObject({ fork, parent: null });
+});
+
+test("rejects malformed GitHub fork parent identity", async () => {
+  const result = await inspectProjectSubmissionSource(
+    {
+      schema_version: 1,
+      project_type: "extension",
+      source_url: "https://github.com/owner/child",
+      name: "Child",
+      description: null,
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    },
+    {
+      request: vi.fn().mockResolvedValue({
+        id: 42,
+        owner: { login: "owner" },
+        name: "child",
+        html_url: "https://github.com/owner/child",
+        visibility: "public",
+        private: false,
+        archived: false,
+        fork: true,
+        parent: {
+          id: 41,
+          name: "different-name",
+          full_name: "owner/parent",
+          html_url: "https://github.com/owner/parent",
+        },
+      }),
+      probe: vi.fn(),
+    },
+  );
+
+  expect(result).toMatchObject({
+    sourceProbe: {
+      status: "retryable",
+      code: "github-api-failure",
+      message: "GitHub returned malformed fork parent metadata.",
+    },
   });
 });
 

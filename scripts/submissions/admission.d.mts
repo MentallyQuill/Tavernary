@@ -1,5 +1,10 @@
 import type { ProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
 import type {
+  ForkDependency,
+  ForkDependencyDecision,
+  SubmissionRepositoryObservation,
+} from "./fork-dependency.mjs";
+import type {
   FrontendResolution,
   FrontendSuggestion,
   MissingFrontendDependency,
@@ -16,6 +21,9 @@ export type SourceProbeDecision =
 export interface ExistingSubmissionProject {
   id: string;
   name: string;
+  kind?: string;
+  visibility?: string;
+  repositoryId?: number | null;
   canonicalUrl: string;
   identity: SourceIdentity;
 }
@@ -24,12 +32,10 @@ export interface ProjectSubmissionAdmissionInput {
   manifest: ProjectSubmissionManifest;
   identity: SourceIdentity | null;
   sourceProbe: SourceProbeDecision;
-  repository?: {
-    visibility: "public" | "private" | "internal";
-    archived: boolean;
-  };
+  repository?: SubmissionRepositoryObservation;
   existingProjects: ExistingSubmissionProject[];
   frontendResolution: FrontendResolution;
+  forkDependency?: ForkDependencyDecision;
   warnings?: string[];
   errors?: string[];
   suggestions?: FrontendSuggestion[];
@@ -55,6 +61,10 @@ export type ProjectSubmissionDecision =
       status: "retryable";
       code: string;
       message: string;
+    }
+  | {
+      status: "waiting-on-fork-parent";
+      dependency: ForkDependency;
     }
   | {
       status: "admitted";

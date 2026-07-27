@@ -4,6 +4,7 @@ import type {
   ProjectSubmissionDecision,
   SourceProbeDecision,
 } from "./admission.mjs";
+import type { SubmissionRepositoryObservation } from "./fork-dependency.mjs";
 import type {
   FrontendProject,
   FrontendVocabulary,
@@ -33,6 +34,14 @@ export interface ProjectSubmissionStateMarker {
     canonical_url: string;
     repository: string;
   }>;
+  source_repository_id?: number;
+  fork_dependency?: {
+    repository_id: number;
+    name: string;
+    repository: string;
+    canonical_url: string;
+    issue_number: number | null;
+  };
 }
 
 export interface ProjectSubmissionTriageMutation {
@@ -58,6 +67,7 @@ export function buildProjectSubmissionTriage(
     currentLabels: string[];
     generatedTitle: string | null;
     previousMarker: ProjectSubmissionStateMarker | null;
+    sourceRepositoryId?: number;
   },
 ): ProjectSubmissionTriageMutation;
 
@@ -146,6 +156,8 @@ export function loadProjectSubmissionCatalogData(): Promise<{
 
 export function projectSubmissionExistingProject(
   record: FrontendProject & {
+    kind?: string;
+    visibility?: string;
     source?: {
       type: string;
       repository?: string;
@@ -167,9 +179,6 @@ export function inspectProjectSubmissionSource(
 ): Promise<{
   identity: SourceIdentity | null;
   sourceProbe: SourceProbeDecision;
-  repository?: {
-    visibility: "public" | "private" | "internal";
-    archived: boolean;
-  };
+  repository?: SubmissionRepositoryObservation;
   errors?: string[];
 }>;
