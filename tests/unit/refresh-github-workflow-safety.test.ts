@@ -103,6 +103,9 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
   const rollout = steps.find(
     ({ name }) => name === "Run durable enrichment rollout",
   );
+  const reporter = steps.find(
+    ({ name }) => name === "Report unresolved enrichment projects",
+  );
 
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty("mode");
   expect(document.on.workflow_dispatch.inputs).not.toHaveProperty(
@@ -117,6 +120,10 @@ test("enrichment delegates one durable rollout to the tested orchestrator", asyn
     GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
   });
   expect(text.match(/secrets\.TAVERNARY_ENRICHMENT_API_KEY/gu)).toHaveLength(1);
+  expect(reporter?.env).toEqual({
+    GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+  });
+  expect(reporter?.run).toContain("enrichment-rollout-result.json");
   expect(text).toContain("## Enrichment provider preflight");
   expect(text).not.toContain("publish_changes()");
   expect(text).not.toContain("complete_canary()");

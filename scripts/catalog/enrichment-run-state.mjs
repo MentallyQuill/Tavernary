@@ -162,7 +162,6 @@ function terminalState(state) {
   if (state.manifest.length === 0 && state.deferred_ids.length > 0) {
     return "complete-with-errors";
   }
-  if (successfulCount === 0) return "failed";
   if (
     successfulCount === state.manifest.length &&
     state.deferred_ids.length === 0

@@ -59,10 +59,21 @@ This page maps Tavernary workflows to common operational tasks.
    - `enrichment_scope`: `pending` (default) or `all-automatic`
    - `batch_size` (default `20`)
    - `model_concurrency` (default `4`)
+   - `model_timeout_seconds` (default `120` per provider request)
 3. Run on `main`. The workflow:
    - writes enrichment output into catalog records
    - emits summary in the workflow run
    - commits enrichment changes on successful selection
+   - retries transient preflight calls three times after the initial attempt
+   - keeps terminal project errors provisional and finishes
+     `complete-with-errors` without stopping later projects
+   - maintains one `Catalog enrichment errors` issue until a clean completed
+     run resolves every project
+
+A green `complete-with-errors` run means the automation completed safely but
+some projects remain provisional after retry. Configuration, authentication,
+model, state, publication, deployment, and issue-reporting failures still make
+the Action red.
 
 Useful when:
 - pending summaries are stale/incomplete

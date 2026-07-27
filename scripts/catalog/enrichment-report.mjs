@@ -27,7 +27,7 @@ const safeMessages = {
   "readme-rate-limited": "GitHub README request was rate limited.",
   "readme-server-error": "GitHub README service is unavailable.",
   "readme-unusable": "GitHub README content is unusable.",
-  "provider-timeout": "The enrichment provider timed out after 120 seconds.",
+  "provider-timeout": "The enrichment provider timed out.",
   "provider-rate-limited": "The enrichment provider returned HTTP 429.",
   "provider-server-error": "The enrichment provider returned a server error.",
   "provider-authentication-failed":
@@ -199,10 +199,7 @@ function assertTerminalFullAccounting(value) {
   const allSuccessful =
     successfulCount === value.manifest.length &&
     value.deferred_ids.length === 0;
-  const validWarning =
-    (successfulCount > 0 &&
-      (!allSuccessful || value.deferred_ids.length > 0)) ||
-    (value.manifest.length === 0 && value.deferred_ids.length > 0);
+  const validWarning = !allSuccessful;
   if (
     (value.status === "complete" && !allSuccessful) ||
     (value.status === "complete-with-errors" && !validWarning)

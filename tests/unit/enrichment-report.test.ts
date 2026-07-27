@@ -68,6 +68,32 @@ test("serializes only sanitized deterministic run-state fields", () => {
   expect(validateEnrichmentReport(JSON.parse(serialized))).toEqual(report);
 });
 
+test("does not hard-code a timeout duration in durable report messages", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "timeout-run",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "failed",
+        reasonCode: "provider-timeout",
+      },
+    ],
+    now,
+  );
+
+  expect(createEnrichmentReport(state).entries.a.message).toBe(
+    "The enrichment provider timed out.",
+  );
+});
+
 test("rejects malformed or contradictory durable reports", () => {
   const report = createEnrichmentReport(
     createEnrichmentRunState({
@@ -172,6 +198,38 @@ test("round-trips a full report completed with isolated errors", () => {
         phase: "primary",
         outcome: "source-not-ready",
         reasonCode: "unhealthy-source",
+      },
+    ],
+    now,
+  );
+  const report = createEnrichmentReport(state);
+
+  expect(report.status).toBe("complete-with-errors");
+  expect(validateEnrichmentReport(report)).toEqual(report);
+});
+
+test("round-trips a full report when every record remains provisional", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a", "b"],
+    runId: "all-provisional",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "unhealthy-source",
+      },
+      {
+        id: "b",
+        phase: "primary",
+        outcome: "source-not-ready",
+        reasonCode: "stale-source",
       },
     ],
     now,

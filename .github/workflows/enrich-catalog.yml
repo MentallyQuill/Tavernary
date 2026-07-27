@@ -19,10 +19,15 @@ on:
         description: Concurrent model calls, from 1 through 4.
         type: number
         default: 4
+      model_timeout_seconds:
+        description: Per-model-request timeout in seconds.
+        type: number
+        default: 120
 
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: catalog-refresh
@@ -58,8 +63,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BATCH_SIZE: ${{ inputs.batch_size || 20 }}
           MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 4 }}
+          MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}
           ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}
         run: npm run catalog:enrichment-rollout
+      - name: Report unresolved enrichment projects
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          npm run catalog:report-enrichment-errors --
+          --result-path "$RUNNER_TEMP/enrichment-rollout-result.json"
+          --report-path data/reports/enrichment-report.json
       - name: Write sanitized workflow summary
         if: always()
         shell: bash

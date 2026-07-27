@@ -177,7 +177,12 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   - `pending` (default) processes automatic records that still need enrichment.
   - `all-automatic` re-enriches every automatic record and is intended for
     provider-contract migrations such as a one-time summary rewrite.
+- `model_timeout_seconds` defaults to `120` and applies independently to each
+  provider request, not to a batch or the five-hour workflow job.
 - Neither scope overrides a record's manual enrichment policy.
+- Preflight retries transient provider timeouts, network failures, rate limits,
+  and server errors three times after the initial request, waiting 5, 15, and
+  30 seconds between attempts. Exhausted preflight retries remain fatal.
 - Canary:
   - a representative pool of 5-7 unique project IDs is selected within the
     chosen scope
@@ -188,10 +193,17 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   - `start` initializes full enrichment manifest
   - `resume` advances until state is no longer `running`
   - required gate `npm run check` between batches
+  - isolated project failures remain provisional after their durable retry and
+    produce a successful `complete-with-errors` Action conclusion
+  - systemic configuration, authentication, model, state, write, publication,
+    deployment, or notification failures produce a failed Action conclusion
 - `concurrency` also `catalog-refresh`.
 - Deployment summary writes include manifest mode/phase/cursor checkpoints.
 - Durable reports freeze `selection_mode` and list `manual_exclusions`, so a
   resumed run cannot silently change scope.
+- A successful partial run creates, updates, or reopens one
+  `Catalog enrichment errors` issue with sanitized terminal errors. A later
+  clean completed run closes it. Recovered first-attempt errors are omitted.
 
 Provider mode uses environment secrets:
 

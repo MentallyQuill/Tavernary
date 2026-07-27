@@ -624,16 +624,41 @@ const preflightInput = {
   allowedCapabilities: [{ id: "automation", label: "Automation" }],
 };
 
-async function runPreflight(provider) {
-  let result = await provider.generate(preflightInput);
+export const PREFLIGHT_RETRY_DELAYS_MS = [5_000, 15_000, 30_000];
+
+const transientPreflightCodes = new Set([
+  "provider-timeout",
+  "provider-network-error",
+  "provider-rate-limited",
+  "provider-server-error",
+]);
+
+async function generatePreflight(provider, input, sleep) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await provider.generate(input);
+    } catch (error) {
+      const delay = PREFLIGHT_RETRY_DELAYS_MS[attempt];
+      if (!transientPreflightCodes.has(error?.code) || delay === undefined) {
+        throw error;
+      }
+      await sleep(delay);
+    }
+  }
+}
+
+async function runPreflight(provider, sleep) {
+  let result = await generatePreflight(provider, preflightInput, sleep);
   const vocabularies = {
     primaryFunctions: preflightInput.allowedPrimaryFunctions,
     capabilities: preflightInput.allowedCapabilities,
   };
   let validation = validateOutput(result.output, vocabularies, true);
   if (!validation.valid) {
-    result = await provider.generate(
+    result = await generatePreflight(
+      provider,
       validationRepairInput(preflightInput, validation, result.output),
+      sleep,
     );
     validation = validateOutput(result.output, vocabularies, true);
   }
@@ -796,7 +821,11 @@ export async function runCli(options = {}) {
       ...configuration,
       timeoutMs: options.timeoutMs,
     });
-  if (mode === "preflight") return runPreflight(provider);
+  const sleep =
+    options.sleep ??
+    ((milliseconds) =>
+      new Promise((resolve) => setTimeout(resolve, milliseconds)));
+  if (mode === "preflight") return runPreflight(provider, sleep);
 
   const records =
     options.records ??
@@ -1024,6 +1053,7 @@ export function cliOptions(argv) {
   const value = (name, fallback) => values(name).at(-1) ?? fallback;
   return {
     mode: value("--mode", "preflight"),
+    timeoutMs: Number(value("--timeout-seconds", 120)) * 1_000,
     batchSize: Number(value("--batch-size", 20)),
     concurrency: Number(value("--concurrency", 4)),
     projectIds: values("--project-id"),

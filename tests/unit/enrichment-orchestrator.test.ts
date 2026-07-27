@@ -6,6 +6,7 @@ import {
   createProductionOperations,
   executeCommand,
   requiresFullCheck,
+  runMain,
   runEnrichmentRollout,
 } from "../../scripts/catalog/enrichment-orchestrator.mjs";
 
@@ -319,6 +320,63 @@ test("runs a fresh canary and full rollout with one exact deployment wait per ph
     `wait:${fullCommit}`,
     `record-full-deployment:${fullCommit}:12345`,
   ]);
+});
+
+test("writes a trusted result file after a completed rollout", async () => {
+  const fixture = recordingOperations({
+    plans: ["start-full"],
+    full: [
+      {
+        status: "complete-with-errors",
+        progress: "complete:1",
+        checkpointCommit: "d".repeat(40),
+      },
+    ],
+  });
+  const writes: Array<{ path: string; content: string }> = [];
+
+  await expect(
+    runMain({
+      operations: fixture.operations,
+      runnerTemp: "C:/runner",
+      async writeText(path: string, content: string) {
+        writes.push({ path, content });
+      },
+    }),
+  ).resolves.toEqual({ status: "complete-with-errors" });
+
+  expect(writes).toEqual([
+    {
+      path: join("C:/runner", "enrichment-rollout-result.json"),
+      content: '{"status":"complete-with-errors"}\n',
+    },
+  ]);
+});
+
+test("does not write a trusted result file for a failed rollout", async () => {
+  const fixture = recordingOperations({
+    plans: ["start-full"],
+    full: [
+      {
+        status: "failed",
+        progress: "complete:1",
+        checkpointCommit: null,
+      },
+    ],
+  });
+  const writes: Array<{ path: string; content: string }> = [];
+
+  await expect(
+    runMain({
+      operations: fixture.operations,
+      runnerTemp: "C:/runner",
+      async writeText(path: string, content: string) {
+        writes.push({ path, content });
+      },
+    }),
+  ).rejects.toThrow("systemic failure");
+
+  expect(writes).toEqual([]);
 });
 
 test("continues a durable canary without selecting or preparing another pool", async () => {
@@ -903,6 +961,53 @@ test("writes only the sanitized preflight result into the workflow summary input
       content: '{"mode":"preflight","status":"passed"}\n',
     },
   ]);
+});
+
+test("passes the configured provider timeout to preflight", async () => {
+  const calls: Array<{ command: string; args: string[] }> = [];
+  const operations = createProductionOperations({
+    npmCommand: "npm",
+    timeoutSeconds: 180,
+    async runCommand(command: string, args: string[]) {
+      calls.push({ command, args });
+      return {
+        stdout: '{"mode":"preflight","status":"passed"}\n',
+        exitCode: 0,
+      };
+    },
+    async publishChanges() {
+      return { changed: false, publishedCommit: null, registryCommit: null };
+    },
+  });
+
+  await operations.preflight();
+
+  expect(calls).toContainEqual({
+    command: "npm",
+    args: [
+      "run",
+      "catalog:enrich",
+      "--",
+      "--mode",
+      "preflight",
+      "--timeout-seconds",
+      "180",
+    ],
+  });
+});
+
+test("rejects a non-positive provider timeout", () => {
+  expect(() =>
+    createProductionOperations({
+      timeoutSeconds: 0,
+      async runCommand() {
+        return { stdout: "", exitCode: 0 };
+      },
+      async publishChanges() {
+        return { changed: false, publishedCommit: null, registryCommit: null };
+      },
+    }),
+  ).toThrow("model timeout seconds must be a positive number");
 });
 
 test("publishes one full preparation checkpoint despite refresh timestamp churn", async () => {

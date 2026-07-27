@@ -304,3 +304,26 @@ test("aborts each model call after 120 seconds", async () => {
   await vi.advanceTimersByTimeAsync(ENRICHMENT_TIMEOUT_MS);
   await rejection;
 });
+
+test("uses the configured timeout in its safe diagnostic", async () => {
+  vi.useFakeTimers();
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test",
+    apiKey: "key",
+    model,
+    timeoutMs: 7_500,
+    fetchImpl: async (_url, init) =>
+      new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener("abort", () => {
+          reject(new DOMException("aborted", "AbortError"));
+        });
+      }),
+  });
+
+  const rejection = expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-timeout",
+    message: "The enrichment provider timed out after 7.5 seconds.",
+  });
+  await vi.advanceTimersByTimeAsync(7_500);
+  await rejection;
+});
