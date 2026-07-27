@@ -117,9 +117,27 @@ async function atomicWrite(path, value) {
   await rename(temporary, path);
 }
 
+export function githubReactionUrl({
+  repository,
+  issueNumber,
+  page,
+  perPage,
+}) {
+  if (!repository) throw new Error("GitHub repository is required");
+  return (
+    `https://api.github.com/repos/${repository}/issues/${issueNumber}` +
+    `/reactions?per_page=${perPage}&page=${page}`
+  );
+}
+
 async function githubReactionPage({ kit, page, perPage }) {
   const response = await fetch(
-    `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/issues/${kit.source_issue_number}/reactions?per_page=${perPage}&page=${page}`,
+    githubReactionUrl({
+      repository: process.env.GITHUB_REPOSITORY,
+      issueNumber: kit.source_issue_number,
+      page,
+      perPage,
+    }),
     {
       headers: {
         Accept: "application/vnd.github+json",

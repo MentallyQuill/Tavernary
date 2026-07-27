@@ -1,6 +1,9 @@
 import { expect, test, vi } from "vitest";
 
-import { refreshKitReactions } from "../../scripts/kits/refresh-reactions.mjs";
+import {
+  githubReactionUrl,
+  refreshKitReactions,
+} from "../../scripts/kits/refresh-reactions.mjs";
 import { effectiveVoteAt } from "../../scripts/kits/trending.mjs";
 
 const now = "2026-07-24T18:00:00.000Z";
@@ -32,6 +35,19 @@ const prior = {
     },
   ],
 };
+
+test("derives the reaction page from repository, issue, and pagination data", () => {
+  expect(
+    githubReactionUrl({
+      repository: "fixture-owner/fixture-catalog",
+      issueNumber: 241,
+      page: 3,
+      perPage: 100,
+    }),
+  ).toBe(
+    "https://api.github.com/repos/fixture-owner/fixture-catalog/issues/241/reactions?per_page=100&page=3",
+  );
+});
 
 test("counts only eligible +1 reactions, including the author", async () => {
   const [snapshot] = await refreshKitReactions({

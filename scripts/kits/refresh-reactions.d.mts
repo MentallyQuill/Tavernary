@@ -18,6 +18,13 @@ export interface KitSupportSnapshot {
   }>;
 }
 
+export function githubReactionUrl(input: {
+  repository: string;
+  issueNumber: number;
+  page: number;
+  perPage: number;
+}): string;
+
 export function refreshKitReactions(input: {
   kits: Array<{
     id: string;

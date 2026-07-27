@@ -490,6 +490,28 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
   expect(source).not.toContain("git add src/generated/catalog.json");
   expect(source).toContain("workflow run deploy-pages.yml");
+
+  const supportRefresh = refreshSteps.find(
+    ({ name }) => name === "Refresh Kit community support",
+  );
+  const validation = refreshSteps.find(
+    ({ name }) => name === "Validate refreshed catalog",
+  );
+  const commit = refreshSteps.find(
+    ({ name }) => name === "Commit snapshot changes",
+  );
+  const redeploy = refreshSteps.find(
+    ({ name }) => name === "Redeploy refreshed catalog",
+  );
+  expect(supportRefresh?.run).toBe(
+    "node scripts/kits/refresh-reactions.mjs",
+  );
+  expect(validation?.run).toBe("npm run check");
+  expect(commit?.run).toContain("data/snapshots/github/kits/*.json");
+  expect(redeploy?.run).toBe("gh workflow run deploy-pages.yml --ref main");
+  expect(source).not.toMatch(
+    /data\/snapshots\/github\/kits\/(?!\*\.json)[a-z0-9-]+\.json/,
+  );
 });
 
 test("runs enrichment through one tested durable orchestrator", async () => {
