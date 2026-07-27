@@ -181,10 +181,12 @@ function entryForResult(result, attempt, outcome, now) {
   };
   const mappings = [
     ["sourceKind", "source_kind"],
+    ["sourceIdentity", "source_identity"],
     ["repositoryId", "repository_id"],
     ["headSha", "head_sha"],
     ["readmePath", "readme_path"],
     ["readmeRef", "readme_ref"],
+    ["redditPostId", "reddit_post_id"],
     ["reasonCode", "reason_code"],
     ["enrichmentNote", "enrichment_note"],
     ["diagnosticCode", "diagnostic_code"],

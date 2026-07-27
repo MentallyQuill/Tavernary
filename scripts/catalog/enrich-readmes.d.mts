@@ -1,4 +1,4 @@
-import type { ReadmeSource } from "./readme-source.d.mts";
+import type { EnrichmentSource } from "./enrichment-source.d.mts";
 import type {
   EnrichmentRunState,
   ProjectAttemptResult,
@@ -11,9 +11,11 @@ export type EnrichmentInput = {
   id: string;
   name: string;
   kind: string;
-  repository: string;
-  repositoryDescription: string | null;
-  readmeText: string | null;
+  source: {
+    kind: string;
+    identity: string;
+    text: string;
+  };
   frontends: string[];
   allowedPrimaryFunctions: VocabularyEntry[];
   allowedCapabilities: VocabularyEntry[];
@@ -41,7 +43,8 @@ export type RegistryRecord = {
   frontends?: string[];
   source?: {
     type: string;
-    repository: string;
+    repository?: string;
+    url?: string;
     repository_id?: number | null;
   };
   path?: string;
@@ -114,9 +117,9 @@ export function enrichRecord(
     };
     loadSource?: (
       record: RegistryRecord,
-      snapshot: GithubSnapshot,
+      snapshot: GithubSnapshot | undefined,
       options?: Record<string, unknown>,
-    ) => Promise<ReadmeSource>;
+    ) => Promise<EnrichmentSource>;
   },
 ): Promise<EnrichmentOutput | null>;
 
@@ -150,9 +153,9 @@ export function runEnrichmentBatch(options: {
   concurrency?: number;
   loadSource?: (
     record: RegistryRecord,
-    snapshot: GithubSnapshot,
+    snapshot: GithubSnapshot | undefined,
     options?: Record<string, unknown>,
-  ) => Promise<ReadmeSource>;
+  ) => Promise<EnrichmentSource>;
   writeRecord?: (
     record: RegistryRecord,
     output: EnrichmentOutput,
@@ -186,9 +189,9 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   deploymentRunId?: number;
   loadSource?: (
     record: RegistryRecord,
-    snapshot: GithubSnapshot,
+    snapshot: GithubSnapshot | undefined,
     options?: Record<string, unknown>,
-  ) => Promise<ReadmeSource>;
+  ) => Promise<EnrichmentSource>;
   writeRecord?: (
     record: RegistryRecord,
     output: EnrichmentOutput,

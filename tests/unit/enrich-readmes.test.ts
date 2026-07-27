@@ -87,6 +87,7 @@ function readySource(id: string) {
   return {
     status: "ready" as const,
     sourceKind: "description" as const,
+    sourceIdentity: `github:creator/${id}`,
     text: `Description for ${id}.`,
     repositoryDescription: `Description for ${id}.`,
     readmeText: null,
@@ -97,7 +98,7 @@ function readySource(id: string) {
   };
 }
 
-test("passes both source fields and only allowed vocabulary entries to provider", async () => {
+test("passes normalized source and only allowed vocabulary entries to provider", async () => {
   const generate = vi.fn(async (input) => ({
     output: {
       summary:
@@ -118,6 +119,7 @@ test("passes both source fields and only allowed vocabulary entries to provider"
       loadSource: async () => ({
         status: "ready" as const,
         sourceKind: "description" as const,
+        sourceIdentity: "github:creator/project",
         text: "A short project description.",
         repositoryDescription: "A short project description.",
         readmeText: null,
@@ -135,14 +137,92 @@ test("passes both source fields and only allowed vocabulary entries to provider"
   expect(output.primary_function).toBe("developer-infrastructure");
   expect(generate).toHaveBeenCalledWith(
     expect.objectContaining({
-      repositoryDescription: "A short project description.",
-      readmeText: null,
+      source: {
+        kind: "description",
+        identity: "github:creator/project",
+        text: "A short project description.",
+      },
       allowedPrimaryFunctions: [
         { id: "developer-infrastructure", label: "Developer" },
       ],
       allowedCapabilities: vocabularies.capabilities,
     }),
   );
+});
+
+test("selects an automatic published Reddit record without a repository snapshot", () => {
+  const reddit = {
+    ...record,
+    id: "reddit-1v64r6z",
+    kind: "preset",
+    refresh_policy: "paused",
+    source: {
+      type: "url",
+      url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+    },
+  };
+
+  expect(selectEnrichmentRecords([reddit]).map(({ id }) => id)).toEqual([
+    "reddit-1v64r6z",
+  ]);
+});
+
+test("enriches a Reddit source without a repository snapshot", async () => {
+  const reddit = {
+    ...record,
+    id: "reddit-1v64r6z",
+    name: "Writer's Block 5",
+    kind: "preset",
+    refresh_policy: "paused",
+    source: {
+      type: "url",
+      url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+    },
+  };
+  const generate = vi.fn(async () => ({
+    output: {
+      summary:
+        "Writer's Block supports deliberate narrative direction in roleplay sessions. It strengthens prose, subtext, character agency, and structured scene control across diverse compatible SillyTavern models.",
+      metadata_status: "curated" as const,
+      primary_function: "developer-infrastructure",
+      capabilities: ["automation"],
+    },
+    metadata: providerMetadata,
+  }));
+
+  const result = await runEnrichmentBatch({
+    projectIds: [reddit.id],
+    recordsById: { [reddit.id]: reddit },
+    snapshotsById: {},
+    phase: "primary",
+    vocabularies,
+    provider: { generate },
+    validateSnapshot: () => true,
+    loadSource: async () => ({
+      status: "ready" as const,
+      sourceKind: "reddit-body" as const,
+      sourceIdentity: "reddit:1v64r6z",
+      redditPostId: "1v64r6z",
+      text: "Writer's Block 5 post body.",
+    }),
+    writeRecord: async () => {},
+  });
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      source: {
+        kind: "reddit-body",
+        identity: "reddit:1v64r6z",
+        text: "Writer's Block 5 post body.",
+      },
+    }),
+  );
+  expect(result[0]).toMatchObject({
+    outcome: "enriched",
+    sourceKind: "reddit-body",
+    sourceIdentity: "reddit:1v64r6z",
+    redditPostId: "1v64r6z",
+  });
 });
 
 test("skips curated records unless forced", async () => {
@@ -237,6 +317,7 @@ test("uses the exact fallback when both source texts are unavailable", async () 
       loadSource: async () => ({
         status: "fallback" as const,
         sourceKind: "confirmed-fallback" as const,
+        sourceIdentity: "github:creator/project",
         readmePath: null,
         readmeRef: "a".repeat(40),
         repositoryId: 42,
@@ -282,7 +363,11 @@ test("force regenerates curated records and provider failures propagate", async 
       { ...record, metadata_status: "curated" },
       snapshot,
       { generate },
-      { vocabularies, force: true },
+      {
+        vocabularies,
+        force: true,
+        loadSource: async () => readySource("fixture"),
+      },
     ),
   ).rejects.toThrow("provider offline");
 });
@@ -317,7 +402,10 @@ test("rejects uncategorized output when source text exists", async () => {
           metadata: providerMetadata,
         }),
       },
-      { vocabularies },
+      {
+        vocabularies,
+        loadSource: async () => readySource("fixture"),
+      },
     ),
   ).rejects.toThrow("substantive primary function");
 });
@@ -357,6 +445,7 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
         return {
           status: "fallback" as const,
           sourceKind: "confirmed-fallback" as const,
+          sourceIdentity: "github:creator/fallback",
           readmePath: null,
           readmeRef: "a".repeat(40),
           repositoryId: 42,

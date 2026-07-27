@@ -1,4 +1,4 @@
-import { loadReadmeSource } from "./readme-source.mjs";
+import { loadEnrichmentSource } from "./enrichment-source.mjs";
 import { validateEnrichmentOutput } from "./enrichment-contract.mjs";
 import { randomUUID } from "node:crypto";
 import {
@@ -20,6 +20,7 @@ import {
   assertAutomaticEnrichment,
   isAutomaticEnrichment,
   manualEnrichmentExclusions,
+  supportsAutomaticEnrichmentSource,
 } from "./enrichment-policy.mjs";
 import {
   createEnrichmentReport,
@@ -78,7 +79,7 @@ function isEligible(record, force = false) {
   if (
     !isAutomaticEnrichment(record) ||
     record.visibility !== "published" ||
-    record.source?.type !== "github"
+    !supportsAutomaticEnrichmentSource(record.source)
   ) {
     return false;
   }
@@ -95,7 +96,7 @@ export function selectEnrichmentRecords(records, options = {}) {
 export async function enrichRecord(record, snapshot, provider, options = {}) {
   if (!isAutomaticEnrichment(record)) return null;
   if (record.visibility !== "published") return null;
-  if (record.source?.type !== "github") return null;
+  if (!supportsAutomaticEnrichmentSource(record.source)) return null;
   if (record.metadata_status === "curated" && !options.force) return null;
   if (
     !options.force &&
@@ -105,7 +106,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     return null;
   }
 
-  const source = await (options.loadSource ?? loadReadmeSource)(
+  const source = await (options.loadSource ?? loadEnrichmentSource)(
     record,
     snapshot,
     options,
@@ -132,19 +133,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     return fallback;
   }
 
-  const input = {
-    id: record.id,
-    name: record.name,
-    kind: record.kind,
-    repository: record.source.repository,
-    repositoryDescription: source.repositoryDescription,
-    readmeText: source.readmeText,
-    frontends: record.frontends ?? [],
-    allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
-      vocabularies.primaryFunctions,
-    ),
-    allowedCapabilities: vocabularies.capabilities,
-  };
+  const input = providerInputForRecord(record, source, vocabularies);
   if (!provider?.generate) {
     throw new Error(
       "enrichment provider configuration is required for source-backed records",
@@ -163,6 +152,24 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     );
   }
   return output;
+}
+
+function providerInputForRecord(record, source, vocabularies) {
+  return {
+    id: record.id,
+    name: record.name,
+    kind: record.kind,
+    source: {
+      kind: source.sourceKind,
+      identity: source.sourceIdentity,
+      text: source.text,
+    },
+    frontends: record.frontends ?? [],
+    allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
+      vocabularies.primaryFunctions,
+    ),
+    allowedCapabilities: vocabularies.capabilities,
+  };
 }
 
 export async function writeEnrichedRecord(
@@ -305,10 +312,12 @@ function validateOutput(output, vocabularies, sourceBacked) {
 function sourceProvenance(source) {
   return {
     sourceKind: source.sourceKind,
+    sourceIdentity: source.sourceIdentity,
     repositoryId: source.repositoryId,
     headSha: source.headSha,
     readmePath: source.readmePath ?? null,
     readmeRef: source.readmeRef ?? null,
+    redditPostId: source.redditPostId,
   };
 }
 
@@ -387,6 +396,7 @@ async function processProject(input, id) {
       outcome: source.status === "failed" ? "failed" : "source-not-ready",
       reasonCode: source.reasonCode,
       message: source.message,
+      ...sourceProvenance(source),
     };
   }
 
@@ -406,19 +416,7 @@ async function processProject(input, id) {
         ...sourceProvenance(source),
       };
     }
-    providerInput = {
-      id: record.id,
-      name: record.name,
-      kind: record.kind,
-      repository: record.source.repository,
-      repositoryDescription: source.repositoryDescription,
-      readmeText: source.readmeText,
-      frontends: record.frontends ?? [],
-      allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
-        vocabularies.primaryFunctions,
-      ),
-      allowedCapabilities: vocabularies.capabilities,
-    };
+    providerInput = providerInputForRecord(record, source, vocabularies);
     const previousEntry = previousEntries?.[id];
     if (
       phase === "retry" &&
@@ -531,7 +529,7 @@ export async function runEnrichmentBatch(input) {
     provider,
     validateSnapshot,
     vocabularies,
-    loadSource = loadReadmeSource,
+    loadSource = loadEnrichmentSource,
     concurrency = 4,
     writeRecord = async (record, output, allowedVocabularies) => {
       if (!record.path) {
@@ -610,10 +608,11 @@ const preflightInput = {
   id: "provider-preflight",
   name: "Provider preflight",
   kind: "extension",
-  repository: "tavernary/provider-preflight",
-  repositoryDescription:
-    "A synthetic source used only to verify structured catalog enrichment.",
-  readmeText: null,
+  source: {
+    kind: "description",
+    identity: "github:tavernary/provider-preflight",
+    text: "A synthetic source used only to verify structured catalog enrichment.",
+  },
   frontends: ["sillytavern"],
   allowedPrimaryFunctions: [
     {

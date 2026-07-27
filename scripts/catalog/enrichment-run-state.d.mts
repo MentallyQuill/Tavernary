@@ -20,11 +20,18 @@ export type ProjectAttemptResult = {
   id: string;
   phase: "primary" | "retry";
   outcome: "enriched" | "fallback" | "source-not-ready" | "failed" | "skipped";
-  sourceKind?: "description" | "readme" | "confirmed-fallback";
+  sourceKind?:
+    | "description"
+    | "readme"
+    | "reddit-body"
+    | "reddit-title"
+    | "confirmed-fallback";
+  sourceIdentity?: string;
   repositoryId?: number;
   headSha?: string;
   readmePath?: string | null;
   readmeRef?: string | null;
+  redditPostId?: string;
   provider?: {
     requestedModel: string;
     returnedModel: string | null;

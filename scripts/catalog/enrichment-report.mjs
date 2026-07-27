@@ -27,6 +27,15 @@ const safeMessages = {
   "readme-rate-limited": "GitHub README request was rate limited.",
   "readme-server-error": "GitHub README service is unavailable.",
   "readme-unusable": "GitHub README content is unusable.",
+  "unsupported-enrichment-source":
+    "No automatic enrichment adapter supports this source.",
+  "reddit-post-unavailable": "The Reddit post is unavailable.",
+  "reddit-identity-mismatch":
+    "The Reddit response does not match the catalog source.",
+  "reddit-rate-limited": "The Reddit source request was rate limited.",
+  "reddit-server-error": "The Reddit source service is unavailable.",
+  "reddit-response-invalid": "The Reddit source response is invalid.",
+  "reddit-fetch-failed": "The Reddit source request failed.",
   "provider-timeout": "The enrichment provider timed out.",
   "provider-rate-limited": "The enrichment provider returned HTTP 429.",
   "provider-server-error": "The enrichment provider returned a server error.",
@@ -57,10 +66,12 @@ function sanitizedEntry(entry) {
   };
   for (const key of [
     "source_kind",
+    "source_identity",
     "repository_id",
     "head_sha",
     "readme_path",
     "readme_ref",
+    "reddit_post_id",
     "requested_model",
     "returned_model",
     "latency_ms",
