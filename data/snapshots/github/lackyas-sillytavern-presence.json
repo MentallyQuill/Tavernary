@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "project_id": "lackyas-sillytavern-presence",
+  "repository": {
+    "id": 875709373,
+    "owner": "lackyas",
+    "name": "SillyTavern-Presence",
+    "url": "https://github.com/lackyas/SillyTavern-Presence",
+    "description": "Gives each individual character their own memory.",
+    "default_branch": "main",
+    "head_sha": "8b9fed2c02548e39006f9c81e83bbc91dbe64c29",
+    "head_committed_at": "2025-06-01T09:05:05.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2024-10-20T16:45:30.000Z",
+    "size_kb": 343
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T22:02:51.162Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "8b9fed2c02548e39006f9c81e83bbc91dbe64c29"
+  },
+  "community": {
+    "stargazers_count": 31,
+    "forks_count": 8,
+    "subscribers_count": 1,
+    "aggregate": 40
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-27T22:02:51.162Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leandrojofre", "type": "User" },
+      { "login": "ccgreen", "type": "User" },
+      { "login": "lackyas", "type": "User" },
+      { "login": "kaldigo", "type": "User" },
+      { "login": "cierru", "type": "User" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T22:02:51.162Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
