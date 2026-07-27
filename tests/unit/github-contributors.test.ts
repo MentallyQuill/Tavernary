@@ -182,6 +182,93 @@ test("collects only authors of pull requests merged into a fork", async () => {
   });
 });
 
+test("completes fork attribution when pull requests are disabled", async () => {
+  const urls: string[] = [];
+  const result = await fetchForkContributors(
+    { owner: "vadash", name: "Extension-Summaryception" },
+    {
+      token: "test-token",
+      now: "2026-07-27T00:00:00.000Z",
+      fetchImpl: async (url) => {
+        urls.push(String(url));
+        if (urls.length === 1) {
+          return new Response(JSON.stringify({ message: "Not Found" }), {
+            status: 404,
+          });
+        }
+        return new Response(JSON.stringify({ has_pull_requests: false }), {
+          status: 200,
+        });
+      },
+    },
+  );
+
+  expect(urls).toEqual([
+    "https://api.github.com/repos/vadash/Extension-Summaryception/pulls?state=closed&sort=updated&direction=desc&per_page=100&page=1",
+    "https://api.github.com/repos/vadash/Extension-Summaryception",
+  ]);
+  expect(result).toEqual({
+    accounts: [],
+    requestCount: 2,
+    baselineCompletedAt: "2026-07-27T00:00:00.000Z",
+    refreshedAt: "2026-07-27T00:00:00.000Z",
+    scan: null,
+  });
+});
+
+test("preserves a fork 404 when repository metadata does not disable pull requests", async () => {
+  let requests = 0;
+  await expect(
+    fetchForkContributors(
+      { owner: "owner", name: "missing-fork" },
+      {
+        token: "test-token",
+        now: "2026-07-27T00:00:00.000Z",
+        fetchImpl: async () => {
+          requests += 1;
+          return requests === 1
+            ? new Response(JSON.stringify({ message: "Not Found" }), {
+                status: 404,
+              })
+            : new Response(JSON.stringify({ has_pull_requests: true }), {
+                status: 200,
+              });
+        },
+      },
+    ),
+  ).rejects.toMatchObject({
+    message: "GitHub contributors returned 404",
+    status: 404,
+    requestCount: 2,
+  });
+});
+
+test("preserves a fork 404 when the repository metadata probe fails", async () => {
+  let requests = 0;
+  await expect(
+    fetchForkContributors(
+      { owner: "owner", name: "missing-fork" },
+      {
+        token: "test-token",
+        now: "2026-07-27T00:00:00.000Z",
+        fetchImpl: async () => {
+          requests += 1;
+          if (requests === 1) {
+            return new Response(JSON.stringify({ message: "Not Found" }), {
+              status: 404,
+            });
+          }
+          throw new Error("metadata request failed");
+        },
+      },
+    ),
+  ).rejects.toMatchObject({
+    message: "GitHub contributors returned 404",
+    status: 404,
+    requestCount: 2,
+  });
+});
+
 test("skips merged pull requests whose deleted author has no GitHub identity", async () => {
   const result = await fetchForkContributors(
     { owner: "owner", name: "fork" },
