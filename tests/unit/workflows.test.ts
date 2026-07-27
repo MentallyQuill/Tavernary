@@ -668,6 +668,41 @@ test("retries frontend dependencies from read-only catalog changes", async () =>
   expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
+test("retries fork dependencies after registry or upstream review changes", async () => {
+  const retry = await workflow("retry-fork-dependencies");
+  const source = await readFile(
+    resolve(workflowDirectory, "retry-fork-dependencies.yml"),
+    "utf8",
+  );
+
+  expect(retry.on.push).toEqual({
+    branches: ["main"],
+    paths: ["data/registry/projects/**"],
+  });
+  expect(retry.on.workflow_dispatch.inputs.upstream_issue_number).toMatchObject(
+    {
+      required: false,
+      type: "number",
+    },
+  );
+  expect(retry.permissions).toEqual({
+    contents: "read",
+    issues: "read",
+    actions: "write",
+  });
+  expect(retry.concurrency).toEqual({
+    group: "retry-fork-dependencies",
+    "cancel-in-progress": false,
+  });
+  expect(source).toContain(
+    "node scripts/submissions/retry-fork-dependencies.mjs",
+  );
+  expect(source).toContain(
+    "UPSTREAM_ISSUE_NUMBER: ${{ inputs.upstream_issue_number }}",
+  );
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
 test("keeps Kit triage registry-read-only and dependency-free", async () => {
   const document = await workflow("triage-kit-submission");
   const source = await readFile(
@@ -757,6 +792,7 @@ test("handles submission closure from default-branch code only", async () => {
     contents: "write",
     issues: "write",
     "pull-requests": "read",
+    actions: "write",
   });
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
@@ -769,6 +805,11 @@ test("handles submission closure from default-branch code only", async () => {
     /gh api --method POST\s+\\\s+"repos\/\$\{GITHUB_REPOSITORY\}\/issues\/\$\{ISSUE_NUMBER\}\/labels"/,
   );
   expect(source).not.toContain("github.event.pull_request.head.ref }}");
+  expect(source).toContain("gh workflow run retry-fork-dependencies.yml");
+  expect(source).toContain('-f upstream_issue_number="$UPSTREAM_ISSUE_NUMBER"');
+  expect(source.indexOf("Synchronize issue lifecycle")).toBeLessThan(
+    source.indexOf("Retry fork dependents"),
+  );
 });
 
 test("continues admitted submissions in the admission run", async () => {
