@@ -44,17 +44,28 @@ function checkedValues(value) {
     .map((entry) => entry.trim());
 }
 
-function checkedIds(value, options) {
+function fieldValues(value) {
+  const lines = value.split(/\r?\n/u);
+  const hasCheckboxMarkup = lines.some((line) =>
+    /^-\s+\[[ xX]\]\s+/u.test(line),
+  );
+  if (hasCheckboxMarkup) return checkedValues(value);
+  return value
+    .split(/[,\n]/u)
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function fieldIds(value, options) {
   const byLabel = new Map(
     options.flatMap((option) => [
       [option.id.toLocaleLowerCase(), option.id],
       [option.label.toLocaleLowerCase(), option.id],
     ]),
   );
-  return checkedValues(value).flatMap((label) => {
-    const id = byLabel.get(label.toLocaleLowerCase());
-    return id ? [id] : [];
-  });
+  return fieldValues(value).map(
+    (entry) => byLabel.get(entry.toLocaleLowerCase()) ?? entry,
+  );
 }
 
 export function parseProjectSubmissionIssue(body) {
@@ -75,6 +86,17 @@ export function parseProjectSubmissionIssue(body) {
     }
   }
 
+  const frontendIndependentValue = (
+    fields.get("Frontend-independent") ?? ""
+  ).trim();
+  if (!/^(?:yes|no)$/iu.test(frontendIndependentValue)) {
+    return {
+      valid: false,
+      source: "headings",
+      errors: ["Frontend-independent must be Yes or No."],
+    };
+  }
+
   const result = normalizeProjectSubmissionManifest({
     schema_version: 2,
     project_type: projectType(fields.get("Project Type") ?? ""),
@@ -85,18 +107,17 @@ export function parseProjectSubmissionIssue(body) {
       known_ids: [],
       other: fallbackFrontends(fields.get("Supported frontends") ?? ""),
     },
-    frontend_independent:
-      (fields.get("Frontend-independent") ?? "").toLowerCase() === "yes",
+    frontend_independent: frontendIndependentValue.toLowerCase() === "yes",
     additional_context: fields.get("Anything we should know?") ?? "",
     preset_compatibility: {
       model_families: {
-        known_ids: checkedIds(
+        known_ids: fieldIds(
           fields.get("Supported model families") ?? "",
           modelFamilyVocabulary.model_families,
         ),
         other: [fields.get("Other model family") ?? ""].filter(Boolean),
       },
-      completion_formats: checkedIds(
+      completion_formats: fieldIds(
         fields.get("Completion formats") ?? "",
         completionFormatVocabulary.completion_formats,
       ),
