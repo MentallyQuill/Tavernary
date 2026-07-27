@@ -34,7 +34,7 @@ export interface CatalogAttribution {
   owner: string;
   contributors: CatalogContributor[];
   humanContributorCount: number;
-  status: "current" | "stale" | "pending";
+  status: "current" | "partial" | "stale" | "pending";
 }
 
 export interface CatalogProject {

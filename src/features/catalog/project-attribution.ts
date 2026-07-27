@@ -34,6 +34,8 @@ export function attributionTooltip(attribution: CatalogAttribution) {
     }
     if (attribution.status === "stale") {
       parts.push("Contributor data stale");
+    } else if (attribution.status === "partial") {
+      parts.push("Contributor history still scanning");
     }
   }
 
@@ -54,6 +56,8 @@ export function attributionAccessibleText(attribution: CatalogAttribution) {
     parts.push("Contributor data pending.");
   } else if (attribution.status === "stale") {
     parts.push("Contributor data stale.");
+  } else if (attribution.status === "partial") {
+    parts.push("Contributor history still scanning.");
   }
 
   return parts.join(" ");

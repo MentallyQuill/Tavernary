@@ -66,6 +66,9 @@ describe("project attribution copy", () => {
     expect(attributionTooltip({ ...current, status: "stale" })).toBe(
       "Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor data stale",
     );
+    expect(attributionTooltip({ ...current, status: "partial" })).toBe(
+      "Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor history still scanning",
+    );
   });
 
   test("provides complete screen-reader copy without an interactive disclosure", () => {
@@ -80,5 +83,10 @@ describe("project attribution copy", () => {
         status: "pending",
       }),
     ).toBe("Repository owner: Solo. Contributor data pending.");
+    expect(
+      attributionAccessibleText({ ...current, status: "partial" }),
+    ).toBe(
+      "Repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot]. Contributor history still scanning.",
+    );
   });
 });
