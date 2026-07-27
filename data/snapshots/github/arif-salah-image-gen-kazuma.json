@@ -33,8 +33,9 @@
     "aggregate": 25
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T06:13:37.923Z",
+  "refreshed_at": "2026-07-27T06:17:32.756Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Arif-salah", "type": "User" },
@@ -43,8 +44,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T06:13:37.923Z",
+    "refreshed_at": "2026-07-27T06:17:32.756Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

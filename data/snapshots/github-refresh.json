@@ -1,99 +1,69 @@
 {
   "schema_version": 1,
-  "mode": "baseline",
-  "started_at": "2026-07-27T06:13:37.923Z",
-  "completed_at": "2026-07-27T06:13:47.818Z",
+  "mode": "project",
+  "started_at": "2026-07-27T06:17:32.756Z",
+  "completed_at": "2026-07-27T06:17:34.323Z",
   "counts": {
-    "total": 12,
-    "checked": 12,
-    "changed": 12,
-    "unchanged": 0,
+    "total": 7,
+    "checked": 7,
+    "changed": 7,
+    "unchanged": 7,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
     "compared": 0,
-    "baseline": 12,
+    "baseline": 0,
     "fallback": 0
   },
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4999,
-    "rest_requests": 57
+    "graphql_remaining": 4998,
+    "rest_requests": 7
   },
-  "duration_ms": 9895,
+  "duration_ms": 1567,
   "project_timings": [
     {
+      "project_id": "aikohanasaki-sillytavern-bookmarks",
+      "outcome": "unchanged",
+      "duration_ms": 0,
+      "error_code": null
+    },
+    {
+      "project_id": "aikohanasaki-sillytavern-ccpromptmanager",
+      "outcome": "unchanged",
+      "duration_ms": 0,
+      "error_code": null
+    },
+    {
+      "project_id": "aikohanasaki-sillytavern-generationlocks",
+      "outcome": "unchanged",
+      "duration_ms": 0,
+      "error_code": null
+    },
+    {
+      "project_id": "aikohanasaki-sillytavern-lorebookordering",
+      "outcome": "unchanged",
+      "duration_ms": 1,
+      "error_code": null
+    },
+    {
+      "project_id": "aikohanasaki-sillytavern-worldinfolocks",
+      "outcome": "unchanged",
+      "duration_ms": 0,
+      "error_code": null
+    },
+    {
       "project_id": "arif-salah-image-gen-kazuma",
-      "outcome": "baseline",
-      "duration_ms": 6965,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "project_id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "bmen25124-sillytavern-custom-scenario",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "bmen25124-sillytavern-magic-translation",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "bmen25124-sillytavern-mcp-client",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "cha1latte-sillytavern-real-world-weather",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "chaaruze-sillytavern-too-many-chats",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "chew1976-dynamic-vars",
-      "outcome": "baseline",
-      "duration_ms": 6965,
-      "error_code": null
-    },
-    {
-      "project_id": "city-unit-sillytavern-chub-search",
-      "outcome": "baseline",
-      "duration_ms": 6966,
-      "error_code": null
-    },
-    {
-      "project_id": "coneja-chibi-hoplight",
-      "outcome": "baseline",
-      "duration_ms": 6966,
-      "error_code": null
-    },
-    {
-      "project_id": "dfaker-st-clickable-actions",
-      "outcome": "baseline",
-      "duration_ms": 6966,
-      "error_code": null
-    },
-    {
-      "project_id": "dfaker-st-wordrunner",
-      "outcome": "baseline",
-      "duration_ms": 6965,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     }
   ],
