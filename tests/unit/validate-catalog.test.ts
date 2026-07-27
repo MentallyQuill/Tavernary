@@ -268,12 +268,7 @@ describe("catalog validation", () => {
       records: [
         {
           ...validRecord,
-          model_families: [
-            "model-agnostic",
-            "claude",
-            "glm",
-            "deepseek",
-          ],
+          model_families: ["model-agnostic", "claude", "glm", "deepseek"],
         },
       ],
     });
