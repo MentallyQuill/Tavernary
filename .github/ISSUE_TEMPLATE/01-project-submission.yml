@@ -36,7 +36,11 @@ body:
     id: project-description
     attributes:
       label: Short Description
-      description: Optional for GitHub sources; required for external System Presets.
+      description: >-
+        Optional for GitHub sources; required for external System Presets. This
+        helps us understand the project and may be adapted into Tavernary's
+        catalog summary for clarity and consistency. The published summary may
+        be shortened or rewritten.
     validations:
       required: false
   - type: textarea

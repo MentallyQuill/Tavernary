@@ -161,6 +161,9 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[4].attributes.description).toContain(
     "comma- or newline-separated",
   );
+  expect(fields[3].attributes.description).toContain(
+    "may be adapted into Tavernary's catalog summary",
+  );
   expect(fields[5].attributes.options).toEqual(["No", "Yes"]);
   expect(fields[7].validations?.required ?? false).toBe(false);
   expect(fields[7].attributes.description).toContain(

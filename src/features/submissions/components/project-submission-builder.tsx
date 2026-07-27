@@ -367,10 +367,15 @@ export function ProjectSubmissionBuilder({
             aria-invalid={Boolean(errorFor("project-description"))}
             aria-describedby={
               errorFor("project-description")
-                ? "project-description-error"
-                : undefined
+                ? "project-description-hint project-description-error"
+                : "project-description-hint"
             }
           />
+          <p className="submission-hint" id="project-description-hint">
+            This helps us understand the project and may be adapted into
+            Tavernary&apos;s catalog summary for clarity and consistency. The
+            published summary may be shortened or rewritten.
+          </p>
           <InlineError
             id="project-description-error"
             message={errorFor("project-description")}
