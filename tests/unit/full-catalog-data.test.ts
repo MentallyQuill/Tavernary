@@ -160,9 +160,27 @@ function expectCatalogContract(records: CatalogRecord[]) {
   const expectedUrlRecordIds = Object.keys(manualCuratedRecords)
     .filter((id) => id !== "tavern-rpg-suite")
     .sort();
-  expect(urlRecords.map(({ id }) => id).sort()).toEqual(expectedUrlRecordIds);
+  const curatedUrlRecords = urlRecords.filter((record) =>
+    expectedUrlRecordIds.includes(record.id),
+  );
+  expect(curatedUrlRecords.map(({ id }) => id).sort()).toEqual(
+    expectedUrlRecordIds,
+  );
   expect(
-    urlRecords.every((record) => record.source.license_status === "missing"),
+    curatedUrlRecords.every(
+      (record) => record.source.license_status === "missing",
+    ),
+  ).toBe(true);
+  const provisionalUrlRecords = urlRecords.filter(
+    (record) => !expectedUrlRecordIds.includes(record.id),
+  );
+  expect(
+    provisionalUrlRecords.every(
+      (record) =>
+        record.metadata_status === "provisional" &&
+        record.enrichment_policy === "manual" &&
+        record.source.license_status === "pending",
+    ),
   ).toBe(true);
 
   for (const record of records) {
