@@ -659,9 +659,9 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).toContain(
     'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"',
   );
-  expect(source.indexOf('git config user.name "github-actions[bot]"')).toBeLessThan(
-    source.indexOf("git rebase origin/main"),
-  );
+  expect(
+    source.indexOf('git config user.name "github-actions[bot]"'),
+  ).toBeLessThan(source.indexOf("git rebase origin/main"));
   expect(source).toContain("previous-generated-paths.txt");
   expect(source).toContain("Refusing unsafe generated path");
   expect(source).toContain("labels.includes('issue-admitted')");
