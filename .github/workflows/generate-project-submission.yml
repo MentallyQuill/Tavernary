@@ -110,6 +110,8 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$PR_NUMBER" && -n "$REMOTE_SHA" && -n "$MARKER_SHA" ]]; then
             git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
             git checkout -B "$BRANCH" "origin/$BRANCH"
@@ -176,8 +178,6 @@ jobs:
             echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "feat(catalog): propose project from issue #${ISSUE_NUMBER}"
           head_sha="$(git rev-parse HEAD)"
           if [[ -z "$REMOTE_SHA" ]]; then
