@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "vadash-extension-summaryception",
+  "name": "Summaryception fork",
+  "kind": "extension",
+  "summary": "Summaryception fork is a SillyTavern memory plug-in designed to simplify conversation memory management. It streamlines memory handling through a minimalist approach, prioritizing simplicity over complex features.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "vadash/Extension-Summaryception",
+    "repository_id": 1287253091
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "capabilities": ["automation"],
+  "cataloged_at": "2026-07-27T15:17:57.249Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
