@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "project_id": "mattjaybe-sillytavern-pathweaver",
+  "repository": {
+    "id": 1133781448,
+    "owner": "mattjaybe",
+    "name": "SillyTavern-Pathweaver",
+    "url": "https://github.com/mattjaybe/SillyTavern-Pathweaver",
+    "description": "A SillyTavern extension that turn your story and roleplay into an adventure with intelligent story suggestions powered by AI.",
+    "default_branch": "main",
+    "head_sha": "f8eadedb124d41a54d84a40d1f84d1332ec4d2f0",
+    "head_committed_at": "2026-03-06T15:12:47.000Z",
+    "archived": false,
+    "fork": false,
+    "created_at": "2026-01-13T20:10:35.000Z",
+    "size_kb": 491
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T20:36:12.198Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "f8eadedb124d41a54d84a40d1f84d1332ec4d2f0"
+  },
+  "community": {
+    "stargazers_count": 108,
+    "forks_count": 6,
+    "subscribers_count": 3,
+    "aggregate": 117
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-27T20:36:12.198Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "mattjaybe", "type": "User" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-27T20:36:12.198Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

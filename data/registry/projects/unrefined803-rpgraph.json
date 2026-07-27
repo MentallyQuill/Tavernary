@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "unrefined803-rpgraph",
+  "name": "RPGraph",
+  "kind": "frontend",
+  "summary": "RPgraph Studio is a local-first desktop app for AI roleplay combining a visual node workflow with rich RP chat. An in-world character phone with apps runs alongside, with all data kept on the user's machine.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "unrefined803/RPGraph",
+    "repository_id": 1289035231
+  },
+  "frontends": ["rpgraph"],
+  "primary_function": "frontend",
+  "capabilities": ["model-routing", "prompt-engineering"],
+  "cataloged_at": "2026-07-27T21:33:36.874Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

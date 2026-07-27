@@ -1,0 +1,26 @@
+{
+  "schema_version": 5,
+  "id": "hornysilicon-innervoice",
+  "name": "innerVoice",
+  "kind": "extension",
+  "summary": "Inner Voice is a SillyTavern extension giving characters inner monologues via a secondary model before the main LLM replies. The ephemeral monologue guides replies and can be reviewed but is never saved to chat history.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "hornysilicon/innerVoice",
+    "repository_id": 1297591852
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "capabilities": [
+    "instruction-control",
+    "model-routing",
+    "planning-reasoning"
+  ],
+  "cataloged_at": "2026-07-27T21:11:50.931Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
