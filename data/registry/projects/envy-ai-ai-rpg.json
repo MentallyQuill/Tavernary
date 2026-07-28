@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "envy-ai-ai-rpg",
+  "name": "AI RPG",
+  "kind": "frontend",
+  "summary": "Solo RPG application that turns an OpenAI-compatible model into a game master while mechanically tracking players, locations, regions, items, quests and world events. It can also generate scene artwork through ComfyUI.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "envy-ai/ai_rpg",
+    "repository_id": 1057660249
+  },
+  "frontends": ["ai-rpg"],
+  "primary_function": "frontend",
+  "capabilities": [],
+  "cataloged_at": "2026-07-27T21:26:07.194Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
