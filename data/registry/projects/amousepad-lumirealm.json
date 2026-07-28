@@ -3,7 +3,7 @@
   "id": "amousepad-lumirealm",
   "name": "LumiRealm",
   "kind": "extension",
-  "summary": "LumiRealm is an extension that adapts RisuRealm's character system for use in the Lumiverse roleplay frontend. It bridges the two platforms so users can access RisuRealm features within Lumiverse.",
+  "summary": "LumiRealm is a Lumiverse extension that runs RisuAI character cards, modules, and lorebooks natively in Lumiverse. It also includes a built-in RisuRealm bot browser.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,12 @@
     "repository_id": 1226998015
   },
   "frontends": ["lumiverse"],
-  "primary_function": "interface-workflow",
-  "capabilities": ["extension-development", "character-worldbuilding"],
+  "primary_function": "frontend",
+  "capabilities": [
+    "extension-development",
+    "character-worldbuilding",
+    "multi-frontend"
+  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
