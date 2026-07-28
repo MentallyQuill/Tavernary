@@ -1,11 +1,29 @@
 import { expect, test, vi } from "vitest";
 
 import {
+  effectiveIssueRoute,
+  issueRouteFromBody,
   issueRouteFromLabels,
   issueAdmissionOutputs,
   listOpenIssues,
   processIssueAdmission,
 } from "../../scripts/submissions/admit-issue.mjs";
+
+const kitBody = [
+  "### Kit title",
+  "",
+  "Super Awesome Test Kit",
+  "",
+  "### Kit description",
+  "",
+  "Testing.",
+  "",
+  "### Kit manifest",
+  "",
+  "```json",
+  '{"operation":"create","kit_id":null,"title":"Super Awesome Test Kit","description":"Testing.","project_ids":["sillytavern-sillytavern"]}',
+  "```",
+].join("\n");
 
 function event(
   number = 11,
@@ -180,6 +198,41 @@ test("trusted collaborators bypass lookup and admission limits", async () => {
   ).toBe(false);
 });
 
+test("restores a missing Kit route label during admission", async () => {
+  const request = vi.fn(async () => null);
+  const baseEvent = event(109, "COLLABORATOR");
+  const kitEvent = {
+    ...baseEvent,
+    issue: { ...baseEvent.issue, body: kitBody },
+  };
+
+  const decision = await processIssueAdmission({ event: kitEvent, request });
+  expect(decision).toMatchObject({ admitted: true, route: "kit" });
+  expect(issueAdmissionOutputs(decision, kitEvent)).toMatchObject({
+    route: "kit",
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/109/labels",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ labels: ["kit-submission"] }),
+    }),
+  );
+  for (const name of [
+    "project-submission",
+    "kit-submission",
+    "kit-withdrawal",
+  ]) {
+    expect(request).toHaveBeenCalledWith(
+      "/repos/MentallyQuill/Tavernary/labels",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.stringContaining(`"name":"${name}"`),
+      }),
+    );
+  }
+});
+
 test("reports admission outputs for downstream workflow dispatch", () => {
   expect(
     issueAdmissionOutputs(
@@ -210,6 +263,93 @@ test.each([
   expect(issueRouteFromLabels(labels)).toBe(expected);
 });
 
+test("recovers an unlabeled Kit route from the complete structured form", () => {
+  expect(issueRouteFromBody(kitBody)).toBe("kit");
+  expect(effectiveIssueRoute({ body: kitBody, labels: [] })).toBe("kit");
+});
+
+test("recovers an unlabeled Project route from the complete structured form", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        "### Project Type",
+        "",
+        "Extension",
+        "",
+        "### Project URL",
+        "",
+        "https://github.com/example/project",
+        "",
+        "### Frontend-independent",
+        "",
+        "No",
+      ].join("\n"),
+    ),
+  ).toBe("project");
+});
+
+test("recovers an unlabeled Kit withdrawal route from the complete structured form", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        "### Kit ID",
+        "",
+        "story-kit-1",
+        "",
+        "### Kit share URL",
+        "",
+        "https://tavernary.org/?kit=story-kit-1",
+        "",
+        "### Confirmation",
+        "",
+        "- [x] I request withdrawal of this Kit.",
+      ].join("\n"),
+    ),
+  ).toBe("kit-withdrawal");
+});
+
+test("fails closed when complete structured form shapes conflict", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        kitBody,
+        "",
+        "### Kit ID",
+        "",
+        "story-kit-1",
+        "",
+        "### Kit share URL",
+        "",
+        "https://tavernary.org/?kit=story-kit-1",
+        "",
+        "### Confirmation",
+        "",
+        "- [x] I request withdrawal of this Kit.",
+      ].join("\n"),
+    ),
+  ).toBe("conflict");
+});
+
+test("does not recover a route from a partial form or title", () => {
+  expect(issueRouteFromBody("### Kit title\n\nIncomplete")).toBe("none");
+  expect(
+    effectiveIssueRoute({
+      title: "[Kit submission]: title only",
+      body: "ordinary issue body",
+      labels: [],
+    }),
+  ).toBe("none");
+});
+
+test("keeps explicit routing labels authoritative", () => {
+  expect(
+    effectiveIssueRoute({
+      body: kitBody,
+      labels: ["project-submission"],
+    }),
+  ).toBe("project");
+});
+
 test("routes an admitted issue edit without changing admission state", async () => {
   const request = vi.fn();
 
@@ -226,6 +366,30 @@ test("routes an admitted issue edit without changing admission state", async () 
     reason: "existing-admission",
   });
   expect(request).not.toHaveBeenCalled();
+});
+
+test("restores a missing Kit route label on an admitted issue edit", async () => {
+  const request = vi.fn(async () => null);
+  const baseEvent = event(109, "NONE", "edited", ["issue-admitted"]);
+  const kitEvent = {
+    ...baseEvent,
+    issue: { ...baseEvent.issue, body: kitBody },
+  };
+
+  await expect(
+    processIssueAdmission({ event: kitEvent, request }),
+  ).resolves.toMatchObject({
+    admitted: true,
+    reason: "existing-admission",
+    route: "kit",
+  });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/109/labels",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ labels: ["kit-submission"] }),
+    }),
+  );
 });
 
 test("does not route an unadmitted issue edit", async () => {
