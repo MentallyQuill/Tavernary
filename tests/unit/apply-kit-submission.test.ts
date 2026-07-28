@@ -1,8 +1,13 @@
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test } from "vitest";
 
 import {
   applyKitSubmission,
   findExistingKitForSubmission,
+  writeAppliedKitOutput,
 } from "../../scripts/kits/apply-submission.mjs";
 
 const now = "2026-07-24T18:00:00.000Z";
@@ -26,6 +31,15 @@ const existing = {
   published_at: "2026-07-01T00:00:00.000Z",
   updated_at: "2026-07-01T00:00:00.000Z",
 };
+
+test("emits the canonical Kit ID for workflow consumers", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "tavernary-kit-output-"));
+  const output = join(directory, "output.txt");
+
+  await writeAppliedKitOutput(output, existing);
+
+  expect(await readFile(output, "utf8")).toBe("kit_id=original-200\n");
+});
 
 test("creates a complete stable Kit record from the issue actor", () => {
   expect(applyKitSubmission({ manifest: create, issue, now })).toEqual({

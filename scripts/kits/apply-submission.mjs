@@ -1,4 +1,11 @@
-import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
+import {
+  appendFile,
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  writeFile,
+} from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -89,6 +96,11 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
   };
 }
 
+export async function writeAppliedKitOutput(path, kit) {
+  if (!path) throw new Error("GITHUB_OUTPUT is required");
+  await appendFile(path, `kit_id=${kit.id}\n`, "utf8");
+}
+
 async function readJsonDirectory(path) {
   const files = (await readdir(path))
     .filter((file) => file.endsWith(".json"))
@@ -163,6 +175,7 @@ async function main() {
     now: new Date().toISOString(),
   });
   await atomicWrite(resolve("data/registry/kits", `${record.id}.json`), record);
+  await writeAppliedKitOutput(process.env.GITHUB_OUTPUT, record);
 }
 
 if (

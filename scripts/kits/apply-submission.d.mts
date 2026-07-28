@@ -32,3 +32,8 @@ export function applyKitSubmission(input: {
   existingKit?: CanonicalKit;
   now: string;
 }): CanonicalKit;
+
+export function writeAppliedKitOutput(
+  path: string,
+  kit: CanonicalKit,
+): Promise<void>;
