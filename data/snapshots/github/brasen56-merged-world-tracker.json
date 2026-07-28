@@ -1,0 +1,95 @@
+{
+  "schema_version": 3,
+  "provider": "github",
+  "project_id": "brasen56-merged-world-tracker",
+  "repository": {
+    "id": 1256623355,
+    "owner": "brasen56",
+    "name": "merged_world_tracker",
+    "url": "https://github.com/brasen56/merged_world_tracker",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "818cce915270b8f7a5b3fe4c56766accfbefc006",
+    "head_committed_at": "2026-07-27T19:35:49.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-02T00:29:40.000Z",
+    "size_kb": 1143
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-27T19:35:49.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T19:35:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T22:28:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T18:19:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T22:13:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T06:42:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T22:03:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T19:09:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T23:41:01.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T23:58:31.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T13:17:25.958Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "818cce915270b8f7a5b3fe4c56766accfbefc006"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-28T13:17:25.958Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-28T13:17:25.958Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
