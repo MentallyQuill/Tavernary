@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "id": "super-awesome-test-kit-109",
+  "status": "published",
+  "title": "Super Awesome Test Kit",
+  "description": "Dev here. Doing some testing. Test Test.\n\nThese are the super cool extensions I've made.",
+  "author": {
+    "github_user_id": 2625904,
+    "login": "MentallyQuill"
+  },
+  "source_issue_number": 109,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "mentallyquill-saga",
+    "mentallyquill-recursion",
+    "mentallyquill-st-wandlight"
+  ],
+  "published_at": "2026-07-28T00:40:09.569Z",
+  "updated_at": "2026-07-28T00:40:09.569Z"
+}
