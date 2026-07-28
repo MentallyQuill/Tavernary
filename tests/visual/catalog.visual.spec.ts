@@ -138,6 +138,54 @@ for (const scenario of [
   });
 }
 
+test("fork relationship stays in the aligned license utility row", async ({
+  page,
+}) => {
+  test.skip(
+    !forkRelationshipChild,
+    "The controlled fork backfill has not been applied.",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await stabilizeRefreshLabel(page);
+
+  const pair = page.locator(".relationship-pair");
+  const upstreamCard = pair.locator(".project-card").nth(0);
+  const forkCard = pair.locator(".project-card").nth(1);
+  const upstreamUtility = (await upstreamCard
+    .locator(".card-utility")
+    .boundingBox())!;
+  const forkUtility = (await forkCard.locator(".card-utility").boundingBox())!;
+  const licenseBox = (await pair
+    .locator(".project-card-shell")
+    .nth(1)
+    .locator(".project-relationship-control .license")
+    .boundingBox())!;
+  const separatorBox = (await pair
+    .locator(".project-relationship-separator")
+    .nth(0)
+    .boundingBox())!;
+  const relationshipBox = (await pair
+    .locator(".project-relationship-origin")
+    .nth(0)
+    .boundingBox())!;
+  const kitBox = (await pair
+    .locator(".project-card-shell")
+    .nth(1)
+    .locator(".project-kit-control-face")
+    .boundingBox())!;
+
+  expect((await upstreamCard.boundingBox())!.height).toBe(
+    (await forkCard.boundingBox())!.height,
+  );
+  expect(forkUtility.y).toBeCloseTo(upstreamUtility.y, 0);
+  expect(licenseBox.x + licenseBox.width).toBeLessThan(separatorBox.x);
+  expect(separatorBox.x + separatorBox.width).toBeLessThan(relationshipBox.x);
+  expect(relationshipBox.x + relationshipBox.width).toBeLessThanOrEqual(
+    kitBox.x,
+  );
+});
+
 test("fork relationship long names avoid control collisions", async ({
   page,
 }) => {

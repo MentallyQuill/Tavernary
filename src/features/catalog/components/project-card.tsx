@@ -41,6 +41,18 @@ function licenseTooltip(project: CatalogProject) {
   return "No license detected";
 }
 
+export function ProjectLicense({ project }: { project: CatalogProject }) {
+  return (
+    <Tooltip
+      id={`${project.id}-license`}
+      label={licenseTooltip(project)}
+      className={`license license-${project.license.status}`}
+    >
+      {project.license.label}
+    </Tooltip>
+  );
+}
+
 function sourceStatusLabel(project: CatalogProject) {
   if (project.sourceStatus === "manual") {
     return project.kind === "preset" ? null : "Manual source";
@@ -147,9 +159,11 @@ function missingSourceActivityStatus(
 export function ProjectCard({
   project,
   now,
+  licensePlacement = "card",
 }: {
   project: CatalogProject;
   now: string;
+  licensePlacement?: "card" | "relationship";
 }) {
   const functionIcon = project.primaryFunction as Parameters<
     typeof CategoryIcon
@@ -161,7 +175,6 @@ export function ProjectCard({
   const typeId = `${project.id}-type`;
   const titleId = `${project.id}-title`;
   const attributionId = `${project.id}-attribution`;
-  const licenseId = `${project.id}-license`;
   const cardDescriptionId = `${project.id}-card-description`;
   const displayName = projectDisplayName(project.name);
   const primaryFunction =
@@ -439,13 +452,9 @@ export function ProjectCard({
           ))}
         </span>
         <div className="card-utility">
-          <Tooltip
-            id={licenseId}
-            label={licenseTooltip(project)}
-            className={`license license-${project.license.status}`}
-          >
-            {project.license.label}
-          </Tooltip>
+          {licensePlacement === "card" ? (
+            <ProjectLicense project={project} />
+          ) : null}
         </div>
       </div>
     </a>

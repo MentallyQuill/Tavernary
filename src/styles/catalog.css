@@ -1378,12 +1378,8 @@
   padding: 11px 12px;
 }
 
-.compact-cards .project-card-shell.has-relationship-control .project-card {
-  padding-bottom: 44px;
-}
-
 .compact-cards .project-relationship-control {
-  font-size: 10px;
+  display: none;
 }
 
 .compact-cards .card-top {
@@ -2335,15 +2331,11 @@
   padding-right: 40px;
 }
 
-.project-card-shell.has-relationship-control .project-card {
-  padding-bottom: 52px;
-}
-
 .project-relationship-control {
   position: absolute;
   z-index: 4;
   bottom: 10px;
-  left: 15px;
+  left: 18px;
   right: 48px;
   display: flex;
   min-width: 0;
@@ -2358,20 +2350,29 @@
 }
 
 .project-relationship-origin {
+  flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
   color: var(--color-text-secondary);
   text-overflow: ellipsis;
 }
 
+.project-relationship-separator {
+  flex: none;
+}
+
 .project-relationship-control button {
-  flex: 0 0 auto;
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
   border: 0;
   padding: 4px 0;
   color: var(--color-functional);
   background: transparent;
   cursor: pointer;
   font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .project-relationship-control button:is(:hover, :focus-visible) {

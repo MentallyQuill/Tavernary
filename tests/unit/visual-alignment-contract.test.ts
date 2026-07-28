@@ -421,13 +421,16 @@ describe("catalog visual alignment", () => {
       /\.project-relationship-control\s*\{[^}]*display:\s*flex/s,
     );
     expect(css).toMatch(
-      /\.project-relationship-control\s*\{[^}]*right:\s*48px/s,
+      /\.project-relationship-control\s*\{[^}]*bottom:\s*10px[^}]*left:\s*18px[^}]*right:\s*48px[^}]*gap:\s*6px/s,
+    );
+    expect(css).not.toMatch(
+      /\.project-card-shell\.has-relationship-control \.project-card\s*\{[^}]*padding-bottom:/s,
     );
     expect(css).toMatch(
-      /\.compact-cards\s+\.project-card-shell\.has-relationship-control\s+\.project-card\s*\{[^}]*padding-bottom:\s*44px/s,
+      /\.project-relationship-control button\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis/s,
     );
     expect(css).toMatch(
-      /\.compact-cards \.project-relationship-control\s*\{[^}]*font-size:\s*10px/s,
+      /\.compact-cards \.project-relationship-control\s*\{[^}]*display:\s*none/s,
     );
     expect(css).toMatch(
       /\.compact-cards \.relationship-pair\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s,
