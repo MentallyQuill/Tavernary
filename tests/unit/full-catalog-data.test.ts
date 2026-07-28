@@ -30,6 +30,13 @@ interface CatalogRecord {
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
+const supportedSourceTypes = [
+  "codeberg",
+  "github",
+  "github-organization",
+  "url",
+];
+
 const removedVillageMakerIds = [
   "village-maker-anonpaste-prompt",
   "village-maker-harrow-hundred-prompt",
@@ -179,7 +186,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
   );
   expect(
     Object.keys(countBy(records, (record) => record.source.type)).sort(),
-  ).toEqual(["github", "github-organization", "url"]);
+  ).toEqual(expect.arrayContaining(["github", "github-organization", "url"]));
   expect(
     Object.keys(countBy(records, (record) => record.enrichment_policy)).sort(),
   ).toEqual(["automatic", "manual"]);
@@ -216,9 +223,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(["extension", "frontend", "preset"], record.id).toContain(
       record.kind,
     );
-    expect(["github", "github-organization", "url"], record.id).toContain(
-      record.source.type,
-    );
+    expect(supportedSourceTypes, record.id).toContain(record.source.type);
     expect(["automatic", "manual"], record.id).toContain(
       record.enrichment_policy,
     );
@@ -308,6 +313,24 @@ function expectCatalogContract(records: CatalogRecord[]) {
 describe("full catalog data", () => {
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("accepts Codeberg as a catalog source", async () => {
+    const records = await loadRegistryRecords();
+    const existingExtension = records.find(
+      (record) =>
+        record.kind === "extension" &&
+        record.metadata_status === "curated" &&
+        record.source.type === "github",
+    );
+    expect(existingExtension).toBeDefined();
+
+    const codebergExtension = structuredClone(existingExtension!);
+    codebergExtension.id = "codeberg-source-contract-fixture";
+    codebergExtension.source.type = "codeberg";
+    codebergExtension.source.repository_id = 1_699_613;
+
+    expectCatalogContract([...records, codebergExtension]);
   });
 
   test("accepts structural primary functions for provisional frontends", async () => {
