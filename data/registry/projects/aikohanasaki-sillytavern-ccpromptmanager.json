@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-ccpromptmanager",
   "name": "SillyTavern-CCPromptManager",
   "kind": "extension",
-  "summary": "SillyTavern-CCPromptManager is a SillyTavern extension that manages chat completion prompts. It operates independently of presets, letting users organize and control instructions sent to language models.",
+  "summary": "SillyTavern-CCPromptManager is a SillyTavern extension for managing chat completion prompt templates per character, chat, or group. It automatically reapplies locked configurations whenever presets or characters change.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "instruction-control"],
+  "capabilities": ["prompt-engineering", "automation", "instruction-control"],
   "cataloged_at": "2026-07-26T19:31:55.720Z",
   "catalog_cohort": "standard",
   "visibility": "published",
