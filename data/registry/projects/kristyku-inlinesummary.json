@@ -3,7 +3,7 @@
   "id": "kristyku-inlinesummary",
   "name": "InlineSummary",
   "kind": "extension",
-  "summary": "InlineSummary is a SillyTavern extension that adds inline message summarization to chat sessions. It condenses conversation history directly within the roleplay interface, reducing manual context management.",
+  "summary": "InlineSummary is a SillyTavern extension that adds inline summary features to the chat interface. It works within the SillyTavern frontend to display summarized content alongside ongoing conversation messages.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

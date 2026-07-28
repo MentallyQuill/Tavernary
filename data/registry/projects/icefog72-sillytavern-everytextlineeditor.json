@@ -3,7 +3,7 @@
   "id": "icefog72-sillytavern-everytextlineeditor",
   "name": "SillyTavern Every Text Line Editor",
   "kind": "extension",
-  "summary": "SillyTavern extension providing a unified editor for prompts, lorebook entries, personas, and connection profiles with snapshots.",
+  "summary": "SillyTavern Every Text Line Editor centralizes editing of prompts, lorebook entries, personas, and presets in one interface. It includes diff comparisons, local history snapshots, and switchable Prism or Monaco editors.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -14,8 +14,8 @@
   "primary_function": "interface-workflow",
   "capabilities": [
     "prompt-engineering",
-    "character-worldbuilding",
-    "instruction-control"
+    "review-validation",
+    "character-worldbuilding"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
