@@ -279,6 +279,51 @@ test("moves only the current location of the same immutable repository", () => {
   });
 });
 
+test.each([
+  ["owner", { owner: "Wrong" }],
+  ["name", { name: "Stale" }],
+  ["URL", { url: "https://github.com/Wrong/Stale" }],
+])(
+  "rejects a source move when the current snapshot %s is stale",
+  (_field, repositoryPatch) => {
+    const record = registryRecord();
+    const snapshot = repositorySnapshot({
+      repository: {
+        ...repositorySnapshot().repository,
+        ...repositoryPatch,
+      },
+    });
+    const manifest = {
+      schema_version: 1,
+      request_kind: "project-owner",
+      operation: "move-source",
+      project_id: "owner-alpha",
+      repository_id: 42,
+      source_fingerprint: fingerprintProjectRecord(record),
+      original: { repository: "Owner/Alpha", repository_id: 42 },
+      proposed: { repository: "NewOwner/Alpha-Renamed", repository_id: 42 },
+      explanation: null,
+    };
+
+    expect(() =>
+      applyProjectOwnerRequest({
+        issueNumber: 125,
+        manifest,
+        record,
+        snapshot,
+        repository: {
+          id: 42,
+          fullName: "NewOwner/Alpha-Renamed",
+          htmlUrl: "https://github.com/NewOwner/Alpha-Renamed",
+          visibility: "public",
+          owner: { login: "NewOwner", type: "User" },
+        },
+        vocabularies,
+      }),
+    ).toThrow("snapshot location");
+  },
+);
+
 test("rejects a source move to a different immutable repository ID", () => {
   const record = registryRecord();
   const manifest = {

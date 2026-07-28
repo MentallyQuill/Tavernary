@@ -131,6 +131,29 @@ function normalizedRepositoryName(repository) {
   return { owner: parts[0], name: parts[1] };
 }
 
+function normalizedGitHubRepositoryUrl(value) {
+  if (typeof value !== "string") return null;
+  try {
+    const url = new URL(value);
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (
+      url.protocol !== "https:" ||
+      url.hostname.toLocaleLowerCase() !== "github.com" ||
+      url.port ||
+      url.username ||
+      url.password ||
+      url.search ||
+      url.hash ||
+      parts.length !== 2
+    ) {
+      return null;
+    }
+    return `${parts[0]}/${parts[1]}`.toLocaleLowerCase();
+  } catch {
+    return null;
+  }
+}
+
 function applySourceMove(input, manifest, record, snapshot) {
   const repository = input.repository;
   const location = normalizedRepositoryName(repository);
@@ -166,6 +189,22 @@ function applySourceMove(input, manifest, record, snapshot) {
     fail(
       "owner-request-invalid",
       "Source move requires the matching GitHub repository snapshot.",
+    );
+  }
+  const expectedSnapshotLocation = record.source.repository.toLocaleLowerCase();
+  const snapshotLocation =
+    typeof snapshot.repository.owner === "string" &&
+    typeof snapshot.repository.name === "string"
+      ? `${snapshot.repository.owner}/${snapshot.repository.name}`.toLocaleLowerCase()
+      : null;
+  if (
+    snapshotLocation !== expectedSnapshotLocation ||
+    normalizedGitHubRepositoryUrl(snapshot.repository.url) !==
+      expectedSnapshotLocation
+  ) {
+    fail(
+      "owner-request-invalid",
+      "Source move snapshot location does not match the current registry source.",
     );
   }
 
