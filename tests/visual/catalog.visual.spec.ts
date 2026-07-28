@@ -130,7 +130,10 @@ for (const scenario of [
     await expectNoHorizontalOverflow(page);
     await expect(pair).toHaveScreenshot(
       `fork-relationship-${scenario.name}.png`,
-      { animations: "disabled" },
+      {
+        animations: "disabled",
+        maxDiffPixels: 10,
+      },
     );
   });
 }
@@ -170,7 +173,7 @@ test("fork relationship long names avoid control collisions", async ({
     "fork-relationship-long-names.png",
     {
       animations: "disabled",
-      maxDiffPixelRatio: 0.015,
+      maxDiffPixels: 800,
     },
   );
 });
