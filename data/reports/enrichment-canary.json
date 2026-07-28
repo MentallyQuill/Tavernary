@@ -56,7 +56,7 @@
   "batch_size": 30,
   "concurrency": 4,
   "created_at": "2026-07-28T06:25:12.930Z",
-  "updated_at": "2026-07-28T06:29:03.687Z",
+  "updated_at": "2026-07-28T06:31:52.876Z",
   "manifest": [
     "aikohanasaki-aikobots",
     "aikohanasaki-sillytavern-bookmarks",
@@ -204,8 +204,8 @@
     }
   },
   "publication": {
-    "checkpoint_commit_sha": "baf190a8c0acf047a6ce3f5bc179ecc1e9c266c5",
-    "recorded_at": "2026-07-28T06:29:01.923Z"
+    "checkpoint_commit_sha": "820e26e46ff987eaaa3923c155508ebcec634c54",
+    "recorded_at": "2026-07-28T06:31:52.876Z"
   },
   "deployment": null,
   "aggregates": {
