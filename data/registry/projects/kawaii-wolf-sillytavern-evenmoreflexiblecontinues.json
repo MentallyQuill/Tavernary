@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "kawaii-wolf-sillytavern-evenmoreflexiblecontinues",
+  "name": "Even More Flexible Continues",
+  "kind": "extension",
+  "summary": "A modernized rewrite of More Flexible Continues.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "kawaii-wolf/SillyTavern-EvenMoreFlexibleContinues",
+    "repository_id": 1063754811
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-28T16:36:12.999Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
