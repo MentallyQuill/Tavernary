@@ -98,14 +98,24 @@ function planInput(overrides: Record<string, unknown> = {}) {
     issueNumber: 123,
     projectId: "owner-alpha",
     operation: "edit-card" as const,
+    repositoryId: 42,
+    verifiedOwnerLogin: "Owner",
     repository: "Tavernary/Tavernary",
     remoteHeadSha: null,
     markerHeadSha: null,
+    existingMarker: null,
     generatedContentChanged: true,
     forceRegeneration: false,
     generatedPaths: marker.generated_paths,
     pulls: [],
     ...overrides,
+  };
+}
+
+function existingOwnerMarker(markerOverrides: Record<string, unknown> = {}) {
+  return {
+    kind: "project-owner",
+    marker: { ...marker, ...markerOverrides },
   };
 }
 
@@ -190,8 +200,9 @@ test("plans create, safe update, and no-op without auto-merge state", () => {
   expect(
     planOwnerPrUpdate(
       planInput({
-        remoteHeadSha: "generated",
-        markerHeadSha: "generated",
+        remoteHeadSha: "a".repeat(40),
+        markerHeadSha: "a".repeat(40),
+        existingMarker: existingOwnerMarker(),
       }),
     ),
   ).toEqual({
@@ -201,8 +212,9 @@ test("plans create, safe update, and no-op without auto-merge state", () => {
   expect(
     planOwnerPrUpdate(
       planInput({
-        remoteHeadSha: "generated",
-        markerHeadSha: "generated",
+        remoteHeadSha: "a".repeat(40),
+        markerHeadSha: "a".repeat(40),
+        existingMarker: existingOwnerMarker(),
         generatedContentChanged: false,
       }),
     ),
@@ -214,8 +226,9 @@ test("refuses both ordinary and explicit regeneration after maintainer divergenc
     expect(
       planOwnerPrUpdate(
         planInput({
-          remoteHeadSha: "maintainer",
-          markerHeadSha: "generated",
+          remoteHeadSha: "b".repeat(40),
+          markerHeadSha: "a".repeat(40),
+          existingMarker: existingOwnerMarker(),
           forceRegeneration,
         }),
       ),
@@ -225,6 +238,38 @@ test("refuses both ordinary and explicit regeneration after maintainer divergenc
     });
   }
 });
+
+test.each([
+  ["missing marker", null],
+  ["marker kind", { kind: "project-submission", marker: { ...marker } }],
+  ["issue", existingOwnerMarker({ issue_number: 999 })],
+  ["project", existingOwnerMarker({ project_id: "other-project" })],
+  ["operation", existingOwnerMarker({ operation: "delist" })],
+  ["repository", existingOwnerMarker({ repository_id: 99 })],
+  ["owner", existingOwnerMarker({ verified_owner_login: "OtherOwner" })],
+  [
+    "paths",
+    existingOwnerMarker({
+      generated_paths: ["data/registry/projects/other-project.json"],
+    }),
+  ],
+])(
+  "refuses update when existing %s ownership does not match",
+  (_kind, value) => {
+    expect(
+      planOwnerPrUpdate(
+        planInput({
+          remoteHeadSha: "a".repeat(40),
+          markerHeadSha: "a".repeat(40),
+          existingMarker: value,
+        }),
+      ),
+    ).toMatchObject({
+      action: "conflict",
+      reasonCode: "existing-marker-mismatch",
+    });
+  },
+);
 
 test("rejects path collisions with open owner and project-submission PRs", () => {
   for (const pull of [ownerPull(), submissionPull()]) {
@@ -237,6 +282,26 @@ test("rejects path collisions with open owner and project-submission PRs", () =>
       },
     });
   }
+});
+
+test("treats a same-number project-submission PR as a collision", () => {
+  const pull = {
+    ...submissionPull(),
+    body: submissionPull().body.replace(
+      '"issue_number":121',
+      '"issue_number":123',
+    ),
+    head: {
+      ...submissionPull().head,
+      ref: "automation/project-submission-123",
+    },
+  };
+
+  expect(planOwnerPrUpdate(planInput({ pulls: [pull] }))).toMatchObject({
+    action: "conflict",
+    reasonCode: "generated-path-collision",
+    collision: { prNumber: 89 },
+  });
 });
 
 test("ignores the current issue, non-overlap, and fork marker spoofing", () => {

@@ -245,22 +245,22 @@ function repositoryIdentity(value) {
   };
 }
 
-function issueApiPath(issue) {
-  if (typeof issue?.url === "string") {
-    try {
-      const url = new URL(issue.url);
-      if (
-        url.protocol === "https:" &&
-        url.hostname.toLocaleLowerCase() === "api.github.com" &&
-        /^\/repos\/[^/]+\/[^/]+\/issues\/[1-9]\d*$/u.test(url.pathname)
-      ) {
-        return url.pathname;
-      }
-    } catch {
-      return null;
-    }
+function issueApiPath(hostRepository, issueNumber) {
+  const fullName =
+    typeof hostRepository === "string"
+      ? hostRepository
+      : typeof hostRepository?.owner === "string" &&
+          typeof hostRepository?.name === "string"
+        ? `${hostRepository.owner}/${hostRepository.name}`
+        : "";
+  if (
+    !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(fullName) ||
+    !Number.isSafeInteger(issueNumber) ||
+    issueNumber < 1
+  ) {
+    return null;
   }
-  return null;
+  return `/repos/${fullName}/issues/${issueNumber}`;
 }
 
 function issueChanged(before, after) {
@@ -408,37 +408,42 @@ export async function processProjectOwnerTriage(input) {
     );
   }
 
-  const refreshPath = issueApiPath(issue);
-  if (typeof input.request === "function" && refreshPath) {
-    try {
-      const refreshed = await input.request(refreshPath);
-      if (issueChanged(issue, refreshed)) {
-        return {
-          status: "retryable",
-          reasonCode: "issue-changed-during-triage",
-          message:
-            "The issue changed during triage and must be processed again.",
-        };
-      }
-      if (!eligibleIssue(refreshed)) {
-        return needsInformation(
-          "issue-not-eligible",
-          "Owner request is no longer open and admitted.",
-        );
-      }
-    } catch (error) {
-      if (temporaryApiFailure(error)) {
-        return {
-          status: "retryable",
-          reasonCode: "github-api-temporary-failure",
-          message: "The latest issue state could not be checked.",
-        };
-      }
+  const refreshPath = issueApiPath(input.hostRepository, issue.number);
+  if (!refreshPath || typeof input.request !== "function") {
+    return {
+      status: "retryable",
+      reasonCode: "trusted-issue-context-unavailable",
+      message:
+        "The latest issue cannot be refreshed without trusted repository context.",
+    };
+  }
+  try {
+    const refreshed = await input.request(refreshPath);
+    if (issueChanged(issue, refreshed)) {
+      return {
+        status: "retryable",
+        reasonCode: "issue-changed-during-triage",
+        message: "The issue changed during triage and must be processed again.",
+      };
+    }
+    if (!eligibleIssue(refreshed)) {
       return needsInformation(
-        "issue-refresh-failed",
-        "The latest issue state could not be verified.",
+        "issue-not-eligible",
+        "Owner request is no longer open and admitted.",
       );
     }
+  } catch (error) {
+    if (temporaryApiFailure(error)) {
+      return {
+        status: "retryable",
+        reasonCode: "github-api-temporary-failure",
+        message: "The latest issue state could not be checked.",
+      };
+    }
+    return needsInformation(
+      "issue-refresh-failed",
+      "The latest issue state could not be verified.",
+    );
   }
 
   return {

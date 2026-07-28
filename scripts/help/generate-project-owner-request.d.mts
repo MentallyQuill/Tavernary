@@ -25,7 +25,8 @@ export interface OwnerGenerationResult {
 }
 
 export function generateProjectOwnerRequest(input: {
-  issue: OwnerTriageIssue & { repository?: string };
+  issue: OwnerTriageIssue;
+  hostRepository?: string | { owner: string; name: string };
   root: string;
   reportPath?: string;
   request: (path: string, options?: Record<string, unknown>) => Promise<any>;

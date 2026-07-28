@@ -33,6 +33,7 @@ export type ProjectOwnerTriageDecision =
 export function processProjectOwnerTriage(input: {
   issue: OwnerTriageIssue;
   root?: string;
+  hostRepository?: string | { owner: string; name: string };
   record?: Record<string, unknown>;
   repository?: GitHubRepositoryIdentity | Record<string, unknown>;
   vocabularies: {

@@ -14,7 +14,10 @@ export type OwnerPrUpdatePlan =
   | { action: "noop" }
   | {
       action: "conflict";
-      reasonCode: "maintainer-divergence" | "generated-path-collision";
+      reasonCode:
+        | "existing-marker-mismatch"
+        | "maintainer-divergence"
+        | "generated-path-collision";
       message: string;
       collision?: {
         issueNumber: number;
@@ -59,9 +62,15 @@ export function planOwnerPrUpdate(input: {
   issueNumber: number;
   projectId: string;
   operation: OwnerPrMarker["operation"];
+  repositoryId: number;
+  verifiedOwnerLogin: string;
   repository: string;
   remoteHeadSha: string | null;
-  markerHeadSha: string | null;
+  markerHeadSha?: string | null;
+  existingMarker:
+    | { kind: "project-owner"; marker: OwnerPrMarker }
+    | { kind: "project-submission"; marker: Record<string, unknown> }
+    | null;
   generatedContentChanged: boolean;
   forceRegeneration?: boolean;
   generatedPaths: string[];

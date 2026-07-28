@@ -27,31 +27,24 @@ function inside(root, path) {
   return local === "" || (!local.startsWith("..") && !isAbsolute(local));
 }
 
-function issuePath(issue) {
-  if (typeof issue?.url === "string") {
-    try {
-      const url = new URL(issue.url);
-      if (
-        url.protocol === "https:" &&
-        url.hostname.toLocaleLowerCase() === "api.github.com" &&
-        /^\/repos\/[^/]+\/[^/]+\/issues\/[1-9]\d*$/u.test(url.pathname)
-      ) {
-        return url.pathname;
-      }
-    } catch {
-      // Fall through to the explicit repository form.
-    }
-  }
-  const repository = issue?.repository ?? process.env.GITHUB_REPOSITORY;
+function issuePath(hostRepository, issueNumber) {
+  const repository =
+    typeof hostRepository === "string"
+      ? hostRepository
+      : typeof hostRepository?.owner === "string" &&
+          typeof hostRepository?.name === "string"
+        ? `${hostRepository.owner}/${hostRepository.name}`
+        : "";
   if (
-    typeof repository === "string" &&
     /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository) &&
-    Number.isSafeInteger(issue?.number) &&
-    issue.number > 0
+    Number.isSafeInteger(issueNumber) &&
+    issueNumber > 0
   ) {
-    return `/repos/${repository}/issues/${issue.number}`;
+    return `/repos/${repository}/issues/${issueNumber}`;
   }
-  throw new Error("Owner generation requires an issue API location.");
+  throw new Error(
+    "Owner generation requires trusted host repository context and an issue number.",
+  );
 }
 
 async function loadVocabularies(root, readFile) {
@@ -68,21 +61,19 @@ async function loadVocabularies(root, readFile) {
 }
 
 async function loadRecord(root, projectId, readFile) {
-  return parseJson(
-    await readFile(
-      resolve(root, "data", "registry", "projects", `${projectId}.json`),
-      "utf8",
-    ),
+  const contents = await readFile(
+    resolve(root, "data", "registry", "projects", `${projectId}.json`),
+    "utf8",
   );
+  return { value: parseJson(contents), contents };
 }
 
 async function loadSnapshot(root, projectId, readFile) {
-  return parseJson(
-    await readFile(
-      resolve(root, "data", "snapshots", "github", `${projectId}.json`),
-      "utf8",
-    ),
+  const contents = await readFile(
+    resolve(root, "data", "snapshots", "github", `${projectId}.json`),
+    "utf8",
   );
+  return { value: parseJson(contents), contents };
 }
 
 function admitted(decision) {
@@ -117,9 +108,59 @@ function generatedAt(now) {
   return date.toISOString();
 }
 
+async function writeOwnerGenerationTransaction({
+  root,
+  reportPath,
+  files,
+  reportContents,
+  priorContents,
+  makeDirectory,
+  writeFile,
+}) {
+  const attempted = [];
+  try {
+    for (const file of files) {
+      const destination = resolve(root, file.path);
+      if (!inside(root, destination)) {
+        throw new Error(
+          `Owner generated path escapes repository: ${file.path}`,
+        );
+      }
+      attempted.push({
+        destination,
+        contents: priorContents.get(file.path),
+      });
+      await makeDirectory(dirname(destination), { recursive: true });
+      await writeFile(destination, file.contents, "utf8");
+    }
+    await makeDirectory(dirname(reportPath), { recursive: true });
+    await writeFile(reportPath, reportContents, "utf8");
+  } catch (writeError) {
+    const rollbackErrors = [];
+    for (const file of [...attempted].reverse()) {
+      try {
+        await writeFile(file.destination, file.contents, "utf8");
+      } catch (rollbackError) {
+        rollbackErrors.push(rollbackError);
+      }
+    }
+    if (rollbackErrors.length > 0) {
+      const error = new AggregateError(
+        [writeError, ...rollbackErrors],
+        `Owner generation rollback failed: ${rollbackErrors
+          .map((failure) => failure.message)
+          .join("; ")}`,
+      );
+      error.code = "owner-generation-rollback-failed";
+      throw error;
+    }
+    throw writeError;
+  }
+}
+
 export async function generateProjectOwnerRequest(input) {
   const root = resolve(input?.root ?? ".");
-  const issueApiPath = issuePath(input?.issue);
+  const issueApiPath = issuePath(input?.hostRepository, input?.issue?.number);
   const reportPath = resolve(
     input?.reportPath ??
       resolve(root, "..", `owner-request-${input?.issue?.number}-report.json`),
@@ -143,6 +184,7 @@ export async function generateProjectOwnerRequest(input) {
     await processProjectOwnerTriage({
       issue: latestIssue,
       root,
+      hostRepository: input.hostRepository,
       request: input.request,
       readFile,
       vocabularies,
@@ -151,11 +193,12 @@ export async function generateProjectOwnerRequest(input) {
 
   // A triage result is not an authorization token. Re-read every mutable
   // authority input immediately before the pure mutation is applied.
-  const [finalIssue, finalRecord, finalVocabularies] = await Promise.all([
+  const [finalIssue, finalRecordSource, finalVocabularies] = await Promise.all([
     input.request(issueApiPath),
     loadRecord(root, initial.projectId, readFile),
     loadVocabularies(root, readFile),
   ]);
+  const finalRecord = finalRecordSource.value;
   const finalRepository = await input.request(
     `/repositories/${finalRecord?.source?.repository_id}`,
   );
@@ -164,15 +207,17 @@ export async function generateProjectOwnerRequest(input) {
       issue: finalIssue,
       record: finalRecord,
       repository: finalRepository,
+      hostRepository: input.hostRepository,
       request: input.request,
       vocabularies: finalVocabularies,
     }),
   );
 
-  const snapshot =
+  const snapshotSource =
     final.operation === "move-source"
       ? await loadSnapshot(root, final.projectId, readFile)
       : null;
+  const snapshot = snapshotSource?.value ?? null;
   const mutation = applyProjectOwnerRequest({
     issueNumber: final.issueNumber,
     manifest: final.manifest,
@@ -214,17 +259,19 @@ export async function generateProjectOwnerRequest(input) {
     })),
   );
   const serializedReport = await formatJson(report);
-
-  for (const file of serialized) {
-    const destination = resolve(root, file.path);
-    if (!inside(root, destination)) {
-      throw new Error(`Owner generated path escapes repository: ${file.path}`);
-    }
-    await makeDirectory(dirname(destination), { recursive: true });
-    await writeFile(destination, file.contents, "utf8");
-  }
-  await makeDirectory(dirname(reportPath), { recursive: true });
-  await writeFile(reportPath, serializedReport, "utf8");
+  const priorContents = new Map([
+    [allowedPaths[0], finalRecordSource.contents],
+    ...(snapshotSource ? [[allowedPaths[1], snapshotSource.contents]] : []),
+  ]);
+  await writeOwnerGenerationTransaction({
+    root,
+    reportPath,
+    files: serialized,
+    reportContents: serializedReport,
+    priorContents,
+    makeDirectory,
+    writeFile,
+  });
 
   return {
     issueNumber: final.issueNumber,
@@ -300,7 +347,8 @@ async function main() {
   const repository = process.env.GITHUB_REPOSITORY;
   if (!repository) throw new Error("GITHUB_REPOSITORY is required.");
   await generateProjectOwnerRequest({
-    issue: { number: cli.issueNumber, repository },
+    issue: { number: cli.issueNumber },
+    hostRepository: repository,
     root: cli.root,
     reportPath: cli.reportPath,
     request: github,

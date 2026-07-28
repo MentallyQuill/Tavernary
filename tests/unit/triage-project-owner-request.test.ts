@@ -81,7 +81,7 @@ ${JSON.stringify(bodyManifest)}
 \`\`\``,
     labels: ["issue-admitted", "project-owner-request"],
     user: { login: "Owner" },
-    url: "https://api.github.com/repos/Tavernary/Tavernary/issues/123",
+    url: "https://api.github.com/repos/Attacker/Wrong/issues/123",
     updated_at: "2026-07-28T12:00:00Z",
   };
 }
@@ -114,6 +114,7 @@ test("reads the trusted record, resolves its immutable repository ID, and refres
     processProjectOwnerTriage({
       issue: latest,
       root: "C:/repo",
+      hostRepository: "Tavernary/Tavernary",
       request,
       readFile,
       writeFile,
@@ -144,6 +145,7 @@ test("returns retryable when immutable repository resolution temporarily fails",
     processProjectOwnerTriage({
       issue: issue(),
       record: record(),
+      hostRepository: "Tavernary/Tavernary",
       vocabularies,
       request: vi.fn(async () => {
         throw temporary;
@@ -194,6 +196,8 @@ test("rejects overlapping stale values but preserves non-overlap fingerprint war
       issue: issue(),
       record: nonOverlap,
       repository,
+      hostRepository: "Tavernary/Tavernary",
+      request: vi.fn(async () => issue()),
       vocabularies,
     }),
   ).resolves.toMatchObject({
@@ -231,6 +235,8 @@ test("constructs and validates a direct fallback without trusting its repository
       issue: fallbackIssue,
       record: current,
       repository,
+      hostRepository: "Tavernary/Tavernary",
+      request: vi.fn(async () => fallbackIssue),
       vocabularies,
     }),
   ).resolves.toMatchObject({
@@ -253,6 +259,7 @@ test("fails closed when the issue changes during triage", async () => {
     processProjectOwnerTriage({
       issue: original,
       record: record(),
+      hostRepository: "Tavernary/Tavernary",
       request,
       vocabularies,
     }),
@@ -260,4 +267,22 @@ test("fails closed when the issue changes during triage", async () => {
     status: "retryable",
     reasonCode: "issue-changed-during-triage",
   });
+});
+
+test("refuses admission when trusted issue routing context is unavailable", async () => {
+  const request = vi.fn(async () => issue());
+
+  await expect(
+    processProjectOwnerTriage({
+      issue: issue(),
+      record: record(),
+      repository,
+      request,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "retryable",
+    reasonCode: "trusted-issue-context-unavailable",
+  });
+  expect(request).not.toHaveBeenCalled();
 });

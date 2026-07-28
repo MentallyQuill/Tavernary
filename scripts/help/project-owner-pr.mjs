@@ -179,6 +179,7 @@ function collisionMarker(pull) {
   const owner = parseOwnerRequestPullRequestMarker(pull.body ?? "");
   if (owner) {
     return {
+      kind: "project-owner",
       issueNumber: owner.issue_number,
       branch: ownerRequestBranch(owner.issue_number),
       paths: owner.generated_paths,
@@ -187,6 +188,7 @@ function collisionMarker(pull) {
   const submission = parseSubmissionPullRequestMarker(pull.body ?? "");
   if (submission) {
     return {
+      kind: "project-submission",
       issueNumber: submission.issue_number,
       branch: `automation/project-submission-${submission.issue_number}`,
       paths: submission.generated_paths.filter(sourceOwnedPath),
@@ -207,7 +209,7 @@ export function findOwnerRequestPathCollision({
     if (
       (typeof pull.state === "string" && pull.state !== "open") ||
       !marker ||
-      marker.issueNumber === issueNumber ||
+      (marker.kind === "project-owner" && marker.issueNumber === issueNumber) ||
       pull.head?.repo?.full_name?.toLocaleLowerCase() !==
         repository.toLocaleLowerCase() ||
       pull.head?.ref !== marker.branch
@@ -233,6 +235,26 @@ export function planOwnerPrUpdate(input) {
       "Owner request generated paths do not match the approved operation.",
     );
   }
+  const existing = input.existingMarker;
+  const existingOwnerMarker = existing?.marker;
+  if (
+    input.remoteHeadSha !== null &&
+    (existing?.kind !== "project-owner" ||
+      !validMarker(existingOwnerMarker) ||
+      existingOwnerMarker.issue_number !== input.issueNumber ||
+      existingOwnerMarker.project_id !== input.projectId ||
+      existingOwnerMarker.operation !== input.operation ||
+      existingOwnerMarker.repository_id !== input.repositoryId ||
+      existingOwnerMarker.verified_owner_login !== input.verifiedOwnerLogin ||
+      !exactPaths(existingOwnerMarker.generated_paths, input.generatedPaths))
+  ) {
+    return {
+      action: "conflict",
+      reasonCode: "existing-marker-mismatch",
+      message:
+        "The existing branch is not owned by this exact project owner request.",
+    };
+  }
   const collision = findOwnerRequestPathCollision({
     repository: input.repository,
     issueNumber: input.issueNumber,
@@ -250,7 +272,7 @@ export function planOwnerPrUpdate(input) {
   if (input.remoteHeadSha === null) {
     return { action: "create", replacePaths: [...input.generatedPaths] };
   }
-  if (input.remoteHeadSha !== input.markerHeadSha) {
+  if (input.remoteHeadSha !== existingOwnerMarker.generated_head_sha) {
     return {
       action: "conflict",
       reasonCode: "maintainer-divergence",
