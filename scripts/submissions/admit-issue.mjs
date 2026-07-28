@@ -44,6 +44,7 @@ const routeByLabel = {
   "project-submission": "project",
   "kit-submission": "kit",
   "kit-withdrawal": "kit-withdrawal",
+  "project-owner-request": "project-owner",
   ...HELP_ROUTE_BY_LABEL,
 };
 const publicHelpRoutes = new Set(Object.values(HELP_ROUTE_BY_LABEL));
@@ -92,6 +93,25 @@ export function issueRouteFromBody(body = "") {
     {
       route: "kit-withdrawal",
       headings: ["Kit ID", "Kit share URL", "Confirmation"],
+    },
+    {
+      route: "project-owner",
+      headings: [
+        "Request type",
+        "Project ID",
+        "Current repository",
+        "Proposed display name",
+        "Proposed summary",
+        "Supported frontends",
+        "Primary function",
+        "Capabilities",
+        "Model families",
+        "Completion formats",
+        "Proposed repository",
+        "Explanation or public note",
+        "Delist confirmation",
+        "Owner request manifest",
+      ],
     },
     ...Object.entries(HELP_FALLBACK_HEADINGS).map(([route, headings]) => ({
       route,

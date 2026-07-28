@@ -37,6 +37,35 @@ describe("pull request CI path classification", () => {
     ).toEqual({ route: "content", reason: "content-only" });
   });
 
+  test("routes exact owner-edit and owner-move paths through focused CI", () => {
+    expect(
+      classifyPullRequestPaths(["data/registry/projects/owner-alpha.json"]),
+    ).toEqual({ route: "content", reason: "content-only" });
+    expect(
+      classifyPullRequestPaths([
+        "data/registry/projects/owner-alpha.json",
+        "data/snapshots/github/owner-alpha.json",
+      ]),
+    ).toEqual({ route: "content", reason: "content-only" });
+  });
+
+  test.each([
+    "docs/owner-alpha.md",
+    "scripts/help/owner-alpha.mjs",
+    ".github/workflows/owner-alpha.yml",
+    "data/schemas/project.schema.json",
+  ])(
+    "fails owner generation additions closed through full CI for %s",
+    (path) => {
+      expect(
+        classifyPullRequestPaths([
+          "data/registry/projects/owner-alpha.json",
+          path,
+        ]),
+      ).toMatchObject({ route: "full", path });
+    },
+  );
+
   test.each([
     "src/features/catalog/components/project-card.tsx",
     "scripts/catalog/build.mjs",

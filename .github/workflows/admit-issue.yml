@@ -69,6 +69,16 @@ jobs:
           -f issue_number="${{ steps.admission.outputs.issue_number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dispatch project owner request triage
+        if: >-
+          steps.admission.outputs.admitted == 'true' &&
+          steps.admission.outputs.route == 'project-owner'
+        run: >
+          gh workflow run triage-project-owner-request.yml
+          --ref "${{ github.event.repository.default_branch }}"
+          -f issue_number="${{ steps.admission.outputs.issue_number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Dispatch Help request triage
         if: >-
           steps.admission.outputs.admitted == 'true' &&

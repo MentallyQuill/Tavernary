@@ -35,6 +35,12 @@ test("uses category-prefixed workflow display names", async () => {
     "generate-project-submission": "Project submissions: Create review PR",
     "project-submission-lifecycle":
       "Project submissions: Process review result",
+    "triage-project-owner-request":
+      "Project owner requests: Validate authority",
+    "generate-project-owner-request":
+      "Project owner requests: Create review PR",
+    "project-owner-request-lifecycle":
+      "Project owner requests: Process review result",
     "retry-frontend-dependencies":
       "Project submissions: Retry frontend dependencies",
     "triage-kit-submission": "Kit submissions: Validate submission",
@@ -60,6 +66,9 @@ test("identifies the object and action in every workflow run name", async () => 
     "triage-submission": ["Project #", "Validate submission"],
     "generate-project-submission": ["Project #", "Create review PR"],
     "project-submission-lifecycle": ["Project review PR #", "Process result"],
+    "triage-project-owner-request": ["Owner request #", "Validate authority"],
+    "generate-project-owner-request": ["Owner request #", "Create review PR"],
+    "project-owner-request-lifecycle": ["Owner review PR #", "Process result"],
     "retry-frontend-dependencies": [
       "Project submissions:",
       "Retry merged frontend dependencies",
@@ -94,6 +103,9 @@ test("pins every first-party action to its resolved commit", async () => {
     "triage-submission",
     "generate-project-submission",
     "project-submission-lifecycle",
+    "triage-project-owner-request",
+    "generate-project-owner-request",
+    "project-owner-request-lifecycle",
     "retry-frontend-dependencies",
     "triage-kit-submission",
     "triage-help-request",
@@ -828,6 +840,146 @@ test("handles submission closure from default-branch code only", async () => {
   );
 });
 
+test("triages owner requests through a read-only repository gate", async () => {
+  const triage = await workflow("triage-project-owner-request");
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-project-owner-request.yml"),
+    "utf8",
+  );
+  const checkout = allSteps(triage).find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  ) as { with?: { ref?: string } } | undefined;
+
+  expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
+  expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
+  expect(triage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+    actions: "write",
+  });
+  expect(triage.concurrency).toEqual({
+    group: "project-owner-triage-${{ inputs.issue_number }}",
+    "cancel-in-progress": true,
+  });
+  expect(checkout?.with?.ref).toBe(
+    "${{ github.event.repository.default_branch }}",
+  );
+  expect(source).toContain("processProjectOwnerTriage");
+  expect(source).toContain("steps.triage.outputs.admitted == 'true'");
+  expect(source).toContain(
+    "gh workflow run generate-project-owner-request.yml",
+  );
+  expect(source).toContain('-f issue_number="$ISSUE_NUMBER"');
+  expect(source).toContain("-f force_regeneration=false");
+  for (const label of [
+    "needs-information",
+    "needs-maintainer-review",
+    "submission-retryable",
+  ]) {
+    expect(source).toContain(label);
+  }
+  expect(source).not.toContain("submission-pr-open");
+  expect(source).not.toContain("npm ci");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
+});
+
+test("generates owner review PRs with operation-scoped guarded writes", async () => {
+  const generation = await workflow("generate-project-owner-request");
+  const source = await readFile(
+    resolve(workflowDirectory, "generate-project-owner-request.yml"),
+    "utf8",
+  );
+  const checkout = allSteps(generation).find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  ) as { with?: { "fetch-depth"?: number; ref?: string } } | undefined;
+
+  expect(generation.permissions).toEqual({
+    contents: "write",
+    issues: "write",
+    "pull-requests": "write",
+    actions: "write",
+  });
+  expect(generation.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
+  expect(
+    generation.on.workflow_dispatch.inputs.force_regeneration,
+  ).toMatchObject({ required: false, type: "boolean", default: false });
+  expect(generation.concurrency).toEqual({
+    group: "project-owner-generation-${{ inputs.issue_number }}",
+    "cancel-in-progress": true,
+  });
+  expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
+  expect(source).toContain("npm ci");
+  expect(source).toContain("generate-project-owner-request.mjs");
+  expect(source).toContain("processProjectOwnerTriage");
+  expect(source).toContain("planOwnerPrUpdate");
+  expect(source).toContain("findOwnerRequestPathCollision");
+  expect(source).toContain("parseOwnerRequestPullRequestMarker");
+  expect(source).toContain("renderOwnerRequestPullRequest");
+  expect(source).toContain('-f head="${GITHUB_REPOSITORY_OWNER}:${branch}"');
+  expect(source).toContain("-f base=main");
+  expect(source).not.toContain('gh pr list --state open --head "$branch"');
+  expect(source).toContain("git push --force-with-lease=");
+  expect(source).not.toMatch(/git push (?:--force|-f)(?!-with-lease)/);
+  expect(source).toContain("feat(catalog): apply owner request #");
+  expect(source).toContain("npm run catalog:validate");
+  expect(source).toContain("npm run catalog:build");
+  expect(source).toContain("tests/unit/project-owner-");
+  expect(source).toContain("npm run check:content");
+  expect(source).toContain("submission-pr-open");
+  expect(source).toContain("gh label create submission-pr-open");
+  expect(source).toContain("Owner generation changed unsafe paths");
+  expect(source.indexOf("Owner generation changed unsafe paths")).toBeLessThan(
+    source.indexOf("git commit -m"),
+  );
+  expect(source).toContain("actions/upload-artifact@");
+  expect(source).toContain("gh workflow run ci.yml");
+  expect(source).toContain("data/registry/projects/");
+  expect(source).toContain("data/snapshots/github/");
+  expect(source).not.toContain("git add src/generated/catalog.json");
+  expect(source).not.toMatch(/git add[^;\n]*(?:\.github\/workflows|scripts\/)/);
+  expect(source).not.toContain("gh pr merge");
+});
+
+test("handles owner closure from default-branch code and exact head state", async () => {
+  const lifecycle = await workflow("project-owner-request-lifecycle");
+  const source = await readFile(
+    resolve(workflowDirectory, "project-owner-request-lifecycle.yml"),
+    "utf8",
+  );
+  const checkout = allSteps(lifecycle).find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  ) as { with?: { ref?: string } } | undefined;
+
+  expect(lifecycle.on.pull_request.types).toEqual(["closed"]);
+  expect(lifecycle.permissions).toEqual({
+    contents: "write",
+    issues: "write",
+    "pull-requests": "read",
+  });
+  expect(lifecycle.concurrency).toEqual({
+    group: "project-owner-lifecycle-${{ github.event.pull_request.number }}",
+    "cancel-in-progress": false,
+  });
+  expect(checkout?.with?.ref).toBe(
+    "${{ github.event.repository.default_branch }}",
+  );
+  expect(source).toContain("planProjectOwnerClosure");
+  expect(source).toContain("github.event.pull_request.head.sha");
+  expect(source).toContain("state_reason");
+  expect(source).toContain("gh api --method PUT");
+  expect(source).toContain("tavernary-project-owner-declined-pr:");
+  expect(source).toContain("gh label create submission-declined");
+  expect(source).not.toContain("github.event.pull_request.head.ref }}");
+  expect(source).not.toContain("gh pr checkout");
+  expect(source).not.toContain("gh pr merge");
+});
+
 test("continues admitted submissions in the admission run", async () => {
   const admission = await workflow("admit-issue");
   const source = await readFile(
@@ -850,12 +1002,17 @@ test("continues admitted submissions in the admission run", async () => {
   expect(source).toContain("gh workflow run triage-submission.yml");
   expect(source).toContain("gh workflow run triage-kit-submission.yml");
   expect(source).toContain("gh workflow run apply-kit-withdrawal.yml");
+  expect(source).toContain("gh workflow run triage-project-owner-request.yml");
+  expect(source).not.toContain(
+    "gh workflow run generate-project-owner-request.yml",
+  );
   expect(
     source.match(/gh workflow run triage-help-request\.yml/g),
   ).toHaveLength(1);
   expect(source).toContain("steps.admission.outputs.route == 'project'");
   expect(source).toContain("steps.admission.outputs.route == 'kit'");
   expect(source).toContain("steps.admission.outputs.route == 'kit-withdrawal'");
+  expect(source).toContain("steps.admission.outputs.route == 'project-owner'");
   for (const route of [
     "project-report",
     "website-bug",

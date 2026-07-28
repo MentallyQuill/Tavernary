@@ -1,0 +1,526 @@
+name: "Project owner requests: Create review PR"
+run-name: "Owner request #${{ inputs.issue_number }}: Create review PR"
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Project owner request issue number
+        required: true
+        type: number
+      force_regeneration:
+        description: Retry generation without overriding maintainer changes
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: project-owner-generation-${{ inputs.issue_number }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      ISSUE_NUMBER: ${{ inputs.issue_number }}
+      FORCE_REGENERATION: ${{ inputs.force_regeneration }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out full current main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Inspect exact existing owner state
+        id: state
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="automation/project-owner-request-${ISSUE_NUMBER}"
+          issue_path="${RUNNER_TEMP}/project-owner-issue.json"
+          pr_path="${RUNNER_TEMP}/project-owner-pr.json"
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "$issue_path"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const issue = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const labels = issue.labels.map((label) => label.name);
+            if (issue.state !== 'open' ||
+                !labels.includes('issue-admitted') ||
+                !labels.includes('project-owner-request') ||
+                (!labels.includes('needs-maintainer-review') &&
+                 !labels.includes('submission-pr-open'))) {
+              throw new Error('Owner request issue is no longer admitted.');
+            }
+          " "$issue_path"
+          gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls" \
+            -f state=open \
+            -f head="${GITHUB_REPOSITORY_OWNER}:${branch}" \
+            -f base=main \
+            -f per_page=2 > "$pr_path"
+          remote_sha="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { parseOwnerRequestPullRequestMarker } from './scripts/help/project-owner-pr.mjs';
+            const pull = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'))[0] ?? null;
+            const marker = pull
+              ? parseOwnerRequestPullRequestMarker(pull.body ?? '')
+              : null;
+            if (pull && !marker) {
+              throw new Error('Existing owner branch PR has no valid owner marker.');
+            }
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/previous-owner-paths.txt',
+              (marker?.generated_paths ?? []).join('\n'),
+            );
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, [
+              'pr_number=' + (pull?.number ?? ''),
+              'marker_sha=' + (marker?.generated_head_sha ?? ''),
+            ].join('\n') + '\n');
+          " "$pr_path"
+          {
+            echo "branch=$branch"
+            echo "remote_sha=$remote_sha"
+          } >> "$GITHUB_OUTPUT"
+      - name: Refuse unowned or maintainer-diverged branches
+        shell: bash
+        env:
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          MARKER_SHA: ${{ steps.state.outputs.marker_sha }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$REMOTE_SHA" && -z "$PR_NUMBER" ]]; then
+            echo "::error::Owner request branch exists without an open marked PR."
+            exit 1
+          fi
+          if [[ -n "$PR_NUMBER" &&
+                ( -z "$REMOTE_SHA" || -z "$MARKER_SHA" ||
+                  "$REMOTE_SHA" != "$MARKER_SHA" ) ]]; then
+            echo "::error::Owner request branch contains maintainer divergence; regeneration is refused."
+            exit 1
+          fi
+      - name: Generate from latest main and issue state
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$PR_NUMBER" ]]; then
+            git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+            git rebase origin/main
+            while IFS= read -r generated_path; do
+              [[ -z "$generated_path" ]] && continue
+              case "$generated_path" in
+                data/registry/projects/*.json|data/snapshots/github/*.json) ;;
+                *)
+                  echo "::error::Refusing unsafe previous owner path: $generated_path"
+                  exit 1
+                  ;;
+              esac
+              git checkout origin/main -- "$generated_path"
+            done < "${RUNNER_TEMP}/previous-owner-paths.txt"
+          else
+            git checkout -B "$BRANCH" origin/main
+          fi
+          node scripts/help/generate-project-owner-request.mjs \
+            --issue-number "$ISSUE_NUMBER" \
+            --output-directory "$GITHUB_WORKSPACE" \
+            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json"
+      - name: Prepare and verify exact operation paths
+        id: paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const report = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
+              "utf8",
+            ),
+          );
+          const registry = `data/registry/projects/${report.project_id}.json`;
+          const expected = report.operation === "move-source"
+            ? [registry, `data/snapshots/github/${report.project_id}.json`]
+            : [registry];
+          if (
+            !Array.isArray(report.generated_paths) ||
+            JSON.stringify(report.generated_paths) !== JSON.stringify(expected)
+          ) {
+            throw new Error("Owner generator returned paths outside the exact operation.");
+          }
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/owner-generated-paths.txt`,
+            expected.join("\n"),
+          );
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `project_id=${report.project_id}\noperation=${report.operation}\n`,
+          );
+          NODE
+          git diff --name-only -z > "${RUNNER_TEMP}/owner-dirty-paths.bin"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const allowed = new Set(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/owner-generated-paths.txt`, "utf8")
+              .split(/\r?\n/u).filter(Boolean),
+          );
+          const dirty = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/owner-dirty-paths.bin`,
+          ).toString("utf8").split("\0").filter(Boolean);
+          const unsafe = dirty.filter((path) => !allowed.has(path));
+          if (unsafe.length > 0) {
+            throw new Error(`Owner generation changed unsafe paths: ${unsafe.join(", ")}`);
+          }
+          NODE
+      - name: Validate owner proposal and content build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run catalog:validate
+          npm run catalog:build
+          npm test -- \
+            tests/unit/project-owner-authority.test.ts \
+            tests/unit/apply-project-owner-request.test.ts \
+            tests/unit/triage-project-owner-request.test.ts \
+            tests/unit/generate-project-owner-request.test.ts \
+            tests/unit/project-owner-pr.test.ts \
+            tests/unit/project-owner-lifecycle.test.ts
+          npm run check:content
+          git checkout -- src/generated/catalog.json
+          git diff --name-only -z > "${RUNNER_TEMP}/owner-validated-paths.bin"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const allowed = new Set(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/owner-generated-paths.txt`, "utf8")
+              .split(/\r?\n/u).filter(Boolean),
+          );
+          const dirty = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/owner-validated-paths.bin`,
+          ).toString("utf8").split("\0").filter(Boolean);
+          const unsafe = dirty.filter((path) => !allowed.has(path));
+          if (unsafe.length > 0) {
+            throw new Error(`Validation left unsafe owner paths: ${unsafe.join(", ")}`);
+          }
+          NODE
+      - name: Reject conflicting open owner paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          pulls_path="${RUNNER_TEMP}/open-owner-pr-pages.json"
+          gh api --paginate --slurp \
+            "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" \
+            > "$pulls_path"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { findOwnerRequestPathCollision } from './scripts/help/project-owner-pr.mjs';
+            const pages = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const generatedPaths = fs.readFileSync(process.argv[2], 'utf8')
+              .split(/\r?\n/u).filter(Boolean);
+            const collision = findOwnerRequestPathCollision({
+              repository: process.env.GITHUB_REPOSITORY,
+              issueNumber: Number(process.env.ISSUE_NUMBER),
+              generatedPaths,
+              pulls: pages.flat(),
+            });
+            if (collision) {
+              throw new Error(
+                'Owner paths already belong to issue #' + collision.issueNumber +
+                ' and PR #' + collision.prNumber + ': ' + collision.prUrl,
+              );
+            }
+          " "$pulls_path" "${RUNNER_TEMP}/owner-generated-paths.txt"
+      - name: Revalidate owner authority before branch mutation
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { execFileSync } from "node:child_process";
+          import fs from "node:fs";
+          import { readFile } from "node:fs/promises";
+          import { processProjectOwnerTriage } from "./scripts/help/triage-project-owner-request.mjs";
+
+          const report = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
+              "utf8",
+            ),
+          );
+          const repository = process.env.GITHUB_REPOSITORY;
+          const issueNumber = Number(process.env.ISSUE_NUMBER);
+          const token = process.env.GITHUB_TOKEN;
+          async function request(path, options = {}) {
+            const response = await fetch(`https://api.github.com${path}`, {
+              ...options,
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "Tavernary-project-owner-generation",
+                "X-GitHub-Api-Version": "2022-11-28",
+                ...options.headers,
+              },
+            });
+            if (!response.ok) {
+              const error = new Error(`GitHub ${response.status}: ${await response.text()}`);
+              error.status = response.status;
+              throw error;
+            }
+            return response.status === 204 ? null : response.json();
+          }
+          const vocabularyFiles = {
+            frontends: ["frontends.json", "frontends"],
+            primaryFunctions: ["primary-functions.json", "primary_functions"],
+            capabilities: ["capabilities.json", "capabilities"],
+            modelFamilies: ["model-families.json", "model_families"],
+            completionFormats: ["completion-formats.json", "completion_formats"],
+          };
+          const vocabularies = Object.fromEntries(
+            await Promise.all(
+              Object.entries(vocabularyFiles).map(async ([name, [file, key]]) => {
+                const document = JSON.parse(
+                  await readFile(`data/vocabularies/${file}`, "utf8"),
+                );
+                return [name, document[key] ?? []];
+              }),
+            ),
+          );
+          const registryPath = `data/registry/projects/${report.project_id}.json`;
+          const record = JSON.parse(
+            execFileSync("git", ["show", `origin/main:${registryPath}`], {
+              encoding: "utf8",
+            }),
+          );
+          const [issue, repositoryIdentity] = await Promise.all([
+            request(`/repos/${repository}/issues/${issueNumber}`),
+            request(`/repositories/${record.source.repository_id}`),
+          ]);
+          const decision = await processProjectOwnerTriage({
+            issue,
+            record,
+            repository: repositoryIdentity,
+            hostRepository: repository,
+            vocabularies,
+            request,
+          });
+          if (
+            decision.status !== "admitted" ||
+            decision.issueNumber !== report.issue_number ||
+            decision.projectId !== report.project_id ||
+            decision.operation !== report.operation ||
+            decision.record.source.repository_id !== report.repository_id ||
+            decision.verifiedOwnerLogin !== report.verified_owner_login
+          ) {
+            throw new Error("Owner authority or request state changed before branch mutation.");
+          }
+          NODE
+      - name: Plan safe owner branch update
+        id: plan
+        shell: bash
+        env:
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+          MARKER_SHA: ${{ steps.state.outputs.marker_sha }}
+        run: |
+          set -euo pipefail
+          mapfile -t generated_paths < "${RUNNER_TEMP}/owner-generated-paths.txt"
+          if git diff --quiet -- "${generated_paths[@]}"; then
+            changed=false
+          else
+            changed=true
+          fi
+          CHANGED="$changed" node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import {
+            parseOwnerRequestPullRequestMarker,
+            planOwnerPrUpdate,
+          } from "./scripts/help/project-owner-pr.mjs";
+          const report = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
+              "utf8",
+            ),
+          );
+          const pulls = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/open-owner-pr-pages.json`, "utf8"),
+          ).flat();
+          const existingPull = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.json`, "utf8"),
+          )[0] ?? null;
+          const marker = existingPull
+            ? parseOwnerRequestPullRequestMarker(existingPull.body ?? "")
+            : null;
+          const plan = planOwnerPrUpdate({
+            issueNumber: Number(process.env.ISSUE_NUMBER),
+            projectId: report.project_id,
+            operation: report.operation,
+            repositoryId: report.repository_id,
+            verifiedOwnerLogin: report.verified_owner_login,
+            repository: process.env.GITHUB_REPOSITORY,
+            remoteHeadSha: process.env.REMOTE_SHA || null,
+            markerHeadSha: process.env.MARKER_SHA || null,
+            existingMarker: marker ? { kind: "project-owner", marker } : null,
+            generatedContentChanged: process.env.CHANGED === "true",
+            forceRegeneration: process.env.FORCE_REGENERATION === "true",
+            generatedPaths: report.generated_paths,
+            pulls,
+          });
+          if (plan.action === "conflict") throw new Error(plan.message);
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `action=${plan.action}\nhas_pr=${Boolean(existingPull)}\n`,
+          );
+          NODE
+      - name: Commit and push exact owner paths
+        id: commit
+        if: steps.plan.outputs.action != 'noop'
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          mapfile -t generated_paths < "${RUNNER_TEMP}/owner-generated-paths.txt"
+          git add -- "${generated_paths[@]}"
+          git diff --cached --name-only -z > "${RUNNER_TEMP}/owner-staged-paths.bin"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const expected = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/owner-generated-paths.txt`,
+            "utf8",
+          ).split(/\r?\n/u).filter(Boolean).sort();
+          const staged = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/owner-staged-paths.bin`,
+          ).toString("utf8").split("\0").filter(Boolean).sort();
+          if (JSON.stringify(staged) !== JSON.stringify(expected)) {
+            throw new Error("Refusing to stage anything except the exact owner operation paths.");
+          }
+          NODE
+          git commit -m "feat(catalog): apply owner request #${ISSUE_NUMBER}"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ -z "$REMOTE_SHA" ]]; then
+            git push origin "HEAD:refs/heads/$BRANCH"
+          else
+            git push --force-with-lease="refs/heads/$BRANCH:$REMOTE_SHA" \
+              origin "HEAD:refs/heads/$BRANCH"
+          fi
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+      - name: Create or update owner review PR
+        if: steps.plan.outputs.action != 'noop'
+        shell: bash
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+          HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
+          PR_NUMBER: ${{ steps.state.outputs.pr_number }}
+          PROJECT_ID: ${{ steps.paths.outputs.project_id }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { renderOwnerRequestPullRequest } from "./scripts/help/project-owner-pr.mjs";
+          const report = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
+              "utf8",
+            ),
+          );
+          const body = renderOwnerRequestPullRequest({
+            issueNumber: Number(process.env.ISSUE_NUMBER),
+            projectName: report.project_id,
+            report,
+            marker: {
+              schema_version: 1,
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              project_id: report.project_id,
+              operation: report.operation,
+              repository_id: report.repository_id,
+              verified_owner_login: report.verified_owner_login,
+              generated_head_sha: process.env.HEAD_SHA,
+              generated_paths: report.generated_paths,
+            },
+          });
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.md`, body);
+          NODE
+          title="[Project owner request] ${PROJECT_ID}"
+          if [[ -n "$PR_NUMBER" ]]; then
+            gh pr edit "$PR_NUMBER" --title "$title" \
+              --body-file "${RUNNER_TEMP}/project-owner-pr.md"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$title" \
+              --body-file "${RUNNER_TEMP}/project-owner-pr.md"
+          fi
+      - name: Synchronize owner issue review state
+        if: steps.plan.outputs.action != 'noop' || steps.plan.outputs.has_pr == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh label create submission-pr-open \
+            --color 5319e7 \
+            --description "Submission has an open generated maintainer-review PR." \
+            --force
+          issue_path="${RUNNER_TEMP}/project-owner-current-issue.json"
+          labels_path="${RUNNER_TEMP}/project-owner-review-labels.json"
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "$issue_path"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const issue = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/project-owner-current-issue.json`, "utf8"),
+          );
+          const labels = issue.labels.map((label) => label.name);
+          if (
+            issue.state !== "open" ||
+            !labels.includes("issue-admitted") ||
+            !labels.includes("project-owner-request")
+          ) {
+            throw new Error("Owner request issue is no longer admitted.");
+          }
+          const owned = new Set([
+            "needs-information",
+            "needs-maintainer-review",
+            "submission-retryable",
+            "submission-pr-open",
+            "submission-declined",
+          ]);
+          const next = labels.filter((label) => !owned.has(label));
+          next.push("submission-pr-open");
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/project-owner-review-labels.json`,
+            JSON.stringify({ labels: [...new Set(next)] }),
+          );
+          NODE
+          gh api --method PUT \
+            "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
+            --input "$labels_path"
+      - name: Upload sanitized owner generation report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: project-owner-request-${{ inputs.issue_number }}-generation
+          path: ${{ runner.temp }}/project-owner-generation-report.json
+          if-no-files-found: error
+      - name: Dispatch CI for generated owner branch
+        if: steps.plan.outputs.action != 'noop'
+        env:
+          BRANCH: ${{ steps.state.outputs.branch }}
+        run: gh workflow run ci.yml --ref "$BRANCH"

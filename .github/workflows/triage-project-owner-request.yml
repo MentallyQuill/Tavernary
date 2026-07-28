@@ -1,0 +1,152 @@
+name: "Project owner requests: Validate authority"
+run-name: "Owner request #${{ inputs.issue_number }}: Validate authority"
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Project owner request issue number
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+concurrency:
+  group: project-owner-triage-${{ inputs.issue_number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - name: Validate owner authority and synchronize queue state
+        id: triage
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { readFile } from "node:fs/promises";
+          import { processProjectOwnerTriage } from "./scripts/help/triage-project-owner-request.mjs";
+
+          const repository = process.env.GITHUB_REPOSITORY;
+          const issueNumber = Number(process.env.ISSUE_NUMBER);
+          const token = process.env.GITHUB_TOKEN;
+          async function request(path, options = {}) {
+            const response = await fetch(`https://api.github.com${path}`, {
+              ...options,
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "Tavernary-project-owner-triage",
+                "X-GitHub-Api-Version": "2022-11-28",
+                ...options.headers,
+              },
+            });
+            if (!response.ok) {
+              const error = new Error(`GitHub ${response.status}: ${await response.text()}`);
+              error.status = response.status;
+              throw error;
+            }
+            return response.status === 204 ? null : response.json();
+          }
+          const vocabularyFiles = {
+            frontends: ["frontends.json", "frontends"],
+            primaryFunctions: ["primary-functions.json", "primary_functions"],
+            capabilities: ["capabilities.json", "capabilities"],
+            modelFamilies: ["model-families.json", "model_families"],
+            completionFormats: ["completion-formats.json", "completion_formats"],
+          };
+          const vocabularies = Object.fromEntries(
+            await Promise.all(
+              Object.entries(vocabularyFiles).map(async ([name, [file, key]]) => {
+                const document = JSON.parse(
+                  await readFile(`data/vocabularies/${file}`, "utf8"),
+                );
+                return [name, document[key] ?? []];
+              }),
+            ),
+          );
+          const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
+          const decision = await processProjectOwnerTriage({
+            issue,
+            root: process.cwd(),
+            hostRepository: repository,
+            vocabularies,
+            request,
+          });
+          const owned = {
+            "needs-information": {
+              color: "d93f0b",
+              description: "Owner request needs corrected public information.",
+            },
+            "needs-maintainer-review": {
+              color: "0e8a16",
+              description: "Owner request passed verification and awaits review.",
+            },
+            "submission-retryable": {
+              color: "1d76db",
+              description: "Owner request hit a temporary failure and can be retried.",
+            },
+          };
+          const desired = {
+            admitted: "needs-maintainer-review",
+            "needs-information": "needs-information",
+            retryable: "submission-retryable",
+          }[decision.status];
+          if (!desired) throw new Error(`Unsupported owner triage state: ${decision.status}`);
+          for (const [name, definition] of Object.entries(owned)) {
+            try {
+              await request(`/repos/${repository}/labels`, {
+                method: "POST",
+                body: JSON.stringify({ name, ...definition }),
+              });
+            } catch (error) {
+              if (error.status !== 422) throw error;
+            }
+          }
+          for (const name of Object.keys(owned)) {
+            if (name === desired) continue;
+            try {
+              await request(
+                `/repos/${repository}/issues/${issueNumber}/labels/${encodeURIComponent(name)}`,
+                { method: "DELETE" },
+              );
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+          }
+          await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
+            method: "POST",
+            body: JSON.stringify({ labels: [desired] }),
+          });
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `admitted=${decision.status === "admitted"}\nissue_number=${issueNumber}\n`,
+          );
+          NODE
+      - name: Generate admitted owner request
+        if: steps.triage.outputs.admitted == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: >
+          gh workflow run generate-project-owner-request.yml
+          --ref main
+          -f issue_number="$ISSUE_NUMBER"
+          -f force_regeneration=false

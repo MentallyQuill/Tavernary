@@ -25,6 +25,64 @@ const kitBody = [
   "```",
 ].join("\n");
 
+const ownerBody = [
+  "### Request type",
+  "",
+  "Edit card details",
+  "",
+  "### Project ID",
+  "",
+  "owner-alpha",
+  "",
+  "### Current repository",
+  "",
+  "https://github.com/Owner/Alpha",
+  "",
+  "### Proposed display name",
+  "",
+  "Alpha",
+  "",
+  "### Proposed summary",
+  "",
+  "Owner-authored summary.",
+  "",
+  "### Supported frontends",
+  "",
+  "sillytavern",
+  "",
+  "### Primary function",
+  "",
+  "extension",
+  "",
+  "### Capabilities",
+  "",
+  "automation",
+  "",
+  "### Model families",
+  "",
+  "_No response_",
+  "",
+  "### Completion formats",
+  "",
+  "_No response_",
+  "",
+  "### Proposed repository",
+  "",
+  "_No response_",
+  "",
+  "### Explanation or public note",
+  "",
+  "_No response_",
+  "",
+  "### Delist confirmation",
+  "",
+  "_No response_",
+  "",
+  "### Owner request manifest",
+  "",
+  "_No response_",
+].join("\n");
+
 function event(
   number = 11,
   association = "NONE",
@@ -261,10 +319,13 @@ test.each([
   [[{ name: "kit-report" }], "kit-report"],
   [["other"], "other-help"],
   [[{ name: "other" }], "other-help"],
+  [["project-owner-request"], "project-owner"],
+  [[{ name: "project-owner-request" }], "project-owner"],
   [[], "none"],
   [["bug"], "none"],
   [["project-submission", "kit-submission"], "conflict"],
   [["project-information", "website-bug"], "conflict"],
+  [["project-owner-request", "project-information"], "conflict"],
   [["website-bug", "kit-report"], "conflict"],
   [["kit-report", "other"], "conflict"],
   [["project-submission", "kit-withdrawal"], "conflict"],
@@ -297,6 +358,16 @@ test("recovers an unlabeled Project route from the complete structured form", ()
       ].join("\n"),
     ),
   ).toBe("project");
+});
+
+test("recovers only the complete owner-request form route", () => {
+  expect(issueRouteFromBody(ownerBody)).toBe("project-owner");
+  expect(effectiveIssueRoute({ body: ownerBody, labels: [] })).toBe(
+    "project-owner",
+  );
+  expect(
+    issueRouteFromBody(ownerBody.replace("### Owner request manifest", "")),
+  ).toBe("none");
 });
 
 test("recovers an unlabeled Kit withdrawal route from the complete structured form", () => {
