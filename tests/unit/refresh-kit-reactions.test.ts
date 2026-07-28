@@ -185,6 +185,36 @@ test("fails edited Kit initialization by canonical ID", async () => {
   );
 });
 
+test("initializes an edited Kit by canonical ID and fetches its source issue", async () => {
+  const editedKit = {
+    ...kit,
+    id: "super-awesome-test-kit-109",
+    source_issue_number: 109,
+  };
+  const fetchPage = vi.fn().mockResolvedValue([]);
+
+  await expect(
+    refreshKitReactions({
+      kits: [editedKit],
+      snapshots: [],
+      blockedUsers: { blocked: [] },
+      fetchPage,
+      now,
+      requiredKitId: editedKit.id,
+    }),
+  ).resolves.toMatchObject([
+    {
+      kit_id: editedKit.id,
+      source_issue_number: 109,
+    },
+  ]);
+  expect(fetchPage).toHaveBeenCalledWith({
+    kit: editedKit,
+    page: 1,
+    perPage: 100,
+  });
+});
+
 test("re-added reactions keep their original first-observed timestamp", async () => {
   const inactive = {
     ...prior,
