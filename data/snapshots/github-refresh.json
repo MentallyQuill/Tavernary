@@ -1,34 +1,34 @@
 {
   "schema_version": 2,
   "mode": "incremental",
-  "started_at": "2026-07-28T06:34:29.119Z",
-  "completed_at": "2026-07-28T06:35:35.416Z",
+  "started_at": "2026-07-28T09:58:50.422Z",
+  "completed_at": "2026-07-28T09:59:57.056Z",
   "counts": {
     "total": 251,
     "checked": 251,
     "changed": 251,
-    "unchanged": 248,
+    "unchanged": 250,
     "provisional": 0,
     "degraded": 0,
     "unavailable": 0,
     "failed": 0,
-    "compared": 2,
+    "compared": 1,
     "baseline": 0,
-    "fallback": 1
+    "fallback": 0
   },
   "api": {
     "graphql_requests": 12,
     "graphql_points": 12,
-    "graphql_remaining": 4986,
-    "rest_requests": 333
+    "graphql_remaining": 4988,
+    "rest_requests": 311
   },
   "providers": {
     "github": {
       "checked": 250,
       "changed": 250,
       "failed": 0,
-      "requests": 327,
-      "remaining": 4986
+      "requests": 305,
+      "remaining": 4988
     },
     "codeberg": {
       "checked": 1,
@@ -38,12 +38,12 @@
       "remaining": 1999
     }
   },
-  "duration_ms": 66297,
+  "duration_ms": 66634,
   "project_timings": [
     {
       "project_id": "aikohanasaki-aikobots",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -73,7 +73,7 @@
     {
       "project_id": "aikohanasaki-sillytavern-lorebookordering",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -91,7 +91,7 @@
     {
       "project_id": "aikohanasaki-sillytavern-worldinfoinfo",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -193,13 +193,13 @@
     {
       "project_id": "arif-salah-megumin-suite",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
       "project_id": "aventurasteam-aventuras",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -331,7 +331,7 @@
     {
       "project_id": "cfigure-lumiverse-prompt-viewer",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -379,7 +379,7 @@
     {
       "project_id": "chaaruze-sillytavern-too-many-chats",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -463,7 +463,7 @@
     {
       "project_id": "dangerdaza-dooms-enhancement-suite",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -553,7 +553,7 @@
     {
       "project_id": "flaxify-st-hands-free-voice",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -595,7 +595,7 @@
     {
       "project_id": "ghostd93-bettersimtracker",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -816,8 +816,8 @@
     },
     {
       "project_id": "kwaroran-risuai",
-      "outcome": "fallback",
-      "duration_ms": 7141,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -853,13 +853,13 @@
     {
       "project_id": "lenanderson-sillytavern-charswitch",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
       "project_id": "lenanderson-sillytavern-csssnippets",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1003,7 +1003,7 @@
     {
       "project_id": "maxipawlowski-story-orchestrator",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1045,7 +1045,7 @@
     {
       "project_id": "mentallyquill-saga",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1123,7 +1123,7 @@
     {
       "project_id": "nattaphat010447-nutho-autocloser",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1195,7 +1195,7 @@
     {
       "project_id": "pixelnull-sillytavern-deeplore",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1219,7 +1219,7 @@
     {
       "project_id": "prolix-oc-lumiverse",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1327,7 +1327,7 @@
     {
       "project_id": "rossascends-st-samplerkillswitches",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1344,8 +1344,8 @@
     },
     {
       "project_id": "sagesheep-narrativeengine-p",
-      "outcome": "compare-source",
-      "duration_ms": 417,
+      "outcome": "unchanged",
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1471,7 +1471,7 @@
     {
       "project_id": "sillytavern-extension-topinfobar",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
@@ -1489,7 +1489,7 @@
     {
       "project_id": "sillytavern-sillytavern",
       "outcome": "unchanged",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "error_code": null
     },
     {
@@ -1501,7 +1501,7 @@
     {
       "project_id": "sillytavern-sillytavern-nicknames",
       "outcome": "unchanged",
-      "duration_ms": 0,
+      "duration_ms": 1,
       "error_code": null
     },
     {
