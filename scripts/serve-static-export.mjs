@@ -33,6 +33,8 @@ function outputPath(pathname) {
 
   if (requestPath.endsWith("/")) {
     requestPath += "index.html";
+  } else if (!requestPath.includes(".")) {
+    requestPath += "/index.html";
   }
 
   const target = resolve(outputDirectory, `.${requestPath}`);

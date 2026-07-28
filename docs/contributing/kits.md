@@ -55,6 +55,11 @@ Kit issue ID.
 
 ## Report unsafe or low-quality Kits
 
+Use the Help hub's **Report a Kit** route (`/help/report-kit/`) when the Kit is
+already published. It prepares the same public GitHub report for review; do not
+include secrets or private personal information. The direct GitHub chooser is
+still available as a broader fallback.
+
 Use:
 
 - `[Kit report]` (`06-kit-report.yml`)

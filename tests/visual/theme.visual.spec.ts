@@ -18,6 +18,7 @@ const graphiteTeal = {
   functional: "rgb(225, 138, 36)",
   focusRing: "rgb(94, 234, 212)",
   controlBackground: "rgb(16, 25, 30)",
+  controlBorder: "rgb(48, 66, 73)",
   controlFocus: "rgb(45, 212, 191)",
   primaryBackground: "rgb(225, 138, 36)",
   primaryHover: "rgb(240, 161, 69)",
@@ -885,4 +886,50 @@ test("desktop primary and secondary controls expose their complete state familie
   await expectStyle(secondary, "color", graphiteTeal.secondaryText);
   await secondary.hover();
   await expectStyle(secondary, "background-color", graphiteTeal.secondaryHover);
+});
+
+test("guided Help states retain the approved graphite and teal treatment", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath("/help/"));
+  await expectStyle(
+    page.locator(".help-page"),
+    "background-color",
+    graphiteTeal.canvas,
+  );
+  await expectStyle(
+    page.locator(".help-security-callout"),
+    "border-top-color",
+    graphiteTeal.controlFocus,
+  );
+
+  await page.goto(
+    sitePath("/help/report-project/?project=aikohanasaki-aikobots"),
+  );
+  await page.getByLabel("What is wrong?").selectOption("incorrect-information");
+  await expectStyle(
+    page.getByLabel("What should Tavernary review?"),
+    "background-color",
+    graphiteTeal.controlBackground,
+  );
+
+  await page.goto(
+    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+  );
+  await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary").fill("x".repeat(219));
+  await expect(page.getByText("219 / 220")).toBeVisible();
+  await expectStyle(
+    page.getByLabel("Summary"),
+    "background-color",
+    graphiteTeal.controlBackground,
+  );
+
+  await page.goto(sitePath("/help/security/"));
+  await expectStyle(
+    page.locator(".help-security-actions a").first(),
+    "border-top-color",
+    graphiteTeal.controlBorder,
+  );
 });

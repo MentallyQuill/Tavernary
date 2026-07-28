@@ -1,8 +1,53 @@
-import { describe, expect, test } from "vitest";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { resolve } from "node:path";
 
-import { verifyStaticExport } from "../../scripts/verify-static-export.mjs";
+import { afterEach, describe, expect, test } from "vitest";
+
+import {
+  verifyHelpStaticRoutes,
+  verifyStaticExport,
+} from "../../scripts/verify-static-export.mjs";
 
 const heading = (count: number) => `<h1>${count} projects</h1>`;
+
+const temporaryExports: string[] = [];
+
+afterEach(() => {
+  for (const directory of temporaryExports.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+function helpExport({
+  omit,
+  securityHtml = "<main>Private report</main>",
+}: {
+  omit?: string;
+  securityHtml?: string;
+} = {}) {
+  const outputDirectory = mkdtempSync(
+    resolve(tmpdir(), "tavernary-help-export-"),
+  );
+  temporaryExports.push(outputDirectory);
+  for (const route of [
+    "help",
+    "help/manage-project",
+    "help/report-project",
+    "help/report-website",
+    "help/report-kit",
+    "help/other",
+  ]) {
+    if (route === omit) continue;
+    const directory = resolve(outputDirectory, route);
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(resolve(directory, "index.html"), "<main>Help</main>");
+  }
+  const securityDirectory = resolve(outputDirectory, "help/security");
+  mkdirSync(securityDirectory, { recursive: true });
+  writeFileSync(resolve(securityDirectory, "index.html"), securityHtml);
+  return outputDirectory;
+}
 
 describe("verifyStaticExport", () => {
   test("accepts a catalog heading split by React server-rendering comments", () => {
@@ -72,5 +117,17 @@ describe("verifyStaticExport", () => {
         "",
       ),
     ).toThrow("intake-only metadata");
+  });
+
+  test("requires the complete Help route inventory and keeps security private", async () => {
+    await expect(verifyHelpStaticRoutes(helpExport())).resolves.toBeUndefined();
+    await expect(
+      verifyHelpStaticRoutes(helpExport({ omit: "help/report-kit" })),
+    ).rejects.toThrow(/help[\\/]report-kit[\\/]index.html/u);
+    await expect(
+      verifyHelpStaticRoutes(
+        helpExport({ securityHtml: '<a href="/issues/new">Public issue</a>' }),
+      ),
+    ).rejects.toThrow("public issue form");
   });
 });

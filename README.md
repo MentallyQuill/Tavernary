@@ -217,10 +217,32 @@ maintainer publishes them only after review. Support is derived from eligible
 a user-rating system. Tavernary remains a static, build-time catalog with no
 accounts, database service, or runtime API.
 
-The Help chooser provides project-information reports, website bug reports,
-help requests, a private security path, and an Other form. Maintainers can pause
-refreshes, hide entries, or remove them when a source becomes unsafe or
-abusive.
+The [Help hub](/help/) is the contextual entry point for existing listings and
+site support. It offers five ordinary public paths: **Manage your project
+listing** (`/help/manage-project/`), **Report a project listing**
+(`/help/report-project/`), **Report a website problem**
+(`/help/report-website/`), **Report a Kit** (`/help/report-kit/`), and **Get
+other help** (`/help/other/`). Ordinary report text is public on GitHub, so it
+must not include secrets or private personal information. Tavernary does not
+provide support for third-party projects; use the listed project's own
+repository or support channel.
+
+Only a verified personal GitHub repository owner can use the automated owner
+path to edit card details, move the same repository, or request a delist.
+Organization listings, maintainers who are not the current personal owner, and
+rights-holder concerns use the human-reviewed project-report path instead. An
+owner request is checked against current source identity before automation
+creates `automation/project-owner-request-<issue-number>` and a generated
+review PR. Merging publishes the reviewed change; closing the PR without merge
+declines it. An owner-authored summary is protected with manual enrichment, so
+an automatic source refresh cannot overwrite it. `refresh_policy` controls
+repository evidence collection, while `enrichment_policy` controls editorial
+enrichment; they are intentionally independent.
+
+For a Tavernary vulnerability, use the private security route
+`/help/security/` or GitHub's private form at
+`https://github.com/MentallyQuill/Tavernary/security/advisories/new`, never a
+public issue.
 
 See the [contribution overview](docs/contributing/contribution-overview.md) for
 issue-form routing and contribution boundaries.

@@ -18,6 +18,31 @@ Use the issue chooser and choose the narrowest form:
 Security issues are always handled via `SECURITY.md` private reporting and never
 through public issue forms.
 
+## Help reports and project-owner requests
+
+The site Help hub (`/help/`) prepares public GitHub reports only after the
+visitor reviews the request. Its five ordinary routes are `/help/manage-project/`,
+`/help/report-project/`, `/help/report-website/`, `/help/report-kit/`, and
+`/help/other/`; `/help/security/` leads only to GitHub's private
+`security/advisories/new` flow. Do not put credentials, private personal data,
+or unreported Tavernary vulnerability details in an ordinary report.
+
+`project-owner-request` is deliberately narrower than a report: automation
+requires the issue author to be the current personal GitHub owner of the
+listing's verified repository identity. Organization listings, repository
+maintainers who are not that owner, and rights-holder requests remain
+human-reviewed `project-information` reports. No third-party project support is
+provided through Tavernary; refer users to that project's own channel.
+
+An admitted owner request generates or safely updates
+`automation/project-owner-request-<issue-number>` and its review PR. The PR is
+the sole review surface. A rerun is safe only while marker-owned generated paths
+remain unchanged; a maintainer-edited branch is preserved for review instead of
+being overwritten. Merge applies the edit/source move/delist; closing without
+merge declines the request. Owner summaries switch to manual enrichment so
+automatic enrichment cannot overwrite the approved text. This is separate from
+`refresh_policy`, which only governs automatic source-evidence refreshes.
+
 ## Open issue limit
 
 External GitHub accounts may keep up to 10 open issues in Tavernary at one

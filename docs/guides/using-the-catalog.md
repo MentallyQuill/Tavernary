@@ -32,6 +32,22 @@ Full summary content is shown in the card body.
 Every card leads to the project's own repository or source page. Tavernary does
 not provide an internal project download or installation flow.
 
+## Getting help about a listing
+
+Use the [Help hub](/help/) when a catalog card, Kit, or Tavernary page needs
+attention. It links to **Manage your project listing**, **Report a project
+listing**, **Report a website problem**, **Report a Kit**, and **Get other
+help**. Contextual links preserve the selected project, Kit, or Tavernary path
+where it is safe to do so.
+
+Only a verified personal GitHub repository owner can use automated listing
+management. Organization listings and all other concerns receive a
+human-reviewed public report. Reports are visible on GitHub, so do not include
+secrets. Tavernary does not support third-party projects: use the project's own
+support channel. A Tavernary security vulnerability instead belongs on the
+private `/help/security/` route, which opens GitHub's
+`security/advisories/new` form.
+
 ## Activity labels
 
 **Recent Activity** sorts by the latest qualifying source change or release.

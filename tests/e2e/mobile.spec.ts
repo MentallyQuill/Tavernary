@@ -189,3 +189,24 @@ test("keeps the project submission builder inside a 320px viewport", async ({
       .evaluate((element) => element.getBoundingClientRect().height),
   ).toBeGreaterThanOrEqual(44);
 });
+
+test("keeps Help controls and private reporting inside a 320px viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(sitePath("/help/"));
+
+  await expect(
+    page.getByRole("link", { name: "Open private security reporting" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Report a website problem" }).click();
+  await expect(page.getByRole("button", { name: "Review request" })).toHaveCSS(
+    "min-height",
+    "44px",
+  );
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - window.innerWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
+});

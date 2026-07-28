@@ -1,4 +1,5 @@
 import { access, readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export function configuredBasePath(environment = process.env) {
@@ -56,10 +57,37 @@ export function verifyStaticExport(html, basePath = "") {
   }
 }
 
+const helpExportPaths = [
+  "help",
+  "help/manage-project",
+  "help/report-project",
+  "help/report-website",
+  "help/report-kit",
+  "help/other",
+  "help/security",
+];
+
+export async function verifyHelpStaticRoutes(outputDirectory = "out") {
+  for (const route of helpExportPaths) {
+    await access(resolve(outputDirectory, route, "index.html"));
+  }
+
+  const securityHtml = await readFile(
+    resolve(outputDirectory, "help/security/index.html"),
+    "utf8",
+  );
+  if (securityHtml.includes("/issues/new")) {
+    throw new Error(
+      "Private security export must not contain a public issue form",
+    );
+  }
+}
+
 async function main() {
   await access("out/index.html");
   const html = await readFile("out/index.html", "utf8");
   verifyStaticExport(html, configuredBasePath());
+  await verifyHelpStaticRoutes();
   console.log("Static export verified");
 }
 

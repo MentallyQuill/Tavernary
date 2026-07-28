@@ -48,7 +48,22 @@ For setup and verification commands, see [development setup](development-setup.m
 
 ## Report a problem
 
-Use the repository's issue chooser for the narrowest applicable report:
+Start from Tavernary's [Help hub](/help/) for a contextual, review-before-send
+path. The ordinary Help routes are public GitHub reports:
+
+- **Manage your project listing** (`/help/manage-project/`) for a verified
+  personal GitHub repository owner requesting an edit, same-repository source
+  move, or delist.
+- **Report a project listing** (`/help/report-project/`) for anyone reporting
+  incorrect, unsafe, rights, organization, or other listing concerns.
+- **Report a website problem** (`/help/report-website/`) for Tavernary runtime,
+  layout, accessibility, navigation, or handoff problems.
+- **Report a Kit** (`/help/report-kit/`) for a published Kit concern.
+- **Get other help** (`/help/other/`) for a Tavernary question or request not
+  covered above.
+
+The GitHub chooser remains broader than Tavernary Help and is still available
+as a direct fallback form. Use the narrowest applicable route:
 
 | Need | Use |
 | --- | --- |
@@ -64,6 +79,10 @@ Do not report a vulnerability publicly. Do not use Tavernary's issue forms to
 request support for an externally hosted project; use that project's own
 support channel instead.
 
+For a Tavernary vulnerability, use `/help/security/` or GitHub's private
+`security/advisories/new` flow. The security path intentionally has no public
+issue form.
+
 ## Contribution expectations
 
 Contributions should be narrow, reviewable, and supported by the appropriate
@@ -73,4 +92,3 @@ source vocabulary and documentation.
 
 Tavernary's [licensing policy](../../LICENSING.md), [security policy](../../SECURITY.md),
 and [trademark policy](../../TRADEMARKS.md) apply to contributions.
-

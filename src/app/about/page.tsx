@@ -127,11 +127,14 @@ export default function AboutPage() {
         <section id="reporting-removal">
           <h2>Reporting and removal</h2>
           <p>
-            If you are an owner, maintainer, or rights holder for a listed
-            project and want it removed, updated, or pointed to a different
-            source, use the
-            <Link href="/help/"> Help report form</Link> and include the current
-            listing and requested change.
+            A verified personal GitHub owner can use{" "}
+            <Link href="/help/manage-project/">
+              Manage your project listing
+            </Link>{" "}
+            to request a card edit, a move of the same repository, or a delist.
+            Organization listings, maintainers who are not that verified owner,
+            and rights holders use a human-reviewed public report through{" "}
+            <Link href="/help/report-project/">Report a project listing</Link>.
           </p>
           <p>
             Users can report inaccurate, outdated, unsafe, malicious, or abusive

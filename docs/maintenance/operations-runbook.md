@@ -201,6 +201,47 @@ the manual catalog verification checklist below before committing.
 - `[Website bug]` belongs to app/code changes in source and PR workflow.
 - `[Other]` supports non-catalog escalations.
 
+## Help report triage and owner-listing recovery
+
+The Help hub has five ordinary public routes: /help/manage-project/,
+/help/report-project/, /help/report-website/, /help/report-kit/, and
+/help/other/. Their text is public GitHub issue content. The private
+/help/security/ route goes to security/advisories/new and must never be
+replaced with an /issues/new form. Tavernary does not provide support for
+third-party projects; route those users to the listed project's own channel.
+
+Triage project-information, website-bug, kit-report, and other-help reports as
+maintainer-owned queues. Preserve the supplied manifest and public evidence in
+the issue, request clarification through the issue when needed, and make a
+normal reviewed PR for site or catalog changes. A serious listing report may
+set visibility/visibility_reason, pause source refresh, or preserve a delist
+tombstone rather than deleting the historical record.
+
+project-owner-request automation is only for the issue author who is the
+current personal GitHub owner of the listing's verified repository ID. Return
+organization listings, non-owner maintainers, external sources, and
+rights-holder requests to a human-reviewed project report. Common owner
+failure reason codes are issue-author-not-owner, stale-owner-request,
+project-not-found, owner-request-unsupported-source, and
+owner-request-invalid-operation; keep the issue open with the recorded reason
+unless the workflow's terminal policy closes it.
+
+For an admitted owner request, inspect the generated
+automation/project-owner-request-<issue-number> PR. It is the sole review
+surface for card edits, same-repository source moves, and delists. An owner
+summary changes the record to enrichment_policy: manual so automatic editorial
+enrichment cannot replace approved owner text. This does not pause source
+collection: refresh_policy controls automatic source evidence while
+enrichment_policy controls editorial enrichment.
+
+If generation failed or a retryable dependency recovered, rerun the owner
+triage/generation workflow from main. Regeneration may update only marker-owned
+generated paths. If a maintainer changed the PR branch, preserve those changes
+and finish review manually rather than forcing a replacement. Merge applies the
+approved policy transition and publishes normally. Closing the generated PR
+without merging declines the request; retain a delisted record as a tombstone
+with its reason so it cannot be silently recreated.
+
 ## Refresh automation
 
 Workflow: `.github/workflows/refresh-catalog.yml`
