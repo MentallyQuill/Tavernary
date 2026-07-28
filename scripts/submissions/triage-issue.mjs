@@ -2,6 +2,7 @@ import { appendFile, readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { repositoryProvider } from "../catalog/repository-provider.mjs";
 import {
   evaluateProjectSubmission,
   submissionQueueLabels,
@@ -545,7 +546,7 @@ function submissionForkFacts(observation) {
 
 export async function inspectProjectSubmissionSource(
   manifest,
-  { request, probe },
+  { request, probe, providers },
 ) {
   let parsed;
   try {
@@ -560,6 +561,73 @@ export async function inspectProjectSubmissionSource(
         message: error.message,
       },
     };
+  }
+
+  if (
+    isRepositoryIdentity(parsed) &&
+    (parsed.provider !== "github" || providers)
+  ) {
+    try {
+      const provider = repositoryProvider(parsed.provider, providers);
+      const identity = await provider.resolve(parsed);
+      let observation = null;
+      if (typeof provider.observe === "function") {
+        const observed = await provider.observe([
+          {
+            id: "submission-source",
+            source: {
+              type: identity.provider,
+              repository: identity.repository,
+              repository_id: identity.repositoryId,
+            },
+          },
+        ]);
+        if (observed.failures?.length) {
+          const error = new Error(observed.failures[0].message);
+          error.status =
+            observed.failures[0].kind === "unavailable" ? 404 : 409;
+          throw error;
+        }
+        observation = observed.observations?.[0] ?? null;
+      }
+      return {
+        identity,
+        sourceProbe: { status: "ok", httpStatus: 200 },
+        repository: {
+          visibility: "public",
+          archived: observation?.repository?.archived === true,
+          fork: observation?.repository?.fork === true,
+          parent: observation?.repository?.parent
+            ? {
+                repositoryId: observation.repository.parent.id,
+                name: observation.repository.parent.name,
+                repository: `${observation.repository.parent.owner}/${observation.repository.parent.name}`,
+                canonicalUrl: observation.repository.parent.url,
+              }
+            : null,
+        },
+      };
+    } catch (error) {
+      const label = parsed.provider === "github" ? "GitHub" : "Codeberg";
+      if (error.status === 404) {
+        return {
+          identity: parsed,
+          sourceProbe: {
+            status: "definitive",
+            code: `${parsed.provider}-repository-unavailable`,
+            message: `The ${label} repository is private, deleted, or does not exist.`,
+          },
+        };
+      }
+      return {
+        identity: parsed,
+        sourceProbe: {
+          status: retryableError(error) ? "retryable" : "definitive",
+          code: `${parsed.provider}-api-failure`,
+          message: error.message,
+        },
+      };
+    }
   }
 
   if (isRepositoryIdentity(parsed) && parsed.provider === "github") {

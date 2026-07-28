@@ -7,6 +7,7 @@ export interface GeneratedSubmissionReport {
   schema_version: 1;
   issue_number: number;
   project_id: string;
+  source_provider: "github" | "codeberg" | null;
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;

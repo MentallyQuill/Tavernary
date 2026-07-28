@@ -44,8 +44,20 @@ test("writes only declared repository files and the external report", async () =
       }),
       sourceClients: {
         prepareDraft: async () => ({
-          record: { id: "owner-repo", name: "Example" },
-          snapshot: { project_id: "owner-repo" },
+          record: {
+            id: "owner-repo",
+            name: "Example",
+            source: {
+              type: "github",
+              repository: "owner/repo",
+              repository_id: 42,
+            },
+          },
+          snapshot: {
+            schema_version: 3,
+            provider: "github",
+            project_id: "owner-repo",
+          },
           frontendVocabulary: {
             frontends: [
               {
@@ -246,6 +258,123 @@ test("prepares a GitHub draft through injected source clients", async () => {
     }),
     { now: "2026-07-25T18:00:00.000Z", previous: undefined },
   );
+});
+
+test("prepares a Codeberg draft through the repository provider", async () => {
+  const headSha = "1".repeat(40);
+  const provider = {
+    resolve: vi.fn(async (identity) => ({
+      ...identity,
+      repositoryId: 1699613,
+    })),
+    observe: vi.fn(async (records) => ({
+      observations: [
+        {
+          provider: "codeberg",
+          projectId: records[0].id,
+          repository: {
+            id: 1699613,
+            owner: "targren",
+            name: "Lumiverse-SwipeScrubber",
+            url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+            description: "Swipe controls.",
+            defaultBranch: "master",
+            headSha,
+            headCommittedAt: "2026-07-25T17:00:00.000Z",
+            archived: false,
+            fork: false,
+            parent: null,
+            createdAt: "2026-05-01T00:00:00.000Z",
+            sizeKb: 409,
+          },
+          community: { starsCount: 0, forksCount: 0, watchersCount: 1 },
+          latestReleaseAt: null,
+          coarseLicenseSpdxId: null,
+        },
+      ],
+      failures: [],
+      usage: { requestCount: 2, pointCost: 0, remainingPoints: 1_998 },
+    })),
+    inspectActivity: vi.fn(async ({ activity }) => ({
+      complete: false,
+      activity,
+      license: {
+        status: "missing",
+        spdxId: null,
+        sourcePath: null,
+      },
+      requestCount: 2,
+      scan: null,
+    })),
+    collectContributors: vi.fn(async () => ({
+      accounts: [{ provider: "codeberg", login: "targren", type: "User" }],
+      requestCount: 3,
+      method: "commit-and-merged-pull-request-authors",
+      baselineCompletedAt: "2026-07-25T18:00:00.000Z",
+      refreshedAt: "2026-07-25T18:00:00.000Z",
+      scan: null,
+    })),
+  };
+  const draft = await prepareProjectSubmissionDraft({
+    issue: {
+      number: 112,
+      state: "open",
+      labels: [{ name: "needs-maintainer-review" }],
+      body: [
+        "### Project manifest",
+        "",
+        "```json",
+        JSON.stringify({
+          schema_version: 2,
+          project_type: "extension",
+          source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+          name: "Swipe Scrubber",
+          description: "Swipe controls.",
+          frontends: { known_ids: ["sillytavern"], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+        }),
+        "```",
+      ].join("\n"),
+    },
+    now: "2026-07-25T18:00:00.000Z",
+    sourceClients: {
+      providers: { codeberg: provider },
+      request: vi.fn(),
+      catalogData: {
+        vocabulary: {
+          frontends: [
+            {
+              id: "sillytavern",
+              label: "SillyTavern",
+              description: "Works with the SillyTavern roleplay frontend.",
+            },
+          ],
+        },
+        projects: [],
+      },
+      enrich: async () => ({
+        status: "curated",
+        summary: "Adds concise swipe controls for roleplay conversations.",
+        primary_function: "interface-workflow",
+        capabilities: ["message-navigation"],
+      }),
+    },
+  });
+
+  expect(draft.record).toMatchObject({
+    id: "targren-lumiverse-swipescrubber",
+    source: {
+      type: "codeberg",
+      repository: "targren/Lumiverse-SwipeScrubber",
+      repository_id: 1699613,
+    },
+  });
+  expect(draft.snapshot).toMatchObject({
+    schema_version: 3,
+    provider: "codeberg",
+    project_id: "targren-lumiverse-swipescrubber",
+  });
 });
 
 test("prepares a generic external Frontend draft with its vocabulary entry", async () => {

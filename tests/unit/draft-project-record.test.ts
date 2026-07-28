@@ -28,6 +28,7 @@ const admittedGithubExtension = {
 };
 
 const observation = {
+  provider: "github" as const,
   projectId: "owner-repo",
   repository: {
     id: 42,
@@ -45,9 +46,9 @@ const observation = {
     sizeKb: 12,
   },
   community: {
-    stargazersCount: 3,
+    starsCount: 3,
     forksCount: 2,
-    subscribersCount: 1,
+    watchersCount: 1,
   },
   latestReleaseAt: null,
   coarseLicenseSpdxId: "MIT",

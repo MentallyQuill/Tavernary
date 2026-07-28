@@ -25,6 +25,7 @@ const reviewFixture = {
     schema_version: 1 as const,
     issue_number: 123,
     project_id: "owner-repo",
+    source_provider: "github" as const,
     submitted: {
       name: "Owner [Repo]",
       description: "Submitted description.",
