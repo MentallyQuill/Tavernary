@@ -469,6 +469,36 @@ test("rejects more than 50 distinct affected Kit projects", () => {
   });
 });
 
+test("retains exactly 50 distinct normalized affected Kit projects", () => {
+  const affectedProjectIds = Array.from(
+    { length: 50 },
+    (_value, index) => `project-${index}`,
+  );
+  const result = normalizeHelpManifest({
+    schema_version: 1,
+    request_kind: "kit-report",
+    origin,
+    payload: {
+      kit_id: "kit",
+      canonical_share_url: "https://tavernary.org/kits/kit/",
+      kit_revision: "2026-07-27",
+      category: "compatibility-problem",
+      affected_project_ids: affectedProjectIds.map((id, index) =>
+        index === 0 ? ` ${id} ` : id,
+      ),
+      details: "It does not load.",
+      evidence: null,
+    },
+  });
+
+  expect(result).toMatchObject({
+    valid: true,
+    manifest: {
+      payload: { affected_project_ids: affectedProjectIds },
+    },
+  });
+});
+
 test("serializes a normalized Help manifest with a trailing newline", () => {
   expect(
     serializeHelpManifest({
