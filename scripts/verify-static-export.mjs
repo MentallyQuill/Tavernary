@@ -1,6 +1,16 @@
 import { access, readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
+const homepageTitle = "Tavernary — SillyTavern Tools";
+const homepageDescription =
+  "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
+const homepageMetadata = [
+  `<title>${homepageTitle}</title>`,
+  `<meta name="description" content="${homepageDescription}"/>`,
+  `<meta property="og:description" content="${homepageDescription}"/>`,
+  `<meta name="twitter:description" content="${homepageDescription}"/>`,
+];
+
 export function configuredBasePath(environment = process.env) {
   const repositoryName = environment.GITHUB_REPOSITORY?.split("/")[1] ?? "";
   const projectPage =
@@ -22,6 +32,11 @@ export function verifyStaticExport(html, basePath = "") {
 
   if (!/\b\d+\s+projects?\b/.test(renderedText)) {
     throw new Error("Static export does not contain the catalog heading");
+  }
+  if (!homepageMetadata.every((tag) => html.includes(tag))) {
+    throw new Error(
+      "Static export does not contain the approved homepage title and description metadata",
+    );
   }
   if (/submitted_at|catalog_intake|"status"\s*:\s*"candidate"/i.test(html)) {
     throw new Error("Static export leaks intake-only metadata");
