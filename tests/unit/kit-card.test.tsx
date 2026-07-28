@@ -231,8 +231,7 @@ describe("Kit card", () => {
     await waitFor(() => {
       expect(
         screen.getByRole("tooltip", {
-          name: "Report this Kit",
-          exact: true,
+          name: /^Report this Kit$/,
         }),
       ).toBeVisible();
     });
