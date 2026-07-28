@@ -60,8 +60,13 @@ function text(value) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function nullableText(value) {
-  const normalized = text(value);
+function nullableText(value, errors, invalidTypeMessage) {
+  if (value === null) return null;
+  if (typeof value !== "string") {
+    errors.push(invalidTypeMessage);
+    return null;
+  }
+  const normalized = value.trim();
   return normalized.length > 0 ? normalized : null;
 }
 
@@ -140,8 +145,16 @@ function normalizeProjectReport(payload, errors) {
   const canonicalSource = text(payload?.canonical_source);
   const category = text(payload?.category);
   const report = text(payload?.report);
-  const requestedOutcome = nullableText(payload?.requested_outcome);
-  const evidence = nullableText(payload?.evidence);
+  const requestedOutcome = nullableText(
+    payload?.requested_outcome,
+    errors,
+    "Project report requested outcome must be a string or null.",
+  );
+  const evidence = nullableText(
+    payload?.evidence,
+    errors,
+    "Project report evidence must be a string or null.",
+  );
 
   addRequiredTextError(
     errors,
@@ -216,9 +229,21 @@ function normalizeWebsiteBug(payload, errors) {
   const actualBehavior = text(payload?.actual_behavior);
   const expectedBehavior = text(payload?.expected_behavior);
   const reproductionSteps = text(payload?.reproduction_steps);
-  const browser = nullableText(payload?.browser);
-  const device = nullableText(payload?.device);
-  const additionalContext = nullableText(payload?.additional_context);
+  const browser = nullableText(
+    payload?.browser,
+    errors,
+    "Website browser must be a string or null.",
+  );
+  const device = nullableText(
+    payload?.device,
+    errors,
+    "Website device must be a string or null.",
+  );
+  const additionalContext = nullableText(
+    payload?.additional_context,
+    errors,
+    "Website additional context must be a string or null.",
+  );
 
   validateCategory(
     errors,
@@ -306,6 +331,9 @@ function normalizeAffectedProjectIds(value, errors) {
       "Kit report affected project IDs must be 120 characters or fewer.",
     );
   }
+  if (ids.length > 50) {
+    errors.push("Kit report cannot contain more than 50 affected project IDs.");
+  }
   return ids;
 }
 
@@ -332,7 +360,11 @@ function normalizeKitReport(payload, errors) {
     errors,
   );
   const details = text(payload?.details);
-  const evidence = nullableText(payload?.evidence);
+  const evidence = nullableText(
+    payload?.evidence,
+    errors,
+    "Kit report evidence must be a string or null.",
+  );
 
   addRequiredTextError(errors, kitId, "Kit report Kit ID is required.");
   addMaxLengthError(
@@ -399,7 +431,11 @@ function normalizeOtherHelp(payload, errors) {
   const category = text(payload?.category);
   const subject = text(payload?.subject);
   const description = text(payload?.description);
-  const relevantUrl = nullableText(payload?.relevant_url);
+  const relevantUrl = nullableText(
+    payload?.relevant_url,
+    errors,
+    "Other Help relevant URL must be a string or null.",
+  );
 
   validateCategory(
     errors,

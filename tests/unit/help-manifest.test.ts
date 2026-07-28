@@ -310,6 +310,165 @@ test("accepts bounded public evidence without requiring a URL", () => {
   });
 });
 
+test.each([
+  [
+    "project requested outcome",
+    {
+      schema_version: 1,
+      request_kind: "project-report",
+      origin,
+      payload: {
+        project_id: "project",
+        canonical_source: "https://github.com/Owner/Repo",
+        category: "incorrect-information",
+        report: "The card is incorrect.",
+        requested_outcome: { unexpected: true },
+        evidence: null,
+      },
+    },
+    "Project report requested outcome must be a string or null.",
+  ],
+  [
+    "project evidence",
+    {
+      schema_version: 1,
+      request_kind: "project-report",
+      origin,
+      payload: {
+        project_id: "project",
+        canonical_source: "https://github.com/Owner/Repo",
+        category: "incorrect-information",
+        report: "The card is incorrect.",
+        requested_outcome: null,
+        evidence: [],
+      },
+    },
+    "Project report evidence must be a string or null.",
+  ],
+  [
+    "website browser",
+    {
+      schema_version: 1,
+      request_kind: "website-bug",
+      origin,
+      payload: {
+        category: "accessibility",
+        page_url: "/help/",
+        actual_behavior: "It fails.",
+        expected_behavior: "It works.",
+        reproduction_steps: "Open Help.",
+        browser: {},
+        device: null,
+        additional_context: null,
+      },
+    },
+    "Website browser must be a string or null.",
+  ],
+  [
+    "website device",
+    {
+      schema_version: 1,
+      request_kind: "website-bug",
+      origin,
+      payload: {
+        category: "accessibility",
+        page_url: "/help/",
+        actual_behavior: "It fails.",
+        expected_behavior: "It works.",
+        reproduction_steps: "Open Help.",
+        browser: null,
+        device: [],
+        additional_context: null,
+      },
+    },
+    "Website device must be a string or null.",
+  ],
+  [
+    "website additional context",
+    {
+      schema_version: 1,
+      request_kind: "website-bug",
+      origin,
+      payload: {
+        category: "accessibility",
+        page_url: "/help/",
+        actual_behavior: "It fails.",
+        expected_behavior: "It works.",
+        reproduction_steps: "Open Help.",
+        browser: null,
+        device: null,
+        additional_context: { unexpected: true },
+      },
+    },
+    "Website additional context must be a string or null.",
+  ],
+  [
+    "Kit evidence",
+    {
+      schema_version: 1,
+      request_kind: "kit-report",
+      origin,
+      payload: {
+        kit_id: "kit",
+        canonical_share_url: "https://tavernary.org/kits/kit/",
+        kit_revision: "2026-07-27",
+        category: "compatibility-problem",
+        affected_project_ids: [],
+        details: "It does not load.",
+        evidence: {},
+      },
+    },
+    "Kit report evidence must be a string or null.",
+  ],
+  [
+    "Other Help relevant URL",
+    {
+      schema_version: 1,
+      request_kind: "other-help",
+      origin,
+      payload: {
+        category: "other",
+        subject: "Question",
+        description: "Please help.",
+        relevant_url: [],
+      },
+    },
+    "Other Help relevant URL must be a string or null.",
+  ],
+])("rejects malformed nullable %s", (_name, value, error) => {
+  expect(normalizeHelpManifest(value)).toEqual({
+    valid: false,
+    errors: expect.arrayContaining([error]),
+  });
+});
+
+test("rejects more than 50 distinct affected Kit projects", () => {
+  const result = normalizeHelpManifest({
+    schema_version: 1,
+    request_kind: "kit-report",
+    origin,
+    payload: {
+      kit_id: "kit",
+      canonical_share_url: "https://tavernary.org/kits/kit/",
+      kit_revision: "2026-07-27",
+      category: "compatibility-problem",
+      affected_project_ids: Array.from(
+        { length: 51 },
+        (_value, index) => `project-${index}`,
+      ),
+      details: "It does not load.",
+      evidence: null,
+    },
+  });
+
+  expect(result).toEqual({
+    valid: false,
+    errors: expect.arrayContaining([
+      "Kit report cannot contain more than 50 affected project IDs.",
+    ]),
+  });
+});
+
 test("serializes a normalized Help manifest with a trailing newline", () => {
   expect(
     serializeHelpManifest({
