@@ -1,7 +1,15 @@
+import { resolve } from "node:path";
+
 import { expect, test, vi } from "vitest";
 
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
 import { processProjectOwnerTriage } from "../../scripts/help/triage-project-owner-request.mjs";
+
+const ownerRepositoryRoot = resolve(
+  "test-fixtures",
+  "owner-request-repository",
+);
+const normalizedOwnerRepositoryRoot = ownerRepositoryRoot.replaceAll("\\", "/");
 
 const vocabularies = {
   frontends: ["sillytavern"],
@@ -113,7 +121,7 @@ test("reads the trusted record, resolves its immutable repository ID, and refres
   await expect(
     processProjectOwnerTriage({
       issue: latest,
-      root: "C:/repo",
+      root: ownerRepositoryRoot,
       hostRepository: "Tavernary/Tavernary",
       request,
       readFile,
@@ -128,7 +136,7 @@ test("reads the trusted record, resolves its immutable repository ID, and refres
     warnings: [],
   });
   expect(chronology).toEqual([
-    "read:C:/repo/data/registry/projects/owner-alpha.json",
+    `read:${normalizedOwnerRepositoryRoot}/data/registry/projects/owner-alpha.json`,
     "request:/repositories/42",
     "request:/repos/Tavernary/Tavernary/issues/123",
   ]);

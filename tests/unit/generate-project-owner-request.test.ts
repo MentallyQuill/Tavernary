@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 import { expect, test, vi } from "vitest";
 
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
@@ -6,6 +8,20 @@ import {
   generateProjectOwnerRequest,
   sameProjectOwnerGenerationReport,
 } from "../../scripts/help/generate-project-owner-request.mjs";
+
+const ownerRepositoryRoot = resolve(
+  "test-fixtures",
+  "owner-request-repository",
+);
+const ownerReportPath = resolve(
+  "test-fixtures",
+  "owner-request-artifacts",
+  "owner-123.json",
+);
+const normalizedOwnerRepositoryRoot = ownerRepositoryRoot.replaceAll("\\", "/");
+const normalizedOwnerReportPath = ownerReportPath.replaceAll("\\", "/");
+const ownerRegistryPath = `${normalizedOwnerRepositoryRoot}/data/registry/projects/owner-alpha.json`;
+const ownerSnapshotPath = `${normalizedOwnerRepositoryRoot}/data/snapshots/github/owner-alpha.json`;
 
 function record(overrides: Record<string, unknown> = {}) {
   return {
@@ -172,9 +188,9 @@ function sourceMoveTransactionHarness({
       url: "https://github.com/Owner/Alpha",
     },
   };
-  const registryPath = "C:/repo/data/registry/projects/owner-alpha.json";
-  const snapshotPath = "C:/repo/data/snapshots/github/owner-alpha.json";
-  const reportPath = "C:/artifacts/owner-123.json";
+  const registryPath = ownerRegistryPath;
+  const snapshotPath = ownerSnapshotPath;
+  const reportPath = normalizedOwnerReportPath;
   const registryPrior = `${JSON.stringify(current, null, 4)}\r\n`;
   const snapshotPrior = `${JSON.stringify(snapshot, null, 2)}\n`;
   const storage = new Map([
@@ -297,8 +313,8 @@ test("revalidates latest authority and state before writing only the approved re
   const generated = await generateProjectOwnerRequest({
     issue: fixture.latest,
     hostRepository: "Tavernary/Tavernary",
-    root: "C:/repo",
-    reportPath: "C:/artifacts/owner-123.json",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
     request: fixture.request,
     readFile: fixture.readFile,
     writeFile: fixture.writeFile,
@@ -309,8 +325,8 @@ test("revalidates latest authority and state before writing only the approved re
     "data/registry/projects/owner-alpha.json",
   ]);
   expect(fixture.writes.map(({ path }) => path)).toEqual([
-    "C:/repo/data/registry/projects/owner-alpha.json",
-    "C:/artifacts/owner-123.json",
+    ownerRegistryPath,
+    normalizedOwnerReportPath,
   ]);
   expect(JSON.parse(fixture.writes[0].value)).toMatchObject({
     summary: "Owner-authored summary.",
@@ -353,8 +369,8 @@ test("stops without writes when an overlapping value changes before final apply"
     generateProjectOwnerRequest({
       issue: fixture.latest,
       hostRepository: "Tavernary/Tavernary",
-      root: "C:/repo",
-      reportPath: "C:/artifacts/owner-123.json",
+      root: ownerRepositoryRoot,
+      reportPath: ownerReportPath,
       request: fixture.request,
       readFile: fixture.readFile,
       writeFile: fixture.writeFile,
@@ -372,8 +388,8 @@ test("preserves a final non-overlap change and reports the fingerprint warning",
   const generated = await generateProjectOwnerRequest({
     issue: fixture.latest,
     hostRepository: "Tavernary/Tavernary",
-    root: "C:/repo",
-    reportPath: "C:/artifacts/owner-123.json",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
     request: fixture.request,
     readFile: fixture.readFile,
     writeFile: fixture.writeFile,
@@ -394,8 +410,8 @@ test("rejects a report path inside repository output before any write", async ()
     generateProjectOwnerRequest({
       issue: fixture.latest,
       hostRepository: "Tavernary/Tavernary",
-      root: "C:/repo",
-      reportPath: "C:/repo/report.json",
+      root: ownerRepositoryRoot,
+      reportPath: resolve(ownerRepositoryRoot, "report.json"),
       request: fixture.request,
       readFile: fixture.readFile,
       writeFile: fixture.writeFile,
@@ -454,8 +470,8 @@ test("writes the matching snapshot only for a same-ID source move", async () => 
   const generated = await generateProjectOwnerRequest({
     issue: fixture.latest,
     hostRepository: "Tavernary/Tavernary",
-    root: "C:/repo",
-    reportPath: "C:/artifacts/owner-123.json",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
     request: fixture.request,
     readFile: fixture.readFile,
     writeFile: fixture.writeFile,
@@ -467,9 +483,9 @@ test("writes the matching snapshot only for a same-ID source move", async () => 
     "data/snapshots/github/owner-alpha.json",
   ]);
   expect(fixture.writes.map(({ path }) => path)).toEqual([
-    "C:/repo/data/registry/projects/owner-alpha.json",
-    "C:/repo/data/snapshots/github/owner-alpha.json",
-    "C:/artifacts/owner-123.json",
+    ownerRegistryPath,
+    ownerSnapshotPath,
+    normalizedOwnerReportPath,
   ]);
 });
 
@@ -479,8 +495,8 @@ test("rejects generation without trusted host repository context", async () => {
   await expect(
     generateProjectOwnerRequest({
       issue: fixture.latest,
-      root: "C:/repo",
-      reportPath: "C:/artifacts/owner-123.json",
+      root: ownerRepositoryRoot,
+      reportPath: ownerReportPath,
       request: fixture.request,
       readFile: fixture.readFile,
       writeFile: fixture.writeFile,
@@ -492,14 +508,14 @@ test("rejects generation without trusted host repository context", async () => {
 
 test("restores exact prior repository bytes when the snapshot write fails", async () => {
   const fixture = sourceMoveTransactionHarness({
-    failPath: "C:/repo/data/snapshots/github/owner-alpha.json",
+    failPath: ownerSnapshotPath,
   });
 
   await expect(
     generateProjectOwnerRequest({
       issue: fixture.latest,
       hostRepository: "Tavernary/Tavernary",
-      root: "C:/repo",
+      root: ownerRepositoryRoot,
       reportPath: fixture.reportPath,
       request: fixture.request,
       readFile: fixture.readFile,
@@ -521,14 +537,14 @@ test("restores exact prior repository bytes when the snapshot write fails", asyn
 
 test("rolls back every canonical file when the outside report write fails", async () => {
   const fixture = sourceMoveTransactionHarness({
-    failPath: "C:/artifacts/owner-123.json",
+    failPath: normalizedOwnerReportPath,
   });
 
   await expect(
     generateProjectOwnerRequest({
       issue: fixture.latest,
       hostRepository: "Tavernary/Tavernary",
-      root: "C:/repo",
+      root: ownerRepositoryRoot,
       reportPath: fixture.reportPath,
       request: fixture.request,
       readFile: fixture.readFile,
@@ -547,15 +563,15 @@ test("rolls back every canonical file when the outside report write fails", asyn
 
 test("attempts every restoration and surfaces rollback failure", async () => {
   const fixture = sourceMoveTransactionHarness({
-    failPath: "C:/artifacts/owner-123.json",
-    rollbackFailPath: "C:/repo/data/snapshots/github/owner-alpha.json",
+    failPath: normalizedOwnerReportPath,
+    rollbackFailPath: ownerSnapshotPath,
   });
 
   await expect(
     generateProjectOwnerRequest({
       issue: fixture.latest,
       hostRepository: "Tavernary/Tavernary",
-      root: "C:/repo",
+      root: ownerRepositoryRoot,
       reportPath: fixture.reportPath,
       request: fixture.request,
       readFile: fixture.readFile,
