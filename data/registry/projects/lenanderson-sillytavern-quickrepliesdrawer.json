@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-quickrepliesdrawer",
   "name": "SillyTavern-QuickRepliesDrawer",
   "kind": "extension",
-  "summary": "SillyTavern-QuickRepliesDrawer is a frontend extension that organizes Quick Replies into a separate drawer panel. It declutters the main interface by relocating Quick Replies to their own accessible section.",
+  "summary": "SillyTavern extension that relocates Quick Reply settings into a dedicated drawer with its own navigation button. It also overhauls the UI for editing and debugging Quick Replies to streamline workflow.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-27T04:33:31.378Z",
   "catalog_cohort": "standard",
   "visibility": "published",

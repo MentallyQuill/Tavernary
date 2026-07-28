@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-worldinfoinfo",
   "name": "SillyTavern WorldInfoInfo",
   "kind": "extension",
-  "summary": "SillyTavern extension that displays which WorldInfo entries were activated during the last generated message in the interface.",
+  "summary": "This is a SillyTavern extension that reveals which WorldInfo entries were active in the most recently generated message. Clicking the book icon in the lower left corner displays the full list of triggered lore entries.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

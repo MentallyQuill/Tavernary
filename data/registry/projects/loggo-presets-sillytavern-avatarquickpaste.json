@@ -3,7 +3,7 @@
   "id": "loggo-presets-sillytavern-avatarquickpaste",
   "name": "SillyTavern-AvatarQuickPaste",
   "kind": "extension",
-  "summary": "SillyTavern-AvatarQuickPaste is a small SillyTavern extension that lets users paste avatars directly from the clipboard. It streamlines avatar setup by eliminating the need to save image files locally first.",
+  "summary": "This extension pastes character avatars into SillyTavern directly from the clipboard without saving files. Ctrl+clicking a sidebar avatar opens a modal that feeds the image into SillyTavern's native cropping tool.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

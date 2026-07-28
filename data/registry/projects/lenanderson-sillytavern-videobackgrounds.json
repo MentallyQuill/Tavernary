@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-videobackgrounds",
   "name": "SillyTavern Video Backgrounds",
   "kind": "extension",
-  "summary": "SillyTavern extension that swaps user-selected image backgrounds with matching video files placed in the backgrounds folder.",
+  "summary": "SillyTavern Video Backgrounds enables video backgrounds in SillyTavern, which natively only supports images. The extension detects paired image files and substitutes the matching video as the active background.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

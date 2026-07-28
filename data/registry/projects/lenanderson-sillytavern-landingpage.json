@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-landingpage",
   "name": "SillyTavern-LandingPage",
   "kind": "extension",
-  "summary": "SillyTavern-LandingPage is a SillyTavern extension that replaces the default entry view with a character-based landing page. Users can click any character to immediately open their most recent chat session.",
+  "summary": "A SillyTavern extension that provides a landing page for selecting characters to continue conversations. Clicking a character on the page directly opens their most recent chat session for quick access.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
+  "capabilities": [],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",
