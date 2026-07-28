@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "getfroggyhoe-universal-immersion-engine-fugue",
+  "name": "Universal-Immersion-Engine-Fugue",
+  "kind": "frontend",
+  "summary": "No README file found.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "GetfroggyHoe/Universal-Immersion-Engine-Fugue",
+    "repository_id": 1289789562
+  },
+  "frontends": ["universal-immersion-engine-fugue"],
+  "primary_function": "frontend",
+  "capabilities": [],
+  "cataloged_at": "2026-07-28T05:14:04.478Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}

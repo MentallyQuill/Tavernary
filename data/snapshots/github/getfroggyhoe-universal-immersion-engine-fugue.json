@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "provider": "github",
+  "project_id": "getfroggyhoe-universal-immersion-engine-fugue",
+  "repository": {
+    "id": 1289789562,
+    "owner": "GetfroggyHoe",
+    "name": "Universal-Immersion-Engine-Fugue",
+    "url": "https://github.com/GetfroggyHoe/Universal-Immersion-Engine-Fugue",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "bf4578398ae174599b25dcb15aecb04a603e48d6",
+    "head_committed_at": "2026-07-23T00:03:43.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-05T07:51:41.000Z",
+    "size_kb": 501316
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-23T00:03:43.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-23T00:03:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-14T18:09:49.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T05:14:04.478Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "bf4578398ae174599b25dcb15aecb04a603e48d6"
+  },
+  "community": {
+    "stars_count": 35,
+    "forks_count": 4,
+    "watchers_count": 2,
+    "aggregate": 41
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-28T05:14:04.478Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "GetfroggyHoe", "type": "User", "provider": "github" },
+      { "login": "tempestnano", "type": "User", "provider": "github" },
+      { "login": "Howl404", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-28T05:14:04.478Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
