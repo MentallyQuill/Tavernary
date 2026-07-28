@@ -1,7 +1,7 @@
 import { access, readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
-const homepageTitle = "Tavernary — SillyTavern Tools";
+const homepageTitle = "Tavernary · SillyTavern Tool Library";
 const homepageDescription =
   "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
 const homepageMetadata = [

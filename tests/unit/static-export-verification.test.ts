@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { verifyStaticExport } from "../../scripts/verify-static-export.mjs";
 
-const homepageTitle = "Tavernary — SillyTavern Tools";
+const homepageTitle = "Tavernary · SillyTavern Tool Library";
 const homepageDescription =
   "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
 const homepageMetadata = [

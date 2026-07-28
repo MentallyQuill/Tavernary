@@ -9,7 +9,7 @@ const projectPage =
 const basePath =
   process.env.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "");
 const assetPath = (path: string) => `${basePath}/${path}`;
-const homepageTitle = "Tavernary — SillyTavern Tools";
+const homepageTitle = "Tavernary · SillyTavern Tool Library";
 const homepageDescription =
   "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
 
