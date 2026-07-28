@@ -9,7 +9,10 @@ export function resolveForkRelationship({
     return null;
   }
 
-  const parentRecord = recordsByRepositoryId.get(parent.id) ?? null;
+  const parentRecord =
+    recordsByRepositoryId.get(`${snapshot.provider}:${parent.id}`) ??
+    recordsByRepositoryId.get(parent.id) ??
+    null;
   const parentName = parentRecord?.name ?? parent.name;
 
   if (snapshot.source_health === "unavailable") {

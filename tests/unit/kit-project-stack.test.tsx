@@ -29,7 +29,7 @@ function project({
     searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {
-      owner: "example-owner",
+      owner: { provider: "github", login: "example-owner" },
       contributors: [],
       humanContributorCount: 1,
       status: "current",

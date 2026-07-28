@@ -1,4 +1,5 @@
 export type GitHubAccount = {
+  provider?: "github" | "codeberg";
   login: string;
   type: string;
 };
@@ -15,6 +16,7 @@ export function isBotOrAiAccount(account: GitHubAccount): boolean {
 }
 
 export function catalogAttribution(
+  provider: "github" | "codeberg",
   owner: string,
   contributors:
     | {
@@ -31,12 +33,13 @@ export function catalogAttribution(
         login.toLocaleLowerCase("en") !== owner.toLocaleLowerCase("en"),
     )
     .map((account) => ({
+      provider: account.provider ?? provider,
       login: account.login,
       botOrAi: isBotOrAiAccount(account),
     }));
 
   return {
-    owner,
+    owner: { provider, login: owner },
     contributors: accounts,
     humanContributorCount: accounts.filter(({ botOrAi }) => !botOrAi).length,
     status: !contributors

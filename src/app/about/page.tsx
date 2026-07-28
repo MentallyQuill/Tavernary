@@ -21,7 +21,7 @@ export default function AboutPage() {
         <p className="about-lead">
           Tavernary is a search and discovery catalog for AI roleplay tools,
           surrounding the SillyTavern community. It indexes public project
-          information and sends visitors to each creator&apos;s own GitHub
+          information and sends visitors to creator-owned repositories
           repository or source page.
         </p>
 

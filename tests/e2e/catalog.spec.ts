@@ -59,7 +59,9 @@ const forkRelationshipParent = forkRelationshipChild?.fork?.parentProjectId
   : null;
 const delistedForkChild =
   catalog.projects.find(
-    ({ id }) => id === "aikohanasaki-sillytavern-worldinfolocks",
+    ({ id, fork }) =>
+      id === "aikohanasaki-sillytavern-worldinfolocks" &&
+      fork?.status === "not-listed",
   ) ??
   catalog.projects.find(
     ({ fork }) =>

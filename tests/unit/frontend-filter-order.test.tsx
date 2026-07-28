@@ -44,7 +44,7 @@ function frontendCard(
       dormant: false,
     },
     latestReleaseAt: null,
-    community: { stars: aggregate, forks: 0, subscribers: 0, aggregate },
+    community: { stars: aggregate, forks: 0, watchers: 0, aggregate },
     repositorySizeKb: 100,
     license: {
       status: "osi-approved",

@@ -98,7 +98,7 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],
   kits: [],

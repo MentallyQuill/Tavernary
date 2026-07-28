@@ -15,6 +15,7 @@ export interface CatalogForkRelationship {
 }
 
 export interface ForkRelationshipSnapshot {
+  provider?: "github" | "codeberg";
   source_health: string;
   repository: {
     id: number;
@@ -30,6 +31,6 @@ export interface ForkRelationshipSnapshot {
 
 export function resolveForkRelationship(input: {
   snapshot: ForkRelationshipSnapshot | null;
-  recordsByRepositoryId: Map<number, ForkRelationshipRecord>;
+  recordsByRepositoryId: Map<number | string, ForkRelationshipRecord>;
   publicProjectIds: Set<string>;
 }): CatalogForkRelationship | null;

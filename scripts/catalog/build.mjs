@@ -22,6 +22,15 @@ async function readJsonDirectory(path) {
   return Promise.all(files.map((file) => readJson(`${path}/${file}`)));
 }
 
+async function readOptionalJsonDirectory(path) {
+  try {
+    return await readJsonDirectory(path);
+  } catch (error) {
+    if (error?.code === "ENOENT") return [];
+    throw error;
+  }
+}
+
 function entriesById(vocabulary, property) {
   return new Map(vocabulary[property].map((item) => [item.id, item]));
 }
@@ -110,7 +119,7 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
   };
 }
 
-function githubProject(record, snapshot, vocabularies, now) {
+function repositoryProject(record, snapshot, vocabularies, now) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const capabilities = labeled(record.capabilities, vocabularies.capabilities);
   const compatibility = presetCompatibility(record, vocabularies);
@@ -122,7 +131,11 @@ function githubProject(record, snapshot, vocabularies, now) {
   };
   const owner =
     snapshot?.repository?.owner ?? record.source.repository.split("/")[0];
-  const attribution = catalogAttribution(owner, snapshot?.contributors);
+  const attribution = catalogAttribution(
+    record.source.type,
+    owner,
+    snapshot?.contributors,
+  );
   const searchableText = [
     record.name,
     record.kind,
@@ -136,7 +149,8 @@ function githubProject(record, snapshot, vocabularies, now) {
       record.model_families ?? [],
       vocabularies.modelFamilies,
     ),
-    attribution.owner,
+    attribution.owner.login,
+    attribution.owner.provider,
     ...attribution.contributors.map(({ login }) => login),
   ]
     .join(" ")
@@ -166,7 +180,9 @@ function githubProject(record, snapshot, vocabularies, now) {
     summary: record.summary,
     canonicalUrl:
       snapshot?.repository?.url ??
-      `https://github.com/${record.source.repository}`,
+      `https://${
+        record.source.type === "github" ? "github.com" : "codeberg.org"
+      }/${record.source.repository}`,
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
@@ -187,11 +203,8 @@ function githubProject(record, snapshot, vocabularies, now) {
       ? {
           stars: snapshot.community.stars_count,
           forks: snapshot.community.forks_count,
-          subscribers: snapshot.community.watchers_count,
-          aggregate:
-            snapshot.community.stars_count +
-            snapshot.community.forks_count +
-            snapshot.community.watchers_count,
+          watchers: snapshot.community.watchers_count,
+          aggregate: snapshot.community.aggregate,
         }
       : null,
     repositorySizeKb: snapshot?.repository?.size_kb ?? null,
@@ -338,7 +351,11 @@ export async function buildCatalog(options = {}) {
     completionFormatVocabulary,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
-    options.snapshots ?? readJsonDirectory("data/snapshots/github"),
+    options.snapshots ??
+      Promise.all([
+        readJsonDirectory("data/snapshots/github"),
+        readOptionalJsonDirectory("data/snapshots/codeberg"),
+      ]).then(([github, codeberg]) => [...github, ...codeberg]),
     options.refreshManifest ?? readJson("data/snapshots/github-refresh.json"),
     options.kitRecords ??
       (options.records ? [] : readJsonDirectory("data/registry/kits")),
@@ -399,11 +416,13 @@ export async function buildCatalog(options = {}) {
     }
 
     if (!snapshot) {
-      projects.push(githubProject(record, null, vocabularies, generatedAtIso));
+      projects.push(
+        repositoryProject(record, null, vocabularies, generatedAtIso),
+      );
       continue;
     }
     projects.push(
-      githubProject(record, snapshot, vocabularies, generatedAtIso),
+      repositoryProject(record, snapshot, vocabularies, generatedAtIso),
     );
   }
 
@@ -412,10 +431,13 @@ export async function buildCatalog(options = {}) {
     records
       .filter(
         (record) =>
-          record.source.type === "github" &&
+          ["github", "codeberg"].includes(record.source.type) &&
           Number.isInteger(record.source.repository_id),
       )
-      .map((record) => [record.source.repository_id, record]),
+      .map((record) => [
+        `${record.source.type}:${record.source.repository_id}`,
+        record,
+      ]),
   );
   const publicProjectIds = new Set(projects.map(({ id }) => id));
   projects = projects.map((project) => ({
@@ -548,7 +570,7 @@ export async function buildCatalog(options = {}) {
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     generatedAt: generatedAtIso,
     projects,
     kits,

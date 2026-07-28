@@ -60,7 +60,7 @@ function project(
       dormant: false,
     },
     latestReleaseAt: null,
-    community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
+    community: { stars: 10, forks: 2, watchers: 1, aggregate: 13 },
     repositorySizeKb: 100,
     license: {
       status: "osi-approved",

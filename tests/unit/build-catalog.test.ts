@@ -305,7 +305,7 @@ test("publishes snapshotless github records with pending source facts", async ()
         tooltip: "Repository facts are pending the first successful snapshot.",
       },
       attribution: {
-        owner: "example",
+        owner: { provider: "github", login: "example" },
         contributors: [],
         humanContributorCount: 0,
         status: "pending",
@@ -346,17 +346,17 @@ test("builds searchable owner and contributor attribution from GitHub facts", as
   });
 
   expect(catalog.projects[0].attribution).toEqual({
-    owner: "example",
+    owner: { provider: "github", login: "example" },
     contributors: [
-      { login: "Alice", botOrAi: false },
-      { login: "Claude", botOrAi: true },
-      { login: "dependabot[bot]", botOrAi: true },
+      { provider: "github", login: "Alice", botOrAi: false },
+      { provider: "github", login: "Claude", botOrAi: true },
+      { provider: "github", login: "dependabot[bot]", botOrAi: true },
     ],
     humanContributorCount: 1,
     status: "current",
   });
   expect(catalog.projects[0].searchableText).toContain(
-    "example alice claude dependabot[bot]",
+    "example github alice claude dependabot[bot]",
   );
 });
 
@@ -400,8 +400,8 @@ test("builds partial fork attribution only from observed merged PR authors", asy
   });
 
   expect(catalog.projects[0].attribution).toEqual({
-    owner: "aikohanasaki",
-    contributors: [{ login: "LeRobber", botOrAi: false }],
+    owner: { provider: "github", login: "aikohanasaki" },
+    contributors: [{ provider: "github", login: "LeRobber", botOrAi: false }],
     humanContributorCount: 1,
     status: "partial",
   });
@@ -588,7 +588,7 @@ test("keeps stale github facts public when the snapshot is unavailable", async (
       community: {
         stars: 1,
         forks: 2,
-        subscribers: 3,
+        watchers: 3,
         aggregate: 6,
       },
       repositorySizeKb: 456,
@@ -601,6 +601,65 @@ test("keeps stale github facts public when the snapshot is unavailable", async (
       },
     }),
   ]);
+});
+
+test("publishes provider-qualified Codeberg evidence", async () => {
+  const record = fixtureProject({
+    id: "targren-lumiverse-swipescrubber",
+    name: "Swipe Scrubber",
+    kind: "extension",
+    source: {
+      type: "codeberg",
+      repository: "targren/Lumiverse-SwipeScrubber",
+      repository_id: 1699613,
+    },
+  });
+  const snapshot = fixtureSnapshot({
+    project_id: record.id,
+    provider: "codeberg",
+    repository: {
+      id: 1699613,
+      owner: "targren",
+      name: "Lumiverse-SwipeScrubber",
+      url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      default_branch: "master",
+      head_sha: "1".repeat(40),
+      head_committed_at: "2026-07-21T14:45:42.000Z",
+      archived: false,
+      created_at: "2026-05-01T00:00:00.000Z",
+      size_kb: 409,
+    },
+    community: {
+      stars_count: 0,
+      forks_count: 0,
+      watchers_count: 1,
+      aggregate: 1,
+    },
+    contributors: {
+      accounts: [{ provider: "codeberg", login: "helper", type: "User" }],
+      method: "commit-and-merged-pull-request-authors",
+      baseline_completed_at: "2026-07-24T00:00:00.000Z",
+      scan: null,
+      refreshed_at: "2026-07-24T00:00:00.000Z",
+      stale_since: null,
+    },
+  });
+
+  const catalog = await buildCatalog({
+    write: false,
+    records: [record],
+    snapshots: [snapshot],
+  });
+
+  expect(catalog.schemaVersion).toBe(3);
+  expect(catalog.projects[0]).toMatchObject({
+    canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+    attribution: {
+      owner: { provider: "codeberg", login: "targren" },
+      contributors: [{ provider: "codeberg", login: "helper", botOrAi: false }],
+    },
+    community: { stars: 0, forks: 0, watchers: 1, aggregate: 1 },
+  });
 });
 
 test("publishes github organizations as manual-source public projects", async () => {
@@ -816,7 +875,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(2);
+  expect(catalog.schemaVersion).toBe(3);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -824,7 +883,7 @@ test("builds every eligible public card with consolidated manual sources", async
   expect(recursion?.community?.aggregate).toBe(
     (recursion?.community?.stars ?? 0) +
       (recursion?.community?.forks ?? 0) +
-      (recursion?.community?.subscribers ?? 0),
+      (recursion?.community?.watchers ?? 0),
   );
   const labels = catalog.projects.flatMap((project) => [
     ...project.frontends,
@@ -936,7 +995,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 2,
+    schemaVersion: 3,
     kits: [
       {
         id: "flagged-kit-42",

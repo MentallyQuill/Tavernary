@@ -29,21 +29,11 @@ async function loadRecords() {
 }
 
 async function loadSnapshots() {
-  const directory = resolve(rootDirectory, "data/snapshots/github");
-  let files;
-  try {
-    files = (await readdir(directory))
-      .filter((file) => file.endsWith(".json"))
-      .sort();
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      return [];
-    }
-    throw error;
-  }
-  return Promise.all(
-    files.map((file) => readJson(`data/snapshots/github/${file}`)),
-  );
+  const [github, codeberg] = await Promise.all([
+    loadJsonDirectory("data/snapshots/github"),
+    loadJsonDirectory("data/snapshots/codeberg"),
+  ]);
+  return [...github, ...codeberg];
 }
 
 async function loadRefreshManifest() {
@@ -71,8 +61,8 @@ function vocabularyIds(vocabulary, property) {
 }
 
 function sourceKey(source) {
-  if (source.type === "github") {
-    return `github:${source.repository.toLowerCase()}`;
+  if (source.type === "github" || source.type === "codeberg") {
+    return `${source.type}:${source.repository.toLowerCase()}`;
   }
   if (source.type === "github-organization") {
     return `github-organization:${source.organization.toLowerCase()}`;
@@ -275,25 +265,35 @@ export async function validateCatalog(options = {}) {
     }
     ids.add(id);
 
-    if (record.source?.type === "github") {
+    if (
+      record.source?.type === "github" ||
+      record.source?.type === "codeberg"
+    ) {
+      const providerLabel =
+        record.source.type === "github" ? "GitHub" : "Codeberg";
       const repositoryId = record.source.repository_id;
       if (
         record.metadata_status === "curated" &&
         (!Number.isInteger(repositoryId) || repositoryId <= 0)
       ) {
         errors.push(
-          `${id}: curated GitHub source requires permanent repository_id`,
+          `${id}: curated ${providerLabel} source requires permanent repository_id`,
         );
       } else if (
         repositoryId !== null &&
         (!Number.isInteger(repositoryId) || repositoryId <= 0)
       ) {
-        errors.push(`${id}: GitHub repository_id must be null or positive`);
+        errors.push(
+          `${id}: ${providerLabel} repository_id must be null or positive`,
+        );
       } else if (repositoryId !== null) {
-        if (repositoryIds.has(repositoryId)) {
-          errors.push(`${id}: duplicate GitHub repository_id ${repositoryId}`);
+        const providerRepositoryId = `${record.source.type}:${repositoryId}`;
+        if (repositoryIds.has(providerRepositoryId)) {
+          errors.push(
+            `${id}: duplicate ${providerLabel} repository_id ${repositoryId}`,
+          );
         }
-        repositoryIds.add(repositoryId);
+        repositoryIds.add(providerRepositoryId);
       }
     } else if (record.source?.type === "github-organization") {
       if (id !== approvedOrganizationRecord.id) {
@@ -352,18 +352,19 @@ export async function validateCatalog(options = {}) {
 
     const repositoryBacked =
       record.source?.type === "github" ||
+      record.source?.type === "codeberg" ||
       (record.id === approvedOrganizationRecord.id &&
         record.source?.type === "github-organization");
 
     if (record.kind === "extension" && !repositoryBacked) {
-      errors.push(`${id}: extension requires a GitHub source`);
+      errors.push(`${id}: extension requires a GitHub or Codeberg source`);
     }
     if (
       record.kind === "frontend" &&
       !repositoryBacked &&
       record.source?.type !== "url"
     ) {
-      errors.push(`${id}: frontend requires a GitHub or URL source`);
+      errors.push(`${id}: frontend requires a GitHub, Codeberg, or URL source`);
     }
 
     if (
@@ -410,7 +411,12 @@ export async function validateCatalog(options = {}) {
   }
 
   const recordsById = new Map(records.map((record) => [record.id, record]));
+  const snapshotProjectIds = new Set();
   for (const snapshot of snapshots) {
+    if (snapshotProjectIds.has(snapshot.project_id)) {
+      errors.push(`${snapshot.project_id}: duplicate repository snapshot`);
+    }
+    snapshotProjectIds.add(snapshot.project_id);
     const validSnapshotShape = validateSnapshot(snapshot);
     if (!validSnapshotShape) {
       errors.push(
@@ -424,8 +430,15 @@ export async function validateCatalog(options = {}) {
     const record = recordsById.get(snapshot.project_id);
     if (!record) {
       errors.push(`${snapshot.project_id}: snapshot has no curated record`);
-    } else if (record.source.type !== "github") {
+    } else if (
+      record.source.type !== "github" &&
+      record.source.type !== "codeberg"
+    ) {
       errors.push(`${snapshot.project_id}: URL source cannot have a snapshot`);
+    } else if (snapshot.provider !== record.source.type) {
+      errors.push(
+        `${snapshot.project_id}: snapshot provider does not match record source`,
+      );
     } else if (
       snapshot.source_health !== "identity-change" &&
       record.source.repository_id !== null &&

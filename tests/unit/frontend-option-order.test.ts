@@ -25,7 +25,7 @@ const card = ({
     community:
       aggregate === null
         ? null
-        : { stars: aggregate, forks: 0, subscribers: 0, aggregate },
+        : { stars: aggregate, forks: 0, watchers: 0, aggregate },
   }) as CatalogProject;
 
 describe("orderFrontendOptionsByPopularity", () => {

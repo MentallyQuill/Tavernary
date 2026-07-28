@@ -50,7 +50,7 @@ export type RegistryRecord = {
   path?: string;
   [key: string]: unknown;
 };
-export type GithubSnapshot = Record<string, unknown>;
+export type RepositorySnapshot = Record<string, unknown>;
 export type EnrichmentProvider = {
   generate(input: EnrichmentInput): Promise<{
     output: EnrichmentOutput;
@@ -107,7 +107,7 @@ export function selectEnrichmentRecords(
 
 export function enrichRecord(
   record: RegistryRecord,
-  snapshot: GithubSnapshot,
+  snapshot: RepositorySnapshot,
   provider: EnrichmentProvider,
   options?: {
     force?: boolean;
@@ -117,7 +117,7 @@ export function enrichRecord(
     };
     loadSource?: (
       record: RegistryRecord,
-      snapshot: GithubSnapshot | undefined,
+      snapshot: RepositorySnapshot | undefined,
       options?: Record<string, unknown>,
     ) => Promise<EnrichmentSource>;
   },
@@ -142,7 +142,7 @@ export function mapWithConcurrency<T, R>(
 export function runEnrichmentBatch(options: {
   projectIds: string[];
   recordsById: Record<string, RegistryRecord>;
-  snapshotsById: Record<string, GithubSnapshot>;
+  snapshotsById: Record<string, RepositorySnapshot>;
   phase: "primary" | "retry";
   vocabularies: {
     primaryFunctions: VocabularyEntry[];
@@ -153,7 +153,7 @@ export function runEnrichmentBatch(options: {
   concurrency?: number;
   loadSource?: (
     record: RegistryRecord,
-    snapshot: GithubSnapshot | undefined,
+    snapshot: RepositorySnapshot | undefined,
     options?: Record<string, unknown>,
   ) => Promise<EnrichmentSource>;
   writeRecord?: (
@@ -178,7 +178,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   timeoutMs?: number;
   sleep?: (milliseconds: number) => Promise<void>;
   records?: RegistryRecord[];
-  snapshots?: Record<string, GithubSnapshot> | GithubSnapshot[];
+  snapshots?: Record<string, RepositorySnapshot> | RepositorySnapshot[];
   snapshotSchema?: Record<string, unknown>;
   validateSnapshot?: (snapshot: unknown) => boolean;
   previousReport?: unknown;
@@ -189,7 +189,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   deploymentRunId?: number;
   loadSource?: (
     record: RegistryRecord,
-    snapshot: GithubSnapshot | undefined,
+    snapshot: RepositorySnapshot | undefined,
     options?: Record<string, unknown>,
   ) => Promise<EnrichmentSource>;
   writeRecord?: (

@@ -98,27 +98,38 @@ export function selectRepresentativeCanaryIds(
 async function loadCatalog() {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const recordDirectory = resolve(root, "data/registry/projects");
-  const snapshotDirectory = resolve(root, "data/snapshots/github");
   const recordFiles = (await readdir(recordDirectory))
     .filter((name) => name.endsWith(".json"))
     .sort();
-  const snapshotFiles = (await readdir(snapshotDirectory))
-    .filter((name) => name.endsWith(".json"))
-    .sort();
+  async function loadSnapshotEntries(provider) {
+    const snapshotDirectory = resolve(root, `data/snapshots/${provider}`);
+    try {
+      return await Promise.all(
+        (await readdir(snapshotDirectory))
+          .filter((name) => name.endsWith(".json"))
+          .sort()
+          .map(async (name) => {
+            const snapshot = JSON.parse(
+              await readFile(resolve(snapshotDirectory, name), "utf8"),
+            );
+            return [snapshot.project_id, snapshot];
+          }),
+      );
+    } catch (error) {
+      if (error.code === "ENOENT") return [];
+      throw error;
+    }
+  }
   const [records, snapshotEntries] = await Promise.all([
     Promise.all(
       recordFiles.map(async (name) =>
         JSON.parse(await readFile(resolve(recordDirectory, name), "utf8")),
       ),
     ),
-    Promise.all(
-      snapshotFiles.map(async (name) => {
-        const snapshot = JSON.parse(
-          await readFile(resolve(snapshotDirectory, name), "utf8"),
-        );
-        return [snapshot.project_id, snapshot];
-      }),
-    ),
+    Promise.all([
+      loadSnapshotEntries("github"),
+      loadSnapshotEntries("codeberg"),
+    ]).then((entries) => entries.flat()),
   ]);
   return { records, snapshots: Object.fromEntries(snapshotEntries) };
 }

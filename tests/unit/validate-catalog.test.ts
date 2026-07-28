@@ -95,6 +95,72 @@ describe("catalog validation", () => {
     );
   });
 
+  test("accepts matching Codeberg records and snapshots", async () => {
+    const {
+      model_families: _modelFamilies,
+      completion_formats: _completionFormats,
+      ...extensionBase
+    } = validRecord;
+    const record = {
+      ...extensionBase,
+      id: "targren-lumiverse-swipescrubber",
+      kind: "extension",
+      source: {
+        type: "codeberg",
+        repository: "targren/Lumiverse-SwipeScrubber",
+        repository_id: 1699613,
+      },
+    };
+    const snapshot = {
+      ...validSnapshotV2,
+      provider: "codeberg",
+      project_id: record.id,
+      repository: {
+        ...validSnapshotV2.repository,
+        id: 1699613,
+        owner: "targren",
+        name: "Lumiverse-SwipeScrubber",
+        url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      },
+      contributors: {
+        accounts: [{ provider: "codeberg", login: "helper", type: "User" }],
+        method: "commit-and-merged-pull-request-authors",
+        baseline_completed_at: "2026-07-24T00:00:00.000Z",
+        scan: null,
+        refreshed_at: "2026-07-24T00:00:00.000Z",
+        stale_since: null,
+      },
+    };
+
+    const result = await validateCatalog({
+      records: [record],
+      snapshots: [snapshot],
+    });
+    expect(result.errors).toEqual([]);
+  });
+
+  test("rejects mismatched and duplicate provider snapshots", async () => {
+    const codebergRecord = {
+      ...validRecord,
+      source: {
+        type: "codeberg",
+        repository: "example/valid-preset",
+        repository_id: 1,
+      },
+    };
+    const result = await validateCatalog({
+      records: [codebergRecord],
+      snapshots: [validSnapshotV2, { ...validSnapshotV2 }],
+    });
+
+    expect(result.errors).toContain(
+      "valid-preset: snapshot provider does not match record source",
+    );
+    expect(result.errors).toContain(
+      "valid-preset: duplicate repository snapshot",
+    );
+  });
+
   test("requires an explicit enrichment policy", async () => {
     const { enrichment_policy: _removed, ...record } = validRecord;
     const result = await validateCatalog({ records: [record] });
@@ -197,7 +263,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "bad-extension: extension requires a GitHub source",
+      "bad-extension: extension requires a GitHub or Codeberg source",
     );
   });
 

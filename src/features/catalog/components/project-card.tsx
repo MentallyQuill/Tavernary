@@ -345,7 +345,7 @@ export function ProjectCard({
             {project.community ? (
               <Tooltip
                 id={communityId}
-                label={`${project.community.aggregate} total: ${project.community.stars} stars, ${project.community.forks} forks, ${project.community.subscribers} subscribers`}
+                label={`${project.community.aggregate} total: ${project.community.stars} stars, ${project.community.forks} forks, ${project.community.watchers} watchers`}
                 className="community"
               >
                 <CategoryIcon name="community" />

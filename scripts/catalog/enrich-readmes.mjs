@@ -592,6 +592,22 @@ async function readOptionalJson(path) {
   }
 }
 
+async function readSnapshotEntries(directory) {
+  try {
+    return await Promise.all(
+      (await readdir(directory))
+        .filter((name) => name.endsWith(".json"))
+        .map(async (name) => {
+          const snapshot = await readJson(resolve(directory, name));
+          return [snapshot.project_id, snapshot];
+        }),
+    );
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  }
+}
+
 async function writeJsonAtomic(path, value) {
   await mkdir(dirname(path), { recursive: true });
   const temporaryPath = `${path}.${randomUUID()}.tmp`;
@@ -840,14 +856,12 @@ export async function runCli(options = {}) {
         )
       : options.snapshots
     : Object.fromEntries(
-        await Promise.all(
-          (await readdir(resolve(root, "data/snapshots/github")))
-            .filter((name) => name.endsWith(".json"))
-            .map(async (name) => [
-              name.slice(0, -5),
-              await readJson(resolve(root, "data/snapshots/github", name)),
-            ]),
-        ),
+        (
+          await Promise.all([
+            readSnapshotEntries(resolve(root, "data/snapshots/github")),
+            readSnapshotEntries(resolve(root, "data/snapshots/codeberg")),
+          ])
+        ).flat(),
       );
   const vocabularyFiles = options.vocabularies
     ? null
