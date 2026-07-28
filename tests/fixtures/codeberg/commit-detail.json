@@ -1,0 +1,16 @@
+{
+  "sha": "111978ba6fcbc5236c060be2b2ad7484833145b9",
+  "created": "2026-07-21T10:45:42-04:00",
+  "files": [
+    {
+      "filename": "src/shared/utils.ts",
+      "status": "modified",
+      "patch": "@@ -1 +1 @@\n-old\n+new"
+    }
+  ],
+  "parents": [
+    {
+      "sha": "f9b2ce1470055763c13bf5cf1ad0ca246eb3b604"
+    }
+  ]
+}

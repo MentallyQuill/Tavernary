@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "ikarusv-cotautoclean",
   "repository": {
     "id": 1216523143,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "0a984577a851038afe2e18e659d6b75aa806ee4a"
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "IkarusV", "type": "User" }],
+    "accounts": [{ "login": "IkarusV", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

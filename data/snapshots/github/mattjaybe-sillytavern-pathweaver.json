@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mattjaybe-sillytavern-pathweaver",
   "repository": {
     "id": 1133781448,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "f8eadedb124d41a54d84a40d1f84d1332ec4d2f0"
   },
   "community": {
-    "stargazers_count": 108,
+    "stars_count": 108,
     "forks_count": 6,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 117
   },
   "license": {
@@ -40,12 +40,15 @@
   "refreshed_at": "2026-07-27T20:36:12.198Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "mattjaybe", "type": "User" }],
+    "accounts": [
+      { "login": "mattjaybe", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T20:36:12.198Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

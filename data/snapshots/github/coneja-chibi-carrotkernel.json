@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-carrotkernel",
   "repository": {
     "id": 1054966103,
@@ -38,9 +38,9 @@
     "evidence_head_sha": "145c273768bfaba437626c0178d8d8cad17db4df"
   },
   "community": {
-    "stargazers_count": 50,
+    "stars_count": 50,
     "forks_count": 8,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 60
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -48,8 +48,8 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Coneja-Chibi", "type": "User" },
-      { "login": "DrMagisto", "type": "User" }
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -57,5 +57,6 @@
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

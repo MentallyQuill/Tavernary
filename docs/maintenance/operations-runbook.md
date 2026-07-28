@@ -14,6 +14,7 @@ Do not edit generated artifacts manually.
   - issue templates and workflow files
 - Generated:
   - `data/snapshots/github/*.json`
+  - `data/snapshots/codeberg/*.json`
   - `data/snapshots/github-refresh.json`
   - `data/snapshots/github/kits/*.json`
   - `data/reports/enrichment-report.json`
@@ -223,6 +224,21 @@ Workflow: `.github/workflows/refresh-catalog.yml`
 Baseline mode loops while provisional queue remains > 0 by reading
 `data/snapshots/github-refresh.json` counts.
 
+The refresh manifest uses schema version 2. Its aggregate counts remain the
+dashboard contract, while `providers.github` and `providers.codeberg` report
+isolated checked, changed, failed, request, and remaining-budget values.
+Provider failures do not discard successful work from the other provider.
+
+For Codeberg rate limits or outages:
+
+1. Inspect `providers.codeberg` and the affected snapshots' `stale_since`.
+2. Leave last-known evidence in place; do not hand-edit snapshot facts.
+3. Retry a single project after the provider budget recovers.
+4. Escalate repeated 404 or identity-change results for source verification.
+
+Only `codeberg.org` is supported. Do not redirect the adapter to an arbitrary
+Forgejo/Gitea origin or infer that GitHub and Codeberg repositories are mirrors.
+
 ## Enrichment automation
 
 Workflow: `.github/workflows/enrich-catalog.yml`
@@ -289,8 +305,9 @@ To return the project to automatic enrichment, set:
 ```
 
 Remove `enrichment_note` at the same time; automatic records must not retain
-one. This setting is independent of `refresh_policy`: refresh controls GitHub
-evidence collection, while enrichment controls model-written editorial fields.
+one. This setting is independent of `refresh_policy`: refresh controls
+repository evidence collection, while enrichment controls model-written
+editorial fields.
 
 ## Kit workflow
 

@@ -3,17 +3,23 @@ import { expect, test, vi } from "vitest";
 import { findEarlierInflightSubmission } from "../../scripts/submissions/inflight-submissions.mjs";
 
 function projectBody(sourceUrl: string) {
+  const repositorySource =
+    sourceUrl.startsWith("https://github.com/") ||
+    sourceUrl.startsWith("https://codeberg.org/");
   return [
     "### Project manifest",
     "```json",
     JSON.stringify({
       schema_version: 1,
-      project_type: "extension",
+      project_type: repositorySource ? "extension" : "preset",
       source_url: sourceUrl,
       name: "Example",
-      description: null,
-      frontends: { known_ids: ["sillytavern"], other: [] },
-      frontend_independent: false,
+      description: repositorySource ? null : "Example external preset.",
+      frontends: {
+        known_ids: repositorySource ? ["sillytavern"] : [],
+        other: [],
+      },
+      frontend_independent: !repositorySource,
       additional_context: null,
     }),
     "```",
@@ -36,7 +42,8 @@ function issue(
 }
 
 const currentGithubIdentity = {
-  kind: "github" as const,
+  kind: "repository" as const,
+  provider: "github" as const,
   canonicalUrl: "https://github.com/NewOwner/NewName",
   repository: "NewOwner/NewName",
   repositoryId: 42,

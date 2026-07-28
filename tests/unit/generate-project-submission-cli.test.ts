@@ -44,8 +44,20 @@ test("writes only declared repository files and the external report", async () =
       }),
       sourceClients: {
         prepareDraft: async () => ({
-          record: { id: "owner-repo", name: "Example" },
-          snapshot: { project_id: "owner-repo" },
+          record: {
+            id: "owner-repo",
+            name: "Example",
+            source: {
+              type: "github",
+              repository: "owner/repo",
+              repository_id: 42,
+            },
+          },
+          snapshot: {
+            schema_version: 3,
+            provider: "github",
+            project_id: "owner-repo",
+          },
           frontendVocabulary: {
             frontends: [
               {
@@ -220,7 +232,8 @@ test("prepares a GitHub draft through injected source clients", async () => {
     metadata_status: "curated",
   });
   expect(draft.snapshot).toMatchObject({
-    schema_version: 2,
+    schema_version: 3,
+    provider: "github",
     project_id: "owner-repo",
     activity: { evidence_status: "provisional" },
     contributors: {
@@ -247,10 +260,64 @@ test("prepares a GitHub draft through injected source clients", async () => {
   );
 });
 
-test("prepares an external Frontend draft with its vocabulary entry", async () => {
+test("prepares a Codeberg draft through the repository provider", async () => {
+  const headSha = "1".repeat(40);
+  const provider = {
+    resolve: vi.fn(async (identity) => ({
+      ...identity,
+      repositoryId: 1699613,
+    })),
+    observe: vi.fn(async (records) => ({
+      observations: [
+        {
+          provider: "codeberg",
+          projectId: records[0].id,
+          repository: {
+            id: 1699613,
+            owner: "targren",
+            name: "Lumiverse-SwipeScrubber",
+            url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+            description: "Swipe controls.",
+            defaultBranch: "master",
+            headSha,
+            headCommittedAt: "2026-07-25T17:00:00.000Z",
+            archived: false,
+            fork: false,
+            parent: null,
+            createdAt: "2026-05-01T00:00:00.000Z",
+            sizeKb: 409,
+          },
+          community: { starsCount: 0, forksCount: 0, watchersCount: 1 },
+          latestReleaseAt: null,
+          coarseLicenseSpdxId: null,
+        },
+      ],
+      failures: [],
+      usage: { requestCount: 2, pointCost: 0, remainingPoints: 1_998 },
+    })),
+    inspectActivity: vi.fn(async ({ activity }) => ({
+      complete: false,
+      activity,
+      license: {
+        status: "missing",
+        spdxId: null,
+        sourcePath: null,
+      },
+      requestCount: 2,
+      scan: null,
+    })),
+    collectContributors: vi.fn(async () => ({
+      accounts: [{ provider: "codeberg", login: "targren", type: "User" }],
+      requestCount: 3,
+      method: "commit-and-merged-pull-request-authors",
+      baselineCompletedAt: "2026-07-25T18:00:00.000Z",
+      refreshedAt: "2026-07-25T18:00:00.000Z",
+      scan: null,
+    })),
+  };
   const draft = await prepareProjectSubmissionDraft({
     issue: {
-      number: 129,
+      number: 112,
       state: "open",
       labels: [{ name: "needs-maintainer-review" }],
       body: [
@@ -259,11 +326,11 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
         "```json",
         JSON.stringify({
           schema_version: 2,
-          project_type: "frontend",
-          source_url: "https://codeberg.org/example/nova",
-          name: "Nova Frontend",
-          description: "A public-source roleplay frontend.",
-          frontends: { known_ids: [], other: [] },
+          project_type: "extension",
+          source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+          name: "Swipe Scrubber",
+          description: "Swipe controls.",
+          frontends: { known_ids: ["sillytavern"], other: [] },
           frontend_independent: false,
           additional_context: null,
         }),
@@ -272,13 +339,8 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
     },
     now: "2026-07-25T18:00:00.000Z",
     sourceClients: {
-      request: async () => {
-        throw new Error("GitHub should not be requested.");
-      },
-      probe: async () => ({
-        status: 200,
-        finalUrl: "https://codeberg.org/example/nova",
-      }),
+      providers: { codeberg: provider },
+      request: vi.fn(),
       catalogData: {
         vocabulary: {
           frontends: [
@@ -291,26 +353,78 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
         },
         projects: [],
       },
+      enrich: async () => ({
+        status: "curated",
+        summary: "Adds concise swipe controls for roleplay conversations.",
+        primary_function: "interface-workflow",
+        capabilities: ["message-navigation"],
+      }),
     },
   });
 
-  expect(draft).toMatchObject({
-    record: {
-      id: "codeberg-org-example-nova",
-      kind: "frontend",
-      source: {
-        type: "url",
-        url: "https://codeberg.org/example/nova",
-      },
-      frontends: ["nova-frontend"],
-    },
-    frontendVocabulary: {
-      frontends: expect.arrayContaining([
-        expect.objectContaining({
-          id: "nova-frontend",
-          label: "Nova Frontend",
-        }),
-      ]),
+  expect(draft.record).toMatchObject({
+    id: "targren-lumiverse-swipescrubber",
+    source: {
+      type: "codeberg",
+      repository: "targren/Lumiverse-SwipeScrubber",
+      repository_id: 1699613,
     },
   });
+  expect(draft.snapshot).toMatchObject({
+    schema_version: 3,
+    provider: "codeberg",
+    project_id: "targren-lumiverse-swipescrubber",
+  });
+});
+
+test("rejects a generic external Frontend before source probing", async () => {
+  await expect(
+    prepareProjectSubmissionDraft({
+      issue: {
+        number: 129,
+        state: "open",
+        labels: [{ name: "needs-maintainer-review" }],
+        body: [
+          "### Project manifest",
+          "",
+          "```json",
+          JSON.stringify({
+            schema_version: 2,
+            project_type: "frontend",
+            source_url: "https://example.com/nova",
+            name: "Nova Frontend",
+            description: "A public-source roleplay frontend.",
+            frontends: { known_ids: [], other: [] },
+            frontend_independent: false,
+            additional_context: null,
+          }),
+          "```",
+        ].join("\n"),
+      },
+      now: "2026-07-25T18:00:00.000Z",
+      sourceClients: {
+        request: async () => {
+          throw new Error("GitHub should not be requested.");
+        },
+        probe: async () => ({
+          status: 200,
+          finalUrl: "https://example.com/nova",
+        }),
+        catalogData: {
+          vocabulary: {
+            frontends: [
+              {
+                id: "sillytavern",
+                label: "SillyTavern",
+                description: "Works with the SillyTavern roleplay frontend.",
+              },
+            ],
+          },
+          projects: [],
+        },
+      },
+    }),
+  ).rejects.toThrow(
+    "Frontends and Extensions require a public GitHub or Codeberg repository.",
+  );
 });

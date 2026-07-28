@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "valdoix-vellum-engine",
   "repository": {
     "id": 1281396724,
@@ -53,9 +53,9 @@
     "evidence_head_sha": "69eca239911b7224e3fccc279902eb43cb583339"
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 6
   },
   "license": {
@@ -68,13 +68,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Fancyhe1", "type": "User" },
-      { "login": "valdoix", "type": "User" }
+      { "login": "Fancyhe1", "type": "User", "provider": "github" },
+      { "login": "valdoix", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

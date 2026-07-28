@@ -1,10 +1,12 @@
-# Repository snapshot schema reference (`data/schemas/repository-snapshot.schema.json`)
+# Repository snapshot schema reference
 
-Snapshot files are machine-written evidence only (`schema_version: 2`).
+GitHub and Codeberg snapshot files are machine-written evidence validated by
+`data/schemas/repository-snapshot.schema.json` (`schema_version: 3`).
 
 ## Required top-level fields
 
-- `schema_version`: `2`
+- `schema_version`: `3`
+- `provider`: `github | codeberg`
 - `project_id`
 - `repository`
 - `source_health`
@@ -31,7 +33,7 @@ Snapshot files are machine-written evidence only (`schema_version: 2`).
 - `head_committed_at`: date-time or null
 - `archived`: boolean
 - `fork`: optional boolean
-- `parent`: optional immediate GitHub parent object or null, with immutable
+- `parent`: optional immediate provider-local parent object or null, with immutable
   repository `id`, `owner`, `name`, and `url`
 - `created_at`: date-time
 - `size_kb`: integer >= 0
@@ -48,7 +50,20 @@ Snapshot files are machine-written evidence only (`schema_version: 2`).
 
 ## Community block
 
-- `stargazers_count`, `forks_count`, `subscribers_count`, `aggregate`
+- `stars_count`, `forks_count`, `watchers_count`, `aggregate`
+
+Provider responses are normalized into these neutral fields. On Codeberg,
+`watchers_count` is the repository's watcher count; it is not inferred from
+stars.
+
+## Contributors
+
+When present, `contributors.accounts` contains provider-qualified linked
+accounts. GitHub evidence uses repository contributors for normal repositories
+and merged-pull-request authors for forks. Codeberg evidence is derived from
+bounded recent commit-author and merged-pull-request scans, followed by
+provider-local account verification. Unlinked commit identities are not
+invented as Codeberg accounts.
 
 ## License block
 
@@ -64,8 +79,10 @@ Snapshot files are machine-written evidence only (`schema_version: 2`).
 ## Notes
 
 - Snapshot writes are gated by `npm run catalog:refresh`.
+- GitHub files live in `data/snapshots/github/*.json`; Codeberg files live in
+  `data/snapshots/codeberg/*.json`.
 - A transient refresh that omits a known parent retains the last-known parent
-  while GitHub still reports the repository as a fork.
+  while the provider still reports the repository as a fork.
 - Parent data is rejected for non-forks and cannot point back to the repository
   itself.
 - Registry source-of-truth is independent; snapshots never rewrite registry fields.

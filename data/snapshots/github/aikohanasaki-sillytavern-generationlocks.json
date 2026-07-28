@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-sillytavern-generationlocks",
   "repository": {
     "id": 1068235084,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "f0ad9a5eeff25b83474f75741ff65f2ddf69f540"
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "aikohanasaki", "type": "User" }],
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

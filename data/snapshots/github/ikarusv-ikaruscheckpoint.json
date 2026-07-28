@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "ikarusv-ikaruscheckpoint",
   "repository": {
     "id": 1226984172,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "164ef300abfa9ed58b6232e6488cfdc56de0f2fe"
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -44,13 +44,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "IkarusV", "type": "User" },
-      { "login": "codex", "type": "User" }
+      { "login": "IkarusV", "type": "User", "provider": "github" },
+      { "login": "codex", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

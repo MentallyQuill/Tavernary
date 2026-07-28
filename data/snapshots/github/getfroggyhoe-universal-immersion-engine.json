@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "getfroggyhoe-universal-immersion-engine",
   "repository": {
     "id": 1125809015,
@@ -32,9 +32,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 75,
+    "stars_count": 75,
     "forks_count": 4,
-    "subscribers_count": 5,
+    "watchers_count": 5,
     "aggregate": 84
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -42,14 +42,15 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "renoschubert", "type": "User" },
-      { "login": "GeoMaciolek", "type": "User" },
-      { "login": "GetfroggyHoe", "type": "User" }
+      { "login": "renoschubert", "type": "User", "provider": "github" },
+      { "login": "GeoMaciolek", "type": "User", "provider": "github" },
+      { "login": "GetfroggyHoe", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

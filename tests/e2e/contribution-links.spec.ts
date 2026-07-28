@@ -24,7 +24,7 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByText(
-      /Non-GitHub Frontends are reviewed manually and do not receive GitHub-derived activity or popularity metadata/i,
+      /Both providers receive the same repository activity, community, and attribution treatment/i,
     ),
   ).toBeVisible();
   await expect(

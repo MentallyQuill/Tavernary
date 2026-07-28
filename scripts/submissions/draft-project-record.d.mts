@@ -1,4 +1,4 @@
-import type { RepositoryObservation } from "../catalog/github-observer.mjs";
+import type { RepositoryObservation } from "../catalog/repository-provider.mjs";
 import type { RepositorySnapshot } from "../catalog/repository-snapshot.mjs";
 import type { ProjectSubmissionDecision } from "./admission.mjs";
 import type {
@@ -20,7 +20,7 @@ export interface DraftedProjectRecord {
   metadata_status: "provisional" | "curated";
   source:
     | {
-        type: "github";
+        type: "github" | "codeberg";
         repository: string;
         repository_id: number;
       }

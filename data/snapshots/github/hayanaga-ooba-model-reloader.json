@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "hayanaga-ooba-model-reloader",
   "repository": {
     "id": 1146891697,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "2f381c877c1d3be6f4cd5ccbc87a6cf522c0f2c8"
   },
   "community": {
-    "stargazers_count": 0,
+    "stars_count": 0,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 0
   },
   "license": {
@@ -41,11 +41,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Hayanaga", "type": "User" }],
+    "accounts": [{ "login": "Hayanaga", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

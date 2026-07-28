@@ -11,6 +11,7 @@ export type RefreshOutcome =
 
 export interface ProjectRefreshOutcome {
   projectId: string;
+  provider?: "github" | "codeberg";
   result: RefreshOutcome;
   durationMs: number;
   snapshotChanged?: boolean;
@@ -21,7 +22,7 @@ export interface ProjectRefreshOutcome {
 }
 
 export interface GitHubRefreshManifest {
-  schema_version: 1;
+  schema_version: 2;
   mode: RefreshMode;
   started_at: string;
   completed_at: string;
@@ -44,6 +45,16 @@ export interface GitHubRefreshManifest {
     graphql_remaining: number | null;
     rest_requests: number;
   };
+  providers: Record<
+    "github" | "codeberg",
+    {
+      checked: number;
+      changed: number;
+      failed: number;
+      requests: number;
+      remaining: number | null;
+    }
+  >;
   duration_ms: number;
   project_timings: Array<{
     project_id: string;
@@ -67,5 +78,11 @@ export function buildRefreshManifest(run: {
     graphqlRemaining?: number | null;
     restRequests?: number;
   };
+  providers?: Partial<
+    Record<
+      "github" | "codeberg",
+      { requests?: number; remaining?: number | null }
+    >
+  >;
   deploymentRequested?: boolean;
 }): GitHubRefreshManifest;

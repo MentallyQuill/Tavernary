@@ -13,14 +13,16 @@ function contributorGroups(attribution: CatalogAttribution) {
 
 export function attributionByline(attribution: CatalogAttribution) {
   const count = attribution.humanContributorCount;
-  if (count === 0) return `by ${attribution.owner}`;
-  return `by ${attribution.owner}, plus ${count} ${
+  if (count === 0) return `by ${attribution.owner.login}`;
+  return `by ${attribution.owner.login}, plus ${count} ${
     count === 1 ? "contributor" : "contributors"
   }`;
 }
 
 export function attributionTooltip(attribution: CatalogAttribution) {
-  const parts = [`Owner: ${attribution.owner}`];
+  const provider =
+    attribution.owner.provider === "github" ? "GitHub" : "Codeberg";
+  const parts = [`${provider} owner: ${attribution.owner.login}`];
   const { humans, botsOrAi } = contributorGroups(attribution);
 
   if (attribution.status === "pending") {
@@ -43,7 +45,9 @@ export function attributionTooltip(attribution: CatalogAttribution) {
 }
 
 export function attributionAccessibleText(attribution: CatalogAttribution) {
-  const parts = [`Repository owner: ${attribution.owner}.`];
+  const provider =
+    attribution.owner.provider === "github" ? "GitHub" : "Codeberg";
+  const parts = [`${provider} repository owner: ${attribution.owner.login}.`];
   const { humans, botsOrAi } = contributorGroups(attribution);
 
   if (humans.length > 0) {

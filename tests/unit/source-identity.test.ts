@@ -27,7 +27,8 @@ test("normalizes GitHub repository identity and title", () => {
   );
 
   expect(identity).toMatchObject({
-    kind: "github",
+    kind: "repository",
+    provider: "github",
     repository: "MentallyQuill/Recursion",
     canonicalUrl: "https://github.com/MentallyQuill/Recursion",
     owner: "MentallyQuill",
@@ -41,6 +42,61 @@ test("normalizes GitHub repository identity and title", () => {
   expect(projectSubmissionTitle(identity)).toBe(
     "[Project submission] MentallyQuill/Recursion",
   );
+});
+
+test.each([
+  [
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+  ],
+  [
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber.git",
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+  ],
+  [
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber/",
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+  ],
+])("parses an exact Codeberg repository URL", (input, canonicalUrl) => {
+  expect(parseSourceIdentity(input)).toEqual({
+    kind: "repository",
+    provider: "codeberg",
+    canonicalUrl,
+    repository: "targren/Lumiverse-SwipeScrubber",
+    repositoryId: null,
+    owner: "targren",
+    name: "Lumiverse-SwipeScrubber",
+  });
+});
+
+test.each([
+  "https://codeberg.org/targren",
+  "https://codeberg.org/targren/repo/issues",
+  "https://codeberg.org/targren/repo?tab=activity",
+  "https://codeberg.org/targren/repo#readme",
+  "https://user@codeberg.org/targren/repo",
+])("rejects a noncanonical Codeberg repository URL: %s", (input) => {
+  expect(() => parseSourceIdentity(input)).toThrow(
+    /Codeberg project URLs must identify exactly one owner\/repository/u,
+  );
+});
+
+test("uses provider-qualified Codeberg duplicate keys", () => {
+  expect(
+    sourceDuplicateKeys({
+      kind: "repository",
+      provider: "codeberg",
+      canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      repository: "targren/Lumiverse-SwipeScrubber",
+      repositoryId: 1699613,
+      owner: "targren",
+      name: "Lumiverse-SwipeScrubber",
+    }),
+  ).toEqual([
+    "url:https://codeberg.org/targren/lumiverse-swipescrubber",
+    "codeberg-repository:targren/lumiverse-swipescrubber",
+    "codeberg-id:1699613",
+  ]);
 });
 
 test("uses the Reddit post ID as identity and the slug as title", () => {
@@ -176,7 +232,7 @@ test("normalizes a generic external URL and readable issue title", () => {
 test("resolves permanent GitHub identity and canonical repository rename", async () => {
   const parsed = parseSourceIdentity("https://github.com/Old/Name");
   const resolved = await resolveSourceIdentity(parsed, {
-    resolveGithub: async () => ({
+    resolveRepository: async () => ({
       id: 123,
       owner: "NewOwner",
       name: "NewName",
@@ -185,7 +241,8 @@ test("resolves permanent GitHub identity and canonical repository rename", async
   });
 
   expect(resolved).toEqual({
-    kind: "github",
+    kind: "repository",
+    provider: "github",
     canonicalUrl: "https://github.com/NewOwner/NewName",
     repository: "NewOwner/NewName",
     repositoryId: 123,

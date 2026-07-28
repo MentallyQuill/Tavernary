@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillytavern-extension-typingindicator",
   "repository": {
     "id": 925891884,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "3c5ef68e2c4bc4b152078965a153f12aa5aad513"
   },
   "community": {
-    "stargazers_count": 38,
+    "stars_count": 38,
     "forks_count": 7,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 46
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "RivelleDays", "type": "User" }
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -63,8 +63,9 @@ const activityInspection = {
   scan: null,
 };
 
-test("creates a schema-v2 initial snapshot from API observations only", () => {
+test("creates a provider-qualified schema-v3 initial snapshot", () => {
   const snapshot = createInitialRepositorySnapshot({
+    provider: "github",
     projectId: "owner-repo",
     observation,
     activityInspection,
@@ -73,7 +74,8 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
   });
 
   expect(snapshot).toMatchObject({
-    schema_version: 2,
+    schema_version: 3,
+    provider: "github",
     project_id: "owner-repo",
     source_health: "healthy",
     repository: {
@@ -89,11 +91,36 @@ test("creates a schema-v2 initial snapshot from API observations only", () => {
     },
     activity: { evidence_status: "complete" },
     contributors: {
-      accounts: [{ login: "owner", type: "User" }],
+      accounts: [{ provider: "github", login: "owner", type: "User" }],
       refreshed_at: "2026-07-25T18:00:00.000Z",
       stale_since: null,
     },
     stale_since: null,
+    community: {
+      stars_count: 3,
+      forks_count: 2,
+      watchers_count: 1,
+      aggregate: 6,
+    },
+  });
+});
+
+test("creates a Codeberg snapshot with provider-qualified contributors", () => {
+  const snapshot = createInitialRepositorySnapshot({
+    provider: "codeberg",
+    projectId: "owner-repo",
+    observation,
+    activityInspection,
+    contributors: [{ login: "owner", type: "User" }],
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(snapshot).toMatchObject({
+    schema_version: 3,
+    provider: "codeberg",
+    contributors: {
+      accounts: [{ provider: "codeberg", login: "owner", type: "User" }],
+    },
   });
 });
 
@@ -102,6 +129,7 @@ test("defaults a legacy observation without a fork fact to false", () => {
   delete (legacyObservation.repository as { fork?: boolean }).fork;
 
   const snapshot = createInitialRepositorySnapshot({
+    provider: "github",
     projectId: "owner-repo",
     observation: legacyObservation,
     activityInspection,
@@ -116,6 +144,7 @@ test("retains a last-known fork parent when refresh omits it", () => {
   const refreshedObservation = structuredClone(observation);
   refreshedObservation.repository.parent = undefined as never;
   const previous = createInitialRepositorySnapshot({
+    provider: "github",
     projectId: "owner-repo",
     observation,
     activityInspection,
@@ -124,6 +153,7 @@ test("retains a last-known fork parent when refresh omits it", () => {
   });
 
   const snapshot = snapshotFromObservation({
+    provider: "github",
     projectId: "owner-repo",
     observation: refreshedObservation,
     previous,
@@ -142,6 +172,7 @@ test("retains an incomplete API activity continuation as provisional", () => {
     resolved_weeks: ["2026-07-20"],
   };
   const snapshot = createInitialRepositorySnapshot({
+    provider: "github",
     projectId: "owner-repo",
     observation,
     activityInspection: {

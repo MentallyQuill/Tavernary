@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "rsxdalv-sillytavern-extension-tts-webui",
   "repository": {
     "id": 997100420,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "94c6e1dc72ff9801fdc901bf132996f853db7e2e"
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 4
   },
   "license": {
@@ -41,11 +41,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "rsxdalv", "type": "User" }],
+    "accounts": [{ "login": "rsxdalv", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -89,7 +89,9 @@ jobs:
         id: commit
         shell: bash
         run: |
-          git add data/snapshots/github/*.json data/snapshots/github-refresh.json
+          git add data/snapshots/github/*.json
+          git add data/snapshots/codeberg/*.json
+          git add data/snapshots/github-refresh.json
           if compgen -G "data/snapshots/github/kits/*.json" > /dev/null; then
             git add data/snapshots/github/kits/*.json
           fi
@@ -99,7 +101,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(catalog): refresh GitHub snapshots"
+          git commit -m "chore(catalog): refresh repository snapshots"
           for attempt in 1 2 3; do
             if git fetch origin main &&
               git rebase origin/main; then

@@ -13,7 +13,7 @@ export interface ManualEnrichmentExclusion {
   note?: string;
 }
 
-export type AutomaticEnrichmentAdapter = "github" | "reddit";
+export type AutomaticEnrichmentAdapter = "github" | "codeberg" | "reddit";
 
 export function automaticEnrichmentAdapter(source: {
   type?: string;

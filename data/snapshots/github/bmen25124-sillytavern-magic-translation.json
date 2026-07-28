@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bmen25124-sillytavern-magic-translation",
   "repository": {
     "id": 938386740,
@@ -38,9 +38,9 @@
     "evidence_head_sha": "a2207bbf53413199444e4f15b9d614c3a3fc830d"
   },
   "community": {
-    "stargazers_count": 31,
+    "stars_count": 31,
     "forks_count": 6,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 39
   },
   "license": {
@@ -53,13 +53,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "bmen25124", "type": "User" },
-      { "login": "Jasonnor", "type": "User" }
+      { "login": "bmen25124", "type": "User", "provider": "github" },
+      { "login": "Jasonnor", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

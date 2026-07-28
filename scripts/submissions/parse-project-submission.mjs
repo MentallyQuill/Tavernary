@@ -71,10 +71,11 @@ function fieldIds(value, options) {
 export function parseProjectSubmissionIssue(body) {
   const fields = issueFields(body);
   const embedded = fields.get("Project manifest") ?? "";
-  if (embedded) {
+  const embeddedJson = manifestJson(embedded).trim();
+  if (embeddedJson) {
     try {
       const result = normalizeProjectSubmissionManifest(
-        JSON.parse(manifestJson(embedded)),
+        JSON.parse(embeddedJson),
       );
       return { ...result, source: "manifest" };
     } catch {

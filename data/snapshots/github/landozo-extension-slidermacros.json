@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "landozo-extension-slidermacros",
   "repository": {
     "id": 1140216653,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "9b266304b80321619f1b42983174456ff6d9c72f"
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 4
   },
   "license": {
@@ -53,5 +53,6 @@
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-moreflexiblecontinues",
   "repository": {
     "id": 732793067,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "569ec3662470600b76e3c3d6a2e1713fdbf7adbf"
   },
   "community": {
-    "stargazers_count": 48,
+    "stars_count": 48,
     "forks_count": 3,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 54
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -38,13 +38,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "LenAnderson", "type": "User" },
-      { "login": "Wolfsblvt", "type": "User" }
+      { "login": "LenAnderson", "type": "User", "provider": "github" },
+      { "login": "Wolfsblvt", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "hornysilicon-charsaver",
   "repository": {
     "id": 1256518687,
@@ -38,21 +38,24 @@
     "evidence_head_sha": "722c6f3a189d2b185016dbc78bf585c5fa8b6546"
   },
   "community": {
-    "stargazers_count": 3,
+    "stars_count": 3,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T21:10:53.399Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "hornysilicon", "type": "User" }],
+    "accounts": [
+      { "login": "hornysilicon", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T21:10:53.399Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

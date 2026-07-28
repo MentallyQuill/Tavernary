@@ -11,13 +11,14 @@
     "completed_at",
     "counts",
     "api",
+    "providers",
     "duration_ms",
     "project_timings",
     "snapshot_changes",
     "deployment_requested"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "const": 2 },
     "mode": {
       "enum": ["incremental", "baseline", "project", "forensic"]
     },
@@ -71,6 +72,15 @@
         "rest_requests": { "type": "integer", "minimum": 0 }
       }
     },
+    "providers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github", "codeberg"],
+      "properties": {
+        "github": { "$ref": "#/definitions/provider" },
+        "codeberg": { "$ref": "#/definitions/provider" }
+      }
+    },
     "duration_ms": { "type": "integer", "minimum": 0 },
     "project_timings": {
       "type": "array",
@@ -108,5 +118,21 @@
     },
     "snapshot_changes": { "type": "boolean" },
     "deployment_requested": { "type": "boolean" }
+  },
+  "definitions": {
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checked", "changed", "failed", "requests", "remaining"],
+      "properties": {
+        "checked": { "type": "integer", "minimum": 0 },
+        "changed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "requests": { "type": "integer", "minimum": 0 },
+        "remaining": {
+          "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
+        }
+      }
+    }
   }
 }

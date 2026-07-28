@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "icefog72-sillytavern-simpleqrbartoggle",
   "repository": {
     "id": 953012653,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "b40082351f9a42dc8e6ed82b7c7a05e41fa3e397"
   },
   "community": {
-    "stargazers_count": 13,
+    "stars_count": 13,
     "forks_count": 1,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 16
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "IceFog72", "type": "User" },
-      { "login": "DAurielS", "type": "User" }
+      { "login": "IceFog72", "type": "User", "provider": "github" },
+      { "login": "DAurielS", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

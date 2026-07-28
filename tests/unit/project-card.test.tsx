@@ -61,7 +61,7 @@ function project(
       dormant: false,
     },
     latestReleaseAt: null,
-    community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
+    community: { stars: 10, forks: 2, watchers: 1, aggregate: 13 },
     repositorySizeKb: 100,
     license: {
       status: "osi-approved",
@@ -248,10 +248,10 @@ describe("project card", () => {
         project={project("directive", {
           name: "Directive",
           attribution: {
-            owner: "MentallyQuill",
+            owner: { provider: "github", login: "MentallyQuill" },
             contributors: [
-              { login: "Alice", botOrAi: false },
-              { login: "Claude", botOrAi: true },
+              { provider: "github", login: "Alice", botOrAi: false },
+              { provider: "github", login: "Claude", botOrAi: true },
             ],
             humanContributorCount: 1,
             status: "current",
@@ -272,13 +272,13 @@ describe("project card", () => {
     fireEvent.pointerEnter(attribution!);
     expect(
       screen.getByRole("tooltip", {
-        name: "Owner: MentallyQuill · Contributors: Alice · Bots/AI: Claude",
+        name: "GitHub owner: MentallyQuill · Contributors: Alice · Bots/AI: Claude",
       }),
     ).toBeVisible();
 
     const descriptionId = card.getAttribute("aria-describedby");
     expect(document.getElementById(descriptionId!)).toHaveTextContent(
-      "Repository owner: MentallyQuill. Contributors: Alice. Bots and AI contributors: Claude.",
+      "GitHub repository owner: MentallyQuill. Contributors: Alice. Bots and AI contributors: Claude.",
     );
   });
 
@@ -915,7 +915,7 @@ describe("project card", () => {
             evidenceStatus: null,
             dormant: false,
           },
-          community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
+          community: { stars: 10, forks: 2, watchers: 1, aggregate: 13 },
           repositorySizeKb: 100,
         })}
         now="2026-07-23T00:00:00Z"

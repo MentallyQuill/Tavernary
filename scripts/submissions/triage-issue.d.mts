@@ -1,4 +1,5 @@
 import type { ProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
+import type { RepositoryProvider } from "../catalog/repository-provider.mjs";
 import type {
   ExistingSubmissionProject,
   ProjectSubmissionDecision,
@@ -171,6 +172,7 @@ export function inspectProjectSubmissionSource(
   manifest: ProjectSubmissionManifest,
   options: {
     request: ProjectSubmissionGitHubRequest;
+    providers?: Record<string, Partial<RepositoryProvider>>;
     probe: (
       url: string,
       options?: SafeProbeOptions,

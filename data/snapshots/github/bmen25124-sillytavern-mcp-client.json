@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bmen25124-sillytavern-mcp-client",
   "repository": {
     "id": 945720767,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "04fdfe4410d59534ab379e9741e1277a95f6d384"
   },
   "community": {
-    "stargazers_count": 89,
+    "stars_count": 89,
     "forks_count": 8,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 99
   },
   "license": {
@@ -48,14 +48,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "bmen25124", "type": "User" },
-      { "login": "mNandhu", "type": "User" },
-      { "login": "NathanGuilhot", "type": "User" }
+      { "login": "bmen25124", "type": "User", "provider": "github" },
+      { "login": "mNandhu", "type": "User", "provider": "github" },
+      { "login": "NathanGuilhot", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

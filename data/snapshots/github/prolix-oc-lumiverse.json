@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "prolix-oc-lumiverse",
   "repository": {
     "id": 1175596366,
@@ -83,9 +83,9 @@
     "evidence_head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69"
   },
   "community": {
-    "stargazers_count": 151,
+    "stars_count": 151,
     "forks_count": 45,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 197
   },
   "license": {
@@ -98,28 +98,29 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "prolix-oc", "type": "User" },
-      { "login": "AMousePad", "type": "User" },
-      { "login": "Archkr", "type": "User" },
-      { "login": "TheLiquorPriest", "type": "User" },
-      { "login": "Sillyfrogster", "type": "User" },
-      { "login": "vectoriin", "type": "User" },
-      { "login": "mindbound", "type": "User" },
-      { "login": "DJLegends1011", "type": "User" },
-      { "login": "fazo96", "type": "User" },
-      { "login": "j-dandelion", "type": "User" },
-      { "login": "CloudCompile", "type": "User" },
-      { "login": "Vaitas", "type": "User" },
-      { "login": "Vishousdev", "type": "User" },
-      { "login": "Copilot", "type": "Bot" },
-      { "login": "sneezejayhauser", "type": "User" },
-      { "login": "Plaguis", "type": "User" },
-      { "login": "aaron-j-reeves", "type": "User" }
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "AMousePad", "type": "User", "provider": "github" },
+      { "login": "Archkr", "type": "User", "provider": "github" },
+      { "login": "TheLiquorPriest", "type": "User", "provider": "github" },
+      { "login": "Sillyfrogster", "type": "User", "provider": "github" },
+      { "login": "vectoriin", "type": "User", "provider": "github" },
+      { "login": "mindbound", "type": "User", "provider": "github" },
+      { "login": "DJLegends1011", "type": "User", "provider": "github" },
+      { "login": "fazo96", "type": "User", "provider": "github" },
+      { "login": "j-dandelion", "type": "User", "provider": "github" },
+      { "login": "CloudCompile", "type": "User", "provider": "github" },
+      { "login": "Vaitas", "type": "User", "provider": "github" },
+      { "login": "Vishousdev", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "sneezejayhauser", "type": "User", "provider": "github" },
+      { "login": "Plaguis", "type": "User", "provider": "github" },
+      { "login": "aaron-j-reeves", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

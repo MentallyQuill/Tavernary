@@ -40,6 +40,39 @@ _No response_
   });
 });
 
+test("treats GitHub's empty rendered JSON fence as an omitted manifest", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+Extension
+### Project URL
+https://codeberg.org/targren/Lumiverse-SwipeScrubber
+### Project Name
+Swipe Scrubber
+### Short Description
+Remove unused swipes from message history.
+### Supported frontends
+Lumiverse
+### Frontend-independent
+No
+### Anything we should know?
+Entered manually.
+### Project manifest
+\`\`\`json
+
+\`\`\`
+`);
+
+  expect(result).toMatchObject({
+    valid: true,
+    source: "headings",
+    manifest: {
+      project_type: "extension",
+      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      name: "Swipe Scrubber",
+    },
+  });
+});
+
 test("prefers a non-empty embedded manifest over readable headings", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type

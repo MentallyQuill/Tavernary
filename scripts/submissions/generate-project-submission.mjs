@@ -4,22 +4,18 @@ import { pathToFileURL } from "node:url";
 
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
-import {
-  fetchForkContributors,
-  fetchRepositoryContributors,
-} from "../catalog/github-contributors.mjs";
-import { inspectApiActivity } from "../catalog/github-inspector.mjs";
-import { observeRepositories } from "../catalog/github-observer.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import {
   createInitialRepositorySnapshot,
   provisionalActivity,
 } from "../catalog/repository-snapshot.mjs";
+import { repositoryProvider } from "../catalog/repository-provider.mjs";
 import { evaluateProjectSubmission } from "./admission.mjs";
 import { draftProjectRecord } from "./draft-project-record.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
+import { isRepositoryIdentity } from "./source-identity.mjs";
 import {
   inspectProjectSubmissionSource,
   loadProjectSubmissionCatalogData,
@@ -27,6 +23,15 @@ import {
 } from "./triage-issue.mjs";
 
 export async function generateProjectSubmission({ issueNumber, draft }) {
+  const snapshotProvider = draft.snapshot ? draft.record.source.type : null;
+  if (
+    snapshotProvider !== null &&
+    !["github", "codeberg"].includes(snapshotProvider)
+  ) {
+    throw new Error(
+      `Unsupported generated snapshot provider: ${snapshotProvider}`,
+    );
+  }
   const files = [
     {
       path: `data/registry/projects/${draft.record.id}.json`,
@@ -35,7 +40,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
     ...(draft.snapshot
       ? [
           {
-            path: `data/snapshots/github/${draft.record.id}.json`,
+            path: `data/snapshots/${snapshotProvider}/${draft.record.id}.json`,
             value: draft.snapshot,
           },
         ]
@@ -60,6 +65,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       schema_version: 1,
       issue_number: issueNumber,
       project_id: draft.record.id,
+      source_provider: snapshotProvider,
       submitted: draft.submitted,
       observed: draft.observed,
       inferred: draft.inferred,
@@ -169,6 +175,22 @@ function decisionFailure(decision) {
   return null;
 }
 
+function assertProjectIdAvailable(record, projects) {
+  const collision = projects.find((project) => project.id === record.id);
+  if (!collision) return;
+  const sameSource =
+    collision.source?.type === record.source.type &&
+    (record.source.type === "github" || record.source.type === "codeberg"
+      ? collision.source.repository?.toLowerCase() ===
+        record.source.repository.toLowerCase()
+      : collision.source.url === record.source.url);
+  if (!sameSource) {
+    throw new Error(
+      `Project ID ${record.id} is already in use by a different source.`,
+    );
+  }
+}
+
 export async function prepareProjectSubmissionDraft({
   issue,
   now,
@@ -180,6 +202,7 @@ export async function prepareProjectSubmissionDraft({
   const inspection = await inspectProjectSubmissionSource(parsed.manifest, {
     request,
     probe: sourceClients.probe ?? safeProbe,
+    providers: sourceClients.providers,
   });
   const data =
     sourceClients.catalogData ?? (await loadProjectSubmissionCatalogData());
@@ -210,8 +233,8 @@ export async function prepareProjectSubmissionDraft({
     throw new Error(decisionFailure(decision));
   }
 
-  if (decision.identity.kind !== "github") {
-    return draftProjectRecord({
+  if (!isRepositoryIdentity(decision.identity)) {
+    const draft = await draftProjectRecord({
       admitted: decision,
       observation: null,
       snapshot: null,
@@ -220,28 +243,30 @@ export async function prepareProjectSubmissionDraft({
       frontendProjects: data.projects,
       now,
     });
+    assertProjectIdAvailable(draft.record, data.projects);
+    return draft;
   }
 
+  const provider = repositoryProvider(
+    decision.identity.provider,
+    sourceClients.providers,
+  );
   const observationRecord = {
     id: `submission-${issue.number}`,
     source: {
-      type: "github",
+      type: decision.identity.provider,
       repository: decision.identity.repository,
       repository_id: decision.identity.repositoryId,
     },
   };
   const observe =
-    sourceClients.observe ??
-    ((records) =>
-      observeRepositories(records, {
-        token: process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN,
-      }));
+    sourceClients.observe ?? ((records) => provider.observe(records));
   const observationRun = await observe([observationRecord]);
   const observation = observationRun.observations?.[0];
   if (!observation || observationRun.failures?.length) {
     throw new Error(
       observationRun.failures?.[0]?.message ??
-        "GitHub source observation failed.",
+        "Repository source observation failed.",
     );
   }
 
@@ -254,12 +279,10 @@ export async function prepareProjectSubmissionDraft({
     frontendProjects: data.projects,
     now,
   });
+  assertProjectIdAvailable(preliminary.record, data.projects);
   const inspectActivity =
     sourceClients.inspectActivity ??
-    ((input) =>
-      inspectApiActivity(input, {
-        token: process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN,
-      }));
+    ((input) => provider.inspectActivity(input));
   const activityInspection = await inspectActivity({
     repository: decision.identity.repository,
     expectedHeadSha: observation.repository.headSha,
@@ -269,27 +292,14 @@ export async function prepareProjectSubmissionDraft({
   });
   const fetchContributors =
     sourceClients.fetchContributors ??
-    (async (repository, context) => {
-      const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
-      if (repository.fork) {
-        return {
-          ...(await fetchForkContributors(repository, {
-            token,
-            now: context.now,
-          })),
-          method: "merged-pull-requests",
-        };
-      }
-      return {
-        ...(await fetchRepositoryContributors(repository, { token })),
-        method: "repository-contributors",
-      };
-    });
+    ((repository, context) =>
+      provider.collectContributors(repository, context));
   const contributorResult = await fetchContributors(observation.repository, {
     now,
     previous: undefined,
   });
   const snapshot = createInitialRepositorySnapshot({
+    provider: decision.identity.provider,
     projectId: preliminary.record.id,
     observation,
     activityInspection,

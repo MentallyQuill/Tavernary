@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "samueras-guidedgenerations-extension",
   "repository": {
     "id": 957795776,
@@ -47,9 +47,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 213,
+    "stars_count": 213,
     "forks_count": 23,
-    "subscribers_count": 5,
+    "watchers_count": 5,
     "aggregate": 241
   },
   "license": {
@@ -60,11 +60,12 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Samueras", "type": "User" }],
+    "accounts": [{ "login": "Samueras", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -24,9 +24,7 @@ vi.mock("@/lib/catalog/load-catalog", () => ({
         name: "Alpha",
         kind: "frontend",
         canonicalUrl: "https://github.com/example/alpha",
-        frontends: [
-          { id: "alpha", label: "Alpha", description: "Frontend." },
-        ],
+        frontends: [{ id: "alpha", label: "Alpha", description: "Frontend." }],
         community: { stars: 4, forks: 0, subscribers: 0, aggregate: 4 },
       },
       {
@@ -34,9 +32,7 @@ vi.mock("@/lib/catalog/load-catalog", () => ({
         name: "Zulu",
         kind: "frontend",
         canonicalUrl: "https://github.com/example/zulu",
-        frontends: [
-          { id: "zulu", label: "Zulu", description: "Frontend." },
-        ],
+        frontends: [{ id: "zulu", label: "Zulu", description: "Frontend." }],
         community: { stars: 12, forks: 0, subscribers: 0, aggregate: 12 },
       },
     ],
@@ -57,7 +53,7 @@ const frontends = [
 ];
 
 const frontendEligibility =
-  "Frontends must link to publicly accessible source code on GitHub or an equivalent source host. The code must be visible without signing in; an open-source license is not required.";
+  "Frontends and Extensions require a public GitHub or Codeberg repository.";
 
 afterEach(() => {
   cleanup();
@@ -83,7 +79,7 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
 
-  expect(screen.queryByText(frontendEligibility)).not.toBeInTheDocument();
+  expect(screen.getByText(frontendEligibility)).toBeVisible();
   expect(
     screen.getByRole("combobox", { name: "Search supported frontends" }),
   ).toBeVisible();
@@ -94,7 +90,7 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
   expect(screen.getByLabelText("SillyTavern")).not.toBeChecked();
 
   await user.click(screen.getByLabelText("Other or not listed"));
-  expect(screen.getByText(frontendEligibility)).toBeVisible();
+  expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
   expect(
     screen.getByText(
       "This project will stay blocked until the missing frontend is submitted, reviewed, and merged.",
@@ -102,58 +98,54 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
   ).toBeVisible();
 });
 
-test("accepts an equivalent public source host for a Frontend", async () => {
+test("rejects a generic public source host for a Frontend", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.type(
     screen.getByLabelText("Project URL"),
-    "https://codeberg.org/example/frontend",
+    "https://example.com/frontend",
   );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+  expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
+});
+
+test("accepts an exact public Codeberg repository for an Extension", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
   await user.type(
-    screen.getByLabelText("Project Name (required)"),
-    "Example Frontend",
+    screen.getByLabelText("Project URL"),
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
   );
-  await user.type(
-    screen.getByLabelText("Short Description (required)"),
-    "A public-source roleplay frontend.",
-  );
+  await user.click(screen.getByLabelText("Lumiverse"));
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      project_type: "frontend",
-      source_url: "https://codeberg.org/example/frontend",
+      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     }),
   );
 });
 
-test("requires identity and documentation fields for an external Frontend", async () => {
+test("does not request metadata as a substitute for a repository", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.type(
     screen.getByLabelText("Project URL"),
-    "https://codeberg.org/example/frontend",
+    "https://example.com/frontend",
   );
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
   expect(openProjectSubmission).not.toHaveBeenCalled();
-  expect(screen.getByLabelText("Project Name (required)")).toHaveAttribute(
-    "aria-invalid",
-    "true",
-  );
-  expect(screen.getByLabelText("Short Description (required)")).toHaveAttribute(
-    "aria-invalid",
-    "true",
-  );
-  expect(
-    screen.getByText("External Frontends require a project name."),
-  ).toBeVisible();
-  expect(
-    screen.getByText("External Frontends require a short description."),
-  ).toBeVisible();
+  expect(screen.getByLabelText("Project Name (optional)")).toBeVisible();
+  expect(screen.getByLabelText("Short Description (optional)")).toBeVisible();
+  expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
 });
 
 test("allows a System Preset to be frontend-independent", async () => {
@@ -242,9 +234,7 @@ test("blocks a non-HTTPS Frontend source before GitHub handoff", async () => {
     "aria-invalid",
     "true",
   );
-  expect(
-    screen.getByText("Project URL must be a public HTTPS URL."),
-  ).toBeVisible();
+  expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
 });
 
 test("associates an invalid not-listed frontend URL with its field", async () => {

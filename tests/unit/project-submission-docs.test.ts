@@ -3,12 +3,14 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 
 test("documents project submission automation and recovery controls", async () => {
-  const [readme, contributorGuide, runbook, lifecycle] = await Promise.all([
-    readFile("README.md", "utf8"),
-    readFile("docs/contributing/submission-and-review.md", "utf8"),
-    readFile("docs/maintenance/operations-runbook.md", "utf8"),
-    readFile("docs/architecture/catalog-lifecycle.md", "utf8"),
-  ]);
+  const [readme, contributorGuide, runbook, lifecycle, issueForm] =
+    await Promise.all([
+      readFile("README.md", "utf8"),
+      readFile("docs/contributing/submission-and-review.md", "utf8"),
+      readFile("docs/maintenance/operations-runbook.md", "utf8"),
+      readFile("docs/architecture/catalog-lifecycle.md", "utf8"),
+      readFile(".github/ISSUE_TEMPLATE/01-project-submission.yml", "utf8"),
+    ]);
 
   for (const phrase of [
     "generate-project-submission.yml",
@@ -39,4 +41,11 @@ test("documents project submission automation and recovery controls", async () =
   expect(lifecycle).toContain("External System Presets");
   expect(readme).toContain("static submission builder");
   expect(readme).toContain("No account, database service, or\nruntime API");
+  for (const document of [readme, contributorGuide, issueForm]) {
+    expect(document).toContain(
+      "Frontends and Extensions require a public GitHub or Codeberg repository.",
+    );
+  }
+  expect(runbook).toContain("providers.codeberg");
+  expect(lifecycle).toContain("data/snapshots/codeberg/*.json");
 });

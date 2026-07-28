@@ -3,13 +3,17 @@ import type { ActivityScan } from "./github-inspector.mjs";
 import type { RepositoryObservation } from "./github-observer.mjs";
 
 export interface ContributorAccount {
+  provider: "github" | "codeberg";
   login: string;
   type: string;
 }
 
 export interface ContributorSnapshot {
   accounts: ContributorAccount[];
-  method?: "repository-contributors" | "merged-pull-requests";
+  method?:
+    | "repository-contributors"
+    | "merged-pull-requests"
+    | "commit-and-merged-pull-request-authors";
   baseline_completed_at?: string | null;
   scan?: {
     next_page: number;
@@ -27,7 +31,8 @@ export interface NormalizedLicense {
 }
 
 export interface RepositorySnapshot {
-  schema_version: 2;
+  schema_version: 3;
+  provider: "github" | "codeberg";
   project_id: string;
   repository: {
     id: number;
@@ -54,9 +59,9 @@ export interface RepositorySnapshot {
   activity_scan?: ActivityScan | null;
   activity: ActivityEvidence;
   community: {
-    stargazers_count: number;
+    stars_count: number;
     forks_count: number;
-    subscribers_count: number;
+    watchers_count: number;
     aggregate: number;
   };
   license: NormalizedLicense;
@@ -93,10 +98,13 @@ export function normalizedLicense(
 
 export function contributorSnapshotForSuccess(
   collection:
-    | ContributorAccount[]
+    | Array<Omit<ContributorAccount, "provider">>
     | {
-        accounts: ContributorAccount[];
-        method?: "repository-contributors" | "merged-pull-requests";
+        accounts: Array<Omit<ContributorAccount, "provider">>;
+        method?:
+          | "repository-contributors"
+          | "merged-pull-requests"
+          | "commit-and-merged-pull-request-authors";
         baselineCompletedAt?: string | null;
         refreshedAt?: string | null;
         scan?: {
@@ -106,6 +114,7 @@ export function contributorSnapshotForSuccess(
         } | null;
       },
   now: string,
+  provider: "github" | "codeberg",
 ): ContributorSnapshot;
 
 export function contributorSnapshotForFailure<T extends ContributorSnapshot>(
@@ -114,6 +123,7 @@ export function contributorSnapshotForFailure<T extends ContributorSnapshot>(
 ): T | undefined;
 
 export function snapshotFromObservation(input: {
+  provider: "github" | "codeberg";
   projectId: string;
   observation: RepositoryObservation;
   previous?: RepositorySnapshot | null;
@@ -122,14 +132,18 @@ export function snapshotFromObservation(input: {
 }): RepositorySnapshot;
 
 export function createInitialRepositorySnapshot(input: {
+  provider: "github" | "codeberg";
   projectId: string;
   observation: RepositoryObservation;
   activityInspection: ApiActivityInspection;
   contributors:
-    | ContributorAccount[]
+    | Array<Omit<ContributorAccount, "provider">>
     | {
-        accounts: ContributorAccount[];
-        method?: "repository-contributors" | "merged-pull-requests";
+        accounts: Array<Omit<ContributorAccount, "provider">>;
+        method?:
+          | "repository-contributors"
+          | "merged-pull-requests"
+          | "commit-and-merged-pull-request-authors";
         baselineCompletedAt?: string | null;
         refreshedAt?: string | null;
         scan?: {

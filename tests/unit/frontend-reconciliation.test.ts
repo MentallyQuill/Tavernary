@@ -174,6 +174,7 @@ test("classifies an unknown public source Frontend as a dependency", () => {
       {
         name: "New UI",
         canonicalUrl: "https://codeberg.org/example/new-ui",
+        repository: "example/new-ui",
       },
     ],
   });
@@ -235,7 +236,8 @@ test("proposes a normalized vocabulary entry for a new frontend", () => {
   const proposal = proposeFrontendVocabularyEntry({
     displayName: "Nova Frontend",
     sourceIdentity: {
-      kind: "github",
+      kind: "repository",
+      provider: "github",
       canonicalUrl: "https://github.com/NovaOrg/Nova",
       repository: "NovaOrg/Nova",
       repositoryId: 42,
@@ -260,7 +262,8 @@ test("adds the GitHub owner when a proposed frontend ID collides", () => {
   const proposal = proposeFrontendVocabularyEntry({
     displayName: "Lumiverse",
     sourceIdentity: {
-      kind: "github",
+      kind: "repository",
+      provider: "github",
       canonicalUrl: "https://github.com/OtherOrg/Lumiverse",
       repository: "OtherOrg/Lumiverse",
       repositoryId: 43,

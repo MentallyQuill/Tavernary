@@ -36,6 +36,7 @@ export function buildRefreshManifest(run) {
   const completedAt = iso(run.completedAt, "refresh completion");
   const outcomes = Array.isArray(run.outcomes) ? run.outcomes : [];
   const usage = run.usage ?? {};
+  const providerUsage = run.providers ?? {};
 
   for (const outcome of outcomes) {
     if (!RESULTS.has(outcome.result)) {
@@ -59,7 +60,7 @@ export function buildRefreshManifest(run) {
     entry.source_health ?? entry.sourceHealth ?? null;
 
   return {
-    schema_version: 1,
+    schema_version: 2,
     mode: run.mode,
     started_at: startedAt,
     completed_at: completedAt,
@@ -100,6 +101,44 @@ export function buildRefreshManifest(run) {
           : nonnegative(usage.graphqlRemaining),
       rest_requests: nonnegative(usage.restRequests),
     },
+    providers: Object.fromEntries(
+      ["github", "codeberg"].map((provider) => {
+        const providerOutcomes = outcomes.filter(
+          (outcome) => (outcome.provider ?? "github") === provider,
+        );
+        const providerState =
+          providerUsage[provider] ??
+          (provider === "github"
+            ? {
+                requests:
+                  nonnegative(usage.graphqlRequests) +
+                  nonnegative(usage.restRequests),
+                remaining: usage.graphqlRemaining,
+              }
+            : {});
+        return [
+          provider,
+          {
+            checked: providerOutcomes.length,
+            changed: count(
+              providerOutcomes,
+              ({ snapshotChanged, result }) =>
+                result !== "failed" && Boolean(snapshotChanged),
+            ),
+            failed: count(
+              providerOutcomes,
+              ({ result }) => result === "failed",
+            ),
+            requests: nonnegative(providerState.requests),
+            remaining:
+              providerState.remaining === null ||
+              providerState.remaining === undefined
+                ? null
+                : nonnegative(providerState.remaining),
+          },
+        ];
+      }),
+    ),
     duration_ms: Math.max(
       0,
       new Date(completedAt).getTime() - new Date(startedAt).getTime(),

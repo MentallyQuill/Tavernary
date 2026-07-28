@@ -14,7 +14,7 @@ const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
 
 const frontendEligibility =
-  "Frontends must link to publicly accessible source code on GitHub or an equivalent source host. The code must be visible without signing in; an open-source license is not required.";
+  "Frontends and Extensions require a public GitHub or Codeberg repository.";
 
 export interface SubmissionFrontendOption {
   id: string;
@@ -48,23 +48,33 @@ function publicHttpsUrl(value: string): URL | null {
   }
 }
 
-function isGithubRepositoryUrl(value: string): boolean {
+function repositoryProviderFromUrl(
+  value: string,
+): "github" | "codeberg" | null {
   const url = publicHttpsUrl(value);
-  if (!url || url.hostname.toLowerCase() !== "github.com") return false;
+  if (!url || url.search || url.hash) return null;
+  const hostname = url.hostname.toLowerCase();
+  const provider =
+    hostname === "github.com"
+      ? "github"
+      : hostname === "codeberg.org"
+        ? "codeberg"
+        : null;
+  if (!provider) return null;
   const parts = url.pathname
     .replace(/\/+$/u, "")
     .replace(/\.git$/iu, "")
     .split("/")
     .filter(Boolean);
-  return parts.length === 2;
+  return parts.length === 2 ? provider : null;
 }
 
 function requiresExternalMetadata(
   projectType: ProjectSubmissionType,
   sourceUrl: string,
 ) {
-  if (!["frontend", "preset"].includes(projectType)) return false;
-  return Boolean(sourceUrl.trim()) && !isGithubRepositoryUrl(sourceUrl);
+  if (projectType !== "preset") return false;
+  return Boolean(sourceUrl.trim()) && !repositoryProviderFromUrl(sourceUrl);
 }
 
 function manifestErrorField(message: string): SubmissionField {
@@ -226,13 +236,10 @@ export function ProjectSubmissionBuilder({
       addError("project-url", "Project URL must be a public HTTPS URL.");
     } else if (
       sourceUrl &&
-      projectType === "extension" &&
-      !isGithubRepositoryUrl(sourceUrl)
+      (projectType === "frontend" || projectType === "extension") &&
+      !repositoryProviderFromUrl(sourceUrl)
     ) {
-      addError(
-        "project-url",
-        "Extensions require an exact public GitHub owner/repository URL.",
-      );
+      addError("project-url", frontendEligibility);
     }
     if (showFrontendFields && includeOtherFrontend) {
       if (!otherFrontendName.trim()) {
@@ -322,7 +329,7 @@ export function ProjectSubmissionBuilder({
             type="url"
             value={sourceUrl}
             onChange={(event) => setSourceUrl(event.target.value)}
-            placeholder="https://github.com/owner/repository"
+            placeholder="https://github.com/owner/repository or https://codeberg.org/owner/repository"
             required
             aria-invalid={Boolean(errorFor("project-url"))}
             aria-describedby={
@@ -332,11 +339,9 @@ export function ProjectSubmissionBuilder({
             }
           />
           <p className="submission-hint" id="project-url-hint">
-            {projectType === "frontend"
+            {projectType === "frontend" || projectType === "extension"
               ? frontendEligibility
-              : projectType === "extension"
-                ? "Extensions require an exact public GitHub owner/repository URL."
-                : "System Presets may use a stable public HTTPS source URL."}
+              : "System Presets may use a stable public HTTPS source URL."}
           </p>
           <InlineError
             id="project-url-error"

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "qvink-sillytavern-messagesummarize",
   "repository": {
     "id": 901076086,
@@ -47,9 +47,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 158,
+    "stars_count": 158,
     "forks_count": 23,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 183
   },
   "license": {
@@ -61,13 +61,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "qvink", "type": "User" },
-      { "login": "RivelleDays", "type": "User" }
+      { "login": "qvink", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

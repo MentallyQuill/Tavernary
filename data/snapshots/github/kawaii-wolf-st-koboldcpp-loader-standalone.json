@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "kawaii-wolf-st-koboldcpp-loader-standalone",
   "repository": {
     "id": 949765337,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "42c283b6630bfa5380918e00a9762e19881ee59b"
   },
   "community": {
-    "stargazers_count": 3,
+    "stars_count": 3,
     "forks_count": 2,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 7
   },
   "license": {
@@ -42,15 +42,16 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "CasualAutopsy", "type": "User" },
-      { "login": "kawaii-wolf", "type": "User" },
-      { "login": "Oninaig", "type": "User" }
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "CasualAutopsy", "type": "User", "provider": "github" },
+      { "login": "kawaii-wolf", "type": "User", "provider": "github" },
+      { "login": "Oninaig", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

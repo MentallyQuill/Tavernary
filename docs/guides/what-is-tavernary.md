@@ -20,7 +20,7 @@ V1 uses three public project kinds:
 - **System Presets** — reusable configuration or prompting resources published
   by their creators.
 
-Frontends and Extensions normally require a public GitHub repository. This
+Frontends and Extensions require a public GitHub or Codeberg repository. This
 gives Tavernary a stable canonical destination and allows machine-verifiable
 repository facts to be refreshed. System Presets may instead link to another
 stable public HTTPS source page.

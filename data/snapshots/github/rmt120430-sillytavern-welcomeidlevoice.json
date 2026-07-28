@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "rmt120430-sillytavern-welcomeidlevoice",
   "repository": {
     "id": 1116424091,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "a910f6a311eaefde8c823deec2feeb2c24e79a0f"
   },
   "community": {
-    "stargazers_count": 0,
+    "stars_count": 0,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "RMT120430", "type": "User" }],
+    "accounts": [
+      { "login": "RMT120430", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

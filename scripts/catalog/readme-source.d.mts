@@ -59,6 +59,15 @@ export function loadReadmeSource(
   snapshot: Record<string, unknown> | undefined,
   options?: {
     github?: GithubClient;
+    providers?: Record<
+      string,
+      {
+        readRootReadme(input: {
+          repository: string;
+          ref: string;
+        }): Promise<Record<string, unknown> | null>;
+      }
+    >;
     validateSnapshot?: (snapshot: unknown) => boolean;
   },
 ): Promise<ReadmeSource>;

@@ -11,11 +11,13 @@ Canonical records live in `data/registry/projects/*.json`.
 - Mutated only by PRs or approved workflows
 - `source.type` determines source behavior:
   - `github` for regular frontends and extensions
+  - `codeberg` for regular frontends and extensions hosted on Codeberg
   - `github-organization` for source collections
   - `url` for curated preset-like entries
 - `enrichment_policy` is canonical maintainer-owned rollout eligibility:
   - `automatic` when the source has a registered automatic enrichment adapter
-    (currently GitHub repositories and canonical Reddit post permalinks)
+    (currently GitHub repositories, Codeberg repositories, and canonical Reddit
+    post permalinks)
   - `manual` for unsupported external URLs, organization collections, and
     documented repository exceptions
 - Manual records require `enrichment_note`; automatic records forbid it.
@@ -24,18 +26,22 @@ Canonical records live in `data/registry/projects/*.json`.
 
 ## Layer 2 - evidence snapshots
 
-Machine evidence lives in `data/snapshots/github/*.json`.
+Machine evidence lives in `data/snapshots/github/*.json` and
+`data/snapshots/codeberg/*.json`.
 
 - Schema: `data/schemas/repository-snapshot.schema.json`
-- Schema version: `2`
+- Schema version: `3`
 - Refreshed by `npm run catalog:refresh`.
-- Contains: repo identity+head, linked GitHub contributor identities, community
-  counts, license, activity evidence, API refresh timestamps, and health state.
+- Contains: provider-qualified repository identity and head, linked
+  provider-local contributor identities, neutral community counts, license,
+  activity evidence, API refresh timestamps, and health state.
 
-Repository snapshot v2 may contain generated `contributors` facts: each linked
-GitHub account's `login` and account `type`, the last successful contributor
-refresh timestamp, and contributor-specific staleness. Absence means contributor
-collection is pending, not that the repository has an empty contributor set.
+Repository snapshot v3 may contain generated `contributors` facts: each linked
+account's provider, login, and account type, the last successful contributor
+refresh timestamp, and contributor-specific staleness. Codeberg contributor
+evidence is derived from bounded recent commit and merged-pull-request scans.
+Absence means contributor collection is pending, not that the repository has an
+empty contributor set.
 
 ## Layer 3 - generated runtime catalog
 
@@ -53,9 +59,10 @@ Generated project objects expose `sourceStatus`:
 - `pending`: no snapshot yet
 - `healthy`: snapshot exists and refresh is current
 - `stale`: snapshot existed but is retaining prior values due to recoverable failure
-- `manual`: non-GitHub (`url`) sources and curated organization entries
+- `manual`: non-repository (`url`) sources and curated organization entries
 
-`manual` status also covers any source that is intentionally excluded from GitHub refresh automation.
+`manual` status also covers any source that is intentionally excluded from
+repository refresh automation.
 
 ## Enrichment source contract
 
@@ -90,7 +97,8 @@ A registry record is visible when:
 
 ## Repository identity flow
 
-1. New GitHub-backed record can start with `repository_id: null`.
+1. New GitHub-backed record can start with `repository_id: null`; Codeberg
+   admission resolves the immutable ID before review.
 2. Successful refresh can establish repository identity.
 3. `npm run catalog:backfill-identities -- --write` copies identity into registry.
 4. `identity-change` requires curator repair before re-publication.

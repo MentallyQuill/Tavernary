@@ -10,8 +10,20 @@ const redditHosts = new Set([
 ]);
 export const REDDIT_SOURCE_HOSTS = new Set([...redditHosts, "redd.it"]);
 
-function githubIdentity(url) {
-  if (url.hostname.toLowerCase() !== "github.com") return null;
+const repositoryHosts = new Map([
+  ["github.com", "github"],
+  ["codeberg.org", "codeberg"],
+]);
+
+function repositoryIdentity(url) {
+  const provider = repositoryHosts.get(url.hostname.toLowerCase());
+  if (!provider) return null;
+  const providerLabel = provider === "github" ? "GitHub" : "Codeberg";
+  if (url.username || url.password || url.search || url.hash) {
+    throw new Error(
+      `${providerLabel} project URLs must identify exactly one owner/repository.`,
+    );
+  }
   const parts = url.pathname
     .replace(/\/+$/u, "")
     .replace(/\.git$/iu, "")
@@ -19,18 +31,23 @@ function githubIdentity(url) {
     .filter(Boolean);
   if (parts.length !== 2) {
     throw new Error(
-      "GitHub project URLs must identify exactly one owner/repository.",
+      `${providerLabel} project URLs must identify exactly one owner/repository.`,
     );
   }
   const [owner, name] = parts;
   return {
-    kind: "github",
-    canonicalUrl: `https://github.com/${owner}/${name}`,
+    kind: "repository",
+    provider,
+    canonicalUrl: `https://${url.hostname.toLowerCase()}/${owner}/${name}`,
     repository: `${owner}/${name}`,
     repositoryId: null,
     owner,
     name,
   };
+}
+
+export function isRepositoryIdentity(identity) {
+  return identity?.kind === "repository";
 }
 
 function redditIdentity(url) {
@@ -97,10 +114,15 @@ function externalIdentity(url) {
 
 export function parseSourceIdentity(value) {
   const url = new URL(value);
-  if (url.protocol !== "https:" || url.username || url.password) {
+  if (url.protocol !== "https:") {
     throw new Error("Project source must be a public HTTPS URL.");
   }
-  return githubIdentity(url) ?? redditIdentity(url) ?? externalIdentity(url);
+  const repository = repositoryIdentity(url);
+  if (repository) return repository;
+  if (url.username || url.password) {
+    throw new Error("Project source must be a public HTTPS URL.");
+  }
+  return redditIdentity(url) ?? externalIdentity(url);
 }
 
 export async function resolveRedditShareIdentity(identity, options) {
@@ -130,8 +152,10 @@ export async function resolveSourceIdentity(identity, options = {}) {
       probe: options.probe ?? safeProbe,
     });
   }
-  if (identity.kind !== "github" || !options.resolveGithub) return identity;
-  const resolved = await options.resolveGithub(identity.repository);
+  if (!isRepositoryIdentity(identity) || !options.resolveRepository) {
+    return identity;
+  }
+  const resolved = await options.resolveRepository(identity);
   if (
     !resolved ||
     !Number.isInteger(resolved.id) ||
@@ -139,11 +163,16 @@ export async function resolveSourceIdentity(identity, options = {}) {
     typeof resolved.owner !== "string" ||
     typeof resolved.name !== "string"
   ) {
-    throw new Error("GitHub repository resolution returned invalid identity.");
+    throw new Error(
+      `${identity.provider === "github" ? "GitHub" : "Codeberg"} repository resolution returned invalid identity.`,
+    );
   }
+  const hostname =
+    identity.provider === "github" ? "github.com" : "codeberg.org";
   return {
-    kind: "github",
-    canonicalUrl: `https://github.com/${resolved.owner}/${resolved.name}`,
+    kind: "repository",
+    provider: identity.provider,
+    canonicalUrl: `https://${hostname}/${resolved.owner}/${resolved.name}`,
     repository: `${resolved.owner}/${resolved.name}`,
     repositoryId: resolved.id,
     owner: resolved.owner,
@@ -157,11 +186,13 @@ export function sourceDuplicateKeys(identity) {
       "Reddit share identity must be resolved before comparison.",
     );
   }
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity)) {
     return [
       `url:${identity.canonicalUrl.toLowerCase()}`,
-      `github-repository:${identity.repository.toLowerCase()}`,
-      ...(identity.repositoryId ? [`github-id:${identity.repositoryId}`] : []),
+      `${identity.provider}-repository:${identity.repository.toLowerCase()}`,
+      ...(identity.repositoryId
+        ? [`${identity.provider}-id:${identity.repositoryId}`]
+        : []),
     ];
   }
   if (identity.kind === "reddit") {
@@ -182,7 +213,7 @@ export function projectSubmissionTitle(identity) {
   if (identity.kind === "reddit-share") {
     throw new Error("Reddit share identity must be resolved before titling.");
   }
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity)) {
     return `${projectSubmissionPrefix} ${identity.repository}`;
   }
   if (identity.kind === "reddit") {

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "LICENSE.md",
+    "path": "LICENSE.md",
+    "type": "file"
+  },
+  {
+    "name": "README.md",
+    "path": "README.md",
+    "type": "file"
+  },
+  {
+    "name": "src",
+    "path": "src",
+    "type": "dir"
+  }
+]

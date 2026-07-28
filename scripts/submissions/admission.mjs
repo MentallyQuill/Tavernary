@@ -1,4 +1,7 @@
-import { sourceDuplicateKeys } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  sourceDuplicateKeys,
+} from "./source-identity.mjs";
 
 export const submissionQueueLabels = [
   "needs-maintainer-review",
@@ -76,18 +79,21 @@ export function evaluateProjectSubmission(input) {
   }
   if (
     input.manifest.project_type === "extension" &&
-    input.identity.kind !== "github"
+    !isRepositoryIdentity(input.identity)
   ) {
     return {
       status: "needs-information",
-      errors: ["Extensions require a public GitHub repository."],
+      errors: ["Extensions require a public GitHub or Codeberg repository."],
       suggestions: [],
       frontendDependencies: [],
     };
   }
   if (
     input.manifest.project_type === "frontend" &&
-    !["github", "external"].includes(input.identity.kind)
+    ![
+      isRepositoryIdentity(input.identity),
+      input.identity.kind === "external",
+    ].some(Boolean)
   ) {
     return {
       status: "needs-information",
@@ -97,12 +103,12 @@ export function evaluateProjectSubmission(input) {
     };
   }
   if (
-    input.identity.kind === "github" &&
+    isRepositoryIdentity(input.identity) &&
     input.repository?.visibility !== "public"
   ) {
     return {
       status: "needs-information",
-      errors: ["GitHub project repositories must be public and accessible."],
+      errors: ["Project repositories must be public and accessible."],
       suggestions: [],
       frontendDependencies: [],
     };
@@ -149,7 +155,7 @@ export function evaluateProjectSubmission(input) {
   const warnings = [
     ...(input.warnings ?? []),
     ...input.frontendResolution.warnings,
-    ...(input.repository?.archived ? ["GitHub repository is archived."] : []),
+    ...(input.repository?.archived ? ["Repository is archived."] : []),
     ...(input.forkDependency?.attention === "cycle"
       ? [
           "Fork ancestry contains a repeated repository ID and requires maintainer review.",

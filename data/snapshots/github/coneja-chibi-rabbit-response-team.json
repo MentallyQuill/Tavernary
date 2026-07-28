@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-rabbit-response-team",
   "repository": {
     "id": 1081026644,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "45097b492f80232aa9e78fd6a4feced1ba1b2df6"
   },
   "community": {
-    "stargazers_count": 26,
+    "stars_count": 26,
     "forks_count": 5,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 31
   },
   "license": {
@@ -47,8 +47,8 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Coneja-Chibi", "type": "User" },
-      { "login": "DrMagisto", "type": "User" }
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -56,5 +56,6 @@
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

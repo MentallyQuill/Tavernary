@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mentallyquill-saga",
   "repository": {
     "id": 1258773435,
@@ -58,9 +58,9 @@
     "evidence_head_sha": "2294dd1ec61fee33e49eede297871ec0fcaa99e1"
   },
   "community": {
-    "stargazers_count": 21,
+    "stars_count": 21,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 22
   },
   "license": {
@@ -73,14 +73,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "MentallyQuill", "type": "User" },
-      { "login": "claude", "type": "User" },
-      { "login": "0cyris", "type": "User" }
+      { "login": "MentallyQuill", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "0cyris", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

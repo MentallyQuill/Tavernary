@@ -15,7 +15,8 @@ const record = {
 };
 
 const healthy = {
-  schema_version: 2,
+  schema_version: 3,
+  provider: "github",
   project_id: "fixture",
   source_health: "healthy",
   stale_since: null,
@@ -34,12 +35,59 @@ const healthy = {
   },
 };
 
+const codebergRecord = {
+  id: "targren-lumiverse-swipescrubber",
+  source: {
+    type: "codeberg",
+    repository: "targren/Lumiverse-SwipeScrubber",
+    repository_id: 1699613,
+  },
+};
+
+const codebergSnapshot = {
+  ...healthy,
+  schema_version: 3,
+  provider: "codeberg",
+  project_id: codebergRecord.id,
+  repository: {
+    ...healthy.repository,
+    id: 1699613,
+    owner: "targren",
+    name: "Lumiverse-SwipeScrubber",
+    url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+  },
+};
+
 const validateSnapshot = (value: unknown) =>
-  (value as { schema_version?: number })?.schema_version === 2;
+  (value as { schema_version?: number })?.schema_version === 3;
 
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
+});
+
+test("loads a Codeberg README through the repository provider", async () => {
+  const readRootReadme = vi.fn().mockResolvedValue({
+    path: "README.md",
+    content: Buffer.from("# Swipe Scrubber").toString("base64"),
+    encoding: "base64",
+  });
+  const result = await loadReadmeSource(codebergRecord, codebergSnapshot, {
+    validateSnapshot: (value) =>
+      (value as { schema_version?: number })?.schema_version === 3,
+    providers: {
+      codeberg: { readRootReadme },
+    },
+  });
+  expect(readRootReadme).toHaveBeenCalledWith({
+    repository: "targren/Lumiverse-SwipeScrubber",
+    ref: codebergSnapshot.repository.head_sha,
+  });
+  expect(result).toMatchObject({
+    status: "ready",
+    sourceKind: "readme",
+    readmePath: "README.md",
+  });
 });
 
 test.each([

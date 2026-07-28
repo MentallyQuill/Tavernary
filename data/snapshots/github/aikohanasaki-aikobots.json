@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-aikobots",
   "repository": {
     "id": 998992781,
@@ -94,9 +94,9 @@
     "evidence_head_sha": "057f1aa998e1d896af760d91785221b9f61c6a8c"
   },
   "community": {
-    "stargazers_count": 17,
+    "stars_count": 17,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 18
   },
   "license": {
@@ -109,13 +109,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "aikohanasaki", "type": "User" },
-      { "login": "LeRobber", "type": "User" }
+      { "login": "aikohanasaki", "type": "User", "provider": "github" },
+      { "login": "LeRobber", "type": "User", "provider": "github" }
     ],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

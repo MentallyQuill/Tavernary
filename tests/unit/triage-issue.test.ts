@@ -176,7 +176,8 @@ test("updates a generic title and records the generated title marker", () => {
         additional_context: null,
       },
       identity: {
-        kind: "github",
+        kind: "repository",
+        provider: "github",
         canonicalUrl: "https://github.com/owner/repo",
         repository: "owner/repo",
         repositoryId: 42,
@@ -291,7 +292,8 @@ test("links the existing project and closes duplicate issues", () => {
 
 test("closes a later in-flight duplicate and links its surviving review", () => {
   const identity = {
-    kind: "github" as const,
+    kind: "repository" as const,
+    provider: "github" as const,
     canonicalUrl: "https://github.com/owner/repo",
     repository: "owner/repo",
     repositoryId: 42,
@@ -341,7 +343,8 @@ test("closes a later in-flight duplicate and links its surviving review", () => 
 
 test("links only the surviving issue when its PR has not started", () => {
   const identity = {
-    kind: "github" as const,
+    kind: "repository" as const,
+    provider: "github" as const,
     canonicalUrl: "https://github.com/owner/repo",
     repository: "owner/repo",
     repositoryId: 42,

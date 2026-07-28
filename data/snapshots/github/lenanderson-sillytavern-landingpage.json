@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-landingpage",
   "repository": {
     "id": 733163811,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "62e39827e666373369822fbbdd7c2599a19fafcb"
   },
   "community": {
-    "stargazers_count": 34,
+    "stars_count": 34,
     "forks_count": 6,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 43
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "LenAnderson", "type": "User" }],
+    "accounts": [
+      { "login": "LenAnderson", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

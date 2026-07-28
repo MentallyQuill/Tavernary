@@ -54,7 +54,7 @@ same rule.
    `submission-declined`, closes it as not planned, and safely removes the
    unchanged automation branch.
 
-If the submitted GitHub repository is a fork, Tavernary reviews its immediate
+If the submitted repository is a fork, Tavernary reviews its immediate
 upstream first. Automation reuses an existing open Project submission for that
 repository or creates a normal system-authored submission with explicit fork
 ancestry provenance. The downstream issue remains open with
@@ -83,11 +83,13 @@ upstream is a normal Project submission and PR; automation never auto-approves
 it. Cycles and ancestry beyond 16 repositories stop at
 `needs-maintainer-review`.
 
-Extensions require an exact public GitHub repository. Frontends require
-publicly accessible source code on GitHub or an equivalent source host; the
-code must be visible without signing in, but an open-source license is not
-required. Non-GitHub Frontends and external System Presets remain manually
-curated and use paused source refresh. Selecting **Other or not listed**
+Frontends and Extensions require a public GitHub or Codeberg repository.
+The code must be visible without signing in, but an open-source license is not
+required. External System Presets remain manually curated and use paused source
+refresh. Duplicate repository identity is provider-local: a GitHub repository
+and a Codeberg repository are not treated as mirrors unless a maintainer curates
+that relationship. Arbitrary Forgejo and Gitea hosts are not accepted.
+Selecting **Other or not listed**
 intentionally pauses admission until that Frontend can be reconciled with the
 current catalog vocabulary.
 

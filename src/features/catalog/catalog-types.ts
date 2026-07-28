@@ -25,13 +25,17 @@ export interface CatalogLabel {
   description: string;
 }
 
-export interface CatalogContributor {
+export interface CatalogAccount {
+  provider: "github" | "codeberg";
   login: string;
+}
+
+export interface CatalogContributor extends CatalogAccount {
   botOrAi: boolean;
 }
 
 export interface CatalogAttribution {
-  owner: string;
+  owner: CatalogAccount;
   contributors: CatalogContributor[];
   humanContributorCount: number;
   status: "current" | "partial" | "stale" | "pending";
@@ -70,7 +74,7 @@ export interface CatalogProject {
   community: {
     stars: number;
     forks: number;
-    subscribers: number;
+    watchers: number;
     aggregate: number;
   } | null;
   repositorySizeKb: number | null;
@@ -91,7 +95,7 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 2;
+  schemaVersion: 3;
   generatedAt: string;
   projects: CatalogProject[];
   kits: import("@/features/kits/kit-types").CatalogKit[];

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mechamarmot-sillytavern-pyrunner",
   "repository": {
     "id": 1114642314,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "78d8f55eb22b5892bd2d76d090fb9f19f1f83fb9"
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": {
@@ -41,11 +41,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "curtisavidacct", "type": "User" }],
+    "accounts": [
+      { "login": "curtisavidacct", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

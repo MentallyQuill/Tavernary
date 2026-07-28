@@ -10,7 +10,7 @@ Each record includes:
 
 - `schema_version`
 - `id`, `name`, `kind`, `summary`
-- `source` (`github` | `github-organization` | `url`)
+- `source` (`github` | `codeberg` | `github-organization` | `url`)
 - `frontends` and `capabilities`
 - `primary_function`
 - `metadata_status` (`provisional` or `curated`)
@@ -41,6 +41,7 @@ Project kinds:
 4. A generated project can begin as curated or provisional.
 5. `source` must satisfy rules:
    - `github` requires `repository` and optional `repository_id` (nullable before identity confirmed).
+   - `codeberg` requires `repository` and a resolved `repository_id`.
    - `github-organization` identifies collection-style sources.
    - `url` is restricted to preset/source-like entries.
 6. A record can be in `published` visibility and still be provisional for
@@ -57,8 +58,9 @@ when a registered adapter recognizes the canonical source.
 
 ## Enrichment eligibility and durable scope
 
-Regular GitHub repositories default to `enrichment_policy: automatic`,
-including GitHub-hosted presets. Canonical Reddit post sources also default to
+Regular GitHub and Codeberg repositories default to
+`enrichment_policy: automatic`, including repository-hosted presets. Canonical
+Reddit post sources also default to
 automatic because Tavernary has a bounded allowlisted adapter for them.
 Unsupported external URLs and GitHub organization collections default to
 `manual` with a required reason. A maintainer may also lock an otherwise
@@ -85,10 +87,11 @@ Arbitrary external URLs are never fetched automatically.
 
 ## Source-health and snapshot layer
 
-Snapshot records in `data/snapshots/github/*.json` include:
+Snapshot records in `data/snapshots/github/*.json` and
+`data/snapshots/codeberg/*.json` include:
 
 - `source_health`: `healthy|unavailable|identity-change|deleted|private`
-- GitHub's observed `fork` flag and immediate `parent` repository identity
+- the provider's observed `fork` flag and immediate `parent` repository identity
 - `activity` evidence and timestamps
 - `community` aggregate
 - `license` and repository metadata

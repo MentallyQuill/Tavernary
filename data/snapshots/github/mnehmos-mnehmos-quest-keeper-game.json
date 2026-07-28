@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mnehmos-mnehmos-quest-keeper-game",
   "repository": {
     "id": 1101728981,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "84a067d667bef275f3bfc0381ab9272bdc9f04e8"
   },
   "community": {
-    "stargazers_count": 12,
+    "stars_count": 12,
     "forks_count": 6,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 20
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,8 +37,8 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Mnehmos", "type": "User" },
-      { "login": "Vario2050", "type": "User" }
+      { "login": "Mnehmos", "type": "User", "provider": "github" },
+      { "login": "Vario2050", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -46,5 +46,6 @@
     "refreshed_at": "2026-07-27T21:28:32.641Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

@@ -1,6 +1,7 @@
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { submissionBranch } from "./project-submission-pr.mjs";
 import {
+  isRepositoryIdentity,
   parseSourceIdentity,
   resolveSourceIdentity,
   sourceDuplicateKeys,
@@ -35,10 +36,10 @@ async function candidateIdentity(issue, { request, probe }) {
   }
   const structural = parseSourceIdentity(parsed.manifest.source_url);
   try {
-    if (structural.kind === "github") {
+    if (isRepositoryIdentity(structural) && structural.provider === "github") {
       const identity = await resolveSourceIdentity(structural, {
-        resolveGithub: async (repository) => {
-          const observed = await request(`/repos/${repository}`);
+        resolveRepository: async (candidate) => {
+          const observed = await request(`/repos/${candidate.repository}`);
           return {
             id: observed.id,
             owner: observed.owner.login,

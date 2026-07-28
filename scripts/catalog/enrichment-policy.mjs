@@ -6,7 +6,7 @@ const URL_NOTE = "External URL source; requires manual curation.";
 const ORGANIZATION_NOTE = "Multi-repository suite; requires manual curation.";
 
 export function automaticEnrichmentAdapter(source) {
-  if (source?.type === "github") return "github";
+  if (["github", "codeberg"].includes(source?.type)) return source.type;
   if (source?.type !== "url" || typeof source.url !== "string") return null;
   try {
     return parseSourceIdentity(source.url).kind === "reddit" ? "reddit" : null;

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mekineer-com-openalma",
   "repository": {
     "id": 1190054879,
@@ -72,9 +72,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 6
   },
   "license": {
@@ -86,13 +86,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "mekineer-com", "type": "User" },
-      { "login": "7henix", "type": "User" }
+      { "login": "mekineer-com", "type": "User", "provider": "github" },
+      { "login": "7henix", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

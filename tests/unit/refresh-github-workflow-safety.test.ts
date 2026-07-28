@@ -24,6 +24,7 @@ test("stages only snapshots and the refresh manifest", async () => {
   const source = await readFile(refreshPath, "utf8");
 
   expect(source).toContain("git add data/snapshots/github/*.json");
+  expect(source).toContain("git add data/snapshots/codeberg/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).not.toMatch(/git add (?:data\/registry|data\/catalog)/);
 });

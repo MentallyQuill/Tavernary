@@ -59,7 +59,7 @@ function project(
       dormant: false,
     },
     latestReleaseAt: null,
-    community: { stars: 10, forks: 2, subscribers: 1, aggregate: 13 },
+    community: { stars: 10, forks: 2, watchers: 1, aggregate: 13 },
     repositorySizeKb: 100,
     license: {
       status: "osi-approved",
@@ -261,11 +261,15 @@ describe("catalog selectors", () => {
     const attributed = project("directive", {
       searchableText: "directive mentallyquill alice claude dependabot[bot]",
       attribution: {
-        owner: "MentallyQuill",
+        owner: { provider: "github", login: "MentallyQuill" },
         contributors: [
-          { login: "alice", botOrAi: false },
-          { login: "claude", botOrAi: true },
-          { login: "dependabot[bot]", botOrAi: true },
+          { provider: "github", login: "alice", botOrAi: false },
+          { provider: "github", login: "claude", botOrAi: true },
+          {
+            provider: "github",
+            login: "dependabot[bot]",
+            botOrAi: true,
+          },
         ],
         humanContributorCount: 1,
         status: "current",
@@ -336,7 +340,7 @@ describe("catalog selectors", () => {
           latestSourceActivityAt: "2026-07-21T00:00:00Z",
           activeWeeks12: 1,
         },
-        community: { stars: 1, forks: 0, subscribers: 0, aggregate: 1 },
+        community: { stars: 1, forks: 0, watchers: 0, aggregate: 1 },
       }),
       project("strong", {
         name: "alpha",
@@ -345,7 +349,7 @@ describe("catalog selectors", () => {
           latestSourceActivityAt: "2026-07-19T00:00:00Z",
           activeWeeks12: 6,
         },
-        community: { stars: 20, forks: 0, subscribers: 0, aggregate: 20 },
+        community: { stars: 20, forks: 0, watchers: 0, aggregate: 20 },
       }),
       project("manual", {
         name: "Beta",

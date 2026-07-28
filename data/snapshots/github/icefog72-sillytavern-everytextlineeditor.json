@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "icefog72-sillytavern-everytextlineeditor",
   "repository": {
     "id": 1240388057,
@@ -38,9 +38,9 @@
     "evidence_head_sha": "290870688da47363a4705284ff404bb6d56c7e4d"
   },
   "community": {
-    "stargazers_count": 19,
+    "stars_count": 19,
     "forks_count": 0,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 21
   },
   "license": {
@@ -52,11 +52,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "IceFog72", "type": "User" }],
+    "accounts": [{ "login": "IceFog72", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bmen25124-sillytavern-character-creator",
   "repository": {
     "id": 956654271,
@@ -32,9 +32,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 162,
+    "stars_count": 162,
     "forks_count": 22,
-    "subscribers_count": 4,
+    "watchers_count": 4,
     "aggregate": 188
   },
   "license": {
@@ -46,14 +46,15 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "bmen25124", "type": "User" },
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "TomMalufe", "type": "User" }
+      { "login": "bmen25124", "type": "User", "provider": "github" },
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "TomMalufe", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

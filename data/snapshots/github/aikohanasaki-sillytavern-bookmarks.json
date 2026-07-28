@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-sillytavern-bookmarks",
   "repository": {
     "id": 1064216842,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "78286fe25b45901abd8f64a956c7e120a0413627"
   },
   "community": {
-    "stargazers_count": 19,
+    "stars_count": 19,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 19
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "aikohanasaki", "type": "User" }],
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

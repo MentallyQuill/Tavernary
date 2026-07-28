@@ -1,5 +1,6 @@
 import { defaultEnrichmentFields } from "../catalog/enrichment-policy.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
+import { isRepositoryIdentity } from "./source-identity.mjs";
 
 function slug(value) {
   return value
@@ -11,7 +12,7 @@ function slug(value) {
 }
 
 function projectId(identity) {
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity)) {
     return `${slug(identity.owner)}-${slug(identity.name)}`;
   }
   if (identity.kind === "reddit") return `reddit-${slug(identity.postId)}`;
@@ -20,9 +21,9 @@ function projectId(identity) {
 }
 
 function projectSource(identity, observation) {
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity)) {
     return {
-      type: "github",
+      type: identity.provider,
       repository: identity.repository,
       repository_id: observation.repository.id,
     };
@@ -71,14 +72,14 @@ export async function draftProjectRecord(input) {
   const { admitted, observation, snapshot, now } = input;
   const identity = admitted.identity;
   const id = projectId(identity);
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity)) {
     if (
       !observation ||
       !Number.isInteger(identity.repositoryId) ||
       identity.repositoryId !== observation.repository.id
     ) {
       throw new Error(
-        "GitHub observation does not match the permanent repository identity.",
+        "Repository observation does not match the permanent repository identity.",
       );
     }
     if (
@@ -87,7 +88,7 @@ export async function draftProjectRecord(input) {
         snapshot.repository.id !== observation.repository.id)
     ) {
       throw new Error(
-        "GitHub snapshot does not match the permanent repository identity.",
+        "Repository snapshot does not match the permanent repository identity.",
       );
     }
   }
@@ -154,7 +155,7 @@ export async function draftProjectRecord(input) {
     catalog_cohort: "standard",
     visibility: "published",
     visibility_reason: null,
-    refresh_policy: identity.kind === "github" ? "automatic" : "paused",
+    refresh_policy: isRepositoryIdentity(identity) ? "automatic" : "paused",
     ...defaultEnrichmentFields(source),
   };
 
@@ -172,16 +173,15 @@ export async function draftProjectRecord(input) {
       additional_context: admitted.manifest.additional_context,
       preset_compatibility: admitted.manifest.preset_compatibility,
     },
-    observed:
-      identity.kind === "github"
-        ? {
-            repository: identity.repository,
-            repository_id: observation.repository.id,
-            canonical_url: identity.canonicalUrl,
-            archived: observation.repository.archived,
-            description: observation.repository.description,
-          }
-        : { canonical_url: identity.canonicalUrl },
+    observed: isRepositoryIdentity(identity)
+      ? {
+          repository: identity.repository,
+          repository_id: observation.repository.id,
+          canonical_url: identity.canonicalUrl,
+          archived: observation.repository.archived,
+          description: observation.repository.description,
+        }
+      : { canonical_url: identity.canonicalUrl },
     inferred: {
       project_id: id,
       name,

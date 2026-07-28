@@ -23,6 +23,24 @@ describe("enrichment policy", () => {
     });
   });
 
+  test("defaults Codeberg repositories to automatic enrichment", () => {
+    expect(
+      defaultEnrichmentFields({
+        type: "codeberg",
+        repository: "targren/Lumiverse-SwipeScrubber",
+        repository_id: 1699613,
+      }),
+    ).toEqual({
+      enrichment_policy: "automatic",
+    });
+    expect(
+      automaticEnrichmentAdapter({
+        type: "codeberg",
+        repository: "targren/Lumiverse-SwipeScrubber",
+      }),
+    ).toBe("codeberg");
+  });
+
   test("defaults external URLs and GitHub organizations to documented manual enrichment", () => {
     expect(
       defaultEnrichmentFields({

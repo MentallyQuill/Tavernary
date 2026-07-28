@@ -434,7 +434,7 @@ describe("full catalog data", () => {
     );
     const catalog = await buildCatalog({ write: false });
 
-    expect(catalog.schemaVersion).toBe(2);
+    expect(catalog.schemaVersion).toBe(3);
     expect(catalog.kits.map(({ id }) => id)).toEqual(
       kitRecords
         .filter(({ status }) => status === "published")

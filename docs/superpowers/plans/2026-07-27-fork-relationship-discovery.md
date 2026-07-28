@@ -52,7 +52,7 @@
 - `scripts/catalog/build.mjs`
 - `scripts/catalog/validate.mjs`
 - `data/schemas/repository-snapshot.schema.json`
-- `docs/reference/github-snapshot-schema.md`
+- `docs/reference/repository-snapshot-schema.md`
 - `scripts/submissions/admission.mjs`
 - `scripts/submissions/triage-issue.mjs`
 - `scripts/submissions/project-submission-lifecycle.mjs`
@@ -99,7 +99,7 @@ and re-read overlapping submission seams before the first production patch.
 - Modify: `scripts/catalog/github-observer.mjs`
 - Modify: `scripts/catalog/repository-snapshot.mjs`
 - Modify: `data/schemas/repository-snapshot.schema.json`
-- Modify: `docs/reference/github-snapshot-schema.md`
+- Modify: `docs/reference/repository-snapshot-schema.md`
 - Test: `tests/unit/github-observer.test.ts`
 - Test: `tests/unit/repository-snapshot.test.ts`
 - Test: `tests/unit/validate-catalog.test.ts`
@@ -241,7 +241,7 @@ Expected: PASS.
 - [ ] **Step 8: Commit**
 
 ```powershell
-git add scripts/catalog/github-observer.mjs scripts/catalog/repository-snapshot.mjs data/schemas/repository-snapshot.schema.json docs/reference/github-snapshot-schema.md tests/unit/github-observer.test.ts tests/unit/repository-snapshot.test.ts tests/unit/validate-catalog.test.ts
+git add scripts/catalog/github-observer.mjs scripts/catalog/repository-snapshot.mjs data/schemas/repository-snapshot.schema.json docs/reference/repository-snapshot-schema.md tests/unit/github-observer.test.ts tests/unit/repository-snapshot.test.ts tests/unit/validate-catalog.test.ts
 git commit -m "feat(catalog): observe fork parents"
 ```
 

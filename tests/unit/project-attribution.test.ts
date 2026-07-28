@@ -8,12 +8,16 @@ import {
 import type { CatalogAttribution } from "@/features/catalog/catalog-types";
 
 const current: CatalogAttribution = {
-  owner: "MentallyQuill",
+  owner: { provider: "github", login: "MentallyQuill" },
   contributors: [
-    { login: "Alice", botOrAi: false },
-    { login: "Bob", botOrAi: false },
-    { login: "Claude", botOrAi: true },
-    { login: "dependabot[bot]", botOrAi: true },
+    { provider: "github", login: "Alice", botOrAi: false },
+    { provider: "github", login: "Bob", botOrAi: false },
+    { provider: "github", login: "Claude", botOrAi: true },
+    {
+      provider: "github",
+      login: "dependabot[bot]",
+      botOrAi: true,
+    },
   ],
   humanContributorCount: 2,
   status: "current",
@@ -27,7 +31,7 @@ describe("project attribution copy", () => {
     expect(
       attributionByline({
         ...current,
-        contributors: [{ login: "Alice", botOrAi: false }],
+        contributors: [{ provider: "github", login: "Alice", botOrAi: false }],
         humanContributorCount: 1,
       }),
     ).toBe("by MentallyQuill, plus 1 contributor");
@@ -42,49 +46,62 @@ describe("project attribution copy", () => {
 
   test("lists all known identities in the desktop tooltip", () => {
     expect(attributionTooltip(current)).toBe(
-      "Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot]",
+      "GitHub owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot]",
     );
   });
 
   test("explains empty, pending, and stale contributor facts", () => {
     expect(
       attributionTooltip({
-        owner: "Solo",
+        owner: { provider: "github", login: "Solo" },
         contributors: [],
         humanContributorCount: 0,
         status: "current",
       }),
-    ).toBe("Owner: Solo");
+    ).toBe("GitHub owner: Solo");
     expect(
       attributionTooltip({
-        owner: "Solo",
+        owner: { provider: "github", login: "Solo" },
         contributors: [],
         humanContributorCount: 0,
         status: "pending",
       }),
-    ).toBe("Owner: Solo · Contributor data pending");
+    ).toBe("GitHub owner: Solo · Contributor data pending");
     expect(attributionTooltip({ ...current, status: "stale" })).toBe(
-      "Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor data stale",
+      "GitHub owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor data stale",
     );
     expect(attributionTooltip({ ...current, status: "partial" })).toBe(
-      "Owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor history still scanning",
+      "GitHub owner: MentallyQuill · Contributors: Alice, Bob · Bots/AI: Claude, dependabot[bot] · Contributor history still scanning",
     );
   });
 
   test("provides complete screen-reader copy without an interactive disclosure", () => {
     expect(attributionAccessibleText(current)).toBe(
-      "Repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot].",
+      "GitHub repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot].",
     );
     expect(
       attributionAccessibleText({
-        owner: "Solo",
+        owner: { provider: "github", login: "Solo" },
         contributors: [],
         humanContributorCount: 0,
         status: "pending",
       }),
-    ).toBe("Repository owner: Solo. Contributor data pending.");
+    ).toBe("GitHub repository owner: Solo. Contributor data pending.");
     expect(attributionAccessibleText({ ...current, status: "partial" })).toBe(
-      "Repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot]. Contributor history still scanning.",
+      "GitHub repository owner: MentallyQuill. Contributors: Alice, Bob. Bots and AI contributors: Claude, dependabot[bot]. Contributor history still scanning.",
     );
+  });
+
+  test("identifies Codeberg attribution in accessible copy", () => {
+    expect(
+      attributionAccessibleText({
+        owner: { provider: "codeberg", login: "targren" },
+        contributors: [
+          { provider: "codeberg", login: "helper", botOrAi: false },
+        ],
+        humanContributorCount: 1,
+        status: "current",
+      }),
+    ).toBe("Codeberg repository owner: targren. Contributors: helper.");
   });
 });

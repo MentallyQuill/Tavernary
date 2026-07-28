@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "amousepad-lumiagent",
   "repository": {
     "id": 1235264700,
@@ -68,9 +68,9 @@
     "evidence_head_sha": "9b0a1a20fe797723f550c26d67a73a603b5b2bbc"
   },
   "community": {
-    "stargazers_count": 7,
+    "stars_count": 7,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 7
   },
   "license": {
@@ -82,11 +82,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "AMousePad", "type": "User" }],
+    "accounts": [
+      { "login": "AMousePad", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

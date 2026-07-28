@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillytavern-extension-weather",
   "repository": {
     "id": 819108745,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "c169a3cacaefd032d2857417564e0330b516a1b3"
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 5,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 11
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "Copilot", "type": "Bot" }
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

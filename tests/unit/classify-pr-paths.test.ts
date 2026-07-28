@@ -14,6 +14,7 @@ describe("pull request CI path classification", () => {
     "data/registry/projects/example-preset.json",
     "data/registry/kits/example-kit.json",
     "data/snapshots/github/example-extension.json",
+    "data/snapshots/codeberg/example-extension.json",
     "data/snapshots/github/kits/example-kit.json",
     "data/snapshots/github-refresh.json",
     "data/vocabularies/frontends.json",
@@ -65,6 +66,17 @@ describe("pull request CI path classification", () => {
       route: "full",
       reason: "full-path",
       path: "src/app/page.tsx",
+    });
+  });
+
+  test.each([
+    "data/snapshots/codeberg/nested/example.json",
+    "data/snapshots/codeberg/example.yaml",
+  ])("fails closed for unsafe Codeberg snapshot path %s", (path) => {
+    expect(classifyPullRequestPaths([path])).toEqual({
+      route: "full",
+      reason: "full-path",
+      path,
     });
   });
 

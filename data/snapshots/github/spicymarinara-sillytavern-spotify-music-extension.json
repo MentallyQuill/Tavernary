@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "spicymarinara-sillytavern-spotify-music-extension",
   "repository": {
     "id": 1058915463,
@@ -32,9 +32,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -47,5 +47,6 @@
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

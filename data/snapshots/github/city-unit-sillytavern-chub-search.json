@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "city-unit-sillytavern-chub-search",
   "repository": {
     "id": 687155351,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "8c699ccd6b5ba1176c01a300eba8bc1b862550fa"
   },
   "community": {
-    "stargazers_count": 51,
+    "stars_count": 51,
     "forks_count": 21,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 73
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "city-unit", "type": "User" },
-      { "login": "DevinAtoms", "type": "User" }
+      { "login": "city-unit", "type": "User", "provider": "github" },
+      { "login": "DevinAtoms", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

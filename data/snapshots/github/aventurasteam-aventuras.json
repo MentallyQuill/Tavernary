@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aventurasteam-aventuras",
   "repository": {
     "id": 1126279204,
@@ -58,9 +58,9 @@
     "evidence_head_sha": "6877c4c0038fd5ea93b61c6b6be478c0ae91f20d"
   },
   "community": {
-    "stargazers_count": 167,
+    "stars_count": 167,
     "forks_count": 27,
-    "subscribers_count": 14,
+    "watchers_count": 14,
     "aggregate": 208
   },
   "license": {
@@ -72,16 +72,16 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "munimunigamer", "type": "User" },
-      { "login": "unkarelian", "type": "User" },
-      { "login": "failerko", "type": "User" },
-      { "login": "a-frazier", "type": "User" },
-      { "login": "Javedz678", "type": "User" },
-      { "login": "Pento95", "type": "User" },
-      { "login": "Fensterbank", "type": "User" },
-      { "login": "surfacecoaster", "type": "User" },
-      { "login": "EventideMiles", "type": "User" },
-      { "login": "vire70", "type": "User" }
+      { "login": "munimunigamer", "type": "User", "provider": "github" },
+      { "login": "unkarelian", "type": "User", "provider": "github" },
+      { "login": "failerko", "type": "User", "provider": "github" },
+      { "login": "a-frazier", "type": "User", "provider": "github" },
+      { "login": "Javedz678", "type": "User", "provider": "github" },
+      { "login": "Pento95", "type": "User", "provider": "github" },
+      { "login": "Fensterbank", "type": "User", "provider": "github" },
+      { "login": "surfacecoaster", "type": "User", "provider": "github" },
+      { "login": "EventideMiles", "type": "User", "provider": "github" },
+      { "login": "vire70", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -89,5 +89,6 @@
     "refreshed_at": "2026-07-27T21:24:49.899Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

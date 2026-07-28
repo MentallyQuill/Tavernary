@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "j-dandelion-lumiverse-canvas",
   "repository": {
     "id": 1255896031,
@@ -68,9 +68,9 @@
     "evidence_head_sha": "d63f5f053aa40bd3be0fe5f83d8d3fff4dc6d552"
   },
   "community": {
-    "stargazers_count": 3,
+    "stars_count": 3,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 3
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -79,14 +79,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "j-dandelion", "type": "User" },
-      { "login": "anderaiprosicks", "type": "User" },
-      { "login": "web-flow", "type": "User" }
+      { "login": "j-dandelion", "type": "User", "provider": "github" },
+      { "login": "anderaiprosicks", "type": "User", "provider": "github" },
+      { "login": "web-flow", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

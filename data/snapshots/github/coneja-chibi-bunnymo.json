@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-bunnymo",
   "repository": {
     "id": 1038188930,
@@ -26,9 +26,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 96,
+    "stars_count": 96,
     "forks_count": 6,
-    "subscribers_count": 6,
+    "watchers_count": 6,
     "aggregate": 108
   },
   "license": {
@@ -39,11 +39,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Coneja-Chibi", "type": "User" }],
+    "accounts": [
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

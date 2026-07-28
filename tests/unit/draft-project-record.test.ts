@@ -15,7 +15,8 @@ const admittedGithubExtension = {
     additional_context: null,
   },
   identity: {
-    kind: "github" as const,
+    kind: "repository" as const,
+    provider: "github" as const,
     canonicalUrl: "https://github.com/Owner/Repo",
     repository: "Owner/Repo",
     repositoryId: 42,
@@ -27,6 +28,7 @@ const admittedGithubExtension = {
 };
 
 const observation = {
+  provider: "github" as const,
   projectId: "owner-repo",
   repository: {
     id: 42,
@@ -44,16 +46,17 @@ const observation = {
     sizeKb: 12,
   },
   community: {
-    stargazersCount: 3,
+    starsCount: 3,
     forksCount: 2,
-    subscribersCount: 1,
+    watchersCount: 1,
   },
   latestReleaseAt: null,
   coarseLicenseSpdxId: "MIT",
 };
 
 const snapshot = {
-  schema_version: 2 as const,
+  schema_version: 3 as const,
+  provider: "github" as const,
   project_id: "owner-repo",
   repository: {
     id: 42,
@@ -79,9 +82,9 @@ const snapshot = {
     baseline_attempts: 0,
   },
   community: {
-    stargazers_count: 3,
+    stars_count: 3,
     forks_count: 2,
-    subscribers_count: 1,
+    watchers_count: 1,
     aggregate: 6,
   },
   license: {

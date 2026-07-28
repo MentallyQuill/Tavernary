@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "selinawynters-ops-paramsentinel",
   "repository": {
     "id": 1311856766,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "a969549292ea64f66c2567bb780efffca02afaf5"
   },
   "community": {
-    "stargazers_count": 3,
+    "stars_count": 3,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 4
   },
   "license": {
@@ -47,11 +47,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "selinawynters-ops", "type": "User" }],
+    "accounts": [
+      { "login": "selinawynters-ops", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

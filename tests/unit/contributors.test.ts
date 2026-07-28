@@ -27,7 +27,7 @@ test("classifies GitHub bots and approved Claude username forms", () => {
 
 test("derives current attribution while excluding the owner from contributors", () => {
   expect(
-    catalogAttribution("MentallyQuill", {
+    catalogAttribution("github", "MentallyQuill", {
       accounts: [
         { login: "mentallyquill", type: "User" },
         { login: "Alice", type: "User" },
@@ -37,11 +37,15 @@ test("derives current attribution while excluding the owner from contributors", 
       stale_since: null,
     }),
   ).toEqual({
-    owner: "MentallyQuill",
+    owner: { provider: "github", login: "MentallyQuill" },
     contributors: [
-      { login: "Alice", botOrAi: false },
-      { login: "Claude", botOrAi: true },
-      { login: "dependabot[bot]", botOrAi: true },
+      { provider: "github", login: "Alice", botOrAi: false },
+      { provider: "github", login: "Claude", botOrAi: true },
+      {
+        provider: "github",
+        login: "dependabot[bot]",
+        botOrAi: true,
+      },
     ],
     humanContributorCount: 1,
     status: "current",
@@ -49,8 +53,8 @@ test("derives current attribution while excluding the owner from contributors", 
 });
 
 test("marks attribution pending when contributor facts are absent", () => {
-  expect(catalogAttribution("MentallyQuill", undefined)).toEqual({
-    owner: "MentallyQuill",
+  expect(catalogAttribution("github", "MentallyQuill", undefined)).toEqual({
+    owner: { provider: "github", login: "MentallyQuill" },
     contributors: [],
     humanContributorCount: 0,
     status: "pending",
@@ -59,7 +63,7 @@ test("marks attribution pending when contributor facts are absent", () => {
 
 test("marks attribution stale when the last contributor refresh failed", () => {
   expect(
-    catalogAttribution("MentallyQuill", {
+    catalogAttribution("github", "MentallyQuill", {
       accounts: [{ login: "Alice", type: "User" }],
       stale_since: "2026-07-25T00:00:00.000Z",
     }).status,
@@ -68,7 +72,7 @@ test("marks attribution stale when the last contributor refresh failed", () => {
 
 test("marks an incomplete fork baseline as partial", () => {
   expect(
-    catalogAttribution("aikohanasaki", {
+    catalogAttribution("github", "aikohanasaki", {
       accounts: [
         { login: "aikohanasaki", type: "User" },
         { login: "LeRobber", type: "User" },
@@ -78,8 +82,8 @@ test("marks an incomplete fork baseline as partial", () => {
       stale_since: null,
     }),
   ).toEqual({
-    owner: "aikohanasaki",
-    contributors: [{ login: "LeRobber", botOrAi: false }],
+    owner: { provider: "github", login: "aikohanasaki" },
+    contributors: [{ provider: "github", login: "LeRobber", botOrAi: false }],
     humanContributorCount: 1,
     status: "partial",
   });
@@ -87,7 +91,7 @@ test("marks an incomplete fork baseline as partial", () => {
 
 test("stale takes precedence over a partial fork baseline", () => {
   expect(
-    catalogAttribution("aikohanasaki", {
+    catalogAttribution("github", "aikohanasaki", {
       accounts: [{ login: "LeRobber", type: "User" }],
       method: "merged-pull-requests",
       baseline_completed_at: null,

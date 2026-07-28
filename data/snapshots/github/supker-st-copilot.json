@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "supker-st-copilot",
   "repository": {
     "id": 1218157882,
@@ -62,9 +62,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 60,
+    "stars_count": 60,
     "forks_count": 6,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 67
   },
   "license": {
@@ -76,13 +76,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Supker", "type": "User" },
-      { "login": "Venomkajo", "type": "User" }
+      { "login": "Supker", "type": "User", "provider": "github" },
+      { "login": "Venomkajo", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

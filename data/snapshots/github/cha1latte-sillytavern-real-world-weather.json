@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "cha1latte-sillytavern-real-world-weather",
   "repository": {
     "id": 1088452012,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "0226317f01e6711bc14d39cab92cbeb15b4d1d7c"
   },
   "community": {
-    "stargazers_count": 7,
+    "stars_count": 7,
     "forks_count": 1,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -38,13 +38,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "cha1latte", "type": "User" },
-      { "login": "madhaha", "type": "User" }
+      { "login": "cha1latte", "type": "User", "provider": "github" },
+      { "login": "madhaha", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-hoplight",
   "repository": {
     "id": 1305235960,
@@ -53,9 +53,9 @@
     "evidence_head_sha": "c9d66bf1e22697ffc8565f84a695a9ab33e3cbc8"
   },
   "community": {
-    "stargazers_count": 11,
+    "stars_count": 11,
     "forks_count": 2,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 13
   },
   "license": {
@@ -68,15 +68,16 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Coneja-Chibi", "type": "User" },
-      { "login": "github-actions[bot]", "type": "Bot" },
-      { "login": "NemoVonNirgend", "type": "User" },
-      { "login": "Livingooal", "type": "User" }
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "NemoVonNirgend", "type": "User", "provider": "github" },
+      { "login": "Livingooal", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

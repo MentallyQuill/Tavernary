@@ -550,11 +550,12 @@ export async function runRefresh(options = {}) {
     const contributorResult = contributorResultsById.get(record.id);
     const contributors =
       contributorResult?.status === "fulfilled"
-        ? contributorSnapshotForSuccess(contributorResult.value, now)
+        ? contributorSnapshotForSuccess(contributorResult.value, now, "github")
         : contributorResult?.status === "rejected"
           ? contributorSnapshotForFailure(previous?.contributors, now)
           : previous?.contributors;
     const candidate = snapshotFromObservation({
+      provider: "github",
       projectId: record.id,
       observation,
       previous,
@@ -784,6 +785,12 @@ export async function runRefresh(options = {}) {
       graphqlRemaining: observed.usage.remainingPoints,
       restRequests,
     },
+    providers: {
+      github: {
+        requests: observed.usage.requestCount + restRequests,
+        remaining: observed.usage.remainingPoints,
+      },
+    },
     deploymentRequested: options.deploymentRequested,
   });
   const previousById = new Map(
@@ -850,12 +857,13 @@ function argumentsFor(name) {
 }
 
 async function main() {
+  const { runRepositoryRefresh } = await import("./refresh-repositories.mjs");
   const mode = argument("--mode", "incremental");
   const batchSize = Number.parseInt(argument("--batch-size", "12"), 10);
   const projectIds = argumentsFor("--project-id");
   const projectId = projectIds.at(-1) ?? null;
   const deploymentRequested = process.argv.includes("--deployment-requested");
-  const result = await runRefresh({
+  const result = await runRepositoryRefresh({
     mode,
     batchSize,
     projectId,

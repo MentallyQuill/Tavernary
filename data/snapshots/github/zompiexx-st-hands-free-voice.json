@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "zompiexx-st-hands-free-voice",
   "repository": {
     "id": 1128225923,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "da66a3e13a93b608b8507fb79e593e9d0d27b77d"
   },
   "community": {
-    "stargazers_count": 1,
+    "stars_count": 1,
     "forks_count": 4,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": {
@@ -40,12 +40,13 @@
   "refreshed_at": "2026-07-27T22:03:00.592Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "zompiexx", "type": "User" }],
+    "accounts": [{ "login": "zompiexx", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T22:03:00.592Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

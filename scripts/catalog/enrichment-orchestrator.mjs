@@ -527,6 +527,7 @@ export function createProductionOperations(options = {}) {
       await publishChanges({
         paths: [
           "data/snapshots/github",
+          "data/snapshots/codeberg",
           "data/snapshots/github-refresh.json",
           "data/registry/projects",
         ],
@@ -729,6 +730,7 @@ export function createProductionOperations(options = {}) {
           "--porcelain",
           "--",
           "data/snapshots/github",
+          "data/snapshots/codeberg",
           "data/registry/projects",
         ],
         { silent: true },
@@ -744,6 +746,7 @@ export function createProductionOperations(options = {}) {
       await publishChanges({
         paths: [
           "data/snapshots/github",
+          "data/snapshots/codeberg",
           "data/snapshots/github-refresh.json",
           "data/registry/projects",
         ],

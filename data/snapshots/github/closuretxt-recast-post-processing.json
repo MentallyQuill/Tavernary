@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "closuretxt-recast-post-processing",
   "repository": {
     "id": 1188318311,
@@ -26,9 +26,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 33,
+    "stars_count": 33,
     "forks_count": 4,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 38
   },
   "license": {
@@ -39,11 +39,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "closuretxt", "type": "User" }],
+    "accounts": [
+      { "login": "closuretxt", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

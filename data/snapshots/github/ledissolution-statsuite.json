@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "ledissolution-statsuite",
   "repository": {
     "id": 981213323,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94"
   },
   "community": {
-    "stargazers_count": 48,
+    "stars_count": 48,
     "forks_count": 1,
-    "subscribers_count": 4,
+    "watchers_count": 4,
     "aggregate": 53
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "leDissolution", "type": "User" }],
+    "accounts": [
+      { "login": "leDissolution", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

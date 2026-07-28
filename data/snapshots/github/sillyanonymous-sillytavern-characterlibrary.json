@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillyanonymous-sillytavern-characterlibrary",
   "repository": {
     "id": 1139430137,
@@ -72,9 +72,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 99,
+    "stars_count": 99,
     "forks_count": 20,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 121
   },
   "license": {
@@ -86,14 +86,15 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Sillyanonymous", "type": "User" },
-      { "login": "mjnitz02", "type": "User" },
-      { "login": "RivelleDays", "type": "User" }
+      { "login": "Sillyanonymous", "type": "User", "provider": "github" },
+      { "login": "mjnitz02", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

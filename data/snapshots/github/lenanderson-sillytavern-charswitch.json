@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-charswitch",
   "repository": {
     "id": 841159088,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "143796612295c9f1eff8f73be5fcdcd3e596c14c"
   },
   "community": {
-    "stargazers_count": 13,
+    "stars_count": 13,
     "forks_count": 1,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 16
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -43,5 +43,6 @@
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

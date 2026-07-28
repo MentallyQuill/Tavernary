@@ -7,6 +7,7 @@ export {
   contributorSnapshotForFailure,
   contributorSnapshotForSuccess,
 } from "./repository-snapshot.mjs";
+export { runRepositoryRefresh } from "./refresh-repositories.mjs";
 
 export function formatSnapshot(snapshot: unknown): Promise<string>;
 export function publishCandidates(

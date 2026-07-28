@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "casus-b-casus-custom-chatfill-ii",
   "repository": {
     "id": 1245539495,
@@ -63,9 +63,9 @@
     "evidence_head_sha": "f66b4954cf063d516157c5d1e7b16748923e0fbf"
   },
   "community": {
-    "stargazers_count": 10,
+    "stars_count": 10,
     "forks_count": 1,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 12
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -73,11 +73,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Casus-B", "type": "User" }],
+    "accounts": [{ "login": "Casus-B", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

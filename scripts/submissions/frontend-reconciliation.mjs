@@ -1,4 +1,7 @@
-import { parseSourceIdentity } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  parseSourceIdentity,
+} from "./source-identity.mjs";
 
 const explicitAliases = new Map([
   ["st", "sillytavern"],
@@ -166,14 +169,17 @@ export function reconcileFrontends(input) {
         if (submitted.url?.trim()) {
           try {
             const identity = parseSourceIdentity(submitted.url.trim());
-            if (["github", "external"].includes(identity.kind)) {
+            if (
+              isRepositoryIdentity(identity) ||
+              identity.kind === "external"
+            ) {
               dependency = {
                 name:
                   submitted.name?.trim() ||
                   identity.repository ||
                   identity.pathSlug,
                 canonicalUrl: identity.canonicalUrl,
-                ...(identity.kind === "github"
+                ...(isRepositoryIdentity(identity)
                   ? { repository: identity.repository }
                   : {}),
               };
@@ -225,7 +231,10 @@ export function proposeFrontendVocabularyEntry(input) {
   const displayName = input.displayName.trim().replace(/\s+/gu, " ");
   const baseId = frontendId(displayName);
   if (!baseId) throw new Error("Frontend display name is required.");
-  if (!["github", "external"].includes(input.sourceIdentity.kind)) {
+  if (
+    !isRepositoryIdentity(input.sourceIdentity) &&
+    input.sourceIdentity.kind !== "external"
+  ) {
     throw new Error("Frontend submissions require a public source repository.");
   }
 
@@ -239,7 +248,7 @@ export function proposeFrontendVocabularyEntry(input) {
   let id = baseId;
   if (collided) {
     const sourceSuffix = frontendId(
-      input.sourceIdentity.kind === "github"
+      isRepositoryIdentity(input.sourceIdentity)
         ? input.sourceIdentity.owner
         : input.sourceIdentity.hostname,
     );

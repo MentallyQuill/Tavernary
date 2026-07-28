@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "thezennou-stextension-snapshot",
   "repository": {
     "id": 801866918,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "ff34ac37048964de41b077bdc3b6dd6bea37568b"
   },
   "community": {
-    "stargazers_count": 12,
+    "stars_count": 12,
     "forks_count": 2,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 15
   },
   "license": {
@@ -41,11 +41,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "TheZennou", "type": "User" }],
+    "accounts": [
+      { "login": "TheZennou", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

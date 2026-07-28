@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "nattaphat010447-nutho-autocloser",
   "repository": {
     "id": 1275541730,
@@ -42,9 +42,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 1,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 7
   },
   "license": {
@@ -56,13 +56,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "nattaphat010447", "type": "User" },
-      { "login": "LukaTheHero", "type": "User" }
+      { "login": "nattaphat010447", "type": "User", "provider": "github" },
+      { "login": "LukaTheHero", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

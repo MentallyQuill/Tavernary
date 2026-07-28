@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "devemberteam-ops-pyre",
   "repository": {
     "id": 1257302750,
@@ -58,9 +58,9 @@
     "evidence_head_sha": "17148f5b60d13e1f2f7b901c99a57fa99cff866a"
   },
   "community": {
-    "stargazers_count": 55,
+    "stars_count": 55,
     "forks_count": 2,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 59
   },
   "license": {
@@ -72,11 +72,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "devemberteam-ops", "type": "User" }],
+    "accounts": [
+      { "login": "devemberteam-ops", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

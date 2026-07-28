@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "zdost-story-engine",
   "repository": {
     "id": 1225640741,
@@ -88,9 +88,9 @@
     "evidence_head_sha": "9967cc55cf0ceb330cda56d7ef73b6622fdf504a"
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -98,11 +98,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "ZDOSt", "type": "User" }],
+    "accounts": [{ "login": "ZDOSt", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

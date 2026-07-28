@@ -119,7 +119,7 @@ jobs:
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in
-                data/registry/projects/*.json|data/snapshots/github/*.json|data/vocabularies/frontends.json) ;;
+                data/registry/projects/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json) ;;
                 *)
                   echo "::error::Refusing unsafe generated path: $generated_path"
                   exit 1
@@ -148,9 +148,17 @@ jobs:
         run: |
           set -euo pipefail
           project_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).project_id")"
+          source_provider="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).source_provider || ''")"
+          case "$source_provider" in
+            github|codeberg|"") ;;
+            *)
+              echo "::error::Refusing unsafe generated provider: $source_provider"
+              exit 1
+              ;;
+          esac
           generated_paths=("data/registry/projects/${project_id}.json")
-          if [[ -f "data/snapshots/github/${project_id}.json" ]]; then
-            generated_paths+=("data/snapshots/github/${project_id}.json")
+          if [[ -n "$source_provider" && -f "data/snapshots/${source_provider}/${project_id}.json" ]]; then
+            generated_paths+=("data/snapshots/${source_provider}/${project_id}.json")
           fi
           if [[ -n "$(git status --porcelain -- data/vocabularies/frontends.json)" ]]; then
             generated_paths+=("data/vocabularies/frontends.json")
@@ -158,7 +166,7 @@ jobs:
           while IFS= read -r previous_path; do
             [[ -z "$previous_path" ]] && continue
             case "$previous_path" in
-              data/registry/projects/*.json|data/snapshots/github/*.json|data/vocabularies/frontends.json)
+              data/registry/projects/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json)
                 generated_paths+=("$previous_path")
                 ;;
               *)

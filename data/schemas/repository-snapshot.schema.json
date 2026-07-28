@@ -6,6 +6,7 @@
   "additionalProperties": false,
   "required": [
     "schema_version",
+    "provider",
     "project_id",
     "repository",
     "source_health",
@@ -16,7 +17,8 @@
     "stale_since"
   ],
   "properties": {
-    "schema_version": { "const": 2 },
+    "schema_version": { "const": 3 },
+    "provider": { "enum": ["github", "codeberg"] },
     "project_id": { "type": "string", "minLength": 1 },
     "repository": {
       "type": "object",
@@ -89,15 +91,20 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["login", "type"],
+            "required": ["provider", "login", "type"],
             "properties": {
+              "provider": { "enum": ["github", "codeberg"] },
               "login": { "type": "string", "minLength": 1 },
               "type": { "type": "string", "minLength": 1 }
             }
           }
         },
         "method": {
-          "enum": ["repository-contributors", "merged-pull-requests"]
+          "enum": [
+            "repository-contributors",
+            "merged-pull-requests",
+            "commit-and-merged-pull-request-authors"
+          ]
         },
         "baseline_completed_at": {
           "anyOf": [
@@ -288,16 +295,11 @@
     "community": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "stargazers_count",
-        "forks_count",
-        "subscribers_count",
-        "aggregate"
-      ],
+      "required": ["stars_count", "forks_count", "watchers_count", "aggregate"],
       "properties": {
-        "stargazers_count": { "type": "integer", "minimum": 0 },
+        "stars_count": { "type": "integer", "minimum": 0 },
         "forks_count": { "type": "integer", "minimum": 0 },
-        "subscribers_count": { "type": "integer", "minimum": 0 },
+        "watchers_count": { "type": "integer", "minimum": 0 },
         "aggregate": { "type": "integer", "minimum": 0 }
       }
     },

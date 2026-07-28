@@ -26,7 +26,7 @@ function normalizeOtherFrontends(values) {
   });
 }
 
-function githubRepositoryShape(sourceUrl) {
+function repositoryProviderFromUrl(sourceUrl) {
   try {
     const url = new URL(sourceUrl);
     const parts = url.pathname
@@ -34,13 +34,22 @@ function githubRepositoryShape(sourceUrl) {
       .replace(/\.git$/iu, "")
       .split("/")
       .filter(Boolean);
-    return (
+    if (
       url.protocol === "https:" &&
-      url.hostname.toLowerCase() === "github.com" &&
+      ["github.com", "codeberg.org"].includes(url.hostname.toLowerCase()) &&
+      !url.username &&
+      !url.password &&
+      !url.search &&
+      !url.hash &&
       parts.length === 2
-    );
+    ) {
+      return url.hostname.toLowerCase() === "github.com"
+        ? "github"
+        : "codeberg";
+    }
+    return null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -129,29 +138,27 @@ export function normalizeProjectSubmissionManifest(value) {
       }
     }
   }
-  if (projectType === "preset" && !githubRepositoryShape(sourceUrl) && !name) {
+  if (
+    projectType === "preset" &&
+    !repositoryProviderFromUrl(sourceUrl) &&
+    !name
+  ) {
     errors.push("External System Presets require a project name.");
   }
   if (
     projectType === "preset" &&
-    !githubRepositoryShape(sourceUrl) &&
+    !repositoryProviderFromUrl(sourceUrl) &&
     !description
   ) {
     errors.push("External System Presets require a short description.");
   }
   if (
-    projectType === "frontend" &&
-    !githubRepositoryShape(sourceUrl) &&
-    !name
+    (projectType === "frontend" || projectType === "extension") &&
+    !repositoryProviderFromUrl(sourceUrl)
   ) {
-    errors.push("External Frontends require a project name.");
-  }
-  if (
-    projectType === "frontend" &&
-    !githubRepositoryShape(sourceUrl) &&
-    !description
-  ) {
-    errors.push("External Frontends require a short description.");
+    errors.push(
+      "Frontends and Extensions require a public GitHub or Codeberg repository.",
+    );
   }
 
   if (errors.length > 0) {

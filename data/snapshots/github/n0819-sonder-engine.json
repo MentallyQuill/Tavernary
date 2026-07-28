@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "n0819-sonder-engine",
   "repository": {
     "id": 1305919833,
@@ -43,9 +43,9 @@
     "evidence_head_sha": "dd3dfced9acff64176c0610d433f5381f7a2ce7e"
   },
   "community": {
-    "stargazers_count": 45,
+    "stars_count": 45,
     "forks_count": 5,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 51
   },
   "license": {
@@ -58,13 +58,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "N0819", "type": "User" },
-      { "login": "DonBananas", "type": "User" }
+      { "login": "N0819", "type": "User", "provider": "github" },
+      { "login": "DonBananas", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

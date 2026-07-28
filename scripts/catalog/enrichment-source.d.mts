@@ -62,6 +62,15 @@ export interface EnrichmentSourceOptions {
     record: EnrichmentSourceRecord,
     options?: { readSource?: RedditSourceReader },
   ) => Promise<RedditEnrichmentSource>;
+  providers?: Record<
+    string,
+    {
+      readRootReadme(input: {
+        repository: string;
+        ref: string;
+      }): Promise<Record<string, unknown> | null>;
+    }
+  >;
   readSource?: RedditSourceReader;
   [key: string]: unknown;
 }

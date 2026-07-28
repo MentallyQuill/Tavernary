@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bmen25124-sillytavern-custom-scenario",
   "repository": {
     "id": 920038768,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "bf207fa1723bc39e19cc4aa530c30712c481b176"
   },
   "community": {
-    "stargazers_count": 39,
+    "stars_count": 39,
     "forks_count": 4,
-    "subscribers_count": 4,
+    "watchers_count": 4,
     "aggregate": 47
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "bmen25124", "type": "User" },
-      { "login": "Cohee1207", "type": "User" }
+      { "login": "bmen25124", "type": "User", "provider": "github" },
+      { "login": "Cohee1207", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

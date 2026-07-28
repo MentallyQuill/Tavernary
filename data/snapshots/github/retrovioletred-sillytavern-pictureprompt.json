@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "retrovioletred-sillytavern-pictureprompt",
   "repository": {
     "id": 1228484987,
@@ -77,9 +77,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 6,
+    "stars_count": 6,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 6
   },
   "license": {
@@ -90,11 +90,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "RetroVioletRed", "type": "User" }],
+    "accounts": [
+      { "login": "RetroVioletRed", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

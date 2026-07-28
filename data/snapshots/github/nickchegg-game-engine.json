@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "nickchegg-game-engine",
   "repository": {
     "id": 1283421850,
@@ -53,9 +53,9 @@
     "evidence_head_sha": "860c4691188545d1a9b1bb195ef4bb90272c8296"
   },
   "community": {
-    "stargazers_count": 9,
+    "stars_count": 9,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -63,11 +63,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "NickChegg", "type": "User" }],
+    "accounts": [
+      { "login": "NickChegg", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

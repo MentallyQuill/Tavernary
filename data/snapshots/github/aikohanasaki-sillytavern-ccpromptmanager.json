@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-sillytavern-ccpromptmanager",
   "repository": {
     "id": 1064216308,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "5ad9b345fa8149d2ac1e973bb2cae33c654ee375"
   },
   "community": {
-    "stargazers_count": 7,
+    "stars_count": 7,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 8
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "aikohanasaki", "type": "User" }],
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

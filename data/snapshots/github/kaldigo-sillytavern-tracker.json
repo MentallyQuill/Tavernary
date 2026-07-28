@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "kaldigo-sillytavern-tracker",
   "repository": {
     "id": 884053465,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "65e0acb3cc9b53a97751132d567622d9b3ba2c2c"
   },
   "community": {
-    "stargazers_count": 98,
+    "stars_count": 98,
     "forks_count": 26,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 127
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "kaldigo", "type": "User" }],
+    "accounts": [{ "login": "kaldigo", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

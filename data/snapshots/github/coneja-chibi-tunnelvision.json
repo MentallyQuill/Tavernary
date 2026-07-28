@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-tunnelvision",
   "repository": {
     "id": 1174011234,
@@ -43,9 +43,9 @@
     "evidence_head_sha": "58847fd6f77d1d473357c0c847f089586f55f4e5"
   },
   "community": {
-    "stargazers_count": 113,
+    "stars_count": 113,
     "forks_count": 23,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 138
   },
   "license": {
@@ -57,11 +57,11 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Coneja-Chibi", "type": "User" },
-      { "login": "mozophe", "type": "User" },
-      { "login": "phampyk", "type": "User" },
-      { "login": "DrMagisto", "type": "User" },
-      { "login": "erratos", "type": "User" }
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "mozophe", "type": "User", "provider": "github" },
+      { "login": "phampyk", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" },
+      { "login": "erratos", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -69,5 +69,6 @@
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }
