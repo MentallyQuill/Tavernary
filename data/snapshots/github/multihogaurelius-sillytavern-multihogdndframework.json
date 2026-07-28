@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "multihogaurelius-sillytavern-multihogdndframework",
   "repository": {
     "id": 1212009993,
@@ -83,9 +83,9 @@
     "evidence_head_sha": "80045335f1f08c3ed3bbb4f031794e08021ba285"
   },
   "community": {
-    "stargazers_count": 54,
+    "stars_count": 54,
     "forks_count": 9,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 63
   },
   "license": {
@@ -98,15 +98,16 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Multihog1", "type": "User" },
-      { "login": "MultihogAurelius", "type": "User" },
-      { "login": "Mimo433", "type": "User" },
-      { "login": "mimo", "type": "User" }
+      { "login": "Multihog1", "type": "User", "provider": "github" },
+      { "login": "MultihogAurelius", "type": "User", "provider": "github" },
+      { "login": "Mimo433", "type": "User", "provider": "github" },
+      { "login": "mimo", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

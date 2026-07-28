@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lodactio-extension-summaryception",
   "repository": {
     "id": 1204673207,
@@ -48,9 +48,9 @@
     "evidence_head_sha": "c67626ab83ee86ec1be4f55b9b3d1d19adb79999"
   },
   "community": {
-    "stargazers_count": 121,
+    "stars_count": 121,
     "forks_count": 15,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 137
   },
   "license": {
@@ -62,9 +62,9 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Lodactio", "type": "User" },
-      { "login": "Copilot", "type": "Bot" },
-      { "login": "Ryah", "type": "User" }
+      { "login": "Lodactio", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "Ryah", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -72,5 +72,6 @@
     "refreshed_at": "2026-07-27T22:03:20.782Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "elthial-sillytavern-map",
   "repository": {
     "id": 711475454,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "3d25ed605d2f1aa91ae52b68a94eb45d364481d4"
   },
   "community": {
-    "stargazers_count": 7,
+    "stars_count": 7,
     "forks_count": 2,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 11
   },
   "license": {
@@ -40,12 +40,13 @@
   "refreshed_at": "2026-07-27T22:02:20.492Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Elthial", "type": "User" }],
+    "accounts": [{ "login": "Elthial", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T22:02:20.492Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

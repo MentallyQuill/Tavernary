@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "arif-salah-image-gen-kazuma",
   "repository": {
     "id": 1132967377,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "f5c625419e7dfc46317660d165b8ceb42786938d"
   },
   "community": {
-    "stargazers_count": 18,
+    "stars_count": 18,
     "forks_count": 6,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 25
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -38,13 +38,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Arif-salah", "type": "User" },
-      { "login": "rostchri", "type": "User" }
+      { "login": "Arif-salah", "type": "User", "provider": "github" },
+      { "login": "rostchri", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -119,9 +119,9 @@ test("persists contributor facts and counts their REST requests", async () => {
 
   expect(result.snapshots[0].contributors).toEqual({
     accounts: [
-      { login: "Creator", type: "User" },
-      { login: "Alice", type: "User" },
-      { login: "Claude", type: "User" },
+      { provider: "github", login: "Creator", type: "User" },
+      { provider: "github", login: "Alice", type: "User" },
+      { provider: "github", login: "Claude", type: "User" },
     ],
     method: "repository-contributors",
     baseline_completed_at: null,
@@ -139,8 +139,8 @@ test("persists a bounded fork contributor continuation", async () => {
   };
   const fetchContributors = vi.fn(async () => ({
     accounts: [
-      { login: "Creator", type: "User" },
-      { login: "LeRobber", type: "User" },
+      { provider: "github", login: "Creator", type: "User" },
+      { provider: "github", login: "LeRobber", type: "User" },
     ],
     requestCount: 2,
     method: "merged-pull-requests",
@@ -179,8 +179,8 @@ test("persists a bounded fork contributor continuation", async () => {
   );
   expect(result.snapshots[0].contributors).toEqual({
     accounts: [
-      { login: "Creator", type: "User" },
-      { login: "LeRobber", type: "User" },
+      { provider: "github", login: "Creator", type: "User" },
+      { provider: "github", login: "LeRobber", type: "User" },
     ],
     method: "merged-pull-requests",
     baseline_completed_at: null,

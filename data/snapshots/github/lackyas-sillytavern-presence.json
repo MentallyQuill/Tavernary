@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lackyas-sillytavern-presence",
   "repository": {
     "id": 875709373,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "8b9fed2c02548e39006f9c81e83bbc91dbe64c29"
   },
   "community": {
-    "stargazers_count": 31,
+    "stars_count": 31,
     "forks_count": 8,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 40
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,11 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "leandrojofre", "type": "User" },
-      { "login": "ccgreen", "type": "User" },
-      { "login": "lackyas", "type": "User" },
-      { "login": "kaldigo", "type": "User" },
-      { "login": "cierru", "type": "User" }
+      { "login": "leandrojofre", "type": "User", "provider": "github" },
+      { "login": "ccgreen", "type": "User", "provider": "github" },
+      { "login": "lackyas", "type": "User", "provider": "github" },
+      { "login": "kaldigo", "type": "User", "provider": "github" },
+      { "login": "cierru", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -49,5 +49,6 @@
     "refreshed_at": "2026-07-27T22:02:51.162Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

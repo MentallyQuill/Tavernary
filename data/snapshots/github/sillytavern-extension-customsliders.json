@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillytavern-extension-customsliders",
   "repository": {
     "id": 960096638,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "758aa6f60ab547cc399c33a4ee9c0a961603a9a1"
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 6,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 11
   },
   "license": {
@@ -41,8 +41,8 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "dependabot[bot]", "type": "Bot" }
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -50,5 +50,6 @@
     "refreshed_at": "2026-07-27T22:02:57.806Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

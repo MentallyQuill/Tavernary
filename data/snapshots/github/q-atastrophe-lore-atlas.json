@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "q-atastrophe-lore-atlas",
   "repository": {
     "id": 1275010865,
@@ -38,21 +38,24 @@
     "evidence_head_sha": "a5bec9d8c3141e7a57f49acc94826adfd4646994"
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T22:05:12.192Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Q-atastrophe", "type": "User" }],
+    "accounts": [
+      { "login": "Q-atastrophe", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T22:05:12.192Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

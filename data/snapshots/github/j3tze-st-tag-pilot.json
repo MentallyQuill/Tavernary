@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "j3tze-st-tag-pilot",
   "repository": {
     "id": 1158753341,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "6591bf181a567961ce333d53c714bcdf30b19056"
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": {
@@ -41,11 +41,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "J3tze", "type": "User" }],
+    "accounts": [{ "login": "J3tze", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

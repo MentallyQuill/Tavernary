@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "loggo-presets-sillytavern-avatarquickpaste",
   "repository": {
     "id": 1144634345,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "a533cc034fc53a0bfdf4550b992494cfaa5ecafb"
   },
   "community": {
-    "stargazers_count": 1,
+    "stars_count": 1,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Loggo-presets", "type": "User" }],
+    "accounts": [
+      { "login": "Loggo-presets", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

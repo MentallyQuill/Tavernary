@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "therosin-st-extension-lua",
   "repository": {
     "id": 826008663,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "fc972dd8e663c6e922d56f3dc756114e7f7f2434"
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 1,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 5
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Therosin", "type": "User" },
-      { "login": "Succubyss", "type": "User" }
+      { "login": "Therosin", "type": "User", "provider": "github" },
+      { "login": "Succubyss", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

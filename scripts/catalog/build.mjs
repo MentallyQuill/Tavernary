@@ -185,13 +185,13 @@ function githubProject(record, snapshot, vocabularies, now) {
     latestReleaseAt: snapshot?.activity?.latest_release_at ?? null,
     community: snapshot
       ? {
-          stars: snapshot.community.stargazers_count,
+          stars: snapshot.community.stars_count,
           forks: snapshot.community.forks_count,
-          subscribers: snapshot.community.subscribers_count,
+          subscribers: snapshot.community.watchers_count,
           aggregate:
-            snapshot.community.stargazers_count +
+            snapshot.community.stars_count +
             snapshot.community.forks_count +
-            snapshot.community.subscribers_count,
+            snapshot.community.watchers_count,
         }
       : null,
     repositorySizeKb: snapshot?.repository?.size_kb ?? null,

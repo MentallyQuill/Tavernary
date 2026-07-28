@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
   "repository": {
     "id": 1081942864,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "3694c90b915a7afa2b1b0bdb95b0ebb2aeed48e7"
   },
   "community": {
-    "stargazers_count": 12,
+    "stars_count": 12,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 13
   },
   "license": {
@@ -42,14 +42,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "zerofata", "type": "User" },
-      { "login": "b4bysw0rld", "type": "User" },
-      { "login": "XanadusWorks", "type": "User" }
+      { "login": "zerofata", "type": "User", "provider": "github" },
+      { "login": "b4bysw0rld", "type": "User", "provider": "github" },
+      { "login": "XanadusWorks", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

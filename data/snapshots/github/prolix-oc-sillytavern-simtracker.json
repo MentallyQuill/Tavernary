@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "prolix-oc-sillytavern-simtracker",
   "repository": {
     "id": 1038203769,
@@ -32,9 +32,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 63,
+    "stars_count": 63,
     "forks_count": 7,
-    "subscribers_count": 4,
+    "watchers_count": 4,
     "aggregate": 74
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -42,13 +42,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "prolix-oc", "type": "User" },
-      { "login": "celeste-co", "type": "User" }
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "celeste-co", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

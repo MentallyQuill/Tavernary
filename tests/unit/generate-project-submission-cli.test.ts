@@ -220,7 +220,8 @@ test("prepares a GitHub draft through injected source clients", async () => {
     metadata_status: "curated",
   });
   expect(draft.snapshot).toMatchObject({
-    schema_version: 2,
+    schema_version: 3,
+    provider: "github",
     project_id: "owner-repo",
     activity: { evidence_status: "provisional" },
     contributors: {

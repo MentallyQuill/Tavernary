@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-sillytavern-memorybooks",
   "repository": {
     "id": 1001051404,
@@ -88,9 +88,9 @@
     "evidence_head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f"
   },
   "community": {
-    "stargazers_count": 264,
+    "stars_count": 264,
     "forks_count": 36,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 302
   },
   "license": {
@@ -103,14 +103,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "aikohanasaki", "type": "User" },
-      { "login": "paradox460", "type": "User" },
-      { "login": "dddanny79", "type": "User" }
+      { "login": "aikohanasaki", "type": "User", "provider": "github" },
+      { "login": "paradox460", "type": "User", "provider": "github" },
+      { "login": "dddanny79", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

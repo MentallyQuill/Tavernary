@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "chew1976-dynamic-vars",
   "repository": {
     "id": 1028124712,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "8f34af01af1bd242d9af8f645e870df13275c8d9"
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": {
@@ -41,11 +41,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "chew1976", "type": "User" }],
+    "accounts": [{ "login": "chew1976", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

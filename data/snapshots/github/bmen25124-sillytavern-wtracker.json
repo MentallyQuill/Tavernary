@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bmen25124-sillytavern-wtracker",
   "repository": {
     "id": 1024412582,
@@ -32,9 +32,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 35,
+    "stars_count": 35,
     "forks_count": 12,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 48
   },
   "license": {
@@ -45,11 +45,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "bmen25124", "type": "User" }],
+    "accounts": [
+      { "login": "bmen25124", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

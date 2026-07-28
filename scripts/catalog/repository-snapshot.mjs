@@ -58,7 +58,7 @@ export function normalizedLicense(license) {
   };
 }
 
-export function contributorSnapshotForSuccess(collection, now) {
+export function contributorSnapshotForSuccess(collection, now, provider) {
   const normalized = Array.isArray(collection)
     ? { accounts: collection, method: "repository-contributors" }
     : collection;
@@ -70,7 +70,10 @@ export function contributorSnapshotForSuccess(collection, now) {
       }
     : null;
   return {
-    accounts: normalized.accounts,
+    accounts: normalized.accounts.map((account) => ({
+      ...account,
+      provider,
+    })),
     method: normalized.method ?? "repository-contributors",
     baseline_completed_at: normalized.baselineCompletedAt ?? null,
     scan,
@@ -88,6 +91,7 @@ export function contributorSnapshotForFailure(previous, now) {
 }
 
 export function snapshotFromObservation({
+  provider,
   projectId,
   observation,
   previous = null,
@@ -98,8 +102,10 @@ export function snapshotFromObservation({
     ...(previous?.activity ?? provisionalActivity()),
     latest_release_at: observation.latestReleaseAt,
   };
+  const githubCommunity = calculateCommunity(observation.community);
   const snapshot = {
-    schema_version: 2,
+    schema_version: 3,
+    provider,
     project_id: projectId,
     repository: repositoryFacts(
       observation.repository,
@@ -107,7 +113,12 @@ export function snapshotFromObservation({
     ),
     source_health: "healthy",
     activity,
-    community: calculateCommunity(observation.community),
+    community: {
+      stars_count: githubCommunity.stargazers_count,
+      forks_count: githubCommunity.forks_count,
+      watchers_count: githubCommunity.subscribers_count,
+      aggregate: githubCommunity.aggregate,
+    },
     license: defaultLicense(previous?.license),
     refreshed_at: now,
     stale_since: null,
@@ -122,6 +133,7 @@ export function snapshotFromObservation({
 }
 
 export function createInitialRepositorySnapshot({
+  provider,
   projectId,
   observation,
   activityInspection,
@@ -130,9 +142,10 @@ export function createInitialRepositorySnapshot({
 }) {
   const snapshot = snapshotFromObservation({
     projectId,
+    provider,
     observation,
     now,
-    contributors: contributorSnapshotForSuccess(contributors, now),
+    contributors: contributorSnapshotForSuccess(contributors, now, provider),
   });
   snapshot.activity = {
     ...activityInspection.activity,

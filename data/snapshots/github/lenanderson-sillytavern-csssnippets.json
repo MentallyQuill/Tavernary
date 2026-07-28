@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-csssnippets",
   "repository": {
     "id": 739396018,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "835d5f7848875842fb3b726ea13d6cc42dca3505"
   },
   "community": {
-    "stargazers_count": 56,
+    "stars_count": 56,
     "forks_count": 5,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 63
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "LenAnderson", "type": "User" }],
+    "accounts": [
+      { "login": "LenAnderson", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

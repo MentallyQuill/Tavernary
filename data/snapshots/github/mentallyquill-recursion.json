@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mentallyquill-recursion",
   "repository": {
     "id": 1285208664,
@@ -48,9 +48,9 @@
     "evidence_head_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720"
   },
   "community": {
-    "stargazers_count": 13,
+    "stars_count": 13,
     "forks_count": 0,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 16
   },
   "license": {
@@ -62,11 +62,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "MentallyQuill", "type": "User" }],
+    "accounts": [
+      { "login": "MentallyQuill", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

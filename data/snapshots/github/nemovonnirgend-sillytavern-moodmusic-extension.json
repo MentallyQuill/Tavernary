@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "nemovonnirgend-sillytavern-moodmusic-extension",
   "repository": {
     "id": 980324649,
@@ -27,21 +27,24 @@
     "evidence_head_sha": "04e4d0a4691213ca7fb4e1fcf45add9d47a9bc20"
   },
   "community": {
-    "stargazers_count": 10,
+    "stars_count": 10,
     "forks_count": 1,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 14
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T22:02:58.367Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "NemoVonNirgend", "type": "User" }],
+    "accounts": [
+      { "login": "NemoVonNirgend", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T22:02:58.367Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

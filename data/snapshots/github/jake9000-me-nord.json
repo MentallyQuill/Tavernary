@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "jake9000-me-nord",
   "repository": {
     "id": 1223260183,
@@ -47,9 +47,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": {
@@ -60,11 +60,12 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "jake9000", "type": "User" }],
+    "accounts": [{ "login": "jake9000", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

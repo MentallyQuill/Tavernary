@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "aikohanasaki-sillytavern-worldinfolocks",
   "repository": {
     "id": 1015688972,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "91cb6afba44748d5ddb5e633f56583db8c7c9adc"
   },
   "community": {
-    "stargazers_count": 30,
+    "stars_count": 30,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 31
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -43,11 +43,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "aikohanasaki", "type": "User" }],
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" }
+    ],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:17:32.756Z",
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

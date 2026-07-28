@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillytavern-sillytavern-nicknames",
   "repository": {
     "id": 936859577,
@@ -26,9 +26,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 20,
+    "stars_count": 20,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 21
   },
   "license": {
@@ -39,11 +39,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Wolfsblvt", "type": "User" }],
+    "accounts": [
+      { "login": "Wolfsblvt", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

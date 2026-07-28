@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "frostbd-st-custom-fonts",
   "repository": {
     "id": 686411772,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "78e11ff7d6adbb0d2b92ebdf26f0ced8cd295437"
   },
   "community": {
-    "stargazers_count": 12,
+    "stars_count": 12,
     "forks_count": 4,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 17
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -38,13 +38,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "FrostBD", "type": "User" },
-      { "login": "Succubyss", "type": "User" }
+      { "login": "FrostBD", "type": "User", "provider": "github" },
+      { "login": "Succubyss", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

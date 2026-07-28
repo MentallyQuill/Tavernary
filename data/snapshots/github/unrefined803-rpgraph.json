@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "unrefined803-rpgraph",
   "repository": {
     "id": 1289035231,
@@ -48,9 +48,9 @@
     "evidence_head_sha": "2fa4ba417f2dea1fd775afcb8f1709194f14b6fc"
   },
   "community": {
-    "stargazers_count": 39,
+    "stars_count": 39,
     "forks_count": 4,
-    "subscribers_count": 2,
+    "watchers_count": 2,
     "aggregate": 45
   },
   "license": {
@@ -62,9 +62,9 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "unrefined803", "type": "User" },
-      { "login": "rostchri", "type": "User" },
-      { "login": "ktello", "type": "User" }
+      { "login": "unrefined803", "type": "User", "provider": "github" },
+      { "login": "rostchri", "type": "User", "provider": "github" },
+      { "login": "ktello", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -72,5 +72,6 @@
     "refreshed_at": "2026-07-27T21:33:36.874Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

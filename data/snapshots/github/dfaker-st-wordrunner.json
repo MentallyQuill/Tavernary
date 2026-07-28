@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "dfaker-st-wordrunner",
   "repository": {
     "id": 1047697678,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "2b4b66d37d0c425011e3ea8060522fb541303d75"
   },
   "community": {
-    "stargazers_count": 0,
+    "stars_count": 0,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "dfaker", "type": "User" }],
+    "accounts": [{ "login": "dfaker", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

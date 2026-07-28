@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "kenhito-marinara-rpg-extension",
   "repository": {
     "id": 1225767064,
@@ -42,9 +42,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 1,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 6
   },
   "license": {
@@ -55,11 +55,12 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Kenhito", "type": "User" }],
+    "accounts": [{ "login": "Kenhito", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

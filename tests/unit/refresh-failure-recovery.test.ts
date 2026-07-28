@@ -9,7 +9,8 @@ import {
 import { refreshKitReactions } from "../../scripts/kits/refresh-reactions.mjs";
 
 const prior = {
-  schema_version: 2,
+  schema_version: 3,
+  provider: "github",
   project_id: "fixture",
   repository: {
     id: 42,
@@ -40,9 +41,9 @@ const prior = {
     baseline_attempts: 0,
   },
   community: {
-    stargazers_count: 3,
+    stars_count: 3,
     forks_count: 2,
-    subscribers_count: 1,
+    watchers_count: 1,
     aggregate: 6,
   },
   license: {
@@ -118,9 +119,10 @@ test("records a successful contributor observation as current", () => {
     contributorSnapshotForSuccess(
       [{ login: "Alice", type: "User" }],
       "2026-07-25T00:00:00.000Z",
+      "github",
     ),
   ).toEqual({
-    accounts: [{ login: "Alice", type: "User" }],
+    accounts: [{ provider: "github", login: "Alice", type: "User" }],
     method: "repository-contributors",
     baseline_completed_at: null,
     scan: null,
@@ -131,7 +133,7 @@ test("records a successful contributor observation as current", () => {
 
 test("preserves previous contributor facts and marks them stale", () => {
   const previous = {
-    accounts: [{ login: "Alice", type: "User" }],
+    accounts: [{ provider: "github" as const, login: "Alice", type: "User" }],
     refreshed_at: "2026-07-24T00:00:00.000Z",
     stale_since: null,
   };

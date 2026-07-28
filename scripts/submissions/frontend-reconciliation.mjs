@@ -231,7 +231,10 @@ export function proposeFrontendVocabularyEntry(input) {
   const displayName = input.displayName.trim().replace(/\s+/gu, " ");
   const baseId = frontendId(displayName);
   if (!baseId) throw new Error("Frontend display name is required.");
-  if (!["github", "external"].includes(input.sourceIdentity.kind)) {
+  if (
+    !isRepositoryIdentity(input.sourceIdentity) &&
+    input.sourceIdentity.kind !== "external"
+  ) {
     throw new Error("Frontend submissions require a public source repository.");
   }
 
@@ -245,7 +248,7 @@ export function proposeFrontendVocabularyEntry(input) {
   let id = baseId;
   if (collided) {
     const sourceSuffix = frontendId(
-      input.sourceIdentity.kind === "github"
+      isRepositoryIdentity(input.sourceIdentity)
         ? input.sourceIdentity.owner
         : input.sourceIdentity.hostname,
     );

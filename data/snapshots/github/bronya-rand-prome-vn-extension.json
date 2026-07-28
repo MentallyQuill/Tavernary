@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "bronya-rand-prome-vn-extension",
   "repository": {
     "id": 839083006,
@@ -26,9 +26,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 55,
+    "stars_count": 55,
     "forks_count": 7,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 63
   },
   "license": {
@@ -40,13 +40,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Bronya-Rand", "type": "User" },
-      { "login": "RivelleDays", "type": "User" }
+      { "login": "Bronya-Rand", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

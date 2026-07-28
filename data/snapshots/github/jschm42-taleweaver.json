@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "jschm42-taleweaver",
   "repository": {
     "id": 1208471920,
@@ -68,9 +68,9 @@
     "evidence_head_sha": "f5d4b1eb3a5cc49aedf2de242f873aa206262f08"
   },
   "community": {
-    "stargazers_count": 8,
+    "stars_count": 8,
     "forks_count": 2,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 11
   },
   "license": {
@@ -82,9 +82,9 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "jschm42", "type": "User" },
-      { "login": "dependabot[bot]", "type": "Bot" },
-      { "login": "Copilot", "type": "Bot" }
+      { "login": "jschm42", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -92,5 +92,6 @@
     "refreshed_at": "2026-07-27T21:35:11.266Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

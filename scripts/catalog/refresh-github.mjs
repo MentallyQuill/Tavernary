@@ -550,11 +550,12 @@ export async function runRefresh(options = {}) {
     const contributorResult = contributorResultsById.get(record.id);
     const contributors =
       contributorResult?.status === "fulfilled"
-        ? contributorSnapshotForSuccess(contributorResult.value, now)
+        ? contributorSnapshotForSuccess(contributorResult.value, now, "github")
         : contributorResult?.status === "rejected"
           ? contributorSnapshotForFailure(previous?.contributors, now)
           : previous?.contributors;
     const candidate = snapshotFromObservation({
+      provider: "github",
       projectId: record.id,
       observation,
       previous,

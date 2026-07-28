@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "jeppsterrr-crossroads",
   "repository": {
     "id": 1310212816,
@@ -38,9 +38,9 @@
     "evidence_head_sha": "8e5bc32679b70ed0837ac8bd59a76ece634fa879"
   },
   "community": {
-    "stargazers_count": 3,
+    "stars_count": 3,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 3
   },
   "license": {
@@ -52,11 +52,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "jeppsterrr", "type": "User" }],
+    "accounts": [
+      { "login": "jeppsterrr", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

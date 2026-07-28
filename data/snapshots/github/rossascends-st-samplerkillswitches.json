@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "rossascends-st-samplerkillswitches",
   "repository": {
     "id": 986817479,
@@ -26,20 +26,23 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 0,
+    "stars_count": 0,
     "forks_count": 0,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "RossAscends", "type": "User" }],
+    "accounts": [
+      { "login": "RossAscends", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

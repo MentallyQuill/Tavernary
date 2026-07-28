@@ -294,6 +294,7 @@ export async function prepareProjectSubmissionDraft({
     previous: undefined,
   });
   const snapshot = createInitialRepositorySnapshot({
+    provider: "github",
     projectId: preliminary.record.id,
     observation,
     activityInspection,

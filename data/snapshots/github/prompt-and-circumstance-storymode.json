@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "prompt-and-circumstance-storymode",
   "repository": {
     "id": 1123999916,
@@ -26,20 +26,27 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 26,
+    "stars_count": 26,
     "forks_count": 4,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 33
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Prompt-And-Circumstance", "type": "User" }],
+    "accounts": [
+      {
+        "login": "Prompt-And-Circumstance",
+        "type": "User",
+        "provider": "github"
+      }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

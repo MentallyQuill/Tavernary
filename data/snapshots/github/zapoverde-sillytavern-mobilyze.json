@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "zapoverde-sillytavern-mobilyze",
   "repository": {
     "id": 1216512802,
@@ -42,9 +42,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 13,
+    "stars_count": 13,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 13
   },
   "license": {
@@ -61,5 +61,6 @@
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mentallyquill-wandlight",
   "repository": {
     "id": 1254077407,
@@ -39,9 +39,9 @@
     "evidence_head_sha": "2d4f818c2ad5855b0faff387d88c3f64479865c6"
   },
   "community": {
-    "stargazers_count": 6,
+    "stars_count": 6,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 6
   },
   "license": {
@@ -52,12 +52,15 @@
   "refreshed_at": "2026-07-27T23:32:09.088Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "MentallyQuill", "type": "User" }],
+    "accounts": [
+      { "login": "MentallyQuill", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T23:32:09.088Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

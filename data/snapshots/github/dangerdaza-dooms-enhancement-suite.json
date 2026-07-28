@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "dangerdaza-dooms-enhancement-suite",
   "repository": {
     "id": 1163555391,
@@ -57,9 +57,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 47,
+    "stars_count": 47,
     "forks_count": 9,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 59
   },
   "license": {
@@ -71,17 +71,18 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "claude", "type": "User" },
-      { "login": "DangerDaza", "type": "User" },
-      { "login": "github-actions[bot]", "type": "Bot" },
-      { "login": "SpicyMarinara", "type": "User" },
-      { "login": "IkarusV", "type": "User" },
-      { "login": "Ryah", "type": "User" }
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "DangerDaza", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "SpicyMarinara", "type": "User", "provider": "github" },
+      { "login": "IkarusV", "type": "User", "provider": "github" },
+      { "login": "Ryah", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "maxipawlowski-story-orchestrator",
   "repository": {
     "id": 1082708357,
@@ -42,9 +42,9 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 4
   },
   "license": {
@@ -55,11 +55,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "MaxiPawlowski", "type": "User" }],
+    "accounts": [
+      { "login": "MaxiPawlowski", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

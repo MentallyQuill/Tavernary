@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "selinawynters-ops-st-threadkeeper",
   "repository": {
     "id": 1219416060,
@@ -42,9 +42,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 9,
+    "stars_count": 9,
     "forks_count": 1,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 11
   },
   "license": {
@@ -55,11 +55,14 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "selinawynters-ops", "type": "User" }],
+    "accounts": [
+      { "login": "selinawynters-ops", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

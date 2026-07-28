@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mindbound-lumiscript",
   "repository": {
     "id": 1180932701,
@@ -63,9 +63,9 @@
     "evidence_head_sha": "66ac526a4e58ef90fa5cad755a4e6a4741148112"
   },
   "community": {
-    "stargazers_count": 4,
+    "stars_count": 4,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 4
   },
   "license": {
@@ -77,11 +77,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "mindbound", "type": "User" }],
+    "accounts": [
+      { "login": "mindbound", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

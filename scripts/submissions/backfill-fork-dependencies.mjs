@@ -156,6 +156,7 @@ export async function observeForkBackfillParents({
     updatedById.set(
       item.projectId,
       snapshotFromObservation({
+        provider: "github",
         projectId: item.projectId,
         observation: item,
         previous,

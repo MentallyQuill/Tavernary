@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "mattjaybe-sillytavern-echochamber",
   "repository": {
     "id": 1128074609,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "284d02874e63e46a43ebe3e7905f76b25207ed60"
   },
   "community": {
-    "stargazers_count": 91,
+    "stars_count": 91,
     "forks_count": 10,
-    "subscribers_count": 5,
+    "watchers_count": 5,
     "aggregate": 106
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "mattjaybe", "type": "User" },
-      { "login": "SpicyMarinara", "type": "User" }
+      { "login": "mattjaybe", "type": "User", "provider": "github" },
+      { "login": "SpicyMarinara", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

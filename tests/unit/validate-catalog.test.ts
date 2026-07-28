@@ -31,7 +31,8 @@ const validRecord = {
 };
 
 const validSnapshotV2: Record<string, any> = {
-  schema_version: 2,
+  schema_version: 3,
+  provider: "github",
   project_id: "valid-preset",
   repository: {
     id: 1,
@@ -62,9 +63,9 @@ const validSnapshotV2: Record<string, any> = {
     baseline_attempts: 1,
   },
   community: {
-    stargazers_count: 3,
+    stars_count: 3,
     forks_count: 2,
-    subscribers_count: 1,
+    watchers_count: 1,
     aggregate: 6,
   },
   license: {
@@ -712,8 +713,8 @@ describe("catalog validation", () => {
     const snapshot = structuredClone(validSnapshotV2);
     snapshot.contributors = {
       accounts: [
-        { login: "Alice", type: "User" },
-        { login: "Claude", type: "User" },
+        { provider: "github", login: "Alice", type: "User" },
+        { provider: "github", login: "Claude", type: "User" },
       ],
       refreshed_at: "2026-07-25T00:00:00.000Z",
       stale_since: null,
@@ -731,7 +732,7 @@ describe("catalog validation", () => {
     const snapshot = structuredClone(validSnapshotV2);
     snapshot.repository.fork = true;
     snapshot.contributors = {
-      accounts: [{ login: "LeRobber", type: "User" }],
+      accounts: [{ provider: "github", login: "LeRobber", type: "User" }],
       method: "merged-pull-requests",
       baseline_completed_at: null,
       scan: {
@@ -755,8 +756,8 @@ describe("catalog validation", () => {
     const snapshot = structuredClone(validSnapshotV2);
     snapshot.contributors = {
       accounts: [
-        { login: "Alice", type: "User" },
-        { login: "alice", type: "User" },
+        { provider: "github", login: "Alice", type: "User" },
+        { provider: "github", login: "alice", type: "User" },
       ],
       refreshed_at: "2026-07-25T00:00:00.000Z",
       stale_since: null,

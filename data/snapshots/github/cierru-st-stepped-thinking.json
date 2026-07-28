@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "cierru-st-stepped-thinking",
   "repository": {
     "id": 871361642,
@@ -26,9 +26,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 162,
+    "stars_count": 162,
     "forks_count": 15,
-    "subscribers_count": 4,
+    "watchers_count": 4,
     "aggregate": 181
   },
   "license": {
@@ -40,15 +40,16 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "cierru", "type": "User" },
-      { "login": "InspectorCaracal", "type": "User" },
-      { "login": "CasualAutopsy", "type": "User" },
-      { "login": "Cohee1207", "type": "User" }
+      { "login": "cierru", "type": "User", "provider": "github" },
+      { "login": "InspectorCaracal", "type": "User", "provider": "github" },
+      { "login": "CasualAutopsy", "type": "User", "provider": "github" },
+      { "login": "Cohee1207", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

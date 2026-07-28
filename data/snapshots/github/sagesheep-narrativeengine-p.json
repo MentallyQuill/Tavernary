@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sagesheep-narrativeengine-p",
   "repository": {
     "id": 1215007786,
@@ -88,9 +88,9 @@
     "evidence_head_sha": "2f26f39129e51910395c16d79448c91530f051d1"
   },
   "community": {
-    "stargazers_count": 70,
+    "stars_count": 70,
     "forks_count": 13,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 86
   },
   "license": {
@@ -102,10 +102,10 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "Sagesheep", "type": "User" },
-      { "login": "EliteCombine2", "type": "User" },
-      { "login": "AradoX7", "type": "User" },
-      { "login": "ericsonguk", "type": "User" }
+      { "login": "Sagesheep", "type": "User", "provider": "github" },
+      { "login": "EliteCombine2", "type": "User", "provider": "github" },
+      { "login": "AradoX7", "type": "User", "provider": "github" },
+      { "login": "ericsonguk", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -113,5 +113,6 @@
     "refreshed_at": "2026-07-27T21:27:18.926Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

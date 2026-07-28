@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "vectricity-st-aspect-vocalia",
   "repository": {
     "id": 1230539972,
@@ -42,20 +42,23 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 5,
+    "stars_count": 5,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 5
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "Vectricity", "type": "User" }],
+    "accounts": [
+      { "login": "Vectricity", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

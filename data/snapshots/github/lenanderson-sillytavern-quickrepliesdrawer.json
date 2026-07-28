@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-quickrepliesdrawer",
   "repository": {
     "id": 919776844,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "0d7feb81f31717d771efebd90618d18a73bff4df"
   },
   "community": {
-    "stargazers_count": 9,
+    "stars_count": 9,
     "forks_count": 1,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 11
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "LenAnderson", "type": "User" }],
+    "accounts": [
+      { "login": "LenAnderson", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

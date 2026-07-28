@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lithiumwaves-danganronpa-sillytavern",
   "repository": {
     "id": 1135951236,
@@ -57,9 +57,9 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stargazers_count": 6,
+    "stars_count": 6,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -67,13 +67,14 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "LithiumWaves", "type": "User" },
-      { "login": "adaptajoe", "type": "User" }
+      { "login": "LithiumWaves", "type": "User", "provider": "github" },
+      { "login": "adaptajoe", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "kikyoicecream-next-choices",
   "repository": {
     "id": 1305892185,
@@ -37,20 +37,23 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 2,
+    "stars_count": 2,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 2
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "kikyoicecream", "type": "User" }],
+    "accounts": [
+      { "login": "kikyoicecream", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

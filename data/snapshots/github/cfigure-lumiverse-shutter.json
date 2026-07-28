@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "cfigure-lumiverse-shutter",
   "repository": {
     "id": 1234743592,
@@ -57,9 +57,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 0,
+    "stars_count": 0,
     "forks_count": 0,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 0
   },
   "license": {
@@ -70,11 +70,12 @@
   "refreshed_at": "2026-07-27T16:42:09.486Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "cfigure", "type": "User" }],
+    "accounts": [{ "login": "cfigure", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

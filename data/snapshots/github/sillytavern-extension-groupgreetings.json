@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "sillytavern-extension-groupgreetings",
   "repository": {
     "id": 772263541,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "52e74dd35dd6f1cfe7dbd9ce3b8b6c4a2ac1fba1"
   },
   "community": {
-    "stargazers_count": 10,
+    "stars_count": 10,
     "forks_count": 4,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 15
   },
   "license": {
@@ -42,13 +42,14 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "Cohee1207", "type": "User" },
-      { "login": "dependabot[bot]", "type": "Bot" }
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

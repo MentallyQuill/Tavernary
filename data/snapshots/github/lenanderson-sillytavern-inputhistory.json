@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "lenanderson-sillytavern-inputhistory",
   "repository": {
     "id": 735181166,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "1ba5491dbe4287f77c12a2114c9a5ddf26a7fbe8"
   },
   "community": {
-    "stargazers_count": 12,
+    "stars_count": 12,
     "forks_count": 2,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 15
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,11 +37,14 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Succubyss", "type": "User" }],
+    "accounts": [
+      { "login": "Succubyss", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

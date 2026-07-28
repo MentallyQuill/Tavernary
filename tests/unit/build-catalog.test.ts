@@ -57,7 +57,8 @@ const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
 });
 
 const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
-  schema_version: 2,
+  schema_version: 3,
+  provider: "github",
   project_id: "fixture",
   source_health: "healthy",
   repository: {
@@ -95,9 +96,10 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
     baseline_attempts: 0,
   },
   community: {
-    stargazers_count: 1,
+    stars_count: 1,
     forks_count: 2,
-    subscribers_count: 3,
+    watchers_count: 3,
+    aggregate: 6,
   },
   license: {
     status: "osi-approved",

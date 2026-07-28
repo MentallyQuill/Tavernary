@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "envy-ai-ai-rpg",
   "repository": {
     "id": 1057660249,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "bea1dd19a425c09eca40bf78e0a22589d3d9fb5a"
   },
   "community": {
-    "stargazers_count": 143,
+    "stars_count": 143,
     "forks_count": 25,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 171
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -37,10 +37,10 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "envy-ai", "type": "User" },
-      { "login": "bartkelsey", "type": "User" },
-      { "login": "funteaqueue", "type": "User" },
-      { "login": "fazo96", "type": "User" }
+      { "login": "envy-ai", "type": "User", "provider": "github" },
+      { "login": "bartkelsey", "type": "User", "provider": "github" },
+      { "login": "funteaqueue", "type": "User", "provider": "github" },
+      { "login": "fazo96", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -48,5 +48,6 @@
     "refreshed_at": "2026-07-27T21:26:07.194Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

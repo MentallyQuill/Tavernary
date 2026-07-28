@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "coneja-chibi-vecthare",
   "repository": {
     "id": 1085333493,
@@ -33,9 +33,9 @@
     "evidence_head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a"
   },
   "community": {
-    "stargazers_count": 65,
+    "stars_count": 65,
     "forks_count": 19,
-    "subscribers_count": 3,
+    "watchers_count": 3,
     "aggregate": 87
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -43,13 +43,13 @@
   "stale_since": null,
   "contributors": {
     "accounts": [
-      { "login": "LeviTheWeasel", "type": "User" },
-      { "login": "Coneja-Chibi", "type": "User" },
-      { "login": "prolix-oc", "type": "User" },
-      { "login": "Promansis", "type": "User" },
-      { "login": "DrMagisto", "type": "User" },
-      { "login": "r-t-k", "type": "User" },
-      { "login": "TheLiquorPriest", "type": "User" }
+      { "login": "LeviTheWeasel", "type": "User", "provider": "github" },
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "Promansis", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" },
+      { "login": "r-t-k", "type": "User", "provider": "github" },
+      { "login": "TheLiquorPriest", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
@@ -57,5 +57,6 @@
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

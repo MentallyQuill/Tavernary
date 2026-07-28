@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "samueras-sillytavern-multipersonacomposer",
   "repository": {
     "id": 1168534011,
@@ -27,9 +27,9 @@
     "evidence_head_sha": "26c11ce9e3d623f74904bfa52cab707bb8e610ba"
   },
   "community": {
-    "stargazers_count": 8,
+    "stars_count": 8,
     "forks_count": 1,
-    "subscribers_count": 0,
+    "watchers_count": 0,
     "aggregate": 9
   },
   "license": {
@@ -41,11 +41,12 @@
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Samueras", "type": "User" }],
+    "accounts": [{ "login": "Samueras", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "platberlitz-sillytavern-character-colors",
   "repository": {
     "id": 1133521830,
@@ -78,9 +78,9 @@
     "evidence_head_sha": "0eb1cf6933ac21a943def607201674bf8dabc952"
   },
   "community": {
-    "stargazers_count": 19,
+    "stars_count": 19,
     "forks_count": 2,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 22
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
@@ -89,14 +89,15 @@
   "activity_scan": null,
   "contributors": {
     "accounts": [
-      { "login": "web-flow", "type": "User" },
-      { "login": "Wolfsblvt", "type": "User" },
-      { "login": "platberlitz", "type": "User" }
+      { "login": "web-flow", "type": "User", "provider": "github" },
+      { "login": "Wolfsblvt", "type": "User", "provider": "github" },
+      { "login": "platberlitz", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }

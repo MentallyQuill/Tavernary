@@ -54,7 +54,8 @@ const observation = {
 };
 
 const snapshot = {
-  schema_version: 2 as const,
+  schema_version: 3 as const,
+  provider: "github" as const,
   project_id: "owner-repo",
   repository: {
     id: 42,
@@ -80,9 +81,9 @@ const snapshot = {
     baseline_attempts: 0,
   },
   community: {
-    stargazers_count: 3,
+    stars_count: 3,
     forks_count: 2,
-    subscribers_count: 1,
+    watchers_count: 1,
     aggregate: 6,
   },
   license: {

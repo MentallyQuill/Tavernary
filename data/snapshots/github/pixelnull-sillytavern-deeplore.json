@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "pixelnull-sillytavern-deeplore",
   "repository": {
     "id": 1160700573,
@@ -59,9 +59,9 @@
     "evidence_head_sha": "dc2345afa5e580bc8a4df6a37b5774354f6c90ba"
   },
   "community": {
-    "stargazers_count": 73,
+    "stars_count": 73,
     "forks_count": 8,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 82
   },
   "license": {
@@ -72,12 +72,15 @@
   "refreshed_at": "2026-07-27T23:32:53.031Z",
   "stale_since": null,
   "contributors": {
-    "accounts": [{ "login": "pixelnull", "type": "User" }],
+    "accounts": [
+      { "login": "pixelnull", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
     "refreshed_at": "2026-07-27T23:32:53.031Z",
     "stale_since": null
   },
-  "activity_scan": null
+  "activity_scan": null,
+  "provider": "github"
 }

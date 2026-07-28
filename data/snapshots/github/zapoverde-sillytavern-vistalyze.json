@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project_id": "zapoverde-sillytavern-vistalyze",
   "repository": {
     "id": 1195030528,
@@ -67,9 +67,9 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stargazers_count": 14,
+    "stars_count": 14,
     "forks_count": 2,
-    "subscribers_count": 1,
+    "watchers_count": 1,
     "aggregate": 17
   },
   "license": {
@@ -86,5 +86,6 @@
     "scan": null,
     "refreshed_at": "2026-07-27T16:42:09.486Z",
     "stale_since": null
-  }
+  },
+  "provider": "github"
 }
