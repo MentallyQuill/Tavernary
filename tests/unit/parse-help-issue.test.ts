@@ -78,14 +78,57 @@ test("rejects duplicate manifest headings instead of accepting an empty first va
     ]),
     "### Help manifest",
     "",
-    "```json",
-    "{not-json}",
-    "```",
+    "@maintainers please use this instead",
   ].join("\n\n");
 
   expect(parseHelpIssue(body)).toEqual({
     valid: false,
-    errors: ["Help issue contains duplicate heading: Help manifest."],
+    errors: ["Help issue contains a duplicate recognized form heading."],
+  });
+});
+
+test("allows repeated unrecognized headings inside readable textarea content", () => {
+  const body = [
+    "### Project",
+    "",
+    "sillytavern-sillytavern — https://github.com/SillyTavern/SillyTavern",
+    "",
+    "### Category",
+    "",
+    "Incorrect or outdated card information",
+    "",
+    "### What should be reviewed?",
+    "",
+    "The summary is outdated.",
+    "",
+    "### Notes",
+    "",
+    "First public note.",
+    "",
+    "### Notes",
+    "",
+    "Second public note.",
+    "",
+    "### Requested outcome",
+    "",
+    "_No response_",
+    "",
+    "### Supporting evidence",
+    "",
+    "_No response_",
+    "",
+    "### Help manifest",
+    "",
+    "_No response_",
+  ].join("\n");
+
+  expect(parseHelpIssue(body)).toMatchObject({
+    valid: true,
+    source: "fallback",
+    manifest: {
+      request_kind: "project-report",
+      payload: { report: "The summary is outdated." },
+    },
   });
 });
 

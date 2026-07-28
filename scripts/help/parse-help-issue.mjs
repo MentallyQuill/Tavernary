@@ -84,6 +84,9 @@ export const HELP_FALLBACK_HEADINGS = Object.freeze({
     "Help manifest",
   ]),
 });
+const recognizedHelpHeadings = new Set(
+  Object.values(HELP_FALLBACK_HEADINGS).flat(),
+);
 
 function readableValue(value = "") {
   const normalized = String(value).trim();
@@ -97,7 +100,10 @@ function collectIssueHeadings(body = "") {
     const [heading, ...content] = section.split(/\r?\n/);
     const normalizedHeading = heading.trim();
     if (!normalizedHeading) continue;
-    if (fields.has(normalizedHeading)) {
+    if (
+      fields.has(normalizedHeading) &&
+      recognizedHelpHeadings.has(normalizedHeading)
+    ) {
       duplicates.add(normalizedHeading);
       continue;
     }
@@ -258,9 +264,7 @@ export function parseHelpIssue(body = "") {
   if (duplicates.length > 0) {
     return {
       valid: false,
-      errors: duplicates.map(
-        (heading) => `Help issue contains duplicate heading: ${heading}.`,
-      ),
+      errors: ["Help issue contains a duplicate recognized form heading."],
     };
   }
   const manifestValue = fields.get("Help manifest") ?? "";

@@ -53,6 +53,8 @@ test("fetches the latest admitted issue and replaces only Help-owned labels", as
       ) {
         return latestIssue;
       }
+      if (path.endsWith("/comments?per_page=100") && !options?.method)
+        return [];
       return null;
     },
   );
@@ -86,6 +88,42 @@ test("fetches the latest admitted issue and replaces only Help-owned labels", as
       String(path).includes("maintainer-priority"),
     ),
   ).toBe(false);
+});
+
+test("removes a bot-owned correction comment after a valid rerun", async () => {
+  const request = vi.fn(
+    async (path: string, options?: { method?: string; body?: string }) => {
+      if (
+        path === "/repos/MentallyQuill/Tavernary/issues/41" &&
+        !options?.method
+      ) {
+        return {
+          number: 41,
+          state: "open",
+          body: websiteBody(),
+          labels: ["issue-admitted", "website-bug"],
+        };
+      }
+      if (path.endsWith("/comments?per_page=100") && !options?.method) {
+        return [
+          {
+            id: 702,
+            body: `${HELP_TRIAGE_MARKER}\nTavernary could not validate this Help request.`,
+            user: { login: "github-actions[bot]" },
+          },
+        ];
+      }
+      return null;
+    },
+  );
+
+  await expect(
+    processHelpIssueTriage({ event: event(), request }),
+  ).resolves.toMatchObject({ valid: true, requestKind: "website-bug" });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/comments/702",
+    { method: "DELETE" },
+  );
 });
 
 test("rejects a latest issue that is no longer admitted before mutation", async () => {

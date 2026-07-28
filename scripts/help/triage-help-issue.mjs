@@ -43,19 +43,27 @@ function buildCorrectionComment(errors) {
   ].join("\n");
 }
 
+async function findCorrectionComment(repository, issueNumber, request) {
+  const comments = await request(
+    `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
+  );
+  return comments.find(
+    (comment) =>
+      comment.user?.login === "github-actions[bot]" &&
+      comment.body?.includes(HELP_TRIAGE_MARKER),
+  );
+}
+
 async function synchronizeCorrectionComment({
   repository,
   issueNumber,
   errors,
   request,
 }) {
-  const comments = await request(
-    `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
-  );
-  const existing = comments.find(
-    (comment) =>
-      comment.user?.login === "github-actions[bot]" &&
-      comment.body?.includes(HELP_TRIAGE_MARKER),
+  const existing = await findCorrectionComment(
+    repository,
+    issueNumber,
+    request,
   );
   const body = buildCorrectionComment(errors);
   if (existing) {
@@ -71,6 +79,22 @@ async function synchronizeCorrectionComment({
     method: "POST",
     body: JSON.stringify({ body }),
   });
+}
+
+async function removeCorrectionComment(repository, issueNumber, request) {
+  const existing = await findCorrectionComment(
+    repository,
+    issueNumber,
+    request,
+  );
+  if (!existing) return;
+  try {
+    await request(`/repos/${repository}/issues/comments/${existing.id}`, {
+      method: "DELETE",
+    });
+  } catch (error) {
+    if (error.status !== 404) throw error;
+  }
 }
 
 async function removeLabel(repository, issueNumber, label, request) {
@@ -148,6 +172,7 @@ export async function processHelpIssueTriage({ event, request }) {
     throw new Error("Help triage label mapping is inconsistent.");
   }
   await synchronizeHelpLabels({ repository, issue, labels, request });
+  await removeCorrectionComment(repository, issueNumber, request);
   return {
     valid: true,
     issueNumber,
