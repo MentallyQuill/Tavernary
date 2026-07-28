@@ -3,7 +3,7 @@ import { loadReadmeSource } from "./readme-source.mjs";
 import { loadRedditEnrichmentSource } from "./reddit-enrichment-source.mjs";
 
 export async function loadEnrichmentSource(record, snapshot, options = {}) {
-  if (record.source?.type === "github") {
+  if (record.source?.type === "github" || record.source?.type === "codeberg") {
     const source = await (options.loadRepository ?? loadReadmeSource)(
       record,
       snapshot,
@@ -11,7 +11,7 @@ export async function loadEnrichmentSource(record, snapshot, options = {}) {
     );
     return {
       ...source,
-      sourceIdentity: `github:${record.source.repository.toLowerCase()}`,
+      sourceIdentity: `${record.source.type}:${record.source.repository.toLowerCase()}`,
     };
   }
 

@@ -91,9 +91,16 @@ export interface ContributorContext {
 }
 
 export interface ContributorCollection {
-  accounts: Array<{ login: string; type: string }>;
+  accounts: Array<{
+    provider?: RepositoryProviderName;
+    login: string;
+    type: string;
+  }>;
   requestCount: number;
-  method: "repository-contributors" | "merged-pull-requests";
+  method:
+    | "repository-contributors"
+    | "merged-pull-requests"
+    | "commit-and-merged-pull-request-authors";
   baselineCompletedAt?: string | null;
   refreshedAt?: string | null;
   scan?: {
@@ -125,6 +132,9 @@ export interface RepositoryProvider {
 export interface RepositoryProviderClients {
   github?: ConstructorParameters<
     typeof import("./github-repository-provider.mjs").GitHubRepositoryProvider
+  >[0];
+  codeberg?: ConstructorParameters<
+    typeof import("./codeberg-repository-provider.mjs").CodebergRepositoryProvider
   >[0];
 }
 

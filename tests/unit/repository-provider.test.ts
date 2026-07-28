@@ -61,6 +61,15 @@ test("returns a GitHub adapter for github sources", () => {
   expect(provider.snapshotDirectory).toBe("data/snapshots/github");
 });
 
+test("returns a Codeberg adapter for codeberg sources", () => {
+  const provider = repositoryProvider("codeberg", {
+    codeberg: { request: vi.fn() },
+  });
+
+  expect(provider.name).toBe("codeberg");
+  expect(provider.snapshotDirectory).toBe("data/snapshots/codeberg");
+});
+
 test("rejects an unregistered provider", () => {
   expect(() => repositoryProvider("gitlab" as never)).toThrow(
     "Unsupported repository provider: gitlab",

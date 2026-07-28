@@ -11,6 +11,15 @@ const githubRecord = {
   },
 };
 
+const codebergRecord = {
+  id: "targren-lumiverse-swipescrubber",
+  source: {
+    type: "codeberg",
+    repository: "targren/Lumiverse-SwipeScrubber",
+    repository_id: 1699613,
+  },
+};
+
 const redditRecord = {
   id: "reddit-1v64r6z",
   source: {
@@ -54,6 +63,29 @@ test("retains GitHub identity on source failures", async () => {
   ).resolves.toMatchObject({
     status: "failed",
     sourceIdentity: "github:creator/project",
+  });
+});
+
+test("routes Codeberg records through the normalized repository adapter", async () => {
+  const loadRepository = vi.fn(async () => ({
+    status: "ready" as const,
+    sourceKind: "readme" as const,
+    text: "# Swipe Scrubber",
+    repositoryDescription: null,
+    readmeText: "# Swipe Scrubber",
+    repositoryId: 1699613,
+    headSha: "a".repeat(40),
+    readmePath: "README.md",
+    readmeRef: "a".repeat(40),
+  }));
+
+  await expect(
+    loadEnrichmentSource(codebergRecord, snapshot, { loadRepository }),
+  ).resolves.toMatchObject({
+    status: "ready",
+    sourceKind: "readme",
+    sourceIdentity: "codeberg:targren/lumiverse-swipescrubber",
+    text: expect.stringContaining("Swipe Scrubber"),
   });
 });
 

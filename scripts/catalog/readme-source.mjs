@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 
 import { prepareReadmeText } from "./readme-preparation.mjs";
+import { repositoryProvider } from "./repository-provider.mjs";
 
 const githubApi = "https://api.github.com";
 
@@ -152,34 +153,34 @@ function readmeFailure(error) {
     return {
       status: "failed",
       reasonCode: "readme-authentication-failed",
-      message: "GitHub README authentication is unavailable.",
+      message: "Repository README authentication is unavailable.",
     };
   }
   if (status === 429) {
     return {
       status: "failed",
       reasonCode: "readme-rate-limited",
-      message: "GitHub README request was rate limited.",
+      message: "Repository README request was rate limited.",
     };
   }
   if (status >= 500 && status <= 599) {
     return {
       status: "failed",
       reasonCode: "readme-server-error",
-      message: "GitHub README service is unavailable.",
+      message: "Repository README service is unavailable.",
     };
   }
   return {
     status: "failed",
     reasonCode: "readme-fetch-failed",
-    message: "GitHub README request failed.",
+    message: "Repository README request failed.",
   };
 }
 
 export async function loadReadmeSource(record, snapshot, options = {}) {
   const validateSnapshot =
     options.validateSnapshot ??
-    ((value) => value?.schema_version === 2 && value?.repository);
+    ((value) => value?.schema_version === 3 && value?.repository);
   const readiness = assessSourceReadiness(record, snapshot, validateSnapshot);
   if (readiness.status !== "ready") return readiness;
 
@@ -189,13 +190,26 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     headSha: repository.head_sha,
   };
   const description = repositoryDescription(snapshot);
-  const github = options.github ?? defaultGithub;
+  const providerName = record.source.type;
+  const provider =
+    options.providers?.[providerName] ??
+    (providerName === "github" && options.github
+      ? {
+          readRootReadme: ({ repository: path, ref }) =>
+            options.github(`/repos/${path}/readme`, { ref }),
+        }
+      : providerName === "github" && !options.providers
+        ? {
+            readRootReadme: ({ repository: path, ref }) =>
+              defaultGithub(`/repos/${path}/readme`, { ref }),
+          }
+        : repositoryProvider(providerName));
   let readme;
   try {
-    readme = await github(
-      `/repos/${repository.owner}/${repository.name}/readme`,
-      { ref: repository.head_sha },
-    );
+    readme = await provider.readRootReadme({
+      repository: `${repository.owner}/${repository.name}`,
+      ref: repository.head_sha,
+    });
   } catch (error) {
     return readmeFailure(error);
   }
@@ -219,7 +233,7 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
       return {
         status: "failed",
         reasonCode: "readme-unusable",
-        message: "GitHub README content is unusable.",
+        message: "Repository README content is unusable.",
       };
     }
   }
