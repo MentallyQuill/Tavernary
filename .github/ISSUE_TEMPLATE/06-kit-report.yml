@@ -1,5 +1,5 @@
 name: Report a Kit
-description: Report a compatibility, safety, accuracy, or duplicate concern.
+description: Report a compatibility, safety, accuracy, attribution, or duplicate concern.
 title: "[Kit report]: "
 labels:
   - kit-report
@@ -14,26 +14,43 @@ body:
     id: share-url
     attributes:
       label: Kit share URL
+      placeholder: https://tavernary.org/?kit=example-kit
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: category
     attributes:
-      label: Report category
-      options:
-        - Compatibility problem
-        - Unsafe or malicious project
-        - Abusive or vulgar content
-        - Broken or removed project
-        - Misleading description
-        - Duplicate Kit
-        - Other
+      label: Category
+      description: "Use exactly one: Compatibility problem; Unsafe or malicious included project; Abusive or inappropriate content; Broken, removed, or unavailable project; Misleading title or description; Duplicate Kit; Author or attribution concern; Other Kit concern"
+      placeholder: Compatibility problem
     validations:
       required: true
+  - type: textarea
+    id: affected-project-ids
+    attributes:
+      label: Affected project IDs
+      description: For compatibility or unavailable-project reports, enter up to 50 project IDs separated by commas or new lines.
+    validations:
+      required: false
   - type: textarea
     id: details
     attributes:
       label: Details
-      description: Explain the concern and include relevant evidence.
+      description: Explain the concern and what Tavernary should review.
     validations:
       required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: Link to public source material that supports the report when possible.
+    validations:
+      required: false
+  - type: textarea
+    id: help-manifest
+    attributes:
+      label: Help manifest
+      description: Optional. If Tavernary prepared this report, keep the complete JSON manifest here. Leave it empty when entering the report directly on GitHub.
+      render: json
+    validations:
+      required: false

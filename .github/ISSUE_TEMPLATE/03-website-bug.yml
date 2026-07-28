@@ -4,24 +4,69 @@ title: "[Website bug]: "
 labels:
   - website-bug
 body:
-  - type: textarea
-    id: problem
+  - type: input
+    id: category
     attributes:
-      label: What happened?
-      description: Explain what you expected and what Tavernary did instead.
+      label: Category
+      description: "Use exactly one: Search, filters, or sorting; Navigation or link; Display, layout, or theme; Form submission or GitHub handoff; Kit builder or catalog interaction; Accessibility; Performance or loading; Other website behavior"
+      placeholder: Search, filters, or sorting
+    validations:
+      required: true
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL
+      description: Enter the Tavernary page where the problem occurred. An HTTPS URL or site path beginning with `/` is accepted.
+      placeholder: https://tavernary.org/
     validations:
       required: true
   - type: textarea
-    id: reproduce
+    id: actual-behavior
+    attributes:
+      label: What happened?
+      description: Describe what Tavernary did.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: What did you expect?
+      description: Describe the behavior you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction-steps
     attributes:
       label: Steps to reproduce
-      description: Include the page, search, filters, view, or project involved.
+      description: Include the search, filters, view, Kit, or project involved.
     validations:
       required: true
   - type: input
     id: browser
     attributes:
-      label: Browser and device
-      placeholder: Firefox 128 on Windows 11
+      label: Browser
+      placeholder: Firefox 128
+    validations:
+      required: false
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: Windows 11 desktop
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Include any other public details that may help reproduce the problem.
+    validations:
+      required: false
+  - type: textarea
+    id: help-manifest
+    attributes:
+      label: Help manifest
+      description: Optional. If Tavernary prepared this report, keep the complete JSON manifest here. Leave it empty when entering the report directly on GitHub.
+      render: json
     validations:
       required: false

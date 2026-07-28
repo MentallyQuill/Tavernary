@@ -88,18 +88,12 @@ test("Kit submission is a readable review form without redundant machine fields"
   const report = parse(
     await readFile(resolve(templateDirectory, "06-kit-report.yml"), "utf8"),
   );
-  const categories = report.body.find(
+  const category = report.body.find(
     (field: { id?: string }) => field.id === "category",
   );
-  expect(categories.attributes.options).toEqual([
-    "Compatibility problem",
-    "Unsafe or malicious project",
-    "Abusive or vulgar content",
-    "Broken or removed project",
-    "Misleading description",
-    "Duplicate Kit",
-    "Other",
-  ]);
+  expect(category.type).toBe("input");
+  expect(category.attributes.description).toContain("Compatibility problem");
+  expect(category.attributes.description).toContain("Duplicate Kit");
   for (const file of ["06-kit-report.yml", "07-kit-withdrawal.yml"]) {
     const source = await readFile(resolve(templateDirectory, file), "utf8");
     expect(source).toContain("id: kit-id");
@@ -197,4 +191,150 @@ test("project submission is a structured fallback for automated intake", async (
   expect(submission.body[0].attributes.value).toContain(
     "Tavernary submission builder",
   );
+});
+
+test("public Help forms expose readable prefillable fields before an optional manifest", async () => {
+  const expected = {
+    "02-project-information.yml": {
+      ids: [
+        "project",
+        "category",
+        "report",
+        "requested-outcome",
+        "evidence",
+        "help-manifest",
+      ],
+      types: ["input", "input", "textarea", "textarea", "textarea", "textarea"],
+      required: ["project", "category", "report"],
+      categories: [
+        "Incorrect or outdated card information",
+        "Repository moved, renamed, archived, or disappeared",
+        "Duplicate or wrong listing",
+        "Unsafe or malicious project",
+        "Abusive or inappropriate content",
+        "Copyright, trademark, or other rights concern",
+        "Something else about this listing",
+      ],
+    },
+    "03-website-bug.yml": {
+      ids: [
+        "category",
+        "page-url",
+        "actual-behavior",
+        "expected-behavior",
+        "reproduction-steps",
+        "browser",
+        "device",
+        "additional-context",
+        "help-manifest",
+      ],
+      types: [
+        "input",
+        "input",
+        "textarea",
+        "textarea",
+        "textarea",
+        "input",
+        "input",
+        "textarea",
+        "textarea",
+      ],
+      required: [
+        "category",
+        "page-url",
+        "actual-behavior",
+        "expected-behavior",
+        "reproduction-steps",
+      ],
+      categories: [
+        "Search, filters, or sorting",
+        "Navigation or link",
+        "Display, layout, or theme",
+        "Form submission or GitHub handoff",
+        "Kit builder or catalog interaction",
+        "Accessibility",
+        "Performance or loading",
+        "Other website behavior",
+      ],
+    },
+    "04-other.yml": {
+      ids: [
+        "category",
+        "subject",
+        "description",
+        "relevant-url",
+        "help-manifest",
+      ],
+      types: ["input", "input", "textarea", "input", "textarea"],
+      required: ["category", "subject", "description"],
+      categories: [
+        "Using Tavernary",
+        "An existing request",
+        "Suggest an improvement",
+        "Documentation or policy",
+        "Something else",
+      ],
+    },
+    "06-kit-report.yml": {
+      ids: [
+        "kit-id",
+        "share-url",
+        "category",
+        "affected-project-ids",
+        "details",
+        "evidence",
+        "help-manifest",
+      ],
+      types: [
+        "input",
+        "input",
+        "input",
+        "textarea",
+        "textarea",
+        "textarea",
+        "textarea",
+      ],
+      required: ["kit-id", "share-url", "category", "details"],
+      categories: [
+        "Compatibility problem",
+        "Unsafe or malicious included project",
+        "Abusive or inappropriate content",
+        "Broken, removed, or unavailable project",
+        "Misleading title or description",
+        "Duplicate Kit",
+        "Author or attribution concern",
+        "Other Kit concern",
+      ],
+    },
+  } as const;
+
+  for (const [file, contract] of Object.entries(expected)) {
+    const form = parse(
+      await readFile(resolve(templateDirectory, file), "utf8"),
+    ) as {
+      body: Array<{
+        type: string;
+        id?: string;
+        attributes?: { description?: string };
+        validations?: { required?: boolean };
+      }>;
+    };
+    const fields = form.body.filter((field) => field.id);
+
+    expect(fields.map((field) => field.id)).toEqual(contract.ids);
+    expect(fields.map((field) => field.type)).toEqual(contract.types);
+    expect(
+      fields
+        .filter((field) => field.validations?.required)
+        .map((field) => field.id),
+    ).toEqual(contract.required);
+    expect(fields.at(-1)).toMatchObject({
+      id: "help-manifest",
+      type: "textarea",
+      validations: { required: false },
+    });
+    expect(
+      fields.find((field) => field.id === "category")?.attributes?.description,
+    ).toContain(contract.categories.join("; "));
+  }
 });

@@ -2,6 +2,11 @@ import { appendFile, readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 import {
+  HELP_LABEL_DEFINITIONS,
+  HELP_ROUTE_BY_LABEL,
+} from "../help/help-labels.mjs";
+import { HELP_FALLBACK_HEADINGS } from "../help/parse-help-issue.mjs";
+import {
   buildIssueLimitComment,
   decideIssueAdmission,
   ISSUE_ADMISSION_LABEL,
@@ -39,7 +44,9 @@ const routeByLabel = {
   "project-submission": "project",
   "kit-submission": "kit",
   "kit-withdrawal": "kit-withdrawal",
+  ...HELP_ROUTE_BY_LABEL,
 };
+const publicHelpRoutes = new Set(Object.values(HELP_ROUTE_BY_LABEL));
 
 const trustedAssociations = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
 
@@ -86,6 +93,10 @@ export function issueRouteFromBody(body = "") {
       route: "kit-withdrawal",
       headings: ["Kit ID", "Kit share URL", "Confirmation"],
     },
+    ...Object.entries(HELP_FALLBACK_HEADINGS).map(([route, headings]) => ({
+      route,
+      headings,
+    })),
   ];
   const matches = routes.filter(({ headings: required }) =>
     required.every((heading) => headings.has(heading)),
@@ -114,6 +125,7 @@ async function ensureOwnedLabels(repository, request) {
   for (const [name, definition] of Object.entries({
     ...admissionLabels,
     ...routingLabels,
+    ...HELP_LABEL_DEFINITIONS,
   })) {
     try {
       await request(`/repos/${repository}/labels`, {
@@ -206,12 +218,14 @@ export async function processIssueAdmission({ event, request }) {
     };
     if (!decision.admitted) return { ...decision, route: "none" };
     const route = effectiveIssueRoute(currentIssue);
+    const helpRoute = publicHelpRoutes.has(route);
+    if (helpRoute) await ensureOwnedLabels(repository, request);
     await restoreRecoveredRouteLabel({
       repository,
       issue: currentIssue,
       route,
       request,
-      ensureLabels: true,
+      ensureLabels: !helpRoute,
     });
     return { ...decision, route };
   }

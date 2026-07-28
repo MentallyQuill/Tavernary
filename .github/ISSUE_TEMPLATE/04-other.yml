@@ -5,6 +5,14 @@ labels:
   - other
 body:
   - type: input
+    id: category
+    attributes:
+      label: Category
+      description: "Use exactly one: Using Tavernary; An existing request; Suggest an improvement; Documentation or policy; Something else"
+      placeholder: Using Tavernary
+    validations:
+      required: true
+  - type: input
     id: subject
     attributes:
       label: Subject
@@ -18,3 +26,19 @@ body:
       description: Explain what you want the Tavernary maintainers to know.
     validations:
       required: true
+  - type: input
+    id: relevant-url
+    attributes:
+      label: Relevant URL
+      description: Link to a relevant public page, issue, pull request, or document when available.
+      placeholder: https://example.com/
+    validations:
+      required: false
+  - type: textarea
+    id: help-manifest
+    attributes:
+      label: Help manifest
+      description: Optional. If Tavernary prepared this request, keep the complete JSON manifest here. Leave it empty when entering the request directly on GitHub.
+      render: json
+    validations:
+      required: false

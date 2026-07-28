@@ -38,6 +38,7 @@ test("uses category-prefixed workflow display names", async () => {
     "retry-frontend-dependencies":
       "Project submissions: Retry frontend dependencies",
     "triage-kit-submission": "Kit submissions: Validate submission",
+    "triage-help-request": "Help requests: Triage report",
     "apply-kit-submission": "Kit submissions: Publish approved Kit",
     "apply-kit-withdrawal": "Kit submissions: Withdraw published Kit",
     "refresh-catalog": "Catalog maintenance: Refresh source data",
@@ -64,6 +65,7 @@ test("identifies the object and action in every workflow run name", async () => 
       "Retry merged frontend dependencies",
     ],
     "triage-kit-submission": ["Kit #", "Validate submission"],
+    "triage-help-request": ["Help request #", "Triage report"],
     "apply-kit-submission": ["Kit #", "Publish approved Kit"],
     "apply-kit-withdrawal": ["Kit #", "Withdraw published Kit"],
     "refresh-catalog": ["Catalog:", "Refresh"],
@@ -94,6 +96,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "project-submission-lifecycle",
     "retry-frontend-dependencies",
     "triage-kit-submission",
+    "triage-help-request",
     "apply-kit-submission",
     "apply-kit-withdrawal",
   ]) {
@@ -847,12 +850,69 @@ test("continues admitted submissions in the admission run", async () => {
   expect(source).toContain("gh workflow run triage-submission.yml");
   expect(source).toContain("gh workflow run triage-kit-submission.yml");
   expect(source).toContain("gh workflow run apply-kit-withdrawal.yml");
+  expect(
+    source.match(/gh workflow run triage-help-request\.yml/g),
+  ).toHaveLength(1);
   expect(source).toContain("steps.admission.outputs.route == 'project'");
   expect(source).toContain("steps.admission.outputs.route == 'kit'");
   expect(source).toContain("steps.admission.outputs.route == 'kit-withdrawal'");
+  for (const route of [
+    "project-report",
+    "website-bug",
+    "kit-report",
+    "other-help",
+  ]) {
+    expect(source).toContain(`steps.admission.outputs.route == '${route}'`);
+  }
+  expect(source).toContain(
+    '-f issue_number="${{ steps.admission.outputs.issue_number }}"',
+  );
   expect(source).toContain("steps.admission.outputs.route == 'conflict'");
   expect(source).not.toContain("startsWith(github.event.issue.title");
   expect(source).not.toContain("npm ci");
+});
+
+test("triages Help reports from latest issue state with a read-only repository boundary", async () => {
+  const triage = await workflow("triage-help-request");
+  const source = await readFile(
+    resolve(workflowDirectory, "triage-help-request.yml"),
+    "utf8",
+  );
+  const steps = allSteps(triage);
+  const checkout = steps.find((step) =>
+    step.uses?.startsWith("actions/checkout@"),
+  ) as { with?: { ref?: string } } | undefined;
+  const setupNode = steps.find((step) =>
+    step.uses?.startsWith("actions/setup-node@"),
+  ) as { with?: { "node-version"?: number } } | undefined;
+
+  expect(Object.keys(triage.on)).toEqual(["workflow_dispatch"]);
+  expect(triage.on.workflow_dispatch.inputs.issue_number).toMatchObject({
+    required: true,
+    type: "number",
+  });
+  expect(triage.permissions).toEqual({
+    contents: "read",
+    issues: "write",
+  });
+  expect(triage.concurrency).toEqual({
+    group: "help-triage-${{ inputs.issue_number }}",
+    "cancel-in-progress": true,
+  });
+  expect(checkout?.with?.ref).toBe(
+    "${{ github.event.repository.default_branch }}",
+  );
+  expect(setupNode?.with?.["node-version"]).toBe(24);
+  expect(source).toContain("node scripts/help/triage-help-issue.mjs");
+  expect(source).toContain("ISSUE_NUMBER: ${{ inputs.issue_number }}");
+  expect(source.indexOf("actions/checkout@")).toBeLessThan(
+    source.indexOf("node scripts/help/triage-help-issue.mjs"),
+  );
+  expect(source).not.toContain("gh workflow run");
+  expect(source).not.toContain("pull-requests:");
+  expect(source).not.toContain("actions: write");
+  expect(source).not.toContain("data/registry");
+  expect(source).not.toMatch(/\bgit (?:add|commit|push)\b/);
 });
 
 test("groups coupled dependency updates into coherent pull requests", async () => {

@@ -253,9 +253,20 @@ test.each([
   [[{ name: "kit-submission" }], "kit"],
   [["kit-withdrawal"], "kit-withdrawal"],
   [[{ name: "kit-withdrawal" }], "kit-withdrawal"],
+  [["project-information"], "project-report"],
+  [[{ name: "project-information" }], "project-report"],
+  [["website-bug"], "website-bug"],
+  [[{ name: "website-bug" }], "website-bug"],
+  [["kit-report"], "kit-report"],
+  [[{ name: "kit-report" }], "kit-report"],
+  [["other"], "other-help"],
+  [[{ name: "other" }], "other-help"],
   [[], "none"],
   [["bug"], "none"],
   [["project-submission", "kit-submission"], "conflict"],
+  [["project-information", "website-bug"], "conflict"],
+  [["website-bug", "kit-report"], "conflict"],
+  [["kit-report", "other"], "conflict"],
   [["project-submission", "kit-withdrawal"], "conflict"],
   [["kit-submission", "kit-withdrawal"], "conflict"],
   [["project-submission", "kit-submission", "kit-withdrawal"], "conflict"],
@@ -306,6 +317,243 @@ test("recovers an unlabeled Kit withdrawal route from the complete structured fo
       ].join("\n"),
     ),
   ).toBe("kit-withdrawal");
+});
+
+test.each([
+  [
+    [
+      "### Project",
+      "",
+      "example — https://github.com/example/project",
+      "",
+      "### Category",
+      "",
+      "Incorrect or outdated card information",
+      "",
+      "### What should be reviewed?",
+      "",
+      "The summary is outdated.",
+      "",
+      "### Requested outcome",
+      "",
+      "_No response_",
+      "",
+      "### Supporting evidence",
+      "",
+      "_No response_",
+      "",
+      "### Help manifest",
+      "",
+      "_No response_",
+    ].join("\n"),
+    "project-report",
+  ],
+  [
+    [
+      "### Category",
+      "",
+      "Accessibility",
+      "",
+      "### Page URL",
+      "",
+      "https://tavernary.org/",
+      "",
+      "### What happened?",
+      "",
+      "Focus disappeared.",
+      "",
+      "### What did you expect?",
+      "",
+      "Visible focus.",
+      "",
+      "### Steps to reproduce",
+      "",
+      "Press Tab.",
+      "",
+      "### Browser",
+      "",
+      "Firefox",
+      "",
+      "### Device",
+      "",
+      "Desktop",
+      "",
+      "### Additional context",
+      "",
+      "_No response_",
+      "",
+      "### Help manifest",
+      "",
+      "_No response_",
+    ].join("\n"),
+    "website-bug",
+  ],
+  [
+    [
+      "### Kit ID",
+      "",
+      "example-kit",
+      "",
+      "### Kit share URL",
+      "",
+      "https://tavernary.org/?kit=example-kit",
+      "",
+      "### Category",
+      "",
+      "Duplicate Kit",
+      "",
+      "### Affected project IDs",
+      "",
+      "_No response_",
+      "",
+      "### Details",
+      "",
+      "Duplicates another Kit.",
+      "",
+      "### Supporting evidence",
+      "",
+      "_No response_",
+      "",
+      "### Help manifest",
+      "",
+      "_No response_",
+    ].join("\n"),
+    "kit-report",
+  ],
+  [
+    [
+      "### Category",
+      "",
+      "Using Tavernary",
+      "",
+      "### Subject",
+      "",
+      "Finding projects",
+      "",
+      "### Description",
+      "",
+      "How do filters work?",
+      "",
+      "### Relevant URL",
+      "",
+      "_No response_",
+      "",
+      "### Help manifest",
+      "",
+      "_No response_",
+    ].join("\n"),
+    "other-help",
+  ],
+])("recovers the %s Help route from exact fallback headings", (body, route) => {
+  expect(issueRouteFromBody(body)).toBe(route);
+});
+
+test("fails closed when multiple complete Help route signatures conflict", () => {
+  expect(
+    issueRouteFromBody(
+      [
+        "### Project",
+        "",
+        "example — https://github.com/example/project",
+        "",
+        "### What should be reviewed?",
+        "",
+        "Outdated.",
+        "",
+        "### Requested outcome",
+        "",
+        "_No response_",
+        "",
+        "### Supporting evidence",
+        "",
+        "_No response_",
+        "",
+        "### Category",
+        "",
+        "Using Tavernary",
+        "",
+        "### Subject",
+        "",
+        "Help",
+        "",
+        "### Description",
+        "",
+        "Question.",
+        "",
+        "### Relevant URL",
+        "",
+        "_No response_",
+        "",
+        "### Help manifest",
+        "",
+        "_No response_",
+      ].join("\n"),
+    ),
+  ).toBe("conflict");
+});
+
+test("restores a missing public Help route label during admission", async () => {
+  const request = vi.fn(async () => null);
+  const baseEvent = event(120, "COLLABORATOR");
+  const helpEvent = {
+    ...baseEvent,
+    issue: {
+      ...baseEvent.issue,
+      body: [
+        "### Category",
+        "",
+        "Using Tavernary",
+        "",
+        "### Subject",
+        "",
+        "Finding projects",
+        "",
+        "### Description",
+        "",
+        "How do filters work?",
+        "",
+        "### Relevant URL",
+        "",
+        "_No response_",
+        "",
+        "### Help manifest",
+        "",
+        "_No response_",
+      ].join("\n"),
+    },
+  };
+
+  await expect(
+    processIssueAdmission({ event: helpEvent, request }),
+  ).resolves.toMatchObject({ admitted: true, route: "other-help" });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/120/labels",
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({ labels: ["other"] }),
+    }),
+  );
+  for (const name of [
+    "project-information",
+    "website-bug",
+    "kit-report",
+    "other",
+    "project-owner-request",
+    "safety-review",
+    "rights-review",
+    "accessibility",
+    "bug",
+    "question",
+    "duplicate-candidate",
+  ]) {
+    expect(request).toHaveBeenCalledWith(
+      "/repos/MentallyQuill/Tavernary/labels",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.stringContaining(`"name":"${name}"`),
+      }),
+    );
+  }
 });
 
 test("fails closed when complete structured form shapes conflict", () => {
@@ -390,6 +638,39 @@ test("restores a missing Kit route label on an admitted issue edit", async () =>
       body: JSON.stringify({ labels: ["kit-submission"] }),
     }),
   );
+});
+
+test("provisions public Help labels before routing an admitted issue edit", async () => {
+  const request = vi.fn(
+    async (_path: string, _options?: { method?: string; body?: string }) =>
+      null,
+  );
+
+  await expect(
+    processIssueAdmission({
+      event: event(121, "NONE", "edited", ["issue-admitted", "website-bug"]),
+      request,
+    }),
+  ).resolves.toMatchObject({
+    admitted: true,
+    reason: "existing-admission",
+    route: "website-bug",
+  });
+  for (const name of ["website-bug", "bug", "accessibility"]) {
+    expect(request).toHaveBeenCalledWith(
+      "/repos/MentallyQuill/Tavernary/labels",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.stringContaining(`"name":"${name}"`),
+      }),
+    );
+  }
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path.endsWith("/issues/121/labels") && options?.method === "POST",
+    ),
+  ).toBe(false);
 });
 
 test("does not route an unadmitted issue edit", async () => {

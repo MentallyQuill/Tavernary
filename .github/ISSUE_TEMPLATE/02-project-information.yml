@@ -8,8 +8,16 @@ body:
     id: project
     attributes:
       label: Project
-      description: Link to the Tavernary entry or its canonical source.
-      placeholder: https://github.com/owner/repository
+      description: Enter the catalog project ID or name, an em dash, and its canonical source URL, for example `sillytavern-sillytavern — https://github.com/SillyTavern/SillyTavern`.
+      placeholder: project-id — https://github.com/owner/repository
+    validations:
+      required: true
+  - type: input
+    id: category
+    attributes:
+      label: Category
+      description: "Use exactly one: Incorrect or outdated card information; Repository moved, renamed, archived, or disappeared; Duplicate or wrong listing; Unsafe or malicious project; Abusive or inappropriate content; Copyright, trademark, or other rights concern; Something else about this listing"
+      placeholder: Incorrect or outdated card information
     validations:
       required: true
   - type: textarea
@@ -20,9 +28,24 @@ body:
     validations:
       required: true
   - type: textarea
+    id: requested-outcome
+    attributes:
+      label: Requested outcome
+      description: Describe the correction or review outcome you are requesting.
+    validations:
+      required: false
+  - type: textarea
     id: evidence
     attributes:
       label: Supporting evidence
       description: Link to public source material that supports the correction when possible.
+    validations:
+      required: false
+  - type: textarea
+    id: help-manifest
+    attributes:
+      label: Help manifest
+      description: Optional. If Tavernary prepared this report, keep the complete JSON manifest here. Leave it empty when entering the report directly on GitHub.
+      render: json
     validations:
       required: false
