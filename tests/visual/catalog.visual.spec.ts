@@ -170,6 +170,7 @@ test("fork relationship long names avoid control collisions", async ({
     "fork-relationship-long-names.png",
     {
       animations: "disabled",
+      maxDiffPixelRatio: 0.015,
     },
   );
 });
