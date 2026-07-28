@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-generationlocks",
   "name": "SillyTavern-GenerationLocks",
   "kind": "extension",
-  "summary": "SillyTavern-GenerationLocks unifies the STCL and CCPM extensions into a single tool for controlling chat completion generation. It centralizes generation settings to streamline prompt management across roleplay sessions.",
+  "summary": "SillyTavern Generation Locks is a SillyTavern extension that manages generation settings through multi-dimensional locking of connection profiles, presets, and templates. The locking feature lets users pin specific...",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1068235084
   },
   "frontends": ["sillytavern"],
-  "primary_function": "generation-reasoning",
-  "capabilities": ["instruction-control", "prompt-engineering"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-26T19:31:47.121Z",
   "catalog_cohort": "standard",
   "visibility": "published",

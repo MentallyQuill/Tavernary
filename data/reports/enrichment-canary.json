@@ -2,8 +2,8 @@
   "schema_version": 1,
   "run_id": "14c7c4d7-8dbc-48a0-9d03-46f93175287d",
   "mode": "canary",
-  "status": "running",
-  "phase": "retry",
+  "status": "awaiting-deployment",
+  "phase": "complete",
   "expected_model": "minimax/minimax-m3:thinking",
   "selection_mode": "all-automatic",
   "manual_exclusions": [
@@ -56,7 +56,7 @@
   "batch_size": 30,
   "concurrency": 4,
   "created_at": "2026-07-28T06:25:12.930Z",
-  "updated_at": "2026-07-28T06:29:01.923Z",
+  "updated_at": "2026-07-28T06:29:03.687Z",
   "manifest": [
     "aikohanasaki-aikobots",
     "aikohanasaki-sillytavern-bookmarks",
@@ -76,15 +76,15 @@
     "aikohanasaki-sillytavern-lorebookordering",
     "aikohanasaki-sillytavern-memorybooks"
   ],
-  "retry_cursor": 0,
+  "retry_cursor": 5,
   "attempts": {
     "aikohanasaki-aikobots": 1,
-    "aikohanasaki-sillytavern-bookmarks": 1,
+    "aikohanasaki-sillytavern-bookmarks": 2,
     "aikohanasaki-sillytavern-ccpromptmanager": 1,
-    "aikohanasaki-sillytavern-characterlocks": 1,
-    "aikohanasaki-sillytavern-generationlocks": 1,
-    "aikohanasaki-sillytavern-lorebookordering": 1,
-    "aikohanasaki-sillytavern-memorybooks": 1
+    "aikohanasaki-sillytavern-characterlocks": 2,
+    "aikohanasaki-sillytavern-generationlocks": 2,
+    "aikohanasaki-sillytavern-lorebookordering": 2,
+    "aikohanasaki-sillytavern-memorybooks": 2
   },
   "entries": {
     "aikohanasaki-aikobots": {
@@ -105,9 +105,9 @@
     },
     "aikohanasaki-sillytavern-bookmarks": {
       "id": "aikohanasaki-sillytavern-bookmarks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "final-failure",
       "source_kind": "readme",
       "source_identity": "github:aikohanasaki/sillytavern-bookmarks",
       "repository_id": 1064216842,
@@ -116,11 +116,11 @@
       "readme_ref": "78286fe25b45901abd8f64a956c7e120a0413627",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 65076,
+      "latency_ms": 59756,
       "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters. Summary must contain 24-36 words.",
+      "repair_hint": "Summary must be at most 220 characters.",
       "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-28T06:25:12.930Z"
+      "completed_at": "2026-07-28T06:29:03.687Z"
     },
     "aikohanasaki-sillytavern-ccpromptmanager": {
       "id": "aikohanasaki-sillytavern-ccpromptmanager",
@@ -140,9 +140,9 @@
     },
     "aikohanasaki-sillytavern-characterlocks": {
       "id": "aikohanasaki-sillytavern-characterlocks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "source_identity": "github:aikohanasaki/sillytavern-characterlocks",
       "repository_id": 998536860,
@@ -151,17 +151,14 @@
       "readme_ref": "208ec33a8828decdd9d7459904baabfc79e3084a",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 51335,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-28T06:25:12.930Z"
+      "latency_ms": 40397,
+      "completed_at": "2026-07-28T06:29:03.687Z"
     },
     "aikohanasaki-sillytavern-generationlocks": {
       "id": "aikohanasaki-sillytavern-generationlocks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "source_identity": "github:aikohanasaki/sillytavern-generationlocks",
       "repository_id": 1068235084,
@@ -170,17 +167,14 @@
       "readme_ref": "f0ad9a5eeff25b83474f75741ff65f2ddf69f540",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 48064,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be exactly two sentences.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-28T06:25:12.930Z"
+      "latency_ms": 48288,
+      "completed_at": "2026-07-28T06:29:03.687Z"
     },
     "aikohanasaki-sillytavern-lorebookordering": {
       "id": "aikohanasaki-sillytavern-lorebookordering",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "source_identity": "github:aikohanasaki/sillytavern-lorebookordering",
       "repository_id": 1059754623,
@@ -189,17 +183,14 @@
       "readme_ref": "9243b9c1ab54269f830d79b1aa0af3052be6ef54",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 49769,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-28T06:25:12.930Z"
+      "latency_ms": 40373,
+      "completed_at": "2026-07-28T06:29:03.687Z"
     },
     "aikohanasaki-sillytavern-memorybooks": {
       "id": "aikohanasaki-sillytavern-memorybooks",
-      "attempt": 1,
-      "phase": "primary",
-      "outcome": "retry-pending",
+      "attempt": 2,
+      "phase": "retry",
+      "outcome": "retry-enriched",
       "source_kind": "readme",
       "source_identity": "github:aikohanasaki/sillytavern-memorybooks",
       "repository_id": 1001051404,
@@ -208,11 +199,8 @@
       "readme_ref": "a2d6fde367fdce2aa38df1efc2b91044e93322d3",
       "requested_model": "minimax/minimax-m3:thinking",
       "returned_model": "minimax/minimax-m3:thinking",
-      "latency_ms": 53903,
-      "reason_code": "output-invalid",
-      "repair_hint": "Summary must be at most 220 characters.",
-      "message": "The enrichment provider output failed validation.",
-      "completed_at": "2026-07-28T06:25:12.930Z"
+      "latency_ms": 35680,
+      "completed_at": "2026-07-28T06:29:03.687Z"
     }
   },
   "publication": {
@@ -224,10 +212,10 @@
     "enriched": 2,
     "fallback": 0,
     "source-not-ready": 0,
-    "retry-pending": 5,
-    "retry-enriched": 0,
+    "retry-pending": 0,
+    "retry-enriched": 4,
     "retry-fallback": 0,
-    "final-failure": 0,
+    "final-failure": 1,
     "skipped": 0
   }
 }
