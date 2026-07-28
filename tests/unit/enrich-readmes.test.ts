@@ -1,3 +1,7 @@
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { expect, test, vi } from "vitest";
 
 import {
@@ -305,6 +309,58 @@ test("reports an explicitly targeted manual record as skipped", async () => {
       message: "Registry record requires manual enrichment.",
     },
   ]);
+});
+
+test("preserves an owner edit made after automatic enrichment selection", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-owner-edit-"));
+  const path = join(root, "fixture.json");
+  const selected = selectEnrichmentRecords([record]);
+  expect(selected.map(({ id }) => id)).toEqual(["fixture"]);
+
+  const ownerEdited = {
+    ...record,
+    summary: "Owner-authored summary.",
+    metadata_status: "curated",
+    enrichment_policy: "manual" as const,
+    enrichment_note:
+      "Owner-authored catalog details approved through issue #123.",
+  };
+  await writeFile(path, JSON.stringify(ownerEdited, null, 2));
+
+  const results = await runEnrichmentBatch({
+    projectIds: selected.map(({ id }) => id),
+    recordsById: {
+      fixture: { ...selected[0], path },
+    },
+    snapshotsById: { fixture: snapshot },
+    phase: "primary",
+    vocabularies,
+    provider: {
+      generate: async () => ({
+        output: {
+          summary:
+            "Generated summary would replace the approved owner wording if the writer trusted selection-time state. The write barrier must re-read current policy before changing the registry record.",
+          metadata_status: "curated",
+          primary_function: "developer-infrastructure",
+          capabilities: ["automation"],
+        },
+        metadata: providerMetadata,
+      }),
+    },
+    validateSnapshot: () => true,
+    loadSource: async () => readySource("fixture"),
+  });
+
+  expect(results).toMatchObject([
+    {
+      id: "fixture",
+      outcome: "skipped",
+      reasonCode: "manual-enrichment-policy",
+      enrichmentNote:
+        "Owner-authored catalog details approved through issue #123.",
+    },
+  ]);
+  expect(JSON.parse(await readFile(path, "utf8"))).toEqual(ownerEdited);
 });
 
 test("uses the exact fallback when both source texts are unavailable", async () => {
