@@ -9,7 +9,10 @@ import type {
   ProjectReportPayload,
 } from "@/features/help/help-manifest.mjs";
 import { PROJECT_REPORT_CATEGORIES } from "@/features/help/help-options";
-import { openHelpRequest } from "@/features/help/help-transport";
+import {
+  HelpHandoffError,
+  openHelpRequest,
+} from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -97,6 +100,7 @@ export function ProjectReportForm({
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const selected = projects.find((project) => project.id === projectId);
   const normalizedSearch = search.trim().toLocaleLowerCase();
@@ -140,6 +144,7 @@ export function ProjectReportForm({
   async function continueOnGitHub() {
     if (!selected || !isProjectReportCategory(category) || !payload) return;
     setHandoffError("");
+    setFallbackUrl("");
     setContinuing(true);
     try {
       await openHelpRequest({
@@ -166,6 +171,7 @@ export function ProjectReportForm({
           "Paste the Help manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
       setHandoffError(
         error instanceof Error
           ? error.message
@@ -204,6 +210,7 @@ export function ProjectReportForm({
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
           continuing={continuing}
+          fallbackUrl={fallbackUrl}
         />
       </>
     );
@@ -280,8 +287,10 @@ export function ProjectReportForm({
         value={report}
         maxLength={3_000}
         onChange={(event) => setReport(event.target.value)}
-        error={errors.find((error) =>
-          error.includes("Describe what Tavernary should review"),
+        error={errors.find(
+          (error) =>
+            error.includes("Describe what Tavernary should review") ||
+            error.includes("report must be"),
         )}
         hint="Everything you submit will be public on GitHub. Do not include secrets or private personal information."
         count={`${report.length}/3000`}
@@ -292,6 +301,7 @@ export function ProjectReportForm({
         value={requestedOutcome}
         maxLength={1_000}
         onChange={(event) => setRequestedOutcome(event.target.value)}
+        error={errors.find((error) => error.includes("requested outcome must"))}
         count={`${requestedOutcome.length}/1000`}
       />
       <HelpTextArea
@@ -300,6 +310,9 @@ export function ProjectReportForm({
         value={evidence}
         maxLength={2_000}
         onChange={(event) => setEvidence(event.target.value)}
+        error={errors.find((error) =>
+          error.includes("public supporting evidence must"),
+        )}
         hint="You can include repository files, releases, commits, issues, public documentation, or the other catalog entry in a duplicate report."
         count={`${evidence.length}/2000`}
       />

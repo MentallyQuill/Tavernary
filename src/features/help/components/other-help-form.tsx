@@ -8,7 +8,10 @@ import type {
   OtherHelpPayload,
 } from "@/features/help/help-manifest.mjs";
 import { OTHER_HELP_CATEGORIES } from "@/features/help/help-options";
-import { openHelpRequest } from "@/features/help/help-transport";
+import {
+  HelpHandoffError,
+  openHelpRequest,
+} from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -58,6 +61,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const payload: OtherHelpPayload | null = isOtherHelpCategory(category)
     ? {
@@ -93,6 +97,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
   async function continueOnGitHub() {
     if (!payload) return;
     setHandoffError("");
+    setFallbackUrl("");
     setContinuing(true);
     try {
       await openHelpRequest({
@@ -115,6 +120,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
           "Paste the Help manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
       setHandoffError(
         error instanceof Error
           ? error.message
@@ -152,6 +158,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
           continuing={continuing}
+          fallbackUrl={fallbackUrl}
         />
       </>
     );

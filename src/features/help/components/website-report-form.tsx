@@ -9,7 +9,10 @@ import type {
   WebsiteBugPayload,
 } from "@/features/help/help-manifest.mjs";
 import { WEBSITE_BUG_CATEGORIES } from "@/features/help/help-options";
-import { openHelpRequest } from "@/features/help/help-transport";
+import {
+  HelpHandoffError,
+  openHelpRequest,
+} from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -85,6 +88,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const [fallbackUrl, setFallbackUrl] = useState("");
   const normalizedPageUrl = safeTavernaryPage(pageUrl);
   const categoryError = errors.find(
     (error) => error === "Choose what kind of website problem this is.",
@@ -147,6 +151,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   async function continueOnGitHub() {
     if (!payload) return;
     setHandoffError("");
+    setFallbackUrl("");
     setContinuing(true);
     try {
       await openHelpRequest({
@@ -176,6 +181,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
           "Paste the Help manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
       setHandoffError(
         error instanceof Error
           ? error.message
@@ -211,6 +217,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
           continuing={continuing}
+          fallbackUrl={fallbackUrl}
         />
       </>
     );

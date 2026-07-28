@@ -44,14 +44,18 @@ function buildCorrectionComment(errors) {
 }
 
 async function findCorrectionComment(repository, issueNumber, request) {
-  const comments = await request(
-    `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
-  );
-  return comments.find(
-    (comment) =>
-      comment.user?.login === "github-actions[bot]" &&
-      comment.body?.includes(HELP_TRIAGE_MARKER),
-  );
+  for (let page = 1; ; page += 1) {
+    const path =
+      `/repos/${repository}/issues/${issueNumber}/comments?per_page=100` +
+      (page === 1 ? "" : `&page=${page}`);
+    const comments = await request(path);
+    const marker = comments.find(
+      (comment) =>
+        comment.user?.login === "github-actions[bot]" &&
+        comment.body?.includes(HELP_TRIAGE_MARKER),
+    );
+    if (marker || comments.length < 100) return marker;
+  }
 }
 
 async function synchronizeCorrectionComment({

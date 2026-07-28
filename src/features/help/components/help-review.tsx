@@ -13,12 +13,14 @@ export function HelpReview({
   onCancel,
   onContinue,
   continuing = false,
+  fallbackUrl = "",
 }: {
   rows: HelpReviewRow[];
   onBack: () => void;
   onCancel: () => void;
   onContinue: () => Promise<void>;
   continuing?: boolean;
+  fallbackUrl?: string;
 }) {
   return (
     <section className="help-review" aria-labelledby="help-review-heading">
@@ -35,6 +37,14 @@ export function HelpReview({
           </div>
         ))}
       </dl>
+      {fallbackUrl ? (
+        <p className="help-hint">
+          <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
+            Open the prepared GitHub form directly
+          </a>
+          .
+        </p>
+      ) : null}
       <div className="help-actions">
         <button
           type="button"

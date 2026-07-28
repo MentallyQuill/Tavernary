@@ -9,7 +9,10 @@ import type {
   KitReportPayload,
 } from "@/features/help/help-manifest.mjs";
 import { KIT_REPORT_CATEGORIES } from "@/features/help/help-options";
-import { openHelpRequest } from "@/features/help/help-transport";
+import {
+  HelpHandoffError,
+  openHelpRequest,
+} from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -85,6 +88,7 @@ export function KitReportForm({
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const selected = kits.find((kit) => kit.id === kitId);
   const otherKit = kits.find((kit) => kit.id === otherKitId);
@@ -165,6 +169,7 @@ export function KitReportForm({
   async function continueOnGitHub() {
     if (!payload) return;
     setHandoffError("");
+    setFallbackUrl("");
     setContinuing(true);
     try {
       await openHelpRequest({
@@ -192,6 +197,7 @@ export function KitReportForm({
           "Paste the Help manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
       setHandoffError(
         error instanceof Error
           ? error.message
@@ -236,6 +242,7 @@ export function KitReportForm({
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
           continuing={continuing}
+          fallbackUrl={fallbackUrl}
         />
       </>
     );

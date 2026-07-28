@@ -11,7 +11,10 @@ import type {
   ProjectOwnerManifest,
 } from "@/features/help/project-owner-manifest.mjs";
 import { normalizeProjectOwnerManifest } from "@/features/help/project-owner-manifest.mjs";
-import { openHelpRequest } from "@/features/help/help-transport";
+import {
+  HelpHandoffError,
+  openHelpRequest,
+} from "@/features/help/help-transport";
 import type { OwnerProjectOption } from "@/lib/help/load-owner-project-options";
 
 import {
@@ -331,6 +334,7 @@ export function ProjectOwnerBuilder({
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const [fallbackUrl, setFallbackUrl] = useState("");
   const [reviewManifest, setReviewManifest] =
     useState<ProjectOwnerManifest | null>(null);
 
@@ -360,6 +364,7 @@ export function ProjectOwnerBuilder({
     setConfirmedDelist(false);
     setErrors([]);
     setHandoffError("");
+    setFallbackUrl("");
   }
 
   function proposedEdit(): OwnerEditableValues {
@@ -489,6 +494,7 @@ export function ProjectOwnerBuilder({
           "Paste the owner request manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
       setHandoffError(
         error instanceof Error
           ? error.message
@@ -523,6 +529,7 @@ export function ProjectOwnerBuilder({
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
           continuing={continuing}
+          fallbackUrl={fallbackUrl}
         />
       </>
     );

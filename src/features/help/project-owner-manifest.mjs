@@ -281,6 +281,9 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   if (!/^[a-f0-9]{64}$/u.test(sourceFingerprint)) {
     errors.push("Owner request source fingerprint is invalid.");
   }
+  if (!Object.hasOwn(value ?? {}, "explanation")) {
+    errors.push("Owner request explanation member is required.");
+  }
   const explanation = nullableText(value?.explanation, errors);
   const explanationLimit = operation === "delist" ? 500 : 1_000;
   if (explanation && explanation.length > explanationLimit) {

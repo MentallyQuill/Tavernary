@@ -53,6 +53,19 @@ function editFixture(proposed: Record<string, unknown> = {}) {
 }
 
 describe("owner card edits", () => {
+  test("requires the optional explanation member to be explicit", () => {
+    const { explanation: _explanation, ...missingExplanation } = editFixture();
+
+    expect(
+      normalizeProjectOwnerManifest(missingExplanation, vocabularies),
+    ).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining([
+        "Owner request explanation member is required.",
+      ]),
+    });
+  });
+
   test("normalizes all editable values and optional explanation", () => {
     expect(
       normalizeProjectOwnerManifest(

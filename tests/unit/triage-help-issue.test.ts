@@ -228,6 +228,55 @@ test("updates the existing marker comment instead of posting a duplicate", async
   ).toBe(false);
 });
 
+test("finds the marker comment after the first comments page", async () => {
+  const firstPage = Array.from({ length: 100 }, (_, index) => ({
+    id: index + 1,
+    body: `Ordinary comment ${index + 1}`,
+    user: { login: "reporter" },
+  }));
+  const request = vi.fn(
+    async (path: string, options?: { method?: string; body?: string }) => {
+      if (
+        path === "/repos/MentallyQuill/Tavernary/issues/41" &&
+        !options?.method
+      ) {
+        return {
+          number: 41,
+          state: "open",
+          body: websiteBody("not json"),
+          labels: ["issue-admitted", "website-bug"],
+        };
+      }
+      if (path.endsWith("/comments?per_page=100") && !options?.method) {
+        return firstPage;
+      }
+      if (path.endsWith("/comments?per_page=100&page=2") && !options?.method) {
+        return [
+          {
+            id: 702,
+            body: `${HELP_TRIAGE_MARKER}\nOld correction`,
+            user: { login: "github-actions[bot]" },
+          },
+        ];
+      }
+      return null;
+    },
+  );
+
+  await processHelpIssueTriage({ event: event(), request });
+
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/comments/702",
+    expect.objectContaining({ method: "PATCH" }),
+  );
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path.endsWith("/issues/41/comments") && options?.method === "POST",
+    ),
+  ).toBe(false);
+});
+
 test("does not overwrite a user-authored comment that contains the marker", async () => {
   const request = vi.fn(
     async (path: string, options?: { method?: string; body?: string }) => {

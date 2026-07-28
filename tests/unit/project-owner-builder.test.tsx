@@ -409,6 +409,11 @@ test("keeps review state and reports a blocked GitHub popup", async () => {
     "GitHub issue form could not be opened.",
   );
   expect(
+    screen.getByRole("link", {
+      name: "Open the prepared GitHub form directly",
+    }),
+  ).toHaveAttribute("href", expect.stringContaining("owner-request-manifest="));
+  expect(
     screen.getByRole("heading", { name: "Review your public request" }),
   ).toBeVisible();
 });

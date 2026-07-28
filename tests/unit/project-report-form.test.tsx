@@ -94,6 +94,36 @@ test("keeps unlisted URLs out of the report payload", async () => {
   ).not.toBeInTheDocument();
 });
 
+test("connects every oversized project-report value to its field", async () => {
+  const user = userEvent.setup();
+  search = "project=wandlight";
+  renderProjectReport();
+
+  await user.selectOptions(
+    screen.getByLabelText("What is wrong?"),
+    "incorrect-information",
+  );
+  fireEvent.change(screen.getByLabelText("What should Tavernary review?"), {
+    target: { value: "r".repeat(3_001) },
+  });
+  fireEvent.change(screen.getByLabelText("What outcome are you requesting?"), {
+    target: { value: "o".repeat(1_001) },
+  });
+  fireEvent.change(screen.getByLabelText("Public supporting evidence"), {
+    target: { value: "e".repeat(2_001) },
+  });
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  for (const field of [
+    screen.getByLabelText("What should Tavernary review?"),
+    screen.getByLabelText("What outcome are you requesting?"),
+    screen.getByLabelText("Public supporting evidence"),
+  ]) {
+    expect(field).toHaveAttribute("aria-invalid", "true");
+    expect(field).toHaveAttribute("aria-describedby");
+  }
+});
+
 test("links owners and Tavernary security reporters to the correct private paths", () => {
   renderProjectReport();
 
