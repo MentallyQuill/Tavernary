@@ -5,6 +5,7 @@ const contentPatterns = [
   /^data\/registry\/projects\/[^/]+\.json$/u,
   /^data\/registry\/kits\/[^/]+\.json$/u,
   /^data\/snapshots\/github\/[^/]+\.json$/u,
+  /^data\/snapshots\/codeberg\/[^/]+\.json$/u,
   /^data\/snapshots\/github\/kits\/[^/]+\.json$/u,
   /^data\/snapshots\/github-refresh\.json$/u,
   /^data\/vocabularies\/[^/]+\.json$/u,

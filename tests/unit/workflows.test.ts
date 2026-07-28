@@ -525,6 +525,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
   expect(advance).not.toContain("while (( remaining > 0 )); do");
   expect(source).not.toContain("workflow run refresh-catalog.yml");
   expect(source).toContain("data/snapshots/github/*.json");
+  expect(source).toContain("data/snapshots/codeberg/*.json");
   expect(source).toContain("data/snapshots/github-refresh.json");
   expect(source).toContain("data/snapshots/github/kits/*.json");
   expect(source).toContain("refresh-reactions.mjs");

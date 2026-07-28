@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "mode": "baseline",
   "started_at": "2026-07-28T00:08:19.461Z",
   "completed_at": "2026-07-28T00:08:19.531Z",
@@ -21,6 +21,22 @@
     "graphql_points": 0,
     "graphql_remaining": null,
     "rest_requests": 0
+  },
+  "providers": {
+    "github": {
+      "checked": 0,
+      "changed": 0,
+      "failed": 0,
+      "requests": 0,
+      "remaining": null
+    },
+    "codeberg": {
+      "checked": 0,
+      "changed": 0,
+      "failed": 0,
+      "requests": 0,
+      "remaining": null
+    }
   },
   "duration_ms": 70,
   "project_timings": [],

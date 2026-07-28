@@ -51,8 +51,61 @@ test("summarizes outcomes without leaking secrets or clone paths", () => {
     graphql_remaining: 4_975,
     rest_requests: 2,
   });
+  expect(manifest.schema_version).toBe(2);
+  expect(manifest.providers).toEqual({
+    github: {
+      checked: 3,
+      changed: 2,
+      failed: 0,
+      requests: 3,
+      remaining: 4_975,
+    },
+    codeberg: {
+      checked: 0,
+      changed: 0,
+      failed: 0,
+      requests: 0,
+      remaining: null,
+    },
+  });
   expect(JSON.stringify(manifest)).not.toContain("ghp_secret");
   expect(JSON.stringify(manifest)).not.toContain("C:\\tmp\\clone");
+});
+
+test("reports isolated provider usage and outcomes", () => {
+  const manifest = buildRefreshManifest({
+    mode: "incremental",
+    startedAt: "2026-07-24T07:17:00.000Z",
+    completedAt: "2026-07-24T07:17:01.000Z",
+    outcomes: [
+      outcome("compare-source", 10, { provider: "github" }),
+      outcome("failed", 10, {
+        provider: "codeberg",
+        snapshotChanged: false,
+      }),
+    ],
+    providers: {
+      github: { requests: 3, remaining: 4_997 },
+      codeberg: { requests: 1, remaining: 0 },
+    },
+  });
+
+  expect(manifest.providers).toEqual({
+    github: {
+      checked: 1,
+      changed: 1,
+      failed: 0,
+      requests: 3,
+      remaining: 4_997,
+    },
+    codeberg: {
+      checked: 1,
+      changed: 0,
+      failed: 1,
+      requests: 1,
+      remaining: 0,
+    },
+  });
 });
 
 test("bounds timings, counts states, and records publication flags", () => {

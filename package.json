@@ -24,7 +24,7 @@
     "test:kits-visual": "node scripts/run-playwright.mjs --config playwright.kits.config.ts kits.visual.spec.ts",
     "palette:audit": "node scripts/audit-palette.mjs",
     "catalog:validate": "node scripts/catalog/validate.mjs",
-    "catalog:refresh": "node scripts/catalog/refresh-github.mjs",
+    "catalog:refresh": "node scripts/catalog/refresh-repositories.mjs",
     "catalog:enrich": "node scripts/catalog/enrich-readmes.mjs",
     "catalog:enrichment-plan": "node scripts/catalog/enrichment-rollout-plan.mjs",
     "catalog:enrichment-rollout": "node scripts/catalog/enrichment-orchestrator.mjs",

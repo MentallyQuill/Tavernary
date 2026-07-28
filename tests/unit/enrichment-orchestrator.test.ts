@@ -85,6 +85,7 @@ test("runs the repository gate for source or registry publications only", () => 
     ]),
   ).toBe(false);
   expect(requiresFullCheck(["data/snapshots/github/a.json"])).toBe(true);
+  expect(requiresFullCheck(["data/snapshots/codeberg/a.json"])).toBe(true);
   expect(requiresFullCheck(["data/registry/projects/a.json"])).toBe(true);
 });
 
