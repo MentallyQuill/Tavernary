@@ -48,6 +48,9 @@ jobs:
             headRef: pull.head.ref,
             headRepository: pull.head.repo?.full_name ?? "",
             baseRepository: event.repository.full_name,
+            baseRef: pull.base.ref,
+            defaultBranch: event.repository.default_branch,
+            headSha: pull.head.sha,
             body: pull.body ?? "",
           });
           fs.writeFileSync(

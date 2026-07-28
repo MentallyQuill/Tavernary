@@ -7,6 +7,7 @@ export interface OwnerGenerationReport {
   operation: "edit-card" | "move-source" | "delist";
   repository_id: number;
   verified_owner_login: string;
+  request_fingerprint: string;
   generated_at: string;
   before: Record<string, unknown>;
   after: Record<string, unknown>;
@@ -39,6 +40,15 @@ export function generateProjectOwnerRequest(input: {
   ) => Promise<void>;
   mkdir?: (path: string, options: { recursive: true }) => Promise<unknown>;
 }): Promise<OwnerGenerationResult>;
+
+export function fingerprintProjectOwnerManifest(
+  manifest: Record<string, unknown>,
+): string;
+
+export function sameProjectOwnerGenerationReport(
+  left: OwnerGenerationReport,
+  right: OwnerGenerationReport,
+): boolean;
 
 export function parseGenerateProjectOwnerCli(argv: string[]): {
   issueNumber: number;

@@ -25,6 +25,9 @@ function closure(overrides: Record<string, unknown> = {}) {
     headRef: "automation/project-owner-request-123",
     headRepository: "MentallyQuill/Tavernary",
     baseRepository: "MentallyQuill/Tavernary",
+    baseRef: "main",
+    defaultBranch: "main",
+    headSha: "a".repeat(40),
     body: markedOwnerBody(123),
     ...overrides,
   };
@@ -78,6 +81,14 @@ test.each([
   {
     name: "different issue branch",
     overrides: { headRef: "automation/project-owner-request-999" },
+  },
+  {
+    name: "retargeted base branch",
+    overrides: { baseRef: "release" },
+  },
+  {
+    name: "stale generated-head marker",
+    overrides: { headSha: "b".repeat(40) },
   },
 ])("ignores $name", ({ overrides }) => {
   expect(planProjectOwnerClosure(closure(overrides))).toEqual({

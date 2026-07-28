@@ -910,13 +910,19 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     generation.on.workflow_dispatch.inputs.force_regeneration,
   ).toMatchObject({ required: false, type: "boolean", default: false });
   expect(generation.concurrency).toEqual({
-    group: "project-owner-generation-${{ inputs.issue_number }}",
-    "cancel-in-progress": true,
+    group: "project-owner-generation",
+    "cancel-in-progress": false,
   });
   expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
   expect(source).toContain("npm ci");
   expect(source).toContain("generate-project-owner-request.mjs");
-  expect(source).toContain("processProjectOwnerTriage");
+  expect(
+    source.match(/node scripts\/help\/generate-project-owner-request\.mjs/gu),
+  ).toHaveLength(2);
+  expect(source).toContain("sameProjectOwnerGenerationReport");
+  expect(source).toContain(
+    "Owner request changed after validation; refusing stale generation.",
+  );
   expect(source).toContain("planOwnerPrUpdate");
   expect(source).toContain("findOwnerRequestPathCollision");
   expect(source).toContain("parseOwnerRequestPullRequestMarker");
@@ -971,6 +977,8 @@ test("handles owner closure from default-branch code and exact head state", asyn
   );
   expect(source).toContain("planProjectOwnerClosure");
   expect(source).toContain("github.event.pull_request.head.sha");
+  expect(source).toContain("pull.base.ref");
+  expect(source).toContain("event.repository.default_branch");
   expect(source).toContain("state_reason");
   expect(source).toContain("gh api --method PUT");
   expect(source).toContain("tavernary-project-owner-declined-pr:");

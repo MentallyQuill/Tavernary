@@ -1,7 +1,11 @@
 import { expect, test, vi } from "vitest";
 
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
-import { generateProjectOwnerRequest } from "../../scripts/help/generate-project-owner-request.mjs";
+import {
+  fingerprintProjectOwnerManifest,
+  generateProjectOwnerRequest,
+  sameProjectOwnerGenerationReport,
+} from "../../scripts/help/generate-project-owner-request.mjs";
 
 function record(overrides: Record<string, unknown> = {}) {
   return {
@@ -30,9 +34,9 @@ function record(overrides: Record<string, unknown> = {}) {
 
 function editManifest(current = record()) {
   return {
-    schema_version: 1,
+    schema_version: 1 as const,
     request_kind: "project-owner",
-    operation: "edit-card",
+    operation: "edit-card" as const,
     project_id: "owner-alpha",
     repository_id: 42,
     source_fingerprint: fingerprintProjectRecord(current),
@@ -226,6 +230,67 @@ function sourceMoveTransactionHarness({
   };
 }
 
+test("fingerprints every normalized request field including proposal and explanation", () => {
+  const manifest = editManifest();
+  const changedSummary = {
+    ...manifest,
+    proposed: {
+      ...manifest.proposed,
+      summary: "A later owner summary.",
+    },
+  };
+  const changedExplanation = {
+    ...manifest,
+    explanation: "A later public explanation.",
+  };
+
+  expect(fingerprintProjectOwnerManifest(manifest)).toBe(
+    fingerprintProjectOwnerManifest(structuredClone(manifest)),
+  );
+  expect(fingerprintProjectOwnerManifest(changedSummary)).not.toBe(
+    fingerprintProjectOwnerManifest(manifest),
+  );
+  expect(fingerprintProjectOwnerManifest(changedExplanation)).not.toBe(
+    fingerprintProjectOwnerManifest(manifest),
+  );
+});
+
+test("accepts only an equivalent freshly regenerated owner report", () => {
+  const validated = {
+    schema_version: 1 as const,
+    issue_number: 123,
+    project_id: "owner-alpha",
+    operation: "edit-card" as const,
+    repository_id: 42,
+    verified_owner_login: "Owner",
+    request_fingerprint: "a".repeat(64),
+    generated_at: "2026-07-28T13:00:00.000Z",
+    before: { summary: "Original summary." },
+    after: { summary: "Owner-authored summary." },
+    warnings: [],
+    generated_paths: ["data/registry/projects/owner-alpha.json"],
+  };
+
+  expect(
+    sameProjectOwnerGenerationReport(validated, {
+      ...validated,
+      generated_at: "2026-07-28T13:05:00.000Z",
+    }),
+  ).toBe(true);
+  expect(
+    sameProjectOwnerGenerationReport(validated, {
+      ...validated,
+      request_fingerprint: "b".repeat(64),
+    }),
+  ).toBe(false);
+  expect(
+    sameProjectOwnerGenerationReport(validated, {
+      ...validated,
+      after: { summary: "A later owner summary." },
+    }),
+  ).toBe(false);
+});
+
 test("revalidates latest authority and state before writing only the approved registry path", async () => {
   const fixture = harness();
 
@@ -260,6 +325,7 @@ test("revalidates latest authority and state before writing only the approved re
     operation: "edit-card",
     repository_id: 42,
     verified_owner_login: "Owner",
+    request_fingerprint: expect.stringMatching(/^[a-f0-9]{64}$/u),
     generated_at: "2026-07-28T13:00:00.000Z",
     before: expect.any(Object),
     after: expect.any(Object),

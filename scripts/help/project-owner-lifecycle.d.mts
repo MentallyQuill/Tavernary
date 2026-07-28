@@ -14,5 +14,8 @@ export function planProjectOwnerClosure(input: {
   headRef: string;
   headRepository: string;
   baseRepository: string;
+  baseRef: string;
+  defaultBranch: string;
+  headSha: string;
   body: string | null;
 }): ProjectOwnerClosurePlan;

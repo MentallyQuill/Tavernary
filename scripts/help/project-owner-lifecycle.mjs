@@ -15,7 +15,9 @@ export function planProjectOwnerClosure(input) {
   if (
     !marker ||
     input.headRepository.toLowerCase() !== input.baseRepository.toLowerCase() ||
-    input.headRef !== ownerRequestBranch(marker.issue_number)
+    input.headRef !== ownerRequestBranch(marker.issue_number) ||
+    input.baseRef !== input.defaultBranch ||
+    input.headSha !== marker.generated_head_sha
   ) {
     return { action: "ignore" };
   }

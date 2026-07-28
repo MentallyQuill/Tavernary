@@ -3,6 +3,7 @@ import {
   readFile as defaultReadFile,
   writeFile as defaultWriteFile,
 } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -20,6 +21,19 @@ const VOCABULARY_FILES = [
 
 function parseJson(text) {
   return JSON.parse(String(text).replace(/^\uFEFF/u, ""));
+}
+
+export function fingerprintProjectOwnerManifest(manifest) {
+  return createHash("sha256")
+    .update(JSON.stringify(manifest), "utf8")
+    .digest("hex");
+}
+
+export function sameProjectOwnerGenerationReport(left, right) {
+  if (!left || !right) return false;
+  const { generated_at: _leftGeneratedAt, ...leftStable } = left;
+  const { generated_at: _rightGeneratedAt, ...rightStable } = right;
+  return JSON.stringify(leftStable) === JSON.stringify(rightStable);
 }
 
 function inside(root, path) {
@@ -240,6 +254,7 @@ export async function generateProjectOwnerRequest(input) {
     operation: final.operation,
     repository_id: final.record.source.repository_id,
     verified_owner_login: final.verifiedOwnerLogin,
+    request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
     generated_at: generatedAt(input.now),
     before: mutation.before,
     after: mutation.after,

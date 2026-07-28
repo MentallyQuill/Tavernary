@@ -21,8 +21,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: project-owner-generation-${{ inputs.issue_number }}
-  cancel-in-progress: true
+  group: project-owner-generation
+  cancel-in-progress: false
 
 jobs:
   generate:
@@ -210,6 +210,7 @@ jobs:
           git checkout -- src/generated/catalog.json
           git diff --name-only -z > "${RUNNER_TEMP}/owner-validated-paths.bin"
           node --input-type=module <<'NODE'
+          import { createHash } from "node:crypto";
           import fs from "node:fs";
           const allowed = new Set(
             fs.readFileSync(`${process.env.RUNNER_TEMP}/owner-generated-paths.txt`, "utf8")
@@ -222,6 +223,23 @@ jobs:
           if (unsafe.length > 0) {
             throw new Error(`Validation left unsafe owner paths: ${unsafe.join(", ")}`);
           }
+          const reportPath =
+            `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`;
+          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+          const hashes = Object.fromEntries(
+            report.generated_paths.map((path) => [
+              path,
+              createHash("sha256").update(fs.readFileSync(path)).digest("hex"),
+            ]),
+          );
+          fs.copyFileSync(
+            reportPath,
+            `${process.env.RUNNER_TEMP}/validated-project-owner-report.json`,
+          );
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/validated-project-owner-hashes.json`,
+            JSON.stringify(hashes),
+          );
           NODE
       - name: Reject conflicting open owner paths
         shell: bash
@@ -250,90 +268,56 @@ jobs:
               );
             }
           " "$pulls_path" "${RUNNER_TEMP}/owner-generated-paths.txt"
-      - name: Revalidate owner authority before branch mutation
+      - name: Regenerate final owner state before branch mutation
         shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "::error::Main advanced during owner validation; rerun against current main."
+            exit 1
+          fi
+          mapfile -t generated_paths < "${RUNNER_TEMP}/owner-generated-paths.txt"
+          git checkout origin/main -- "${generated_paths[@]}"
+          node scripts/help/generate-project-owner-request.mjs \
+            --issue-number "$ISSUE_NUMBER" \
+            --output-directory "$GITHUB_WORKSPACE" \
+            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json"
           node --input-type=module <<'NODE'
-          import { execFileSync } from "node:child_process";
+          import { createHash } from "node:crypto";
           import fs from "node:fs";
-          import { readFile } from "node:fs/promises";
-          import { processProjectOwnerTriage } from "./scripts/help/triage-project-owner-request.mjs";
-
-          const report = JSON.parse(
+          import { sameProjectOwnerGenerationReport } from "./scripts/help/generate-project-owner-request.mjs";
+          const validated = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/validated-project-owner-report.json`,
+              "utf8",
+            ),
+          );
+          const regenerated = JSON.parse(
             fs.readFileSync(
               `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
               "utf8",
             ),
           );
-          const repository = process.env.GITHUB_REPOSITORY;
-          const issueNumber = Number(process.env.ISSUE_NUMBER);
-          const token = process.env.GITHUB_TOKEN;
-          async function request(path, options = {}) {
-            const response = await fetch(`https://api.github.com${path}`, {
-              ...options,
-              headers: {
-                Accept: "application/vnd.github+json",
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                "User-Agent": "Tavernary-project-owner-generation",
-                "X-GitHub-Api-Version": "2022-11-28",
-                ...options.headers,
-              },
-            });
-            if (!response.ok) {
-              const error = new Error(`GitHub ${response.status}: ${await response.text()}`);
-              error.status = response.status;
-              throw error;
-            }
-            return response.status === 204 ? null : response.json();
-          }
-          const vocabularyFiles = {
-            frontends: ["frontends.json", "frontends"],
-            primaryFunctions: ["primary-functions.json", "primary_functions"],
-            capabilities: ["capabilities.json", "capabilities"],
-            modelFamilies: ["model-families.json", "model_families"],
-            completionFormats: ["completion-formats.json", "completion_formats"],
-          };
-          const vocabularies = Object.fromEntries(
-            await Promise.all(
-              Object.entries(vocabularyFiles).map(async ([name, [file, key]]) => {
-                const document = JSON.parse(
-                  await readFile(`data/vocabularies/${file}`, "utf8"),
-                );
-                return [name, document[key] ?? []];
-              }),
+          const validatedHashes = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/validated-project-owner-hashes.json`,
+              "utf8",
             ),
           );
-          const registryPath = `data/registry/projects/${report.project_id}.json`;
-          const record = JSON.parse(
-            execFileSync("git", ["show", `origin/main:${registryPath}`], {
-              encoding: "utf8",
-            }),
+          const regeneratedHashes = Object.fromEntries(
+            regenerated.generated_paths.map((path) => [
+              path,
+              createHash("sha256").update(fs.readFileSync(path)).digest("hex"),
+            ]),
           );
-          const [issue, repositoryIdentity] = await Promise.all([
-            request(`/repos/${repository}/issues/${issueNumber}`),
-            request(`/repositories/${record.source.repository_id}`),
-          ]);
-          const decision = await processProjectOwnerTriage({
-            issue,
-            record,
-            repository: repositoryIdentity,
-            hostRepository: repository,
-            vocabularies,
-            request,
-          });
           if (
-            decision.status !== "admitted" ||
-            decision.issueNumber !== report.issue_number ||
-            decision.projectId !== report.project_id ||
-            decision.operation !== report.operation ||
-            decision.record.source.repository_id !== report.repository_id ||
-            decision.verifiedOwnerLogin !== report.verified_owner_login
+            !sameProjectOwnerGenerationReport(validated, regenerated) ||
+            JSON.stringify(validatedHashes) !== JSON.stringify(regeneratedHashes)
           ) {
-            throw new Error("Owner authority or request state changed before branch mutation.");
+            throw new Error(
+              "Owner request changed after validation; refusing stale generation.",
+            );
           }
           NODE
       - name: Plan safe owner branch update
