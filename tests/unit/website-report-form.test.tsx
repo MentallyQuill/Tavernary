@@ -61,7 +61,7 @@ test("accepts only safe local website context from the query", () => {
   renderWebsiteForm();
 
   expect(screen.getByLabelText("What page has the problem?")).toHaveValue(
-    "https://tavernary.org/catalog/",
+    "/catalog/",
   );
 
   cleanup();
@@ -69,6 +69,46 @@ test("accepts only safe local website context from the query", () => {
   renderWebsiteForm();
 
   expect(screen.getByLabelText("What page has the problem?")).toHaveValue("");
+});
+
+test("normalizes query context to a path-only Tavernary route", () => {
+  search = "from=%2Fcatalog%3Fsearch%3Dprivate%23details";
+  renderWebsiteForm();
+
+  expect(screen.getByLabelText("What page has the problem?")).toHaveValue(
+    "/catalog",
+  );
+
+  cleanup();
+  search = "from=%2F%5Cevil.example";
+  renderWebsiteForm();
+
+  expect(screen.getByLabelText("What page has the problem?")).toHaveValue("");
+
+  cleanup();
+  search = "from=https%3A%2F%2Ftavernary.org%3A444%2Fcatalog%2F";
+  renderWebsiteForm();
+
+  expect(screen.getByLabelText("What page has the problem?")).toHaveValue("");
+});
+
+test("associates a website category error with its select", async () => {
+  const user = userEvent.setup();
+  renderWebsiteForm();
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  const category = screen.getByLabelText(
+    "What kind of website problem is this?",
+  );
+  expect(category).toHaveAttribute("aria-invalid", "true");
+  expect(category).toHaveAttribute(
+    "aria-describedby",
+    "website-category-error",
+  );
+  expect(document.getElementById("website-category-error")).toHaveTextContent(
+    "Choose what kind of website problem this is.",
+  );
 });
 
 test("serializes only approved website diagnostics", async () => {

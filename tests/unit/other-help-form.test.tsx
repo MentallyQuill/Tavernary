@@ -69,6 +69,31 @@ test("rejects a non-HTTPS relevant URL before public handoff", async () => {
   expect(screen.getByRole("alert")).toHaveTextContent(
     "Enter a valid HTTPS relevant URL.",
   );
+  expect(screen.getByLabelText("Relevant URL (optional)")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  expect(screen.getByLabelText("Relevant URL (optional)")).toHaveAttribute(
+    "aria-describedby",
+    expect.stringContaining("other-relevant-url-error"),
+  );
+  expect(document.getElementById("other-relevant-url-error")).toHaveTextContent(
+    "Enter a valid HTTPS relevant URL.",
+  );
+});
+
+test("associates an Other Help category error with its select", async () => {
+  const user = userEvent.setup();
+  renderOtherHelpForm();
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  const category = screen.getByLabelText("What do you need help with?");
+  expect(category).toHaveAttribute("aria-invalid", "true");
+  expect(category).toHaveAttribute("aria-describedby", "other-category-error");
+  expect(document.getElementById("other-category-error")).toHaveTextContent(
+    "Choose what you need help with.",
+  );
 });
 
 test("reviews public values and hands off Other Help through the manifest", async () => {

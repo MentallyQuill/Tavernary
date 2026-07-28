@@ -129,6 +129,10 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
     category === "existing-request"
       ? "GitHub issue or pull request (optional)"
       : "Relevant URL (optional)";
+  const categoryError = errors.find(
+    (error) => error === "Choose what you need help with.",
+  );
+  const relevantUrlError = errors.find((error) => /relevant url/i.test(error));
 
   if (reviewing && payload) {
     return (
@@ -190,7 +194,8 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
         <select
           id="other-category"
           value={category}
-          aria-invalid={errors.includes("Choose what you need help with.")}
+          aria-invalid={Boolean(categoryError)}
+          aria-describedby={categoryError ? "other-category-error" : undefined}
           onChange={(event) => {
             const nextCategory = event.target.value;
             setCategory(isOtherHelpCategory(nextCategory) ? nextCategory : "");
@@ -203,6 +208,11 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
             </option>
           ))}
         </select>
+        {categoryError ? (
+          <p className="help-field-error" id="other-category-error">
+            {categoryError}
+          </p>
+        ) : null}
       </div>
       <HelpTextField
         id="other-subject"
@@ -230,7 +240,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
         type="url"
         maxLength={500}
         onChange={(event) => setRelevantUrl(event.target.value)}
-        error={errors.find((error) => error.includes("Relevant URL"))}
+        error={relevantUrlError}
         count={`${relevantUrl.length}/500`}
       />
       <div className="help-actions">

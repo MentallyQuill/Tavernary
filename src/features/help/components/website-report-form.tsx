@@ -41,8 +41,11 @@ function isWebsiteBugCategory(value: string): value is WebsiteBugCategory {
 function safeTavernaryPage(value: string) {
   const candidate = value.trim();
   if (!candidate) return "";
+  if (candidate.includes("\\")) return "";
+
   if (candidate.startsWith("/") && !candidate.startsWith("//")) {
-    return candidate;
+    const route = new URL(candidate, "https://tavernary.org");
+    return route.pathname;
   }
 
   try {
@@ -51,9 +54,10 @@ function safeTavernaryPage(value: string) {
       url.protocol === "https:" &&
       url.hostname === "tavernary.org" &&
       !url.username &&
-      !url.password
+      !url.password &&
+      !url.port
     ) {
-      return url.toString();
+      return url.pathname;
     }
   } catch {
     // The form will show the normal validation error for an unsafe value.
@@ -81,11 +85,15 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
   const [handoffError, setHandoffError] = useState("");
+  const normalizedPageUrl = safeTavernaryPage(pageUrl);
+  const categoryError = errors.find(
+    (error) => error === "Choose what kind of website problem this is.",
+  );
 
   const payload: WebsiteBugPayload | null = isWebsiteBugCategory(category)
     ? {
         category,
-        page_url: pageUrl.trim(),
+        page_url: normalizedPageUrl,
         actual_behavior: actualBehavior.trim(),
         expected_behavior: expectedBehavior.trim(),
         reproduction_steps: reproductionSteps.trim(),
@@ -100,7 +108,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
     if (!isWebsiteBugCategory(category)) {
       nextErrors.push("Choose what kind of website problem this is.");
     }
-    if (!safeTavernaryPage(pageUrl)) {
+    if (!normalizedPageUrl) {
       nextErrors.push("Enter a Tavernary page URL or site-relative path.");
     }
     if (!actualBehavior.trim())
@@ -137,7 +145,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   }
 
   async function continueOnGitHub() {
-    if (!payload || !safeTavernaryPage(pageUrl)) return;
+    if (!payload) return;
     setHandoffError("");
     setContinuing(true);
     try {
@@ -230,9 +238,10 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
         <select
           id="website-category"
           value={category}
-          aria-invalid={errors.includes(
-            "Choose what kind of website problem this is.",
-          )}
+          aria-invalid={Boolean(categoryError)}
+          aria-describedby={
+            categoryError ? "website-category-error" : undefined
+          }
           onChange={(event) => {
             const nextCategory = event.target.value;
             setCategory(isWebsiteBugCategory(nextCategory) ? nextCategory : "");
@@ -245,6 +254,11 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
             </option>
           ))}
         </select>
+        {categoryError ? (
+          <p className="help-field-error" id="website-category-error">
+            {categoryError}
+          </p>
+        ) : null}
       </div>
       <HelpTextField
         id="website-page-url"
