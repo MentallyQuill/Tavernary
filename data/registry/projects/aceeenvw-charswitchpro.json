@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "aceeenvw-charswitchpro",
+  "name": "CharSwitchPro",
+  "kind": "extension",
+  "summary": "A fork of CharSwitchPro.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "aceeenvw/charswitchpro",
+    "repository_id": 1221995274
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-28T16:38:02.346Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
