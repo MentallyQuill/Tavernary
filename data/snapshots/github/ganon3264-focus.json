@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "provider": "github",
+  "project_id": "ganon3264-focus",
+  "repository": {
+    "id": 1305306157,
+    "owner": "ganon3264",
+    "name": "focus",
+    "url": "https://github.com/ganon3264/focus",
+    "description": "A roleplaying frontend for use with LLMs.",
+    "default_branch": "master",
+    "head_sha": "b16283d3eb4e0b779a6c926a0c3e1cb3fe510d02",
+    "head_committed_at": "2026-07-28T15:21:03.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-19T00:13:30.000Z",
+    "size_kb": 3873
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-28T15:21:03.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-28T15:21:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T23:35:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T18:14:38.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T17:41:57.321Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b16283d3eb4e0b779a6c926a0c3e1cb3fe510d02"
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 3
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-28T17:41:57.321Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "ganon3264", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-28T17:41:57.321Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
