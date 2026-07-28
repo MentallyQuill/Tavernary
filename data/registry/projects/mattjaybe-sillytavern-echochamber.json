@@ -3,7 +3,7 @@
   "id": "mattjaybe-sillytavern-echochamber",
   "name": "SillyTavern-EchoChamber",
   "kind": "extension",
-  "summary": "SillyTavern-EchoChamber is a SillyTavern extension that generates AI-powered audience reactions in styles including Discord, Twitch, Twitter, News, and MST3K. These simulated reactions appear below the chat input field.",
+  "summary": "EchoChamber is a SillyTavern extension that adds a dynamic, AI-powered audience to stories and conversations. It generates simulated audience reactions that respond to ongoing roleplay for added immersion.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
+  "capabilities": ["prompt-engineering", "automation"],
   "cataloged_at": "2026-07-26T19:32:08.845Z",
   "catalog_cohort": "standard",
   "visibility": "published",

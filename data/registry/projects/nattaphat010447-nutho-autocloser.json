@@ -3,7 +3,7 @@
   "id": "nattaphat010447-nutho-autocloser",
   "name": "Nutho Autocloser",
   "kind": "extension",
-  "summary": "Nutho Autocloser is a SillyTavern extension that automatically closes elements in the chat interface. It saves users from performing repetitive closing actions during their roleplay sessions.",
+  "summary": "Nutho Autocloser is a SillyTavern extension designed to automate closing operations within the frontend. It handles routine close actions in the background, reducing manual interaction during roleplay sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

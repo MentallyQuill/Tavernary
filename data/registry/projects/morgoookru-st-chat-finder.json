@@ -3,7 +3,7 @@
   "id": "morgoookru-st-chat-finder",
   "name": "ST Chat Finder",
   "kind": "extension",
-  "summary": "ST Chat Finder is a SillyTavern extension that adds find and replace text functionality to chat logs. Users can search conversations for specific terms and substitute them in place throughout their message history.",
+  "summary": "ST Chat Finder is a SillyTavern extension that lets users search for and replace text within their chat conversations. It provides find-and-replace functionality across message history for quick content edits.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
