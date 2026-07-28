@@ -14,7 +14,7 @@ export async function refreshKitReactions({
   blockedUsers,
   fetchPage,
   now,
-  requiredKitIssueNumber,
+  requiredKitId,
 }) {
   const previousByKit = new Map(
     snapshots.map((snapshot) => [snapshot.kit_id, snapshot]),
@@ -86,7 +86,7 @@ export async function refreshKitReactions({
         ),
       });
     } catch (error) {
-      if (kit.source_issue_number === requiredKitIssueNumber) {
+      if (kit.id === requiredKitId) {
         throw new Error(`Unable to initialize Kit ${kit.id} support`, {
           cause: error,
         });
@@ -97,16 +97,10 @@ export async function refreshKitReactions({
   }
 
   if (
-    requiredKitIssueNumber !== undefined &&
-    !kits.some(
-      (kit) =>
-        kit.status === "published" &&
-        kit.source_issue_number === requiredKitIssueNumber,
-    )
+    requiredKitId !== undefined &&
+    !kits.some((kit) => kit.status === "published" && kit.id === requiredKitId)
   ) {
-    throw new Error(
-      `Published Kit issue #${requiredKitIssueNumber} was not found`,
-    );
+    throw new Error(`Published Kit ${requiredKitId} was not found`);
   }
 
   return results;
@@ -183,9 +177,7 @@ async function main() {
     blockedUsers,
     fetchPage: githubReactionPage,
     now: new Date().toISOString(),
-    requiredKitIssueNumber: process.env.REQUIRED_KIT_ISSUE_NUMBER
-      ? Number(process.env.REQUIRED_KIT_ISSUE_NUMBER)
-      : undefined,
+    requiredKitId: process.env.REQUIRED_KIT_ID || undefined,
   });
   await Promise.all(
     refreshed.map((snapshot) =>

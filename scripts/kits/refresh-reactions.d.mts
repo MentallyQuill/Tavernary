@@ -46,5 +46,5 @@ export function refreshKitReactions(input: {
     perPage: number;
   }) => Promise<KitReaction[]>;
   now: string;
-  requiredKitIssueNumber?: number;
+  requiredKitId?: string;
 }): Promise<KitSupportSnapshot[]>;

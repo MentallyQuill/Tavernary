@@ -164,17 +164,25 @@ test("returns a stale prior snapshot on failure and no first snapshot", async ()
   ).resolves.toEqual([]);
 });
 
-test("fails publication when the required Kit cannot get its first snapshot", async () => {
+test("fails edited Kit initialization by canonical ID", async () => {
+  const editedKit = {
+    ...kit,
+    id: "super-awesome-test-kit-109",
+    source_issue_number: 109,
+  };
+
   await expect(
     refreshKitReactions({
-      kits: [kit],
+      kits: [editedKit],
       snapshots: [],
       blockedUsers: { blocked: [] },
       fetchPage: vi.fn().mockRejectedValue(new Error("transient")),
       now,
-      requiredKitIssueNumber: 241,
+      requiredKitId: editedKit.id,
     }),
-  ).rejects.toThrow("Unable to initialize Kit story-kit-241 support");
+  ).rejects.toThrow(
+    "Unable to initialize Kit super-awesome-test-kit-109 support",
+  );
 });
 
 test("re-added reactions keep their original first-observed timestamp", async () => {
