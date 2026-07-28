@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   DEFAULT_QUERY,
@@ -16,7 +17,6 @@ import { KitGrid } from "@/features/kits/components/kit-grid";
 import { ProjectSelectionDock } from "@/features/kits/components/project-selection-dock";
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
-import { kitShareUrl } from "@/features/kits/share-kit";
 import { openKitSubmission } from "@/features/kits/submission-transport";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
@@ -58,6 +58,7 @@ type AddedStatus = {
 };
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
+  const router = useRouter();
   const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery();
   const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
@@ -358,13 +359,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       kits: current.kits,
     }));
   const reportKit = (kitId: string) => {
-    const url = new URL(
-      "https://github.com/MentallyQuill/Tavernary/issues/new",
-    );
-    url.searchParams.set("template", "06-kit-report.yml");
-    url.searchParams.set("kit-id", kitId);
-    url.searchParams.set("share-url", kitShareUrl(kitId));
-    window.open(url, "_blank", "noopener,noreferrer");
+    router.push(`/help/report-kit/?kit=${encodeURIComponent(kitId)}`);
   };
 
   return (

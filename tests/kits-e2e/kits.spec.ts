@@ -812,12 +812,6 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   });
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await openKits(page);
-  await page.evaluate(() => {
-    window.open = (url) => {
-      window.sessionStorage.setItem("opened-url", String(url));
-      return null;
-    };
-  });
 
   const longDescription = page
     .getByRole("article")
@@ -865,16 +859,46 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const cardReportButton = card.getByRole("button", { name: "Report Kit" });
   await cardReportButton.hover();
   await expect(
-    page.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
+    page.getByRole("tooltip", { name: "Report this Kit" }),
   ).toBeVisible();
   await cardReportButton.click();
+  await expect(page).toHaveURL(/\/help\/report-kit\/?\?kit=alpha-kit-101/);
+  // The static test server does not resolve directory indexes without a
+  // trailing slash, while Pages does. Reload the exported directory route to
+  // verify the same contextual query hydrates the selected Kit.
+  await page.goto(sitePath("/help/report-kit/?kit=alpha-kit-101"));
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
+    "alpha-kit-101",
+  );
+
+  await page.evaluate(() => {
+    window.open = (url) => {
+      window.sessionStorage.setItem("opened-url", String(url));
+      return window;
+    };
+  });
+  await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
+  await page.getByLabel("Fixture Frontend").check();
+  await page
+    .getByLabel("What should Tavernary review?")
+    .fill("The Kit fails after the frontend is selected.");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
   const cardReport = new URL(
     (await page.evaluate(() => sessionStorage.getItem("opened-url")))!,
   );
-  expect(cardReport.searchParams.get("kit-id")).toBe("alpha-kit-101");
-  expect(cardReport.searchParams.get("share-url")).toContain(
-    "kit=alpha-kit-101",
-  );
+  expect(cardReport.searchParams.get("template")).toBe("06-kit-report.yml");
+  expect(
+    JSON.parse(cardReport.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    request_kind: "kit-report",
+    payload: {
+      kit_id: "alpha-kit-101",
+      affected_project_ids: ["fixture-frontend"],
+    },
+  });
+
+  await openKits(page);
 
   await page.getByRole("button", { name: "Open Alpha Kit" }).click();
   const inspector = page.getByRole("complementary", { name: "Kit Builder" });
@@ -925,11 +949,15 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
 
   const report = page.getByRole("link", { name: "Report Kit" });
   const withdrawal = page.getByRole("link", { name: "Request withdrawal" });
-  for (const link of [report, withdrawal]) {
-    const url = new URL((await link.getAttribute("href"))!);
-    expect(url.searchParams.get("kit-id")).toBe("alpha-kit-101");
-    expect(url.searchParams.get("share-url")).toContain("kit=alpha-kit-101");
-  }
+  await expect(report).toHaveAttribute(
+    "href",
+    "/help/report-kit/?kit=alpha-kit-101",
+  );
+  const withdrawalUrl = new URL((await withdrawal.getAttribute("href"))!);
+  expect(withdrawalUrl.searchParams.get("template")).toBe(
+    "07-kit-withdrawal.yml",
+  );
+  expect(withdrawalUrl.searchParams.get("kit-id")).toBe("alpha-kit-101");
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
   await expect(

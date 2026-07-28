@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -33,9 +34,9 @@ const builderBackground = [
   ".catalog-main",
 ];
 
-function issueUrl(template: string, kit: CatalogKit) {
+function withdrawalIssueUrl(kit: CatalogKit) {
   const url = new URL("https://github.com/MentallyQuill/Tavernary/issues/new");
-  url.searchParams.set("template", template);
+  url.searchParams.set("template", "07-kit-withdrawal.yml");
   url.searchParams.set("kit-id", kit.id);
   url.searchParams.set("share-url", kitShareUrl(kit.id));
   return url.toString();
@@ -415,17 +416,16 @@ export function KitBuilderPanel({
                     </Tooltip>
                   </div>
                   <div className="kit-builder-panel-admin-actions">
-                    <a
+                    <Link
                       className="control-secondary kit-preview-action"
-                      href={issueUrl("06-kit-report.yml", kit)}
-                      target="_blank"
+                      href={`/help/report-kit/?kit=${encodeURIComponent(kit.id)}`}
                     >
                       <KitPreviewActionIcon name="report" />
                       Report Kit
-                    </a>
+                    </Link>
                     <a
                       className="control-secondary kit-preview-action kit-withdrawal-action"
-                      href={issueUrl("07-kit-withdrawal.yml", kit)}
+                      href={withdrawalIssueUrl(kit)}
                       target="_blank"
                     >
                       Request withdrawal

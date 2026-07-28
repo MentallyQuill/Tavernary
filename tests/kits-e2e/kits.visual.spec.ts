@@ -188,7 +188,8 @@ test("Kit card Report hover has a deterministic tooltip treatment", async ({
   const card = page.getByRole("article", { name: "Alpha Kit" });
   await card.getByRole("button", { name: "Report Kit" }).hover();
   const tooltip = page.getByRole("tooltip", {
-    name: "Report this Kit on GitHub",
+    name: "Report this Kit",
+    exact: true,
   });
   await expect(tooltip).toBeVisible();
   await expect(tooltip).toHaveScreenshot("kit-card-report-hover.png", {

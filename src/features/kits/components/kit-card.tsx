@@ -92,7 +92,7 @@ export function KitCard({
         </Tooltip>
         <Tooltip
           id={`${tooltipId}-report`}
-          label="Report this Kit on GitHub"
+          label="Report this Kit"
           className="control-tooltip"
         >
           <button
