@@ -151,3 +151,183 @@ test("keeps the private security route free of a public issue form at 320 px", a
   );
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test("preserves selected catalog and Kit records through actual report controls", async ({
+  page,
+}) => {
+  await page.goto(sitePath());
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("Aikobots");
+
+  const project = page.locator(".project-card-shell").filter({
+    has: page.getByRole("heading", { name: "Aikobots", exact: true }),
+  });
+  const reportProject = project.getByRole("link", {
+    name: "Report Aikobots",
+  });
+  await expect(reportProject).toHaveAttribute(
+    "href",
+    sitePath("/help/report-project/?project=aikohanasaki-aikobots"),
+  );
+  await reportProject.click();
+  await expect(page.getByLabel("Project", { exact: true })).toHaveValue(
+    "aikohanasaki-aikobots",
+  );
+
+  await page.goto(sitePath("/?mode=kits"));
+  const kit = page.getByRole("article", { name: "Aiko's Loadout" });
+  await kit.getByRole("button", { name: "Report Kit" }).click();
+  await expect
+    .poll(() => new URL(page.url()).pathname)
+    .toBe(sitePath("/help/report-kit"));
+  await expect
+    .poll(() => new URL(page.url()).searchParams.get("kit"))
+    .toBe("aiko-s-loadout-30");
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
+    "aiko-s-loadout-30",
+  );
+});
+
+test("takes a Kit report from source control through validation, review, cancel, and handoff", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/?mode=kits"));
+  await page
+    .getByRole("article", { name: "Aiko's Loadout" })
+    .getByRole("button", { name: "Report Kit" })
+    .click();
+  await interceptHelpWindow(page);
+
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(page.locator(".help-error-summary")).toContainText(
+    "Choose what is wrong.",
+  );
+  await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
+  await page
+    .getByRole("checkbox", { name: "SillyTavern", exact: true })
+    .check();
+  await page
+    .getByLabel("What should Tavernary review?")
+    .fill("The Kit needs a compatibility review.");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your public request" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "SillyTavern", exact: true }),
+  ).toBeChecked();
+  await expect(page.getByLabel("What should Tavernary review?")).toHaveValue(
+    "The Kit needs a compatibility review.",
+  );
+
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Cancel" }).click();
+  await expect(
+    page.evaluate(
+      () => (window as Window & { openedHelpUrl?: string }).openedHelpUrl,
+    ),
+  ).resolves.toBeUndefined();
+
+  await interceptHelpWindow(page);
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  const opened = new URL(
+    await page.evaluate(
+      () => (window as Window & { openedHelpUrl?: string }).openedHelpUrl ?? "",
+    ),
+  );
+  expect(opened.searchParams.get("template")).toBe("06-kit-report.yml");
+  expect(
+    JSON.parse(opened.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    request_kind: "kit-report",
+    payload: {
+      kit_id: "aiko-s-loadout-30",
+      affected_project_ids: ["sillytavern-sillytavern"],
+    },
+  });
+});
+
+test("covers conditional report branches and ignores unknown record context", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/help/report-project/?project=unknown-project"));
+  await expect(page.getByLabel("Project", { exact: true })).toHaveValue("");
+  for (const branch of [
+    {
+      category: "incorrect-information",
+      guidance: "Explain what is wrong",
+    },
+    {
+      category: "source-moved-or-unavailable",
+      guidance: "Share the last known source",
+    },
+  ]) {
+    await page.getByLabel("What is wrong?").selectOption(branch.category);
+    await expect(page.getByText(branch.guidance)).toBeVisible();
+  }
+
+  await page.goto(sitePath("/help/report-kit/?kit=unknown-kit"));
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue("");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(page.locator(".help-error-summary")).toContainText(
+    "Select a published Kit.",
+  );
+
+  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  for (const branch of [
+    {
+      category: "compatibility-problem",
+      label: "Affected Kit projects",
+    },
+    { category: "duplicate-kit", label: "Other Kit" },
+  ]) {
+    await page.getByLabel("What is wrong?").selectOption(branch.category);
+    await expect(page.getByText(branch.label, { exact: true })).toBeVisible();
+  }
+  await page
+    .getByLabel("What is wrong?")
+    .selectOption("unsafe-or-malicious-included-project");
+  await expect(
+    page.getByRole("link", { name: "Report the project listing instead" }),
+  ).toBeVisible();
+  await page
+    .getByLabel("What is wrong?")
+    .selectOption("author-or-attribution-concern");
+  await expect(
+    page.getByText("Explain what author or source information is wrong."),
+  ).toBeVisible();
+});
+
+test("covers owner source-move and delist review branches", async ({
+  page,
+}) => {
+  await page.goto(
+    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+  );
+  await page.getByRole("radio", { name: "Update repository location" }).check();
+  await page
+    .getByLabel("Public GitHub repository URL")
+    .fill("https://github.com/MentallyQuill/Directive-Renamed");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(
+    page.getByText("After: repository", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(page.getByLabel("Public GitHub repository URL")).toHaveValue(
+    "https://github.com/MentallyQuill/Directive-Renamed",
+  );
+
+  await page.getByRole("radio", { name: "Delist this project" }).check();
+  await page
+    .getByLabel("I am requesting that Tavernary delist this project")
+    .check();
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(
+    page.getByText("After: visibility", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("disabled", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Cancel" }).click();
+});

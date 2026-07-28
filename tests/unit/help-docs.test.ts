@@ -53,3 +53,15 @@ test("limits automated owner management to verified personal owners", () => {
     /Organization listings.*rights holders.*human-reviewed public report/i,
   );
 });
+
+test("documents the runtime owner failure codes without invented aliases", () => {
+  const operationsRunbook = readFileSync(
+    resolve(process.cwd(), "docs/maintenance/operations-runbook.md"),
+    "utf8",
+  );
+
+  expect(operationsRunbook).toContain("unsupported-source");
+  expect(operationsRunbook).toContain("owner-request-invalid");
+  expect(operationsRunbook).not.toContain("owner-request-unsupported-source");
+  expect(operationsRunbook).not.toContain("owner-request-invalid-operation");
+});

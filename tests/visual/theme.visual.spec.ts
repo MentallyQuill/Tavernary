@@ -933,3 +933,54 @@ test("guided Help states retain the approved graphite and teal treatment", async
     graphiteTeal.controlBorder,
   );
 });
+
+test("captures the complete guided Help surface on Windows", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath("/help/"));
+  await expect(page.locator(".help-content")).toHaveScreenshot(
+    "help-hub-desktop.png",
+  );
+
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto(sitePath("/help/"));
+  await expect(page.locator(".help-content")).toHaveScreenshot(
+    "help-hub-mobile.png",
+  );
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
+  await expect(page.locator(".help-content")).toHaveScreenshot(
+    "help-kit-conditional-form.png",
+  );
+
+  await page.goto(sitePath("/help/report-website/?from=%2Fhelp%2F"));
+  await page
+    .getByLabel("What kind of website problem is this?")
+    .selectOption("accessibility");
+  await page.getByLabel("What happens instead?").fill("Focus disappears.");
+  await page.getByLabel("What should happen?").fill("Focus remains visible.");
+  await page
+    .getByLabel("How can we reproduce it?")
+    .fill("Open Help and press Tab.");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(page.locator(".help-review")).toHaveScreenshot(
+    "help-review-state.png",
+  );
+
+  await page.goto(
+    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+  );
+  await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary").fill("x".repeat(219));
+  await expect(page.locator(".help-content")).toHaveScreenshot(
+    "help-owner-near-limit.png",
+  );
+
+  await page.goto(sitePath("/help/security/"));
+  await expect(page.locator(".help-content")).toHaveScreenshot(
+    "help-private-security.png",
+  );
+});

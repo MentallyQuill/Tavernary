@@ -222,8 +222,7 @@ current personal GitHub owner of the listing's verified repository ID. Return
 organization listings, non-owner maintainers, external sources, and
 rights-holder requests to a human-reviewed project report. Common owner
 failure reason codes are issue-author-not-owner, stale-owner-request,
-project-not-found, owner-request-unsupported-source, and
-owner-request-invalid-operation; keep the issue open with the recorded reason
+project-not-found, unsupported-source, and owner-request-invalid; keep the issue open with the recorded reason
 unless the workflow's terminal policy closes it.
 
 For an admitted owner request, inspect the generated

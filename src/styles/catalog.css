@@ -2328,7 +2328,7 @@
 }
 
 .project-card-shell.has-kit-control .card-utility {
-  padding-right: 40px;
+  padding-right: 84px;
 }
 
 .project-relationship-control {
@@ -2396,6 +2396,35 @@
   width: 44px;
   height: 44px;
   place-items: center;
+}
+
+.project-report-control {
+  position: absolute;
+  z-index: 4;
+  right: 42px;
+  bottom: 4px;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  border: 1px solid var(--color-control-border);
+  border-radius: 6px;
+  padding: 0 8px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-raised);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.project-report-control:is(:hover, :focus-visible) {
+  border-color: var(--color-control-border-hover);
+  color: var(--color-link);
+  background: var(--color-bg-surface-hover);
+}
+
+.project-report-control:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
 .project-kit-control {

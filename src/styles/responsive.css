@@ -561,6 +561,10 @@
     width: 44px;
     height: 44px;
   }
+
+  .project-report-control {
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
