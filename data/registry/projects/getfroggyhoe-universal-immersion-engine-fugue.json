@@ -3,8 +3,8 @@
   "id": "getfroggyhoe-universal-immersion-engine-fugue",
   "name": "Universal-Immersion-Engine-Fugue",
   "kind": "frontend",
-  "summary": "No README file found.",
-  "metadata_status": "provisional",
+  "summary": "Fugue is a local-first visual-novel RPG frontend for character-driven stories with persistent characters and maps. It works with any cloud API or local server while the AI writes and Fugue tracks the game.",
+  "metadata_status": "curated",
   "source": {
     "type": "github",
     "repository": "GetfroggyHoe/Universal-Immersion-Engine-Fugue",
@@ -12,7 +12,11 @@
   },
   "frontends": ["universal-immersion-engine-fugue"],
   "primary_function": "frontend",
-  "capabilities": [],
+  "capabilities": [
+    "character-worldbuilding",
+    "model-routing",
+    "image-generation"
+  ],
   "cataloged_at": "2026-07-28T05:14:04.478Z",
   "catalog_cohort": "standard",
   "visibility": "published",

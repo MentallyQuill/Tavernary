@@ -3,7 +3,7 @@
   "id": "dfaker-st-char-powersearch",
   "name": "ST Character PowerSearch",
   "kind": "extension",
-  "summary": "A SillyTavern extension that provides more powerful and faster character search functionality for the frontend interface.",
+  "summary": "ST Character PowerSearch adds a faster character search interface to SillyTavern. It opens a dedicated tab with Chat and Details actions and runs NLP-based similarity searches across character cards.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

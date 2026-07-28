@@ -3,7 +3,7 @@
   "id": "eum27-nai-inlay-illustrator",
   "name": "NAI Inlay Illustrator",
   "kind": "extension",
-  "summary": "NAI Inlay Illustrator is a Marinara Engine extension that adds inline story illustrations to assistant responses. It plans chronological paragraph slots and embeds generated images between matching paragraphs.",
+  "summary": "NAI Inlay Illustrator inserts inline illustrations into Marinara Engine responses via a custom planning agent. It splits text into chronological beats and routes each through the existing image connection.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,12 +11,8 @@
     "repository_id": 1270778825
   },
   "frontends": ["marinara-engine"],
-  "primary_function": "frontend",
-  "capabilities": [
-    "image-generation",
-    "extension-development",
-    "planning-reasoning"
-  ],
+  "primary_function": "interface-workflow",
+  "capabilities": ["image-generation", "automation", "planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

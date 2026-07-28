@@ -3,7 +3,7 @@
   "id": "forgottenglory-st-superobjective",
   "name": "ST SuperObjective",
   "kind": "extension",
-  "summary": "ST SuperObjective is a major enhancement and partial rewrite of the existing Objective extension for SillyTavern frontend.",
+  "summary": "SillyTavern-SuperObjective is a SillyTavern extension that manages character super-objectives during roleplay sessions. It helps maintain each character's long-term motivations and overarching goals across conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 949189091
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
-  "capabilities": [],
+  "primary_function": "character-worldbuilding",
+  "capabilities": ["character-worldbuilding", "planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
