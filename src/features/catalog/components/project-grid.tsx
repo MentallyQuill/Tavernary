@@ -1,6 +1,10 @@
 import type { CatalogProject } from "../catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
-import { ProjectCard, projectDisplayName } from "./project-card";
+import {
+  ProjectCard,
+  ProjectLicense,
+  projectDisplayName,
+} from "./project-card";
 import { ProjectKitControl } from "./project-kit-control";
 import { ProjectRelationshipControl } from "./project-relationship-control";
 
@@ -51,11 +55,16 @@ export function ProjectGrid({
               .join(" ")}
             key={project.id}
           >
-            <ProjectCard project={project} now={now} />
+            <ProjectCard
+              project={project}
+              now={now}
+              licensePlacement={project.fork ? "relationship" : "card"}
+            />
             {project.fork ? (
               <ProjectRelationshipControl
                 childProjectName={displayName}
                 relationship={project.fork}
+                license={<ProjectLicense project={project} />}
                 active={relationshipActive}
                 onViewRelationship={
                   project.fork.status === "published" && !relationshipActive

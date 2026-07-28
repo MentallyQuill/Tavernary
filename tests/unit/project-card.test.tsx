@@ -119,9 +119,15 @@ describe("project card", () => {
     const relationshipControl = shell?.querySelector(
       ".project-relationship-control",
     );
-    expect(relationshipControl).toHaveTextContent("Fork of VectHare");
-    expect(relationshipControl).toHaveTextContent("·");
-    expect(relationshipControl).toHaveTextContent("View relationship");
+    expect(relationshipControl?.children[0]).toHaveClass("license");
+    expect(relationshipControl?.children[0]).toHaveTextContent("MIT");
+    expect(relationshipControl?.children[1]).toHaveTextContent("·");
+    expect(relationshipControl?.children[2]).toBe(relationshipButton);
+    expect(relationshipButton).toHaveTextContent("Fork of VectHare");
+    expect(screen.queryByText("View relationship")).not.toBeInTheDocument();
+    expect(
+      repositoryLink.querySelector(".card-utility .license"),
+    ).not.toBeInTheDocument();
     expect(repositoryLink).not.toContainElement(relationshipButton);
     expect(relationshipButton.parentElement?.parentElement).toBe(shell);
 
