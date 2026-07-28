@@ -3,7 +3,7 @@
   "id": "cha1latte-win95-theme-marinara",
   "name": "Win95 Theme Marinara",
   "kind": "extension",
-  "summary": "Win95 Theme Marinara brings an authentic Windows 95 visual style to the Marinara Engine frontend. It delivers beveled buttons, blue title bars, MS Sans Serif text, and sunken inputs via simple paste installation.",
+  "summary": "Win95 Theme Marinara is a CSS-only extension that re-skins Marinara Engine with authentic Windows 95 styling. The v3.0 release dropped the JavaScript layer for a leaner pure-CSS approach that's simpler to maintain.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
+  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

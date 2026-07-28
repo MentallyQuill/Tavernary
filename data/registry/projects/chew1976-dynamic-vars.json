@@ -3,7 +3,7 @@
   "id": "chew1976-dynamic-vars",
   "name": "dynamic-vars",
   "kind": "extension",
-  "summary": "This SillyTavern extension lets users define and use dynamic variables within the frontend. It supports creating named values that can be referenced throughout the chat session.",
+  "summary": "This SillyTavern extension substitutes placeholders in character cards and lorebooks with random values from user pools. Session caching preserves each choice, while inline randomization supports quick swaps.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

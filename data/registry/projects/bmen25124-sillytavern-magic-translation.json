@@ -3,7 +3,7 @@
   "id": "bmen25124-sillytavern-magic-translation",
   "name": "SillyTavern-Magic-Translation",
   "kind": "extension",
-  "summary": "SillyTavern-Magic-Translation is a SillyTavern extension that translates chat messages via a configured language model. It provides real-time translation between languages during conversations with AI characters.",
+  "summary": "SillyTavern extension that translates chat messages in real time using configured language model APIs. It supports automatic and on-demand translation via slash commands with customizable prompt presets.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,12 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "model-routing"],
+  "capabilities": [
+    "automation",
+    "extension-development",
+    "model-routing",
+    "prompt-engineering"
+  ],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

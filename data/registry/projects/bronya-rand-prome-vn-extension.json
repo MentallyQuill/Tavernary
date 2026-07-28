@@ -3,7 +3,7 @@
   "id": "bronya-rand-prome-vn-extension",
   "name": "Prome VN Extension",
   "kind": "extension",
-  "summary": "Prome VN Extension delivers an enhanced visual novel experience as a SillyTavern extension. It provides visual novel-focused enhancements to support narrative-driven roleplay sessions on the frontend.",
+  "summary": "The Prome VN Extension remodernizes SillyTavern's Visual Novel mode with new presentation features. It adds world and character tinting, user sprites, sprite emulation, focus mode, and letterboxing options.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 839083006
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
-  "capabilities": [],
+  "primary_function": "frontend",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

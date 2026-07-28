@@ -3,7 +3,7 @@
   "id": "carlosnahuelcoy-sillytavern-player2",
   "name": "SillyTavern Player2",
   "kind": "extension",
-  "summary": "SillyTavern Player2 is a SillyTavern extension that connects the frontend to the Player2 AI API. It offers local app auto-authentication and web-based OAuth login to sign in from either context.",
+  "summary": "SillyTavern-Player2 is a SillyTavern extension that connects to the Player2 AI API for chat completions. It adds a dedicated Player2 panel in the Extensions tab where users can select a connection mode.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "automation"],
+  "capabilities": ["model-routing"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

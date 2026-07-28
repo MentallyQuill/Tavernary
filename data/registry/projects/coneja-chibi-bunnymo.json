@@ -3,7 +3,7 @@
   "id": "coneja-chibi-bunnymo",
   "name": "BunnyMo",
   "kind": "extension",
-  "summary": "BunnyMo is a SillyTavern extension functioning as a thinking engine for roleplay interactions. It introduces structured reasoning to improve how AI models generate character responses.",
+  "summary": "BunnyMo is a SillyTavern extension that integrates the RoleCall thinking engine for structured reasoning during roleplay. It embeds the engine's planning capabilities directly into the SillyTavern chat workflow.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "capabilities": ["planning-reasoning", "prompt-engineering"],
+  "capabilities": ["planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

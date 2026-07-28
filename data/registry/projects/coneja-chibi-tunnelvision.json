@@ -3,7 +3,7 @@
   "id": "coneja-chibi-tunnelvision",
   "name": "TunnelVision",
   "kind": "extension",
-  "summary": "TunnelVision is a SillyTavern extension that autonomously manages lorebook entries, trackers, and summary retrieval. It operates agentically to handle memory tasks without requiring manual setup or maintenance.",
+  "summary": "TunnelVision is a SillyTavern extension that lets AI browse for what to remember rather than guessing. Built as a RoleCall proof of concept, it gives the model an active remote-control interface for retrieval.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,11 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": [
-    "automation",
-    "character-worldbuilding",
-    "instruction-control"
-  ],
+  "capabilities": ["instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",
