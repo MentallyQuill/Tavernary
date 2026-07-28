@@ -4,6 +4,7 @@ import {
   ProjectSubmissionBuilder,
   type SubmissionFrontendOption,
 } from "@/features/submissions/components/project-submission-builder";
+import { orderFrontendOptionsByPopularity } from "@/features/catalog/frontend-option-order";
 import { loadCatalog } from "@/lib/catalog/load-catalog";
 
 const fallbackUrl =
@@ -15,21 +16,25 @@ export const metadata = {
 };
 
 export default function ProjectSubmissionPage() {
-  const frontends: SubmissionFrontendOption[] = loadCatalog()
-    .projects.filter((project) => project.kind === "frontend")
-    .flatMap((project) => {
-      const [selfCompatibility] = project.frontends;
-      return selfCompatibility
-        ? [
-            {
-              id: selfCompatibility.id,
-              label: selfCompatibility.label,
-              canonicalUrl: project.canonicalUrl,
-            },
-          ]
-        : [];
-    })
-    .sort((left, right) => left.label.localeCompare(right.label));
+  const catalog = loadCatalog();
+  const frontends: SubmissionFrontendOption[] =
+    orderFrontendOptionsByPopularity(
+      catalog.projects
+        .filter((project) => project.kind === "frontend")
+        .flatMap((project) => {
+          const [selfCompatibility] = project.frontends;
+          return selfCompatibility
+            ? [
+                {
+                  id: selfCompatibility.id,
+                  label: selfCompatibility.label,
+                  canonicalUrl: project.canonicalUrl,
+                },
+              ]
+            : [];
+        }),
+      catalog.projects,
+    );
 
   return (
     <main className="submission-page">

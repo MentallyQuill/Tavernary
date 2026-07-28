@@ -2,6 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 
+import ProjectSubmissionPage from "@/app/submit/project/page";
 import { ProjectSubmissionBuilder } from "@/features/submissions/components/project-submission-builder";
 
 const { openProjectSubmission } = vi.hoisted(() => ({
@@ -10,6 +11,36 @@ const { openProjectSubmission } = vi.hoisted(() => ({
 
 vi.mock("@/features/submissions/submission-transport", () => ({
   openProjectSubmission,
+}));
+
+vi.mock("@/lib/catalog/load-catalog", () => ({
+  loadCatalog: () => ({
+    schemaVersion: 2,
+    generatedAt: "2026-07-27T00:00:00.000Z",
+    kits: [],
+    projects: [
+      {
+        id: "alpha-frontend",
+        name: "Alpha",
+        kind: "frontend",
+        canonicalUrl: "https://github.com/example/alpha",
+        frontends: [
+          { id: "alpha", label: "Alpha", description: "Frontend." },
+        ],
+        community: { stars: 4, forks: 0, subscribers: 0, aggregate: 4 },
+      },
+      {
+        id: "zulu-frontend",
+        name: "Zulu",
+        kind: "frontend",
+        canonicalUrl: "https://github.com/example/zulu",
+        frontends: [
+          { id: "zulu", label: "Zulu", description: "Frontend." },
+        ],
+        community: { stars: 12, forks: 0, subscribers: 0, aggregate: 12 },
+      },
+    ],
+  }),
 }));
 
 const frontends = [
@@ -31,6 +62,17 @@ const frontendEligibility =
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+});
+
+test("orders supported frontends by frontend-card popularity", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionPage />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+
+  const frontendChoices = screen.getAllByRole("checkbox");
+  expect(frontendChoices[0]).toHaveAccessibleName("Zulu");
+  expect(frontendChoices[1]).toHaveAccessibleName("Alpha");
 });
 
 test("shows Frontend eligibility only at relevant submission decisions", async () => {
