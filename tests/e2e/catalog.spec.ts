@@ -57,14 +57,9 @@ const forkRelationshipParent = forkRelationshipChild?.fork?.parentProjectId
       ({ id }) => id === forkRelationshipChild.fork?.parentProjectId,
     )
   : null;
-const delistedForkChild =
-  catalog.projects.find(
-    ({ id }) => id === "aikohanasaki-sillytavern-worldinfolocks",
-  ) ??
-  catalog.projects.find(
-    ({ fork }) =>
-      fork?.status === "not-listed" && fork.parentProjectId === null,
-  );
+const delistedForkChild = catalog.projects.find(
+  ({ fork }) => fork?.status === "not-listed" && fork.parentProjectId === null,
+);
 
 function displayedProjectName(name: string) {
   const withoutPrefix = name.replace(/^sillytavern[\s_-]+/i, "");
