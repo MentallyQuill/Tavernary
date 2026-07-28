@@ -1,0 +1,70 @@
+{
+  "schema_version": 3,
+  "provider": "github",
+  "project_id": "aceeenvw-charswitchpro",
+  "repository": {
+    "id": 1221995274,
+    "owner": "aceeenvw",
+    "name": "charswitchpro",
+    "url": "https://github.com/aceeenvw/charswitchpro",
+    "description": "A power-user fork of SillyTavern-CharSwitch. Adds a VSCode-style command palette with fuzzy search across characters, groups, chat content, tags, and slash commands. Works on desktop and mobile.",
+    "default_branch": "master",
+    "head_sha": "b03de4b82c447ba76ee62cfc7032c5339223c1fc",
+    "head_committed_at": "2026-07-01T00:05:34.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 841159088,
+      "owner": "LenAnderson",
+      "name": "SillyTavern-CharSwitch",
+      "url": "https://github.com/LenAnderson/SillyTavern-CharSwitch"
+    },
+    "created_at": "2026-04-27T00:01:10.000Z",
+    "size_kb": 130
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-01T00:05:34.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-01T00:05:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-25T21:20:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-05T23:22:55.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T16:38:02.346Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b03de4b82c447ba76ee62cfc7032c5339223c1fc"
+  },
+  "community": {
+    "stars_count": 4,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 4
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-28T16:38:02.346Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-28T16:38:02.346Z",
+    "scan": null,
+    "refreshed_at": "2026-07-28T16:38:02.346Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
