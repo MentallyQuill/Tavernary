@@ -243,6 +243,62 @@ test("an injected observer does not enable contributor requests from an ambient 
   }
 });
 
+test("normalizes raw GitHub community metrics while retaining refresh evidence", async () => {
+  const previous = {
+    ...snapshot(0),
+    contributors: {
+      accounts: [{ provider: "github", login: "maintainer", type: "User" }],
+      method: "repository-contributors",
+      baseline_completed_at: "2026-07-22T00:00:00.000Z",
+      scan: null,
+      refreshed_at: "2026-07-22T00:00:00.000Z",
+      stale_since: null,
+    },
+  };
+  const parent = {
+    id: 999,
+    owner: "upstream",
+    name: "project",
+    url: "https://github.com/upstream/project",
+  };
+  const rawObservation = {
+    ...observation(0),
+    repository: {
+      ...observation(0).repository,
+      fork: true,
+      parent,
+    },
+    community: {
+      stargazersCount: 46,
+      forksCount: 4,
+      subscribersCount: 2,
+    },
+  };
+
+  const result = await runRefresh({
+    mode: "incremental",
+    now: "2026-07-24T08:00:00.000Z",
+    records: [record(0)],
+    snapshots: [previous],
+    observe: observer([rawObservation]),
+    inspectDelta: vi.fn(),
+    inspectGit: vi.fn(),
+    write: false,
+  });
+
+  expect(result.snapshots[0]).toMatchObject({
+    repository: { fork: true, parent },
+    community: {
+      stars_count: 46,
+      forks_count: 4,
+      watchers_count: 2,
+      aggregate: 52,
+    },
+    activity: previous.activity,
+    contributors: previous.contributors,
+  });
+});
+
 test("first observation creates provisional evidence without cloning", async () => {
   const inspectDelta = vi.fn();
   const inspectGit = vi.fn();

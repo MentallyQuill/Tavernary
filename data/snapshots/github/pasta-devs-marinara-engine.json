@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "pasta-devs-marinara-engine",
   "repository": {
     "id": 1172690270,
@@ -12,8 +13,9 @@
     "head_committed_at": "2026-07-23T00:11:48.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 227058
+    "size_kb": 228579
   },
   "source_health": "healthy",
   "activity": {
@@ -88,8 +90,8 @@
     "evidence_head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29"
   },
   "community": {
-    "stars_count": 528,
-    "forks_count": 142,
+    "stars_count": 529,
+    "forks_count": 141,
     "watchers_count": 8,
     "aggregate": 678
   },
@@ -98,7 +100,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -161,8 +163,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

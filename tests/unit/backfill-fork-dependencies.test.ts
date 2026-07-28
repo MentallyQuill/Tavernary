@@ -187,9 +187,9 @@ describe("fork dependency backfill planning", () => {
             sizeKb: 10,
           },
           community: {
-            stargazersCount: 1,
-            forksCount: 2,
-            subscribersCount: 3,
+            stargazersCount: 46,
+            forksCount: 4,
+            subscribersCount: 2,
           },
           latestReleaseAt: null,
           coarseLicenseSpdxId: "MIT",
@@ -214,11 +214,20 @@ describe("fork dependency backfill planning", () => {
     expect(result.candidates).toHaveLength(1);
     expect(result.updatedSnapshots[0]).toMatchObject({
       repository: { parent },
+      community: {
+        stars_count: 46,
+        forks_count: 4,
+        watchers_count: 2,
+        aggregate: 52,
+      },
       contributors: legacy.contributors,
       activity_scan: legacy.activity_scan,
       activity: legacy.activity,
       license: legacy.license,
     });
+    expect(
+      Number.isInteger(result.updatedSnapshots[0].community.aggregate),
+    ).toBe(true);
   });
 });
 

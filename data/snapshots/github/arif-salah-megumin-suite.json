@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "arif-salah-megumin-suite",
   "repository": {
     "id": 1189674883,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-22T19:43:08.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-03-23T14:58:37.000Z",
     "size_kb": 23430
   },
@@ -47,17 +49,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 211,
+    "stars_count": 212,
     "forks_count": 9,
     "watchers_count": 4,
-    "aggregate": 224
+    "aggregate": 225
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "License"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -67,8 +69,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "landozo-extension-slidermacros",
   "repository": {
     "id": 1140216653,
@@ -43,7 +44,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T22:01:07.175Z",
+  "refreshed_at": "2026-07-28T04:21:33.607Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -51,8 +52,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

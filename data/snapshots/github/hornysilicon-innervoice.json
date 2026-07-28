@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "hornysilicon-innervoice",
   "repository": {
     "id": 1297591852,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-11T16:15:17.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-07-11T16:10:52.000Z",
     "size_kb": 10
   },
@@ -39,8 +41,9 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T21:11:50.931Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "hornysilicon", "type": "User", "provider": "github" }
@@ -48,9 +51,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T21:11:50.931Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "provider": "github"
+  }
 }

@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "multihogaurelius-sillytavern-multihogdndframework",
   "repository": {
     "id": 1212009993,
@@ -8,20 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG framework where you can basically make your own game. Mechanical integrity and simulation depth is key here. This isn't a narrative-first philosophy; it aims for relentless \"simulation autism.\"",
     "default_branch": "main",
-    "head_sha": "80045335f1f08c3ed3bbb4f031794e08021ba285",
-    "head_committed_at": "2026-07-27T15:48:56.000Z",
+    "head_sha": "32095ae47c2cdb39b4d17a00c16e858e5dc633cc",
+    "head_committed_at": "2026-07-27T21:48:14.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 5115
+    "size_kb": 5600
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T15:48:56.000Z",
+    "latest_source_activity_at": "2026-07-27T21:48:14.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T15:48:56.000Z",
+        "latest_at": "2026-07-27T21:48:14.000Z",
         "precision": "exact"
       },
       {
@@ -80,20 +82,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T10:52:18.639Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "80045335f1f08c3ed3bbb4f031794e08021ba285"
+    "evidence_head_sha": "32095ae47c2cdb39b4d17a00c16e858e5dc633cc"
   },
   "community": {
-    "stars_count": 54,
-    "forks_count": 9,
+    "stars_count": 58,
+    "forks_count": 10,
     "watchers_count": 0,
-    "aggregate": 63
+    "aggregate": 68
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -106,8 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

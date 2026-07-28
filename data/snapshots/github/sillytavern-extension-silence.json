@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "sillytavern-extension-silence",
   "repository": {
     "id": 752014538,
@@ -12,6 +13,7 @@
     "head_committed_at": "2024-06-24T19:45:01.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2024-02-02T20:28:04.000Z",
     "size_kb": 412
   },
@@ -37,7 +39,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,8 +49,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

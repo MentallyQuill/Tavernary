@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "city-unit-sillytavern-chub-search",
   "repository": {
     "id": 687155351,
@@ -12,6 +13,7 @@
     "head_committed_at": "2025-12-14T15:55:27.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2023-09-04T18:41:35.000Z",
     "size_kb": 16
   },
@@ -37,7 +39,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -48,8 +50,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

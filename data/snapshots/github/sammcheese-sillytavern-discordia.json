@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "sammcheese-sillytavern-discordia",
   "repository": {
     "id": 1104616181,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-16T08:40:52.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2025-11-26T13:00:55.000Z",
     "size_kb": 3858
   },
@@ -92,7 +94,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -101,8 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

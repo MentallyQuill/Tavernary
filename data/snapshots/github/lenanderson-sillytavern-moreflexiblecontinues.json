@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "lenanderson-sillytavern-moreflexiblecontinues",
   "repository": {
     "id": 732793067,
@@ -12,6 +13,7 @@
     "head_committed_at": "2025-01-20T23:45:15.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2023-12-17T20:53:31.000Z",
     "size_kb": 75
   },
@@ -33,7 +35,7 @@
     "aggregate": 54
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -44,8 +46,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

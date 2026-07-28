@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { format } from "prettier";
 
-import { observeRepositories as observeRepositoriesDefault } from "../catalog/github-observer.mjs";
+import { GitHubRepositoryProvider } from "../catalog/github-repository-provider.mjs";
 import { snapshotFromObservation } from "../catalog/repository-snapshot.mjs";
 import { ensureForkParentSubmission } from "./fork-dependency.mjs";
 
@@ -133,7 +133,7 @@ export async function observeForkBackfillParents({
   projects,
   snapshots,
   token,
-  observe = observeRepositoriesDefault,
+  observe,
   now = new Date().toISOString(),
 }) {
   const snapshotsById = new Map(
@@ -148,7 +148,11 @@ export async function observeForkBackfillParents({
         snapshotsById.get(project.id)?.repository?.fork === true,
     )
     .sort((left, right) => left.id.localeCompare(right.id));
-  const observation = await observe(records, { token });
+  const provider = new GitHubRepositoryProvider({
+    ...(observe ? { observeRepositories: observe } : {}),
+    token,
+  });
+  const observation = await provider.observe(records);
   const updatedById = new Map();
   for (const item of observation.observations) {
     const previous = snapshotsById.get(item.projectId);

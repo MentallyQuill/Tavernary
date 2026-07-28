@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "aikohanasaki-sillytavern-memorybooks",
   "repository": {
     "id": 1001051404,
@@ -8,17 +9,23 @@
     "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
     "description": "Saves SillyTavern chat memories to lorebooks",
     "default_branch": "main",
-    "head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f",
-    "head_committed_at": "2026-07-26T06:51:39.000Z",
+    "head_sha": "a2d6fde367fdce2aa38df1efc2b91044e93322d3",
+    "head_committed_at": "2026-07-28T01:23:46.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2025-06-12T18:30:31.000Z",
-    "size_kb": 19857
+    "size_kb": 13636
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-26T06:51:39.000Z",
+    "latest_source_activity_at": "2026-07-28T01:23:46.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-28T01:23:46.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-26T06:51:39.000Z",
@@ -73,32 +80,27 @@
         "week_start": "2026-05-11",
         "latest_at": "2026-05-17T21:09:28.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-04",
-        "latest_at": "2026-05-07T04:38:55.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "9fc9abb6837e59b1d5c9672b87e72e360cf1041f"
+    "evidence_head_sha": "a2d6fde367fdce2aa38df1efc2b91044e93322d3"
   },
   "community": {
-    "stars_count": 264,
+    "stars_count": 265,
     "forks_count": 36,
     "watchers_count": 2,
-    "aggregate": 302
+    "aggregate": 303
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -110,8 +112,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

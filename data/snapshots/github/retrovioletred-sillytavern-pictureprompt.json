@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "retrovioletred-sillytavern-pictureprompt",
   "repository": {
     "id": 1228484987,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-12T23:24:28.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-05-04T04:13:31.000Z",
     "size_kb": 457
   },
@@ -87,7 +89,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -96,8 +98,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

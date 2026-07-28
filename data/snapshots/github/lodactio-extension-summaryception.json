@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "lodactio-extension-summaryception",
   "repository": {
     "id": 1204673207,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-16T20:20:06.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-04-08T08:14:54.000Z",
     "size_kb": 87
   },
@@ -49,17 +51,18 @@
   },
   "community": {
     "stars_count": 121,
-    "forks_count": 15,
+    "forks_count": 16,
     "watchers_count": 1,
-    "aggregate": 137
+    "aggregate": 138
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T22:03:20.782Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Lodactio", "type": "User", "provider": "github" },
@@ -69,9 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T22:03:20.782Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "provider": "github"
+  }
 }

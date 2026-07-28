@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "vevan-arousalpub",
   "repository": {
     "id": 1248993662,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-27T10:44:58.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-05-25T08:43:02.000Z",
     "size_kb": 12527
   },
@@ -83,17 +85,17 @@
     "evidence_head_sha": "43e63f311876c86324aab299b66d64d65f911327"
   },
   "community": {
-    "stars_count": 0,
-    "forks_count": 0,
+    "stars_count": 1,
+    "forks_count": 1,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 2
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -101,8 +103,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

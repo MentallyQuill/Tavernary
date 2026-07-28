@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "mentallyquill-wandlight",
   "repository": {
     "id": 1254077407,
@@ -49,8 +50,9 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T23:32:09.088Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "MentallyQuill", "type": "User", "provider": "github" }
@@ -58,9 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T23:32:09.088Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "provider": "github"
+  }
 }

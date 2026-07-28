@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "aikohanasaki-aikobots",
   "repository": {
     "id": 998992781,
@@ -23,11 +24,11 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T02:39:06.000Z",
+    "latest_source_activity_at": "2026-07-27T18:16:19.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T02:39:06.000Z",
+        "latest_at": "2026-07-27T18:16:19.000Z",
         "precision": "exact"
       },
       {
@@ -89,9 +90,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T05:14:36.020Z",
+    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "057f1aa998e1d896af760d91785221b9f61c6a8c"
+    "evidence_head_sha": "2eb21e34f7018ddf81bcccbb14ebc369ca871f15"
   },
   "community": {
     "stars_count": 17,
@@ -104,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T22:01:07.175Z",
+  "refreshed_at": "2026-07-28T04:21:33.607Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -115,8 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

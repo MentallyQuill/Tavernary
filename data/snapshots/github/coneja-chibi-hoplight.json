@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "coneja-chibi-hoplight",
   "repository": {
     "id": 1305235960,
@@ -8,20 +9,21 @@
     "url": "https://github.com/Coneja-Chibi/Hoplight",
     "description": "The local-first studio for AI-roleplay content. Characters, lorebooks, personas, presets; one canonical model, exported to any platform.",
     "default_branch": "Mainstage",
-    "head_sha": "c9d66bf1e22697ffc8565f84a695a9ab33e3cbc8",
-    "head_committed_at": "2026-07-27T08:32:36.000Z",
+    "head_sha": "b347622d0cbfade21eb12f87bed83e7a77fb7193",
+    "head_committed_at": "2026-07-28T00:28:56.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-07-18T21:26:28.000Z",
-    "size_kb": 36048
+    "size_kb": 36770
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T08:32:36.000Z",
+    "latest_source_activity_at": "2026-07-28T00:28:56.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T08:32:36.000Z",
+        "latest_at": "2026-07-28T00:28:56.000Z",
         "precision": "exact"
       },
       {
@@ -46,11 +48,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-27T08:34:53.000Z",
+    "latest_release_at": "2026-07-28T00:31:48.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c9d66bf1e22697ffc8565f84a695a9ab33e3cbc8"
+    "evidence_head_sha": "b347622d0cbfade21eb12f87bed83e7a77fb7193"
   },
   "community": {
     "stars_count": 11,
@@ -63,7 +65,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -76,8 +78,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

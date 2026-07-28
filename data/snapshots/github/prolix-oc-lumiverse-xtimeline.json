@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "prolix-oc-lumiverse-xtimeline",
   "repository": {
     "id": 1296928830,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-22T00:51:16.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-07-10T21:51:39.000Z",
     "size_kb": 372
   },
@@ -48,7 +50,7 @@
     "aggregate": 1
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -57,8 +59,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

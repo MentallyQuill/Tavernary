@@ -25,7 +25,7 @@ import {
   inspectDelta as inspectDeltaDefault,
   mapConcurrent,
 } from "./github-inspector.mjs";
-import { observeRepositories } from "./github-observer.mjs";
+import { GitHubRepositoryProvider } from "./github-repository-provider.mjs";
 import {
   contributorSnapshotForFailure,
   contributorSnapshotForSuccess,
@@ -402,9 +402,11 @@ export async function runRefresh(options = {}) {
   const logger = options.logger ?? console;
   const token =
     options.token ?? process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
-  const observe =
-    options.observe ??
-    ((batch) => observeRepositories(batch, { token, logger }));
+  const provider = new GitHubRepositoryProvider({
+    ...(options.observe ? { observeRepositories: options.observe } : {}),
+    token,
+  });
+  const observe = (batch) => provider.observe(batch);
   const inspectDelta =
     options.inspectDelta ??
     ((input) =>

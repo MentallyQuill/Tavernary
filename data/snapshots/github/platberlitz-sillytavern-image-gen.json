@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "platberlitz-sillytavern-image-gen",
   "repository": {
     "id": 1132564534,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-27T03:01:07.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-01-12T06:21:59.000Z",
     "size_kb": 2659
   },
@@ -83,7 +85,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -96,8 +98,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

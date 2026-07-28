@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "bronya-rand-prome-vn-extension",
   "repository": {
     "id": 839083006,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-02-08T21:45:41.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2024-08-06T23:56:55.000Z",
     "size_kb": 37675
   },
@@ -26,17 +28,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 55,
+    "stars_count": 56,
     "forks_count": 7,
     "watchers_count": 1,
-    "aggregate": 63
+    "aggregate": 64
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -46,8 +48,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "nemovonnirgend-nemopresetext",
   "repository": {
     "id": 983964699,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-23T19:13:07.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2025-05-15T07:28:20.000Z",
     "size_kb": 17794
   },
@@ -53,7 +55,7 @@
     "aggregate": 104
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -64,8 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

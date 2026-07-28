@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "sillytavern-sillytavern-greetingtools",
   "repository": {
     "id": 1158265980,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-03-26T21:47:38.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-02-15T04:07:14.000Z",
     "size_kb": 158
   },
@@ -36,7 +38,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -45,8 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

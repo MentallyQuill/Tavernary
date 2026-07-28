@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "sillyanonymous-sillytavern-characterlibrary",
   "repository": {
     "id": 1139430137,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-18T00:06:05.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-01-22T00:21:33.000Z",
     "size_kb": 4444
   },
@@ -72,17 +74,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 99,
+    "stars_count": 100,
     "forks_count": 20,
     "watchers_count": 2,
-    "aggregate": 121
+    "aggregate": 122
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -93,8 +95,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

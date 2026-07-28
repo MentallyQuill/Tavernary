@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "hayanaga-ooba-model-reloader",
   "repository": {
     "id": 1146891697,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-03-23T06:37:55.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-01-31T21:08:51.000Z",
     "size_kb": 15
   },
@@ -37,7 +39,7 @@
     "spdx_id": "Apache-2.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -45,8 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }

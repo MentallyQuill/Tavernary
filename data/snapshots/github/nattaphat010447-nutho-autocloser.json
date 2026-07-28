@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "nattaphat010447-nutho-autocloser",
   "repository": {
     "id": 1275541730,
@@ -8,17 +9,23 @@
     "url": "https://github.com/nattaphat010447/nutho_autocloser",
     "description": "Auto Closer Extension for SillyTavern",
     "default_branch": "main",
-    "head_sha": "1f54fc8aebbd4f3fb8665ca36ad355aee6226381",
-    "head_committed_at": "2026-07-14T01:51:11.000Z",
+    "head_sha": "a8cf65851cff66926bbfe148563bf003bf0eec92",
+    "head_committed_at": "2026-07-27T16:58:18.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-06-20T20:38:42.000Z",
-    "size_kb": 18
+    "size_kb": 23
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-14T01:51:11.000Z",
+    "latest_source_activity_at": "2026-07-27T16:58:18.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T16:58:18.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-14T01:51:11.000Z",
@@ -38,8 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a8cf65851cff66926bbfe148563bf003bf0eec92"
   },
   "community": {
     "stars_count": 5,
@@ -52,7 +60,7 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -62,8 +70,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
   },
-  "provider": "github"
+  "activity_scan": null
 }

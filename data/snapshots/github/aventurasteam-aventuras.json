@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "aventurasteam-aventuras",
   "repository": {
     "id": 1126279204,
@@ -12,6 +13,7 @@
     "head_committed_at": "2026-07-20T13:10:12.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2026-01-01T15:03:20.000Z",
     "size_kb": 44504
   },
@@ -59,17 +61,18 @@
   },
   "community": {
     "stars_count": 167,
-    "forks_count": 27,
+    "forks_count": 28,
     "watchers_count": 14,
-    "aggregate": 208
+    "aggregate": 209
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-27T21:24:49.899Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "munimunigamer", "type": "User", "provider": "github" },
@@ -86,9 +89,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T21:24:49.899Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "provider": "github"
+  }
 }

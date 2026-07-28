@@ -1,5 +1,6 @@
 {
   "schema_version": 3,
+  "provider": "github",
   "project_id": "dfaker-st-clickable-actions",
   "repository": {
     "id": 1034747621,
@@ -12,6 +13,7 @@
     "head_committed_at": "2025-08-16T20:45:21.000Z",
     "archived": false,
     "fork": false,
+    "parent": null,
     "created_at": "2025-08-08T23:12:30.000Z",
     "size_kb": 31
   },
@@ -33,7 +35,7 @@
     "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-27T16:42:09.486Z",
+  "refreshed_at": "2026-07-28T04:19:18.249Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -41,8 +43,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-27T16:42:09.486Z",
+    "refreshed_at": "2026-07-28T04:19:18.249Z",
     "stale_since": null
-  },
-  "provider": "github"
+  }
 }
