@@ -1,5 +1,8 @@
-export interface GithubSourceIdentity {
-  kind: "github";
+export type RepositoryProviderName = "github" | "codeberg";
+
+export interface RepositorySourceIdentity {
+  kind: "repository";
+  provider: RepositoryProviderName;
   canonicalUrl: string;
   repository: string;
   repositoryId: number | null;
@@ -29,7 +32,7 @@ export interface ExternalSourceIdentity {
 }
 
 export type SourceIdentity =
-  GithubSourceIdentity | RedditSourceIdentity | ExternalSourceIdentity;
+  RepositorySourceIdentity | RedditSourceIdentity | ExternalSourceIdentity;
 
 export type ParsedSourceIdentity = SourceIdentity | RedditShareSourceIdentity;
 
@@ -50,6 +53,10 @@ export type SourceProbe = (
 
 export function parseSourceIdentity(value: string): ParsedSourceIdentity;
 
+export function isRepositoryIdentity(
+  identity: ParsedSourceIdentity | null | undefined,
+): identity is RepositorySourceIdentity;
+
 export function resolveRedditShareIdentity(
   identity: ParsedSourceIdentity,
   options: { probe: SourceProbe },
@@ -58,7 +65,7 @@ export function resolveRedditShareIdentity(
 export function resolveSourceIdentity(
   identity: ParsedSourceIdentity,
   options?: {
-    resolveGithub?: (repository: string) => Promise<{
+    resolveRepository?: (identity: RepositorySourceIdentity) => Promise<{
       id: number;
       owner: string;
       name: string;

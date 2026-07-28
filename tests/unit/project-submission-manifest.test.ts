@@ -61,7 +61,7 @@ test("requires name and description for an external Frontend", () => {
   const result = normalizeProjectSubmissionManifest({
     schema_version: 2,
     project_type: "frontend",
-    source_url: "https://codeberg.org/example/frontend",
+    source_url: "https://example.com/frontend",
     name: null,
     description: null,
     frontends: { known_ids: [], other: [] },
@@ -78,6 +78,38 @@ test("requires name and description for an external Frontend", () => {
     ]),
   );
 });
+
+test.each(["frontend", "preset"] as const)(
+  "treats a Codeberg %s as repository-backed metadata",
+  (projectType) => {
+    const result = normalizeProjectSubmissionManifest({
+      schema_version: projectType === "preset" ? 2 : 1,
+      project_type: projectType,
+      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      name: null,
+      description: null,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: projectType === "preset",
+      additional_context: null,
+      ...(projectType === "preset"
+        ? {
+            preset_compatibility: {
+              model_families: { known_ids: ["model-agnostic"], other: [] },
+              completion_formats: ["chat-completion"],
+            },
+          }
+        : {}),
+    });
+
+    expect(result).toMatchObject({
+      valid: true,
+      manifest: {
+        project_type: projectType,
+        source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+      },
+    });
+  },
+);
 
 test("serializes the stable submission manifest with a trailing newline", () => {
   expect(

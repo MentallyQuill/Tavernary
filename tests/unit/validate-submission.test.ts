@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { validateSubmission } from "../../scripts/submissions/validate-submission.mjs";
 
-test("rejects an extension without GitHub", () => {
+test("rejects an extension without a supported repository provider", () => {
   expect(
     validateSubmission({
       kind: "Extension",
@@ -11,7 +11,7 @@ test("rejects an extension without GitHub", () => {
     }),
   ).toEqual({
     labels: ["needs-information"],
-    errors: ["Extensions require a public GitHub repository."],
+    errors: ["Extensions require a public GitHub or Codeberg repository."],
   });
 });
 
@@ -65,14 +65,24 @@ test("rejects invalid and non-HTTPS source URLs", () => {
   ).toContain("Canonical source URL must be a valid HTTPS URL.");
 });
 
-test("requires an exact GitHub owner and repository path for Extensions", () => {
+test("requires an exact supported owner and repository path for Extensions", () => {
   expect(
     validateSubmission({
       kind: "Extension",
       sourceUrl: "https://github.com/owner/repository/issues",
       existingSources: [],
     }).errors,
-  ).toContain("Extensions require a public GitHub repository.");
+  ).toContain("Extensions require a public GitHub or Codeberg repository.");
+});
+
+test("accepts an exact Codeberg repository for Extensions", () => {
+  expect(
+    validateSubmission({
+      kind: "Extension",
+      sourceUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber.git",
+      existingSources: [],
+    }),
+  ).toEqual({ labels: ["needs-maintainer-review"], errors: [] });
 });
 
 test("ignores malformed existing source values during duplicate checks", () => {
@@ -90,7 +100,8 @@ test("detects duplicates by permanent GitHub repository ID", () => {
     validateSubmission({
       projectType: "extension",
       identity: {
-        kind: "github",
+        kind: "repository",
+        provider: "github",
         canonicalUrl: "https://github.com/NewOwner/NewName",
         repository: "NewOwner/NewName",
         repositoryId: 123,
@@ -99,7 +110,8 @@ test("detects duplicates by permanent GitHub repository ID", () => {
       },
       existingIdentities: [
         {
-          kind: "github",
+          kind: "repository",
+          provider: "github",
           canonicalUrl: "https://github.com/OldOwner/OldName",
           repository: "OldOwner/OldName",
           repositoryId: 123,

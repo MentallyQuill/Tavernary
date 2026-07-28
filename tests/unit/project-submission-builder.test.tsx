@@ -60,13 +60,13 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
   ).toBeVisible();
 });
 
-test("accepts an equivalent public source host for a Frontend", async () => {
+test("accepts a generic public source host for a Frontend", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.type(
     screen.getByLabelText("Project URL"),
-    "https://codeberg.org/example/frontend",
+    "https://example.com/frontend",
   );
   await user.type(
     screen.getByLabelText("Project Name (required)"),
@@ -82,7 +82,27 @@ test("accepts an equivalent public source host for a Frontend", async () => {
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
       project_type: "frontend",
-      source_url: "https://codeberg.org/example/frontend",
+      source_url: "https://example.com/frontend",
+    }),
+  );
+});
+
+test("accepts an exact public Codeberg repository for an Extension", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+  );
+  await user.click(screen.getByLabelText("Lumiverse"));
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).toHaveBeenCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     }),
   );
 });
@@ -93,7 +113,7 @@ test("requires identity and documentation fields for an external Frontend", asyn
 
   await user.type(
     screen.getByLabelText("Project URL"),
-    "https://codeberg.org/example/frontend",
+    "https://example.com/frontend",
   );
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 

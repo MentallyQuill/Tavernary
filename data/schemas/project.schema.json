@@ -49,6 +49,21 @@
         {
           "type": "object",
           "additionalProperties": false,
+          "required": ["type", "repository", "repository_id"],
+          "properties": {
+            "type": { "const": "codeberg" },
+            "repository": {
+              "type": "string",
+              "pattern": "^[^/\\s]+/[^/\\s]+$"
+            },
+            "repository_id": {
+              "anyOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
           "required": ["type", "organization", "url"],
           "properties": {
             "type": { "const": "github-organization" },

@@ -14,7 +14,8 @@ const manifest = {
 };
 
 const githubIdentity = {
-  kind: "github" as const,
+  kind: "repository" as const,
+  provider: "github" as const,
   canonicalUrl: "https://github.com/NewOwner/NewName",
   repository: "NewOwner/NewName",
   repositoryId: 1285208664,
@@ -204,7 +205,7 @@ test("treats a definitive missing source as correctable information", () => {
   });
 });
 
-test("requires GitHub repositories to be public", () => {
+test("requires repository sources to be public", () => {
   expect(
     evaluateProjectSubmission(
       admittedFixture({
@@ -213,7 +214,7 @@ test("requires GitHub repositories to be public", () => {
     ),
   ).toEqual({
     status: "needs-information",
-    errors: ["GitHub project repositories must be public and accessible."],
+    errors: ["Project repositories must be public and accessible."],
     suggestions: [],
     frontendDependencies: [],
   });
@@ -301,12 +302,12 @@ test("admits archived repositories with a maintainer warning", () => {
     warnings: [
       "No SPDX license was detected.",
       "Interpreted ST as SillyTavern.",
-      "GitHub repository is archived.",
+      "Repository is archived.",
     ],
   });
 });
 
-test("requires extensions to use GitHub repositories", () => {
+test("requires extensions to use supported repository providers", () => {
   expect(
     evaluateProjectSubmission(
       admittedFixture({
@@ -321,9 +322,38 @@ test("requires extensions to use GitHub repositories", () => {
     ),
   ).toEqual({
     status: "needs-information",
-    errors: ["Extensions require a public GitHub repository."],
+    errors: ["Extensions require a public GitHub or Codeberg repository."],
     suggestions: [],
     frontendDependencies: [],
+  });
+});
+
+test("admits a public Codeberg Extension repository", () => {
+  expect(
+    evaluateProjectSubmission(
+      admittedFixture({
+        manifest: {
+          ...manifest,
+          source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+        },
+        identity: {
+          kind: "repository",
+          provider: "codeberg",
+          canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+          repository: "targren/Lumiverse-SwipeScrubber",
+          repositoryId: 1699613,
+          owner: "targren",
+          name: "Lumiverse-SwipeScrubber",
+        },
+      }),
+    ),
+  ).toMatchObject({
+    status: "admitted",
+    identity: {
+      kind: "repository",
+      provider: "codeberg",
+      repositoryId: 1699613,
+    },
   });
 });
 

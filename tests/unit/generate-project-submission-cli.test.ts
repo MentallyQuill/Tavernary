@@ -247,7 +247,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
   );
 });
 
-test("prepares an external Frontend draft with its vocabulary entry", async () => {
+test("prepares a generic external Frontend draft with its vocabulary entry", async () => {
   const draft = await prepareProjectSubmissionDraft({
     issue: {
       number: 129,
@@ -260,7 +260,7 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
         JSON.stringify({
           schema_version: 2,
           project_type: "frontend",
-          source_url: "https://codeberg.org/example/nova",
+          source_url: "https://example.com/nova",
           name: "Nova Frontend",
           description: "A public-source roleplay frontend.",
           frontends: { known_ids: [], other: [] },
@@ -277,7 +277,7 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
       },
       probe: async () => ({
         status: 200,
-        finalUrl: "https://codeberg.org/example/nova",
+        finalUrl: "https://example.com/nova",
       }),
       catalogData: {
         vocabulary: {
@@ -296,11 +296,11 @@ test("prepares an external Frontend draft with its vocabulary entry", async () =
 
   expect(draft).toMatchObject({
     record: {
-      id: "codeberg-org-example-nova",
+      id: "example-com-nova",
       kind: "frontend",
       source: {
         type: "url",
-        url: "https://codeberg.org/example/nova",
+        url: "https://example.com/nova",
       },
       frontends: ["nova-frontend"],
     },

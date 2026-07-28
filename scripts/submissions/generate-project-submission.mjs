@@ -20,6 +20,7 @@ import { draftProjectRecord } from "./draft-project-record.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
+import { isRepositoryIdentity } from "./source-identity.mjs";
 import {
   inspectProjectSubmissionSource,
   loadProjectSubmissionCatalogData,
@@ -210,7 +211,10 @@ export async function prepareProjectSubmissionDraft({
     throw new Error(decisionFailure(decision));
   }
 
-  if (decision.identity.kind !== "github") {
+  if (
+    !isRepositoryIdentity(decision.identity) ||
+    decision.identity.provider !== "github"
+  ) {
     return draftProjectRecord({
       admitted: decision,
       observation: null,

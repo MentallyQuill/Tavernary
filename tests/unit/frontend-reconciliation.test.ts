@@ -174,6 +174,7 @@ test("classifies an unknown public source Frontend as a dependency", () => {
       {
         name: "New UI",
         canonicalUrl: "https://codeberg.org/example/new-ui",
+        repository: "example/new-ui",
       },
     ],
   });

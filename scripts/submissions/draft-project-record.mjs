@@ -1,5 +1,6 @@
 import { defaultEnrichmentFields } from "../catalog/enrichment-policy.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
+import { isRepositoryIdentity } from "./source-identity.mjs";
 
 function slug(value) {
   return value
@@ -11,7 +12,7 @@ function slug(value) {
 }
 
 function projectId(identity) {
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity) || identity.kind === "github") {
     return `${slug(identity.owner)}-${slug(identity.name)}`;
   }
   if (identity.kind === "reddit") return `reddit-${slug(identity.postId)}`;
@@ -20,6 +21,13 @@ function projectId(identity) {
 }
 
 function projectSource(identity, observation) {
+  if (isRepositoryIdentity(identity)) {
+    return {
+      type: identity.provider,
+      repository: identity.repository,
+      repository_id: observation.repository.id,
+    };
+  }
   if (identity.kind === "github") {
     return {
       type: "github",
@@ -71,7 +79,7 @@ export async function draftProjectRecord(input) {
   const { admitted, observation, snapshot, now } = input;
   const identity = admitted.identity;
   const id = projectId(identity);
-  if (identity.kind === "github") {
+  if (isRepositoryIdentity(identity) || identity.kind === "github") {
     if (
       !observation ||
       !Number.isInteger(identity.repositoryId) ||
@@ -154,7 +162,10 @@ export async function draftProjectRecord(input) {
     catalog_cohort: "standard",
     visibility: "published",
     visibility_reason: null,
-    refresh_policy: identity.kind === "github" ? "automatic" : "paused",
+    refresh_policy:
+      isRepositoryIdentity(identity) || identity.kind === "github"
+        ? "automatic"
+        : "paused",
     ...defaultEnrichmentFields(source),
   };
 
@@ -173,7 +184,7 @@ export async function draftProjectRecord(input) {
       preset_compatibility: admitted.manifest.preset_compatibility,
     },
     observed:
-      identity.kind === "github"
+      isRepositoryIdentity(identity) || identity.kind === "github"
         ? {
             repository: identity.repository,
             repository_id: observation.repository.id,

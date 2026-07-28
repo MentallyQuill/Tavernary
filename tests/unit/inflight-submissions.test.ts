@@ -36,7 +36,8 @@ function issue(
 }
 
 const currentGithubIdentity = {
-  kind: "github" as const,
+  kind: "repository" as const,
+  provider: "github" as const,
   canonicalUrl: "https://github.com/NewOwner/NewName",
   repository: "NewOwner/NewName",
   repositoryId: 42,

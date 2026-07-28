@@ -1,4 +1,7 @@
-import { parseSourceIdentity } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  parseSourceIdentity,
+} from "./source-identity.mjs";
 
 const explicitAliases = new Map([
   ["st", "sillytavern"],
@@ -166,14 +169,17 @@ export function reconcileFrontends(input) {
         if (submitted.url?.trim()) {
           try {
             const identity = parseSourceIdentity(submitted.url.trim());
-            if (["github", "external"].includes(identity.kind)) {
+            if (
+              isRepositoryIdentity(identity) ||
+              identity.kind === "external"
+            ) {
               dependency = {
                 name:
                   submitted.name?.trim() ||
                   identity.repository ||
                   identity.pathSlug,
                 canonicalUrl: identity.canonicalUrl,
-                ...(identity.kind === "github"
+                ...(isRepositoryIdentity(identity)
                   ? { repository: identity.repository }
                   : {}),
               };

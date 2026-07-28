@@ -1,4 +1,8 @@
-import { sourceDuplicateKeys } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  parseSourceIdentity,
+  sourceDuplicateKeys,
+} from "./source-identity.mjs";
 
 function canonicalSource(sourceUrl) {
   const parsed = new URL(sourceUrl);
@@ -15,12 +19,14 @@ function validateResolvedSubmission({
   existingIdentities,
 }) {
   const errors = [];
-  if (projectType === "extension" && identity.kind !== "github") {
-    errors.push("Extensions require a public GitHub repository.");
+  if (projectType === "extension" && !isRepositoryIdentity(identity)) {
+    errors.push("Extensions require a public GitHub or Codeberg repository.");
   }
   if (
     projectType === "frontend" &&
-    !["github", "external"].includes(identity.kind)
+    ![isRepositoryIdentity(identity), identity.kind === "external"].some(
+      Boolean,
+    )
   ) {
     errors.push("Frontends require a public source repository.");
   }
@@ -52,13 +58,15 @@ export function validateSubmission(input) {
     errors.push("Canonical source URL must be a valid HTTPS URL.");
   }
 
-  const path = parsed.pathname.replace(/\/+$/, "").replace(/\.git$/i, "");
-  const parts = path.split("/").filter(Boolean);
-  const githubRepository =
-    parsed.hostname.toLowerCase() === "github.com" && parts.length === 2;
+  let repositorySource = false;
+  try {
+    repositorySource = isRepositoryIdentity(parseSourceIdentity(sourceUrl));
+  } catch {
+    repositorySource = false;
+  }
 
-  if (kind === "Extension" && !githubRepository) {
-    errors.push("Extensions require a public GitHub repository.");
+  if (kind === "Extension" && !repositorySource) {
+    errors.push("Extensions require a public GitHub or Codeberg repository.");
   }
 
   const canonical = canonicalSource(sourceUrl);

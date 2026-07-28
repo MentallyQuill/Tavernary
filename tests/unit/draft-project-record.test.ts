@@ -15,7 +15,8 @@ const admittedGithubExtension = {
     additional_context: null,
   },
   identity: {
-    kind: "github" as const,
+    kind: "repository" as const,
+    provider: "github" as const,
     canonicalUrl: "https://github.com/Owner/Repo",
     repository: "Owner/Repo",
     repositoryId: 42,
