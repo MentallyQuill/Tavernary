@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "test-135",
+  "status": "published",
+  "title": "test",
+  "description": "test",
+  "author": {
+    "github_user_id": 222511369,
+    "login": "whitybreity"
+  },
+  "source_issue_number": 135,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "village-maker-google-drive-prompt",
+    "senjinthedragon-smart-memory",
+    "bal-spec-sillytavern-character-memory",
+    "mangkoodkung-another-universe",
+    "twitter-twemoji",
+    "arif-salah-megumin-suite",
+    "sillytavern-extension-topinfobar",
+    "supker-st-copilot",
+    "bmen25124-sillytavern-wtracker",
+    "bmen25124-sillytavern-flowchart",
+    "platberlitz-sillytavern-image-gen"
+  ],
+  "published_at": "2026-07-28T15:27:20.211Z",
+  "updated_at": "2026-07-28T15:27:20.211Z"
+}
