@@ -16,9 +16,9 @@ on:
         type: number
         default: 20
       model_concurrency:
-        description: Concurrent model calls, from 1 through 4.
+        description: Concurrent model calls, from 1 through 8.
         type: number
-        default: 4
+        default: 6
       model_timeout_seconds:
         description: Per-model-request timeout in seconds.
         type: number
@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BATCH_SIZE: ${{ inputs.batch_size || 20 }}
-          MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 4 }}
+          MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 6 }}
           MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}
           ENRICHMENT_SELECTION_MODE: ${{ inputs.enrichment_scope || 'pending' }}
         run: npm run catalog:enrichment-rollout
@@ -83,11 +83,11 @@ jobs:
             echo "" >> "$GITHUB_STEP_SUMMARY"
           fi
           if [[ -f data/reports/enrichment-report.json ]]; then
-            node -e "const r=require('./data/reports/enrichment-report.json'); const a=r.aggregates||{}; console.log('## Full enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Enriched: '+((a.enriched||0)+(a['retry-enriched']||0))+'\\n- Fallback: '+((a.fallback||0)+(a['retry-fallback']||0))+'\\n- Source not ready: '+(a['source-not-ready']||0)+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
+            node -e "const r=require('./data/reports/enrichment-report.json'); const a=r.aggregates||{}; const m=r.provider_metrics||{}; console.log('## Full enrichment '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Model calls: '+(m.call_count||0)+'\\n- Repair calls: '+(m.repair_call_count||0)+'\\n- Rate-limit events: '+(m.rate_limit_events||0)+'\\n- Total model latency: '+(m.latency_ms_total||0)+' ms\\n- Enriched: '+((a.enriched||0)+(a['retry-enriched']||0))+'\\n- Fallback: '+((a.fallback||0)+(a['retry-fallback']||0))+'\\n- Source not ready: '+(a['source-not-ready']||0)+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
             node -e "const r=require('./data/reports/enrichment-report.json'); const entries=Object.values(r.entries||{}); const unresolved=entries.filter(entry=>['source-not-ready','final-failure','skipped'].includes(entry.outcome)); const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(unresolved.length){ console.log('\\n### Unresolved projects\\n\\n| Project | Outcome | Reason | Detail |\\n| --- | --- | --- | --- |'); for(const entry of unresolved){ console.log('| '+cell(entry.id)+' | '+cell(entry.outcome)+' | '+cell(entry.reason_code)+' | '+cell(entry.message)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
             node -e "const r=require('./data/reports/enrichment-report.json'); const excluded=r.manual_exclusions||[]; const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(excluded.length){ console.log('\\n### Manual exclusions\\n\\n| Project | Reason | Note |\\n| --- | --- | --- |'); for(const entry of excluded){ console.log('| '+cell(entry.id)+' | '+cell(entry.reason_code)+' | '+cell(entry.enrichment_note)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
           fi
           if [[ -f data/reports/enrichment-canary.json ]]; then
-            node -e "const r=require('./data/reports/enrichment-canary.json'); const a=r.aggregates||{}; console.log('## Enrichment canary '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Successful: '+((a.enriched||0)+(a.fallback||0)+(a['retry-enriched']||0)+(a['retry-fallback']||0))+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
+            node -e "const r=require('./data/reports/enrichment-canary.json'); const a=r.aggregates||{}; const m=r.provider_metrics||{}; console.log('## Enrichment canary '+r.run_id+'\\n\\n- Status: '+r.status+'\\n- Phase: '+r.phase+'\\n- Selection scope: '+(r.selection_mode||'pending')+'\\n- Manual exclusions: '+(r.manual_exclusions||[]).length+'\\n- Primary cursor: '+r.primary_cursor+'/'+r.manifest.length+'\\n- Retry cursor: '+r.retry_cursor+'/'+r.retry_queue.length+'\\n- Model calls: '+(m.call_count||0)+'\\n- Repair calls: '+(m.repair_call_count||0)+'\\n- Rate-limit events: '+(m.rate_limit_events||0)+'\\n- Total model latency: '+(m.latency_ms_total||0)+' ms\\n- Successful: '+((a.enriched||0)+(a.fallback||0)+(a['retry-enriched']||0)+(a['retry-fallback']||0))+'\\n- Final failures: '+(a['final-failure']||0))" >> "$GITHUB_STEP_SUMMARY"
             node -e "const r=require('./data/reports/enrichment-canary.json'); const excluded=r.manual_exclusions||[]; const cell=value=>String(value??'').replaceAll('|',String.fromCharCode(92)+'|').replace(/\\s+/g,' ').trim(); if(excluded.length){ console.log('\\n### Manual exclusions\\n\\n| Project | Reason | Note |\\n| --- | --- | --- |'); for(const entry of excluded){ console.log('| '+cell(entry.id)+' | '+cell(entry.reason_code)+' | '+cell(entry.enrichment_note)+' |'); } }" >> "$GITHUB_STEP_SUMMARY"
           fi

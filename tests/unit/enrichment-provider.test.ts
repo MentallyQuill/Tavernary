@@ -170,6 +170,9 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   expect(body.messages[0].content).toMatch(
     /distinctive workflow, capability, or benefit/iu,
   );
+  expect(body.messages[0].content).toMatch(
+    /prefer 24-30 words and 160-200 characters/iu,
+  );
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });
@@ -287,6 +290,22 @@ test.each([
     expect((error as Error).message).not.toMatch(/do-not-leak|secret body/iu);
   },
 );
+
+test("includes elapsed time on controlled provider failures", async () => {
+  const times = [1_000, 1_250];
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test",
+    apiKey: "key",
+    model,
+    fetchImpl: async () => new Response("", { status: 429 }),
+    now: () => times.shift() ?? 1_250,
+  });
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-rate-limited",
+    latencyMs: 250,
+  });
+});
 
 test("aborts each model call after 120 seconds", async () => {
   vi.useFakeTimers();

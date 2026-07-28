@@ -5,6 +5,7 @@ import type {
 } from "./enrichment-run-state.d.mts";
 
 export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
+export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS: readonly [5000, 15000, 30000];
 
 export type VocabularyEntry = { id: string; label?: string };
 export type EnrichmentInput = {
@@ -166,6 +167,8 @@ export function runEnrichmentBatch(options: {
   ) => Promise<void>;
   previousEntries?: EnrichmentRunState["entries"];
   force?: boolean;
+  sleep?: (milliseconds: number) => Promise<void>;
+  rateLimitBackoffDelays?: readonly number[];
 }): Promise<ProjectAttemptResult[]>;
 
 export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {

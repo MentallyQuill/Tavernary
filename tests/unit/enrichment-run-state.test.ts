@@ -41,6 +41,34 @@ function results(
   return projectIds.map((id) => ({ id, phase, outcome }));
 }
 
+test("defaults new runs to six model calls and accepts up to eight", () => {
+  const defaultState = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "default-concurrency",
+    now,
+  });
+  const maximumState = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "maximum-concurrency",
+    now,
+    concurrency: 8,
+  });
+
+  expect(defaultState.concurrency).toBe(6);
+  expect(maximumState.concurrency).toBe(8);
+  expect(() =>
+    createEnrichmentRunState({
+      mode: "full",
+      manifest: ["a"],
+      runId: "excessive-concurrency",
+      now,
+      concurrency: 9,
+    }),
+  ).toThrow("concurrency cannot exceed eight");
+});
+
 test("freezes selection mode and manual exclusions in new state", () => {
   const state = createEnrichmentRunState({
     mode: "full",
@@ -246,6 +274,56 @@ test("queues primary failures once and retries only after primary completion", (
     phase: "retry",
     projectIds: ["a", "c"],
     attempt: 2,
+  });
+});
+
+test("retains cumulative provider telemetry across durable retries", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "telemetry",
+    now,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "failed",
+        reasonCode: "output-invalid",
+        providerCallCount: 2,
+        providerRepairCallCount: 1,
+        providerLatencyMsTotal: 240,
+      },
+    ],
+    later,
+  );
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "retry",
+        outcome: "enriched",
+        providerCallCount: 1,
+        providerRepairCallCount: 1,
+        providerLatencyMsTotal: 90,
+        provider: {
+          requestedModel: model,
+          returnedModel: model,
+          latencyMs: 90,
+        },
+      },
+    ],
+    later,
+  );
+
+  expect(state.entries.a).toMatchObject({
+    outcome: "retry-enriched",
+    provider_calls: 3,
+    provider_repair_calls: 2,
+    provider_latency_ms_total: 330,
   });
 });
 

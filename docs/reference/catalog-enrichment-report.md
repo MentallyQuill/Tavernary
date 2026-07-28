@@ -31,6 +31,8 @@ This file is a durable run-state and outcome artifact written by
 - `attempts`: map from project ID to attempt count
 - `entries`: ordered map from project ID to per-project sanitized entry
 - `deployment`: null or `{ commit_sha, run_id, verified_at }`
+- `provider_metrics`: cumulative model `call_count`, `repair_call_count`,
+  `rate_limit_events`, and `latency_ms_total`
 - `aggregates`: counts by sanitized outcome
 
 ## Entry fields
@@ -52,6 +54,8 @@ Each `entries` item includes:
 - optional `source_kind`, `repository_id`, `head_sha`, `readme_path`,
   `readme_ref`
 - optional `requested_model`, `returned_model`, `latency_ms`
+- optional cumulative `provider_calls`, `provider_repair_calls`,
+  `provider_rate_limit_events`, and `provider_latency_ms_total`
 - optional `reason_code`
 - `message` (generated from controlled `reason_code` family)
 - `completed_at`: ISO timestamp

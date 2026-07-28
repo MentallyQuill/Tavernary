@@ -349,7 +349,7 @@ test("preflight repairs one invalid structured response before failing", async (
     repair: {
       reasonCode: "output-invalid",
       message:
-        "Summary must be at most 220 characters. Rewrite it in 24-32 words and no more than 190 characters.",
+        "The rejected summary has 35 words, 327 characters, and 2 sentences. Summary must be at most 220 characters. Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.",
       rejectedSummary,
     },
   });
@@ -561,7 +561,16 @@ test("repairs invalid provider output immediately with the rejected summary", as
       e: {
         attempt: 1,
         outcome: "enriched",
+        provider_calls: 2,
+        provider_repair_calls: 1,
+        provider_latency_ms_total: 20,
       },
+    },
+    provider_metrics: {
+      call_count: 6,
+      repair_call_count: 1,
+      rate_limit_events: 0,
+      latency_ms_total: 60,
     },
   });
   expect(
@@ -575,7 +584,7 @@ test("repairs invalid provider output immediately with the rejected summary", as
       repair: {
         reasonCode: "output-invalid",
         message:
-          "Summary must be at most 220 characters. Rewrite it in 24-32 words and no more than 190 characters.",
+          "The rejected summary has 34 words, 317 characters, and 2 sentences. Summary must be at most 220 characters. Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.",
         rejectedSummary,
       },
     }),
@@ -871,6 +880,12 @@ test("CLI converts provider timeout seconds to milliseconds", () => {
   ).toMatchObject({
     mode: "preflight",
     timeoutMs: 180_000,
+  });
+});
+
+test("CLI defaults new enrichment runs to six concurrent model calls", () => {
+  expect(cliOptions(["--mode", "preflight"])).toMatchObject({
+    concurrency: 6,
   });
 });
 

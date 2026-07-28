@@ -333,18 +333,26 @@ function retryRepairMessage(entry) {
   return diagnostics[entry.diagnostic_code] ?? entry.message;
 }
 
+function summaryMeasurements(summary) {
+  const words = summary.trim().split(/\s+/u).filter(Boolean).length;
+  const sentences = summary.match(/[.!?](?=\s|$)/gu)?.length ?? 0;
+  return `${words} words, ${summary.length} characters, and ${sentences} sentences`;
+}
+
 function validationRepairInput(providerInput, validation, output) {
   const rejectedSummary =
     typeof output?.summary === "string"
       ? output.summary.slice(0, 1_000)
       : undefined;
+  const summaryGuidance =
+    rejectedSummary === undefined
+      ? validation.repairHint
+      : `The rejected summary has ${summaryMeasurements(rejectedSummary)}. ${validation.repairHint} Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.`;
   return {
     ...providerInput,
     repair: {
       reasonCode: "output-invalid",
-      message: validation.repairHint.includes("Summary must")
-        ? `${validation.repairHint} Rewrite it in 24-32 words and no more than 190 characters.`
-        : validation.repairHint,
+      message: summaryGuidance,
       ...(rejectedSummary === undefined ? {} : { rejectedSummary }),
     },
   };
@@ -403,6 +411,36 @@ async function processProject(input, id) {
   let output;
   let providerMetadata;
   let providerInput;
+  let providerCallCount = 0;
+  let providerRepairCallCount = 0;
+  let providerRateLimitCount = 0;
+  let providerLatencyMsTotal = 0;
+  const providerTelemetry = () =>
+    providerCallCount === 0
+      ? {}
+      : {
+          providerCallCount,
+          providerRepairCallCount,
+          providerRateLimitCount,
+          providerLatencyMsTotal,
+        };
+  const generate = async (input) => {
+    providerCallCount += 1;
+    if (input.repair) providerRepairCallCount += 1;
+    try {
+      const generated = await provider.generate(input);
+      providerLatencyMsTotal += generated.metadata.latencyMs;
+      return generated;
+    } catch (error) {
+      if (error?.code === "provider-rate-limited") {
+        providerRateLimitCount += 1;
+      }
+      if (Number.isFinite(error?.latencyMs) && error.latencyMs >= 0) {
+        providerLatencyMsTotal += error.latencyMs;
+      }
+      throw error;
+    }
+  };
   if (source.status === "fallback") {
     output = fallbackOutput();
   } else {
@@ -429,7 +467,7 @@ async function processProject(input, id) {
       };
     }
     try {
-      const generated = await provider.generate(providerInput);
+      const generated = await generate(providerInput);
       output = generated.output;
       providerMetadata = generated.metadata;
     } catch (error) {
@@ -441,6 +479,7 @@ async function processProject(input, id) {
         diagnosticCode: error.diagnosticCode,
         message: error.message ?? "The enrichment provider failed.",
         ...sourceProvenance(source),
+        ...providerTelemetry(),
       };
     }
   }
@@ -453,7 +492,7 @@ async function processProject(input, id) {
   if (!validation.valid && providerInput) {
     providerInput = validationRepairInput(providerInput, validation, output);
     try {
-      const generated = await provider.generate(providerInput);
+      const generated = await generate(providerInput);
       output = generated.output;
       providerMetadata = generated.metadata;
     } catch (error) {
@@ -465,6 +504,7 @@ async function processProject(input, id) {
         diagnosticCode: error.diagnosticCode,
         message: error.message ?? "The enrichment provider failed.",
         ...sourceProvenance(source),
+        ...providerTelemetry(),
       };
     }
     validation = validateOutput(
@@ -482,6 +522,7 @@ async function processProject(input, id) {
       message: validation.message,
       repairHint: validation.repairHint,
       ...sourceProvenance(source),
+      ...providerTelemetry(),
       ...(providerMetadata ? { provider: providerMetadata } : {}),
     };
   }
@@ -497,6 +538,7 @@ async function processProject(input, id) {
         enrichmentNote: error.enrichmentNote,
         message: "Registry record requires manual enrichment.",
         ...sourceProvenance(source),
+        ...providerTelemetry(),
       };
     }
     return {
@@ -506,6 +548,7 @@ async function processProject(input, id) {
       reasonCode: "write-failed",
       message: "Validated enrichment could not be written.",
       ...sourceProvenance(source),
+      ...providerTelemetry(),
       ...(providerMetadata ? { provider: providerMetadata } : {}),
     };
   }
@@ -516,6 +559,7 @@ async function processProject(input, id) {
     outcome: source.status === "fallback" ? "fallback" : "enriched",
     output,
     ...sourceProvenance(source),
+    ...providerTelemetry(),
     ...(providerMetadata ? { provider: providerMetadata } : {}),
   };
 }
@@ -530,7 +574,7 @@ export async function runEnrichmentBatch(input) {
     validateSnapshot,
     vocabularies,
     loadSource = loadEnrichmentSource,
-    concurrency = 4,
+    concurrency = 6,
     writeRecord = async (record, output, allowedVocabularies) => {
       if (!record.path) {
         throw new Error(
@@ -546,13 +590,44 @@ export async function runEnrichmentBatch(input) {
     },
     previousEntries = {},
     force = false,
+    sleep = (milliseconds) =>
+      new Promise((resolve) => setTimeout(resolve, milliseconds)),
+    rateLimitBackoffDelays = MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS,
   } = input;
   if (!["primary", "retry"].includes(phase)) {
     throw new Error("batch phase must be primary or retry");
   }
+  if (
+    !Array.isArray(rateLimitBackoffDelays) ||
+    rateLimitBackoffDelays.length === 0 ||
+    rateLimitBackoffDelays.some(
+      (delay) => !Number.isInteger(delay) || delay < 0,
+    )
+  ) {
+    throw new Error(
+      "rate-limit backoff delays must be a non-empty array of non-negative integers",
+    );
+  }
+  let rateLimitEvents = 0;
+  let backoffPending = false;
+  let backoffBarrier = Promise.resolve();
+  const recordRateLimit = (result) => {
+    if (result.reasonCode !== "provider-rate-limited" || backoffPending) return;
+    const delay =
+      rateLimitBackoffDelays[
+        Math.min(rateLimitEvents, rateLimitBackoffDelays.length - 1)
+      ];
+    rateLimitEvents += 1;
+    backoffPending = true;
+    backoffBarrier = backoffBarrier.then(async () => {
+      await sleep(delay);
+      backoffPending = false;
+    });
+  };
   return mapWithConcurrency(projectIds, concurrency, async (id) => {
+    await backoffBarrier;
     try {
-      return await processProject(
+      const result = await processProject(
         {
           recordsById,
           snapshotsById,
@@ -567,14 +642,18 @@ export async function runEnrichmentBatch(input) {
         },
         id,
       );
+      recordRateLimit(result);
+      return result;
     } catch (error) {
-      return {
+      const result = {
         id,
         phase,
         outcome: "failed",
         reasonCode: error.code ?? "source-load-failed",
         message: error.message ?? "Enrichment source loading failed.",
       };
+      recordRateLimit(result);
+      return result;
     }
   });
 }
@@ -640,6 +719,7 @@ const preflightInput = {
 };
 
 export const PREFLIGHT_RETRY_DELAYS_MS = [5_000, 15_000, 30_000];
+export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS = [5_000, 15_000, 30_000];
 
 const transientPreflightCodes = new Set([
   "provider-timeout",
@@ -1068,7 +1148,7 @@ export function cliOptions(argv) {
     mode: value("--mode", "preflight"),
     timeoutMs: Number(value("--timeout-seconds", 120)) * 1_000,
     batchSize: Number(value("--batch-size", 20)),
-    concurrency: Number(value("--concurrency", 4)),
+    concurrency: Number(value("--concurrency", 6)),
     projectIds: values("--project-id"),
     commitSha: value("--commit-sha", undefined),
     deploymentRunId: Number(value("--deployment-run-id", Number.NaN)),

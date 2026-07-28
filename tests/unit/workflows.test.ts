@@ -600,12 +600,24 @@ test("runs enrichment through one tested durable orchestrator", async () => {
     type: "number",
     default: 120,
   });
+  expect(inputs.model_concurrency).toEqual({
+    description: "Concurrent model calls, from 1 through 8.",
+    type: "number",
+    default: 6,
+  });
+  expect(source).toContain(
+    "MODEL_CONCURRENCY: ${{ inputs.model_concurrency || 6 }}",
+  );
   expect(source).toContain(
     "MODEL_TIMEOUT_SECONDS: ${{ inputs.model_timeout_seconds || 120 }}",
   );
   expect(source).toContain("npm run catalog:report-enrichment-errors");
   expect(source).toContain("enrichment-rollout-result.json");
   expect(source).toContain("Manual exclusions:");
+  expect(source).toContain("Model calls:");
+  expect(source).toContain("Repair calls:");
+  expect(source).toContain("Rate-limit events:");
+  expect(source).toContain("Total model latency:");
   expect(source).toContain("manual_exclusions");
   expect(source).toContain("data/reports/enrichment-canary.json");
   expect(source).toContain("| Project | Outcome | Reason | Detail |");

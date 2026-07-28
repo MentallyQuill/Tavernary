@@ -696,6 +696,41 @@ test("passes the dispatch batch size and concurrency into enrichment batches", a
   );
 });
 
+test("defaults new rollout batches to six concurrent model calls", async () => {
+  const calls: Array<{ command: string; args: string[] }> = [];
+  const ids = ["a", "b", "c", "d", "e"];
+  const operations = createProductionOperations({
+    npmCommand: "npm",
+    async runCommand(command: string, args: string[]) {
+      calls.push({ command, args });
+      if (args.includes("catalog:select-canary")) {
+        return { stdout: `${ids.join("\n")}\n`, exitCode: 0 };
+      }
+      return { stdout: "", exitCode: 0 };
+    },
+    async publishChanges() {
+      return { changed: false, publishedCommit: null, registryCommit: null };
+    },
+    async readJson() {
+      return {
+        status: "running",
+        phase: "primary",
+        primary_cursor: 0,
+        retry_cursor: 0,
+        retry_queue: [],
+      };
+    },
+  });
+
+  await operations.startCanary();
+  await operations.publishCanaryBatch();
+
+  const enrichment = calls.find(({ args }) => args.includes("catalog:enrich"));
+  expect(enrichment?.args).toEqual(
+    expect.arrayContaining(["--concurrency", "6"]),
+  );
+});
+
 test("propagates one enrichment selection mode through planner, canary, and execution commands", async () => {
   const calls: Array<{
     command: string;

@@ -37,6 +37,10 @@ export type ProjectAttemptResult = {
     returnedModel: string | null;
     latencyMs: number;
   };
+  providerCallCount?: number;
+  providerRepairCallCount?: number;
+  providerRateLimitCount?: number;
+  providerLatencyMsTotal?: number;
   reasonCode?: string;
   enrichmentNote?: string;
   diagnosticCode?: string | null;
@@ -50,6 +54,10 @@ export type EnrichmentRunEntry = {
   phase: "primary" | "retry";
   outcome: AttemptOutcome;
   completed_at: string;
+  provider_calls?: number;
+  provider_repair_calls?: number;
+  provider_rate_limit_events?: number;
+  provider_latency_ms_total?: number;
   [key: string]: unknown;
 };
 

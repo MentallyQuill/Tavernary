@@ -171,7 +171,7 @@ function terminalState(state) {
   return "complete-with-errors";
 }
 
-function entryForResult(result, attempt, outcome, now) {
+function entryForResult(result, attempt, outcome, now, previousEntry) {
   const entry = {
     id: result.id,
     attempt,
@@ -201,6 +201,22 @@ function entryForResult(result, attempt, outcome, now) {
     entry.returned_model = result.provider.returnedModel;
     entry.latency_ms = result.provider.latencyMs;
   }
+  const currentProviderCalls =
+    result.providerCallCount ?? (result.provider ? 1 : 0);
+  const providerCalls =
+    (previousEntry?.provider_calls ?? 0) + currentProviderCalls;
+  if (providerCalls > 0) {
+    entry.provider_calls = providerCalls;
+    entry.provider_repair_calls =
+      (previousEntry?.provider_repair_calls ?? 0) +
+      (result.providerRepairCallCount ?? 0);
+    entry.provider_rate_limit_events =
+      (previousEntry?.provider_rate_limit_events ?? 0) +
+      (result.providerRateLimitCount ?? 0);
+    entry.provider_latency_ms_total =
+      (previousEntry?.provider_latency_ms_total ?? 0) +
+      (result.providerLatencyMsTotal ?? result.provider?.latencyMs ?? 0);
+  }
   return entry;
 }
 
@@ -219,10 +235,10 @@ export function createEnrichmentRunState(input) {
     throw new Error("configured model is required");
   }
   const batchSize = input.batchSize ?? 20;
-  const concurrency = input.concurrency ?? 4;
+  const concurrency = input.concurrency ?? 6;
   assertPositiveInteger(batchSize, "batch size");
   assertPositiveInteger(concurrency, "concurrency");
-  if (concurrency > 4) throw new Error("concurrency cannot exceed four");
+  if (concurrency > 8) throw new Error("concurrency cannot exceed eight");
   const deferredIds = normalizedDeferredIds(
     input.mode,
     input.deferredIds ?? [],
@@ -371,7 +387,13 @@ export function applyAttemptResults(state, results, now) {
         outcome = "final-failure";
       }
     }
-    next.entries[result.id] = entryForResult(result, attempt, outcome, now);
+    next.entries[result.id] = entryForResult(
+      result,
+      attempt,
+      outcome,
+      now,
+      next.entries[result.id],
+    );
   }
 
   if (systemicAttemptFailure) {
