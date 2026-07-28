@@ -13,6 +13,13 @@ export interface OwnerProjectOption {
   eligibleShape: boolean;
   ineligibilityReason: string | null;
   sourceFingerprint: string;
+  listingState: {
+    metadataStatus: string;
+    visibility: string;
+    visibilityReason: string | null;
+    refreshPolicy: string;
+    enrichmentPolicy: string;
+  };
   editable: {
     name: string;
     summary: string;
@@ -38,7 +45,11 @@ interface RegistryRecord {
   capabilities: string[];
   model_families?: string[];
   completion_formats?: string[];
+  metadata_status: string;
   visibility: string;
+  visibility_reason: string | null;
+  refresh_policy: string;
+  enrichment_policy: string;
 }
 
 function ineligibilityReason(record: RegistryRecord) {
@@ -95,6 +106,13 @@ export async function loadOwnerProjectOptions(
         eligibleShape: reason === null,
         ineligibilityReason: reason,
         sourceFingerprint: fingerprintProjectRecord(record),
+        listingState: {
+          metadataStatus: record.metadata_status,
+          visibility: record.visibility,
+          visibilityReason: record.visibility_reason,
+          refreshPolicy: record.refresh_policy,
+          enrichmentPolicy: record.enrichment_policy,
+        },
         editable: {
           name: record.name,
           summary: record.summary,

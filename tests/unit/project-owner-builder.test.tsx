@@ -22,6 +22,13 @@ const projects: OwnerProjectOption[] = [
     eligibleShape: true,
     ineligibilityReason: null,
     sourceFingerprint: "a".repeat(64),
+    listingState: {
+      metadataStatus: "curated",
+      visibility: "published",
+      visibilityReason: null,
+      refreshPolicy: "automatic",
+      enrichmentPolicy: "automatic",
+    },
     editable: {
       name: "Owner Extension",
       summary: "Current extension summary.",
@@ -42,6 +49,13 @@ const projects: OwnerProjectOption[] = [
     eligibleShape: true,
     ineligibilityReason: null,
     sourceFingerprint: "b".repeat(64),
+    listingState: {
+      metadataStatus: "curated",
+      visibility: "published",
+      visibilityReason: null,
+      refreshPolicy: "automatic",
+      enrichmentPolicy: "manual",
+    },
     editable: {
       name: "Owner Preset",
       summary: "Current preset summary.",
@@ -63,6 +77,13 @@ const projects: OwnerProjectOption[] = [
     ineligibilityReason:
       "Organization suite listings require a public project report.",
     sourceFingerprint: "c".repeat(64),
+    listingState: {
+      metadataStatus: "curated",
+      visibility: "published",
+      visibilityReason: null,
+      refreshPolicy: "paused",
+      enrichmentPolicy: "manual",
+    },
     editable: {
       name: "Organization Suite",
       summary: "A suite.",
@@ -111,6 +132,10 @@ async function selectProject(
   await user.selectOptions(screen.getByLabelText("Project"), id);
 }
 
+function expectReviewRow(label: string, value: string) {
+  expect(screen.getByText(label).closest("div")).toHaveTextContent(value);
+}
+
 afterEach(cleanup);
 
 beforeEach(() => {
@@ -118,7 +143,7 @@ beforeEach(() => {
   vi.restoreAllMocks();
 });
 
-test("searches and preselects only cataloged projects", async () => {
+test("keeps the selected project visible while filtering other cataloged projects", async () => {
   search = "project=owner-extension";
   const user = userEvent.setup();
   renderBuilder();
@@ -130,8 +155,9 @@ test("searches and preselects only cataloged projects", async () => {
     screen.getByRole("option", { name: /owner preset/iu }),
   ).toBeInTheDocument();
   expect(
-    screen.queryByRole("option", { name: /owner extension/iu }),
-  ).not.toBeInTheDocument();
+    screen.getByRole("option", { name: /owner extension/iu }),
+  ).toBeInTheDocument();
+  expect(screen.getByLabelText("Project")).toHaveValue("owner-extension");
 });
 
 test("explains ineligible shapes and routes them to the public report form", async () => {
@@ -240,15 +266,24 @@ test("requires the exact delist confirmation and explains the retained effect", 
   expect(
     screen.getByText("Delisting disables, pauses, and retains the record."),
   ).toBeVisible();
+  expectReviewRow("Before: visibility", "published");
+  expectReviewRow("Before: visibility reason", "None");
+  expectReviewRow("Before: refresh policy", "automatic");
+  expectReviewRow("Before: enrichment policy", "automatic");
+  expectReviewRow("After: visibility", "disabled");
+  expectReviewRow("After: visibility reason", "removed");
+  expectReviewRow("After: refresh policy", "paused");
+  expectReviewRow("After: enrichment policy", "manual");
 });
 
-test("reviews policy effects without claiming browser-side identity verification", async () => {
+test("reviews card values before and after without claiming browser-side identity verification", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
   await user.clear(screen.getByLabelText("Summary"));
   await user.type(screen.getByLabelText("Summary"), "Owner-authored summary.");
+  await user.click(screen.getByRole("checkbox", { name: "Automation" }));
   await user.click(screen.getByRole("button", { name: "Review request" }));
 
   expect(
@@ -259,13 +294,43 @@ test("reviews policy effects without claiming browser-side identity verification
   expect(
     screen.getByText("A card edit changes model enrichment to manual."),
   ).toBeVisible();
-  expect(screen.getByText("Owner-authored summary.")).toBeVisible();
+  expectReviewRow("Before: summary", "Current extension summary.");
+  expectReviewRow("After: summary", "Owner-authored summary.");
+  expectReviewRow("Before: enrichment policy", "automatic");
+  expectReviewRow("After: enrichment policy", "manual");
+  expectReviewRow("Before: capabilities", "automation");
+  expectReviewRow("After: capabilities", "None");
   expect(
     screen.queryByText(/identity has been verified/iu),
   ).not.toBeInTheDocument();
   expect(
     screen.queryByText(/you are the verified owner/iu),
   ).not.toBeInTheDocument();
+});
+
+test("reviews repository location before and after", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Update repository location" }),
+  );
+  await user.type(
+    screen.getByLabelText("Public GitHub repository URL"),
+    "https://github.com/CurrentOwner/Extension-Renamed",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expectReviewRow(
+    "Before: repository",
+    "https://github.com/CurrentOwner/Extension",
+  );
+  expectReviewRow(
+    "After: repository",
+    "https://github.com/CurrentOwner/Extension-Renamed",
+  );
+  expectReviewRow("Before: repository ID", "42");
+  expectReviewRow("After: repository ID", "42");
 });
 
 test("hands off one complete edit manifest and preserves state after back", async () => {

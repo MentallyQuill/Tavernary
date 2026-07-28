@@ -143,41 +143,96 @@ function policyStatement(operation: OwnerOperation) {
   return "Delisting disables, pauses, and retains the record.";
 }
 
-function operationReviewRows(manifest: ProjectOwnerManifest) {
+function reviewValue(value: unknown) {
+  if (Array.isArray(value)) return value.join(", ") || "None";
+  if (typeof value === "string") return value || "None";
+  return value === null || value === undefined ? "None" : String(value);
+}
+
+function operationReviewRows(
+  manifest: ProjectOwnerManifest,
+  project: OwnerProjectOption,
+) {
   if (manifest.operation === "edit-card") {
     return [
-      { label: "Proposed display name", value: manifest.proposed.name },
-      { label: "Proposed summary", value: manifest.proposed.summary },
       {
-        label: "Supported frontends",
-        value: manifest.proposed.frontends.join(", "),
+        label: "Before: display name",
+        value: reviewValue(manifest.original.name),
+      },
+      { label: "After: display name", value: manifest.proposed.name },
+      {
+        label: "Before: summary",
+        value: reviewValue(manifest.original.summary),
+      },
+      { label: "After: summary", value: manifest.proposed.summary },
+      {
+        label: "Before: supported frontends",
+        value: reviewValue(manifest.original.frontends),
       },
       {
-        label: "Primary function",
+        label: "After: supported frontends",
+        value: reviewValue(manifest.proposed.frontends),
+      },
+      {
+        label: "Before: primary function",
+        value: reviewValue(manifest.original.primary_function),
+      },
+      {
+        label: "After: primary function",
         value: manifest.proposed.primary_function,
       },
       {
-        label: "Capabilities",
-        value: manifest.proposed.capabilities.join(", "),
+        label: "Before: capabilities",
+        value: reviewValue(manifest.original.capabilities),
+      },
+      {
+        label: "After: capabilities",
+        value: reviewValue(manifest.proposed.capabilities),
       },
       ...(manifest.original.kind === "preset"
         ? [
             {
-              label: "Model families",
-              value: manifest.proposed.model_families.join(", "),
+              label: "Before: model families",
+              value: reviewValue(manifest.original.model_families),
             },
             {
-              label: "Completion formats",
-              value: manifest.proposed.completion_formats.join(", "),
+              label: "After: model families",
+              value: reviewValue(manifest.proposed.model_families),
+            },
+            {
+              label: "Before: completion formats",
+              value: reviewValue(manifest.original.completion_formats),
+            },
+            {
+              label: "After: completion formats",
+              value: reviewValue(manifest.proposed.completion_formats),
             },
           ]
         : []),
+      {
+        label: "Before: metadata status",
+        value: project.listingState.metadataStatus,
+      },
+      { label: "After: metadata status", value: "curated" },
+      {
+        label: "Before: enrichment policy",
+        value: project.listingState.enrichmentPolicy,
+      },
+      { label: "After: enrichment policy", value: "manual" },
+      {
+        label: "Before: refresh policy",
+        value: project.listingState.refreshPolicy,
+      },
+      {
+        label: "After: refresh policy",
+        value: project.listingState.refreshPolicy,
+      },
     ];
   }
   if (manifest.operation === "move-source") {
     return [
       {
-        label: "Current repository",
+        label: "Before: repository",
         value: repositoryUrl(
           typeof manifest.original.repository === "string"
             ? manifest.original.repository
@@ -185,12 +240,51 @@ function operationReviewRows(manifest: ProjectOwnerManifest) {
         ),
       },
       {
-        label: "Proposed repository",
+        label: "After: repository",
         value: repositoryUrl(manifest.proposed.repository),
+      },
+      {
+        label: "Before: repository ID",
+        value: reviewValue(manifest.original.repository_id),
+      },
+      {
+        label: "After: repository ID",
+        value: reviewValue(manifest.proposed.repository_id),
       },
     ];
   }
-  return [{ label: "Confirmation", value: delistConfirmation }];
+  return [
+    { label: "Confirmation", value: delistConfirmation },
+    {
+      label: "Before: visibility",
+      value: project.listingState.visibility,
+    },
+    {
+      label: "Before: visibility reason",
+      value: reviewValue(project.listingState.visibilityReason),
+    },
+    {
+      label: "Before: refresh policy",
+      value: project.listingState.refreshPolicy,
+    },
+    {
+      label: "Before: enrichment policy",
+      value: project.listingState.enrichmentPolicy,
+    },
+    { label: "After: visibility", value: manifest.proposed.visibility },
+    {
+      label: "After: visibility reason",
+      value: manifest.proposed.visibility_reason,
+    },
+    {
+      label: "After: refresh policy",
+      value: manifest.proposed.refresh_policy,
+    },
+    {
+      label: "After: enrichment policy",
+      value: manifest.proposed.enrichment_policy,
+    },
+  ];
 }
 
 export function ProjectOwnerBuilder({
@@ -242,10 +336,12 @@ export function ProjectOwnerBuilder({
 
   const selected = projects.find((project) => project.id === projectId);
   const normalizedSearch = search.trim().toLocaleLowerCase();
-  const visibleProjects = projects.filter((project) =>
-    `${project.name} ${project.id} ${project.repository ?? ""}`
-      .toLocaleLowerCase()
-      .includes(normalizedSearch),
+  const visibleProjects = projects.filter(
+    (project) =>
+      project.id === projectId ||
+      `${project.name} ${project.id} ${project.repository ?? ""}`
+        .toLocaleLowerCase()
+        .includes(normalizedSearch),
   );
 
   function selectProject(id: string) {
@@ -419,7 +515,7 @@ export function ProjectOwnerBuilder({
               value:
                 "GitHub will verify the issue author against the current personal owner.",
             },
-            ...operationReviewRows(reviewManifest),
+            ...operationReviewRows(reviewManifest, selected),
             { label: "Policy effect", value: policyStatement(operation) },
             { label: "Explanation", value: explanation.trim() },
           ]}

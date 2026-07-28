@@ -46,7 +46,11 @@ const githubRecord = {
   frontends: ["sillytavern"],
   primary_function: "interface-workflow",
   capabilities: ["automation"],
+  metadata_status: "curated",
   visibility: "published",
+  visibility_reason: null,
+  refresh_policy: "automatic",
+  enrichment_policy: "automatic",
 };
 
 test("loads deterministic owner options from canonical registry records", async () => {
@@ -78,6 +82,13 @@ test("loads deterministic owner options from canonical registry records", async 
       eligibleShape: true,
       ineligibilityReason: null,
       sourceFingerprint: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      listingState: {
+        metadataStatus: "curated",
+        visibility: "published",
+        visibilityReason: null,
+        refreshPolicy: "automatic",
+        enrichmentPolicy: "automatic",
+      },
       editable: {
         name: "Alpha",
         summary: "An owner-manageable project.",
