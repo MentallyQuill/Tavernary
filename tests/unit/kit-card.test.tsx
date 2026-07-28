@@ -230,7 +230,10 @@ describe("Kit card", () => {
     report.focus();
     await waitFor(() => {
       expect(
-        screen.getByRole("tooltip", { name: "Report this Kit on GitHub" }),
+        screen.getByRole("tooltip", {
+          name: "Report this Kit",
+          exact: true,
+        }),
       ).toBeVisible();
     });
 

@@ -8,6 +8,8 @@ import {
 } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
+const navigation = vi.hoisted(() => ({ push: vi.fn() }));
+
 vi.mock("next/image", () => ({
   default: ({
     src,
@@ -18,6 +20,10 @@ vi.mock("next/image", () => ({
     alt: string;
     [key: string]: unknown;
   }) => <span data-image-src={src} aria-label={alt || undefined} {...props} />,
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => navigation,
 }));
 
 vi.mock("@/features/kits/submission-transport", () => ({
@@ -114,6 +120,7 @@ const submissionCatalog: Catalog = {
 
 afterEach(() => {
   cleanup();
+  navigation.push.mockClear();
   window.localStorage.clear();
   window.history.replaceState(null, "", "/");
   vi.useRealTimers();

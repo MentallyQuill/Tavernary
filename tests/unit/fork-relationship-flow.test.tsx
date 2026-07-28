@@ -7,6 +7,8 @@ import {
 } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
+const navigation = vi.hoisted(() => ({ push: vi.fn() }));
+
 vi.mock("next/image", () => ({
   default: ({
     src,
@@ -17,6 +19,10 @@ vi.mock("next/image", () => ({
     alt: string;
     [key: string]: unknown;
   }) => <span data-image-src={src} aria-label={alt || undefined} {...props} />,
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => navigation,
 }));
 
 import { CatalogPage } from "@/features/catalog/components/catalog-page";
@@ -122,6 +128,7 @@ function mockViewport(phone = false) {
 
 afterEach(() => {
   cleanup();
+  navigation.push.mockClear();
   window.localStorage.clear();
   window.history.replaceState(null, "", "/");
   Object.defineProperty(window, "matchMedia", {

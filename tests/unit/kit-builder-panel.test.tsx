@@ -817,7 +817,7 @@ describe("Kit Builder", () => {
     expect(screen.queryByRole("textbox", { name: "Kit link" })).toBeNull();
     expect(screen.getByRole("link", { name: "Report Kit" })).toHaveAttribute(
       "href",
-      expect.stringContaining("kit-id=story-kit-41"),
+      "/help/report-kit?kit=story-kit-41",
     );
   });
 });
