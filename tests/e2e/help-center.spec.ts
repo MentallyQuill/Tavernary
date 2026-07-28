@@ -189,6 +189,36 @@ test("preserves selected catalog and Kit records through actual report controls"
   );
 });
 
+test("keeps compact catalog Report and Kit actions clear of each other and the summary", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("Aikobots");
+  await page.getByRole("button", { name: "Use compact cards" }).click();
+
+  const project = page.locator(".project-card-shell").filter({
+    has: page.getByRole("heading", { name: "Aikobots", exact: true }),
+  });
+  const [report, kit, summary] = await Promise.all([
+    project.getByRole("link", { name: "Report Aikobots" }).boundingBox(),
+    project.getByRole("button", { name: "Add Aikobots to Kit" }).boundingBox(),
+    project.locator(".card-summary").boundingBox(),
+  ]);
+  expect(report).not.toBeNull();
+  expect(kit).not.toBeNull();
+  expect(summary).not.toBeNull();
+  if (!report || !kit || !summary) return;
+
+  expect(
+    report.x + report.width <= kit.x || kit.x + kit.width <= report.x,
+  ).toBe(true);
+  expect(report.y >= summary.y + summary.height).toBe(true);
+  expect(kit.y >= summary.y + summary.height).toBe(true);
+});
+
 test("takes a Kit report from source control through validation, review, cancel, and handoff", async ({
   page,
 }) => {

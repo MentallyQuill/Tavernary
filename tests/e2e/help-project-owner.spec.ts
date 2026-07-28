@@ -86,3 +86,21 @@ test("keeps unsupported organization listings visible with a report fallback", a
     page.getByRole("radio", { name: "Edit card details" }),
   ).toHaveCount(0);
 });
+
+test("falls back from an unknown owner project and requires a listed selection", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/help/manage-project/?project=unknown-project"));
+
+  const project = page.getByLabel("Project", { exact: true });
+  await expect(project).toHaveValue("");
+  await page.getByRole("button", { name: "Review request" }).click();
+
+  await expect(page.locator(".help-error-summary")).toContainText(
+    "Select a listed project.",
+  );
+  await expect(project).toHaveAttribute("aria-invalid", "true");
+  await expect(
+    page.getByRole("heading", { name: "Review your public request" }),
+  ).toHaveCount(0);
+});

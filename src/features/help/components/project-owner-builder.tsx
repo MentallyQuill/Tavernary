@@ -556,6 +556,7 @@ export function ProjectOwnerBuilder({
         <select
           id="owner-project"
           value={projectId}
+          aria-invalid={errors.includes("Select a listed project.")}
           onChange={(event) => selectProject(event.target.value)}
         >
           <option value="">Select a listed project</option>
@@ -692,13 +693,13 @@ export function ProjectOwnerBuilder({
               count={`${explanation.length} / ${operation === "delist" ? 500 : 1_000}`}
             />
           ) : null}
-          <div className="help-actions">
-            <button type="submit" className="help-continue-action">
-              Review request
-            </button>
-          </div>
         </>
       ) : null}
+      <div className="help-actions">
+        <button type="submit" className="help-continue-action">
+          Review request
+        </button>
+      </div>
     </form>
   );
 }

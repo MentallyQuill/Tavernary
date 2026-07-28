@@ -75,22 +75,24 @@ export function ProjectGrid({
                 }
               />
             ) : null}
-            <span className="project-kit-control-hit">
-              <ProjectKitControl
-                projectName={displayName}
-                bindings={bindings}
-              />
-            </span>
-            <Link
-              className="project-report-control"
-              href={
-                "/help/report-project/?project=" +
-                encodeURIComponent(project.id)
-              }
-              aria-label={["Report", displayName].join(" ")}
-            >
-              Report
-            </Link>
+            <div className="project-card-actions">
+              <Link
+                className="project-report-control"
+                href={
+                  "/help/report-project/?project=" +
+                  encodeURIComponent(project.id)
+                }
+                aria-label={["Report", displayName].join(" ")}
+              >
+                Report
+              </Link>
+              <span className="project-kit-control-hit">
+                <ProjectKitControl
+                  projectName={displayName}
+                  bindings={bindings}
+                />
+              </span>
+            </div>
             {bindings.state === "in-kit" ? (
               <span className="project-in-draft">In Kit</span>
             ) : null}

@@ -68,13 +68,13 @@ test("routes specific requests away from Other Help and prepares the fallback", 
 
   await expect(
     page.getByRole("link", { name: /submit a new project/i }),
-  ).toHaveAttribute("href", "/submit/project/");
+  ).toHaveAttribute("href", sitePath("/submit/project/"));
   await expect(
     page.getByRole("link", { name: /create or manage a kit/i }),
-  ).toHaveAttribute("href", "/?mode=kits");
+  ).toHaveAttribute("href", sitePath("/?mode=kits"));
   await expect(
     page.getByRole("link", { name: /report it privately/i }),
-  ).toHaveAttribute("href", "/help/security/");
+  ).toHaveAttribute("href", sitePath("/help/security/"));
 
   await page
     .getByLabel("What do you need help with?")
