@@ -690,7 +690,7 @@ test("desktop Kit inspection keeps fixed actions reachable with a 600-character 
   ).toBeInViewport();
 });
 
-test("compact cards keep the Kit control right-aligned and reserve an ellipsis gutter", async ({
+test("compact cards keep Report and Kit actions in a reserved bottom row", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1024, height: 800 });
@@ -712,28 +712,39 @@ test("compact cards keep the Kit control right-aligned and reserve an ellipsis g
     const title = element.querySelector("h2");
     const summary = element.querySelector(".card-summary");
     const controlHit = element.querySelector(".project-kit-control-hit");
-    if (!title || !summary || !controlHit) {
+    const actions = element.querySelector(".project-card-actions");
+    const card = element.querySelector(".project-card");
+    if (!title || !summary || !controlHit || !actions || !card) {
       throw new Error("Compact card anatomy is incomplete");
     }
     const titleStyle = getComputedStyle(title);
     const summaryStyle = getComputedStyle(summary);
+    const cardStyle = getComputedStyle(card);
     const shellBounds = element.getBoundingClientRect();
     const controlBounds = controlHit.getBoundingClientRect();
+    const actionBounds = actions.getBoundingClientRect();
+    const summaryBounds = summary.getBoundingClientRect();
     return {
       titlePaddingRight: titleStyle.paddingRight,
       summaryPaddingRight: summaryStyle.paddingRight,
       summaryOverflow: summaryStyle.overflow,
       summaryTextOverflow: summaryStyle.textOverflow,
+      cardPaddingBottom: cardStyle.paddingBottom,
       controlRightGap: Math.round(shellBounds.right - controlBounds.right),
+      actionBottomGap: Math.round(shellBounds.bottom - actionBounds.bottom),
+      actionsBelowSummary: actionBounds.top >= summaryBounds.bottom,
     };
   });
 
   expect(compactStyles).toEqual({
-    titlePaddingRight: "44px",
-    summaryPaddingRight: "44px",
+    titlePaddingRight: "0px",
+    summaryPaddingRight: "0px",
     summaryOverflow: "hidden",
     summaryTextOverflow: "ellipsis",
+    cardPaddingBottom: "59px",
     controlRightGap: 4,
+    actionBottomGap: 4,
+    actionsBelowSummary: true,
   });
 });
 

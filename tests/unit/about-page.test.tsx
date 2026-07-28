@@ -30,6 +30,11 @@ test("explains safety, reporting, and legal information on About", () => {
     "https://github.com/MentallyQuill/Tavernary/security/advisories/new",
   );
   expect(
-    screen.getByText(/owner, maintainer, or rights holder/i),
+    screen.getByText(/a verified personal GitHub owner/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      /organization listings, maintainers who are not that verified owner, and rights holders/i,
+    ),
   ).toBeInTheDocument();
 });
