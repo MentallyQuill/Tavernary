@@ -1,6 +1,6 @@
 import type { ActivityEvidence } from "./activity-evidence.mjs";
 import type { ActivityScan } from "./github-inspector.mjs";
-import type { RepositoryObservation } from "./github-observer.mjs";
+import type { RepositoryObservation } from "./repository-provider.mjs";
 
 export interface ContributorAccount {
   provider: "github" | "codeberg";

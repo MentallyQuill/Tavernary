@@ -6,6 +6,7 @@ import {
 } from "../../scripts/catalog/repository-snapshot.mjs";
 
 const observation = {
+  provider: "github" as const,
   projectId: "owner-repo",
   repository: {
     id: 42,
@@ -28,9 +29,9 @@ const observation = {
     },
   },
   community: {
-    stargazersCount: 3,
+    starsCount: 3,
     forksCount: 2,
-    subscribersCount: 1,
+    watchersCount: 1,
   },
   latestReleaseAt: "2026-07-24T00:00:00.000Z",
   coarseLicenseSpdxId: "MIT",
@@ -109,7 +110,7 @@ test("creates a Codeberg snapshot with provider-qualified contributors", () => {
   const snapshot = createInitialRepositorySnapshot({
     provider: "codeberg",
     projectId: "owner-repo",
-    observation,
+    observation: { ...observation, provider: "codeberg" },
     activityInspection,
     contributors: [{ login: "owner", type: "User" }],
     now: "2026-07-25T18:00:00.000Z",
@@ -118,6 +119,12 @@ test("creates a Codeberg snapshot with provider-qualified contributors", () => {
   expect(snapshot).toMatchObject({
     schema_version: 3,
     provider: "codeberg",
+    community: {
+      stars_count: 3,
+      forks_count: 2,
+      watchers_count: 1,
+      aggregate: 6,
+    },
     contributors: {
       accounts: [{ provider: "codeberg", login: "owner", type: "User" }],
     },

@@ -1,5 +1,3 @@
-import { calculateCommunity } from "../../src/lib/github/repository-metrics.ts";
-
 export function repositoryFacts(observation, previous = null) {
   const parent = observation.parent
     ? {
@@ -102,7 +100,7 @@ export function snapshotFromObservation({
     ...(previous?.activity ?? provisionalActivity()),
     latest_release_at: observation.latestReleaseAt,
   };
-  const githubCommunity = calculateCommunity(observation.community);
+  const community = observation.community;
   const snapshot = {
     schema_version: 3,
     provider,
@@ -114,10 +112,11 @@ export function snapshotFromObservation({
     source_health: "healthy",
     activity,
     community: {
-      stars_count: githubCommunity.stargazers_count,
-      forks_count: githubCommunity.forks_count,
-      watchers_count: githubCommunity.subscribers_count,
-      aggregate: githubCommunity.aggregate,
+      stars_count: community.starsCount,
+      forks_count: community.forksCount,
+      watchers_count: community.watchersCount,
+      aggregate:
+        community.starsCount + community.forksCount + community.watchersCount,
     },
     license: defaultLicense(previous?.license),
     refreshed_at: now,
