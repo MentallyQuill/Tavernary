@@ -1,0 +1,24 @@
+{
+  "schema_version": 5,
+  "id": "ryah-st-freaky-d20-preset",
+  "name": "Freaky FrankenSIM",
+  "kind": "preset",
+  "summary": "The Official Slow-Burn MAX++ Version of Freaky Frankenstein. Utilizes ARC Engine for pacing, Chekhov's Gun for narrative debt, VERY in-depth relationship tracking and NPC emotion calculation, Chaos Engine for plot",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "Ryah/ST-Freaky-D20-Preset",
+    "repository_id": 1239724267
+  },
+  "frontends": [],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "model_families": ["glm", "model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-07-28T04:01:50.555Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
