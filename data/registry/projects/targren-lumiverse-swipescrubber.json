@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "targren-lumiverse-swipescrubber",
+  "name": "Swipe Scrubber",
+  "kind": "extension",
+  "summary": "Swipe Scrubber cleans up unneeded swipes in Lumiverse chats, adding a button to character message action bars. Pushing the button removes all swipes except the currently displayed message.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "codeberg",
+    "repository": "targren/Lumiverse-SwipeScrubber",
+    "repository_id": 1699613
+  },
+  "frontends": ["lumiverse"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation", "extension-development"],
+  "cataloged_at": "2026-07-28T05:14:04.318Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
