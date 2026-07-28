@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
-const securityUrl = "https://github.com/MentallyQuill/Tavernary/security";
+const securityUrl =
+  "https://github.com/MentallyQuill/Tavernary/security/advisories/new";
 
 export const metadata = {
   title: "About Tavernary",
@@ -130,7 +130,7 @@ export default function AboutPage() {
             If you are an owner, maintainer, or rights holder for a listed
             project and want it removed, updated, or pointed to a different
             source, use the
-            <a href={helpUrl}> Help report form</a> and include the current
+            <Link href="/help/"> Help report form</Link> and include the current
             listing and requested change.
           </p>
           <p>
@@ -171,7 +171,7 @@ export default function AboutPage() {
           <Link className="primary-action" href="/submit/project/">
             Submit a project
           </Link>
-          <a href={helpUrl}>Get help</a>
+          <Link href="/help/">Get help</Link>
         </div>
       </article>
     </main>

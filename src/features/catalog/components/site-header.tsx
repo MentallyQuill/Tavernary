@@ -3,8 +3,6 @@ import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 
-const helpUrl = "https://github.com/MentallyQuill/Tavernary/issues/new/choose";
-
 export function SiteHeader({
   search,
   onSearch,
@@ -54,9 +52,9 @@ export function SiteHeader({
         <a className="top-link" href="./about/">
           About
         </a>
-        <a className="top-link" href={helpUrl}>
+        <Link className="top-link" href="/help/">
           Help
-        </a>
+        </Link>
         <Link className="submit-link" href="/submit/project/">
           Submit Project
         </Link>

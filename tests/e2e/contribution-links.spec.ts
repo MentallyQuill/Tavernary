@@ -10,10 +10,7 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   ).toHaveAttribute("href", /\/submit\/project\/$/);
   await expect(
     page.getByRole("link", { name: "Help", exact: true }),
-  ).toHaveAttribute(
-    "href",
-    /github\.com\/MentallyQuill\/Tavernary\/issues\/new\/choose/,
-  );
+  ).toHaveAttribute("href", /\/help\/$/);
 
   await page.getByRole("link", { name: "About" }).click();
   await expect(
@@ -32,6 +29,6 @@ test("explains Tavernary and links to contribution flows", async ({ page }) => {
   ).toHaveAttribute("href", /\/submit\/project\/$/);
   await expect(page.getByRole("link", { name: "Get help" })).toHaveAttribute(
     "href",
-    /issues\/new\/choose/,
+    /\/help\/$/,
   );
 });

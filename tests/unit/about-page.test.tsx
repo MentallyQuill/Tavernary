@@ -21,11 +21,14 @@ test("explains safety, reporting, and legal information on About", () => {
   ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Get help" })).toHaveAttribute(
     "href",
-    "https://github.com/MentallyQuill/Tavernary/issues/new/choose",
+    "/help",
   );
   expect(
     screen.getByRole("link", { name: "private security path" }),
-  ).toBeInTheDocument();
+  ).toHaveAttribute(
+    "href",
+    "https://github.com/MentallyQuill/Tavernary/security/advisories/new",
+  );
   expect(
     screen.getByText(/owner, maintainer, or rights holder/i),
   ).toBeInTheDocument();
