@@ -159,6 +159,7 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
 test("initializes Kit support before publishing the new registry record", async () => {
   const publication = await workflow("apply-kit-submission");
   const steps = publication.jobs.publish.steps as Array<{
+    id?: string;
     name?: string;
     run?: string;
     env?: Record<string, string>;
@@ -172,17 +173,20 @@ test("initializes Kit support before publishing the new registry record", async 
   const validationIndex = steps.findIndex(
     ({ name }) => name === "Validate publication",
   );
+  const apply = steps[applyIndex];
   const support = steps[supportIndex];
   const commit = steps.find(({ name }) => name === "Commit canonical Kit");
 
   expect(applyIndex).toBeGreaterThanOrEqual(0);
   expect(supportIndex).toBeGreaterThan(applyIndex);
   expect(validationIndex).toBeGreaterThan(supportIndex);
+  expect(apply?.id).toBe("apply");
   expect(support.run).toBe("node scripts/kits/refresh-reactions.mjs");
   expect(support.env).toMatchObject({
     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-    REQUIRED_KIT_ISSUE_NUMBER: "${{ inputs.issue_number }}",
+    REQUIRED_KIT_ID: "${{ steps.apply.outputs.kit_id }}",
   });
+  expect(support.env).not.toHaveProperty("REQUIRED_KIT_ISSUE_NUMBER");
   expect(commit?.run).toContain(
     "git add data/registry/kits data/snapshots/github/kits",
   );

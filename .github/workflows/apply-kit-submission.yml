@@ -39,6 +39,7 @@ jobs:
           git fetch origin main
           git checkout -B main origin/main
       - name: Re-fetch, revalidate, and apply approved issue
+        id: apply
         run: node scripts/kits/apply-submission.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +48,7 @@ jobs:
         run: node scripts/kits/refresh-reactions.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REQUIRED_KIT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+          REQUIRED_KIT_ID: ${{ steps.apply.outputs.kit_id }}
       - name: Validate publication
         run: |
           npm run catalog:validate
