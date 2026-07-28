@@ -55,6 +55,7 @@ test("orders the repository forms and leaves security reporting to GitHub", asyn
     "05-kit-submission.yml",
     "06-kit-report.yml",
     "07-kit-withdrawal.yml",
+    "08-project-owner-request.yml",
   ]);
   expect(formNames).toEqual([
     "Submit a project",
@@ -64,9 +65,60 @@ test("orders the repository forms and leaves security reporting to GitHub", asyn
     "Submit or edit a Kit",
     "Report a Kit",
     "Withdraw a Kit",
+    "Manage a project listing",
   ]);
   expect(formNames).not.toContain("Request help");
   expect(formNames).not.toContain("Report a security vulnerability");
+});
+
+test("owner requests have an accessible readable fallback in exact review order", async () => {
+  const form = parse(
+    await readFile(
+      resolve(templateDirectory, "08-project-owner-request.yml"),
+      "utf8",
+    ),
+  ) as {
+    body: Array<{
+      type: string;
+      id?: string;
+      attributes?: { label?: string; description?: string };
+      validations?: { required?: boolean };
+    }>;
+  };
+  const fields = form.body.filter((field) => field.id);
+
+  expect(fields.map((field) => field.id)).toEqual([
+    "request-type",
+    "project-id",
+    "repository",
+    "proposed-name",
+    "proposed-summary",
+    "supported-frontends",
+    "primary-function",
+    "capabilities",
+    "model-families",
+    "completion-formats",
+    "proposed-repository",
+    "explanation",
+    "delist-confirmation",
+    "owner-request-manifest",
+  ]);
+  expect(
+    fields
+      .filter((field) => field.validations?.required)
+      .map((field) => field.id),
+  ).toEqual(["request-type", "project-id", "repository"]);
+  expect(fields.at(-1)).toMatchObject({
+    id: "owner-request-manifest",
+    type: "textarea",
+    validations: { required: false },
+  });
+  expect(
+    fields.find((field) => field.id === "request-type")?.attributes
+      ?.description,
+  ).toContain(
+    "Edit card details; Update repository location; Delist this project",
+  );
 });
 
 test("Kit submission is a readable review form without redundant machine fields", async () => {

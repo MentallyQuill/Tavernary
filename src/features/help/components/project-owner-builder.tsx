@@ -1,0 +1,608 @@
+"use client";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+import type {
+  OwnerCardOriginal,
+  OwnerEditableValues,
+  OwnerOperation,
+  ProjectOwnerManifest,
+} from "@/features/help/project-owner-manifest.mjs";
+import { normalizeProjectOwnerManifest } from "@/features/help/project-owner-manifest.mjs";
+import { openHelpRequest } from "@/features/help/help-transport";
+import type { OwnerProjectOption } from "@/lib/help/load-owner-project-options";
+
+import {
+  HelpChoiceGroup,
+  HelpErrorSummary,
+  HelpTextArea,
+  HelpTextField,
+} from "./help-form-fields";
+import { HelpReview } from "./help-review";
+
+interface VocabularyOption {
+  id: string;
+  label: string;
+}
+
+export interface OwnerBuilderVocabularies {
+  frontends: VocabularyOption[];
+  primaryFunctions: VocabularyOption[];
+  capabilities: VocabularyOption[];
+  modelFamilies: VocabularyOption[];
+  completionFormats: VocabularyOption[];
+}
+
+const operationLabels: Record<OwnerOperation, string> = {
+  "edit-card": "Edit card details",
+  "move-source": "Update repository location",
+  delist: "Delist this project",
+};
+
+const delistConfirmation = "I am requesting that Tavernary delist this project";
+
+function initialProjectId(
+  projects: OwnerProjectOption[],
+  candidate: string | null,
+) {
+  return candidate && projects.some((project) => project.id === candidate)
+    ? candidate
+    : "";
+}
+
+function repositoryUrl(repository: string | null) {
+  return repository ? `https://github.com/${repository}` : "";
+}
+
+function parsePublicGitHubRepository(value: string) {
+  try {
+    const url = new URL(value.trim());
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (
+      url.protocol !== "https:" ||
+      url.hostname.toLocaleLowerCase() !== "github.com" ||
+      url.username ||
+      url.password ||
+      url.search ||
+      url.hash ||
+      parts.length !== 2
+    ) {
+      return null;
+    }
+    const repository = parts[1]?.replace(/\.git$/iu, "");
+    if (
+      !parts[0] ||
+      !repository ||
+      !/^[A-Za-z0-9_.-]+$/u.test(parts[0]) ||
+      !/^[A-Za-z0-9_.-]+$/u.test(repository)
+    ) {
+      return null;
+    }
+    return `${parts[0]}/${repository}`;
+  } catch {
+    return null;
+  }
+}
+
+function uniqueToggle(values: string[], id: string, checked: boolean) {
+  if (checked) return values.includes(id) ? values : [...values, id];
+  return values.filter((value) => value !== id);
+}
+
+function OptionCheckboxes({
+  legend,
+  options,
+  values,
+  onChange,
+}: {
+  legend: string;
+  options: VocabularyOption[];
+  values: string[];
+  onChange: (values: string[]) => void;
+}) {
+  return (
+    <HelpChoiceGroup legend={legend}>
+      {options.map((option) => (
+        <label className="help-choice" key={option.id}>
+          <input
+            type="checkbox"
+            checked={values.includes(option.id)}
+            onChange={(event) =>
+              onChange(uniqueToggle(values, option.id, event.target.checked))
+            }
+          />
+          <span>{option.label}</span>
+        </label>
+      ))}
+    </HelpChoiceGroup>
+  );
+}
+
+function originalEdit(project: OwnerProjectOption): OwnerCardOriginal {
+  return {
+    kind: project.kind,
+    name: project.editable.name,
+    summary: project.editable.summary,
+    frontends: [...project.editable.frontends],
+    primary_function: project.editable.primaryFunction,
+    capabilities: [...project.editable.capabilities],
+    model_families: [...project.editable.modelFamilies],
+    completion_formats: [...project.editable.completionFormats],
+  };
+}
+
+function policyStatement(operation: OwnerOperation) {
+  if (operation === "edit-card") {
+    return "A card edit changes model enrichment to manual.";
+  }
+  if (operation === "move-source") {
+    return "A source move must retain repository ID.";
+  }
+  return "Delisting disables, pauses, and retains the record.";
+}
+
+function operationReviewRows(manifest: ProjectOwnerManifest) {
+  if (manifest.operation === "edit-card") {
+    return [
+      { label: "Proposed display name", value: manifest.proposed.name },
+      { label: "Proposed summary", value: manifest.proposed.summary },
+      {
+        label: "Supported frontends",
+        value: manifest.proposed.frontends.join(", "),
+      },
+      {
+        label: "Primary function",
+        value: manifest.proposed.primary_function,
+      },
+      {
+        label: "Capabilities",
+        value: manifest.proposed.capabilities.join(", "),
+      },
+      ...(manifest.original.kind === "preset"
+        ? [
+            {
+              label: "Model families",
+              value: manifest.proposed.model_families.join(", "),
+            },
+            {
+              label: "Completion formats",
+              value: manifest.proposed.completion_formats.join(", "),
+            },
+          ]
+        : []),
+    ];
+  }
+  if (manifest.operation === "move-source") {
+    return [
+      {
+        label: "Current repository",
+        value: repositoryUrl(
+          typeof manifest.original.repository === "string"
+            ? manifest.original.repository
+            : null,
+        ),
+      },
+      {
+        label: "Proposed repository",
+        value: repositoryUrl(manifest.proposed.repository),
+      },
+    ];
+  }
+  return [{ label: "Confirmation", value: delistConfirmation }];
+}
+
+export function ProjectOwnerBuilder({
+  projects,
+  vocabularies,
+}: {
+  projects: OwnerProjectOption[];
+  vocabularies: OwnerBuilderVocabularies;
+}) {
+  const searchParams = useSearchParams();
+  const startingProjectId = initialProjectId(
+    projects,
+    searchParams.get("project"),
+  );
+  const startingProject = projects.find(
+    (project) => project.id === startingProjectId,
+  );
+  const [search, setSearch] = useState("");
+  const [projectId, setProjectId] = useState(startingProjectId);
+  const [operation, setOperation] = useState<OwnerOperation | "">("");
+  const [name, setName] = useState(startingProject?.editable.name ?? "");
+  const [summary, setSummary] = useState(
+    startingProject?.editable.summary ?? "",
+  );
+  const [frontends, setFrontends] = useState(
+    startingProject?.editable.frontends ?? [],
+  );
+  const [primaryFunction, setPrimaryFunction] = useState(
+    startingProject?.editable.primaryFunction ?? "",
+  );
+  const [capabilities, setCapabilities] = useState(
+    startingProject?.editable.capabilities ?? [],
+  );
+  const [modelFamilies, setModelFamilies] = useState(
+    startingProject?.editable.modelFamilies ?? [],
+  );
+  const [completionFormats, setCompletionFormats] = useState(
+    startingProject?.editable.completionFormats ?? [],
+  );
+  const [proposedRepositoryUrl, setProposedRepositoryUrl] = useState("");
+  const [explanation, setExplanation] = useState("");
+  const [confirmedDelist, setConfirmedDelist] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [reviewing, setReviewing] = useState(false);
+  const [continuing, setContinuing] = useState(false);
+  const [handoffError, setHandoffError] = useState("");
+  const [reviewManifest, setReviewManifest] =
+    useState<ProjectOwnerManifest | null>(null);
+
+  const selected = projects.find((project) => project.id === projectId);
+  const normalizedSearch = search.trim().toLocaleLowerCase();
+  const visibleProjects = projects.filter((project) =>
+    `${project.name} ${project.id} ${project.repository ?? ""}`
+      .toLocaleLowerCase()
+      .includes(normalizedSearch),
+  );
+
+  function selectProject(id: string) {
+    const project = projects.find((candidate) => candidate.id === id);
+    setProjectId(project?.id ?? "");
+    setOperation("");
+    setName(project?.editable.name ?? "");
+    setSummary(project?.editable.summary ?? "");
+    setFrontends(project?.editable.frontends ?? []);
+    setPrimaryFunction(project?.editable.primaryFunction ?? "");
+    setCapabilities(project?.editable.capabilities ?? []);
+    setModelFamilies(project?.editable.modelFamilies ?? []);
+    setCompletionFormats(project?.editable.completionFormats ?? []);
+    setProposedRepositoryUrl("");
+    setExplanation("");
+    setConfirmedDelist(false);
+    setErrors([]);
+    setHandoffError("");
+  }
+
+  function proposedEdit(): OwnerEditableValues {
+    return {
+      name,
+      summary,
+      frontends,
+      primary_function: primaryFunction,
+      capabilities,
+      model_families: modelFamilies,
+      completion_formats: completionFormats,
+    };
+  }
+
+  function candidateManifest(): object | null {
+    if (!selected?.repository || !selected.repositoryId || !operation) {
+      return null;
+    }
+    const envelope = {
+      schema_version: 1,
+      request_kind: "project-owner",
+      operation,
+      project_id: selected.id,
+      repository_id: selected.repositoryId,
+      source_fingerprint: selected.sourceFingerprint,
+      explanation: explanation.trim() || null,
+    };
+    if (operation === "edit-card") {
+      return {
+        ...envelope,
+        original: originalEdit(selected),
+        proposed: proposedEdit(),
+      };
+    }
+    if (operation === "move-source") {
+      const proposedRepository = parsePublicGitHubRepository(
+        proposedRepositoryUrl,
+      );
+      return {
+        ...envelope,
+        original: {
+          repository: selected.repository,
+          repository_id: selected.repositoryId,
+        },
+        proposed: {
+          repository: proposedRepository ?? "",
+          repository_id: selected.repositoryId,
+        },
+      };
+    }
+    return {
+      ...envelope,
+      original: { visibility: "published" },
+      proposed: {
+        visibility: "disabled",
+        visibility_reason: "removed",
+        refresh_policy: "paused",
+        enrichment_policy: "manual",
+      },
+    };
+  }
+
+  function validate() {
+    const nextErrors: string[] = [];
+    if (!selected) nextErrors.push("Select a listed project.");
+    if (selected && !selected.eligibleShape) {
+      nextErrors.push(
+        selected.ineligibilityReason ??
+          "This listing is not eligible for owner self-service.",
+      );
+    }
+    if (!operation) nextErrors.push("Choose an owner request type.");
+    if (
+      operation === "move-source" &&
+      !parsePublicGitHubRepository(proposedRepositoryUrl)
+    ) {
+      nextErrors.push("Enter one public GitHub repository URL.");
+    }
+    if (operation === "delist" && !confirmedDelist) {
+      nextErrors.push("Confirm that Tavernary should delist this project.");
+    }
+    const candidate = candidateManifest();
+    if (candidate) {
+      const result = normalizeProjectOwnerManifest(candidate, vocabularies);
+      if (!result.valid) nextErrors.push(...result.errors);
+      else setReviewManifest(result.manifest);
+    }
+    const uniqueErrors = [...new Set(nextErrors)];
+    setErrors(uniqueErrors);
+    return uniqueErrors.length === 0;
+  }
+
+  async function continueOnGitHub() {
+    if (!selected || !operation || !reviewManifest) return;
+    setHandoffError("");
+    setContinuing(true);
+    const proposed =
+      reviewManifest.operation === "edit-card" ? reviewManifest.proposed : null;
+    try {
+      await openHelpRequest({
+        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+        template: "08-project-owner-request.yml",
+        manifestFieldId: "owner-request-manifest",
+        manifest: reviewManifest,
+        prefills: [
+          ["request-type", operationLabels[operation]],
+          ["project-id", selected.id],
+          ["repository", repositoryUrl(selected.repository)],
+          ["proposed-name", proposed?.name ?? ""],
+          ["proposed-summary", proposed?.summary ?? ""],
+          ["supported-frontends", proposed?.frontends.join("\n") ?? ""],
+          ["primary-function", proposed?.primary_function ?? ""],
+          ["capabilities", proposed?.capabilities.join("\n") ?? ""],
+          ["model-families", proposed?.model_families.join("\n") ?? ""],
+          ["completion-formats", proposed?.completion_formats.join("\n") ?? ""],
+          [
+            "proposed-repository",
+            operation === "move-source" ? proposedRepositoryUrl.trim() : "",
+          ],
+          ["explanation", explanation.trim()],
+          [
+            "delist-confirmation",
+            operation === "delist" ? delistConfirmation : "",
+          ],
+        ],
+        pasteInstruction:
+          "Paste the owner request manifest copied by Tavernary into the manifest field.",
+      });
+    } catch (error) {
+      setHandoffError(
+        error instanceof Error
+          ? error.message
+          : "GitHub could not be opened. Please try again.",
+      );
+    } finally {
+      setContinuing(false);
+    }
+  }
+
+  if (reviewing && selected && operation && reviewManifest) {
+    return (
+      <>
+        <HelpErrorSummary errors={handoffError ? [handoffError] : []} />
+        <HelpReview
+          rows={[
+            {
+              label: "Project",
+              value: `${selected.name} — ${repositoryUrl(selected.repository)}`,
+            },
+            { label: "Request type", value: operationLabels[operation] },
+            {
+              label: "Verification",
+              value:
+                "GitHub will verify the issue author against the current personal owner.",
+            },
+            ...operationReviewRows(reviewManifest),
+            { label: "Policy effect", value: policyStatement(operation) },
+            { label: "Explanation", value: explanation.trim() },
+          ]}
+          onBack={() => setReviewing(false)}
+          onCancel={() => setReviewing(false)}
+          onContinue={continueOnGitHub}
+          continuing={continuing}
+        />
+      </>
+    );
+  }
+
+  return (
+    <form
+      className="help-form"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        setHandoffError("");
+        if (validate()) setReviewing(true);
+      }}
+    >
+      <HelpErrorSummary errors={errors} />
+      <p className="help-hint">
+        Owner self-service is available only for public GitHub records with an
+        immutable repository ID. Eligibility here is informational; GitHub
+        verifies the current personal owner after submission.
+      </p>
+      <HelpTextField
+        id="owner-project-search"
+        label="Search listed projects"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        hint="Search by project name, repository owner, repository name, or project ID."
+      />
+      <div className="help-field">
+        <label htmlFor="owner-project">Project</label>
+        <select
+          id="owner-project"
+          value={projectId}
+          onChange={(event) => selectProject(event.target.value)}
+        >
+          <option value="">Select a listed project</option>
+          {visibleProjects.map((project) => (
+            <option key={project.id} value={project.id}>
+              {project.name} — {project.repository ?? project.id}
+            </option>
+          ))}
+        </select>
+      </div>
+      {selected && !selected.eligibleShape ? (
+        <div className="help-security-callout">
+          <p>{selected.ineligibilityReason}</p>
+          <Link href={`/help/report-project/?project=${selected.id}`}>
+            Report this listing instead
+          </Link>
+        </div>
+      ) : null}
+      {selected?.eligibleShape ? (
+        <>
+          <HelpChoiceGroup legend="What would you like to do?">
+            {(Object.keys(operationLabels) as OwnerOperation[]).map((value) => (
+              <label className="help-choice" key={value}>
+                <input
+                  type="radio"
+                  name="owner-operation"
+                  value={value}
+                  checked={operation === value}
+                  onChange={() => {
+                    setOperation(value);
+                    setErrors([]);
+                  }}
+                />
+                <span>{operationLabels[value]}</span>
+              </label>
+            ))}
+          </HelpChoiceGroup>
+          {operation === "edit-card" ? (
+            <>
+              <HelpTextField
+                id="owner-name"
+                label="Display name"
+                value={name}
+                maxLength={100}
+                onChange={(event) => setName(event.target.value)}
+              />
+              <HelpTextArea
+                id="owner-summary"
+                label="Summary"
+                value={summary}
+                maxLength={220}
+                onChange={(event) => setSummary(event.target.value)}
+                count={`${summary.length} / 220`}
+                hint="Plain text. Line breaks are collapsed to spaces; automatic model-summary word rules do not apply."
+              />
+              <OptionCheckboxes
+                legend="Supported frontends"
+                options={vocabularies.frontends}
+                values={frontends}
+                onChange={setFrontends}
+              />
+              <div className="help-field">
+                <label htmlFor="owner-primary-function">Primary function</label>
+                <select
+                  id="owner-primary-function"
+                  value={primaryFunction}
+                  onChange={(event) => setPrimaryFunction(event.target.value)}
+                >
+                  {vocabularies.primaryFunctions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <OptionCheckboxes
+                legend="Capabilities"
+                options={vocabularies.capabilities}
+                values={capabilities}
+                onChange={setCapabilities}
+              />
+              {selected.kind === "preset" ? (
+                <>
+                  <OptionCheckboxes
+                    legend="Model families"
+                    options={vocabularies.modelFamilies}
+                    values={modelFamilies}
+                    onChange={setModelFamilies}
+                  />
+                  <OptionCheckboxes
+                    legend="Completion formats"
+                    options={vocabularies.completionFormats}
+                    values={completionFormats}
+                    onChange={setCompletionFormats}
+                  />
+                </>
+              ) : null}
+            </>
+          ) : null}
+          {operation === "move-source" ? (
+            <HelpTextField
+              id="owner-proposed-repository"
+              label="Public GitHub repository URL"
+              value={proposedRepositoryUrl}
+              type="url"
+              onChange={(event) => setProposedRepositoryUrl(event.target.value)}
+              hint="Use the current public URL for this same repository. GitHub must report the same immutable repository ID."
+            />
+          ) : null}
+          {operation === "delist" ? (
+            <HelpChoiceGroup legend="Confirm delisting">
+              <label className="help-choice">
+                <input
+                  type="checkbox"
+                  checked={confirmedDelist}
+                  onChange={(event) => setConfirmedDelist(event.target.checked)}
+                />
+                <span>{delistConfirmation}</span>
+              </label>
+            </HelpChoiceGroup>
+          ) : null}
+          {operation ? (
+            <HelpTextArea
+              id="owner-explanation"
+              label={
+                operation === "delist"
+                  ? "Public note (optional)"
+                  : "Explanation (optional)"
+              }
+              value={explanation}
+              maxLength={operation === "delist" ? 500 : 1_000}
+              onChange={(event) => setExplanation(event.target.value)}
+              hint="Everything you submit will be public on GitHub. Do not include secrets or private personal information."
+              count={`${explanation.length} / ${operation === "delist" ? 500 : 1_000}`}
+            />
+          ) : null}
+          <div className="help-actions">
+            <button type="submit" className="help-continue-action">
+              Review request
+            </button>
+          </div>
+        </>
+      ) : null}
+    </form>
+  );
+}

@@ -1,0 +1,114 @@
+name: Manage a project listing
+description: Request an owner-authored card edit, same-repository source move, or delisting.
+title: "[Project owner request]"
+labels:
+  - project-owner-request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue will be public. Do not include secrets, passwords, API keys, private personal information, or unpublished security details.
+
+        GitHub automation verifies the issue author against the current personal repository owner. The readable fields below are a fallback for accessibility and manual review; workflow validation applies the operation-specific requirements.
+  - type: input
+    id: request-type
+    attributes:
+      label: Request type
+      description: "Use one: Edit card details; Update repository location; Delist this project."
+      placeholder: Edit card details
+    validations:
+      required: true
+  - type: input
+    id: project-id
+    attributes:
+      label: Project ID
+      description: The stable Tavernary project ID.
+    validations:
+      required: true
+  - type: input
+    id: repository
+    attributes:
+      label: Current repository
+      description: The currently listed public GitHub repository URL.
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: input
+    id: proposed-name
+    attributes:
+      label: Proposed display name
+      description: Used only for a card-details edit.
+    validations:
+      required: false
+  - type: textarea
+    id: proposed-summary
+    attributes:
+      label: Proposed summary
+      description: Used only for a card-details edit. Plain text, 220 characters maximum.
+    validations:
+      required: false
+  - type: textarea
+    id: supported-frontends
+    attributes:
+      label: Supported frontends
+      description: Used only for a card-details edit. Enter one controlled frontend ID per line.
+    validations:
+      required: false
+  - type: input
+    id: primary-function
+    attributes:
+      label: Primary function
+      description: Used only for a card-details edit. Enter one controlled primary-function ID.
+    validations:
+      required: false
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Capabilities
+      description: Used only for a card-details edit. Enter one controlled capability ID per line.
+    validations:
+      required: false
+  - type: textarea
+    id: model-families
+    attributes:
+      label: Model families
+      description: Used only for a Preset card-details edit. Enter one controlled model-family ID per line.
+    validations:
+      required: false
+  - type: textarea
+    id: completion-formats
+    attributes:
+      label: Completion formats
+      description: Used only for a Preset card-details edit. Enter one controlled completion-format ID per line.
+    validations:
+      required: false
+  - type: input
+    id: proposed-repository
+    attributes:
+      label: Proposed repository
+      description: Used only for a repository-location update. This must be the same immutable repository at its current public GitHub URL.
+      placeholder: https://github.com/owner/renamed-repository
+    validations:
+      required: false
+  - type: textarea
+    id: explanation
+    attributes:
+      label: Explanation or public note
+      description: Optional public context or supporting documentation.
+    validations:
+      required: false
+  - type: input
+    id: delist-confirmation
+    attributes:
+      label: Delist confirmation
+      description: "For delisting, enter exactly: I am requesting that Tavernary delist this project"
+    validations:
+      required: false
+  - type: textarea
+    id: owner-request-manifest
+    attributes:
+      label: Owner request manifest
+      description: The Tavernary owner form prefills this machine-readable review payload. Leave it unchanged.
+      render: json
+    validations:
+      required: false
