@@ -391,6 +391,7 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
   const glyph = face.locator('[data-kit-glyph="add"]');
 
   await expect(submitProject).toHaveCSS("color", expectedInk);
+  await expect(submitProject).toHaveCSS("font-weight", "700");
   await expect(createKit).toHaveCSS("color", expectedInk);
   await expect(face).toHaveCSS("color", expectedInk);
 

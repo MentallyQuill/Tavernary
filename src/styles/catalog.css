@@ -280,6 +280,7 @@
   border: 1px solid var(--color-action-primary-bg);
   color: var(--color-action-primary-text);
   background: var(--color-action-primary-bg);
+  font-weight: 700;
   white-space: nowrap;
 }
 
