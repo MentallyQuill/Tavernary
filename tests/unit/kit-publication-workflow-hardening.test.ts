@@ -45,21 +45,20 @@ test("treats Kit issue labeling as warning-only bookkeeping", async () => {
   const bookkeeping = steps.find(
     (step) => step.name === "Finalize published issue",
   );
+  const run = bookkeeping?.run ?? "";
 
-  expect(bookkeeping?.run).toContain("gh label view kit-published");
-  expect(bookkeeping?.run).toContain("gh label create kit-published");
-  expect(bookkeeping?.run).toMatch(
-    /gh label create kit-published[\s\S]*\|\|\s+true/,
-  );
-  expect(bookkeeping?.run).toContain(
+  expect(run).not.toContain("gh label view");
+  expect(run).toMatch(/gh label create kit-published[\s\S]*--force/);
+  expect(run).toContain(
     'gh issue edit "${{ inputs.issue_number }}" --add-label kit-published',
   );
-  expect(bookkeeping?.run).toContain(
-    "::warning title=Kit publication bookkeeping::",
+  expect(run.indexOf("gh label create kit-published")).toBeLessThan(
+    run.indexOf(
+      'gh issue edit "${{ inputs.issue_number }}" --add-label kit-published',
+    ),
   );
-  expect(bookkeeping?.run).toMatch(
-    /if ! gh issue edit[\s\S]*then[\s\S]*::warning/,
-  );
+  expect(run).toContain("::warning title=Kit publication bookkeeping::");
+  expect(run).toMatch(/if ! gh issue edit[\s\S]*then[\s\S]*::warning/);
 });
 
 test("closes a published Kit issue only after exact-SHA deployment dispatch", async () => {
