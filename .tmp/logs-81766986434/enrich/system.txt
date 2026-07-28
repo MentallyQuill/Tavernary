@@ -1,9 +1,0 @@
-2026-07-25T19:28:36.5820000Z Evaluating enrich.if
-2026-07-25T19:28:36.5820000Z Evaluating: (success() && ((github.ref == 'refs/heads/main')))
-2026-07-25T19:28:36.5820000Z Expanded: (true && ('refs/heads/main' == 'refs/heads/main'))
-2026-07-25T19:28:36.5820000Z Result: true
-2026-07-25T19:28:36.5880000Z Job is waiting for a hosted runner to come online.
-2026-07-25T19:28:36.5890000Z Job is about to start running on the hosted runner: GitHub Actions 1000000227
-2026-07-25T19:28:36.5850000Z Requested labels: ubuntu-latest
-2026-07-25T19:28:36.5850000Z Job defined at: MentallyQuill/Tavernary/.github/workflows/enrich-catalog.yml@refs/heads/main
-2026-07-25T19:28:36.5850000Z Waiting for a runner to pick up this job...
