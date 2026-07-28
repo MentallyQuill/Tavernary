@@ -3,7 +3,7 @@
   "id": "aiko-s-loadout-30",
   "status": "published",
   "title": "Aiko's Loadout",
-  "description": "Aiko's daily in-use plugins... pending some additions (projects submitted)",
+  "description": "Aiko's daily in-use plugins for SillyTavern.",
   "author": {
     "github_user_id": 215114633,
     "login": "aikohanasaki"
@@ -16,8 +16,11 @@
     "aikohanasaki-sillytavern-worldinfoinfo",
     "aikohanasaki-sillytavern-characterlocks",
     "sillytavern-extension-topinfobar",
-    "subzero5544-favorites-carousel"
+    "subzero5544-favorites-carousel",
+    "aikohanasaki-sillytavern-bookmarks",
+    "aikohanasaki-sillytavern-worldinfolocks",
+    "aikohanasaki-sillytavern-lorebookordering"
   ],
   "published_at": "2026-07-26T23:23:57.490Z",
-  "updated_at": "2026-07-26T23:23:57.490Z"
+  "updated_at": "2026-07-28T21:13:25.925Z"
 }

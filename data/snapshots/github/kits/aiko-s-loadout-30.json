@@ -2,13 +2,19 @@
   "schema_version": 1,
   "kit_id": "aiko-s-loadout-30",
   "source_issue_number": 30,
-  "refreshed_at": "2026-07-28T15:27:20.272Z",
+  "refreshed_at": "2026-07-28T21:13:25.979Z",
   "stale_since": null,
   "supporters": [
     {
       "github_user_id": 2625904,
       "login": "MentallyQuill",
       "first_reacted_at": "2026-07-27T23:34:51Z",
+      "active": true
+    },
+    {
+      "github_user_id": 215114633,
+      "login": "aikohanasaki",
+      "first_reacted_at": "2026-07-28T21:13:05Z",
       "active": true
     }
   ]
