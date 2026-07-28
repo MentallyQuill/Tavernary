@@ -338,16 +338,17 @@ describe("full catalog data", () => {
       (record) =>
         record.source.type === "url" &&
         record.enrichment_policy === "automatic" &&
-        record.metadata_status === "provisional" &&
         record.source.license_status === "pending",
     );
     expect(automaticUrlRecord).toBeDefined();
 
-    automaticUrlRecord!.metadata_status = "curated";
-    automaticUrlRecord!.primary_function = "generation-reasoning";
-    automaticUrlRecord!.capabilities = ["prompt-engineering"];
+    const curatedAutomaticUrlRecord = structuredClone(automaticUrlRecord!);
+    curatedAutomaticUrlRecord.id = "curated-automatic-url-contract-fixture";
+    curatedAutomaticUrlRecord.metadata_status = "curated";
+    curatedAutomaticUrlRecord.primary_function = "generation-reasoning";
+    curatedAutomaticUrlRecord.capabilities = ["prompt-engineering"];
 
-    expectCatalogContract(records);
+    expectCatalogContract([...records, curatedAutomaticUrlRecord]);
   });
 
   test("accepts structural primary functions for provisional frontends", async () => {
