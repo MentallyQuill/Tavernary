@@ -9,13 +9,13 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "3d3dd1a0efbd32c30797ae3802a4dc080d638123",
-    "head_committed_at": "2026-07-25T02:06:46.000Z",
+    "head_sha": "846c897bf56e3e0121ef12e7ba07f5c3912dfa78",
+    "head_committed_at": "2026-07-28T05:29:26.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77411
+    "size_kb": 77165
   },
   "source_health": "healthy",
   "activity": {
@@ -80,9 +80,9 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-07-10T11:12:20.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T21:29:13.485Z",
+    "baseline_completed_at": "2026-07-28T06:34:29.172Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "3d3dd1a0efbd32c30797ae3802a4dc080d638123"
+    "evidence_head_sha": "846c897bf56e3e0121ef12e7ba07f5c3912dfa78"
   },
   "community": {
     "stars_count": 1562,
@@ -95,7 +95,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-28T04:19:18.249Z",
+  "refreshed_at": "2026-07-28T06:34:29.172Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -157,6 +157,7 @@
       { "login": "dootaang", "type": "User", "provider": "github" },
       { "login": "alattalatta", "type": "User", "provider": "github" },
       { "login": "rhplus0831", "type": "User", "provider": "github" },
+      { "login": "LLMLover452", "type": "User", "provider": "github" },
       { "login": "eltociear", "type": "User", "provider": "github" },
       { "login": "yaa19212-droid", "type": "User", "provider": "github" },
       { "login": "nevaeh5379", "type": "User", "provider": "github" },
@@ -184,7 +185,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T04:19:18.249Z",
+    "refreshed_at": "2026-07-28T06:34:29.172Z",
     "stale_since": null
   }
 }
