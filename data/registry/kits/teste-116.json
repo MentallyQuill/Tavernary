@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "id": "teste-116",
+  "status": "published",
+  "title": "Teste",
+  "description": "Teste",
+  "author": {
+    "github_user_id": 213903790,
+    "login": "JayJaysz"
+  },
+  "source_issue_number": 116,
+  "project_ids": [
+    "sillytavern-sillytavern",
+    "zdost-story-engine",
+    "aikohanasaki-sillytavern-memorybooks",
+    "ghostd93-bettersimtracker"
+  ],
+  "published_at": "2026-07-28T00:37:37.377Z",
+  "updated_at": "2026-07-28T00:37:37.377Z"
+}
