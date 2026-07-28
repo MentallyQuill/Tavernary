@@ -185,7 +185,10 @@ export function ProjectReportForm({
   if (reviewing && selected && isProjectReportCategory(category) && payload) {
     return (
       <>
-        <HelpErrorSummary errors={handoffError ? [handoffError] : []} />
+        <HelpErrorSummary
+          errors={handoffError ? [handoffError] : []}
+          heading="GitHub could not be opened automatically."
+        />
         <HelpReview
           rows={[
             {

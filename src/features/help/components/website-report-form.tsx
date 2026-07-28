@@ -195,7 +195,10 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   if (reviewing && payload) {
     return (
       <>
-        <HelpErrorSummary errors={handoffError ? [handoffError] : []} />
+        <HelpErrorSummary
+          errors={handoffError ? [handoffError] : []}
+          heading="GitHub could not be opened automatically."
+        />
         <HelpReview
           rows={[
             {

@@ -11,7 +11,13 @@ function describedBy(...ids: Array<string | undefined>) {
   return ids.filter(Boolean).join(" ") || undefined;
 }
 
-export function HelpErrorSummary({ errors }: { errors: string[] }) {
+export function HelpErrorSummary({
+  errors,
+  heading = "Please fix the highlighted fields before continuing.",
+}: {
+  errors: string[];
+  heading?: string;
+}) {
   const summaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +33,7 @@ export function HelpErrorSummary({ errors }: { errors: string[] }) {
       role="alert"
       tabIndex={-1}
     >
-      <p>Please fix the highlighted fields before continuing.</p>
+      <p>{heading}</p>
       <ul>
         {errors.map((error) => (
           <li key={error}>{error}</li>

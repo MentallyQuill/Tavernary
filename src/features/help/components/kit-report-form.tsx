@@ -211,7 +211,10 @@ export function KitReportForm({
   if (reviewing && payload) {
     return (
       <>
-        <HelpErrorSummary errors={handoffError ? [handoffError] : []} />
+        <HelpErrorSummary
+          errors={handoffError ? [handoffError] : []}
+          heading="GitHub could not be opened automatically."
+        />
         <HelpReview
           rows={[
             {
@@ -330,7 +333,7 @@ export function KitReportForm({
           <legend>Affected Kit projects</legend>
           <p className="help-hint">Select any affected projects in this Kit.</p>
           {selected.projects.map((project) => (
-            <label key={project.id}>
+            <label className="help-choice" key={project.id}>
               <input
                 type="checkbox"
                 checked={validAffectedProjectIds.includes(project.id)}

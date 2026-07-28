@@ -508,7 +508,10 @@ export function ProjectOwnerBuilder({
   if (reviewing && selected && operation && reviewManifest) {
     return (
       <>
-        <HelpErrorSummary errors={handoffError ? [handoffError] : []} />
+        <HelpErrorSummary
+          errors={handoffError ? [handoffError] : []}
+          heading="GitHub could not be opened automatically."
+        />
         <HelpReview
           rows={[
             {

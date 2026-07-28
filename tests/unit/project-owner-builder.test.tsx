@@ -408,11 +408,24 @@ test("keeps review state and reports a blocked GitHub popup", async () => {
   expect(screen.getByRole("alert")).toHaveTextContent(
     "GitHub issue form could not be opened.",
   );
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "GitHub could not be opened automatically.",
+  );
+  expect(screen.getByRole("alert")).not.toHaveTextContent(
+    "fix the highlighted fields",
+  );
+  const fallback = screen.getByRole("link", {
+    name: "Open the prepared GitHub form directly",
+  });
+  expect(fallback).toHaveAttribute(
+    "href",
+    expect.stringContaining("owner-request-manifest="),
+  );
   expect(
-    screen.getByRole("link", {
-      name: "Open the prepared GitHub form directly",
-    }),
-  ).toHaveAttribute("href", expect.stringContaining("owner-request-manifest="));
+    fallback.compareDocumentPosition(
+      document.querySelector(".help-review-rows")!,
+    ) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
   expect(
     screen.getByRole("heading", { name: "Review your public request" }),
   ).toBeVisible();

@@ -210,3 +210,49 @@ test("keeps Help controls and private reporting inside a 320px viewport", async 
   );
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test("keeps the owner project selector usable at 320px", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(
+    sitePath("/help/manage-project/?project=mentallyquill-directive"),
+  );
+
+  const project = page.getByLabel("Project", { exact: true });
+  await expect(project).toHaveValue("mentallyquill-directive");
+  const bounds = await project.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      left: rect.left,
+      right: rect.right,
+      viewport: document.documentElement.clientWidth,
+    };
+  });
+
+  expect(bounds.left).toBeGreaterThanOrEqual(0);
+  expect(bounds.right).toBeLessThanOrEqual(bounds.viewport);
+});
+
+test("renders affected Kit projects as compact touch-safe choices", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(sitePath("/help/report-kit/?kit=aiko-s-loadout-30"));
+  await page.getByLabel("What is wrong?").selectOption("compatibility-problem");
+
+  const choice = page
+    .getByRole("group", { name: "Affected Kit projects" })
+    .getByLabel("SillyTavern", { exact: true });
+  const geometry = await choice.evaluate((element) => {
+    const input = element.getBoundingClientRect();
+    const label = element.closest("label")!.getBoundingClientRect();
+    return {
+      inputWidth: input.width,
+      inputHeight: input.height,
+      labelHeight: label.height,
+    };
+  });
+
+  expect(geometry.inputWidth).toBeLessThanOrEqual(24);
+  expect(geometry.inputHeight).toBeLessThanOrEqual(24);
+  expect(geometry.labelHeight).toBeGreaterThanOrEqual(44);
+});

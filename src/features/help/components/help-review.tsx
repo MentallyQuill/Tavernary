@@ -29,14 +29,6 @@ export function HelpReview({
         These details will be public on GitHub. Do not include secrets or
         private personal information.
       </p>
-      <dl className="help-review-rows">
-        {rows.map((row) => (
-          <div key={row.label}>
-            <dt>{row.label}</dt>
-            <dd>{row.value}</dd>
-          </div>
-        ))}
-      </dl>
       {fallbackUrl ? (
         <p className="help-hint">
           <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
@@ -45,6 +37,14 @@ export function HelpReview({
           .
         </p>
       ) : null}
+      <dl className="help-review-rows">
+        {rows.map((row) => (
+          <div key={row.label}>
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
       <div className="help-actions">
         <button
           type="button"

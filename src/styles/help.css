@@ -154,10 +154,12 @@
   font-weight: 720;
 }
 
-.help-field input,
-.help-field textarea {
+.help-field input:not([type="checkbox"]):not([type="radio"]),
+.help-field textarea,
+.help-field select {
   width: 100%;
   min-width: 0;
+  max-width: 100%;
   min-height: 44px;
   border: 1px solid var(--color-control-border);
   border-radius: 7px;
@@ -171,14 +173,16 @@
   resize: vertical;
 }
 
-.help-field input:hover,
-.help-field textarea:hover {
+.help-field input:not([type="checkbox"]):not([type="radio"]):hover,
+.help-field textarea:hover,
+.help-field select:hover {
   border-color: var(--color-control-border-hover);
   background: var(--color-control-bg-hover);
 }
 
-.help-field input:focus,
-.help-field textarea:focus {
+.help-field input:not([type="checkbox"]):not([type="radio"]):focus,
+.help-field textarea:focus,
+.help-field select:focus {
   border-color: var(--color-control-border-focus);
 }
 
@@ -212,8 +216,32 @@
 
 .help-choice-group {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
   margin: 0;
+}
+
+.help-choice-group > legend,
+.help-choice-group > .help-field-error {
+  grid-column: 1 / -1;
+}
+
+.help-choice {
+  display: grid;
+  min-width: 0;
+  min-height: 44px;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.help-choice input[type="checkbox"],
+.help-choice input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-accent-teal);
 }
 
 .help-review {
