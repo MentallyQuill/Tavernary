@@ -16,10 +16,11 @@ export class EnrichmentProviderError extends Error {
   constructor(
     code: ProviderErrorCode,
     diagnosticCode?: string | null,
-    details?: { timeoutMs?: number },
+    details?: { timeoutMs?: number; latencyMs?: number },
   );
   code: ProviderErrorCode;
   diagnosticCode: string | null;
+  latencyMs: number | null;
 }
 
 export type ProviderResult = {

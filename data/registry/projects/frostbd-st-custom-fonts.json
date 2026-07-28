@@ -3,7 +3,7 @@
   "id": "frostbd-st-custom-fonts",
   "name": "st-custom-fonts",
   "kind": "extension",
-  "summary": "SillyTavern users can apply custom fonts through this extension to personalize their chat interface appearance. The extension adds typography options that let roleplayers adjust visual styling for their sessions.",
+  "summary": "ST Custom Fonts is a SillyTavern extension that lets users apply custom fonts to the interface. It supports local fonts and Google Fonts imports, and can automatically load fonts when a chosen UI theme activates.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

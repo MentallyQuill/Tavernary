@@ -3,7 +3,7 @@
   "id": "carmentagit-carmy-infoboard",
   "name": "Carmy InfoBoard",
   "kind": "extension",
-  "summary": "Carmy InfoBoard is a SillyTavern extension that displays an extracted info board from model replies as a clean sidebar HUD. It keeps structured story details out of the main chat for narrative-focused roleplay sessions.",
+  "summary": "Carmy InfoBoard is a SillyTavern extension that extracts structured info blocks from model replies and renders them as a narrative sidebar. It keeps story-driven roleplay details out of chat clutter.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["instruction-control"],
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -3,7 +3,7 @@
   "id": "alatheus1-marinara-engine-game-sessions",
   "name": "Marinara Engine Game Sessions",
   "kind": "extension",
-  "summary": "Client extension for the Marinara Engine frontend that adds a Sessions browser to the Game Mode toolbar, implementing upstream issue 441.",
+  "summary": "A client-side Marinara Engine extension that adds a Sessions browser to the in-game toolbar. It opens the full message log of any past session of the current Game Mode story without searching recent chats.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1237502934
   },
   "frontends": ["marinara-engine"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

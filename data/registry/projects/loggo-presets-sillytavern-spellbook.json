@@ -3,7 +3,7 @@
   "id": "loggo-presets-sillytavern-spellbook",
   "name": "SillyTavern SpellBook",
   "kind": "extension",
-  "summary": "SillyTavern SpellBook is a floating markdown notepad extension for organizing notes, spell lore, references, and creative content.",
+  "summary": "SillyTavern SpellBook is a floating markdown notepad that organizes roleplay notes and references. Its glassmorphism overlay creates a dedicated workspace for spell lores alongside chat.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

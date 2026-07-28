@@ -3,7 +3,7 @@
   "id": "coneja-chibi-carrotkernel",
   "name": "CarrotKernel",
   "kind": "extension",
-  "summary": "CarrotKernel is a SillyTavern extension that helps support BunnyMo Packs. This Electric Boogaloo iteration delivers companion functionality for users engaging with the BunnyMo pack system.",
+  "summary": "CarrotKernel is a SillyTavern extension for managing character sheets and world info entries. It serves as a spiritual successor to BunnyMoTags, continuing the lineage of professional roleplay content organization tools.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

@@ -296,7 +296,7 @@ export function createProductionOperations(options = {}) {
     options.npmCommand ?? (process.platform === "win32" ? "npm.cmd" : "npm");
   const batchSize = String(options.batchSize ?? process.env.BATCH_SIZE ?? 20);
   const concurrency = String(
-    options.concurrency ?? process.env.MODEL_CONCURRENCY ?? 4,
+    options.concurrency ?? process.env.MODEL_CONCURRENCY ?? 6,
   );
   const timeoutSeconds = Number(
     options.timeoutSeconds ?? process.env.MODEL_TIMEOUT_SECONDS ?? 120,

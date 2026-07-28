@@ -3,7 +3,7 @@
   "id": "ayvencore-sillytavern-another-character-library",
   "name": "SillyTavern Another Character Library",
   "kind": "extension",
-  "summary": "SillyTavern extension that replaces the default landing page with a rich character library view for browsing characters.",
+  "summary": "A SillyTavern extension replaces the default landing page with a full-screen character library view. It enables searching across character metadata and text fields, with modal interfaces for browsing and editing details.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
+  "capabilities": ["character-worldbuilding", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

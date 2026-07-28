@@ -3,7 +3,7 @@
   "id": "aimicrocot-scenarios-extension",
   "name": "Scenarios Extension",
   "kind": "extension",
-  "summary": "This SillyTavern extension lets users attach multiple scenarios to a single bot, avoiding the need to duplicate character entries. It consolidates varied roleplay setups into one profile for simpler context switching.",
+  "summary": "Scenarios Extension adds scenario management capabilities to the SillyTavern frontend for roleplay chat sessions. It provides tools to organize, structure, and manage contextual scenarios during conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "instruction-control"],
+  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

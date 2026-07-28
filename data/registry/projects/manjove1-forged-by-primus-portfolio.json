@@ -3,7 +3,7 @@
   "id": "manjove1-forged-by-primus-portfolio",
   "name": "Forged by Primus",
   "kind": "extension",
-  "summary": "Portfolio for Transformers: Forged by Primus is a modular long-form AI Dungeon Master system for SillyTavern. It demonstrates advanced prompt engineering techniques to deliver stateful, immersive RPG experiences.",
+  "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -15,7 +15,7 @@
   "capabilities": [
     "prompt-engineering",
     "planning-reasoning",
-    "character-worldbuilding"
+    "instruction-control"
   ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

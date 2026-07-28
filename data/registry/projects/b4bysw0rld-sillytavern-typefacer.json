@@ -3,7 +3,7 @@
   "id": "b4bysw0rld-sillytavern-typefacer",
   "name": "SillyTavern TypefaceR",
   "kind": "extension",
-  "summary": "SillyTavern TypefaceR is an extension that lets users customize fonts for chat messages. It supports local system fonts and Google Fonts, giving users flexible control over interface typography.",
+  "summary": "TypefaceR is a SillyTavern extension that lets users customize the fonts used in chat messages. It supports both local system fonts and Google Fonts, giving users flexible typographic control over their chat interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

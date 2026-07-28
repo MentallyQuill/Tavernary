@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-lorebookordering",
   "name": "SillyTavern-LorebookOrdering",
   "kind": "extension",
-  "summary": "This SillyTavern extension provides lorebook-level control over activation priority for world info entries. It lets users set the order in which lorebooks trigger during chat, beyond standard per-entry settings.",
+  "summary": "This SillyTavern extension adds lorebook priority management and budgeting to World Info, letting users control activation order and cap resource-hungry lorebooks. It supports character-specific overrides in group chats.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1059754623
   },
   "frontends": ["sillytavern"],
-  "primary_function": "memory-retrieval",
-  "capabilities": ["prompt-engineering"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["instruction-control", "character-worldbuilding"],
   "cataloged_at": "2026-07-26T19:31:48.440Z",
   "catalog_cohort": "standard",
   "visibility": "published",

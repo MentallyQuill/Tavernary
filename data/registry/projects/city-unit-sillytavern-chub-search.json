@@ -3,7 +3,7 @@
   "id": "city-unit-sillytavern-chub-search",
   "name": "SillyTavern-Chub-Search",
   "kind": "extension",
-  "summary": "SillyTavern-Chub-Search is a SillyTavern extension that lets users search Character Hub directly from the interface. It brings external character discovery into the SillyTavern browsing workflow.",
+  "summary": "SillyTavern Chub Search is a SillyTavern extension for browsing character cards from the CHUB repository. It adds an in-app search interface that lets users discover new cards without leaving the tavern.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

@@ -3,7 +3,7 @@
   "id": "mangkoodkung-another-universe",
   "name": "Another Universe",
   "kind": "extension",
-  "summary": "Another Universe is a roleplay extension presenting an alternate-reality reunion scenario for character interactions. It supports both SillyTavern and Marinara Engine frontends for cross-platform fictional encounters.",
+  "summary": "Another Universe is a roleplay extension for building fictional universes through compatible frontends. It supports both SillyTavern and Marinara Engine while offering bilingual Thai and English interfaces.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern", "marinara-engine"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["multi-frontend"],
+  "capabilities": ["multi-frontend", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

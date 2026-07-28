@@ -3,7 +3,7 @@
   "id": "chaaruze-sillytavern-too-many-chats",
   "name": "SillyTavern-Too-Many-Chats",
   "kind": "extension",
-  "summary": "An archived SillyTavern extension that organizes chat conversations into folders for easier management. It groups chats into folder-based categories, helping users handle large collections.",
+  "summary": "This SillyTavern extension organizes chat histories into per-character folders for easier navigation. It adds collapsible folders, right-click chat moving, persistent state across sessions, and a mobile-friendly popup.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

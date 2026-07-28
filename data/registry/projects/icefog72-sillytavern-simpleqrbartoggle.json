@@ -3,7 +3,7 @@
   "id": "icefog72-sillytavern-simpleqrbartoggle",
   "name": "SillyTavern-SimpleQRBarToggle",
   "kind": "extension",
-  "summary": "This SillyTavern extension adds a toggle button to hide and reveal the Quick Replies Bar. After installation, users adjust the bar's open height by adding a short CSS rule.",
+  "summary": "Adds a hide toggle button for the Quick Replies Bar in SillyTavern, letting users collapse it when not in use. Users can customize the bar's open height through a simple CSS edit.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

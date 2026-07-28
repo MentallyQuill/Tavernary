@@ -3,7 +3,7 @@
   "id": "lodactio-extension-summaryception",
   "name": "Extension-Summaryception",
   "kind": "extension",
-  "summary": "The Summaryception SillyTavern extension applies a summary-of-summary concept to roleplay content. It offers a distinctive nested summarization workflow for condensing long conversations within the frontend.",
+  "summary": "Summaryception is a SillyTavern extension designed to summarize conversation history. The tool extends the frontend with summary-focused workflow features to help manage long roleplay sessions.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation"],
+  "capabilities": ["automation", "review-validation"],
   "cataloged_at": "2026-07-27T22:03:20.782Z",
   "catalog_cohort": "standard",
   "visibility": "published",

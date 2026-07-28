@@ -3,7 +3,7 @@
   "id": "bmen25124-sillytavern-wtracker",
   "name": "SillyTavern WTracker",
   "kind": "extension",
-  "summary": "SillyTavern WTracker is a SillyTavern extension that tracks roleplay statistics using large language models. It automates stat monitoring during sessions to keep consistent records across conversations.",
+  "summary": "SillyTavern extension for tracking chat statistics with LLMs through connection profiles. You can edit the active chat schema, with separate setup requirements for Text Completion and Chat Completion profiles.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
+  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

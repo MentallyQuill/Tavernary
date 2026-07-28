@@ -3,7 +3,7 @@
   "id": "mechamarmot-sillytavern-localimage",
   "name": "SillyTavern LocalImage",
   "kind": "extension",
-  "summary": "SillyTavern LocalImage is a SillyTavern extension that handles local image processing within the frontend interface. It enables users to manage and display locally stored images directly in their roleplay workflow.",
+  "summary": "SillyTavern LocalImage is an extension that lets users upload custom images for characters and personas. It provides per-character galleries, floating quick-send buttons, and AI-driven contextual image display.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["image-generation"],
+  "capabilities": ["image-generation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

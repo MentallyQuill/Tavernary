@@ -3,7 +3,7 @@
   "id": "lukathehero-sillytavern-personatools",
   "name": "SillyTavern PersonaTools",
   "kind": "extension",
-  "summary": "SillyTavern PersonaTools is a SillyTavern extension that organizes chat personas within the user interface. It offers a quick switcher, folders, tags, and styled tooltips to streamline persona selection.",
+  "summary": "SillyTavern PersonaTools is an extension for managing personas with folders, tags, and a quick persona switcher. It plays nicely with SillyTavern's existing pagination, search, and sorting features.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

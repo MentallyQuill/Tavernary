@@ -75,6 +75,10 @@ function sanitizedEntry(entry) {
     "requested_model",
     "returned_model",
     "latency_ms",
+    "provider_calls",
+    "provider_repair_calls",
+    "provider_rate_limit_events",
+    "provider_latency_ms_total",
     "reason_code",
     "enrichment_note",
     "diagnostic_code",
@@ -82,12 +86,49 @@ function sanitizedEntry(entry) {
   ]) {
     if (entry[key] !== undefined) result[key] = entry[key];
   }
+  const providerTelemetry = [
+    result.provider_calls,
+    result.provider_repair_calls,
+    result.provider_rate_limit_events,
+    result.provider_latency_ms_total,
+  ];
+  if (
+    providerTelemetry.some((value) => value !== undefined) &&
+    (!providerTelemetry.every(
+      (value) => Number.isInteger(value) && value >= 0,
+    ) ||
+      result.provider_calls < 1 ||
+      result.provider_repair_calls > result.provider_calls ||
+      result.provider_rate_limit_events > result.provider_calls)
+  ) {
+    throw new Error("enrichment report provider telemetry is invalid");
+  }
   if (entry.reason_code !== undefined) {
     result.message =
       safeMessages[entry.reason_code] ?? "Enrichment attempt failed.";
   }
   result.completed_at = entry.completed_at;
   return result;
+}
+
+function providerMetrics(entries) {
+  return Object.values(entries).reduce(
+    (metrics, entry) => ({
+      call_count: metrics.call_count + (entry.provider_calls ?? 0),
+      repair_call_count:
+        metrics.repair_call_count + (entry.provider_repair_calls ?? 0),
+      rate_limit_events:
+        metrics.rate_limit_events + (entry.provider_rate_limit_events ?? 0),
+      latency_ms_total:
+        metrics.latency_ms_total + (entry.provider_latency_ms_total ?? 0),
+    }),
+    {
+      call_count: 0,
+      repair_call_count: 0,
+      rate_limit_events: 0,
+      latency_ms_total: 0,
+    },
+  );
 }
 
 function aggregates(entries) {
@@ -148,6 +189,7 @@ export function createEnrichmentReport(state) {
           verified_at: state.deployment.verified_at,
         }
       : null,
+    provider_metrics: providerMetrics(entries),
     aggregates: aggregates(entries),
   };
 }

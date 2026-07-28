@@ -3,7 +3,7 @@
   "id": "leandrojofre-sillytavern-presence",
   "name": "SillyTavern Presence",
   "kind": "extension",
-  "summary": "SillyTavern Presence is a SillyTavern extension that gives each individual character their own dedicated memory.",
+  "summary": "SillyTavern Presence is a SillyTavern extension that broadcasts user activity during chats. It runs automatically and adapts its behavior based on whether the session is single-character or group chat.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 882467511
   },
   "frontends": ["sillytavern"],
-  "primary_function": "memory-retrieval",
-  "capabilities": ["character-worldbuilding"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

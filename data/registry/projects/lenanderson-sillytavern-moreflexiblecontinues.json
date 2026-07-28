@@ -3,7 +3,7 @@
   "id": "lenanderson-sillytavern-moreflexiblecontinues",
   "name": "SillyTavern-MoreFlexibleContinues",
   "kind": "extension",
-  "summary": "More Flexible Continues is a SillyTavern extension that adds flexible management options for continuing chat messages. It lets users remove, list, regenerate, and trigger continues directly from the interface.",
+  "summary": "A SillyTavern extension that adds flexible controls for managing the continue feature during roleplay. It provides interface buttons to remove, list, regenerate, and trigger continues.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -12,7 +12,7 @@
   },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
   "visibility": "published",

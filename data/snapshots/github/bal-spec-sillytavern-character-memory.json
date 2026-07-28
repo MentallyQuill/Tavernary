@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-02-14T02:08:33.000Z",
-    "size_kb": 17044
+    "size_kb": 15913
   },
   "source_health": "healthy",
   "activity": {
@@ -34,14 +34,14 @@
     "aggregate": 73
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-28T04:19:18.249Z",
+  "refreshed_at": "2026-07-28T09:58:50.496Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "bal-spec", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T04:19:18.249Z",
+    "refreshed_at": "2026-07-28T09:58:50.496Z",
     "stale_since": null
   }
 }

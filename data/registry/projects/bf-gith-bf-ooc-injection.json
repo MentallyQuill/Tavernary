@@ -3,7 +3,7 @@
   "id": "bf-gith-bf-ooc-injection",
   "name": "BF OOC Injection",
   "kind": "extension",
-  "summary": "SillyTavern extension that prevents repetitive LLM responses by injecting randomized out-of-character prompts automatically. The tool maintains a clean history and requires zero ongoing maintenance.",
+  "summary": "BF OOC Injection is a SillyTavern extension that randomizes LLM responses to prevent repetition. It automatically injects varying prompts for narrative variety without manual configuration.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

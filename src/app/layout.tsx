@@ -9,10 +9,22 @@ const projectPage =
 const basePath =
   process.env.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "");
 const assetPath = (path: string) => `${basePath}/${path}`;
+const homepageTitle = "Tavernary · SillyTavern Tool Library";
+const homepageDescription =
+  "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
 
 export const metadata = {
-  title: "Tavernary",
-  description: "Where AI roleplay tools gather",
+  title: homepageTitle,
+  description: homepageDescription,
+  openGraph: {
+    title: homepageTitle,
+    description: homepageDescription,
+  },
+  twitter: {
+    card: "summary",
+    title: homepageTitle,
+    description: homepageDescription,
+  },
   icons: {
     icon: [
       { url: assetPath("favicon.ico"), sizes: "16x16 32x32" },

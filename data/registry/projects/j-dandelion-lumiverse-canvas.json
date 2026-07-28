@@ -3,7 +3,7 @@
   "id": "j-dandelion-lumiverse-canvas",
   "name": "Lumiverse Canvas",
   "kind": "extension",
-  "summary": "Lumiverse Canvas is a Spindle extension for the Lumiverse frontend that adds UI tweaks and convenience features. It aims to deliver deeper customization and quality-of-life improvements to the user experience.",
+  "summary": "Lumiverse Canvas adds optional tweaks and features to enhance the Lumiverse user interface. Each behavior can be individually toggled and styled using CSS variables and stable Canvas selectors.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

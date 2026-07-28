@@ -1,0 +1,91 @@
+{
+  "schema_version": 3,
+  "provider": "codeberg",
+  "project_id": "targren-lumiverse-swipescrubber",
+  "repository": {
+    "id": 1699613,
+    "owner": "targren",
+    "name": "Lumiverse-SwipeScrubber",
+    "url": "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "111978ba6fcbc5236c060be2b2ad7484833145b9",
+    "head_committed_at": "2026-07-21T14:45:42.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-30T23:15:30.000Z",
+    "size_kb": 409
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-21T14:45:42.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-21T14:45:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T23:44:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T17:55:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-01T17:10:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T00:54:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T17:33:52.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-14T01:32:03.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T09:58:50.422Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "111978ba6fcbc5236c060be2b2ad7484833145b9"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-28T09:58:50.422Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "provider": "codeberg", "login": "targren", "type": "User" }
+    ],
+    "method": "commit-and-merged-pull-request-authors",
+    "baseline_completed_at": "2026-07-28T09:58:50.422Z",
+    "scan": null,
+    "refreshed_at": "2026-07-28T09:58:50.422Z",
+    "stale_since": null
+  }
+}

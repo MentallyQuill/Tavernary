@@ -3,7 +3,7 @@
   "id": "bbw3000-simplesummary",
   "name": "SimpleSummary",
   "kind": "extension",
-  "summary": "SimpleSummary is a SillyTavern extension that generates summaries of chat conversations. It automates condensing long roleplay exchanges into concise overviews to help users keep track of context.",
+  "summary": "SimpleSummary is a SillyTavern extension that generates condensed summaries of ongoing roleplay chat conversations. It provides an automated summarization workflow that runs directly inside the SillyTavern interface.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

@@ -3,7 +3,7 @@
   "id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
   "name": "SillyTavern-Smart-Dialogue-Colorizer",
   "kind": "extension",
-  "summary": "This SillyTavern extension automatically extracts colors from dialogue to enhance the visual chat experience. It applies intelligent quality filtering to ensure only meaningful color assignments appear in messages.",
+  "summary": "This SillyTavern extension automatically colors dialogue quotes based on each speaking character's avatar. It uses intelligent color extraction with built-in quality filtering to keep text readable and visually distinct.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

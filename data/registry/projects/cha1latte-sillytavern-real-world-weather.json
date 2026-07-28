@@ -3,7 +3,7 @@
   "id": "cha1latte-sillytavern-real-world-weather",
   "name": "sillytavern-real-world-weather",
   "kind": "extension",
-  "summary": "A SillyTavern extension that fetches real-world weather data to enhance roleplay immersion. It injects live atmospheric conditions into chat context, helping ground fictional scenes in believable, current weather.",
+  "summary": "This SillyTavern extension pulls weather from Open-Meteo and injects it into roleplay chats for immersion. It accepts city names or coordinates, toggles units, and auto-injects into Author's Note with a one-minute cache.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1088452012
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": ["automation", "instruction-control"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",

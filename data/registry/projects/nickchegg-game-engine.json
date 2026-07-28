@@ -3,7 +3,7 @@
   "id": "nickchegg-game-engine",
   "name": "NickChegg Game Engine",
   "kind": "extension",
-  "summary": "NickChegg Game Engine is a Silly Tavern extension providing game engine creations for roleplay. It adds game engine functionality to SillyTavern sessions through the frontend.",
+  "summary": "A SillyTavern extension that hosts modular, UI-driven minigames in a pop-out window for roleplay sessions. It feeds minigame results seamlessly back to the LLM to enrich ongoing conversations.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1283421850
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
-  "capabilities": [],
+  "primary_function": "interface-workflow",
+  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

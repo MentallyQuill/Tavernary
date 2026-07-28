@@ -3,7 +3,7 @@
   "id": "coneja-chibi-rabbit-response-team",
   "name": "Rabbit Response Team",
   "kind": "extension",
-  "summary": "Rabbit Response Team is a SillyTavern extension that injects random words into LLM prompts. It aims to destabilize standard probability-driven thinking by adding unexpected tokens during generation.",
+  "summary": "Rabbit Response Team is a SillyTavern extension that injects random words into LLM prompts. It destabilizes predictable pattern-based responses by disrupting the model's standard probability thinking during generation.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 1081026644
   },
   "frontends": ["sillytavern"],
-  "primary_function": "interface-workflow",
+  "primary_function": "generation-reasoning",
   "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

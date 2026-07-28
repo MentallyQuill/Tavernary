@@ -3,7 +3,7 @@
   "id": "getfroggyhoe-universal-immersion-engine",
   "name": "Universal Immersion Engine",
   "kind": "extension",
-  "summary": "Universal Immersion Engine is a SillyTavern extension that overlays an in-world RPG interface onto chat. It drives features directly from the chat log to keep storytelling coherent and mobile-friendly.",
+  "summary": "Universal Immersion Engine is a SillyTavern extension overlaying an in-world RPG interface onto chat. It derives interface elements from the live chat log rather than side context, keeping stories coherent.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,8 +11,8 @@
     "repository_id": 1125809015
   },
   "frontends": ["sillytavern"],
-  "primary_function": "rpg-systems",
-  "capabilities": ["automation", "character-worldbuilding"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
   "visibility": "published",

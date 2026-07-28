@@ -64,6 +64,15 @@ test("serializes only sanitized deterministic run-state fields", () => {
   expect(report.entries.b).toMatchObject({
     requested_model: model,
     returned_model: model,
+    provider_calls: 1,
+    provider_repair_calls: 0,
+    provider_latency_ms_total: 250,
+  });
+  expect(report.provider_metrics).toEqual({
+    call_count: 1,
+    repair_call_count: 0,
+    rate_limit_events: 0,
+    latency_ms_total: 250,
   });
   expect(validateEnrichmentReport(JSON.parse(serialized))).toEqual(report);
 });
@@ -91,6 +100,38 @@ test("does not hard-code a timeout duration in durable report messages", () => {
 
   expect(createEnrichmentReport(state).entries.a.message).toBe(
     "The enrichment provider timed out.",
+  );
+});
+
+test("rejects invalid cumulative provider telemetry", () => {
+  let state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "invalid-telemetry",
+    now,
+    model,
+  });
+  state = applyAttemptResults(
+    state,
+    [
+      {
+        id: "a",
+        phase: "primary",
+        outcome: "enriched",
+        provider: {
+          requestedModel: model,
+          returnedModel: model,
+          latencyMs: 25,
+        },
+      },
+    ],
+    now,
+  );
+  const report = createEnrichmentReport(state);
+  report.entries.a.provider_repair_calls = 2;
+
+  expect(() => validateEnrichmentReport(report)).toThrow(
+    "provider telemetry is invalid",
   );
 });
 

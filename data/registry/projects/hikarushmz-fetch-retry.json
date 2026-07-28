@@ -3,7 +3,7 @@
   "id": "hikarushmz-fetch-retry",
   "name": "fetch-retry",
   "kind": "extension",
-  "summary": "fetch-retry is a SillyTavern extension that automatically retries failed fetch requests to keep connections stable. It runs quietly in the background, reducing manual reloads when network calls fail.",
+  "summary": "Fetch Retry is a SillyTavern extension that automatically retries failed fetch requests with configurable limits. It detects stuck thinking, incomplete responses, and HTTP 429 errors to resume broken connections.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

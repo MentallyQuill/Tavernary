@@ -600,3 +600,52 @@ test("validates worker-pool concurrency limits", async () => {
     mapWithConcurrency([1], 9, async (value) => value),
   ).rejects.toThrow("between 1 and 8");
 });
+
+test("backs off new model work after repeated provider rate limits", async () => {
+  const projectIds = ["rate-limit-1", "rate-limit-2", "healthy"];
+  const sleep = vi.fn(async (_milliseconds: number) => {});
+  const generate = vi.fn(async (input: { id: string }) => {
+    if (input.id.startsWith("rate-limit")) {
+      throw Object.assign(new Error("rate limited"), {
+        code: "provider-rate-limited",
+      });
+    }
+    return {
+      output: {
+        summary:
+          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+        metadata_status: "curated" as const,
+        primary_function: "developer-infrastructure",
+        capabilities: ["automation"],
+      },
+      metadata: providerMetadata,
+    };
+  });
+
+  const results = await runEnrichmentBatch({
+    projectIds,
+    recordsById: Object.fromEntries(
+      projectIds.map((id) => [id, recordFor(id)]),
+    ),
+    snapshotsById: Object.fromEntries(
+      projectIds.map((id) => [id, snapshotFor(id)]),
+    ),
+    phase: "primary",
+    vocabularies,
+    provider: { generate },
+    validateSnapshot: () => true,
+    loadSource: async (candidate) => readySource(candidate.id),
+    concurrency: 1,
+    sleep,
+    writeRecord: vi.fn(async () => {}),
+  });
+
+  expect(results.map(({ reasonCode }) => reasonCode)).toEqual([
+    "provider-rate-limited",
+    "provider-rate-limited",
+    undefined,
+  ]);
+  expect(sleep.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([
+    5_000, 15_000,
+  ]);
+});

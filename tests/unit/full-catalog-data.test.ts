@@ -30,6 +30,13 @@ interface CatalogRecord {
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
+const supportedSourceTypes = [
+  "codeberg",
+  "github",
+  "github-organization",
+  "url",
+];
+
 const removedVillageMakerIds = [
   "village-maker-anonpaste-prompt",
   "village-maker-harrow-hundred-prompt",
@@ -179,7 +186,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
   );
   expect(
     Object.keys(countBy(records, (record) => record.source.type)).sort(),
-  ).toEqual(["github", "github-organization", "url"]);
+  ).toEqual(expect.arrayContaining(["github", "github-organization", "url"]));
   expect(
     Object.keys(countBy(records, (record) => record.enrichment_policy)).sort(),
   ).toEqual(["automatic", "manual"]);
@@ -198,16 +205,15 @@ function expectCatalogContract(records: CatalogRecord[]) {
       (record) => record.source.license_status === "missing",
     ),
   ).toBe(true);
-  const provisionalUrlRecords = urlRecords.filter(
+  const pendingUrlRecords = urlRecords.filter(
     (record) => !expectedUrlRecordIds.includes(record.id),
   );
   expect(
-    provisionalUrlRecords.every(
+    pendingUrlRecords.every(
       (record) =>
-        record.metadata_status === "provisional" &&
-        (record.id === "reddit-1v64r6z"
-          ? record.enrichment_policy === "automatic"
-          : record.enrichment_policy === "manual") &&
+        (record.enrichment_policy === "automatic"
+          ? ["curated", "provisional"].includes(record.metadata_status)
+          : record.metadata_status === "provisional") &&
         record.source.license_status === "pending",
     ),
   ).toBe(true);
@@ -216,9 +222,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(["extension", "frontend", "preset"], record.id).toContain(
       record.kind,
     );
-    expect(["github", "github-organization", "url"], record.id).toContain(
-      record.source.type,
-    );
+    expect(supportedSourceTypes, record.id).toContain(record.source.type);
     expect(["automatic", "manual"], record.id).toContain(
       record.enrichment_policy,
     );
@@ -308,6 +312,42 @@ function expectCatalogContract(records: CatalogRecord[]) {
 describe("full catalog data", () => {
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("accepts Codeberg as a catalog source", async () => {
+    const records = await loadRegistryRecords();
+    const existingExtension = records.find(
+      (record) =>
+        record.kind === "extension" &&
+        record.metadata_status === "curated" &&
+        record.source.type === "github",
+    );
+    expect(existingExtension).toBeDefined();
+
+    const codebergExtension = structuredClone(existingExtension!);
+    codebergExtension.id = "codeberg-source-contract-fixture";
+    codebergExtension.source.type = "codeberg";
+    codebergExtension.source.repository_id = 1_699_613;
+
+    expectCatalogContract([...records, codebergExtension]);
+  });
+
+  test("accepts a curated automatic URL record after enrichment", async () => {
+    const records = await loadRegistryRecords();
+    const automaticUrlRecord = records.find(
+      (record) =>
+        record.source.type === "url" &&
+        record.enrichment_policy === "automatic" &&
+        record.metadata_status === "provisional" &&
+        record.source.license_status === "pending",
+    );
+    expect(automaticUrlRecord).toBeDefined();
+
+    automaticUrlRecord!.metadata_status = "curated";
+    automaticUrlRecord!.primary_function = "generation-reasoning";
+    automaticUrlRecord!.capabilities = ["prompt-engineering"];
+
+    expectCatalogContract(records);
   });
 
   test("accepts structural primary functions for provisional frontends", async () => {

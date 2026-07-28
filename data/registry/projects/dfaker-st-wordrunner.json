@@ -3,7 +3,7 @@
   "id": "dfaker-st-wordrunner",
   "name": "st-wordrunner",
   "kind": "extension",
-  "summary": "st-wordrunner is a SillyTavern extension that displays generated chat responses word by word. The extension reveals output progressively as it streams, creating an animated typing effect in the interface.",
+  "summary": "st-wordrunner is a SillyTavern extension that animates character responses as a word-by-word running display in various themes. Users can also compose and send their own replies within the same overlay.",
   "metadata_status": "curated",
   "source": {
     "type": "github",

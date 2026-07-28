@@ -9,7 +9,17 @@ import {
   verifyStaticExport,
 } from "../../scripts/verify-static-export.mjs";
 
-const heading = (count: number) => `<h1>${count} projects</h1>`;
+const homepageTitle = "Tavernary · SillyTavern Tool Library";
+const homepageDescription =
+  "Discover open-source tools for SillyTavern and AI roleplay. Explore extensions, frontends, presets, and community-built Kits.";
+const homepageMetadata = [
+  `<title>${homepageTitle}</title>`,
+  `<meta name="description" content="${homepageDescription}"/>`,
+  `<meta property="og:description" content="${homepageDescription}"/>`,
+  `<meta name="twitter:description" content="${homepageDescription}"/>`,
+].join("");
+const heading = (count: number) =>
+  `${homepageMetadata}<h1>${count} projects</h1>`;
 
 const temporaryExports: string[] = [];
 
@@ -53,7 +63,7 @@ describe("verifyStaticExport", () => {
   test("accepts a catalog heading split by React server-rendering comments", () => {
     expect(() =>
       verifyStaticExport(
-        '<h1>37<!-- --> <!-- -->projects</h1><script src="/_next/static/app.js"></script>',
+        `${homepageMetadata}<h1>37<!-- --> <!-- -->projects</h1><script src="/_next/static/app.js"></script>`,
         "",
       ),
     ).not.toThrow();
@@ -129,5 +139,26 @@ describe("verifyStaticExport", () => {
         helpExport({ securityHtml: '<a href="/issues/new">Public issue</a>' }),
       ),
     ).rejects.toThrow("public issue form");
+  });
+
+  test("rejects stale or incomplete homepage metadata", () => {
+    const rootAsset = '<script src="/_next/static/app.js"></script>';
+
+    expect(() =>
+      verifyStaticExport(
+        `${heading(37).replace(homepageTitle, "Tavernary")}${rootAsset}`,
+        "",
+      ),
+    ).toThrow("homepage title and description metadata");
+
+    expect(() =>
+      verifyStaticExport(
+        `${heading(37).replace(
+          `<meta property="og:description" content="${homepageDescription}"/>`,
+          "",
+        )}${rootAsset}`,
+        "",
+      ),
+    ).toThrow("homepage title and description metadata");
   });
 });

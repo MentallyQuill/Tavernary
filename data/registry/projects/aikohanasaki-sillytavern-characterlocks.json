@@ -3,7 +3,7 @@
   "id": "aikohanasaki-sillytavern-characterlocks",
   "name": "SillyTavern Character Locks",
   "kind": "extension",
-  "summary": "SillyTavern extension that locks presets and connection profiles to individual characters and groups for consistent configuration.",
+  "summary": "This SillyTavern extension remembers your preferred connection profile and preset for each character, chat, or group. It automatically applies them when switching contexts, eliminating manual reconfiguration.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
@@ -11,7 +11,7 @@
     "repository_id": 998536860
   },
   "frontends": ["sillytavern"],
-  "primary_function": "character-worldbuilding",
+  "primary_function": "interface-workflow",
   "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

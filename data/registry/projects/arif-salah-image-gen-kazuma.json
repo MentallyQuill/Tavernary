@@ -3,7 +3,7 @@
   "id": "arif-salah-image-gen-kazuma",
   "name": "Image-gen-kazuma",
   "kind": "extension",
-  "summary": "Image Gen Kazuma bridges SillyTavern with ComfyUI to generate images without leaving the chat interface. The extension adds full workflow control, smart prompting logic, and persistent settings.",
+  "summary": "Image Gen Kazuma bridges SillyTavern with ComfyUI to bring in-chat image generation and full workflow control. Smart prompting and persistent settings let users manage visuals without leaving the conversation.",
   "metadata_status": "curated",
   "source": {
     "type": "github",
