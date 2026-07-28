@@ -15,12 +15,12 @@ test("exports and renders the project submission builder", async ({ page }) => {
     page.getByRole("combobox", { name: "Search supported frontends" }),
   ).toHaveCount(0);
   const eligibility = page.getByText(
-    /Frontends must link to publicly accessible source code/u,
+    "Frontends and Extensions require a public GitHub or Codeberg repository.",
   );
   await expect(eligibility).toBeVisible();
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
-  await expect(eligibility).toHaveCount(0);
+  await expect(eligibility).toBeVisible();
 });
 
 test("selects multiple current frontends for an Extension", async ({
@@ -73,7 +73,9 @@ test("supports frontend-independent and not-listed submission paths", async ({
   await expect(frontendSection.getByText("0 selected")).toBeVisible();
   await page.getByLabel("Other or not listed").check();
   await expect(
-    page.getByText(/Frontends must link to publicly accessible source code/u),
+    page.getByText(
+      "Frontends and Extensions require a public GitHub or Codeberg repository.",
+    ),
   ).toBeVisible();
   await expect(
     page.getByText(
@@ -143,7 +145,7 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
   await page
     .getByLabel("Project URL")
-    .fill("https://github.com/example/extension");
+    .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");
   await page.getByLabel("SillyTavern").check();
   await page.getByRole("button", { name: "Continue to GitHub" }).click();
 
@@ -158,7 +160,7 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
     expect.objectContaining({
       schema_version: 2,
       project_type: "extension",
-      source_url: "https://github.com/example/extension",
+      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
       frontends: {
         known_ids: ["sillytavern"],
         other: [],

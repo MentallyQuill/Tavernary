@@ -60,6 +60,7 @@ Do not hand-edit generated output. The important boundaries are:
 
 - `data/registry/projects/` - canonical human-authored project records;
 - `data/snapshots/github/` - machine-authored GitHub facts;
+- `data/snapshots/codeberg/` - machine-authored Codeberg facts;
 - `data/catalog/projects.json` - historical intake preserved for migration and
   auditability;
 - `src/generated/catalog.json` - generated browser-ready catalog data; and
@@ -75,4 +76,3 @@ shims. In that case, use `npm.cmd` and `npx.cmd` for the same commands.
 
 The repository's [contribution overview](contribution-overview.md) explains
 which changes belong in issues, pull requests, or private security reports.
-

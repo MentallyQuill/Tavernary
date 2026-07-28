@@ -3,7 +3,10 @@ import { resolve } from "node:path";
 
 import { expect, test, vi } from "vitest";
 
-import { CodebergRepositoryProvider } from "../../scripts/catalog/codeberg-repository-provider.mjs";
+import {
+  CodebergRepositoryProvider,
+  runCodebergSmoke,
+} from "../../scripts/catalog/codeberg-repository-provider.mjs";
 
 async function fixture(name: string) {
   return JSON.parse(
@@ -22,6 +25,30 @@ const record = {
     repository_id: 1699613,
   },
 };
+
+test("smoke verifies public identity and a 40-character head", async () => {
+  const repository = await fixture("repository");
+  const commits = await fixture("commits");
+  const logger = { log: vi.fn() };
+  const result = await runCodebergSmoke(record.source.repository, {
+    request: vi
+      .fn()
+      .mockResolvedValueOnce({ data: repository })
+      .mockResolvedValueOnce({ data: commits }),
+    logger,
+  });
+
+  expect(result).toEqual({
+    provider: "codeberg",
+    repositoryId: 1699613,
+    repository: "targren/Lumiverse-SwipeScrubber",
+    public: true,
+    headSha: "111978ba6fcbc5236c060be2b2ad7484833145b9",
+  });
+  expect(logger.log).toHaveBeenCalledWith(
+    expect.stringContaining("provider=codeberg"),
+  );
+});
 
 function activity() {
   return {

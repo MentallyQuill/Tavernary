@@ -12,7 +12,7 @@ Do not use reference fixtures as runtime imports. Production builds read from
 ## Machine contracts
 
 - [Project record schema](project-record-schema.md)
-- [GitHub snapshot schema](github-snapshot-schema.md)
+- [Repository snapshot schema](repository-snapshot-schema.md)
 - [Catalog statuses and manifests](catalog-statuses-and-manifests.md)
 - [Controlled vocabularies](controlled-vocabularies.md)
 - [Enrichment run report contract](catalog-enrichment-report.md)
@@ -21,6 +21,7 @@ Do not use reference fixtures as runtime imports. Production builds read from
 
 - `data/snapshots/github-refresh.json`: latest sanitized refresh manifest.
 - `data/snapshots/github/*.json`: generated GitHub evidence.
+- `data/snapshots/codeberg/*.json`: generated Codeberg evidence.
 - `data/snapshots/github/kits/*.json`: kit reaction snapshots.
 - `data/reports/enrichment-report.json`: latest enrichment run report.
 - `src/generated/catalog.json`: generated browser input artifact.

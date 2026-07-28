@@ -57,7 +57,7 @@ test("requires name and description for an external preset", () => {
   );
 });
 
-test("requires name and description for an external Frontend", () => {
+test("requires a GitHub or Codeberg repository for a Frontend", () => {
   const result = normalizeProjectSubmissionManifest({
     schema_version: 2,
     project_type: "frontend",
@@ -71,12 +71,9 @@ test("requires name and description for an external Frontend", () => {
 
   expect(result).toMatchObject({ valid: false });
   if (result.valid) throw new Error("Expected invalid manifest");
-  expect(result.errors).toEqual(
-    expect.arrayContaining([
-      "External Frontends require a project name.",
-      "External Frontends require a short description.",
-    ]),
-  );
+  expect(result.errors).toEqual([
+    "Frontends and Extensions require a public GitHub or Codeberg repository.",
+  ]);
 });
 
 test.each(["frontend", "preset"] as const)(

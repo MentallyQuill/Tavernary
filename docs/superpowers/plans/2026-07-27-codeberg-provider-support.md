@@ -72,7 +72,7 @@
 - Modify `package.json`: point `catalog:refresh` at the provider-neutral refresh entrypoint.
 - Modify `.github/workflows/refresh-catalog.yml` and `.github/workflows/generate-project-submission.yml`: stage and validate Codeberg snapshot paths safely.
 - Modify `scripts/ci/classify-pr-paths.mjs`: recognize Codeberg snapshot content.
-- Move `docs/reference/github-snapshot-schema.md` to `docs/reference/repository-snapshot-schema.md`: make the public schema reference provider-neutral.
+- Maintain `docs/reference/repository-snapshot-schema.md` as the provider-neutral public schema reference.
 - Modify `docs/reference/README.md`: link the renamed repository snapshot reference.
 - Modify focused unit, submission E2E, catalog E2E, visual, documentation, and workflow contract tests listed in the tasks below.
 
@@ -1404,7 +1404,7 @@ git commit -m "feat(catalog): refresh Codeberg sources"
 - Modify: `.github/ISSUE_TEMPLATE/01-project-submission.yml`
 - Modify: `docs/contributing/submission-and-review.md`
 - Modify: `docs/architecture/catalog-data-model.md`
-- Move: `docs/reference/github-snapshot-schema.md` to `docs/reference/repository-snapshot-schema.md`
+- Modify: `docs/reference/repository-snapshot-schema.md`
 - Modify: `docs/reference/README.md`
 - Modify: `docs/maintenance/operations-runbook.md`
 - Modify: `tests/unit/project-submission-docs.test.ts`
@@ -1468,14 +1468,13 @@ Document:
 - no arbitrary Forgejo or cross-provider mirror inference.
 
 Use `apply_patch` to move
-`docs/reference/github-snapshot-schema.md` to
 `docs/reference/repository-snapshot-schema.md` while changing its title and
 provider-specific wording in the same patch.
 
 Run this exact search and update every returned documentation link:
 
 ```powershell
-rg -n "github-snapshot-schema" docs README.md
+rg -n "repository-snapshot-schema" docs README.md
 ```
 
 The completed search must return no stale references.

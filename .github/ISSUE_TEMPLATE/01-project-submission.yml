@@ -8,6 +8,7 @@ body:
     attributes:
       value: |
         Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type. This form remains available as a structured fallback.
+        Frontends and Extensions require a public GitHub or Codeberg repository.
   - type: input
     id: project-type
     attributes:
@@ -20,14 +21,14 @@ body:
     id: project-url
     attributes:
       label: Project URL
-      placeholder: https://github.com/owner/repository
+      placeholder: https://github.com/owner/repository or https://codeberg.org/owner/repository
     validations:
       required: true
   - type: input
     id: project-name
     attributes:
       label: Project Name
-      description: Optional for GitHub sources; required for external Frontends and System Presets.
+      description: Optional for GitHub and Codeberg sources; required for external System Presets.
     validations:
       required: false
   - type: textarea
@@ -35,7 +36,7 @@ body:
     attributes:
       label: Short Description
       description: >-
-        Optional for GitHub sources; required for external Frontends and System
+        Optional for GitHub and Codeberg sources; required for external System
         Presets. This helps us understand the project and may be adapted into
         Tavernary's catalog summary for clarity and consistency. The published
         summary may be shortened or rewritten.

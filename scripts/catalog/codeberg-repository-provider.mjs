@@ -1,5 +1,6 @@
 import { codebergRequest } from "./codeberg-client.mjs";
 import { inspectApiActivity } from "./github-inspector.mjs";
+import { pathToFileURL } from "node:url";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const HISTORY_DAYS = 12 * 7;
@@ -353,4 +354,56 @@ export class CodebergRepositoryProvider {
     );
     return response.data;
   }
+}
+
+export async function runCodebergSmoke(repository, options = {}) {
+  if (!/^[^/\s]+\/[^/\s]+$/u.test(repository)) {
+    throw new Error("Codeberg smoke requires owner/repository.");
+  }
+  const request = options.request ?? codebergRequest;
+  const root = repositoryPath(repository);
+  const { data } = await request(`/repos/${root}`);
+  if (
+    !Number.isInteger(data?.id) ||
+    data.private === true ||
+    typeof data?.default_branch !== "string"
+  ) {
+    throw new Error("Codeberg smoke repository is not a public repository.");
+  }
+  const { data: commits } = await request(
+    `/repos/${root}/commits?sha=${encodeURIComponent(data.default_branch)}&page=1&limit=1`,
+  );
+  const headSha = Array.isArray(commits) ? commits[0]?.sha : null;
+  if (!/^[0-9a-f]{40}$/u.test(headSha ?? "")) {
+    throw new Error("Codeberg smoke returned an invalid head SHA.");
+  }
+  const canonicalRepository = `${data.owner.login}/${data.name}`;
+  const output = [
+    "provider=codeberg",
+    `repository_id=${data.id}`,
+    `repository=${canonicalRepository}`,
+    "public=true",
+    `head_sha=${headSha}`,
+  ].join("\n");
+  (options.logger ?? console).log(output);
+  return {
+    provider: "codeberg",
+    repositoryId: data.id,
+    repository: canonicalRepository,
+    public: true,
+    headSha,
+  };
+}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  const smokeIndex = process.argv.indexOf("--smoke");
+  if (smokeIndex < 0 || !process.argv[smokeIndex + 1]) {
+    throw new Error(
+      "Usage: codeberg-repository-provider.mjs --smoke owner/repository",
+    );
+  }
+  await runCodebergSmoke(process.argv[smokeIndex + 1]);
 }

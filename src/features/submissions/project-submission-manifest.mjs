@@ -153,18 +153,12 @@ export function normalizeProjectSubmissionManifest(value) {
     errors.push("External System Presets require a short description.");
   }
   if (
-    projectType === "frontend" &&
-    !repositoryProviderFromUrl(sourceUrl) &&
-    !name
+    (projectType === "frontend" || projectType === "extension") &&
+    !repositoryProviderFromUrl(sourceUrl)
   ) {
-    errors.push("External Frontends require a project name.");
-  }
-  if (
-    projectType === "frontend" &&
-    !repositoryProviderFromUrl(sourceUrl) &&
-    !description
-  ) {
-    errors.push("External Frontends require a short description.");
+    errors.push(
+      "Frontends and Extensions require a public GitHub or Codeberg repository.",
+    );
   }
 
   if (errors.length > 0) {

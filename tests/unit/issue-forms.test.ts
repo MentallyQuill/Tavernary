@@ -170,7 +170,7 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[0].validations.required).toBe(true);
   expect(fields[1].validations.required).toBe(true);
   expect(fields[1].attributes.placeholder).toBe(
-    "https://github.com/owner/repository",
+    "https://github.com/owner/repository or https://codeberg.org/owner/repository",
   );
   expect(fields[4].attributes.description).toContain(
     "comma- or newline-separated",
@@ -178,8 +178,10 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[3].attributes.description).toContain(
     "may be adapted into Tavernary's catalog summary",
   );
-  expect(fields[2].attributes.description).toContain("external Frontends");
-  expect(fields[3].attributes.description).toContain("external Frontends");
+  expect(fields[2].attributes.description).toContain(
+    "GitHub and Codeberg sources",
+  );
+  expect(fields[3].attributes.description).toContain("external System Presets");
   expect(fields[5].attributes.placeholder).toBe("Yes or No");
   expect(fields[5].validations.required).toBe(true);
   expect(fields[7].validations?.required ?? false).toBe(false);

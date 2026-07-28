@@ -377,70 +377,54 @@ test("prepares a Codeberg draft through the repository provider", async () => {
   });
 });
 
-test("prepares a generic external Frontend draft with its vocabulary entry", async () => {
-  const draft = await prepareProjectSubmissionDraft({
-    issue: {
-      number: 129,
-      state: "open",
-      labels: [{ name: "needs-maintainer-review" }],
-      body: [
-        "### Project manifest",
-        "",
-        "```json",
-        JSON.stringify({
-          schema_version: 2,
-          project_type: "frontend",
-          source_url: "https://example.com/nova",
-          name: "Nova Frontend",
-          description: "A public-source roleplay frontend.",
-          frontends: { known_ids: [], other: [] },
-          frontend_independent: false,
-          additional_context: null,
-        }),
-        "```",
-      ].join("\n"),
-    },
-    now: "2026-07-25T18:00:00.000Z",
-    sourceClients: {
-      request: async () => {
-        throw new Error("GitHub should not be requested.");
+test("rejects a generic external Frontend before source probing", async () => {
+  await expect(
+    prepareProjectSubmissionDraft({
+      issue: {
+        number: 129,
+        state: "open",
+        labels: [{ name: "needs-maintainer-review" }],
+        body: [
+          "### Project manifest",
+          "",
+          "```json",
+          JSON.stringify({
+            schema_version: 2,
+            project_type: "frontend",
+            source_url: "https://example.com/nova",
+            name: "Nova Frontend",
+            description: "A public-source roleplay frontend.",
+            frontends: { known_ids: [], other: [] },
+            frontend_independent: false,
+            additional_context: null,
+          }),
+          "```",
+        ].join("\n"),
       },
-      probe: async () => ({
-        status: 200,
-        finalUrl: "https://example.com/nova",
-      }),
-      catalogData: {
-        vocabulary: {
-          frontends: [
-            {
-              id: "sillytavern",
-              label: "SillyTavern",
-              description: "Works with the SillyTavern roleplay frontend.",
-            },
-          ],
+      now: "2026-07-25T18:00:00.000Z",
+      sourceClients: {
+        request: async () => {
+          throw new Error("GitHub should not be requested.");
         },
-        projects: [],
-      },
-    },
-  });
-
-  expect(draft).toMatchObject({
-    record: {
-      id: "example-com-nova",
-      kind: "frontend",
-      source: {
-        type: "url",
-        url: "https://example.com/nova",
-      },
-      frontends: ["nova-frontend"],
-    },
-    frontendVocabulary: {
-      frontends: expect.arrayContaining([
-        expect.objectContaining({
-          id: "nova-frontend",
-          label: "Nova Frontend",
+        probe: async () => ({
+          status: 200,
+          finalUrl: "https://example.com/nova",
         }),
-      ]),
-    },
-  });
+        catalogData: {
+          vocabulary: {
+            frontends: [
+              {
+                id: "sillytavern",
+                label: "SillyTavern",
+                description: "Works with the SillyTavern roleplay frontend.",
+              },
+            ],
+          },
+          projects: [],
+        },
+      },
+    }),
+  ).rejects.toThrow(
+    "Frontends and Extensions require a public GitHub or Codeberg repository.",
+  );
 });

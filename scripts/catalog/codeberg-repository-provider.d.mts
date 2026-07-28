@@ -37,3 +37,17 @@ export class CodebergRepositoryProvider implements RepositoryProvider {
   ): Promise<ContributorCollection>;
   readRootReadme: RepositoryProvider["readRootReadme"];
 }
+
+export function runCodebergSmoke(
+  repository: string,
+  options?: {
+    request?: CodebergRepositoryProviderClients["request"];
+    logger?: { log(value: string): void };
+  },
+): Promise<{
+  provider: "codeberg";
+  repositoryId: number;
+  repository: string;
+  public: true;
+  headSha: string;
+}>;

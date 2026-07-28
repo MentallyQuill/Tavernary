@@ -14,7 +14,7 @@ const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
 
 const frontendEligibility =
-  "Frontends must link to publicly accessible source code on GitHub or an equivalent source host. The code must be visible without signing in; an open-source license is not required.";
+  "Frontends and Extensions require a public GitHub or Codeberg repository.";
 
 export interface SubmissionFrontendOption {
   id: string;
@@ -73,7 +73,7 @@ function requiresExternalMetadata(
   projectType: ProjectSubmissionType,
   sourceUrl: string,
 ) {
-  if (!["frontend", "preset"].includes(projectType)) return false;
+  if (projectType !== "preset") return false;
   return Boolean(sourceUrl.trim()) && !repositoryProviderFromUrl(sourceUrl);
 }
 
@@ -236,13 +236,10 @@ export function ProjectSubmissionBuilder({
       addError("project-url", "Project URL must be a public HTTPS URL.");
     } else if (
       sourceUrl &&
-      projectType === "extension" &&
+      (projectType === "frontend" || projectType === "extension") &&
       !repositoryProviderFromUrl(sourceUrl)
     ) {
-      addError(
-        "project-url",
-        "Extensions require an exact public GitHub or Codeberg owner/repository URL.",
-      );
+      addError("project-url", frontendEligibility);
     }
     if (showFrontendFields && includeOtherFrontend) {
       if (!otherFrontendName.trim()) {
@@ -342,11 +339,9 @@ export function ProjectSubmissionBuilder({
             }
           />
           <p className="submission-hint" id="project-url-hint">
-            {projectType === "frontend"
+            {projectType === "frontend" || projectType === "extension"
               ? frontendEligibility
-              : projectType === "extension"
-                ? "Extensions require an exact public GitHub or Codeberg owner/repository URL."
-                : "System Presets may use a stable public HTTPS source URL."}
+              : "System Presets may use a stable public HTTPS source URL."}
           </p>
           <InlineError
             id="project-url-error"

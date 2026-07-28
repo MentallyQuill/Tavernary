@@ -91,10 +91,10 @@ export default function AboutPage() {
         <section id="frontend-eligibility">
           <h2>Adding Frontends</h2>
           <p>
-            Frontends must link to publicly accessible source code on GitHub or
-            an equivalent source host. The code must be visible without signing
-            in, but an open-source license is not required. Tavernary does not
-            require a popularity level or recent activity for inclusion.
+            Frontends and Extensions require a public GitHub or Codeberg
+            repository. The code must be visible without signing in, but an
+            open-source license is not required. Tavernary does not require a
+            popularity level or recent activity for inclusion.
           </p>
           <p>
             A submission should be an identifiable, usable Frontend rather than
@@ -102,8 +102,8 @@ export default function AboutPage() {
             documentation to understand what it is and how to run it.
           </p>
           <p>
-            Non-GitHub Frontends are reviewed manually and do not receive
-            GitHub-derived activity or popularity metadata.
+            Both providers receive the same repository activity, community, and
+            attribution treatment in the catalog.
           </p>
         </section>
 
