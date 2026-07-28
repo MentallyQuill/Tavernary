@@ -205,16 +205,15 @@ function expectCatalogContract(records: CatalogRecord[]) {
       (record) => record.source.license_status === "missing",
     ),
   ).toBe(true);
-  const provisionalUrlRecords = urlRecords.filter(
+  const pendingUrlRecords = urlRecords.filter(
     (record) => !expectedUrlRecordIds.includes(record.id),
   );
   expect(
-    provisionalUrlRecords.every(
+    pendingUrlRecords.every(
       (record) =>
-        record.metadata_status === "provisional" &&
-        (record.id === "reddit-1v64r6z"
-          ? record.enrichment_policy === "automatic"
-          : record.enrichment_policy === "manual") &&
+        (record.enrichment_policy === "automatic"
+          ? ["curated", "provisional"].includes(record.metadata_status)
+          : record.metadata_status === "provisional") &&
         record.source.license_status === "pending",
     ),
   ).toBe(true);
@@ -331,6 +330,24 @@ describe("full catalog data", () => {
     codebergExtension.source.repository_id = 1_699_613;
 
     expectCatalogContract([...records, codebergExtension]);
+  });
+
+  test("accepts a curated automatic URL record after enrichment", async () => {
+    const records = await loadRegistryRecords();
+    const automaticUrlRecord = records.find(
+      (record) =>
+        record.source.type === "url" &&
+        record.enrichment_policy === "automatic" &&
+        record.metadata_status === "provisional" &&
+        record.source.license_status === "pending",
+    );
+    expect(automaticUrlRecord).toBeDefined();
+
+    automaticUrlRecord!.metadata_status = "curated";
+    automaticUrlRecord!.primary_function = "generation-reasoning";
+    automaticUrlRecord!.capabilities = ["prompt-engineering"];
+
+    expectCatalogContract(records);
   });
 
   test("accepts structural primary functions for provisional frontends", async () => {
