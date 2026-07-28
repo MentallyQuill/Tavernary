@@ -11,23 +11,46 @@ import { loadCatalog } from "@/lib/catalog/load-catalog";
 interface CatalogProjectForHelpOption {
   id: string;
   name: string;
-  canonicalUrl: string;
+  canonicalUrl: unknown;
   searchableText: string;
   attribution: { owner: { login: string } } | null;
+}
+
+function parseHttpsCatalogSource(value: unknown) {
+  if (typeof value !== "string") return null;
+
+  try {
+    const source = new URL(value);
+    if (
+      source.protocol !== "https:" ||
+      source.username.length > 0 ||
+      source.password.length > 0
+    ) {
+      return null;
+    }
+    return { canonicalUrl: value, hostname: source.hostname };
+  } catch {
+    return null;
+  }
 }
 
 export function mapHelpProjectOptions(
   projects: readonly CatalogProjectForHelpOption[],
 ): HelpProjectOption[] {
-  return projects.map((project) => ({
-    id: project.id,
-    name: project.name,
-    creator:
-      project.attribution?.owner.login ??
-      new URL(project.canonicalUrl).hostname,
-    canonicalUrl: project.canonicalUrl,
-    searchableText: project.searchableText,
-  }));
+  return projects.flatMap((project) => {
+    const source = parseHttpsCatalogSource(project.canonicalUrl);
+    if (!source) return [];
+
+    return [
+      {
+        id: project.id,
+        name: project.name,
+        creator: project.attribution?.owner.login ?? source.hostname,
+        canonicalUrl: source.canonicalUrl,
+        searchableText: project.searchableText,
+      },
+    ];
+  });
 }
 
 export const metadata = {
