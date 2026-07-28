@@ -56,7 +56,7 @@
   "batch_size": 30,
   "concurrency": 4,
   "created_at": "2026-07-28T06:37:02.551Z",
-  "updated_at": "2026-07-28T07:03:25.845Z",
+  "updated_at": "2026-07-28T07:12:17.868Z",
   "manifest": [
     "aikohanasaki-sillytavern-modelinjection",
     "aikohanasaki-sillytavern-worldinfoinfo",
@@ -2604,8 +2604,8 @@
     }
   },
   "publication": {
-    "checkpoint_commit_sha": "bdb4b9d999723eecc83667d35d8d45662c3dcb71",
-    "recorded_at": "2026-07-28T07:03:23.945Z"
+    "checkpoint_commit_sha": "24e08dd38b472b2f3d7ddd95e7b17964cda7345a",
+    "recorded_at": "2026-07-28T07:12:17.868Z"
   },
   "deployment": null,
   "aggregates": {
