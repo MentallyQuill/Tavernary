@@ -51,20 +51,28 @@ function record(id: string) {
     summary: "Generic intake details.",
     metadata_status: "provisional",
     enrichment_policy: "automatic" as const,
-    visibility: "published",
+    listing_status: "active",
     frontends: [],
-    source: {
-      type: "github",
-      repository: `Creator/${id}`,
-      repository_id: 42,
-    },
+    source_id: `github-${id}`,
+  };
+}
+
+function sourceRecord(id: string) {
+  return {
+    id: `github-${id}`,
+    type: "github",
+    repository: `Creator/${id}`,
+    repository_id: 42,
+    status: "active",
+    refresh_policy: "automatic",
   };
 }
 
 function snapshot(id: string) {
   return {
-    schema_version: 2,
-    project_id: id,
+    schema_version: 4,
+    provider: "github",
+    source_id: `github-${id}`,
     source_health: "healthy",
     stale_since: null,
     repository: {
@@ -95,7 +103,10 @@ function sources(id: string) {
 function executionOptions(ids: string[]) {
   return {
     records: ids.map(record),
-    snapshots: Object.fromEntries(ids.map((id) => [id, snapshot(id)])),
+    sources: ids.map(sourceRecord),
+    snapshots: Object.fromEntries(
+      ids.map((id) => [`github-${id}`, snapshot(id)]),
+    ),
     vocabularies,
     validateSnapshot: () => true,
     providerConfiguration,

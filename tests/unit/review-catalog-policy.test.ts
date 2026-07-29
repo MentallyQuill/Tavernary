@@ -6,7 +6,12 @@ const project = {
   name: "Alpha",
   kind: "extension",
   summary: "Summary.",
-  source: { type: "github", repository: "Owner/Alpha" },
+  source_id: "github-42",
+};
+const source = {
+  id: "github-42",
+  type: "github",
+  repository: "Owner/Alpha",
 };
 const snapshot = {
   repository: { head_sha: "a".repeat(40) },
@@ -22,6 +27,7 @@ test("reviews bounded published evidence and returns durable state", async () =>
   };
   const result = await reviewCatalogPolicy({
     project,
+    source,
     snapshot,
     provider,
     loadSource: async () => ({
@@ -47,6 +53,7 @@ test("reviews bounded published evidence and returns durable state", async () =>
 test("provider and evidence failures remain non-blocking and retryable", async () => {
   const result = await reviewCatalogPolicy({
     project,
+    source,
     snapshot,
     provider: { review: vi.fn(async () => Promise.reject(new Error("raw"))) },
     loadSource: async () => ({ status: "ready", readmeText: "evidence" }),
@@ -62,6 +69,7 @@ test("provider and evidence failures remain non-blocking and retryable", async (
 test("skips an already successful evidence fingerprint", async () => {
   const first = await reviewCatalogPolicy({
     project,
+    source,
     snapshot,
     provider: {
       review: async () => ({
@@ -75,6 +83,7 @@ test("skips an already successful evidence fingerprint", async () => {
   });
   const second = await reviewCatalogPolicy({
     project,
+    source,
     snapshot,
     previous: first.state,
     provider: { review: vi.fn() },

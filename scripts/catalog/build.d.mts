@@ -4,6 +4,7 @@ export interface BuildCatalogOptions {
   write?: boolean;
   now?: string;
   records?: unknown[];
+  sources?: unknown[];
   snapshots?: unknown[];
   refreshManifest?: unknown;
   kitRecords?: unknown[];

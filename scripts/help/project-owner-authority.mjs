@@ -1,4 +1,18 @@
-import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
+import {
+  fingerprintProjectRecord,
+  fingerprintSourceRecord,
+} from "../../src/features/help/project-owner-record.mjs";
+
+const PROJECT_OPERATIONS = new Set([
+  "edit-card",
+  "retire-card",
+  "restore-card",
+]);
+const SOURCE_OPERATIONS = new Set([
+  "add-cards",
+  "move-source",
+  "delist-source",
+]);
 
 function positiveInteger(value) {
   return Number.isSafeInteger(value) && value > 0;
@@ -9,7 +23,7 @@ function unauthorized(reasonCode) {
 }
 
 export function verifyProjectOwnerAuthority(input) {
-  const source = input?.record?.source;
+  const source = input?.source;
   if (source?.type !== "github") return unauthorized("unsupported-source");
 
   const storedRepositoryId = source.repository_id;
@@ -50,70 +64,36 @@ export function verifyProjectOwnerAuthority(input) {
   };
 }
 
-function valuesEqual(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right);
-}
-
-function operationFieldValue(operation, record, field) {
-  if (operation === "move-source") return record?.source?.[field];
-  return record?.[field];
-}
-
-function changedManifestFields(manifest) {
-  const original = manifest?.original;
-  const proposed = manifest?.proposed;
-  if (!original || !proposed) return [];
-
-  if (manifest.operation === "edit-card") {
-    return [
-      "name",
-      "summary",
-      "frontends",
-      "primary_function",
-      "capabilities",
-      "model_families",
-      "completion_formats",
-    ].filter((field) => !valuesEqual(original[field], proposed[field]));
-  }
-  if (manifest.operation === "move-source") {
-    return ["repository", "repository_id"].filter(
-      (field) => !valuesEqual(original[field], proposed[field]),
-    );
-  }
-  if (manifest.operation === "delist") {
-    return Object.keys(original).filter(
-      (field) => !valuesEqual(original[field], proposed[field]),
-    );
-  }
-  return [];
+function stale(field) {
+  return {
+    conflict: true,
+    reasonCode: "stale-owner-request",
+    fields: [field],
+    warnings: [],
+  };
 }
 
 export function detectOwnerRequestConflict(input) {
-  const { manifest, record } = input ?? {};
-  const fields = changedManifestFields(manifest);
-  const staleFields = fields.filter(
-    (field) =>
-      !valuesEqual(
-        operationFieldValue(manifest?.operation, record, field),
-        manifest?.original?.[field],
-      ),
-  );
-  if (staleFields.length > 0) {
-    return {
-      conflict: true,
-      reasonCode: "stale-owner-request",
-      fields: staleFields,
-      warnings: [],
-    };
+  const operation = input?.manifest?.operation;
+  if (PROJECT_OPERATIONS.has(operation)) {
+    const current =
+      input?.currentProjectFingerprint ??
+      fingerprintProjectRecord(input?.project);
+    return current === input?.manifest?.project_fingerprint
+      ? { conflict: false, warnings: [] }
+      : stale("project_fingerprint");
   }
-
-  const currentFingerprint =
-    input?.currentFingerprint ?? fingerprintProjectRecord(record);
+  if (SOURCE_OPERATIONS.has(operation)) {
+    const current =
+      input?.currentSourceFingerprint ?? fingerprintSourceRecord(input?.source);
+    return current === input?.manifest?.source_fingerprint
+      ? { conflict: false, warnings: [] }
+      : stale("source_fingerprint");
+  }
   return {
-    conflict: false,
-    warnings:
-      currentFingerprint === manifest?.source_fingerprint
-        ? []
-        : ["source-fingerprint-changed"],
+    conflict: true,
+    reasonCode: "unsupported-owner-operation",
+    fields: ["operation"],
+    warnings: [],
   };
 }

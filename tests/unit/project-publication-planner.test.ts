@@ -6,10 +6,13 @@ import { createProjectPublicationTransaction } from "../../scripts/publication/p
 const headSha = "c".repeat(40);
 const baseSha = "b".repeat(40);
 const transaction = createProjectPublicationTransaction({
+  schema_version: 2,
   operation: "create",
   producer: "project-submission",
+  publication_mode: "automatic",
   issue_number: 72,
-  project_id: "owner-project",
+  project_ids: ["owner-project"],
+  source_id: "github-42",
   source_identity: {
     type: "github",
     canonical: "github:42",
@@ -18,12 +21,13 @@ const transaction = createProjectPublicationTransaction({
   actor: { id: 11, login: "Submitter", type: "User" },
   authority_type: "community-submitter",
   input_digest: "a".repeat(64),
-  record_fingerprint: null,
+  input_fingerprints: { projects: {}, source: null },
   base_sha: baseSha,
   generated_head_sha: headSha,
   generated_paths: [
     "data/registry/projects/owner-project.json",
-    "data/snapshots/github/owner-project.json",
+    "data/registry/sources/github-42.json",
+    "data/snapshots/github/github-42.json",
   ],
   policy_version: "2026-07-29",
   copy_result: null,
@@ -66,7 +70,8 @@ function input(overrides: Record<string, unknown> = {}) {
     current: {
       mainSha: baseSha,
       inputDigest: transaction.input_digest,
-      recordFingerprint: null,
+      projectFingerprints: {},
+      sourceFingerprint: null,
       authorityValid: true,
       sourceIdentityValid: true,
     },
@@ -81,7 +86,8 @@ test("merges a successful exact generated transaction", () => {
     expectedHeadSha: headSha,
     producer: "project-submission",
     issueNumber: 72,
-    projectId: "owner-project",
+    projectIds: ["owner-project"],
+    sourceId: "github-42",
   });
 });
 
@@ -129,14 +135,20 @@ test("retries unsuccessful or pending mergeability checks", () => {
 test.each([
   ["input-digest-stale", { inputDigest: "d".repeat(64) }],
   ["base-behind-main", { mainSha: "e".repeat(40) }],
-  ["record-fingerprint-stale", { recordFingerprint: "f".repeat(64) }],
+  [
+    "project-fingerprint-stale",
+    { projectFingerprints: { "owner-project": "f".repeat(64) } },
+  ],
 ] as const)("regenerates %s state", (reasonCode, currentOverride) => {
   const ownerTransaction = createProjectPublicationTransaction({
     ...transaction,
     operation: "edit-card",
     producer: "project-owner-request",
     authority_type: "repository-owner",
-    record_fingerprint: "9".repeat(64),
+    input_fingerprints: {
+      projects: { "owner-project": "9".repeat(64) },
+      source: null,
+    },
     generated_paths: ["data/registry/projects/owner-project.json"],
     copy_result: {
       mode: "preserve",
@@ -169,7 +181,10 @@ test.each([
     changedPaths: ownerTransaction.generated_paths,
     current: {
       ...input().current,
-      recordFingerprint: ownerTransaction.record_fingerprint,
+      projectFingerprints: {
+        "owner-project":
+          ownerTransaction.input_fingerprints.projects["owner-project"],
+      },
       ...currentOverride,
     },
   });
@@ -178,6 +193,62 @@ test.each([
     reasonCode,
     producer: "project-owner-request",
     issueNumber: 72,
+  });
+});
+
+test("holds a valid manual transaction for deliberate maintainer approval", () => {
+  const manual = createProjectPublicationTransaction({
+    ...transaction,
+    operation: "add-cards",
+    producer: "project-owner-request",
+    publication_mode: "manual",
+    project_ids: ["card-a", "card-b"],
+    authority_type: "repository-owner",
+    input_fingerprints: { projects: {}, source: "9".repeat(64) },
+    generated_paths: [
+      "data/registry/projects/card-a.json",
+      "data/registry/projects/card-b.json",
+    ],
+    copy_result: null,
+  });
+  expect(
+    planProjectPublication(
+      input({
+        workflowRun: {
+          ...input().workflowRun,
+          head_branch: "automation/project-owner-request-72",
+        },
+        pull: {
+          ...input().pull,
+          mergeable: null,
+          head: {
+            ...input().pull.head,
+            ref: "automation/project-owner-request-72",
+          },
+        },
+        transaction: manual,
+        issue: {
+          ...input().issue,
+          labels: [
+            { name: "issue-admitted" },
+            { name: "project-owner-request" },
+            { name: "submission-pr-open" },
+          ],
+        },
+        changedPaths: manual.generated_paths,
+        current: {
+          ...input().current,
+          sourceFingerprint: "9".repeat(64),
+        },
+      }),
+    ),
+  ).toEqual({
+    action: "await-maintainer",
+    reasonCode: "manual-approval-required",
+    producer: "project-owner-request",
+    issueNumber: 72,
+    projectIds: ["card-a", "card-b"],
+    sourceId: "github-42",
   });
 });
 

@@ -35,24 +35,28 @@ const frontendProjects = [
     id: "prolix-oc-lumiverse",
     name: "Lumiverse",
     kind: "frontend",
-    source: {
-      type: "github",
-      repository: "prolix-oc/Lumiverse",
-      repository_id: 1175596366,
-    },
+    source_id: "github-1175596366",
     frontends: ["lumiverse"],
   },
   {
     id: "example-nova",
     name: "Nova",
     kind: "frontend",
-    source: {
-      type: "url",
-      url: "https://codeberg.org/example/nova",
-    },
+    source_id: "url-example-nova",
     frontends: ["nova"],
   },
 ];
+const sourcesById = {
+  "github-1175596366": {
+    type: "github",
+    repository: "prolix-oc/Lumiverse",
+    repository_id: 1175596366,
+  },
+  "url-example-nova": {
+    type: "url",
+    url: "https://codeberg.org/example/nova",
+  },
+};
 
 test("matches IDs, labels, aliases, and frontend repository URLs", () => {
   const result = reconcileFrontends({
@@ -67,6 +71,7 @@ test("matches IDs, labels, aliases, and frontend repository URLs", () => {
     frontendIndependent: false,
     vocabulary,
     frontendProjects,
+    sourcesById,
   });
 
   expect(result).toEqual({
@@ -87,6 +92,7 @@ test("matches submitted labels and explicit aliases", () => {
     frontendIndependent: false,
     vocabulary,
     frontendProjects,
+    sourcesById,
   });
 
   expect(result).toEqual({
@@ -110,6 +116,7 @@ test("classifies an unknown GitHub frontend as a dependency", () => {
       frontendIndependent: false,
       vocabulary,
       frontendProjects,
+      sourcesById,
     }),
   ).toEqual({
     status: "needs-information",
@@ -148,6 +155,7 @@ test("matches an indexed external Frontend by canonical source URL", () => {
         ],
       },
       frontendProjects,
+      sourcesById,
     }),
   ).toEqual({
     status: "resolved",
@@ -165,6 +173,7 @@ test("classifies an unknown public source Frontend as a dependency", () => {
       frontendIndependent: false,
       vocabulary,
       frontendProjects,
+      sourcesById,
     }),
   ).toEqual({
     status: "needs-information",
@@ -188,6 +197,7 @@ test("returns candidates instead of guessing an ambiguous typo", () => {
     frontendIndependent: false,
     vocabulary,
     frontendProjects,
+    sourcesById,
   });
 
   expect(result.status).toBe("needs-information");
@@ -204,6 +214,7 @@ test("rejects frontend-independent extensions", () => {
     frontendIndependent: true,
     vocabulary,
     frontendProjects,
+    sourcesById,
   });
 
   expect(result).toEqual({
@@ -222,6 +233,7 @@ test("requires a frontend for non-independent presets", () => {
     frontendIndependent: false,
     vocabulary,
     frontendProjects,
+    sourcesById,
   });
 
   expect(result).toEqual({

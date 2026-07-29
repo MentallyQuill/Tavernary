@@ -19,6 +19,19 @@ export interface ReconciliationProject {
   id: string;
   kind: string;
   visibility?: string;
+  source_id?: string;
+  listing_status?: string;
+}
+
+export interface ReconciliationSource {
+  id: string;
+  status: string;
+  status_reason?: string | null;
+}
+
+export interface ReconciliationSnapshot {
+  source_id: string;
+  source_health?: string;
 }
 
 export interface ReconciliationKit {
@@ -52,6 +65,8 @@ export interface KitReconciliationLedgerEntry extends KitReconciliation {
 export interface KitReconciliationInput {
   issue: GitHubKitIssue;
   projects: ReconciliationProject[];
+  sourcesById?: Record<string, ReconciliationSource>;
+  snapshotsBySourceId?: Record<string, ReconciliationSnapshot>;
   kits: ReconciliationKit[];
   blockedUsers: ReconciliationBlockedUsers;
 }
@@ -70,6 +85,8 @@ export function reconcileOwnedKitLabels(input: {
 export function buildKitReconciliationLedger(input: {
   issues: GitHubKitIssue[];
   projects: ReconciliationProject[];
+  sourcesById: Record<string, ReconciliationSource>;
+  snapshotsBySourceId: Record<string, ReconciliationSnapshot>;
   kits: ReconciliationKit[];
   blockedUsers: ReconciliationBlockedUsers;
 }): KitReconciliationLedgerEntry[];
@@ -79,6 +96,8 @@ export function runKitReconciliation(input: {
   apply: boolean;
   gh: GhRunner;
   projects: ReconciliationProject[];
+  sourcesById: Record<string, ReconciliationSource>;
+  snapshotsBySourceId: Record<string, ReconciliationSnapshot>;
   kits: ReconciliationKit[];
   blockedUsers: ReconciliationBlockedUsers;
 }): Promise<KitReconciliationLedgerEntry[]>;

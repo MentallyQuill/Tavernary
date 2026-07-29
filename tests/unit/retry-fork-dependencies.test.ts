@@ -35,34 +35,34 @@ function markerComment({
 
 const parentProject = {
   id: "parent",
-  visibility: "published",
-  source: {
-    type: "github",
-    repository: "owner/parent",
-    repository_id: 41,
-  },
+  listing_status: "retired",
+  source_id: "github-41",
+};
+
+const parentSource = {
+  id: "github-41",
+  type: "github",
+  repository: "owner/parent",
+  repository_id: 41,
+  status: "active",
+  refresh_policy: "automatic",
 };
 
 describe("terminal fork dependency selection", () => {
-  test.each(["published", "disabled", "quarantined"])(
-    "resolves when the parent registry record is %s",
-    (visibility) => {
-      expect(
-        hasTerminalForkDependency({
-          comments: [markerComment()],
-          projectsByRepositoryId: new Map([
-            [41, { ...parentProject, visibility }],
-          ]),
-        }),
-      ).toBe(true);
-    },
-  );
+  test("resolves when the parent source is registered even if its card is retired", () => {
+    expect(
+      hasTerminalForkDependency({
+        comments: [markerComment()],
+        sourcesByRepositoryId: new Map([[41, parentSource]]),
+      }),
+    ).toBe(true);
+  });
 
   test("resolves when the referenced upstream issue closed", () => {
     expect(
       hasTerminalForkDependency({
         comments: [markerComment()],
-        projectsByRepositoryId: new Map(),
+        sourcesByRepositoryId: new Map(),
         closedUpstreamIssueNumber: 201,
       }),
     ).toBe(true);
@@ -72,14 +72,14 @@ describe("terminal fork dependency selection", () => {
     expect(
       hasTerminalForkDependency({
         comments: [markerComment({ repositoryId: 99, issueNumber: 202 })],
-        projectsByRepositoryId: new Map([[41, parentProject]]),
+        sourcesByRepositoryId: new Map([[41, parentSource]]),
         closedUpstreamIssueNumber: 201,
       }),
     ).toBe(false);
     expect(
       hasTerminalForkDependency({
         comments: [markerComment()],
-        projectsByRepositoryId: new Map(),
+        sourcesByRepositoryId: new Map(),
       }),
     ).toBe(false);
     expect(
@@ -87,7 +87,7 @@ describe("terminal fork dependency selection", () => {
         comments: [
           { body: "<!-- tavernary-project-submission-state\n{}\n-->" },
         ],
-        projectsByRepositoryId: new Map([[41, parentProject]]),
+        sourcesByRepositoryId: new Map([[41, parentSource]]),
       }),
     ).toBe(false);
   });
@@ -126,7 +126,7 @@ describe("fork dependency retry", () => {
       retryForkDependencies({
         repository: "Tavernary/Tavernary",
         ref: "main",
-        projects: [parentProject],
+        sources: [parentSource],
         request,
       }),
     ).resolves.toEqual([123]);
@@ -161,7 +161,7 @@ describe("fork dependency retry", () => {
       retryForkDependencies({
         repository: "Tavernary/Tavernary",
         ref: "main",
-        projects: [],
+        sources: [],
         closedUpstreamIssueNumber: 201,
         request,
       }),

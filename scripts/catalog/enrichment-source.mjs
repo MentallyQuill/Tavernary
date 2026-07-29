@@ -2,29 +2,34 @@ import { parseSourceIdentity } from "../submissions/source-identity.mjs";
 import { loadReadmeSource } from "./readme-source.mjs";
 import { loadRedditEnrichmentSource } from "./reddit-enrichment-source.mjs";
 
-export async function loadEnrichmentSource(record, snapshot, options = {}) {
-  if (record.source?.type === "github" || record.source?.type === "codeberg") {
+export async function loadEnrichmentSource(
+  project,
+  sourceRecord,
+  snapshot,
+  options = {},
+) {
+  if (sourceRecord?.type === "github" || sourceRecord?.type === "codeberg") {
     const source = await (options.loadRepository ?? loadReadmeSource)(
-      record,
+      sourceRecord,
       snapshot,
       options,
     );
     return {
       ...source,
-      sourceIdentity: `${record.source.type}:${record.source.repository.toLowerCase()}`,
+      sourceIdentity: `${sourceRecord.type}:${sourceRecord.repository.toLowerCase()}`,
     };
   }
 
-  if (record.source?.type === "url") {
+  if (sourceRecord?.type === "url") {
     let identity;
     try {
-      identity = parseSourceIdentity(record.source.url);
+      identity = parseSourceIdentity(sourceRecord.url);
     } catch {
       identity = null;
     }
     if (identity?.kind === "reddit") {
       return (options.loadReddit ?? loadRedditEnrichmentSource)(
-        record,
+        sourceRecord,
         options,
       );
     }

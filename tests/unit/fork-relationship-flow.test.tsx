@@ -93,6 +93,7 @@ const parent = project("parent", "Parent", {
   fork: {
     parentName: "Grandparent",
     parentProjectId: "grandparent",
+    parentUrl: null,
     status: "published",
   },
 });
@@ -100,6 +101,7 @@ const child = project("child", "Child", {
   fork: {
     parentName: "Parent",
     parentProjectId: "parent",
+    parentUrl: null,
     status: "published",
   },
 });
@@ -201,5 +203,35 @@ describe("fork relationship catalog flow", () => {
         (heading) => heading.textContent,
       ),
     ).toEqual(["Parent", "Child"]);
+  });
+
+  test("links to a multi-card upstream repository without choosing one sibling", () => {
+    mockViewport();
+    const repositoryChild = project("repository-child", "Repository Child", {
+      fork: {
+        parentName: "VectHare",
+        parentProjectId: null,
+        parentUrl: "https://github.com/Coneja-Chibi/VectHare",
+        status: "repository",
+      },
+    });
+
+    render(
+      <CatalogPage
+        catalog={{
+          ...catalog,
+          projects: [repositoryChild],
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("link", { name: "Fork of VectHare" }),
+    ).toHaveAttribute("href", "https://github.com/Coneja-Chibi/VectHare");
+    expect(
+      screen.queryByRole("button", {
+        name: /View relationship between VectHare/u,
+      }),
+    ).not.toBeInTheDocument();
   });
 });

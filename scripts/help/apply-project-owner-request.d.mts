@@ -1,60 +1,25 @@
-import type { GitHubRepositoryIdentity } from "./project-owner-authority.d.mts";
-
-export type ProjectRegistryRecord = {
-  id: string;
-  kind: "frontend" | "extension" | "preset";
-  metadata_status: "provisional" | "curated";
-  source:
-    | {
-        type: "github";
-        repository: string;
-        repository_id: number | null;
-      }
-    | {
-        type: "codeberg";
-        repository: string;
-        repository_id: number;
-      }
-    | { type: "github-organization"; [key: string]: unknown }
-    | { type: "url"; [key: string]: unknown };
-  [key: string]: unknown;
-};
-
-export type RepositorySnapshot = {
-  provider: "github";
-  project_id: string;
-  repository: {
-    id: number;
-    owner: string;
-    name: string;
-    url: string;
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
-};
-
-export interface OwnerMutationResult {
-  record: ProjectRegistryRecord;
-  snapshot: RepositorySnapshot | null;
-  changedPaths: string[];
-  before: Record<string, unknown>;
-  after: Record<string, unknown>;
-}
+import type { ProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
+import type { GitHubRepositoryIdentity } from "./project-owner-authority.mjs";
 
 export interface OwnerMutationInput {
   issueNumber: number;
   manifest: unknown;
-  record: Record<string, unknown>;
+  projects: Array<Record<string, unknown>>;
+  source: Record<string, unknown>;
   snapshot?: Record<string, unknown> | null;
   repository?: GitHubRepositoryIdentity;
   publishedSummary?: string;
-  vocabularies: {
-    frontends: readonly (string | { id: string })[];
-    primaryFunctions: readonly (string | { id: string })[];
-    capabilities: readonly (string | { id: string })[];
-    modelFamilies: readonly (string | { id: string })[];
-    completionFormats: readonly (string | { id: string })[];
-  };
+  catalogedAt?: string;
+  vocabularies: Record<string, unknown>;
+}
+
+export interface OwnerMutationResult {
+  projects: Array<Record<string, unknown>>;
+  source: Record<string, unknown>;
+  snapshot: Record<string, unknown> | null;
+  changedPaths: string[];
+  before: unknown;
+  after: unknown;
 }
 
 export function applyProjectOwnerRequest(
@@ -63,4 +28,7 @@ export function applyProjectOwnerRequest(
 
 export function assertProjectOwnerRequestApplicable(
   input: OwnerMutationInput,
-): unknown;
+): {
+  manifest: ProjectOwnerManifest;
+  project: Record<string, unknown> | null;
+};

@@ -156,11 +156,11 @@ test("identity backfill targets optional IDs and owns only repository identity w
     .join("\n");
 
   expect(document.concurrency.group).toBe("catalog-refresh");
-  expect(text).toContain("while IFS= read -r project_id");
-  expect(text).toContain('args+=(--project-id "$project_id")');
+  expect(text).toContain("while IFS= read -r source_id");
+  expect(text).toContain('args+=(--source-id "$source_id")');
   expect(commands).toContain("npm run catalog:backfill-identities");
   expect(commands).toContain("npm run catalog:validate");
-  expect(text).toContain("git add data/registry/projects/*.json");
+  expect(text).toContain("git add data/registry/sources/*.json");
   expect(text).not.toMatch(/git add .*data\/snapshots/);
   expect(text).not.toContain("data/reports/enrichment-report.json");
   expect(text).not.toContain("workflow run enrich-catalog.yml");

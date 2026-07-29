@@ -20,6 +20,8 @@ test("runs advisory review after publication without blocking publication", asyn
     "cancel-in-progress": false,
   });
   expect(source).toContain("reviewCatalogPolicy");
+  expect(source).toContain("data/registry/sources/${project.source_id}.json");
+  expect(source).toContain("data/snapshots/${source.type}/${source.id}.json");
   expect(source).toContain("renderCatalogPolicyReviewIssue");
   expect(source).toContain("data/snapshots/policy-review/");
   expect(source).toContain("catalog-policy-advisory");

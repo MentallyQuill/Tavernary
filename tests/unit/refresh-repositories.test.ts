@@ -6,19 +6,18 @@ function record(id: string, type: "github" | "codeberg") {
   return {
     id,
     refresh_policy: "automatic",
-    source: {
-      type,
-      repository: `owner/${id}`,
-      repository_id: 1,
-    },
+    type,
+    repository: `owner/${id}`,
+    repository_id: 1,
+    status: "active",
   };
 }
 
 function snapshot(id: string, provider: "github" | "codeberg") {
   return {
-    schema_version: 3,
+    schema_version: 4,
     provider,
-    project_id: id,
+    source_id: id,
     repository: { head_sha: "old" },
     source_health: "healthy",
     activity: {
@@ -37,9 +36,9 @@ test("isolates provider records, failures, and request telemetry", async () => {
     snapshots: [{ ...githubSnapshot, repository: { head_sha: "new" } }],
     changedSnapshots: [{ ...githubSnapshot, repository: { head_sha: "new" } }],
     manifest: {
-      project_timings: [
+      source_timings: [
         {
-          project_id: "github-project",
+          source_id: "github-project",
           outcome: "compare-source",
           duration_ms: 5,
           error_code: null,
@@ -84,11 +83,11 @@ test("isolates provider records, failures, and request telemetry", async () => {
     expect.objectContaining({ id: "codeberg-project" }),
   ]);
   expect(
-    result.snapshots.find(({ project_id }) => project_id === "github-project")
+    result.snapshots.find(({ source_id }) => source_id === "github-project")
       ?.repository.head_sha,
   ).toBe("new");
   expect(
-    result.snapshots.find(({ project_id }) => project_id === "codeberg-project")
+    result.snapshots.find(({ source_id }) => source_id === "codeberg-project")
       ?.stale_since,
   ).toBe("2026-07-27T12:00:00.000Z");
   expect(result.manifest.providers).toEqual({

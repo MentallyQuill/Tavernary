@@ -91,8 +91,11 @@ export function renderSubmissionPullRequest(input) {
   if (
     transaction.producer !== "project-submission" ||
     transaction.operation !== "create" ||
+    transaction.publication_mode !== "automatic" ||
     transaction.issue_number !== input.issueNumber ||
-    transaction.project_id !== input.report.project_id
+    transaction.project_ids.length !== 1 ||
+    transaction.project_ids[0] !== input.report.project_id ||
+    transaction.source_id !== input.report.source_id
   ) {
     throw new Error("Submission pull request transaction is inconsistent.");
   }
@@ -184,7 +187,8 @@ export function findSubmissionPathCollision({
 }) {
   const sourceOwnedPath = (path) =>
     /^data\/registry\/projects\/[^/]+\.json$/u.test(path) ||
-    /^data\/snapshots\/github\/[^/]+\.json$/u.test(path);
+    /^data\/registry\/sources\/[^/]+\.json$/u.test(path) ||
+    /^data\/snapshots\/(?:github|codeberg)\/[^/]+\.json$/u.test(path);
   const intended = new Set(generatedPaths.filter(sourceOwnedPath));
   for (const pull of pulls) {
     const marker = parseSubmissionPullRequestMarker(pull.body ?? "");

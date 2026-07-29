@@ -528,6 +528,7 @@ test("refreshes snapshots daily without granting production-record writes", asyn
     "forensic",
   ]);
   expect(inputs.batch_size.default).toBe(12);
+  expect(inputs).toHaveProperty("source_id");
   expect(inputs).not.toHaveProperty("start_index");
   expect(refresh["run-name"]).toContain("Catalog: Refresh baseline queue");
   const refreshSteps = refresh.jobs.refresh.steps;

@@ -6,15 +6,13 @@ import { expect, test, vi } from "vitest";
 import { runRefresh } from "../../scripts/catalog/refresh-github.mjs";
 
 const record = {
-  schema_version: 5,
-  id: "fixture",
-  source: {
-    type: "github",
-    repository: "Creator/Project",
-    repository_id: 42,
-  },
+  schema_version: 1,
+  id: "github-42",
+  type: "github",
+  repository: "Creator/Project",
+  repository_id: 42,
+  status: "active",
   refresh_policy: "automatic",
-  enrichment_policy: "automatic",
 };
 
 const observedRepository = {
@@ -40,7 +38,7 @@ test("persists the observed description in a new schema-v2 snapshot", async () =
     observe: vi.fn(async () => ({
       observations: [
         {
-          projectId: record.id,
+          sourceId: record.id,
           repository: observedRepository,
           community: {
             stargazersCount: 1,

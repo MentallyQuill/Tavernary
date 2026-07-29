@@ -14,20 +14,18 @@ import { expect, test, vi } from "vitest";
 import {
   publishCandidates,
   runRefresh,
-  selectRefreshRecords,
+  selectRefreshSources,
 } from "../../scripts/catalog/refresh-github.mjs";
 
 function record(index: number) {
   return {
-    schema_version: 5,
+    schema_version: 1,
     id: `project-${String(index).padStart(3, "0")}`,
-    source: {
-      type: "github",
-      repository: `example/project-${index}`,
-      repository_id: 1_000 + index,
-    },
+    type: "github",
+    repository: `example/project-${index}`,
+    repository_id: 1_000 + index,
+    status: "active",
     refresh_policy: "automatic",
-    enrichment_policy: "automatic",
   };
 }
 
@@ -60,8 +58,9 @@ function snapshot(
   status: "provisional" | "complete" | "degraded" = "complete",
 ) {
   return {
-    schema_version: 2,
-    project_id: record(index).id,
+    schema_version: 4,
+    provider: "github",
+    source_id: record(index).id,
     repository: {
       id: 1_000 + index,
       owner: "example",
@@ -97,7 +96,7 @@ function observation(
   headSha = snapshot(index).repository.head_sha,
 ) {
   return {
-    projectId: record(index).id,
+    sourceId: record(index).id,
     repository: {
       id: 1_000 + index,
       owner: "example",
@@ -142,50 +141,68 @@ test("selects baseline records from evidence status rather than index", () => {
   );
 
   expect(
-    selectRefreshRecords(records, snapshots, {
+    selectRefreshSources(records, snapshots, {
       mode: "baseline",
       batchSize: 2,
     }).map(({ id }) => id),
   ).toEqual([record(1).id, record(2).id]);
 });
 
-test("requires exact project modes and bounds baseline batches", () => {
+test("never schedules paused or delisted sources", () => {
+  const active = record(0);
+  const paused = {
+    ...record(1),
+    refresh_policy: "paused",
+  };
+  const delisted = {
+    ...record(2),
+    status: "delisted",
+  };
+
+  expect(
+    selectRefreshSources([active, paused, delisted], [], {
+      mode: "incremental",
+    }).map(({ id }) => id),
+  ).toEqual([active.id]);
+});
+
+test("requires exact source modes and bounds baseline batches", () => {
   const records = [record(0), record(1)];
   const snapshots = [snapshot(0), snapshot(1)];
 
   expect(() =>
-    selectRefreshRecords(records, snapshots, {
+    selectRefreshSources(records, snapshots, {
       mode: "project",
-      projectId: record(1).id,
+      sourceId: record(1).id,
     }),
   ).not.toThrow();
   expect(() =>
-    selectRefreshRecords(records, snapshots, { mode: "forensic" }),
-  ).toThrow("project_id");
+    selectRefreshSources(records, snapshots, { mode: "forensic" }),
+  ).toThrow("source_id");
   expect(() =>
-    selectRefreshRecords(records, snapshots, {
+    selectRefreshSources(records, snapshots, {
       mode: "baseline",
       batchSize: 25,
     }),
   ).toThrow("between 1 and 24");
 });
 
-test("selects one coherent project-mode batch from repeated IDs", () => {
+test("selects one coherent project-mode batch from repeated source IDs", () => {
   const records = [record(0), record(1), record(2), record(3)];
   const snapshots = records.map((_, index) => snapshot(index));
 
   expect(
-    selectRefreshRecords(records, snapshots, {
+    selectRefreshSources(records, snapshots, {
       mode: "project",
-      projectIds: [record(2).id, record(0).id, record(2).id],
+      sourceIds: [record(2).id, record(0).id, record(2).id],
     }).map(({ id }) => id),
   ).toEqual([record(0).id, record(2).id]);
   expect(() =>
-    selectRefreshRecords(records, snapshots, {
+    selectRefreshSources(records, snapshots, {
       mode: "project",
-      projectIds: [record(0).id, "missing-project"],
+      sourceIds: [record(0).id, "missing-source"],
     }),
-  ).toThrow("missing-project");
+  ).toThrow("missing-source");
 });
 
 test("unchanged projects require zero compares and zero clones", async () => {
@@ -793,8 +810,8 @@ test("rolls back installed snapshots when publication fails", async () => {
       publishCandidates(
         {
           changedSnapshots: [
-            { project_id: "first", version: "new-first" },
-            { project_id: "second", version: "new-second" },
+            { source_id: "first", version: "new-first" },
+            { source_id: "second", version: "new-second" },
           ],
           manifest: { version: "new-manifest" },
         },

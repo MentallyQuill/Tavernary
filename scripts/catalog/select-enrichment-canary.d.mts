@@ -1,14 +1,18 @@
 export function selectRandomCanaryIds(
   records: Array<{
     id: string;
-    visibility?: string;
+    listing_status?: string;
     metadata_status?: string;
     summary?: string;
     refresh_policy?: string;
     enrichment_policy?: "automatic" | "manual";
     enrichment_note?: string;
-    source?: { type?: string };
+    source_id: string;
   }>,
+  sourcesById: Record<
+    string,
+    { type?: string; refresh_policy?: string; [key: string]: unknown }
+  >,
   options?: {
     count?: number;
     randomInt?: (maximum: number) => number;
@@ -20,26 +24,30 @@ export function selectRepresentativeCanaryIds(
   records: Array<{
     id: string;
     kind?: string;
-    visibility?: string;
+    listing_status?: string;
     metadata_status?: string;
     summary?: string;
     refresh_policy?: string;
     enrichment_policy?: "automatic" | "manual";
     enrichment_note?: string;
-    source?: { type?: string };
+    source_id: string;
   }>,
+  sourcesById: Record<
+    string,
+    { type?: string; refresh_policy?: string; [key: string]: unknown }
+  >,
   snapshots:
     | Record<
         string,
         {
-          project_id?: string;
+          source_id?: string;
           source_health?: string;
           stale_since?: string | null;
           repository?: { description?: string | null };
         }
       >
     | Array<{
-        project_id: string;
+        source_id: string;
         source_health?: string;
         stale_since?: string | null;
         repository?: { description?: string | null };

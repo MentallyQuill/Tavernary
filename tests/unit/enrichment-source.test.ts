@@ -4,31 +4,37 @@ import { loadEnrichmentSource } from "../../scripts/catalog/enrichment-source.mj
 
 const githubRecord = {
   id: "fixture",
-  source: {
-    type: "github",
-    repository: "Creator/Project",
-    repository_id: 42,
-  },
+  source_id: "github-42",
+};
+const githubSource = {
+  id: "github-42",
+  type: "github",
+  repository: "Creator/Project",
+  repository_id: 42,
 };
 
 const codebergRecord = {
   id: "targren-lumiverse-swipescrubber",
-  source: {
-    type: "codeberg",
-    repository: "targren/Lumiverse-SwipeScrubber",
-    repository_id: 1699613,
-  },
+  source_id: "codeberg-1699613",
+};
+const codebergSource = {
+  id: "codeberg-1699613",
+  type: "codeberg",
+  repository: "targren/Lumiverse-SwipeScrubber",
+  repository_id: 1699613,
 };
 
 const redditRecord = {
   id: "reddit-1v64r6z",
-  source: {
-    type: "url",
-    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-  },
+  source_id: "url-reddit-1v64r6z",
+};
+const redditSource = {
+  id: "url-reddit-1v64r6z",
+  type: "url",
+  url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
 };
 
-const snapshot = { project_id: "fixture" };
+const snapshot = { source_id: "github-42" };
 
 test("routes GitHub records to the repository adapter", async () => {
   const loadRepository = vi.fn(async () => ({
@@ -44,11 +50,48 @@ test("routes GitHub records to the repository adapter", async () => {
   }));
 
   await expect(
-    loadEnrichmentSource(githubRecord, snapshot, { loadRepository }),
+    loadEnrichmentSource(githubRecord, githubSource, snapshot, {
+      loadRepository,
+    }),
   ).resolves.toMatchObject({
     sourceKind: "readme",
     sourceIdentity: "github:creator/project",
   });
+});
+
+test("gives sibling cards the same source evidence identity", async () => {
+  const loadRepository = vi.fn(async () => ({
+    status: "ready" as const,
+    sourceKind: "description" as const,
+    text: "Shared repository evidence",
+    repositoryDescription: "Shared repository evidence",
+    readmeText: null,
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+    readmePath: null,
+    readmeRef: "a".repeat(40),
+  }));
+  const sibling = { id: "fixture-preset", source_id: githubSource.id };
+
+  const first = await loadEnrichmentSource(
+    githubRecord,
+    githubSource,
+    snapshot,
+    { loadRepository },
+  );
+  const second = await loadEnrichmentSource(sibling, githubSource, snapshot, {
+    loadRepository,
+  });
+
+  expect(first.sourceIdentity).toBe("github:creator/project");
+  expect(second.sourceIdentity).toBe(first.sourceIdentity);
+  expect(loadRepository).toHaveBeenCalledTimes(2);
+  expect(loadRepository).toHaveBeenNthCalledWith(
+    2,
+    githubSource,
+    snapshot,
+    expect.any(Object),
+  );
 });
 
 test("retains GitHub identity on source failures", async () => {
@@ -59,7 +102,9 @@ test("retains GitHub identity on source failures", async () => {
   }));
 
   await expect(
-    loadEnrichmentSource(githubRecord, snapshot, { loadRepository }),
+    loadEnrichmentSource(githubRecord, githubSource, snapshot, {
+      loadRepository,
+    }),
   ).resolves.toMatchObject({
     status: "failed",
     sourceIdentity: "github:creator/project",
@@ -80,7 +125,12 @@ test("routes Codeberg records through the normalized repository adapter", async 
   }));
 
   await expect(
-    loadEnrichmentSource(codebergRecord, snapshot, { loadRepository }),
+    loadEnrichmentSource(
+      codebergRecord,
+      codebergSource,
+      { source_id: codebergSource.id },
+      { loadRepository },
+    ),
   ).resolves.toMatchObject({
     status: "ready",
     sourceKind: "readme",
@@ -99,7 +149,7 @@ test("routes canonical Reddit records to the Reddit adapter", async () => {
   }));
 
   await expect(
-    loadEnrichmentSource(redditRecord, undefined, { loadReddit }),
+    loadEnrichmentSource(redditRecord, redditSource, undefined, { loadReddit }),
   ).resolves.toMatchObject({ sourceKind: "reddit-body" });
 });
 
@@ -108,7 +158,12 @@ test("fails closed for an unregistered source", async () => {
     loadEnrichmentSource(
       {
         ...redditRecord,
-        source: { type: "url", url: "https://example.com/preset" },
+        source_id: "url-example-preset",
+      },
+      {
+        id: "url-example-preset",
+        type: "url",
+        url: "https://example.com/preset",
       },
       undefined,
     ),

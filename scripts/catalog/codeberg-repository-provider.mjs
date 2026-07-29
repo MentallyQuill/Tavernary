@@ -86,25 +86,25 @@ export class CodebergRepositoryProvider {
     for (const record of records) {
       try {
         const repositoryResponse = await this.request(
-          `/repos/${repositoryPath(record.source.repository)}`,
+          `/repos/${repositoryPath(record.repository)}`,
         );
         requestCount += 1;
         remainingPoints =
           repositoryResponse.rateLimit?.remaining ?? remainingPoints;
         const repository = repositoryResponse.data;
         if (
-          record.source.repository_id !== null &&
-          repository.id !== record.source.repository_id
+          record.repository_id !== null &&
+          repository.id !== record.repository_id
         ) {
           failures.push({
-            projectId: record.id,
+            sourceId: record.id,
             kind: "identity-change",
             message: "Codeberg repository permanent identity changed.",
           });
           continue;
         }
         const commitsResponse = await this.request(
-          `/repos/${repositoryPath(record.source.repository)}/commits?sha=${encodeURIComponent(repository.default_branch)}&page=1&limit=1`,
+          `/repos/${repositoryPath(record.repository)}/commits?sha=${encodeURIComponent(repository.default_branch)}&page=1&limit=1`,
         );
         requestCount += 1;
         const head = Array.isArray(commitsResponse.data)
@@ -112,7 +112,7 @@ export class CodebergRepositoryProvider {
           : null;
         if (!head?.sha) {
           failures.push({
-            projectId: record.id,
+            sourceId: record.id,
             kind: "missing-default-branch",
             message: "Codeberg repository default branch has no head commit.",
           });
@@ -121,7 +121,7 @@ export class CodebergRepositoryProvider {
         let releases = [];
         try {
           const releaseResponse = await this.request(
-            `/repos/${repositoryPath(record.source.repository)}/releases?limit=1`,
+            `/repos/${repositoryPath(record.repository)}/releases?limit=1`,
           );
           requestCount += 1;
           releases = Array.isArray(releaseResponse.data)
@@ -133,7 +133,7 @@ export class CodebergRepositoryProvider {
         }
         observations.push({
           provider: this.name,
-          projectId: record.id,
+          sourceId: record.id,
           repository: {
             id: repository.id,
             owner: repository.owner.login,
@@ -175,7 +175,7 @@ export class CodebergRepositoryProvider {
         if (error?.status === 404) {
           requestCount += 1;
           failures.push({
-            projectId: record.id,
+            sourceId: record.id,
             kind: "unavailable",
             message: "Codeberg repository is unavailable.",
           });

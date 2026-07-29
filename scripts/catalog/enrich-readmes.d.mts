@@ -66,16 +66,19 @@ export type RegistryRecord = {
   enrichment_policy?: "automatic" | "manual";
   enrichment_note?: string;
   summary?: string;
-  visibility?: string;
+  listing_status?: string;
   frontends?: string[];
   primary_function?: string;
-  source?: {
-    type: string;
-    repository?: string;
-    url?: string;
-    repository_id?: number | null;
-  };
+  source_id: string;
   path?: string;
+  [key: string]: unknown;
+};
+export type SourceRecord = {
+  id: string;
+  type: string;
+  repository?: string;
+  url?: string;
+  repository_id?: number | null;
   [key: string]: unknown;
 };
 export type RepositorySnapshot = Record<string, unknown>;
@@ -130,11 +133,13 @@ export type FullAuthorizationResult = {
 
 export function selectEnrichmentRecords(
   records: RegistryRecord[],
+  sourcesById: Record<string, SourceRecord>,
   options?: { force?: boolean },
 ): RegistryRecord[];
 
 export function enrichRecord(
   record: RegistryRecord,
+  source: SourceRecord,
   snapshot: RepositorySnapshot,
   provider: EnrichmentProvider,
   options?: {
@@ -150,6 +155,7 @@ export function enrichRecord(
     policyVersion?: string;
     loadSource?: (
       record: RegistryRecord,
+      source: SourceRecord,
       snapshot: RepositorySnapshot | undefined,
       options?: Record<string, unknown>,
     ) => Promise<EnrichmentSource>;
@@ -175,7 +181,8 @@ export function mapWithConcurrency<T, R>(
 export function runEnrichmentBatch(options: {
   projectIds: string[];
   recordsById: Record<string, RegistryRecord>;
-  snapshotsById: Record<string, RepositorySnapshot>;
+  sourcesById: Record<string, SourceRecord>;
+  snapshotsBySourceId: Record<string, RepositorySnapshot>;
   phase: "primary" | "retry";
   vocabularies: {
     primaryFunctions: VocabularyEntry[];
@@ -186,6 +193,7 @@ export function runEnrichmentBatch(options: {
   concurrency?: number;
   loadSource?: (
     record: RegistryRecord,
+    source: SourceRecord,
     snapshot: RepositorySnapshot | undefined,
     options?: Record<string, unknown>,
   ) => Promise<EnrichmentSource>;
@@ -213,6 +221,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   timeoutMs?: number;
   sleep?: (milliseconds: number) => Promise<void>;
   records?: RegistryRecord[];
+  sources?: SourceRecord[];
   snapshots?: Record<string, RepositorySnapshot> | RepositorySnapshot[];
   snapshotSchema?: Record<string, unknown>;
   validateSnapshot?: (snapshot: unknown) => boolean;
@@ -224,6 +233,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   deploymentRunId?: number;
   loadSource?: (
     record: RegistryRecord,
+    source: SourceRecord,
     snapshot: RepositorySnapshot | undefined,
     options?: Record<string, unknown>,
   ) => Promise<EnrichmentSource>;

@@ -17,13 +17,8 @@ function project(
     kind: "extension",
     primary_function: "interface-workflow",
     summary: `${id} summary`,
-    visibility: "published",
-    refresh_policy: "automatic",
-    source: {
-      type: "github",
-      repository: `owner/${id}`,
-      repository_id: repositoryId,
-    },
+    listing_status: "active",
+    source_id: `github-${repositoryId}`,
     frontends: ["sillytavern"],
     model_families: [],
     completion_formats: [],
@@ -31,8 +26,24 @@ function project(
   };
 }
 
+function source(
+  id: string,
+  repositoryId: number,
+  overrides: Record<string, unknown> = {},
+) {
+  return {
+    id: `github-${repositoryId}`,
+    type: "github",
+    repository: `owner/${id}`,
+    repository_id: repositoryId,
+    status: "active",
+    refresh_policy: "automatic",
+    ...overrides,
+  };
+}
+
 function snapshot(
-  projectId: string,
+  sourceId: string,
   repositoryId: number,
   parent: {
     id: number;
@@ -42,13 +53,14 @@ function snapshot(
   } | null,
 ) {
   return {
-    schema_version: 2,
-    project_id: projectId,
+    schema_version: 4,
+    provider: "github",
+    source_id: sourceId,
     repository: {
       id: repositoryId,
       owner: "owner",
-      name: projectId,
-      url: `https://github.com/owner/${projectId}`,
+      name: sourceId,
+      url: `https://github.com/owner/${sourceId}`,
       fork: true,
       parent,
     },
@@ -80,21 +92,36 @@ describe("fork dependency backfill planning", () => {
     const projects = [
       project("child-b", 43),
       project("child-a", 42),
-      project("manual", 44, { refresh_policy: "paused" }),
-      project("disabled", 45, { visibility: "disabled" }),
+      project("manual", 44),
+      project("disabled", 45, { listing_status: "retired" }),
       project("url-source", 46, {
-        source: { type: "url", url: "https://example.com/preset" },
+        source_id: "url-source",
       }),
     ];
+    const sources = [
+      source("child-b", 43),
+      source("child-a", 42),
+      source("manual", 44, { refresh_policy: "paused" }),
+      source("disabled", 45),
+      {
+        id: "url-source",
+        type: "url",
+        url: "https://example.com/preset",
+        status: "active",
+        refresh_policy: "paused",
+      },
+    ];
     const snapshots = [
-      snapshot("child-b", 43, parent),
-      snapshot("child-a", 42, parent),
-      snapshot("manual", 44, parent),
-      snapshot("disabled", 45, parent),
+      snapshot("github-43", 43, parent),
+      snapshot("github-42", 42, parent),
+      snapshot("github-44", 44, parent),
+      snapshot("github-45", 45, parent),
       snapshot("url-source", 46, parent),
     ];
 
-    expect(planForkDependencyBackfill({ projects, snapshots })).toEqual([
+    expect(
+      planForkDependencyBackfill({ projects, sources, snapshots }),
+    ).toEqual([
       expect.objectContaining({
         parentRepositoryId: 41,
         parentName: "parent",
@@ -117,9 +144,10 @@ describe("fork dependency backfill planning", () => {
       planForkDependencyBackfill({
         projects: [
           project("child", 42),
-          project("parent-project", 41, { visibility: "quarantined" }),
+          project("parent-project", 41, { listing_status: "quarantined" }),
         ],
-        snapshots: [snapshot("child", 42, parent)],
+        sources: [source("child", 42), source("parent-project", 41)],
+        snapshots: [snapshot("github-42", 42, parent)],
       }),
     ).toEqual([]);
   });
@@ -135,9 +163,10 @@ describe("fork dependency backfill planning", () => {
             completion_formats: ["chat-completion"],
           }),
         ],
+        sources: [source("extension-child", 42), source("preset-child", 43)],
         snapshots: [
-          snapshot("extension-child", 42, parent),
-          snapshot("preset-child", 43, parent),
+          snapshot("github-42", 42, parent),
+          snapshot("github-43", 43, parent),
         ],
       }),
     ).toThrow(/incompatible child kinds/iu);
@@ -152,9 +181,10 @@ describe("fork dependency backfill planning", () => {
             primary_function: "memory-retrieval",
           }),
         ],
+        sources: [source("workflow-child", 42), source("memory-child", 43)],
         snapshots: [
-          snapshot("workflow-child", 42, parent),
-          snapshot("memory-child", 43, parent),
+          snapshot("github-42", 42, parent),
+          snapshot("github-43", 43, parent),
         ],
       }),
     ).toThrow(/incompatible child primary functions/iu);
@@ -170,27 +200,28 @@ describe("fork dependency backfill planning", () => {
     expect(
       planForkDependencyBackfill({
         projects: [project("later-child", 50), project("child", 42)],
+        sources: [source("later-child", 50), source("child", 42)],
         snapshots: [
-          snapshot("later-child", 50, laterParent),
-          snapshot("child", 42, parent),
+          snapshot("github-50", 50, laterParent),
+          snapshot("github-42", 42, parent),
         ],
       }).map(({ parentRepositoryId }) => parentRepositoryId),
     ).toEqual([41, 99]);
   });
 
   test("re-observes only known legacy fork records and preserves snapshot evidence", async () => {
-    const legacy = snapshot("legacy", 42, null);
+    const legacy = snapshot("github-42", 42, null);
     const ordinary = {
-      ...snapshot("ordinary", 43, null),
+      ...snapshot("github-43", 43, null),
       repository: {
-        ...snapshot("ordinary", 43, null).repository,
+        ...snapshot("github-43", 43, null).repository,
         fork: false,
       },
     };
     const observe = vi.fn().mockResolvedValue({
       observations: [
         {
-          projectId: "legacy",
+          sourceId: "github-42",
           repository: {
             id: 42,
             owner: "owner",
@@ -221,6 +252,7 @@ describe("fork dependency backfill planning", () => {
 
     const result = await observeForkBackfillParents({
       projects: [project("legacy", 42), project("ordinary", 43)],
+      sources: [source("legacy", 42), source("ordinary", 43)],
       snapshots: [legacy, ordinary],
       token: "token",
       observe,
@@ -228,7 +260,7 @@ describe("fork dependency backfill planning", () => {
     });
 
     expect(observe).toHaveBeenCalledWith(
-      [expect.objectContaining({ id: "legacy" })],
+      [expect.objectContaining({ id: "github-42" })],
       expect.objectContaining({ token: "token" }),
     );
     expect(result.candidates).toHaveLength(1);

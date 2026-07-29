@@ -7,7 +7,7 @@ import {
   parseIssueFields,
   parseProjectSubmissionStateMarker,
   processProjectSubmissionTriage,
-  projectSubmissionExistingProject,
+  projectSubmissionExistingSource,
   resolveProjectSubmissionEvent,
   synchronizeProjectSubmissionTriage,
 } from "../../scripts/submissions/triage-issue.mjs";
@@ -41,24 +41,19 @@ This is an unusual installation.
   });
 });
 
-test("retains catalog visibility, kind, and stable repository ID for fork classification", () => {
+test("derives stable duplicate identity from a source record", () => {
   expect(
-    projectSubmissionExistingProject({
-      id: "parent",
-      name: "Parent",
-      kind: "extension",
-      visibility: "disabled",
-      source: {
-        type: "github",
-        repository: "owner/parent",
-        repository_id: 41,
-      },
+    projectSubmissionExistingSource({
+      id: "github-41",
+      type: "github",
+      repository: "owner/parent",
+      repository_id: 41,
     }),
   ).toMatchObject({
-    id: "parent",
-    kind: "extension",
-    visibility: "disabled",
-    repositoryId: 41,
+    id: "github-41",
+    name: "owner/parent",
+    canonicalUrl: "https://github.com/owner/parent",
+    identity: { repositoryId: 41 },
   });
 });
 
@@ -258,7 +253,7 @@ test("preserves a title manually customized by a maintainer", () => {
   expect(mutation.marker.generated_title).toBe("[Project submission] new/repo");
 });
 
-test("links the existing project and closes duplicate issues", () => {
+test("links the existing source, lists sibling cards, and closes duplicates", () => {
   const mutation = buildProjectSubmissionTriage(
     {
       status: "duplicate",
@@ -268,10 +263,11 @@ test("links the existing project and closes duplicate issues", () => {
         hostname: "example.com",
         pathSlug: "preset",
       },
-      existingProject: {
-        id: "existing-preset",
-        name: "Existing Preset",
-        canonicalUrl: "https://tavernary.example/projects/existing-preset",
+      existingSource: {
+        id: "url-existing-preset",
+        name: "example.com/preset",
+        canonicalUrl: "https://example.com/preset",
+        projectIds: ["existing-preset", "existing-preset-variant"],
       },
     },
     {
@@ -290,7 +286,10 @@ test("links the existing project and closes duplicate issues", () => {
     dispatchGeneration: false,
   });
   expect(mutation.commentBody).toContain(
-    "[Existing Preset](https://tavernary.example/projects/existing-preset)",
+    "[example.com/preset](https://example.com/preset)",
+  );
+  expect(mutation.commentBody).toContain(
+    "Existing cards: existing-preset, existing-preset-variant.",
   );
 });
 
@@ -1019,6 +1018,7 @@ test("processes an admitted issue through injected GitHub mutations", async () =
         ],
       },
       projects: [],
+      sources: [],
     },
     writeOutput: async (name, value) => {
       outputs[name] = value;
@@ -1146,6 +1146,7 @@ test("closes a later issue when an earlier admitted submission has the same sour
         ],
       },
       projects: [],
+      sources: [],
     },
     writeOutput: async (name, value) => {
       outputs[name] = value;
@@ -1243,6 +1244,7 @@ test("keeps the issue retryable when the admitted submission inventory is unavai
         ],
       },
       projects: [],
+      sources: [],
     },
     writeOutput: async (name, value) => {
       outputs[name] = value;
@@ -1355,6 +1357,7 @@ test("persists a waiting child before dispatching its newly created upstream", a
         ],
       },
       projects: [],
+      sources: [],
     },
     writeOutput: async (name, value) => {
       outputs[name] = value;
@@ -1446,7 +1449,11 @@ test("accepts a manually customized project title after routing", async () => {
         status: 200,
         finalUrl: "https://example.com/preset",
       }),
-      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+      catalogData: {
+        vocabulary: { frontends: [] },
+        projects: [],
+        sources: [],
+      },
     }),
   ).resolves.toBeDefined();
   expect(updates).toEqual([]);
@@ -1510,7 +1517,11 @@ test("does not apply a stale decision after the issue body changes", async () =>
         status: 200,
         finalUrl: "https://example.com/original",
       }),
-      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+      catalogData: {
+        vocabulary: { frontends: [] },
+        projects: [],
+        sources: [],
+      },
     }),
   ).rejects.toThrow("Project submission changed during triage.");
   expect(
@@ -1552,7 +1563,11 @@ test("does not dispatch after the routing label is revoked", async () => {
         issue: { number: 131 },
       },
       request,
-      catalogData: { vocabulary: { frontends: [] }, projects: [] },
+      catalogData: {
+        vocabulary: { frontends: [] },
+        projects: [],
+        sources: [],
+      },
       writeOutput,
     }),
   ).rejects.toThrow("Project submission issue is not open and admitted.");
@@ -1738,6 +1753,7 @@ test.each([
       catalogData: {
         vocabulary: { frontends: [] },
         projects: [],
+        sources: [],
       },
     }),
   ).rejects.toThrow("Project submission issue is not open and admitted.");

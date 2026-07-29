@@ -1,42 +1,102 @@
-const ENVELOPE_KEYS = [
+import { classificationError } from "../catalog/primary-function-contract.mjs";
+import { siblingProjectId } from "../catalog/source-record.mjs";
+
+const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const SOURCE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const FINGERPRINT_PATTERN = /^[a-f0-9]{64}$/u;
+const DRAFT_ID_PATTERN = /^[A-Za-z0-9_-]{1,80}$/u;
+const REPOSITORY_PATTERN = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u;
+const PROJECT_KINDS = ["frontend", "extension", "preset"];
+const OPERATIONS = [
+  "edit-card",
+  "add-cards",
+  "retire-card",
+  "restore-card",
+  "move-source",
+  "delist-source",
+];
+const BASE_KEYS = [
   "schema_version",
   "request_kind",
   "operation",
-  "project_id",
+  "source_id",
   "repository_id",
-  "source_fingerprint",
-  "original",
-  "proposed",
   "explanation",
 ];
+const OPERATION_KEYS = {
+  "edit-card": [
+    ...BASE_KEYS,
+    "project_id",
+    "project_fingerprint",
+    "original",
+    "proposed",
+  ],
+  "add-cards": [...BASE_KEYS, "source_fingerprint", "proposed_cards"],
+  "retire-card": [
+    ...BASE_KEYS,
+    "project_id",
+    "project_fingerprint",
+    "original",
+    "proposed",
+  ],
+  "restore-card": [
+    ...BASE_KEYS,
+    "project_id",
+    "project_fingerprint",
+    "original",
+    "proposed",
+  ],
+  "move-source": [...BASE_KEYS, "source_fingerprint", "original", "proposed"],
+  "delist-source": [
+    ...BASE_KEYS,
+    "source_fingerprint",
+    "original",
+    "proposed",
+    "delist_confirmation",
+  ],
+};
 const EDITABLE_KEYS = [
   "name",
   "summary",
   "frontends",
   "primary_function",
-  "capabilities",
+  "tags",
+  "metadata",
   "model_families",
   "completion_formats",
 ];
 const ORIGINAL_EDIT_KEYS = ["kind", ...EDITABLE_KEYS];
-const SOURCE_KEYS = ["repository", "repository_id"];
-const DELIST_ORIGINAL_KEYS = ["visibility"];
-const DELIST_PROPOSED_KEYS = [
-  "visibility",
-  "visibility_reason",
-  "refresh_policy",
-  "enrichment_policy",
+const DRAFT_KEYS = [
+  "draft_id",
+  "project_id",
+  "name",
+  "kind",
+  "summary",
+  "frontends",
+  "primary_function",
+  "tags",
+  "metadata",
+  "model_families",
+  "completion_formats",
 ];
-const PROJECT_KINDS = ["frontend", "extension", "preset"];
-const REPOSITORY_PATTERN = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u;
+const SOURCE_KEYS = ["repository", "repository_id"];
+const CARD_STATE_KEYS = ["listing_status", "listing_status_reason"];
+const SOURCE_STATE_ORIGINAL_KEYS = ["status"];
+const SOURCE_STATE_PROPOSED_KEYS = [
+  "status",
+  "status_reason",
+  "refresh_policy",
+];
 
 function isObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function hasOnlyKeys(value, allowed) {
+function hasExactKeys(value, allowed) {
   return (
-    isObject(value) && Object.keys(value).every((key) => allowed.includes(key))
+    isObject(value) &&
+    Object.keys(value).length === allowed.length &&
+    Object.keys(value).every((key) => allowed.includes(key))
   );
 }
 
@@ -55,19 +115,24 @@ function nullableText(value, errors) {
 
 function vocabularyEntries(value, key) {
   const entries = Array.isArray(value) ? value : value?.[key];
-  if (!Array.isArray(entries)) return new Set();
-  return new Set(
-    entries.flatMap((entry) =>
-      typeof entry === "string"
-        ? [entry]
-        : typeof entry?.id === "string"
-          ? [entry.id]
-          : [],
-    ),
+  if (!Array.isArray(entries)) return [];
+  return entries.flatMap((entry) =>
+    typeof entry === "string"
+      ? [{ id: entry, applicable_kinds: PROJECT_KINDS }]
+      : typeof entry?.id === "string"
+        ? [
+            {
+              id: entry.id,
+              applicable_kinds: Array.isArray(entry.applicable_kinds)
+                ? entry.applicable_kinds
+                : PROJECT_KINDS,
+            },
+          ]
+        : [],
   );
 }
 
-function controlledArray(value, allowed, errors, message) {
+function controlledArray(value, allowed, errors, message, maximum = null) {
   if (
     !Array.isArray(value) ||
     value.some((entry) => typeof entry !== "string")
@@ -75,21 +140,69 @@ function controlledArray(value, allowed, errors, message) {
     errors.push(message);
     return [];
   }
-  const normalized = [
-    ...new Set(value.map((entry) => entry.trim()).filter(Boolean)),
-  ];
-  if (normalized.some((entry) => !allowed.has(entry))) errors.push(message);
-  return normalized;
+  const normalized = value.map((entry) => entry.trim()).filter(Boolean);
+  if (
+    new Set(normalized).size !== normalized.length ||
+    normalized.some((entry) => !allowed.has(entry)) ||
+    (maximum !== null && normalized.length > maximum)
+  ) {
+    errors.push(message);
+  }
+  return [...new Set(normalized)];
 }
 
 function normalizedSummary(value) {
   return typeof value === "string" ? value.trim().replace(/\s+/gu, " ") : "";
 }
 
-function normalizeEditable(value, kind, vocabularies, errors, original) {
-  const allowedKeys = original ? ORIGINAL_EDIT_KEYS : EDITABLE_KEYS;
-  if (!hasOnlyKeys(value, allowedKeys)) {
-    errors.push("Owner card values contain unknown properties.");
+function normalizeMetadata(value, errors) {
+  if (!hasExactKeys(value, ["summary", "tags"])) {
+    errors.push("Owner metadata choices are invalid.");
+  }
+  const normalizeField = (field) => {
+    const candidate = value?.[field];
+    if (
+      !hasExactKeys(candidate, ["mode"]) ||
+      !["automatic", "manual"].includes(candidate?.mode)
+    ) {
+      errors.push(`Owner ${field} metadata choice is invalid.`);
+    }
+    return {
+      mode: ["automatic", "manual"].includes(candidate?.mode)
+        ? candidate.mode
+        : "automatic",
+    };
+  };
+  return {
+    summary: normalizeField("summary"),
+    tags: normalizeField("tags"),
+  };
+}
+
+function tagVocabulary(rawVocabularies) {
+  const entries = vocabularyEntries(rawVocabularies?.tags, "tags");
+  return {
+    ids: new Set(entries.map((entry) => entry.id)),
+    applicableKindsById: new Map(
+      entries.map((entry) => [entry.id, new Set(entry.applicable_kinds)]),
+    ),
+  };
+}
+
+function normalizeEditable(
+  value,
+  kind,
+  vocabularies,
+  errors,
+  { original = false, draft = false } = {},
+) {
+  const allowedKeys = draft
+    ? DRAFT_KEYS
+    : original
+      ? ORIGINAL_EDIT_KEYS
+      : EDITABLE_KEYS;
+  if (!hasExactKeys(value, allowedKeys)) {
+    errors.push("Owner card values contain unknown or missing properties.");
   }
   const name = requiredText(value?.name);
   const summary = normalizedSummary(value?.summary);
@@ -100,11 +213,12 @@ function normalizeEditable(value, kind, vocabularies, errors, original) {
     errors,
     "Owner supported frontends are invalid.",
   );
-  const capabilities = controlledArray(
-    value?.capabilities,
-    vocabularies.capabilities,
+  const tags = controlledArray(
+    value?.tags,
+    vocabularies.tags.ids,
     errors,
-    "Owner capabilities are invalid.",
+    "Owner tags are invalid or exceed six.",
+    6,
   );
   const modelFamilies = controlledArray(
     value?.model_families,
@@ -118,7 +232,10 @@ function normalizeEditable(value, kind, vocabularies, errors, original) {
     errors,
     "Owner completion formats are invalid.",
   );
+  const metadata = normalizeMetadata(value?.metadata, errors);
 
+  if (!PROJECT_KINDS.includes(kind))
+    errors.push("Owner project kind is invalid.");
   if (!name) errors.push("Owner display name is required.");
   if (name.length > 100) {
     errors.push("Owner display name must be 100 characters or fewer.");
@@ -135,6 +252,11 @@ function normalizeEditable(value, kind, vocabularies, errors, original) {
   }
   const primaryFunctionError = classificationError(kind, primaryFunction);
   if (primaryFunctionError) errors.push(primaryFunctionError);
+  for (const tag of tags) {
+    if (!vocabularies.tags.applicableKindsById.get(tag)?.has(kind)) {
+      errors.push(`Owner tag ${tag} does not apply to ${kind} cards.`);
+    }
+  }
   if (kind === "preset") {
     if (modelFamilies.length === 0) {
       errors.push("Owner Preset must include at least one model family.");
@@ -147,12 +269,21 @@ function normalizeEditable(value, kind, vocabularies, errors, original) {
   }
 
   return {
-    ...(original ? { kind } : {}),
+    ...(draft
+      ? {
+          draft_id: requiredText(value?.draft_id),
+          project_id: requiredText(value?.project_id),
+          kind,
+        }
+      : original
+        ? { kind }
+        : {}),
     name,
     summary,
     frontends,
     primary_function: primaryFunction,
-    capabilities,
+    tags,
+    metadata,
     model_families: modelFamilies,
     completion_formats: completionFormats,
   };
@@ -162,7 +293,7 @@ function comparableEditable(value) {
   return {
     ...value,
     frontends: [...value.frontends].sort(),
-    capabilities: [...value.capabilities].sort(),
+    tags: [...value.tags].sort(),
     model_families: [...value.model_families].sort(),
     completion_formats: [...value.completion_formats].sort(),
   };
@@ -170,21 +301,20 @@ function comparableEditable(value) {
 
 function normalizeEdit(value, vocabularies, errors) {
   const kind = requiredText(value?.original?.kind);
-  if (!PROJECT_KINDS.includes(kind))
-    errors.push("Owner project kind is invalid.");
   const original = normalizeEditable(
     value?.original,
     kind,
     vocabularies,
     errors,
-    true,
+    {
+      original: true,
+    },
   );
   const proposed = normalizeEditable(
     value?.proposed,
     kind,
     vocabularies,
     errors,
-    false,
   );
   const { kind: _kind, ...originalEditable } = original;
   if (
@@ -196,9 +326,64 @@ function normalizeEdit(value, vocabularies, errors) {
   return { original, proposed };
 }
 
+function normalizeDraft(value, source, vocabularies, errors, index) {
+  const kind = requiredText(value?.kind);
+  const draft = normalizeEditable(value, kind, vocabularies, errors, {
+    draft: true,
+  });
+  if (!DRAFT_ID_PATTERN.test(draft.draft_id)) {
+    errors.push(`Owner card draft ${index + 1} has an invalid draft ID.`);
+  }
+  if (!PROJECT_ID_PATTERN.test(draft.project_id)) {
+    errors.push(`Owner card draft ${index + 1} has an invalid project ID.`);
+  }
+  if (
+    source &&
+    draft.name &&
+    draft.project_id !== siblingProjectId(source, draft.name)
+  ) {
+    errors.push(
+      `Owner card draft ${index + 1} project ID does not match its source and title.`,
+    );
+  }
+  return draft;
+}
+
+function normalizeAddCards(value, source, vocabularies, errors) {
+  if (
+    !Array.isArray(value?.proposed_cards) ||
+    value.proposed_cards.length < 1 ||
+    value.proposed_cards.length > 10
+  ) {
+    errors.push("Owner add-card request must contain one to ten cards.");
+  }
+  const cards = Array.isArray(value?.proposed_cards)
+    ? value.proposed_cards
+        .slice(0, 10)
+        .map((card, index) =>
+          normalizeDraft(card, source, vocabularies, errors, index),
+        )
+    : [];
+  for (const [field, values] of [
+    ["draft IDs", cards.map((card) => card.draft_id)],
+    ["project IDs", cards.map((card) => card.project_id)],
+    [
+      "normalized titles",
+      cards.map((card) => card.name.toLocaleLowerCase().replace(/\s+/gu, " ")),
+    ],
+  ]) {
+    if (new Set(values).size !== values.length) {
+      errors.push(`Owner add-card request contains duplicate ${field}.`);
+    }
+  }
+  return { proposed_cards: cards };
+}
+
 function normalizeSource(value, errors, label) {
-  if (!hasOnlyKeys(value, SOURCE_KEYS)) {
-    errors.push(`Owner ${label} source contains unknown properties.`);
+  if (!hasExactKeys(value, SOURCE_KEYS)) {
+    errors.push(
+      `Owner ${label} source contains unknown or missing properties.`,
+    );
   }
   const repository = requiredText(value?.repository);
   const repositoryId = value?.repository_id;
@@ -222,126 +407,186 @@ function normalizeMove(value, envelopeRepositoryId, errors) {
       "Repository location changes must retain the immutable repository ID.",
     );
   }
-  if (original.repository === proposed.repository) {
+  if (
+    original.repository.toLocaleLowerCase() ===
+    proposed.repository.toLocaleLowerCase()
+  ) {
     errors.push("Repository location change must name a new repository.");
   }
   return { original, proposed };
 }
 
-function normalizeDelist(value, errors) {
-  if (!hasOnlyKeys(value?.original, DELIST_ORIGINAL_KEYS)) {
-    errors.push("Owner original delisting values contain unknown properties.");
-  }
-  if (!hasOnlyKeys(value?.proposed, DELIST_PROPOSED_KEYS)) {
-    errors.push("Owner proposed delisting values contain unknown properties.");
-  }
-  const original = { visibility: requiredText(value?.original?.visibility) };
-  if (original.visibility !== "published") {
-    errors.push("Owner request can delist only a published project.");
-  }
-  const proposed = {
-    visibility: value?.proposed?.visibility,
-    visibility_reason: value?.proposed?.visibility_reason,
-    refresh_policy: value?.proposed?.refresh_policy,
-    enrichment_policy: value?.proposed?.enrichment_policy,
-  };
+function normalizeCardState(value, operation, errors) {
   if (
-    proposed.visibility !== "disabled" ||
-    proposed.visibility_reason !== "removed" ||
-    proposed.refresh_policy !== "paused" ||
-    proposed.enrichment_policy !== "manual"
+    !hasExactKeys(value?.original, CARD_STATE_KEYS) ||
+    !hasExactKeys(value?.proposed, CARD_STATE_KEYS)
   ) {
-    errors.push("Owner delisting effect is invalid.");
+    errors.push("Owner card lifecycle values are invalid.");
   }
-  return { original, proposed };
+  const expected =
+    operation === "retire-card"
+      ? {
+          original: { listing_status: "active", listing_status_reason: null },
+          proposed: {
+            listing_status: "retired",
+            listing_status_reason: "removed",
+          },
+        }
+      : {
+          original: {
+            listing_status: "retired",
+            listing_status_reason: "removed",
+          },
+          proposed: { listing_status: "active", listing_status_reason: null },
+        };
+  if (
+    JSON.stringify(value?.original) !== JSON.stringify(expected.original) ||
+    JSON.stringify(value?.proposed) !== JSON.stringify(expected.proposed)
+  ) {
+    errors.push(`Owner ${operation} lifecycle transition is invalid.`);
+  }
+  return expected;
+}
+
+function normalizeDelistSource(value, source, errors) {
+  if (
+    !hasExactKeys(value?.original, SOURCE_STATE_ORIGINAL_KEYS) ||
+    !hasExactKeys(value?.proposed, SOURCE_STATE_PROPOSED_KEYS) ||
+    value?.original?.status !== "active" ||
+    value?.proposed?.status !== "delisted" ||
+    value?.proposed?.status_reason !== "removed" ||
+    value?.proposed?.refresh_policy !== "paused"
+  ) {
+    errors.push("Owner source delisting effect is invalid.");
+  }
+  const confirmation = requiredText(value?.delist_confirmation);
+  if (!confirmation) {
+    errors.push("Owner source delisting confirmation is required.");
+  } else if (
+    source?.repository &&
+    confirmation.toLocaleLowerCase() !== source.repository.toLocaleLowerCase()
+  ) {
+    errors.push(
+      "Owner source delisting confirmation must match the repository.",
+    );
+  }
+  return {
+    original: { status: "active" },
+    proposed: {
+      status: "delisted",
+      status_reason: "removed",
+      refresh_policy: "paused",
+    },
+    delist_confirmation: confirmation,
+  };
+}
+
+function sourceContext(rawVocabularies, sourceId, repositoryId, errors) {
+  const source = rawVocabularies?.source;
+  if (source === undefined) return null;
+  if (
+    !isObject(source) ||
+    source.type !== "github" ||
+    source.id !== sourceId ||
+    source.repository_id !== repositoryId ||
+    !REPOSITORY_PATTERN.test(source.repository ?? "")
+  ) {
+    errors.push("Owner request source context is inconsistent.");
+    return null;
+  }
+  return source;
 }
 
 export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   const errors = [];
-  if (value?.schema_version !== 1) {
-    errors.push("Owner request must use schema version 1.");
+  if (value?.schema_version !== 2) {
+    errors.push("Owner request must use schema version 2.");
   }
   if (value?.request_kind !== "project-owner") {
     errors.push("Owner request kind is invalid.");
   }
   const operation = requiredText(value?.operation);
-  if (!["edit-card", "move-source", "delist"].includes(operation)) {
+  if (!OPERATIONS.includes(operation)) {
     errors.push("Owner request operation is invalid.");
   }
-  const envelopeKeys =
-    operation === "delist"
-      ? [...ENVELOPE_KEYS, "delist_confirmation"]
-      : ENVELOPE_KEYS;
-  if (!hasOnlyKeys(value, envelopeKeys)) {
-    errors.push("Owner request contains unknown properties.");
+  const envelopeKeys = OPERATION_KEYS[operation] ?? BASE_KEYS;
+  if (!hasExactKeys(value, envelopeKeys)) {
+    errors.push("Owner request contains unknown or missing properties.");
   }
-  const projectId = requiredText(value?.project_id);
-  if (!projectId || projectId.length > 120) {
-    errors.push("Owner request project ID is invalid.");
+  const sourceId = requiredText(value?.source_id);
+  if (!SOURCE_ID_PATTERN.test(sourceId)) {
+    errors.push("Owner request source ID is invalid.");
   }
   const repositoryId = value?.repository_id;
-  if (
-    !Object.hasOwn(value ?? {}, "repository_id") ||
-    (repositoryId !== null &&
-      (!Number.isSafeInteger(repositoryId) || repositoryId <= 0))
-  ) {
+  if (!Number.isSafeInteger(repositoryId) || repositoryId <= 0) {
+    errors.push("Owner request repository ID must be a positive integer.");
+  }
+  const usesProject = ["edit-card", "retire-card", "restore-card"].includes(
+    operation,
+  );
+  const projectId = usesProject ? requiredText(value?.project_id) : null;
+  if (usesProject && !PROJECT_ID_PATTERN.test(projectId)) {
+    errors.push("Owner request project ID is invalid.");
+  }
+  const fingerprintField = usesProject
+    ? "project_fingerprint"
+    : "source_fingerprint";
+  const fingerprint = requiredText(value?.[fingerprintField]);
+  if (!FINGERPRINT_PATTERN.test(fingerprint)) {
     errors.push(
-      "Owner request repository ID must be a positive integer or null.",
+      `Owner request ${fingerprintField.replace("_", " ")} is invalid.`,
     );
-  }
-  if (
-    operation === "move-source" &&
-    (!Number.isSafeInteger(repositoryId) || repositoryId <= 0)
-  ) {
-    errors.push("Owner source move requires a positive repository ID.");
-  }
-  const sourceFingerprint = requiredText(value?.source_fingerprint);
-  if (!/^[a-f0-9]{64}$/u.test(sourceFingerprint)) {
-    errors.push("Owner request source fingerprint is invalid.");
   }
   if (!Object.hasOwn(value ?? {}, "explanation")) {
     errors.push("Owner request explanation member is required.");
   }
   const explanation = nullableText(value?.explanation, errors);
-  const delistConfirmation =
-    operation === "delist" ? requiredText(value?.delist_confirmation) : null;
-  if (operation === "delist" && !delistConfirmation) {
-    errors.push("Owner delisting confirmation is required.");
-  }
-  const explanationLimit = operation === "delist" ? 500 : 1_000;
+  const explanationLimit = operation === "delist-source" ? 500 : 1_000;
   if (explanation && explanation.length > explanationLimit) {
     errors.push(
       `Owner request explanation must be ${explanationLimit.toLocaleString("en-US")} characters or fewer.`,
     );
   }
 
+  const tagIndex = tagVocabulary(rawVocabularies);
   const vocabularies = {
-    frontends: vocabularyEntries(rawVocabularies?.frontends, "frontends"),
-    primaryFunctions: vocabularyEntries(
-      rawVocabularies?.primaryFunctions,
-      "primary_functions",
+    frontends: new Set(
+      vocabularyEntries(rawVocabularies?.frontends, "frontends").map(
+        (entry) => entry.id,
+      ),
     ),
-    capabilities: vocabularyEntries(
-      rawVocabularies?.capabilities,
-      "capabilities",
+    primaryFunctions: new Set(
+      vocabularyEntries(
+        rawVocabularies?.primaryFunctions,
+        "primary_functions",
+      ).map((entry) => entry.id),
     ),
-    modelFamilies: vocabularyEntries(
-      rawVocabularies?.modelFamilies,
-      "model_families",
+    tags: tagIndex,
+    modelFamilies: new Set(
+      vocabularyEntries(rawVocabularies?.modelFamilies, "model_families").map(
+        (entry) => entry.id,
+      ),
     ),
-    completionFormats: vocabularyEntries(
-      rawVocabularies?.completionFormats,
-      "completion_formats",
+    completionFormats: new Set(
+      vocabularyEntries(
+        rawVocabularies?.completionFormats,
+        "completion_formats",
+      ).map((entry) => entry.id),
     ),
   };
+  const source = sourceContext(rawVocabularies, sourceId, repositoryId, errors);
 
-  let values = { original: {}, proposed: {} };
+  let operationValues = {};
   if (operation === "edit-card") {
-    values = normalizeEdit(value, vocabularies, errors);
+    operationValues = normalizeEdit(value, vocabularies, errors);
+  } else if (operation === "add-cards") {
+    operationValues = normalizeAddCards(value, source, vocabularies, errors);
+  } else if (operation === "retire-card" || operation === "restore-card") {
+    operationValues = normalizeCardState(value, operation, errors);
   } else if (operation === "move-source") {
-    values = normalizeMove(value, repositoryId, errors);
-  } else if (operation === "delist") {
-    values = normalizeDelist(value, errors);
+    operationValues = normalizeMove(value, repositoryId, errors);
+  } else if (operation === "delist-source") {
+    operationValues = normalizeDelistSource(value, source, errors);
   }
 
   if (errors.length > 0) {
@@ -350,18 +595,19 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   return {
     valid: true,
     manifest: {
-      schema_version: 1,
+      schema_version: 2,
       request_kind: "project-owner",
       operation,
-      project_id: projectId,
+      source_id: sourceId,
       repository_id: repositoryId,
-      source_fingerprint: sourceFingerprint,
-      ...values,
+      ...(usesProject
+        ? {
+            project_id: projectId,
+            project_fingerprint: fingerprint,
+          }
+        : { source_fingerprint: fingerprint }),
+      ...operationValues,
       explanation,
-      ...(operation === "delist"
-        ? { delist_confirmation: delistConfirmation }
-        : {}),
     },
   };
 }
-import { classificationError } from "../catalog/primary-function-contract.mjs";

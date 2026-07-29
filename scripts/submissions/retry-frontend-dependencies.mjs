@@ -6,18 +6,21 @@ import {
 } from "./triage-issue.mjs";
 import { parseSourceIdentity } from "./source-identity.mjs";
 
-export function indexedFrontendUrls(projects) {
+export function indexedFrontendUrls(projects, sourcesById) {
   const urls = new Set();
   for (const project of projects) {
     if (project.kind !== "frontend") continue;
+    const source = sourcesById[project.source_id];
     const sourceUrl =
-      project.source?.type === "github" &&
-      typeof project.source.repository === "string"
-        ? `https://github.com/${project.source.repository}`
-        : project.source?.type === "url" &&
-            typeof project.source.url === "string"
-          ? project.source.url
-          : null;
+      source?.type === "github" && typeof source.repository === "string"
+        ? `https://github.com/${source.repository}`
+        : source?.type === "codeberg" && typeof source.repository === "string"
+          ? `https://codeberg.org/${source.repository}`
+          : (source?.type === "url" ||
+                source?.type === "github-organization") &&
+              typeof source.url === "string"
+            ? source.url
+            : null;
     if (!sourceUrl) continue;
     const identity = parseSourceIdentity(sourceUrl);
     urls.add(identity.canonicalUrl.toLowerCase());
@@ -55,9 +58,13 @@ export async function retryFrontendDependencies({
   repository,
   ref = "main",
   projects,
+  sources,
   request,
 }) {
-  const indexedUrls = indexedFrontendUrls(projects);
+  const sourcesById = Object.fromEntries(
+    sources.map((source) => [source.id, source]),
+  );
+  const indexedUrls = indexedFrontendUrls(projects, sourcesById);
   const dispatched = [];
   let page = 1;
 
@@ -127,11 +134,12 @@ async function main() {
   if (!repository || !process.env.GITHUB_TOKEN) {
     throw new Error("GITHUB_REPOSITORY and GITHUB_TOKEN are required.");
   }
-  const { projects } = await loadProjectSubmissionCatalogData();
+  const { projects, sources } = await loadProjectSubmissionCatalogData();
   await retryFrontendDependencies({
     repository,
     ref: process.env.GITHUB_REF_NAME || "main",
     projects,
+    sources,
     request: github,
   });
 }

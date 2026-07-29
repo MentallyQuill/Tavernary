@@ -66,7 +66,7 @@ function closeCandidates(value, entries) {
     .map(({ id, label }) => ({ id, label }));
 }
 
-function frontendIndexes(vocabulary, frontendProjects) {
+function frontendIndexes(vocabulary, frontendProjects, sourcesById) {
   const entries = vocabularyEntries(vocabulary);
   const byId = new Map(entries.map((entry) => [entry.id, entry]));
   const byLabel = new Map();
@@ -84,11 +84,12 @@ function frontendIndexes(vocabulary, frontendProjects) {
     if (project.kind !== "frontend") continue;
     const frontendId = project.frontends?.[0];
     if (!byId.has(frontendId)) continue;
+    const source = sourcesById[project.source_id];
     const sourceUrl =
-      project.source?.type === "github"
-        ? `https://github.com/${project.source.repository}`
-        : project.source?.type === "url"
-          ? project.source.url
+      source?.type === "github"
+        ? `https://github.com/${source.repository}`
+        : source?.type === "url"
+          ? source.url
           : null;
     if (!sourceUrl) continue;
     const identity = parseSourceIdentity(sourceUrl);
@@ -109,7 +110,11 @@ export function reconcileFrontends(input) {
   if (input.projectType === "preset" && input.frontendIndependent) {
     return { status: "resolved", ids: [], warnings: [] };
   }
-  const indexes = frontendIndexes(input.vocabulary, input.frontendProjects);
+  const indexes = frontendIndexes(
+    input.vocabulary,
+    input.frontendProjects,
+    input.sourcesById,
+  );
   const ids = [];
   const errors = [];
   const suggestions = [];

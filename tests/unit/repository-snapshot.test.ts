@@ -7,7 +7,7 @@ import {
 
 const observation = {
   provider: "github" as const,
-  projectId: "owner-repo",
+  sourceId: "github-42",
   repository: {
     id: 42,
     owner: "Owner",
@@ -64,10 +64,10 @@ const activityInspection = {
   scan: null,
 };
 
-test("creates a provider-qualified schema-v3 initial snapshot", () => {
+test("creates a source-keyed provider-qualified schema-v4 initial snapshot", () => {
   const snapshot = createInitialRepositorySnapshot({
     provider: "github",
-    projectId: "owner-repo",
+    sourceId: "github-42",
     observation,
     activityInspection,
     contributors: [{ login: "owner", type: "User" }],
@@ -75,9 +75,9 @@ test("creates a provider-qualified schema-v3 initial snapshot", () => {
   });
 
   expect(snapshot).toMatchObject({
-    schema_version: 3,
+    schema_version: 4,
     provider: "github",
-    project_id: "owner-repo",
+    source_id: "github-42",
     source_health: "healthy",
     repository: {
       id: observation.repository.id,
@@ -109,16 +109,21 @@ test("creates a provider-qualified schema-v3 initial snapshot", () => {
 test("creates a Codeberg snapshot with provider-qualified contributors", () => {
   const snapshot = createInitialRepositorySnapshot({
     provider: "codeberg",
-    projectId: "owner-repo",
-    observation: { ...observation, provider: "codeberg" },
+    sourceId: "codeberg-42",
+    observation: {
+      ...observation,
+      provider: "codeberg",
+      sourceId: "codeberg-42",
+    },
     activityInspection,
     contributors: [{ login: "owner", type: "User" }],
     now: "2026-07-25T18:00:00.000Z",
   });
 
   expect(snapshot).toMatchObject({
-    schema_version: 3,
+    schema_version: 4,
     provider: "codeberg",
+    source_id: "codeberg-42",
     community: {
       stars_count: 3,
       forks_count: 2,
@@ -137,7 +142,7 @@ test("defaults a legacy observation without a fork fact to false", () => {
 
   const snapshot = createInitialRepositorySnapshot({
     provider: "github",
-    projectId: "owner-repo",
+    sourceId: "github-42",
     observation: legacyObservation,
     activityInspection,
     contributors: [],
@@ -152,7 +157,7 @@ test("retains a last-known fork parent when refresh omits it", () => {
   refreshedObservation.repository.parent = undefined as never;
   const previous = createInitialRepositorySnapshot({
     provider: "github",
-    projectId: "owner-repo",
+    sourceId: "github-42",
     observation,
     activityInspection,
     contributors: [],
@@ -161,7 +166,7 @@ test("retains a last-known fork parent when refresh omits it", () => {
 
   const snapshot = snapshotFromObservation({
     provider: "github",
-    projectId: "owner-repo",
+    sourceId: "github-42",
     observation: refreshedObservation,
     previous,
     now: "2026-07-26T18:00:00.000Z",
@@ -180,7 +185,7 @@ test("retains an incomplete API activity continuation as provisional", () => {
   };
   const snapshot = createInitialRepositorySnapshot({
     provider: "github",
-    projectId: "owner-repo",
+    sourceId: "github-42",
     observation,
     activityInspection: {
       ...activityInspection,

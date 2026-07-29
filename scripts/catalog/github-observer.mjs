@@ -51,7 +51,7 @@ function batchQuery(count) {
 }
 
 function parseRepositoryName(record) {
-  const repository = record.source?.repository;
+  const repository = record.repository;
   if (typeof repository !== "string") {
     throw new Error(`${record.id}: GitHub repository is required`);
   }
@@ -172,19 +172,19 @@ function parseObservation(record, repository) {
   if (!repository || typeof repository !== "object") {
     return {
       failure: {
-        projectId: record.id,
+        sourceId: record.id,
         kind: "unavailable",
         message: "Repository is unavailable",
       },
     };
   }
   if (
-    record.source.repository_id !== null &&
-    repository.databaseId !== record.source.repository_id
+    record.repository_id !== null &&
+    repository.databaseId !== record.repository_id
   ) {
     return {
       failure: {
-        projectId: record.id,
+        sourceId: record.id,
         kind: "identity-change",
         message: "Repository identity changed",
       },
@@ -202,7 +202,7 @@ function parseObservation(record, repository) {
   ) {
     return {
       failure: {
-        projectId: record.id,
+        sourceId: record.id,
         kind: "missing-default-branch",
         message: "Repository has no default branch commit",
       },
@@ -266,7 +266,7 @@ function parseObservation(record, repository) {
 
   return {
     observation: {
-      projectId: record.id,
+      sourceId: record.id,
       repository: {
         id: repository.databaseId,
         owner,
@@ -369,7 +369,7 @@ export async function observeRepositories(records, options = {}) {
       const alias = `r${index}`;
       if (aliasErrors.has(alias)) {
         failures.push({
-          projectId: record.id,
+          sourceId: record.id,
           kind: "unavailable",
           message: "Repository is unavailable",
         });

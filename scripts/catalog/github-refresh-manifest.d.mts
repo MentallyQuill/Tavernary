@@ -9,8 +9,8 @@ export type RefreshOutcome =
   | "identity-change"
   | "failed";
 
-export interface ProjectRefreshOutcome {
-  projectId: string;
+export interface SourceRefreshOutcome {
+  sourceId: string;
   provider?: "github" | "codeberg";
   result: RefreshOutcome;
   durationMs: number;
@@ -22,7 +22,7 @@ export interface ProjectRefreshOutcome {
 }
 
 export interface GitHubRefreshManifest {
-  schema_version: 2;
+  schema_version: 3;
   mode: RefreshMode;
   started_at: string;
   completed_at: string;
@@ -56,8 +56,8 @@ export interface GitHubRefreshManifest {
     }
   >;
   duration_ms: number;
-  project_timings: Array<{
-    project_id: string;
+  source_timings: Array<{
+    source_id: string;
     outcome: RefreshOutcome;
     duration_ms: number;
     error_code: string | null;
@@ -70,7 +70,7 @@ export function buildRefreshManifest(run: {
   mode: RefreshMode;
   startedAt: string;
   completedAt: string;
-  outcomes: ProjectRefreshOutcome[];
+  outcomes: SourceRefreshOutcome[];
   snapshots?: unknown[];
   usage?: {
     graphqlRequests?: number;

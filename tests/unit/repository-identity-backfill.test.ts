@@ -10,30 +10,26 @@ import {
   writeUpdatedRecords,
 } from "../../scripts/catalog/backfill-repository-identities.mjs";
 import { backfillRepositoryIdentities } from "../../scripts/catalog/repository-identity-backfill.mjs";
-import type { IdentityRecord } from "../../scripts/catalog/repository-identity-backfill.mjs";
+import type { IdentitySourceRecord } from "../../scripts/catalog/repository-identity-backfill.mjs";
 
 test("backfills only null IDs from healthy matching snapshots", () => {
   const records = [
     {
       id: "pending",
-      source: {
-        type: "github",
-        repository: "Example/Pending",
-        repository_id: null,
-      },
+      type: "github",
+      repository: "Example/Pending",
+      repository_id: null,
     },
     {
       id: "curated",
-      source: {
-        type: "github",
-        repository: "Example/Curated",
-        repository_id: 7,
-      },
+      type: "github",
+      repository: "Example/Curated",
+      repository_id: 7,
     },
   ];
   const snapshots = [
     {
-      project_id: "pending",
+      source_id: "pending",
       source_health: "healthy",
       repository: {
         id: 42,
@@ -42,7 +38,7 @@ test("backfills only null IDs from healthy matching snapshots", () => {
       },
     },
     {
-      project_id: "curated",
+      source_id: "curated",
       source_health: "healthy",
       repository: {
         id: 99,
@@ -57,7 +53,7 @@ test("backfills only null IDs from healthy matching snapshots", () => {
   expect(result.updated).toEqual([
     expect.objectContaining({
       id: "pending",
-      source: expect.objectContaining({ repository_id: 42 }),
+      repository_id: 42,
     }),
   ]);
   expect(result.conflicts).toEqual([
@@ -74,39 +70,31 @@ test("reports deterministic changed skipped and conflict counts", () => {
   const records = [
     {
       id: "updated",
-      source: {
-        type: "github",
-        repository: "Example/Updated",
-        repository_id: null,
-      },
+      type: "github",
+      repository: "Example/Updated",
+      repository_id: null,
     },
     {
       id: "unhealthy",
-      source: {
-        type: "github",
-        repository: "Example/Unhealthy",
-        repository_id: null,
-      },
+      type: "github",
+      repository: "Example/Unhealthy",
+      repository_id: null,
     },
     {
       id: "mismatch",
-      source: {
-        type: "github",
-        repository: "Example/Expected",
-        repository_id: null,
-      },
+      type: "github",
+      repository: "Example/Expected",
+      repository_id: null,
     },
     {
       id: "manual",
-      source: {
-        type: "url",
-        url: "https://example.com",
-      },
+      type: "url",
+      url: "https://example.com",
     },
   ];
   const snapshots = [
     {
-      project_id: "updated",
+      source_id: "updated",
       source_health: "healthy",
       repository: {
         id: 42,
@@ -115,7 +103,7 @@ test("reports deterministic changed skipped and conflict counts", () => {
       },
     },
     {
-      project_id: "unhealthy",
+      source_id: "unhealthy",
       source_health: "unavailable",
       repository: {
         id: 77,
@@ -124,7 +112,7 @@ test("reports deterministic changed skipped and conflict counts", () => {
       },
     },
     {
-      project_id: "mismatch",
+      source_id: "mismatch",
       source_health: "healthy",
       repository: {
         id: 88,
@@ -147,16 +135,14 @@ test("counts healthy matching snapshots with matching non-null IDs in determinis
   const records = [
     {
       id: "stable",
-      source: {
-        type: "github",
-        repository: "Example/Stable",
-        repository_id: 42,
-      },
+      type: "github",
+      repository: "Example/Stable",
+      repository_id: 42,
     },
   ];
   const snapshots = [
     {
-      project_id: "stable",
+      source_id: "stable",
       source_health: "healthy",
       repository: {
         id: 42,
@@ -181,16 +167,14 @@ test("plans a validated backfill projection before writing", async () => {
   const records = [
     {
       id: "pending",
-      source: {
-        type: "github",
-        repository: "Example/Pending",
-        repository_id: null,
-      },
+      type: "github",
+      repository: "Example/Pending",
+      repository_id: null,
     },
   ];
   const snapshots = [
     {
-      project_id: "pending",
+      source_id: "pending",
       source_health: "healthy",
       repository: {
         id: 42,
@@ -201,11 +185,11 @@ test("plans a validated backfill projection before writing", async () => {
   ];
 
   const validateCatalog = async ({
-    records: projectedRecords,
+    sources: projectedSources,
   }: {
-    records: IdentityRecord[];
+    sources: IdentitySourceRecord[];
   }) => ({
-    projectCount: projectedRecords.length,
+    projectCount: projectedSources.length,
     snapshotCount: snapshots.length,
     kitCount: 0,
     kitSnapshotCount: 0,
@@ -223,25 +207,23 @@ test("plans a validated backfill projection before writing", async () => {
     skipped: 0,
     conflicts: 0,
   });
-  expect(result.projectedRecords).toEqual([
+  expect(result.projectedSources).toEqual([
     expect.objectContaining({
       id: "pending",
-      source: expect.objectContaining({ repository_id: 42 }),
+      repository_id: 42,
     }),
   ]);
 });
 
-test("targets only explicitly selected project IDs", () => {
+test("targets only explicitly selected source IDs", () => {
   const records = ["canary-a", "canary-b", "other"].map((id) => ({
     id,
-    source: {
-      type: "github",
-      repository: `Example/${id}`,
-      repository_id: null,
-    },
+    type: "github",
+    repository: `Example/${id}`,
+    repository_id: null,
   }));
   const snapshots = records.map(({ id }, index) => ({
-    project_id: id,
+    source_id: id,
     source_health: "healthy",
     repository: {
       id: index + 1,
@@ -251,7 +233,7 @@ test("targets only explicitly selected project IDs", () => {
   }));
 
   const result = backfillRepositoryIdentities(records, snapshots, {
-    projectIds: new Set(["canary-a", "canary-b"]),
+    sourceIds: new Set(["canary-a", "canary-b"]),
   });
 
   expect(result.updated.map(({ id }) => id)).toEqual(["canary-a", "canary-b"]);
@@ -265,21 +247,21 @@ test("targets only explicitly selected project IDs", () => {
   });
 });
 
-test("parses repeated project IDs and rejects duplicates", () => {
+test("parses repeated source IDs and rejects duplicates", () => {
   expect(
     parseIdentityBackfillArguments([
       "--write",
-      "--project-id",
+      "--source-id",
       "a",
-      "--project-id",
+      "--source-id",
       "b",
     ]),
   ).toEqual({
     write: true,
-    projectIds: new Set(["a", "b"]),
+    sourceIds: new Set(["a", "b"]),
   });
   expect(() =>
-    parseIdentityBackfillArguments(["--project-id", "a", "--project-id", "a"]),
+    parseIdentityBackfillArguments(["--source-id", "a", "--source-id", "a"]),
   ).toThrow("duplicate");
 });
 
@@ -293,18 +275,16 @@ test("rejects unknown targeted IDs before catalog validation", async () => {
       records: [
         {
           id: "known",
-          source: {
-            type: "github",
-            repository: "Example/Known",
-            repository_id: null,
-          },
+          type: "github",
+          repository: "Example/Known",
+          repository_id: null,
         },
       ],
       snapshots: [],
-      projectIds: new Set(["unknown"]),
+      sourceIds: new Set(["unknown"]),
       validateCatalog,
     }),
-  ).rejects.toThrow("unknown project ID");
+  ).rejects.toThrow("unknown source ID");
 });
 
 test("writes backfilled records in repository Prettier format", async () => {
@@ -313,19 +293,16 @@ test("writes backfilled records in repository Prettier format", async () => {
     [
       {
         id: "formatted",
-        frontends: ["sillytavern"],
-        capabilities: [],
-        source: {
-          type: "github",
-          repository: "Example/Formatted",
-          repository_id: 42,
-        },
+        type: "github",
+        repository: "Example/Formatted",
+        repository_id: 42,
+        refresh_policy: "automatic",
       },
     ],
     directory,
   );
 
   const serialized = await readFile(join(directory, "formatted.json"), "utf8");
-  expect(serialized).toContain('"frontends": ["sillytavern"]');
-  expect(serialized).toContain('"capabilities": []');
+  expect(serialized).toContain('"repository": "Example/Formatted"');
+  expect(serialized).toContain('"refresh_policy": "automatic"');
 });

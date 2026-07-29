@@ -23,6 +23,8 @@ export function ProjectRelationshipControl({
       : "Upstream unavailable";
   const canView =
     relationship.status === "published" && !active && onViewRelationship;
+  const repositoryUrl =
+    relationship.status === "repository" ? relationship.parentUrl : null;
 
   return (
     <div className="project-relationship-control">
@@ -38,12 +40,16 @@ export function ProjectRelationshipControl({
         >
           Fork of {relationship.parentName}
         </button>
+      ) : repositoryUrl ? (
+        <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
+          Fork of {relationship.parentName}
+        </a>
       ) : (
         <span className="project-relationship-origin">
           Fork of {relationship.parentName}
         </span>
       )}
-      {relationship.status !== "published" ? (
+      {["not-listed", "unavailable"].includes(relationship.status) ? (
         <>
           <span className="project-relationship-separator" aria-hidden="true">
             ·

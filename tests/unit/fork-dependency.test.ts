@@ -32,12 +32,14 @@ const parentProject = {
   id: "parent-project",
   name: "Curated Parent",
   kind: "extension",
-  visibility: "published",
-  source: {
-    type: "github",
-    repository: "renamed-owner/renamed-parent",
-    repository_id: 41,
-  },
+  listing_status: "active",
+  source_id: "github-41",
+};
+const parentSource = {
+  id: "github-41",
+  type: "github",
+  repository: "renamed-owner/renamed-parent",
+  repository_id: 41,
 };
 
 const childManifest = {
@@ -62,6 +64,7 @@ function classify(
   return classifyForkDependency({
     repository,
     projects: [],
+    sources: [],
     priorSubmission: null,
     ancestryRepositoryIds: [42],
     ...overrides,
@@ -83,18 +86,21 @@ describe("fork submission dependency classification", () => {
   });
 
   test("finds a published parent by immutable repository ID across renames", () => {
-    expect(classify({ projects: [parentProject] })).toEqual({
+    expect(
+      classify({ projects: [parentProject], sources: [parentSource] }),
+    ).toEqual({
       status: "published",
       parentProjectId: "parent-project",
     });
   });
 
-  test.each(["disabled", "quarantined"])(
+  test.each(["retired", "quarantined"])(
     "treats a %s parent as terminally not listed",
-    (visibility) => {
+    (listingStatus) => {
       expect(
         classify({
-          projects: [{ ...parentProject, visibility }],
+          projects: [{ ...parentProject, listing_status: listingStatus }],
+          sources: [parentSource],
         }),
       ).toEqual({
         status: "not-listed",

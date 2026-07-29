@@ -1,16 +1,25 @@
 export type ProjectPublicationOperation =
-  "create" | "edit-card" | "move-source" | "delist";
+  | "create"
+  | "edit-card"
+  | "add-cards"
+  | "retire-card"
+  | "restore-card"
+  | "move-source"
+  | "delist-source";
 export type ProjectPublicationProducer =
   "project-submission" | "project-owner-request";
+export type ProjectPublicationMode = "automatic" | "manual";
 export type ProjectPublicationAuthority =
   "community-submitter" | "repository-owner" | "tavernary-staff";
 
 export interface ProjectPublicationTransaction {
-  schema_version: 1;
+  schema_version: 2;
   operation: ProjectPublicationOperation;
   producer: ProjectPublicationProducer;
+  publication_mode: ProjectPublicationMode;
   issue_number: number;
-  project_id: string;
+  project_ids: string[];
+  source_id: string;
   source_identity: {
     type: "github" | "codeberg" | "reddit" | "external";
     canonical: string;
@@ -19,7 +28,10 @@ export interface ProjectPublicationTransaction {
   actor: { id: number; login: string; type: "User" };
   authority_type: ProjectPublicationAuthority;
   input_digest: string;
-  record_fingerprint: string | null;
+  input_fingerprints: {
+    projects: Record<string, string>;
+    source: string | null;
+  };
   base_sha: string;
   generated_head_sha: string;
   generated_paths: string[];

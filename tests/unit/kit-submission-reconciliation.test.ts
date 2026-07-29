@@ -103,11 +103,53 @@ const unpublishedBody = [
 ].join("\n");
 
 const projects = [
-  { id: "frontend", kind: "frontend" },
-  { id: "extension-a", kind: "extension" },
-  { id: "extension-b", kind: "extension" },
-  { id: "extension-c", kind: "extension" },
+  {
+    id: "frontend",
+    kind: "frontend",
+    source_id: "github-1",
+    listing_status: "active",
+  },
+  {
+    id: "extension-a",
+    kind: "extension",
+    source_id: "github-2",
+    listing_status: "active",
+  },
+  {
+    id: "extension-b",
+    kind: "extension",
+    source_id: "github-3",
+    listing_status: "active",
+  },
+  {
+    id: "extension-c",
+    kind: "extension",
+    source_id: "github-4",
+    listing_status: "active",
+  },
 ];
+const sourcesById = Object.fromEntries(
+  [1, 2, 3, 4].map((repositoryId) => [
+    `github-${repositoryId}`,
+    {
+      id: `github-${repositoryId}`,
+      type: "github",
+      repository: `owner/project-${repositoryId}`,
+      repository_id: repositoryId,
+      status: "active",
+      refresh_policy: "automatic",
+    },
+  ]),
+);
+const snapshotsBySourceId = Object.fromEntries(
+  [1, 2, 3, 4].map((repositoryId) => [
+    `github-${repositoryId}`,
+    {
+      source_id: `github-${repositoryId}`,
+      source_health: "healthy",
+    },
+  ]),
+);
 
 const historicalIssues = (): GitHubKitIssue[] => [
   {
@@ -232,6 +274,8 @@ test("classifies a valid create without a canonical Kit as unpublished", () => {
         user: { id: 42, login: "submitter" },
       },
       projects,
+      sourcesById,
+      snapshotsBySourceId,
       kits: [publishedKit],
       blockedUsers: { blocked: [] },
     }),
@@ -272,6 +316,8 @@ test("builds a deterministic reconciliation ledger", () => {
     buildKitReconciliationLedger({
       issues: historicalIssues(),
       projects,
+      sourcesById,
+      snapshotsBySourceId,
       kits: [publishedKit],
       blockedUsers: { blocked: [] },
     }).map(({ issueNumber, disposition }) => ({
@@ -298,6 +344,8 @@ test("builds a dry-run ledger through the GitHub CLI adapter without mutation", 
     apply: false,
     gh,
     projects,
+    sourcesById,
+    snapshotsBySourceId,
     kits: [publishedKit],
     blockedUsers: { blocked: [] },
   });
@@ -336,6 +384,8 @@ test("applies labels, terminal states, and unpublished dispatch through GitHub C
     apply: true,
     gh,
     projects,
+    sourcesById,
+    snapshotsBySourceId,
     kits: [publishedKit],
     blockedUsers: { blocked: [] },
   });
@@ -414,9 +464,30 @@ test("does not rewrite an already reconciled label set in a different order", as
     apply: true,
     gh,
     projects,
+    sourcesById,
+    snapshotsBySourceId,
     kits: [publishedKit],
     blockedUsers: { blocked: [] },
   });
 
   expect(calls).toHaveLength(2);
+});
+
+test("does not redispatch a pending Kit when source state hides a card", () => {
+  expect(
+    classifyKitSubmissionHistory({
+      issue: historicalIssues()[3],
+      projects,
+      sourcesById: {
+        ...sourcesById,
+        "github-4": { ...sourcesById["github-4"], status: "delisted" },
+      },
+      snapshotsBySourceId,
+      kits: [publishedKit],
+      blockedUsers: { blocked: [] },
+    }),
+  ).toMatchObject({
+    disposition: "invalid",
+    dispatch: false,
+  });
 });

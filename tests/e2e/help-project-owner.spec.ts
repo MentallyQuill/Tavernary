@@ -50,8 +50,10 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
     opened.searchParams.get("owner-request-manifest") ?? "",
   );
   expect(manifest).toMatchObject({
+    schema_version: 2,
     request_kind: "project-owner",
     operation: "edit-card",
+    source_id: "github-1273112032",
     project_id: projectId,
     repository_id: 1273112032,
     original: {
@@ -63,7 +65,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
       summary: "An owner-authored summary for the Directive listing.",
     },
   });
-  expect(manifest.source_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
+  expect(manifest.project_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
 });
 
 test("keeps owner wording while removing emoji and linking the policy", async ({
@@ -86,7 +88,7 @@ test("keeps owner wording while removing emoji and linking the policy", async ({
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
-test("requires the typed project name before handing off a permanent delist", async ({
+test("requires the typed repository before handing off a permanent source delist", async ({
   page,
 }) => {
   await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
@@ -100,42 +102,41 @@ test("requires the typed project name before handing off a permanent delist", as
     });
   });
 
-  await page.getByRole("radio", { name: "Delist this project" }).check();
+  await page
+    .getByRole("radio", { name: "Permanently delist this source" })
+    .check();
   await page.getByRole("button", { name: "Review request" }).click();
 
   await expect(
-    page.getByRole("heading", { name: "Permanently delist Directive?" }),
+    page.getByRole("heading", {
+      name: "Permanently delist MentallyQuill/Directive?",
+    }),
   ).toBeVisible();
   await expect(
     page.getByText(
-      "You are about to remove Directive from Tavernary. This delisting applies to MentallyQuill/Directive.",
+      "Adding, editing, retiring, and restoring individual cards are normal maintenance. Delisting the source is not reversible.",
     ),
   ).toBeVisible();
   const confirmation = page.getByLabel(
-    "Type Directive to confirm permanent delisting.",
+    "Type MentallyQuill/Directive to confirm permanent delisting.",
   );
   const delist = page.getByRole("button", {
-    name: "Permanently delist project",
+    name: "Permanently delist source",
   });
-  await confirmation.fill("Direct");
+  await confirmation.fill("MentallyQuill");
   await expect(delist).toBeDisabled();
-  await confirmation.fill("directive");
+  await confirmation.fill("MentallyQuill/Directive");
   await expect(delist).toBeEnabled();
   await expect(
-    page.getByText(
-      "Project name matches. Permanent delisting is now available.",
-    ),
+    page.getByText("Repository matches. Permanent delisting is now available."),
   ).toBeVisible();
   await delist.click();
 
   await expect(
     page.getByText(
-      "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.",
+      "This permanently delists MentallyQuill/Directive and every card from that source.",
     ),
   ).toBeVisible();
-  await expect(
-    page.getByText(/retains the record|refresh policy|enrichment policy/iu),
-  ).toHaveCount(0);
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
 
   const openedUrl = await page.evaluate(() =>
@@ -145,21 +146,17 @@ test("requires the typed project name before handing off a permanent delist", as
   expect(
     JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
   ).toMatchObject({
-    operation: "delist",
-    project_id: projectId,
-    delist_confirmation: "directive",
+    operation: "delist-source",
+    source_id: "github-1273112032",
+    delist_confirmation: "MentallyQuill/Directive",
   });
 });
 
-test("keeps organization listings editable for trusted staff with a report fallback", async ({
-  page,
-}) => {
+test("routes non-GitHub listings to the report workflow", async ({ page }) => {
   await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
 
   await expect(
-    page.getByText(
-      /Organization suite listings require a public project report/iu,
-    ),
+    page.getByText(/Only GitHub repository listings/iu),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Report this listing instead" }),
@@ -169,7 +166,55 @@ test("keeps organization listings editable for trusted staff with a report fallb
   );
   await expect(
     page.getByRole("radio", { name: "Edit card details" }),
+  ).toHaveCount(0);
+});
+
+test("reviews an atomic add-card request with independent automatic metadata", async ({
+  page,
+}) => {
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.evaluate(() => {
+    Object.defineProperty(window, "open", {
+      configurable: true,
+      value: (url: string | URL) => {
+        window.sessionStorage.setItem("tavernary-opened-url", String(url));
+        return window;
+      },
+    });
+  });
+
+  await page.getByRole("radio", { name: "Add cards from this source" }).check();
+  await expect(
+    page.getByText(/Only one unresolved add-card request/iu),
   ).toBeVisible();
+  await page.getByLabel("Card 1 display name").fill("Directive Preset");
+  await expect(page.getByLabel("Card 1 summary policy")).toHaveValue(
+    "automatic",
+  );
+  await expect(page.getByLabel("Card 1 tag policy")).toHaveValue("automatic");
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+
+  const openedUrl = await page.evaluate(() =>
+    window.sessionStorage.getItem("tavernary-opened-url"),
+  );
+  const opened = new URL(openedUrl ?? "");
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    schema_version: 2,
+    operation: "add-cards",
+    source_id: "github-1273112032",
+    proposed_cards: [
+      {
+        name: "Directive Preset",
+        metadata: {
+          summary: { mode: "automatic" },
+          tags: { mode: "automatic" },
+        },
+      },
+    ],
+  });
 });
 
 test("falls back from an unknown owner project and requires a listed selection", async ({

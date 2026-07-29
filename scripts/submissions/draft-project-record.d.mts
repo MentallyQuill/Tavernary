@@ -7,6 +7,7 @@ import type {
   CatalogCopyResultStatus,
 } from "../catalog/catalog-copy-contract.mjs";
 import type { SubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
+import type { SourceRecord } from "../../src/features/catalog/source-record.mjs";
 import type { ProjectSubmissionDecision } from "./admission.mjs";
 import type {
   FrontendProject,
@@ -19,27 +20,13 @@ export type AdmittedProjectSubmission = Extract<
 >;
 
 export interface DraftedProjectRecord {
-  schema_version: 5;
+  schema_version: 6;
   id: string;
   name: string;
   kind: "frontend" | "extension" | "preset";
   summary: string;
   metadata_status: "provisional" | "curated";
-  source:
-    | {
-        type: "github" | "codeberg";
-        repository: string;
-        repository_id: number;
-      }
-    | {
-        type: "url";
-        url: string;
-        published_at: null;
-        version: null;
-        artifact_size_bytes: null;
-        license_status: "pending";
-        license_spdx_id: null;
-      };
+  source_id: string;
   frontends: string[];
   primary_function: string;
   capabilities: string[];
@@ -47,9 +34,8 @@ export interface DraftedProjectRecord {
   completion_formats?: string[];
   cataloged_at: string;
   catalog_cohort: "standard";
-  visibility: "published";
-  visibility_reason: null;
-  refresh_policy: "automatic" | "paused";
+  listing_status: "active";
+  listing_status_reason: null;
   enrichment_policy: "automatic" | "manual";
   enrichment_note?: string;
 }
@@ -93,6 +79,7 @@ export type GeneratedClassificationReview =
 
 export interface ProjectDraftResult {
   record: DraftedProjectRecord;
+  source: SourceRecord;
   snapshot?: RepositorySnapshot;
   frontendVocabulary?: FrontendVocabulary;
   submitted: Record<string, unknown>;

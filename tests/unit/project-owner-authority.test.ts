@@ -5,23 +5,17 @@ import {
   verifyProjectOwnerAuthority,
 } from "../../scripts/help/project-owner-authority.mjs";
 
-function githubRecord(
-  source: Record<string, unknown> = {},
-  record: Record<string, unknown> = {},
-) {
+function githubSource(source: Record<string, unknown> = {}) {
   return {
-    schema_version: 5,
-    id: "owner-alpha",
-    name: "Alpha",
-    kind: "extension",
-    summary: "The original summary.",
-    source: {
-      type: "github",
-      repository: "Owner/Alpha",
-      repository_id: 42,
-      ...source,
-    },
-    ...record,
+    schema_version: 1,
+    id: "github-42",
+    type: "github",
+    repository: "Owner/Alpha",
+    repository_id: 42,
+    status: "active",
+    status_reason: null,
+    refresh_policy: "automatic",
+    ...source,
   };
 }
 
@@ -40,13 +34,13 @@ function authorityFixture(repositoryPatch: Record<string, unknown> = {}) {
   return {
     issueAuthor: "owner",
     manifestRepositoryId: 42,
-    record: githubRecord(),
+    source: githubSource(),
     repository: githubIdentity(repositoryPatch),
   };
 }
 
 describe("exact project-owner authority", () => {
-  test("admits the current personal owner case-insensitively", () => {
+  test("admits the current personal repository owner case-insensitively", () => {
     expect(verifyProjectOwnerAuthority(authorityFixture())).toEqual({
       authorized: true,
       authorityType: "repository-owner",
@@ -68,42 +62,44 @@ describe("exact project-owner authority", () => {
 
   test.each([
     [
-      "organization suite records",
-      githubRecord({
+      "organization sources",
+      {
+        ...githubSource(),
         type: "github-organization",
         organization: "Owner",
         url: "https://github.com/Owner",
         repository: undefined,
         repository_id: undefined,
-      }),
+      },
     ],
     [
-      "external URL records",
-      githubRecord({
+      "external URL sources",
+      {
+        ...githubSource(),
         type: "url",
         url: "https://example.com/alpha",
         repository: undefined,
         repository_id: undefined,
-      }),
+      },
     ],
     [
-      "repositories without stored identities",
-      githubRecord({ repository_id: null }),
+      "sources without stored identities",
+      githubSource({ repository_id: null }),
     ],
-  ])("rejects %s", (_name, candidate) => {
+  ])("rejects %s", (_name, source) => {
     expect(
       verifyProjectOwnerAuthority({
         ...authorityFixture(),
-        record: candidate,
+        source,
       }),
     ).toMatchObject({ authorized: false });
   });
 
-  test("requires all three repository IDs to be equal positive integers", () => {
+  test("requires stored, manifest, and API repository IDs to match", () => {
     for (const candidate of [
       { manifestRepositoryId: 0 },
       { manifestRepositoryId: 99 },
-      { record: githubRecord({ repository_id: 99 }) },
+      { source: githubSource({ repository_id: 99 }) },
       { repository: githubIdentity({ id: 0 }) },
     ]) {
       expect(
@@ -131,103 +127,82 @@ describe("exact project-owner authority", () => {
   });
 });
 
-function editManifest(
-  proposed: Record<string, unknown> = {},
-  sourceFingerprint = "a".repeat(64),
-) {
-  return {
-    operation: "edit-card" as const,
-    source_fingerprint: sourceFingerprint,
-    original: {
-      kind: "extension",
-      name: "Alpha",
-      summary: "The original summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
+describe("operation-scoped owner request conflict detection", () => {
+  test.each(["edit-card", "retire-card", "restore-card"] as const)(
+    "uses the card fingerprint for %s",
+    (operation) => {
+      expect(
+        detectOwnerRequestConflict({
+          manifest: {
+            operation,
+            project_fingerprint: "a".repeat(64),
+          },
+          project: { id: "owner-alpha" },
+          currentProjectFingerprint: "a".repeat(64),
+        }),
+      ).toEqual({ conflict: false, warnings: [] });
+
+      expect(
+        detectOwnerRequestConflict({
+          manifest: {
+            operation,
+            project_fingerprint: "a".repeat(64),
+          },
+          project: { id: "owner-alpha" },
+          currentProjectFingerprint: "b".repeat(64),
+        }),
+      ).toEqual({
+        conflict: true,
+        reasonCode: "stale-owner-request",
+        fields: ["project_fingerprint"],
+        warnings: [],
+      });
     },
-    proposed: {
-      name: "Alpha",
-      summary: "Owner-authored summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
-      ...proposed,
+  );
+
+  test.each(["add-cards", "move-source", "delist-source"] as const)(
+    "uses the shared source fingerprint for %s",
+    (operation) => {
+      expect(
+        detectOwnerRequestConflict({
+          manifest: {
+            operation,
+            source_fingerprint: "c".repeat(64),
+          },
+          source: githubSource(),
+          currentSourceFingerprint: "c".repeat(64),
+        }),
+      ).toEqual({ conflict: false, warnings: [] });
+
+      expect(
+        detectOwnerRequestConflict({
+          manifest: {
+            operation,
+            source_fingerprint: "c".repeat(64),
+          },
+          source: githubSource(),
+          currentSourceFingerprint: "d".repeat(64),
+        }),
+      ).toEqual({
+        conflict: true,
+        reasonCode: "stale-owner-request",
+        fields: ["source_fingerprint"],
+        warnings: [],
+      });
     },
-  };
-}
+  );
 
-describe("owner request conflict detection", () => {
-  test("rejects a current change that overlaps a requested field", () => {
+  test("does not let a sibling card edit stale a source-wide request", () => {
     expect(
       detectOwnerRequestConflict({
-        manifest: editManifest(),
-        record: githubRecord({}, { summary: "Maintainer-edited summary." }),
-        currentFingerprint: "b".repeat(64),
-      }),
-    ).toEqual({
-      conflict: true,
-      reasonCode: "stale-owner-request",
-      fields: ["summary"],
-      warnings: [],
-    });
-  });
-
-  test("warns without conflicting when fingerprint drift is outside requested fields", () => {
-    expect(
-      detectOwnerRequestConflict({
-        manifest: editManifest(),
-        record: githubRecord({}, { name: "Maintainer-renamed Alpha" }),
-        currentFingerprint: "b".repeat(64),
-      }),
-    ).toEqual({
-      conflict: false,
-      warnings: ["source-fingerprint-changed"],
-    });
-  });
-
-  test("reports no warning when the current fingerprint still matches", () => {
-    expect(
-      detectOwnerRequestConflict({
-        manifest: editManifest({}, "c".repeat(64)),
-        record: githubRecord(),
-        currentFingerprint: "c".repeat(64),
+        manifest: {
+          operation: "add-cards",
+          source_fingerprint: "e".repeat(64),
+        },
+        source: githubSource(),
+        currentSourceFingerprint: "e".repeat(64),
+        currentProjectFingerprint: "f".repeat(64),
       }),
     ).toEqual({ conflict: false, warnings: [] });
-  });
-
-  test("compares only the current source location for a same-ID move", () => {
-    const manifest = {
-      operation: "move-source" as const,
-      source_fingerprint: "a".repeat(64),
-      original: { repository: "Owner/Alpha", repository_id: 42 },
-      proposed: { repository: "Owner/Alpha-Renamed", repository_id: 42 },
-    };
-
-    expect(
-      detectOwnerRequestConflict({
-        manifest,
-        record: githubRecord({}, { summary: "A concurrent editorial change." }),
-        currentFingerprint: "b".repeat(64),
-      }),
-    ).toEqual({
-      conflict: false,
-      warnings: ["source-fingerprint-changed"],
-    });
-    expect(
-      detectOwnerRequestConflict({
-        manifest,
-        record: githubRecord({ repository: "Owner/Alpha-Elsewhere" }),
-        currentFingerprint: "b".repeat(64),
-      }),
-    ).toMatchObject({
-      conflict: true,
-      reasonCode: "stale-owner-request",
-      fields: ["repository"],
-    });
   });
 });

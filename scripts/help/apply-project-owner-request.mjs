@@ -1,13 +1,26 @@
 import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
-import { detectOwnerRequestConflict } from "./project-owner-authority.mjs";
+import {
+  fingerprintProjectRecord,
+  fingerprintSourceRecord,
+} from "../../src/features/help/project-owner-record.mjs";
 
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const PROJECT_OPERATIONS = new Set([
+  "edit-card",
+  "retire-card",
+  "restore-card",
+]);
+const SOURCE_OPERATIONS = new Set([
+  "add-cards",
+  "move-source",
+  "delist-source",
+]);
 const EDITABLE_FIELDS = [
   "name",
   "summary",
   "frontends",
   "primary_function",
-  "capabilities",
+  "tags",
   "model_families",
   "completion_formats",
 ];
@@ -24,118 +37,238 @@ function requirePositiveInteger(value, message) {
   }
 }
 
-function requireCurrentRecord(manifest, record) {
-  if (
-    !record ||
-    typeof record !== "object" ||
-    !PROJECT_ID_PATTERN.test(record.id) ||
-    record.id !== manifest.project_id
-  ) {
+function projectPath(id) {
+  return `data/registry/projects/${id}.json`;
+}
+
+function sourcePath(id) {
+  return `data/registry/sources/${id}.json`;
+}
+
+function snapshotPath(id) {
+  return `data/snapshots/github/${id}.json`;
+}
+
+function currentProject(projects, projectId) {
+  const matches = projects.filter((project) => project?.id === projectId);
+  if (matches.length !== 1) {
     fail(
       "owner-request-invalid",
-      "Owner request project does not match the current registry record.",
+      "Owner request project does not match exactly one current registry record.",
     );
   }
-  if (manifest.operation === "move-source") {
-    if (
-      record.source?.type !== "github" ||
-      record.source.repository_id !== manifest.repository_id
-    ) {
-      fail(
-        "repository-identity-mismatch",
-        "Owner request immutable repository ID does not match the current registry record.",
-      );
-    }
-    return;
-  }
-  const repositoryId =
-    record.source?.type === "github" &&
-    Number.isSafeInteger(record.source.repository_id) &&
-    record.source.repository_id > 0
-      ? record.source.repository_id
-      : null;
-  if (repositoryId !== manifest.repository_id) {
-    fail(
-      "repository-identity-mismatch",
-      "Owner request immutable repository ID does not match the current registry record.",
-    );
-  }
+  return matches[0];
 }
 
 function normalizeManifest(input) {
-  const normalized = normalizeProjectOwnerManifest(
-    input?.manifest,
-    input?.vocabularies,
-  );
+  const normalized = normalizeProjectOwnerManifest(input?.manifest, {
+    ...input?.vocabularies,
+    source: {
+      id: input?.source?.id,
+      type: input?.source?.type,
+      repository: input?.source?.repository,
+      repository_id: input?.source?.repository_id,
+    },
+  });
   if (!normalized.valid) {
     fail("owner-request-invalid", normalized.errors.join(" "));
   }
   return normalized.manifest;
 }
 
-function registryPath(record) {
-  return `data/registry/projects/${record.id}.json`;
+function requireCurrentSource(manifest, source) {
+  if (
+    !source ||
+    source.schema_version !== 1 ||
+    source.type !== "github" ||
+    source.id !== manifest.source_id ||
+    source.repository_id !== manifest.repository_id
+  ) {
+    fail(
+      "repository-identity-mismatch",
+      "Owner request source identity does not match the current registry source.",
+    );
+  }
 }
 
-function snapshotPath(record) {
-  return `data/snapshots/github/${record.id}.json`;
+function requireOperationFingerprint(manifest, projects, source) {
+  if (PROJECT_OPERATIONS.has(manifest.operation)) {
+    const project = currentProject(projects, manifest.project_id);
+    if (fingerprintProjectRecord(project) !== manifest.project_fingerprint) {
+      fail(
+        "project-fingerprint-stale",
+        "Owner request project fingerprint does not match the current card.",
+      );
+    }
+    return project;
+  }
+  if (
+    SOURCE_OPERATIONS.has(manifest.operation) &&
+    fingerprintSourceRecord(source) !== manifest.source_fingerprint
+  ) {
+    fail(
+      "source-fingerprint-stale",
+      "Owner request source fingerprint does not match the current source.",
+    );
+  }
+  return null;
 }
 
-function relevantEditValues(record) {
+function metadataPolicy(metadata, issueNumber) {
   return {
-    ...Object.fromEntries(
-      EDITABLE_FIELDS.flatMap((field) =>
-        Object.hasOwn(record, field)
-          ? [[field, structuredClone(record[field])]]
-          : [],
-      ),
-    ),
-    metadata_status: record.metadata_status,
-    refresh_policy: record.refresh_policy,
-    enrichment_policy: record.enrichment_policy,
-    ...(record.enrichment_note === undefined
-      ? {}
-      : { enrichment_note: record.enrichment_note }),
+    summary:
+      metadata.summary.mode === "manual"
+        ? {
+            mode: "manual",
+            note: `Owner-authored summary approved through issue #${issueNumber}.`,
+          }
+        : { mode: "automatic" },
+    tags:
+      metadata.tags.mode === "manual"
+        ? {
+            mode: "manual",
+            note: `Owner-authored tags approved through issue #${issueNumber}.`,
+          }
+        : { mode: "automatic" },
   };
 }
 
-function applyCardEdit(input, manifest, record, snapshot) {
-  if (record.kind !== manifest.original.kind) {
+function cardFromDraft(input, draft) {
+  const record = {
+    schema_version: 6,
+    id: draft.project_id,
+    name: draft.name,
+    kind: draft.kind,
+    summary: draft.summary,
+    metadata_status: "curated",
+    source_id: input.source.id,
+    frontends: structuredClone(draft.frontends),
+    primary_function: draft.primary_function,
+    tags: structuredClone(draft.tags),
+    metadata_policy: metadataPolicy(draft.metadata, input.issueNumber),
+    ...(draft.kind === "preset"
+      ? {
+          model_families: structuredClone(draft.model_families),
+          completion_formats: structuredClone(draft.completion_formats),
+        }
+      : {}),
+    cataloged_at: input.catalogedAt,
+    catalog_cohort: "standard",
+    listing_status: "active",
+    listing_status_reason: null,
+  };
+  if (
+    typeof record.cataloged_at !== "string" ||
+    !Number.isFinite(new Date(record.cataloged_at).getTime())
+  ) {
+    fail(
+      "owner-request-invalid",
+      "Add-card generation requires a valid catalog timestamp.",
+    );
+  }
+  return record;
+}
+
+function applyCardEdit(input, manifest, project) {
+  if (project.kind !== manifest.original.kind) {
     fail(
       "stale-owner-request",
       "stale-owner-request: the current project kind changed.",
     );
   }
-  const before = relevantEditValues(record);
-  const updated = { ...record };
-  const manuallyCurated = ["summary", "capabilities"].some(
-    (field) =>
-      JSON.stringify(manifest.original[field]) !==
-      JSON.stringify(manifest.proposed[field]),
-  );
+  const updated = structuredClone(project);
   for (const field of EDITABLE_FIELDS) {
-    if (
-      JSON.stringify(manifest.original[field]) ===
-      JSON.stringify(manifest.proposed[field])
-    ) {
-      continue;
-    }
     if (field === "model_families" || field === "completion_formats") {
-      if (record.kind !== "preset") continue;
+      if (project.kind !== "preset") {
+        delete updated[field];
+        continue;
+      }
     }
     updated[field] = structuredClone(manifest.proposed[field]);
   }
-  if (manuallyCurated) {
-    updated.metadata_status = "curated";
-    updated.enrichment_policy = "manual";
-    updated.enrichment_note = `Owner-authored catalog details approved through issue #${input.issueNumber}.`;
+  if (
+    manifest.original.summary !== manifest.proposed.summary &&
+    input.publishedSummary !== undefined
+  ) {
+    if (
+      typeof input.publishedSummary !== "string" ||
+      input.publishedSummary.length < 1 ||
+      input.publishedSummary.length > 220
+    ) {
+      fail(
+        "owner-request-invalid",
+        "Published owner summary must be one to 220 characters.",
+      );
+    }
+    updated.summary = input.publishedSummary;
   }
+  updated.metadata_status = "curated";
+  updated.metadata_policy = metadataPolicy(
+    manifest.proposed.metadata,
+    input.issueNumber,
+  );
   return {
-    record: updated,
-    snapshot,
-    changedPaths: [registryPath(record)],
-    before,
-    after: relevantEditValues(updated),
+    projects: [updated],
+    source: structuredClone(input.source),
+    snapshot: structuredClone(input.snapshot ?? null),
+    changedPaths: [projectPath(project.id)],
+    before: structuredClone(project),
+    after: structuredClone(updated),
+  };
+}
+
+function applyAddCards(input, manifest) {
+  if (input.source.status !== "active") {
+    fail(
+      "source-delisted",
+      "Additional cards cannot be added to a delisted source.",
+    );
+  }
+  const existingIds = new Set(input.projects.map((project) => project.id));
+  for (const draft of manifest.proposed_cards) {
+    if (existingIds.has(draft.project_id)) {
+      fail(
+        "project-id-collision",
+        `Owner add-card project ID already exists: ${draft.project_id}`,
+      );
+    }
+    existingIds.add(draft.project_id);
+  }
+  const projects = manifest.proposed_cards
+    .map((draft) => cardFromDraft(input, draft))
+    .sort((left, right) => left.id.localeCompare(right.id));
+  return {
+    projects,
+    source: structuredClone(input.source),
+    snapshot: structuredClone(input.snapshot ?? null),
+    changedPaths: projects.map((project) => projectPath(project.id)),
+    before: [],
+    after: structuredClone(projects),
+  };
+}
+
+function applyCardLifecycle(input, manifest, project) {
+  if (
+    manifest.operation === "restore-card" &&
+    input.source.status !== "active"
+  ) {
+    fail(
+      "source-delisted",
+      "A card cannot be restored from a delisted source.",
+    );
+  }
+  const updated = {
+    ...structuredClone(project),
+    listing_status: manifest.proposed.listing_status,
+    listing_status_reason: manifest.proposed.listing_status_reason,
+  };
+  return {
+    projects: [updated],
+    source: structuredClone(input.source),
+    snapshot: structuredClone(input.snapshot ?? null),
+    changedPaths: [projectPath(project.id)],
+    before: structuredClone(manifest.original),
+    after: structuredClone(manifest.proposed),
   };
 }
 
@@ -176,7 +309,10 @@ function normalizedGitHubRepositoryUrl(value) {
   }
 }
 
-function applySourceMove(input, manifest, record, snapshot) {
+function applySourceMove(input, manifest) {
+  if (input.source.status !== "active") {
+    fail("source-delisted", "A delisted source cannot be moved.");
+  }
   const repository = input.repository;
   const location = normalizedRepositoryName(repository);
   requirePositiveInteger(
@@ -185,8 +321,8 @@ function applySourceMove(input, manifest, record, snapshot) {
   );
   if (
     repository.id !== manifest.repository_id ||
-    repository.id !== record.source.repository_id ||
-    repository.id !== snapshot?.repository?.id
+    repository.id !== input.source.repository_id ||
+    repository.id !== input.snapshot?.repository?.id
   ) {
     fail(
       "repository-identity-mismatch",
@@ -204,91 +340,74 @@ function applySourceMove(input, manifest, record, snapshot) {
     );
   }
   if (
-    snapshot?.provider !== "github" ||
-    snapshot.project_id !== record.id ||
-    typeof snapshot.repository !== "object"
+    input.snapshot?.provider !== "github" ||
+    input.snapshot.source_id !== input.source.id ||
+    typeof input.snapshot.repository !== "object"
   ) {
     fail(
       "owner-request-invalid",
-      "Source move requires the matching GitHub repository snapshot.",
+      "Source move requires the matching source-owned GitHub snapshot.",
     );
   }
-  const expectedSnapshotLocation = record.source.repository.toLocaleLowerCase();
+  const expectedLocation = input.source.repository.toLocaleLowerCase();
   const snapshotLocation =
-    typeof snapshot.repository.owner === "string" &&
-    typeof snapshot.repository.name === "string"
-      ? `${snapshot.repository.owner}/${snapshot.repository.name}`.toLocaleLowerCase()
+    typeof input.snapshot.repository.owner === "string" &&
+    typeof input.snapshot.repository.name === "string"
+      ? `${input.snapshot.repository.owner}/${input.snapshot.repository.name}`.toLocaleLowerCase()
       : null;
   if (
-    snapshotLocation !== expectedSnapshotLocation ||
-    normalizedGitHubRepositoryUrl(snapshot.repository.url) !==
-      expectedSnapshotLocation
+    snapshotLocation !== expectedLocation ||
+    normalizedGitHubRepositoryUrl(input.snapshot.repository.url) !==
+      expectedLocation
   ) {
     fail(
       "owner-request-invalid",
       "Source move snapshot location does not match the current registry source.",
     );
   }
-
-  const updatedRecord = {
-    ...record,
-    source: {
-      ...record.source,
-      repository: repository.fullName,
-      repository_id: repository.id,
-    },
+  const source = {
+    ...structuredClone(input.source),
+    repository: repository.fullName,
   };
-  const updatedSnapshot = {
-    ...snapshot,
+  const snapshot = {
+    ...structuredClone(input.snapshot),
     repository: {
-      ...snapshot.repository,
+      ...structuredClone(input.snapshot.repository),
       owner: repository.owner?.login ?? location.owner,
       name: location.name,
       url: repository.htmlUrl,
     },
   };
   return {
-    record: updatedRecord,
-    snapshot: updatedSnapshot,
-    changedPaths: [registryPath(record), snapshotPath(record)],
+    projects: [],
+    source,
+    snapshot,
+    changedPaths: [sourcePath(source.id), snapshotPath(source.id)],
     before: structuredClone(manifest.original),
     after: {
-      repository: repository.fullName,
-      repository_id: repository.id,
+      repository: source.repository,
+      repository_id: source.repository_id,
     },
   };
 }
 
-function applyDelist(input, record, snapshot) {
-  const before = {
-    visibility: record.visibility,
-    visibility_reason: record.visibility_reason,
-    refresh_policy: record.refresh_policy,
-    enrichment_policy: record.enrichment_policy,
-    ...(record.enrichment_note === undefined
-      ? {}
-      : { enrichment_note: record.enrichment_note }),
-  };
-  const updated = {
-    ...record,
-    visibility: "disabled",
-    visibility_reason: "removed",
+function applyDelistSource(input, manifest) {
+  if (input.source.status !== "active") {
+    fail("source-delisted", "The source is already delisted.");
+  }
+  const source = {
+    ...structuredClone(input.source),
+    status: "delisted",
+    status_reason: "removed",
     refresh_policy: "paused",
-    enrichment_policy: "manual",
-    enrichment_note: `Owner-requested delisting approved through issue #${input.issueNumber}.`,
   };
   return {
-    record: updated,
-    snapshot,
-    changedPaths: [registryPath(record)],
-    before,
-    after: {
-      visibility: updated.visibility,
-      visibility_reason: updated.visibility_reason,
-      refresh_policy: updated.refresh_policy,
-      enrichment_policy: updated.enrichment_policy,
-      enrichment_note: updated.enrichment_note,
-    },
+    projects: [],
+    source,
+    snapshot: structuredClone(input.snapshot ?? null),
+    changedPaths: [sourcePath(source.id)],
+    before: structuredClone(manifest.original),
+    after: structuredClone(manifest.proposed),
   };
 }
 
@@ -297,67 +416,45 @@ export function assertProjectOwnerRequestApplicable(input) {
     input?.issueNumber,
     "Owner request issue number must be a positive integer.",
   );
-  const manifest = normalizeManifest(input);
-  requireCurrentRecord(manifest, input.record);
+  if (!Array.isArray(input?.projects)) {
+    fail("owner-request-invalid", "Owner request requires current projects.");
+  }
+  const ids = input.projects.map((project) => project?.id);
   if (
-    manifest.operation === "delist" &&
-    manifest.delist_confirmation.trim().toLocaleLowerCase() !==
-      String(input.record.name).trim().toLocaleLowerCase()
+    ids.some((id) => !PROJECT_ID_PATTERN.test(id ?? "")) ||
+    new Set(ids).size !== ids.length
   ) {
     fail(
       "owner-request-invalid",
-      "Owner delisting confirmation must match the current complete project name.",
+      "Current project IDs are invalid or duplicate.",
     );
   }
-
-  const conflict = detectOwnerRequestConflict({
+  const manifest = normalizeManifest(input);
+  requireCurrentSource(manifest, input.source);
+  const project = requireOperationFingerprint(
     manifest,
-    record: input.record,
-  });
-  if (conflict.conflict) {
-    fail(
-      conflict.reasonCode,
-      `${conflict.reasonCode}: current values changed for ${conflict.fields.join(", ")}.`,
-    );
-  }
-  return manifest;
+    input.projects,
+    input.source,
+  );
+  return { manifest, project };
 }
 
 export function applyProjectOwnerRequest(input) {
-  let manifest = assertProjectOwnerRequestApplicable(input);
-  if (
-    manifest.operation === "edit-card" &&
-    manifest.original.summary !== manifest.proposed.summary &&
-    input.publishedSummary !== undefined
-  ) {
-    if (
-      typeof input.publishedSummary !== "string" ||
-      input.publishedSummary.length === 0
-    ) {
-      fail(
-        "owner-request-invalid",
-        "Published owner summary must be a non-empty string.",
-      );
-    }
-    manifest = {
-      ...manifest,
-      proposed: {
-        ...manifest.proposed,
-        summary: input.publishedSummary,
-      },
-    };
-  }
-  const record = structuredClone(input.record);
-  const snapshot =
-    input.snapshot === null || input.snapshot === undefined
-      ? null
-      : structuredClone(input.snapshot);
-
+  const { manifest, project } = assertProjectOwnerRequestApplicable(input);
   if (manifest.operation === "edit-card") {
-    return applyCardEdit(input, manifest, record, snapshot);
+    return applyCardEdit(input, manifest, project);
+  }
+  if (manifest.operation === "add-cards") {
+    return applyAddCards(input, manifest);
+  }
+  if (
+    manifest.operation === "retire-card" ||
+    manifest.operation === "restore-card"
+  ) {
+    return applyCardLifecycle(input, manifest, project);
   }
   if (manifest.operation === "move-source") {
-    return applySourceMove(input, manifest, record, snapshot);
+    return applySourceMove(input, manifest);
   }
-  return applyDelist(input, record, snapshot);
+  return applyDelistSource(input, manifest);
 }

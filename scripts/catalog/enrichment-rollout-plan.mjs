@@ -114,9 +114,11 @@ export function planEnrichmentRollout(input) {
 export function createEnrichmentRolloutPlan(input) {
   const selectionMode = input.selectionMode ?? "pending";
   const force = selectionMode === "all-automatic";
-  const eligibleCount = selectEnrichmentRecords(input.records, {
-    force,
-  }).length;
+  const eligibleCount = selectEnrichmentRecords(
+    input.records,
+    input.sourcesById,
+    { force },
+  ).length;
   const manualExclusionCount = manualEnrichmentExclusions(input.records).length;
   return {
     ...planEnrichmentRollout({ ...input, selectionMode, eligibleCount }),
@@ -161,6 +163,15 @@ export async function runPlannerCli(options = {}) {
           readOptionalJson(resolve(root, "data/registry/projects", name)),
         ),
     ));
+  const sources =
+    options.sources ??
+    (await Promise.all(
+      (await readdir(resolve(root, "data/registry/sources")))
+        .filter((name) => name.endsWith(".json"))
+        .map(async (name) =>
+          readOptionalJson(resolve(root, "data/registry/sources", name)),
+        ),
+    ));
   const fullReport =
     options.fullReport !== undefined
       ? options.fullReport
@@ -182,6 +193,9 @@ export async function runPlannerCli(options = {}) {
     model,
     selectionMode,
     records,
+    sourcesById: Object.fromEntries(
+      sources.map((source) => [source.id, source]),
+    ),
     fullReport: validatedFullReport,
     canaryReport: validatedCanaryReport,
   });

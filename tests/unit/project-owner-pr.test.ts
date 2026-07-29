@@ -21,11 +21,13 @@ const marker = {
 };
 
 const transactionMarker: ProjectPublicationTransaction = {
-  schema_version: 1 as const,
+  schema_version: 2 as const,
   operation: "edit-card" as const,
   producer: "project-owner-request" as const,
+  publication_mode: "automatic" as const,
   issue_number: 123,
-  project_id: "owner-alpha",
+  project_ids: ["owner-alpha"],
+  source_id: "github-42",
   source_identity: {
     type: "github" as const,
     canonical: "github:42",
@@ -34,7 +36,10 @@ const transactionMarker: ProjectPublicationTransaction = {
   actor: { id: 11, login: "Owner", type: "User" as const },
   authority_type: "repository-owner" as const,
   input_digest: "d".repeat(64),
-  record_fingerprint: "e".repeat(64),
+  input_fingerprints: {
+    projects: { "owner-alpha": "e".repeat(64) },
+    source: null,
+  },
   base_sha: "b".repeat(40),
   generated_head_sha: "a".repeat(40),
   generated_paths: marker.generated_paths,
@@ -54,6 +59,9 @@ const reviewFixture = {
     schema_version: 1 as const,
     issue_number: 123,
     project_id: "owner-alpha",
+    project_ids: ["owner-alpha"],
+    source_id: "github-42",
+    publication_mode: "automatic" as const,
     operation: "edit-card" as const,
     repository_id: 42,
     authority_type: "repository-owner" as const,
@@ -408,4 +416,95 @@ test("fails closed on caller-supplied generated paths", () => {
       }),
     ),
   ).toThrow("generated paths");
+});
+
+test("plans one manual PR transaction for a multi-card source batch", () => {
+  const report = {
+    schema_version: 2,
+    issue_number: 123,
+    project_id: null,
+    project_ids: ["owner-alpha-beta", "owner-alpha-gamma"],
+    source_id: "github-42",
+    operation: "add-cards" as const,
+    publication_mode: "manual" as const,
+    repository_id: 42,
+    source_identity: {
+      type: "github" as const,
+      canonical: "github:42",
+      repository_id: 42,
+    },
+    actor_id: 11,
+    actor_login: "Owner",
+    actor_type: "User" as const,
+    authority_type: "repository-owner" as const,
+    request_fingerprint: "d".repeat(64),
+    input_fingerprints: {
+      projects: {},
+      source: "e".repeat(64),
+    },
+    policy_version: "2026-07-29",
+    generated_paths: [
+      "data/registry/projects/owner-alpha-beta.json",
+      "data/registry/projects/owner-alpha-gamma.json",
+    ],
+    before: [],
+    after: [{ id: "owner-alpha-beta" }, { id: "owner-alpha-gamma" }],
+    warnings: [],
+  };
+  const addTransaction: ProjectPublicationTransaction = {
+    schema_version: 2,
+    operation: "add-cards",
+    producer: "project-owner-request",
+    publication_mode: "manual",
+    issue_number: 123,
+    project_ids: report.project_ids,
+    source_id: "github-42",
+    source_identity: report.source_identity,
+    actor: { id: 11, login: "Owner", type: "User" },
+    authority_type: "repository-owner",
+    input_digest: report.request_fingerprint,
+    input_fingerprints: report.input_fingerprints,
+    base_sha: "b".repeat(40),
+    generated_head_sha: "a".repeat(40),
+    generated_paths: report.generated_paths,
+    policy_version: "2026-07-29",
+    copy_result: null,
+  };
+
+  expect(
+    planOwnerPrUpdate({
+      report,
+      repository: "Tavernary/Tavernary",
+      remoteHeadSha: null,
+      existingMarker: null,
+      generatedContentChanged: true,
+      pulls: [],
+    }),
+  ).toEqual({
+    action: "create",
+    replacePaths: report.generated_paths,
+  });
+  expect(
+    planOwnerPrUpdate({
+      report,
+      repository: "Tavernary/Tavernary",
+      remoteHeadSha: "a".repeat(40),
+      existingMarker: { kind: "project-owner", marker: addTransaction },
+      generatedContentChanged: true,
+      pulls: [],
+    }),
+  ).toEqual({
+    action: "update",
+    replacePaths: report.generated_paths,
+  });
+
+  const body = renderOwnerRequestPullRequest({
+    issueNumber: 123,
+    projectName: "Owner/Alpha",
+    report,
+    marker: addTransaction,
+  });
+  expect(body).toContain("Projects: `owner-alpha-beta, owner-alpha-gamma`");
+  expect(body).toContain("Publication: `manual`");
+  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(addTransaction);
 });

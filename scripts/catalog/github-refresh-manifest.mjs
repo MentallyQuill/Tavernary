@@ -44,8 +44,8 @@ export function buildRefreshManifest(run) {
     }
   }
 
-  const projectTimings = outcomes.slice(0, 250).map((outcome) => ({
-    project_id: String(outcome.projectId),
+  const sourceTimings = outcomes.slice(0, 250).map((outcome) => ({
+    source_id: String(outcome.sourceId),
     outcome: outcome.result,
     duration_ms: nonnegative(outcome.durationMs),
     error_code: safeCode(outcome.errorCode),
@@ -60,7 +60,7 @@ export function buildRefreshManifest(run) {
     entry.source_health ?? entry.sourceHealth ?? null;
 
   return {
-    schema_version: 2,
+    schema_version: 3,
     mode: run.mode,
     started_at: startedAt,
     completed_at: completedAt,
@@ -143,7 +143,7 @@ export function buildRefreshManifest(run) {
       0,
       new Date(completedAt).getTime() - new Date(startedAt).getTime(),
     ),
-    project_timings: projectTimings,
+    source_timings: sourceTimings,
     snapshot_changes: changed > 0,
     deployment_requested: Boolean(run.deploymentRequested),
   };

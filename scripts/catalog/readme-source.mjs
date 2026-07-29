@@ -8,7 +8,7 @@ const githubApi = "https://api.github.com";
 const readinessMessages = {
   "missing-snapshot": "Repository snapshot is missing.",
   "invalid-snapshot": "Repository snapshot is invalid.",
-  "project-mismatch": "Repository snapshot belongs to another project.",
+  "source-mismatch": "Repository snapshot belongs to another source.",
   "unhealthy-source": "Snapshot source is unavailable.",
   "stale-source": "Repository snapshot is stale.",
   "missing-permanent-identity": "Permanent repository identity is missing.",
@@ -128,20 +128,20 @@ export function createSnapshotValidator(schema) {
   return ajv.compile(schema);
 }
 
-export function assessSourceReadiness(record, snapshot, validateSnapshot) {
+export function assessSourceReadiness(source, snapshot, validateSnapshot) {
   if (!snapshot) return notReady("missing-snapshot");
   if (!validateSnapshot(snapshot)) return notReady("invalid-snapshot");
-  if (snapshot.project_id !== record.id) return notReady("project-mismatch");
+  if (snapshot.source_id !== source.id) return notReady("source-mismatch");
   if (snapshot.source_health !== "healthy") return notReady("unhealthy-source");
   if (snapshot.stale_since !== null) return notReady("stale-source");
-  if (record.source?.repository_id == null)
+  if (source.repository_id == null)
     return notReady("missing-permanent-identity");
 
-  const expected = record.source?.repository?.toLowerCase();
+  const expected = source.repository?.toLowerCase();
   const received =
     `${snapshot.repository.owner}/${snapshot.repository.name}`.toLowerCase();
   if (expected !== received) return notReady("repository-mismatch");
-  if (record.source.repository_id !== snapshot.repository.id)
+  if (source.repository_id !== snapshot.repository.id)
     return notReady("identity-mismatch");
 
   return { status: "ready", snapshot };
@@ -177,11 +177,15 @@ function readmeFailure(error) {
   };
 }
 
-export async function loadReadmeSource(record, snapshot, options = {}) {
+export async function loadReadmeSource(sourceRecord, snapshot, options = {}) {
   const validateSnapshot =
     options.validateSnapshot ??
-    ((value) => value?.schema_version === 3 && value?.repository);
-  const readiness = assessSourceReadiness(record, snapshot, validateSnapshot);
+    ((value) => value?.schema_version === 4 && value?.repository);
+  const readiness = assessSourceReadiness(
+    sourceRecord,
+    snapshot,
+    validateSnapshot,
+  );
   if (readiness.status !== "ready") return readiness;
 
   const { repository } = snapshot;
@@ -190,7 +194,7 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     headSha: repository.head_sha,
   };
   const description = repositoryDescription(snapshot);
-  const providerName = record.source.type;
+  const providerName = sourceRecord.type;
   const provider =
     options.providers?.[providerName] ??
     (providerName === "github" && options.github
@@ -228,7 +232,7 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
         readmeText,
         readmePath: typeof readme.path === "string" ? readme.path : null,
         readmeRef: repository.head_sha,
-        readmeIdentity: `${record.source.type}:${record.source.repository.toLowerCase()}@${repository.head_sha}:${readmePath}`,
+        readmeIdentity: `${sourceRecord.type}:${sourceRecord.repository.toLowerCase()}@${repository.head_sha}:${readmePath}`,
         ...common,
       };
     }

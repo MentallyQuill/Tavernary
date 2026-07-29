@@ -19,18 +19,21 @@ const record = {
   metadata_status: "provisional",
   enrichment_policy: "automatic" as const,
   summary: "Generic intake details.",
-  visibility: "published",
+  listing_status: "active",
   frontends: ["sillytavern"],
-  source: {
-    type: "github",
-    repository: "Creator/Project",
-    repository_id: 42,
-  },
+  source_id: "github-fixture",
+};
+const sourceRecord = {
+  id: "github-fixture",
+  type: "github",
+  repository: "Creator/Project",
+  repository_id: 42,
 };
 
 const snapshot = {
-  schema_version: 2,
-  project_id: "fixture",
+  schema_version: 4,
+  provider: "github",
+  source_id: sourceRecord.id,
   source_health: "healthy",
   stale_since: null,
   repository: {
@@ -69,18 +72,22 @@ function recordFor(id: string) {
     ...record,
     id,
     name: id,
-    source: {
-      ...record.source,
-      repository: `Creator/${id}`,
-      repository_id: 42,
-    },
+    source_id: `github-${id}`,
+  };
+}
+
+function sourceFor(id: string) {
+  return {
+    ...sourceRecord,
+    id: `github-${id}`,
+    repository: `Creator/${id}`,
   };
 }
 
 function snapshotFor(id: string) {
   return {
     ...snapshot,
-    project_id: id,
+    source_id: `github-${id}`,
     repository: {
       ...snapshot.repository,
       name: id,
@@ -122,6 +129,7 @@ test("passes normalized source and only allowed vocabulary entries to provider",
 
   const output = await enrichRecord(
     record,
+    sourceRecord,
     snapshot,
     { generate },
     {
@@ -187,6 +195,7 @@ test("labels conflicting intake evidence in README-first priority order", async 
 
   await enrichRecord(
     record,
+    sourceRecord,
     snapshot,
     { generate },
     {
@@ -256,6 +265,7 @@ test("repairs one invalid preservation result with sanitized validation context"
   await expect(
     enrichRecord(
       record,
+      sourceRecord,
       snapshot,
       { generate },
       {
@@ -289,15 +299,19 @@ test("selects an automatic published Reddit record without a repository snapshot
     id: "reddit-1v64r6z",
     kind: "preset",
     refresh_policy: "paused",
-    source: {
-      type: "url",
-      url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-    },
+    source_id: "url-reddit-1v64r6z",
+  };
+  const redditSource = {
+    id: reddit.source_id,
+    type: "url",
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
   };
 
-  expect(selectEnrichmentRecords([reddit]).map(({ id }) => id)).toEqual([
-    "reddit-1v64r6z",
-  ]);
+  expect(
+    selectEnrichmentRecords([reddit], {
+      [redditSource.id]: redditSource,
+    }).map(({ id }) => id),
+  ).toEqual(["reddit-1v64r6z"]);
 });
 
 test("enriches a Reddit source without a repository snapshot", async () => {
@@ -307,10 +321,12 @@ test("enriches a Reddit source without a repository snapshot", async () => {
     name: "Writer's Block 5",
     kind: "preset",
     refresh_policy: "paused",
-    source: {
-      type: "url",
-      url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-    },
+    source_id: "url-reddit-1v64r6z",
+  };
+  const redditSource = {
+    id: reddit.source_id,
+    type: "url",
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
   };
   const generate = vi.fn(async () => ({
     output: {
@@ -327,7 +343,8 @@ test("enriches a Reddit source without a repository snapshot", async () => {
   const result = await runEnrichmentBatch({
     projectIds: [reddit.id],
     recordsById: { [reddit.id]: reddit },
-    snapshotsById: {},
+    sourcesById: { [redditSource.id]: redditSource },
+    snapshotsBySourceId: {},
     phase: "primary",
     vocabularies,
     provider: { generate },
@@ -359,10 +376,54 @@ test("enriches a Reddit source without a repository snapshot", async () => {
   });
 });
 
+test("loads shared source evidence once while generating each sibling card", async () => {
+  const siblings = [
+    { ...record, id: "suite-extension", name: "Suite Extension" },
+    { ...record, id: "suite-preset", name: "Suite Preset", kind: "preset" },
+  ];
+  const loadSource = vi.fn(async () => readySource("project"));
+  const generate = vi.fn(async (input) => ({
+    output: {
+      summary:
+        input.id === "suite-extension"
+          ? "Suite Extension adds repository-backed tools for SillyTavern users. It streamlines setup, exposes focused controls, and supports repeatable workflows without obscuring the underlying project behavior."
+          : "Suite Preset provides repository-backed defaults for SillyTavern conversations. It balances clear instructions, adaptable roleplay behavior, and practical configuration choices for repeatable sessions across models.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: null,
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  const results = await runEnrichmentBatch({
+    projectIds: siblings.map(({ id }) => id),
+    recordsById: Object.fromEntries(
+      siblings.map((project) => [project.id, project]),
+    ),
+    sourcesById: { [sourceRecord.id]: sourceRecord },
+    snapshotsBySourceId: { [sourceRecord.id]: snapshot },
+    phase: "primary",
+    vocabularies,
+    provider: { generate },
+    validateSnapshot: () => true,
+    loadSource,
+    writeRecord: vi.fn(async () => {}),
+  });
+
+  expect(loadSource).toHaveBeenCalledOnce();
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(results.map(({ id, outcome }) => ({ id, outcome }))).toEqual([
+    { id: "suite-extension", outcome: "enriched" },
+    { id: "suite-preset", outcome: "enriched" },
+  ]);
+});
+
 test("skips curated records unless forced", async () => {
   const generate = vi.fn();
   const output = await enrichRecord(
     { ...record, metadata_status: "curated" },
+    sourceRecord,
     snapshot,
     { generate },
     { vocabularies },
@@ -388,9 +449,11 @@ test("includes an automatic GitHub preset and excludes manual GitHub records eve
   };
 
   expect(
-    selectEnrichmentRecords([manual, automaticPreset], { force: true }).map(
-      ({ id }) => id,
-    ),
+    selectEnrichmentRecords(
+      [manual, automaticPreset],
+      { [sourceRecord.id]: sourceRecord },
+      { force: true },
+    ).map(({ id }) => id),
   ).toEqual(["preset"]);
 });
 
@@ -403,6 +466,7 @@ test("does not call the provider for a manual record", async () => {
         enrichment_policy: "manual",
         enrichment_note: "Requires manual curation.",
       },
+      sourceRecord,
       snapshot,
       { generate },
       { force: true, vocabularies },
@@ -422,7 +486,8 @@ test("reports an explicitly targeted manual record as skipped", async () => {
         enrichment_note: "Requires manual curation.",
       },
     },
-    snapshotsById: {},
+    sourcesById: { [sourceRecord.id]: sourceRecord },
+    snapshotsBySourceId: {},
     phase: "primary",
     vocabularies,
     provider: { generate: vi.fn() },
@@ -444,7 +509,9 @@ test("reports an explicitly targeted manual record as skipped", async () => {
 test("preserves an owner edit made after automatic enrichment selection", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-owner-edit-"));
   const path = join(root, "fixture.json");
-  const selected = selectEnrichmentRecords([record]);
+  const selected = selectEnrichmentRecords([record], {
+    [sourceRecord.id]: sourceRecord,
+  });
   expect(selected.map(({ id }) => id)).toEqual(["fixture"]);
 
   const ownerEdited = {
@@ -462,7 +529,8 @@ test("preserves an owner edit made after automatic enrichment selection", async 
     recordsById: {
       fixture: { ...selected[0], path },
     },
-    snapshotsById: { fixture: snapshot },
+    sourcesById: { [sourceRecord.id]: sourceRecord },
+    snapshotsBySourceId: { [sourceRecord.id]: snapshot },
     phase: "primary",
     vocabularies,
     provider: {
@@ -520,6 +588,7 @@ test("writes the accepted summary without persisting copy-audit metadata", async
 test("uses the exact fallback when both source texts are unavailable", async () => {
   const output = await enrichRecord(
     record,
+    sourceRecord,
     { ...snapshot, repository: { ...snapshot.repository, description: null } },
     { generate: vi.fn() },
     {
@@ -560,6 +629,7 @@ test("uses the submitted description as third-priority evidence when repository 
 
   await enrichRecord(
     record,
+    sourceRecord,
     { ...snapshot, repository: { ...snapshot.repository, description: null } },
     { generate },
     {
@@ -594,6 +664,7 @@ test.each(["source-not-ready", "failed"] as const)(
     await expect(
       enrichRecord(
         record,
+        sourceRecord,
         snapshot,
         { generate: vi.fn() },
         {
@@ -615,6 +686,7 @@ test("force regenerates curated records and provider failures propagate", async 
   await expect(
     enrichRecord(
       { ...record, metadata_status: "curated" },
+      sourceRecord,
       snapshot,
       { generate },
       {
@@ -629,7 +701,8 @@ test("force regenerates curated records and provider failures propagate", async 
 test("skips unpublished GitHub records", async () => {
   const generate = vi.fn();
   const output = await enrichRecord(
-    { ...record, visibility: "quarantined" },
+    { ...record, listing_status: "quarantined" },
+    sourceRecord,
     snapshot,
     { generate },
     { vocabularies },
@@ -643,6 +716,7 @@ test("rejects a model-owned primary function when source text exists", async () 
   await expect(
     enrichRecord(
       record,
+      sourceRecord,
       snapshot,
       {
         generate: async () => ({
@@ -671,8 +745,11 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
   const recordsById = Object.fromEntries(
     projectIds.map((id) => [id, recordFor(id)]),
   );
-  const snapshotsById = Object.fromEntries(
-    projectIds.map((id) => [id, snapshotFor(id)]),
+  const sourcesById = Object.fromEntries(
+    projectIds.map((id) => [sourceFor(id).id, sourceFor(id)]),
+  );
+  const snapshotsBySourceId = Object.fromEntries(
+    projectIds.map((id) => [sourceFor(id).id, snapshotFor(id)]),
   );
   const writeRecord = vi.fn(async () => {});
   const generate = vi.fn(async (input) => {
@@ -692,7 +769,8 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
   const result = await runEnrichmentBatch({
     projectIds,
     recordsById,
-    snapshotsById,
+    sourcesById,
+    snapshotsBySourceId,
     phase: "primary",
     vocabularies,
     provider: { generate },
@@ -750,15 +828,19 @@ test("runs no more than four model calls concurrently and preserves order", asyn
   const recordsById = Object.fromEntries(
     projectIds.map((id) => [id, recordFor(id)]),
   );
-  const snapshotsById = Object.fromEntries(
-    projectIds.map((id) => [id, snapshotFor(id)]),
+  const sourcesById = Object.fromEntries(
+    projectIds.map((id) => [sourceFor(id).id, sourceFor(id)]),
+  );
+  const snapshotsBySourceId = Object.fromEntries(
+    projectIds.map((id) => [sourceFor(id).id, snapshotFor(id)]),
   );
   let active = 0;
   let maximum = 0;
   const result = await runEnrichmentBatch({
     projectIds,
     recordsById,
-    snapshotsById,
+    sourcesById,
+    snapshotsBySourceId,
     phase: "primary",
     vocabularies,
     provider: {
@@ -827,8 +909,11 @@ test("backs off new model work after repeated provider rate limits", async () =>
     recordsById: Object.fromEntries(
       projectIds.map((id) => [id, recordFor(id)]),
     ),
-    snapshotsById: Object.fromEntries(
-      projectIds.map((id) => [id, snapshotFor(id)]),
+    sourcesById: Object.fromEntries(
+      projectIds.map((id) => [sourceFor(id).id, sourceFor(id)]),
+    ),
+    snapshotsBySourceId: Object.fromEntries(
+      projectIds.map((id) => [sourceFor(id).id, snapshotFor(id)]),
     ),
     phase: "primary",
     vocabularies,

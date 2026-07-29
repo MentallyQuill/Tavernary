@@ -1,16 +1,13 @@
-export interface IdentityRecord {
+export interface IdentitySourceRecord {
   id: string;
-  source: {
-    type: string;
-    repository?: string;
-    repository_id?: number | null;
-    [key: string]: unknown;
-  };
+  type: string;
+  repository?: string;
+  repository_id?: number | null;
   [key: string]: unknown;
 }
 
 export interface IdentitySnapshot {
-  project_id: string;
+  source_id: string;
   source_health: string;
   repository: {
     id: number;
@@ -21,7 +18,7 @@ export interface IdentitySnapshot {
 }
 
 export interface RepositoryIdentityBackfillResult {
-  updated: IdentityRecord[];
+  updated: IdentitySourceRecord[];
   conflicts: Array<{
     id: string;
     reason: "repository-name-mismatch" | "repository-id-mismatch";
@@ -36,7 +33,7 @@ export interface RepositoryIdentityBackfillResult {
 }
 
 export function backfillRepositoryIdentities(
-  records: IdentityRecord[],
+  records: IdentitySourceRecord[],
   snapshots: IdentitySnapshot[],
-  options?: { projectIds?: ReadonlySet<string> | null },
+  options?: { sourceIds?: ReadonlySet<string> | null },
 ): RepositoryIdentityBackfillResult;

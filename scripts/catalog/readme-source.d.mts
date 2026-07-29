@@ -3,7 +3,7 @@ export type SourceReasonCode =
   | "invalid-snapshot"
   | "unhealthy-source"
   | "stale-source"
-  | "project-mismatch"
+  | "source-mismatch"
   | "repository-mismatch"
   | "identity-mismatch"
   | "missing-permanent-identity"
@@ -50,13 +50,13 @@ export function createSnapshotValidator(
 ): (snapshot: unknown) => boolean;
 
 export function assessSourceReadiness(
-  record: Record<string, unknown>,
+  source: Record<string, unknown>,
   snapshot: Record<string, unknown> | undefined,
   validateSnapshot: (snapshot: unknown) => boolean,
 ): ReadmeSource | { status: "ready"; snapshot: Record<string, unknown> };
 
 export function loadReadmeSource(
-  record: Record<string, unknown>,
+  source: Record<string, unknown>,
   snapshot: Record<string, unknown> | undefined,
   options?: {
     github?: GithubClient;

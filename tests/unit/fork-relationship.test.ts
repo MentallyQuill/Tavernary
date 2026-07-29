@@ -51,10 +51,65 @@ function resolve({
 }
 
 describe("fork relationship resolution", () => {
+  test.each([
+    [
+      1,
+      [{ id: "parent-card", name: "Parent Card" }],
+      {
+        parentName: "Parent Card",
+        parentProjectId: "parent-card",
+        parentUrl: null,
+        status: "published",
+      },
+    ],
+    [
+      2,
+      [
+        { id: "parent-extension", name: "Parent Extension" },
+        { id: "parent-preset", name: "Parent Preset" },
+      ],
+      {
+        parentName: "VectHare",
+        parentProjectId: null,
+        parentUrl: "https://github.com/Coneja-Chibi/VectHare",
+        status: "repository",
+      },
+    ],
+    [
+      0,
+      [],
+      {
+        parentName: "VectHare",
+        parentProjectId: null,
+        parentUrl: null,
+        status: "unavailable",
+      },
+    ],
+  ])(
+    "resolves a source-backed parent with %i public sibling cards",
+    (_count, publicParents, expected) => {
+      const source = {
+        id: "github-9001",
+        type: "github" as const,
+        repository: "Coneja-Chibi/VectHare",
+        repository_id: 9001,
+      };
+
+      expect(
+        resolveForkRelationship({
+          snapshot: { ...forkSnapshot(), provider: "github" },
+          sourcesByRepositoryKey: new Map([["github:9001", source]]),
+          publicProjectsBySourceId: new Map([[source.id, publicParents]]),
+        }),
+      ).toEqual(expected);
+    },
+  );
+
   test("resolves a published parent by immutable repository ID", () => {
     expect(resolve()).toEqual({
       parentName: "VectHare",
       parentProjectId: "coneja-chibi-vecthare",
+      parentUrl: null,
       status: "published",
     });
   });
@@ -77,6 +132,7 @@ describe("fork relationship resolution", () => {
     ).toEqual({
       parentName: "VectHare",
       parentProjectId: "coneja-chibi-vecthare",
+      parentUrl: null,
       status: "published",
     });
   });
@@ -90,6 +146,7 @@ describe("fork relationship resolution", () => {
     ).toEqual({
       parentName: "VectHare",
       parentProjectId: null,
+      parentUrl: null,
       status: "not-listed",
     });
   });
@@ -100,6 +157,7 @@ describe("fork relationship resolution", () => {
     ).toEqual({
       parentName: "VectHare",
       parentProjectId: null,
+      parentUrl: null,
       status: "not-listed",
     });
   });
@@ -112,6 +170,7 @@ describe("fork relationship resolution", () => {
     ).toEqual({
       parentName: "VectHare",
       parentProjectId: null,
+      parentUrl: null,
       status: "unavailable",
     });
   });

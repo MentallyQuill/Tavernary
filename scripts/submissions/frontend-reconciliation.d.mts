@@ -18,12 +18,7 @@ export interface FrontendProject {
   id: string;
   name: string;
   kind: string;
-  source?: {
-    type: string;
-    repository?: string;
-    repository_id?: number | null;
-    url?: string;
-  };
+  source_id: string;
   frontends?: string[];
 }
 
@@ -54,6 +49,15 @@ export interface FrontendReconciliationInput {
   frontendIndependent: boolean;
   vocabulary: FrontendVocabulary | FrontendVocabularyEntry[];
   frontendProjects: FrontendProject[];
+  sourcesById: Record<
+    string,
+    {
+      type: string;
+      repository?: string;
+      repository_id?: number | null;
+      url?: string;
+    }
+  >;
 }
 
 export interface FrontendVocabularyProposal {

@@ -9,20 +9,19 @@ import { writeEnrichedRecord } from "../../scripts/catalog/enrich-readmes.mjs";
 import type { EnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 
 const record = {
-  schema_version: 5,
+  schema_version: 6,
   id: "fixture",
   name: "Fixture",
   kind: "extension",
   summary: "Generic intake details.",
   metadata_status: "provisional",
-  source: { type: "github", repository: "Creator/Project", repository_id: 1 },
+  source_id: "github-1",
   frontends: ["sillytavern"],
   primary_function: "interface-workflow",
   capabilities: [],
   cataloged_at: "2026-07-24T00:00:00.000Z",
   catalog_cohort: "seed",
-  visibility: "published",
-  refresh_policy: "automatic",
+  listing_status: "active",
   enrichment_policy: "automatic" as const,
 };
 
@@ -48,7 +47,7 @@ test("atomically merges only editorial enrichment fields", async () => {
 
   await writeEnrichedRecord(
     path,
-    { ...record, source: { ...record.source, repository: "Other/Repo" } },
+    { ...record, source_id: "github-99" },
     output,
   );
 
@@ -62,7 +61,7 @@ test("atomically merges only editorial enrichment fields", async () => {
   });
   expect(written.primary_function).toBe("interface-workflow");
   expect(written).not.toHaveProperty("classification_review");
-  expect(written.source).toEqual(record.source);
+  expect(written.source_id).toEqual(record.source_id);
   expect(serialized).toContain('"frontends": ["sillytavern"]');
   expect(serialized).toContain('"capabilities": ["automation"]');
 });
@@ -108,11 +107,7 @@ test("preserves every non-editorial field across concurrent record writes", asyn
     ...record,
     id,
     name: id,
-    source: {
-      ...record.source,
-      repository: `Creator/${id}`,
-      repository_id: index + 1,
-    },
+    source_id: `github-${index + 1}`,
   }));
   const paths = records.map(({ id }) => join(root, `${id}.json`));
   await Promise.all(

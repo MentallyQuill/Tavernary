@@ -288,6 +288,7 @@ export async function ensureForkParentSubmission({
 export function classifyForkDependency({
   repository,
   projects,
+  sources,
   priorSubmission,
   ancestryRepositoryIds,
 }) {
@@ -307,19 +308,25 @@ export function classifyForkDependency({
     return { status: "not-listed", dependency, attention: "depth-limit" };
   }
 
-  const parentProject = projects.find(
-    (project) =>
-      project.repositoryId === parent.repositoryId ||
-      (project.source?.type === "github" &&
-        project.source.repository_id === parent.repositoryId),
+  const parentSource = sources.find(
+    (source) =>
+      source.type === "github" && source.repository_id === parent.repositoryId,
   );
-  if (parentProject?.visibility === "published") {
+  const parentProjects = parentSource
+    ? projects
+        .filter((project) => project.source_id === parentSource.id)
+        .sort((left, right) => left.id.localeCompare(right.id))
+    : [];
+  const publishedParent = parentProjects.find(
+    (project) => project.listing_status === "active",
+  );
+  if (publishedParent) {
     return {
       status: "published",
-      parentProjectId: parentProject.id,
+      parentProjectId: publishedParent.id,
     };
   }
-  if (parentProject || priorSubmission?.state === "declined") {
+  if (parentSource || priorSubmission?.state === "declined") {
     return { status: "not-listed", dependency };
   }
 

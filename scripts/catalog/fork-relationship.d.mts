@@ -11,7 +11,20 @@ export interface ForkRelationshipRecord {
 export interface CatalogForkRelationship {
   parentName: string;
   parentProjectId: string | null;
-  status: "published" | "not-listed" | "unavailable";
+  parentUrl: string | null;
+  status: "published" | "repository" | "not-listed" | "unavailable";
+}
+
+export interface ForkRelationshipSource {
+  id: string;
+  type: "github" | "codeberg";
+  repository: string;
+  repository_id: number;
+}
+
+export interface ForkRelationshipProject {
+  id: string;
+  name: string;
 }
 
 export interface ForkRelationshipSnapshot {
@@ -31,6 +44,8 @@ export interface ForkRelationshipSnapshot {
 
 export function resolveForkRelationship(input: {
   snapshot: ForkRelationshipSnapshot | null;
-  recordsByRepositoryId: Map<number | string, ForkRelationshipRecord>;
-  publicProjectIds: Set<string>;
+  recordsByRepositoryId?: Map<number | string, ForkRelationshipRecord>;
+  publicProjectIds?: Set<string>;
+  sourcesByRepositoryKey?: Map<string, ForkRelationshipSource>;
+  publicProjectsBySourceId?: Map<string, ForkRelationshipProject[]>;
 }): CatalogForkRelationship | null;

@@ -12,6 +12,7 @@ describe("pull request CI path classification", () => {
     "data/registry/projects/example-extension.json",
     "data/registry/projects/example-frontend.json",
     "data/registry/projects/example-preset.json",
+    "data/registry/sources/github-42.json",
     "data/registry/kits/example-kit.json",
     "data/snapshots/github/example-extension.json",
     "data/snapshots/codeberg/example-extension.json",

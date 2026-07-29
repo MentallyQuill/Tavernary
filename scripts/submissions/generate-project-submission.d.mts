@@ -7,6 +7,7 @@ export interface GeneratedSubmissionReport {
   schema_version: 1;
   issue_number: number;
   project_id: string;
+  source_id: string;
   source_provider: "github" | "codeberg" | null;
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
@@ -37,6 +38,7 @@ export interface GeneratedSubmission {
 
 export interface GeneratedSubmissionDraft {
   record: { id: string; [key: string]: unknown };
+  source: import("../../src/features/catalog/source-record.mjs").SourceRecord;
   snapshot?: unknown;
   frontendVocabulary?: {
     frontends: Array<{ id: string; [key: string]: unknown }>;

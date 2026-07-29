@@ -12,7 +12,7 @@ const exactKeys = new Set(["status", "category", "explanation"]);
 export function createPolicyEvidenceFingerprint(input) {
   const serialized = JSON.stringify({
     project_id: input?.projectId,
-    source_identity: input?.sourceIdentity,
+    source_id: input?.sourceId,
     head_sha: input?.headSha,
     policy_version: input?.policyVersion,
   });

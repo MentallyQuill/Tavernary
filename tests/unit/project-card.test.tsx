@@ -91,6 +91,7 @@ describe("project card", () => {
       fork: {
         parentName: "VectHare",
         parentProjectId: "vecthare",
+        parentUrl: null,
         status: "published",
       },
     });
@@ -144,6 +145,7 @@ describe("project card", () => {
             fork: {
               parentName: "VectHare",
               parentProjectId: null,
+              parentUrl: null,
               status: "not-listed",
             },
           }),
@@ -177,6 +179,7 @@ describe("project card", () => {
       fork: {
         parentName: "Grandparent",
         parentProjectId: "grandparent",
+        parentUrl: null,
         status: "published",
       },
     });
@@ -185,6 +188,7 @@ describe("project card", () => {
       fork: {
         parentName: "Parent",
         parentProjectId: "parent",
+        parentUrl: null,
         status: "published",
       },
     });

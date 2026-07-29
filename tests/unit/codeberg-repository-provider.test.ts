@@ -18,19 +18,19 @@ async function fixture(name: string) {
 }
 
 const record = {
-  id: "targren-lumiverse-swipescrubber",
-  source: {
-    type: "codeberg" as const,
-    repository: "targren/Lumiverse-SwipeScrubber",
-    repository_id: 1699613,
-  },
+  id: "codeberg-1699613",
+  type: "codeberg" as const,
+  repository: "targren/Lumiverse-SwipeScrubber",
+  repository_id: 1699613,
+  status: "active" as const,
+  refresh_policy: "automatic" as const,
 };
 
 test("smoke verifies public identity and a 40-character head", async () => {
   const repository = await fixture("repository");
   const commits = await fixture("commits");
   const logger = { log: vi.fn() };
-  const result = await runCodebergSmoke(record.source.repository, {
+  const result = await runCodebergSmoke(record.repository, {
     request: vi
       .fn()
       .mockResolvedValueOnce({ data: repository })
@@ -77,7 +77,7 @@ test("normalizes a Codeberg repository observation", async () => {
     observations: [
       {
         provider: "codeberg",
-        projectId: "targren-lumiverse-swipescrubber",
+        sourceId: "codeberg-1699613",
         repository: expect.objectContaining({
           id: 1699613,
           owner: "targren",
@@ -125,7 +125,7 @@ test("feeds Codeberg commit details into meaningful activity inspection", async 
   const provider = new CodebergRepositoryProvider({ request });
 
   const inspected = await provider.inspectActivity({
-    repository: record.source.repository,
+    repository: record.repository,
     expectedHeadSha: "head",
     now: "2026-07-27T00:00:00.000Z",
     activity: activity(),

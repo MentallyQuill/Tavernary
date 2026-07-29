@@ -30,7 +30,7 @@ const admittedGithubExtension = {
 
 const observation = {
   provider: "github" as const,
-  projectId: "owner-repo",
+  sourceId: "github-42",
   repository: {
     id: 42,
     owner: "Owner",
@@ -56,9 +56,9 @@ const observation = {
 };
 
 const snapshot = {
-  schema_version: 3 as const,
+  schema_version: 4 as const,
   provider: "github" as const,
-  project_id: "owner-repo",
+  source_id: "github-42",
   repository: {
     id: 42,
     owner: "Owner",
@@ -97,7 +97,7 @@ const snapshot = {
   stale_since: null,
 };
 
-test("drafts a schema-v4 GitHub project with permanent identity", async () => {
+test("drafts a source-backed GitHub card with permanent identity", async () => {
   const result = await draftProjectRecord({
     admitted: admittedGithubExtension,
     observation,
@@ -117,24 +117,28 @@ test("drafts a schema-v4 GitHub project with permanent identity", async () => {
   });
 
   expect(result.record).toMatchObject({
-    schema_version: 5,
+    schema_version: 6,
     id: "owner-repo",
     name: "Repository Tool",
     kind: "extension",
     metadata_status: "curated",
-    source: {
-      type: "github",
-      repository: "Owner/Repo",
-      repository_id: observation.repository.id,
-    },
+    source_id: "github-42",
     frontends: ["sillytavern"],
     primary_function: "generation-reasoning",
     capabilities: ["planning-reasoning"],
     catalog_cohort: "standard",
-    visibility: "published",
-    visibility_reason: null,
-    refresh_policy: "automatic",
+    listing_status: "active",
+    listing_status_reason: null,
     enrichment_policy: "automatic",
+  });
+  expect(result.source).toMatchObject({
+    schema_version: 1,
+    id: "github-42",
+    type: "github",
+    repository: "Owner/Repo",
+    repository_id: observation.repository.id,
+    status: "active",
+    refresh_policy: "automatic",
   });
 });
 
@@ -359,16 +363,20 @@ test("drafts external presets with manual source policy", async () => {
   expect(result.record).toMatchObject({
     id: "example-com-presets-nova",
     kind: "preset",
-    source: {
-      type: "url",
-      url: "https://example.com/presets/Nova",
-      published_at: null,
-      version: null,
-      artifact_size_bytes: null,
-      license_status: "pending",
-      license_spdx_id: null,
-    },
+    source_id: "url-example-com-presets-nova",
+  });
+  expect(result.source).toMatchObject({
+    id: "url-example-com-presets-nova",
+    type: "url",
+    url: "https://example.com/presets/Nova",
+    published_at: null,
+    version: null,
+    artifact_size_bytes: null,
+    license_status: "pending",
+    license_spdx_id: null,
     refresh_policy: "paused",
+  });
+  expect(result.record).toMatchObject({
     enrichment_policy: "manual",
     enrichment_note: "External URL source; requires manual curation.",
   });
@@ -463,14 +471,18 @@ test("drafts an external Frontend with manual source policy", async () => {
   expect(result.record).toMatchObject({
     id: "codeberg-org-example-nova",
     kind: "frontend",
-    source: {
-      type: "url",
-      url: "https://codeberg.org/example/nova",
-      license_status: "pending",
-    },
+    source_id: "url-codeberg-org-example-nova",
+  });
+  expect(result.source).toMatchObject({
+    id: "url-codeberg-org-example-nova",
+    type: "url",
+    url: "https://codeberg.org/example/nova",
+    license_status: "pending",
+    refresh_policy: "paused",
+  });
+  expect(result.record).toMatchObject({
     frontends: ["nova-frontend"],
     primary_function: "frontend",
-    refresh_policy: "paused",
     enrichment_policy: "manual",
   });
 });

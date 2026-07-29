@@ -11,6 +11,7 @@ export function applyCatalogPolicyReviewState(previous, result) {
     state: {
       schema_version: 1,
       project_id: result.projectId,
+      source_id: result.sourceId,
       source_identity: result.sourceIdentity,
       evidence_fingerprint: result.evidenceFingerprint,
       policy_version: result.policyVersion,

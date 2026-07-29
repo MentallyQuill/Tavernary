@@ -91,7 +91,7 @@ function admittedFixture(overrides = {}) {
       parent: null,
     },
     forkDependency: { status: "none" as const },
-    existingProjects: [],
+    existingSources: [],
     frontendResolution: {
       status: "resolved" as const,
       ids: ["sillytavern"],
@@ -165,11 +165,12 @@ test("closes a permanent repository-ID duplicate before PR generation", () => {
         prUrl: "https://github.com/Tavernary/Tavernary/pull/73",
         identity: githubIdentity,
       },
-      existingProjects: [
+      existingSources: [
         {
-          id: "old-owner-old-name",
-          name: "Existing project",
+          id: "github-1285208664",
+          name: "OldOwner/OldName",
           canonicalUrl: "https://github.com/OldOwner/OldName",
+          projectIds: ["old-owner-old-name", "preset-variant"],
           identity: {
             ...githubIdentity,
             canonicalUrl: "https://github.com/OldOwner/OldName",
@@ -184,7 +185,10 @@ test("closes a permanent repository-ID duplicate before PR generation", () => {
 
   expect(decision).toMatchObject({
     status: "duplicate",
-    existingProject: { id: "old-owner-old-name" },
+    existingSource: {
+      id: "github-1285208664",
+      projectIds: ["old-owner-old-name", "preset-variant"],
+    },
   });
 });
 

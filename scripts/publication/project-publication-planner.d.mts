@@ -16,12 +16,21 @@ export type ProjectPublicationPlan =
       issueNumber: number;
     }
   | {
+      action: "await-maintainer";
+      reasonCode: "manual-approval-required";
+      producer: ProjectPublicationTransaction["producer"];
+      issueNumber: number;
+      projectIds: string[];
+      sourceId: string;
+    }
+  | {
       action: "merge";
       pullNumber: number;
       expectedHeadSha: string;
       producer: ProjectPublicationTransaction["producer"];
       issueNumber: number;
-      projectId: string;
+      projectIds: string[];
+      sourceId: string;
     };
 
 export function planProjectPublication(

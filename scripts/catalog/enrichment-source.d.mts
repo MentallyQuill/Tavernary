@@ -44,23 +44,27 @@ export type EnrichmentSource =
     };
 
 export interface EnrichmentSourceRecord {
-  source?: {
-    type?: string;
-    repository?: string;
-    url?: string;
-    [key: string]: unknown;
-  };
+  id: string;
+  source_id?: string;
+  [key: string]: unknown;
+}
+
+export interface EnrichmentSourceContext {
+  id: string;
+  type?: string;
+  repository?: string;
+  url?: string;
   [key: string]: unknown;
 }
 
 export interface EnrichmentSourceOptions {
   loadRepository?: (
-    record: EnrichmentSourceRecord,
+    source: EnrichmentSourceContext,
     snapshot: Record<string, unknown> | undefined,
     options?: Record<string, unknown>,
   ) => Promise<ReadmeSource>;
   loadReddit?: (
-    record: EnrichmentSourceRecord,
+    source: EnrichmentSourceContext,
     options?: { readSource?: RedditSourceReader },
   ) => Promise<RedditEnrichmentSource>;
   providers?: Record<
@@ -78,6 +82,7 @@ export interface EnrichmentSourceOptions {
 
 export function loadEnrichmentSource(
   record: EnrichmentSourceRecord,
+  source: EnrichmentSourceContext,
   snapshot: Record<string, unknown> | undefined,
   options?: EnrichmentSourceOptions,
 ): Promise<EnrichmentSource>;

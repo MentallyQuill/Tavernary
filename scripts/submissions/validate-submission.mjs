@@ -36,7 +36,16 @@ function validateResolvedSubmission({
   const duplicate = sourceDuplicateKeys(identity).some((key) =>
     existingKeys.has(key),
   );
-  return { duplicate, errors };
+  return {
+    status: duplicate ? "rejected" : errors.length ? "rejected" : "accepted",
+    reasonCode: duplicate
+      ? "duplicate-source"
+      : errors.length
+        ? "invalid-submission"
+        : null,
+    duplicate,
+    errors,
+  };
 }
 
 export function validateSubmission(input) {

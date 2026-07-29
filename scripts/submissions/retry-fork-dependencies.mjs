@@ -7,7 +7,7 @@ import {
 
 export function hasTerminalForkDependency({
   comments,
-  projectsByRepositoryId,
+  sourcesByRepositoryId,
   closedUpstreamIssueNumber,
 }) {
   return comments.some((comment) => {
@@ -16,7 +16,7 @@ export function hasTerminalForkDependency({
     return (
       marker?.status === "waiting-on-fork-parent" &&
       dependency &&
-      (projectsByRepositoryId.has(dependency.repository_id) ||
+      (sourcesByRepositoryId.has(dependency.repository_id) ||
         (Number.isInteger(closedUpstreamIssueNumber) &&
           dependency.issue_number === closedUpstreamIssueNumber))
     );
@@ -32,16 +32,16 @@ function issueLabels(issue) {
 export async function retryForkDependencies({
   repository,
   ref = "main",
-  projects,
+  sources,
   closedUpstreamIssueNumber,
   request,
 }) {
-  const projectsByRepositoryId = new Map(
-    projects.flatMap((project) =>
-      project.source?.type === "github" &&
-      Number.isInteger(project.source.repository_id) &&
-      project.source.repository_id > 0
-        ? [[project.source.repository_id, project]]
+  const sourcesByRepositoryId = new Map(
+    sources.flatMap((source) =>
+      source.type === "github" &&
+      Number.isInteger(source.repository_id) &&
+      source.repository_id > 0
+        ? [[source.repository_id, source]]
         : [],
     ),
   );
@@ -71,7 +71,7 @@ export async function retryForkDependencies({
       if (
         !hasTerminalForkDependency({
           comments,
-          projectsByRepositoryId,
+          sourcesByRepositoryId,
           closedUpstreamIssueNumber,
         })
       ) {
@@ -124,11 +124,11 @@ async function main() {
     throw new Error("GITHUB_REPOSITORY and GITHUB_TOKEN are required.");
   }
   const issueNumber = Number(process.env.UPSTREAM_ISSUE_NUMBER || 0);
-  const { projects } = await loadProjectSubmissionCatalogData();
+  const { sources } = await loadProjectSubmissionCatalogData();
   await retryForkDependencies({
     repository,
     ref: process.env.GITHUB_REF_NAME || "main",
-    projects,
+    sources,
     closedUpstreamIssueNumber:
       Number.isInteger(issueNumber) && issueNumber > 0
         ? issueNumber

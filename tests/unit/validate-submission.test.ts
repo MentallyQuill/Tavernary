@@ -120,5 +120,42 @@ test("detects duplicates by permanent GitHub repository ID", () => {
         },
       ],
     }),
-  ).toEqual({ duplicate: true, errors: [] });
+  ).toMatchObject({
+    status: "rejected",
+    reasonCode: "duplicate-source",
+    duplicate: true,
+    errors: [],
+  });
+});
+
+test("rejects an ordinary submission when one source already has several cards", () => {
+  const existingSourceIdentity = {
+    kind: "repository" as const,
+    provider: "github" as const,
+    canonicalUrl: "https://github.com/OldOwner/OldName",
+    repository: "OldOwner/OldName",
+    repositoryId: 123,
+    owner: "OldOwner",
+    name: "OldName",
+  };
+
+  expect(
+    validateSubmission({
+      projectType: "preset",
+      identity: {
+        ...existingSourceIdentity,
+        canonicalUrl: "https://github.com/NewOwner/NewName",
+        repository: "NewOwner/NewName",
+        owner: "NewOwner",
+        name: "NewName",
+      },
+      existingIdentities: [existingSourceIdentity],
+      existingProjectIdsBySource: {
+        "github-123": ["preset-a", "preset-b", "extension-a"],
+      },
+    }),
+  ).toMatchObject({
+    status: "rejected",
+    reasonCode: "duplicate-source",
+  });
 });

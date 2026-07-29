@@ -46,8 +46,10 @@ export function validateKitDraft(draft, projects) {
     resolved.some(
       (project) =>
         project &&
-        project.visibility !== undefined &&
-        project.visibility !== "published",
+        ((project.visibility !== undefined &&
+          project.visibility !== "published") ||
+          (project.listing_status !== undefined &&
+            project.listing_status !== "active")),
     )
   ) {
     errors.push("A Kit cannot contain flagged projects.");

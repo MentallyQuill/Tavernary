@@ -76,11 +76,11 @@ function durableManualExclusions(records) {
   }));
 }
 
-function isEligible(record, force = false) {
+function isEligible(record, source, force = false) {
   if (
     !isAutomaticEnrichment(record) ||
-    record.visibility !== "published" ||
-    !supportsAutomaticEnrichmentSource(record.source)
+    record.listing_status !== "active" ||
+    !supportsAutomaticEnrichmentSource(source)
   ) {
     return false;
   }
@@ -88,16 +88,24 @@ function isEligible(record, force = false) {
   return genericSummaries.has(record.summary);
 }
 
-export function selectEnrichmentRecords(records, options = {}) {
+export function selectEnrichmentRecords(records, sourcesById, options = {}) {
   return records
-    .filter((record) => isEligible(record, options.force))
+    .filter((record) =>
+      isEligible(record, sourcesById?.[record.source_id], options.force),
+    )
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export async function enrichRecord(record, snapshot, provider, options = {}) {
+export async function enrichRecord(
+  record,
+  sourceRecord,
+  snapshot,
+  provider,
+  options = {},
+) {
   if (!isAutomaticEnrichment(record)) return null;
-  if (record.visibility !== "published") return null;
-  if (!supportsAutomaticEnrichmentSource(record.source)) return null;
+  if (record.listing_status !== "active") return null;
+  if (!supportsAutomaticEnrichmentSource(sourceRecord)) return null;
   if (record.metadata_status === "curated" && !options.force) return null;
   if (
     !options.force &&
@@ -109,6 +117,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
 
   let source = await (options.loadSource ?? loadEnrichmentSource)(
     record,
+    sourceRecord,
     snapshot,
     options,
   );
@@ -161,6 +170,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
 
   const input = providerInputForRecord(
     record,
+    sourceRecord,
     source,
     vocabularies,
     options.classificationReviewRequest,
@@ -217,14 +227,15 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
 
 function providerInputForRecord(
   record,
+  sourceRecord,
   source,
   vocabularies,
   classificationReviewRequest = null,
   options = {},
 ) {
   const repositoryParts =
-    typeof record.source?.repository === "string"
-      ? record.source.repository.split("/").filter(Boolean)
+    typeof sourceRecord?.repository === "string"
+      ? sourceRecord.repository.split("/").filter(Boolean)
       : [];
   const protectedTerms = [
     ...new Set(
@@ -476,7 +487,8 @@ function validationRepairInput(providerInput, validation, output) {
 async function processProject(input, id) {
   const {
     recordsById,
-    snapshotsById,
+    sourcesById,
+    snapshotsBySourceId,
     phase,
     provider,
     validateSnapshot,
@@ -487,6 +499,7 @@ async function processProject(input, id) {
     force = false,
   } = input;
   const record = recordsById[id];
+  const sourceRecord = record ? sourcesById[record.source_id] : null;
   if (record && !isAutomaticEnrichment(record)) {
     return {
       id,
@@ -497,21 +510,28 @@ async function processProject(input, id) {
       message: "Registry record requires manual enrichment.",
     };
   }
-  if (!record || !isEligible(record, force)) {
+  if (!record || !sourceRecord || !isEligible(record, sourceRecord, force)) {
     return {
       id,
       phase,
       outcome: "skipped",
       reasonCode: record ? "record-ineligible" : "record-missing",
       message: record
-        ? "Registry record is no longer eligible."
+        ? sourceRecord
+          ? "Registry record is no longer eligible."
+          : "Registry source is missing."
         : "Registry record is missing.",
     };
   }
 
-  const source = await loadSource(record, snapshotsById[id], {
-    validateSnapshot,
-  });
+  const source = await loadSource(
+    record,
+    sourceRecord,
+    snapshotsBySourceId[sourceRecord.id],
+    {
+      validateSnapshot,
+    },
+  );
   if (source.status === "source-not-ready" || source.status === "failed") {
     return {
       id,
@@ -569,7 +589,12 @@ async function processProject(input, id) {
         ...sourceProvenance(source),
       };
     }
-    providerInput = providerInputForRecord(record, source, vocabularies);
+    providerInput = providerInputForRecord(
+      record,
+      sourceRecord,
+      source,
+      vocabularies,
+    );
     const previousEntry = previousEntries?.[id];
     if (
       phase === "retry" &&
@@ -683,7 +708,8 @@ export async function runEnrichmentBatch(input) {
   const {
     projectIds,
     recordsById,
-    snapshotsById,
+    sourcesById,
+    snapshotsBySourceId,
     phase,
     provider,
     validateSnapshot,
@@ -739,18 +765,36 @@ export async function runEnrichmentBatch(input) {
       backoffPending = false;
     });
   };
+  const evidenceBySourceId = new Map();
+  const loadPreparedSource = (
+    project,
+    sourceRecord,
+    snapshot,
+    sourceOptions,
+  ) => {
+    if (!evidenceBySourceId.has(sourceRecord.id)) {
+      evidenceBySourceId.set(
+        sourceRecord.id,
+        Promise.resolve(
+          loadSource(project, sourceRecord, snapshot, sourceOptions),
+        ),
+      );
+    }
+    return evidenceBySourceId.get(sourceRecord.id);
+  };
   return mapWithConcurrency(projectIds, concurrency, async (id) => {
     await backoffBarrier;
     try {
       const result = await processProject(
         {
           recordsById,
-          snapshotsById,
+          sourcesById,
+          snapshotsBySourceId,
           phase,
           provider,
           validateSnapshot,
           vocabularies,
-          loadSource,
+          loadSource: loadPreparedSource,
           writeRecord,
           previousEntries,
           force,
@@ -793,7 +837,7 @@ async function readSnapshotEntries(directory) {
         .filter((name) => name.endsWith(".json"))
         .map(async (name) => {
           const snapshot = await readJson(resolve(directory, name));
-          return [snapshot.project_id, snapshot];
+          return [snapshot.source_id, snapshot];
         }),
     );
   } catch (error) {
@@ -1038,10 +1082,20 @@ export async function runCli(options = {}) {
         .filter((name) => name.endsWith(".json"))
         .map((name) => readJson(resolve(root, "data/registry/projects", name))),
     ));
-  const snapshots = options.snapshots
+  const sources =
+    options.sources ??
+    (await Promise.all(
+      (await readdir(resolve(root, "data/registry/sources")))
+        .filter((name) => name.endsWith(".json"))
+        .map((name) => readJson(resolve(root, "data/registry/sources", name))),
+    ));
+  const sourcesById = Object.fromEntries(
+    sources.map((source) => [source.id, source]),
+  );
+  const snapshotsBySourceId = options.snapshots
     ? Array.isArray(options.snapshots)
       ? Object.fromEntries(
-          options.snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+          options.snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
         )
       : options.snapshots
     : Object.fromEntries(
@@ -1153,9 +1207,9 @@ export async function runCli(options = {}) {
       }
     }
     const force = forceForSelectionMode(requestedSelectionMode);
-    const eligibleIds = selectEnrichmentRecords(records, { force }).map(
-      ({ id }) => id,
-    );
+    const eligibleIds = selectEnrichmentRecords(records, sourcesById, {
+      force,
+    }).map(({ id }) => id);
     const canaryBoundaryAlreadyApplied =
       previousFullState?.mode === "full" &&
       previousFullState.phase === "complete" &&
@@ -1221,7 +1275,8 @@ export async function runCli(options = {}) {
     recordsById: Object.fromEntries(
       records.map((record) => [record.id, record]),
     ),
-    snapshotsById: snapshots,
+    sourcesById,
+    snapshotsBySourceId,
     phase: batch.phase,
     vocabularies,
     provider,

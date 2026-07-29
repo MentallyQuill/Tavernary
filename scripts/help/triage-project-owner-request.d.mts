@@ -1,3 +1,8 @@
+import type { SourceRecord } from "../../src/features/catalog/source-record.mjs";
+import type {
+  OwnerVocabularies,
+  ProjectOwnerManifest,
+} from "../../src/features/help/project-owner-manifest.mjs";
 import type { GitHubRepositoryIdentity } from "./project-owner-authority.d.mts";
 import type {
   TrustedEditorRegistry,
@@ -19,10 +24,16 @@ export type ProjectOwnerTriageDecision =
   | {
       status: "admitted";
       issueNumber: number;
-      projectId: string;
-      operation: "edit-card" | "move-source" | "delist";
-      manifest: Record<string, unknown>;
-      record: Record<string, unknown>;
+      projectId: string | null;
+      projectIds: string[];
+      sourceId: string;
+      operation: ProjectOwnerManifest["operation"];
+      manifest: ProjectOwnerManifest;
+      project: Record<string, unknown> | null;
+      record: Record<string, unknown> | null;
+      projects: Array<Record<string, unknown>>;
+      source: SourceRecord | Record<string, unknown>;
+      snapshot: Record<string, unknown> | null;
       repository: GitHubRepositoryIdentity | null;
       authorityType: "repository-owner" | "tavernary-staff";
       actorLogin: string;
@@ -36,23 +47,22 @@ export type ProjectOwnerTriageDecision =
       message: string;
       errors?: string[];
       fields?: string[];
+      conflictingIssueNumber?: number;
     };
 
 export function processProjectOwnerTriage(input: {
   issue: OwnerTriageIssue;
   root?: string;
   hostRepository?: string | { owner: string; name: string };
-  record?: Record<string, unknown>;
+  project?: Record<string, unknown>;
+  projects?: Array<Record<string, unknown>>;
+  source?: SourceRecord | Record<string, unknown>;
+  snapshot?: Record<string, unknown>;
   repository?: GitHubRepositoryIdentity | Record<string, unknown>;
+  issues?: unknown[];
+  pulls?: unknown[];
   trustedEditorRegistry?: TrustedEditorRegistry;
-  vocabularies: {
-    frontends: readonly (string | { id: string })[];
-    primaryFunctions: readonly (string | { id: string })[];
-    capabilities: readonly (string | { id: string })[];
-    modelFamilies: readonly (string | { id: string })[];
-    completionFormats: readonly (string | { id: string })[];
-  };
+  vocabularies: Omit<OwnerVocabularies, "source">;
   request?: (path: string) => Promise<any>;
   readFile?: (path: string, encoding: "utf8") => Promise<string>;
-  writeFile?: (...args: any[]) => Promise<any>;
 }): Promise<ProjectOwnerTriageDecision>;
