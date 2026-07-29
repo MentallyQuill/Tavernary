@@ -67,6 +67,7 @@ test("explicitly hands successful generated CI to the publisher", async () => {
   expect(dispatch.steps[0].run).toContain(
     "gh workflow run publish-project-transaction.yml",
   );
+  expect(dispatch.steps[0].run).toContain('--repo "$GITHUB_REPOSITORY"');
   expect(dispatch.steps[0].run).toContain(
     '-f validation_run_id="$GITHUB_RUN_ID"',
   );
