@@ -286,11 +286,7 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(record?.source.repository_id).toEqual(expect.any(Number));
   }
 
-  for (const id of [
-    "daddytorgo-hash-frankengarage",
-    "mentallyquill-st-wandlight",
-    "zorgonatis-stabs-edh",
-  ]) {
+  for (const id of ["daddytorgo-hash-frankengarage", "zorgonatis-stabs-edh"]) {
     expect(records.find((record) => record.id === id)?.enrichment_policy).toBe(
       "automatic",
     );
@@ -312,6 +308,20 @@ function expectCatalogContract(records: CatalogRecord[]) {
 describe("full catalog data", () => {
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
+  });
+
+  test("accepts an owner-approved manual enrichment lock for a GitHub card", async () => {
+    const records = structuredClone(await loadRegistryRecords());
+    const ownerEdited = records.find(
+      (record) => record.id === "mentallyquill-st-wandlight",
+    );
+    expect(ownerEdited).toBeDefined();
+
+    ownerEdited!.enrichment_policy = "manual";
+    ownerEdited!.enrichment_note =
+      "Owner-authored catalog details approved through issue #144.";
+
+    expectCatalogContract(records);
   });
 
   test("accepts Codeberg as a catalog source", async () => {
