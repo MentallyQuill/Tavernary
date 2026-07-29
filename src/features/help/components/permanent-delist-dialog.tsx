@@ -7,13 +7,13 @@ import { useModalSurface } from "@/hooks/use-modal-surface";
 const noInertSelectors: readonly string[] = [];
 
 export function PermanentDelistDialog({
-  projectName,
-  repositoryLabel,
+  repository,
+  cards,
   onCancel,
   onConfirm,
 }: {
-  projectName: string;
-  repositoryLabel: string;
+  repository: string;
+  cards: Array<{ id: string; name: string }>;
   onCancel: () => void;
   onConfirm: (confirmation: string) => void;
 }) {
@@ -24,7 +24,7 @@ export function PermanentDelistDialog({
   const descriptionId = useId();
   const effectId = useId();
   const matches =
-    confirmation.trim().toLocaleLowerCase() === projectName.toLocaleLowerCase();
+    confirmation.trim().toLocaleLowerCase() === repository.toLocaleLowerCase();
 
   useModalSurface({
     active: true,
@@ -49,22 +49,28 @@ export function PermanentDelistDialog({
         aria-labelledby={titleId}
         aria-describedby={`${descriptionId} ${effectId}`}
       >
-        <h2 id={titleId}>Permanently delist {projectName}?</h2>
+        <h2 id={titleId}>Permanently delist {repository}?</h2>
         <p id={descriptionId}>
-          You are about to remove {projectName} from Tavernary. This delisting
-          applies to {repositoryLabel}.
+          This is a permanent repository-wide action. It hides every Tavernary
+          card from this source and prevents the repository from being added
+          again.
         </p>
         <p id={effectId}>
-          The project will be removed from the public catalog. You will not be
-          able to reverse this decision or resubmit the project. Kits containing
-          this project may also be affected.
+          Adding, editing, retiring, and restoring individual cards are normal
+          maintenance. Delisting the source is not reversible.
         </p>
+        <p>Affected cards:</p>
+        <ul className="permanent-delist-cards">
+          {cards.map((card) => (
+            <li key={card.id}>{card.name}</li>
+          ))}
+        </ul>
 
-        <label htmlFor="permanent-delist-project-name">
-          Type {projectName} to confirm permanent delisting.
+        <label htmlFor="permanent-delist-repository">
+          Type {repository} to confirm permanent delisting.
         </label>
         <input
-          id="permanent-delist-project-name"
+          id="permanent-delist-repository"
           value={confirmation}
           autoComplete="off"
           onChange={(event) => setConfirmation(event.target.value)}
@@ -75,7 +81,7 @@ export function PermanentDelistDialog({
             role="status"
             aria-live="polite"
           >
-            Project name matches. Permanent delisting is now available.
+            Repository matches. Permanent delisting is now available.
           </p>
         ) : null}
 
@@ -94,7 +100,7 @@ export function PermanentDelistDialog({
             disabled={!matches}
             onClick={() => onConfirm(confirmation)}
           >
-            Permanently delist project
+            Permanently delist source
           </button>
         </div>
       </div>

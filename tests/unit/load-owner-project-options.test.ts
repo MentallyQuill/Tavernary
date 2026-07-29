@@ -129,9 +129,7 @@ test("joins cards to sources with separate fingerprints and sibling state", asyn
     },
     {
       id: "owner-alpha-preset",
-      siblings: [
-        { id: "owner-alpha", name: "Alpha", listingStatus: "active" },
-      ],
+      siblings: [{ id: "owner-alpha", name: "Alpha", listingStatus: "active" }],
       editable: {
         modelFamilies: ["claude"],
         completionFormats: ["chat-completion"],

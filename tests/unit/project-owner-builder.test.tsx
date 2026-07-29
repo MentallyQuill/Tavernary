@@ -1,10 +1,4 @@
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -17,88 +11,114 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(search),
 }));
 
+const metadataPolicy = {
+  summary: { mode: "manual" as const },
+  tags: { mode: "manual" as const },
+};
+
+const commonEditable = {
+  summary: "Current extension summary.",
+  frontends: ["sillytavern"],
+  primaryFunction: "interface-workflow",
+  tags: ["automate-workflows"],
+  metadataPolicy,
+  capabilities: [],
+  modelFamilies: [],
+  completionFormats: [],
+};
+
 const projects: OwnerProjectOption[] = [
   {
-    id: "owner-extension",
-    name: "Owner Extension",
+    id: "owner-alpha",
+    name: "Alpha",
     kind: "extension",
+    sourceId: "github-42",
     sourceType: "github",
-    repository: "CurrentOwner/Extension",
+    sourceUrl: "https://github.com/Owner/Alpha",
+    repository: "Owner/Alpha",
     repositoryId: 42,
     eligibleShape: true,
     ineligibilityReason: null,
+    projectFingerprint: "b".repeat(64),
     sourceFingerprint: "a".repeat(64),
+    siblings: [
+      {
+        id: "owner-alpha-preset",
+        name: "Alpha Preset",
+        listingStatus: "retired",
+      },
+    ],
+    sourceState: { status: "active", refreshPolicy: "automatic" },
     listingState: {
       metadataStatus: "curated",
-      visibility: "published",
-      visibilityReason: null,
-      refreshPolicy: "automatic",
-      enrichmentPolicy: "automatic",
-    },
-    editable: {
-      name: "Owner Extension",
-      summary: "Current extension summary.",
-      frontends: ["sillytavern"],
-      primaryFunction: "interface-workflow",
-      capabilities: ["automation"],
-      modelFamilies: [],
-      completionFormats: [],
-    },
-  },
-  {
-    id: "owner-preset",
-    name: "Owner Preset",
-    kind: "preset",
-    sourceType: "github",
-    repository: "CurrentOwner/Preset",
-    repositoryId: 84,
-    eligibleShape: true,
-    ineligibilityReason: null,
-    sourceFingerprint: "b".repeat(64),
-    listingState: {
-      metadataStatus: "curated",
+      listingStatus: "active",
+      listingStatusReason: null,
       visibility: "published",
       visibilityReason: null,
       refreshPolicy: "automatic",
       enrichmentPolicy: "manual",
     },
+    editable: { ...commonEditable, name: "Alpha" },
+  },
+  {
+    id: "owner-alpha-preset",
+    name: "Alpha Preset",
+    kind: "preset",
+    sourceId: "github-42",
+    sourceType: "github",
+    sourceUrl: "https://github.com/Owner/Alpha",
+    repository: "Owner/Alpha",
+    repositoryId: 42,
+    eligibleShape: true,
+    ineligibilityReason: null,
+    projectFingerprint: "c".repeat(64),
+    sourceFingerprint: "a".repeat(64),
+    siblings: [{ id: "owner-alpha", name: "Alpha", listingStatus: "active" }],
+    sourceState: { status: "active", refreshPolicy: "automatic" },
+    listingState: {
+      metadataStatus: "curated",
+      listingStatus: "retired",
+      listingStatusReason: "removed",
+      visibility: "disabled",
+      visibilityReason: "removed",
+      refreshPolicy: "automatic",
+      enrichmentPolicy: "manual",
+    },
     editable: {
-      name: "Owner Preset",
-      summary: "Current preset summary.",
-      frontends: ["sillytavern"],
+      ...commonEditable,
+      name: "Alpha Preset",
+      summary: "A preset from the Alpha repository.",
       primaryFunction: "preset",
-      capabilities: ["prompt-engineering"],
+      tags: ["creative-writing"],
       modelFamilies: ["claude"],
       completionFormats: ["chat-completion"],
     },
   },
   {
-    id: "organization-suite",
-    name: "Organization Suite",
+    id: "removed-card",
+    name: "Removed Card",
     kind: "extension",
-    sourceType: "github-organization",
-    repository: null,
-    repositoryId: null,
+    sourceId: "github-84",
+    sourceType: "github",
+    sourceUrl: "https://github.com/Owner/Removed",
+    repository: "Owner/Removed",
+    repositoryId: 84,
     eligibleShape: false,
-    ineligibilityReason:
-      "Organization suite listings require a public project report.",
-    sourceFingerprint: "c".repeat(64),
+    ineligibilityReason: "This repository source is permanently delisted.",
+    projectFingerprint: "d".repeat(64),
+    sourceFingerprint: "e".repeat(64),
+    siblings: [],
+    sourceState: { status: "delisted", refreshPolicy: "paused" },
     listingState: {
       metadataStatus: "curated",
+      listingStatus: "active",
+      listingStatusReason: null,
       visibility: "published",
       visibilityReason: null,
       refreshPolicy: "paused",
       enrichmentPolicy: "manual",
     },
-    editable: {
-      name: "Organization Suite",
-      summary: "A suite.",
-      frontends: ["sillytavern"],
-      primaryFunction: "interface-workflow",
-      capabilities: [],
-      modelFamilies: [],
-      completionFormats: [],
-    },
+    editable: { ...commonEditable, name: "Removed Card" },
   },
 ];
 
@@ -108,50 +128,36 @@ const vocabularies = {
     { id: "risuai", label: "RisuAI" },
   ],
   primaryFunctions: [
-    {
-      id: "frontend",
-      label: "Frontend",
-      description: "A structural Frontend category.",
-    },
-    {
-      id: "preset",
-      label: "System Preset",
-      description: "A structural System Preset category.",
-    },
-    {
-      id: "interface-workflow",
-      label: "Interface and workflow",
-      description: "Improves user-facing navigation and productivity.",
-    },
-    {
-      id: "generation-reasoning",
-      label: "Generation and reasoning",
-      description: "Changes how model output is prompted or reasoned.",
-    },
-    {
-      id: "memory-retrieval",
-      label: "Memory and retrieval",
-      description: "Stores and retrieves conversational knowledge.",
-    },
-    {
-      id: "character-worldbuilding",
-      label: "Character and worldbuilding",
-      description: "Creates characters and narrative-world material.",
-    },
-    {
-      id: "rpg-systems",
-      label: "RPG systems and suites",
-      description: "Provides game mechanics and structured world state.",
-    },
-    {
-      id: "developer-infrastructure",
-      label: "Developer infrastructure",
-      description: "Provides developer-facing APIs and diagnostics.",
-    },
+    { id: "frontend", label: "Frontend" },
+    { id: "preset", label: "System Preset" },
+    { id: "interface-workflow", label: "Interface and workflow" },
+    { id: "generation-reasoning", label: "Generation and reasoning" },
   ],
-  capabilities: [
-    { id: "automation", label: "Automation" },
-    { id: "prompt-engineering", label: "Prompt engineering" },
+  tags: [
+    {
+      id: "automate-workflows",
+      label: "Automate workflows",
+      facet: "goal" as const,
+      description: "Automate repeated work.",
+      aliases: [],
+      applicable_kinds: ["frontend", "extension"] as const,
+    },
+    {
+      id: "creative-writing",
+      label: "Creative writing",
+      facet: "goal" as const,
+      description: "Support creative writing.",
+      aliases: [],
+      applicable_kinds: ["frontend", "extension", "preset"] as const,
+    },
+    ...Array.from({ length: 6 }, (_, index) => ({
+      id: `trait-${index + 1}`,
+      label: `Trait ${index + 1}`,
+      facet: "trait" as const,
+      description: `Trait ${index + 1}.`,
+      aliases: [],
+      applicable_kinds: ["extension"] as const,
+    })),
   ],
   modelFamilies: [
     { id: "claude", label: "Claude" },
@@ -171,13 +177,9 @@ function renderBuilder() {
 
 async function selectProject(
   user: ReturnType<typeof userEvent.setup>,
-  id = "owner-extension",
+  id = "owner-alpha",
 ) {
   await user.selectOptions(screen.getByLabelText("Project"), id);
-}
-
-function expectReviewRow(label: string, value: string) {
-  expect(screen.getByText(label).closest("div")).toHaveTextContent(value);
 }
 
 afterEach(cleanup);
@@ -187,471 +189,247 @@ beforeEach(() => {
   vi.restoreAllMocks();
 });
 
-test("keeps the selected project visible while filtering other cataloged projects", async () => {
-  search = "project=owner-extension";
-  const user = userEvent.setup();
-  renderBuilder();
-
-  expect(screen.getByLabelText("Project")).toHaveValue("owner-extension");
-  await user.type(screen.getByLabelText("Search listed projects"), "preset");
-
-  expect(
-    screen.getByRole("option", { name: /owner preset/iu }),
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("option", { name: /owner extension/iu }),
-  ).toBeInTheDocument();
-  expect(screen.getByLabelText("Project")).toHaveValue("owner-extension");
-});
-
-test("explains staff-only shapes while keeping their edit controls available", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user, "organization-suite");
-
-  expect(
-    screen.getByText(
-      /Organization suite listings require a public project report/iu,
-    ),
-  ).toBeVisible();
-  expect(
-    screen.getByRole("link", { name: "Report this listing instead" }),
-  ).toHaveAttribute("href", "/help/report-project?project=organization-suite");
-  expect(
-    screen.getByRole("radio", { name: "Edit card details" }),
-  ).toBeVisible();
-});
-
-test("keeps edit, source, and delist fields in separate branches", async () => {
+test("offers only source- and card-valid maintenance operations", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user);
 
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  expect(screen.getByLabelText("Display name")).toBeVisible();
+  for (const label of [
+    "Edit card details",
+    "Add cards from this source",
+    "Retire this card",
+    "Update repository location",
+    "Permanently delist this source",
+  ]) {
+    expect(screen.getByRole("radio", { name: label })).toBeVisible();
+  }
   expect(
-    screen.queryByLabelText("Public GitHub repository URL"),
+    screen.queryByRole("radio", { name: "Restore this card" }),
   ).not.toBeInTheDocument();
 
+  await selectProject(user, "owner-alpha-preset");
+  expect(
+    screen.getByRole("radio", { name: "Restore this card" }),
+  ).toBeVisible();
+  expect(
+    screen.queryByRole("radio", { name: "Retire this card" }),
+  ).not.toBeInTheDocument();
+
+  await selectProject(user, "removed-card");
+  for (const label of [
+    "Add cards from this source",
+    "Restore this card",
+    "Update repository location",
+  ]) {
+    expect(
+      screen.queryByRole("radio", { name: label }),
+    ).not.toBeInTheDocument();
+  }
+});
+
+test("clones one complete card without cloning metadata provenance", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
   await user.click(
-    screen.getByRole("radio", { name: "Update repository location" }),
+    screen.getByRole("radio", { name: "Add cards from this source" }),
   );
-  expect(screen.getByLabelText("Public GitHub repository URL")).toBeVisible();
-  expect(screen.queryByLabelText("Display name")).not.toBeInTheDocument();
 
-  await user.click(screen.getByRole("radio", { name: "Delist this project" }));
-  expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
-  expect(screen.getByLabelText("Public note (optional)")).toBeVisible();
-  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  expect(
-    screen.queryByLabelText("Public GitHub repository URL"),
-  ).not.toBeInTheDocument();
-});
-
-test("shows a live summary counter and exact controlled metadata", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-
-  expect(screen.getByText("26 / 220")).toHaveAttribute("role", "status");
-  await user.clear(screen.getByLabelText("Summary"));
-  await user.type(screen.getByLabelText("Summary"), "Updated.");
-  expect(screen.getByText("8 / 220")).toBeVisible();
-
-  expect(
-    screen.getAllByRole("checkbox", {
-      name: /SillyTavern|RisuAI|Automation|Prompt engineering/u,
-    }),
-  ).toHaveLength(4);
-  const primaryFunction = screen.getByLabelText("Primary function");
-  expect(primaryFunction).toHaveTextContent("Interface and workflow");
-  expect(
-    screen.queryByText("Improves user-facing navigation and productivity."),
-  ).not.toBeInTheDocument();
-
-  await user.click(primaryFunction);
-  expect(
-    screen.getByText("Improves user-facing navigation and productivity."),
-  ).toBeVisible();
-  expect(
-    within(screen.getByRole("listbox")).queryByRole("option", {
-      name: /System Preset/u,
-    }),
-  ).not.toBeInTheDocument();
-  expect(
-    within(screen.getByRole("listbox")).getAllByRole("option"),
-  ).toHaveLength(6);
-  expect(
-    screen.queryByRole("checkbox", { name: "Claude" }),
-  ).not.toBeInTheDocument();
-});
-
-test("removes emoji from an owner summary while preserving its wording", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-
-  const summary = screen.getByLabelText("Summary");
-  await user.clear(summary);
-  await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
-
-  expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
   expect(
     screen.getByText(
-      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+      "You may propose up to 10 cards from this GitHub repository in one request. Only one unresolved add-card request may exist for the repository at a time. Tavernary reviews the complete batch together.",
     ),
-  ).toHaveAttribute("role", "status");
-  expect(screen.getByRole("link", { name: "Catalog Policy" })).toHaveAttribute(
-    "href",
-    "/catalog-policy",
+  ).toBeVisible();
+  expect(screen.getByLabelText("Card 1 display name")).toHaveValue("Alpha");
+  expect(screen.getByLabelText("Card 1 summary policy")).toHaveValue(
+    "automatic",
   );
-});
-
-test("shows compatibility controls only for Presets", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user, "owner-preset");
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-
-  expect(screen.getByRole("checkbox", { name: "Claude" })).toBeChecked();
-  expect(screen.getByRole("checkbox", { name: "Gemini" })).not.toBeChecked();
+  expect(screen.getByLabelText("Card 1 tag policy")).toHaveValue("automatic");
   expect(
-    screen.getByRole("checkbox", { name: "Chat Completion" }),
+    screen.getByRole("checkbox", { name: "Automate workflows" }),
   ).toBeChecked();
-  expect(
-    screen.getByRole("checkbox", { name: "Text Completion" }),
-  ).not.toBeChecked();
-  expect(screen.getByLabelText("Primary function")).toHaveValue("preset");
-  expect(screen.getByLabelText("Primary function")).toHaveAttribute("readonly");
+  expect(screen.getByText("owner-alpha-alpha")).toBeVisible();
 });
 
-test("builds a nullable-identity staff edit for a staff-only card", async () => {
-  const user = userEvent.setup();
-  const open = vi.spyOn(window, "open").mockReturnValue(window);
-  renderBuilder();
-  await selectProject(user, "organization-suite");
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  await user.clear(screen.getByLabelText("Display name"));
-  await user.type(
-    screen.getByLabelText("Display name"),
-    "Organization Suite 2",
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
-
-  const opened = new URL(open.mock.calls[0]?.[0] as string);
-  expect(
-    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
-  ).toMatchObject({
-    operation: "edit-card",
-    project_id: "organization-suite",
-    repository_id: null,
-    proposed: { name: "Organization Suite 2" },
-  });
-});
-
-test("connects each required owner choice to its inline error", async () => {
+test("enforces the ten-card batch boundary and keeps at least one draft", async () => {
   const user = userEvent.setup();
   renderBuilder();
-
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  expect(screen.getByLabelText("Project")).toHaveAttribute("aria-describedby");
-  expect(document.getElementById("owner-project-error")).toHaveTextContent(
-    "Select a listed project.",
-  );
-
   await selectProject(user);
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  expect(
-    screen.getByRole("group", { name: "What would you like to do?" }),
-  ).toHaveAttribute("aria-invalid", "true");
-
   await user.click(
-    screen.getByRole("radio", { name: "Update repository location" }),
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  expect(screen.getByLabelText("Public GitHub repository URL")).toHaveAttribute(
-    "aria-describedby",
+    screen.getByRole("radio", { name: "Add cards from this source" }),
   );
 
-  await user.click(screen.getByRole("radio", { name: "Delist this project" }));
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  expect(
-    screen.getByRole("dialog", {
-      name: "Permanently delist Owner Extension?",
-    }),
-  ).toBeVisible();
-  expect(
-    screen.getByRole("button", { name: "Permanently delist project" }),
-  ).toBeDisabled();
+  const add = screen.getByRole("button", { name: "Add another card" });
+  for (let index = 1; index < 10; index += 1) await user.click(add);
+  expect(add).toBeDisabled();
+  expect(screen.getAllByRole("group", { name: /Card \d+/u })).toHaveLength(10);
+
+  const remove = screen.getAllByRole("button", { name: /Remove Card/u });
+  for (let index = remove.length - 1; index > 0; index -= 1) {
+    await user.click(remove[index]!);
+  }
+  expect(screen.getAllByRole("group", { name: /Card \d+/u })).toHaveLength(1);
+  expect(screen.getByRole("button", { name: /Remove Card 1/u })).toBeDisabled();
 });
 
-test("connects required owner card text to its inline errors", async () => {
+test("blocks the whole batch for duplicate generated IDs or one invalid card", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  await user.clear(screen.getByLabelText("Display name"));
-  await user.clear(screen.getByLabelText("Summary"));
-
+  await user.click(
+    screen.getByRole("radio", { name: "Add cards from this source" }),
+  );
+  await user.click(screen.getByRole("button", { name: "Add another card" }));
   await user.click(screen.getByRole("button", { name: "Review request" }));
 
-  expect(screen.getByLabelText("Display name")).toHaveAttribute(
-    "aria-describedby",
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    /duplicate project IDs|project ID does not match/iu,
   );
-  expect(screen.getByLabelText("Summary")).toHaveAttribute("aria-describedby");
-  expect(document.getElementById("owner-name-error")).toHaveTextContent(
-    "Owner display name is required.",
-  );
-  expect(document.getElementById("owner-summary-error")).toHaveTextContent(
+  expect(
+    screen.queryByRole("heading", { name: "Review your public request" }),
+  ).not.toBeInTheDocument();
+
+  await user.clear(screen.getByLabelText("Card 2 display name"));
+  await user.type(screen.getByLabelText("Card 2 display name"), "Beta");
+  await user.clear(screen.getByLabelText("Card 2 summary"));
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByRole("alert")).toHaveTextContent(
     "Owner summary is required.",
   );
 });
 
-test("requires typed project confirmation before reviewing a permanent delist", async () => {
+test("reviews and hands off one atomic multi-card manifest", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
   await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Delist this project" }));
-  const reviewButton = screen.getByRole("button", { name: "Review request" });
-  vi.spyOn(reviewButton, "getClientRects").mockReturnValue({
-    length: 1,
-  } as unknown as DOMRectList);
-  await user.click(reviewButton);
-
-  expect(
-    screen.getByRole("heading", {
-      name: "Permanently delist Owner Extension?",
-    }),
-  ).toBeVisible();
-  expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
-  await user.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(
-    screen.queryByRole("heading", {
-      name: "Permanently delist Owner Extension?",
-    }),
-  ).not.toBeInTheDocument();
-  await waitFor(() =>
-    expect(
-      screen.getByRole("button", { name: "Review request" }),
-    ).toHaveFocus(),
-  );
-
-  await user.click(reviewButton);
-  await user.type(
-    screen.getByLabelText(
-      "Type Owner Extension to confirm permanent delisting.",
-    ),
-    "owner extension",
-  );
   await user.click(
-    screen.getByRole("button", { name: "Permanently delist project" }),
+    screen.getByRole("radio", { name: "Add cards from this source" }),
   );
+  await user.clear(screen.getByLabelText("Card 1 display name"));
+  await user.type(screen.getByLabelText("Card 1 display name"), "V9 Mirage");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
 
-  expect(
-    screen.getByText(
-      "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.",
-    ),
-  ).toBeVisible();
-  expectReviewRow("Confirmation", "owner extension");
-  expectReviewRow("After: visibility", "disabled");
+  expect(screen.getByText("Card 1: V9 Mirage")).toBeVisible();
+  expect(screen.getByText("owner-alpha-v9-mirage")).toBeVisible();
+  expect(screen.getByText("Summary policy: automatic")).toBeVisible();
+  expect(screen.getByText("Tag policy: automatic")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  const manifest = JSON.parse(
+    opened.searchParams.get("owner-request-manifest") ?? "",
+  );
+  expect(manifest).toMatchObject({
+    schema_version: 2,
+    operation: "add-cards",
+    source_id: "github-42",
+    source_fingerprint: "a".repeat(64),
+    proposed_cards: [
+      {
+        project_id: "owner-alpha-v9-mirage",
+        name: "V9 Mirage",
+        metadata: {
+          summary: { mode: "automatic" },
+          tags: { mode: "automatic" },
+        },
+      },
+    ],
+  });
+  expect(manifest.proposed_cards[0].draft_id).not.toBe(
+    manifest.proposed_cards[0].project_id,
+  );
+});
+
+test("uses independent metadata choices for ordinary edits", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
+  await user.selectOptions(screen.getByLabelText("Tag policy"), "automatic");
+  await user.clear(screen.getByLabelText("Display name"));
+  await user.type(screen.getByLabelText("Display name"), "Alpha Updated");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
   const opened = new URL(open.mock.calls[0]?.[0] as string);
   expect(
     JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
   ).toMatchObject({
-    operation: "delist",
-    delist_confirmation: "owner extension",
+    operation: "edit-card",
+    source_id: "github-42",
+    project_id: "owner-alpha",
+    project_fingerprint: "b".repeat(64),
+    proposed: {
+      name: "Alpha Updated",
+      metadata: {
+        summary: { mode: "manual" },
+        tags: { mode: "automatic" },
+      },
+    },
   });
 });
 
-test("reviews card values before and after without claiming browser-side identity verification", async () => {
+test("describes retire and restore as reversible one-card maintenance", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  await user.clear(screen.getByLabelText("Summary"));
-  await user.type(screen.getByLabelText("Summary"), "Owner-authored summary.");
-  await user.click(screen.getByRole("checkbox", { name: "Automation" }));
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-
+  await user.click(screen.getByRole("radio", { name: "Retire this card" }));
   expect(
     screen.getByText(
-      "GitHub will verify either current personal-owner authority or reviewed Tavernary staff authority.",
+      "Retiring Alpha hides only this card. The repository and sibling cards stay listed, and this card can be restored later.",
     ),
   ).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByText("After: retired")).toBeVisible();
+
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+  await selectProject(user, "owner-alpha-preset");
+  await user.click(screen.getByRole("radio", { name: "Restore this card" }));
   expect(
     screen.getByText(
-      "Summary or capability edits change model enrichment to manual.",
+      "Restoring Alpha Preset returns this card to the public catalog without changing its repository or sibling cards.",
     ),
   ).toBeVisible();
-  expectReviewRow("Before: summary", "Current extension summary.");
-  expectReviewRow("After: summary", "Owner-authored summary.");
-  expectReviewRow("Before: enrichment policy", "automatic");
-  expectReviewRow("After: enrichment policy", "manual");
-  expectReviewRow("Before: capabilities", "automation");
-  expectReviewRow("After: capabilities", "None");
-  expect(
-    screen.queryByText(/identity has been verified/iu),
-  ).not.toBeInTheDocument();
-  expect(
-    screen.queryByText(/you are the verified owner/iu),
-  ).not.toBeInTheDocument();
 });
 
-test("reports that a classification-only edit preserves enrichment authority", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-
-  const primaryFunction = screen.getByLabelText("Primary function");
-  expect(primaryFunction).toHaveTextContent("Interface and workflow");
-  expect(
-    screen.queryByText("Improves user-facing navigation and productivity."),
-  ).not.toBeInTheDocument();
-
-  await user.click(primaryFunction);
-  expect(
-    within(screen.getByRole("listbox")).getAllByRole("option"),
-  ).toHaveLength(6);
-  await user.click(
-    screen.getByRole("option", { name: /Generation and reasoning/u }),
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-
-  expectReviewRow("Before: primary function", "interface-workflow");
-  expectReviewRow("After: primary function", "generation-reasoning");
-  expectReviewRow("Before: enrichment policy", "automatic");
-  expectReviewRow("After: enrichment policy", "automatic");
-  expect(
-    screen.getByText("This edit preserves the automatic enrichment policy."),
-  ).toBeVisible();
-});
-
-test("reviews repository location before and after", async () => {
-  const user = userEvent.setup();
-  renderBuilder();
-  await selectProject(user);
-  await user.click(
-    screen.getByRole("radio", { name: "Update repository location" }),
-  );
-  await user.type(
-    screen.getByLabelText("Public GitHub repository URL"),
-    "https://github.com/CurrentOwner/Extension-Renamed",
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-
-  expectReviewRow(
-    "Before: repository",
-    "https://github.com/CurrentOwner/Extension",
-  );
-  expectReviewRow(
-    "After: repository",
-    "https://github.com/CurrentOwner/Extension-Renamed",
-  );
-  expectReviewRow("Before: repository ID", "42");
-  expectReviewRow("After: repository ID", "42");
-});
-
-test("hands off one complete edit manifest and preserves state after back", async () => {
+test("permanently delists one source only after repository confirmation", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
   await selectProject(user);
-  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  await user.clear(screen.getByLabelText("Display name"));
-  await user.type(screen.getByLabelText("Display name"), "Owner Extension 2");
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  await user.click(screen.getByRole("button", { name: "Back and edit" }));
-  expect(screen.getByLabelText("Display name")).toHaveValue(
-    "Owner Extension 2",
+  await user.click(
+    screen.getByRole("radio", {
+      name: "Permanently delist this source",
+    }),
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  const dialog = screen.getByRole("dialog", {
+    name: "Permanently delist Owner/Alpha?",
+  });
+  expect(within(dialog).getByText("Alpha")).toBeVisible();
+  expect(within(dialog).getByText("Alpha Preset")).toBeVisible();
+  const confirmation = within(dialog).getByLabelText(
+    "Type Owner/Alpha to confirm permanent delisting.",
+  );
+  await user.type(confirmation, "Owner/Alpha");
+  await user.click(
+    within(dialog).getByRole("button", {
+      name: "Permanently delist source",
+    }),
+  );
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
   const opened = new URL(open.mock.calls[0]?.[0] as string);
-  expect(opened.searchParams.get("template")).toBe(
-    "08-project-owner-request.yml",
-  );
-  expect(opened.searchParams.get("request-type")).toBe("Edit card details");
-  expect(opened.searchParams.get("project-id")).toBe("owner-extension");
-  expect(opened.searchParams.get("repository")).toBe(
-    "https://github.com/CurrentOwner/Extension",
-  );
   expect(
     JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
-  ).toEqual({
-    schema_version: 1,
-    request_kind: "project-owner",
-    operation: "edit-card",
-    project_id: "owner-extension",
-    repository_id: 42,
+  ).toMatchObject({
+    operation: "delist-source",
+    source_id: "github-42",
     source_fingerprint: "a".repeat(64),
-    original: {
-      kind: "extension",
-      name: "Owner Extension",
-      summary: "Current extension summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
-    },
-    proposed: {
-      name: "Owner Extension 2",
-      summary: "Current extension summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
-    },
-    explanation: null,
+    delist_confirmation: "Owner/Alpha",
   });
-});
-
-test("keeps review state and reports a blocked GitHub popup", async () => {
-  const user = userEvent.setup();
-  vi.spyOn(window, "open").mockReturnValue(null);
-  renderBuilder();
-  await selectProject(user);
-  await user.click(
-    screen.getByRole("radio", { name: "Update repository location" }),
-  );
-  await user.type(
-    screen.getByLabelText("Public GitHub repository URL"),
-    "https://github.com/CurrentOwner/Extension-Renamed",
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
-
-  expect(screen.getByRole("alert")).toHaveTextContent(
-    "GitHub issue form could not be opened.",
-  );
-  expect(screen.getByRole("alert")).toHaveTextContent(
-    "GitHub could not be opened automatically.",
-  );
-  expect(screen.getByRole("alert")).not.toHaveTextContent(
-    "fix the highlighted fields",
-  );
-  const fallback = screen.getByRole("link", {
-    name: "Open the prepared GitHub form directly",
-  });
-  expect(fallback).toHaveAttribute(
-    "href",
-    expect.stringContaining("owner-request-manifest="),
-  );
-  expect(
-    fallback.compareDocumentPosition(
-      document.querySelector(".help-review-rows")!,
-    ) & Node.DOCUMENT_POSITION_FOLLOWING,
-  ).toBeTruthy();
-  expect(
-    screen.getByRole("heading", { name: "Review your public request" }),
-  ).toBeVisible();
 });

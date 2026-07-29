@@ -9,15 +9,18 @@ afterEach(() => {
   document.body.className = "";
 });
 
-test("requires the complete project name before permanent delisting", async () => {
+test("requires the repository identity and lists every affected card", async () => {
   const user = userEvent.setup();
   const onCancel = vi.fn();
   const onConfirm = vi.fn();
 
   render(
     <PermanentDelistDialog
-      projectName="Owner Extension"
-      repositoryLabel="CurrentOwner/Extension"
+      repository="Owner/Alpha"
+      cards={[
+        { id: "alpha", name: "Alpha" },
+        { id: "alpha-preset", name: "Alpha Preset" },
+      ]}
       onCancel={onCancel}
       onConfirm={onConfirm}
     />,
@@ -25,46 +28,37 @@ test("requires the complete project name before permanent delisting", async () =
 
   expect(
     screen.getByRole("heading", {
-      name: "Permanently delist Owner Extension?",
+      name: "Permanently delist Owner/Alpha?",
     }),
   ).toBeVisible();
+  expect(screen.getByText("Alpha")).toBeVisible();
+  expect(screen.getByText("Alpha Preset")).toBeVisible();
   expect(
     screen.getByText(
-      "You are about to remove Owner Extension from Tavernary. This delisting applies to CurrentOwner/Extension.",
-    ),
-  ).toBeVisible();
-  expect(
-    screen.getByText(
-      "The project will be removed from the public catalog. You will not be able to reverse this decision or resubmit the project. Kits containing this project may also be affected.",
+      "Adding, editing, retiring, and restoring individual cards are normal maintenance. Delisting the source is not reversible.",
     ),
   ).toBeVisible();
   expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
 
   const confirm = screen.getByRole("button", {
-    name: "Permanently delist project",
+    name: "Permanently delist source",
   });
-  const projectName = screen.getByLabelText(
-    "Type Owner Extension to confirm permanent delisting.",
+  const repository = screen.getByLabelText(
+    "Type Owner/Alpha to confirm permanent delisting.",
   );
   expect(confirm).toBeDisabled();
 
-  await user.type(projectName, "Owner");
+  await user.type(repository, "Owner");
   expect(confirm).toBeDisabled();
-
-  await user.clear(projectName);
-  await user.type(projectName, "  owner extension  ");
+  await user.clear(repository);
+  await user.type(repository, "  owner/alpha  ");
   expect(confirm).toBeEnabled();
   expect(
     screen.getByText(
-      "Project name matches. Permanent delisting is now available.",
+      "Repository matches. Permanent delisting is now available.",
     ),
   ).toHaveAttribute("aria-live", "polite");
 
-  await user.type(projectName, "!");
-  expect(confirm).toBeDisabled();
-  expect(
-    screen.queryByText(
-      "Project name matches. Permanent delisting is now available.",
-    ),
-  ).not.toBeInTheDocument();
+  await user.click(confirm);
+  expect(onConfirm).toHaveBeenCalledWith("  owner/alpha  ");
 });

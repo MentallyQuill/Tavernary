@@ -46,12 +46,7 @@ const OPERATION_KEYS = {
     "original",
     "proposed",
   ],
-  "move-source": [
-    ...BASE_KEYS,
-    "source_fingerprint",
-    "original",
-    "proposed",
-  ],
+  "move-source": [...BASE_KEYS, "source_fingerprint", "original", "proposed"],
   "delist-source": [
     ...BASE_KEYS,
     "source_fingerprint",
@@ -239,7 +234,8 @@ function normalizeEditable(
   );
   const metadata = normalizeMetadata(value?.metadata, errors);
 
-  if (!PROJECT_KINDS.includes(kind)) errors.push("Owner project kind is invalid.");
+  if (!PROJECT_KINDS.includes(kind))
+    errors.push("Owner project kind is invalid.");
   if (!name) errors.push("Owner display name is required.");
   if (name.length > 100) {
     errors.push("Owner display name must be 100 characters or fewer.");
@@ -305,9 +301,15 @@ function comparableEditable(value) {
 
 function normalizeEdit(value, vocabularies, errors) {
   const kind = requiredText(value?.original?.kind);
-  const original = normalizeEditable(value?.original, kind, vocabularies, errors, {
-    original: true,
-  });
+  const original = normalizeEditable(
+    value?.original,
+    kind,
+    vocabularies,
+    errors,
+    {
+      original: true,
+    },
+  );
   const proposed = normalizeEditable(
     value?.proposed,
     kind,
@@ -379,7 +381,9 @@ function normalizeAddCards(value, source, vocabularies, errors) {
 
 function normalizeSource(value, errors, label) {
   if (!hasExactKeys(value, SOURCE_KEYS)) {
-    errors.push(`Owner ${label} source contains unknown or missing properties.`);
+    errors.push(
+      `Owner ${label} source contains unknown or missing properties.`,
+    );
   }
   const repository = requiredText(value?.repository);
   const repositoryId = value?.repository_id;
@@ -462,7 +466,9 @@ function normalizeDelistSource(value, source, errors) {
     source?.repository &&
     confirmation.toLocaleLowerCase() !== source.repository.toLocaleLowerCase()
   ) {
-    errors.push("Owner source delisting confirmation must match the repository.");
+    errors.push(
+      "Owner source delisting confirmation must match the repository.",
+    );
   }
   return {
     original: { status: "active" },
@@ -515,11 +521,9 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   if (!Number.isSafeInteger(repositoryId) || repositoryId <= 0) {
     errors.push("Owner request repository ID must be a positive integer.");
   }
-  const usesProject = [
-    "edit-card",
-    "retire-card",
-    "restore-card",
-  ].includes(operation);
+  const usesProject = ["edit-card", "retire-card", "restore-card"].includes(
+    operation,
+  );
   const projectId = usesProject ? requiredText(value?.project_id) : null;
   if (usesProject && !PROJECT_ID_PATTERN.test(projectId)) {
     errors.push("Owner request project ID is invalid.");
@@ -529,7 +533,9 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     : "source_fingerprint";
   const fingerprint = requiredText(value?.[fingerprintField]);
   if (!FINGERPRINT_PATTERN.test(fingerprint)) {
-    errors.push(`Owner request ${fingerprintField.replace("_", " ")} is invalid.`);
+    errors.push(
+      `Owner request ${fingerprintField.replace("_", " ")} is invalid.`,
+    );
   }
   if (!Object.hasOwn(value ?? {}, "explanation")) {
     errors.push("Owner request explanation member is required.");
@@ -557,10 +563,9 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     ),
     tags: tagIndex,
     modelFamilies: new Set(
-      vocabularyEntries(
-        rawVocabularies?.modelFamilies,
-        "model_families",
-      ).map((entry) => entry.id),
+      vocabularyEntries(rawVocabularies?.modelFamilies, "model_families").map(
+        (entry) => entry.id,
+      ),
     ),
     completionFormats: new Set(
       vocabularyEntries(
@@ -569,12 +574,7 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
       ).map((entry) => entry.id),
     ),
   };
-  const source = sourceContext(
-    rawVocabularies,
-    sourceId,
-    repositoryId,
-    errors,
-  );
+  const source = sourceContext(rawVocabularies, sourceId, repositoryId, errors);
 
   let operationValues = {};
   if (operation === "edit-card") {

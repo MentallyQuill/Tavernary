@@ -140,9 +140,7 @@ export async function loadOwnerProjectOptions(
   root = process.cwd(),
 ): Promise<OwnerProjectOption[]> {
   const [projects, sources] = await Promise.all([
-    readJsonDirectory<RegistryProject>(
-      resolve(root, "data/registry/projects"),
-    ),
+    readJsonDirectory<RegistryProject>(resolve(root, "data/registry/projects")),
     readJsonDirectory<RegistrySource>(resolve(root, "data/registry/sources")),
   ]);
   const sourcesById = new Map<string, RegistrySource>();

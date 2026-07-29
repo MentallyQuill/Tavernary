@@ -28,7 +28,7 @@ const vocabularies = {
   ],
   source: {
     id: "github-42",
-    type: "github",
+    type: "github" as const,
     repository: "Owner/Alpha",
     repository_id: 42,
   },
@@ -243,9 +243,7 @@ describe("owner add-card batches", () => {
       ),
     ).toMatchObject({
       valid: false,
-      errors: expect.arrayContaining([
-        "Owner tags are invalid or exceed six.",
-      ]),
+      errors: expect.arrayContaining(["Owner tags are invalid or exceed six."]),
     });
     expect(
       normalizeProjectOwnerManifest(
@@ -391,33 +389,33 @@ describe("owner card edits and lifecycle", () => {
       { listing_status: "retired", listing_status_reason: "removed" },
       { listing_status: "active", listing_status_reason: null },
     ],
-  ] as const)("accepts only the exact %s transition", (operation, original, proposed) => {
-    const candidate = {
-      ...base(operation),
-      project_id: "owner-alpha",
-      project_fingerprint: "b".repeat(64),
-      original,
-      proposed,
-    };
-    expect(
-      normalizeProjectOwnerManifest(candidate, vocabularies),
-    ).toMatchObject({ valid: true });
-    expect(
-      normalizeProjectOwnerManifest(
-        { ...candidate, proposed: original },
-        vocabularies,
-      ),
-    ).toMatchObject({ valid: false });
-  });
+  ] as const)(
+    "accepts only the exact %s transition",
+    (operation, original, proposed) => {
+      const candidate = {
+        ...base(operation),
+        project_id: "owner-alpha",
+        project_fingerprint: "b".repeat(64),
+        original,
+        proposed,
+      };
+      expect(
+        normalizeProjectOwnerManifest(candidate, vocabularies),
+      ).toMatchObject({ valid: true });
+      expect(
+        normalizeProjectOwnerManifest(
+          { ...candidate, proposed: original },
+          vocabularies,
+        ),
+      ).toMatchObject({ valid: false });
+    },
+  );
 });
 
 describe("owner source maintenance", () => {
   test("moves a source only when the immutable repository ID is retained", () => {
     expect(
-      normalizeProjectOwnerManifest(
-        sourceFixture("move-source"),
-        vocabularies,
-      ),
+      normalizeProjectOwnerManifest(sourceFixture("move-source"), vocabularies),
     ).toMatchObject({ valid: true });
     expect(
       normalizeProjectOwnerManifest(

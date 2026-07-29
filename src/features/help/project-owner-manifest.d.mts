@@ -59,30 +59,29 @@ interface OwnerEnvelope<K extends OwnerOperation> {
   explanation: string | null;
 }
 
-interface OwnerProjectEnvelope<K extends OwnerOperation>
-  extends OwnerEnvelope<K> {
+interface OwnerProjectEnvelope<
+  K extends OwnerOperation,
+> extends OwnerEnvelope<K> {
   project_id: string;
   project_fingerprint: string;
 }
 
-interface OwnerSourceEnvelope<K extends OwnerOperation>
-  extends OwnerEnvelope<K> {
+interface OwnerSourceEnvelope<
+  K extends OwnerOperation,
+> extends OwnerEnvelope<K> {
   source_fingerprint: string;
 }
 
-export interface OwnerEditCardManifest
-  extends OwnerProjectEnvelope<"edit-card"> {
+export interface OwnerEditCardManifest extends OwnerProjectEnvelope<"edit-card"> {
   original: OwnerCardOriginal;
   proposed: OwnerEditableValues;
 }
 
-export interface OwnerAddCardsManifest
-  extends OwnerSourceEnvelope<"add-cards"> {
+export interface OwnerAddCardsManifest extends OwnerSourceEnvelope<"add-cards"> {
   proposed_cards: OwnerCardDraft[];
 }
 
-export interface OwnerRetireCardManifest
-  extends OwnerProjectEnvelope<"retire-card"> {
+export interface OwnerRetireCardManifest extends OwnerProjectEnvelope<"retire-card"> {
   original: {
     listing_status: "active";
     listing_status_reason: null;
@@ -93,8 +92,7 @@ export interface OwnerRetireCardManifest
   };
 }
 
-export interface OwnerRestoreCardManifest
-  extends OwnerProjectEnvelope<"restore-card"> {
+export interface OwnerRestoreCardManifest extends OwnerProjectEnvelope<"restore-card"> {
   original: {
     listing_status: "retired";
     listing_status_reason: "removed";
@@ -105,14 +103,12 @@ export interface OwnerRestoreCardManifest
   };
 }
 
-export interface OwnerMoveSourceManifest
-  extends OwnerSourceEnvelope<"move-source"> {
+export interface OwnerMoveSourceManifest extends OwnerSourceEnvelope<"move-source"> {
   original: OwnerSourceMove;
   proposed: OwnerSourceMove;
 }
 
-export interface OwnerDelistSourceManifest
-  extends OwnerSourceEnvelope<"delist-source"> {
+export interface OwnerDelistSourceManifest extends OwnerSourceEnvelope<"delist-source"> {
   original: { status: "active" };
   proposed: OwnerSourceDelist;
   delist_confirmation: string;

@@ -155,6 +155,29 @@
   gap: 18px;
 }
 
+.help-inline-note,
+.help-lifecycle-note,
+.owner-policy-statement {
+  margin: 0;
+  border-left: 3px solid var(--color-accent-teal);
+  padding: 12px 14px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-surface);
+  line-height: 1.55;
+}
+
+.help-inline-note p,
+.help-inline-note ul,
+.help-lifecycle-note,
+.owner-policy-statement {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.help-danger-note {
+  border-left-color: var(--color-danger-border);
+}
+
 .help-field {
   display: grid;
   min-width: 0;
@@ -162,9 +185,98 @@
 }
 
 .help-field > label,
+.help-field-label,
 .help-choice-group legend {
   color: var(--color-text-primary);
   font-weight: 720;
+}
+
+.owner-card-fields,
+.source-card-batch,
+.source-card-drafts {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.source-card-batch {
+  border-top: 1px solid var(--color-border-default);
+  padding-top: 20px;
+}
+
+.source-card-batch-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.source-card-batch-heading h2,
+.source-card-batch-heading p {
+  margin: 0;
+}
+
+.source-card-batch-heading p {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.source-card-count {
+  flex: 0 0 auto;
+  border: 1px solid var(--color-border-default);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.source-card-draft {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius);
+  padding: clamp(16px, 4vw, 24px);
+  background: var(--color-bg-surface);
+}
+
+.source-card-draft > legend {
+  padding: 0 8px;
+  color: var(--color-text-primary);
+  font-weight: 800;
+}
+
+.source-card-project-id {
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.source-card-project-id code {
+  color: var(--color-text-primary);
+}
+
+.help-card-notice {
+  margin: 0;
+  color: var(--color-accent-teal-text);
+  line-height: 1.5;
+}
+
+.owner-card-review {
+  display: grid;
+  gap: 5px;
+  overflow-wrap: anywhere;
+}
+
+.owner-card-review code {
+  width: fit-content;
+}
+
+.permanent-delist-cards {
+  margin: -8px 0 0;
+  padding-left: 22px;
 }
 
 .help-field input:not([type="checkbox"]):not([type="radio"]),
@@ -436,6 +548,15 @@
   .help-actions button,
   .help-security-actions a {
     width: 100%;
+  }
+
+  .source-card-batch-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .source-card-count {
+    align-self: flex-start;
   }
 
   .permanent-delist-backdrop {
