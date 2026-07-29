@@ -60,7 +60,12 @@
       "label": "Build worlds and lore",
       "facet": "goal",
       "description": "Create fictional settings, lore, locations, factions, or other world material.",
-      "aliases": ["worldbuilding", "lore creation", "setting design"],
+      "aliases": [
+        "worldbuilding",
+        "character worldbuilding",
+        "lore creation",
+        "setting design"
+      ],
       "applicable_kinds": ["frontend", "extension", "preset"],
       "inclusion_guidance": [
         "Use when creating or developing fictional-world content is an explicit workflow."
@@ -192,7 +197,12 @@
       "label": "Add structured reasoning",
       "facet": "goal",
       "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
-      "aliases": ["reasoning pipelines", "stepped thinking", "planning passes"],
+      "aliases": [
+        "reasoning pipelines",
+        "stepped thinking",
+        "planning reasoning",
+        "planning passes"
+      ],
       "applicable_kinds": ["frontend", "extension", "preset"],
       "inclusion_guidance": [
         "Use when an explicit reasoning or planning process is a defining user-facing feature."
@@ -202,12 +212,27 @@
       ]
     },
     {
+      "id": "route-tasks-across-models",
+      "label": "Route tasks across models",
+      "facet": "goal",
+      "description": "Assign chat, memory, image, analysis, or other work to different model connections.",
+      "aliases": ["model routing", "task routing", "connection routing"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when choosing or automatically assigning distinct model connections by task is central."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary provider selection that applies one model to the whole chat."
+      ]
+    },
+    {
       "id": "manage-prompts-and-presets",
       "label": "Manage prompts and presets",
       "facet": "goal",
       "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
       "aliases": [
         "prompt management",
+        "prompt engineering",
         "preset organization",
         "template management"
       ],
@@ -225,6 +250,7 @@
       "facet": "goal",
       "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
       "aliases": [
+        "automation",
         "workflow automation",
         "task automation",
         "triggered actions"
@@ -243,6 +269,7 @@
       "facet": "goal",
       "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
       "aliases": [
+        "image generation",
         "AI art generation",
         "scene illustration",
         "picture generation"
@@ -419,6 +446,7 @@
       "aliases": [
         "prompt inspection",
         "generation diagnostics",
+        "review validation",
         "request debugging"
       ],
       "applicable_kinds": ["frontend", "extension"],
