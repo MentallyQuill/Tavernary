@@ -207,7 +207,7 @@ jobs:
             tests/unit/project-owner-pr.test.ts \
             tests/unit/project-owner-lifecycle.test.ts
           npm run check:content
-          git checkout -- src/generated/catalog.json
+          git clean -fX -- src/generated/catalog.json
           git diff --name-only -z > "${RUNNER_TEMP}/owner-validated-paths.bin"
           node --input-type=module <<'NODE'
           import { createHash } from "node:crypto";

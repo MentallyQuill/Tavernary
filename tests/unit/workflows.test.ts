@@ -949,6 +949,8 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("npm run catalog:build");
   expect(source).toContain("tests/unit/project-owner-");
   expect(source).toContain("npm run check:content");
+  expect(source).toContain("git clean -fX -- src/generated/catalog.json");
+  expect(source).not.toContain("git checkout -- src/generated/catalog.json");
   expect(source).toContain("submission-pr-open");
   expect(source).toContain("gh label create submission-pr-open");
   expect(source).toContain("Owner generation changed unsafe paths");
