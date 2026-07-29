@@ -190,10 +190,10 @@ describe("catalog visual alignment", () => {
       /\.project-card-shell\.in-draft \.project-card\s*\{[^}]*border-color:\s*var\(--color-functional\)/s,
     );
     expect(css).toMatch(
-      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-bottom:\s*52px/s,
+      /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
     );
     expect(css).toMatch(
-      /\.project-card-actions\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*display:\s*flex[^}]*gap:\s*4px/s,
+      /\.project-kit-control-hit\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*4px[^}]*right:\s*4px[^}]*width:\s*44px[^}]*height:\s*44px/s,
     );
     expect(css).toMatch(
       /\.project-kit-control-hit\s*\{[^}]*width:\s*44px[^}]*height:\s*44px/s,
@@ -401,15 +401,13 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(
       /\.project-card-shell:hover,\s*\.project-card-shell:focus-within\s*\{[^}]*transform:\s*translateY\(-2px\)/s,
     );
+    expect(css).toMatch(/\.project-kit-control-hit\s*\{[^}]*right:\s*4px/s);
+    expect(css).not.toMatch(/\.project-kit-control-hit\s*\{[^}]*left:\s*4px/s);
     expect(css).toMatch(
-      /\.project-card-actions\s*\{[^}]*right:\s*4px[^}]*display:\s*flex/s,
-    );
-    expect(css).not.toMatch(/\.project-card-actions\s*\{[^}]*left:\s*4px/s);
-    expect(css).toMatch(
-      /\.project-card-shell\.has-kit-control \.card-bottom\s*\{[^}]*padding-bottom:\s*52px/s,
+      /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
     );
     expect(css).toMatch(
-      /\.compact-cards \.project-card\s*\{[^}]*padding:\s*11px 12px 59px/s,
+      /\.compact-cards \.project-card h2,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*padding-right:\s*44px/s,
     );
   });
 

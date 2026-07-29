@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import type { CatalogProject } from "../catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
 import {
@@ -75,24 +73,12 @@ export function ProjectGrid({
                 }
               />
             ) : null}
-            <div className="project-card-actions">
-              <Link
-                className="project-report-control"
-                href={
-                  "/help/report-project/?project=" +
-                  encodeURIComponent(project.id)
-                }
-                aria-label={["Report", displayName].join(" ")}
-              >
-                Report
-              </Link>
-              <span className="project-kit-control-hit">
-                <ProjectKitControl
-                  projectName={displayName}
-                  bindings={bindings}
-                />
-              </span>
-            </div>
+            <span className="project-kit-control-hit">
+              <ProjectKitControl
+                projectName={displayName}
+                bindings={bindings}
+              />
+            </span>
             {bindings.state === "in-kit" ? (
               <span className="project-in-draft">In Kit</span>
             ) : null}

@@ -207,25 +207,18 @@ test("renders one clean Kit-author routing reminder", async ({ page }) => {
   await expect(page.locator("body")).not.toContainText("â");
 });
 
-test("preserves selected catalog and Kit records through actual report controls", async ({
+test("selects project reports through Help and preserves contextual Kit reports", async ({
   page,
 }) => {
   await page.goto(sitePath());
   await page
-    .getByRole("searchbox", { name: "Search projects" })
-    .fill("Aikobots");
-
-  const project = page.locator(".project-card-shell").filter({
-    has: page.getByRole("heading", { name: "Aikobots", exact: true }),
-  });
-  const reportProject = project.getByRole("link", {
-    name: "Report Aikobots",
-  });
-  await expect(reportProject).toHaveAttribute(
-    "href",
-    sitePath("/help/report-project/?project=aikohanasaki-aikobots"),
-  );
-  await reportProject.click();
+    .getByRole("navigation", { name: "Site actions" })
+    .getByRole("link", { name: "Help" })
+    .click();
+  await page.getByRole("link", { name: "Report a project listing" }).click();
+  await page
+    .getByLabel("Project", { exact: true })
+    .selectOption("aikohanasaki-aikobots");
   await expect(page.getByLabel("Project", { exact: true })).toHaveValue(
     "aikohanasaki-aikobots",
   );
@@ -244,34 +237,34 @@ test("preserves selected catalog and Kit records through actual report controls"
   );
 });
 
-test("keeps compact catalog Report and Kit actions clear of each other and the summary", async ({
+test("keeps the catalog Kit action aligned with the license row", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
   await page
     .getByRole("searchbox", { name: "Search projects" })
-    .fill("Aikobots");
-  await page.getByRole("button", { name: "Use compact cards" }).click();
+    .fill("WorldInfoPresets");
 
   const project = page.locator(".project-card-shell").filter({
-    has: page.getByRole("heading", { name: "Aikobots", exact: true }),
+    has: page.getByRole("heading", { name: "WorldInfoPresets", exact: true }),
   });
-  const [report, kit, summary] = await Promise.all([
-    project.getByRole("link", { name: "Report Aikobots" }).boundingBox(),
-    project.getByRole("button", { name: "Add Aikobots to Kit" }).boundingBox(),
-    project.locator(".card-summary").boundingBox(),
+  await expect(
+    project.getByRole("link", { name: "Report WorldInfoPresets" }),
+  ).toHaveCount(0);
+  const [kit, license] = await Promise.all([
+    project
+      .getByRole("button", { name: "Add WorldInfoPresets to Kit" })
+      .boundingBox(),
+    project.locator(".card-utility .license").boundingBox(),
   ]);
-  expect(report).not.toBeNull();
   expect(kit).not.toBeNull();
-  expect(summary).not.toBeNull();
-  if (!report || !kit || !summary) return;
+  expect(license).not.toBeNull();
+  if (!kit || !license) return;
 
-  expect(
-    report.x + report.width <= kit.x || kit.x + kit.width <= report.x,
-  ).toBe(true);
-  expect(report.y >= summary.y + summary.height).toBe(true);
-  expect(kit.y >= summary.y + summary.height).toBe(true);
+  const kitCenter = kit.y + kit.height / 2;
+  const licenseCenter = license.y + license.height / 2;
+  expect(Math.abs(kitCenter - licenseCenter)).toBeLessThanOrEqual(4);
 });
 
 test("takes a Kit report from source control through validation, review, cancel, and handoff", async ({

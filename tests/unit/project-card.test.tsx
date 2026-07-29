@@ -330,6 +330,30 @@ describe("project card", () => {
     );
   });
 
+  test("keeps project reporting in Help instead of on catalog cards", () => {
+    render(
+      <ProjectGrid
+        projects={[project("memory-tool", { name: "Memory Tool" })]}
+        now="2026-07-23T00:00:00Z"
+        selection={{
+          bindingsFor: () => ({
+            state: "available",
+            disabled: false,
+            disabledReason: null,
+            onActivate: vi.fn(),
+          }),
+        }}
+      />,
+    );
+
+    expect(
+      screen.queryByRole("link", { name: "Report Memory Tool" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Add Memory Tool to Kit" }),
+    ).toBeVisible();
+  });
+
   test("places two-line metadata above a dedicated license utility row", () => {
     const { container } = render(
       <ProjectCard
