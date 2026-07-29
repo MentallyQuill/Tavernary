@@ -8,6 +8,7 @@ import { classificationError } from "../../src/features/catalog/primary-function
 import { validateKitData } from "../kits/validation.mjs";
 import { validateTrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 import { supportsAutomaticEnrichmentSource } from "./enrichment-policy.mjs";
+import { validateTagVocabulary } from "./tag-vocabulary.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const approvedOrganizationRecord = {
@@ -184,6 +185,8 @@ export async function validateCatalog(options = {}) {
     capabilityVocabulary,
     modelFamilyVocabulary,
     completionFormatVocabulary,
+    tagVocabularySchema,
+    tagVocabulary,
     trustedEditorSchema,
     policyReviewSchema,
   ] = await Promise.all([
@@ -195,6 +198,8 @@ export async function validateCatalog(options = {}) {
     readJson("data/vocabularies/capabilities.json"),
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
+    readJson("data/schemas/tag-vocabulary.schema.json"),
+    options.tagVocabulary ?? readJson("data/vocabularies/tags.json"),
     readJson("data/schemas/trusted-tavernary-editors.schema.json"),
     readJson("data/schemas/catalog-policy-review.schema.json"),
   ]);
@@ -219,6 +224,7 @@ export async function validateCatalog(options = {}) {
   const validateRecord = ajv.compile(schema);
   const validateSnapshot = ajv.compile(snapshotSchema);
   const validateRefreshManifest = ajv.compile(refreshManifestSchema);
+  const validateTagVocabularySchema = ajv.compile(tagVocabularySchema);
   const validateTrustedEditors = ajv.compile(trustedEditorSchema);
   const validatePolicyReview = ajv.compile(policyReviewSchema);
   const records = options.records ?? (await loadRecords());
@@ -259,6 +265,24 @@ export async function validateCatalog(options = {}) {
   const sources = new Set();
   const repositoryIds = new Set();
   const errors = [];
+
+  const tagVocabularySchemaValid = validateTagVocabularySchema(tagVocabulary);
+  if (!tagVocabularySchemaValid) {
+    errors.push(
+      ...validateTagVocabularySchema.errors.map((error) =>
+        schemaError({ id: "tags-vocabulary" }, error),
+      ),
+    );
+  } else {
+    const tagVocabularyValidation = validateTagVocabulary(tagVocabulary);
+    if (!tagVocabularyValidation.valid) {
+      errors.push(
+        ...tagVocabularyValidation.errors.map(
+          (error) => `tags-vocabulary: ${error}`,
+        ),
+      );
+    }
+  }
 
   for (const state of policyReviewStates) {
     if (!validatePolicyReview(state)) {

@@ -78,6 +78,45 @@ const validSnapshotV2: Record<string, any> = {
 };
 
 describe("catalog validation", () => {
+  test("rejects an invalid Goals-and-Traits vocabulary", async () => {
+    const result = await validateCatalog({
+      records: [],
+      tagVocabulary: {
+        schema_version: 1,
+        tags: [],
+        injected: true,
+      },
+    });
+
+    expect(result.errors.join("\n")).toContain(
+      "tags-vocabulary: schema / must NOT have additional properties",
+    );
+  });
+
+  test("rejects semantic tag vocabulary collisions", async () => {
+    const tag = {
+      id: "maintain-long-term-memory",
+      label: "Maintain long-term memory",
+      facet: "goal",
+      description: "Preserve durable conversation context.",
+      aliases: ["memory"],
+      applicable_kinds: ["extension"],
+      inclusion_guidance: ["Requires explicit durable memory behavior."],
+      exclusion_guidance: ["Exclude ordinary history display."],
+    };
+    const result = await validateCatalog({
+      records: [],
+      tagVocabulary: {
+        schema_version: 1,
+        tags: [tag, { ...tag, label: "Persistent memory", aliases: [] }],
+      },
+    });
+
+    expect(result.errors).toContain(
+      "tags-vocabulary: tags[1].id duplicates tag ID maintain-long-term-memory.",
+    );
+  });
+
   test("accepts the production catalog at its current Kit counts", async () => {
     const countJsonFiles = async (directory: string) =>
       (await readdir(resolve(directory))).filter((file) =>
