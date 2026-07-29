@@ -11,7 +11,7 @@
     "repository_id": 1246232030
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
+  "primary_function": "character-worldbuilding",
   "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "model_families": ["model-agnostic", "claude", "gpt", "glm", "deepseek"],
   "completion_formats": ["chat-completion"],
@@ -20,5 +20,6 @@
   "visibility": "published",
   "refresh_policy": "automatic",
   "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "enrichment_policy": "manual",
+  "enrichment_note": "Owner-authored catalog details approved through issue #144."
 }
