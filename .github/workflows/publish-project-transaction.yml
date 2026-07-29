@@ -411,6 +411,21 @@ jobs:
         if: steps.notices.outcome == 'failure'
         run: |
           echo "Post-merge project notices failed and require an idempotent retry." >> "$GITHUB_STEP_SUMMARY"
+      - name: Dispatch non-blocking Catalog Policy advisory
+        if: steps.merge.outputs.merge_sha != ''
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ steps.state.outputs.project_id }}
+          ISSUE_NUMBER: ${{ steps.state.outputs.issue_number }}
+          PULL_NUMBER: ${{ steps.state.outputs.pull_number }}
+          MERGE_SHA: ${{ steps.merge.outputs.merge_sha }}
+        run: >
+          gh workflow run review-catalog-policy.yml
+          --ref main
+          -f project_id="$PROJECT_ID"
+          -f transaction_issue_number="$ISSUE_NUMBER"
+          -f transaction_pull_number="$PULL_NUMBER"
+          -f merge_sha="$MERGE_SHA"
       - name: Deploy exact merged project state
         if: steps.merge.outputs.merge_sha != ''
         env:

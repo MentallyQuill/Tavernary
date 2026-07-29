@@ -1,0 +1,256 @@
+name: "Catalog: Advisory policy review"
+run-name: "Catalog policy advisory for ${{ inputs.project_id || 'retry queue' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: Published project ID
+        required: true
+        type: string
+      transaction_issue_number:
+        description: Source transaction issue number
+        required: true
+        type: number
+      transaction_pull_number:
+        description: Merged transaction PR number
+        required: true
+        type: number
+      merge_sha:
+        description: Exact merged evidence state
+        required: true
+        type: string
+  schedule:
+    - cron: "43 5 * * *"
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: read
+  actions: write
+
+concurrency:
+  group: catalog-policy-review
+  cancel-in-progress: false
+
+jobs:
+  retry:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Dispatch unavailable advisory states
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE' > "${RUNNER_TEMP}/policy-review-retries.tsv"
+          import fs from "node:fs";
+          const directory = "data/snapshots/policy-review";
+          if (!fs.existsSync(directory)) process.exit(0);
+          for (const name of fs.readdirSync(directory).filter((name) => name.endsWith(".json"))) {
+            const state = JSON.parse(fs.readFileSync(`${directory}/${name}`, "utf8"));
+            if (state.status === "review-unavailable" && state.retry.attempts < 8) {
+              process.stdout.write(`${state.project_id}\n`);
+            }
+          }
+          NODE
+          while IFS= read -r project_id; do
+            [[ -z "$project_id" ]] && continue
+            main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq '.sha')"
+            gh workflow run review-catalog-policy.yml --ref main \
+              -f project_id="$project_id" \
+              -f transaction_issue_number=0 \
+              -f transaction_pull_number=0 \
+              -f merge_sha="$main_sha"
+          done < "${RUNNER_TEMP}/policy-review-retries.tsv"
+
+  review:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PROJECT_ID: ${{ inputs.project_id }}
+      ISSUE_NUMBER: ${{ inputs.transaction_issue_number }}
+      PULL_NUMBER: ${{ inputs.transaction_pull_number }}
+      MERGE_SHA: ${{ inputs.merge_sha }}
+      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+    steps:
+      - name: Check out exact published state
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.merge_sha }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Load transaction context
+        run: |
+          if (( ISSUE_NUMBER > 0 && PULL_NUMBER > 0 )); then
+            gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "${RUNNER_TEMP}/policy-review-issue.json"
+            gh api "repos/${GITHUB_REPOSITORY}/pulls/${PULL_NUMBER}" > "${RUNNER_TEMP}/policy-review-pull.json"
+          else
+            printf 'null' > "${RUNNER_TEMP}/policy-review-issue.json"
+            printf 'null' > "${RUNNER_TEMP}/policy-review-pull.json"
+          fi
+      - name: Run advisory evidence review
+        id: review
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { CATALOG_POLICY_VERSION } from "./src/features/catalog/catalog-policy.mjs";
+          import { createCatalogPolicyReviewProvider } from "./scripts/moderation/catalog-policy-review-provider.mjs";
+          import { reviewCatalogPolicy } from "./scripts/moderation/review-catalog-policy.mjs";
+          const project = JSON.parse(
+            fs.readFileSync(`data/registry/projects/${process.env.PROJECT_ID}.json`, "utf8"),
+          );
+          const snapshotPath =
+            `data/snapshots/${project.source.type}/${process.env.PROJECT_ID}.json`;
+          const snapshot = fs.existsSync(snapshotPath)
+            ? JSON.parse(fs.readFileSync(snapshotPath, "utf8"))
+            : null;
+          const statePath =
+            `data/snapshots/policy-review/${process.env.PROJECT_ID}.json`;
+          const previous = fs.existsSync(statePath)
+            ? JSON.parse(fs.readFileSync(statePath, "utf8"))
+            : null;
+          let provider;
+          try {
+            provider = createCatalogPolicyReviewProvider({
+              apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+              apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+              model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+            });
+          } catch {
+            provider = {
+              review: async () => {
+                throw new Error("provider-unavailable");
+              },
+            };
+          }
+          const result = await reviewCatalogPolicy({
+            project,
+            snapshot,
+            previous,
+            provider,
+            policyVersion: CATALOG_POLICY_VERSION,
+          });
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/catalog-policy-review-report.json`,
+            JSON.stringify({
+              status: result.status,
+              evidence_fingerprint: result.evidenceFingerprint ?? previous?.evidence_fingerprint,
+              category: result.output?.category ?? previous?.category ?? null,
+              explanation: result.output?.explanation ?? null,
+            }),
+          );
+          if (result.status !== "skipped") {
+            fs.mkdirSync("data/snapshots/policy-review", { recursive: true });
+            fs.writeFileSync(statePath, `${JSON.stringify(result.state, null, 2)}\n`);
+          }
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, [
+            `status=${result.status}`,
+            `fingerprint=${result.evidenceFingerprint ?? ""}`,
+            `readme_ref=${result.source?.readmeRef ?? ""}`,
+            `readme_path=${result.source?.readmePath ?? ""}`,
+          ].join("\n") + "\n");
+          NODE
+      - name: Create or update neutral advisory issue
+        id: notice
+        if: steps.review.outputs.status == 'review-suggested'
+        shell: bash
+        env:
+          README_REF: ${{ steps.review.outputs.readme_ref }}
+          README_PATH: ${{ steps.review.outputs.readme_path }}
+        run: |
+          set -euo pipefail
+          gh label create catalog-policy-advisory \
+            --color fbca04 \
+            --description "Automated post-publication Catalog Policy advisory." \
+            --force
+          gh issue list --state open --label catalog-policy-advisory --limit 100 \
+            --json number,title,body > "${RUNNER_TEMP}/catalog-policy-review-issues.json"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { CATALOG_POLICY_VERSION } from "./src/features/catalog/catalog-policy.mjs";
+          import { parseProjectPublicationTransaction } from "./scripts/publication/project-publication-transaction.mjs";
+          import { renderCatalogPolicyReviewIssue } from "./scripts/moderation/catalog-policy-review-notice.mjs";
+          const issue = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/policy-review-issue.json`, "utf8"));
+          const pull = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/policy-review-pull.json`, "utf8"));
+          const report = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/catalog-policy-review-report.json`, "utf8"));
+          const transaction = parseProjectPublicationTransaction(pull?.body ?? "");
+          const project = JSON.parse(fs.readFileSync(`data/registry/projects/${process.env.PROJECT_ID}.json`, "utf8"));
+          const marker = `<!-- tavernary-catalog-policy-review:${project.id} -->`;
+          const existing = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/catalog-policy-review-issues.json`, "utf8"),
+          ).find((candidate) => candidate.body?.includes(marker));
+          const sourceUrl = ["github", "codeberg"].includes(project.source.type)
+            ? `https://${project.source.type === "github" ? "github.com" : "codeberg.org"}/${project.source.repository}`
+            : project.source.url;
+          const readmeUrl =
+            process.env.README_REF && process.env.README_PATH && project.source.type === "github"
+              ? `https://github.com/${project.source.repository}/blob/${process.env.README_REF}/${process.env.README_PATH}`
+              : null;
+          const embedded = String(issue?.body ?? "").match(/"description"\s*:\s*"([^"]*)"/u)?.[1] ?? "";
+          const rendered = renderCatalogPolicyReviewIssue({
+            project,
+            sourceUrl,
+            output: {
+              status: "review-suggested",
+              category: report.category,
+              explanation: report.explanation,
+            },
+            submittedSummary: embedded,
+            copyReasons: transaction?.copy_result?.change_reasons ?? [],
+            transactionIssueNumber: Number(process.env.ISSUE_NUMBER),
+            transactionPullNumber: Number(process.env.PULL_NUMBER),
+            evidenceFingerprint: report.evidence_fingerprint,
+            policyVersion: transaction?.policy_version ?? CATALOG_POLICY_VERSION,
+            reviewedAt: new Date().toISOString(),
+            readmeUrl,
+          });
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/catalog-policy-review-notice.json`, JSON.stringify({ existing, rendered }));
+          NODE
+          payload="${RUNNER_TEMP}/catalog-policy-review-issue-payload.json"
+          node -e "const v=JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).rendered; require('fs').writeFileSync(process.argv[2],JSON.stringify(v))" "${RUNNER_TEMP}/catalog-policy-review-notice.json" "$payload"
+          existing_number="$(node -p "JSON.parse(require('fs').readFileSync('${RUNNER_TEMP}/catalog-policy-review-notice.json','utf8')).existing?.number ?? ''")"
+          if [[ -n "$existing_number" ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/${existing_number}" --input "$payload"
+            echo "issue_number=$existing_number" >> "$GITHUB_OUTPUT"
+          else
+            created="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/issues" --input "$payload")"
+            echo "issue_number=$(node -e 'process.stdout.write(String(JSON.parse(process.argv[1]).number))' "$created")" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Persist sanitized advisory state
+        if: steps.review.outputs.status != 'skipped'
+        shell: bash
+        env:
+          MAINTENANCE_ISSUE_NUMBER: ${{ steps.notice.outputs.issue_number }}
+        run: |
+          set -euo pipefail
+          state="data/snapshots/policy-review/${PROJECT_ID}.json"
+          if [[ -n "$MAINTENANCE_ISSUE_NUMBER" ]]; then
+            node -e "const fs=require('fs'); const p=process.argv[1]; const v=JSON.parse(fs.readFileSync(p,'utf8')); v.maintenance_issue_number=Number(process.env.MAINTENANCE_ISSUE_NUMBER); fs.writeFileSync(p,JSON.stringify(v,null,2)+'\n')" "$state"
+          fi
+          npm run catalog:validate
+          git add -- "$state"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(moderation): update ${PROJECT_ID} advisory state"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload sanitized advisory report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: catalog-policy-review-${{ inputs.project_id }}
+          path: ${{ runner.temp }}/catalog-policy-review-report.json
+          if-no-files-found: error
