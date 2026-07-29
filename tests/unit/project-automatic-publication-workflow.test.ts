@@ -36,6 +36,11 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("deploy-pages.yml");
   expect(source).toContain('-f source_sha="$MERGE_SHA"');
   expect(source).toContain("force_regeneration=false");
+  expect(source).toContain("planCopyAdjustmentNotice");
+  expect(source).toContain("planOwnerDelistNotice");
+  expect(source).toContain("continue-on-error: true");
+  expect(source).toContain("owner-delist-notice");
+  expect(source).toContain("idempotent retry");
 });
 
 test.each([

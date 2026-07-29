@@ -25,6 +25,7 @@ test("owns the complete public Help label inventory", () => {
     "kit-report",
     "other",
     "project-owner-request",
+    "owner-delist-notice",
     "safety-review",
     "rights-review",
     "accessibility",

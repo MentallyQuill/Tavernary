@@ -296,6 +296,121 @@ jobs:
             gh workflow run project-owner-request-lifecycle.yml --ref main \
               -f pull_number="$PULL_NUMBER"
           fi
+      - name: Publish post-merge project notices
+        id: notices
+        if: steps.merge.outputs.merge_sha != ''
+        continue-on-error: true
+        shell: bash
+        env:
+          MERGE_SHA: ${{ steps.merge.outputs.merge_sha }}
+          ISSUE_NUMBER: ${{ steps.state.outputs.issue_number }}
+          PROJECT_ID: ${{ steps.state.outputs.project_id }}
+          PULL_NUMBER: ${{ steps.state.outputs.pull_number }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          git cat-file -e "${MERGE_SHA}^{commit}"
+          git checkout --detach "$MERGE_SHA"
+          comments="${RUNNER_TEMP}/project-publication-comments.json"
+          notices="${RUNNER_TEMP}/project-publication-notices.json"
+          existing="${RUNNER_TEMP}/project-owner-delist-issues.json"
+          gh api --paginate --slurp \
+            "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments?per_page=100" \
+            > "$comments"
+          gh label create owner-delist-notice \
+            --color 6e7781 \
+            --description "Maintenance notice for a completed verified-owner project delisting." \
+            --force
+          gh issue list --state open --label owner-delist-notice --limit 100 \
+            --json number,title,body > "$existing"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import {
+            planCopyAdjustmentNotice,
+            planOwnerDelistNotice,
+          } from "./scripts/publication/project-publication-notices.mjs";
+          const read = (name) => JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/${name}`, "utf8"),
+          );
+          const transaction = read("project-publication-transaction.json");
+          const pull = read("project-publication-pull.json");
+          const issue = read("project-publication-issue.json");
+          const comments = read("project-publication-comments.json").flat();
+          const existingIssues = read("project-owner-delist-issues.json");
+          const projectPath =
+            `data/registry/projects/${transaction.project_id}.json`;
+          const project = fs.existsSync(projectPath)
+            ? JSON.parse(fs.readFileSync(projectPath, "utf8"))
+            : {};
+          const kits = fs.existsSync("data/registry/kits")
+            ? fs.readdirSync("data/registry/kits")
+                .filter((name) => name.endsWith(".json"))
+                .map((name) => JSON.parse(
+                  fs.readFileSync(`data/registry/kits/${name}`, "utf8"),
+                ))
+            : [];
+          const section = String(issue.body ?? "")
+            .split(/^### /mu)
+            .slice(1)
+            .find((value) => value.split(/\r?\n/u)[0].trim() === "Owner request manifest");
+          const rendered = section
+            ? section.split(/\r?\n/u).slice(1).join("\n").trim()
+            : "";
+          const json = rendered.match(/^```(?:json)?\s*\r?\n([\s\S]*?)\r?\n```$/iu)?.[1] ?? rendered;
+          let ownerNote = null;
+          try {
+            ownerNote = JSON.parse(json).explanation ?? null;
+          } catch {
+            ownerNote = null;
+          }
+          const copy = planCopyAdjustmentNotice(transaction, comments);
+          const delist = planOwnerDelistNotice({
+            transaction,
+            project,
+            kits,
+            pull,
+            issue: { ...issue, ownerNote },
+            publishedAt: new Date().toISOString(),
+            existingIssues,
+          });
+          fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/project-publication-notices.json`,
+            JSON.stringify({ copy, delist }),
+          );
+          NODE
+          copy_action="$(node -p "JSON.parse(require('fs').readFileSync('${notices}','utf8')).copy.action")"
+          if [[ "$copy_action" == "create" || "$copy_action" == "update" ]]; then
+            copy_payload="${RUNNER_TEMP}/project-copy-notice-payload.json"
+            node -e "const v=JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).copy; require('fs').writeFileSync(process.argv[2], JSON.stringify({body:v.body}))" "$notices" "$copy_payload"
+            if [[ "$copy_action" == "create" ]]; then
+              gh api --method POST \
+                "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+                --input "$copy_payload"
+            else
+              comment_id="$(node -p "JSON.parse(require('fs').readFileSync('${notices}','utf8')).copy.commentId")"
+              gh api --method PATCH \
+                "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" \
+                --input "$copy_payload"
+            fi
+          fi
+          delist_action="$(node -p "JSON.parse(require('fs').readFileSync('${notices}','utf8')).delist.action")"
+          if [[ "$delist_action" == "create" || "$delist_action" == "update" ]]; then
+            delist_payload="${RUNNER_TEMP}/project-delist-notice-payload.json"
+            node -e "const v=JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).delist; require('fs').writeFileSync(process.argv[2], JSON.stringify({title:v.title,body:v.body,labels:v.labels}))" "$notices" "$delist_payload"
+            if [[ "$delist_action" == "create" ]]; then
+              gh api --method POST "repos/${GITHUB_REPOSITORY}/issues" \
+                --input "$delist_payload"
+            else
+              notice_number="$(node -p "JSON.parse(require('fs').readFileSync('${notices}','utf8')).delist.issueNumber")"
+              gh api --method PATCH \
+                "repos/${GITHUB_REPOSITORY}/issues/${notice_number}" \
+                --input "$delist_payload"
+            fi
+          fi
+      - name: Record retryable notification failure
+        if: steps.notices.outcome == 'failure'
+        run: |
+          echo "Post-merge project notices failed and require an idempotent retry." >> "$GITHUB_STEP_SUMMARY"
       - name: Deploy exact merged project state
         if: steps.merge.outputs.merge_sha != ''
         env:
