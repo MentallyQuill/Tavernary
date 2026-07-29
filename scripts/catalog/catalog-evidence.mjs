@@ -33,6 +33,10 @@ function isRepositorySource(source) {
   );
 }
 
+function isRefreshableEvidenceSource(source) {
+  return isRepositorySource(source) && source.status !== "delisted";
+}
+
 export function parseEvidenceArguments(arguments_) {
   const selection = {
     all: false,
@@ -81,7 +85,7 @@ export function parseEvidenceArguments(arguments_) {
 
 export function selectEvidenceSources({ sources, projects, selection }) {
   if (selection.all) {
-    return sources.filter(isRepositorySource);
+    return sources.filter(isRefreshableEvidenceSource);
   }
 
   const sourcesById = new Map(sources.map((source) => [source.id, source]));
@@ -98,6 +102,9 @@ export function selectEvidenceSources({ sources, projects, selection }) {
     if (!isRepositorySource(source)) {
       throw new Error(`Source ${sourceId} is not a repository evidence source`);
     }
+    if (source.status === "delisted") {
+      throw new Error(`Source ${sourceId} is permanently delisted`);
+    }
     selectedIds.add(sourceId);
   }
 
@@ -109,6 +116,11 @@ export function selectEvidenceSources({ sources, projects, selection }) {
     const source = sourcesById.get(project.source_id);
     if (!source || !isRepositorySource(source)) {
       throw new Error(`Project ${projectId} has no repository evidence source`);
+    }
+    if (source.status === "delisted") {
+      throw new Error(
+        `Project ${projectId} uses a permanently delisted source`,
+      );
     }
     selectedIds.add(source.id);
   }

@@ -438,6 +438,54 @@ test("resolves project selections through sources and deduplicates siblings", as
   ).toThrow("Unknown source: github-missing");
 });
 
+test("retains but never refreshes evidence for a delisted source", async () => {
+  const { selectEvidenceSources } =
+    await import("../../scripts/catalog/catalog-evidence.mjs");
+  const activeSource = { ...githubSource, status: "active" as const };
+  const delistedSource = {
+    ...githubSource,
+    id: "github-99",
+    repository: "owner/removed",
+    repository_id: 99,
+    status: "delisted" as const,
+  };
+  const sources = [activeSource, delistedSource];
+  const projects = [
+    { id: "active-card", source_id: activeSource.id },
+    { id: "removed-card", source_id: delistedSource.id },
+  ];
+
+  expect(
+    selectEvidenceSources({
+      sources,
+      projects,
+      selection: { all: true, sourceIds: [], projectIds: [] },
+    }),
+  ).toEqual([activeSource]);
+  expect(() =>
+    selectEvidenceSources({
+      sources,
+      projects,
+      selection: {
+        all: false,
+        sourceIds: [delistedSource.id],
+        projectIds: [],
+      },
+    }),
+  ).toThrow(`Source ${delistedSource.id} is permanently delisted`);
+  expect(() =>
+    selectEvidenceSources({
+      sources,
+      projects,
+      selection: {
+        all: false,
+        sourceIds: [],
+        projectIds: ["removed-card"],
+      },
+    }),
+  ).toThrow("Project removed-card uses a permanently delisted source");
+});
+
 test("fetches GitHub README bytes through the CLI adapter and skips an unchanged head", async () => {
   const { createEvidenceAdapter } =
     await import("../../scripts/catalog/catalog-evidence.mjs");
