@@ -1,4 +1,10 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import {
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -122,6 +128,26 @@ const vocabularies = {
       label: "Generation and reasoning",
       description: "Changes how model output is prompted or reasoned.",
     },
+    {
+      id: "memory-retrieval",
+      label: "Memory and retrieval",
+      description: "Stores and retrieves conversational knowledge.",
+    },
+    {
+      id: "character-worldbuilding",
+      label: "Character and worldbuilding",
+      description: "Creates characters and narrative-world material.",
+    },
+    {
+      id: "rpg-systems",
+      label: "RPG systems and suites",
+      description: "Provides game mechanics and structured world state.",
+    },
+    {
+      id: "developer-infrastructure",
+      label: "Developer infrastructure",
+      description: "Provides developer-facing APIs and diagnostics.",
+    },
   ],
   capabilities: [
     { id: "automation", label: "Automation" },
@@ -238,15 +264,24 @@ test("shows a live summary counter and exact controlled metadata", async () => {
       name: /SillyTavern|RisuAI|Automation|Prompt engineering/u,
     }),
   ).toHaveLength(4);
-  expect(screen.getByLabelText("Primary function")).toHaveValue(
-    "interface-workflow",
-  );
+  const primaryFunction = screen.getByLabelText("Primary function");
+  expect(primaryFunction).toHaveTextContent("Interface and workflow");
   expect(
-    screen.getByText(/Interface and workflow:/u).closest("li"),
-  ).toHaveTextContent("Improves user-facing navigation and productivity.");
-  expect(
-    screen.queryByRole("option", { name: "System Preset" }),
+    screen.queryByText("Improves user-facing navigation and productivity."),
   ).not.toBeInTheDocument();
+
+  await user.click(primaryFunction);
+  expect(
+    screen.getByText("Improves user-facing navigation and productivity."),
+  ).toBeVisible();
+  expect(
+    within(screen.getByRole("listbox")).queryByRole("option", {
+      name: /System Preset/u,
+    }),
+  ).not.toBeInTheDocument();
+  expect(
+    within(screen.getByRole("listbox")).getAllByRole("option"),
+  ).toHaveLength(6);
   expect(
     screen.queryByRole("checkbox", { name: "Claude" }),
   ).not.toBeInTheDocument();
@@ -473,9 +508,19 @@ test("reports that a classification-only edit preserves enrichment authority", a
   renderBuilder();
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
-  await user.selectOptions(
-    screen.getByLabelText("Primary function"),
-    "generation-reasoning",
+
+  const primaryFunction = screen.getByLabelText("Primary function");
+  expect(primaryFunction).toHaveTextContent("Interface and workflow");
+  expect(
+    screen.queryByText("Improves user-facing navigation and productivity."),
+  ).not.toBeInTheDocument();
+
+  await user.click(primaryFunction);
+  expect(
+    within(screen.getByRole("listbox")).getAllByRole("option"),
+  ).toHaveLength(6);
+  await user.click(
+    screen.getByRole("option", { name: /Generation and reasoning/u }),
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));
 

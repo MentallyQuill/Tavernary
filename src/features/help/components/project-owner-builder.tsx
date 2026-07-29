@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import { DescribedSelect } from "@/components/forms/described-select";
 import {
   EXTENSION_PRIMARY_FUNCTION_IDS,
   STRUCTURAL_PRIMARY_FUNCTIONS,
@@ -364,6 +365,13 @@ export function ProjectOwnerBuilder({
         .toLocaleLowerCase()
         .includes(normalizedSearch),
   );
+  const editablePrimaryFunctions = vocabularies.primaryFunctions
+    .filter((option) => EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id))
+    .map((option) => ({
+      id: option.id,
+      label: option.label,
+      description: option.description ?? "",
+    }));
 
   function selectProject(id: string) {
     const project = projects.find((candidate) => candidate.id === id);
@@ -709,36 +717,15 @@ export function ProjectOwnerBuilder({
                 onChange={setFrontends}
               />
               {selected.kind === "extension" ? (
-                <HelpSelectField
+                <DescribedSelect
                   id="owner-primary-function"
                   label="Primary function"
                   value={primaryFunction}
-                  onChange={(event) => setPrimaryFunction(event.target.value)}
-                  hint={
-                    <ul className="help-option-definitions">
-                      {vocabularies.primaryFunctions
-                        .filter((option) =>
-                          EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
-                        )
-                        .map((option) => (
-                          <li key={option.id}>
-                            <strong>{option.label}:</strong>{" "}
-                            {option.description}
-                          </li>
-                        ))}
-                    </ul>
-                  }
-                >
-                  {vocabularies.primaryFunctions
-                    .filter((option) =>
-                      EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
-                    )
-                    .map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                </HelpSelectField>
+                  placeholder="Select a primary function"
+                  options={editablePrimaryFunctions}
+                  onChange={setPrimaryFunction}
+                  required
+                />
               ) : (
                 <HelpTextField
                   id="owner-primary-function"
