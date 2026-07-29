@@ -1,16 +1,19 @@
 import type { TrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 import type { SourceIdentity } from "./source-identity.mjs";
 
-export type SubmissionSummaryAuthorityType =
+export type SubmissionMetadataAuthorityType =
   "community-submitter" | "repository-owner" | "tavernary-staff";
 
-export interface SubmissionSummaryAuthority {
-  authorityType: SubmissionSummaryAuthorityType;
+export interface SubmissionMetadataAuthority {
+  authorityType: SubmissionMetadataAuthorityType;
   actorId: number | null;
   actorLogin: string | null;
 }
 
-export function classifySubmissionSummaryAuthority(input: {
+export type SubmissionSummaryAuthorityType = SubmissionMetadataAuthorityType;
+export type SubmissionSummaryAuthority = SubmissionMetadataAuthority;
+
+export interface SubmissionMetadataAuthorityInput {
   issueActor?: { id?: number | null; login?: string | null } | null;
   authorAssociation?: string | null;
   sourceIdentity?: SourceIdentity | null;
@@ -20,4 +23,10 @@ export function classifySubmissionSummaryAuthority(input: {
     type?: string | null;
   } | null;
   trustedEditorRegistry: TrustedEditorRegistry;
-}): SubmissionSummaryAuthority;
+}
+
+export function classifySubmissionMetadataAuthority(
+  input: SubmissionMetadataAuthorityInput,
+): SubmissionMetadataAuthority;
+
+export const classifySubmissionSummaryAuthority: typeof classifySubmissionMetadataAuthority;
