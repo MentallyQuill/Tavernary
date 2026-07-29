@@ -1,3 +1,5 @@
+import { primaryFunctionLabel } from "./classification-review-notice.mjs";
+
 const markerStart = "<!-- tavernary-project-submission-pr";
 
 function safeText(value, limit = 320) {
@@ -10,7 +12,10 @@ function safeText(value, limit = 320) {
     normalized.length <= limit
       ? normalized
       : `${normalized.slice(0, Math.max(0, limit - 1)).trimEnd()}…`;
-  return bounded.replace(/\\/gu, "\\\\").replace(/([[\]()*_`#<>|])/gu, "\\$1");
+  return bounded
+    .replace(/@/gu, "&#64;")
+    .replace(/\\/gu, "\\\\")
+    .replace(/([[\]()*_`#<>|])/gu, "\\$1");
 }
 
 const urlFieldKeys = new Set(["canonical_url", "source_url"]);
@@ -48,6 +53,27 @@ function renderGroup(values) {
     .join("\n");
 }
 
+function mismatchReview(report) {
+  const review = report.classificationReview;
+  return review?.status === "possible-mismatch" ? review : null;
+}
+
+function renderClassificationReview(report) {
+  const review = mismatchReview(report);
+  if (!review) return [];
+  const submittedId = safeText(review.submitted_primary_function, 80);
+  const suggestedId = safeText(review.suggested_primary_function, 80);
+  return [
+    "## Classification review",
+    "",
+    "> [!WARNING]",
+    `> The submitter selected **${primaryFunctionLabel(review.submitted_primary_function)}** (\`${submittedId}\`), while the optional intake review suggested **${primaryFunctionLabel(review.suggested_primary_function)}** (\`${suggestedId}\`).`,
+    `> Review reason: ${safeText(review.explanation, 240)}`,
+    "> The submitted value remains in the generated record unless a maintainer deliberately changes it during review.",
+    "",
+  ];
+}
+
 export function submissionBranch(issueNumber) {
   if (!Number.isInteger(issueNumber) || issueNumber < 1) {
     throw new Error("Submission issue number must be a positive integer.");
@@ -56,6 +82,7 @@ export function submissionBranch(issueNumber) {
 }
 
 export function renderSubmissionPullRequest(input) {
+  const classificationReview = mismatchReview(input.report);
   const warningLines =
     input.report.warnings.length > 0
       ? input.report.warnings
@@ -84,6 +111,7 @@ export function renderSubmissionPullRequest(input) {
     "",
     renderGroup(input.report.inferred),
     "",
+    ...renderClassificationReview(input.report),
     "## Warnings",
     "",
     warningLines,
@@ -94,6 +122,9 @@ export function renderSubmissionPullRequest(input) {
     "- [ ] Project kind and supported frontends are correct",
     "- [ ] Name and summary are factual",
     "- [ ] Primary function and capabilities are appropriate",
+    ...(classificationReview
+      ? ["- [ ] Possible primary-function mismatch was reviewed"]
+      : []),
     "- [ ] License, archival, and source warnings were reviewed",
     "- [ ] The generated card passes CI",
     "",

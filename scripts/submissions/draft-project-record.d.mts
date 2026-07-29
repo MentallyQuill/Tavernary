@@ -1,5 +1,6 @@
 import type { RepositoryObservation } from "../catalog/repository-provider.mjs";
 import type { RepositorySnapshot } from "../catalog/repository-snapshot.mjs";
+import type { ClassificationReview } from "../catalog/enrichment-contract.mjs";
 import type { ProjectSubmissionDecision } from "./admission.mjs";
 import type {
   FrontendProject,
@@ -51,8 +52,8 @@ export type DraftEnrichment =
   | {
       status: "curated";
       summary: string;
-      primary_function: string;
       capabilities: string[];
+      classification_review: ClassificationReview;
     }
   | {
       status: "failed";
@@ -61,6 +62,26 @@ export type DraftEnrichment =
     }
   | null;
 
+export type GeneratedClassificationReview =
+  | {
+      status: "confirmed";
+      submitted_primary_function: string;
+      suggested_primary_function: string;
+      explanation: null;
+    }
+  | {
+      status: "possible-mismatch";
+      submitted_primary_function: string;
+      suggested_primary_function: string;
+      explanation: string;
+    }
+  | {
+      status: "classification-check-unavailable";
+      submitted_primary_function: string;
+      suggested_primary_function: null;
+      explanation: string;
+    };
+
 export interface ProjectDraftResult {
   record: DraftedProjectRecord;
   snapshot?: RepositorySnapshot;
@@ -68,6 +89,7 @@ export interface ProjectDraftResult {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
 

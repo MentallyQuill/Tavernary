@@ -11,6 +11,7 @@ export interface GeneratedSubmissionReport {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
 
@@ -28,6 +29,7 @@ export interface GeneratedSubmissionDraft {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  classificationReview?: GeneratedClassificationReview | null;
   warnings: string[];
 }
 
@@ -82,3 +84,4 @@ export function runGenerateProjectSubmissionCli(
     clock?: () => string;
   },
 ): Promise<GeneratedSubmission>;
+import type { GeneratedClassificationReview } from "./draft-project-record.mjs";

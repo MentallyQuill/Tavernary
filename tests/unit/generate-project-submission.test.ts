@@ -108,6 +108,13 @@ test("returns only deterministic canonical submission files and its report", asy
         project_id: "owner-repo",
         primary_function: "generation-reasoning",
       },
+      classificationReview: {
+        status: "possible-mismatch",
+        submitted_primary_function: "generation-reasoning",
+        suggested_primary_function: "interface-workflow",
+        explanation:
+          "The source primarily describes user-facing editing controls.",
+      },
       warnings: [],
     },
   });
@@ -132,6 +139,13 @@ test("returns only deterministic canonical submission files and its report", asy
     schema_version: 1,
     issue_number: 123,
     project_id: "owner-repo",
+    classificationReview: {
+      status: "possible-mismatch",
+      submitted_primary_function: "generation-reasoning",
+      suggested_primary_function: "interface-workflow",
+      explanation:
+        "The source primarily describes user-facing editing controls.",
+    },
   });
   expect(JSON.stringify(generated)).not.toContain("submitter");
 });

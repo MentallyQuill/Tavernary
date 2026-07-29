@@ -794,6 +794,19 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).toContain("Prepare generated path set");
   expect(source).toContain("Reject conflicting open submission paths");
   expect(source).toContain("findSubmissionPathCollision");
+  expect(source).toContain("planClassificationReviewNotice");
+  expect(source).toContain(
+    "scripts/submissions/classification-review-notice.mjs",
+  );
+  expect(source).toContain("gh label create classification-review");
+  expect(source).toContain("issues/${ISSUE_NUMBER}/comments?per_page=100");
+  expect(source).toContain("classificationReview: report.classificationReview");
+  expect(
+    source.indexOf("Synchronize classification review notice"),
+  ).toBeLessThan(source.indexOf("Create or update maintainer review PR"));
+  expect(source).toContain(
+    "steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''",
+  );
   expect(source).toContain("gh api --paginate --slurp");
   expect(source).toContain("generated-paths.txt");
   expect(
