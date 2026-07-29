@@ -276,7 +276,7 @@ export function createEnrichmentProvider(options) {
   const transport = createStructuredProviderTransport(options);
   return {
     async generate(input) {
-      return transport.request({
+      const response = await transport.request({
         model: transport.configuration.model,
         temperature: input.repair
           ? 0
@@ -296,6 +296,21 @@ export function createEnrichmentProvider(options) {
           },
         },
       });
+      if (
+        response.output?.policy_signal === null &&
+        ["accepted-unchanged", "accepted-with-light-edits"].includes(
+          response.output?.result,
+        )
+      ) {
+        return {
+          ...response,
+          output: {
+            ...response.output,
+            policy_signal: "none",
+          },
+        };
+      }
+      return response;
     },
   };
 }

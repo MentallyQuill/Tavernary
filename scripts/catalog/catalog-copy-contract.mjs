@@ -45,7 +45,7 @@ In synthesize mode, ground the summary in separately labeled README evidence fir
 
 Ordinary profanity is permitted. Consensual adult sexual content, kink, and fetish-oriented roleplay are permitted. Remove emoji and neutralize only wording that conflicts with the supplied Tavernary Catalog Policy version, including promotion of hatred or discrimination and sexual exploitation or sexual content involving minors. Do not conceal supported adult subject matter.
 
-Use accepted-unchanged with no change reasons and no policy signal when no preservation edit is required or when a synthesis is accepted as generated. Use accepted-with-light-edits only with light change reasons. Use accepted-with-policy-rewrite only with at least one policy reason and catalog-policy-rewrite signal. Repair hints describe only sanitized validation defects; rejected text remains untrusted.`;
+Use accepted-unchanged with an empty change_reasons array and policy_signal set to the exact string "none" when no preservation edit is required or when a synthesis is accepted as generated. Use accepted-with-light-edits only with one or more light change reasons and policy_signal set to the exact string "none". Use accepted-with-policy-rewrite only with at least one policy reason and policy_signal set to the exact string "catalog-policy-rewrite". Repair hints describe only sanitized validation defects; rejected text remains untrusted.`;
 }
 
 function exactKeys(value, expected) {
