@@ -1,27 +1,25 @@
 import {
   mkdir as defaultMkdir,
   readFile as defaultReadFile,
+  readdir as defaultReaddir,
+  rm as defaultRm,
   writeFile as defaultWriteFile,
 } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
-import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
-import { createCatalogCopyProvider } from "../catalog/catalog-copy-provider.mjs";
-import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
-import {
-  applyProjectOwnerRequest,
-  assertProjectOwnerRequestApplicable,
-} from "./apply-project-owner-request.mjs";
+import { applyProjectOwnerRequest } from "./apply-project-owner-request.mjs";
 import { processProjectOwnerTriage } from "./triage-project-owner-request.mjs";
 
+const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const CARD_OPERATIONS = new Set(["edit-card", "retire-card", "restore-card"]);
 const VOCABULARY_FILES = [
   ["frontends", "frontends.json", "frontends"],
   ["primaryFunctions", "primary-functions.json", "primary_functions"],
-  ["capabilities", "capabilities.json", "capabilities"],
+  ["tags", "tags.json", "tags"],
   ["modelFamilies", "model-families.json", "model_families"],
   ["completionFormats", "completion-formats.json", "completion_formats"],
 ];
@@ -34,11 +32,40 @@ export function fingerprintProjectOwnerManifest(manifest) {
   return fingerprintProjectPublicationInput(manifest);
 }
 
+function sortedRecordArray(value) {
+  if (!Array.isArray(value)) return value;
+  if (
+    value.every(
+      (entry) =>
+        entry !== null &&
+        typeof entry === "object" &&
+        !Array.isArray(entry) &&
+        typeof entry.id === "string",
+    )
+  ) {
+    return [...value].sort((left, right) => left.id.localeCompare(right.id));
+  }
+  return value;
+}
+
+function comparableReport(report) {
+  const clone = structuredClone(report);
+  delete clone.generated_at;
+  if (Array.isArray(clone.project_ids)) {
+    clone.project_ids.sort((left, right) => left.localeCompare(right));
+  }
+  clone.before = sortedRecordArray(clone.before);
+  clone.after = sortedRecordArray(clone.after);
+  return clone;
+}
+
 export function sameProjectOwnerGenerationReport(left, right) {
-  if (!left || !right) return false;
-  const { generated_at: _leftGeneratedAt, ...leftStable } = left;
-  const { generated_at: _rightGeneratedAt, ...rightStable } = right;
-  return JSON.stringify(leftStable) === JSON.stringify(rightStable);
+  return (
+    Boolean(left) &&
+    Boolean(right) &&
+    JSON.stringify(comparableReport(left)) ===
+      JSON.stringify(comparableReport(right))
+  );
 }
 
 function inside(root, path) {
@@ -46,53 +73,138 @@ function inside(root, path) {
   return local === "" || (!local.startsWith("..") && !isAbsolute(local));
 }
 
-function issuePath(hostRepository, issueNumber) {
-  const repository =
+function repositoryName(hostRepository) {
+  const value =
     typeof hostRepository === "string"
       ? hostRepository
       : typeof hostRepository?.owner === "string" &&
           typeof hostRepository?.name === "string"
         ? `${hostRepository.owner}/${hostRepository.name}`
         : "";
-  if (
-    /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository) &&
-    Number.isSafeInteger(issueNumber) &&
-    issueNumber > 0
-  ) {
-    return `/repos/${repository}/issues/${issueNumber}`;
+  if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(value)) {
+    throw new Error(
+      "Owner generation requires trusted host repository context and an issue number.",
+    );
   }
-  throw new Error(
-    "Owner generation requires trusted host repository context and an issue number.",
-  );
+  return value;
+}
+
+function issuePath(hostRepository, issueNumber) {
+  const repository = repositoryName(hostRepository);
+  if (!Number.isSafeInteger(issueNumber) || issueNumber < 1) {
+    throw new Error(
+      "Owner generation requires trusted host repository context and an issue number.",
+    );
+  }
+  return `/repos/${repository}/issues/${issueNumber}`;
 }
 
 async function loadVocabularies(root, readFile) {
+  return Object.fromEntries(
+    await Promise.all(
+      VOCABULARY_FILES.map(async ([name, file, key]) => [
+        name,
+        parseJson(
+          await readFile(resolve(root, "data", "vocabularies", file), "utf8"),
+        )?.[key] ?? [],
+      ]),
+    ),
+  );
+}
+
+function sectionValue(body, heading) {
+  const matches = String(body ?? "")
+    .split(/^### /mu)
+    .slice(1)
+    .filter((section) => section.split(/\r?\n/u)[0]?.trim() === heading);
+  if (matches.length !== 1) return null;
+  const value = matches[0].split(/\r?\n/u).slice(1).join("\n").trim();
+  return /^_No response_$/iu.test(value) ? "" : value;
+}
+
+function generatedManifest(body) {
+  const rendered = sectionValue(body, "Owner request manifest");
+  if (!rendered) return null;
+  const json =
+    rendered.match(/^```(?:json)?\s*\r?\n([\s\S]*?)\r?\n```$/iu)?.[1] ??
+    rendered;
+  try {
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
+
+function contextIdentifiers(issue) {
+  const manifest = generatedManifest(issue?.body);
+  const projectId =
+    manifest?.project_id ?? sectionValue(issue?.body, "Project ID");
+  const sourceId =
+    manifest?.source_id ?? sectionValue(issue?.body, "Source ID");
+  return {
+    projectId:
+      typeof projectId === "string" && ID_PATTERN.test(projectId)
+        ? projectId
+        : null,
+    sourceId:
+      typeof sourceId === "string" && ID_PATTERN.test(sourceId)
+        ? sourceId
+        : null,
+  };
+}
+
+async function loadAllProjects(root, readFile, readdir) {
+  const directory = resolve(root, "data", "registry", "projects");
+  const names = (await readdir(directory))
+    .filter(
+      (name) =>
+        typeof name === "string" &&
+        /^[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(name),
+    )
+    .sort((left, right) => left.localeCompare(right));
   const entries = await Promise.all(
-    VOCABULARY_FILES.map(async ([name, file, key]) => {
-      const contents = await readFile(
-        resolve(root, "data", "vocabularies", file),
-        "utf8",
-      );
-      return [name, parseJson(contents)?.[key] ?? []];
+    names.map(async (name) => {
+      const path = resolve(directory, name);
+      const contents = await readFile(path, "utf8");
+      return {
+        value: parseJson(contents),
+        contents,
+        path: `data/registry/projects/${name}`,
+      };
     }),
   );
-  return Object.fromEntries(entries);
+  return {
+    projects: entries.map((entry) => entry.value),
+    priorContents: new Map(
+      entries.map((entry) => [entry.path, entry.contents]),
+    ),
+  };
 }
 
-async function loadRecord(root, projectId, readFile) {
-  const contents = await readFile(
-    resolve(root, "data", "registry", "projects", `${projectId}.json`),
-    "utf8",
-  );
-  return { value: parseJson(contents), contents };
+async function loadSource(root, sourceId, readFile) {
+  const localPath = `data/registry/sources/${sourceId}.json`;
+  const contents = await readFile(resolve(root, localPath), "utf8");
+  return { value: parseJson(contents), contents, path: localPath };
 }
 
-async function loadSnapshot(root, projectId, readFile) {
-  const contents = await readFile(
-    resolve(root, "data", "snapshots", "github", `${projectId}.json`),
-    "utf8",
-  );
-  return { value: parseJson(contents), contents };
+async function loadSnapshot(root, sourceId, readFile) {
+  const localPath = `data/snapshots/github/${sourceId}.json`;
+  const contents = await readFile(resolve(root, localPath), "utf8");
+  return { value: parseJson(contents), contents, path: localPath };
+}
+
+async function loadOpenRequests(hostRepository, request) {
+  const repository = repositoryName(hostRepository);
+  const [issues, pulls] = await Promise.all([
+    request(
+      `/repos/${repository}/issues?state=open&labels=project-owner-request&per_page=100`,
+    ),
+    request(`/repos/${repository}/pulls?state=open&per_page=100`),
+  ]);
+  return {
+    issues: Array.isArray(issues) ? issues : [],
+    pulls: Array.isArray(pulls) ? pulls : [],
+  };
 }
 
 function admitted(decision) {
@@ -104,11 +216,65 @@ function admitted(decision) {
   throw error;
 }
 
-function expectedPaths(projectId, operation) {
-  const registry = `data/registry/projects/${projectId}.json`;
-  return operation === "move-source"
-    ? [registry, `data/snapshots/github/${projectId}.json`]
-    : [registry];
+async function triagePhase(input, issueApiPath, root, readFile, readdir) {
+  const issue = await input.request(issueApiPath);
+  const identifiers = contextIdentifiers(issue);
+  if (!identifiers.sourceId) {
+    throw Object.assign(
+      new Error("owner-request-invalid: Source ID is missing."),
+      { code: "owner-request-invalid" },
+    );
+  }
+  const [vocabularies, projectRegistry, sourceRecord, open] = await Promise.all(
+    [
+      loadVocabularies(root, readFile),
+      loadAllProjects(root, readFile, readdir),
+      loadSource(root, identifiers.sourceId, readFile),
+      loadOpenRequests(input.hostRepository, input.request),
+    ],
+  );
+  const project = identifiers.projectId
+    ? projectRegistry.projects.find(
+        (candidate) => candidate.id === identifiers.projectId,
+      )
+    : null;
+  const decision = admitted(
+    await processProjectOwnerTriage({
+      issue,
+      project: project ?? undefined,
+      projects: projectRegistry.projects,
+      source: sourceRecord.value,
+      hostRepository: input.hostRepository,
+      request: input.request,
+      vocabularies,
+      issues: open.issues,
+      pulls: open.pulls,
+    }),
+  );
+  return {
+    decision,
+    issue,
+    vocabularies,
+    projects: projectRegistry.projects,
+    source: sourceRecord.value,
+    priorContents: new Map([
+      ...projectRegistry.priorContents,
+      [sourceRecord.path, sourceRecord.contents],
+    ]),
+  };
+}
+
+function expectedPaths(operation, projectIds, sourceId) {
+  if (CARD_OPERATIONS.has(operation) || operation === "add-cards") {
+    return projectIds.map((id) => `data/registry/projects/${id}.json`);
+  }
+  if (operation === "move-source") {
+    return [
+      `data/registry/sources/${sourceId}.json`,
+      `data/snapshots/github/${sourceId}.json`,
+    ];
+  }
+  return [`data/registry/sources/${sourceId}.json`];
 }
 
 function exactPaths(actual, expected) {
@@ -127,108 +293,6 @@ function generatedAt(now) {
   return date.toISOString();
 }
 
-function ownerCopyProtectedTerms(final, vocabularies) {
-  const manifest = final.manifest;
-  if (manifest.operation !== "edit-card") return [];
-  const repositoryParts =
-    typeof final.record.source?.repository === "string"
-      ? final.record.source.repository.split("/").filter(Boolean)
-      : [];
-  const frontendIds = new Set(manifest.proposed.frontends);
-  const frontendLabels = vocabularies.frontends
-    .filter(({ id }) => frontendIds.has(id))
-    .map(({ label }) => label);
-  const stableIdentifiers =
-    manifest.proposed.summary.match(
-      /\b[\p{Letter}\p{Number}]+(?:[-_.:/][\p{Letter}\p{Number}]+)+\b/gu,
-    ) ?? [];
-  return [
-    ...new Set(
-      [
-        manifest.original.name,
-        manifest.proposed.name,
-        ...repositoryParts,
-        ...frontendLabels,
-        ...stableIdentifiers,
-      ].filter(
-        (term) =>
-          typeof term === "string" && term.length > 0 && term.length <= 100,
-      ),
-    ),
-  ].slice(0, 64);
-}
-
-async function defaultCopySummary(input) {
-  const provider = createCatalogCopyProvider({
-    apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-    apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-    model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-  });
-  const generated = await provider.generate({
-    mode: "preserve",
-    submittedSummary: input.submittedSummary,
-    evidence: {
-      readme: null,
-      repositoryDescription: null,
-      submissionDescription: input.submittedSummary,
-    },
-    protectedTerms: input.protectedTerms,
-    policyVersion: input.policyVersion,
-    ...(input.repair ? { repair: input.repair } : {}),
-  });
-  return generated.output;
-}
-
-async function copyEditedSummary(input, final, vocabularies) {
-  if (
-    final.operation !== "edit-card" ||
-    final.manifest.original.summary === final.manifest.proposed.summary
-  ) {
-    return null;
-  }
-  const copySummary = input.copySummary ?? defaultCopySummary;
-  const request = {
-    authorityType: final.authorityType,
-    submittedSummary: final.manifest.proposed.summary,
-    protectedTerms: ownerCopyProtectedTerms(final, vocabularies),
-    policyVersion: CATALOG_POLICY_VERSION,
-  };
-  let output = await copySummary(request);
-  let validation = validateCatalogCopyResult(output, {
-    mode: "preserve",
-    submittedSummary: request.submittedSummary,
-    protectedTerms: request.protectedTerms,
-  });
-  if (!validation.valid) {
-    output = await copySummary({
-      ...request,
-      repair: {
-        reasonCode: "output-invalid",
-        message: validation.repairHint,
-      },
-    });
-    validation = validateCatalogCopyResult(output, {
-      mode: "preserve",
-      submittedSummary: request.submittedSummary,
-      protectedTerms: request.protectedTerms,
-    });
-  }
-  if (!validation.valid) {
-    const error = new Error(validation.repairHint);
-    error.code = "catalog-copy-invalid";
-    throw error;
-  }
-  return {
-    submittedSummary: request.submittedSummary,
-    publishedSummary: output.summary,
-    copyResult: {
-      result: output.result,
-      change_reasons: [...output.change_reasons],
-      policy_signal: output.policy_signal,
-    },
-  };
-}
-
 async function writeOwnerGenerationTransaction({
   root,
   reportPath,
@@ -237,6 +301,7 @@ async function writeOwnerGenerationTransaction({
   priorContents,
   makeDirectory,
   writeFile,
+  remove,
 }) {
   const attempted = [];
   try {
@@ -249,7 +314,7 @@ async function writeOwnerGenerationTransaction({
       }
       attempted.push({
         destination,
-        contents: priorContents.get(file.path),
+        contents: priorContents.get(file.path) ?? null,
       });
       await makeDirectory(dirname(destination), { recursive: true });
       await writeFile(destination, file.contents, "utf8");
@@ -260,7 +325,11 @@ async function writeOwnerGenerationTransaction({
     const rollbackErrors = [];
     for (const file of [...attempted].reverse()) {
       try {
-        await writeFile(file.destination, file.contents, "utf8");
+        if (file.contents === null) {
+          await remove(file.destination, { force: true });
+        } else {
+          await writeFile(file.destination, file.contents, "utf8");
+        }
       } catch (rollbackError) {
         rollbackErrors.push(rollbackError);
       }
@@ -279,6 +348,64 @@ async function writeOwnerGenerationTransaction({
   }
 }
 
+function reportProjectIds(final, mutation) {
+  if (CARD_OPERATIONS.has(final.decision.operation)) {
+    return [final.decision.projectId];
+  }
+  if (final.decision.operation === "add-cards") {
+    return mutation.projects.map((project) => project.id);
+  }
+  return final.projects
+    .filter((project) => project.source_id === final.source.id)
+    .map((project) => project.id)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function sourceIdentity(source) {
+  return source?.type === "github" &&
+    Number.isSafeInteger(source.repository_id) &&
+    source.repository_id > 0
+    ? {
+        type: "github",
+        canonical: `github:${source.repository_id}`,
+        repository_id: source.repository_id,
+      }
+    : null;
+}
+
+function inputFingerprints(decision) {
+  if (CARD_OPERATIONS.has(decision.operation)) {
+    return {
+      projects: {
+        [decision.projectId]: decision.manifest.project_fingerprint,
+      },
+      source: null,
+    };
+  }
+  return {
+    projects: {},
+    source: decision.manifest.source_fingerprint,
+  };
+}
+
+function changedValues(mutation) {
+  return new Map([
+    ...mutation.projects.map((project) => [
+      `data/registry/projects/${project.id}.json`,
+      project,
+    ]),
+    [`data/registry/sources/${mutation.source.id}.json`, mutation.source],
+    ...(mutation.snapshot
+      ? [
+          [
+            `data/snapshots/github/${mutation.source.id}.json`,
+            mutation.snapshot,
+          ],
+        ]
+      : []),
+  ]);
+}
+
 export async function generateProjectOwnerRequest(input) {
   const root = resolve(input?.root ?? ".");
   const issueApiPath = issuePath(input?.hostRepository, input?.issue?.number);
@@ -295,73 +422,42 @@ export async function generateProjectOwnerRequest(input) {
     throw new Error("Owner generation requires an injected GitHub request.");
   }
   const readFile = input.readFile ?? defaultReadFile;
+  const readdir = input.readdir ?? defaultReaddir;
   const writeFile = input.writeFile ?? defaultWriteFile;
+  const remove = input.rm ?? defaultRm;
   const makeDirectory =
     input.mkdir ?? (input.writeFile ? async () => {} : defaultMkdir);
 
-  const latestIssue = await input.request(issueApiPath);
-  const vocabularies = await loadVocabularies(root, readFile);
-  const initial = admitted(
-    await processProjectOwnerTriage({
-      issue: latestIssue,
-      root,
-      hostRepository: input.hostRepository,
-      request: input.request,
-      readFile,
-      vocabularies,
-    }),
+  const initial = await triagePhase(
+    input,
+    issueApiPath,
+    root,
+    readFile,
+    readdir,
   );
+  const final = await triagePhase(input, issueApiPath, root, readFile, readdir);
 
-  // A triage result is not an authorization token. Re-read every mutable
-  // authority input immediately before the pure mutation is applied.
-  const [finalIssue, finalRecordSource, finalVocabularies] = await Promise.all([
-    input.request(issueApiPath),
-    loadRecord(root, initial.projectId, readFile),
-    loadVocabularies(root, readFile),
-  ]);
-  const finalRecord = finalRecordSource.value;
-  const finalRepository =
-    initial.operation === "move-source" ||
-    initial.authorityType === "repository-owner"
-      ? await input.request(
-          `/repositories/${finalRecord?.source?.repository_id}`,
-        )
-      : null;
-  const final = admitted(
-    await processProjectOwnerTriage({
-      issue: finalIssue,
-      record: finalRecord,
-      ...(finalRepository ? { repository: finalRepository } : {}),
-      hostRepository: input.hostRepository,
-      request: input.request,
-      vocabularies: finalVocabularies,
-    }),
-  );
-
-  const snapshotSource =
-    final.operation === "move-source"
-      ? await loadSnapshot(root, final.projectId, readFile)
-      : null;
-  const snapshot = snapshotSource?.value ?? null;
-  assertProjectOwnerRequestApplicable({
-    issueNumber: final.issueNumber,
-    manifest: final.manifest,
-    record: final.record,
-    snapshot,
-    repository: final.repository,
-    vocabularies: finalVocabularies,
-  });
-  const copy = await copyEditedSummary(input, final, finalVocabularies);
+  let snapshotRecord = null;
+  if (final.decision.operation === "move-source") {
+    snapshotRecord = await loadSnapshot(root, final.source.id, readFile);
+    final.priorContents.set(snapshotRecord.path, snapshotRecord.contents);
+  }
   const mutation = applyProjectOwnerRequest({
-    issueNumber: final.issueNumber,
-    manifest: final.manifest,
-    record: final.record,
-    snapshot,
-    repository: final.repository,
-    vocabularies: finalVocabularies,
-    ...(copy ? { publishedSummary: copy.publishedSummary } : {}),
+    issueNumber: final.decision.issueNumber,
+    manifest: final.decision.manifest,
+    projects: final.projects,
+    source: final.source,
+    snapshot: snapshotRecord?.value ?? null,
+    repository: final.decision.repository ?? undefined,
+    vocabularies: final.vocabularies,
+    catalogedAt: generatedAt(input.now),
   });
-  const allowedPaths = expectedPaths(final.projectId, final.operation);
+  const projectIds = reportProjectIds(final, mutation);
+  const allowedPaths = expectedPaths(
+    final.decision.operation,
+    projectIds,
+    final.source.id,
+  );
   if (!exactPaths(mutation.changedPaths, allowedPaths)) {
     throw new Error(
       "Owner mutation returned paths outside its approved operation.",
@@ -369,74 +465,65 @@ export async function generateProjectOwnerRequest(input) {
   }
 
   const report = {
-    schema_version: 1,
-    issue_number: final.issueNumber,
-    project_id: final.projectId,
-    operation: final.operation,
-    repository_id: final.manifest.repository_id,
-    authority_type: final.authorityType,
-    actor_id: finalIssue.user?.id,
-    actor_login: final.actorLogin,
-    actor_type: "User",
-    request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
-    record_fingerprint: fingerprintProjectRecord(final.record),
-    source_identity:
-      final.record?.source?.type === "github" &&
-      Number.isSafeInteger(final.record.source.repository_id) &&
-      final.record.source.repository_id > 0
-        ? {
-            type: "github",
-            canonical: `github:${final.record.source.repository_id}`,
-            repository_id: final.record.source.repository_id,
-          }
+    schema_version: 2,
+    issue_number: final.decision.issueNumber,
+    project_id:
+      projectIds.length === 1 && CARD_OPERATIONS.has(final.decision.operation)
+        ? projectIds[0]
         : null,
+    project_ids: projectIds,
+    source_id: final.source.id,
+    operation: final.decision.operation,
+    publication_mode:
+      final.decision.operation === "add-cards" ? "manual" : "automatic",
+    repository_id: final.decision.manifest.repository_id,
+    authority_type: final.decision.authorityType,
+    actor_id: final.issue.user?.id,
+    actor_login: final.decision.actorLogin,
+    actor_type: "User",
+    request_fingerprint: fingerprintProjectOwnerManifest(
+      final.decision.manifest,
+    ),
+    input_fingerprints: inputFingerprints(final.decision),
+    source_identity: sourceIdentity(final.source),
     policy_version: CATALOG_POLICY_VERSION,
     generated_at: generatedAt(input.now),
-    ...(copy
-      ? {
-          submitted_summary: copy.submittedSummary,
-          published_summary: copy.publishedSummary,
-          copy_result: copy.copyResult,
-        }
-      : {}),
     before: mutation.before,
     after: mutation.after,
-    warnings: [...new Set([...initial.warnings, ...final.warnings])],
+    warnings: [
+      ...new Set([...initial.decision.warnings, ...final.decision.warnings]),
+    ],
     generated_paths: [...mutation.changedPaths],
   };
-  const values = new Map([
-    [allowedPaths[0], mutation.record],
-    ...(final.operation === "move-source"
-      ? [[allowedPaths[1], mutation.snapshot]]
-      : []),
-  ]);
-  const serialized = await Promise.all(
-    mutation.changedPaths.map(async (path) => ({
-      path,
-      contents: await formatJson(values.get(path)),
-    })),
+  const values = changedValues(mutation);
+  const files = await Promise.all(
+    mutation.changedPaths.map(async (path) => {
+      if (!values.has(path)) {
+        throw new Error(`Owner mutation omitted generated value for ${path}.`);
+      }
+      return { path, contents: await formatJson(values.get(path)) };
+    }),
   );
-  const serializedReport = await formatJson(report);
-  const priorContents = new Map([
-    [allowedPaths[0], finalRecordSource.contents],
-    ...(snapshotSource ? [[allowedPaths[1], snapshotSource.contents]] : []),
-  ]);
   await writeOwnerGenerationTransaction({
     root,
     reportPath,
-    files: serialized,
-    reportContents: serializedReport,
-    priorContents,
+    files,
+    reportContents: await formatJson(report),
+    priorContents: final.priorContents,
     makeDirectory,
     writeFile,
+    remove,
   });
 
   return {
-    issueNumber: final.issueNumber,
-    projectId: final.projectId,
-    operation: final.operation,
-    authorityType: final.authorityType,
-    actorLogin: final.actorLogin,
+    issueNumber: final.decision.issueNumber,
+    projectId: final.decision.projectId,
+    projectIds,
+    sourceId: final.source.id,
+    operation: final.decision.operation,
+    publicationMode: report.publication_mode,
+    authorityType: final.decision.authorityType,
+    actorLogin: final.decision.actorLogin,
     generatedPaths: [...mutation.changedPaths],
     reportPath,
     report,

@@ -2,102 +2,133 @@ import { resolve } from "node:path";
 
 import { expect, test, vi } from "vitest";
 
-import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
+import {
+  fingerprintProjectRecord,
+  fingerprintSourceRecord,
+} from "../../src/features/help/project-owner-record.mjs";
 import { processProjectOwnerTriage } from "../../scripts/help/triage-project-owner-request.mjs";
 
-const ownerRepositoryRoot = resolve(
-  "test-fixtures",
-  "owner-request-repository",
-);
-const normalizedOwnerRepositoryRoot = ownerRepositoryRoot.replaceAll("\\", "/");
-
+const root = resolve("test-fixtures", "owner-request-repository");
+const normalizedRoot = root.replaceAll("\\", "/");
 const vocabularies = {
   frontends: ["sillytavern"],
   primaryFunctions: ["interface-workflow"],
-  capabilities: ["automation"],
+  tags: [{ id: "automation", applicable_kinds: ["extension"] }],
   modelFamilies: ["claude"],
   completionFormats: ["chat-completion"],
 };
 
-function record(overrides: Record<string, unknown> = {}) {
+function source(overrides: Record<string, unknown> = {}) {
   return {
-    schema_version: 5,
-    id: "owner-alpha",
-    name: "Alpha",
-    kind: "extension",
-    summary: "Original summary.",
-    metadata_status: "provisional",
-    source: {
-      type: "github",
-      repository: "Owner/Alpha",
-      repository_id: 42,
-    },
-    frontends: ["sillytavern"],
-    primary_function: "interface-workflow",
-    capabilities: ["automation"],
-    visibility: "published",
-    visibility_reason: null,
+    schema_version: 1,
+    id: "github-42",
+    type: "github",
+    repository: "Owner/Alpha",
+    repository_id: 42,
+    status: "active",
+    status_reason: null,
     refresh_policy: "automatic",
-    enrichment_policy: "automatic",
     ...overrides,
   };
 }
 
-function manifest(current = record()) {
+function project(overrides: Record<string, unknown> = {}) {
   return {
-    schema_version: 1,
+    schema_version: 6,
+    id: "owner-alpha",
+    source_id: "github-42",
+    name: "Alpha",
+    kind: "extension",
+    summary: "Original summary.",
+    metadata_status: "provisional",
+    frontends: ["sillytavern"],
+    primary_function: "interface-workflow",
+    tags: ["automation"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+    listing_status: "active",
+    listing_status_reason: null,
+    ...overrides,
+  };
+}
+
+function editable(summary = "Owner-authored summary.") {
+  return {
+    name: "Alpha",
+    summary,
+    frontends: ["sillytavern"],
+    primary_function: "interface-workflow",
+    tags: ["automation"],
+    metadata: {
+      summary: { mode: "manual" },
+      tags: { mode: "automatic" },
+    },
+    model_families: [],
+    completion_formats: [],
+  };
+}
+
+function editManifest(current = project()) {
+  return {
+    schema_version: 2,
     request_kind: "project-owner",
     operation: "edit-card",
+    source_id: "github-42",
     project_id: "owner-alpha",
     repository_id: 42,
-    source_fingerprint: fingerprintProjectRecord(current),
-    original: {
-      kind: "extension",
-      name: "Alpha",
-      summary: "Original summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
-    },
-    proposed: {
-      name: "Alpha",
-      summary: "Owner-authored summary.",
-      frontends: ["sillytavern"],
-      primary_function: "interface-workflow",
-      capabilities: ["automation"],
-      model_families: [],
-      completion_formats: [],
-    },
+    project_fingerprint: fingerprintProjectRecord(current),
+    original: { kind: "extension", ...editable("Original summary.") },
+    proposed: editable(),
     explanation: null,
+  };
+}
+
+function addManifest(currentSource = source()) {
+  return {
+    schema_version: 2,
+    request_kind: "project-owner",
+    operation: "add-cards",
+    source_id: "github-42",
+    repository_id: 42,
+    source_fingerprint: fingerprintSourceRecord(currentSource),
+    proposed_cards: [
+      {
+        draft_id: "draft-1",
+        project_id: "owner-alpha-beta",
+        kind: "extension",
+        ...editable("A distinct sibling card."),
+        name: "Beta",
+      },
+    ],
+    explanation: "This repository ships two distinct extensions.",
   };
 }
 
 function delistManifest(
-  current = record(),
-  confirmation: string = String(current.name),
+  currentSource = source(),
+  confirmation = "Owner/Alpha",
 ) {
   return {
-    schema_version: 1,
+    schema_version: 2,
     request_kind: "project-owner",
-    operation: "delist",
-    project_id: "owner-alpha",
+    operation: "delist-source",
+    source_id: "github-42",
     repository_id: 42,
-    source_fingerprint: fingerprintProjectRecord(current),
-    delist_confirmation: confirmation,
-    original: { visibility: "published" },
+    source_fingerprint: fingerprintSourceRecord(currentSource),
+    original: { status: "active" },
     proposed: {
-      visibility: "disabled",
-      visibility_reason: "removed",
+      status: "delisted",
+      status_reason: "removed",
       refresh_policy: "paused",
-      enrichment_policy: "manual",
     },
+    delist_confirmation: confirmation,
     explanation: null,
   };
 }
 
-function issue(bodyManifest: Record<string, unknown> = manifest()) {
+function issue(bodyManifest: Record<string, unknown> = editManifest()) {
   return {
     number: 123,
     state: "open",
@@ -118,6 +149,14 @@ ${JSON.stringify(bodyManifest)}
   };
 }
 
+const repository = {
+  id: 42,
+  fullName: "Owner/Alpha",
+  htmlUrl: "https://github.com/Owner/Alpha",
+  visibility: "public",
+  owner: { login: "Owner", type: "User" },
+};
+
 const trustedEditorRegistry = {
   schema_version: 1 as const,
   editors: [
@@ -129,54 +168,22 @@ const trustedEditorRegistry = {
   ],
 };
 
-function staffManifest(current: ReturnType<typeof record>) {
-  const repositoryId =
-    current.source?.type === "github" &&
-    Number.isSafeInteger(current.source.repository_id)
-      ? current.source.repository_id
-      : null;
-  return {
-    ...manifest(current),
-    repository_id: repositoryId,
-    original: {
-      kind: current.kind,
-      name: current.name,
-      summary: current.summary,
-      frontends: current.frontends,
-      primary_function: current.primary_function,
-      capabilities: current.capabilities,
-      model_families: [],
-      completion_formats: [],
-    },
-    proposed: {
-      name: `${current.name} Staff Edit`,
-      summary: current.summary,
-      frontends: current.frontends,
-      primary_function: current.primary_function,
-      capabilities: current.capabilities,
-      model_families: [],
-      completion_formats: [],
-    },
-  };
-}
-
-const repository = {
-  id: 42,
-  fullName: "Owner/Alpha",
-  htmlUrl: "https://github.com/Owner/Alpha",
-  visibility: "public",
-  owner: { login: "Owner", type: "User" },
-};
-
-test("reads the trusted record, resolves its immutable repository ID, and refreshes before admission", async () => {
-  const current = record();
+test("reads card and source records by trusted IDs, resolves immutable GitHub identity, and refreshes the issue", async () => {
+  const currentProject = project();
+  const currentSource = source();
   const latest = issue();
   const chronology: string[] = [];
   const readFile = vi.fn(async (path: string) => {
-    chronology.push(`read:${path.replaceAll("\\", "/")}`);
-    return JSON.stringify(current);
+    const normalized = path.replaceAll("\\", "/");
+    chronology.push(`read:${normalized}`);
+    if (normalized.endsWith("/projects/owner-alpha.json")) {
+      return JSON.stringify(currentProject);
+    }
+    if (normalized.endsWith("/sources/github-42.json")) {
+      return JSON.stringify(currentSource);
+    }
+    throw new Error(`unexpected read ${normalized}`);
   });
-  const writeFile = vi.fn();
   const request = vi.fn(async (path: string) => {
     chronology.push(`request:${path}`);
     if (path === "/repositories/42") return repository;
@@ -187,38 +194,86 @@ test("reads the trusted record, resolves its immutable repository ID, and refres
   await expect(
     processProjectOwnerTriage({
       issue: latest,
-      root: ownerRepositoryRoot,
+      root,
       hostRepository: "Tavernary/Tavernary",
       request,
       readFile,
-      writeFile,
       vocabularies,
     }),
   ).resolves.toMatchObject({
     status: "admitted",
     issueNumber: 123,
     projectId: "owner-alpha",
+    sourceId: "github-42",
+    operation: "edit-card",
     verifiedOwnerLogin: "Owner",
     warnings: [],
   });
   expect(chronology).toEqual([
-    `read:${normalizedOwnerRepositoryRoot}/data/registry/projects/owner-alpha.json`,
+    `read:${normalizedRoot}/data/registry/projects/owner-alpha.json`,
+    `read:${normalizedRoot}/data/registry/sources/github-42.json`,
     "request:/repositories/42",
     "request:/repos/Tavernary/Tavernary/issues/123",
   ]);
   expect(request).not.toHaveBeenCalledWith(expect.stringContaining("Attacker"));
-  expect(writeFile).not.toHaveBeenCalled();
+});
+
+test("admits a source-scoped add-card batch without requiring a selected card", async () => {
+  const currentSource = source();
+  const latest = issue(addManifest(currentSource));
+  await expect(
+    processProjectOwnerTriage({
+      issue: latest,
+      source: currentSource,
+      projects: [project(), project({ id: "owner-alpha-old" })],
+      repository,
+      hostRepository: "Tavernary/Tavernary",
+      request: vi.fn(async () => latest),
+      vocabularies,
+      issues: [latest],
+      pulls: [],
+    }),
+  ).resolves.toMatchObject({
+    status: "admitted",
+    projectId: null,
+    sourceId: "github-42",
+    operation: "add-cards",
+    projects: [{ id: "owner-alpha" }, { id: "owner-alpha-old" }],
+  });
+});
+
+test("rejects a later unresolved add-card batch for the same immutable source", async () => {
+  const currentSource = source();
+  const latest = issue(addManifest(currentSource));
+  const earlier = {
+    ...issue(addManifest(currentSource)),
+    number: 122,
+  };
+  await expect(
+    processProjectOwnerTriage({
+      issue: latest,
+      source: currentSource,
+      repository,
+      vocabularies,
+      issues: [earlier, latest],
+      pulls: [],
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "source-request-already-open",
+    conflictingIssueNumber: 122,
+  });
 });
 
 test("returns retryable when immutable repository resolution temporarily fails", async () => {
   const temporary = Object.assign(new Error("GitHub unavailable"), {
     status: 503,
   });
-
   await expect(
     processProjectOwnerTriage({
       issue: issue(),
-      record: record(),
+      project: project(),
+      source: source(),
       hostRepository: "Tavernary/Tavernary",
       vocabularies,
       request: vi.fn(async () => {
@@ -231,14 +286,14 @@ test("returns retryable when immutable repository resolution temporarily fails",
   });
 });
 
-test("returns needs-information with the literal personal-owner rule", async () => {
+test("keeps owner authority limited to the current personal repository owner", async () => {
   const decision = await processProjectOwnerTriage({
     issue: { ...issue(), user: { login: "Contributor" } },
-    record: record(),
+    project: project(),
+    source: source(),
     repository,
     vocabularies,
   });
-
   expect(decision).toMatchObject({
     status: "needs-information",
     reasonCode: "issue-author-not-owner",
@@ -249,141 +304,96 @@ test("returns needs-information with the literal personal-owner rule", async () 
   );
 });
 
-test.each([
-  [
-    "Codeberg",
-    {
-      source: {
-        type: "codeberg",
-        repository: "Owner/Alpha",
-        repository_id: 52,
-      },
-    },
-  ],
-  ["external", { source: { type: "url", url: "https://example.com/alpha" } }],
-  [
-    "organization",
-    {
-      source: {
-        type: "github-organization",
-        organization: "Owner",
-        url: "https://github.com/Owner",
-      },
-    },
-  ],
-  [
-    "missing-ID",
-    {
-      source: {
-        type: "github",
-        repository: "Owner/Alpha",
-        repository_id: null,
-      },
-    },
-  ],
-  ["disabled", { visibility: "disabled", visibility_reason: "removed" }],
-])(
-  "admits a trusted Tavernary staff edit for a %s card without owner-shape authority",
-  async (_shape, overrides) => {
-    const current = record(overrides);
-    const latest = {
-      ...issue(staffManifest(current)),
-      user: { id: 2_625_904, login: "MentallyQuill" },
-      author_association: "OWNER",
-    };
-    const request = vi.fn(async (path: string) => {
-      if (path === "/repos/Tavernary/Tavernary/issues/123") return latest;
-      throw new Error(`unexpected request ${path}`);
-    });
-
-    await expect(
-      processProjectOwnerTriage({
-        issue: latest,
-        record: current,
-        hostRepository: "Tavernary/Tavernary",
-        request,
-        vocabularies,
-        trustedEditorRegistry,
-      }),
-    ).resolves.toMatchObject({
-      status: "admitted",
-      authorityType: "tavernary-staff",
-      actorLogin: "MentallyQuill",
-      repository: null,
-    });
-    expect(request).toHaveBeenCalledTimes(1);
-  },
-);
-
-test("keeps staff-only card shapes closed to ordinary requesters", async () => {
-  const current = record({
-    source: { type: "url", url: "https://example.com/alpha" },
-  });
+test("admits trusted staff while still validating source identity", async () => {
   const latest = {
-    ...issue(staffManifest(current)),
-    user: { id: 99, login: "Contributor" },
-    author_association: "COLLABORATOR",
+    ...issue(),
+    user: { id: 2_625_904, login: "MentallyQuill" },
+    author_association: "OWNER",
   };
-
+  const request = vi.fn(async () => latest);
   await expect(
     processProjectOwnerTriage({
       issue: latest,
-      record: current,
+      project: project(),
+      source: source(),
       hostRepository: "Tavernary/Tavernary",
-      request: vi.fn(async () => latest),
+      request,
       vocabularies,
       trustedEditorRegistry,
     }),
   ).resolves.toMatchObject({
-    status: "needs-information",
-    reasonCode: "unsupported-source",
+    status: "admitted",
+    authorityType: "tavernary-staff",
+    actorLogin: "MentallyQuill",
+    repository: null,
   });
+  expect(request).toHaveBeenCalledTimes(1);
 });
 
-test("rejects overlapping stale values but preserves non-overlap fingerprint warnings", async () => {
-  const stale = record({ summary: "Maintainer changed this summary." });
+test("scopes stale checks to the operation target", async () => {
+  const changedProject = project({ summary: "Maintainer changed the card." });
   await expect(
     processProjectOwnerTriage({
       issue: issue(),
-      record: stale,
+      project: changedProject,
+      source: source(),
       repository,
       vocabularies,
     }),
   ).resolves.toMatchObject({
     status: "needs-information",
     reasonCode: "stale-owner-request",
-    fields: ["summary"],
+    fields: ["project_fingerprint"],
   });
 
-  const nonOverlap = record({ catalog_cohort: "standard" });
+  const changedSource = source({ refresh_policy: "paused" });
   await expect(
     processProjectOwnerTriage({
-      issue: issue(),
-      record: nonOverlap,
+      issue: issue(addManifest()),
+      source: changedSource,
       repository,
-      hostRepository: "Tavernary/Tavernary",
-      request: vi.fn(async () => issue()),
       vocabularies,
+      issues: [],
+      pulls: [],
     }),
   ).resolves.toMatchObject({
-    status: "admitted",
-    warnings: ["source-fingerprint-changed"],
+    status: "needs-information",
+    reasonCode: "stale-owner-request",
+    fields: ["source_fingerprint"],
   });
 });
 
-test("constructs and validates a direct fallback without trusting its repository URL", async () => {
-  const current = record();
+test("requires repository-wide delisting confirmation", async () => {
+  await expect(
+    processProjectOwnerTriage({
+      issue: issue(delistManifest(source(), "Alpha")),
+      source: source(),
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "owner-request-invalid",
+    message: expect.stringContaining("match the repository"),
+  });
+});
+
+test("constructs and validates the readable edit fallback without trusting its repository URL", async () => {
+  const currentProject = project();
   const fallbackIssue = {
     ...issue(),
     body: [
       ["Request type", "Edit card details"],
+      ["Source ID", "github-42"],
       ["Project ID", "owner-alpha"],
       ["Current repository", "https://github.com/Attacker/Wrong"],
       ["Proposed display name", "Alpha"],
       ["Proposed summary", "Fallback owner summary."],
       ["Supported frontends", "sillytavern"],
       ["Primary function", "interface-workflow"],
-      ["Capabilities", "automation"],
+      ["Tags", "automation"],
+      ["Summary metadata mode", "manual"],
+      ["Tag metadata mode", "automatic"],
       ["Model families", "_No response_"],
       ["Completion formats", "_No response_"],
       ["Proposed repository", "_No response_"],
@@ -394,11 +404,11 @@ test("constructs and validates a direct fallback without trusting its repository
       .map(([heading, value]) => `### ${heading}\n\n${value}`)
       .join("\n\n"),
   };
-
   await expect(
     processProjectOwnerTriage({
       issue: fallbackIssue,
-      record: current,
+      project: currentProject,
+      source: source(),
       repository,
       hostRepository: "Tavernary/Tavernary",
       request: vi.fn(async () => fallbackIssue),
@@ -413,122 +423,17 @@ test("constructs and validates a direct fallback without trusting its repository
   });
 });
 
-test("requires the project display name in a direct delist fallback", async () => {
-  const fallback = (confirmation: string) => {
-    const fallbackIssue = {
-      ...issue(),
-      body: [
-        ["Request type", "Delist this project"],
-        ["Project ID", "owner-alpha"],
-        ["Current repository", "https://github.com/Owner/Alpha"],
-        ["Proposed display name", "_No response_"],
-        ["Proposed summary", "_No response_"],
-        ["Supported frontends", "_No response_"],
-        ["Primary function", "_No response_"],
-        ["Capabilities", "_No response_"],
-        ["Model families", "_No response_"],
-        ["Completion formats", "_No response_"],
-        ["Proposed repository", "_No response_"],
-        ["Explanation or public note", "_No response_"],
-        ["Delist confirmation", confirmation],
-        ["Owner request manifest", "_No response_"],
-      ]
-        .map(([heading, value]) => `### ${heading}\n\n${value}`)
-        .join("\n\n"),
-    };
-    return fallbackIssue;
-  };
-
-  const accepted = fallback("ALPHA");
-  await expect(
-    processProjectOwnerTriage({
-      issue: accepted,
-      record: record(),
-      repository,
-      hostRepository: "Tavernary/Tavernary",
-      request: vi.fn(async () => accepted),
-      vocabularies,
-    }),
-  ).resolves.toMatchObject({
-    status: "admitted",
-    manifest: {
-      operation: "delist",
-      delist_confirmation: "ALPHA",
-    },
-  });
-
-  await expect(
-    processProjectOwnerTriage({
-      issue: fallback("Al"),
-      record: record(),
-      repository,
-      vocabularies,
-    }),
-  ).resolves.toMatchObject({
-    status: "needs-information",
-    reasonCode: "owner-request-invalid",
-  });
-});
-
-test("matches delist confirmation to the current complete project name", async () => {
-  const current = record();
-  const partialIssue = issue(delistManifest(current, "Al"));
-  await expect(
-    processProjectOwnerTriage({
-      issue: partialIssue,
-      record: current,
-      repository,
-      vocabularies,
-    }),
-  ).resolves.toMatchObject({
-    status: "needs-information",
-    reasonCode: "owner-request-invalid",
-    message:
-      "Owner delisting confirmation must match the current complete project name.",
-  });
-
-  const acceptedIssue = issue(delistManifest(current, "  aLpHa  "));
-  await expect(
-    processProjectOwnerTriage({
-      issue: acceptedIssue,
-      record: current,
-      repository,
-      hostRepository: "Tavernary/Tavernary",
-      request: vi.fn(async () => acceptedIssue),
-      vocabularies,
-    }),
-  ).resolves.toMatchObject({
-    status: "admitted",
-    manifest: { delist_confirmation: "aLpHa" },
-  });
-
-  const renamed = record({ name: "Alpha Renamed" });
-  await expect(
-    processProjectOwnerTriage({
-      issue: issue(delistManifest(current, "Alpha")),
-      record: renamed,
-      repository,
-      vocabularies,
-    }),
-  ).resolves.toMatchObject({
-    status: "needs-information",
-    reasonCode: "owner-request-invalid",
-    message:
-      "Owner delisting confirmation must match the current complete project name.",
-  });
-});
-
 test("fails closed when the issue changes during triage", async () => {
   const original = issue();
   const changed = { ...original, updated_at: "2026-07-28T12:01:00Z" };
   const request = vi.fn(async (path: string) =>
     path === "/repositories/42" ? repository : changed,
   );
-
   await expect(
     processProjectOwnerTriage({
       issue: original,
-      record: record(),
+      project: project(),
+      source: source(),
       hostRepository: "Tavernary/Tavernary",
       request,
       vocabularies,
@@ -540,19 +445,17 @@ test("fails closed when the issue changes during triage", async () => {
 });
 
 test("refuses admission when trusted issue routing context is unavailable", async () => {
-  const request = vi.fn(async () => issue());
-
   await expect(
     processProjectOwnerTriage({
       issue: issue(),
-      record: record(),
+      project: project(),
+      source: source(),
       repository,
-      request,
+      request: vi.fn(async () => issue()),
       vocabularies,
     }),
   ).resolves.toMatchObject({
     status: "retryable",
     reasonCode: "trusted-issue-context-unavailable",
   });
-  expect(request).not.toHaveBeenCalled();
 });

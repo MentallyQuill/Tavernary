@@ -370,6 +370,7 @@ export function findOwnerRequestPathCollision({
 }
 
 export function planOwnerPrUpdate(input) {
+  if (input?.report) return planSourceAwareOwnerPrUpdate(input);
   const expected = expectedPaths(input?.projectId, input?.operation);
   if (!expected || !exactPaths(input.generatedPaths, expected)) {
     throw new Error(
@@ -425,4 +426,95 @@ export function planOwnerPrUpdate(input) {
   }
   if (!input.generatedContentChanged) return { action: "noop" };
   return { action: "update", replacePaths: [...input.generatedPaths] };
+}
+
+function transactionFromReport(report) {
+  return createProjectPublicationTransaction({
+    schema_version: 2,
+    operation: report?.operation,
+    producer: "project-owner-request",
+    publication_mode: report?.publication_mode,
+    issue_number: report?.issue_number,
+    project_ids: report?.project_ids,
+    source_id: report?.source_id,
+    source_identity: report?.source_identity,
+    actor: {
+      id: report?.actor_id,
+      login: report?.actor_login,
+      type: report?.actor_type,
+    },
+    authority_type: report?.authority_type,
+    input_digest: report?.request_fingerprint,
+    input_fingerprints: report?.input_fingerprints,
+    base_sha: "0".repeat(40),
+    generated_head_sha: "1".repeat(40),
+    generated_paths: report?.generated_paths,
+    policy_version: report?.policy_version,
+    copy_result: report?.copy_result
+      ? { mode: "preserve", ...report.copy_result }
+      : null,
+  });
+}
+
+function sameSourceAwareOwnership(expected, current) {
+  return (
+    current?.schema_version === 2 &&
+    current.producer === "project-owner-request" &&
+    current.issue_number === expected.issue_number &&
+    current.operation === expected.operation &&
+    current.publication_mode === expected.publication_mode &&
+    current.source_id === expected.source_id &&
+    JSON.stringify(current.source_identity) ===
+      JSON.stringify(expected.source_identity) &&
+    current.authority_type === expected.authority_type &&
+    current.actor?.id === expected.actor.id &&
+    current.actor?.login === expected.actor.login &&
+    current.actor?.type === expected.actor.type &&
+    (expected.operation === "add-cards" ||
+      JSON.stringify(current.project_ids) ===
+        JSON.stringify(expected.project_ids))
+  );
+}
+
+function planSourceAwareOwnerPrUpdate(input) {
+  const expected = transactionFromReport(input.report);
+  const collision = findOwnerRequestPathCollision({
+    repository: input.repository,
+    issueNumber: expected.issue_number,
+    generatedPaths: expected.generated_paths,
+    pulls: input.pulls,
+  });
+  if (collision) {
+    return {
+      action: "conflict",
+      reasonCode: "generated-path-collision",
+      message: "An open generated pull request already owns this project path.",
+      collision,
+    };
+  }
+  if (input.remoteHeadSha === null) {
+    return { action: "create", replacePaths: [...expected.generated_paths] };
+  }
+  const existing = input.existingMarker?.marker;
+  if (
+    input.existingMarker?.kind !== "project-owner" ||
+    !sameSourceAwareOwnership(expected, existing)
+  ) {
+    return {
+      action: "conflict",
+      reasonCode: "existing-marker-mismatch",
+      message:
+        "The existing branch is not owned by this exact project owner request.",
+    };
+  }
+  if (input.remoteHeadSha !== existing.generated_head_sha) {
+    return {
+      action: "conflict",
+      reasonCode: "maintainer-divergence",
+      message:
+        "The owner request pull request contains maintainer changes. Regeneration is refused; continue review on the existing branch.",
+    };
+  }
+  if (!input.generatedContentChanged) return { action: "noop" };
+  return { action: "update", replacePaths: [...expected.generated_paths] };
 }

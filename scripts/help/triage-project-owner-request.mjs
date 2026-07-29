@@ -2,24 +2,36 @@ import { readFile as defaultReadFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
-import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
+import {
+  fingerprintProjectRecord,
+  fingerprintSourceRecord,
+} from "../../src/features/help/project-owner-record.mjs";
 import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
 import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 import {
   detectOwnerRequestConflict,
   verifyProjectOwnerAuthority,
 } from "./project-owner-authority.mjs";
+import { planSourceRequestAdmission } from "./source-request-lock.mjs";
 
-const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const PROJECT_OPERATIONS = new Set([
+  "edit-card",
+  "retire-card",
+  "restore-card",
+]);
 const OWNER_HEADINGS = new Set([
   "Request type",
+  "Source ID",
   "Project ID",
   "Current repository",
   "Proposed display name",
   "Proposed summary",
   "Supported frontends",
   "Primary function",
-  "Capabilities",
+  "Tags",
+  "Summary metadata mode",
+  "Tag metadata mode",
   "Model families",
   "Completion formats",
   "Proposed repository",
@@ -44,7 +56,7 @@ function issueLabels(issue) {
 function eligibleIssue(issue) {
   const labels = issueLabels(issue);
   return (
-    issue?.state === "open" &&
+    String(issue?.state).toLocaleLowerCase() === "open" &&
     labels.has("issue-admitted") &&
     labels.has("project-owner-request")
   );
@@ -72,25 +84,37 @@ function renderedJson(value) {
   );
 }
 
-function parseRepositoryLocation(value) {
+function preliminary(body) {
+  const collected = collectHeadings(body);
+  if (collected.duplicates.length > 0) {
+    return {
+      valid: false,
+      errors: ["Owner request contains a duplicate recognized form heading."],
+    };
+  }
+  const manifestValue = collected.fields.get("Owner request manifest") ?? "";
+  if (!manifestValue) {
+    return {
+      valid: true,
+      source: "fallback",
+      manifest: null,
+      fields: collected.fields,
+    };
+  }
   try {
-    const url = new URL(value);
-    const parts = url.pathname.split("/").filter(Boolean);
-    if (
-      url.protocol !== "https:" ||
-      url.hostname.toLocaleLowerCase() !== "github.com" ||
-      url.port ||
-      url.username ||
-      url.password ||
-      url.search ||
-      url.hash ||
-      parts.length !== 2
-    ) {
-      return null;
-    }
-    return `${parts[0]}/${parts[1]}`;
+    return {
+      valid: true,
+      source: "manifest",
+      manifest: JSON.parse(renderedJson(manifestValue)),
+      fields: collected.fields,
+    };
   } catch {
-    return null;
+    return {
+      valid: false,
+      errors: [
+        "Owner request manifest is not valid JSON. Correct it or leave it empty to use the readable fields.",
+      ],
+    };
   }
 }
 
@@ -105,127 +129,147 @@ function lineValues(value) {
   ];
 }
 
-function originalCard(record) {
+function metadataMode(value, fallback) {
+  return ["automatic", "manual"].includes(value) ? value : fallback;
+}
+
+function originalCard(project) {
   return {
-    kind: record.kind,
-    name: record.name,
-    summary: record.summary,
-    frontends: record.frontends,
-    primary_function: record.primary_function,
-    capabilities: record.capabilities,
-    model_families: Array.isArray(record.model_families)
-      ? record.model_families
+    kind: project.kind,
+    name: project.name,
+    summary: project.summary,
+    frontends: project.frontends,
+    primary_function: project.primary_function,
+    tags: project.tags,
+    metadata: {
+      summary: {
+        mode: project.metadata_policy?.summary?.mode ?? "automatic",
+      },
+      tags: { mode: project.metadata_policy?.tags?.mode ?? "automatic" },
+    },
+    model_families: Array.isArray(project.model_families)
+      ? project.model_families
       : [],
-    completion_formats: Array.isArray(record.completion_formats)
-      ? record.completion_formats
+    completion_formats: Array.isArray(project.completion_formats)
+      ? project.completion_formats
       : [],
   };
 }
 
-function fallbackManifest(fields, record) {
+function parseRepositoryLocation(value) {
+  const text = readable(value);
+  if (/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(text)) return text;
+  try {
+    const url = new URL(text);
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (
+      url.protocol === "https:" &&
+      url.hostname.toLocaleLowerCase() === "github.com" &&
+      !url.port &&
+      !url.username &&
+      !url.password &&
+      !url.search &&
+      !url.hash &&
+      parts.length === 2
+    ) {
+      return `${parts[0]}/${parts[1]}`;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function fallbackManifest(fields, project, source) {
   const operation = {
     "Edit card details": "edit-card",
+    "Add cards from this source": "add-cards",
+    "Retire this card": "retire-card",
+    "Restore this card": "restore-card",
     "Update repository location": "move-source",
-    "Delist this project": "delist",
+    "Permanently delist this source": "delist-source",
   }[fields.get("Request type")];
+  if (!operation || operation === "add-cards") return null;
+
   const common = {
-    schema_version: 1,
+    schema_version: 2,
     request_kind: "project-owner",
     operation,
-    project_id: fields.get("Project ID"),
-    repository_id:
-      record?.source?.type === "github" &&
-      Number.isSafeInteger(record.source.repository_id) &&
-      record.source.repository_id > 0
-        ? record.source.repository_id
-        : null,
-    source_fingerprint: fingerprintProjectRecord(record),
+    source_id: source?.id,
+    repository_id: source?.repository_id,
     explanation: fields.get("Explanation or public note") || null,
   };
   if (operation === "edit-card") {
+    const original = originalCard(project);
     return {
       ...common,
-      original: originalCard(record),
+      project_id: project?.id,
+      project_fingerprint: fingerprintProjectRecord(project),
+      original,
       proposed: {
         name: fields.get("Proposed display name"),
         summary: fields.get("Proposed summary"),
         frontends: lineValues(fields.get("Supported frontends")),
         primary_function: fields.get("Primary function"),
-        capabilities: lineValues(fields.get("Capabilities")),
+        tags: lineValues(fields.get("Tags")),
+        metadata: {
+          summary: {
+            mode: metadataMode(
+              fields.get("Summary metadata mode"),
+              original.metadata.summary.mode,
+            ),
+          },
+          tags: {
+            mode: metadataMode(
+              fields.get("Tag metadata mode"),
+              original.metadata.tags.mode,
+            ),
+          },
+        },
         model_families: lineValues(fields.get("Model families")),
         completion_formats: lineValues(fields.get("Completion formats")),
       },
     };
   }
+  if (operation === "retire-card" || operation === "restore-card") {
+    const retiring = operation === "retire-card";
+    return {
+      ...common,
+      project_id: project?.id,
+      project_fingerprint: fingerprintProjectRecord(project),
+      original: retiring
+        ? { listing_status: "active", listing_status_reason: null }
+        : { listing_status: "retired", listing_status_reason: "removed" },
+      proposed: retiring
+        ? { listing_status: "retired", listing_status_reason: "removed" }
+        : { listing_status: "active", listing_status_reason: null },
+    };
+  }
   if (operation === "move-source") {
     return {
       ...common,
+      source_fingerprint: fingerprintSourceRecord(source),
       original: {
-        repository: record?.source?.repository,
-        repository_id: record?.source?.repository_id,
+        repository: source?.repository,
+        repository_id: source?.repository_id,
       },
       proposed: {
         repository: parseRepositoryLocation(fields.get("Proposed repository")),
-        repository_id: record?.source?.repository_id,
+        repository_id: source?.repository_id,
       },
     };
   }
   return {
     ...common,
-    delist_confirmation: fields.get("Delist confirmation"),
-    original: { visibility: record?.visibility },
+    source_fingerprint: fingerprintSourceRecord(source),
+    original: { status: "active" },
     proposed: {
-      visibility: "disabled",
-      visibility_reason: "removed",
+      status: "delisted",
+      status_reason: "removed",
       refresh_policy: "paused",
-      enrichment_policy: "manual",
     },
+    delist_confirmation: fields.get("Delist confirmation"),
   };
-}
-
-function preliminary(body) {
-  const collected = collectHeadings(body);
-  if (collected.duplicates.length > 0) {
-    return {
-      valid: false,
-      errors: ["Owner request contains a duplicate recognized form heading."],
-    };
-  }
-  const manifestValue = collected.fields.get("Owner request manifest") ?? "";
-  if (manifestValue) {
-    try {
-      const manifest = JSON.parse(renderedJson(manifestValue));
-      return {
-        valid: true,
-        source: "manifest",
-        manifest,
-        fields: collected.fields,
-      };
-    } catch {
-      return {
-        valid: false,
-        errors: [
-          "Owner request manifest is not valid JSON. Correct it or leave it empty to use the readable fields.",
-        ],
-      };
-    }
-  }
-  return {
-    valid: true,
-    source: "fallback",
-    manifest: null,
-    fields: collected.fields,
-  };
-}
-
-function projectIdFromParsed(parsed) {
-  const value =
-    parsed.source === "manifest"
-      ? parsed.manifest?.project_id
-      : parsed.fields.get("Project ID");
-  return typeof value === "string" && PROJECT_ID_PATTERN.test(value)
-    ? value
-    : null;
 }
 
 function needsInformation(reasonCode, message, extra = {}) {
@@ -285,12 +329,24 @@ function issueChanged(before, after) {
   );
 }
 
-async function resolveRepositoryIdentity(input, record) {
+async function readRecord(input, kind, id) {
+  const injected = kind === "projects" ? input.project : input.source;
+  if (injected) return structuredClone(injected);
+  const readFile = input.readFile ?? defaultReadFile;
+  return JSON.parse(
+    await readFile(
+      resolve(input.root ?? ".", "data", "registry", kind, `${id}.json`),
+      "utf8",
+    ),
+  );
+}
+
+async function resolveRepositoryIdentity(input, source) {
   if (input.repository) return repositoryIdentity(input.repository);
   if (
-    record?.source?.type !== "github" ||
-    !Number.isSafeInteger(record.source.repository_id) ||
-    record.source.repository_id <= 0
+    source?.type !== "github" ||
+    !Number.isSafeInteger(source.repository_id) ||
+    source.repository_id <= 0
   ) {
     return null;
   }
@@ -299,23 +355,42 @@ async function resolveRepositoryIdentity(input, record) {
     error.code = "github-api-temporary-failure";
     throw error;
   }
-  const raw = await input.request(
-    `/repositories/${record.source.repository_id}`,
+  return repositoryIdentity(
+    await input.request(`/repositories/${source.repository_id}`),
   );
-  return repositoryIdentity(raw);
 }
 
-async function readRegistryRecord(input, projectId) {
-  if (input.record) return structuredClone(input.record);
-  const readFile = input.readFile ?? defaultReadFile;
-  const path = resolve(
-    input.root ?? ".",
-    "data",
-    "registry",
-    "projects",
-    `${projectId}.json`,
-  );
-  return JSON.parse(await readFile(path, "utf8"));
+function rawIdentifiers(parsed) {
+  const operation =
+    parsed.source === "manifest"
+      ? parsed.manifest?.operation
+      : {
+          "Edit card details": "edit-card",
+          "Add cards from this source": "add-cards",
+          "Retire this card": "retire-card",
+          "Restore this card": "restore-card",
+          "Update repository location": "move-source",
+          "Permanently delist this source": "delist-source",
+        }[parsed.fields.get("Request type")];
+  const projectId =
+    parsed.source === "manifest"
+      ? parsed.manifest?.project_id
+      : parsed.fields.get("Project ID");
+  const sourceId =
+    parsed.source === "manifest"
+      ? parsed.manifest?.source_id
+      : parsed.fields.get("Source ID");
+  return {
+    operation,
+    projectId:
+      typeof projectId === "string" && ID_PATTERN.test(projectId)
+        ? projectId
+        : null,
+    sourceId:
+      typeof sourceId === "string" && ID_PATTERN.test(sourceId)
+        ? sourceId
+        : null,
+  };
 }
 
 export async function processProjectOwnerTriage(input) {
@@ -332,38 +407,57 @@ export async function processProjectOwnerTriage(input) {
       errors: parsed.errors,
     });
   }
-  const projectId = projectIdFromParsed(parsed);
-  if (!projectId) {
+
+  const identifiers = rawIdentifiers(parsed);
+  const usesProject = PROJECT_OPERATIONS.has(identifiers.operation);
+  if (!identifiers.operation || (usesProject && !identifiers.projectId)) {
     return needsInformation(
       "owner-request-invalid",
-      "Owner request project ID is invalid.",
+      "Owner request operation or project ID is invalid.",
+    );
+  }
+  if (!identifiers.sourceId && !usesProject) {
+    return needsInformation(
+      "owner-request-invalid",
+      "Owner request source ID is invalid.",
     );
   }
 
-  let record;
+  let project = null;
+  let source = null;
   try {
-    record = await readRegistryRecord(input, projectId);
-  } catch {
+    if (usesProject) {
+      project = await readRecord(input, "projects", identifiers.projectId);
+      if (project?.id !== identifiers.projectId) throw new Error("project");
+    }
+    const sourceId = identifiers.sourceId ?? project?.source_id;
+    if (!ID_PATTERN.test(sourceId ?? "")) throw new Error("source");
+    source = await readRecord(input, "sources", sourceId);
+    if (source?.id !== sourceId) throw new Error("source");
+    if (project && project.source_id !== source.id) throw new Error("join");
+  } catch (error) {
     return needsInformation(
-      "project-not-found",
-      "Owner request project does not match a current registry record.",
-    );
-  }
-  if (record?.id !== projectId) {
-    return needsInformation(
-      "project-not-found",
-      "Owner request project does not match a current registry record.",
+      String(error?.message) === "project"
+        ? "project-not-found"
+        : "source-not-found",
+      "Owner request does not match current card and source records.",
     );
   }
 
   const rawManifest =
     parsed.source === "manifest"
       ? parsed.manifest
-      : fallbackManifest(parsed.fields, record);
-  const normalized = normalizeProjectOwnerManifest(
-    rawManifest,
-    input.vocabularies,
-  );
+      : fallbackManifest(parsed.fields, project, source);
+  if (!rawManifest) {
+    return needsInformation(
+      "owner-request-invalid",
+      "This owner operation requires the complete generated request manifest.",
+    );
+  }
+  const normalized = normalizeProjectOwnerManifest(rawManifest, {
+    ...input.vocabularies,
+    source,
+  });
   if (!normalized.valid) {
     return needsInformation(
       "owner-request-invalid",
@@ -371,15 +465,21 @@ export async function processProjectOwnerTriage(input) {
       { errors: normalized.errors },
     );
   }
-  if (
-    normalized.manifest.operation === "delist" &&
-    normalized.manifest.delist_confirmation.trim().toLocaleLowerCase() !==
-      String(record.name).trim().toLocaleLowerCase()
-  ) {
-    return needsInformation(
-      "owner-request-invalid",
-      "Owner delisting confirmation must match the current complete project name.",
-    );
+
+  if (normalized.manifest.operation === "add-cards") {
+    const lock = planSourceRequestAdmission({
+      sourceId: source.id,
+      issueNumber: issue.number,
+      issues: input.issues ?? [],
+      pulls: input.pulls ?? [],
+    });
+    if (lock.action === "reject") {
+      return needsInformation(
+        lock.reasonCode,
+        `Only one unresolved add-card request is allowed for this source. Resolve #${lock.conflictingIssueNumber} first.`,
+        { conflictingIssueNumber: lock.conflictingIssueNumber },
+      );
+    }
   }
 
   const staffAuthority = verifyTrustedEditor({
@@ -396,18 +496,8 @@ export async function processProjectOwnerTriage(input) {
       role: staffAuthority.role,
     };
     if (normalized.manifest.operation === "move-source") {
-      if (
-        record.source?.type !== "github" ||
-        !Number.isSafeInteger(record.source.repository_id) ||
-        record.source.repository_id <= 0
-      ) {
-        return needsInformation(
-          "unsupported-source",
-          "Repository location updates require a current GitHub repository identity.",
-        );
-      }
       try {
-        repository = await resolveRepositoryIdentity(input, record);
+        repository = await resolveRepositoryIdentity(input, source);
       } catch (error) {
         if (temporaryApiFailure(error)) {
           return {
@@ -424,7 +514,7 @@ export async function processProjectOwnerTriage(input) {
     }
   } else {
     try {
-      repository = await resolveRepositoryIdentity(input, record);
+      repository = await resolveRepositoryIdentity(input, source);
     } catch (error) {
       if (temporaryApiFailure(error)) {
         return {
@@ -441,7 +531,7 @@ export async function processProjectOwnerTriage(input) {
     const ownerAuthority = verifyProjectOwnerAuthority({
       issueAuthor: issue.user?.login,
       manifestRepositoryId: normalized.manifest.repository_id,
-      record,
+      source,
       repository: repository ?? {},
     });
     if (!ownerAuthority.authorized) {
@@ -455,9 +545,21 @@ export async function processProjectOwnerTriage(input) {
     authority = ownerAuthority;
   }
 
+  if (
+    normalized.manifest.operation === "move-source" &&
+    repository?.fullName?.toLocaleLowerCase() !==
+      normalized.manifest.proposed.repository.toLocaleLowerCase()
+  ) {
+    return needsInformation(
+      "repository-location-mismatch",
+      "The proposed repository location does not match the current immutable GitHub repository identity.",
+    );
+  }
+
   const conflict = detectOwnerRequestConflict({
     manifest: normalized.manifest,
-    record,
+    project,
+    source,
   });
   if (conflict.conflict) {
     return needsInformation(
@@ -505,13 +607,27 @@ export async function processProjectOwnerTriage(input) {
     );
   }
 
+  const projects = (input.projects ?? (project ? [project] : [])).filter(
+    (candidate) => candidate?.source_id === source.id,
+  );
   return {
     status: "admitted",
     issueNumber: issue.number,
-    projectId,
+    projectId: project?.id ?? null,
+    projectIds:
+      normalized.manifest.operation === "add-cards"
+        ? normalized.manifest.proposed_cards.map((card) => card.project_id)
+        : project
+          ? [project.id]
+          : [],
+    sourceId: source.id,
     operation: normalized.manifest.operation,
     manifest: normalized.manifest,
-    record,
+    project,
+    record: project,
+    projects,
+    source,
+    snapshot: input.snapshot ?? null,
     repository,
     authorityType: authority.authorityType,
     actorLogin: authority.actorLogin,

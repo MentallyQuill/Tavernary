@@ -34,7 +34,7 @@ export function renderOwnerRequestPullRequest(input: {
   projectName: string;
   report: {
     issue_number: number;
-    project_id?: string;
+    project_id?: string | null;
     project_ids: string[];
     source_id: string;
     publication_mode: "automatic" | "manual";
@@ -52,8 +52,8 @@ export function renderOwnerRequestPullRequest(input: {
       change_reasons: string[];
       policy_signal: "none" | "catalog-policy-rewrite";
     };
-    before: Record<string, unknown>;
-    after: Record<string, unknown>;
+    before: unknown;
+    after: unknown;
     warnings: string[];
     generated_paths: string[];
   };
@@ -93,6 +93,44 @@ export function planOwnerPrUpdate(input: {
   generatedContentChanged: boolean;
   forceRegeneration?: boolean;
   generatedPaths: string[];
+  pulls?: any[];
+}): OwnerPrUpdatePlan;
+
+export function planOwnerPrUpdate(input: {
+  report: {
+    issue_number: number;
+    project_ids: string[];
+    source_id: string;
+    operation: ProjectPublicationTransaction["operation"];
+    publication_mode: "automatic" | "manual";
+    source_identity: ProjectPublicationTransaction["source_identity"];
+    actor_id: number;
+    actor_login: string;
+    actor_type: "User";
+    authority_type: OwnerPrMarker["authority_type"];
+    request_fingerprint: string;
+    input_fingerprints: ProjectPublicationTransaction["input_fingerprints"];
+    policy_version: string;
+    copy_result?: {
+      result:
+        | "accepted-unchanged"
+        | "accepted-with-light-edits"
+        | "accepted-with-policy-rewrite";
+      change_reasons: string[];
+      policy_signal: "none" | "catalog-policy-rewrite";
+    };
+    generated_paths: string[];
+  };
+  repository: string;
+  remoteHeadSha: string | null;
+  existingMarker:
+    | {
+        kind: "project-owner";
+        marker: OwnerPrMarker | ProjectPublicationTransaction;
+      }
+    | { kind: "project-submission"; marker: Record<string, unknown> }
+    | null;
+  generatedContentChanged: boolean;
   pulls?: any[];
 }): OwnerPrUpdatePlan;
 import type { ProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
