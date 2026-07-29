@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { classifySubmissionSummaryAuthority } from "../../scripts/submissions/submission-summary-authority.mjs";
+import {
+  classifySubmissionMetadataAuthority,
+  classifySubmissionSummaryAuthority,
+} from "../../scripts/submissions/submission-summary-authority.mjs";
 
 const trustedEditorRegistry = {
   schema_version: 1 as const,
@@ -151,4 +154,18 @@ test("staff authority wins before a matching repository-owner route", () => {
       trustedEditorRegistry,
     }),
   ).toMatchObject({ authorityType: "tavernary-staff" });
+});
+
+test("retains the summary authority name as a forwarding alias", () => {
+  const input = {
+    issueActor: { id: 11, login: "projectowner" },
+    authorAssociation: "NONE",
+    sourceIdentity: githubSource,
+    repositoryOwner: { id: 11, login: "ProjectOwner", type: "User" },
+    trustedEditorRegistry,
+  };
+
+  expect(classifySubmissionSummaryAuthority(input)).toEqual(
+    classifySubmissionMetadataAuthority(input),
+  );
 });

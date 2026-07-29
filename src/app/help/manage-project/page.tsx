@@ -6,6 +6,10 @@ import frontends from "../../../../data/vocabularies/frontends.json";
 import modelFamilies from "../../../../data/vocabularies/model-families.json";
 import primaryFunctions from "../../../../data/vocabularies/primary-functions.json";
 import tags from "../../../../data/vocabularies/tags.json";
+import {
+  publicTagVocabulary,
+  type TagVocabulary,
+} from "../../../../scripts/catalog/tag-vocabulary.mjs";
 import { HelpPageShell } from "@/features/help/components/help-page-shell";
 import { ProjectOwnerBuilder } from "@/features/help/components/project-owner-builder";
 import { loadOwnerProjectOptions } from "@/lib/help/load-owner-project-options";
@@ -45,7 +49,7 @@ export default async function ManageProjectPage() {
           vocabularies={{
             frontends: frontends.frontends,
             primaryFunctions: primaryFunctions.primary_functions,
-            tags: tags.tags,
+            tags: publicTagVocabulary(tags as TagVocabulary),
             modelFamilies: modelFamilies.model_families,
             completionFormats: completionFormats.completion_formats,
           }}

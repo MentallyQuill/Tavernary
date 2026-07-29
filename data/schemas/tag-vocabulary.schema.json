@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/tag-vocabulary.schema.json",
+  "title": "Tavernary Goals-and-Traits vocabulary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "tags"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "label",
+          "facet",
+          "description",
+          "aliases",
+          "applicable_kinds",
+          "inclusion_guidance",
+          "exclusion_guidance"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "label": { "type": "string", "minLength": 1 },
+          "facet": { "enum": ["goal", "trait"] },
+          "description": { "type": "string", "minLength": 1 },
+          "aliases": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "applicable_kinds": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "enum": ["frontend", "extension", "preset"] },
+            "uniqueItems": true
+          },
+          "inclusion_guidance": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "exclusion_guidance": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}

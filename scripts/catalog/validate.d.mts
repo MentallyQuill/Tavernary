@@ -15,4 +15,5 @@ export function validateCatalog(options?: {
   supportSnapshots?: unknown[];
   blockedUsers?: unknown;
   trustedEditors?: unknown;
+  tagVocabulary?: unknown;
 }): Promise<ValidationResult>;

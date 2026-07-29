@@ -14,7 +14,7 @@ function actorIdentity(actor) {
   };
 }
 
-export function classifySubmissionSummaryAuthority(input) {
+export function classifySubmissionMetadataAuthority(input) {
   const actor = actorIdentity(input?.issueActor);
   const staff = verifyTrustedEditor({
     actor: input?.issueActor,
@@ -48,3 +48,6 @@ export function classifySubmissionSummaryAuthority(input) {
     ...actor,
   };
 }
+
+export const classifySubmissionSummaryAuthority =
+  classifySubmissionMetadataAuthority;

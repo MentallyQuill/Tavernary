@@ -128,9 +128,7 @@ test("requires the typed repository before handing off a permanent source delist
   await confirmation.fill("MentallyQuill/Directive");
   await expect(delist).toBeEnabled();
   await expect(
-    page.getByText(
-      "Repository matches. Permanent delisting is now available.",
-    ),
+    page.getByText("Repository matches. Permanent delisting is now available."),
   ).toBeVisible();
   await delist.click();
 
@@ -154,9 +152,7 @@ test("requires the typed repository before handing off a permanent source delist
   });
 });
 
-test("routes non-GitHub listings to the report workflow", async ({
-  page,
-}) => {
+test("routes non-GitHub listings to the report workflow", async ({ page }) => {
   await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
 
   await expect(
@@ -187,9 +183,7 @@ test("reviews an atomic add-card request with independent automatic metadata", a
     });
   });
 
-  await page
-    .getByRole("radio", { name: "Add cards from this source" })
-    .check();
+  await page.getByRole("radio", { name: "Add cards from this source" }).check();
   await expect(
     page.getByText(/Only one unresolved add-card request/iu),
   ).toBeVisible();

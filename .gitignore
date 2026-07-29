@@ -15,3 +15,4 @@ test-results/
 !/tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-*.png
 *.tsbuildinfo
 /src/generated/catalog.json
+/local-data/catalog-evidence/

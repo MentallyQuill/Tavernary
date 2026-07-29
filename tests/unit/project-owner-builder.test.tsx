@@ -262,13 +262,15 @@ test("enforces the ten-card batch boundary and keeps at least one draft", async 
   const add = screen.getByRole("button", { name: "Add another card" });
   for (let index = 1; index < 10; index += 1) await user.click(add);
   expect(add).toBeDisabled();
-  expect(screen.getAllByRole("group", { name: /Card \d+/u })).toHaveLength(10);
+  expect(screen.getAllByRole("group", { name: /^Card \d+:/u })).toHaveLength(
+    10,
+  );
 
   const remove = screen.getAllByRole("button", { name: /Remove Card/u });
   for (let index = remove.length - 1; index > 0; index -= 1) {
     await user.click(remove[index]!);
   }
-  expect(screen.getAllByRole("group", { name: /Card \d+/u })).toHaveLength(1);
+  expect(screen.getAllByRole("group", { name: /^Card \d+:/u })).toHaveLength(1);
   expect(screen.getByRole("button", { name: /Remove Card 1/u })).toBeDisabled();
 });
 
