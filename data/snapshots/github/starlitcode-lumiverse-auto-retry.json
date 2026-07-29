@@ -7,20 +7,25 @@
     "owner": "starlitcode",
     "name": "Lumiverse-Auto-Retry",
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
-    "description": "Automatically re-fires generations that fail, come back empty, stall mid-stream, or get cut off. It is a rebuild of the SillyTavern fetch-retry idea by Hikarushmz for Lumiverse's Spindle framework.",
+    "description": "Retries AI replies that fail, come back empty, stall, or get cut off, so you are not the one pressing regenerate. A Lumiverse Spindle extension.",
     "default_branch": "main",
-    "head_sha": "855a6ff543fe98cc91c2687a5d749572e9286dbf",
-    "head_committed_at": "2026-07-24T21:05:06.000Z",
+    "head_sha": "335ac4cdff2c3faaa112d50d76caed8b78fa300e",
+    "head_committed_at": "2026-07-29T05:28:13.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 701
+    "size_kb": 759
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-24T21:05:06.000Z",
+    "latest_source_activity_at": "2026-07-29T04:56:41.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T04:56:41.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-24T21:05:06.000Z",
@@ -55,8 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T06:05:19.795Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-29T10:00:10.862Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "335ac4cdff2c3faaa112d50d76caed8b78fa300e"
   },
   "community": {
     "stars_count": 1,
@@ -69,7 +75,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-28T09:58:50.496Z",
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -78,7 +84,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T09:58:50.496Z",
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

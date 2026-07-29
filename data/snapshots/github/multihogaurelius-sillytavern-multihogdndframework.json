@@ -9,21 +9,21 @@
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
     "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG framework where you can basically make your own game. Mechanical integrity and simulation depth is key here. This isn't a narrative-first philosophy; it aims for relentless \"simulation autism.\"",
     "default_branch": "main",
-    "head_sha": "32095ae47c2cdb39b4d17a00c16e858e5dc633cc",
-    "head_committed_at": "2026-07-27T21:48:14.000Z",
+    "head_sha": "d5ff4a9d316f2652d08fb724754f1de50dc7e3be",
+    "head_committed_at": "2026-07-29T06:24:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 5600
+    "size_kb": 4460
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T21:48:14.000Z",
+    "latest_source_activity_at": "2026-07-29T06:24:36.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-27T21:48:14.000Z",
+        "latest_at": "2026-07-29T06:24:36.000Z",
         "precision": "exact"
       },
       {
@@ -78,24 +78,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-27T15:26:51.000Z",
+    "latest_release_at": "2026-07-28T11:58:03.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T10:52:18.639Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "32095ae47c2cdb39b4d17a00c16e858e5dc633cc"
+    "evidence_head_sha": "d5ff4a9d316f2652d08fb724754f1de50dc7e3be"
   },
   "community": {
-    "stars_count": 58,
-    "forks_count": 10,
+    "stars_count": 59,
+    "forks_count": 11,
     "watchers_count": 0,
-    "aggregate": 68
+    "aggregate": 70
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-28T09:58:50.496Z",
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T09:58:50.496Z",
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
     "stale_since": null
   }
 }

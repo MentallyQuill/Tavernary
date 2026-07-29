@@ -9,23 +9,30 @@
     "url": "https://github.com/closuretxt/recast-post-processing",
     "description": "A SillyTavern extension dedicated to prose post-processing.",
     "default_branch": "master",
-    "head_sha": "5066894fb1cb340c534b0f5f9244a380b701b0ed",
-    "head_committed_at": "2026-04-09T19:00:54.000Z",
+    "head_sha": "c248c711b5ff4d86cea6fefee6978fbaf65eaa64",
+    "head_committed_at": "2026-07-29T00:14:42.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-21T22:59:38.000Z",
-    "size_kb": 205
+    "size_kb": 192
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": null,
-    "source_weeks": [],
+    "latest_source_activity_at": "2026-07-29T00:14:42.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T00:14:42.000Z",
+        "precision": "exact"
+      }
+    ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-07-29T10:00:10.862Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "c248c711b5ff4d86cea6fefee6978fbaf65eaa64"
   },
   "community": {
     "stars_count": 33,
@@ -38,7 +45,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-28T09:58:50.496Z",
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -47,7 +54,8 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T09:58:50.496Z",
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

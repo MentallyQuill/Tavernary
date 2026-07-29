@@ -56,15 +56,15 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-28T16:38:02.346Z",
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-28T16:38:02.346Z",
     "scan": null,
-    "refreshed_at": "2026-07-28T16:38:02.346Z",
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

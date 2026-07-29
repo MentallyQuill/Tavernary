@@ -9,13 +9,13 @@
     "url": "https://github.com/brasen56/merged_world_tracker",
     "description": null,
     "default_branch": "main",
-    "head_sha": "818cce915270b8f7a5b3fe4c56766accfbefc006",
-    "head_committed_at": "2026-07-27T19:35:49.000Z",
+    "head_sha": "265fc6663b75047e783cc3c24aa53e1be0549d3d",
+    "head_committed_at": "2026-07-28T20:53:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-02T00:29:40.000Z",
-    "size_kb": 1143
+    "size_kb": 1156
   },
   "source_health": "healthy",
   "activity": {
@@ -72,7 +72,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-28T13:17:25.958Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "818cce915270b8f7a5b3fe4c56766accfbefc006"
+    "evidence_head_sha": "265fc6663b75047e783cc3c24aa53e1be0549d3d"
   },
   "community": {
     "stars_count": 0,
@@ -81,15 +81,15 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-28T13:17:25.958Z",
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-28T13:17:25.958Z",
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
