@@ -3,14 +3,15 @@ import {
   readFile as defaultReadFile,
   writeFile as defaultWriteFile,
 } from "node:fs/promises";
-import { createHash } from "node:crypto";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
 import { createCatalogCopyProvider } from "../catalog/catalog-copy-provider.mjs";
 import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
+import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import {
   applyProjectOwnerRequest,
   assertProjectOwnerRequestApplicable,
@@ -30,9 +31,7 @@ function parseJson(text) {
 }
 
 export function fingerprintProjectOwnerManifest(manifest) {
-  return createHash("sha256")
-    .update(JSON.stringify(manifest), "utf8")
-    .digest("hex");
+  return fingerprintProjectPublicationInput(manifest);
 }
 
 export function sameProjectOwnerGenerationReport(left, right) {
@@ -380,7 +379,7 @@ export async function generateProjectOwnerRequest(input) {
     actor_login: final.actorLogin,
     actor_type: "User",
     request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
-    record_fingerprint: final.manifest.source_fingerprint,
+    record_fingerprint: fingerprintProjectRecord(final.record),
     source_identity:
       final.record?.source?.type === "github" &&
       Number.isSafeInteger(final.record.source.repository_id) &&

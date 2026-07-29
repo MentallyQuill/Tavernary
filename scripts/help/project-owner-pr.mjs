@@ -241,7 +241,7 @@ export function renderOwnerRequestPullRequest(input) {
     "",
     `Operation: \`${marker.operation}\``,
     "",
-    "This pull request is a maintainer review surface. It is never automatically merged.",
+    "This pull request is the validation and audit transaction for the authorized project change. Eligible transactions publish automatically after required checks pass.",
     "",
     "## Before",
     "",

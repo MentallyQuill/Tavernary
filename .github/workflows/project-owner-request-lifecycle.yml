@@ -1,10 +1,16 @@
 name: "Project owner requests: Process review result"
-run-name: "Owner review PR #${{ github.event.pull_request.number }}: Process result"
+run-name: "Owner review PR #${{ inputs.pull_number || github.event.pull_request.number }}: Process result"
 
 on:
   pull_request:
     types:
       - closed
+  workflow_dispatch:
+    inputs:
+      pull_number:
+        description: Merged project owner-request PR number
+        required: true
+        type: number
 
 permissions:
   contents: write
@@ -12,20 +18,23 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: project-owner-lifecycle-${{ github.event.pull_request.number }}
+  group: project-owner-lifecycle-${{ inputs.pull_number || github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
   close:
-    if: startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PULL_NUMBER: ${{ inputs.pull_number || github.event.pull_request.number }}
     steps:
       - name: Check out default-branch lifecycle code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.repository.default_branch }}
+          ref: ${{ github.event.repository.default_branch || 'main' }}
           fetch-depth: 1
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -38,19 +47,29 @@ jobs:
           CLOSED_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          pull_path="${RUNNER_TEMP}/project-owner-closure-pull.json"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            gh api "repos/${GITHUB_REPOSITORY}/pulls/${PULL_NUMBER}" > "$pull_path"
+          else
+            node -e "const e=require(process.env.GITHUB_EVENT_PATH); require('fs').writeFileSync(process.argv[1], JSON.stringify(e.pull_request))" "$pull_path"
+          fi
           node --input-type=module <<'NODE'
           import fs from "node:fs";
           import { planProjectOwnerClosure } from "./scripts/help/project-owner-lifecycle.mjs";
 
-          const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
-          const pull = event.pull_request;
+          const pull = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-closure-pull.json`,
+              "utf8",
+            ),
+          );
           const plan = planProjectOwnerClosure({
             merged: pull.merged === true,
             headRef: pull.head.ref,
             headRepository: pull.head.repo?.full_name ?? "",
-            baseRepository: event.repository.full_name,
+            baseRepository: process.env.GITHUB_REPOSITORY,
             baseRef: pull.base.ref,
-            defaultBranch: event.repository.default_branch,
+            defaultBranch: pull.base.repo?.default_branch ?? "main",
             headSha: pull.head.sha,
             body: pull.body ?? "",
           });

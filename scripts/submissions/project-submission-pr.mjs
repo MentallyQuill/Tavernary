@@ -111,7 +111,7 @@ export function renderSubmissionPullRequest(input) {
     "",
     `Closes #${input.issueNumber}`,
     "",
-    "This pull request is the maintainer review surface for the generated catalog proposal. Edit the proposed files directly when corrections are needed.",
+    "This pull request is the validation and audit transaction for the generated catalog proposal. Eligible transactions publish automatically after required checks pass.",
     "",
     "## Submitted",
     "",

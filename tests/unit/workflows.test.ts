@@ -847,11 +847,14 @@ test("handles submission closure from default-branch code only", async () => {
     "pull-requests": "read",
     actions: "write",
   });
-  expect(lifecycle.jobs.close.if).toBe(
+  expect(lifecycle.jobs.close.if).toContain(
     "startsWith(github.event.pull_request.head.ref, 'automation/project-submission-')",
   );
+  expect(lifecycle.jobs.close.if).toContain(
+    "github.event_name == 'workflow_dispatch'",
+  );
   expect(checkout?.with?.ref).toBe(
-    "${{ github.event.repository.default_branch }}",
+    "${{ github.event.repository.default_branch || 'main' }}",
   );
   expect(source).toContain("github.event.pull_request.head.sha");
   expect(source).toContain("submission-declined");
@@ -1013,14 +1016,18 @@ test("handles owner closure from default-branch code and exact head state", asyn
     "pull-requests": "read",
   });
   expect(lifecycle.concurrency).toEqual({
-    group: "project-owner-lifecycle-${{ github.event.pull_request.number }}",
+    group:
+      "project-owner-lifecycle-${{ inputs.pull_number || github.event.pull_request.number }}",
     "cancel-in-progress": false,
   });
-  expect(lifecycle.jobs.close.if).toBe(
+  expect(lifecycle.jobs.close.if).toContain(
     "startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')",
   );
+  expect(lifecycle.jobs.close.if).toContain(
+    "github.event_name == 'workflow_dispatch'",
+  );
   expect(checkout?.with?.ref).toBe(
-    "${{ github.event.repository.default_branch }}",
+    "${{ github.event.repository.default_branch || 'main' }}",
   );
   expect(source).toContain("planProjectOwnerClosure");
   expect(source).toContain("github.event.pull_request.head.sha");
