@@ -107,7 +107,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     return null;
   }
 
-  const source = await (options.loadSource ?? loadEnrichmentSource)(
+  let source = await (options.loadSource ?? loadEnrichmentSource)(
     record,
     snapshot,
     options,
@@ -120,29 +120,43 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     throw new Error(source.message);
   }
   if (source.status === "fallback") {
-    const fallback = {
-      summary: "No README file found.",
-      metadata_status: "curated",
-      capabilities: [],
-      classification_review: null,
-      result: "accepted-unchanged",
-      change_reasons: [],
-      policy_signal: "none",
+    const submittedDescription =
+      typeof options.submittedDescription === "string"
+        ? options.submittedDescription.trim()
+        : "";
+    if (!submittedDescription) {
+      const fallback = {
+        summary: "No README file found.",
+        metadata_status: "curated",
+        capabilities: [],
+        classification_review: null,
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      };
+      const validation = validateEnrichmentOutput(
+        fallback,
+        {
+          capabilities: entriesToSet(vocabularies.capabilities),
+        },
+        null,
+        {
+          mode: "synthesize",
+          submittedSummary: "",
+          protectedTerms: [],
+        },
+      );
+      if (!validation.valid) throw new Error(validation.errors.join("; "));
+      return fallback;
+    }
+    source = {
+      ...source,
+      status: "ready",
+      text: submittedDescription,
+      repositoryDescription: null,
+      readmeText: null,
+      readmeIdentity: null,
     };
-    const validation = validateEnrichmentOutput(
-      fallback,
-      {
-        capabilities: entriesToSet(vocabularies.capabilities),
-      },
-      null,
-      {
-        mode: "synthesize",
-        submittedSummary: "",
-        protectedTerms: [],
-      },
-    );
-    if (!validation.valid) throw new Error(validation.errors.join("; "));
-    return fallback;
   }
 
   const input = providerInputForRecord(
@@ -157,9 +171,9 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
       "enrichment provider configuration is required for source-backed records",
     );
   }
-  const generated = await provider.generate(input);
-  const output = generated.output;
-  const validation = validateEnrichmentOutput(
+  let generated = await provider.generate(input);
+  let output = generated.output;
+  let validation = validateEnrichmentOutput(
     output,
     {
       capabilities: entriesToSet(vocabularies.capabilities),
@@ -171,7 +185,33 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
       protectedTerms: input.protectedTerms,
     },
   );
-  if (!validation.valid) throw new Error(validation.errors.join("; "));
+  if (!validation.valid) {
+    generated = await provider.generate({
+      ...input,
+      repair: {
+        reasonCode: "output-invalid",
+        message: [...new Set(validation.errors)].join("; "),
+      },
+    });
+    output = generated.output;
+    validation = validateEnrichmentOutput(
+      output,
+      {
+        capabilities: entriesToSet(vocabularies.capabilities),
+      },
+      input.classificationReviewRequest ?? null,
+      {
+        mode: input.summaryMode,
+        submittedSummary: input.submittedDescription ?? "",
+        protectedTerms: input.protectedTerms,
+      },
+    );
+  }
+  if (!validation.valid) {
+    const error = new Error([...new Set(validation.errors)].join("; "));
+    error.code = "output-invalid";
+    throw error;
+  }
   return output;
 }
 
@@ -214,7 +254,10 @@ function providerInputForRecord(
         typeof source.readmeText === "string" && source.readmeText.length > 0
           ? {
               identity:
-                source.readmeRef ?? source.readmePath ?? source.sourceIdentity,
+                source.readmeIdentity ??
+                source.readmeRef ??
+                source.readmePath ??
+                source.sourceIdentity,
               text: source.readmeText,
             }
           : null,

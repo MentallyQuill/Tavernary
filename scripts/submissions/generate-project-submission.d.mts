@@ -11,6 +11,14 @@ export interface GeneratedSubmissionReport {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  summary_authority:
+    | import("./submission-summary-authority.mjs").SubmissionSummaryAuthority
+    | null;
+  copy_result: {
+    result: import("../catalog/catalog-copy-contract.mjs").CatalogCopyResultStatus;
+    change_reasons: import("../catalog/catalog-copy-contract.mjs").CatalogCopyChangeReason[];
+    policy_signal: import("../catalog/catalog-copy-contract.mjs").CatalogCopyPolicySignal;
+  } | null;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -29,6 +37,8 @@ export interface GeneratedSubmissionDraft {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  summaryAuthority?: import("./submission-summary-authority.mjs").SubmissionSummaryAuthority;
+  copyResult?: GeneratedSubmissionReport["copy_result"];
   classificationReview?: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -48,6 +58,8 @@ export interface GenerationIssue {
   number: number;
   state: string;
   body?: string | null;
+  user?: { id?: number | null; login?: string | null } | null;
+  author_association?: string | null;
   labels: Array<string | { name: string }>;
 }
 

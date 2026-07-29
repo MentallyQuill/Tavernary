@@ -173,6 +173,85 @@ test("keeps a submitted primary function when intake review suggests a mismatch"
   });
 });
 
+test("protects a preserved repository-owner summary from scheduled enrichment", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    summaryAuthority: {
+      authorityType: "repository-owner",
+      actorId: 11,
+      actorLogin: "Owner",
+    },
+    sourceIssueNumber: 128,
+    enrichment: {
+      status: "curated",
+      summary: "Submitted description.",
+      capabilities: ["planning-reasoning"],
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "generation-reasoning",
+        explanation: null,
+      },
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    summary: "Submitted description.",
+    metadata_status: "curated",
+    enrichment_policy: "manual",
+    enrichment_note:
+      "Catalog summary preserved from repository-owner submission issue #128.",
+  });
+  expect(result.copyResult).toEqual({
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  });
+});
+
+test("keeps synthesized owner intake eligible for automatic enrichment", async () => {
+  const result = await draftProjectRecord({
+    admitted: {
+      ...admittedGithubExtension,
+      manifest: {
+        ...admittedGithubExtension.manifest,
+        description: null,
+      },
+    },
+    observation,
+    snapshot,
+    summaryAuthority: {
+      authorityType: "repository-owner",
+      actorId: 11,
+      actorLogin: "Owner",
+    },
+    sourceIssueNumber: 129,
+    enrichment: {
+      status: "curated",
+      summary:
+        "Repository evidence defines this structured roleplay tool and its purpose. Its documented controls support focused work while keeping the surrounding conversation accessible.",
+      capabilities: ["planning-reasoning"],
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "generation-reasoning",
+        explanation: null,
+      },
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record.enrichment_policy).toBe("automatic");
+  expect(result.record).not.toHaveProperty("enrichment_note");
+});
+
 test("stores only a bounded plain-text mismatch explanation", async () => {
   const result = await draftProjectRecord({
     admitted: admittedGithubExtension,
@@ -228,6 +307,23 @@ test("falls back to submitted description when enrichment is unavailable", async
     suggested_primary_function: null,
     explanation: "The optional classification check was unavailable.",
   });
+});
+
+test("refuses an unreviewed fallback when intake marks catalog copy as required", async () => {
+  await expect(
+    draftProjectRecord({
+      admitted: admittedGithubExtension,
+      observation,
+      snapshot,
+      enrichment: {
+        status: "failed",
+        code: "provider-timeout",
+        message: "The enrichment provider timed out.",
+      },
+      copyRequired: true,
+      now: "2026-07-25T18:00:00.000Z",
+    }),
+  ).rejects.toThrow("Validated catalog copy is required");
 });
 
 test("drafts external presets with manual source policy", async () => {

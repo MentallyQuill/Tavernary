@@ -218,6 +218,8 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
     const decoded = decodeReadme(readme);
     const readmeText = decoded === null ? null : prepareReadmeText(decoded);
     if (readmeText) {
+      const readmePath =
+        typeof readme.path === "string" ? readme.path : "README";
       return {
         status: "ready",
         sourceKind: "readme",
@@ -226,6 +228,7 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
         readmeText,
         readmePath: typeof readme.path === "string" ? readme.path : null,
         readmeRef: repository.head_sha,
+        readmeIdentity: `${record.source.type}:${record.source.repository.toLowerCase()}@${repository.head_sha}:${readmePath}`,
         ...common,
       };
     }
@@ -247,6 +250,7 @@ export async function loadReadmeSource(record, snapshot, options = {}) {
       readmeText: null,
       readmePath: null,
       readmeRef: repository.head_sha,
+      readmeIdentity: null,
       ...common,
     };
   }

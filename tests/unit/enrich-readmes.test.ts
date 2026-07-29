@@ -172,6 +172,117 @@ test("passes normalized source and only allowed vocabulary entries to provider",
   );
 });
 
+test("labels conflicting intake evidence in README-first priority order", async () => {
+  const generate = vi.fn(async () => ({
+    output: {
+      summary:
+        "README-grounded purpose takes priority for this SillyTavern project. Repository and submitted descriptions fill only factual gaps without overriding the canonical README evidence or its stated purpose.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: null,
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      summaryMode: "synthesize",
+      submittedDescription:
+        "The submitter claims a conflicting primary purpose.",
+      loadSource: async () => ({
+        status: "ready" as const,
+        sourceKind: "readme" as const,
+        sourceIdentity: "github:creator/project",
+        text: "README canonical purpose.",
+        repositoryDescription: "Repository description says something else.",
+        readmeText: "README canonical purpose.",
+        readmePath: "README.md",
+        readmeRef: "a".repeat(40),
+        readmeIdentity: `github:creator/project@${"a".repeat(40)}:README.md`,
+        repositoryId: 42,
+        headSha: "a".repeat(40),
+      }),
+    },
+  );
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      summaryMode: "synthesize",
+      evidence: {
+        readme: {
+          identity: `github:creator/project@${"a".repeat(40)}:README.md`,
+          text: "README canonical purpose.",
+        },
+        repositoryDescription: "Repository description says something else.",
+        submissionDescription:
+          "The submitter claims a conflicting primary purpose.",
+      },
+    }),
+  );
+});
+
+test("repairs one invalid preservation result with sanitized validation context", async () => {
+  const submittedSummary = "ST-QuickReply keeps the owner's wording";
+  const generate = vi
+    .fn()
+    .mockResolvedValueOnce({
+      output: {
+        summary: "QuickReply keeps the owner's wording.",
+        metadata_status: "curated",
+        capabilities: ["automation"],
+        classification_review: null,
+        result: "accepted-with-light-edits",
+        change_reasons: ["punctuation-corrected"],
+        policy_signal: "none",
+      },
+      metadata: providerMetadata,
+    })
+    .mockResolvedValueOnce({
+      output: {
+        summary: submittedSummary,
+        metadata_status: "curated",
+        capabilities: ["automation"],
+        classification_review: null,
+        ...copyMetadata,
+      },
+      metadata: providerMetadata,
+    });
+
+  await expect(
+    enrichRecord(
+      record,
+      snapshot,
+      { generate },
+      {
+        vocabularies,
+        summaryMode: "preserve",
+        submittedDescription: submittedSummary,
+        protectedTerms: ["ST-QuickReply"],
+        loadSource: async () => readySource("fixture"),
+      },
+    ),
+  ).resolves.toMatchObject({
+    summary: submittedSummary,
+    result: "accepted-unchanged",
+  });
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate.mock.calls[1][0]).toMatchObject({
+    repair: {
+      reasonCode: "output-invalid",
+      message: expect.stringContaining("preserve every protected term"),
+    },
+  });
+  expect(generate.mock.calls[1][0].repair.message).not.toContain(
+    "QuickReply keeps",
+  );
+});
+
 test("selects an automatic published Reddit record without a repository snapshot", () => {
   const reddit = {
     ...record,
@@ -432,6 +543,49 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     classification_review: null,
     ...copyMetadata,
   });
+});
+
+test("uses the submitted description as third-priority evidence when repository text is absent", async () => {
+  const generate = vi.fn(async () => ({
+    output: {
+      summary:
+        "Submitted evidence identifies this SillyTavern extension and its purpose. The catalog summary remains grounded only in the available intake description when repository text is unavailable.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: null,
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    { ...snapshot, repository: { ...snapshot.repository, description: null } },
+    { generate },
+    {
+      vocabularies,
+      submittedDescription: "Only the submitted description is available.",
+      loadSource: async () => ({
+        status: "fallback" as const,
+        sourceKind: "confirmed-fallback" as const,
+        sourceIdentity: "github:creator/project",
+        repositoryId: 42,
+        headSha: "a".repeat(40),
+        readmePath: null,
+        readmeRef: "a".repeat(40),
+      }),
+    },
+  );
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      evidence: {
+        readme: null,
+        repositoryDescription: null,
+        submissionDescription: "Only the submitted description is available.",
+      },
+    }),
+  );
 });
 
 test.each(["source-not-ready", "failed"] as const)(

@@ -1,4 +1,5 @@
 import { defaultEnrichmentFields } from "../catalog/enrichment-policy.mjs";
+import { validateCatalogCopyMetadata } from "../catalog/catalog-copy-contract.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
@@ -65,6 +66,38 @@ function fallbackEnrichment(input, name) {
       : "Automated enrichment was unavailable; deterministic provisional metadata was used.",
     name,
   };
+}
+
+function copyResult(enrichment) {
+  if (enrichment?.status !== "curated") return null;
+  const result = {
+    result: enrichment.result,
+    change_reasons: enrichment.change_reasons,
+    policy_signal: enrichment.policy_signal,
+  };
+  return validateCatalogCopyMetadata(result).valid
+    ? {
+        result: result.result,
+        change_reasons: [...result.change_reasons],
+        policy_signal: result.policy_signal,
+      }
+    : null;
+}
+
+function enrichmentFields(input, source, acceptedCopyResult) {
+  const authorityType = input.summaryAuthority?.authorityType;
+  const submittedDescription = input.admitted.manifest.description?.trim();
+  if (
+    acceptedCopyResult &&
+    submittedDescription &&
+    ["repository-owner", "tavernary-staff"].includes(authorityType)
+  ) {
+    return {
+      enrichment_policy: "manual",
+      enrichment_note: `Catalog summary preserved from ${authorityType} submission issue #${input.sourceIssueNumber}.`,
+    };
+  }
+  return defaultEnrichmentFields(source);
 }
 
 function unavailableClassificationReview(submittedPrimaryFunction) {
@@ -172,6 +205,12 @@ export async function draftProjectRecord(input) {
           warning: null,
         }
       : fallbackEnrichment(input, name);
+  const acceptedCopyResult = copyResult(input.enrichment);
+  if (input.copyRequired && !acceptedCopyResult) {
+    throw new Error(
+      "Validated catalog copy is required before this project can be drafted.",
+    );
+  }
   const classificationReview = sanitizedClassificationReview(input);
   let frontendIds = [...admitted.frontendIds];
   let frontendVocabulary;
@@ -222,7 +261,7 @@ export async function draftProjectRecord(input) {
     visibility: "published",
     visibility_reason: null,
     refresh_policy: isRepositoryIdentity(identity) ? "automatic" : "paused",
-    ...defaultEnrichmentFields(source),
+    ...enrichmentFields(input, source, acceptedCopyResult),
   };
 
   return {
@@ -256,6 +295,12 @@ export async function draftProjectRecord(input) {
       capabilities: enrichment.capabilities,
       frontend_ids: frontendIds,
     },
+    summaryAuthority: input.summaryAuthority ?? {
+      authorityType: "community-submitter",
+      actorId: null,
+      actorLogin: null,
+    },
+    copyResult: acceptedCopyResult,
     classificationReview: classificationReview.review,
     warnings: [...new Set(warnings)],
   };

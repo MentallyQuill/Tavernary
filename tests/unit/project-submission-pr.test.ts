@@ -40,6 +40,8 @@ const reviewFixture = {
       primary_function: "generation-reasoning",
       capabilities: ["planning-reasoning"],
     },
+    summary_authority: null,
+    copy_result: null,
     classificationReview: null,
     warnings: ["Repository is archived."],
   },

@@ -22,6 +22,7 @@ export type ReadmeSource =
       readmeText: string | null;
       readmePath: string | null;
       readmeRef: string | null;
+      readmeIdentity?: string | null;
       repositoryId: number;
       headSha: string;
     }

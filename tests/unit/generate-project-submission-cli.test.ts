@@ -110,6 +110,9 @@ test("prepares a GitHub draft through injected source clients", async () => {
       explanation:
         "The source primarily describes user-facing editing controls.",
     },
+    result: "accepted-unchanged" as const,
+    change_reasons: [],
+    policy_signal: "none" as const,
   }));
   const fetchContributors = vi.fn(async () => ({
     accounts: [
@@ -131,6 +134,8 @@ test("prepares a GitHub draft through injected source clients", async () => {
       number: 128,
       state: "open",
       labels: [{ name: "needs-maintainer-review" }],
+      user: { id: 11, login: "owner" },
+      author_association: "NONE",
       body: [
         "### Project manifest",
         "",
@@ -153,7 +158,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
     sourceClients: {
       request: async () => ({
         id: 42,
-        owner: { login: "Owner" },
+        owner: { id: 11, login: "Owner", type: "User" },
         name: "Repo",
         html_url: "https://github.com/Owner/Repo",
         visibility: "public",
@@ -238,6 +243,19 @@ test("prepares a GitHub draft through injected source clients", async () => {
     source: { repository_id: 42 },
     metadata_status: "curated",
     primary_function: "memory-retrieval",
+    enrichment_policy: "manual",
+    enrichment_note:
+      "Catalog summary preserved from repository-owner submission issue #128.",
+  });
+  expect(draft.summaryAuthority).toEqual({
+    authorityType: "repository-owner",
+    actorId: 11,
+    actorLogin: "owner",
+  });
+  expect(draft.copyResult).toEqual({
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
   });
   expect(draft.classificationReview).toMatchObject({
     status: "possible-mismatch",
@@ -253,6 +271,19 @@ test("prepares a GitHub draft through injected source clients", async () => {
           expect.objectContaining({ id: "interface-workflow" }),
         ]),
       },
+      summaryAuthority: {
+        authorityType: "repository-owner",
+        actorId: 11,
+        actorLogin: "owner",
+      },
+      summaryMode: "preserve",
+      submittedDescription: "Submitted description.",
+      protectedTerms: expect.arrayContaining([
+        "Repository Tool",
+        "Owner",
+        "Repo",
+        "SillyTavern",
+      ]),
     }),
   );
   expect(draft.snapshot).toMatchObject({
@@ -387,6 +418,9 @@ test("prepares a Codeberg draft through the repository provider", async () => {
           suggested_primary_function: "interface-workflow",
           explanation: null,
         },
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
       }),
     },
   });

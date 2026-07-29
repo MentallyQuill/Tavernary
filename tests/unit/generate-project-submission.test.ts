@@ -115,6 +115,16 @@ test("returns only deterministic canonical submission files and its report", asy
         explanation:
           "The source primarily describes user-facing editing controls.",
       },
+      summaryAuthority: {
+        authorityType: "repository-owner",
+        actorId: 11,
+        actorLogin: "Owner",
+      },
+      copyResult: {
+        result: "accepted-with-light-edits",
+        change_reasons: ["punctuation-corrected"],
+        policy_signal: "none",
+      },
       warnings: [],
     },
   });
@@ -139,6 +149,16 @@ test("returns only deterministic canonical submission files and its report", asy
     schema_version: 1,
     issue_number: 123,
     project_id: "owner-repo",
+    summary_authority: {
+      authorityType: "repository-owner",
+      actorId: 11,
+      actorLogin: "Owner",
+    },
+    copy_result: {
+      result: "accepted-with-light-edits",
+      change_reasons: ["punctuation-corrected"],
+      policy_signal: "none",
+    },
     classificationReview: {
       status: "possible-mismatch",
       submitted_primary_function: "generation-reasoning",
@@ -147,7 +167,7 @@ test("returns only deterministic canonical submission files and its report", asy
         "The source primarily describes user-facing editing controls.",
     },
   });
-  expect(JSON.stringify(generated)).not.toContain("submitter");
+  expect(JSON.stringify(generated)).not.toContain("raw_provider_output");
 });
 
 test("includes a sorted vocabulary update only for a frontend proposal", async () => {

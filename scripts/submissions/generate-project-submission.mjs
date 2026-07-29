@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
@@ -17,6 +18,7 @@ import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
+import { classifySubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
 import {
   inspectProjectSubmissionSource,
   loadProjectSubmissionCatalogData,
@@ -70,6 +72,8 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       submitted: draft.submitted,
       observed: draft.observed,
       inferred: draft.inferred,
+      summary_authority: draft.summaryAuthority ?? null,
+      copy_result: draft.copyResult ?? null,
       classificationReview: draft.classificationReview ?? null,
       warnings: draft.warnings,
     },
@@ -193,6 +197,46 @@ function assertProjectIdAvailable(record, projects) {
   }
 }
 
+function protectedTermsForSubmission({
+  record,
+  decision,
+  data,
+  submittedDescription,
+}) {
+  const repositoryParts = decision.identity.repository
+    .split("/")
+    .filter(Boolean);
+  const frontendLabels = data.vocabulary.frontends
+    .filter(({ id }) => decision.frontendIds.includes(id))
+    .map(({ label }) => label);
+  const mentionedProjectNames = data.projects
+    .map(({ name }) => name)
+    .filter(
+      (name) =>
+        typeof name === "string" &&
+        name.length > 0 &&
+        submittedDescription.includes(name),
+    );
+  const stableIdentifiers =
+    submittedDescription.match(
+      /\b[\p{Letter}\p{Number}]+(?:[-_.:/][\p{Letter}\p{Number}]+)+\b/gu,
+    ) ?? [];
+  return [
+    ...new Set(
+      [
+        record.name,
+        ...repositoryParts,
+        ...frontendLabels,
+        ...mentionedProjectNames,
+        ...stableIdentifiers,
+      ].filter(
+        (term) =>
+          typeof term === "string" && term.length > 0 && term.length <= 100,
+      ),
+    ),
+  ].slice(0, 64);
+}
+
 export async function prepareProjectSubmissionDraft({
   issue,
   now,
@@ -234,6 +278,14 @@ export async function prepareProjectSubmissionDraft({
   if (decision.status !== "admitted") {
     throw new Error(decisionFailure(decision));
   }
+  const summaryAuthority = classifySubmissionSummaryAuthority({
+    issueActor: issue.user,
+    authorAssociation: issue.author_association,
+    sourceIdentity: decision.identity,
+    repositoryOwner: inspection.repositoryOwner,
+    trustedEditorRegistry:
+      sourceClients.trustedEditorRegistry ?? trustedEditorRegistry,
+  });
 
   if (!isRepositoryIdentity(decision.identity)) {
     const draft = await draftProjectRecord({
@@ -243,6 +295,8 @@ export async function prepareProjectSubmissionDraft({
       enrichment: null,
       frontendVocabulary: data.vocabulary,
       frontendProjects: data.projects,
+      summaryAuthority,
+      sourceIssueNumber: issue.number,
       now,
     });
     assertProjectIdAvailable(draft.record, data.projects);
@@ -319,12 +373,30 @@ export async function prepareProjectSubmissionDraft({
           ),
         }
       : null;
+  const submittedDescription = decision.manifest.description?.trim() ?? "";
+  const summaryMode =
+    submittedDescription.length > 0 &&
+    ["repository-owner", "tavernary-staff"].includes(
+      summaryAuthority.authorityType,
+    )
+      ? "preserve"
+      : "synthesize";
+  const protectedTerms = protectedTermsForSubmission({
+    record: preliminary.record,
+    decision,
+    data,
+    submittedDescription,
+  });
   let enrichment;
   try {
     if (sourceClients.enrich) {
       enrichment = await sourceClients.enrich({
         record: preliminary.record,
         snapshot,
+        summaryAuthority,
+        summaryMode,
+        submittedDescription: submittedDescription || null,
+        protectedTerms,
         ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
       });
     } else {
@@ -339,6 +411,12 @@ export async function prepareProjectSubmissionDraft({
         provider,
         {
           vocabularies,
+          summaryMode,
+          submittedDescription: submittedDescription || null,
+          protectedTerms,
+          ...(sourceClients.loadEnrichmentSource
+            ? { loadSource: sourceClients.loadEnrichmentSource }
+            : {}),
           ...(classificationReviewRequest
             ? { classificationReviewRequest }
             : {}),
@@ -350,6 +428,9 @@ export async function prepareProjectSubmissionDraft({
             summary: output.summary,
             capabilities: [...output.capabilities],
             classification_review: output.classification_review,
+            result: output.result,
+            change_reasons: [...output.change_reasons],
+            policy_signal: output.policy_signal,
           }
         : null;
     }
@@ -368,6 +449,9 @@ export async function prepareProjectSubmissionDraft({
     enrichment,
     frontendVocabulary: data.vocabulary,
     frontendProjects: data.projects,
+    summaryAuthority,
+    sourceIssueNumber: issue.number,
+    copyRequired: true,
     now,
   });
 }

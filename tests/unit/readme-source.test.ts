@@ -189,6 +189,7 @@ test("prefers usable README content over a repository description", async () => 
     readmeText: "# ParamSentinel\n\nDisables unsupported sampler parameters.",
     readmePath: "README.md",
     readmeRef: "a".repeat(40),
+    readmeIdentity: `github:creator/project@${"a".repeat(40)}:README.md`,
   });
 });
 
@@ -248,6 +249,7 @@ test("loads README content at the snapshot head SHA", async () => {
     readmeText: "# Project\n\nUseful tool.",
     readmePath: "docs/README.md",
     readmeRef: "a".repeat(40),
+    readmeIdentity: `github:creator/project@${"a".repeat(40)}:docs/README.md`,
     repositoryId: 42,
     headSha: "a".repeat(40),
   });
