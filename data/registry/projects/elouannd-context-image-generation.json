@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "elouannd-context-image-generation",
+  "name": "context-image-generation",
+  "kind": "extension",
+  "summary": "A SillyTavern extension for Gemini-powered image generation using character and user descriptions in prompts. It uses avatars as visual references for consistent art and includes a /proimagine slash command.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "elouannd/context-image-generation",
+    "repository_id": 1124349811
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "capabilities": ["image-generation", "prompt-engineering"],
+  "cataloged_at": "2026-07-29T22:22:20.673Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
