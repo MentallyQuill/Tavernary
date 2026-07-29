@@ -9,9 +9,9 @@ import {
 import { refreshKitReactions } from "../../scripts/kits/refresh-reactions.mjs";
 
 const prior = {
-  schema_version: 3,
+  schema_version: 4,
   provider: "github",
-  project_id: "fixture",
+  source_id: "github-42",
   repository: {
     id: 42,
     owner: "Creator",
@@ -102,15 +102,12 @@ test("the third baseline failure degrades evidence and advances the queue", () =
 test("repository identity checks allow unverified records and reject mismatches", () => {
   expect(
     repositoryIdentityChanged(
-      { source: { repository_id: null } },
+      { repository_id: null },
       { repository: { id: 42 } },
     ),
   ).toBe(false);
   expect(
-    repositoryIdentityChanged(
-      { source: { repository_id: 7 } },
-      { repository: { id: 42 } },
-    ),
+    repositoryIdentityChanged({ repository_id: 7 }, { repository: { id: 42 } }),
   ).toBe(true);
 });
 

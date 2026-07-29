@@ -4,9 +4,9 @@ run-name: >-
   ${{ github.event_name == 'schedule'
     && 'Catalog: Refresh scheduled incremental'
     || inputs.mode == 'baseline'
-    && format('Catalog: Refresh baseline queue (up to {0} projects)', inputs.batch_size)
-    || inputs.project_id
-    && format('Catalog: Refresh {0} project {1}', inputs.mode, inputs.project_id)
+    && format('Catalog: Refresh baseline queue (up to {0} sources)', inputs.batch_size)
+    || inputs.source_id
+    && format('Catalog: Refresh {0} source {1}', inputs.mode, inputs.source_id)
     || format('Catalog: Refresh {0}', inputs.mode) }}
 
 on:
@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Select incremental observation, baseline queue, or one project.
+        description: Select incremental observation, baseline queue, or one source.
         type: choice
         options:
           - incremental
@@ -24,11 +24,11 @@ on:
           - forensic
         default: incremental
       batch_size:
-        description: Number of provisional projects for baseline mode (1-24).
+        description: Number of provisional sources for baseline mode (1-24).
         type: number
         default: 12
-      project_id:
-        description: Required project ID for project or forensic mode.
+      source_id:
+        description: Required source ID for project or forensic mode.
         type: string
         required: false
 
@@ -63,12 +63,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MODE: ${{ inputs.mode || 'incremental' }}
           BATCH_SIZE: ${{ inputs.batch_size || 12 }}
-          PROJECT_ID: ${{ inputs.project_id || '' }}
+          SOURCE_ID: ${{ inputs.source_id || '' }}
         run: |
           refresh_batch() {
             args=(--mode "$MODE" --batch-size "$BATCH_SIZE" --deployment-requested)
-            if [[ -n "$PROJECT_ID" ]]; then
-              args+=(--project-id "$PROJECT_ID")
+            if [[ -n "$SOURCE_ID" ]]; then
+              args+=(--source-id "$SOURCE_ID")
             fi
             npm run catalog:refresh -- "${args[@]}"
           }
@@ -93,7 +93,7 @@ jobs:
             data/snapshots/github \
             data/snapshots/codeberg \
             | grep -E '^data/snapshots/(github|codeberg)/[^/]+\.json$' \
-            > "${RUNNER_TEMP}/refreshed-policy-projects.txt" || true
+            > "${RUNNER_TEMP}/refreshed-policy-sources.txt" || true
           git add data/snapshots/github/*.json
           git add data/snapshots/codeberg/*.json
           git add data/snapshots/github-refresh.json
@@ -136,13 +136,20 @@ jobs:
         run: |
           while IFS= read -r snapshot_path; do
             [[ -z "$snapshot_path" ]] && continue
-            project_id="$(basename "$snapshot_path" .json)"
-            gh workflow run review-catalog-policy.yml --ref main \
-              -f project_id="$project_id" \
-              -f transaction_issue_number=0 \
-              -f transaction_pull_number=0 \
-              -f merge_sha="$MERGE_SHA"
-          done < "${RUNNER_TEMP}/refreshed-policy-projects.txt"
+            source_id="$(basename "$snapshot_path" .json)"
+            while IFS= read -r project_id; do
+              [[ -z "$project_id" ]] && continue
+              gh workflow run review-catalog-policy.yml --ref main \
+                -f project_id="$project_id" \
+                -f transaction_issue_number=0 \
+                -f transaction_pull_number=0 \
+                -f merge_sha="$MERGE_SHA"
+            done < <(
+              jq -r --arg source_id "$source_id" \
+                'select(.source_id == $source_id) | .id' \
+                data/registry/projects/*.json
+            )
+          done < "${RUNNER_TEMP}/refreshed-policy-sources.txt"
       - name: Redeploy refreshed catalog
         if: steps.commit.outputs.changed == 'true'
         env:

@@ -90,7 +90,7 @@ export function contributorSnapshotForFailure(previous, now) {
 
 export function snapshotFromObservation({
   provider,
-  projectId,
+  sourceId,
   observation,
   previous = null,
   now,
@@ -102,9 +102,9 @@ export function snapshotFromObservation({
   };
   const community = observation.community;
   const snapshot = {
-    schema_version: 3,
+    schema_version: 4,
     provider,
-    project_id: projectId,
+    source_id: sourceId,
     repository: repositoryFacts(
       observation.repository,
       previous?.repository ?? null,
@@ -133,14 +133,14 @@ export function snapshotFromObservation({
 
 export function createInitialRepositorySnapshot({
   provider,
-  projectId,
+  sourceId,
   observation,
   activityInspection,
   contributors,
   now,
 }) {
   const snapshot = snapshotFromObservation({
-    projectId,
+    sourceId,
     provider,
     observation,
     now,

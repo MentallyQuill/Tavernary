@@ -4,12 +4,12 @@ import { observeRepositories } from "../../scripts/catalog/github-observer.mjs";
 
 function records(count: number) {
   return Array.from({ length: count }, (_, index) => ({
-    id: `project-${index}`,
-    source: {
-      type: "github" as const,
-      repository: `owner-${index}/repository-${index}`,
-      repository_id: 1000 + index,
-    },
+    id: `github-${1000 + index}`,
+    type: "github" as const,
+    repository: `owner-${index}/repository-${index}`,
+    repository_id: 1000 + index,
+    status: "active" as const,
+    refresh_policy: "automatic" as const,
   }));
 }
 
@@ -71,6 +71,27 @@ function batchResponse(
 }
 
 describe("GitHub repository observer", () => {
+  test("observes a repository source and returns its stable source ID", async () => {
+    const [source] = records(1);
+    const result = await observeRepositories(
+      [
+        {
+          ...source,
+          status: "active",
+          refresh_policy: "automatic",
+        },
+      ],
+      {
+        token: "test-token",
+        fetchImpl: async () => batchResponse(0, 1),
+      },
+    );
+
+    expect(result).toMatchObject({
+      observations: [{ sourceId: "github-1000" }],
+    });
+  });
+
   test("observes 53 repositories in three serial variable-driven batches", async () => {
     const calls: Array<{ active: number; query: string; variables: object }> =
       [];
@@ -131,7 +152,7 @@ describe("GitHub repository observer", () => {
     });
 
     expect(result.observations[0]).toMatchObject({
-      projectId: "project-0",
+      sourceId: "github-1000",
       repository: {
         id: 1000,
         description: "Description 0",
@@ -267,17 +288,17 @@ describe("GitHub repository observer", () => {
     expect(result.observations).toEqual([]);
     expect(result.failures).toEqual([
       {
-        projectId: "project-0",
+        sourceId: "github-1000",
         kind: "unavailable",
         message: "Repository is unavailable",
       },
       {
-        projectId: "project-1",
+        sourceId: "github-1001",
         kind: "identity-change",
         message: "Repository identity changed",
       },
       {
-        projectId: "project-2",
+        sourceId: "github-1002",
         kind: "missing-default-branch",
         message: "Repository has no default branch commit",
       },

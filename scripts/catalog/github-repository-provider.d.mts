@@ -4,7 +4,7 @@ import type {
   ContributorContext,
   ObservationRun,
   ProviderActivityInput,
-  ProviderRepositoryRecord,
+  RepositorySourceRecord,
   RepositoryObservation,
   RepositoryProvider,
 } from "./repository-provider.mjs";
@@ -14,7 +14,7 @@ export interface GitHubRepositoryProviderClients {
   token?: string;
   fetchImpl?: typeof fetch;
   observeRepositories?: (
-    records: ProviderRepositoryRecord[],
+    records: RepositorySourceRecord[],
     options: { token: string; fetchImpl: typeof fetch },
   ) => Promise<unknown>;
   inspectApiActivity?: (
@@ -47,7 +47,7 @@ export class GitHubRepositoryProvider implements RepositoryProvider {
   resolve(
     identity: RepositorySourceIdentity,
   ): Promise<RepositorySourceIdentity>;
-  observe(records: ProviderRepositoryRecord[]): Promise<ObservationRun>;
+  observe(records: RepositorySourceRecord[]): Promise<ObservationRun>;
   inspectActivity(input: ProviderActivityInput): Promise<ApiActivityInspection>;
   collectContributors(
     repository: RepositoryObservation["repository"],

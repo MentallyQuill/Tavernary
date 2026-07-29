@@ -1,5 +1,5 @@
 export interface RepositoryObservation {
-  projectId: string;
+  sourceId: string;
   repository: {
     id: number;
     owner: string;
@@ -30,7 +30,7 @@ export interface RepositoryObservation {
 }
 
 export interface ObservationFailure {
-  projectId: string;
+  sourceId: string;
   kind: "unavailable" | "identity-change" | "missing-default-branch";
   message: string;
 }
@@ -47,11 +47,11 @@ export interface ObservationRun {
 
 export interface ObservationRecord {
   id: string;
-  source: {
-    type: "github";
-    repository: string;
-    repository_id: number | null;
-  };
+  type: "github";
+  repository: string;
+  repository_id: number;
+  status: "active" | "delisted";
+  refresh_policy: "automatic" | "paused";
 }
 
 export function observeRepositories(

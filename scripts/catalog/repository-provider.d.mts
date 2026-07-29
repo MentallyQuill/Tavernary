@@ -8,18 +8,18 @@ import type { RepositorySourceIdentity } from "../submissions/source-identity.mj
 
 export type { RepositoryProviderName };
 
-export interface ProviderRepositoryRecord {
+export interface RepositorySourceRecord {
   id: string;
-  source: {
-    type: RepositoryProviderName;
-    repository: string;
-    repository_id: number | null;
-  };
+  type: RepositoryProviderName;
+  repository: string;
+  repository_id: number;
+  status: "active" | "delisted";
+  refresh_policy: "automatic" | "paused";
 }
 
 export interface RepositoryObservation {
   provider: RepositoryProviderName;
-  projectId: string;
+  sourceId: string;
   repository: {
     id: number;
     owner: string;
@@ -50,7 +50,7 @@ export interface RepositoryObservation {
 }
 
 export interface ObservationFailure {
-  projectId: string;
+  sourceId: string;
   kind: "unavailable" | "identity-change" | "missing-default-branch";
   message: string;
 }
@@ -116,7 +116,7 @@ export interface RepositoryProvider {
   resolve(
     identity: RepositorySourceIdentity,
   ): Promise<RepositorySourceIdentity>;
-  observe(records: ProviderRepositoryRecord[]): Promise<ObservationRun>;
+  observe(records: RepositorySourceRecord[]): Promise<ObservationRun>;
   inspectActivity(input: ProviderActivityInput): Promise<ApiActivityInspection>;
   collectContributors(
     repository: RepositoryObservation["repository"],

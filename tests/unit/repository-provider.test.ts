@@ -4,11 +4,11 @@ import { repositoryProvider } from "../../scripts/catalog/repository-provider.mj
 
 const githubRecord = {
   id: "github-example",
-  source: {
-    type: "github" as const,
-    repository: "example/project",
-    repository_id: 123,
-  },
+  type: "github" as const,
+  repository: "example/project",
+  repository_id: 123,
+  status: "active" as const,
+  refresh_policy: "automatic" as const,
 };
 
 function githubClients() {
@@ -16,7 +16,7 @@ function githubClients() {
     observeRepositories: vi.fn().mockResolvedValue({
       observations: [
         {
-          projectId: githubRecord.id,
+          sourceId: githubRecord.id,
           repository: {
             id: 123,
             owner: "example",
@@ -84,6 +84,7 @@ test("normalizes GitHub observations behind the repository contract", async () =
     observations: [
       expect.objectContaining({
         provider: "github",
+        sourceId: githubRecord.id,
         repository: expect.objectContaining({ id: 123 }),
         community: {
           starsCount: 4,

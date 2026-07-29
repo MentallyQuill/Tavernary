@@ -7,7 +7,7 @@ import { formatJson } from "./json-format.mjs";
 import { validateCatalog } from "./validate.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const projectDirectory = resolve(rootDirectory, "data/registry/projects");
+const sourceDirectory = resolve(rootDirectory, "data/registry/sources");
 const snapshotDirectory = resolve(rootDirectory, "data/snapshots/github");
 
 async function readJson(path) {
@@ -24,34 +24,34 @@ async function readJsonDirectory(directory) {
 export async function planRepositoryIdentityBackfill({
   records,
   snapshots,
-  projectIds,
+  sourceIds,
   validateCatalog: validate = validateCatalog,
 }) {
-  if (projectIds) {
+  if (sourceIds) {
     const recordIds = new Set(records.map(({ id }) => id));
-    for (const id of projectIds) {
+    for (const id of sourceIds) {
       if (!recordIds.has(id)) {
-        throw new Error(`unknown project ID: ${id}`);
+        throw new Error(`unknown source ID: ${id}`);
       }
     }
   }
   const result = backfillRepositoryIdentities(records, snapshots, {
-    projectIds,
+    sourceIds,
   });
   const updatedById = new Map(
     result.updated.map((record) => [record.id, record]),
   );
-  const projectedRecords = records.map(
+  const projectedSources = records.map(
     (record) => updatedById.get(record.id) ?? record,
   );
   const validation = await validate({
-    records: projectedRecords,
+    sources: projectedSources,
     snapshots,
   });
 
   return {
     ...result,
-    projectedRecords,
+    projectedSources,
     validation,
   };
 }
@@ -61,10 +61,10 @@ export function parseIdentityBackfillArguments(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === "--write") continue;
-    if (argument === "--project-id") {
+    if (argument === "--source-id") {
       const id = argv[index + 1];
       if (!id || id.startsWith("--")) {
-        throw new Error("--project-id requires a value");
+        throw new Error("--source-id requires a value");
       }
       ids.push(id);
       index += 1;
@@ -73,16 +73,16 @@ export function parseIdentityBackfillArguments(argv) {
     throw new Error(`unknown identity backfill argument: ${argument}`);
   }
   if (new Set(ids).size !== ids.length) {
-    throw new Error("duplicate project ID");
+    throw new Error("duplicate source ID");
   }
   return {
     write: argv.includes("--write"),
-    projectIds: ids.length > 0 ? new Set(ids) : null,
+    sourceIds: ids.length > 0 ? new Set(ids) : null,
   };
 }
 
 async function loadRecords() {
-  return readJsonDirectory(projectDirectory);
+  return readJsonDirectory(sourceDirectory);
 }
 
 async function loadSnapshots() {
@@ -98,7 +98,7 @@ async function loadSnapshots() {
 
 export async function writeUpdatedRecords(
   records,
-  directory = projectDirectory,
+  directory = sourceDirectory,
 ) {
   for (const record of records) {
     await writeFile(
@@ -117,7 +117,7 @@ async function main() {
   const result = await planRepositoryIdentityBackfill({
     records,
     snapshots,
-    projectIds: arguments_.projectIds,
+    sourceIds: arguments_.sourceIds,
   });
 
   console.log(
@@ -144,7 +144,7 @@ async function main() {
 
   if (arguments_.write) {
     await writeUpdatedRecords(result.updated);
-    console.log(`Wrote ${result.updated.length} updated project files`);
+    console.log(`Wrote ${result.updated.length} updated source files`);
   }
 }
 

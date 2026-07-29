@@ -4,8 +4,8 @@ run-name: "Catalog: Backfill repository IDs"
 on:
   workflow_dispatch:
     inputs:
-      project_ids:
-        description: Optional newline-separated project IDs; empty selects all.
+      source_ids:
+        description: Optional newline-separated source IDs; empty selects all.
         type: string
         required: false
 
@@ -34,20 +34,20 @@ jobs:
         run: npm ci
       - name: Backfill selected identities
         env:
-          PROJECT_IDS: ${{ inputs.project_ids || '' }}
+          SOURCE_IDS: ${{ inputs.source_ids || '' }}
         shell: bash
         run: |
           args=(--write)
-          while IFS= read -r project_id; do
-            [[ -z "$project_id" ]] || args+=(--project-id "$project_id")
-          done <<< "$PROJECT_IDS"
+          while IFS= read -r source_id; do
+            [[ -z "$source_id" ]] || args+=(--source-id "$source_id")
+          done <<< "$SOURCE_IDS"
           npm run catalog:backfill-identities -- "${args[@]}"
       - name: Validate catalog identities
         run: npm run catalog:validate
       - name: Commit repository identities
         shell: bash
         run: |
-          git add data/registry/projects/*.json
+          git add data/registry/sources/*.json
           if git diff --cached --quiet; then
             exit 0
           fi

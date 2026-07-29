@@ -1,31 +1,31 @@
 import type {
-  IdentityRecord,
+  IdentitySourceRecord,
   IdentitySnapshot,
   RepositoryIdentityBackfillResult,
 } from "./repository-identity-backfill.mjs";
 import type { ValidationResult } from "./validate.mjs";
 
 export function planRepositoryIdentityBackfill(options: {
-  records: IdentityRecord[];
+  records: IdentitySourceRecord[];
   snapshots: IdentitySnapshot[];
-  projectIds?: ReadonlySet<string> | null;
+  sourceIds?: ReadonlySet<string> | null;
   validateCatalog?: (options: {
-    records: IdentityRecord[];
+    sources: IdentitySourceRecord[];
     snapshots: IdentitySnapshot[];
   }) => Promise<ValidationResult>;
 }): Promise<
   RepositoryIdentityBackfillResult & {
-    projectedRecords: IdentityRecord[];
+    projectedSources: IdentitySourceRecord[];
     validation: ValidationResult;
   }
 >;
 
 export function parseIdentityBackfillArguments(argv: string[]): {
   write: boolean;
-  projectIds: Set<string> | null;
+  sourceIds: Set<string> | null;
 };
 
 export function writeUpdatedRecords(
-  records: IdentityRecord[],
+  records: IdentitySourceRecord[],
   directory?: string,
 ): Promise<void>;

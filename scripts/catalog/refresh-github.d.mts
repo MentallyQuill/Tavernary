@@ -18,21 +18,21 @@ export function publishCandidates(
     rename?: (from: string, to: string) => Promise<void>;
   },
 ): Promise<void>;
-export function selectRefreshRecords(
+export function selectRefreshSources(
   records: Array<{
     id: string;
-    source: { type: string };
+    type: string;
     refresh_policy: string;
   }>,
   snapshots: Array<{
-    project_id: string;
+    source_id: string;
     activity?: { evidence_status?: string };
   }>,
   options: {
     mode: RefreshMode;
     batchSize?: number;
-    projectId?: string | null;
-    projectIds?: string[];
+    sourceId?: string | null;
+    sourceIds?: string[];
   },
 ): Array<{ id: string; [key: string]: unknown }>;
 export function snapshotForFailure<T>(
@@ -42,7 +42,7 @@ export function snapshotForFailure<T>(
   options?: { baselineAttempt?: boolean },
 ): T | null;
 export function repositoryIdentityChanged(
-  record: { source: { repository_id: number | null } },
+  record: { repository_id: number | null },
   observation: { repository: { id: number } },
 ): boolean;
 export function runRefresh(options?: Record<string, unknown>): Promise<{

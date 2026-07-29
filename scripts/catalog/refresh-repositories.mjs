@@ -40,7 +40,7 @@ async function readDirectory(path) {
 
 async function readInputs() {
   const records = await readDirectory(
-    resolve(rootDirectory, "data/registry/projects"),
+    resolve(rootDirectory, "data/registry/sources"),
   );
   const snapshots = (
     await Promise.all(
@@ -62,17 +62,17 @@ function automaticRecords(records) {
   return records
     .filter(
       (record) =>
-        (record.source.type === "github" ||
-          record.source.type === "codeberg") &&
+        (record.type === "github" || record.type === "codeberg") &&
+        record.status === "active" &&
         record.refresh_policy === "automatic",
     )
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export function selectRepositoryRefreshRecords(records, snapshots, options) {
+export function selectRefreshSources(records, snapshots, options) {
   const automatic = automaticRecords(records);
   const snapshotsById = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const mode = options.mode ?? "incremental";
   if (mode === "incremental") return automatic;
@@ -89,25 +89,25 @@ export function selectRepositoryRefreshRecords(records, snapshots, options) {
       .slice(0, batchSize);
   }
   if (mode === "project" || mode === "forensic") {
-    const projectIds = [
+    const sourceIds = [
       ...new Set(
-        (options.projectIds ?? (options.projectId ? [options.projectId] : []))
+        (options.sourceIds ?? (options.sourceId ? [options.sourceId] : []))
           .filter(Boolean)
           .map(String),
       ),
     ];
-    if (projectIds.length === 0) {
-      throw new Error(`${mode} mode requires project_id`);
+    if (sourceIds.length === 0) {
+      throw new Error(`${mode} mode requires source_id`);
     }
-    if (mode === "forensic" && projectIds.length !== 1) {
-      throw new Error("forensic mode requires exactly one project_id");
+    if (mode === "forensic" && sourceIds.length !== 1) {
+      throw new Error("forensic mode requires exactly one source_id");
     }
-    const requested = new Set(projectIds);
+    const requested = new Set(sourceIds);
     const selected = automatic.filter(({ id }) => requested.has(id));
     const selectedIds = new Set(selected.map(({ id }) => id));
-    const missing = projectIds.filter((id) => !selectedIds.has(id));
+    const missing = sourceIds.filter((id) => !selectedIds.has(id));
     if (missing.length > 0) {
-      throw new Error(`Unknown refreshable project: ${missing.join(", ")}`);
+      throw new Error(`Unknown refreshable source: ${missing.join(", ")}`);
     }
     return selected;
   }
@@ -123,8 +123,8 @@ function failureOutcome(record, previous, now, error) {
   return {
     snapshot: candidate,
     outcome: {
-      projectId: record.id,
-      provider: record.source.type,
+      sourceId: record.id,
+      provider: record.type,
       result: "failed",
       durationMs: 0,
       snapshotChanged: changed(candidate, previous),
@@ -137,7 +137,7 @@ function failureOutcome(record, previous, now, error) {
 async function refreshCodebergGroup(provider, records, snapshots, now) {
   const snapshotsById = new Map(
     snapshots.map((snapshot) => [
-      snapshot.project_id,
+      snapshot.source_id,
       structuredClone(snapshot),
     ]),
   );
@@ -171,10 +171,10 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
   }
 
   const observationsById = new Map(
-    observed.observations.map((entry) => [entry.projectId, entry]),
+    observed.observations.map((entry) => [entry.sourceId, entry]),
   );
   const failuresById = new Map(
-    observed.failures.map((entry) => [entry.projectId, entry]),
+    observed.failures.map((entry) => [entry.sourceId, entry]),
   );
   for (const record of records) {
     const started = Date.now();
@@ -204,7 +204,7 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
     }
     try {
       const activity = await provider.inspectActivity({
-        repository: record.source.repository,
+        repository: record.repository,
         expectedHeadSha: observation.repository.headSha,
         now,
         activity: previous?.activity ?? {
@@ -226,7 +226,7 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
       requests += contributorResult.requestCount ?? 0;
       const candidate = snapshotFromObservation({
         provider: "codeberg",
-        projectId: record.id,
+        sourceId: record.id,
         observation,
         previous,
         now,
@@ -243,7 +243,7 @@ async function refreshCodebergGroup(provider, records, snapshots, now) {
       }
       snapshotsById.set(record.id, candidate);
       outcomes.push({
-        projectId: record.id,
+        sourceId: record.id,
         provider: "codeberg",
         result: previous ? "compare-source" : "baseline",
         durationMs: Math.max(0, Date.now() - started),
@@ -286,7 +286,7 @@ export async function publishRepositoryCandidates(
     );
     await mkdir(directory, { recursive: true });
     await write(
-      resolve(directory, `${snapshot.project_id}.json`),
+      resolve(directory, `${snapshot.source_id}.json`),
       await format(JSON.stringify(snapshot), { parser: "json" }),
       "utf8",
     );
@@ -310,20 +310,16 @@ export async function runRepositoryRefresh(options = {}) {
           snapshots: options.snapshots,
           previousManifest: options.previousManifest ?? null,
         };
-  const selected = selectRepositoryRefreshRecords(
-    inputs.records,
-    inputs.snapshots,
-    {
-      mode,
-      batchSize: options.batchSize,
-      projectId: options.projectId,
-      projectIds: options.projectIds,
-    },
-  );
+  const selected = selectRefreshSources(inputs.records, inputs.snapshots, {
+    mode,
+    batchSize: options.batchSize,
+    sourceId: options.sourceId,
+    sourceIds: options.sourceIds,
+  });
   const selectedByProvider = new Map(
     ["github", "codeberg"].map((provider) => [
       provider,
-      selected.filter((record) => record.source.type === provider),
+      selected.filter((record) => record.type === provider),
     ]),
   );
   const snapshotsByProvider = new Map(
@@ -353,14 +349,14 @@ export async function runRepositoryRefresh(options = {}) {
     });
     finalSnapshots.push(...github.snapshots);
     outcomes.push(
-      ...github.manifest.project_timings.map((entry) => ({
-        projectId: entry.project_id,
+      ...github.manifest.source_timings.map((entry) => ({
+        sourceId: entry.source_id,
         provider: "github",
         result: entry.outcome,
         durationMs: entry.duration_ms,
         errorCode: entry.error_code,
         snapshotChanged: github.changedSnapshots.some(
-          (snapshot) => snapshot.project_id === entry.project_id,
+          (snapshot) => snapshot.source_id === entry.source_id,
         ),
       })),
     );
@@ -400,9 +396,9 @@ export async function runRepositoryRefresh(options = {}) {
   }
 
   finalSnapshots.sort((left, right) =>
-    left.project_id.localeCompare(right.project_id),
+    left.source_id.localeCompare(right.source_id),
   );
-  outcomes.sort((left, right) => left.projectId.localeCompare(right.projectId));
+  outcomes.sort((left, right) => left.sourceId.localeCompare(right.sourceId));
   const completedAt = new Date(
     options.completedAt ?? (options.now ? now : Date.now()),
   ).toISOString();
@@ -417,10 +413,10 @@ export async function runRepositoryRefresh(options = {}) {
     deploymentRequested: options.deploymentRequested,
   });
   const previousById = new Map(
-    inputs.snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+    inputs.snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const changedSnapshots = finalSnapshots.filter((snapshot) =>
-    changed(snapshot, previousById.get(snapshot.project_id)),
+    changed(snapshot, previousById.get(snapshot.source_id)),
   );
 
   if (options.write !== false) {
@@ -466,8 +462,8 @@ async function main() {
   const result = await runRepositoryRefresh({
     mode,
     batchSize: Number(argument("--batch-size", "12")),
-    projectId: argument("--project-id"),
-    projectIds: argumentsFor("--project-id"),
+    sourceId: argument("--source-id"),
+    sourceIds: argumentsFor("--source-id"),
     deploymentRequested: process.argv.includes("--deployment-requested"),
   });
   console.log(

@@ -31,9 +31,9 @@ export interface NormalizedLicense {
 }
 
 export interface RepositorySnapshot {
-  schema_version: 3;
+  schema_version: 4;
   provider: "github" | "codeberg";
-  project_id: string;
+  source_id: string;
   repository: {
     id: number;
     owner: string;
@@ -124,7 +124,7 @@ export function contributorSnapshotForFailure<T extends ContributorSnapshot>(
 
 export function snapshotFromObservation(input: {
   provider: "github" | "codeberg";
-  projectId: string;
+  sourceId: string;
   observation: RepositoryObservation;
   previous?: RepositorySnapshot | null;
   now: string;
@@ -133,7 +133,7 @@ export function snapshotFromObservation(input: {
 
 export function createInitialRepositorySnapshot(input: {
   provider: "github" | "codeberg";
-  projectId: string;
+  sourceId: string;
   observation: RepositoryObservation;
   activityInspection: ApiActivityInspection;
   contributors:

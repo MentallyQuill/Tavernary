@@ -52,7 +52,7 @@ async function readJson(path) {
 }
 
 async function readRecords() {
-  const directory = resolve(rootDirectory, "data/registry/projects");
+  const directory = resolve(rootDirectory, "data/registry/sources");
   const files = (await readdir(directory))
     .filter((file) => file.endsWith(".json"))
     .sort();
@@ -94,16 +94,17 @@ function automaticRecords(records) {
   return records
     .filter(
       (record) =>
-        record.source.type === "github" &&
+        record.type === "github" &&
+        record.status === "active" &&
         record.refresh_policy === "automatic",
     )
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export function selectRefreshRecords(records, snapshots, options) {
+export function selectRefreshSources(records, snapshots, options) {
   const automatic = automaticRecords(records);
   const snapshotsById = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const mode = options.mode ?? "incremental";
 
@@ -121,25 +122,25 @@ export function selectRefreshRecords(records, snapshots, options) {
       .slice(0, batchSize);
   }
   if (mode === "project" || mode === "forensic") {
-    const projectIds = [
+    const sourceIds = [
       ...new Set(
-        (options.projectIds ?? (options.projectId ? [options.projectId] : []))
+        (options.sourceIds ?? (options.sourceId ? [options.sourceId] : []))
           .filter(Boolean)
           .map(String),
       ),
     ];
-    if (projectIds.length === 0) {
-      throw new Error(`${mode} mode requires project_id`);
+    if (sourceIds.length === 0) {
+      throw new Error(`${mode} mode requires source_id`);
     }
-    if (mode === "forensic" && projectIds.length !== 1) {
-      throw new Error("forensic mode requires exactly one project_id");
+    if (mode === "forensic" && sourceIds.length !== 1) {
+      throw new Error("forensic mode requires exactly one source_id");
     }
-    const requested = new Set(projectIds);
+    const requested = new Set(sourceIds);
     const selected = automatic.filter(({ id }) => requested.has(id));
     const selectedIds = new Set(selected.map(({ id }) => id));
-    const missing = projectIds.filter((id) => !selectedIds.has(id));
+    const missing = sourceIds.filter((id) => !selectedIds.has(id));
     if (missing.length > 0) {
-      throw new Error(`Unknown refreshable project: ${missing.join(", ")}`);
+      throw new Error(`Unknown refreshable source: ${missing.join(", ")}`);
     }
     return selected;
   }
@@ -190,8 +191,8 @@ export function snapshotForFailure(previous, error, now, options = {}) {
 
 export function repositoryIdentityChanged(record, observation) {
   return (
-    record.source.repository_id !== null &&
-    observation.repository.id !== record.source.repository_id
+    record.repository_id !== null &&
+    observation.repository.id !== record.repository_id
   );
 }
 
@@ -215,9 +216,9 @@ function lastSuccessfulObservationAt(previous, previousManifest) {
   }
   const covered =
     previousManifest.mode === "incremental" ||
-    previousManifest.project_timings?.some(
+    previousManifest.source_timings?.some(
       (timing) =>
-        timing.project_id === previous.project_id &&
+        timing.source_id === previous.source_id &&
         !["failed", "unavailable", "identity-change"].includes(timing.outcome),
     );
   return covered ? previousManifest.completed_at : previous.refreshed_at;
@@ -238,12 +239,12 @@ function crossesAmbiguousWeeks(previous, observation) {
 function errorCode(error) {
   if (typeof error?.code === "string") return error.code;
   if (Number.isInteger(error?.status)) return `HTTP_${error.status}`;
-  return "PROJECT_REFRESH_FAILED";
+  return "SOURCE_REFRESH_FAILED";
 }
 
-function outcome(projectId, result, started, snapshot, changed, extra = {}) {
+function outcome(sourceId, result, started, snapshot, changed, extra = {}) {
   return {
-    projectId,
+    sourceId,
     result,
     durationMs: Math.max(0, Date.now() - started),
     snapshotChanged: changed,
@@ -254,7 +255,7 @@ function outcome(projectId, result, started, snapshot, changed, extra = {}) {
 }
 
 function replaceSnapshot(snapshotsById, snapshot) {
-  if (snapshot) snapshotsById.set(snapshot.project_id, snapshot);
+  if (snapshot) snapshotsById.set(snapshot.source_id, snapshot);
 }
 
 function defaultHeaders(token) {
@@ -322,11 +323,11 @@ export async function publishCandidates(
     for (const [index, snapshot] of changedSnapshots.entries()) {
       const temporaryPath = resolve(
         stagedSnapshots,
-        `${snapshot.project_id}.json`,
+        `${snapshot.source_id}.json`,
       );
       const destinationPath = resolve(
         destinationDirectory,
-        `${snapshot.project_id}.json`,
+        `${snapshot.source_id}.json`,
       );
       await writeFile(temporaryPath, await formatSnapshot(snapshot));
       replacements.push({
@@ -393,11 +394,11 @@ export async function runRefresh(options = {}) {
     (options.records === undefined && options.snapshots === undefined
       ? await readRefreshManifest()
       : null);
-  const selected = selectRefreshRecords(records, snapshots, {
+  const selected = selectRefreshSources(records, snapshots, {
     mode,
     batchSize: options.batchSize,
-    projectId: options.projectId,
-    projectIds: options.projectIds,
+    sourceId: options.sourceId,
+    sourceIds: options.sourceIds,
   });
   const logger = options.logger ?? console;
   const token =
@@ -418,7 +419,7 @@ export async function runRefresh(options = {}) {
     options.inspectGit ?? ((input) => inspectApiActivity(input, { token }));
   const snapshotsById = new Map(
     snapshots.map((snapshot) => [
-      snapshot.project_id,
+      snapshot.source_id,
       structuredClone(snapshot),
     ]),
   );
@@ -427,13 +428,13 @@ export async function runRefresh(options = {}) {
   const gitJobs = [];
   let restRequests = 0;
 
-  logger.log(`GitHub refresh ${mode}: ${selected.length} project(s)`);
+  logger.log(`GitHub refresh ${mode}: ${selected.length} source(s)`);
   const observed = await observe(selected);
   const observationsById = new Map(
-    observed.observations.map((entry) => [entry.projectId, entry]),
+    observed.observations.map((entry) => [entry.sourceId, entry]),
   );
   const failuresById = new Map(
-    observed.failures.map((failure) => [failure.projectId, failure]),
+    observed.failures.map((failure) => [failure.sourceId, failure]),
   );
   const fetchContributors =
     options.fetchContributors !== undefined
@@ -477,9 +478,9 @@ export async function runRefresh(options = {}) {
           : null;
   const contributorJobs = fetchContributors
     ? observed.observations.map((observation) => ({
-        projectId: observation.projectId,
+        sourceId: observation.sourceId,
         repository: observation.repository,
-        previous: snapshotsById.get(observation.projectId)?.contributors,
+        previous: snapshotsById.get(observation.sourceId)?.contributors,
       }))
     : [];
   const contributorResults = await mapConcurrent(contributorJobs, 3, (job) =>
@@ -501,7 +502,7 @@ export async function runRefresh(options = {}) {
       result.status === "fulfilled"
         ? (result.value.requestCount ?? 0)
         : (result.reason?.requestCount ?? 0);
-    contributorResultsById.set(contributorJobs[index].projectId, result);
+    contributorResultsById.set(contributorJobs[index].sourceId, result);
   });
 
   for (const record of selected) {
@@ -558,7 +559,7 @@ export async function runRefresh(options = {}) {
           : previous?.contributors;
     const candidate = snapshotFromObservation({
       provider: "github",
-      projectId: record.id,
+      sourceId: record.id,
       observation,
       previous,
       now,
@@ -613,7 +614,7 @@ export async function runRefresh(options = {}) {
 
     try {
       const delta = await inspectDelta({
-        repository: record.source.repository,
+        repository: record.repository,
         baseSha: evidenceHeadSha,
         headSha: observation.repository.headSha,
         hoursSinceLastSuccess: hoursBetween(
@@ -689,7 +690,7 @@ export async function runRefresh(options = {}) {
         ? job.previous.repository.head_sha
         : null);
     return inspectGit({
-      repository: job.record.source.repository,
+      repository: job.record.repository,
       defaultBranch: job.observation.repository.defaultBranch,
       expectedHeadSha:
         job.previous?.activity_scan?.head_sha ??
@@ -768,9 +769,9 @@ export async function runRefresh(options = {}) {
     );
   });
 
-  outcomes.sort((left, right) => left.projectId.localeCompare(right.projectId));
+  outcomes.sort((left, right) => left.sourceId.localeCompare(right.sourceId));
   const finalSnapshots = [...snapshotsById.values()].sort((left, right) =>
-    left.project_id.localeCompare(right.project_id),
+    left.source_id.localeCompare(right.source_id),
   );
   const completedAt = new Date(
     options.completedAt ?? (options.now ? now : Date.now()),
@@ -796,12 +797,12 @@ export async function runRefresh(options = {}) {
     deploymentRequested: options.deploymentRequested,
   });
   const previousById = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const changedSnapshots = finalSnapshots.filter(
     (snapshot) =>
       JSON.stringify(snapshot) !==
-      JSON.stringify(previousById.get(snapshot.project_id)),
+      JSON.stringify(previousById.get(snapshot.source_id)),
   );
 
   if (options.write !== false) {
@@ -862,18 +863,18 @@ async function main() {
   const { runRepositoryRefresh } = await import("./refresh-repositories.mjs");
   const mode = argument("--mode", "incremental");
   const batchSize = Number.parseInt(argument("--batch-size", "12"), 10);
-  const projectIds = argumentsFor("--project-id");
-  const projectId = projectIds.at(-1) ?? null;
+  const sourceIds = argumentsFor("--source-id");
+  const sourceId = sourceIds.at(-1) ?? null;
   const deploymentRequested = process.argv.includes("--deployment-requested");
   const result = await runRepositoryRefresh({
     mode,
     batchSize,
-    projectId,
-    projectIds,
+    sourceId,
+    sourceIds,
     deploymentRequested,
   });
   console.table(result.manifest.counts);
-  console.table(result.manifest.project_timings);
+  console.table(result.manifest.source_timings);
 }
 
 if (

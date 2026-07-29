@@ -3,21 +3,21 @@ import type {
   RefreshMode,
 } from "./github-refresh-manifest.mjs";
 
-export function selectRepositoryRefreshRecords(
+export function selectRefreshSources(
   records: Array<{
     id: string;
-    source: { type: string };
+    type: string;
     refresh_policy: string;
   }>,
   snapshots: Array<{
-    project_id: string;
+    source_id: string;
     activity?: { evidence_status?: string };
   }>,
   options: {
     mode: RefreshMode;
     batchSize?: number;
-    projectId?: string | null;
-    projectIds?: string[];
+    sourceId?: string | null;
+    sourceIds?: string[];
   },
 ): Array<{ id: string; [key: string]: unknown }>;
 

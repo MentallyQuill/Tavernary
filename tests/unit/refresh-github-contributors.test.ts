@@ -3,19 +3,17 @@ import { expect, test, vi } from "vitest";
 import { runRefresh } from "../../scripts/catalog/refresh-github.mjs";
 
 const record = {
-  schema_version: 5,
-  id: "fixture",
-  source: {
-    type: "github",
-    repository: "Creator/Project",
-    repository_id: 42,
-  },
+  schema_version: 1,
+  id: "github-42",
+  type: "github",
+  repository: "Creator/Project",
+  repository_id: 42,
+  status: "active",
   refresh_policy: "automatic",
-  enrichment_policy: "automatic",
 };
 
 const observation = {
-  projectId: record.id,
+  sourceId: record.id,
   repository: {
     id: 42,
     owner: "Creator",
@@ -40,8 +38,9 @@ const observation = {
 };
 
 const previousSnapshot = {
-  schema_version: 2,
-  project_id: record.id,
+  schema_version: 4,
+  provider: "github",
+  source_id: record.id,
   repository: {
     id: 42,
     owner: "Creator",
@@ -250,15 +249,12 @@ test("limits contributor collection to three concurrent requests", async () => {
   const records = Array.from({ length: 5 }, (_, index) => ({
     ...record,
     id: `fixture-${index}`,
-    source: {
-      ...record.source,
-      repository: `Creator/Project-${index}`,
-      repository_id: 100 + index,
-    },
+    repository: `Creator/Project-${index}`,
+    repository_id: 100 + index,
   }));
   const observations = records.map((entry, index) => ({
     ...observation,
-    projectId: entry.id,
+    sourceId: entry.id,
     repository: {
       ...observation.repository,
       id: 100 + index,

@@ -9,7 +9,7 @@ function outcome(
   overrides: Record<string, unknown> = {},
 ) {
   return {
-    projectId: `project-${result}`,
+    sourceId: `source-${result}`,
     result,
     durationMs,
     snapshotChanged: result !== "unchanged",
@@ -51,7 +51,7 @@ test("summarizes outcomes without leaking secrets or clone paths", () => {
     graphql_remaining: 4_975,
     rest_requests: 2,
   });
-  expect(manifest.schema_version).toBe(2);
+  expect(manifest.schema_version).toBe(3);
   expect(manifest.providers).toEqual({
     github: {
       checked: 3,
@@ -111,7 +111,7 @@ test("reports isolated provider usage and outcomes", () => {
 test("bounds timings, counts states, and records publication flags", () => {
   const outcomes = Array.from({ length: 260 }, (_, index) =>
     outcome(index === 0 ? "baseline" : "unchanged", index, {
-      projectId: `project-${String(index).padStart(3, "0")}`,
+      sourceId: `source-${String(index).padStart(3, "0")}`,
       evidenceStatus:
         index === 1 ? "provisional" : index === 2 ? "degraded" : "complete",
       sourceHealth: index === 3 ? "unavailable" : "healthy",
@@ -134,7 +134,7 @@ test("bounds timings, counts states, and records publication flags", () => {
     deploymentRequested: true,
   });
 
-  expect(manifest.project_timings).toHaveLength(250);
+  expect(manifest.source_timings).toHaveLength(250);
   expect(manifest.counts).toMatchObject({
     provisional: 2,
     degraded: 1,
