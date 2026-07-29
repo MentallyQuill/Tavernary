@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/source.schema.json",
+  "title": "Tavernary source record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "type",
+    "status",
+    "status_reason",
+    "refresh_policy"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "type": { "enum": ["github", "codeberg", "github-organization", "url"] },
+    "repository": {
+      "type": "string",
+      "pattern": "^[^/\\s]+/[^/\\s]+$"
+    },
+    "repository_id": { "type": "integer", "minimum": 1 },
+    "organization": {
+      "type": "string",
+      "pattern": "^[^/\\s]+$"
+    },
+    "url": { "type": "string", "format": "uri" },
+    "published_at": {
+      "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }]
+    },
+    "version": {
+      "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+    },
+    "artifact_size_bytes": {
+      "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
+    },
+    "license_status": {
+      "enum": ["osi-approved", "proprietary", "missing", "pending"]
+    },
+    "license_spdx_id": {
+      "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+    },
+    "status": { "enum": ["active", "delisted"] },
+    "status_reason": { "enum": ["removed", null] },
+    "refresh_policy": { "enum": ["automatic", "paused"] }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "id": { "pattern": "^github-[1-9][0-9]*$" },
+        "type": { "const": "github" }
+      },
+      "required": ["repository", "repository_id"]
+    },
+    {
+      "properties": {
+        "id": { "pattern": "^codeberg-[1-9][0-9]*$" },
+        "type": { "const": "codeberg" }
+      },
+      "required": ["repository", "repository_id"]
+    },
+    {
+      "properties": {
+        "id": {
+          "pattern": "^github-organization-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "type": { "const": "github-organization" },
+        "refresh_policy": { "const": "paused" }
+      },
+      "required": ["organization", "url"]
+    },
+    {
+      "properties": {
+        "id": { "pattern": "^url-[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "type": { "const": "url" },
+        "refresh_policy": { "const": "paused" }
+      },
+      "required": [
+        "url",
+        "published_at",
+        "version",
+        "artifact_size_bytes",
+        "license_status",
+        "license_spdx_id"
+      ]
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "active" } },
+        "required": ["status"]
+      },
+      "then": { "properties": { "status_reason": { "type": "null" } } }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "delisted" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "status_reason": { "const": "removed" },
+          "refresh_policy": { "const": "paused" }
+        }
+      }
+    }
+  ]
+}
