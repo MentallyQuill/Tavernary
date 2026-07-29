@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { DescribedSelect } from "@/components/forms/described-select";
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
 import {
   normalizeProjectSubmissionManifest,
@@ -352,42 +353,17 @@ export function ProjectSubmissionBuilder({
         </div>
 
         {projectType === "extension" ? (
-          <div className="submission-field">
-            <label htmlFor="project-primary-function">Primary function</label>
-            <select
-              id="project-primary-function"
-              value={primaryFunction}
-              required
-              aria-invalid={Boolean(errorFor("primary-function"))}
-              aria-describedby={
-                errorFor("primary-function")
-                  ? "project-primary-function-help project-primary-function-error"
-                  : "project-primary-function-help"
-              }
-              onChange={(event) => setPrimaryFunction(event.target.value)}
-            >
-              <option value="">Select a primary function</option>
-              {extensionPrimaryFunctions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <ul
-              id="project-primary-function-help"
-              className="submission-option-help"
-            >
-              {extensionPrimaryFunctions.map((option) => (
-                <li key={option.id}>
-                  <strong>{option.label}:</strong> {option.description}
-                </li>
-              ))}
-            </ul>
-            <InlineError
-              id="project-primary-function-error"
-              message={errorFor("primary-function")}
-            />
-          </div>
+          <DescribedSelect
+            id="project-primary-function"
+            label="Primary function"
+            value={primaryFunction}
+            placeholder="Select a primary function"
+            options={extensionPrimaryFunctions}
+            onChange={setPrimaryFunction}
+            required
+            invalid={Boolean(errorFor("primary-function"))}
+            error={errorFor("primary-function")}
+          />
         ) : null}
 
         <div className="submission-field">

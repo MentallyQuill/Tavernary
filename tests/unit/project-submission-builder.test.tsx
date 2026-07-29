@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 
@@ -55,6 +55,16 @@ const frontends = [
 const frontendEligibility =
   "Frontends and Extensions require a public GitHub or Codeberg repository.";
 
+async function choosePrimaryFunction(
+  user: ReturnType<typeof userEvent.setup>,
+  label: string,
+) {
+  await user.click(screen.getByLabelText("Primary function"));
+  await user.click(
+    screen.getByRole("option", { name: new RegExp(label, "u") }),
+  );
+}
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
@@ -71,9 +81,15 @@ test("offers the six defined primary functions only for Extensions", async () =>
   const primaryFunction = screen.getByLabelText("Primary function");
   expect(primaryFunction).toBeVisible();
   expect(
-    screen.getAllByRole("option", {
-      name: /Memory and retrieval|Generation and reasoning|Character and worldbuilding|RPG systems and suites|Interface and workflow|Developer infrastructure/u,
-    }),
+    screen.queryByText(
+      /Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity/u,
+    ),
+  ).not.toBeInTheDocument();
+
+  await user.click(primaryFunction);
+
+  expect(
+    within(screen.getByRole("listbox")).getAllByRole("option"),
   ).toHaveLength(6);
   expect(
     screen.getByText(
@@ -90,10 +106,7 @@ test("submits selected and structural primary functions without stale values", a
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
-  await user.selectOptions(
-    screen.getByLabelText("Primary function"),
-    "memory-retrieval",
-  );
+  await choosePrimaryFunction(user, "Memory and retrieval");
   await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
@@ -112,11 +125,10 @@ test("submits selected and structural primary functions without stale values", a
 
   openProjectSubmission.mockClear();
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
-  expect(screen.getByLabelText("Primary function")).toHaveValue("");
-  await user.selectOptions(
-    screen.getByLabelText("Primary function"),
-    "interface-workflow",
+  expect(screen.getByLabelText("Primary function")).toHaveTextContent(
+    "Select a primary function",
   );
+  await choosePrimaryFunction(user, "Interface and workflow");
   await user.click(screen.getByLabelText("SillyTavern"));
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
@@ -206,10 +218,7 @@ test("accepts an exact public Codeberg repository for an Extension", async () =>
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
-  await user.selectOptions(
-    screen.getByLabelText("Primary function"),
-    "interface-workflow",
-  );
+  await choosePrimaryFunction(user, "Interface and workflow");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
@@ -256,10 +265,7 @@ test("submits multiple current frontend identities in the manifest", async () =>
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
-  await user.selectOptions(
-    screen.getByLabelText("Primary function"),
-    "developer-infrastructure",
-  );
+  await choosePrimaryFunction(user, "Developer infrastructure");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://github.com/example/extension",
