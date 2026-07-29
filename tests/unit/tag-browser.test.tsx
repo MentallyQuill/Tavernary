@@ -95,6 +95,7 @@ test("searches labels, aliases, and descriptions", () => {
   expect(searchTags(coreTags, "persistent context")[0]?.id).toBe(
     "maintain-long-term-memory",
   );
+  expect(searchTags(coreTags, "local first")[0]?.id).toBe("local-first");
   expect(searchTags(coreTags, "  ")).toEqual(coreTags);
 });
 

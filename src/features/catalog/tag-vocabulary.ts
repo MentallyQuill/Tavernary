@@ -10,7 +10,14 @@ export interface PublicTagDefinition {
 }
 
 function normalized(value: string) {
-  return value.trim().toLocaleLowerCase();
+  return value
+    .normalize("NFKD")
+    .replace(/\p{Mark}/gu, "")
+    .toLocaleLowerCase()
+    .replace(/&/gu, " and ")
+    .replace(/[^a-z0-9]+/gu, " ")
+    .trim()
+    .replace(/\s+/gu, " ");
 }
 
 export function searchTags(
