@@ -16,6 +16,7 @@ import {
 
 import {
   HelpErrorSummary,
+  HelpSelectField,
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
@@ -212,6 +213,7 @@ export function ProjectReportForm({
           onBack={() => setReviewing(false)}
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
+          returnFocusId="project-search"
           continuing={continuing}
           fallbackUrl={fallbackUrl}
         />
@@ -242,48 +244,42 @@ export function ProjectReportForm({
         onChange={(event) => setSearch(event.target.value)}
         hint="Search the published catalog by name, creator, source, or catalog text."
       />
-      <div className="help-field">
-        <label htmlFor="project">Project</label>
-        <select
-          id="project"
-          value={projectId}
-          aria-invalid={errors.includes("Select a listed project.")}
-          onChange={(event) =>
-            setProjectId(selectedProjectId(projects, event.target.value))
-          }
-        >
-          <option value="">Select a listed project</option>
-          {visibleProjects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name} — {project.creator}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="help-field">
-        <label htmlFor="project-category">What is wrong?</label>
-        <select
-          id="project-category"
-          value={category}
-          aria-invalid={errors.includes("Choose what is wrong.")}
-          onChange={(event) => {
-            const nextCategory = event.target.value;
-            setCategory(
-              isProjectReportCategory(nextCategory) ? nextCategory : "",
-            );
-          }}
-        >
-          <option value="">Choose a concern</option>
-          {PROJECT_REPORT_CATEGORIES.map((option) => (
-            <option key={option} value={option}>
-              {displayProjectReportCategory(option)}
-            </option>
-          ))}
-        </select>
-        {category ? (
-          <p className="help-hint">{categoryGuidance[category]}</p>
-        ) : null}
-      </div>
+      <HelpSelectField
+        id="project"
+        label="Project"
+        value={projectId}
+        error={errors.find((error) => error === "Select a listed project.")}
+        onChange={(event) =>
+          setProjectId(selectedProjectId(projects, event.target.value))
+        }
+      >
+        <option value="">Select a listed project</option>
+        {visibleProjects.map((project) => (
+          <option key={project.id} value={project.id}>
+            {project.name} — {project.creator}
+          </option>
+        ))}
+      </HelpSelectField>
+      <HelpSelectField
+        id="project-category"
+        label="What is wrong?"
+        value={category}
+        error={errors.find((error) => error === "Choose what is wrong.")}
+        hint={category ? categoryGuidance[category] : undefined}
+        onChange={(event) => {
+          const nextCategory = event.target.value;
+          setCategory(
+            isProjectReportCategory(nextCategory) ? nextCategory : "",
+          );
+        }}
+      >
+        <option value="">Choose a concern</option>
+        {PROJECT_REPORT_CATEGORIES.map((option) => (
+          <option key={option} value={option}>
+            {displayProjectReportCategory(option)}
+          </option>
+        ))}
+      </HelpSelectField>
       <HelpTextArea
         id="project-report"
         label="What should Tavernary review?"

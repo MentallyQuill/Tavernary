@@ -152,6 +152,61 @@ test("keeps the private security route free of a public issue form at 320 px", a
   expect(overflow).toBeLessThanOrEqual(0);
 });
 
+test("spaces every interactive Help form without mobile overflow", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+
+  for (const path of [
+    "/help/manage-project/",
+    "/help/report-project/",
+    "/help/report-website/",
+    "/help/report-kit/",
+    "/help/other/",
+  ]) {
+    await page.goto(sitePath(path));
+
+    const form = page.locator(".help-form");
+    await expect(form).toBeVisible();
+    const gaps = await form.evaluate((element) => {
+      const visibleChildren = [...element.children].filter(
+        (child): child is HTMLElement =>
+          child instanceof HTMLElement &&
+          window.getComputedStyle(child).display !== "none",
+      );
+      return visibleChildren.slice(1).map((child, index) => {
+        const previous = visibleChildren[index]!.getBoundingClientRect();
+        const current = child.getBoundingClientRect();
+        return current.top - previous.bottom;
+      });
+    });
+
+    expect(
+      gaps.length,
+      `${path} should render multiple form sections`,
+    ).toBeGreaterThan(0);
+    expect(
+      gaps.every((gap) => gap >= 16),
+      `${path} direct form gaps: ${gaps.join(", ")}`,
+    ).toBe(true);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      ),
+      `${path} horizontal overflow`,
+    ).toBeLessThanOrEqual(0);
+  }
+});
+
+test("renders one clean Kit-author routing reminder", async ({ page }) => {
+  await page.goto(sitePath("/help/report-kit/"));
+
+  await expect(
+    page.locator("p").filter({ hasText: "Are you the Kit author?" }),
+  ).toHaveCount(1);
+  await expect(page.locator("body")).not.toContainText("â");
+});
+
 test("preserves selected catalog and Kit records through actual report controls", async ({
   page,
 }) => {

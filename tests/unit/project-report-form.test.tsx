@@ -89,6 +89,10 @@ test("keeps unlisted URLs out of the report payload", async () => {
   expect(screen.getByRole("alert")).toHaveTextContent(
     "Select a listed project.",
   );
+  expect(screen.getByLabelText("Project")).toHaveAttribute("aria-describedby");
+  expect(document.getElementById("project-error")).toHaveTextContent(
+    "Select a listed project.",
+  );
   expect(
     screen.queryByText("Review your public request"),
   ).not.toBeInTheDocument();

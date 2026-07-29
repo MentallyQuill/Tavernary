@@ -12,6 +12,7 @@ export function HelpReview({
   onBack,
   onCancel,
   onContinue,
+  returnFocusId,
   continuing = false,
   fallbackUrl = "",
 }: {
@@ -19,9 +20,17 @@ export function HelpReview({
   onBack: () => void;
   onCancel: () => void;
   onContinue: () => Promise<void>;
+  returnFocusId: string;
   continuing?: boolean;
   fallbackUrl?: string;
 }) {
+  function returnToForm(callback: () => void) {
+    callback();
+    window.setTimeout(() => {
+      document.getElementById(returnFocusId)?.focus();
+    }, 0);
+  }
+
   return (
     <section className="help-review" aria-labelledby="help-review-heading">
       <h2 id="help-review-heading">Review your public request</h2>
@@ -49,11 +58,15 @@ export function HelpReview({
         <button
           type="button"
           className="help-secondary-action"
-          onClick={onBack}
+          onClick={() => returnToForm(onBack)}
         >
           Back and edit
         </button>
-        <button type="button" className="help-link-action" onClick={onCancel}>
+        <button
+          type="button"
+          className="help-link-action"
+          onClick={() => returnToForm(onCancel)}
+        >
           Cancel
         </button>
         <button

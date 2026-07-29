@@ -20,6 +20,7 @@ import type { OwnerProjectOption } from "@/lib/help/load-owner-project-options";
 import {
   HelpChoiceGroup,
   HelpErrorSummary,
+  HelpSelectField,
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
@@ -531,6 +532,7 @@ export function ProjectOwnerBuilder({
           onBack={() => setReviewing(false)}
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
+          returnFocusId="owner-project-search"
           continuing={continuing}
           fallbackUrl={fallbackUrl}
         />
@@ -561,22 +563,20 @@ export function ProjectOwnerBuilder({
         onChange={(event) => setSearch(event.target.value)}
         hint="Search by project name, repository owner, repository name, or project ID."
       />
-      <div className="help-field">
-        <label htmlFor="owner-project">Project</label>
-        <select
-          id="owner-project"
-          value={projectId}
-          aria-invalid={errors.includes("Select a listed project.")}
-          onChange={(event) => selectProject(event.target.value)}
-        >
-          <option value="">Select a listed project</option>
-          {visibleProjects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name} — {project.repository ?? project.id}
-            </option>
-          ))}
-        </select>
-      </div>
+      <HelpSelectField
+        id="owner-project"
+        label="Project"
+        value={projectId}
+        error={errors.find((error) => error === "Select a listed project.")}
+        onChange={(event) => selectProject(event.target.value)}
+      >
+        <option value="">Select a listed project</option>
+        {visibleProjects.map((project) => (
+          <option key={project.id} value={project.id}>
+            {project.name} — {project.repository ?? project.id}
+          </option>
+        ))}
+      </HelpSelectField>
       {selected && !selected.eligibleShape ? (
         <div className="help-security-callout">
           <p>{selected.ineligibilityReason}</p>
@@ -587,7 +587,12 @@ export function ProjectOwnerBuilder({
       ) : null}
       {selected?.eligibleShape ? (
         <>
-          <HelpChoiceGroup legend="What would you like to do?">
+          <HelpChoiceGroup
+            legend="What would you like to do?"
+            error={errors.find(
+              (error) => error === "Choose an owner request type.",
+            )}
+          >
             {(Object.keys(operationLabels) as OwnerOperation[]).map((value) => (
               <label className="help-choice" key={value}>
                 <input
@@ -612,6 +617,9 @@ export function ProjectOwnerBuilder({
                 value={name}
                 maxLength={100}
                 onChange={(event) => setName(event.target.value)}
+                error={errors.find((error) =>
+                  error.startsWith("Owner display name"),
+                )}
               />
               <HelpTextArea
                 id="owner-summary"
@@ -619,6 +627,9 @@ export function ProjectOwnerBuilder({
                 value={summary}
                 maxLength={220}
                 onChange={(event) => setSummary(event.target.value)}
+                error={errors.find((error) =>
+                  error.startsWith("Owner summary"),
+                )}
                 count={`${summary.length} / 220`}
                 hint="Plain text. Line breaks are collapsed to spaces; automatic model-summary word rules do not apply."
               />
@@ -628,20 +639,18 @@ export function ProjectOwnerBuilder({
                 values={frontends}
                 onChange={setFrontends}
               />
-              <div className="help-field">
-                <label htmlFor="owner-primary-function">Primary function</label>
-                <select
-                  id="owner-primary-function"
-                  value={primaryFunction}
-                  onChange={(event) => setPrimaryFunction(event.target.value)}
-                >
-                  {vocabularies.primaryFunctions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <HelpSelectField
+                id="owner-primary-function"
+                label="Primary function"
+                value={primaryFunction}
+                onChange={(event) => setPrimaryFunction(event.target.value)}
+              >
+                {vocabularies.primaryFunctions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </HelpSelectField>
               <OptionCheckboxes
                 legend="Capabilities"
                 options={vocabularies.capabilities}
@@ -673,11 +682,21 @@ export function ProjectOwnerBuilder({
               value={proposedRepositoryUrl}
               type="url"
               onChange={(event) => setProposedRepositoryUrl(event.target.value)}
+              error={errors.find(
+                (error) => error === "Enter one public GitHub repository URL.",
+              )}
               hint="Use the current public URL for this same repository. GitHub must report the same immutable repository ID."
             />
           ) : null}
           {operation === "delist" ? (
-            <HelpChoiceGroup legend="Confirm delisting">
+            <HelpChoiceGroup
+              legend="Confirm delisting"
+              error={errors.find(
+                (error) =>
+                  error ===
+                  "Confirm that Tavernary should delist this project.",
+              )}
+            >
               <label className="help-choice">
                 <input
                   type="checkbox"

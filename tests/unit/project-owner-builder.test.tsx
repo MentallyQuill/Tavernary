@@ -246,6 +246,59 @@ test("shows compatibility controls only for Presets", async () => {
   ).not.toBeChecked();
 });
 
+test("connects each required owner choice to its inline error", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByLabelText("Project")).toHaveAttribute("aria-describedby");
+  expect(document.getElementById("owner-project-error")).toHaveTextContent(
+    "Select a listed project.",
+  );
+
+  await selectProject(user);
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(
+    screen.getByRole("group", { name: "What would you like to do?" }),
+  ).toHaveAttribute("aria-invalid", "true");
+
+  await user.click(
+    screen.getByRole("radio", { name: "Update repository location" }),
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByLabelText("Public GitHub repository URL")).toHaveAttribute(
+    "aria-describedby",
+  );
+
+  await user.click(screen.getByRole("radio", { name: "Delist this project" }));
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(
+    screen.getByRole("group", { name: "Confirm delisting" }),
+  ).toHaveAttribute("aria-invalid", "true");
+});
+
+test("connects required owner card text to its inline errors", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+  await user.clear(screen.getByLabelText("Display name"));
+  await user.clear(screen.getByLabelText("Summary"));
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByLabelText("Display name")).toHaveAttribute(
+    "aria-describedby",
+  );
+  expect(screen.getByLabelText("Summary")).toHaveAttribute("aria-describedby");
+  expect(document.getElementById("owner-name-error")).toHaveTextContent(
+    "Owner display name is required.",
+  );
+  expect(document.getElementById("owner-summary-error")).toHaveTextContent(
+    "Owner summary is required.",
+  );
+});
+
 test("requires the exact delist confirmation and explains the retained effect", async () => {
   const user = userEvent.setup();
   renderBuilder();

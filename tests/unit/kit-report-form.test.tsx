@@ -94,6 +94,15 @@ test("does not trust an unknown Kit query", () => {
   expect(screen.getByLabelText("Kit")).toHaveValue("");
 });
 
+test("renders published Kit choices with a real em dash", () => {
+  renderKitReport();
+
+  expect(
+    screen.getByRole("option", { name: "Alpha Kit — @alpha-author" }),
+  ).toBeVisible();
+  expect(screen.getByLabelText("Kit")).not.toHaveTextContent("â");
+});
+
 test("limits affected projects to the selected Kit", async () => {
   const user = userEvent.setup();
   search = "kit=alpha-kit";
@@ -106,6 +115,11 @@ test("limits affected projects to the selected Kit", async () => {
 
   expect(screen.getByLabelText("Extension Alpha")).toBeVisible();
   expect(screen.queryByLabelText("Unrelated Project")).not.toBeInTheDocument();
+  const affectedProjects = screen.getByRole("group", {
+    name: "Affected Kit projects",
+  });
+  expect(affectedProjects).toHaveClass("help-choice-group");
+  expect(affectedProjects).toHaveAttribute("aria-describedby");
 });
 
 test("asks for another published Kit when reporting a duplicate", async () => {
@@ -154,6 +168,24 @@ test("keeps author editing and withdrawal guidance in existing Kit surfaces", ()
       name: "use the existing author withdrawal action",
     }),
   ).toHaveAttribute("href", "/?mode=kits");
+});
+
+test("connects required Kit choices to their inline errors", async () => {
+  const user = userEvent.setup();
+  renderKitReport();
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByLabelText("Kit")).toHaveAttribute("aria-describedby");
+  expect(screen.getByLabelText("What is wrong?")).toHaveAttribute(
+    "aria-describedby",
+  );
+  expect(document.getElementById("kit-error")).toHaveTextContent(
+    "Select a published Kit.",
+  );
+  expect(document.getElementById("kit-category-error")).toHaveTextContent(
+    "Choose what is wrong.",
+  );
 });
 
 test("reviews a constrained Kit report without moderation side effects", async () => {

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Suspense } from "react";
 
 import { HelpPageShell } from "@/features/help/components/help-page-shell";
@@ -73,21 +72,9 @@ export default function KitReportPage() {
     <HelpPageShell
       kicker="Help"
       title="Report a Kit"
-      lead={
-        <>
-          <p>
-            Use this form to report a compatibility, safety, accuracy,
-            broken-project, or duplicate-Kit concern about a published Kit.
-          </p>
-          <p>
-            Are you the Kit author?{" "}
-            <Link href="/?mode=kits">Edit the Kit in the Kit Builder</Link> or
-            use its existing author withdrawal action.
-          </p>
-        </>
-      }
+      lead="Use this form to report a compatibility, safety, accuracy, broken-project, or duplicate-Kit concern about a published Kit."
     >
-      <Suspense fallback={<p>Loading Kit report formâ€¦</p>}>
+      <Suspense fallback={<p>Loading Kit report form…</p>}>
         <KitReportForm
           kits={mapHelpKitOptions(catalog.kits)}
           siteRevision={siteRevision}

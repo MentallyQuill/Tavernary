@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from "react";
 import type {
   InputHTMLAttributes,
   ReactNode,
+  SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
 
@@ -152,23 +153,83 @@ export function HelpTextArea({
   );
 }
 
+type HelpSelectFieldProps = Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  "id"
+> & {
+  id: string;
+  label: ReactNode;
+  hint?: ReactNode;
+  error?: string;
+};
+
+export function HelpSelectField({
+  id,
+  label,
+  hint,
+  error,
+  children,
+  ...selectProps
+}: HelpSelectFieldProps) {
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+
+  return (
+    <div className="help-field">
+      <label htmlFor={id}>{label}</label>
+      <select
+        {...selectProps}
+        id={id}
+        aria-invalid={Boolean(error)}
+        aria-describedby={describedBy(
+          selectProps["aria-describedby"],
+          hintId,
+          errorId,
+        )}
+      >
+        {children}
+      </select>
+      {hint ? (
+        <p className="help-hint" id={hintId}>
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p className="help-field-error" id={errorId}>
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 export function HelpChoiceGroup({
   legend,
   children,
+  hint,
   error,
 }: {
   legend: ReactNode;
   children: ReactNode;
+  hint?: ReactNode;
   error?: string;
 }) {
-  const errorId = useId();
+  const descriptionId = useId();
+  const hintId = hint ? `${descriptionId}-hint` : undefined;
+  const errorId = error ? `${descriptionId}-error` : undefined;
 
   return (
     <fieldset
       className="help-choice-group"
-      aria-describedby={error ? errorId : undefined}
+      aria-invalid={Boolean(error)}
+      aria-describedby={describedBy(hintId, errorId)}
     >
       <legend>{legend}</legend>
+      {hint ? (
+        <p className="help-hint" id={hintId}>
+          {hint}
+        </p>
+      ) : null}
       {children}
       {error ? (
         <p className="help-field-error" id={errorId}>

@@ -15,7 +15,9 @@ import {
 } from "@/features/help/help-transport";
 
 import {
+  HelpChoiceGroup,
   HelpErrorSummary,
+  HelpSelectField,
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
@@ -219,7 +221,7 @@ export function KitReportForm({
           rows={[
             {
               label: "Kit",
-              value: `${selected?.title} â€” @${selected?.author}`,
+              value: `${selected?.title} — @${selected?.author}`,
             },
             {
               label: "Category",
@@ -244,6 +246,7 @@ export function KitReportForm({
           onBack={() => setReviewing(false)}
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
+          returnFocusId="kit-search"
           continuing={continuing}
           fallbackUrl={fallbackUrl}
         />
@@ -276,62 +279,58 @@ export function KitReportForm({
         onChange={(event) => setSearch(event.target.value)}
         hint="Search published Kits by title, author, or Kit ID."
       />
-      <div className="help-field">
-        <label htmlFor="kit">Kit</label>
-        <select
-          id="kit"
-          value={kitId}
-          aria-invalid={errors.includes("Select a published Kit.")}
-          onChange={(event) => selectKit(event.target.value)}
-        >
-          <option value="">Select a published Kit</option>
-          {visibleKits.map((kit) => (
-            <option key={kit.id} value={kit.id}>
-              {kit.title} â€” @{kit.author}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="help-field">
-        <label htmlFor="kit-category">What is wrong?</label>
-        <select
-          id="kit-category"
-          value={category}
-          aria-invalid={errors.includes("Choose what is wrong.")}
-          onChange={(event) => {
-            const nextCategory = event.target.value;
-            setCategory(isKitReportCategory(nextCategory) ? nextCategory : "");
-            setAffectedProjectIds([]);
-            setOtherKitId("");
-          }}
-        >
-          <option value="">Choose a concern</option>
-          {KIT_REPORT_CATEGORIES.map((option) => (
-            <option key={option} value={option}>
-              {displayKitReportCategory(option)}
-            </option>
-          ))}
-        </select>
-        {category === "unsafe-or-malicious-included-project" ? (
-          <p className="help-hint">
-            Is the concern about the underlying project rather than this
-            Kit&apos;s inclusion or presentation?{" "}
-            <Link href="/help/report-project/">
-              Report the project listing instead
-            </Link>
-            .
-          </p>
-        ) : null}
-        {category === "author-or-attribution-concern" ? (
-          <p className="help-hint">
-            Explain what author or source information is wrong.
-          </p>
-        ) : null}
-      </div>
+      <HelpSelectField
+        id="kit"
+        label="Kit"
+        value={kitId}
+        error={errors.find((error) => error === "Select a published Kit.")}
+        onChange={(event) => selectKit(event.target.value)}
+      >
+        <option value="">Select a published Kit</option>
+        {visibleKits.map((kit) => (
+          <option key={kit.id} value={kit.id}>
+            {kit.title} — @{kit.author}
+          </option>
+        ))}
+      </HelpSelectField>
+      <HelpSelectField
+        id="kit-category"
+        label="What is wrong?"
+        value={category}
+        error={errors.find((error) => error === "Choose what is wrong.")}
+        hint={
+          category === "unsafe-or-malicious-included-project" ? (
+            <>
+              Is the concern about the underlying project rather than this
+              Kit&apos;s inclusion or presentation?{" "}
+              <Link href="/help/report-project/">
+                Report the project listing instead
+              </Link>
+              .
+            </>
+          ) : category === "author-or-attribution-concern" ? (
+            "Explain what author or source information is wrong."
+          ) : undefined
+        }
+        onChange={(event) => {
+          const nextCategory = event.target.value;
+          setCategory(isKitReportCategory(nextCategory) ? nextCategory : "");
+          setAffectedProjectIds([]);
+          setOtherKitId("");
+        }}
+      >
+        <option value="">Choose a concern</option>
+        {KIT_REPORT_CATEGORIES.map((option) => (
+          <option key={option} value={option}>
+            {displayKitReportCategory(option)}
+          </option>
+        ))}
+      </HelpSelectField>
       {selected && hasAffectedProjects(category) ? (
-        <fieldset className="help-field">
-          <legend>Affected Kit projects</legend>
-          <p className="help-hint">Select any affected projects in this Kit.</p>
+        <HelpChoiceGroup
+          legend="Affected Kit projects"
+          hint="Select any affected projects in this Kit."
+        >
           {selected.projects.map((project) => (
             <label className="help-choice" key={project.id}>
               <input
@@ -344,29 +343,29 @@ export function KitReportForm({
               {project.name}
             </label>
           ))}
-        </fieldset>
+        </HelpChoiceGroup>
       ) : null}
       {selected && category === "duplicate-kit" ? (
-        <div className="help-field">
-          <label htmlFor="other-kit">Other Kit</label>
-          <select
-            id="other-kit"
-            value={otherKitId}
-            aria-invalid={errors.includes("Select the other published Kit.")}
-            onChange={(event) =>
-              setOtherKitId(selectedKitId(kits, event.target.value))
-            }
-          >
-            <option value="">Select the other published Kit</option>
-            {kits
-              .filter((kit) => kit.id !== selected.id)
-              .map((kit) => (
-                <option key={kit.id} value={kit.id}>
-                  {kit.title} â€” @{kit.author}
-                </option>
-              ))}
-          </select>
-        </div>
+        <HelpSelectField
+          id="other-kit"
+          label="Other Kit"
+          value={otherKitId}
+          error={errors.find(
+            (error) => error === "Select the other published Kit.",
+          )}
+          onChange={(event) =>
+            setOtherKitId(selectedKitId(kits, event.target.value))
+          }
+        >
+          <option value="">Select the other published Kit</option>
+          {kits
+            .filter((kit) => kit.id !== selected.id)
+            .map((kit) => (
+              <option key={kit.id} value={kit.id}>
+                {kit.title} — @{kit.author}
+              </option>
+            ))}
+        </HelpSelectField>
       ) : null}
       <HelpTextArea
         id="kit-details"

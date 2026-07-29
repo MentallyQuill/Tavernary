@@ -16,6 +16,7 @@ import {
 
 import {
   HelpErrorSummary,
+  HelpSelectField,
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
@@ -219,6 +220,7 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
           onBack={() => setReviewing(false)}
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
+          returnFocusId="website-category"
           continuing={continuing}
           fallbackUrl={fallbackUrl}
         />
@@ -241,35 +243,23 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
         <Link href="/help/other/">Suggest an improvement.</Link> A Tavernary
         vulnerability? <Link href="/help/security/">Report it privately.</Link>
       </p>
-      <div className="help-field">
-        <label htmlFor="website-category">
-          What kind of website problem is this?
-        </label>
-        <select
-          id="website-category"
-          value={category}
-          aria-invalid={Boolean(categoryError)}
-          aria-describedby={
-            categoryError ? "website-category-error" : undefined
-          }
-          onChange={(event) => {
-            const nextCategory = event.target.value;
-            setCategory(isWebsiteBugCategory(nextCategory) ? nextCategory : "");
-          }}
-        >
-          <option value="">Choose a website problem</option>
-          {WEBSITE_BUG_CATEGORIES.map((option) => (
-            <option key={option} value={option}>
-              {displayWebsiteBugCategory(option)}
-            </option>
-          ))}
-        </select>
-        {categoryError ? (
-          <p className="help-field-error" id="website-category-error">
-            {categoryError}
-          </p>
-        ) : null}
-      </div>
+      <HelpSelectField
+        id="website-category"
+        label="What kind of website problem is this?"
+        value={category}
+        error={categoryError}
+        onChange={(event) => {
+          const nextCategory = event.target.value;
+          setCategory(isWebsiteBugCategory(nextCategory) ? nextCategory : "");
+        }}
+      >
+        <option value="">Choose a website problem</option>
+        {WEBSITE_BUG_CATEGORIES.map((option) => (
+          <option key={option} value={option}>
+            {displayWebsiteBugCategory(option)}
+          </option>
+        ))}
+      </HelpSelectField>
       <HelpTextField
         id="website-page-url"
         label="What page has the problem?"

@@ -984,6 +984,9 @@ test("handles owner closure from default-branch code and exact head state", asyn
     group: "project-owner-lifecycle-${{ github.event.pull_request.number }}",
     "cancel-in-progress": false,
   });
+  expect(lifecycle.jobs.close.if).toBe(
+    "startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')",
+  );
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
   );

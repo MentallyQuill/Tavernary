@@ -15,6 +15,7 @@ import {
 
 import {
   HelpErrorSummary,
+  HelpSelectField,
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
@@ -160,6 +161,7 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
           onBack={() => setReviewing(false)}
           onCancel={() => setReviewing(false)}
           onContinue={continueOnGitHub}
+          returnFocusId="other-category"
           continuing={continuing}
           fallbackUrl={fallbackUrl}
         />
@@ -199,31 +201,23 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
           <Link href="/help/security/">Report it privately.</Link>
         </p>
       </section>
-      <div className="help-field">
-        <label htmlFor="other-category">What do you need help with?</label>
-        <select
-          id="other-category"
-          value={category}
-          aria-invalid={Boolean(categoryError)}
-          aria-describedby={categoryError ? "other-category-error" : undefined}
-          onChange={(event) => {
-            const nextCategory = event.target.value;
-            setCategory(isOtherHelpCategory(nextCategory) ? nextCategory : "");
-          }}
-        >
-          <option value="">Choose a topic</option>
-          {OTHER_HELP_CATEGORIES.map((option) => (
-            <option key={option} value={option}>
-              {displayOtherHelpCategory(option)}
-            </option>
-          ))}
-        </select>
-        {categoryError ? (
-          <p className="help-field-error" id="other-category-error">
-            {categoryError}
-          </p>
-        ) : null}
-      </div>
+      <HelpSelectField
+        id="other-category"
+        label="What do you need help with?"
+        value={category}
+        error={categoryError}
+        onChange={(event) => {
+          const nextCategory = event.target.value;
+          setCategory(isOtherHelpCategory(nextCategory) ? nextCategory : "");
+        }}
+      >
+        <option value="">Choose a topic</option>
+        {OTHER_HELP_CATEGORIES.map((option) => (
+          <option key={option} value={option}>
+            {displayOtherHelpCategory(option)}
+          </option>
+        ))}
+      </HelpSelectField>
       <HelpTextField
         id="other-subject"
         label="Subject"
