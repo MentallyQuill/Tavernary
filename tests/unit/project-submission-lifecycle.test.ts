@@ -1,16 +1,42 @@
 import { expect, test } from "vitest";
 
 import { planProjectSubmissionClosure } from "../../scripts/submissions/project-submission-lifecycle.mjs";
+import {
+  createProjectPublicationTransaction,
+  PROJECT_PUBLICATION_TRANSACTION_MARKER,
+} from "../../scripts/publication/project-publication-transaction.mjs";
 
 function markedBody(issueNumber: number) {
+  const transaction = createProjectPublicationTransaction({
+    schema_version: 2,
+    operation: "create",
+    producer: "project-submission",
+    publication_mode: "automatic",
+    issue_number: issueNumber,
+    project_ids: [`project-${issueNumber}`],
+    source_id: "github-42",
+    source_identity: {
+      type: "github",
+      canonical: "github:42",
+      repository_id: 42,
+    },
+    actor: { id: 11, login: "Submitter", type: "User" },
+    authority_type: "community-submitter",
+    input_digest: "d".repeat(64),
+    input_fingerprints: { projects: {}, source: null },
+    base_sha: "b".repeat(40),
+    generated_head_sha: "a".repeat(40),
+    generated_paths: [
+      `data/registry/projects/project-${issueNumber}.json`,
+      "data/registry/sources/github-42.json",
+      "data/snapshots/github/github-42.json",
+    ],
+    policy_version: "2026-07-29",
+    copy_result: null,
+  });
   return [
-    "<!-- tavernary-project-submission-pr",
-    JSON.stringify({
-      schema_version: 1,
-      issue_number: issueNumber,
-      generated_head_sha: "a".repeat(40),
-      generated_paths: [`data/registry/projects/project-${issueNumber}.json`],
-    }),
+    PROJECT_PUBLICATION_TRANSACTION_MARKER,
+    JSON.stringify(transaction),
     "-->",
     `Closes #${issueNumber}`,
   ].join("\n");

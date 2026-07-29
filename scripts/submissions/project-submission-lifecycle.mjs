@@ -8,7 +8,8 @@ const removableLabels = ["needs-maintainer-review", "submission-pr-open"];
 export function planProjectSubmissionClosure(input) {
   const marker = parseSubmissionPullRequestMarker(input.body ?? "");
   if (
-    !marker ||
+    marker?.schema_version !== 2 ||
+    marker.producer !== "project-submission" ||
     input.headRepository.toLowerCase() !== input.baseRepository.toLowerCase() ||
     input.headRef !== submissionBranch(marker.issue_number)
   ) {

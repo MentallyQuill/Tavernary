@@ -1,7 +1,7 @@
 const copyMarker = (issueNumber) =>
   `<!-- tavernary-project-copy-notice:${issueNumber} -->`;
-const ownerDelistMarker = (projectId, issueNumber) =>
-  `<!-- tavernary-owner-delist-notice:${projectId}:${issueNumber} -->`;
+const ownerDelistMarker = (sourceId, issueNumber) =>
+  `<!-- tavernary-owner-delist-notice:${sourceId}:${issueNumber} -->`;
 
 function safePlainText(value, limit = 600) {
   const normalized = String(value ?? "")
@@ -61,29 +61,24 @@ export function planCopyAdjustmentNotice(transaction, existingComments = []) {
     : { action: "update", commentId: existing.id, body };
 }
 
-function canonicalSource(project) {
-  if (
-    project?.source?.type === "github" &&
-    typeof project.source.repository === "string"
-  ) {
-    return `https://github.com/${project.source.repository}`;
+function canonicalSource(source) {
+  if (source?.type === "github" && typeof source.repository === "string") {
+    return `https://github.com/${source.repository}`;
   }
-  if (
-    project?.source?.type === "codeberg" &&
-    typeof project.source.repository === "string"
-  ) {
-    return `https://codeberg.org/${project.source.repository}`;
+  if (source?.type === "codeberg" && typeof source.repository === "string") {
+    return `https://codeberg.org/${source.repository}`;
   }
-  return project?.source?.url ?? "Unavailable";
+  return source?.url ?? "Unavailable";
 }
 
-function renderedKits(kits, projectId) {
+function renderedKits(kits, projectIds) {
+  const affectedIds = new Set(projectIds);
   const affected = (kits ?? [])
     .filter(
       (kit) =>
         kit?.status === "published" &&
         Array.isArray(kit.project_ids) &&
-        kit.project_ids.includes(projectId),
+        kit.project_ids.some((projectId) => affectedIds.has(projectId)),
     )
     .sort((left, right) =>
       String(left.title).localeCompare(String(right.title)),
@@ -98,35 +93,54 @@ function renderedKits(kits, projectId) {
         .join("\n");
 }
 
+function renderedProjects(projects) {
+  return projects.length === 0
+    ? "- None."
+    : projects
+        .map(
+          (project) =>
+            `- ${safePlainText(project.name, 180)} (\`${safePlainText(project.id, 100)}\`)`,
+        )
+        .join("\n");
+}
+
 export function planOwnerDelistNotice(input) {
   const transaction = input?.transaction;
   if (
-    transaction?.operation !== "delist" ||
+    transaction?.operation !== "delist-source" ||
     transaction.authority_type !== "repository-owner"
   ) {
     return { action: "none" };
   }
-  const project = input.project ?? {};
+  const source = input.source ?? {};
+  const projects = (input.projects ?? [])
+    .filter(
+      (project) =>
+        project?.source_id === transaction.source_id &&
+        transaction.project_ids.includes(project.id),
+    )
+    .sort((left, right) => String(left.name).localeCompare(String(right.name)));
   const marker = ownerDelistMarker(
-    transaction.project_id,
+    transaction.source_id,
     transaction.issue_number,
   );
-  const title = `[Owner delisting notice] ${safeTitle(
-    project.name ?? transaction.project_id,
+  const title = `[Owner source delisting notice] ${safeTitle(
+    source.repository ?? transaction.source_id,
     180,
   )}`;
   const ownerNote = input.issue?.ownerNote;
   const body = [
     marker,
-    "A verified repository owner automatically delisted this project. The authority and immutable repository identity checks passed, and the delisting transaction has already merged. No staff approval is required.",
+    "A verified repository owner permanently delisted this repository source. The authority and immutable repository identity checks passed, and the delisting transaction has already merged. No staff approval is required.",
     "",
     "Review is optional unless the affected-Kit information requires follow-up.",
     "",
-    "## Project",
+    "## Source",
     "",
-    `- **Name:** ${safePlainText(project.name ?? transaction.project_id, 180)}`,
-    `- **Project ID:** \`${transaction.project_id}\``,
-    `- **Canonical source:** ${safePlainText(canonicalSource(project), 320)}`,
+    `- **Repository:** ${safePlainText(source.repository ?? transaction.source_id, 180)}`,
+    `- **Source ID:** \`${transaction.source_id}\``,
+    `- **Canonical source:** ${safePlainText(canonicalSource(source), 320)}`,
+    `- **Blocked identity:** \`${safePlainText(transaction.source_identity?.canonical ?? "Unavailable", 120)}\` is permanently blocked from ordinary resubmission.`,
     `- **Owner:** ${safePlainText(transaction.actor.login, 80)} (GitHub ID \`${transaction.actor.id}\`)`,
     `- **Source request:** #${transaction.issue_number}`,
     `- **Merged transaction PR:** #${input.pull?.number ?? "Unavailable"}`,
@@ -134,12 +148,17 @@ export function planOwnerDelistNotice(input) {
     "",
     "## Resulting canonical state",
     "",
-    `- visibility: ${safePlainText(project.visibility ?? "delisted", 80)}`,
-    `- visibility_reason: ${safePlainText(project.visibility_reason ?? "owner-request", 120)}`,
+    `- status: ${safePlainText(source.status ?? "delisted", 80)}`,
+    `- status_reason: ${safePlainText(source.status_reason ?? "removed", 120)}`,
+    `- refresh_policy: ${safePlainText(source.refresh_policy ?? "paused", 120)}`,
     "",
-    "## Currently published Kits referencing this project",
+    "## Affected cards",
     "",
-    renderedKits(input.kits, transaction.project_id),
+    renderedProjects(projects),
+    "",
+    "## Currently published Kits referencing affected cards",
+    "",
+    renderedKits(input.kits, transaction.project_ids),
     ...(ownerNote
       ? ["", "## Owner note", "", `> ${safePlainText(ownerNote, 600)}`]
       : []),

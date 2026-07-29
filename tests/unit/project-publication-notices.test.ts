@@ -10,8 +10,10 @@ function transaction(overrides: Record<string, unknown> = {}) {
   return createProjectPublicationTransaction({
     operation: "edit-card",
     producer: "project-owner-request",
+    publication_mode: "automatic",
     issue_number: 128,
-    project_id: "owner-alpha",
+    project_ids: ["owner-alpha"],
+    source_id: "github-42",
     source_identity: {
       type: "github",
       canonical: "github:42",
@@ -20,7 +22,10 @@ function transaction(overrides: Record<string, unknown> = {}) {
     actor: { id: 11, login: "Owner", type: "User" },
     authority_type: "repository-owner",
     input_digest: "a".repeat(64),
-    record_fingerprint: "d".repeat(64),
+    input_fingerprints: {
+      projects: { "owner-alpha": "d".repeat(64) },
+      source: null,
+    },
     base_sha: "b".repeat(40),
     generated_head_sha: "c".repeat(40),
     generated_paths: ["data/registry/projects/owner-alpha.json"],
@@ -73,8 +78,14 @@ test("does not notify community synthesis or unchanged copy", () => {
       transaction({
         operation: "create",
         producer: "project-submission",
+        publication_mode: "automatic",
         authority_type: "community-submitter",
-        record_fingerprint: null,
+        input_fingerprints: { projects: {}, source: null },
+        generated_paths: [
+          "data/registry/projects/owner-alpha.json",
+          "data/registry/sources/github-42.json",
+          "data/snapshots/github/github-42.json",
+        ],
         copy_result: {
           mode: "synthesize",
           result: "accepted-with-light-edits",
@@ -102,28 +113,36 @@ test("does not notify community synthesis or unchanged copy", () => {
 
 test("renders an idempotent verified-owner delisting maintenance issue", () => {
   const delist = transaction({
-    operation: "delist",
+    operation: "delist-source",
+    project_ids: ["owner-alpha", "owner-beta"],
+    input_fingerprints: {
+      projects: {},
+      source: "d".repeat(64),
+    },
+    generated_paths: ["data/registry/sources/github-42.json"],
     copy_result: null,
   });
   const plan = planOwnerDelistNotice({
     transaction: delist,
-    project: {
-      id: "owner-alpha",
-      name: "Alpha [Tool]",
-      visibility: "delisted",
-      visibility_reason: "owner-request",
-      source: {
-        type: "github",
-        repository: "Owner/Alpha",
-        repository_id: 42,
-      },
+    source: {
+      id: "github-42",
+      type: "github",
+      repository: "Owner/Alpha",
+      repository_id: 42,
+      status: "delisted",
+      status_reason: "removed",
+      refresh_policy: "paused",
     },
+    projects: [
+      { id: "owner-alpha", name: "Alpha [Tool]", source_id: "github-42" },
+      { id: "owner-beta", name: "Beta <script>", source_id: "github-42" },
+    ],
     kits: [
       {
         id: "alpha-kit",
         title: "Alpha Kit",
         status: "published",
-        project_ids: ["owner-alpha"],
+        project_ids: ["owner-beta"],
       },
     ],
     pull: { number: 129, html_url: "https://github.test/pull/129" },
@@ -138,14 +157,14 @@ test("renders an idempotent verified-owner delisting maintenance issue", () => {
 
   expect(plan).toMatchObject({
     action: "create",
-    title: "[Owner delisting notice] Alpha [Tool]",
+    title: "[Owner source delisting notice] Owner/Alpha",
     labels: ["owner-delist-notice"],
   });
   if (plan.action !== "create") {
     throw new Error("Expected owner delist notice.");
   }
   expect(plan.body).toContain(
-    "A verified repository owner automatically delisted this project.",
+    "A verified repository owner permanently delisted this repository source.",
   );
   expect(plan.body).toContain("No staff approval is required.");
   expect(plan.body).toContain("Review is optional");
@@ -153,9 +172,12 @@ test("renders an idempotent verified-owner delisting maintenance issue", () => {
   expect(plan.body).toContain("Owner");
   expect(plan.body).toContain("GitHub ID `11`");
   expect(plan.body).toContain("Alpha Kit");
-  expect(plan.body).toContain("visibility: delisted");
+  expect(plan.body).toContain("Alpha \\[Tool\\]");
+  expect(plan.body).toContain("Beta");
+  expect(plan.body).toContain("status: delisted");
+  expect(plan.body).toContain("permanently blocked");
   expect(plan.body).toContain(
-    "<!-- tavernary-owner-delist-notice:owner-alpha:128 -->",
+    "<!-- tavernary-owner-delist-notice:github-42:128 -->",
   );
   expect(plan.body).not.toContain("@staff");
   expect(plan.body).not.toContain("<script>");
@@ -166,11 +188,18 @@ test("does not create an owner notice for trusted-staff delisting", () => {
   expect(
     planOwnerDelistNotice({
       transaction: transaction({
-        operation: "delist",
+        operation: "delist-source",
+        project_ids: ["owner-alpha"],
+        input_fingerprints: {
+          projects: {},
+          source: "d".repeat(64),
+        },
+        generated_paths: ["data/registry/sources/github-42.json"],
         authority_type: "tavernary-staff",
         copy_result: null,
       }),
-      project: {},
+      source: {},
+      projects: [],
       kits: [],
       pull: {},
       issue: {},

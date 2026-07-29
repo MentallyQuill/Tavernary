@@ -27,6 +27,16 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("PROJECT_AUTO_PUBLICATION_ENABLED");
   expect(source).toContain("parseProjectPublicationTransaction");
   expect(source).toContain("planProjectPublication");
+  expect(source).toContain(
+    "Schema version 2 is required; regenerate this request.",
+  );
+  expect(source).toContain("fingerprintSourceRecord");
+  expect(source).toContain("projectFingerprints");
+  expect(source).toContain("sourceFingerprint");
+  expect(source).toContain('import tags from "./data/vocabularies/tags.json"');
+  expect(source).not.toContain(
+    'import capabilities from "./data/vocabularies/capabilities.json"',
+  );
   expect(source).toContain("github.event.workflow_run.head_sha");
   expect(source).toContain("sha: process.env.EXPECTED_HEAD_SHA");
   expect(source).toContain("/pulls/${PULL_NUMBER}/merge");
@@ -41,6 +51,25 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("continue-on-error: true");
   expect(source).toContain("owner-delist-notice");
   expect(source).toContain("idempotent retry");
+  const steps = workflow.jobs.publish.steps as Array<{
+    name?: string;
+    if?: string;
+    run?: string;
+  }>;
+  expect(steps).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        name: "Await maintainer merge",
+        if: "steps.plan.outputs.action == 'await-maintainer'",
+      }),
+      expect.objectContaining({
+        name: "Merge exact validated head",
+        if: "steps.plan.outputs.action == 'merge'",
+      }),
+    ]),
+  );
+  expect(source).toContain("source,");
+  expect(source).toContain("projects,");
 });
 
 test.each(["project-submission-lifecycle", "project-owner-request-lifecycle"])(

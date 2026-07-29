@@ -10,7 +10,8 @@ export function planCopyAdjustmentNotice(
 
 export function planOwnerDelistNotice(input: {
   transaction: ProjectPublicationTransaction;
-  project: Record<string, any>;
+  source: Record<string, any>;
+  projects: Array<Record<string, any>>;
   kits: Array<Record<string, any>>;
   pull: Record<string, any>;
   issue: Record<string, any>;

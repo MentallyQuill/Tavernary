@@ -68,7 +68,7 @@ jobs:
           const vocabularyFiles = {
             frontends: ["frontends.json", "frontends"],
             primaryFunctions: ["primary-functions.json", "primary_functions"],
-            capabilities: ["capabilities.json", "capabilities"],
+            tags: ["tags.json", "tags"],
             modelFamilies: ["model-families.json", "model_families"],
             completionFormats: ["completion-formats.json", "completion_formats"],
           };
@@ -83,12 +83,20 @@ jobs:
             ),
           );
           const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
+          const [openIssues, openPulls] = await Promise.all([
+            request(
+              `/repos/${repository}/issues?state=open&labels=project-owner-request&per_page=100`,
+            ),
+            request(`/repos/${repository}/pulls?state=open&per_page=100`),
+          ]);
           const decision = await processProjectOwnerTriage({
             issue,
             root: process.cwd(),
             hostRepository: repository,
             vocabularies,
             request,
+            issues: openIssues,
+            pulls: openPulls,
           });
           const owned = {
             "needs-information": {
