@@ -22,6 +22,10 @@
     --header-height: auto;
   }
 
+  .tag-results-bounded {
+    max-height: min(320px, 42vh);
+  }
+
   .site-header {
     grid-template-areas:
       "brand actions"

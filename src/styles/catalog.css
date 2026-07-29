@@ -600,6 +600,128 @@
   display: inline;
 }
 
+.tag-browser {
+  display: grid;
+  gap: 8px;
+}
+
+.tag-browser-search {
+  margin-bottom: 0;
+}
+
+.tag-browser-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.tag-results-bounded {
+  max-height: min(360px, 46vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--color-divider);
+  border-radius: 7px;
+  padding: 10px;
+  background: var(--color-control-bg);
+  scrollbar-gutter: stable;
+}
+
+.tag-browser-group {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.tag-browser-group + .tag-browser-group {
+  margin-top: 12px;
+  border-top: 1px solid var(--color-divider);
+  padding-top: 12px;
+}
+
+.tag-browser-group legend {
+  margin-bottom: 7px;
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.tag-browser-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-browser-option {
+  display: inline-flex;
+  min-height: 27px;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 999px;
+  padding: 5px 8px;
+  color: var(--color-control-text);
+  background: var(--color-bg-sidebar);
+  cursor: pointer;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.tag-browser-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.tag-browser-option:hover {
+  border-color: var(--color-control-border-hover);
+  background: var(--color-control-bg-hover);
+}
+
+.tag-browser-option:has(input:focus-visible) {
+  border-color: var(--color-control-border-focus);
+  box-shadow: 0 0 0 2px var(--color-accent-teal-bg);
+}
+
+.tag-browser-option.selected {
+  border-color: var(--color-accent-teal-border);
+  color: var(--color-accent-teal-text);
+  background: var(--color-accent-teal-bg);
+}
+
+.tag-browser-option.disabled {
+  cursor: not-allowed;
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  background: var(--color-bg-disabled);
+}
+
+.tag-browser-check {
+  display: none;
+  font-weight: 900;
+}
+
+.tag-browser-option.selected .tag-browser-check {
+  display: inline;
+}
+
+.tag-browser-count {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tag-browser-empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
 .metadata-option:focus-within .metadata-filter-chip {
   box-shadow: 0 0 0 2px var(--color-focus-ring);
 }
