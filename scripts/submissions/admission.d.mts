@@ -19,14 +19,12 @@ export type SourceProbeDecision =
   | { status: "retryable"; code: string; message: string }
   | { status: "definitive"; code: string; message: string };
 
-export interface ExistingSubmissionProject {
+export interface ExistingSubmissionSource {
   id: string;
   name: string;
-  kind?: string;
-  visibility?: string;
-  repositoryId?: number | null;
   canonicalUrl: string;
   identity: SourceIdentity;
+  projectIds?: string[];
 }
 
 export interface ProjectSubmissionAdmissionInput {
@@ -34,7 +32,7 @@ export interface ProjectSubmissionAdmissionInput {
   identity: SourceIdentity | null;
   sourceProbe: SourceProbeDecision;
   repository?: SubmissionRepositoryObservation;
-  existingProjects: ExistingSubmissionProject[];
+  existingSources: ExistingSubmissionSource[];
   inflightDuplicate?: InflightSubmissionMatch | null;
   frontendResolution: FrontendResolution;
   forkDependency?: ForkDependencyDecision;
@@ -47,10 +45,11 @@ export type ProjectSubmissionDecision =
   | {
       status: "duplicate";
       identity: SourceIdentity;
-      existingProject: {
+      existingSource: {
         id: string;
         name: string;
         canonicalUrl: string;
+        projectIds: string[];
       };
     }
   | {

@@ -15,9 +15,12 @@ export interface ResolvedSubmissionInput {
   projectType: "frontend" | "extension" | "preset";
   identity: SourceIdentity;
   existingIdentities: SourceIdentity[];
+  existingProjectIdsBySource?: Record<string, string[]>;
 }
 
 export interface ResolvedSubmissionValidation {
+  status: "accepted" | "rejected";
+  reasonCode: "duplicate-source" | "invalid-submission" | null;
   duplicate: boolean;
   errors: string[];
 }

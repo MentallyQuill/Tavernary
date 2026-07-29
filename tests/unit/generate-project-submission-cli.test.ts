@@ -47,16 +47,22 @@ test("writes only declared repository files and the external report", async () =
           record: {
             id: "owner-repo",
             name: "Example",
-            source: {
-              type: "github",
-              repository: "owner/repo",
-              repository_id: 42,
-            },
+            source_id: "github-42",
+          },
+          source: {
+            schema_version: 1,
+            id: "github-42",
+            type: "github",
+            repository: "owner/repo",
+            repository_id: 42,
+            status: "active",
+            status_reason: null,
+            refresh_policy: "automatic",
           },
           snapshot: {
-            schema_version: 3,
+            schema_version: 4,
             provider: "github",
-            project_id: "owner-repo",
+            source_id: "github-42",
           },
           frontendVocabulary: {
             frontends: [
@@ -78,7 +84,8 @@ test("writes only declared repository files and the external report", async () =
 
     expect(result.files.map(({ path }) => path)).toEqual([
       "data/registry/projects/owner-repo.json",
-      "data/snapshots/github/owner-repo.json",
+      "data/registry/sources/github-42.json",
+      "data/snapshots/github/github-42.json",
       "data/vocabularies/frontends.json",
     ]);
     expect(
@@ -86,11 +93,12 @@ test("writes only declared repository files and the external report", async () =
     ).toEqual(["owner-repo.json"]);
     expect(
       await readdir(resolve(outputDirectory, "data/snapshots/github")),
-    ).toEqual(["owner-repo.json"]);
+    ).toEqual(["github-42.json"]);
     expect(JSON.parse(await readFile(reportPath, "utf8"))).toMatchObject({
       schema_version: 1,
       issue_number: 123,
       project_id: "owner-repo",
+      source_id: "github-42",
     });
   } finally {
     await rm(temporary, { recursive: true, force: true });
@@ -176,11 +184,12 @@ test("prepares a GitHub draft through injected source clients", async () => {
           ],
         },
         projects: [],
+        sources: [],
       },
       observe: async () => ({
         observations: [
           {
-            projectId: "submission-128",
+            sourceId: "github-42",
             repository: {
               id: 42,
               owner: "Owner",
@@ -240,12 +249,16 @@ test("prepares a GitHub draft through injected source clients", async () => {
 
   expect(draft.record).toMatchObject({
     id: "owner-repo",
-    source: { repository_id: 42 },
+    source_id: "github-42",
     metadata_status: "curated",
     primary_function: "memory-retrieval",
     enrichment_policy: "manual",
     enrichment_note:
       "Catalog summary preserved from repository-owner submission issue #128.",
+  });
+  expect(draft.source).toMatchObject({
+    id: "github-42",
+    repository_id: 42,
   });
   expect(draft.summaryAuthority).toEqual({
     authorityType: "repository-owner",
@@ -287,9 +300,9 @@ test("prepares a GitHub draft through injected source clients", async () => {
     }),
   );
   expect(draft.snapshot).toMatchObject({
-    schema_version: 3,
+    schema_version: 4,
     provider: "github",
-    project_id: "owner-repo",
+    source_id: "github-42",
     activity: { evidence_status: "provisional" },
     contributors: {
       accounts: [
@@ -326,7 +339,7 @@ test("prepares a Codeberg draft through the repository provider", async () => {
       observations: [
         {
           provider: "codeberg",
-          projectId: records[0].id,
+          sourceId: records[0].id,
           repository: {
             id: 1699613,
             owner: "targren",
@@ -408,6 +421,7 @@ test("prepares a Codeberg draft through the repository provider", async () => {
           ],
         },
         projects: [],
+        sources: [],
       },
       enrich: async () => ({
         status: "curated",
@@ -427,16 +441,18 @@ test("prepares a Codeberg draft through the repository provider", async () => {
 
   expect(draft.record).toMatchObject({
     id: "targren-lumiverse-swipescrubber",
-    source: {
-      type: "codeberg",
-      repository: "targren/Lumiverse-SwipeScrubber",
-      repository_id: 1699613,
-    },
+    source_id: "codeberg-1699613",
+  });
+  expect(draft.source).toMatchObject({
+    id: "codeberg-1699613",
+    type: "codeberg",
+    repository: "targren/Lumiverse-SwipeScrubber",
+    repository_id: 1699613,
   });
   expect(draft.snapshot).toMatchObject({
-    schema_version: 3,
+    schema_version: 4,
     provider: "codeberg",
-    project_id: "targren-lumiverse-swipescrubber",
+    source_id: "codeberg-1699613",
   });
 });
 
@@ -485,6 +501,7 @@ test("rejects a generic external Frontend before source probing", async () => {
             ],
           },
           projects: [],
+          sources: [],
         },
       },
     }),

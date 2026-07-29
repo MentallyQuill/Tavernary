@@ -40,6 +40,7 @@ const reviewFixture = {
     schema_version: 1 as const,
     issue_number: 123,
     project_id: "owner-repo",
+    source_id: "github-42",
     source_provider: "github" as const,
     submitted: {
       name: "Owner [Repo]",
@@ -268,6 +269,32 @@ test("finds an overlapping trusted generated PR", () => {
     issueNumber: 72,
     prNumber: 73,
     paths: marker.generated_paths,
+  });
+});
+
+test("blocks two ordinary submissions that would create the same source path", () => {
+  expect(
+    findSubmissionPathCollision({
+      repository: "Tavernary/Tavernary",
+      issueNumber: 74,
+      generatedPaths: [
+        "data/registry/projects/alternate-card.json",
+        "data/registry/sources/github-42.json",
+      ],
+      pulls: [
+        openPull({
+          number: 73,
+          issueNumber: 72,
+          paths: [
+            "data/registry/projects/owner-repo.json",
+            "data/registry/sources/github-42.json",
+          ],
+        }),
+      ],
+    }),
+  ).toMatchObject({
+    issueNumber: 72,
+    paths: ["data/registry/sources/github-42.json"],
   });
 });
 

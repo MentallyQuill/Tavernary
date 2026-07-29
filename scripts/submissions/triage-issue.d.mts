@@ -1,7 +1,7 @@
 import type { ProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
 import type { RepositoryProvider } from "../catalog/repository-provider.mjs";
 import type {
-  ExistingSubmissionProject,
+  ExistingSubmissionSource,
   ProjectSubmissionDecision,
   SourceProbeDecision,
 } from "./admission.mjs";
@@ -141,6 +141,13 @@ export function processProjectSubmissionTriage(input: {
   catalogData?: {
     vocabulary: FrontendVocabulary;
     projects: FrontendProject[];
+    sources: Array<{
+      id: string;
+      type: string;
+      repository?: string;
+      repository_id?: number | null;
+      url?: string;
+    }>;
   };
   writeOutput?: (name: string, value: string) => Promise<unknown>;
 }): Promise<ProjectSubmissionDecision>;
@@ -162,18 +169,13 @@ export function loadProjectSubmissionCatalogData(): Promise<{
   }>;
 }>;
 
-export function projectSubmissionExistingProject(
-  record: FrontendProject & {
-    kind?: string;
-    visibility?: string;
-    source?: {
-      type: string;
-      repository?: string;
-      repository_id?: number | null;
-      url?: string;
-    };
-  },
-): ExistingSubmissionProject | null;
+export function projectSubmissionExistingSource(source: {
+  id: string;
+  type: string;
+  repository?: string;
+  repository_id?: number | null;
+  url?: string;
+}): ExistingSubmissionSource | null;
 
 export function inspectProjectSubmissionSource(
   manifest: ProjectSubmissionManifest,

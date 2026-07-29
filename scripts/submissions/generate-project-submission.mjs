@@ -20,14 +20,25 @@ import { safeProbe } from "./safe-source-fetch.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
 import { classifySubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
+import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 import {
   inspectProjectSubmissionSource,
   loadProjectSubmissionCatalogData,
-  projectSubmissionExistingProject,
+  projectSubmissionExistingSource,
 } from "./triage-issue.mjs";
 
 export async function generateProjectSubmission({ issueNumber, draft }) {
-  const snapshotProvider = draft.snapshot ? draft.record.source.type : null;
+  if (!draft.source || draft.record.source_id !== draft.source.id) {
+    throw new Error("Generated project and source records do not match.");
+  }
+  const snapshotProvider = draft.snapshot ? draft.source.type : null;
+  if (
+    draft.snapshot &&
+    (draft.snapshot.source_id !== draft.source.id ||
+      draft.snapshot.provider !== draft.source.type)
+  ) {
+    throw new Error("Generated source and snapshot records do not match.");
+  }
   if (
     snapshotProvider !== null &&
     !["github", "codeberg"].includes(snapshotProvider)
@@ -41,10 +52,14 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       path: `data/registry/projects/${draft.record.id}.json`,
       value: draft.record,
     },
+    {
+      path: `data/registry/sources/${draft.source.id}.json`,
+      value: draft.source,
+    },
     ...(draft.snapshot
       ? [
           {
-            path: `data/snapshots/${snapshotProvider}/${draft.record.id}.json`,
+            path: `data/snapshots/${snapshotProvider}/${draft.source.id}.json`,
             value: draft.snapshot,
           },
         ]
@@ -69,6 +84,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       schema_version: 1,
       issue_number: issueNumber,
       project_id: draft.record.id,
+      source_id: draft.source.id,
       source_provider: snapshotProvider,
       submitted: draft.submitted,
       observed: draft.observed,
@@ -221,7 +237,7 @@ function decisionFailure(decision) {
   }
   if (decision.status === "retryable") return decision.message;
   if (decision.status === "duplicate") {
-    return `Source is already cataloged as ${decision.existingProject.name}.`;
+    return `Source is already registered as ${decision.existingSource.name}.`;
   }
   return null;
 }
@@ -229,17 +245,7 @@ function decisionFailure(decision) {
 function assertProjectIdAvailable(record, projects) {
   const collision = projects.find((project) => project.id === record.id);
   if (!collision) return;
-  const sameSource =
-    collision.source?.type === record.source.type &&
-    (record.source.type === "github" || record.source.type === "codeberg"
-      ? collision.source.repository?.toLowerCase() ===
-        record.source.repository.toLowerCase()
-      : collision.source.url === record.source.url);
-  if (!sameSource) {
-    throw new Error(
-      `Project ID ${record.id} is already in use by a different source.`,
-    );
-  }
+  throw new Error(`Project ID ${record.id} is already in use.`);
 }
 
 function protectedTermsForSubmission({
@@ -307,15 +313,28 @@ export async function prepareProjectSubmissionDraft({
           frontendIndependent: parsed.manifest.frontend_independent,
           vocabulary: data.vocabulary,
           frontendProjects: data.projects,
+          sourcesById: Object.fromEntries(
+            data.sources.map((source) => [source.id, source]),
+          ),
         });
+  const projectIdsBySource = new Map();
+  for (const project of data.projects) {
+    const projectIds = projectIdsBySource.get(project.source_id) ?? [];
+    projectIds.push(project.id);
+    projectIdsBySource.set(project.source_id, projectIds);
+  }
   const decision = evaluateProjectSubmission({
     manifest: parsed.manifest,
     identity: inspection.identity,
     sourceProbe: inspection.sourceProbe,
     repository: inspection.repository,
-    existingProjects: data.projects
-      .map(projectSubmissionExistingProject)
-      .filter((project) => project !== null),
+    existingSources: data.sources
+      .map(projectSubmissionExistingSource)
+      .filter((source) => source !== null)
+      .map((source) => ({
+        ...source,
+        projectIds: projectIdsBySource.get(source.id) ?? [],
+      })),
     frontendResolution,
     errors: inspection.errors,
     warnings: [],
@@ -353,12 +372,15 @@ export async function prepareProjectSubmissionDraft({
     sourceClients.providers,
   );
   const observationRecord = {
-    id: `submission-${issue.number}`,
-    source: {
-      type: decision.identity.provider,
-      repository: decision.identity.repository,
-      repository_id: decision.identity.repositoryId,
-    },
+    id: repositorySourceId(
+      decision.identity.provider,
+      decision.identity.repositoryId,
+    ),
+    type: decision.identity.provider,
+    repository: decision.identity.repository,
+    repository_id: decision.identity.repositoryId,
+    status: "active",
+    refresh_policy: "automatic",
   };
   const observe =
     sourceClients.observe ?? ((records) => provider.observe(records));
@@ -401,7 +423,7 @@ export async function prepareProjectSubmissionDraft({
   });
   const snapshot = createInitialRepositorySnapshot({
     provider: decision.identity.provider,
-    projectId: preliminary.record.id,
+    sourceId: preliminary.source.id,
     observation,
     activityInspection,
     contributors: contributorResult,
@@ -437,6 +459,7 @@ export async function prepareProjectSubmissionDraft({
     if (sourceClients.enrich) {
       enrichment = await sourceClients.enrich({
         record: preliminary.record,
+        source: preliminary.source,
         snapshot,
         summaryAuthority,
         summaryMode,
@@ -452,6 +475,7 @@ export async function prepareProjectSubmissionDraft({
       });
       const output = await enrichRecord(
         preliminary.record,
+        preliminary.source,
         snapshot,
         provider,
         {

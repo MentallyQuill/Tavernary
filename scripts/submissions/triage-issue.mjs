@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { repositoryProvider } from "../catalog/repository-provider.mjs";
+import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 import {
   evaluateProjectSubmission,
   submissionQueueLabels,
@@ -204,7 +205,11 @@ function frontendDependencyComment(dependency) {
 
 function decisionComment(decision) {
   if (decision.status === "duplicate") {
-    return `This source is already cataloged as [${decision.existingProject.name}](${decision.existingProject.canonicalUrl}). The duplicate submission has been closed.`;
+    const cards =
+      decision.existingSource.projectIds.length > 0
+        ? ` Existing cards: ${decision.existingSource.projectIds.join(", ")}.`
+        : "";
+    return `This source is already registered as [${decision.existingSource.name}](${decision.existingSource.canonicalUrl}).${cards} The duplicate submission has been closed.`;
   }
   if (decision.status === "inflight-duplicate") {
     const existing = decision.existingSubmission;
@@ -469,32 +474,25 @@ function assertProjectSubmissionEligible(
   }
 }
 
-export function projectSubmissionExistingProject(record) {
+export function projectSubmissionExistingSource(source) {
   try {
-    const repositoryProvider = ["github", "codeberg"].includes(
-      record.source.type,
-    )
-      ? record.source.type
+    const repositoryProvider = ["github", "codeberg"].includes(source.type)
+      ? source.type
       : null;
     const repositoryHost =
       repositoryProvider === "github" ? "github.com" : "codeberg.org";
     const parsed = repositoryProvider
-      ? parseSourceIdentity(
-          `https://${repositoryHost}/${record.source.repository}`,
-        )
-      : parseSourceIdentity(record.source.url);
+      ? parseSourceIdentity(`https://${repositoryHost}/${source.repository}`)
+      : parseSourceIdentity(source.url);
     const identity = isRepositoryIdentity(parsed)
-      ? { ...parsed, repositoryId: record.source.repository_id ?? null }
+      ? { ...parsed, repositoryId: source.repository_id ?? null }
       : parsed;
     if (identity.kind === "reddit-share") return null;
     return {
-      id: record.id,
-      name: record.name,
-      kind: record.kind,
-      visibility: record.visibility,
-      repositoryId: isRepositoryIdentity(identity)
-        ? identity.repositoryId
-        : null,
+      id: source.id,
+      name: isRepositoryIdentity(identity)
+        ? identity.repository
+        : identity.pathSlug,
       canonicalUrl: identity.canonicalUrl,
       identity,
     };
@@ -607,12 +605,12 @@ export async function inspectProjectSubmissionSource(
       if (typeof provider.observe === "function") {
         const observed = await provider.observe([
           {
-            id: "submission-source",
-            source: {
-              type: identity.provider,
-              repository: identity.repository,
-              repository_id: identity.repositoryId,
-            },
+            id: repositorySourceId(identity.provider, identity.repositoryId),
+            type: identity.provider,
+            repository: identity.repository,
+            repository_id: identity.repositoryId,
+            status: "active",
+            refresh_policy: "automatic",
           },
         ]);
         if (observed.failures?.length) {
@@ -886,7 +884,7 @@ export async function processProjectSubmissionTriage({
         code: "manifest-invalid",
         message: parsed.errors.join(" "),
       },
-      existingProjects: [],
+      existingSources: [],
       frontendResolution: {
         status: "needs-information",
         errors: parsed.errors,
@@ -911,10 +909,23 @@ export async function processProjectSubmissionTriage({
             frontendIndependent: parsed.manifest.frontend_independent,
             vocabulary: data.vocabulary,
             frontendProjects: data.projects,
+            sourcesById: Object.fromEntries(
+              data.sources.map((source) => [source.id, source]),
+            ),
           });
-    const existingProjects = data.projects
-      .map(projectSubmissionExistingProject)
-      .filter((project) => project !== null);
+    const projectIdsBySource = new Map();
+    for (const project of data.projects) {
+      const projectIds = projectIdsBySource.get(project.source_id) ?? [];
+      projectIds.push(project.id);
+      projectIdsBySource.set(project.source_id, projectIds);
+    }
+    const existingSources = data.sources
+      .map(projectSubmissionExistingSource)
+      .filter((source) => source !== null)
+      .map((source) => ({
+        ...source,
+        projectIds: (projectIdsBySource.get(source.id) ?? []).sort(),
+      }));
     const inflightScan =
       inspection.identity && inspection.sourceProbe.status === "ok"
         ? await findEarlierInflightSubmission({
@@ -956,7 +967,8 @@ export async function processProjectSubmissionTriage({
         const previousForkDependency = previousMarker?.fork_dependency;
         forkDependency = classifyForkDependency({
           repository: inspection.repository,
-          projects: existingProjects,
+          projects: data.projects,
+          sources: data.sources,
           priorSubmission:
             previousForkDependency &&
             inspection.repository?.parent &&
@@ -977,7 +989,7 @@ export async function processProjectSubmissionTriage({
         identity,
         sourceProbe: inspection.sourceProbe,
         repository: inspection.repository,
-        existingProjects,
+        existingSources,
         inflightDuplicate: inflightScan.match,
         frontendResolution,
         forkDependency,
@@ -995,7 +1007,8 @@ export async function processProjectSubmissionTriage({
         });
         forkDependency = classifyForkDependency({
           repository: inspection.repository,
-          projects: existingProjects,
+          projects: data.projects,
+          sources: data.sources,
           priorSubmission: {
             issueNumber: upstream.issueNumber,
             state: upstream.state === "created" ? "open" : upstream.state,
@@ -1007,7 +1020,7 @@ export async function processProjectSubmissionTriage({
           identity,
           sourceProbe: inspection.sourceProbe,
           repository: inspection.repository,
-          existingProjects,
+          existingSources,
           frontendResolution,
           forkDependency,
           errors: inspection.errors,

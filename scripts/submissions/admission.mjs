@@ -13,10 +13,10 @@ export const submissionQueueLabels = [
   "waiting-on-fork-parent",
 ];
 
-function findDuplicate(identity, existingProjects) {
+function findDuplicate(identity, existingSources) {
   const submittedKeys = new Set(sourceDuplicateKeys(identity));
-  return existingProjects.find((project) =>
-    sourceDuplicateKeys(project.identity).some((key) => submittedKeys.has(key)),
+  return existingSources.find((source) =>
+    sourceDuplicateKeys(source.identity).some((key) => submittedKeys.has(key)),
   );
 }
 
@@ -32,15 +32,16 @@ export function evaluateProjectSubmission(input) {
     };
   }
 
-  const existingProject = findDuplicate(input.identity, input.existingProjects);
-  if (existingProject) {
+  const existingSource = findDuplicate(input.identity, input.existingSources);
+  if (existingSource) {
     return {
       status: "duplicate",
       identity: input.identity,
-      existingProject: {
-        id: existingProject.id,
-        name: existingProject.name,
-        canonicalUrl: existingProject.canonicalUrl,
+      existingSource: {
+        id: existingSource.id,
+        name: existingSource.name,
+        canonicalUrl: existingSource.canonicalUrl,
+        projectIds: [...(existingSource.projectIds ?? [])],
       },
     };
   }

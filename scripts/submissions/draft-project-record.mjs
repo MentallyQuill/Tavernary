@@ -3,6 +3,7 @@ import { validateCatalogCopyMetadata } from "../catalog/catalog-copy-contract.mj
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
+import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 
 const extensionPrimaryFunctions = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
 
@@ -24,15 +25,22 @@ function projectId(identity) {
   return slug(`${source.hostname}-${source.pathname}`);
 }
 
-function projectSource(identity, observation) {
+function sourceRecord(identity, observation, id) {
   if (isRepositoryIdentity(identity)) {
     return {
+      schema_version: 1,
+      id: repositorySourceId(identity.provider, observation.repository.id),
       type: identity.provider,
       repository: identity.repository,
       repository_id: observation.repository.id,
+      status: "active",
+      status_reason: null,
+      refresh_policy: "automatic",
     };
   }
   return {
+    schema_version: 1,
+    id: `url-${id}`,
     type: "url",
     url: identity.canonicalUrl,
     published_at: null,
@@ -40,6 +48,9 @@ function projectSource(identity, observation) {
     artifact_size_bytes: null,
     license_status: "pending",
     license_spdx_id: null,
+    status: "active",
+    status_reason: null,
+    refresh_policy: "paused",
   };
 }
 
@@ -179,22 +190,22 @@ export async function draftProjectRecord(input) {
         "Repository observation does not match the permanent repository identity.",
       );
     }
-    if (
-      snapshot &&
-      (snapshot.project_id !== id ||
-        snapshot.repository.id !== observation.repository.id)
-    ) {
-      throw new Error(
-        "Repository snapshot does not match the permanent repository identity.",
-      );
-    }
+  }
+  const source = sourceRecord(identity, observation, id);
+  if (
+    snapshot &&
+    (snapshot.source_id !== source.id ||
+      snapshot.repository.id !== observation.repository.id)
+  ) {
+    throw new Error(
+      "Repository snapshot does not match the permanent repository identity.",
+    );
   }
   const name =
     admitted.manifest.name?.trim() ||
     observation?.repository?.name ||
     identity.name ||
     identity.pathSlug;
-  const source = projectSource(identity, observation);
   const primaryFunction = admitted.manifest.primary_function;
   const enrichment =
     input.enrichment?.status === "curated"
@@ -235,13 +246,13 @@ export async function draftProjectRecord(input) {
   if (classificationReview.warning) warnings.push(classificationReview.warning);
 
   const record = {
-    schema_version: 5,
+    schema_version: 6,
     id,
     name,
     kind: admitted.manifest.project_type,
     summary: enrichment.summary,
     metadata_status: enrichment.metadata_status,
-    source,
+    source_id: source.id,
     frontends: [...new Set(frontendIds)].sort(),
     primary_function: primaryFunction,
     capabilities: [...new Set(enrichment.capabilities)].sort(),
@@ -258,14 +269,14 @@ export async function draftProjectRecord(input) {
       : {}),
     cataloged_at: now,
     catalog_cohort: "standard",
-    visibility: "published",
-    visibility_reason: null,
-    refresh_policy: isRepositoryIdentity(identity) ? "automatic" : "paused",
+    listing_status: "active",
+    listing_status_reason: null,
     ...enrichmentFields(input, source, acceptedCopyResult),
   };
 
   return {
     record,
+    source,
     ...(snapshot ? { snapshot } : {}),
     ...(frontendVocabulary ? { frontendVocabulary } : {}),
     submitted: {

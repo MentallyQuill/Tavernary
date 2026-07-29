@@ -3,32 +3,37 @@ import { expect, test } from "vitest";
 import { generateProjectSubmission } from "../../scripts/submissions/generate-project-submission.mjs";
 
 const record = {
-  schema_version: 5,
+  schema_version: 6,
   id: "owner-repo",
   name: "Repository Tool",
   kind: "extension",
   summary: "A factual project summary.",
   metadata_status: "curated",
-  source: {
-    type: "github",
-    repository: "Owner/Repo",
-    repository_id: 42,
-  },
+  source_id: "github-42",
   frontends: ["sillytavern"],
   primary_function: "generation-reasoning",
   capabilities: ["planning-reasoning"],
   cataloged_at: "2026-07-25T18:00:00.000Z",
   catalog_cohort: "standard",
-  visibility: "published",
-  visibility_reason: null,
-  refresh_policy: "automatic",
+  listing_status: "active",
+  listing_status_reason: null,
   enrichment_policy: "automatic",
+};
+const source = {
+  schema_version: 1 as const,
+  id: "github-42",
+  type: "github" as const,
+  repository: "Owner/Repo",
+  repository_id: 42,
+  status: "active" as const,
+  status_reason: null,
+  refresh_policy: "automatic" as const,
 };
 
 const snapshot = {
-  schema_version: 3,
+  schema_version: 4,
   provider: "github",
-  project_id: "owner-repo",
+  source_id: "github-42",
   repository: { id: 42 },
 };
 
@@ -36,16 +41,19 @@ test("writes Codeberg records and snapshots to provider-qualified paths", async 
   const codebergRecord = {
     ...record,
     id: "targren-lumiverse-swipescrubber",
-    source: {
-      type: "codeberg",
-      repository: "targren/Lumiverse-SwipeScrubber",
-      repository_id: 1699613,
-    },
+    source_id: "codeberg-1699613",
+  };
+  const codebergSource = {
+    ...source,
+    id: "codeberg-1699613",
+    type: "codeberg" as const,
+    repository: "targren/Lumiverse-SwipeScrubber",
+    repository_id: 1699613,
   };
   const codebergSnapshot = {
     ...snapshot,
     provider: "codeberg",
-    project_id: codebergRecord.id,
+    source_id: codebergSource.id,
     repository: { id: 1699613 },
   };
 
@@ -53,6 +61,7 @@ test("writes Codeberg records and snapshots to provider-qualified paths", async 
     issueNumber: 112,
     draft: {
       record: codebergRecord,
+      source: codebergSource,
       snapshot: codebergSnapshot,
       submitted: {},
       observed: {},
@@ -66,17 +75,17 @@ test("writes Codeberg records and snapshots to provider-qualified paths", async 
       expect.objectContaining({
         path: "data/registry/projects/targren-lumiverse-swipescrubber.json",
         value: expect.objectContaining({
-          source: {
-            type: "codeberg",
-            repository: "targren/Lumiverse-SwipeScrubber",
-            repository_id: 1699613,
-          },
+          source_id: "codeberg-1699613",
         }),
       }),
       expect.objectContaining({
-        path: "data/snapshots/codeberg/targren-lumiverse-swipescrubber.json",
+        path: "data/registry/sources/codeberg-1699613.json",
+        value: codebergSource,
+      }),
+      expect.objectContaining({
+        path: "data/snapshots/codeberg/codeberg-1699613.json",
         value: expect.objectContaining({
-          schema_version: 3,
+          schema_version: 4,
           provider: "codeberg",
         }),
       }),
@@ -90,6 +99,7 @@ test("returns only deterministic canonical submission files and its report", asy
     issueNumber: 123,
     draft: {
       record,
+      source,
       snapshot,
       submitted: {
         project_type: "extension",
@@ -135,7 +145,11 @@ test("returns only deterministic canonical submission files and its report", asy
       value: record,
     },
     {
-      path: "data/snapshots/github/owner-repo.json",
+      path: "data/registry/sources/github-42.json",
+      value: source,
+    },
+    {
+      path: "data/snapshots/github/github-42.json",
       value: snapshot,
     },
   ]);
@@ -170,6 +184,23 @@ test("returns only deterministic canonical submission files and its report", asy
   expect(JSON.stringify(generated)).not.toContain("raw_provider_output");
 });
 
+test("fails closed when a snapshot belongs to a different source", async () => {
+  await expect(
+    generateProjectSubmission({
+      issueNumber: 123,
+      draft: {
+        record,
+        source,
+        snapshot: { ...snapshot, source_id: "github-99" },
+        submitted: {},
+        observed: {},
+        inferred: {},
+        warnings: [],
+      },
+    }),
+  ).rejects.toThrow("source and snapshot records do not match");
+});
+
 test("includes a sorted vocabulary update only for a frontend proposal", async () => {
   const generated = await generateProjectSubmission({
     issueNumber: 124,
@@ -181,6 +212,7 @@ test("includes a sorted vocabulary update only for a frontend proposal", async (
         frontends: ["nova"],
         primary_function: "frontend",
       },
+      source,
       frontendVocabulary: {
         frontends: [
           {
@@ -204,11 +236,12 @@ test("includes a sorted vocabulary update only for a frontend proposal", async (
 
   expect(generated.files.map(({ path }) => path)).toEqual([
     "data/registry/projects/owner-frontend.json",
+    "data/registry/sources/github-42.json",
     "data/vocabularies/frontends.json",
   ]);
   expect(
     (
-      generated.files[1].value as {
+      generated.files[2].value as {
         frontends: Array<{ id: string }>;
       }
     ).frontends.map(({ id }) => id),

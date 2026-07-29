@@ -184,7 +184,8 @@ export function findSubmissionPathCollision({
 }) {
   const sourceOwnedPath = (path) =>
     /^data\/registry\/projects\/[^/]+\.json$/u.test(path) ||
-    /^data\/snapshots\/github\/[^/]+\.json$/u.test(path);
+    /^data\/registry\/sources\/[^/]+\.json$/u.test(path) ||
+    /^data\/snapshots\/(?:github|codeberg)\/[^/]+\.json$/u.test(path);
   const intended = new Set(generatedPaths.filter(sourceOwnedPath));
   for (const pull of pulls) {
     const marker = parseSubmissionPullRequestMarker(pull.body ?? "");
