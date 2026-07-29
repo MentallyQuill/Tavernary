@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { fingerprintProjectRecord } from "@/features/help/project-owner-record.mjs";
+import {
+  fingerprintProjectRecord,
+  fingerprintSourceRecord,
+} from "@/features/help/project-owner-record.mjs";
 
 test("fingerprints the parsed project record with JSON.stringify ordering", () => {
   expect(
@@ -22,4 +25,21 @@ test("does not mutate the record while fingerprinting it", () => {
   fingerprintProjectRecord(record);
 
   expect(record).toEqual(before);
+});
+
+test("fingerprints a source independently from its sibling cards", () => {
+  const source = {
+    schema_version: 1,
+    id: "github-42",
+    type: "github",
+    repository: "Owner/Alpha",
+    repository_id: 42,
+    status: "active",
+    status_reason: null,
+    refresh_policy: "automatic",
+  };
+  expect(fingerprintSourceRecord(source)).toMatch(/^[a-f0-9]{64}$/u);
+  expect(fingerprintSourceRecord(source)).not.toBe(
+    fingerprintProjectRecord({ id: "owner-alpha", source_id: "github-42" }),
+  );
 });
