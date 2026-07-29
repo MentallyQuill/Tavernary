@@ -54,6 +54,8 @@ The approved direction is therefore:
   by reusing the current Help editor.
 - Prefill a new card from an existing card while keeping every card field
   editable.
+- Target the shared schema-v6 card contract from the catalog-tag-system work:
+  zero to six controlled tags and independent summary/tag metadata policies.
 - Accept between one and ten new cards in one atomic request.
 - Permit only one unresolved add-card batch per immutable source at a time.
 - Keep repository identity stable across GitHub renames and transfers.
@@ -117,8 +119,35 @@ status, its source status, and current source-health evidence.
 9. Source delisting affects every sibling card and permanently reserves the
    source identity.
 10. Repository snapshots and refresh scheduling are source-owned.
-11. Editorial enrichment policy remains card-owned.
+11. Summary and tag metadata policies remain card-owned.
 12. All cards in an add-card batch validate and publish together or none do.
+
+## Catalog Tag System Integration
+
+This feature and the separately approved catalog-tag-system feature share one
+canonical project-schema migration.
+
+The source-registry work owns:
+
+- extracting and validating source records;
+- replacing inline source identity with `source_id`;
+- moving refresh policy and repository lifecycle to the source;
+- rekeying snapshots and refresh state;
+- computing effective listing visibility; and
+- implementing multi-card Help and publication operations.
+
+The tag-system work owns:
+
+- the Goals-and-Traits vocabulary;
+- source-evidence corpus and classifier;
+- reassessing all projects into zero to six tags;
+- independent summary/tag policy semantics; and
+- scalable tag selection and filtering UI.
+
+The integrated merge candidate owns the combined project schema and final
+catalog-wide migration. Neither feature may merge an interim schema called
+version 6. The multi-card form consumes the tag-system picker and metadata
+policy contract rather than maintaining a second capability editor.
 
 ## Canonical Data Model
 
@@ -178,9 +207,12 @@ The project schema advances from version 5 to version 6. Each project record:
 - removes its inline `source`;
 - adds `source_id`;
 - removes `refresh_policy`;
+- removes legacy `capabilities`, `enrichment_policy`, and `enrichment_note`;
+- adds zero to six controlled `tags`;
+- adds independent `metadata_policy.summary` and `metadata_policy.tags`
+  automatic/manual policies;
 - retains project ID, name, kind, summary, metadata status, frontends, primary
-  function, capabilities, Preset compatibility, catalog dates, and enrichment
-  policy; and
+  function, Preset compatibility, and catalog dates; and
 - replaces repository-overloaded `visibility` with card-owned
   `listing_status` and `listing_status_reason`.
 
@@ -197,15 +229,31 @@ The conceptual shape is:
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
+  "tags": ["preset-management"],
   "cataloged_at": "2026-07-29T00:00:00.000Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "…"
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    }
+  }
 }
 ```
+
+`tags` contains unique IDs from the shared Goals-and-Traits vocabulary and has
+a maximum of six entries. Zero tags is valid when source evidence is
+insufficient.
+
+Each metadata-policy member has `mode: automatic | manual`. A manual member
+requires a trusted-generated note. An automatic member forbids a note. Summary
+and tag authority are independent; changing one must not change the other.
 
 `listing_status` is:
 
@@ -288,11 +336,18 @@ For each current project:
    written;
 3. replace inline source identity with `source_id`;
 4. move `refresh_policy` to the source;
-5. retain `enrichment_policy` and editorial metadata on the card; and
+5. compose the source migration with the tag-system migration that replaces
+   capabilities and enrichment policy with `tags` and `metadata_policy`; and
 6. map card/source lifecycle according to the rules below.
 
 The migration fails instead of merging records when two current records claim
 the same immutable repository ID with contradictory source facts.
+
+Source extraction and editorial metadata reassessment are separate migration
+units but one default-branch cutover. Source extraction never guesses tags or
+metadata authority. The tag-system migration supplies the final `tags` and
+`metadata_policy` values for every project before version-6 records are
+written. No interim version-6 card shape may merge.
 
 ### Lifecycle mapping
 
@@ -354,13 +409,14 @@ sibling does not affect Kit components using another sibling.
 ### Enrichment
 
 README and repository-description selection loads source evidence once, then
-applies it to the selected card's enrichment operation. Enrichment state and
+applies it to the selected card's summary/tag operation. Metadata policy and
 approved editorial copy remain card-specific.
 
-Sibling cards created through the owner/editor Help workflow use curated
-metadata and manual enrichment because the complete card copy was explicitly
-authored and approved. Automatic repository observation remains active at the
-source.
+Sibling cards resolve summary and tag policy independently. An owner or trusted
+editor may choose automatic or manual treatment for either field. Manual
+values receive trusted-generated notes when approved. Automatic values use the
+source-backed generator. Automatic repository observation remains active at
+the source.
 
 ### Fork relationships
 
@@ -400,9 +456,11 @@ Every draft independently edits:
 - title;
 - kind: Frontend, Extension, or Preset;
 - summary;
+- how the summary is resolved: automatic or manual;
 - supported frontends;
 - primary function;
-- capabilities; and
+- zero to six controlled Goals-and-Traits tags;
+- how tags are resolved: automatic or manual; and
 - for Presets, existing model-family and completion-format fields.
 
 Changing a draft to or from Preset adds or removes the Preset-only controlled
@@ -411,6 +469,11 @@ variant, or flavor field.
 
 The source is fixed for the entire batch and is not editable here. Repository
 location changes use the separate source-move operation.
+
+The selected card may seed each draft's summary and tags, but it never donates
+its metadata-policy provenance. Each draft defaults to automatic summary and
+automatic tags. Choosing manual makes that draft's submitted value
+authoritative after maintainer approval and creates a new trusted note.
 
 The form and review step display this notice:
 
@@ -432,7 +495,9 @@ Card errors identify the affected draft and field. Batch errors identify:
 - more than ten cards;
 - duplicate normalized titles or generated IDs within the batch;
 - collision with any active, quarantined, or retired project ID; or
-- inconsistent source references.
+- inconsistent source references;
+- more than six tags on one card; or
+- an unknown or kind-inapplicable controlled tag.
 
 Source errors identify:
 
@@ -648,6 +713,11 @@ are not rewritten. Generated catalog data is rebuilt from canonical records.
 
 - A selected GitHub card prefills the first draft completely.
 - The user can edit every supported card field and kind.
+- Summary and tag policy default to automatic without cloning source-card
+  provenance.
+- Manual summary and manual tags create independent trusted policy notes.
+- Automatic summary or tags never retain a manual note.
+- Every card accepts zero to six controlled tags and rejects a seventh.
 - Preset-only fields appear and validate correctly.
 - Batches of one and ten cards succeed.
 - Zero and eleven cards fail.
@@ -703,6 +773,9 @@ The implementation is complete only after:
 - Only one unresolved add-card request exists per immutable source.
 - Repository owners and trusted editors may submit; batches never auto-merge.
 - Cards use only existing Tavernary kinds, compatibility fields, and tags.
+- The final version-6 card shape contains `tags` and independent
+  `metadata_policy.summary` / `metadata_policy.tags`; legacy capabilities and
+  enrichment-policy fields are absent.
 - Repository rename changes source location without changing card identity.
 - Card retirement is soft and reversible.
 - Source delisting is repository-wide, permanent, and blocks re-entry.
