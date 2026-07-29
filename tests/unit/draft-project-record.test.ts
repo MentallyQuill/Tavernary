@@ -5,8 +5,9 @@ import { draftProjectRecord } from "../../scripts/submissions/draft-project-reco
 const admittedGithubExtension = {
   status: "admitted" as const,
   manifest: {
-    schema_version: 1 as const,
+    schema_version: 3 as const,
     project_type: "extension" as const,
+    primary_function: "generation-reasoning",
     source_url: "https://github.com/Owner/Repo",
     name: "Repository Tool",
     description: "Submitted description.",
@@ -162,8 +163,9 @@ test("drafts external presets with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 1,
+        schema_version: 3,
         project_type: "preset",
+        primary_function: "preset",
         source_url: "https://example.com/presets/Nova/",
         name: "Nova Preset",
         description: "A submitted external system preset.",
@@ -212,6 +214,7 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
       manifest: {
         ...admittedGithubExtension.manifest,
         project_type: "frontend",
+        primary_function: "frontend",
         name: "Nova Frontend",
         frontends: { known_ids: [], other: [] },
       },
@@ -254,8 +257,9 @@ test("drafts an external Frontend with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 2,
+        schema_version: 3,
         project_type: "frontend",
+        primary_function: "frontend",
         source_url: "https://codeberg.org/example/nova",
         name: "Nova Frontend",
         description: "A public-source roleplay frontend.",
@@ -309,8 +313,9 @@ test("keeps external project IDs distinct across source owners", async () => {
       admitted: {
         status: "admitted",
         manifest: {
-          schema_version: 2,
+          schema_version: 3,
           project_type: "frontend",
+          primary_function: "frontend",
           source_url: `https://codeberg.org/${owner}/nova`,
           name: "Nova Frontend",
           description: "A public-source roleplay frontend.",

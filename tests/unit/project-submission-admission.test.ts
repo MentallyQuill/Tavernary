@@ -4,8 +4,9 @@ import { evaluateProjectSubmission } from "../../scripts/submissions/admission.m
 import { inspectProjectSubmissionSource } from "../../scripts/submissions/triage-issue.mjs";
 
 const manifest = {
-  schema_version: 1 as const,
+  schema_version: 3 as const,
   project_type: "extension" as const,
+  primary_function: "interface-workflow",
   source_url: "https://github.com/NewOwner/NewName",
   name: "Example",
   description: null,
@@ -448,8 +449,9 @@ test("keeps legacy preset submissions open until compatibility is supplied", () 
       admittedFixture({
         manifest: {
           ...manifest,
-          schema_version: 1,
+          schema_version: 3,
           project_type: "preset",
+          primary_function: "preset",
         },
       }),
     ),
@@ -468,8 +470,9 @@ test("keeps unlisted model families out of canonical project drafts", () => {
       admittedFixture({
         manifest: {
           ...manifest,
-          schema_version: 2,
+          schema_version: 3,
           project_type: "preset",
+          primary_function: "preset",
           preset_compatibility: {
             model_families: {
               known_ids: ["claude"],

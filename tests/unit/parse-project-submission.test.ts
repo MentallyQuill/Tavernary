@@ -6,6 +6,8 @@ test("parses the fallback form into the shared contract", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 Extension
+### Primary function
+Interface and workflow
 ### Project URL
 https://github.com/Owner/Repo
 ### Project Name
@@ -27,6 +29,7 @@ _No response_
     source: "headings",
     manifest: {
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/Owner/Repo",
       name: "Example",
       frontends: {
@@ -44,6 +47,8 @@ test("treats GitHub's empty rendered JSON fence as an omitted manifest", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 Extension
+### Primary function
+Memory and retrieval
 ### Project URL
 https://codeberg.org/targren/Lumiverse-SwipeScrubber
 ### Project Name
@@ -67,6 +72,7 @@ Entered manually.
     source: "headings",
     manifest: {
       project_type: "extension",
+      primary_function: "memory-retrieval",
       source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
       name: "Swipe Scrubber",
     },
@@ -82,8 +88,9 @@ https://github.com/Wrong/Heading
 ### Project manifest
 \`\`\`json
 {
-  "schema_version": 1,
+  "schema_version": 3,
   "project_type": "extension",
+  "primary_function": "generation-reasoning",
   "source_url": "https://github.com/Owner/Repo",
   "name": "Example",
   "description": null,
@@ -99,6 +106,7 @@ https://github.com/Wrong/Heading
     source: "manifest",
     manifest: {
       project_type: "extension",
+      primary_function: "generation-reasoning",
       source_url: "https://github.com/Owner/Repo",
     },
   });
@@ -125,6 +133,8 @@ test("parses fallback Preset compatibility fields into manifest version 2", () =
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 System Preset
+### Primary function
+
 ### Project URL
 https://github.com/Owner/Preset
 ### Project Name
@@ -150,8 +160,9 @@ _No response_
     valid: true,
     source: "headings",
     manifest: {
-      schema_version: 2,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       preset_compatibility: {
         model_families: {
           known_ids: ["claude", "gemini"],
@@ -167,6 +178,8 @@ test("parses text Preset compatibility fields into manifest version 2", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 System Preset
+### Primary function
+preset
 ### Project URL
 https://github.com/Owner/Preset
 ### Project Name
@@ -190,8 +203,9 @@ _No response_
     valid: true,
     source: "headings",
     manifest: {
-      schema_version: 2,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       frontend_independent: false,
       preset_compatibility: {
         model_families: {
@@ -209,6 +223,8 @@ test("rejects invalid frontend-independent fallback text", () => {
     parseProjectSubmissionIssue(`
 ### Project Type
 Frontend
+### Primary function
+
 ### Project URL
 https://github.com/Owner/Frontend
 ### Frontend-independent
@@ -220,6 +236,31 @@ _No response_
     valid: false,
     source: "headings",
     errors: ["Frontend-independent must be Yes or No."],
+  });
+});
+
+test("rejects an Extension fallback without a primary function", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+Extension
+### Primary function
+_No response_
+### Project URL
+https://github.com/Owner/Extension
+### Supported frontends
+SillyTavern
+### Frontend-independent
+No
+### Project manifest
+_No response_
+`);
+
+  expect(result).toMatchObject({
+    valid: false,
+    source: "headings",
+    errors: expect.arrayContaining([
+      "Extensions must use one approved Extension primary function.",
+    ]),
   });
 });
 

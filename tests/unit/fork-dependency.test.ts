@@ -41,8 +41,9 @@ const parentProject = {
 };
 
 const childManifest = {
-  schema_version: 2 as const,
+  schema_version: 3 as const,
   project_type: "preset" as const,
+  primary_function: "preset",
   source_url: "https://github.com/owner/child",
   name: "Child",
   description: "Child description.",

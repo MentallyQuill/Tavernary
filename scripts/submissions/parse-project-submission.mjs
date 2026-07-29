@@ -1,6 +1,8 @@
 import { normalizeProjectSubmissionManifest } from "../../src/features/submissions/project-submission-manifest.mjs";
 import completionFormatVocabulary from "../../data/vocabularies/completion-formats.json" with { type: "json" };
 import modelFamilyVocabulary from "../../data/vocabularies/model-families.json" with { type: "json" };
+import primaryFunctionVocabulary from "../../data/vocabularies/primary-functions.json" with { type: "json" };
+import { STRUCTURAL_PRIMARY_FUNCTIONS } from "../../src/features/catalog/primary-function-contract.mjs";
 
 function issueFields(body) {
   const fields = new Map();
@@ -98,9 +100,22 @@ export function parseProjectSubmissionIssue(body) {
     };
   }
 
+  const parsedProjectType = projectType(fields.get("Project Type") ?? "");
+  const submittedPrimaryFunction = fieldIds(
+    fields.get("Primary function") ?? "",
+    primaryFunctionVocabulary.primary_functions,
+  )[0];
+  const primaryFunction =
+    parsedProjectType === "frontend"
+      ? submittedPrimaryFunction || STRUCTURAL_PRIMARY_FUNCTIONS.frontend
+      : parsedProjectType === "preset"
+        ? submittedPrimaryFunction || STRUCTURAL_PRIMARY_FUNCTIONS.preset
+        : submittedPrimaryFunction || "";
+
   const result = normalizeProjectSubmissionManifest({
-    schema_version: 2,
-    project_type: projectType(fields.get("Project Type") ?? ""),
+    schema_version: 3,
+    project_type: parsedProjectType,
+    primary_function: primaryFunction,
     source_url: fields.get("Project URL") ?? "",
     name: fields.get("Project Name") ?? "",
     description: fields.get("Short Description") ?? "",

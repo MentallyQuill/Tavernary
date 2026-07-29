@@ -25,6 +25,18 @@ body:
     validations:
       required: true
   - type: input
+    id: primary-function
+    attributes:
+      label: Primary function
+      description: >-
+        Extensions must enter one category: memory-retrieval,
+        generation-reasoning, character-worldbuilding, rpg-systems,
+        interface-workflow, or developer-infrastructure. Leave blank or enter
+        the structural value frontend or preset for those project types.
+      placeholder: Extension category only
+    validations:
+      required: false
+  - type: input
     id: project-name
     attributes:
       label: Project Name

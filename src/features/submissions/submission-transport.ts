@@ -28,6 +28,7 @@ function readablePrefills(
 ): Array<[string, string]> {
   const prefills: Array<[string, string]> = [
     ["project-type", displayKind(manifest.project_type)],
+    ["primary-function", manifest.primary_function],
     ["project-url", manifest.source_url],
     ["project-name", manifest.name ?? ""],
     ["frontend-independent", manifest.frontend_independent ? "Yes" : "No"],

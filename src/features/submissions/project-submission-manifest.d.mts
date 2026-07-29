@@ -6,8 +6,9 @@ export interface OtherFrontendSubmission {
 }
 
 export interface ProjectSubmissionManifest {
-  schema_version: 1 | 2;
+  schema_version: 3;
   project_type: ProjectSubmissionType;
+  primary_function: string;
   source_url: string;
   name: string | null;
   description: string | null;

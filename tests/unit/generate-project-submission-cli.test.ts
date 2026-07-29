@@ -124,8 +124,9 @@ test("prepares a GitHub draft through injected source clients", async () => {
         "",
         "```json",
         JSON.stringify({
-          schema_version: 1,
+          schema_version: 3,
           project_type: "extension",
+          primary_function: "generation-reasoning",
           source_url: "https://github.com/Owner/Repo",
           name: "Repository Tool",
           description: "Submitted description.",
@@ -325,8 +326,9 @@ test("prepares a Codeberg draft through the repository provider", async () => {
         "",
         "```json",
         JSON.stringify({
-          schema_version: 2,
+          schema_version: 3,
           project_type: "extension",
+          primary_function: "interface-workflow",
           source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
           name: "Swipe Scrubber",
           description: "Swipe controls.",
@@ -389,8 +391,9 @@ test("rejects a generic external Frontend before source probing", async () => {
           "",
           "```json",
           JSON.stringify({
-            schema_version: 2,
+            schema_version: 3,
             project_type: "frontend",
+            primary_function: "frontend",
             source_url: "https://example.com/nova",
             name: "Nova Frontend",
             description: "A public-source roleplay frontend.",
