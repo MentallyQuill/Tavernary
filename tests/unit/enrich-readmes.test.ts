@@ -291,8 +291,8 @@ test("degrades an invalid optional classification review without losing valid co
       metadata_status: "curated" as const,
       capabilities: ["automation"],
       classification_review: {
-        status: "provider-invented-status" as "confirmed",
-        suggested_primary_function: "provider-invented-category",
+        status: "possible-mismatch" as const,
+        suggested_primary_function: "interface-workflow",
         explanation: null,
       },
       ...copyMetadata,
@@ -327,7 +327,7 @@ test("degrades an invalid optional classification review without losing valid co
     repair: {
       reasonCode: "output-invalid",
       message: expect.stringContaining(
-        "classification_review status is invalid",
+        "possible-mismatch classification_review explanation",
       ),
     },
   });

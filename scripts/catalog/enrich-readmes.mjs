@@ -212,7 +212,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
       input.classificationReviewRequest &&
       validation.errors.length > 0 &&
       validation.errors.every((error) =>
-        error.startsWith("classification_review"),
+        /(?:^| )classification_review(?: |$)/u.test(error),
       );
     if (classificationReviewOnly) {
       const withoutClassificationReview = {
