@@ -1,4 +1,878 @@
 {
   "schema_version": 1,
-  "tags": []
+  "tags": [
+    {
+      "id": "maintain-long-term-memory",
+      "label": "Maintain long-term memory",
+      "facet": "goal",
+      "description": "Preserve and recall important information across long chats or separate sessions.",
+      "aliases": [
+        "durable memory",
+        "persistent memory",
+        "remember across chats"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when durable conversational or character memory is a primary documented outcome."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary chat history, bookmarks, or temporary context alone."
+      ]
+    },
+    {
+      "id": "manage-context-limits",
+      "label": "Manage context limits",
+      "facet": "goal",
+      "description": "Summarize, compress, budget, or selectively inject context for long conversations.",
+      "aliases": [
+        "context compression",
+        "context window management",
+        "token budgeting"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when the project explicitly helps conversations remain useful within model context limits."
+      ],
+      "exclusion_guidance": [
+        "Do not use merely because a project sends prompts or displays token counts."
+      ]
+    },
+    {
+      "id": "retrieve-relevant-context",
+      "label": "Retrieve relevant context",
+      "facet": "goal",
+      "description": "Find and inject the memories, lore, or documents most relevant to the current scene.",
+      "aliases": [
+        "context retrieval",
+        "relevant recall",
+        "knowledge retrieval"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when selective retrieval of stored knowledge is a central user-facing purpose."
+      ],
+      "exclusion_guidance": [
+        "Do not use for static prompt injection that does not select information by relevance."
+      ]
+    },
+    {
+      "id": "build-worlds-and-lore",
+      "label": "Build worlds and lore",
+      "facet": "goal",
+      "description": "Create fictional settings, lore, locations, factions, or other world material.",
+      "aliases": ["worldbuilding", "lore creation", "setting design"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when creating or developing fictional-world content is an explicit workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use solely because a project can read existing lorebook entries."
+      ]
+    },
+    {
+      "id": "manage-lorebooks",
+      "label": "Manage lorebooks",
+      "facet": "goal",
+      "description": "Organize, edit, inspect, activate, or synchronize lorebook and World Info entries.",
+      "aliases": [
+        "World Info management",
+        "worldbook organization",
+        "loredeck management"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when users directly manage collections of lore entries or their activation behavior."
+      ],
+      "exclusion_guidance": [
+        "Do not use for projects that only consume lore as hidden prompt context."
+      ]
+    },
+    {
+      "id": "create-character-cards",
+      "label": "Create character cards",
+      "facet": "goal",
+      "description": "Generate or author ready-to-use AI roleplay character cards.",
+      "aliases": [
+        "character card generation",
+        "character creator",
+        "make characters"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when card creation or guided character authoring is a primary documented workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use for browsing, editing, or switching existing characters without creation."
+      ]
+    },
+    {
+      "id": "manage-characters-and-personas",
+      "label": "Manage characters and personas",
+      "facet": "goal",
+      "description": "Edit, switch, organize, or evolve characters, personas, and their identity fields.",
+      "aliases": [
+        "persona management",
+        "character management",
+        "identity management"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when direct management of existing character or persona records is central."
+      ],
+      "exclusion_guidance": [
+        "Do not use just because characters appear in ordinary roleplay."
+      ]
+    },
+    {
+      "id": "preserve-story-continuity",
+      "label": "Preserve story continuity",
+      "facet": "goal",
+      "description": "Keep facts, canon, timelines, and narrative details consistent over time.",
+      "aliases": [
+        "continuity tracking",
+        "canon consistency",
+        "story coherence"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when avoiding contradictions or maintaining long-form narrative consistency is explicit."
+      ],
+      "exclusion_guidance": [
+        "Do not use for generic quality claims without a continuity mechanism or instruction."
+      ]
+    },
+    {
+      "id": "plan-stories-and-scenes",
+      "label": "Plan stories and scenes",
+      "facet": "goal",
+      "description": "Develop plots, arcs, scenes, pacing, hooks, or narrative direction.",
+      "aliases": ["story planning", "plot direction", "scene planning"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when deliberate narrative planning or director-style control is a documented purpose."
+      ],
+      "exclusion_guidance": [
+        "Do not use merely because the project produces roleplay prose."
+      ]
+    },
+    {
+      "id": "improve-writing-and-prose",
+      "label": "Improve writing and prose",
+      "facet": "goal",
+      "description": "Strengthen prose, dialogue, style, pacing, subtext, or general writing quality.",
+      "aliases": ["writing assistance", "prose improvement", "co-writing"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when improving authored or generated writing is a direct advertised outcome."
+      ],
+      "exclusion_guidance": [
+        "Do not use for unrelated tools that happen to display generated text."
+      ]
+    },
+    {
+      "id": "guide-model-responses",
+      "label": "Guide model responses",
+      "facet": "goal",
+      "description": "Shape what the model says, how it behaves, or which instructions it follows.",
+      "aliases": [
+        "response steering",
+        "generation control",
+        "instruction control"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when users intentionally steer generation behavior beyond ordinary chat input."
+      ],
+      "exclusion_guidance": [
+        "Do not use solely because every project ultimately sends text to a model."
+      ]
+    },
+    {
+      "id": "add-structured-reasoning",
+      "label": "Add structured reasoning",
+      "facet": "goal",
+      "description": "Introduce deliberate planning, reflection, critique, or multi-step thinking before output.",
+      "aliases": ["reasoning pipelines", "stepped thinking", "planning passes"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when an explicit reasoning or planning process is a defining user-facing feature."
+      ],
+      "exclusion_guidance": [
+        "Do not infer this from model marketing or an unexplained chain-of-thought reference."
+      ]
+    },
+    {
+      "id": "manage-prompts-and-presets",
+      "label": "Manage prompts and presets",
+      "facet": "goal",
+      "description": "Create, organize, lock, search, switch, or reuse prompt and preset configurations.",
+      "aliases": [
+        "prompt management",
+        "preset organization",
+        "template management"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when the project directly manages prompt or preset artifacts for users."
+      ],
+      "exclusion_guidance": [
+        "Do not apply to a preset merely because the project itself contains prompt text."
+      ]
+    },
+    {
+      "id": "automate-roleplay-workflows",
+      "label": "Automate roleplay workflows",
+      "facet": "goal",
+      "description": "Run repeated, triggered, scheduled, or chained roleplay tasks with less manual work.",
+      "aliases": [
+        "workflow automation",
+        "task automation",
+        "triggered actions"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when user-configurable automation or a substantial automatic workflow is central."
+      ],
+      "exclusion_guidance": [
+        "Do not use for a single automatic behavior with no broader workflow purpose."
+      ]
+    },
+    {
+      "id": "generate-images",
+      "label": "Generate images",
+      "facet": "goal",
+      "description": "Create AI-generated images, illustrations, portraits, or backgrounds for roleplay.",
+      "aliases": [
+        "AI art generation",
+        "scene illustration",
+        "picture generation"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when producing images through an AI image backend is a direct feature."
+      ],
+      "exclusion_guidance": [
+        "Do not use for displaying, uploading, or organizing existing images only."
+      ]
+    },
+    {
+      "id": "add-visual-immersion",
+      "label": "Add visual immersion",
+      "facet": "goal",
+      "description": "Enhance roleplay with sprites, portraits, backgrounds, galleries, or visual-novel presentation.",
+      "aliases": [
+        "roleplay visuals",
+        "visual novel presentation",
+        "scene visuals"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when visual presentation materially changes the roleplay experience."
+      ],
+      "exclusion_guidance": [
+        "Do not use for incidental icons, screenshots, or ordinary interface styling."
+      ]
+    },
+    {
+      "id": "add-voice-interaction",
+      "label": "Add voice interaction",
+      "facet": "goal",
+      "description": "Speak to characters or hear responses through speech recognition and synthesis.",
+      "aliases": ["voice chat", "speech input", "text to speech"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when speech input or spoken character output is a substantive feature."
+      ],
+      "exclusion_guidance": [
+        "Do not use for music, sound effects, or unrelated audio playback."
+      ]
+    },
+    {
+      "id": "add-music-and-audio",
+      "label": "Add music and audio",
+      "facet": "goal",
+      "description": "Add music, ambient sound, playlists, or other non-speech audio to roleplay.",
+      "aliases": ["ambient audio", "roleplay music", "soundscapes"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when selecting, generating, or playing non-speech audio is a direct feature."
+      ],
+      "exclusion_guidance": [
+        "Do not use for voice-only speech synthesis or a generic notification sound."
+      ]
+    },
+    {
+      "id": "translate-roleplay-content",
+      "label": "Translate roleplay content",
+      "facet": "goal",
+      "description": "Translate chats, cards, lore, prompts, or other roleplay material between languages.",
+      "aliases": ["chat translation", "AI translation", "translate messages"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when content translation is an explicit user workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use just because documentation or interface text has translations."
+      ]
+    },
+    {
+      "id": "run-group-roleplay",
+      "label": "Run group roleplay",
+      "facet": "goal",
+      "description": "Coordinate scenes involving several AI characters in the same conversation.",
+      "aliases": ["multi-character roleplay", "group chats", "ensemble scenes"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when group-chat behavior, responder control, or multiple active characters is explicit."
+      ],
+      "exclusion_guidance": [
+        "Do not confuse multiple AI characters with multiple human users."
+      ]
+    },
+    {
+      "id": "add-rpg-gameplay",
+      "label": "Add RPG gameplay",
+      "facet": "goal",
+      "description": "Add game-mastering, rules, dice, combat, progression, or other roleplaying-game mechanics.",
+      "aliases": ["tabletop mechanics", "game master tools", "RPG systems"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when mechanical game play is central rather than purely freeform conversation."
+      ],
+      "exclusion_guidance": [
+        "Do not use merely because the project is described broadly as roleplay."
+      ]
+    },
+    {
+      "id": "track-characters-and-world-state",
+      "label": "Track characters and world state",
+      "facet": "goal",
+      "description": "Track changing stats, relationships, inventory, time, facts, or scene state.",
+      "aliases": ["state tracking", "stat trackers", "world state tracking"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when structured state is updated and surfaced or injected across turns."
+      ],
+      "exclusion_guidance": [
+        "Do not use for unstructured chat memory without distinct tracked state."
+      ]
+    },
+    {
+      "id": "manage-maps-and-locations",
+      "label": "Manage maps and locations",
+      "facet": "goal",
+      "description": "Represent, navigate, calculate, or update places and spatial relationships.",
+      "aliases": [
+        "interactive maps",
+        "location tracking",
+        "spatial navigation"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when maps, rooms, coordinates, travel, or location state are substantive features."
+      ],
+      "exclusion_guidance": [
+        "Do not use for location words that only appear in ordinary story text."
+      ]
+    },
+    {
+      "id": "manage-inventory-and-quests",
+      "label": "Manage inventory and quests",
+      "facet": "goal",
+      "description": "Track equipment, items, objectives, quests, or progression records.",
+      "aliases": [
+        "quest tracking",
+        "inventory management",
+        "equipment tracking"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when users or the system maintain structured items or objectives over time."
+      ],
+      "exclusion_guidance": [
+        "Do not infer this from a generic RPG label without documented inventory or quest behavior."
+      ]
+    },
+    {
+      "id": "organize-chats-and-messages",
+      "label": "Organize chats and messages",
+      "facet": "goal",
+      "description": "Search, group, bookmark, browse, archive, or navigate conversations and messages.",
+      "aliases": [
+        "chat organization",
+        "message bookmarks",
+        "conversation search"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when conversation organization or navigation is a primary user workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use for tools that only alter model-generated message content."
+      ]
+    },
+    {
+      "id": "inspect-prompts-and-generations",
+      "label": "Inspect prompts and generations",
+      "facet": "goal",
+      "description": "View, diagnose, validate, or debug the exact inputs and outputs of model calls.",
+      "aliases": [
+        "prompt inspection",
+        "generation diagnostics",
+        "request debugging"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when transparency, diagnostics, or validation of model calls is explicit."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary prompt editing without an inspection or diagnostic purpose."
+      ]
+    },
+    {
+      "id": "customize-the-interface",
+      "label": "Customize the interface",
+      "facet": "goal",
+      "description": "Change themes, fonts, layouts, controls, panels, or other interface presentation.",
+      "aliases": [
+        "interface theming",
+        "layout customization",
+        "UI personalization"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when users can materially personalize or replace interface presentation."
+      ],
+      "exclusion_guidance": [
+        "Do not use solely because a project has a polished or distinctive interface."
+      ]
+    },
+    {
+      "id": "build-extensions-and-scripts",
+      "label": "Build extensions and scripts",
+      "facet": "goal",
+      "description": "Develop, execute, test, or integrate custom code that extends a roleplay frontend.",
+      "aliases": [
+        "extension development",
+        "custom scripting",
+        "plugin development"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when developer tooling, scripting, APIs, or extension authoring is user-facing."
+      ],
+      "exclusion_guidance": [
+        "Do not use merely because the repository itself contains source code."
+      ]
+    },
+    {
+      "id": "connect-external-services",
+      "label": "Connect external services",
+      "facet": "goal",
+      "description": "Bridge roleplay workflows to messaging, media, note-taking, automation, or other services.",
+      "aliases": [
+        "service integrations",
+        "external bridges",
+        "third-party connections"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when integration with a named external product or service is a central feature."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary model-provider API compatibility."
+      ]
+    },
+    {
+      "id": "recover-failed-generations",
+      "label": "Recover failed generations",
+      "facet": "goal",
+      "description": "Retry, resume, or repair failed, empty, interrupted, or stalled model responses.",
+      "aliases": [
+        "automatic retry",
+        "generation recovery",
+        "resume failed responses"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when failure recovery is a deliberate, documented user benefit."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary regenerate or swipe controls without failure detection."
+      ]
+    },
+    {
+      "id": "manage-character-libraries",
+      "label": "Manage character libraries",
+      "facet": "goal",
+      "description": "Discover, search, browse, categorize, import, or maintain collections of character cards.",
+      "aliases": ["character browsing", "card library", "character discovery"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when handling a collection of character cards is a defining workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use for editing one active character or generating a new card alone."
+      ]
+    },
+    {
+      "id": "move-and-back-up-data",
+      "label": "Move and back up data",
+      "facet": "goal",
+      "description": "Import, export, synchronize, migrate, restore, or back up roleplay data.",
+      "aliases": [
+        "data portability",
+        "backup and restore",
+        "import and export"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when moving or safeguarding user data is a substantial documented workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use for a routine one-file import required only to install the project."
+      ]
+    },
+    {
+      "id": "monitor-token-usage-and-cost",
+      "label": "Monitor token usage and cost",
+      "facet": "goal",
+      "description": "Measure, visualize, budget, or report model token consumption and spending.",
+      "aliases": ["usage analytics", "cost tracking", "token statistics"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when usage or cost monitoring is a user-facing purpose rather than incidental metadata."
+      ],
+      "exclusion_guidance": [
+        "Do not use for context compression or a simple token counter shown during editing."
+      ]
+    },
+    {
+      "id": "edit-and-refine-messages",
+      "label": "Edit and refine messages",
+      "facet": "goal",
+      "description": "Rewrite, combine, clean, expand, shorten, or otherwise revise chat messages.",
+      "aliases": ["message rewriting", "chat editing", "response refinement"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when users directly transform or compose message text through a dedicated workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not use for general prose guidance that only affects future generations."
+      ]
+    },
+    {
+      "id": "increase-narrative-variety",
+      "label": "Increase narrative variety",
+      "facet": "goal",
+      "description": "Reduce repetition and introduce fresh actions, beats, twists, or response patterns.",
+      "aliases": ["prevent repetition", "plot variety", "response diversity"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when avoiding repetitive output or injecting deliberate variety is explicit."
+      ],
+      "exclusion_guidance": [
+        "Do not use for generic creativity claims without a documented variety mechanism."
+      ]
+    },
+    {
+      "id": "local-first",
+      "label": "Local-first",
+      "facet": "trait",
+      "description": "Keeps its primary data and workflow on the user's own device.",
+      "aliases": ["stored locally", "on-device data", "local data ownership"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use only when local storage or local execution is an explicit design commitment."
+      ],
+      "exclusion_guidance": [
+        "Do not infer local-first behavior merely because the project can be installed locally."
+      ]
+    },
+    {
+      "id": "self-hosted",
+      "label": "Self-hosted",
+      "facet": "trait",
+      "description": "Runs as infrastructure that users deploy and operate themselves.",
+      "aliases": ["self-hostable", "run your own server", "local deployment"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when users are expected to deploy a server, service, or full application."
+      ],
+      "exclusion_guidance": [
+        "Do not apply to an ordinary frontend extension installed inside an existing host."
+      ]
+    },
+    {
+      "id": "privacy-focused",
+      "label": "Privacy-focused",
+      "facet": "trait",
+      "description": "Explicitly minimizes data exposure or gives users strong control over sensitive data.",
+      "aliases": [
+        "private by design",
+        "privacy preserving",
+        "data stays private"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use only when the project documents a concrete privacy property or protection."
+      ],
+      "exclusion_guidance": [
+        "Do not infer privacy from open source, local installation, or lack of contrary evidence."
+      ]
+    },
+    {
+      "id": "agentic-tool-use",
+      "label": "Agentic tool use",
+      "facet": "trait",
+      "description": "Lets an AI plan actions, call tools, or actively inspect and manipulate resources.",
+      "aliases": ["tool calling", "AI agents", "agent mode"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when autonomous planning or model-invoked tools are explicit and functional."
+      ],
+      "exclusion_guidance": [
+        "Do not use for a fixed sequence of ordinary model calls with no tool agency."
+      ]
+    },
+    {
+      "id": "semantic-retrieval",
+      "label": "Semantic retrieval",
+      "facet": "trait",
+      "description": "Selects relevant information through embeddings, vector search, RAG, or hybrid retrieval.",
+      "aliases": [
+        "semantic search",
+        "vector search",
+        "retrieval-augmented generation",
+        "RAG"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when semantic, vector, sparse, or hybrid retrieval is directly documented."
+      ],
+      "exclusion_guidance": [
+        "Do not use for keyword-only lore activation or generic memory claims."
+      ]
+    },
+    {
+      "id": "visual-workflow",
+      "label": "Visual workflow",
+      "facet": "trait",
+      "description": "Uses nodes, diagrams, canvases, maps, or drag-and-drop builders to define behavior.",
+      "aliases": ["node editor", "flowchart builder", "graphical workflow"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when a visual builder is central to authoring logic or content."
+      ],
+      "exclusion_guidance": [
+        "Do not use for a normal graphical settings form or attractive dashboard."
+      ]
+    },
+    {
+      "id": "multi-user",
+      "label": "Multi-user",
+      "facet": "trait",
+      "description": "Supports several human users, shared communities, or collaborative sessions.",
+      "aliases": ["multiplayer", "shared sessions", "community hosting"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when multiple human participants or accounts are explicitly supported."
+      ],
+      "exclusion_guidance": [
+        "Do not confuse multiple human users with a single user chatting to several AI characters."
+      ]
+    },
+    {
+      "id": "mobile-friendly",
+      "label": "Mobile-friendly",
+      "facet": "trait",
+      "description": "Provides an explicitly supported and usable mobile layout or mobile application.",
+      "aliases": ["mobile support", "phone friendly", "responsive mobile UI"],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when mobile use is documented, tested, or a named feature."
+      ],
+      "exclusion_guidance": [
+        "Do not infer this from responsive web technology without project evidence."
+      ]
+    },
+    {
+      "id": "model-agnostic",
+      "label": "Model-agnostic",
+      "facet": "trait",
+      "description": "Works across a broad range of model providers rather than requiring one model family.",
+      "aliases": ["bring your own model", "BYOM", "provider independent"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when broad provider or model interchangeability is an explicit property."
+      ],
+      "exclusion_guidance": [
+        "Do not use when compatibility is limited to one named family or merely untested."
+      ]
+    },
+    {
+      "id": "background-operation",
+      "label": "Background operation",
+      "facet": "trait",
+      "description": "Runs meaningful work asynchronously or quietly without blocking the main conversation.",
+      "aliases": [
+        "asynchronous processing",
+        "quiet generation",
+        "background tasks"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when background or non-blocking execution is explicitly important to the workflow."
+      ],
+      "exclusion_guidance": [
+        "Do not infer this from implementation details such as ordinary async functions."
+      ]
+    },
+    {
+      "id": "modular-and-extensible",
+      "label": "Modular and extensible",
+      "facet": "trait",
+      "description": "Supports optional modules, plugins, replaceable components, or user-defined extensions.",
+      "aliases": ["plugin architecture", "modular design", "extensible system"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when users can meaningfully add, remove, or replace documented components."
+      ],
+      "exclusion_guidance": [
+        "Do not infer modularity from a repository's internal code organization."
+      ]
+    },
+    {
+      "id": "rules-driven",
+      "label": "Rules-driven",
+      "facet": "trait",
+      "description": "Uses explicit rules, schemas, calculations, or deterministic mechanics to constrain behavior.",
+      "aliases": ["deterministic mechanics", "rule based", "schema driven"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when documented rules or mechanics materially govern project output."
+      ],
+      "exclusion_guidance": [
+        "Do not use for ordinary settings validation or implicit prompt instructions."
+      ]
+    },
+    {
+      "id": "multi-stage-generation",
+      "label": "Multi-stage generation",
+      "facet": "trait",
+      "description": "Builds a final result through multiple model calls, passes, branches, or review stages.",
+      "aliases": [
+        "generation pipeline",
+        "parallel model calls",
+        "multi-pass generation"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when several distinct generation stages are explicit and central."
+      ],
+      "exclusion_guidance": [
+        "Do not use for a single model response that internally reasons before answering."
+      ]
+    },
+    {
+      "id": "secondary-model",
+      "label": "Secondary-model workflow",
+      "facet": "trait",
+      "description": "Delegates supporting tasks to a separately configured model or connection.",
+      "aliases": [
+        "helper model",
+        "auxiliary model",
+        "separate connection profile"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when a distinct model connection handles memory, tracking, tagging, or another side task."
+      ],
+      "exclusion_guidance": [
+        "Do not use just because users may choose among several providers for the main chat."
+      ]
+    },
+    {
+      "id": "non-destructive",
+      "label": "Non-destructive",
+      "facet": "trait",
+      "description": "Preserves original content or data while applying overlays, previews, or reversible changes.",
+      "aliases": ["reversible workflow", "preserves originals", "safe overlay"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when preserving originals or easy reversal is an explicit distinguishing property."
+      ],
+      "exclusion_guidance": [
+        "Do not assume all editors or data tools are non-destructive."
+      ]
+    },
+    {
+      "id": "multilingual",
+      "label": "Multilingual",
+      "facet": "trait",
+      "description": "Explicitly supports use, authoring, or interfaces in multiple languages.",
+      "aliases": [
+        "multiple languages",
+        "internationalized",
+        "cross-language support"
+      ],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when multilingual use is a documented product capability."
+      ],
+      "exclusion_guidance": [
+        "Do not use solely because the README is translated."
+      ]
+    },
+    {
+      "id": "persistent-state",
+      "label": "Persistent state",
+      "facet": "trait",
+      "description": "Stores structured state that survives turns, chats, sessions, or application restarts.",
+      "aliases": ["durable state", "state persistence", "cross-session state"],
+      "applicable_kinds": ["frontend", "extension", "preset"],
+      "inclusion_guidance": [
+        "Use when structured state persistence is explicit and distinct from ordinary message history."
+      ],
+      "exclusion_guidance": [
+        "Do not use for temporary in-memory controls or generic long-term-memory claims alone."
+      ]
+    },
+    {
+      "id": "hands-free",
+      "label": "Hands-free",
+      "facet": "trait",
+      "description": "Supports continuous or automatically sequenced interaction without routine button presses.",
+      "aliases": [
+        "voice loop",
+        "automatic conversation flow",
+        "no-touch interaction"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when hands-free conversational operation is explicitly supported."
+      ],
+      "exclusion_guidance": [
+        "Do not apply to isolated text-to-speech playback that still requires normal controls."
+      ]
+    },
+    {
+      "id": "streaming-aware",
+      "label": "Streaming-aware",
+      "facet": "trait",
+      "description": "Observes, transforms, or reacts to model output while it is still streaming.",
+      "aliases": [
+        "live token processing",
+        "stream processing",
+        "incremental output handling"
+      ],
+      "applicable_kinds": ["frontend", "extension"],
+      "inclusion_guidance": [
+        "Use when real-time handling of partial generated output is documented and meaningful."
+      ],
+      "exclusion_guidance": [
+        "Do not use merely because the host frontend normally displays streaming text."
+      ]
+    }
+  ]
 }
