@@ -48,10 +48,17 @@ Kit issue ID.
 
 - The published Kit remains unchanged until server validation and publication
   gates pass.
-- Only the Kit author's GitHub numeric identity may publish an edit.
+- The Kit author's GitHub numeric identity may publish an edit. Reviewed
+  Tavernary staff listed by immutable ID in
+  `data/maintenance/trusted-tavernary-editors.json` may also edit any Kit when
+  the refreshed issue has a current trusted association.
 - Timestamps update only when canonical Kit content or the displayed author
   login changes.
 - An unchanged retry is a no-op.
+
+A `tavernary-staff` edit preserves the original author, Kit ID, source issue,
+publication date, and support snapshot identity. It does not transfer
+authorship to the staff actor.
 
 ## Report unsafe or low-quality Kits
 

@@ -40,7 +40,7 @@ test("publishes the guided Help routes and owner workflow vocabulary", () => {
   }
 });
 
-test("limits automated owner management to verified personal owners", () => {
+test("documents both personal-owner and reviewed Tavernary staff management", () => {
   render(AboutPage());
 
   expect(
@@ -49,8 +49,26 @@ test("limits automated owner management to verified personal owners", () => {
   expect(
     screen.getByRole("heading", { name: "Reporting and removal" })
       .parentElement,
-  ).toHaveTextContent(
-    /Organization listings.*rights holders.*human-reviewed public report/i,
+  ).toHaveTextContent(/Tavernary owners, admins, and maintainers.*any card/i);
+});
+
+test("documents immutable trusted-editor authority instead of association alone", () => {
+  const documentationCorpus = documentationPaths
+    .map((path) => readFileSync(resolve(process.cwd(), path), "utf8"))
+    .join("\n");
+  const actionGuide = readFileSync(
+    resolve(process.cwd(), "docs/maintenance/github-actions-user-guides.md"),
+    "utf8",
+  );
+
+  expect(`${documentationCorpus}\n${actionGuide}`).toContain(
+    "data/maintenance/trusted-tavernary-editors.json",
+  );
+  expect(`${documentationCorpus}\n${actionGuide}`).toMatch(
+    /immutable GitHub (?:user )?ID/i,
+  );
+  expect(`${documentationCorpus}\n${actionGuide}`).toMatch(
+    /association alone.*does not/i,
   );
 });
 

@@ -1,9 +1,20 @@
 # Kit Maintenance
 
-Valid Kit creates and author edits publish automatically through the issue
-workflows. Discovery is community-driven: community support feeds Trending,
-with no maintainer-curated endorsement. The following exceptional maintainer
-operation uses ordinary Git history so every change is reviewable.
+Valid Kit creates, author edits, and trusted Tavernary staff edits publish
+automatically through the issue workflows. Discovery is community-driven:
+community support feeds Trending, with no maintainer-curated endorsement.
+
+Trusted edits use `editAuthority: "tavernary-staff"`. Authority requires the
+actor's immutable GitHub ID in
+`data/maintenance/trusted-tavernary-editors.json` and a current trusted
+repository association; association alone does not grant access. Triage and the
+final publisher both validate the refreshed issue actor. A staff edit preserves
+the canonical author, Kit `id`, source issue, `published_at`, and support
+snapshot identity. It never substitutes the staff issue author for Kit
+provenance.
+
+The following exceptional maintainer operation uses ordinary Git history so
+every change is reviewable.
 
 ## Safety repair
 

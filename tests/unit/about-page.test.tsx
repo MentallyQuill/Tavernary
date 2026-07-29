@@ -34,7 +34,12 @@ test("explains safety, reporting, and legal information on About", () => {
   ).toBeInTheDocument();
   expect(
     screen.getByText(
-      /organization listings, maintainers who are not that verified owner, and rights holders/i,
+      /reviewed Tavernary owners, admins, and maintainers.*any card/i,
+    ),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      /other organization maintainers and rights holders.*public report/i,
     ),
   ).toBeInTheDocument();
 });

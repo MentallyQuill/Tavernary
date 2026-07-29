@@ -80,6 +80,11 @@ Each `entries` item includes:
 
 - This report is written alongside registry project snapshots during enrichment
   operations, not during `catalog:refresh` runs.
+- Enrichment writes only summary, `metadata_status`, and `capabilities` to a
+  canonical project record. It cannot write or change `primary_function`.
+- A provider classification result is an intake-only classification review. It
+  can support a sanitized mismatch warning on a new submission, but is never
+  canonical classification state and is not copied into this report.
 - `catalog:refresh` has a separate manifest at
   `data/snapshots/github-refresh.json`; that manifest documents GitHub snapshot
   collection only.

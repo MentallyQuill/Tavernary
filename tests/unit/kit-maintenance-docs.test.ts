@@ -87,3 +87,18 @@ test("documents automatic Kit publication and severe-language revalidation", asy
   expect(runbook).toMatch(/closes the source issue/i);
   expect(runbook).toMatch(/exact.*SHA/i);
 });
+
+test("documents trusted Kit edits without replacing canonical provenance", async () => {
+  const [maintenance, submissionFlow, actionGuide] = await Promise.all([
+    readFile("docs/maintenance/kits.md", "utf8"),
+    readFile("docs/contributing/submission-and-review.md", "utf8"),
+    readFile("docs/maintenance/github-actions-user-guides.md", "utf8"),
+  ]);
+  const corpus = `${maintenance}\n${submissionFlow}\n${actionGuide}`;
+
+  expect(corpus).toContain("tavernary-staff");
+  expect(corpus).toContain("data/maintenance/trusted-tavernary-editors.json");
+  expect(corpus).toMatch(/staff edit.*preserves.*author/i);
+  expect(corpus).toMatch(/source issue.*published_at.*support snapshot/is);
+  expect(corpus).toMatch(/valid issue dispatches.*automatically/is);
+});

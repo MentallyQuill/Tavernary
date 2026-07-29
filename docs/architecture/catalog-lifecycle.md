@@ -27,18 +27,27 @@ Project kinds:
 - `extension`
 - `preset`
 
+Primary function is a human-owned classification with a structural kind
+contract. Frontends always use `frontend`; System Presets always use `preset`;
+Extensions use one of the six functional Extension categories. There is no
+Uncategorized state.
+
 ## Draft -> reviewed -> public
 
-1. A submission issue is intake, not a second approval surface. URL
-   normalization, duplicate identity, source probing, and frontend
-   reconciliation run before any catalog proposal is created.
+1. A submission issue is intake, not a second approval surface. The submitted
+   Extension primary function is authoritative. Frontend and Preset values are
+   derived structurally before URL normalization, duplicate identity, source
+   probing, and frontend reconciliation run.
 2. Confirmed duplicates close before PR generation. Correctable failures remain
    open with `needs-information`.
 3. An admitted issue creates one deterministic
    `automation/project-submission-<issue-number>` branch and one generated pull
    request. The PR is the sole human review and may be corrected directly by
    maintainers.
-4. A generated project can begin as curated or provisional.
+4. A generated project can begin as curated or provisional, but never without
+   a valid kind/primary-function pair. An intake-only model review may confirm
+   the submitted Extension value or attach a `classification-review` mismatch
+   warning. It does not mutate the proposal.
 5. `source` must satisfy rules:
    - `github` requires `repository` and optional `repository_id` (nullable before identity confirmed).
    - `codeberg` requires `repository` and a resolved `repository_id`.
@@ -49,8 +58,8 @@ Project kinds:
 7. Merge places the reviewed record on `main`, closes the linked issue, and
    publishes through the normal static build. Closing the generated PR without
    merge declines the submission and does not publish it.
-8. Curated metadata is still expected to evolve after merge if maintainers
-   update summary/function/capabilities/visibility.
+8. Curated metadata may still evolve after merge if a reviewed human update
+   changes summary, primary function, capabilities, or visibility.
 
 External System Presets follow the same PR review boundary. Their source
 refresh can remain paused, while editorial enrichment may be automatic only
@@ -75,6 +84,10 @@ Manual records are excluded from both. A run persists its `selection_mode` and
 `manual_exclusions` in the canary and full reports, then uses that frozen scope
 for every resume. The write boundary re-reads the canonical record before
 replacement, so a newly added manual lock wins even after selection.
+
+Enrichment owns exactly three canonical fields: summary, `metadata_status`, and
+capabilities. Its optional classification result exists only to support the
+intake warning path and never changes the canonical `primary_function`.
 
 `refresh_policy` remains separate: it controls source observation and snapshot
 updates, not permission to overwrite editorial enrichment.
