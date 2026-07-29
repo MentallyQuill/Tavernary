@@ -834,6 +834,9 @@ test("handles submission closure from default-branch code only", async () => {
     "pull-requests": "read",
     actions: "write",
   });
+  expect(lifecycle.jobs.close.if).toBe(
+    "startsWith(github.event.pull_request.head.ref, 'automation/project-submission-')",
+  );
   expect(checkout?.with?.ref).toBe(
     "${{ github.event.repository.default_branch }}",
   );
