@@ -1,11 +1,16 @@
 import type { GitHubRepositoryIdentity } from "./project-owner-authority.d.mts";
+import type {
+  TrustedEditorRegistry,
+  TrustedEditorRole,
+} from "../maintenance/trusted-editor-authority.mjs";
 
 export interface OwnerTriageIssue {
   number: number;
   state: string;
   body?: string | null;
   labels: Array<string | { name?: string }>;
-  user?: { login?: string };
+  user?: { id?: number; login?: string };
+  author_association?: string;
   url?: string;
   updated_at?: string;
 }
@@ -18,8 +23,11 @@ export type ProjectOwnerTriageDecision =
       operation: "edit-card" | "move-source" | "delist";
       manifest: Record<string, unknown>;
       record: Record<string, unknown>;
-      repository: GitHubRepositoryIdentity;
-      verifiedOwnerLogin: string;
+      repository: GitHubRepositoryIdentity | null;
+      authorityType: "repository-owner" | "tavernary-staff";
+      actorLogin: string;
+      verifiedOwnerLogin?: string;
+      trustedEditorRole?: TrustedEditorRole;
       warnings: string[];
     }
   | {
@@ -36,6 +44,7 @@ export function processProjectOwnerTriage(input: {
   hostRepository?: string | { owner: string; name: string };
   record?: Record<string, unknown>;
   repository?: GitHubRepositoryIdentity | Record<string, unknown>;
+  trustedEditorRegistry?: TrustedEditorRegistry;
   vocabularies: {
     frontends: readonly (string | { id: string })[];
     primaryFunctions: readonly (string | { id: string })[];

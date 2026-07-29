@@ -133,6 +133,8 @@ function normalizeEditable(value, kind, vocabularies, errors, original) {
   if (!vocabularies.primaryFunctions.has(primaryFunction)) {
     errors.push("Owner primary function is invalid.");
   }
+  const primaryFunctionError = classificationError(kind, primaryFunction);
+  if (primaryFunctionError) errors.push(primaryFunctionError);
   if (kind === "preset") {
     if (modelFamilies.length === 0) {
       errors.push("Owner Preset must include at least one model family.");
@@ -274,8 +276,20 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     errors.push("Owner request project ID is invalid.");
   }
   const repositoryId = value?.repository_id;
-  if (!Number.isSafeInteger(repositoryId) || repositoryId <= 0) {
-    errors.push("Owner request repository ID must be a positive integer.");
+  if (
+    !Object.hasOwn(value ?? {}, "repository_id") ||
+    (repositoryId !== null &&
+      (!Number.isSafeInteger(repositoryId) || repositoryId <= 0))
+  ) {
+    errors.push(
+      "Owner request repository ID must be a positive integer or null.",
+    );
+  }
+  if (
+    operation === "move-source" &&
+    (!Number.isSafeInteger(repositoryId) || repositoryId <= 0)
+  ) {
+    errors.push("Owner source move requires a positive repository ID.");
   }
   const sourceFingerprint = requiredText(value?.source_fingerprint);
   if (!/^[a-f0-9]{64}$/u.test(sourceFingerprint)) {
@@ -338,3 +352,4 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     },
   };
 }
+import { classificationError } from "../catalog/primary-function-contract.mjs";

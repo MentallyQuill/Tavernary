@@ -9,7 +9,7 @@ body:
       value: |
         This issue will be public. Do not include secrets, passwords, API keys, private personal information, or unpublished security details.
 
-        GitHub automation verifies the issue author against the current personal repository owner. The readable fields below are a fallback for accessibility and manual review; workflow validation applies the operation-specific requirements.
+        GitHub automation verifies the issue author as either the current personal repository owner or a reviewed Tavernary owner, admin, or maintainer. The readable fields below are a fallback for accessibility and manual review; workflow validation applies the operation-specific requirements.
   - type: input
     id: request-type
     attributes:
@@ -29,10 +29,10 @@ body:
     id: repository
     attributes:
       label: Current repository
-      description: The currently listed public GitHub repository URL.
+      description: The current source URL when the selected record has one.
       placeholder: https://github.com/owner/repository
     validations:
-      required: true
+      required: false
   - type: input
     id: proposed-name
     attributes:
@@ -58,7 +58,7 @@ body:
     id: primary-function
     attributes:
       label: Primary function
-      description: Used only for a card-details edit. Enter one controlled primary-function ID.
+      description: Used only for an Extension card-details edit. Frontends and System Presets use their structural primary function.
     validations:
       required: false
   - type: textarea

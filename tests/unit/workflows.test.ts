@@ -964,6 +964,10 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("npm run catalog:validate");
   expect(source).toContain("npm run catalog:build");
   expect(source).toContain("tests/unit/project-owner-");
+  expect(source).toContain("tests/unit/trusted-editor-authority.test.ts");
+  expect(source).toContain("authorityType: report.authority_type");
+  expect(source).toContain("actorLogin: report.actor_login");
+  expect(source).not.toContain("verifiedOwnerLogin");
   expect(source).toContain("npm run check:content");
   expect(source).toContain("git clean -fX -- src/generated/catalog.json");
   expect(source).not.toContain("git checkout -- src/generated/catalog.json");

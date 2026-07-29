@@ -29,12 +29,16 @@ export interface OwnerDelist {
   enrichment_policy: "manual";
 }
 
-export interface OwnerEnvelope<K extends string, P> {
+export interface OwnerEnvelope<
+  K extends string,
+  P,
+  R extends number | null = number | null,
+> {
   schema_version: 1;
   request_kind: "project-owner";
   operation: K;
   project_id: string;
-  repository_id: number;
+  repository_id: R;
   source_fingerprint: string;
   original: Record<string, unknown>;
   proposed: P;
@@ -43,7 +47,7 @@ export interface OwnerEnvelope<K extends string, P> {
 
 export type ProjectOwnerManifest =
   | OwnerEnvelope<"edit-card", OwnerCardEdit>
-  | OwnerEnvelope<"move-source", OwnerSourceMove>
+  | OwnerEnvelope<"move-source", OwnerSourceMove, number>
   | OwnerEnvelope<"delist", OwnerDelist>;
 
 export interface OwnerVocabularies {

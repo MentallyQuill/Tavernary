@@ -30,8 +30,9 @@ export default async function ManageProjectPage() {
             location of the same GitHub repository, or delist a project.
           </p>
           <p>
-            Organization, external-source, and other listing concerns can still
-            be reviewed through{" "}
+            Reviewed Tavernary owners, admins, and maintainers can use this
+            workflow for any catalog record. Other organization,
+            external-source, and listing concerns can be reviewed through{" "}
             <Link href="/help/report-project/">Report a project listing</Link>.
           </p>
         </>

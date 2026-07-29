@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import {
+  EXTENSION_PRIMARY_FUNCTION_IDS,
+  STRUCTURAL_PRIMARY_FUNCTIONS,
+} from "@/features/catalog/primary-function-contract.mjs";
 import type {
   OwnerCardOriginal,
   OwnerEditableValues,
@@ -29,6 +33,7 @@ import { HelpReview } from "./help-review";
 interface VocabularyOption {
   id: string;
   label: string;
+  description?: string;
 }
 
 export interface OwnerBuilderVocabularies {
@@ -137,11 +142,28 @@ function originalEdit(project: OwnerProjectOption): OwnerCardOriginal {
   };
 }
 
-function policyStatement(operation: OwnerOperation) {
-  if (operation === "edit-card") {
-    return "A card edit changes model enrichment to manual.";
+function manuallyCurates(manifest: ProjectOwnerManifest) {
+  const enrichmentFields = ["summary", "capabilities"] as const;
+  return (
+    manifest.operation === "edit-card" &&
+    enrichmentFields.some(
+      (field) =>
+        JSON.stringify(manifest.original[field]) !==
+        JSON.stringify(manifest.proposed[field]),
+    )
+  );
+}
+
+function policyStatement(
+  manifest: ProjectOwnerManifest,
+  project: OwnerProjectOption,
+) {
+  if (manifest.operation === "edit-card") {
+    return manuallyCurates(manifest)
+      ? "Summary or capability edits change model enrichment to manual."
+      : `This edit preserves the ${project.listingState.enrichmentPolicy} enrichment policy.`;
   }
-  if (operation === "move-source") {
+  if (manifest.operation === "move-source") {
     return "A source move must retain repository ID.";
   }
   return "Delisting disables, pauses, and retains the record.";
@@ -158,6 +180,7 @@ function operationReviewRows(
   project: OwnerProjectOption,
 ) {
   if (manifest.operation === "edit-card") {
+    const manualEnrichment = manuallyCurates(manifest);
     return [
       {
         label: "Before: display name",
@@ -217,12 +240,22 @@ function operationReviewRows(
         label: "Before: metadata status",
         value: project.listingState.metadataStatus,
       },
-      { label: "After: metadata status", value: "curated" },
+      {
+        label: "After: metadata status",
+        value: manualEnrichment
+          ? "curated"
+          : project.listingState.metadataStatus,
+      },
       {
         label: "Before: enrichment policy",
         value: project.listingState.enrichmentPolicy,
       },
-      { label: "After: enrichment policy", value: "manual" },
+      {
+        label: "After: enrichment policy",
+        value: manualEnrichment
+          ? "manual"
+          : project.listingState.enrichmentPolicy,
+      },
       {
         label: "Before: refresh policy",
         value: project.listingState.refreshPolicy,
@@ -369,11 +402,17 @@ export function ProjectOwnerBuilder({
   }
 
   function proposedEdit(): OwnerEditableValues {
+    const proposedPrimaryFunction =
+      selected?.kind === "extension"
+        ? primaryFunction
+        : selected
+          ? STRUCTURAL_PRIMARY_FUNCTIONS[selected.kind]
+          : primaryFunction;
     return {
       name,
       summary,
       frontends,
-      primary_function: primaryFunction,
+      primary_function: proposedPrimaryFunction,
       capabilities,
       model_families: modelFamilies,
       completion_formats: completionFormats,
@@ -381,7 +420,19 @@ export function ProjectOwnerBuilder({
   }
 
   function candidateManifest(): object | null {
-    if (!selected?.repository || !selected.repositoryId || !operation) {
+    if (!selected || !operation) {
+      return null;
+    }
+    const repositoryId =
+      selected.sourceType === "github" &&
+      Number.isSafeInteger(selected.repositoryId) &&
+      (selected.repositoryId ?? 0) > 0
+        ? selected.repositoryId
+        : null;
+    if (
+      operation === "move-source" &&
+      (!selected.repository || !repositoryId)
+    ) {
       return null;
     }
     const envelope = {
@@ -389,7 +440,7 @@ export function ProjectOwnerBuilder({
       request_kind: "project-owner",
       operation,
       project_id: selected.id,
-      repository_id: selected.repositoryId,
+      repository_id: repositoryId,
       source_fingerprint: selected.sourceFingerprint,
       explanation: explanation.trim() || null,
     };
@@ -408,11 +459,11 @@ export function ProjectOwnerBuilder({
         ...envelope,
         original: {
           repository: selected.repository,
-          repository_id: selected.repositoryId,
+          repository_id: repositoryId,
         },
         proposed: {
           repository: proposedRepository ?? "",
-          repository_id: selected.repositoryId,
+          repository_id: repositoryId,
         },
       };
     }
@@ -431,13 +482,12 @@ export function ProjectOwnerBuilder({
   function validate() {
     const nextErrors: string[] = [];
     if (!selected) nextErrors.push("Select a listed project.");
-    if (selected && !selected.eligibleShape) {
+    if (!operation) nextErrors.push("Choose an owner request type.");
+    if (operation === "move-source" && selected && !selected.eligibleShape) {
       nextErrors.push(
-        selected.ineligibilityReason ??
-          "This listing is not eligible for owner self-service.",
+        "Repository location updates require a public GitHub record with an immutable repository ID.",
       );
     }
-    if (!operation) nextErrors.push("Choose an owner request type.");
     if (
       operation === "move-source" &&
       !parsePublicGitHubRepository(proposedRepositoryUrl)
@@ -473,7 +523,10 @@ export function ProjectOwnerBuilder({
         prefills: [
           ["request-type", operationLabels[operation]],
           ["project-id", selected.id],
-          ["repository", repositoryUrl(selected.repository)],
+          [
+            "repository",
+            selected.sourceUrl ?? repositoryUrl(selected.repository),
+          ],
           ["proposed-name", proposed?.name ?? ""],
           ["proposed-summary", proposed?.summary ?? ""],
           ["supported-frontends", proposed?.frontends.join("\n") ?? ""],
@@ -517,16 +570,19 @@ export function ProjectOwnerBuilder({
           rows={[
             {
               label: "Project",
-              value: `${selected.name} — ${repositoryUrl(selected.repository)}`,
+              value: `${selected.name} — ${selected.sourceUrl ?? selected.id}`,
             },
             { label: "Request type", value: operationLabels[operation] },
             {
               label: "Verification",
               value:
-                "GitHub will verify the issue author against the current personal owner.",
+                "GitHub will verify either current personal-owner authority or reviewed Tavernary staff authority.",
             },
             ...operationReviewRows(reviewManifest, selected),
-            { label: "Policy effect", value: policyStatement(operation) },
+            {
+              label: "Policy effect",
+              value: policyStatement(reviewManifest, selected),
+            },
             { label: "Explanation", value: explanation.trim() },
           ]}
           onBack={() => setReviewing(false)}
@@ -552,9 +608,10 @@ export function ProjectOwnerBuilder({
     >
       <HelpErrorSummary errors={errors} />
       <p className="help-hint">
-        Owner self-service is available only for public GitHub records with an
-        immutable repository ID. Eligibility here is informational; GitHub
-        verifies the current personal owner after submission.
+        Personal-owner self-service requires a public GitHub record with an
+        immutable repository ID. Reviewed Tavernary owners, admins, and
+        maintainers may use this form for any catalog record. GitHub verifies
+        authority after submission.
       </p>
       <HelpTextField
         id="owner-project-search"
@@ -579,13 +636,16 @@ export function ProjectOwnerBuilder({
       </HelpSelectField>
       {selected && !selected.eligibleShape ? (
         <div className="help-security-callout">
-          <p>{selected.ineligibilityReason}</p>
+          <p>
+            {selected.ineligibilityReason} Trusted Tavernary staff may continue
+            below.
+          </p>
           <Link href={`/help/report-project/?project=${selected.id}`}>
             Report this listing instead
           </Link>
         </div>
       ) : null}
-      {selected?.eligibleShape ? (
+      {selected ? (
         <>
           <HelpChoiceGroup
             legend="What would you like to do?"
@@ -593,21 +653,25 @@ export function ProjectOwnerBuilder({
               (error) => error === "Choose an owner request type.",
             )}
           >
-            {(Object.keys(operationLabels) as OwnerOperation[]).map((value) => (
-              <label className="help-choice" key={value}>
-                <input
-                  type="radio"
-                  name="owner-operation"
-                  value={value}
-                  checked={operation === value}
-                  onChange={() => {
-                    setOperation(value);
-                    setErrors([]);
-                  }}
-                />
-                <span>{operationLabels[value]}</span>
-              </label>
-            ))}
+            {(Object.keys(operationLabels) as OwnerOperation[])
+              .filter(
+                (value) => value !== "move-source" || selected.eligibleShape,
+              )
+              .map((value) => (
+                <label className="help-choice" key={value}>
+                  <input
+                    type="radio"
+                    name="owner-operation"
+                    value={value}
+                    checked={operation === value}
+                    onChange={() => {
+                      setOperation(value);
+                      setErrors([]);
+                    }}
+                  />
+                  <span>{operationLabels[value]}</span>
+                </label>
+              ))}
           </HelpChoiceGroup>
           {operation === "edit-card" ? (
             <>
@@ -639,18 +703,45 @@ export function ProjectOwnerBuilder({
                 values={frontends}
                 onChange={setFrontends}
               />
-              <HelpSelectField
-                id="owner-primary-function"
-                label="Primary function"
-                value={primaryFunction}
-                onChange={(event) => setPrimaryFunction(event.target.value)}
-              >
-                {vocabularies.primaryFunctions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.label}
-                  </option>
-                ))}
-              </HelpSelectField>
+              {selected.kind === "extension" ? (
+                <HelpSelectField
+                  id="owner-primary-function"
+                  label="Primary function"
+                  value={primaryFunction}
+                  onChange={(event) => setPrimaryFunction(event.target.value)}
+                  hint={
+                    <ul className="help-option-definitions">
+                      {vocabularies.primaryFunctions
+                        .filter((option) =>
+                          EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
+                        )
+                        .map((option) => (
+                          <li key={option.id}>
+                            <strong>{option.label}:</strong>{" "}
+                            {option.description}
+                          </li>
+                        ))}
+                    </ul>
+                  }
+                >
+                  {vocabularies.primaryFunctions
+                    .filter((option) =>
+                      EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
+                    )
+                    .map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                </HelpSelectField>
+              ) : (
+                <HelpTextField
+                  id="owner-primary-function"
+                  label="Primary function"
+                  value={STRUCTURAL_PRIMARY_FUNCTIONS[selected.kind]}
+                  readOnly
+                />
+              )}
               <OptionCheckboxes
                 legend="Capabilities"
                 options={vocabularies.capabilities}

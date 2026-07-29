@@ -5,8 +5,9 @@ export interface OwnerGenerationReport {
   issue_number: number;
   project_id: string;
   operation: "edit-card" | "move-source" | "delist";
-  repository_id: number;
-  verified_owner_login: string;
+  repository_id: number | null;
+  authority_type: "repository-owner" | "tavernary-staff";
+  actor_login: string;
   request_fingerprint: string;
   generated_at: string;
   before: Record<string, unknown>;
@@ -19,7 +20,8 @@ export interface OwnerGenerationResult {
   issueNumber: number;
   projectId: string;
   operation: OwnerGenerationReport["operation"];
-  verifiedOwnerLogin: string;
+  authorityType: OwnerGenerationReport["authority_type"];
+  actorLogin: string;
   generatedPaths: string[];
   reportPath: string;
   report: OwnerGenerationReport;

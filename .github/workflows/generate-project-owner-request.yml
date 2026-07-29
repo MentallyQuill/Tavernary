@@ -200,6 +200,7 @@ jobs:
           npm run catalog:validate
           npm run catalog:build
           npm test -- \
+            tests/unit/trusted-editor-authority.test.ts \
             tests/unit/project-owner-authority.test.ts \
             tests/unit/apply-project-owner-request.test.ts \
             tests/unit/triage-project-owner-request.test.ts \
@@ -361,7 +362,8 @@ jobs:
             projectId: report.project_id,
             operation: report.operation,
             repositoryId: report.repository_id,
-            verifiedOwnerLogin: report.verified_owner_login,
+            authorityType: report.authority_type,
+            actorLogin: report.actor_login,
             repository: process.env.GITHUB_REPOSITORY,
             remoteHeadSha: process.env.REMOTE_SHA || null,
             markerHeadSha: process.env.MARKER_SHA || null,
@@ -440,7 +442,8 @@ jobs:
               project_id: report.project_id,
               operation: report.operation,
               repository_id: report.repository_id,
-              verified_owner_login: report.verified_owner_login,
+              authority_type: report.authority_type,
+              actor_login: report.actor_login,
               generated_head_sha: process.env.HEAD_SHA,
               generated_paths: report.generated_paths,
             },

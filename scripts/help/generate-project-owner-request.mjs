@@ -213,14 +213,18 @@ export async function generateProjectOwnerRequest(input) {
     loadVocabularies(root, readFile),
   ]);
   const finalRecord = finalRecordSource.value;
-  const finalRepository = await input.request(
-    `/repositories/${finalRecord?.source?.repository_id}`,
-  );
+  const finalRepository =
+    initial.operation === "move-source" ||
+    initial.authorityType === "repository-owner"
+      ? await input.request(
+          `/repositories/${finalRecord?.source?.repository_id}`,
+        )
+      : null;
   const final = admitted(
     await processProjectOwnerTriage({
       issue: finalIssue,
       record: finalRecord,
-      repository: finalRepository,
+      ...(finalRepository ? { repository: finalRepository } : {}),
       hostRepository: input.hostRepository,
       request: input.request,
       vocabularies: finalVocabularies,
@@ -252,8 +256,9 @@ export async function generateProjectOwnerRequest(input) {
     issue_number: final.issueNumber,
     project_id: final.projectId,
     operation: final.operation,
-    repository_id: final.record.source.repository_id,
-    verified_owner_login: final.verifiedOwnerLogin,
+    repository_id: final.manifest.repository_id,
+    authority_type: final.authorityType,
+    actor_login: final.actorLogin,
     request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
     generated_at: generatedAt(input.now),
     before: mutation.before,
@@ -292,7 +297,8 @@ export async function generateProjectOwnerRequest(input) {
     issueNumber: final.issueNumber,
     projectId: final.projectId,
     operation: final.operation,
-    verifiedOwnerLogin: final.verifiedOwnerLogin,
+    authorityType: final.authorityType,
+    actorLogin: final.actorLogin,
     generatedPaths: [...mutation.changedPaths],
     reportPath,
     report,

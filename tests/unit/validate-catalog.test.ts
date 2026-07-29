@@ -139,6 +139,60 @@ describe("catalog validation", () => {
     expect(result.errors).toEqual([]);
   });
 
+  test.each([
+    [
+      "duplicate IDs",
+      {
+        schema_version: 1,
+        editors: [
+          { github_user_id: 42, login: "EditorOne", role: "owner" },
+          { github_user_id: 42, login: "EditorTwo", role: "maintainer" },
+        ],
+      },
+      "GitHub user IDs must be unique",
+    ],
+    [
+      "duplicate logins",
+      {
+        schema_version: 1,
+        editors: [
+          { github_user_id: 42, login: "EditorOne", role: "owner" },
+          { github_user_id: 43, login: "editorone", role: "admin" },
+        ],
+      },
+      "logins must be unique case-insensitively",
+    ],
+    [
+      "invalid ID",
+      {
+        schema_version: 1,
+        editors: [{ github_user_id: 0, login: "EditorOne", role: "owner" }],
+      },
+      "GitHub user ID must be a positive integer",
+    ],
+    [
+      "invalid role",
+      {
+        schema_version: 1,
+        editors: [
+          { github_user_id: 42, login: "EditorOne", role: "contributor" },
+        ],
+      },
+      "role is invalid",
+    ],
+  ])(
+    "rejects a trusted-editor registry with %s",
+    async (_label, registry, message) => {
+      const result = await validateCatalog({
+        records: [validRecord],
+        snapshots: [],
+        trustedEditors: registry,
+      });
+
+      expect(result.errors.join("\n")).toContain(message);
+    },
+  );
+
   test("rejects mismatched and duplicate provider snapshots", async () => {
     const codebergRecord = {
       ...validRecord,

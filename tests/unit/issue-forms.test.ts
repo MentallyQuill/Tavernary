@@ -107,7 +107,7 @@ test("owner requests have an accessible readable fallback in exact review order"
     fields
       .filter((field) => field.validations?.required)
       .map((field) => field.id),
-  ).toEqual(["request-type", "project-id", "repository"]);
+  ).toEqual(["request-type", "project-id"]);
   expect(fields.at(-1)).toMatchObject({
     id: "owner-request-manifest",
     type: "textarea",

@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv from "ajv";
 
 import { validateKitData } from "../kits/validation.mjs";
+import { validateTrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 import { supportsAutomaticEnrichmentSource } from "./enrichment-policy.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -182,6 +183,7 @@ export async function validateCatalog(options = {}) {
     capabilityVocabulary,
     modelFamilyVocabulary,
     completionFormatVocabulary,
+    trustedEditorSchema,
   ] = await Promise.all([
     readJson("data/schemas/project.schema.json"),
     readJson("data/schemas/repository-snapshot.schema.json"),
@@ -191,6 +193,7 @@ export async function validateCatalog(options = {}) {
     readJson("data/vocabularies/capabilities.json"),
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
+    readJson("data/schemas/trusted-tavernary-editors.schema.json"),
   ]);
 
   const ajv = new Ajv({ allErrors: true, strict: false });
@@ -213,6 +216,7 @@ export async function validateCatalog(options = {}) {
   const validateRecord = ajv.compile(schema);
   const validateSnapshot = ajv.compile(snapshotSchema);
   const validateRefreshManifest = ajv.compile(refreshManifestSchema);
+  const validateTrustedEditors = ajv.compile(trustedEditorSchema);
   const records = options.records ?? (await loadRecords());
   const snapshots =
     options.snapshots ?? (options.records ? [] : await loadSnapshots());
@@ -231,6 +235,9 @@ export async function validateCatalog(options = {}) {
     (options.records
       ? { schema_version: 1, blocked: [] }
       : await readJson("data/moderation/blocked-github-users.json"));
+  const trustedEditors =
+    options.trustedEditors ??
+    (await readJson("data/maintenance/trusted-tavernary-editors.json"));
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
@@ -248,6 +255,21 @@ export async function validateCatalog(options = {}) {
     errors.push(
       ...validateRefreshManifest.errors.map((error) =>
         schemaError({ id: "github-refresh" }, error),
+      ),
+    );
+  }
+  if (!validateTrustedEditors(trustedEditors)) {
+    errors.push(
+      ...validateTrustedEditors.errors.map((error) =>
+        schemaError({ id: "trusted-tavernary-editors" }, error),
+      ),
+    );
+  }
+  const trustedEditorValidation = validateTrustedEditorRegistry(trustedEditors);
+  if (!trustedEditorValidation.valid) {
+    errors.push(
+      ...trustedEditorValidation.errors.map(
+        (error) => `trusted-tavernary-editors: ${error}`,
       ),
     );
   }

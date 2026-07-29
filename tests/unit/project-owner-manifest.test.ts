@@ -4,7 +4,12 @@ import { normalizeProjectOwnerManifest } from "@/features/help/project-owner-man
 
 const vocabularies = {
   frontends: ["sillytavern", "risuai"],
-  primaryFunctions: ["interface-workflow", "generation-reasoning"],
+  primaryFunctions: [
+    "frontend",
+    "preset",
+    "interface-workflow",
+    "generation-reasoning",
+  ],
   capabilities: ["automation", "prompt-engineering"],
   modelFamilies: ["claude", "gemini"],
   completionFormats: ["chat-completion", "text-completion"],
@@ -160,11 +165,13 @@ describe("owner card edits", () => {
     const presetOriginal = {
       ...originalEdit,
       kind: "preset",
+      primary_function: "preset",
       model_families: ["claude"],
       completion_formats: ["chat-completion"],
     };
     const preset = {
       ...editFixture().proposed,
+      primary_function: "preset",
       model_families: ["gemini"],
       completion_formats: ["text-completion"],
     };
@@ -196,6 +203,42 @@ describe("owner card edits", () => {
     });
   });
 
+  test("enforces structural primary functions for Frontends and Presets", () => {
+    for (const [kind, requiredPrimaryFunction] of [
+      ["frontend", "frontend"],
+      ["preset", "preset"],
+    ] as const) {
+      const original = {
+        ...originalEdit,
+        kind,
+        primary_function: requiredPrimaryFunction,
+        ...(kind === "preset"
+          ? {
+              model_families: ["claude"],
+              completion_formats: ["chat-completion"],
+            }
+          : {}),
+      };
+      const proposed = {
+        ...editFixture().proposed,
+        primary_function: "generation-reasoning",
+        ...(kind === "preset"
+          ? {
+              model_families: ["claude"],
+              completion_formats: ["chat-completion"],
+            }
+          : {}),
+      };
+
+      expect(
+        normalizeProjectOwnerManifest(
+          envelope("edit-card", original, proposed),
+          vocabularies,
+        ),
+      ).toMatchObject({ valid: false });
+    }
+  });
+
   test("rejects unchanged card edits", () => {
     expect(
       normalizeProjectOwnerManifest(
@@ -220,6 +263,46 @@ describe("owner card edits", () => {
 });
 
 describe("owner source moves and delisting", () => {
+  test("allows null repository identity for card edits and delisting only", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        { ...editFixture(), repository_id: null },
+        vocabularies,
+      ),
+    ).toMatchObject({ valid: true });
+    expect(
+      normalizeProjectOwnerManifest(
+        {
+          ...envelope(
+            "delist",
+            { visibility: "published" },
+            {
+              visibility: "disabled",
+              visibility_reason: "removed",
+              refresh_policy: "paused",
+              enrichment_policy: "manual",
+            },
+          ),
+          repository_id: null,
+        },
+        vocabularies,
+      ),
+    ).toMatchObject({ valid: true });
+    expect(
+      normalizeProjectOwnerManifest(
+        {
+          ...envelope(
+            "move-source",
+            { repository: "Owner/Alpha", repository_id: 42 },
+            { repository: "Owner/Alpha-Renamed", repository_id: 42 },
+          ),
+          repository_id: null,
+        },
+        vocabularies,
+      ),
+    ).toMatchObject({ valid: false });
+  });
+
   test("accepts a renamed repository only when immutable IDs stay equal", () => {
     expect(
       normalizeProjectOwnerManifest(
@@ -307,7 +390,7 @@ test("rejects malformed envelopes and unknown fields", () => {
     valid: false,
     errors: expect.arrayContaining([
       "Owner request contains unknown properties.",
-      "Owner request repository ID must be a positive integer.",
+      "Owner request repository ID must be a positive integer or null.",
     ]),
   });
 });

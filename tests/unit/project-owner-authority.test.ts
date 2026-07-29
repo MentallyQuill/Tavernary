@@ -49,6 +49,8 @@ describe("exact project-owner authority", () => {
   test("admits the current personal owner case-insensitively", () => {
     expect(verifyProjectOwnerAuthority(authorityFixture())).toEqual({
       authorized: true,
+      authorityType: "repository-owner",
+      actorLogin: "owner",
       ownerLogin: "Owner",
     });
   });

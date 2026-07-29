@@ -4,11 +4,19 @@ export type ProjectRegistryRecord = {
   id: string;
   kind: "frontend" | "extension" | "preset";
   metadata_status: "provisional" | "curated";
-  source: {
-    type: "github";
-    repository: string;
-    repository_id: number;
-  };
+  source:
+    | {
+        type: "github";
+        repository: string;
+        repository_id: number | null;
+      }
+    | {
+        type: "codeberg";
+        repository: string;
+        repository_id: number;
+      }
+    | { type: "github-organization"; [key: string]: unknown }
+    | { type: "url"; [key: string]: unknown };
   [key: string]: unknown;
 };
 
