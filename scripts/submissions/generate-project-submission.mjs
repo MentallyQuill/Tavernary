@@ -19,6 +19,7 @@ import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
 import { classifySubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
+import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import {
   inspectProjectSubmissionSource,
   loadProjectSubmissionCatalogData,
@@ -74,9 +75,53 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       inferred: draft.inferred,
       summary_authority: draft.summaryAuthority ?? null,
       copy_result: draft.copyResult ?? null,
+      input_digest: draft.inputDigest ?? null,
+      source_identity: draft.sourceIdentity ?? null,
+      actor:
+        Number.isSafeInteger(draft.summaryAuthority?.actorId) &&
+        draft.summaryAuthority.actorId > 0 &&
+        typeof draft.summaryAuthority?.actorLogin === "string"
+          ? {
+              id: draft.summaryAuthority.actorId,
+              login: draft.summaryAuthority.actorLogin,
+              type: "User",
+            }
+          : null,
       classificationReview: draft.classificationReview ?? null,
       warnings: draft.warnings,
     },
+  };
+}
+
+function publicationSourceIdentity(identity) {
+  if (isRepositoryIdentity(identity)) {
+    return {
+      type: identity.provider,
+      canonical: identity.repositoryId
+        ? `${identity.provider}:${identity.repositoryId}`
+        : `${identity.provider}:${identity.repository.toLocaleLowerCase()}`,
+      repository_id: identity.repositoryId ?? null,
+    };
+  }
+  if (identity.kind === "reddit") {
+    return {
+      type: "reddit",
+      canonical: `reddit:${identity.postId.toLocaleLowerCase()}`,
+      repository_id: null,
+    };
+  }
+  return {
+    type: "external",
+    canonical: identity.canonicalUrl,
+    repository_id: null,
+  };
+}
+
+function withPublicationMetadata(draft, decision) {
+  return {
+    ...draft,
+    inputDigest: fingerprintProjectPublicationInput(decision.manifest),
+    sourceIdentity: publicationSourceIdentity(decision.identity),
   };
 }
 
@@ -300,7 +345,7 @@ export async function prepareProjectSubmissionDraft({
       now,
     });
     assertProjectIdAvailable(draft.record, data.projects);
-    return draft;
+    return withPublicationMetadata(draft, decision);
   }
 
   const provider = repositoryProvider(
@@ -442,8 +487,9 @@ export async function prepareProjectSubmissionDraft({
     };
   }
 
-  return draftProjectRecord({
-    admitted: decision,
+  return withPublicationMetadata(
+    await draftProjectRecord({
+      admitted: decision,
     observation,
     snapshot,
     enrichment,
@@ -452,8 +498,10 @@ export async function prepareProjectSubmissionDraft({
     summaryAuthority,
     sourceIssueNumber: issue.number,
     copyRequired: true,
-    now,
-  });
+      now,
+    }),
+    decision,
+  );
 }
 
 function inside(root, destination) {

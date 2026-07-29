@@ -1,4 +1,9 @@
 import { primaryFunctionLabel } from "./classification-review-notice.mjs";
+import {
+  createProjectPublicationTransaction,
+  parseProjectPublicationTransaction,
+  PROJECT_PUBLICATION_TRANSACTION_MARKER,
+} from "../publication/project-publication-transaction.mjs";
 
 const markerStart = "<!-- tavernary-project-submission-pr";
 
@@ -82,6 +87,15 @@ export function submissionBranch(issueNumber) {
 }
 
 export function renderSubmissionPullRequest(input) {
+  const transaction = createProjectPublicationTransaction(input.marker);
+  if (
+    transaction.producer !== "project-submission" ||
+    transaction.operation !== "create" ||
+    transaction.issue_number !== input.issueNumber ||
+    transaction.project_id !== input.report.project_id
+  ) {
+    throw new Error("Submission pull request transaction is inconsistent.");
+  }
   const classificationReview = mismatchReview(input.report);
   const warningLines =
     input.report.warnings.length > 0
@@ -90,8 +104,8 @@ export function renderSubmissionPullRequest(input) {
           .join("\n")
       : "- None.";
   return [
-    `${markerStart}`,
-    JSON.stringify(input.marker),
+    PROJECT_PUBLICATION_TRANSACTION_MARKER,
+    JSON.stringify(transaction),
     "-->",
     `# Project submission: ${safeText(input.projectName)}`,
     "",
@@ -132,6 +146,13 @@ export function renderSubmissionPullRequest(input) {
 }
 
 export function parseSubmissionPullRequestMarker(body) {
+  const transaction = parseProjectPublicationTransaction(body);
+  if (transaction) {
+    return transaction.producer === "project-submission" &&
+      transaction.operation === "create"
+      ? transaction
+      : null;
+  }
   const start = body.indexOf(markerStart);
   if (start < 0) return null;
   const jsonStart = body.indexOf("\n", start);

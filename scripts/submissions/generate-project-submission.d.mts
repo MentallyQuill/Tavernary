@@ -19,6 +19,13 @@ export interface GeneratedSubmissionReport {
     change_reasons: import("../catalog/catalog-copy-contract.mjs").CatalogCopyChangeReason[];
     policy_signal: import("../catalog/catalog-copy-contract.mjs").CatalogCopyPolicySignal;
   } | null;
+  input_digest: string | null;
+  source_identity: {
+    type: "github" | "codeberg" | "reddit" | "external";
+    canonical: string;
+    repository_id: number | null;
+  } | null;
+  actor: { id: number; login: string; type: "User" } | null;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -39,6 +46,8 @@ export interface GeneratedSubmissionDraft {
   inferred: Record<string, unknown>;
   summaryAuthority?: import("./submission-summary-authority.mjs").SubmissionSummaryAuthority;
   copyResult?: GeneratedSubmissionReport["copy_result"];
+  inputDigest?: string;
+  sourceIdentity?: NonNullable<GeneratedSubmissionReport["source_identity"]>;
   classificationReview?: GeneratedClassificationReview | null;
   warnings: string[];
 }

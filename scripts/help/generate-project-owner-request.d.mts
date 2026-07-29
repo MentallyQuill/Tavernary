@@ -13,8 +13,17 @@ export interface OwnerGenerationReport {
   operation: "edit-card" | "move-source" | "delist";
   repository_id: number | null;
   authority_type: "repository-owner" | "tavernary-staff";
+  actor_id: number;
   actor_login: string;
+  actor_type: "User";
   request_fingerprint: string;
+  record_fingerprint: string;
+  source_identity: {
+    type: "github";
+    canonical: string;
+    repository_id: number;
+  } | null;
+  policy_version: string;
   generated_at: string;
   submitted_summary?: string;
   published_summary?: string;

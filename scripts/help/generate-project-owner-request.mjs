@@ -376,8 +376,22 @@ export async function generateProjectOwnerRequest(input) {
     operation: final.operation,
     repository_id: final.manifest.repository_id,
     authority_type: final.authorityType,
+    actor_id: finalIssue.user?.id,
     actor_login: final.actorLogin,
+    actor_type: "User",
     request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
+    record_fingerprint: final.manifest.source_fingerprint,
+    source_identity:
+      final.record?.source?.type === "github" &&
+      Number.isSafeInteger(final.record.source.repository_id) &&
+      final.record.source.repository_id > 0
+        ? {
+            type: "github",
+            canonical: `github:${final.record.source.repository_id}`,
+            repository_id: final.record.source.repository_id,
+          }
+        : null,
+    policy_version: CATALOG_POLICY_VERSION,
     generated_at: generatedAt(input.now),
     ...(copy
       ? {

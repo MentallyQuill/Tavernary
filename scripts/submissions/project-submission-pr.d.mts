@@ -1,4 +1,5 @@
 import type { GeneratedSubmissionReport } from "./generate-project-submission.mjs";
+import type { ProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
 
 export interface GeneratedPrMarker {
   schema_version: 1;
@@ -26,12 +27,12 @@ export function renderSubmissionPullRequest(input: {
   issueNumber: number;
   projectName: string;
   report: GeneratedSubmissionReport;
-  marker: GeneratedPrMarker;
+  marker: ProjectPublicationTransaction;
 }): string;
 
 export function parseSubmissionPullRequestMarker(
   body: string,
-): GeneratedPrMarker | null;
+): GeneratedPrMarker | ProjectPublicationTransaction | null;
 
 export function findSubmissionPathCollision(input: {
   repository: string;

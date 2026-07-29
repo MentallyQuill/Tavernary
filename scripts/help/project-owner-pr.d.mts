@@ -54,11 +54,11 @@ export function renderOwnerRequestPullRequest(input: {
     warnings: string[];
     generated_paths: string[];
   };
-  marker: OwnerPrMarker;
+  marker: ProjectPublicationTransaction;
 }): string;
 export function parseOwnerRequestPullRequestMarker(
   body: string,
-): OwnerPrMarker | null;
+): OwnerPrMarker | ProjectPublicationTransaction | null;
 export function findOwnerRequestPathCollision(input: {
   repository: string;
   issueNumber: number;
@@ -81,7 +81,10 @@ export function planOwnerPrUpdate(input: {
   remoteHeadSha: string | null;
   markerHeadSha?: string | null;
   existingMarker:
-    | { kind: "project-owner"; marker: OwnerPrMarker }
+    | {
+        kind: "project-owner";
+        marker: OwnerPrMarker | ProjectPublicationTransaction;
+      }
     | { kind: "project-submission"; marker: Record<string, unknown> }
     | null;
   generatedContentChanged: boolean;
@@ -89,3 +92,4 @@ export function planOwnerPrUpdate(input: {
   generatedPaths: string[];
   pulls?: any[];
 }): OwnerPrUpdatePlan;
+import type { ProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";
