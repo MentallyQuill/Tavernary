@@ -22,10 +22,20 @@ test("exports and renders the project submission builder", async ({ page }) => {
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
   await expect(eligibility).toBeVisible();
-  await expect(page.getByLabel("Primary function")).toBeVisible();
+  const primaryFunction = page.getByLabel("Primary function");
+  await expect(primaryFunction).toBeVisible();
   await expect(
-    page.getByLabel("Primary function").getByRole("option"),
-  ).toHaveCount(7);
+    page.getByText(
+      "Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity.",
+    ),
+  ).toHaveCount(0);
+
+  await primaryFunction.click();
+
+  const primaryFunctionListbox = page.getByRole("listbox", {
+    name: "Primary function",
+  });
+  await expect(primaryFunctionListbox.getByRole("option")).toHaveCount(6);
   await expect(
     page.getByText(
       "Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity.",
@@ -36,6 +46,33 @@ test("exports and renders the project submission builder", async ({ page }) => {
     .getByLabel("Project Type")
     .selectOption({ label: "System Preset" });
   await expect(page.getByLabel("Primary function")).toHaveCount(0);
+});
+
+test("keeps described primary options separate at mobile width", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(sitePath("/submit/project/"));
+  await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page.getByLabel("Primary function").click();
+
+  const listbox = page.getByRole("listbox", { name: "Primary function" });
+  const optionLayout = await listbox
+    .getByRole("option")
+    .evaluateAll((elements) =>
+      elements.map((element) => ({
+        clientHeight: element.clientHeight,
+        scrollHeight: element.scrollHeight,
+      })),
+    );
+
+  expect(optionLayout).toHaveLength(6);
+  for (const option of optionLayout) {
+    expect(option.clientHeight).toBeGreaterThanOrEqual(option.scrollHeight);
+  }
+  expect(
+    await listbox.evaluate((element) => element.scrollHeight),
+  ).toBeGreaterThan(await listbox.evaluate((element) => element.clientHeight));
 });
 
 test("keeps description prose while removing emoji and linking the policy", async ({
@@ -181,7 +218,8 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   });
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
-  await page.getByLabel("Primary function").selectOption("interface-workflow");
+  await page.getByLabel("Primary function").click();
+  await page.getByRole("option", { name: /Interface and workflow/u }).click();
   await page
     .getByLabel("Project URL")
     .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");

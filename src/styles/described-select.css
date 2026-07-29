@@ -68,6 +68,8 @@
   display: grid;
   width: 100%;
   max-height: min(420px, 60vh);
+  grid-auto-rows: max-content;
+  align-content: start;
   overflow-y: auto;
   border: 1px solid var(--color-control-border);
   border-radius: 7px;
