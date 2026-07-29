@@ -25,7 +25,7 @@ export interface GeneratedSubmissionReport {
     canonical: string;
     repository_id: number | null;
   } | null;
-  actor: { id: number; login: string; type: "User" } | null;
+  actor: { id: number; login: string; type: "User" | "Bot" } | null;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -67,7 +67,11 @@ export interface GenerationIssue {
   number: number;
   state: string;
   body?: string | null;
-  user?: { id?: number | null; login?: string | null } | null;
+  user?: {
+    id?: number | null;
+    login?: string | null;
+    type?: string | null;
+  } | null;
   author_association?: string | null;
   labels: Array<string | { name: string }>;
 }

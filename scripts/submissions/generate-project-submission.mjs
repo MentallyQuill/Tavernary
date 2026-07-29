@@ -84,7 +84,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
           ? {
               id: draft.summaryAuthority.actorId,
               login: draft.summaryAuthority.actorLogin,
-              type: "User",
+              type: draft.summaryAuthority.actorType === "Bot" ? "Bot" : "User",
             }
           : null,
       classificationReview: draft.classificationReview ?? null,

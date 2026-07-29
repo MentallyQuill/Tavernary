@@ -170,6 +170,32 @@ test("returns only deterministic canonical submission files and its report", asy
   expect(JSON.stringify(generated)).not.toContain("raw_provider_output");
 });
 
+test("preserves a generated GitHub bot actor in the audit report", async () => {
+  const generated = await generateProjectSubmission({
+    issueNumber: 152,
+    draft: {
+      record,
+      snapshot,
+      submitted: {},
+      observed: {},
+      inferred: {},
+      summaryAuthority: {
+        authorityType: "community-submitter",
+        actorId: 41_898_282,
+        actorLogin: "github-actions[bot]",
+        actorType: "Bot",
+      },
+      warnings: [],
+    },
+  });
+
+  expect(generated.report.actor).toEqual({
+    id: 41_898_282,
+    login: "github-actions[bot]",
+    type: "Bot",
+  });
+});
+
 test("includes a sorted vocabulary update only for a frontend proposal", async () => {
   const generated = await generateProjectSubmission({
     issueNumber: 124,

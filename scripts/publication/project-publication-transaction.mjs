@@ -1,5 +1,6 @@
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const LOGIN_PATTERN = /^(?!-)[A-Za-z0-9-]{1,39}(?<!-)$/u;
+const BOT_LOGIN_PATTERN = /^[A-Za-z0-9-]{1,100}\[bot\]$/u;
 const SHA1_PATTERN = /^[a-f0-9]{40}$/u;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 const POLICY_VERSION_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/u;
@@ -100,8 +101,8 @@ function validActor(actor) {
     Number.isSafeInteger(actor.id) &&
     actor.id > 0 &&
     typeof actor.login === "string" &&
-    LOGIN_PATTERN.test(actor.login) &&
-    actor.type === "User"
+    ((actor.type === "User" && LOGIN_PATTERN.test(actor.login)) ||
+      (actor.type === "Bot" && BOT_LOGIN_PATTERN.test(actor.login)))
   );
 }
 

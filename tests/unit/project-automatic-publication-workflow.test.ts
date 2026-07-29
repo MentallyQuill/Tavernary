@@ -99,6 +99,9 @@ test("explicitly hands successful generated CI to the publisher", async () => {
   expect(publisherSource).toContain(
     '/^[0-9a-f]{40}$/u.test(validation.head_sha ?? "")',
   );
+  expect(publisherSource).toContain(
+    "issue.user?.type === transaction.actor.type",
+  );
 });
 
 test.each(["project-submission-lifecycle", "project-owner-request-lifecycle"])(

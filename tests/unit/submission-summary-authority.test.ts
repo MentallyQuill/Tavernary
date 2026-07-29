@@ -152,3 +152,24 @@ test("staff authority wins before a matching repository-owner route", () => {
     }),
   ).toMatchObject({ authorityType: "tavernary-staff" });
 });
+
+test("retains an immutable GitHub bot actor for generated submissions", () => {
+  expect(
+    classifySubmissionSummaryAuthority({
+      issueActor: {
+        id: 41_898_282,
+        login: "github-actions[bot]",
+        type: "Bot",
+      },
+      authorAssociation: "CONTRIBUTOR",
+      sourceIdentity: githubSource,
+      repositoryOwner: { id: 11, login: "ProjectOwner", type: "User" },
+      trustedEditorRegistry,
+    }),
+  ).toEqual({
+    authorityType: "community-submitter",
+    actorId: 41_898_282,
+    actorLogin: "github-actions[bot]",
+    actorType: "Bot",
+  });
+});

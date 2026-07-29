@@ -178,6 +178,7 @@ jobs:
           const changedPaths = filePages.flat().map(({ filename }) => filename);
           const actorMatches =
             issue.user?.id === transaction.actor.id &&
+            issue.user?.type === transaction.actor.type &&
             issue.user?.login?.toLocaleLowerCase() ===
               transaction.actor.login.toLocaleLowerCase();
           const staff = verifyTrustedEditor({
