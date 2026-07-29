@@ -92,8 +92,9 @@ rerun triage.
 
 Repository Actions settings must permit **Allow GitHub Actions to create and
 approve pull requests** so the workflow token can create the review PR.
-Automation creates but never approves its own PR; branch protection and the
-normal maintainer review still apply.
+Project transaction PRs are merged by `publish-project-transaction.yml` only
+when `PROJECT_AUTO_PUBLICATION_ENABLED` equals `true` and every authoritative
+check matches the exact validated head SHA.
 
 1. The static Tavernary builder or `01-project-submission.yml` creates an issue
    carrying `project-submission`.
@@ -107,10 +108,11 @@ normal maintainer review still apply.
    `automation/project-submission-<issue-number>`, writes only declared registry,
    snapshot, and optional frontend-vocabulary files, validates/builds them, and
    opens one PR marked with `Closes #<issue-number>`.
-5. The issue changes to `submission-pr-open`. Treat that PR as the sole
-   maintainer review surface. Correct proposed generated files directly on the
-   branch; do not separately approve the issue.
-6. Merge publishes through the normal `main` build and closes the linked issue.
+5. The issue changes to `submission-pr-open`. The PR is the isolated CI,
+   audit, and rollback transaction.
+6. Successful dispatched CI triggers the serialized publisher, which refreshes
+   current issue, authority, source, record, path, base, and head state before
+   an exact-SHA merge publishes through `main` and closes the linked issue.
    `project-submission-lifecycle.yml` removes transient review labels and deletes
    the generated branch only when its SHA still matches the closed PR.
 7. Close without merging only when declining the submission. Lifecycle
@@ -230,9 +232,9 @@ project-not-found, unsupported-source, and owner-request-invalid; keep the
 issue open with the recorded reason unless the workflow's terminal policy
 closes it.
 
-For an admitted owner request, inspect the generated
-automation/project-owner-request-<issue-number> PR. It is the sole review
-surface for card edits, same-repository source moves, and delists. Summary or
+For an admitted owner request, the generated
+automation/project-owner-request-<issue-number> PR is the validation and audit
+transaction for card edits, same-repository source moves, and delists. Summary or
 capability changes set `enrichment_policy: manual` so automatic editorial
 enrichment cannot replace approved content. A primary-function-only edit
 preserves the current enrichment policy. This does not pause source collection:
@@ -242,10 +244,47 @@ controls model-written summary and capabilities.
 If generation failed or a retryable dependency recovered, rerun the owner
 triage/generation workflow from main. Regeneration may update only marker-owned
 generated paths. If a maintainer changed the PR branch, preserve those changes
-and finish review manually rather than forcing a replacement. Merge applies the
-approved policy transition and publishes normally. Closing the generated PR
+and investigate before forcing a replacement. The automatic publisher applies
+the authorized policy transition. Closing the generated PR
 without merging declines the request; retain a delisted record as a tombstone
 with its reason so it cannot be silently recreated.
+
+## Automatic project publication operations
+
+`PROJECT_AUTO_PUBLICATION_ENABLED` is the single emergency merge switch. Set it
+to the exact string `true` to enable create, edit, source-move, and delist
+publication. Intake and generation continue while it is absent or false;
+queued transactions are reconstructed from current issues and current `main`
+when publication resumes.
+
+The repository ruleset must allow GitHub Actions to create and approve pull
+requests, permit the workflow token the declared contents/issues/pull-request/
+actions permissions, and require the stable `Site: Validate changes` check.
+The publisher accepts only a successful `workflow_dispatch` validation run for
+an in-repository generated branch. It compares the common transaction marker,
+current admitted issue, immutable actor and source authority, normalized input
+digest, record fingerprint, current base, exact path allowlist, and exact head
+SHA. A stale transaction regenerates; a temporary API or mergeability failure
+retries; a lost authority or invalid path is rejected.
+
+After GitHub confirms the merge, the publisher explicitly dispatches lifecycle,
+dependent recovery, `deploy-pages.yml` for the returned merge SHA, owner/copy
+notices, and the post-publication Catalog Policy advisory. Notification,
+advisory, and deployment failures never roll back canonical publication.
+Verified-owner delisting creates `owner-delist-notice`; staff acknowledge it
+only when follow-up is useful.
+
+The advisory workflow is post-publication and non-enforcing. It stores only
+sanitized state under `data/snapshots/policy-review/`, retries unavailable
+evidence/provider results, and creates a neutral maintenance issue for
+`review-suggested`. Consensual adult content, kink, fetish content, and ordinary
+profanity are not policy conflicts.
+
+Exceptional restoration of an owner-delisted repository is manual Tavernary
+staff maintenance. Verify the current repository identity and ownership,
+document the exception, restore the canonical visibility fields, validate the
+catalog, and publish through an ordinary staff-maintained change. Do not reopen
+self-service submission for that repository.
 
 ## Refresh automation
 

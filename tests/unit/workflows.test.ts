@@ -946,12 +946,9 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   });
   expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
   expect(generation.jobs.generate.env).toMatchObject({
-    TAVERNARY_ENRICHMENT_API_URL:
-      "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
-    TAVERNARY_ENRICHMENT_API_KEY:
-      "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
-    TAVERNARY_ENRICHMENT_MODEL:
-      "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
   });
   expect(source).toContain("npm ci");
   expect(source).toContain("generate-project-owner-request.mjs");

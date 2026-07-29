@@ -29,7 +29,9 @@ export function renderCatalogPolicyReviewIssue(input) {
   const marker = `<!-- tavernary-catalog-policy-review:${input.project.id} -->`;
   const reasons =
     input.copyReasons?.length > 0
-      ? input.copyReasons.slice(0, 8).map((reason) => `- \`${safe(reason, 80)}\``)
+      ? input.copyReasons
+          .slice(0, 8)
+          .map((reason) => `- \`${safe(reason, 80)}\``)
       : ["- None."];
   return {
     title: `[Catalog policy advisory] ${safe(input.project.name, 180)}`,

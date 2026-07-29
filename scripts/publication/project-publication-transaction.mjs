@@ -90,8 +90,7 @@ function validSourceIdentity(identity) {
   }
   return (
     identity.repository_id === null ||
-    (Number.isSafeInteger(identity.repository_id) &&
-      identity.repository_id > 0)
+    (Number.isSafeInteger(identity.repository_id) && identity.repository_id > 0)
   );
 }
 
@@ -149,7 +148,10 @@ function authorityValid(operation, authority) {
 
 function allowedPaths(transaction) {
   const registry = `data/registry/projects/${transaction.project_id}.json`;
-  if (transaction.operation === "edit-card" || transaction.operation === "delist") {
+  if (
+    transaction.operation === "edit-card" ||
+    transaction.operation === "delist"
+  ) {
     return new Set([registry]);
   }
   if (transaction.operation === "move-source") {
@@ -230,10 +232,7 @@ function validateTransaction(value) {
   ) {
     return false;
   }
-  if (
-    value.operation === "move-source" &&
-    value.generated_paths.length !== 2
-  ) {
+  if (value.operation === "move-source" && value.generated_paths.length !== 2) {
     return false;
   }
   return true;

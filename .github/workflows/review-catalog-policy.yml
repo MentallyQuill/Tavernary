@@ -182,6 +182,7 @@ jobs:
           import fs from "node:fs";
           import { CATALOG_POLICY_VERSION } from "./src/features/catalog/catalog-policy.mjs";
           import { parseProjectPublicationTransaction } from "./scripts/publication/project-publication-transaction.mjs";
+          import { parseProjectSubmissionIssue } from "./scripts/submissions/parse-project-submission.mjs";
           import { renderCatalogPolicyReviewIssue } from "./scripts/moderation/catalog-policy-review-notice.mjs";
           const issue = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/policy-review-issue.json`, "utf8"));
           const pull = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/policy-review-pull.json`, "utf8"));
@@ -199,7 +200,27 @@ jobs:
             process.env.README_REF && process.env.README_PATH && project.source.type === "github"
               ? `https://github.com/${project.source.repository}/blob/${process.env.README_REF}/${process.env.README_PATH}`
               : null;
-          const embedded = String(issue?.body ?? "").match(/"description"\s*:\s*"([^"]*)"/u)?.[1] ?? "";
+          let submittedSummary = "";
+          if (transaction?.producer === "project-submission") {
+            const parsed = parseProjectSubmissionIssue(issue?.body ?? "");
+            submittedSummary = parsed.valid ? parsed.manifest.description ?? "" : "";
+          } else if (transaction?.producer === "project-owner-request") {
+            const section = String(issue?.body ?? "")
+              .split(/^### /mu)
+              .slice(1)
+              .find((value) => value.split(/\r?\n/u)[0].trim() === "Owner request manifest");
+            const renderedManifest = section
+              ? section.split(/\r?\n/u).slice(1).join("\n").trim()
+              : "";
+            const manifestJson =
+              renderedManifest.match(/^```(?:json)?\s*\r?\n([\s\S]*?)\r?\n```$/iu)?.[1] ??
+              renderedManifest;
+            try {
+              submittedSummary = JSON.parse(manifestJson).proposed?.summary ?? "";
+            } catch {
+              submittedSummary = "";
+            }
+          }
           const rendered = renderCatalogPolicyReviewIssue({
             project,
             sourceUrl,
@@ -208,7 +229,7 @@ jobs:
               category: report.category,
               explanation: report.explanation,
             },
-            submittedSummary: embedded,
+            submittedSummary,
             copyReasons: transaction?.copy_result?.change_reasons ?? [],
             transactionIssueNumber: Number(process.env.ISSUE_NUMBER),
             transactionPullNumber: Number(process.env.PULL_NUMBER),

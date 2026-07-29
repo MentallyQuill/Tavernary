@@ -35,9 +35,13 @@ These docs explain the product, the repository, and contribution paths.
 Existing design specs and implementation plans remain under
 [`docs/superpowers/`](superpowers/) as historical project context.
 
+The operations runbook is also the rollout authority for automatic project
+publication, the `PROJECT_AUTO_PUBLICATION_ENABLED` emergency switch,
+exact-SHA recovery, owner-delisting notices, and post-publication advisory
+review.
+
 ## Repository-level policies
 
 - [Licensing](../LICENSING.md)
 - [Security policy](../SECURITY.md)
 - [Trademark and brand policy](../TRADEMARKS.md)
-

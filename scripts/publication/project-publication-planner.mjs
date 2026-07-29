@@ -58,8 +58,7 @@ export function planProjectPublication(input) {
   ) {
     return { action: "ignore" };
   }
-  const expectedBranch =
-    `${route[1]}${transaction.issue_number}`;
+  const expectedBranch = `${route[1]}${transaction.issue_number}`;
   if (
     branch !== expectedBranch ||
     pull.state !== "open" ||

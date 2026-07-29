@@ -82,3 +82,13 @@ license, release history, and support expectations. Tavernary's catalog facts
 are useful discovery context, not a substitute for the creator's source of
 truth. Refer to the exact status and manifest definitions in
 [catalog statuses and manifests](../reference/catalog-statuses-and-manifests.md).
+
+## Catalog descriptions and reports
+
+Verified-owner wording is preserved whenever possible; community-submitted
+descriptions are rebuilt from README evidence first. Tavernary may make narrow
+public-directory copy corrections, but consensual adult content, kink, fetish
+content, and ordinary profanity are permitted. Automated Catalog Policy
+signals are post-publication advisories, not violation decisions. Use
+**Report a project listing** when a published project appears to conflict with
+the policy.

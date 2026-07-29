@@ -24,4 +24,6 @@ export type ProjectPublicationPlan =
       projectId: string;
     };
 
-export function planProjectPublication(input: Record<string, any>): ProjectPublicationPlan;
+export function planProjectPublication(
+  input: Record<string, any>,
+): ProjectPublicationPlan;

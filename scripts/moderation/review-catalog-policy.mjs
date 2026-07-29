@@ -14,7 +14,9 @@ function sourceIdentity(project) {
 }
 
 function evidenceHead(snapshot) {
-  return snapshot?.repository?.head_sha ?? snapshot?.observed_at ?? "unavailable";
+  return (
+    snapshot?.repository?.head_sha ?? snapshot?.observed_at ?? "unavailable"
+  );
 }
 
 export async function reviewCatalogPolicy(input) {
@@ -40,10 +42,7 @@ export async function reviewCatalogPolicy(input) {
       input.snapshot,
       input.sourceOptions,
     );
-    if (
-      !source ||
-      !["ready", "description-only"].includes(source.status)
-    ) {
+    if (!source || !["ready", "description-only"].includes(source.status)) {
       throw new Error("evidence-unavailable");
     }
     const raw = await input.provider.review({

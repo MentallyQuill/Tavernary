@@ -18,8 +18,7 @@ const copyReasonLabels = {
   "obvious-spelling-corrected": "Obvious spelling corrected",
   "graphic-wording-neutralized": "Graphic wording neutralized",
   "slur-removed": "Slur removed",
-  "discriminatory-framing-neutralized":
-    "Discriminatory framing neutralized",
+  "discriminatory-framing-neutralized": "Discriminatory framing neutralized",
 };
 
 function safeText(value, limit = 400) {

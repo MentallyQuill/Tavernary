@@ -25,7 +25,7 @@ export function applyCatalogPolicyReviewState(previous, result) {
         result.maintenanceIssueNumber ??
         (result.output.status === "review-suggested" &&
         previous?.evidence_fingerprint === result.evidenceFingerprint
-          ? previous.maintenance_issue_number ?? null
+          ? (previous.maintenance_issue_number ?? null)
           : null),
     },
   };

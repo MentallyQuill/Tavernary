@@ -43,15 +43,15 @@ test("publishes successful generated project transactions by exact SHA", async (
   expect(source).toContain("idempotent retry");
 });
 
-test.each([
-  "project-submission-lifecycle",
-  "project-owner-request-lifecycle",
-])("supports explicit %s dispatch after bot merges", async (name) => {
-  const workflow = parse(
-    await readFile(`.github/workflows/${name}.yml`, "utf8"),
-  ) as any;
-  expect(workflow.on.workflow_dispatch.inputs.pull_number).toMatchObject({
-    required: true,
-    type: "number",
-  });
-});
+test.each(["project-submission-lifecycle", "project-owner-request-lifecycle"])(
+  "supports explicit %s dispatch after bot merges",
+  async (name) => {
+    const workflow = parse(
+      await readFile(`.github/workflows/${name}.yml`, "utf8"),
+    ) as any;
+    expect(workflow.on.workflow_dispatch.inputs.pull_number).toMatchObject({
+      required: true,
+      type: "number",
+    });
+  },
+);

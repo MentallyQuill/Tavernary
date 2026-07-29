@@ -5,11 +5,7 @@ export const CATALOG_POLICY_REVIEW_CATEGORIES = Object.freeze([
   "potential-sexual-content-involving-minors",
   "potential-other-catalog-policy-conflict",
 ]);
-const statuses = new Set([
-  "clear",
-  "review-suggested",
-  "review-unavailable",
-]);
+const statuses = new Set(["clear", "review-suggested", "review-unavailable"]);
 const categories = new Set(CATALOG_POLICY_REVIEW_CATEGORIES);
 const exactKeys = new Set(["status", "category", "explanation"]);
 

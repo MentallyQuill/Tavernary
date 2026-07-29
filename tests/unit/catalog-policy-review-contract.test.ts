@@ -9,7 +9,8 @@ test.each([
   {
     status: "review-suggested",
     category: "potential-hate-or-discrimination",
-    explanation: "The project description appears to promote discriminatory treatment.",
+    explanation:
+      "The project description appears to promote discriminatory treatment.",
   },
   { status: "review-unavailable", category: null, explanation: null },
 ])("accepts exact advisory output $status", (output) => {
@@ -22,7 +23,11 @@ test.each([
 test("rejects unknown keys, categories, and unsafe explanations", () => {
   for (const output of [
     { status: "clear", category: null, explanation: null, raw: "no" },
-    { status: "review-suggested", category: "sexual-content", explanation: "x" },
+    {
+      status: "review-suggested",
+      category: "sexual-content",
+      explanation: "x",
+    },
     {
       status: "review-suggested",
       category: "potential-other-catalog-policy-conflict",

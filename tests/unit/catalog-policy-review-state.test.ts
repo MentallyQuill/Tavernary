@@ -56,9 +56,9 @@ test("deduplicates successful fingerprints and retries unavailable output", () =
       }),
     ).state.retry.attempts,
   ).toBe(2);
-  expect(applyCatalogPolicyReviewState(unavailable, result()).state.retry).toEqual(
-    { attempts: 0, last_failure_at: null },
-  );
+  expect(
+    applyCatalogPolicyReviewState(unavailable, result()).state.retry,
+  ).toEqual({ attempts: 0, last_failure_at: null });
 });
 
 test("new evidence or policy versions produce new state", () => {

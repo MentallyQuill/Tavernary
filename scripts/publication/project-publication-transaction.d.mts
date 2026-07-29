@@ -1,15 +1,9 @@
 export type ProjectPublicationOperation =
-  | "create"
-  | "edit-card"
-  | "move-source"
-  | "delist";
+  "create" | "edit-card" | "move-source" | "delist";
 export type ProjectPublicationProducer =
-  | "project-submission"
-  | "project-owner-request";
+  "project-submission" | "project-owner-request";
 export type ProjectPublicationAuthority =
-  | "community-submitter"
-  | "repository-owner"
-  | "tavernary-staff";
+  "community-submitter" | "repository-owner" | "tavernary-staff";
 
 export interface ProjectPublicationTransaction {
   schema_version: 1;

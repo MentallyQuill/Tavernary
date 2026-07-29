@@ -40,9 +40,7 @@ test("plans one neutral owner copy-adjustment notice", () => {
 
   expect(plan).toMatchObject({ action: "create" });
   if (plan.action !== "create") throw new Error("Expected create notice.");
-  expect(plan.body).toContain(
-    "<!-- tavernary-project-copy-notice:128 -->",
-  );
+  expect(plan.body).toContain("<!-- tavernary-project-copy-notice:128 -->");
   expect(plan.body).toContain("limited automated catalog-copy adjustment");
   expect(plan.body).toContain("did not delay publication");
   expect(plan.body).not.toContain("punctuation-corrected");

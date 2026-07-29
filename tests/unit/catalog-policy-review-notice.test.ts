@@ -21,8 +21,7 @@ test("renders a bounded neutral maintenance advisory with inert summaries", () =
     evidenceFingerprint: "a".repeat(64),
     policyVersion: "2026-07-29",
     reviewedAt: "2026-07-29T12:00:00.000Z",
-    readmeUrl:
-      "https://github.com/Owner/Alpha/blob/abcdef/README.md",
+    readmeUrl: "https://github.com/Owner/Alpha/blob/abcdef/README.md",
   });
   expect(issue.title).toBe("[Catalog policy advisory] Alpha");
   expect(issue.body).toContain("Automated advisory only");

@@ -85,7 +85,9 @@ function renderedKits(kits, projectId) {
         Array.isArray(kit.project_ids) &&
         kit.project_ids.includes(projectId),
     )
-    .sort((left, right) => String(left.title).localeCompare(String(right.title)));
+    .sort((left, right) =>
+      String(left.title).localeCompare(String(right.title)),
+    );
   return affected.length === 0
     ? "- None."
     : affected
@@ -139,12 +141,7 @@ export function planOwnerDelistNotice(input) {
     "",
     renderedKits(input.kits, transaction.project_id),
     ...(ownerNote
-      ? [
-          "",
-          "## Owner note",
-          "",
-          `> ${safePlainText(ownerNote, 600)}`,
-        ]
+      ? ["", "## Owner note", "", `> ${safePlainText(ownerNote, 600)}`]
       : []),
   ].join("\n");
   const existing = (input.existingIssues ?? []).find((issue) =>

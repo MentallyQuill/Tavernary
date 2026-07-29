@@ -116,9 +116,7 @@ test("allows a nullable source identity only for owner edit or delist", () => {
     ).toBeNull();
   }
   expect(() =>
-    createProjectPublicationTransaction(
-      createInput({ source_identity: null }),
-    ),
+    createProjectPublicationTransaction(createInput({ source_identity: null })),
   ).toThrow(/source identity/iu);
 });
 
@@ -134,9 +132,7 @@ test.each([
   [
     "missing registry",
     {
-      generated_paths: [
-        "data/snapshots/github/owner-project.json",
-      ],
+      generated_paths: ["data/snapshots/github/owner-project.json"],
     },
   ],
   [
@@ -176,7 +172,5 @@ test("parses only one valid shared transaction marker", () => {
   ].join("\n");
 
   expect(parseProjectPublicationTransaction(body)).toEqual(transaction);
-  expect(
-    parseProjectPublicationTransaction(`${body}\n${body}`),
-  ).toBeNull();
+  expect(parseProjectPublicationTransaction(`${body}\n${body}`)).toBeNull();
 });
