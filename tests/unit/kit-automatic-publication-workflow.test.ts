@@ -28,6 +28,7 @@ test("valid Kit triage dispatches serialized publication automatically", async (
     (step) => step.name === "Validate and label Kit submission",
   );
   expect(triage?.id).toBe("triage");
+  expect(triage?.run).toContain("triage-kit-issue.mjs");
   const publish = workflow.jobs.validate.steps.find(
     (step) => step.name === "Publish valid Kit",
   );

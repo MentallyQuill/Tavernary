@@ -92,6 +92,7 @@ test("parses Kit manifests and builds a stable success comment", () => {
     buildKitValidationComment({
       valid: true,
       manifest: null,
+      editAuthority: "author",
       labels: ["kit-publication-ready"],
       errors: [],
       warnings: [],
@@ -112,6 +113,7 @@ test("emits publication outputs only for a valid Kit", () => {
       {
         valid: true,
         manifest,
+        editAuthority: "author",
         labels: ["kit-publication-ready"],
         errors: [],
         warnings: [],
@@ -124,6 +126,7 @@ test("emits publication outputs only for a valid Kit", () => {
       {
         valid: false,
         manifest: null,
+        editAuthority: null,
         labels: ["needs-information"],
         errors: ["Title contains language Tavernary doesn't allow."],
         warnings: [],
@@ -1570,6 +1573,7 @@ test("rechecks Kit eligibility before applying triage mutations", async () => {
       {
         valid: true,
         manifest: null,
+        editAuthority: "author",
         errors: [],
         warnings: [],
         labels: ["kit-submission-valid"],
@@ -1611,6 +1615,7 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
       {
         valid: true,
         manifest: null,
+        editAuthority: "author",
         errors: [],
         warnings: [],
         labels: ["kit-publication-ready"],
