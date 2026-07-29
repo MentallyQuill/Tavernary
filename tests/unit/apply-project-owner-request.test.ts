@@ -170,6 +170,22 @@ test("protects an approved owner card edit from enrichment", () => {
   expect(result.record).not.toHaveProperty("provenance");
 });
 
+test("applies the validated published summary instead of raw proposed copy", () => {
+  const result = applyProjectOwnerRequest({
+    ...editMutationFixture({
+      summary: "Owner-authored summary",
+    }),
+    publishedSummary: "Owner-authored summary.",
+  });
+
+  expect(result.record).toMatchObject({
+    summary: "Owner-authored summary.",
+    metadata_status: "curated",
+    enrichment_policy: "manual",
+  });
+  expect(result.after.summary).toBe("Owner-authored summary.");
+});
+
 test("preserves enrichment authority for classification-only edits", () => {
   const result = applyProjectOwnerRequest(
     editMutationFixture({

@@ -150,6 +150,24 @@ test("requires every supplied protected term with exact spelling and case", () =
   });
 });
 
+test("does not require a protected term that was absent from submitted copy", () => {
+  expect(
+    validateCatalogCopyResult(
+      {
+        summary: "Owner-authored summary.",
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      },
+      {
+        mode: "preserve",
+        submittedSummary: "Owner-authored summary.",
+        protectedTerms: ["Alpha"],
+      },
+    ),
+  ).toEqual({ valid: true });
+});
+
 test.each([
   "ST-QuickReply is damn useful and keeps shit organized.",
   "ST-QuickReply supports consensual adult sexual roleplay, kinks, and fetishes.",

@@ -7,8 +7,14 @@ import { createHash } from "node:crypto";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { createCatalogCopyProvider } from "../catalog/catalog-copy-provider.mjs";
+import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
-import { applyProjectOwnerRequest } from "./apply-project-owner-request.mjs";
+import {
+  applyProjectOwnerRequest,
+  assertProjectOwnerRequestApplicable,
+} from "./apply-project-owner-request.mjs";
 import { processProjectOwnerTriage } from "./triage-project-owner-request.mjs";
 
 const VOCABULARY_FILES = [
@@ -120,6 +126,108 @@ function generatedAt(now) {
     throw new Error("Owner generation time must be a valid timestamp.");
   }
   return date.toISOString();
+}
+
+function ownerCopyProtectedTerms(final, vocabularies) {
+  const manifest = final.manifest;
+  if (manifest.operation !== "edit-card") return [];
+  const repositoryParts =
+    typeof final.record.source?.repository === "string"
+      ? final.record.source.repository.split("/").filter(Boolean)
+      : [];
+  const frontendIds = new Set(manifest.proposed.frontends);
+  const frontendLabels = vocabularies.frontends
+    .filter(({ id }) => frontendIds.has(id))
+    .map(({ label }) => label);
+  const stableIdentifiers =
+    manifest.proposed.summary.match(
+      /\b[\p{Letter}\p{Number}]+(?:[-_.:/][\p{Letter}\p{Number}]+)+\b/gu,
+    ) ?? [];
+  return [
+    ...new Set(
+      [
+        manifest.original.name,
+        manifest.proposed.name,
+        ...repositoryParts,
+        ...frontendLabels,
+        ...stableIdentifiers,
+      ].filter(
+        (term) =>
+          typeof term === "string" && term.length > 0 && term.length <= 100,
+      ),
+    ),
+  ].slice(0, 64);
+}
+
+async function defaultCopySummary(input) {
+  const provider = createCatalogCopyProvider({
+    apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+    apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+    model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+  });
+  const generated = await provider.generate({
+    mode: "preserve",
+    submittedSummary: input.submittedSummary,
+    evidence: {
+      readme: null,
+      repositoryDescription: null,
+      submissionDescription: input.submittedSummary,
+    },
+    protectedTerms: input.protectedTerms,
+    policyVersion: input.policyVersion,
+    ...(input.repair ? { repair: input.repair } : {}),
+  });
+  return generated.output;
+}
+
+async function copyEditedSummary(input, final, vocabularies) {
+  if (
+    final.operation !== "edit-card" ||
+    final.manifest.original.summary === final.manifest.proposed.summary
+  ) {
+    return null;
+  }
+  const copySummary = input.copySummary ?? defaultCopySummary;
+  const request = {
+    authorityType: final.authorityType,
+    submittedSummary: final.manifest.proposed.summary,
+    protectedTerms: ownerCopyProtectedTerms(final, vocabularies),
+    policyVersion: CATALOG_POLICY_VERSION,
+  };
+  let output = await copySummary(request);
+  let validation = validateCatalogCopyResult(output, {
+    mode: "preserve",
+    submittedSummary: request.submittedSummary,
+    protectedTerms: request.protectedTerms,
+  });
+  if (!validation.valid) {
+    output = await copySummary({
+      ...request,
+      repair: {
+        reasonCode: "output-invalid",
+        message: validation.repairHint,
+      },
+    });
+    validation = validateCatalogCopyResult(output, {
+      mode: "preserve",
+      submittedSummary: request.submittedSummary,
+      protectedTerms: request.protectedTerms,
+    });
+  }
+  if (!validation.valid) {
+    const error = new Error(validation.repairHint);
+    error.code = "catalog-copy-invalid";
+    throw error;
+  }
+  return {
+    submittedSummary: request.submittedSummary,
+    publishedSummary: output.summary,
+    copyResult: {
+      result: output.result,
+      change_reasons: [...output.change_reasons],
+      policy_signal: output.policy_signal,
+    },
+  };
 }
 
 async function writeOwnerGenerationTransaction({
@@ -236,6 +344,15 @@ export async function generateProjectOwnerRequest(input) {
       ? await loadSnapshot(root, final.projectId, readFile)
       : null;
   const snapshot = snapshotSource?.value ?? null;
+  assertProjectOwnerRequestApplicable({
+    issueNumber: final.issueNumber,
+    manifest: final.manifest,
+    record: final.record,
+    snapshot,
+    repository: final.repository,
+    vocabularies: finalVocabularies,
+  });
+  const copy = await copyEditedSummary(input, final, finalVocabularies);
   const mutation = applyProjectOwnerRequest({
     issueNumber: final.issueNumber,
     manifest: final.manifest,
@@ -243,6 +360,7 @@ export async function generateProjectOwnerRequest(input) {
     snapshot,
     repository: final.repository,
     vocabularies: finalVocabularies,
+    ...(copy ? { publishedSummary: copy.publishedSummary } : {}),
   });
   const allowedPaths = expectedPaths(final.projectId, final.operation);
   if (!exactPaths(mutation.changedPaths, allowedPaths)) {
@@ -261,6 +379,13 @@ export async function generateProjectOwnerRequest(input) {
     actor_login: final.actorLogin,
     request_fingerprint: fingerprintProjectOwnerManifest(final.manifest),
     generated_at: generatedAt(input.now),
+    ...(copy
+      ? {
+          submitted_summary: copy.submittedSummary,
+          published_summary: copy.publishedSummary,
+          copy_result: copy.copyResult,
+        }
+      : {}),
     before: mutation.before,
     after: mutation.after,
     warnings: [...new Set([...initial.warnings, ...final.warnings])],

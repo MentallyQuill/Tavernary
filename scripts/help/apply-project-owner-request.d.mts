@@ -47,6 +47,7 @@ export interface OwnerMutationInput {
   record: Record<string, unknown>;
   snapshot?: Record<string, unknown> | null;
   repository?: GitHubRepositoryIdentity;
+  publishedSummary?: string;
   vocabularies: {
     frontends: readonly (string | { id: string })[];
     primaryFunctions: readonly (string | { id: string })[];
@@ -59,3 +60,7 @@ export interface OwnerMutationInput {
 export function applyProjectOwnerRequest(
   input: OwnerMutationInput,
 ): OwnerMutationResult;
+
+export function assertProjectOwnerRequestApplicable(
+  input: OwnerMutationInput,
+): unknown;

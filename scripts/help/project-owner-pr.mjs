@@ -1,10 +1,21 @@
 import { parseSubmissionPullRequestMarker } from "../submissions/project-submission-pr.mjs";
+import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
 
 const markerStart = "<!-- tavernary-project-owner-pr";
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const LOGIN_PATTERN = /^(?!-)[A-Za-z0-9-]{1,39}(?<!-)$/u;
 const OPERATIONS = new Set(["edit-card", "move-source", "delist"]);
 const AUTHORITY_TYPES = new Set(["repository-owner", "tavernary-staff"]);
+const copyReasonLabels = {
+  "emoji-removed": "Emoji removed",
+  "whitespace-normalized": "Whitespace normalized",
+  "punctuation-corrected": "Punctuation corrected",
+  "obvious-spelling-corrected": "Obvious spelling corrected",
+  "graphic-wording-neutralized": "Graphic wording neutralized",
+  "slur-removed": "Slur removed",
+  "discriminatory-framing-neutralized":
+    "Discriminatory framing neutralized",
+};
 
 function safeText(value, limit = 400) {
   const rendered =
@@ -35,6 +46,47 @@ function renderValues(values) {
   return entries
     .map(([key, value]) => `- **${fieldLabel(key)}:** ${safeText(value)}`)
     .join("\n");
+}
+
+function renderCopyReview(report) {
+  const fields = [
+    report?.submitted_summary,
+    report?.published_summary,
+    report?.copy_result,
+  ];
+  if (fields.every((value) => value === undefined)) return null;
+  if (fields.some((value) => value === undefined)) {
+    throw new Error("Owner pull request copy report is incomplete.");
+  }
+  const validation = validateCatalogCopyResult(
+    {
+      summary: report.published_summary,
+      result: report.copy_result.result,
+      change_reasons: report.copy_result.change_reasons,
+      policy_signal: report.copy_result.policy_signal,
+    },
+    {
+      mode: "preserve",
+      submittedSummary: report.submitted_summary,
+      protectedTerms: [],
+    },
+  );
+  if (!validation.valid) {
+    throw new Error("Owner pull request copy report is invalid.");
+  }
+  const status =
+    report.copy_result.result === "accepted-unchanged"
+      ? "The automated preservation pass kept the submitted summary unchanged."
+      : report.copy_result.result === "accepted-with-light-edits"
+        ? "The automated preservation pass made limited preservation edits."
+        : "The automated preservation pass neutralized wording for the public catalog policy.";
+  const reasons =
+    report.copy_result.change_reasons.length === 0
+      ? "- None."
+      : report.copy_result.change_reasons
+          .map((reason) => `- ${copyReasonLabels[reason]}`)
+          .join("\n");
+  return ["## Catalog copy", "", status, "", "Change categories:", "", reasons];
 }
 
 function expectedPaths(projectId, operation) {
@@ -123,6 +175,7 @@ export function renderOwnerRequestPullRequest(input) {
           .map((warning) => `- ${safeText(warning, 240)}`)
           .join("\n")
       : "- None.";
+  const copyReview = renderCopyReview(input.report);
   return [
     markerStart,
     JSON.stringify(input.marker),
@@ -147,6 +200,7 @@ export function renderOwnerRequestPullRequest(input) {
     "",
     renderValues(input.report.after),
     "",
+    ...(copyReview ? [...copyReview, ""] : []),
     "## Warnings",
     "",
     warnings,

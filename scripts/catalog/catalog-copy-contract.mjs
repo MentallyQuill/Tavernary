@@ -148,7 +148,11 @@ export function validateCatalogCopyResult(output, context) {
   }
   const protectedTerms = Array.isArray(context?.protectedTerms)
     ? context.protectedTerms.filter(
-        (term) => typeof term === "string" && term.length > 0,
+        (term) =>
+          typeof term === "string" &&
+          term.length > 0 &&
+          typeof context?.submittedSummary === "string" &&
+          context.submittedSummary.includes(term),
       )
     : [];
   if (

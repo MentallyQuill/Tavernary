@@ -39,6 +39,16 @@ export function renderOwnerRequestPullRequest(input: {
     repository_id: number | null;
     authority_type: OwnerPrMarker["authority_type"];
     actor_login: string;
+    submitted_summary?: string;
+    published_summary?: string;
+    copy_result?: {
+      result:
+        | "accepted-unchanged"
+        | "accepted-with-light-edits"
+        | "accepted-with-policy-rewrite";
+      change_reasons: string[];
+      policy_signal: "none" | "catalog-policy-rewrite";
+    };
     before: Record<string, unknown>;
     after: Record<string, unknown>;
     warnings: string[];

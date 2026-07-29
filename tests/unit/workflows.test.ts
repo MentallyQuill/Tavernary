@@ -942,6 +942,14 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     "cancel-in-progress": false,
   });
   expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
+  expect(generation.jobs.generate.env).toMatchObject({
+    TAVERNARY_ENRICHMENT_API_URL:
+      "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+    TAVERNARY_ENRICHMENT_API_KEY:
+      "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+    TAVERNARY_ENRICHMENT_MODEL:
+      "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+  });
   expect(source).toContain("npm ci");
   expect(source).toContain("generate-project-owner-request.mjs");
   expect(
@@ -965,6 +973,8 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("npm run catalog:build");
   expect(source).toContain("tests/unit/project-owner-");
   expect(source).toContain("tests/unit/trusted-editor-authority.test.ts");
+  expect(source).toContain("tests/unit/catalog-copy-provider.test.ts");
+  expect(source).toContain("tests/unit/catalog-copy-contract.test.ts");
   expect(source).toContain("authorityType: report.authority_type");
   expect(source).toContain("actorLogin: report.actor_login");
   expect(source).not.toContain("verifiedOwnerLogin");

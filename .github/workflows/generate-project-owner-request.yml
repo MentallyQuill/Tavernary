@@ -32,6 +32,9 @@ jobs:
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       FORCE_REGENERATION: ${{ inputs.force_regeneration }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
     steps:
       - name: Check out full current main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -201,6 +204,8 @@ jobs:
           npm run catalog:build
           npm test -- \
             tests/unit/trusted-editor-authority.test.ts \
+            tests/unit/catalog-copy-provider.test.ts \
+            tests/unit/catalog-copy-contract.test.ts \
             tests/unit/project-owner-authority.test.ts \
             tests/unit/apply-project-owner-request.test.ts \
             tests/unit/triage-project-owner-request.test.ts \

@@ -292,7 +292,7 @@ function applyDelist(input, record, snapshot) {
   };
 }
 
-export function applyProjectOwnerRequest(input) {
+export function assertProjectOwnerRequestApplicable(input) {
   requirePositiveInteger(
     input?.issueNumber,
     "Owner request issue number must be a positive integer.",
@@ -320,7 +320,33 @@ export function applyProjectOwnerRequest(input) {
       `${conflict.reasonCode}: current values changed for ${conflict.fields.join(", ")}.`,
     );
   }
+  return manifest;
+}
 
+export function applyProjectOwnerRequest(input) {
+  let manifest = assertProjectOwnerRequestApplicable(input);
+  if (
+    manifest.operation === "edit-card" &&
+    manifest.original.summary !== manifest.proposed.summary &&
+    input.publishedSummary !== undefined
+  ) {
+    if (
+      typeof input.publishedSummary !== "string" ||
+      input.publishedSummary.length === 0
+    ) {
+      fail(
+        "owner-request-invalid",
+        "Published owner summary must be a non-empty string.",
+      );
+    }
+    manifest = {
+      ...manifest,
+      proposed: {
+        ...manifest.proposed,
+        summary: input.publishedSummary,
+      },
+    };
+  }
   const record = structuredClone(input.record);
   const snapshot =
     input.snapshot === null || input.snapshot === undefined

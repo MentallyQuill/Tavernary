@@ -30,6 +30,13 @@ const reviewFixture = {
     repository_id: 42,
     authority_type: "repository-owner" as const,
     actor_login: "Owner",
+    submitted_summary: "New owner summary",
+    published_summary: "New owner summary.",
+    copy_result: {
+      result: "accepted-with-light-edits" as const,
+      change_reasons: ["punctuation-corrected"],
+      policy_signal: "none" as const,
+    },
     before: {
       summary: "Old summary.",
       enrichment_policy: "automatic",
@@ -133,6 +140,9 @@ test("renders verified identity, before/after values, and policy effects", () =>
   expect(body).toContain("## Before");
   expect(body).toContain("## After");
   expect(body).toContain("Enrichment policy");
+  expect(body).toContain("## Catalog copy");
+  expect(body).toContain("limited preservation edits");
+  expect(body).toContain("Punctuation corrected");
   expect(body).toContain("Alpha \\[Tool\\]");
   expect(parseOwnerRequestPullRequestMarker(body)).toEqual(marker);
 });
