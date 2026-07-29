@@ -41,6 +41,7 @@ function envelope(
     original,
     proposed,
     explanation: null,
+    ...(operation === "delist" ? { delist_confirmation: "Alpha" } : {}),
   };
 }
 
@@ -263,6 +264,54 @@ describe("owner card edits", () => {
 });
 
 describe("owner source moves and delisting", () => {
+  test("requires a non-empty confirmation only for delisting", () => {
+    const delist = envelope(
+      "delist",
+      { visibility: "published" },
+      {
+        visibility: "disabled",
+        visibility_reason: "removed",
+        refresh_policy: "paused",
+        enrichment_policy: "manual",
+      },
+    );
+    const { delist_confirmation: _confirmation, ...missing } = delist;
+
+    expect(normalizeProjectOwnerManifest(missing, vocabularies)).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining([
+        "Owner delisting confirmation is required.",
+      ]),
+    });
+    expect(
+      normalizeProjectOwnerManifest(
+        { ...delist, delist_confirmation: "   " },
+        vocabularies,
+      ),
+    ).toMatchObject({ valid: false });
+    for (const operation of ["edit-card", "move-source"] as const) {
+      const candidate =
+        operation === "edit-card"
+          ? editFixture()
+          : envelope(
+              "move-source",
+              { repository: "Owner/Alpha", repository_id: 42 },
+              { repository: "Owner/Alpha-Renamed", repository_id: 42 },
+            );
+      expect(
+        normalizeProjectOwnerManifest(
+          { ...candidate, delist_confirmation: "Alpha" },
+          vocabularies,
+        ),
+      ).toMatchObject({
+        valid: false,
+        errors: expect.arrayContaining([
+          "Owner request contains unknown properties.",
+        ]),
+      });
+    }
+  });
+
   test("allows null repository identity for card edits and delisting only", () => {
     expect(
       normalizeProjectOwnerManifest(

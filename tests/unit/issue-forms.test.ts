@@ -127,6 +127,14 @@ test("owner requests have an accessible readable fallback in exact review order"
     fields.find((field) => field.id === "proposed-summary")?.attributes
       ?.description,
   ).toContain("https://mentallyquill.github.io/Tavernary/catalog-policy/");
+  expect(
+    fields.find((field) => field.id === "delist-confirmation")?.attributes
+      ?.description,
+  ).toContain("current complete project display name");
+  expect(
+    fields.find((field) => field.id === "delist-confirmation")?.attributes
+      ?.description,
+  ).not.toContain("I am requesting that Tavernary delist this project");
 });
 
 test("Kit submission is a readable review form without redundant machine fields", async () => {

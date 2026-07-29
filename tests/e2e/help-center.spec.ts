@@ -399,10 +399,13 @@ test("covers owner source-move and delist review branches", async ({
   );
 
   await page.getByRole("radio", { name: "Delist this project" }).check();
-  await page
-    .getByLabel("I am requesting that Tavernary delist this project")
-    .check();
   await page.getByRole("button", { name: "Review request" }).click();
+  await page
+    .getByLabel("Type Directive to confirm permanent delisting.")
+    .fill("DIRECTIVE");
+  await page
+    .getByRole("button", { name: "Permanently delist project" })
+    .click();
   await expect(
     page.getByText("After: visibility", { exact: true }),
   ).toBeVisible();

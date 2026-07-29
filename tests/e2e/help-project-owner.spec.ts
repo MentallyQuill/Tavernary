@@ -86,6 +86,71 @@ test("keeps owner wording while removing emoji and linking the policy", async ({
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
+test("requires the typed project name before handing off a permanent delist", async ({
+  page,
+}) => {
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.evaluate(() => {
+    Object.defineProperty(window, "open", {
+      configurable: true,
+      value: (url: string | URL) => {
+        window.sessionStorage.setItem("tavernary-opened-url", String(url));
+        return window;
+      },
+    });
+  });
+
+  await page.getByRole("radio", { name: "Delist this project" }).check();
+  await page.getByRole("button", { name: "Review request" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Permanently delist Directive?" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "You are about to remove Directive from Tavernary. This delisting applies to MentallyQuill/Directive.",
+    ),
+  ).toBeVisible();
+  const confirmation = page.getByLabel(
+    "Type Directive to confirm permanent delisting.",
+  );
+  const delist = page.getByRole("button", {
+    name: "Permanently delist project",
+  });
+  await confirmation.fill("Direct");
+  await expect(delist).toBeDisabled();
+  await confirmation.fill("directive");
+  await expect(delist).toBeEnabled();
+  await expect(
+    page.getByText(
+      "Project name matches. Permanent delisting is now available.",
+    ),
+  ).toBeVisible();
+  await delist.click();
+
+  await expect(
+    page.getByText(
+      "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/retains the record|refresh policy|enrichment policy/iu),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+
+  const openedUrl = await page.evaluate(() =>
+    window.sessionStorage.getItem("tavernary-opened-url"),
+  );
+  const opened = new URL(openedUrl ?? "");
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "delist",
+    project_id: projectId,
+    delist_confirmation: "directive",
+  });
+});
+
 test("keeps organization listings editable for trusted staff with a report fallback", async ({
   page,
 }) => {

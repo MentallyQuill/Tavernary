@@ -34,6 +34,7 @@ import {
   HelpTextArea,
   HelpTextField,
 } from "./help-form-fields";
+import { PermanentDelistDialog } from "./permanent-delist-dialog";
 import { HelpReview } from "./help-review";
 
 interface VocabularyOption {
@@ -55,8 +56,6 @@ const operationLabels: Record<OwnerOperation, string> = {
   "move-source": "Update repository location",
   delist: "Delist this project",
 };
-
-const delistConfirmation = "I am requesting that Tavernary delist this project";
 
 function initialProjectId(
   projects: OwnerProjectOption[],
@@ -172,7 +171,7 @@ function policyStatement(
   if (manifest.operation === "move-source") {
     return "A source move must retain repository ID.";
   }
-  return "Delisting disables, pauses, and retains the record.";
+  return "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.";
 }
 
 function reviewValue(value: unknown) {
@@ -297,36 +296,12 @@ function operationReviewRows(
     ];
   }
   return [
-    { label: "Confirmation", value: delistConfirmation },
+    { label: "Confirmation", value: manifest.delist_confirmation },
     {
       label: "Before: visibility",
       value: project.listingState.visibility,
     },
-    {
-      label: "Before: visibility reason",
-      value: reviewValue(project.listingState.visibilityReason),
-    },
-    {
-      label: "Before: refresh policy",
-      value: project.listingState.refreshPolicy,
-    },
-    {
-      label: "Before: enrichment policy",
-      value: project.listingState.enrichmentPolicy,
-    },
     { label: "After: visibility", value: manifest.proposed.visibility },
-    {
-      label: "After: visibility reason",
-      value: manifest.proposed.visibility_reason,
-    },
-    {
-      label: "After: refresh policy",
-      value: manifest.proposed.refresh_policy,
-    },
-    {
-      label: "After: enrichment policy",
-      value: manifest.proposed.enrichment_policy,
-    },
   ];
 }
 
@@ -370,7 +345,8 @@ export function ProjectOwnerBuilder({
   );
   const [proposedRepositoryUrl, setProposedRepositoryUrl] = useState("");
   const [explanation, setExplanation] = useState("");
-  const [confirmedDelist, setConfirmedDelist] = useState(false);
+  const [delistConfirmation, setDelistConfirmation] = useState("");
+  const [delistDialogOpen, setDelistDialogOpen] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [reviewing, setReviewing] = useState(false);
   const [continuing, setContinuing] = useState(false);
@@ -402,7 +378,8 @@ export function ProjectOwnerBuilder({
     setCompletionFormats(project?.editable.completionFormats ?? []);
     setProposedRepositoryUrl("");
     setExplanation("");
-    setConfirmedDelist(false);
+    setDelistConfirmation("");
+    setDelistDialogOpen(false);
     setErrors([]);
     setHandoffError("");
     setFallbackUrl("");
@@ -426,7 +403,7 @@ export function ProjectOwnerBuilder({
     };
   }
 
-  function candidateManifest(): object | null {
+  function candidateManifest(confirmation = delistConfirmation): object | null {
     if (!selected || !operation) {
       return null;
     }
@@ -476,6 +453,7 @@ export function ProjectOwnerBuilder({
     }
     return {
       ...envelope,
+      delist_confirmation: confirmation,
       original: { visibility: "published" },
       proposed: {
         visibility: "disabled",
@@ -486,7 +464,7 @@ export function ProjectOwnerBuilder({
     };
   }
 
-  function validate() {
+  function validate(confirmation = delistConfirmation) {
     const nextErrors: string[] = [];
     if (!selected) nextErrors.push("Select a listed project.");
     if (!operation) nextErrors.push("Choose an owner request type.");
@@ -501,10 +479,7 @@ export function ProjectOwnerBuilder({
     ) {
       nextErrors.push("Enter one public GitHub repository URL.");
     }
-    if (operation === "delist" && !confirmedDelist) {
-      nextErrors.push("Confirm that Tavernary should delist this project.");
-    }
-    const candidate = candidateManifest();
+    const candidate = candidateManifest(confirmation);
     if (candidate) {
       const result = normalizeProjectOwnerManifest(candidate, vocabularies);
       if (!result.valid) nextErrors.push(...result.errors);
@@ -548,7 +523,9 @@ export function ProjectOwnerBuilder({
           ["explanation", explanation.trim()],
           [
             "delist-confirmation",
-            operation === "delist" ? delistConfirmation : "",
+            reviewManifest.operation === "delist"
+              ? reviewManifest.delist_confirmation
+              : "",
           ],
         ],
         pasteInstruction:
@@ -610,6 +587,11 @@ export function ProjectOwnerBuilder({
       onSubmit={(event) => {
         event.preventDefault();
         setHandoffError("");
+        if (selected && operation === "delist") {
+          setErrors([]);
+          setDelistDialogOpen(true);
+          return;
+        }
         if (validate()) setReviewing(true);
       }}
     >
@@ -673,6 +655,8 @@ export function ProjectOwnerBuilder({
                     checked={operation === value}
                     onChange={() => {
                       setOperation(value);
+                      setDelistConfirmation("");
+                      setDelistDialogOpen(false);
                       setErrors([]);
                     }}
                   />
@@ -800,25 +784,6 @@ export function ProjectOwnerBuilder({
               hint="Use the current public URL for this same repository. GitHub must report the same immutable repository ID."
             />
           ) : null}
-          {operation === "delist" ? (
-            <HelpChoiceGroup
-              legend="Confirm delisting"
-              error={errors.find(
-                (error) =>
-                  error ===
-                  "Confirm that Tavernary should delist this project.",
-              )}
-            >
-              <label className="help-choice">
-                <input
-                  type="checkbox"
-                  checked={confirmedDelist}
-                  onChange={(event) => setConfirmedDelist(event.target.checked)}
-                />
-                <span>{delistConfirmation}</span>
-              </label>
-            </HelpChoiceGroup>
-          ) : null}
           {operation ? (
             <HelpTextArea
               id="owner-explanation"
@@ -841,6 +806,21 @@ export function ProjectOwnerBuilder({
           Review request
         </button>
       </div>
+      {selected && operation === "delist" ? (
+        <PermanentDelistDialog
+          projectName={selected.name}
+          repositoryLabel={selected.repository ?? selected.id}
+          open={delistDialogOpen}
+          onCancel={() => setDelistDialogOpen(false)}
+          onConfirm={(confirmation) => {
+            setDelistConfirmation(confirmation);
+            if (validate(confirmation)) {
+              setDelistDialogOpen(false);
+              setReviewing(true);
+            }
+          }}
+        />
+      ) : null}
     </form>
   );
 }

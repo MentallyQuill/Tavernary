@@ -433,6 +433,7 @@ test("retains a delisted record and snapshot as an explicit tombstone", () => {
       project_id: "owner-alpha",
       repository_id: 42,
       source_fingerprint: fingerprintProjectRecord(record),
+      delist_confirmation: "Alpha",
       original: { visibility: "published" },
       proposed: {
         visibility: "disabled",
@@ -459,6 +460,61 @@ test("retains a delisted record and snapshot as an explicit tombstone", () => {
   expect(result.changedPaths).toEqual([
     "data/registry/projects/owner-alpha.json",
   ]);
+});
+
+test("revalidates typed delist confirmation against the current name", () => {
+  const record = registryRecord();
+  const manifest = {
+    schema_version: 1,
+    request_kind: "project-owner",
+    operation: "delist",
+    project_id: "owner-alpha",
+    repository_id: 42,
+    source_fingerprint: fingerprintProjectRecord(record),
+    delist_confirmation: "  aLpHa  ",
+    original: { visibility: "published" },
+    proposed: {
+      visibility: "disabled",
+      visibility_reason: "removed",
+      refresh_policy: "paused",
+      enrichment_policy: "manual",
+    },
+    explanation: null,
+  };
+
+  expect(() =>
+    applyProjectOwnerRequest({
+      issueNumber: 128,
+      manifest,
+      record,
+      snapshot: repositorySnapshot(),
+      vocabularies,
+    }),
+  ).not.toThrow();
+
+  expect(() =>
+    applyProjectOwnerRequest({
+      issueNumber: 128,
+      manifest: { ...manifest, delist_confirmation: "Al" },
+      record,
+      snapshot: repositorySnapshot(),
+      vocabularies,
+    }),
+  ).toThrow(
+    "Owner delisting confirmation must match the current complete project name.",
+  );
+
+  expect(() =>
+    applyProjectOwnerRequest({
+      issueNumber: 128,
+      manifest,
+      record: registryRecord({ name: "Alpha Renamed" }),
+      snapshot: repositorySnapshot(),
+      vocabularies,
+    }),
+  ).toThrow(
+    "Owner delisting confirmation must match the current complete project name.",
+  );
 });
 
 test("rejects no-op requests and overlapping current-record changes", () => {

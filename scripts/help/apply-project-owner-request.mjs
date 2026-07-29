@@ -299,6 +299,16 @@ export function applyProjectOwnerRequest(input) {
   );
   const manifest = normalizeManifest(input);
   requireCurrentRecord(manifest, input.record);
+  if (
+    manifest.operation === "delist" &&
+    manifest.delist_confirmation.trim().toLocaleLowerCase() !==
+      String(input.record.name).trim().toLocaleLowerCase()
+  ) {
+    fail(
+      "owner-request-invalid",
+      "Owner delisting confirmation must match the current complete project name.",
+    );
+  }
 
   const conflict = detectOwnerRequestConflict({
     manifest,

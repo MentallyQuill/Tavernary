@@ -108,7 +108,9 @@ body:
     id: delist-confirmation
     attributes:
       label: Delist confirmation
-      description: "For delisting, enter exactly: I am requesting that Tavernary delist this project"
+      description: >-
+        For delisting, enter the current complete project display name. The
+        comparison is case-insensitive, but the complete name is required.
     validations:
       required: false
   - type: textarea

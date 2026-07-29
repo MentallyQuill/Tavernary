@@ -45,10 +45,17 @@ export interface OwnerEnvelope<
   explanation: string | null;
 }
 
+export interface OwnerDelistEnvelope extends OwnerEnvelope<
+  "delist",
+  OwnerDelist
+> {
+  delist_confirmation: string;
+}
+
 export type ProjectOwnerManifest =
   | OwnerEnvelope<"edit-card", OwnerCardEdit>
   | OwnerEnvelope<"move-source", OwnerSourceMove, number>
-  | OwnerEnvelope<"delist", OwnerDelist>;
+  | OwnerDelistEnvelope;
 
 export interface OwnerVocabularies {
   frontends:

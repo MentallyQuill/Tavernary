@@ -79,6 +79,26 @@ function editManifest(current = record()) {
   };
 }
 
+function delistManifest(current = record()) {
+  return {
+    schema_version: 1 as const,
+    request_kind: "project-owner",
+    operation: "delist" as const,
+    project_id: "owner-alpha",
+    repository_id: 42,
+    source_fingerprint: fingerprintProjectRecord(current),
+    delist_confirmation: "Alpha",
+    original: { visibility: "published" },
+    proposed: {
+      visibility: "disabled",
+      visibility_reason: "removed",
+      refresh_policy: "paused",
+      enrichment_policy: "manual",
+    },
+    explanation: null,
+  };
+}
+
 function issue(manifest: Record<string, unknown> = editManifest()) {
   return {
     number: 123,
@@ -439,6 +459,29 @@ test("stops without writes when an overlapping value changes before final apply"
       now: "2026-07-28T13:00:00.000Z",
     }),
   ).rejects.toThrow("stale-owner-request");
+  expect(fixture.writeFile).not.toHaveBeenCalled();
+});
+
+test("stops a delist when the current project name changes before final apply", async () => {
+  const fixture = harness({
+    records: [record(), record({ name: "Alpha Renamed" })],
+    manifest: delistManifest(),
+  });
+
+  await expect(
+    generateProjectOwnerRequest({
+      issue: fixture.latest,
+      hostRepository: "Tavernary/Tavernary",
+      root: ownerRepositoryRoot,
+      reportPath: ownerReportPath,
+      request: fixture.request,
+      readFile: fixture.readFile,
+      writeFile: fixture.writeFile,
+      now: "2026-07-28T13:00:00.000Z",
+    }),
+  ).rejects.toThrow(
+    "Owner delisting confirmation must match the current complete project name.",
+  );
   expect(fixture.writeFile).not.toHaveBeenCalled();
 });
 
