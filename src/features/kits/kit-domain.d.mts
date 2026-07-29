@@ -2,6 +2,7 @@ export interface KitDomainProject {
   id: string;
   kind: string;
   visibility?: string;
+  listing_status?: string;
 }
 
 export interface KitDomainDraft {

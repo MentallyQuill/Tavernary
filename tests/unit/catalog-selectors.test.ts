@@ -185,6 +185,7 @@ describe("catalog selectors", () => {
       fork: {
         parentName: "Grandparent",
         parentProjectId: "grandparent",
+        parentUrl: null,
         status: "published",
       },
     });
@@ -193,6 +194,7 @@ describe("catalog selectors", () => {
       fork: {
         parentName: "Parent",
         parentProjectId: "parent",
+        parentUrl: null,
         status: "published",
       },
     });
@@ -212,6 +214,7 @@ describe("catalog selectors", () => {
       fork: {
         parentName: "Parent",
         parentProjectId: "parent",
+        parentUrl: null,
         status: "published",
       },
     });

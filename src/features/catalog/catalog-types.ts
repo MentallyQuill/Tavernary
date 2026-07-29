@@ -44,7 +44,8 @@ export interface CatalogAttribution {
 export interface CatalogForkRelationship {
   parentName: string;
   parentProjectId: string | null;
-  status: "published" | "not-listed" | "unavailable";
+  parentUrl: string | null;
+  status: "published" | "repository" | "not-listed" | "unavailable";
 }
 
 export interface CatalogProject {

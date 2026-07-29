@@ -132,6 +132,77 @@ const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
   ...overrides,
 });
 
+test("builds sibling extension and preset cards from one source snapshot", async () => {
+  const source = {
+    schema_version: 1,
+    id: "github-42",
+    type: "github",
+    repository: "Arif-salah/Megumin-Suite",
+    repository_id: 42,
+    status: "active",
+    status_reason: null,
+    refresh_policy: "automatic",
+  };
+  const sourceBackedCard = (id: string, kind: "extension" | "preset") => ({
+    schema_version: 6,
+    id,
+    source_id: source.id,
+    name: id,
+    kind,
+    summary: `${id} summary.`,
+    metadata_status: "curated",
+    frontends: ["sillytavern"],
+    primary_function: kind === "preset" ? "preset" : "interface-workflow",
+    tags: [],
+    ...(kind === "preset"
+      ? {
+          model_families: ["claude"],
+          completion_formats: ["chat-completion"],
+        }
+      : {}),
+    cataloged_at: "2026-07-29T00:00:00Z",
+    catalog_cohort: "standard",
+    listing_status: "active",
+    listing_status_reason: null,
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  const { project_id: _projectId, ...snapshotFacts } = fixtureSnapshot();
+  const snapshot = {
+    ...snapshotFacts,
+    schema_version: 4,
+    source_id: source.id,
+    repository: {
+      ...snapshotFacts.repository,
+      id: source.repository_id,
+      owner: "Arif-salah",
+      name: "Megumin-Suite",
+      url: "https://github.com/Arif-salah/Megumin-Suite",
+    },
+  };
+
+  const catalog = await buildCatalog({
+    write: false,
+    records: [
+      sourceBackedCard("megumin-extension", "extension"),
+      sourceBackedCard("megumin-preset", "preset"),
+    ],
+    sources: [source],
+    snapshots: [snapshot],
+  });
+
+  expect(catalog.projects.map(({ id }) => id)).toEqual([
+    "megumin-extension",
+    "megumin-preset",
+  ]);
+  expect(catalog.projects[0].canonicalUrl).toBe(
+    catalog.projects[1].canonicalUrl,
+  );
+  expect(catalog.projects[0].community).toEqual(catalog.projects[1].community);
+});
+
 test("derives temporary browser activity from version two evidence", async () => {
   const record = fixtureProject({
     kind: "extension",
@@ -476,6 +547,7 @@ test("resolves a published immediate fork parent into browser-safe data", async 
   expect(catalog.projects.find(({ id }) => id === "child")?.fork).toEqual({
     parentName: "Curated Parent",
     parentProjectId: "parent",
+    parentUrl: null,
     status: "published",
   });
 });
@@ -526,6 +598,7 @@ test("keeps a disabled fork parent name without exposing a link or coordinates",
   expect(relationship).toEqual({
     parentName: "Curated Parent",
     parentProjectId: null,
+    parentUrl: null,
     status: "not-listed",
   });
   expect(JSON.stringify(relationship)).not.toMatch(
@@ -576,6 +649,7 @@ test("keeps unknown fork provenance name-only and emits null for non-forks", asy
   expect(catalog.projects.find(({ id }) => id === "child")?.fork).toEqual({
     parentName: "Unknown Parent",
     parentProjectId: null,
+    parentUrl: null,
     status: "not-listed",
   });
   expect(catalog.projects.find(({ id }) => id === "ordinary")?.fork).toBeNull();

@@ -8,6 +8,7 @@ export interface ValidationResult {
 
 export function validateCatalog(options?: {
   records?: unknown[];
+  sources?: unknown[];
   snapshots?: unknown[];
   refreshManifest?: unknown;
   kitRecords?: unknown[];

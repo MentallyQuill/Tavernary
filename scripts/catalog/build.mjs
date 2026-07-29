@@ -3,9 +3,12 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
+import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
+import { canonicalSourceUrl } from "../../src/features/catalog/source-record.mjs";
 import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { resolveForkRelationship } from "./fork-relationship.mjs";
+import { indexRegistry } from "./registry-context.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -120,9 +123,12 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
   };
 }
 
-function repositoryProject(record, snapshot, vocabularies, now) {
+function repositoryProject(record, source, snapshot, vocabularies, now) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const capabilities = labeled(
+    record.capabilities ?? [],
+    vocabularies.capabilities,
+  );
   const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
@@ -130,10 +136,9 @@ function repositoryProject(record, snapshot, vocabularies, now) {
       vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
-  const owner =
-    snapshot?.repository?.owner ?? record.source.repository.split("/")[0];
+  const owner = snapshot?.repository?.owner ?? source.repository.split("/")[0];
   const attribution = catalogAttribution(
-    record.source.type,
+    source.type,
     owner,
     snapshot?.contributors,
   );
@@ -179,11 +184,7 @@ function repositoryProject(record, snapshot, vocabularies, now) {
       : "pending",
     primaryFunction: primaryFunction.id,
     summary: record.summary,
-    canonicalUrl:
-      snapshot?.repository?.url ??
-      `https://${
-        record.source.type === "github" ? "github.com" : "codeberg.org"
-      }/${record.source.repository}`,
+    canonicalUrl: snapshot?.repository?.url ?? canonicalSourceUrl(source),
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
@@ -226,9 +227,12 @@ function repositoryProject(record, snapshot, vocabularies, now) {
   };
 }
 
-function urlProject(record, vocabularies) {
+function urlProject(record, source, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const capabilities = labeled(
+    record.capabilities ?? [],
+    vocabularies.capabilities,
+  );
   const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
@@ -237,8 +241,8 @@ function urlProject(record, vocabularies) {
       record.primary_function,
   };
   const license = licenseDisplay(
-    record.source.license_status,
-    record.source.license_spdx_id,
+    source.license_status,
+    source.license_spdx_id,
     "url",
   );
 
@@ -250,7 +254,7 @@ function urlProject(record, vocabularies) {
     sourceStatus: "manual",
     primaryFunction: primaryFunction.id,
     summary: record.summary,
-    canonicalUrl: record.source.url,
+    canonicalUrl: source.url,
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
@@ -280,9 +284,9 @@ function urlProject(record, vocabularies) {
     preset:
       record.kind === "preset"
         ? {
-            version: record.source.version,
-            publishedAt: record.source.published_at,
-            artifactSizeBytes: record.source.artifact_size_bytes,
+            version: source.version,
+            publishedAt: source.published_at,
+            artifactSizeBytes: source.artifact_size_bytes,
             ...compatibility,
           }
         : null,
@@ -291,9 +295,12 @@ function urlProject(record, vocabularies) {
   };
 }
 
-function manualProject(record, vocabularies) {
+function manualProject(record, source, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(record.capabilities, vocabularies.capabilities);
+  const capabilities = labeled(
+    record.capabilities ?? [],
+    vocabularies.capabilities,
+  );
   const primaryFunction = {
     id: record.primary_function,
     label:
@@ -309,7 +316,7 @@ function manualProject(record, vocabularies) {
     sourceStatus: "manual",
     primaryFunction: primaryFunction.id,
     summary: record.summary,
-    canonicalUrl: record.source.url,
+    canonicalUrl: source.url,
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
@@ -339,6 +346,7 @@ function manualProject(record, vocabularies) {
 export async function buildCatalog(options = {}) {
   const [
     records,
+    sources,
     snapshots,
     refreshManifest,
     kitRecords,
@@ -352,6 +360,10 @@ export async function buildCatalog(options = {}) {
     completionFormatVocabulary,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
+    options.sources ??
+      (options.records
+        ? []
+        : readOptionalJsonDirectory("data/registry/sources")),
     options.snapshots ??
       Promise.all([
         readJsonDirectory("data/snapshots/github"),
@@ -386,14 +398,31 @@ export async function buildCatalog(options = {}) {
       "completion_formats",
     ),
   };
-  const snapshotsByProject = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+  const snapshotsBySource = new Map(
+    snapshots.map((snapshot) => [
+      snapshot.source_id ?? snapshot.project_id,
+      snapshot,
+    ]),
   );
   const generatedAt = options.now ?? refreshManifest.completed_at;
   const generatedAtIso = new Date(generatedAt).toISOString();
   const recordsByProject = new Map(
     records.map((record) => [record.id, record]),
   );
+  const sourceBackedRecords = records.filter(
+    ({ schema_version: version }) => version === 6,
+  );
+  const sourceBackedSnapshots = snapshots.filter(
+    ({ schema_version: version }) => version === 4,
+  );
+  const registry =
+    sourceBackedRecords.length > 0
+      ? indexRegistry({
+          projects: sourceBackedRecords,
+          sources,
+          snapshots: sourceBackedSnapshots,
+        })
+      : null;
   let projects = [];
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
@@ -405,32 +434,46 @@ export async function buildCatalog(options = {}) {
     if (classificationIssue) {
       throw new Error(`${record.id}: classification ${classificationIssue}`);
     }
-    if (record.visibility !== "published") {
-      continue;
+    const sourceBacked = record.schema_version === 6;
+    const source = sourceBacked
+      ? registry.sourcesById.get(record.source_id)
+      : record.source;
+    const snapshot = snapshotsBySource.get(
+      sourceBacked ? record.source_id : record.id,
+    );
+    if (sourceBacked) {
+      if (
+        !effectiveListingState({ project: record, source, snapshot }).public
+      ) {
+        continue;
+      }
+    } else {
+      if (record.visibility !== "published") {
+        continue;
+      }
+      if (snapshot && hiddenSourceStates.has(snapshot.source_health)) {
+        continue;
+      }
     }
-    const snapshot = snapshotsByProject.get(record.id);
-    if (snapshot && hiddenSourceStates.has(snapshot.source_health)) {
-      continue;
-    }
-    if (record.source.type === "url") {
+    if (source.type === "url") {
       if (record.kind === "preset" || record.kind === "frontend") {
-        projects.push(urlProject(record, vocabularies));
+        projects.push(urlProject(record, source, vocabularies));
       }
       continue;
     }
-    if (record.source.type === "github-organization") {
-      projects.push(manualProject(record, vocabularies));
+    if (source.type === "github-organization") {
+      projects.push(manualProject(record, source, vocabularies));
       continue;
     }
 
     if (!snapshot) {
       projects.push(
-        repositoryProject(record, null, vocabularies, generatedAtIso),
+        repositoryProject(record, source, null, vocabularies, generatedAtIso),
       );
       continue;
     }
     projects.push(
-      repositoryProject(record, snapshot, vocabularies, generatedAtIso),
+      repositoryProject(record, source, snapshot, vocabularies, generatedAtIso),
     );
   }
 
@@ -439,7 +482,7 @@ export async function buildCatalog(options = {}) {
     records
       .filter(
         (record) =>
-          ["github", "codeberg"].includes(record.source.type) &&
+          ["github", "codeberg"].includes(record.source?.type) &&
           Number.isInteger(record.source.repository_id),
       )
       .map((record) => [
@@ -448,13 +491,32 @@ export async function buildCatalog(options = {}) {
       ]),
   );
   const publicProjectIds = new Set(projects.map(({ id }) => id));
+  const publicProjectsBySourceId = new Map();
+  for (const project of projects) {
+    const sourceId = recordsByProject.get(project.id)?.source_id;
+    if (!sourceId) continue;
+    publicProjectsBySourceId.set(sourceId, [
+      ...(publicProjectsBySourceId.get(sourceId) ?? []),
+      { id: project.id, name: project.name },
+    ]);
+  }
   projects = projects.map((project) => ({
     ...project,
-    fork: resolveForkRelationship({
-      snapshot: snapshotsByProject.get(project.id) ?? null,
-      recordsByRepositoryId,
-      publicProjectIds,
-    }),
+    fork:
+      recordsByProject.get(project.id)?.schema_version === 6
+        ? resolveForkRelationship({
+            snapshot:
+              snapshotsBySource.get(
+                recordsByProject.get(project.id)?.source_id,
+              ) ?? null,
+            sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
+            publicProjectsBySourceId,
+          })
+        : resolveForkRelationship({
+            snapshot: snapshotsBySource.get(project.id) ?? null,
+            recordsByRepositoryId,
+            publicProjectIds,
+          }),
   }));
   const publicProjectsById = new Map(
     projects.map((project) => [project.id, project]),
@@ -470,19 +532,31 @@ export async function buildCatalog(options = {}) {
     .map((kit) => {
       const components = kit.project_ids.map((projectId) => {
         const record = recordsByProject.get(projectId);
-        const snapshot = snapshotsByProject.get(projectId);
+        const sourceBacked = record?.schema_version === 6;
+        const source = sourceBacked
+          ? registry.sourcesById.get(record.source_id)
+          : record?.source;
+        const snapshot = snapshotsBySource.get(
+          sourceBacked ? record.source_id : projectId,
+        );
         const sourceHealth = snapshot?.source_health;
         const sourceFlagged = hiddenSourceStates.has(sourceHealth);
-        const registryFlagged = record?.visibility !== "published";
+        const listing = sourceBacked
+          ? effectiveListingState({ project: record, source, snapshot })
+          : {
+              public: record?.visibility === "published" && !sourceFlagged,
+              reason: record?.visibility_reason ?? sourceHealth ?? null,
+            };
+        const registryFlagged = !listing.public;
         const availability =
-          !record || sourceFlagged || registryFlagged ? "flagged" : "available";
+          !record || registryFlagged ? "flagged" : "available";
         const unavailableReason = registryFlagged
-          ? record.visibility_reason
-          : sourceHealth === "identity-change"
+          ? listing.reason === "identity-change"
             ? "identity-change"
-            : sourceFlagged
+            : ["deleted", "private"].includes(listing.reason)
               ? "source-unavailable"
-              : null;
+              : listing.reason
+          : null;
         const publicProject = publicProjectsById.get(projectId) ?? null;
 
         return {

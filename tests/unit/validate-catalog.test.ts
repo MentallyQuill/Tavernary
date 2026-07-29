@@ -77,7 +77,74 @@ const validSnapshotV2: Record<string, any> = {
   stale_since: null,
 };
 
+const validSourceV1 = {
+  schema_version: 1,
+  id: "github-1",
+  type: "github",
+  repository: "example/valid-preset",
+  repository_id: 1,
+  status: "active",
+  status_reason: null,
+  refresh_policy: "automatic",
+};
+
+const validRecordV6 = {
+  schema_version: 6,
+  id: "valid-extension",
+  source_id: validSourceV1.id,
+  name: "Valid Extension",
+  kind: "extension",
+  summary: "A valid source-backed test fixture.",
+  metadata_status: "curated",
+  frontends: ["sillytavern"],
+  primary_function: "interface-workflow",
+  tags: [],
+  cataloged_at: "2026-07-29T00:00:00Z",
+  catalog_cohort: "standard",
+  listing_status: "active",
+  listing_status_reason: null,
+  metadata_policy: {
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
+  },
+};
+
+const { project_id: _legacyProjectId, ...validSnapshotFacts } = validSnapshotV2;
+const validSnapshotV4 = {
+  ...validSnapshotFacts,
+  schema_version: 4,
+  source_id: validSourceV1.id,
+};
+
 describe("catalog validation", () => {
+  test("accepts sibling v6 cards sharing one source and reports a missing source", async () => {
+    const sibling = {
+      ...validRecordV6,
+      id: "valid-preset-sibling",
+      name: "Valid Preset Sibling",
+      kind: "preset",
+      primary_function: "preset",
+      model_families: ["claude"],
+      completion_formats: ["chat-completion"],
+    };
+    const valid = await validateCatalog({
+      records: [validRecordV6, sibling],
+      sources: [validSourceV1],
+      snapshots: [validSnapshotV4],
+    });
+
+    expect(valid.errors).toEqual([]);
+
+    const missing = await validateCatalog({
+      records: [validRecordV6, sibling],
+      sources: [],
+      snapshots: [validSnapshotV4],
+    });
+    expect(missing.errors).toContain(
+      "valid-extension: source github-1 does not exist",
+    );
+  });
+
   test("accepts the production catalog at its current Kit counts", async () => {
     const countJsonFiles = async (directory: string) =>
       (await readdir(resolve(directory))).filter((file) =>

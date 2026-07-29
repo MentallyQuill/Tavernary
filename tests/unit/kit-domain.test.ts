@@ -8,6 +8,7 @@ const projects = [
   { id: "memory", kind: "extension", visibility: "published" },
   { id: "preset", kind: "preset", visibility: "published" },
   { id: "flagged", kind: "extension", visibility: "quarantined" },
+  { id: "retired-v6", kind: "extension", listing_status: "retired" },
 ];
 
 describe("Kit domain", () => {
@@ -105,6 +106,21 @@ describe("Kit domain", () => {
         "A Kit requires at least two non-Frontend projects.",
       ]),
     );
+  });
+
+  test("rejects a source-backed card that is not actively listed", () => {
+    const result = validateKitDraft(
+      {
+        operation: "create",
+        kitId: null,
+        title: "Retired Project Kit",
+        description: "A compact story stack.",
+        projectIds: ["frontend", "retired-v6", "preset"],
+      },
+      projects,
+    );
+
+    expect(result.errors).toContain("A Kit cannot contain flagged projects.");
   });
 
   test("accepts 600 description characters and rejects 601", () => {
