@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "provider": "github",
+  "project_id": "leandrojofre-sillytavern-mathcros",
+  "repository": {
+    "id": 932215365,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-Mathcros",
+    "url": "https://github.com/leandrojofre/SillyTavern-Mathcros",
+    "description": null,
+    "default_branch": "release",
+    "head_sha": "f2d9ef8e7d6b4f924dd02a588d772e10439b06d4",
+    "head_committed_at": "2026-05-05T21:51:37.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-02-13T15:00:40.000Z",
+    "size_kb": 657
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-05T21:50:43.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-05-05T21:51:48.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-29T21:22:05.694Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "f2d9ef8e7d6b4f924dd02a588d772e10439b06d4"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T21:22:05.694Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leandrojofre", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T21:22:05.694Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

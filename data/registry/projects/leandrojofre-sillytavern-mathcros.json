@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "leandrojofre-sillytavern-mathcros",
+  "name": "SillyTavern-Mathcros",
+  "kind": "extension",
+  "summary": "Mathcros is a SillyTavern extension that enables inline math operations directly inside prompts. It integrates with SillyTavern's macro system to evaluate expressions within chat text.",
+  "metadata_status": "curated",
+  "source": {
+    "type": "github",
+    "repository": "leandrojofre/SillyTavern-Mathcros",
+    "repository_id": 932215365
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "developer-infrastructure",
+  "capabilities": ["prompt-engineering"],
+  "cataloged_at": "2026-07-29T21:22:05.694Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
