@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import { useModalSurface } from "@/hooks/use-modal-surface";
 
@@ -9,13 +9,11 @@ const noInertSelectors: readonly string[] = [];
 export function PermanentDelistDialog({
   projectName,
   repositoryLabel,
-  open,
   onCancel,
   onConfirm,
 }: {
   projectName: string;
   repositoryLabel: string;
-  open: boolean;
   onCancel: () => void;
   onConfirm: (confirmation: string) => void;
 }) {
@@ -28,19 +26,13 @@ export function PermanentDelistDialog({
   const matches =
     confirmation.trim().toLocaleLowerCase() === projectName.toLocaleLowerCase();
 
-  useEffect(() => {
-    if (open) setConfirmation("");
-  }, [open, projectName]);
-
   useModalSurface({
-    active: open,
+    active: true,
     containerRef: dialogRef,
     initialFocusRef: cancelRef,
     onDismiss: onCancel,
     inertSelectors: noInertSelectors,
   });
-
-  if (!open) return null;
 
   return (
     <div

@@ -806,11 +806,11 @@ export function ProjectOwnerBuilder({
           Review request
         </button>
       </div>
-      {selected && operation === "delist" ? (
+      {selected && operation === "delist" && delistDialogOpen ? (
         <PermanentDelistDialog
+          key={selected.id}
           projectName={selected.name}
           repositoryLabel={selected.repository ?? selected.id}
-          open={delistDialogOpen}
           onCancel={() => setDelistDialogOpen(false)}
           onConfirm={(confirmation) => {
             setDelistConfirmation(confirmation);

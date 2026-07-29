@@ -18,7 +18,6 @@ test("requires the complete project name before permanent delisting", async () =
     <PermanentDelistDialog
       projectName="Owner Extension"
       repositoryLabel="CurrentOwner/Extension"
-      open
       onCancel={onCancel}
       onConfirm={onConfirm}
     />,
