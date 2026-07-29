@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
 import {
   normalizeProjectSubmissionManifest,
   type ProjectSubmissionManifest,
@@ -9,12 +10,21 @@ import {
 } from "../project-submission-manifest.mjs";
 import { openProjectSubmission } from "../submission-transport";
 import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
+import {
+  EXTENSION_PRIMARY_FUNCTION_IDS,
+  STRUCTURAL_PRIMARY_FUNCTIONS,
+} from "@/features/catalog/primary-function-contract.mjs";
 
 const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
 
 const frontendEligibility =
   "Frontends and Extensions require a public GitHub or Codeberg repository.";
+
+const extensionPrimaryFunctions =
+  primaryFunctionVocabulary.primary_functions.filter((option) =>
+    EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
+  );
 
 export interface SubmissionFrontendOption {
   id: string;
@@ -26,6 +36,7 @@ type SubmissionField =
   | "project-url"
   | "project-name"
   | "project-description"
+  | "primary-function"
   | "frontend-selection"
   | "other-frontend-name"
   | "other-frontend-url"
@@ -78,6 +89,7 @@ function requiresExternalMetadata(
 }
 
 function manifestErrorField(message: string): SubmissionField {
+  if (message.includes("primary function")) return "primary-function";
   if (message.includes("project name")) return "project-name";
   if (message.includes("short description")) return "project-description";
   if (
@@ -118,6 +130,7 @@ export function ProjectSubmissionBuilder({
   const [projectType, setProjectType] =
     useState<ProjectSubmissionType>("frontend");
   const [sourceUrl, setSourceUrl] = useState("");
+  const [primaryFunction, setPrimaryFunction] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [additionalContext, setAdditionalContext] = useState("");
@@ -187,6 +200,12 @@ export function ProjectSubmissionBuilder({
   }
 
   function buildManifest(): ProjectSubmissionManifest | null {
+    const submittedPrimaryFunction =
+      projectType === "frontend"
+        ? STRUCTURAL_PRIMARY_FUNCTIONS.frontend
+        : projectType === "preset"
+          ? STRUCTURAL_PRIMARY_FUNCTIONS.preset
+          : primaryFunction;
     const activeFrontends =
       projectType === "frontend" || frontendIndependent
         ? { known_ids: [], other: [] }
@@ -197,8 +216,9 @@ export function ProjectSubmissionBuilder({
               : [],
           };
     const validation = normalizeProjectSubmissionManifest({
-      schema_version: 2,
+      schema_version: 3,
       project_type: projectType,
+      primary_function: submittedPrimaryFunction,
       source_url: sourceUrl,
       name,
       description,
@@ -306,6 +326,7 @@ export function ProjectSubmissionBuilder({
             value={projectType}
             onChange={(event) => {
               setProjectType(event.target.value as ProjectSubmissionType);
+              setPrimaryFunction("");
               setFrontendIndependent(false);
               setModelFamilies([]);
               setIncludeOtherModelFamily(false);
@@ -321,6 +342,45 @@ export function ProjectSubmissionBuilder({
             <option value="preset">System Preset</option>
           </select>
         </div>
+
+        {projectType === "extension" ? (
+          <div className="submission-field">
+            <label htmlFor="project-primary-function">Primary function</label>
+            <select
+              id="project-primary-function"
+              value={primaryFunction}
+              required
+              aria-invalid={Boolean(errorFor("primary-function"))}
+              aria-describedby={
+                errorFor("primary-function")
+                  ? "project-primary-function-help project-primary-function-error"
+                  : "project-primary-function-help"
+              }
+              onChange={(event) => setPrimaryFunction(event.target.value)}
+            >
+              <option value="">Select a primary function</option>
+              {extensionPrimaryFunctions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <ul
+              id="project-primary-function-help"
+              className="submission-option-help"
+            >
+              {extensionPrimaryFunctions.map((option) => (
+                <li key={option.id}>
+                  <strong>{option.label}:</strong> {option.description}
+                </li>
+              ))}
+            </ul>
+            <InlineError
+              id="project-primary-function-error"
+              message={errorFor("primary-function")}
+            />
+          </div>
+        ) : null}
 
         <div className="submission-field">
           <label htmlFor="project-url">Project URL</label>

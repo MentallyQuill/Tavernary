@@ -3,14 +3,23 @@ import { readFile } from "node:fs/promises";
 import { expect, test } from "vitest";
 
 test("documents project submission automation and recovery controls", async () => {
-  const [readme, contributorGuide, runbook, lifecycle, issueForm] =
-    await Promise.all([
-      readFile("README.md", "utf8"),
-      readFile("docs/contributing/submission-and-review.md", "utf8"),
-      readFile("docs/maintenance/operations-runbook.md", "utf8"),
-      readFile("docs/architecture/catalog-lifecycle.md", "utf8"),
-      readFile(".github/ISSUE_TEMPLATE/01-project-submission.yml", "utf8"),
-    ]);
+  const [
+    readme,
+    contributorGuide,
+    runbook,
+    lifecycle,
+    issueForm,
+    schemaReference,
+    enrichmentReference,
+  ] = await Promise.all([
+    readFile("README.md", "utf8"),
+    readFile("docs/contributing/submission-and-review.md", "utf8"),
+    readFile("docs/maintenance/operations-runbook.md", "utf8"),
+    readFile("docs/architecture/catalog-lifecycle.md", "utf8"),
+    readFile(".github/ISSUE_TEMPLATE/01-project-submission.yml", "utf8"),
+    readFile("docs/reference/project-record-schema.md", "utf8"),
+    readFile("docs/reference/catalog-enrichment-report.md", "utf8"),
+  ]);
 
   for (const phrase of [
     "generate-project-submission.yml",
@@ -48,4 +57,16 @@ test("documents project submission automation and recovery controls", async () =
   }
   expect(runbook).toContain("providers.codeberg");
   expect(lifecycle).toContain("data/snapshots/codeberg/*.json");
+  expect(contributorGuide).toContain(
+    "submitted Extension primary function is authoritative",
+  );
+  expect(lifecycle).toContain(
+    "Frontends always use `frontend`; System Presets always use `preset`",
+  );
+  expect(lifecycle).toContain("never changes the canonical `primary_function`");
+  expect(enrichmentReference).toContain(
+    "summary, `metadata_status`, and `capabilities`",
+  );
+  expect(enrichmentReference).toContain("intake-only classification review");
+  expect(schemaReference).not.toContain("`uncategorized`");
 });

@@ -33,7 +33,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
 
   await expect(
     page.getByText(
-      "GitHub will verify the issue author against the current personal owner.",
+      "GitHub will verify either current personal-owner authority or reviewed Tavernary staff authority.",
     ),
   ).toBeVisible();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
@@ -66,14 +66,14 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
   expect(manifest.source_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
 });
 
-test("keeps unsupported organization listings visible with a report fallback", async ({
+test("keeps organization listings editable for trusted staff with a report fallback", async ({
   page,
 }) => {
   await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
 
   await expect(
     page.getByText(
-      "Organization suite listings require a public project report.",
+      /Organization suite listings require a public project report/iu,
     ),
   ).toBeVisible();
   await expect(
@@ -84,7 +84,7 @@ test("keeps unsupported organization listings visible with a report fallback", a
   );
   await expect(
     page.getByRole("radio", { name: "Edit card details" }),
-  ).toHaveCount(0);
+  ).toBeVisible();
 });
 
 test("falls back from an unknown owner project and requires a listed selection", async ({

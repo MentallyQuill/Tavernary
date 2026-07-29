@@ -1,4 +1,5 @@
 import type { KitSubmissionValidation } from "./validate-kit-submission.mjs";
+import type { TrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 
 export interface KitSubmissionIssue {
   number: number;
@@ -7,9 +8,29 @@ export interface KitSubmissionIssue {
   state: string;
   labels: Array<string | { name: string }>;
   user: { id: number; login: string };
+  author_association?: string;
 }
 
 export function parseKitIssueFields(body: string): { manifest: string };
+export function validateKitIssue(input: {
+  issue: Pick<
+    KitSubmissionIssue,
+    "number" | "body" | "user" | "author_association"
+  >;
+  projects: Array<{ id: string; kind: string; visibility?: string }>;
+  kits: Array<{
+    id: string;
+    status: string;
+    author: { github_user_id: number; login: string };
+    source_issue_number?: number;
+    project_ids: string[];
+  }>;
+  blockedUsers: {
+    schema_version?: number;
+    blocked: Array<{ github_user_id: number; login: string; reason: string }>;
+  };
+  trustedEditors?: TrustedEditorRegistry;
+}): KitSubmissionValidation;
 export function buildKitValidationComment(
   validation: KitSubmissionValidation,
 ): string;

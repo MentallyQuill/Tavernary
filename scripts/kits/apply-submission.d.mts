@@ -30,6 +30,7 @@ export function applyKitSubmission(input: {
   manifest: KitSubmissionManifest;
   issue: { number: number; user: { id: number; login: string } };
   existingKit?: CanonicalKit;
+  editAuthority?: "author" | "tavernary-staff";
   now: string;
 }): CanonicalKit;
 

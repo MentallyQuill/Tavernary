@@ -99,6 +99,18 @@ test("writes only declared repository files and the external report", async () =
 
 test("prepares a GitHub draft through injected source clients", async () => {
   const headSha = "a".repeat(40);
+  const enrich = vi.fn(async () => ({
+    status: "curated" as const,
+    summary:
+      "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
+    capabilities: ["planning-reasoning"],
+    classification_review: {
+      status: "possible-mismatch" as const,
+      suggested_primary_function: "interface-workflow",
+      explanation:
+        "The source primarily describes user-facing editing controls.",
+    },
+  }));
   const fetchContributors = vi.fn(async () => ({
     accounts: [
       { login: "Owner", type: "User" },
@@ -124,8 +136,9 @@ test("prepares a GitHub draft through injected source clients", async () => {
         "",
         "```json",
         JSON.stringify({
-          schema_version: 1,
+          schema_version: 3,
           project_type: "extension",
+          primary_function: "memory-retrieval",
           source_url: "https://github.com/Owner/Repo",
           name: "Repository Tool",
           description: "Submitted description.",
@@ -216,13 +229,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
         },
       }),
       fetchContributors,
-      enrich: async () => ({
-        status: "curated",
-        summary:
-          "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-        primary_function: "generation-reasoning",
-        capabilities: ["planning-reasoning"],
-      }),
+      enrich,
     },
   });
 
@@ -230,7 +237,24 @@ test("prepares a GitHub draft through injected source clients", async () => {
     id: "owner-repo",
     source: { repository_id: 42 },
     metadata_status: "curated",
+    primary_function: "memory-retrieval",
   });
+  expect(draft.classificationReview).toMatchObject({
+    status: "possible-mismatch",
+    submitted_primary_function: "memory-retrieval",
+    suggested_primary_function: "interface-workflow",
+  });
+  expect(enrich).toHaveBeenCalledWith(
+    expect.objectContaining({
+      classificationReviewRequest: {
+        submittedPrimaryFunction: "memory-retrieval",
+        allowedPrimaryFunctions: expect.arrayContaining([
+          expect.objectContaining({ id: "memory-retrieval" }),
+          expect.objectContaining({ id: "interface-workflow" }),
+        ]),
+      },
+    }),
+  );
   expect(draft.snapshot).toMatchObject({
     schema_version: 3,
     provider: "github",
@@ -325,8 +349,9 @@ test("prepares a Codeberg draft through the repository provider", async () => {
         "",
         "```json",
         JSON.stringify({
-          schema_version: 2,
+          schema_version: 3,
           project_type: "extension",
+          primary_function: "interface-workflow",
           source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
           name: "Swipe Scrubber",
           description: "Swipe controls.",
@@ -356,8 +381,12 @@ test("prepares a Codeberg draft through the repository provider", async () => {
       enrich: async () => ({
         status: "curated",
         summary: "Adds concise swipe controls for roleplay conversations.",
-        primary_function: "interface-workflow",
         capabilities: ["message-navigation"],
+        classification_review: {
+          status: "confirmed",
+          suggested_primary_function: "interface-workflow",
+          explanation: null,
+        },
       }),
     },
   });
@@ -389,8 +418,9 @@ test("rejects a generic external Frontend before source probing", async () => {
           "",
           "```json",
           JSON.stringify({
-            schema_version: 2,
+            schema_version: 3,
             project_type: "frontend",
+            primary_function: "frontend",
             source_url: "https://example.com/nova",
             name: "Nova Frontend",
             description: "A public-source roleplay frontend.",

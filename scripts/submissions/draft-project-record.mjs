@@ -1,6 +1,9 @@
 import { defaultEnrichmentFields } from "../catalog/enrichment-policy.mjs";
+import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
+
+const extensionPrimaryFunctions = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
 
 function slug(value) {
   return value
@@ -56,16 +59,77 @@ function fallbackEnrichment(input, name) {
   return {
     summary,
     metadata_status: "provisional",
-    primary_function:
-      input.admitted.manifest.project_type === "frontend"
-        ? "frontend"
-        : "uncategorized",
     capabilities: [],
     warning: input.enrichment?.message
       ? `Automated enrichment failed: ${input.enrichment.message}`
       : "Automated enrichment was unavailable; deterministic provisional metadata was used.",
     name,
   };
+}
+
+function unavailableClassificationReview(submittedPrimaryFunction) {
+  return {
+    review: {
+      status: "classification-check-unavailable",
+      submitted_primary_function: submittedPrimaryFunction,
+      suggested_primary_function: null,
+      explanation: "The optional classification check was unavailable.",
+    },
+    warning:
+      "The optional classification check was unavailable; the submitted primary function was preserved.",
+  };
+}
+
+function sanitizedClassificationReview(input) {
+  if (input.admitted.manifest.project_type !== "extension") {
+    return { review: null, warning: null };
+  }
+  const submittedPrimaryFunction = input.admitted.manifest.primary_function;
+  const review =
+    input.enrichment?.status === "curated"
+      ? input.enrichment.classification_review
+      : null;
+  if (
+    review?.status === "confirmed" &&
+    review.suggested_primary_function === submittedPrimaryFunction &&
+    review.explanation === null
+  ) {
+    return {
+      review: {
+        status: "confirmed",
+        submitted_primary_function: submittedPrimaryFunction,
+        suggested_primary_function: submittedPrimaryFunction,
+        explanation: null,
+      },
+      warning: null,
+    };
+  }
+  const explanation =
+    typeof review?.explanation === "string"
+      ? review.explanation
+          .replace(/[\u0000-\u001f\u007f<>]+/gu, " ")
+          .trim()
+          .replace(/\s+/gu, " ")
+          .slice(0, 240)
+          .trimEnd()
+      : "";
+  if (
+    review?.status === "possible-mismatch" &&
+    extensionPrimaryFunctions.has(review.suggested_primary_function) &&
+    review.suggested_primary_function !== submittedPrimaryFunction &&
+    explanation.length > 0
+  ) {
+    return {
+      review: {
+        status: "possible-mismatch",
+        submitted_primary_function: submittedPrimaryFunction,
+        suggested_primary_function: review.suggested_primary_function,
+        explanation,
+      },
+      warning: null,
+    };
+  }
+  return unavailableClassificationReview(submittedPrimaryFunction);
 }
 
 export async function draftProjectRecord(input) {
@@ -98,16 +162,17 @@ export async function draftProjectRecord(input) {
     identity.name ||
     identity.pathSlug;
   const source = projectSource(identity, observation);
+  const primaryFunction = admitted.manifest.primary_function;
   const enrichment =
     input.enrichment?.status === "curated"
       ? {
           summary: input.enrichment.summary,
           metadata_status: "curated",
-          primary_function: input.enrichment.primary_function,
           capabilities: [...input.enrichment.capabilities],
           warning: null,
         }
       : fallbackEnrichment(input, name);
+  const classificationReview = sanitizedClassificationReview(input);
   let frontendIds = [...admitted.frontendIds];
   let frontendVocabulary;
   const warnings = [...admitted.warnings];
@@ -128,6 +193,7 @@ export async function draftProjectRecord(input) {
     if (proposal.warning) warnings.push(proposal.warning);
   }
   if (enrichment.warning) warnings.push(enrichment.warning);
+  if (classificationReview.warning) warnings.push(classificationReview.warning);
 
   const record = {
     schema_version: 5,
@@ -138,7 +204,7 @@ export async function draftProjectRecord(input) {
     metadata_status: enrichment.metadata_status,
     source,
     frontends: [...new Set(frontendIds)].sort(),
-    primary_function: enrichment.primary_function,
+    primary_function: primaryFunction,
     capabilities: [...new Set(enrichment.capabilities)].sort(),
     ...(admitted.manifest.project_type === "preset" &&
     admitted.manifest.preset_compatibility
@@ -165,6 +231,7 @@ export async function draftProjectRecord(input) {
     ...(frontendVocabulary ? { frontendVocabulary } : {}),
     submitted: {
       project_type: admitted.manifest.project_type,
+      primary_function: primaryFunction,
       source_url: admitted.manifest.source_url,
       name: admitted.manifest.name,
       description: admitted.manifest.description,
@@ -186,10 +253,10 @@ export async function draftProjectRecord(input) {
       project_id: id,
       name,
       summary: enrichment.summary,
-      primary_function: enrichment.primary_function,
       capabilities: enrichment.capabilities,
       frontend_ids: frontendIds,
     },
+    classificationReview: classificationReview.review,
     warnings: [...new Set(warnings)],
   };
 }

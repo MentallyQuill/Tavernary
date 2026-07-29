@@ -89,7 +89,8 @@ function issue(manifest: Record<string, unknown> = editManifest()) {
 ${JSON.stringify(manifest)}
 \`\`\``,
     labels: ["issue-admitted", "project-owner-request"],
-    user: { login: "Owner" },
+    user: { id: 100, login: "Owner" },
+    author_association: "NONE",
     url: "https://api.github.com/repos/Attacker/Wrong/issues/123",
     updated_at: "2026-07-28T12:00:00Z",
   };
@@ -278,7 +279,8 @@ test("accepts only an equivalent freshly regenerated owner report", () => {
     project_id: "owner-alpha",
     operation: "edit-card" as const,
     repository_id: 42,
-    verified_owner_login: "Owner",
+    authority_type: "repository-owner" as const,
+    actor_login: "Owner",
     request_fingerprint: "a".repeat(64),
     generated_at: "2026-07-28T13:00:00.000Z",
     before: { summary: "Original summary." },
@@ -340,7 +342,8 @@ test("revalidates latest authority and state before writing only the approved re
     project_id: "owner-alpha",
     operation: "edit-card",
     repository_id: 42,
-    verified_owner_login: "Owner",
+    authority_type: "repository-owner",
+    actor_login: "Owner",
     request_fingerprint: expect.stringMatching(/^[a-f0-9]{64}$/u),
     generated_at: "2026-07-28T13:00:00.000Z",
     before: expect.any(Object),
@@ -358,6 +361,65 @@ test("revalidates latest authority and state before writing only the approved re
   expect(JSON.stringify(fixture.writes)).not.toContain(
     "src/generated/catalog.json",
   );
+});
+
+test("revalidates a trusted staff edit without resolving repository identity", async () => {
+  const current = record({
+    source: { type: "url", url: "https://example.com/alpha" },
+  });
+  const staffManifest = {
+    ...editManifest(current),
+    repository_id: null,
+  };
+  const latest = {
+    ...issue(staffManifest),
+    user: { id: 2_625_904, login: "MentallyQuill" },
+    author_association: "OWNER",
+  };
+  const readFile = vi.fn(async (path: string) => {
+    const normalized = path.replaceAll("\\", "/");
+    const vocabulary = vocabularyJson(normalized);
+    if (vocabulary !== null) return vocabulary;
+    if (normalized.endsWith("/data/registry/projects/owner-alpha.json")) {
+      return JSON.stringify(current);
+    }
+    throw new Error(`unexpected read ${normalized}`);
+  });
+  const request = vi.fn(async (path: string) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/123") return latest;
+    throw new Error(`unexpected request ${path}`);
+  });
+  const writes: Array<{ path: string; value: string }> = [];
+
+  const generated = await generateProjectOwnerRequest({
+    issue: latest,
+    hostRepository: "Tavernary/Tavernary",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
+    request,
+    readFile,
+    writeFile: vi.fn(async (path: string, value: string) => {
+      writes.push({ path: path.replaceAll("\\", "/"), value });
+    }),
+    now: "2026-07-28T13:00:00.000Z",
+  });
+
+  expect(generated).toMatchObject({
+    authorityType: "tavernary-staff",
+    actorLogin: "MentallyQuill",
+    report: {
+      repository_id: null,
+      authority_type: "tavernary-staff",
+      actor_login: "MentallyQuill",
+    },
+  });
+  expect(request).not.toHaveBeenCalledWith(
+    expect.stringContaining("repositories"),
+  );
+  expect(JSON.parse(writes[0].value)).toMatchObject({
+    source: { type: "url", url: "https://example.com/alpha" },
+    summary: "Owner-authored summary.",
+  });
 });
 
 test("stops without writes when an overlapping value changes before final apply", async () => {

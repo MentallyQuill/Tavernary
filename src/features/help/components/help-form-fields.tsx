@@ -190,9 +190,9 @@ export function HelpSelectField({
         {children}
       </select>
       {hint ? (
-        <p className="help-hint" id={hintId}>
+        <div className="help-hint" id={hintId}>
           {hint}
-        </p>
+        </div>
       ) : null}
       {error ? (
         <p className="help-field-error" id={errorId}>

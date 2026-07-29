@@ -4,6 +4,7 @@ const markerStart = "<!-- tavernary-project-owner-pr";
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const LOGIN_PATTERN = /^(?!-)[A-Za-z0-9-]{1,39}(?<!-)$/u;
 const OPERATIONS = new Set(["edit-card", "move-source", "delist"]);
+const AUTHORITY_TYPES = new Set(["repository-owner", "tavernary-staff"]);
 
 function safeText(value, limit = 400) {
   const rendered =
@@ -61,7 +62,8 @@ function validMarker(marker) {
     "project_id",
     "operation",
     "repository_id",
-    "verified_owner_login",
+    "authority_type",
+    "actor_login",
     "generated_head_sha",
     "generated_paths",
   ]);
@@ -75,9 +77,14 @@ function validMarker(marker) {
     marker.issue_number < 1 ||
     !PROJECT_ID_PATTERN.test(marker.project_id) ||
     !OPERATIONS.has(marker.operation) ||
-    !Number.isSafeInteger(marker.repository_id) ||
-    marker.repository_id < 1 ||
-    !LOGIN_PATTERN.test(marker.verified_owner_login) ||
+    (marker.repository_id !== null &&
+      (!Number.isSafeInteger(marker.repository_id) ||
+        marker.repository_id < 1)) ||
+    (marker.operation === "move-source" &&
+      (!Number.isSafeInteger(marker.repository_id) ||
+        marker.repository_id < 1)) ||
+    !AUTHORITY_TYPES.has(marker.authority_type) ||
+    !LOGIN_PATTERN.test(marker.actor_login) ||
     !/^[a-f0-9]{40}$/u.test(marker.generated_head_sha)
   ) {
     return false;
@@ -103,7 +110,8 @@ export function renderOwnerRequestPullRequest(input) {
     input.report.project_id !== input.marker.project_id ||
     input.report.operation !== input.marker.operation ||
     input.report.repository_id !== input.marker.repository_id ||
-    input.report.verified_owner_login !== input.marker.verified_owner_login ||
+    input.report.authority_type !== input.marker.authority_type ||
+    input.report.actor_login !== input.marker.actor_login ||
     !exactPaths(input.report.generated_paths, input.marker.generated_paths)
   ) {
     throw new Error("Owner pull request review input is inconsistent.");
@@ -123,7 +131,9 @@ export function renderOwnerRequestPullRequest(input) {
     "",
     `Closes #${input.issueNumber}`,
     "",
-    `Verified repository owner: \`${input.marker.verified_owner_login}\``,
+    input.marker.authority_type === "repository-owner"
+      ? `Verified repository owner: \`${input.marker.actor_login}\``
+      : `Authorized Tavernary staff actor: \`${input.marker.actor_login}\``,
     "",
     `Operation: \`${input.marker.operation}\``,
     "",
@@ -143,7 +153,7 @@ export function renderOwnerRequestPullRequest(input) {
     "",
     "## Maintainer checklist",
     "",
-    "- [ ] Repository identity and personal-owner authority were verified",
+    "- [ ] Authenticated actor and applicable authority route were verified",
     "- [ ] Requested before and after values are accurate",
     "- [ ] Enrichment policy and refresh policy effects are appropriate",
     "- [ ] Only the marker-owned registry and optional source-move snapshot paths changed",
@@ -245,7 +255,8 @@ export function planOwnerPrUpdate(input) {
       existingOwnerMarker.project_id !== input.projectId ||
       existingOwnerMarker.operation !== input.operation ||
       existingOwnerMarker.repository_id !== input.repositoryId ||
-      existingOwnerMarker.verified_owner_login !== input.verifiedOwnerLogin ||
+      existingOwnerMarker.authority_type !== input.authorityType ||
+      existingOwnerMarker.actor_login !== input.actorLogin ||
       !exactPaths(existingOwnerMarker.generated_paths, input.generatedPaths))
   ) {
     return {

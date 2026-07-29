@@ -57,7 +57,6 @@ Canonical source-of-truth intent:
 
 ## Pipeline scripts
 
-- `npm run catalog:migrate`: converts intake shape into schema-compliant registry files (audit-oriented).
 - `npm run catalog:validate`: validates registry + snapshots + generated manifest.
 - `npm run catalog:build`: regenerates `src/generated/catalog.json`.
 - `npm run catalog:refresh`: updates GitHub snapshots and manifest.

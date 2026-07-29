@@ -8,7 +8,7 @@ export interface GitHubRepositoryIdentity {
 
 export interface OwnerAuthorityInput {
   issueAuthor: string;
-  manifestRepositoryId: number;
+  manifestRepositoryId: number | null;
   record: {
     source?: {
       type?: string;
@@ -22,7 +22,12 @@ export interface OwnerAuthorityInput {
 }
 
 export type OwnerAuthorityDecision =
-  | { authorized: true; ownerLogin: string }
+  | {
+      authorized: true;
+      authorityType: "repository-owner";
+      actorLogin: string;
+      ownerLogin: string;
+    }
   | { authorized: false; reasonCode: string };
 
 export interface OwnerConflictInput {

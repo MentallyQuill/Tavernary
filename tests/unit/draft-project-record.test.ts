@@ -5,8 +5,9 @@ import { draftProjectRecord } from "../../scripts/submissions/draft-project-reco
 const admittedGithubExtension = {
   status: "admitted" as const,
   manifest: {
-    schema_version: 1 as const,
+    schema_version: 3 as const,
     project_type: "extension" as const,
+    primary_function: "generation-reasoning",
     source_url: "https://github.com/Owner/Repo",
     name: "Repository Tool",
     description: "Submitted description.",
@@ -105,8 +106,12 @@ test("drafts a schema-v4 GitHub project with permanent identity", async () => {
       status: "curated",
       summary:
         "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-      primary_function: "generation-reasoning",
       capabilities: ["planning-reasoning"],
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "generation-reasoning",
+        explanation: null,
+      },
     },
     now: "2026-07-25T18:00:00.000Z",
   });
@@ -133,6 +138,65 @@ test("drafts a schema-v4 GitHub project with permanent identity", async () => {
   });
 });
 
+test("keeps a submitted primary function when intake review suggests a mismatch", async () => {
+  const result = await draftProjectRecord({
+    admitted: {
+      ...admittedGithubExtension,
+      manifest: {
+        ...admittedGithubExtension.manifest,
+        primary_function: "memory-retrieval",
+      },
+    },
+    observation,
+    snapshot,
+    enrichment: {
+      status: "curated",
+      summary:
+        "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
+      capabilities: ["planning-reasoning"],
+      classification_review: {
+        status: "possible-mismatch",
+        suggested_primary_function: "interface-workflow",
+        explanation:
+          "The source primarily describes user-facing editing controls.",
+      },
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record.primary_function).toBe("memory-retrieval");
+  expect(result.classificationReview).toEqual({
+    status: "possible-mismatch",
+    submitted_primary_function: "memory-retrieval",
+    suggested_primary_function: "interface-workflow",
+    explanation: "The source primarily describes user-facing editing controls.",
+  });
+});
+
+test("stores only a bounded plain-text mismatch explanation", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    enrichment: {
+      status: "curated",
+      summary:
+        "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
+      capabilities: ["planning-reasoning"],
+      classification_review: {
+        status: "possible-mismatch",
+        suggested_primary_function: "interface-workflow",
+        explanation: `<script>\n${"source evidence ".repeat(30)}</script>`,
+      },
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+  const explanation = result.classificationReview?.explanation ?? "";
+
+  expect(explanation.length).toBeLessThanOrEqual(240);
+  expect(explanation).not.toMatch(/[\r\n<>]/u);
+});
+
 test("falls back to submitted description when enrichment is unavailable", async () => {
   const result = await draftProjectRecord({
     admitted: admittedGithubExtension,
@@ -149,12 +213,21 @@ test("falls back to submitted description when enrichment is unavailable", async
   expect(result.record).toMatchObject({
     summary: "Submitted description.",
     metadata_status: "provisional",
-    primary_function: "uncategorized",
+    primary_function: "generation-reasoning",
     capabilities: [],
   });
   expect(result.warnings).toContain(
     "Automated enrichment failed: The enrichment provider timed out.",
   );
+  expect(result.warnings).toContain(
+    "The optional classification check was unavailable; the submitted primary function was preserved.",
+  );
+  expect(result.classificationReview).toEqual({
+    status: "classification-check-unavailable",
+    submitted_primary_function: "generation-reasoning",
+    suggested_primary_function: null,
+    explanation: "The optional classification check was unavailable.",
+  });
 });
 
 test("drafts external presets with manual source policy", async () => {
@@ -162,8 +235,9 @@ test("drafts external presets with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 1,
+        schema_version: 3,
         project_type: "preset",
+        primary_function: "preset",
         source_url: "https://example.com/presets/Nova/",
         name: "Nova Preset",
         description: "A submitted external system preset.",
@@ -212,6 +286,7 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
       manifest: {
         ...admittedGithubExtension.manifest,
         project_type: "frontend",
+        primary_function: "frontend",
         name: "Nova Frontend",
         frontends: { known_ids: [], other: [] },
       },
@@ -254,8 +329,9 @@ test("drafts an external Frontend with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 2,
+        schema_version: 3,
         project_type: "frontend",
+        primary_function: "frontend",
         source_url: "https://codeberg.org/example/nova",
         name: "Nova Frontend",
         description: "A public-source roleplay frontend.",
@@ -309,8 +385,9 @@ test("keeps external project IDs distinct across source owners", async () => {
       admitted: {
         status: "admitted",
         manifest: {
-          schema_version: 2,
+          schema_version: 3,
           project_type: "frontend",
+          primary_function: "frontend",
           source_url: `https://codeberg.org/${owner}/nova`,
           name: "Nova Frontend",
           description: "A public-source roleplay frontend.",

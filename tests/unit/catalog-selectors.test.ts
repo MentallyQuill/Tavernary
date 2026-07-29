@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import frontendVocabulary from "../../data/vocabularies/frontends.json";
 import {
+  CATEGORY_OPTIONS,
   DEFAULT_QUERY,
   parseCatalogQuery,
   serializeCatalogQuery,
@@ -563,29 +564,32 @@ describe("catalog selectors", () => {
     ).toEqual(["agnostic-preset", "recommended-preset"]);
   });
 
-  test("keeps uncategorized results visible with deterministic alphabetical ties", () => {
-    const uncategorizedProjects = [
+  test("filters Frontends structurally instead of trusting an Extension label", () => {
+    const frontendProjects = [
       project("zeta", {
         name: "Shared Name",
-        primaryFunction: "uncategorized",
+        kind: "frontend",
+        primaryFunction: "frontend",
       }),
       project("alpha", {
         name: "Shared Name",
-        primaryFunction: "uncategorized",
+        kind: "frontend",
+        primaryFunction: "frontend",
       }),
       project("beta", {
         name: "Another Name",
-        primaryFunction: "uncategorized",
+        kind: "extension",
+        primaryFunction: "frontend",
       }),
     ];
 
     expect(
       selectProjects(
-        uncategorizedProjects,
-        { ...DEFAULT_QUERY, category: "uncategorized", sort: "alphabetical" },
+        frontendProjects,
+        { ...DEFAULT_QUERY, category: "frontend", sort: "alphabetical" },
         context,
       ).map(({ id }) => id),
-    ).toEqual(["beta", "alpha", "zeta"]);
+    ).toEqual(["alpha", "zeta"]);
   });
 });
 
@@ -671,17 +675,28 @@ describe("catalog query URLs", () => {
     ).toEqual(DEFAULT_QUERY);
   });
 
-  test("accepts uncategorized as a valid category", () => {
-    expect(parseCatalogQuery("?category=uncategorized")).toEqual({
-      ...DEFAULT_QUERY,
-      category: "uncategorized",
-    });
+  test("discards the removed Uncategorized category from stale and generated URLs", () => {
+    expect(parseCatalogQuery("?category=uncategorized")).toEqual(DEFAULT_QUERY);
     expect(
       serializeCatalogQuery({
         ...DEFAULT_QUERY,
         category: "uncategorized",
       }),
-    ).toBe("category=uncategorized");
+    ).toBe("");
+  });
+
+  test("exposes only structural categories and the six Extension functions", () => {
+    expect(CATEGORY_OPTIONS.map(({ id }) => id)).toEqual([
+      "",
+      "frontend",
+      "preset",
+      "memory-retrieval",
+      "generation-reasoning",
+      "character-worldbuilding",
+      "rpg-systems",
+      "interface-workflow",
+      "developer-infrastructure",
+    ]);
   });
 
   test("round-trips pending license query state", () => {

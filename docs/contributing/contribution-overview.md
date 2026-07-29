@@ -19,9 +19,9 @@ rules. For issue routing and maintainer handoff details, see
 ## Create or change a Kit
 
 Kits are ordered collections of catalog projects assembled by the community.
-Drafts are built in the in-browser Kit builder and submitted through GitHub issue
-forms. New Kits and edits require manual approval; a pending edit does not
-replace the published Kit.
+Drafts are built in the in-browser Kit builder and submitted through GitHub
+issue forms. Valid Kits and edits publish automatically after triage and final
+revalidation; a pending or invalid edit does not replace the published Kit.
 
 For full Kit workflow details (submit/edit/report/withdraw constraints and
 author eligibility checks), see [Kit submission and moderation workflows](kits.md).
@@ -53,7 +53,7 @@ path. The ordinary Help routes are public GitHub reports:
 
 - **Manage your project listing** (`/help/manage-project/`) for a verified
   personal GitHub repository owner requesting an edit, same-repository source
-  move, or delist.
+  move, or delist, and for reviewed Tavernary staff managing any card.
 - **Report a project listing** (`/help/report-project/`) for anyone reporting
   incorrect, unsafe, rights, organization, or other listing concerns.
 - **Report a website problem** (`/help/report-website/`) for Tavernary runtime,

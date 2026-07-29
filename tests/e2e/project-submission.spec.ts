@@ -18,9 +18,24 @@ test("exports and renders the project submission builder", async ({ page }) => {
     "Frontends and Extensions require a public GitHub or Codeberg repository.",
   );
   await expect(eligibility).toBeVisible();
+  await expect(page.getByLabel("Primary function")).toHaveCount(0);
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
   await expect(eligibility).toBeVisible();
+  await expect(page.getByLabel("Primary function")).toBeVisible();
+  await expect(
+    page.getByLabel("Primary function").getByRole("option"),
+  ).toHaveCount(7);
+  await expect(
+    page.getByText(
+      "Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity.",
+    ),
+  ).toBeVisible();
+
+  await page
+    .getByLabel("Project Type")
+    .selectOption({ label: "System Preset" });
+  await expect(page.getByLabel("Primary function")).toHaveCount(0);
 });
 
 test("selects multiple current frontends for an Extension", async ({
@@ -110,7 +125,9 @@ test("supports frontend-independent and not-listed submission paths", async ({
   const opened = new URL(openedUrl ?? "");
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       preset_compatibility: {
         model_families: { known_ids: ["claude"], other: [] },
         completion_formats: ["chat-completion"],
@@ -143,6 +160,7 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   });
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page.getByLabel("Primary function").selectOption("interface-workflow");
   await page
     .getByLabel("Project URL")
     .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");
@@ -158,8 +176,9 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   expect(opened.searchParams.get("template")).toBe("01-project-submission.yml");
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
-      schema_version: 2,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
       frontends: {
         known_ids: ["sillytavern"],

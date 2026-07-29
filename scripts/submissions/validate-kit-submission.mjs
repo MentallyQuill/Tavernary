@@ -2,6 +2,7 @@ import {
   kitSetKey,
   validateKitDraft,
 } from "../../src/features/kits/kit-domain.mjs";
+import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 
 function nearDuplicate(left, right) {
   const leftIds = new Set(left);
@@ -19,10 +20,12 @@ export function validateKitSubmission({
   projects,
   kits,
   blockedUsers,
+  trustedEditors,
   sourceIssueNumber,
 }) {
   const errors = [];
   const warnings = [];
+  let editAuthority = null;
   let parsed;
   try {
     parsed = JSON.parse(manifest);
@@ -30,6 +33,7 @@ export function validateKitSubmission({
     return {
       valid: false,
       manifest: null,
+      editAuthority: null,
       labels: ["needs-information"],
       errors: ["Kit manifest must be valid JSON."],
       warnings,
@@ -63,8 +67,23 @@ export function validateKitSubmission({
     errors.push("The Kit selected for editing does not exist.");
   } else if (existingKit?.status === "withdrawn") {
     errors.push("A withdrawn Kit cannot be edited.");
-  } else if (existingKit && existingKit.author.github_user_id !== actor.id) {
-    errors.push("Only the Kit author may submit an edit.");
+  } else if (existingKit) {
+    if (existingKit.author.github_user_id === actor.id) {
+      editAuthority = "author";
+    } else {
+      const staffAuthority = verifyTrustedEditor({
+        actor,
+        association: actor.association,
+        registry: trustedEditors,
+      });
+      if (staffAuthority.authorized) {
+        editAuthority = "tavernary-staff";
+      } else {
+        errors.push("Only the Kit author may submit an edit.");
+      }
+    }
+  } else if (parsed?.operation === "create") {
+    editAuthority = "author";
   }
 
   if (
@@ -114,6 +133,7 @@ export function validateKitSubmission({
   return {
     valid: errors.length === 0,
     manifest: errors.length === 0 ? parsed : (parsed ?? null),
+    editAuthority: errors.length === 0 ? editAuthority : null,
     labels,
     errors: [...new Set(errors)],
     warnings,

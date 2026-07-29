@@ -92,6 +92,7 @@ test("parses Kit manifests and builds a stable success comment", () => {
     buildKitValidationComment({
       valid: true,
       manifest: null,
+      editAuthority: "author",
       labels: ["kit-publication-ready"],
       errors: [],
       warnings: [],
@@ -112,6 +113,7 @@ test("emits publication outputs only for a valid Kit", () => {
       {
         valid: true,
         manifest,
+        editAuthority: "author",
         labels: ["kit-publication-ready"],
         errors: [],
         warnings: [],
@@ -124,6 +126,7 @@ test("emits publication outputs only for a valid Kit", () => {
       {
         valid: false,
         manifest: null,
+        editAuthority: null,
         labels: ["needs-information"],
         errors: ["Title contains language Tavernary doesn't allow."],
         warnings: [],
@@ -166,8 +169,9 @@ test("updates a generic title and records the generated title marker", () => {
     {
       status: "admitted",
       manifest: {
-        schema_version: 1,
+        schema_version: 3,
         project_type: "extension",
+        primary_function: "interface-workflow",
         source_url: "https://github.com/owner/repo",
         name: null,
         description: null,
@@ -476,8 +480,9 @@ test("does not dispatch a second generation while a submission PR is open", () =
     {
       status: "admitted",
       manifest: {
-        schema_version: 1,
+        schema_version: 3,
         project_type: "preset",
+        primary_function: "preset",
         source_url: "https://example.com/preset",
         name: "Preset",
         description: "A preset.",
@@ -742,8 +747,9 @@ test("rejects malformed frontend dependencies in the state marker", () => {
 test("accepts Reddit permalinks without an anonymous availability probe", async () => {
   const result = await inspectProjectSubmissionSource(
     {
-      schema_version: 1,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       source_url:
         "https://old.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
       name: "Writer's Block 5",
@@ -774,8 +780,9 @@ test("accepts Reddit permalinks without an anonymous availability probe", async 
 test("normalizes an immediate GitHub fork parent during source inspection", async () => {
   const result = await inspectProjectSubmissionSource(
     {
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/child",
       name: "Child",
       description: null,
@@ -839,8 +846,9 @@ test.each([
 ])("normalizes %s without exposing a parent", async (_name, facts, fork) => {
   const result = await inspectProjectSubmissionSource(
     {
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/child",
       name: "Child",
       description: null,
@@ -869,8 +877,9 @@ test.each([
 test("rejects malformed GitHub fork parent identity", async () => {
   const result = await inspectProjectSubmissionSource(
     {
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/child",
       name: "Child",
       description: null,
@@ -914,8 +923,9 @@ test("processes an admitted issue through injected GitHub mutations", async () =
     "",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/repo",
       name: "Example",
       description: null,
@@ -1044,8 +1054,9 @@ test("closes a later issue when an earlier admitted submission has the same sour
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/repo",
       name: "Example",
       description: null,
@@ -1161,8 +1172,9 @@ test("keeps the issue retryable when the admitted submission inventory is unavai
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/repo",
       name: "Example",
       description: null,
@@ -1246,8 +1258,9 @@ test("persists a waiting child before dispatching its newly created upstream", a
     "",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/child",
       name: "Child",
       description: null,
@@ -1376,14 +1389,19 @@ test("accepts a manually customized project title after routing", async () => {
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       source_url: "https://example.com/preset",
       name: "Example",
-      description: null,
+      description: "Example preset.",
       frontends: { known_ids: [], other: [] },
       frontend_independent: true,
       additional_context: null,
+      preset_compatibility: {
+        model_families: { known_ids: ["model-agnostic"], other: [] },
+        completion_formats: ["chat-completion"],
+      },
     }),
     "```",
   ].join("\n");
@@ -1433,14 +1451,19 @@ test("does not apply a stale decision after the issue body changes", async () =>
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       source_url: "https://example.com/original",
       name: "Original",
-      description: null,
+      description: "Original preset.",
       frontends: { known_ids: [], other: [] },
       frontend_independent: true,
       additional_context: null,
+      preset_compatibility: {
+        model_families: { known_ids: ["model-agnostic"], other: [] },
+        completion_formats: ["chat-completion"],
+      },
     }),
     "```",
   ].join("\n");
@@ -1550,6 +1573,7 @@ test("rechecks Kit eligibility before applying triage mutations", async () => {
       {
         valid: true,
         manifest: null,
+        editAuthority: "author",
         errors: [],
         warnings: [],
         labels: ["kit-submission-valid"],
@@ -1591,6 +1615,7 @@ test("Kit synchronization tolerates a concurrently removed owned label", async (
       {
         valid: true,
         manifest: null,
+        editAuthority: "author",
         errors: [],
         warnings: [],
         labels: ["kit-publication-ready"],

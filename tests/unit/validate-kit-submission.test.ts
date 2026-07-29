@@ -23,10 +23,23 @@ const create = JSON.stringify({
   description: "A complete roleplay stack.",
   project_ids: ["frontend", "memory", "writer"],
 });
+const trustedEditors = {
+  schema_version: 1 as const,
+  editors: [
+    {
+      github_user_id: 2625904,
+      login: "MentallyQuill",
+      role: "owner" as const,
+    },
+  ],
+};
 
 function validate(
   manifest = create,
-  actor = { id: 42, login: "author" },
+  actor: { id: number; login: string; association?: string } = {
+    id: 42,
+    login: "author",
+  },
   kits = [existing],
 ) {
   return validateKitSubmission({
@@ -35,12 +48,14 @@ function validate(
     projects,
     kits,
     blockedUsers: { schema_version: 1, blocked: [] },
+    trustedEditors,
   });
 }
 
 test("accepts valid create and matching-author edit manifests", () => {
   expect(validate()).toMatchObject({
     valid: true,
+    editAuthority: "author",
     labels: ["kit-publication-ready"],
     errors: [],
   });
@@ -54,7 +69,64 @@ test("accepts valid create and matching-author edit manifests", () => {
         project_ids: ["frontend", "memory", "writer"],
       }),
     ),
-  ).toMatchObject({ valid: true, labels: ["kit-publication-ready"] });
+  ).toMatchObject({
+    valid: true,
+    editAuthority: "author",
+    labels: ["kit-publication-ready"],
+  });
+});
+
+test("accepts a trusted Tavernary staff edit of another author's Kit", () => {
+  const result = validate(
+    JSON.stringify({
+      operation: "edit",
+      kit_id: "existing-1",
+      title: "Staff-corrected title",
+      description: "A corrected complete stack.",
+      project_ids: ["frontend", "memory", "writer"],
+    }),
+    { id: 2625904, login: "MentallyQuill", association: "OWNER" },
+  );
+
+  expect(result).toMatchObject({
+    valid: true,
+    editAuthority: "tavernary-staff",
+    labels: ["kit-publication-ready"],
+    errors: [],
+  });
+});
+
+test("rejects unlisted collaborators and trusted IDs without a current association", () => {
+  const manifest = JSON.stringify({
+    operation: "edit",
+    kit_id: "existing-1",
+    title: "Staff-corrected title",
+    description: "A corrected complete stack.",
+    project_ids: ["frontend", "memory", "writer"],
+  });
+
+  expect(
+    validate(manifest, {
+      id: 7,
+      login: "unlisted-collaborator",
+      association: "COLLABORATOR",
+    }),
+  ).toMatchObject({
+    valid: false,
+    editAuthority: null,
+    errors: expect.arrayContaining(["Only the Kit author may submit an edit."]),
+  });
+  expect(
+    validate(manifest, {
+      id: 2625904,
+      login: "MentallyQuill",
+      association: "NONE",
+    }),
+  ).toMatchObject({
+    valid: false,
+    editAuthority: null,
+    errors: expect.arrayContaining(["Only the Kit author may submit an edit."]),
+  });
 });
 
 test("rejects malformed manifests and blocked actors", () => {

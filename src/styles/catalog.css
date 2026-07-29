@@ -298,7 +298,7 @@
   position: relative;
   z-index: 15;
   display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  grid-template-columns: repeat(10, minmax(0, 1fr));
   align-items: center;
   gap: 6px;
   min-height: 50px;

@@ -42,7 +42,12 @@ export function verifyProjectOwnerAuthority(input) {
   ) {
     return unauthorized("issue-author-not-owner");
   }
-  return { authorized: true, ownerLogin: owner.login };
+  return {
+    authorized: true,
+    authorityType: "repository-owner",
+    actorLogin: input.issueAuthor,
+    ownerLogin: owner.login,
+  };
 }
 
 function valuesEqual(left, right) {

@@ -10,8 +10,9 @@ function projectBody(sourceUrl: string) {
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 1,
+      schema_version: 3,
       project_type: repositorySource ? "extension" : "preset",
+      primary_function: repositorySource ? "interface-workflow" : "preset",
       source_url: sourceUrl,
       name: "Example",
       description: repositorySource ? null : "Example external preset.",
@@ -21,6 +22,17 @@ function projectBody(sourceUrl: string) {
       },
       frontend_independent: !repositorySource,
       additional_context: null,
+      ...(!repositorySource
+        ? {
+            preset_compatibility: {
+              model_families: {
+                known_ids: ["model-agnostic"],
+                other: [],
+              },
+              completion_formats: ["chat-completion"],
+            },
+          }
+        : {}),
     }),
     "```",
   ].join("\n");

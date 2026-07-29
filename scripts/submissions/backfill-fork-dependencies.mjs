@@ -20,8 +20,9 @@ function candidateManifest(children, parentRepository, parentName) {
     children.flatMap((child) => child.frontends ?? []),
   );
   const manifest = {
-    schema_version: first.kind === "preset" ? 2 : 1,
+    schema_version: 3,
     project_type: first.kind,
+    primary_function: first.primary_function,
     source_url: `https://github.com/${parentRepository}`,
     name: parentName,
     description: null,
@@ -107,6 +108,17 @@ export function planForkDependencyBackfill({ projects, snapshots }) {
       if (kinds.size !== 1) {
         throw new Error(
           `Parent repository ID ${group.parentRepositoryId} has incompatible child kinds.`,
+        );
+      }
+      const primaryFunctions = new Set(
+        group.children.map(({ primary_function: value }) => value),
+      );
+      if (
+        primaryFunctions.size !== 1 ||
+        !primaryFunctions.values().next().value
+      ) {
+        throw new Error(
+          `Parent repository ID ${group.parentRepositoryId} has incompatible child primary functions.`,
         );
       }
       const children = [...group.children].sort((left, right) =>

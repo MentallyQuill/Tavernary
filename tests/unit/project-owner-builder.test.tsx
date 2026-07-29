@@ -60,7 +60,7 @@ const projects: OwnerProjectOption[] = [
       name: "Owner Preset",
       summary: "Current preset summary.",
       frontends: ["sillytavern"],
-      primaryFunction: "generation-reasoning",
+      primaryFunction: "preset",
       capabilities: ["prompt-engineering"],
       modelFamilies: ["claude"],
       completionFormats: ["chat-completion"],
@@ -102,8 +102,26 @@ const vocabularies = {
     { id: "risuai", label: "RisuAI" },
   ],
   primaryFunctions: [
-    { id: "interface-workflow", label: "Interface and workflow" },
-    { id: "generation-reasoning", label: "Generation and reasoning" },
+    {
+      id: "frontend",
+      label: "Frontend",
+      description: "A structural Frontend category.",
+    },
+    {
+      id: "preset",
+      label: "System Preset",
+      description: "A structural System Preset category.",
+    },
+    {
+      id: "interface-workflow",
+      label: "Interface and workflow",
+      description: "Improves user-facing navigation and productivity.",
+    },
+    {
+      id: "generation-reasoning",
+      label: "Generation and reasoning",
+      description: "Changes how model output is prompted or reasoned.",
+    },
   ],
   capabilities: [
     { id: "automation", label: "Automation" },
@@ -160,22 +178,22 @@ test("keeps the selected project visible while filtering other cataloged project
   expect(screen.getByLabelText("Project")).toHaveValue("owner-extension");
 });
 
-test("explains ineligible shapes and routes them to the public report form", async () => {
+test("explains staff-only shapes while keeping their edit controls available", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user, "organization-suite");
 
   expect(
     screen.getByText(
-      "Organization suite listings require a public project report.",
+      /Organization suite listings require a public project report/iu,
     ),
   ).toBeVisible();
   expect(
     screen.getByRole("link", { name: "Report this listing instead" }),
   ).toHaveAttribute("href", "/help/report-project?project=organization-suite");
   expect(
-    screen.queryByRole("radio", { name: "Edit card details" }),
-  ).not.toBeInTheDocument();
+    screen.getByRole("radio", { name: "Edit card details" }),
+  ).toBeVisible();
 });
 
 test("keeps edit, source, and delist fields in separate branches", async () => {
@@ -226,6 +244,12 @@ test("shows a live summary counter and exact controlled metadata", async () => {
     "interface-workflow",
   );
   expect(
+    screen.getByText(/Interface and workflow:/u).closest("li"),
+  ).toHaveTextContent("Improves user-facing navigation and productivity.");
+  expect(
+    screen.queryByRole("option", { name: "System Preset" }),
+  ).not.toBeInTheDocument();
+  expect(
     screen.queryByRole("checkbox", { name: "Claude" }),
   ).not.toBeInTheDocument();
 });
@@ -244,6 +268,33 @@ test("shows compatibility controls only for Presets", async () => {
   expect(
     screen.getByRole("checkbox", { name: "Text Completion" }),
   ).not.toBeChecked();
+  expect(screen.getByLabelText("Primary function")).toHaveValue("preset");
+  expect(screen.getByLabelText("Primary function")).toHaveAttribute("readonly");
+});
+
+test("builds a nullable-identity staff edit for a staff-only card", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user, "organization-suite");
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+  await user.clear(screen.getByLabelText("Display name"));
+  await user.type(
+    screen.getByLabelText("Display name"),
+    "Organization Suite 2",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "edit-card",
+    project_id: "organization-suite",
+    repository_id: null,
+    proposed: { name: "Organization Suite 2" },
+  });
 });
 
 test("connects each required owner choice to its inline error", async () => {
@@ -341,11 +392,13 @@ test("reviews card values before and after without claiming browser-side identit
 
   expect(
     screen.getByText(
-      "GitHub will verify the issue author against the current personal owner.",
+      "GitHub will verify either current personal-owner authority or reviewed Tavernary staff authority.",
     ),
   ).toBeVisible();
   expect(
-    screen.getByText("A card edit changes model enrichment to manual."),
+    screen.getByText(
+      "Summary or capability edits change model enrichment to manual.",
+    ),
   ).toBeVisible();
   expectReviewRow("Before: summary", "Current extension summary.");
   expectReviewRow("After: summary", "Owner-authored summary.");
@@ -359,6 +412,26 @@ test("reviews card values before and after without claiming browser-side identit
   expect(
     screen.queryByText(/you are the verified owner/iu),
   ).not.toBeInTheDocument();
+});
+
+test("reports that a classification-only edit preserves enrichment authority", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+  await user.selectOptions(
+    screen.getByLabelText("Primary function"),
+    "generation-reasoning",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expectReviewRow("Before: primary function", "interface-workflow");
+  expectReviewRow("After: primary function", "generation-reasoning");
+  expectReviewRow("Before: enrichment policy", "automatic");
+  expectReviewRow("After: enrichment policy", "automatic");
+  expect(
+    screen.getByText("This edit preserves the automatic enrichment policy."),
+  ).toBeVisible();
 });
 
 test("reviews repository location before and after", async () => {

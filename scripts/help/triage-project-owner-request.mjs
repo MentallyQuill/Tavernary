@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 
 import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
 import { fingerprintProjectRecord } from "../../src/features/help/project-owner-record.mjs";
+import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
+import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 import {
   detectOwnerRequestConflict,
   verifyProjectOwnerAuthority,
@@ -131,7 +133,12 @@ function fallbackManifest(fields, record) {
     request_kind: "project-owner",
     operation,
     project_id: fields.get("Project ID"),
-    repository_id: record?.source?.repository_id,
+    repository_id:
+      record?.source?.type === "github" &&
+      Number.isSafeInteger(record.source.repository_id) &&
+      record.source.repository_id > 0
+        ? record.source.repository_id
+        : null,
     source_fingerprint: fingerprintProjectRecord(record),
     explanation: fields.get("Explanation or public note") || null,
   };
@@ -271,8 +278,30 @@ function issueChanged(before, after) {
     before?.state !== after?.state ||
     JSON.stringify([...issueLabels(before)].sort()) !==
       JSON.stringify([...issueLabels(after)].sort()) ||
-    before?.user?.login !== after?.user?.login
+    before?.user?.login !== after?.user?.login ||
+    before?.user?.id !== after?.user?.id ||
+    before?.author_association !== after?.author_association
   );
+}
+
+async function resolveRepositoryIdentity(input, record) {
+  if (input.repository) return repositoryIdentity(input.repository);
+  if (
+    record?.source?.type !== "github" ||
+    !Number.isSafeInteger(record.source.repository_id) ||
+    record.source.repository_id <= 0
+  ) {
+    return null;
+  }
+  if (typeof input.request !== "function") {
+    const error = new Error("GitHub repository identity could not be checked.");
+    error.code = "github-api-temporary-failure";
+    throw error;
+  }
+  const raw = await input.request(
+    `/repositories/${record.source.repository_id}`,
+  );
+  return repositoryIdentity(raw);
 }
 
 async function readRegistryRecord(input, projectId) {
@@ -353,19 +382,49 @@ export async function processProjectOwnerTriage(input) {
     );
   }
 
-  let rawRepository = input.repository;
-  if (!rawRepository) {
-    if (typeof input.request !== "function") {
-      return {
-        status: "retryable",
-        reasonCode: "github-api-temporary-failure",
-        message: "GitHub repository identity could not be checked.",
-      };
+  const staffAuthority = verifyTrustedEditor({
+    actor: issue.user,
+    association: issue.author_association,
+    registry: input.trustedEditorRegistry ?? trustedEditorRegistry,
+  });
+  let repository = null;
+  let authority;
+  if (staffAuthority.authorized) {
+    authority = {
+      authorityType: "tavernary-staff",
+      actorLogin: staffAuthority.actorLogin,
+      role: staffAuthority.role,
+    };
+    if (normalized.manifest.operation === "move-source") {
+      if (
+        record.source?.type !== "github" ||
+        !Number.isSafeInteger(record.source.repository_id) ||
+        record.source.repository_id <= 0
+      ) {
+        return needsInformation(
+          "unsupported-source",
+          "Repository location updates require a current GitHub repository identity.",
+        );
+      }
+      try {
+        repository = await resolveRepositoryIdentity(input, record);
+      } catch (error) {
+        if (temporaryApiFailure(error)) {
+          return {
+            status: "retryable",
+            reasonCode: "github-api-temporary-failure",
+            message: "GitHub repository identity could not be checked.",
+          };
+        }
+        return needsInformation(
+          "repository-identity-unavailable",
+          "The current repository identity could not be verified.",
+        );
+      }
     }
+  } else {
     try {
-      rawRepository = await input.request(
-        `/repositories/${record.source?.repository_id}`,
-      );
+      repository = await resolveRepositoryIdentity(input, record);
     } catch (error) {
       if (temporaryApiFailure(error)) {
         return {
@@ -379,21 +438,21 @@ export async function processProjectOwnerTriage(input) {
         "The current repository identity could not be verified.",
       );
     }
-  }
-  const repository = repositoryIdentity(rawRepository);
-  const authority = verifyProjectOwnerAuthority({
-    issueAuthor: issue.user?.login,
-    manifestRepositoryId: normalized.manifest.repository_id,
-    record,
-    repository,
-  });
-  if (!authority.authorized) {
-    return needsInformation(
-      authority.reasonCode,
-      authority.reasonCode === "issue-author-not-owner"
-        ? "Only the current personal GitHub repository owner can submit this request."
-        : `Owner authority could not be verified: ${authority.reasonCode}.`,
-    );
+    const ownerAuthority = verifyProjectOwnerAuthority({
+      issueAuthor: issue.user?.login,
+      manifestRepositoryId: normalized.manifest.repository_id,
+      record,
+      repository: repository ?? {},
+    });
+    if (!ownerAuthority.authorized) {
+      return needsInformation(
+        ownerAuthority.reasonCode,
+        ownerAuthority.reasonCode === "issue-author-not-owner"
+          ? "Only the current personal GitHub repository owner can submit this request."
+          : `Owner authority could not be verified: ${ownerAuthority.reasonCode}.`,
+      );
+    }
+    authority = ownerAuthority;
   }
 
   const conflict = detectOwnerRequestConflict({
@@ -454,7 +513,11 @@ export async function processProjectOwnerTriage(input) {
     manifest: normalized.manifest,
     record,
     repository,
-    verifiedOwnerLogin: authority.ownerLogin,
+    authorityType: authority.authorityType,
+    actorLogin: authority.actorLogin,
+    ...(authority.authorityType === "repository-owner"
+      ? { verifiedOwnerLogin: authority.ownerLogin }
+      : { trustedEditorRole: authority.role }),
     warnings: conflict.warnings,
   };
 }

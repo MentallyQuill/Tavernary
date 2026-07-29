@@ -48,10 +48,7 @@ const snapshot = {
 };
 
 const vocabularies = {
-  primaryFunctions: [
-    { id: "developer-infrastructure", label: "Developer" },
-    { id: "uncategorized", label: "Uncategorized" },
-  ],
+  primaryFunctions: [{ id: "developer-infrastructure", label: "Developer" }],
   capabilities: [{ id: "automation", label: "Automation" }],
 };
 
@@ -108,8 +105,8 @@ test("passes normalized source and only allowed vocabulary entries to provider",
       summary:
         "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
       metadata_status: "curated" as const,
-      primary_function: input.allowedPrimaryFunctions[0].id,
       capabilities: [input.allowedCapabilities[0].id],
+      classification_review: null,
     },
     metadata: providerMetadata,
   }));
@@ -138,7 +135,7 @@ test("passes normalized source and only allowed vocabulary entries to provider",
   expect(output).not.toBeNull();
   if (!output) return;
   expect(output.metadata_status).toBe("curated");
-  expect(output.primary_function).toBe("developer-infrastructure");
+  expect(output.classification_review).toBeNull();
   expect(generate).toHaveBeenCalledWith(
     expect.objectContaining({
       source: {
@@ -146,11 +143,14 @@ test("passes normalized source and only allowed vocabulary entries to provider",
         identity: "github:creator/project",
         text: "A short project description.",
       },
-      allowedPrimaryFunctions: [
-        { id: "developer-infrastructure", label: "Developer" },
-      ],
       allowedCapabilities: vocabularies.capabilities,
     }),
+  );
+  expect(generate.mock.calls[0][0]).not.toHaveProperty(
+    "allowedPrimaryFunctions",
+  );
+  expect(generate.mock.calls[0][0]).not.toHaveProperty(
+    "classificationReviewRequest",
   );
 });
 
@@ -188,8 +188,8 @@ test("enriches a Reddit source without a repository snapshot", async () => {
       summary:
         "Writer's Block supports deliberate narrative direction in roleplay sessions. It strengthens prose, subtext, character agency, and structured scene control across diverse compatible SillyTavern models.",
       metadata_status: "curated" as const,
-      primary_function: "developer-infrastructure",
       capabilities: ["automation"],
+      classification_review: null,
     },
     metadata: providerMetadata,
   }));
@@ -341,8 +341,8 @@ test("preserves an owner edit made after automatic enrichment selection", async 
           summary:
             "Generated summary would replace the approved owner wording if the writer trusted selection-time state. The write barrier must re-read current policy before changing the registry record.",
           metadata_status: "curated",
-          primary_function: "developer-infrastructure",
           capabilities: ["automation"],
+          classification_review: null,
         },
         metadata: providerMetadata,
       }),
@@ -385,8 +385,8 @@ test("uses the exact fallback when both source texts are unavailable", async () 
   expect(output).toEqual({
     summary: "No README file found.",
     metadata_status: "curated",
-    primary_function: "uncategorized",
     capabilities: [],
+    classification_review: null,
   });
 });
 
@@ -441,7 +441,7 @@ test("skips unpublished GitHub records", async () => {
   expect(generate).not.toHaveBeenCalled();
 });
 
-test("rejects uncategorized output when source text exists", async () => {
+test("rejects a model-owned primary function when source text exists", async () => {
   await expect(
     enrichRecord(
       record,
@@ -452,8 +452,9 @@ test("rejects uncategorized output when source text exists", async () => {
             summary:
               "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated",
-            primary_function: "uncategorized",
+            primary_function: "developer-infrastructure",
             capabilities: [],
+            classification_review: null,
           },
           metadata: providerMetadata,
         }),
@@ -463,7 +464,7 @@ test("rejects uncategorized output when source text exists", async () => {
         loadSource: async () => readySource("fixture"),
       },
     ),
-  ).rejects.toThrow("substantive primary function");
+  ).rejects.toThrow("primary_function is not allowed");
 });
 
 test("returns ordered isolated outcomes for a mixed batch", async () => {
@@ -482,8 +483,8 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
         summary:
           "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated" as const,
-        primary_function: "developer-infrastructure",
         capabilities: ["automation"],
+        classification_review: null,
       },
       metadata: providerMetadata,
     };
@@ -536,11 +537,8 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     readmeRef: "a".repeat(40),
   });
   for (const [input] of generate.mock.calls) {
-    expect(input.allowedPrimaryFunctions).not.toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ id: "uncategorized" }),
-      ]),
-    );
+    expect(input).not.toHaveProperty("allowedPrimaryFunctions");
+    expect(input).not.toHaveProperty("classificationReviewRequest");
   }
 });
 
@@ -575,8 +573,8 @@ test("runs no more than four model calls concurrently and preserves order", asyn
             summary:
               "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated" as const,
-            primary_function: "developer-infrastructure",
             capabilities: ["automation"],
+            classification_review: null,
           },
           metadata: providerMetadata,
         };
@@ -615,8 +613,8 @@ test("backs off new model work after repeated provider rate limits", async () =>
         summary:
           "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated" as const,
-        primary_function: "developer-infrastructure",
         capabilities: ["automation"],
+        classification_review: null,
       },
       metadata: providerMetadata,
     };

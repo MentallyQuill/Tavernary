@@ -77,6 +77,7 @@ test("loads deterministic owner options from canonical registry records", async 
       name: "Alpha",
       kind: "extension",
       sourceType: "github",
+      sourceUrl: "https://github.com/Owner/Alpha",
       repository: "Owner/Alpha",
       repositoryId: 42,
       eligibleShape: true,
@@ -124,6 +125,16 @@ test("marks unsupported source shapes with a human-readable fallback reason", as
     },
     {
       ...githubRecord,
+      id: "codeberg-record",
+      name: "Codeberg Record",
+      source: {
+        type: "codeberg",
+        repository: "Owner/Codeberg",
+        repository_id: 52,
+      },
+    },
+    {
+      ...githubRecord,
       id: "organization-suite",
       name: "Organization Suite",
       source: {
@@ -143,6 +154,14 @@ test("marks unsupported source shapes with a human-readable fallback reason", as
   const options = await loadOwnerProjectOptions(root);
 
   expect(options).toMatchObject([
+    {
+      id: "codeberg-record",
+      sourceType: "codeberg",
+      sourceUrl: "https://codeberg.org/Owner/Codeberg",
+      eligibleShape: false,
+      ineligibilityReason:
+        "Codeberg listings require trusted Tavernary staff authority.",
+    },
     {
       id: "external-record",
       sourceType: "url",
@@ -181,7 +200,7 @@ test("fingerprints parsed records independently of file line endings", async () 
   expect(lf[0]?.sourceFingerprint).toBe(crlf[0]?.sourceFingerprint);
 });
 
-test("does not offer disabled registry tombstones as current listings", async () => {
+test("offers disabled registry records for trusted staff editing", async () => {
   const root = await fixtureRoot([
     githubRecord,
     {
@@ -194,5 +213,6 @@ test("does not offer disabled registry tombstones as current listings", async ()
 
   await expect(loadOwnerProjectOptions(root)).resolves.toMatchObject([
     { id: "owner-alpha" },
+    { id: "removed-alpha", listingState: { visibility: "disabled" } },
   ]);
 });

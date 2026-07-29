@@ -1,3 +1,5 @@
+import { classificationError } from "../catalog/primary-function-contract.mjs";
+
 function nullableText(value) {
   if (typeof value !== "string") return null;
   const normalized = value.trim();
@@ -54,8 +56,19 @@ function repositoryProviderFromUrl(sourceUrl) {
 }
 
 export function normalizeProjectSubmissionManifest(value) {
+  if ([1, 2].includes(value?.schema_version)) {
+    return {
+      valid: false,
+      errors: ["Project submission must be updated with a primary function."],
+    };
+  }
+
   const errors = [];
   const projectType = value?.project_type;
+  const primaryFunction =
+    typeof value?.primary_function === "string"
+      ? value.primary_function.trim()
+      : "";
   const sourceUrl =
     typeof value?.source_url === "string" ? value.source_url.trim() : "";
   const name = nullableText(value?.name);
@@ -95,11 +108,14 @@ export function normalizeProjectSubmissionManifest(value) {
     "text-completion",
   ]);
 
-  if (![1, 2].includes(value?.schema_version)) {
-    errors.push("Submission manifest must use schema version 1 or 2.");
+  if (value?.schema_version !== 3) {
+    errors.push("Submission manifest must use schema version 3.");
   }
   if (!["frontend", "extension", "preset"].includes(projectType)) {
     errors.push("Project type is invalid.");
+  } else {
+    const classification = classificationError(projectType, primaryFunction);
+    if (classification) errors.push(classification);
   }
   if (!sourceUrl) errors.push("Project URL is required.");
   if (projectType === "frontend" && (knownIds.length || other.length)) {
@@ -115,7 +131,7 @@ export function normalizeProjectSubmissionManifest(value) {
   ) {
     errors.push("Extensions require at least one supported frontend.");
   }
-  if (projectType === "preset" && value?.schema_version === 2) {
+  if (projectType === "preset") {
     if (modelFamilies.length === 0 && otherModelFamilies.length === 0) {
       errors.push(
         "System Presets require at least one supported model family.",
@@ -169,13 +185,14 @@ export function normalizeProjectSubmissionManifest(value) {
     manifest: {
       schema_version: value.schema_version,
       project_type: projectType,
+      primary_function: primaryFunction,
       source_url: sourceUrl,
       name,
       description,
       frontends: { known_ids: knownIds, other },
       frontend_independent: frontendIndependent,
       additional_context: nullableText(value?.additional_context),
-      ...(projectType === "preset" && value.schema_version === 2
+      ...(projectType === "preset"
         ? {
             preset_compatibility: {
               model_families: {

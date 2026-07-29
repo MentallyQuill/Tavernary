@@ -3,8 +3,9 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { openProjectSubmission } from "@/features/submissions/submission-transport";
 
 const manifest = {
-  schema_version: 1 as const,
+  schema_version: 3 as const,
   project_type: "extension" as const,
+  primary_function: "interface-workflow",
   source_url: "https://github.com/example/project",
   name: "Example Project",
   description: "Adds useful roleplay tools.",
@@ -23,8 +24,8 @@ const manifest = {
 
 const presetManifest = {
   ...manifest,
-  schema_version: 2 as const,
   project_type: "preset" as const,
+  primary_function: "preset",
   frontends: {
     known_ids: ["sillytavern", "lumiverse"],
     other: [],
@@ -56,6 +57,7 @@ test("prefills every readable project field and the stable manifest", async () =
   expect(Object.fromEntries(opened.searchParams)).toMatchObject({
     template: "01-project-submission.yml",
     "project-type": "Extension",
+    "primary-function": "interface-workflow",
     "project-url": "https://github.com/example/project",
     "project-name": "Example Project",
     "project-description": "Adds useful roleplay tools.",
@@ -84,6 +86,7 @@ test("prefills every Preset compatibility field", async () => {
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(Object.fromEntries(opened.searchParams)).toMatchObject({
     "project-type": "System Preset",
+    "primary-function": "preset",
     "frontend-independent": "No",
     "supported-model-families": "model-agnostic\nclaude",
     "other-model-family": "FutureModel",
@@ -125,7 +128,7 @@ test("copies an oversized manifest while preserving readable prefills", async ()
   ).resolves.toBe("clipboard");
 
   expect(writeText).toHaveBeenCalledWith(
-    expect.stringContaining('"schema_version": 1'),
+    expect.stringContaining('"schema_version": 3'),
   );
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(opened.toString().length).toBeLessThanOrEqual(7_000);

@@ -171,6 +171,41 @@ test("edits only author-controlled fields and preserves canonical identity", () 
   });
 });
 
+test("lets trusted staff edit content without changing Kit provenance", () => {
+  const staffIssue = {
+    number: 999,
+    user: { id: 2625904, login: "MentallyQuill" },
+  };
+  const result = applyKitSubmission({
+    manifest: {
+      ...create,
+      operation: "edit",
+      kit_id: existing.id,
+      title: "Staff-corrected title",
+      project_ids: ["frontend", "memory", "writer"],
+    },
+    issue: staffIssue,
+    existingKit: existing,
+    editAuthority: "tavernary-staff",
+    now,
+  });
+
+  expect(result).toEqual({
+    ...existing,
+    title: "Staff-corrected title",
+    description: create.description,
+    project_ids: ["frontend", "memory", "writer"],
+    updated_at: now,
+  });
+  expect(result).toMatchObject({
+    id: existing.id,
+    author: existing.author,
+    source_issue_number: existing.source_issue_number,
+    published_at: existing.published_at,
+  });
+  expect(result.author).not.toBe(existing.author);
+});
+
 test("treats an unchanged edit retry as a timestamp-preserving no-op", () => {
   const result = applyKitSubmission({
     manifest: {

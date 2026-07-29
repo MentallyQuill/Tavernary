@@ -13,7 +13,8 @@ const marker = {
   project_id: "owner-alpha",
   operation: "edit-card" as const,
   repository_id: 42,
-  verified_owner_login: "Owner",
+  authority_type: "repository-owner" as const,
+  actor_login: "Owner",
   generated_head_sha: "a".repeat(40),
   generated_paths: ["data/registry/projects/owner-alpha.json"],
 };
@@ -27,7 +28,8 @@ const reviewFixture = {
     project_id: "owner-alpha",
     operation: "edit-card" as const,
     repository_id: 42,
-    verified_owner_login: "Owner",
+    authority_type: "repository-owner" as const,
+    actor_login: "Owner",
     before: {
       summary: "Old summary.",
       enrichment_policy: "automatic",
@@ -99,7 +101,8 @@ function planInput(overrides: Record<string, unknown> = {}) {
     projectId: "owner-alpha",
     operation: "edit-card" as const,
     repositoryId: 42,
-    verifiedOwnerLogin: "Owner",
+    authorityType: "repository-owner" as const,
+    actorLogin: "Owner",
     repository: "Tavernary/Tavernary",
     remoteHeadSha: null,
     markerHeadSha: null,
@@ -132,6 +135,28 @@ test("renders verified identity, before/after values, and policy effects", () =>
   expect(body).toContain("Enrichment policy");
   expect(body).toContain("Alpha \\[Tool\\]");
   expect(parseOwnerRequestPullRequestMarker(body)).toEqual(marker);
+});
+
+test("accepts a trusted staff marker without repository identity", () => {
+  const staffMarker = {
+    ...marker,
+    repository_id: null,
+    authority_type: "tavernary-staff" as const,
+    actor_login: "MentallyQuill",
+  };
+  const body = renderOwnerRequestPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      repository_id: null,
+      authority_type: "tavernary-staff",
+      actor_login: "MentallyQuill",
+    },
+    marker: staffMarker,
+  });
+
+  expect(body).toContain("Authorized Tavernary staff actor: `MentallyQuill`");
+  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(staffMarker);
 });
 
 test("bounds and escapes untrusted Markdown without creating a second marker", () => {
@@ -246,7 +271,8 @@ test.each([
   ["project", existingOwnerMarker({ project_id: "other-project" })],
   ["operation", existingOwnerMarker({ operation: "delist" })],
   ["repository", existingOwnerMarker({ repository_id: 99 })],
-  ["owner", existingOwnerMarker({ verified_owner_login: "OtherOwner" })],
+  ["authority", existingOwnerMarker({ authority_type: "tavernary-staff" })],
+  ["actor", existingOwnerMarker({ actor_login: "OtherOwner" })],
   [
     "paths",
     existingOwnerMarker({

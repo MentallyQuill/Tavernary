@@ -217,21 +217,27 @@ normal reviewed PR for site or catalog changes. A serious listing report may
 set visibility/visibility_reason, pause source refresh, or preserve a delist
 tombstone rather than deleting the historical record.
 
-project-owner-request automation is only for the issue author who is the
-current personal GitHub owner of the listing's verified repository ID. Return
-organization listings, non-owner maintainers, external sources, and
-rights-holder requests to a human-reviewed project report. Common owner
+project-owner-request automation accepts the current personal GitHub owner of a
+listing's verified repository ID and reviewed Tavernary staff. Staff authority
+requires an immutable GitHub user ID in
+`data/maintenance/trusted-tavernary-editors.json` plus a current trusted
+repository association. Association alone does not grant authority. Trusted
+owners, admins, and maintainers may edit or delist any catalog card; source
+moves still require an immutable GitHub repository identity. Other
+rights-holder requests return to a human-reviewed project report. Common owner
 failure reason codes are issue-author-not-owner, stale-owner-request,
-project-not-found, unsupported-source, and owner-request-invalid; keep the issue open with the recorded reason
-unless the workflow's terminal policy closes it.
+project-not-found, unsupported-source, and owner-request-invalid; keep the
+issue open with the recorded reason unless the workflow's terminal policy
+closes it.
 
 For an admitted owner request, inspect the generated
 automation/project-owner-request-<issue-number> PR. It is the sole review
-surface for card edits, same-repository source moves, and delists. An owner
-summary changes the record to enrichment_policy: manual so automatic editorial
-enrichment cannot replace approved owner text. This does not pause source
-collection: refresh_policy controls automatic source evidence while
-enrichment_policy controls editorial enrichment.
+surface for card edits, same-repository source moves, and delists. Summary or
+capability changes set `enrichment_policy: manual` so automatic editorial
+enrichment cannot replace approved content. A primary-function-only edit
+preserves the current enrichment policy. This does not pause source collection:
+`refresh_policy` controls automatic source evidence while `enrichment_policy`
+controls model-written summary and capabilities.
 
 If generation failed or a retryable dependency recovered, rerun the owner
 triage/generation workflow from main. Regeneration may update only marker-owned
@@ -293,6 +299,11 @@ Workflow: `.github/workflows/enrich-catalog.yml`
 - `model_timeout_seconds` defaults to `120` and applies independently to each
   provider request, not to a batch or the five-hour workflow job.
 - Neither scope overrides a record's manual enrichment policy.
+- Enrichment writes only summary, `metadata_status`, and capabilities. It never
+  writes or changes `primary_function`.
+- An intake-only classification review may confirm a submitted Extension
+  category or emit a sanitized mismatch warning. The warning does not mutate
+  canonical classification and raw provider/source payloads are not published.
 - Preflight retries transient provider timeouts, network failures, rate limits,
   and server errors three times after the initial request, waiting 5, 15, and
   30 seconds between attempts. Exhausted preflight retries remain fatal.
@@ -362,6 +373,10 @@ Workflow set:
 - `.github/workflows/apply-kit-submission.yml` applies valid edit/create issues:
   - re-fetches and validates issue content again, including the shared
     severe-language policy
+  - accepts either the canonical Kit author or `tavernary-staff` authority from
+    the reviewed immutable-ID registry plus current association
+  - preserves Kit ID, canonical author, source issue, `published_at`, and
+    support snapshot identity for a staff edit
   - writes/updates `data/registry/kits/<kit-id>.json`
   - validates and builds catalog
   - commits `feat(kits): publish issue #<n>`
@@ -420,8 +435,9 @@ Use this workflow for reproducible identity persistence:
 ### Kit/record safety repair
 
 - Follow `docs/maintenance/kits.md`.
-- Keep provenance fields unless required to change.
-- Preserve support snapshots and author identity where possible.
+- Keep Kit ID, source issue, `published_at`, and author identity unchanged.
+- Preserve support snapshots; a staff edit must not rewrite reaction identity
+  or history.
 
 ## Verification checklist for manual catalog mutations
 
@@ -443,7 +459,7 @@ npm run check
 
 Deployment trigger sequence:
 
-- Snapshot-only changes are published by `deploy-pages.yml` after `refresh-catalog`
-  and manual approval path.
+- Snapshot-only changes are published by `deploy-pages.yml` after
+  `refresh-catalog`.
 - Registry enrichment publish path is in `enrich-catalog` (commit + page dispatch).
 - Kit changes publish through kit apply workflows only.

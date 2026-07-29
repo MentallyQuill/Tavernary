@@ -36,10 +36,25 @@ function requireCurrentRecord(manifest, record) {
       "Owner request project does not match the current registry record.",
     );
   }
-  if (
-    record.source?.type !== "github" ||
-    record.source.repository_id !== manifest.repository_id
-  ) {
+  if (manifest.operation === "move-source") {
+    if (
+      record.source?.type !== "github" ||
+      record.source.repository_id !== manifest.repository_id
+    ) {
+      fail(
+        "repository-identity-mismatch",
+        "Owner request immutable repository ID does not match the current registry record.",
+      );
+    }
+    return;
+  }
+  const repositoryId =
+    record.source?.type === "github" &&
+    Number.isSafeInteger(record.source.repository_id) &&
+    record.source.repository_id > 0
+      ? record.source.repository_id
+      : null;
+  if (repositoryId !== manifest.repository_id) {
     fail(
       "repository-identity-mismatch",
       "Owner request immutable repository ID does not match the current registry record.",
@@ -93,6 +108,11 @@ function applyCardEdit(input, manifest, record, snapshot) {
   }
   const before = relevantEditValues(record);
   const updated = { ...record };
+  const manuallyCurated = ["summary", "capabilities"].some(
+    (field) =>
+      JSON.stringify(manifest.original[field]) !==
+      JSON.stringify(manifest.proposed[field]),
+  );
   for (const field of EDITABLE_FIELDS) {
     if (
       JSON.stringify(manifest.original[field]) ===
@@ -105,9 +125,11 @@ function applyCardEdit(input, manifest, record, snapshot) {
     }
     updated[field] = structuredClone(manifest.proposed[field]);
   }
-  updated.metadata_status = "curated";
-  updated.enrichment_policy = "manual";
-  updated.enrichment_note = `Owner-authored catalog details approved through issue #${input.issueNumber}.`;
+  if (manuallyCurated) {
+    updated.metadata_status = "curated";
+    updated.enrichment_policy = "manual";
+    updated.enrichment_note = `Owner-authored catalog details approved through issue #${input.issueNumber}.`;
+  }
   return {
     record: updated,
     snapshot,

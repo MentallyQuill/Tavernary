@@ -1,18 +1,44 @@
 {
   "primary_functions": [
-    { "id": "frontend", "label": "Frontend" },
-    { "id": "memory-retrieval", "label": "Memory and retrieval" },
-    { "id": "generation-reasoning", "label": "Generation and reasoning" },
+    {
+      "id": "frontend",
+      "label": "Frontend",
+      "description": "A standalone frontend with a structural Frontend classification."
+    },
+    {
+      "id": "preset",
+      "label": "System Preset",
+      "description": "A reusable System Preset with a structural Preset classification."
+    },
+    {
+      "id": "memory-retrieval",
+      "label": "Memory and retrieval",
+      "description": "Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity."
+    },
+    {
+      "id": "generation-reasoning",
+      "label": "Generation and reasoning",
+      "description": "Changes how model output is prompted, sampled, continued, routed, or reasoned."
+    },
     {
       "id": "character-worldbuilding",
-      "label": "Character and worldbuilding"
+      "label": "Character and worldbuilding",
+      "description": "Creates or manages characters, personas, lore, locations, expressions, or narrative-world material."
     },
-    { "id": "rpg-systems", "label": "RPG systems and suites" },
-    { "id": "interface-workflow", "label": "Interface and workflow" },
+    {
+      "id": "rpg-systems",
+      "label": "RPG systems and suites",
+      "description": "Provides game mechanics, rules, progression, statistics, quests, or structured world-state systems."
+    },
+    {
+      "id": "interface-workflow",
+      "label": "Interface and workflow",
+      "description": "Improves user-facing navigation, presentation, editing, productivity, accessibility, or media interaction."
+    },
     {
       "id": "developer-infrastructure",
-      "label": "Developer infrastructure"
-    },
-    { "id": "uncategorized", "label": "Uncategorized" }
+      "label": "Developer infrastructure",
+      "description": "Provides developer-facing APIs, scripting, proxies, interoperability, diagnostics, build support, or operational plumbing."
+    }
   ]
 }

@@ -38,9 +38,6 @@ const provisionalCount = catalog.projects.filter(
 const sourcePendingCount = catalog.projects.filter(
   ({ sourceStatus }) => sourceStatus === "pending",
 ).length;
-const uncategorizedCount = catalog.projects.filter(
-  ({ primaryFunction }) => primaryFunction === "uncategorized",
-).length;
 const pendingLicenseCount = catalog.projects.filter(
   ({ license }) => license.status === "pending",
 ).length;
@@ -158,14 +155,14 @@ test("uses the approved category strip", async ({ page }) => {
   expect(metrics).toEqual({
     display: "grid",
     height: 50,
-    tracks: 11,
+    tracks: 10,
     activeBorder: "1px",
     afterContent: "none",
     justifyContent: "center",
     textAlign: "center",
   });
 
-  await expect(page.locator(".category-navigation button")).toHaveCount(11);
+  await expect(page.locator(".category-navigation button")).toHaveCount(10);
   expect(
     await page
       .locator(".category-navigation button")
@@ -183,7 +180,6 @@ test("uses the approved category strip", async ({ page }) => {
     "RPG Systems & Suites",
     "Interface & Workflow",
     "Developer Infrastructure",
-    "Uncategorized",
   ]);
 });
 
@@ -725,18 +721,9 @@ test("uses canonical external URLs for project cards", async ({ page }) => {
   await expect(recursion).toHaveAttribute("rel", /noopener/);
 });
 
-test("supports uncategorized, pending-license, and missing-license catalog filters at full scale", async ({
+test("supports pending-license and missing-license catalog filters at full scale", async ({
   page,
 }) => {
-  await page
-    .getByRole("button", { name: "Uncategorized", exact: true })
-    .click();
-  await expect(
-    page.getByRole("heading", { name: projectCountLabel(uncategorizedCount) }),
-  ).toBeVisible();
-  await expect(page).toHaveURL(/category=uncategorized/);
-
-  await page.getByRole("button", { name: "All Projects", exact: true }).click();
   await page.getByLabel("Pending verification", { exact: true }).check();
   await expect(
     page.getByRole("heading", {

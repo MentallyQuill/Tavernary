@@ -27,10 +27,13 @@ visitor reviews the request. Its five ordinary routes are `/help/manage-project/
 `security/advisories/new` flow. Do not put credentials, private personal data,
 or unreported Tavernary vulnerability details in an ordinary report.
 
-`project-owner-request` is deliberately narrower than a report: automation
-requires the issue author to be the current personal GitHub owner of the
-listing's verified repository identity. Organization listings, repository
-maintainers who are not that owner, and rights-holder requests remain
+`project-owner-request` accepts either the current personal GitHub owner of a
+listing's verified repository identity or a reviewed Tavernary staff actor.
+Staff authority comes from an immutable GitHub user ID in
+`data/maintenance/trusted-tavernary-editors.json` plus a current trusted
+repository association; association alone does not grant authority. Trusted
+staff may request edits for any card, including organization, external, and
+disabled records. Rights-holder requests from other actors remain
 human-reviewed `project-information` reports. No third-party project support is
 provided through Tavernary; refer users to that project's own channel.
 
@@ -39,9 +42,11 @@ An admitted owner request generates or safely updates
 the sole review surface. A rerun is safe only while marker-owned generated paths
 remain unchanged; a maintainer-edited branch is preserved for review instead of
 being overwritten. Merge applies the edit/source move/delist; closing without
-merge declines the request. Owner summaries switch to manual enrichment so
-automatic enrichment cannot overwrite the approved text. This is separate from
-`refresh_policy`, which only governs automatic source-evidence refreshes.
+merge declines the request. Summary or capability edits switch to manual
+enrichment so automation cannot overwrite approved editorial content. A
+primary-function-only edit preserves the current enrichment policy. This is
+separate from `refresh_policy`, which only governs automatic source-evidence
+refreshes.
 
 ## Open issue limit
 
@@ -60,7 +65,10 @@ same rule.
 
 1. The submitter uses Tavernary's static builder or the native GitHub fallback
    form. The builder's frontend choices come from the current catalog rather
-   than a separately maintained dropdown.
+   than a separately maintained dropdown. Only Extensions show the
+   primary-function dropdown: the submitted Extension primary function is authoritative.
+   Frontends receive `frontend` and System Presets receive `preset`
+   structurally.
 2. Automation normalizes the source, updates an automatically generated issue
    title, checks URL and source eligibility, reconciles supported frontends,
    probes public source facts, and checks duplicate URL/repository identity.
@@ -72,7 +80,9 @@ same rule.
    and any required frontend-vocabulary addition.
 5. The generated PR is the sole human review. Maintainers verify the source,
    project type, frontends, factual summary, classification, and warnings. They
-   may correct the generated files directly in the PR.
+   may correct the generated files directly in the PR. An intake model may
+   confirm the submitted category or add a sanitized `classification-review`
+   mismatch warning, but it never changes `primary_function`.
 6. Merging publishes through the normal catalog and Pages path. The PR's
    `Closes #<issue-number>` link closes the intake issue.
 7. Closing the generated PR without merging marks the issue
@@ -126,7 +136,8 @@ through normal gates.
 
 ### Kits
 
-- Kit creates and author-owned edits use `05-kit-submission.yml`.
+- Kit creates, author-owned edits, and trusted Tavernary staff edits use
+  `05-kit-submission.yml`.
 - Kit submissions are prepared by the in-browser builder and serialized into a
   stable JSON manifest on submit. The builder blocks severe language in the
   title and description.
@@ -137,6 +148,14 @@ through normal gates.
   pushes `main`, requests exact-SHA Pages deployment, and closes the issue.
 - A correctable validation failure remains open. Edit the issue and automation
   reruns without consuming another issue slot.
+
+Trusted Kit edit authority is recorded as `tavernary-staff` only when the
+actor's immutable ID appears in
+`data/maintenance/trusted-tavernary-editors.json` and the refreshed issue still
+has a trusted association. The final apply workflow re-fetches and revalidates
+that actor. A staff edit preserves the canonical Kit author, source issue,
+`published_at`, Kit ID, and support snapshot identity; only editable content and
+`updated_at` change.
 
 The currently published Kit remains unchanged until every publication gate
 passes. Near-duplicate composition is a non-blocking warning; exact duplicate

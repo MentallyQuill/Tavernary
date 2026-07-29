@@ -6,7 +6,12 @@ import { fingerprintProjectRecord } from "../../src/features/help/project-owner-
 
 const vocabularies = {
   frontends: ["sillytavern", "risuai"],
-  primaryFunctions: ["interface-workflow", "generation-reasoning"],
+  primaryFunctions: [
+    "frontend",
+    "preset",
+    "interface-workflow",
+    "generation-reasoning",
+  ],
   capabilities: ["automation", "prompt-engineering"],
   modelFamilies: ["claude", "gemini"],
   completionFormats: ["chat-completion", "text-completion"],
@@ -165,6 +170,64 @@ test("protects an approved owner card edit from enrichment", () => {
   expect(result.record).not.toHaveProperty("provenance");
 });
 
+test("preserves enrichment authority for classification-only edits", () => {
+  const result = applyProjectOwnerRequest(
+    editMutationFixture({
+      summary: "The original summary.",
+      primary_function: "generation-reasoning",
+    }),
+  );
+
+  expect(result.record).toMatchObject({
+    metadata_status: "provisional",
+    primary_function: "generation-reasoning",
+    enrichment_policy: "automatic",
+  });
+  expect(result.record).not.toHaveProperty("enrichment_note");
+});
+
+test("changes enrichment to manual only for summary or capability edits", () => {
+  for (const proposed of [
+    { summary: "A deliberately owner-authored summary." },
+    {
+      summary: "The original summary.",
+      capabilities: ["prompt-engineering"],
+    },
+  ]) {
+    expect(
+      applyProjectOwnerRequest(editMutationFixture(proposed)).record,
+    ).toMatchObject({
+      metadata_status: "curated",
+      enrichment_policy: "manual",
+      enrichment_note:
+        "Owner-authored catalog details approved through issue #123.",
+    });
+  }
+});
+
+test("applies a trusted staff card edit without repository identity", () => {
+  const current = registryRecord({
+    source: { type: "url", url: "https://example.com/alpha" },
+  });
+  const manifest = {
+    ...editManifest(current, { name: "Alpha Staff Edit" }),
+    repository_id: null,
+  };
+
+  expect(
+    applyProjectOwnerRequest({
+      issueNumber: 123,
+      manifest,
+      record: current,
+      snapshot: null,
+      vocabularies,
+    }).record,
+  ).toMatchObject({
+    name: "Alpha Staff Edit",
+    source: { type: "url", url: "https://example.com/alpha" },
+  });
+});
+
 test("preserves concurrent changes outside the owner-requested fields", () => {
   const original = registryRecord();
   const input = {
@@ -196,10 +259,12 @@ test("enforces the owner display-name boundary again when applying", () => {
 test("applies Preset compatibility fields with the same approved field parity", () => {
   const record = registryRecord({
     kind: "preset",
+    primary_function: "preset",
     model_families: ["claude"],
     completion_formats: ["chat-completion"],
   });
   const manifest = editManifest(record, {
+    primary_function: "preset",
     model_families: ["gemini"],
     completion_formats: ["text-completion"],
   });

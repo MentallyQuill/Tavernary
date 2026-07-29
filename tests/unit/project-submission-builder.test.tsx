@@ -60,6 +60,76 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+test("offers the six defined primary functions only for Extensions", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  expect(screen.queryByLabelText("Primary function")).not.toBeInTheDocument();
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+
+  const primaryFunction = screen.getByLabelText("Primary function");
+  expect(primaryFunction).toBeVisible();
+  expect(
+    screen.getAllByRole("option", {
+      name: /Memory and retrieval|Generation and reasoning|Character and worldbuilding|RPG systems and suites|Interface and workflow|Developer infrastructure/u,
+    }),
+  ).toHaveLength(6);
+  expect(
+    screen.getByText(
+      /Stores, summarizes, searches, retrieves, or injects conversational knowledge and continuity/u,
+    ),
+  ).toBeVisible();
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "preset");
+  expect(screen.queryByLabelText("Primary function")).not.toBeInTheDocument();
+});
+
+test("submits selected and structural primary functions without stale values", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await user.selectOptions(
+    screen.getByLabelText("Primary function"),
+    "memory-retrieval",
+  );
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/frontend",
+  );
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).toHaveBeenLastCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      schema_version: 3,
+      project_type: "frontend",
+      primary_function: "frontend",
+    }),
+  );
+
+  openProjectSubmission.mockClear();
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  expect(screen.getByLabelText("Primary function")).toHaveValue("");
+  await user.selectOptions(
+    screen.getByLabelText("Primary function"),
+    "interface-workflow",
+  );
+  await user.click(screen.getByLabelText("SillyTavern"));
+  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+
+  expect(openProjectSubmission).toHaveBeenLastCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      schema_version: 3,
+      project_type: "extension",
+      primary_function: "interface-workflow",
+    }),
+  );
+});
+
 test("orders supported frontends by frontend-card popularity", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionPage />);
@@ -117,6 +187,10 @@ test("accepts an exact public Codeberg repository for an Extension", async () =>
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await user.selectOptions(
+    screen.getByLabelText("Primary function"),
+    "interface-workflow",
+  );
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
@@ -163,6 +237,10 @@ test("submits multiple current frontend identities in the manifest", async () =>
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await user.selectOptions(
+    screen.getByLabelText("Primary function"),
+    "developer-infrastructure",
+  );
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://github.com/example/extension",
@@ -174,8 +252,9 @@ test("submits multiple current frontend identities in the manifest", async () =>
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 2,
+      schema_version: 3,
       project_type: "extension",
+      primary_function: "developer-infrastructure",
       source_url: "https://github.com/example/extension",
       frontends: {
         known_ids: ["sillytavern", "lumiverse"],
@@ -352,8 +431,9 @@ test("serializes multiple model families and both completion formats for a Prese
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 2,
+      schema_version: 3,
       project_type: "preset",
+      primary_function: "preset",
       preset_compatibility: {
         model_families: {
           known_ids: ["claude", "gemini"],

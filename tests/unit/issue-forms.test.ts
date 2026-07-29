@@ -107,7 +107,7 @@ test("owner requests have an accessible readable fallback in exact review order"
     fields
       .filter((field) => field.validations?.required)
       .map((field) => field.id),
-  ).toEqual(["request-type", "project-id", "repository"]);
+  ).toEqual(["request-type", "project-id"]);
   expect(fields.at(-1)).toMatchObject({
     id: "owner-request-manifest",
     type: "textarea",
@@ -167,6 +167,7 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields.map((field: { id: string }) => field.id)).toEqual([
     "project-type",
     "project-url",
+    "primary-function",
     "project-name",
     "project-description",
     "supported-frontends",
@@ -184,6 +185,7 @@ test("project submission is a structured fallback for automated intake", async (
   ).toEqual([
     "Project Type",
     "Project URL",
+    "Primary function",
     "Project Name",
     "Short Description",
     "Supported frontends",
@@ -195,6 +197,7 @@ test("project submission is a structured fallback for automated intake", async (
     "Project manifest",
   ]);
   expect(fields.map((field: { type: string }) => field.type)).toEqual([
+    "input",
     "input",
     "input",
     "input",
@@ -218,23 +221,25 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[1].attributes.placeholder).toBe(
     "https://github.com/owner/repository or https://codeberg.org/owner/repository",
   );
-  expect(fields[4].attributes.description).toContain(
+  expect(fields[2].validations?.required ?? false).toBe(false);
+  expect(fields[2].attributes.description).toContain("memory-retrieval");
+  expect(fields[5].attributes.description).toContain(
     "comma- or newline-separated",
   );
-  expect(fields[3].attributes.description).toContain(
+  expect(fields[4].attributes.description).toContain(
     "may be adapted into Tavernary's catalog summary",
   );
-  expect(fields[2].attributes.description).toContain(
+  expect(fields[3].attributes.description).toContain(
     "GitHub and Codeberg sources",
   );
-  expect(fields[3].attributes.description).toContain("external System Presets");
-  expect(fields[5].attributes.placeholder).toBe("Yes or No");
-  expect(fields[5].validations.required).toBe(true);
-  expect(fields[7].validations?.required ?? false).toBe(false);
-  expect(fields[7].attributes.description).toContain(
+  expect(fields[4].attributes.description).toContain("external System Presets");
+  expect(fields[6].attributes.placeholder).toBe("Yes or No");
+  expect(fields[6].validations.required).toBe(true);
+  expect(fields[8].validations?.required ?? false).toBe(false);
+  expect(fields[8].attributes.description).toContain(
     "one canonical family ID per line",
   );
-  expect(fields[9].attributes.description).toContain(
+  expect(fields[10].attributes.description).toContain(
     "one canonical format ID per line",
   );
   expect(submission.body[0].attributes.value).toContain(

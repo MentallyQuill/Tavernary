@@ -12,9 +12,9 @@ automation that publishes the catalog.
 Read the [Tavernary documentation](docs/README.md) for the product overview,
 catalog guide, contribution paths, and local development setup.
 
-The public seed catalog contains 214 projects. Five records are curated and
-209 are visibly provisional while repository enrichment and editorial review
-continue.
+The canonical registry contains 304 projects, with 302 currently published in
+the browser catalog. Repository enrichment and editorial review may improve
+summaries and capabilities without changing a project's primary function.
 
 ## Local development
 
@@ -79,7 +79,7 @@ vocabularies into `src/generated/catalog.json`.
 manifest; it records aggregate and provider-isolated counts, API usage, timings,
 and the catalog-wide refresh timestamp for the latest completed run.
 
-Registry records use schema version 3. Every record carries
+Registry records use schema version 5. Every record carries
 `metadata_status: "curated"` or `"provisional"`. Provisional GitHub records may
 publish with `source.repository_id: null` until a successful refresh and
 identity backfill fill the immutable GitHub repository ID.
@@ -98,19 +98,11 @@ qualifying change reports no source activity in the last twelve weeks.
 
 Snapshotless published repository records stay visible. The site renders them as
 pending enrichment rather than as zero activity or verified missing metadata.
-Imported seed records also remain visibly `uncategorized` until a maintainer
-replaces the provisional editorial metadata.
+Every record already has an authoritative category: Frontends use `frontend`,
+System Presets use `preset`, and Extensions use one of the six functional
+categories.
 
 ## Refresh operations
-
-Audit the deterministic seed migration:
-
-```powershell
-npm run catalog:migrate
-```
-
-After the seed files exist, this is a rerunnable audit command. A healthy rerun
-should report `writes_required: 0`.
 
 Refresh every automatic repository source:
 
@@ -190,7 +182,11 @@ Before clearing a quarantine:
 The **Submit Project** link opens Tavernary's static submission builder. Its
 frontend choices come from the current catalog, and it prepares a structured
 GitHub issue with a stable manifest. The native GitHub issue form remains
-available as a free-text fallback.
+available as a readable fallback. Only Extension submissions choose a primary
+function. That submitted Extension category is authoritative; Frontends and
+System Presets receive their structural values automatically. Intake may add a
+`classification-review` warning when source evidence suggests a mismatch, but
+the model never changes the submitted value.
 
 Automation normalizes the source, checks eligibility and obvious duplicates,
 and prepares admitted submissions as a generated pull request. Duplicates close
@@ -211,10 +207,10 @@ lifecycle and recovery procedure.
 
 Kits are community-authored, ordered collections of 3-50 catalog projects.
 The browser builder keeps drafts only in memory and hands a stable JSON
-manifest to GitHub. New Kits and edits are validated automatically, but a
-maintainer publishes them only after review. Support is derived from eligible
-`+1` reactions on the Kit's source issue; it is catalog evidence rather than
-a user-rating system. Tavernary remains a static, build-time catalog with no
+manifest to GitHub. Valid new Kits and edits publish automatically after triage
+and a second validation in the apply workflow. Support is derived from eligible
+`+1` reactions on the Kit's source issue; it is catalog evidence rather than a
+user-rating system. Tavernary remains a static, build-time catalog with no
 accounts, database service, or runtime API.
 
 The [Help hub](/help/) is the contextual entry point for existing listings and
@@ -227,17 +223,19 @@ must not include secrets or private personal information. Tavernary does not
 provide support for third-party projects; use the listed project's own
 repository or support channel.
 
-Only a verified personal GitHub repository owner can use the automated owner
-path to edit card details, move the same repository, or request a delist.
-Organization listings, maintainers who are not the current personal owner, and
-rights-holder concerns use the human-reviewed project-report path instead. An
-owner request is checked against current source identity before automation
-creates `automation/project-owner-request-<issue-number>` and a generated
-review PR. Merging publishes the reviewed change; closing the PR without merge
-declines it. An owner-authored summary is protected with manual enrichment, so
-an automatic source refresh cannot overwrite it. `refresh_policy` controls
-repository evidence collection, while `enrichment_policy` controls editorial
-enrichment; they are intentionally independent.
+A verified personal GitHub repository owner can use the automated owner path
+for that repository. Reviewed Tavernary owners, admins, and maintainers listed
+by immutable GitHub ID in
+`data/maintenance/trusted-tavernary-editors.json` may use the same reviewed
+request for any card. A current trusted repository association is also
+required; association alone does not grant authority. Automation creates
+`automation/project-owner-request-<issue-number>` and a generated review PR.
+Merging publishes the reviewed change; closing the PR without merge declines
+it. Summary or capability edits switch enrichment to manual, while a
+classification-only edit preserves the existing enrichment policy.
+`refresh_policy` controls repository evidence collection, while
+`enrichment_policy` controls model-written summary and capabilities; neither
+allows enrichment to change `primary_function`.
 
 For a Tavernary vulnerability, use the private security route
 `/help/security/` or GitHub's private form at

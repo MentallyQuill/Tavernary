@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
+import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createInitialRepositorySnapshot,
   provisionalActivity,
@@ -69,6 +70,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       submitted: draft.submitted,
       observed: draft.observed,
       inferred: draft.inferred,
+      classificationReview: draft.classificationReview ?? null,
       warnings: draft.warnings,
     },
   };
@@ -307,12 +309,23 @@ export async function prepareProjectSubmissionDraft({
     now,
   });
 
+  const vocabularies = await loadEnrichmentVocabularies();
+  const classificationReviewRequest =
+    decision.manifest.project_type === "extension"
+      ? {
+          submittedPrimaryFunction: decision.manifest.primary_function,
+          allowedPrimaryFunctions: vocabularies.primaryFunctions.filter(
+            ({ id }) => EXTENSION_PRIMARY_FUNCTION_IDS.includes(id),
+          ),
+        }
+      : null;
   let enrichment;
   try {
     if (sourceClients.enrich) {
       enrichment = await sourceClients.enrich({
         record: preliminary.record,
         snapshot,
+        ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
       });
     } else {
       const provider = createEnrichmentProvider({
@@ -325,15 +338,18 @@ export async function prepareProjectSubmissionDraft({
         snapshot,
         provider,
         {
-          vocabularies: await loadEnrichmentVocabularies(),
+          vocabularies,
+          ...(classificationReviewRequest
+            ? { classificationReviewRequest }
+            : {}),
         },
       );
       enrichment = output
         ? {
             status: "curated",
             summary: output.summary,
-            primary_function: output.primary_function,
             capabilities: [...output.capabilities],
+            classification_review: output.classification_review,
           }
         : null;
     }

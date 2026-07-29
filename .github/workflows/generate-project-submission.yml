@@ -142,6 +142,95 @@ jobs:
         run: |
           npm run catalog:validate
           npm run catalog:build
+      - name: Synchronize classification review notice
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh label create classification-review \
+            --color d4c5f9 \
+            --description "Optional intake review found a possible primary-function mismatch." \
+            --force
+          issue_path="${RUNNER_TEMP}/project-submission-issue.json"
+          comments_path="${RUNNER_TEMP}/project-submission-comments.json"
+          plan_path="${RUNNER_TEMP}/classification-review-notice-plan.json"
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "$issue_path"
+          gh api --paginate --slurp \
+            "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments?per_page=100" \
+            > "$comments_path"
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            import { planClassificationReviewNotice } from './scripts/submissions/classification-review-notice.mjs';
+            const issue = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+            const report = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+            const commentPages = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
+            const labels = issue.labels.map((label) => label.name);
+            if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
+                !labels.includes('project-submission') ||
+                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+              throw new Error('Submission issue is no longer admitted.');
+            }
+            const plan = planClassificationReviewNotice({
+              classificationReview: report.classificationReview ?? null,
+              currentLabels: labels,
+              comments: commentPages.flat(),
+            });
+            fs.writeFileSync(process.argv[4], JSON.stringify(plan));
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/classification-review-labels-to-delete.txt',
+              plan.removeLabels.join('\n'),
+            );
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/classification-review-labels.json',
+              JSON.stringify({ labels: plan.addLabels }),
+            );
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/classification-review-comment-ids-to-delete.txt',
+              plan.removeCommentIds.join('\n'),
+            );
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/classification-review-comment.json',
+              JSON.stringify(plan.comment ? { body: plan.comment.body } : {}),
+            );
+          " "$issue_path" "${RUNNER_TEMP}/admission-report.json" "$comments_path" "$plan_path"
+          while IFS= read -r label; do
+            [[ -z "$label" ]] && continue
+            if ! delete_output="$(gh api --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels/${label}" 2>&1)"; then
+              if [[ "$delete_output" != *"(HTTP 404)"* ]]; then
+                echo "$delete_output" >&2
+                exit 1
+              fi
+            fi
+          done < "${RUNNER_TEMP}/classification-review-labels-to-delete.txt"
+          if [[ "$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8')).addLabels.length" "$plan_path")" -gt 0 ]]; then
+            gh api --method POST \
+              "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
+              --input "${RUNNER_TEMP}/classification-review-labels.json" \
+              > /dev/null
+          fi
+          comment_action="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8')).comment?.action || ''" "$plan_path")"
+          if [[ "$comment_action" == "create" ]]; then
+            gh api --method POST \
+              "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+              --input "${RUNNER_TEMP}/classification-review-comment.json" \
+              > /dev/null
+          elif [[ "$comment_action" == "update" ]]; then
+            comment_id="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8')).comment.commentId" "$plan_path")"
+            gh api --method PATCH \
+              "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" \
+              --input "${RUNNER_TEMP}/classification-review-comment.json" \
+              > /dev/null
+          fi
+          while IFS= read -r comment_id; do
+            [[ -z "$comment_id" ]] && continue
+            if ! delete_output="$(gh api --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" 2>&1)"; then
+              if [[ "$delete_output" != *"(HTTP 404)"* ]]; then
+                echo "$delete_output" >&2
+                exit 1
+              fi
+            fi
+          done < "${RUNNER_TEMP}/classification-review-comment-ids-to-delete.txt"
       - name: Prepare generated path set
         id: paths
         shell: bash
@@ -220,6 +309,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "project_id=$PROJECT_ID" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "feat(catalog): propose project from issue #${ISSUE_NUMBER}"
@@ -235,7 +325,7 @@ jobs:
             echo "project_id=$PROJECT_ID"
           } >> "$GITHUB_OUTPUT"
       - name: Create or update maintainer review PR
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
         shell: bash
         env:
           BRANCH: ${{ steps.state.outputs.branch }}

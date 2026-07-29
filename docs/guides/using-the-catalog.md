@@ -40,13 +40,14 @@ listing**, **Report a website problem**, **Report a Kit**, and **Get other
 help**. Contextual links preserve the selected project, Kit, or Tavernary path
 where it is safe to do so.
 
-Only a verified personal GitHub repository owner can use automated listing
-management. Organization listings and all other concerns receive a
-human-reviewed public report. Reports are visible on GitHub, so do not include
-secrets. Tavernary does not support third-party projects: use the project's own
-support channel. A Tavernary security vulnerability instead belongs on the
-private `/help/security/` route, which opens GitHub's
-`security/advisories/new` form.
+A verified personal GitHub repository owner can manage that repository's
+listing. Reviewed Tavernary owners, admins, and maintainers may use the same
+reviewed request for any card. Organization maintainers without either
+authority and all other concerns receive a human-reviewed public report.
+Reports are visible on GitHub, so do not include secrets. Tavernary does not
+support third-party projects: use the project's own support channel. A
+Tavernary security vulnerability instead belongs on the private
+`/help/security/` route, which opens GitHub's `security/advisories/new` form.
 
 ## Activity labels
 

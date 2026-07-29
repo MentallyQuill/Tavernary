@@ -15,7 +15,7 @@
     "license_spdx_id": null
   },
   "frontends": ["sillytavern"],
-  "primary_function": "character-worldbuilding",
+  "primary_function": "preset",
   "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "model_families": ["claude"],
   "completion_formats": ["chat-completion"],

@@ -4,8 +4,10 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, test } from "vitest";
 
+import primaryFunctionVocabulary from "../../data/vocabularies/primary-functions.json";
 import { buildCatalog } from "../../scripts/catalog/build.mjs";
 import { validateEnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
+import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
 
 interface CatalogRecord {
   id: string;
@@ -43,11 +45,52 @@ const removedVillageMakerIds = [
   "village-maker-thornbeck-prompt",
 ];
 
+const reconciledPrimaryFunctions = {
+  "casus-b-casus-custom-chatfill-ii": "preset",
+  "daddytorgo-hash-frankengarage": "preset",
+  "evening-truth-carrd-prompt": "preset",
+  "le-emotionalism-1-1-5-prompt": "preset",
+  "mentallyquill-st-wandlight": "preset",
+  "puras-director-v15": "preset",
+  "purrfect-logic-4-max-mini": "preset",
+  "realistic-frankenstein-preset": "preset",
+  "reddit-1v64r6z": "preset",
+  "reddit-1v72pju": "preset",
+  "ryah-st-freaky-d20-preset": "preset",
+  "village-maker-google-drive-prompt": "preset",
+  "writers-block-4": "preset",
+  "zorgonatis-stabs-edh": "preset",
+  "mnehmos-mnehmos-quest-keeper-game": "frontend",
+  "sagesheep-narrativeengine-p": "frontend",
+  "amousepad-lumirealm": "character-worldbuilding",
+  "archkr-lumiverse-lumimind": "memory-retrieval",
+  "archkr-sillytavern-outfitswitch": "character-worldbuilding",
+  "bronya-rand-prome-vn-extension": "interface-workflow",
+  "cha1latte-marinara-avatar-background": "interface-workflow",
+  "countcandy-sillytavern-extension-candyexpressions":
+    "character-worldbuilding",
+  "ikarusv-cotautoclean": "interface-workflow",
+  "leandrojofre-sillytavern-stat-us-maximus": "rpg-systems",
+  "sillytavern-extension-groupgreetings": "character-worldbuilding",
+  "spicymarinara-sillytavern-spotify-music-extension": "interface-workflow",
+  "zapoverde-sillytavern-vistalyze": "character-worldbuilding",
+  "aceeenvw-charswitchpro": "interface-workflow",
+  "aeoness-swipe-sculpt": "interface-workflow",
+  "brasen56-merged-world-tracker": "rpg-systems",
+  "hornysilicon-charsaver": "character-worldbuilding",
+  "kawaii-wolf-sillytavern-evenmoreflexiblecontinues": "generation-reasoning",
+  "prolix-oc-lumiverse-chatroom": "interface-workflow",
+  "prolix-oc-lumiverse-spotifycontrols": "interface-workflow",
+  "selinawynters-ops-paramsentinel": "generation-reasoning",
+  "sillytavern-extension-customsliders": "interface-workflow",
+  "zompiexx-st-hands-free-voice": "interface-workflow",
+} as const;
+
 const manualCuratedRecords = {
   "evening-truth-carrd-prompt": {
     summary:
       "A collection of concise, model-tailored roleplay system prompts designed for broad Chat Completion compatibility.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -59,7 +102,7 @@ const manualCuratedRecords = {
   "le-emotionalism-1-1-5-prompt": {
     summary:
       "A modular SillyTavern preset for grounded roleplay, autonomous NPCs, deliberate reasoning, continuity, pacing, and expressive prose.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -72,7 +115,7 @@ const manualCuratedRecords = {
   "puras-director-v15": {
     summary:
       "A customizable SillyTavern preset combining director-style scene control, grounded prose, reasoning aids, trackers, and RPG systems.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -85,7 +128,7 @@ const manualCuratedRecords = {
   "purrfect-logic-4-max-mini": {
     summary:
       "A streamlined SillyTavern roleplay preset reducing prompt overhead while strengthening structure, instruction following, and prose.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: ["prompt-engineering", "instruction-control"],
     version: "4 Max Mini",
     artifact_size_bytes: null,
@@ -93,7 +136,7 @@ const manualCuratedRecords = {
   "realistic-frankenstein-preset": {
     summary:
       "A three-tier SillyTavern preset family promoting character autonomy, realistic behavior, living-world continuity, and scalable prompting.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -105,7 +148,7 @@ const manualCuratedRecords = {
   "reddit-1v72pju": {
     summary:
       "A director-style roleplay preset where the user directs intent while an autonomous simulation authors the world, characters, and consequences.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -118,7 +161,7 @@ const manualCuratedRecords = {
   "writers-block-4": {
     summary:
       "A SillyTavern co-writing preset with director modes, adaptive pacing, structured reasoning, prose styles, character agency, and subtext.",
-    primary_function: "generation-reasoning",
+    primary_function: "preset",
     capabilities: [
       "prompt-engineering",
       "instruction-control",
@@ -130,7 +173,7 @@ const manualCuratedRecords = {
   "village-maker-google-drive-prompt": {
     summary:
       "An interview-driven guide for creating village-as-character cards with communities, locations, events, lore, and roleplay structure.",
-    primary_function: "character-worldbuilding",
+    primary_function: "preset",
     capabilities: ["character-worldbuilding", "prompt-engineering"],
     version: "1.0",
     artifact_size_bytes: null,
@@ -235,6 +278,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(["curated", "provisional"], record.id).toContain(
       record.metadata_status,
     );
+    expect(
+      classificationError(record.kind, record.primary_function),
+      record.id,
+    ).toBeNull();
     if (record.enrichment_policy === "automatic") {
       expect(record.enrichment_note, record.id).toBeUndefined();
     } else {
@@ -245,9 +292,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
   }
 
   for (const record of provisionalRecords) {
-    expect(record.primary_function).toBe(
-      record.kind === "frontend" ? "frontend" : "uncategorized",
-    );
+    expect(
+      classificationError(record.kind, record.primary_function),
+      record.id,
+    ).toBeNull();
     expect(record.capabilities).toEqual([]);
   }
 
@@ -262,10 +310,6 @@ function expectCatalogContract(records: CatalogRecord[]) {
     ).toBe(true);
     if (record.metadata_status === "curated") {
       expect(repositoryId, record.id).toEqual(expect.any(Number));
-      if (record.primary_function === "uncategorized") {
-        expect(record.summary, record.id).toBe("No README file found.");
-        expect(record.capabilities, record.id).toEqual([]);
-      }
     }
   }
 
@@ -281,7 +325,10 @@ function expectCatalogContract(records: CatalogRecord[]) {
     expect(record, `missing curated overlap record: ${id}`).toBeDefined();
     expect(record?.metadata_status).toBe("curated");
     expect(record?.source.type).toBe("github");
-    expect(record?.primary_function).not.toBe("uncategorized");
+    expect(
+      classificationError(record?.kind ?? "", record?.primary_function ?? ""),
+      record?.id,
+    ).toBeNull();
     expect(record?.capabilities ?? []).not.toEqual([]);
     expect(record?.source.repository_id).toEqual(expect.any(Number));
   }
@@ -306,6 +353,40 @@ function expectCatalogContract(records: CatalogRecord[]) {
 }
 
 describe("full catalog data", () => {
+  test("reconciles the exact approved 37-record classification ledger", async () => {
+    const records = await loadRegistryRecords();
+    const byId = new Map(records.map((record) => [record.id, record]));
+
+    expect(Object.keys(reconciledPrimaryFunctions)).toHaveLength(37);
+    for (const [id, primaryFunction] of Object.entries(
+      reconciledPrimaryFunctions,
+    )) {
+      expect(byId.get(id)?.primary_function, id).toBe(primaryFunction);
+    }
+  });
+
+  test("every project obeys the kind and primary-function contract", async () => {
+    const records = await loadRegistryRecords();
+
+    expect(
+      records.flatMap((record) => {
+        const error = classificationError(record.kind, record.primary_function);
+        return error ? [`${record.id}: ${error}`] : [];
+      }),
+    ).toEqual([]);
+  });
+
+  test("has no canonical Uncategorized taxonomy state", async () => {
+    const records = await loadRegistryRecords();
+
+    expect(
+      primaryFunctionVocabulary.primary_functions.map(({ id }) => id),
+    ).not.toContain("uncategorized");
+    expect(
+      records.some((record) => record.primary_function === "uncategorized"),
+    ).toBe(false);
+  });
+
   test("matches the production catalog invariants", async () => {
     expectCatalogContract(await loadRegistryRecords());
   });
@@ -355,7 +436,6 @@ describe("full catalog data", () => {
     const curatedAutomaticUrlRecord = structuredClone(automaticUrlRecord!);
     curatedAutomaticUrlRecord.id = "curated-automatic-url-contract-fixture";
     curatedAutomaticUrlRecord.metadata_status = "curated";
-    curatedAutomaticUrlRecord.primary_function = "generation-reasoning";
     curatedAutomaticUrlRecord.capabilities = ["prompt-engineering"];
 
     expectCatalogContract([...records, curatedAutomaticUrlRecord]);
@@ -392,7 +472,7 @@ describe("full catalog data", () => {
 
     expect(() =>
       expectCatalogContract([...records, provisionalExtension]),
-    ).toThrow(/expected 'frontend' to be 'uncategorized'/iu);
+    ).toThrow(/Extensions must use one approved Exte/iu);
   });
 
   test("applies the requested delist and automatic Reddit enrichment decisions", async () => {
@@ -464,7 +544,12 @@ describe("full catalog data", () => {
     for (const [index, record] of canary.entries()) {
       record.source.repository_id = 1_000_000 + index;
       record.metadata_status = "curated";
-      record.primary_function = "developer-infrastructure";
+      record.primary_function =
+        record.kind === "frontend"
+          ? "frontend"
+          : record.kind === "preset"
+            ? "preset"
+            : "developer-infrastructure";
       record.capabilities = ["automation"];
       record.summary =
         "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.";
@@ -505,12 +590,6 @@ describe("full catalog data", () => {
   });
 
   test("validates the contract used by generated curated summaries", async () => {
-    const primaryFunctions = JSON.parse(
-      await readFile(
-        resolve(rootDirectory, "data/vocabularies/primary-functions.json"),
-        "utf8",
-      ),
-    ).primary_functions;
     const capabilities = JSON.parse(
       await readFile(
         resolve(rootDirectory, "data/vocabularies/capabilities.json"),
@@ -522,10 +601,10 @@ describe("full catalog data", () => {
         summary:
           "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated",
-        primary_function: "developer-infrastructure",
         capabilities: ["automation"],
+        classification_review: null,
       },
-      { primaryFunctions, capabilities },
+      { capabilities },
     );
     expect(result).toEqual({ valid: true });
   });

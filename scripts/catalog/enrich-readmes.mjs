@@ -11,6 +11,7 @@ import {
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createEnrichmentProvider,
   validateProviderConfiguration,
@@ -45,11 +46,10 @@ function entriesToSet(entries) {
   );
 }
 
-function sourceBackedPrimaryFunctions(entries) {
+function extensionPrimaryFunctions(entries) {
+  const extensionIds = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
   return entries.filter((entry) =>
-    typeof entry === "string"
-      ? entry !== "uncategorized"
-      : entry.id !== "uncategorized",
+    extensionIds.has(typeof entry === "string" ? entry : entry.id),
   );
 }
 
@@ -122,18 +122,22 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     const fallback = {
       summary: "No README file found.",
       metadata_status: "curated",
-      primary_function: "uncategorized",
       capabilities: [],
+      classification_review: null,
     };
     const validation = validateEnrichmentOutput(fallback, {
-      primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
       capabilities: entriesToSet(vocabularies.capabilities),
     });
     if (!validation.valid) throw new Error(validation.errors.join("; "));
     return fallback;
   }
 
-  const input = providerInputForRecord(record, source, vocabularies);
+  const input = providerInputForRecord(
+    record,
+    source,
+    vocabularies,
+    options.classificationReviewRequest,
+  );
   if (!provider?.generate) {
     throw new Error(
       "enrichment provider configuration is required for source-backed records",
@@ -141,20 +145,23 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
   }
   const generated = await provider.generate(input);
   const output = generated.output;
-  const validation = validateEnrichmentOutput(output, {
-    primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
-    capabilities: entriesToSet(vocabularies.capabilities),
-  });
+  const validation = validateEnrichmentOutput(
+    output,
+    {
+      capabilities: entriesToSet(vocabularies.capabilities),
+    },
+    input.classificationReviewRequest ?? null,
+  );
   if (!validation.valid) throw new Error(validation.errors.join("; "));
-  if (output.primary_function === "uncategorized") {
-    throw new Error(
-      "source-backed enrichment must choose a substantive primary function",
-    );
-  }
   return output;
 }
 
-function providerInputForRecord(record, source, vocabularies) {
+function providerInputForRecord(
+  record,
+  source,
+  vocabularies,
+  classificationReviewRequest = null,
+) {
   return {
     id: record.id,
     name: record.name,
@@ -165,10 +172,8 @@ function providerInputForRecord(record, source, vocabularies) {
       text: source.text,
     },
     frontends: record.frontends ?? [],
-    allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
-      vocabularies.primaryFunctions,
-    ),
     allowedCapabilities: vocabularies.capabilities,
+    ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
   };
 }
 
@@ -179,13 +184,13 @@ export async function writeEnrichedRecord(
   vocabularies = {
     primaryFunctions: [
       "frontend",
+      "preset",
       "memory-retrieval",
       "generation-reasoning",
       "character-worldbuilding",
       "rpg-systems",
       "interface-workflow",
       "developer-infrastructure",
-      "uncategorized",
     ],
     capabilities: [
       "automation",
@@ -201,18 +206,28 @@ export async function writeEnrichedRecord(
     ],
   },
 ) {
-  const validation = validateEnrichmentOutput(output, {
-    primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
-    capabilities: entriesToSet(vocabularies.capabilities),
-  });
-  if (!validation.valid) throw new Error(validation.errors.join("; "));
   const current = JSON.parse(await readFile(path, "utf8"));
   assertAutomaticEnrichment(current);
+  const classificationReviewRequest = output.classification_review
+    ? {
+        submittedPrimaryFunction: current.primary_function,
+        allowedPrimaryFunctions: extensionPrimaryFunctions(
+          vocabularies.primaryFunctions,
+        ),
+      }
+    : null;
+  const validation = validateEnrichmentOutput(
+    output,
+    {
+      capabilities: entriesToSet(vocabularies.capabilities),
+    },
+    classificationReviewRequest,
+  );
+  if (!validation.valid) throw new Error(validation.errors.join("; "));
   const updated = {
     ...current,
     summary: output.summary,
     metadata_status: output.metadata_status,
-    primary_function: output.primary_function,
     capabilities: output.capabilities,
   };
   const temporaryPath = `${path}.${randomUUID()}.tmp`;
@@ -248,16 +263,23 @@ function fallbackOutput() {
   return {
     summary: "No README file found.",
     metadata_status: "curated",
-    primary_function: "uncategorized",
     capabilities: [],
+    classification_review: null,
   };
 }
 
-function validateOutput(output, vocabularies, sourceBacked) {
-  const validation = validateEnrichmentOutput(output, {
-    primaryFunctions: entriesToSet(vocabularies.primaryFunctions),
-    capabilities: entriesToSet(vocabularies.capabilities),
-  });
+function validateOutput(
+  output,
+  vocabularies,
+  classificationReviewRequest = null,
+) {
+  const validation = validateEnrichmentOutput(
+    output,
+    {
+      capabilities: entriesToSet(vocabularies.capabilities),
+    },
+    classificationReviewRequest,
+  );
   if (!validation.valid) {
     const repairHints = validation.errors.map((error) => {
       if (error === "summary must be a non-empty string") {
@@ -281,14 +303,17 @@ function validateOutput(output, vocabularies, sourceBacked) {
       if (error === "metadata_status must be curated") {
         return "Set metadata_status to curated.";
       }
-      if (error === "primary_function is not in the controlled vocabulary") {
-        return "Use one allowed primary_function ID.";
-      }
       if (error === "capabilities must be an array") {
         return "Return capabilities as an array.";
       }
       if (error.startsWith("capabilities contains an unknown")) {
         return "Use only allowed capability IDs.";
+      }
+      if (error.startsWith("classification_review")) {
+        return "Return the requested bounded classification_review value.";
+      }
+      if (error === "primary_function is not allowed in enrichment output") {
+        return "Do not return primary_function.";
       }
       return "Return an object that satisfies the enrichment schema.";
     });
@@ -296,14 +321,6 @@ function validateOutput(output, vocabularies, sourceBacked) {
       valid: false,
       message: validation.errors.join("; "),
       repairHint: [...new Set(repairHints)].join(" "),
-    };
-  }
-  if (sourceBacked && output.primary_function === "uncategorized") {
-    return {
-      valid: false,
-      message:
-        "source-backed enrichment must choose a substantive primary function",
-      repairHint: "Choose one substantive allowed primary_function ID.",
     };
   }
   return { valid: true };
@@ -487,7 +504,7 @@ async function processProject(input, id) {
   let validation = validateOutput(
     output,
     vocabularies,
-    source.status === "ready",
+    providerInput?.classificationReviewRequest ?? null,
   );
   if (!validation.valid && providerInput) {
     providerInput = validationRepairInput(providerInput, validation, output);
@@ -510,7 +527,7 @@ async function processProject(input, id) {
     validation = validateOutput(
       output,
       vocabularies,
-      source.status === "ready",
+      providerInput?.classificationReviewRequest ?? null,
     );
   }
   if (!validation.valid) {
@@ -709,12 +726,6 @@ const preflightInput = {
     text: "A synthetic source used only to verify structured catalog enrichment.",
   },
   frontends: ["sillytavern"],
-  allowedPrimaryFunctions: [
-    {
-      id: "developer-infrastructure",
-      label: "Developer infrastructure",
-    },
-  ],
   allowedCapabilities: [{ id: "automation", label: "Automation" }],
 };
 
@@ -745,17 +756,17 @@ async function generatePreflight(provider, input, sleep) {
 async function runPreflight(provider, sleep) {
   let result = await generatePreflight(provider, preflightInput, sleep);
   const vocabularies = {
-    primaryFunctions: preflightInput.allowedPrimaryFunctions,
+    primaryFunctions: [],
     capabilities: preflightInput.allowedCapabilities,
   };
-  let validation = validateOutput(result.output, vocabularies, true);
+  let validation = validateOutput(result.output, vocabularies);
   if (!validation.valid) {
     result = await generatePreflight(
       provider,
       validationRepairInput(preflightInput, validation, result.output),
       sleep,
     );
-    validation = validateOutput(result.output, vocabularies, true);
+    validation = validateOutput(result.output, vocabularies);
   }
   if (!validation.valid) {
     throw new Error(

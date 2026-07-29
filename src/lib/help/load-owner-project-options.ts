@@ -7,7 +7,8 @@ export interface OwnerProjectOption {
   id: string;
   name: string;
   kind: "frontend" | "extension" | "preset";
-  sourceType: "github" | "github-organization" | "url";
+  sourceType: "github" | "codeberg" | "github-organization" | "url";
+  sourceUrl?: string;
   repository: string | null;
   repositoryId: number | null;
   eligibleShape: boolean;
@@ -38,8 +39,9 @@ interface RegistryRecord {
   summary: string;
   source:
     | { type: "github"; repository: string; repository_id: number | null }
-    | { type: "github-organization" }
-    | { type: "url" };
+    | { type: "codeberg"; repository: string; repository_id: number }
+    | { type: "github-organization"; url: string }
+    | { type: "url"; url: string };
   frontends: string[];
   primary_function: string;
   capabilities: string[];
@@ -53,6 +55,9 @@ interface RegistryRecord {
 }
 
 function ineligibilityReason(record: RegistryRecord) {
+  if (record.source.type === "codeberg") {
+    return "Codeberg listings require trusted Tavernary staff authority.";
+  }
   if (record.source.type === "url") {
     return "External URL listings require a public project report.";
   }
@@ -66,6 +71,16 @@ function ineligibilityReason(record: RegistryRecord) {
     return "This GitHub listing does not have a verified immutable repository ID.";
   }
   return null;
+}
+
+function sourceUrl(record: RegistryRecord) {
+  if (record.source.type === "github") {
+    return `https://github.com/${record.source.repository}`;
+  }
+  if (record.source.type === "codeberg") {
+    return `https://codeberg.org/${record.source.repository}`;
+  }
+  return record.source.url;
 }
 
 export async function loadOwnerProjectOptions(
@@ -85,7 +100,6 @@ export async function loadOwnerProjectOptions(
   );
 
   return records
-    .filter((record) => record.visibility === "published")
     .map((record) => {
       const reason = ineligibilityReason(record);
       const repository =
@@ -101,6 +115,7 @@ export async function loadOwnerProjectOptions(
         name: record.name,
         kind: record.kind,
         sourceType: record.source.type,
+        sourceUrl: sourceUrl(record),
         repository,
         repositoryId,
         eligibleShape: reason === null,

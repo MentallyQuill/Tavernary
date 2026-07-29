@@ -11,6 +11,14 @@ afterEach(() => {
 });
 
 describe("catalog query history", () => {
+  test("treats a stale Uncategorized URL as the default category", () => {
+    window.history.replaceState(null, "", "/?category=uncategorized");
+
+    const { result } = renderHook(() => useCatalogQuery());
+
+    expect(result.current.query.category).toBe("");
+  });
+
   test("pushes relationship scope with an origin marker", () => {
     window.history.replaceState(null, "", "/?q=memory&kind=extension");
     const pushState = vi.spyOn(window.history, "pushState");

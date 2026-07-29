@@ -9,7 +9,11 @@ import {
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { parseKitIssueFields } from "../submissions/triage-kit-issue.mjs";
+import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
+import {
+  assertKitSubmissionEligible,
+  parseKitIssueFields,
+} from "../submissions/triage-kit-issue.mjs";
 import { validateKitSubmission } from "../submissions/validate-kit-submission.mjs";
 
 function slug(value) {
@@ -29,7 +33,13 @@ export function findExistingKitForSubmission({ manifest, issueNumber, kits }) {
     : kits.find((kit) => kit.source_issue_number === issueNumber);
 }
 
-export function applyKitSubmission({ manifest, issue, existingKit, now }) {
+export function applyKitSubmission({
+  manifest,
+  issue,
+  existingKit,
+  editAuthority = "author",
+  now,
+}) {
   if (manifest.operation === "create") {
     if (existingKit) {
       if (existingKit.status === "withdrawn") {
@@ -72,15 +82,22 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
   if (existingKit.status === "withdrawn") {
     throw new Error("A withdrawn Kit cannot be edited.");
   }
-  if (existingKit.author.github_user_id !== issue.user.id) {
+  if (
+    editAuthority !== "tavernary-staff" &&
+    existingKit.author.github_user_id !== issue.user.id
+  ) {
     throw new Error("Only the Kit author may publish an edit.");
   }
   const title = manifest.title.trim();
   const description = manifest.description.trim();
+  const author =
+    editAuthority === "tavernary-staff"
+      ? structuredClone(existingKit.author)
+      : { ...existingKit.author, login: issue.user.login };
   const unchanged =
     existingKit.title === title &&
     existingKit.description === description &&
-    existingKit.author.login === issue.user.login &&
+    JSON.stringify(existingKit.author) === JSON.stringify(author) &&
     JSON.stringify(existingKit.project_ids) ===
       JSON.stringify(manifest.project_ids);
   if (unchanged) {
@@ -90,7 +107,7 @@ export function applyKitSubmission({ manifest, issue, existingKit, now }) {
     ...existingKit,
     title,
     description,
-    author: { ...existingKit.author, login: issue.user.login },
+    author,
     project_ids: [...manifest.project_ids],
     updated_at: now,
   };
@@ -143,6 +160,7 @@ async function main() {
     process.env.ISSUE_NUMBER,
     process.env.GITHUB_TOKEN,
   );
+  assertKitSubmissionEligible(issue);
   const [projects, kits, blockedUsers] = await Promise.all([
     readJsonDirectory(resolve("data/registry/projects")),
     readJsonDirectory(resolve("data/registry/kits")),
@@ -152,10 +170,15 @@ async function main() {
   ]);
   const validation = validateKitSubmission({
     ...parseKitIssueFields(issue.body ?? ""),
-    actor: { id: issue.user.id, login: issue.user.login },
+    actor: {
+      id: issue.user.id,
+      login: issue.user.login,
+      association: issue.author_association,
+    },
     projects,
     kits,
     blockedUsers,
+    trustedEditors: trustedEditorRegistry,
     sourceIssueNumber: issue.number,
   });
   if (!validation.valid) {
@@ -172,6 +195,7 @@ async function main() {
     manifest: validation.manifest,
     issue,
     existingKit,
+    editAuthority: validation.editAuthority,
     now: new Date().toISOString(),
   });
   await atomicWrite(resolve("data/registry/kits", `${record.id}.json`), record);

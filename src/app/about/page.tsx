@@ -132,8 +132,9 @@ export default function AboutPage() {
               Manage your project listing
             </Link>{" "}
             to request a card edit, a move of the same repository, or a delist.
-            Organization listings, maintainers who are not that verified owner,
-            and rights holders use a human-reviewed public report through{" "}
+            Reviewed Tavernary owners, admins, and maintainers may use that
+            reviewed request for any card. Other organization maintainers and
+            rights holders use a human-reviewed public report through{" "}
             <Link href="/help/report-project/">Report a project listing</Link>.
           </p>
           <p>

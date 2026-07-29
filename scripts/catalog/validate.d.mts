@@ -13,4 +13,5 @@ export function validateCatalog(options?: {
   kitRecords?: unknown[];
   supportSnapshots?: unknown[];
   blockedUsers?: unknown;
+  trustedEditors?: unknown;
 }): Promise<ValidationResult>;

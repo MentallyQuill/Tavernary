@@ -2,6 +2,7 @@ import { appendFile, readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
 import { validateKitSubmission } from "./validate-kit-submission.mjs";
 
 const validationMarker = "<!-- tavernary-kit-submission-validation -->";
@@ -39,6 +40,28 @@ export function parseKitIssueFields(body) {
   const manifest = fields.get("Kit manifest") ?? "";
   const renderedJson = manifest.match(/^```json\s*\r?\n([\s\S]*?)\r?\n```$/i);
   return { manifest: renderedJson?.[1] ?? manifest };
+}
+
+export function validateKitIssue({
+  issue,
+  projects,
+  kits,
+  blockedUsers,
+  trustedEditors = trustedEditorRegistry,
+}) {
+  return validateKitSubmission({
+    ...parseKitIssueFields(issue.body ?? ""),
+    actor: {
+      id: issue.user.id,
+      login: issue.user.login,
+      association: issue.author_association,
+    },
+    projects,
+    kits,
+    blockedUsers,
+    trustedEditors,
+    sourceIssueNumber: issue.number,
+  });
 }
 
 export function buildKitValidationComment(validation) {
@@ -215,9 +238,8 @@ async function main() {
       JSON.parse,
     ),
   ]);
-  const validation = validateKitSubmission({
-    ...parseKitIssueFields(event.issue.body ?? ""),
-    actor: { id: event.issue.user.id, login: event.issue.user.login },
+  const validation = validateKitIssue({
+    issue: event.issue,
     projects,
     kits,
     blockedUsers,

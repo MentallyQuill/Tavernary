@@ -3,8 +3,9 @@ export interface OwnerPrMarker {
   issue_number: number;
   project_id: string;
   operation: "edit-card" | "move-source" | "delist";
-  repository_id: number;
-  verified_owner_login: string;
+  repository_id: number | null;
+  authority_type: "repository-owner" | "tavernary-staff";
+  actor_login: string;
   generated_head_sha: string;
   generated_paths: string[];
 }
@@ -35,8 +36,9 @@ export function renderOwnerRequestPullRequest(input: {
     issue_number: number;
     project_id: string;
     operation: OwnerPrMarker["operation"];
-    repository_id: number;
-    verified_owner_login: string;
+    repository_id: number | null;
+    authority_type: OwnerPrMarker["authority_type"];
+    actor_login: string;
     before: Record<string, unknown>;
     after: Record<string, unknown>;
     warnings: string[];
@@ -62,8 +64,9 @@ export function planOwnerPrUpdate(input: {
   issueNumber: number;
   projectId: string;
   operation: OwnerPrMarker["operation"];
-  repositoryId: number;
-  verifiedOwnerLogin: string;
+  repositoryId: number | null;
+  authorityType: OwnerPrMarker["authority_type"];
+  actorLogin: string;
   repository: string;
   remoteHeadSha: string | null;
   markerHeadSha?: string | null;

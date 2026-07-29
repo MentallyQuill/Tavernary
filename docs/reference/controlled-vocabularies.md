@@ -35,13 +35,16 @@ IDs include:
 File: `data/vocabularies/primary-functions.json`
 
 - `frontend`
+- `preset`
 - `memory-retrieval`
 - `generation-reasoning`
 - `character-worldbuilding`
 - `rpg-systems`
 - `interface-workflow`
 - `developer-infrastructure`
-- `uncategorized`
+
+`frontend` and `preset` are structural values. Only Extensions choose among the
+six functional IDs.
 
 ## Why these exist
 
@@ -50,4 +53,3 @@ File: `data/vocabularies/primary-functions.json`
 - Make filtering explainable and maintainable for moderation and UI validation.
 
 Changing vocabulary entries requires both update and full validation/build gates (`npm run check`) before merge.
-

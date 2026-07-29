@@ -41,6 +41,10 @@ Playwright, GitHub Actions, and GitHub Pages.
 - Project Kind has exactly three values: `frontend`, `extension`, and `preset`.
   “System Presets” is the top-navigation label; “Preset” remains the singular
   project-kind label.
+- Frontends always use primary function `frontend`, System Presets always use
+  `preset`, and only Extensions choose among the six functional categories.
+  Submitter-selected Extension classification is authoritative; model
+  enrichment may warn at intake but cannot change it.
 - A root `LICENSE*` file recognized as an OSI-approved license is shown by SPDX
   identifier. No root license is `Missing`. A present but unrecognized,
   source-available, custom, or restrictive license is `Proprietary`.
@@ -55,24 +59,21 @@ Playwright, GitHub Actions, and GitHub Pages.
 
 ---
 
-## Current launch baseline (authoritative on July 24, 2026)
+## Current launch baseline (authoritative on July 29, 2026)
 
 The repository is no longer at the five-project production-vertical-slice
 stage. The current launch baseline is:
 
-- 214 canonical registry records in `data/registry/projects/`;
-- 5 curated records and 209 provisional records;
-- 204 GitHub repositories, 1 GitHub organization exception, and 9 URL-backed
-  presets;
-- schema-version-3 project records with `metadata_status`;
+- 304 canonical registry records in `data/registry/projects/`;
+- 302 records in the public generated catalog;
+- schema-version-5 project records with structural/human-owned classification;
 - snapshotless publication for valid published GitHub records whose first
   refresh has not succeeded yet; and
 - a deterministic identity-backfill step
   (`npm run catalog:backfill-identities -- --write`) after healthy refreshes.
 
-Treat `data/catalog/projects.json` as historical intake only. It exists for the
-deterministic migration audit (`npm run catalog:migrate`) and does not become a
-runtime input.
+Treat `data/catalog/projects.json` as historical intake only. The completed
+seed migration command has been retired; this file is not a runtime input.
 
 When this document's older implementation-task wording conflicts with the
 current launched architecture above, the launched architecture wins.
@@ -169,13 +170,12 @@ Current shape as of July 24, 2026:
 - fields present on every row: `id`, `name`, `frontends`, `status`,
   `submission`, and `submitted_at`;
 - optional intake-only fields: `repository`, `source_url`, `source_type`,
-  `source_post`, and `tags`; and
-- a deterministic migration audit that preserves the file in place.
+  `source_post`, and `tags`.
 
 This is an intake list, not the production runtime model. It remains at
-`data/catalog/projects.json` for provenance and deterministic reruns of
-`npm run catalog:migrate`. The canonical production records live one per file
-at:
+`data/catalog/projects.json` for historical provenance. The completed
+category-inventing migration path has been retired. Canonical production
+records live one per file at:
 
 ```text
 data/registry/projects/<project-id>.json
@@ -410,7 +410,6 @@ top-level directories:
 ├── scripts/
 │   ├── catalog/
 │   │   ├── build.mjs
-│   │   ├── migrate-intake.mjs
 │   │   ├── refresh-github.mjs
 │   │   └── validate.mjs
 │   └── verify-static-export.mjs
@@ -533,7 +532,7 @@ keeps GitHub Actions, dependency updates, and local commands straightforward.
 
 `data/registry/projects/<id>.json` is human-authored and validated by
 `data/schemas/project.schema.json`. The current launched contract is schema
-version 2, not the earlier richer draft record model.
+version 5.
 
 At minimum, each canonical record carries:
 
@@ -542,19 +541,24 @@ type ProjectKind = "frontend" | "extension" | "preset";
 type MetadataStatus = "provisional" | "curated";
 type PrimaryFunction =
   | "frontend"
+  | "preset"
   | "memory-retrieval"
   | "generation-reasoning"
   | "character-worldbuilding"
   | "rpg-systems"
   | "interface-workflow"
-  | "developer-infrastructure"
-  | "uncategorized";
+  | "developer-infrastructure";
 
 type CanonicalSource =
   | {
       type: "github";
       repository: string;
       repository_id: number | null;
+    }
+  | {
+      type: "codeberg";
+      repository: string;
+      repository_id: number;
     }
   | {
       type: "github-organization";
@@ -572,7 +576,7 @@ type CanonicalSource =
     };
 
 interface ProjectRecord {
-  schema_version: 2;
+  schema_version: 5;
   metadata_status: MetadataStatus;
   id: string;
   name: string;
@@ -583,16 +587,24 @@ interface ProjectRecord {
   primary_function: PrimaryFunction;
   capabilities: string[];
   cataloged_at: string;
-  catalog_cohort: "seed";
+  catalog_cohort: "seed" | "standard";
   visibility: "published" | "quarantined" | "disabled";
+  visibility_reason:
+    | null
+    | "identity-change"
+    | "source-unavailable"
+    | "removed"
+    | "safety-review";
   refresh_policy: "automatic" | "paused";
+  enrichment_policy: "automatic" | "manual";
+  enrichment_note?: string;
 }
 ```
 
 The launched model intentionally separates editorial truth from generated
-repository facts. Imported records may stay public as `metadata_status:
-"provisional"` with `primary_function: "uncategorized"` and
-`source.repository_id: null` until enrichment and curator review complete.
+repository facts. Provisional records still require a valid authoritative
+classification. Enrichment writes only summary, `metadata_status`, and
+capabilities; it never changes `primary_function`.
 
 ### 5.2 Generated repository snapshot
 
@@ -781,7 +793,6 @@ Define these scripts in `package.json`:
     "catalog:select-canary": "node scripts/catalog/select-enrichment-canary.mjs",
     "catalog:enrich": "node scripts/catalog/enrich-readmes.mjs",
     "palette:audit": "node scripts/audit-palette.mjs",
-    "catalog:migrate": "node scripts/catalog/migrate-intake.mjs",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
     "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export"
@@ -1017,7 +1028,6 @@ separate group so framework changes receive deliberate review.
 - Create: `data/vocabularies/frontends.json`
 - Create: `data/vocabularies/capabilities.json`
 - Create: `data/vocabularies/primary-functions.json`
-- Create: `scripts/catalog/migrate-intake.mjs`
 - Create: `scripts/catalog/validate.mjs`
 - Create: `scripts/catalog/build.mjs`
 - Create: `src/features/catalog/catalog-types.ts`
@@ -1034,16 +1044,16 @@ separate group so framework changes receive deliberate review.
   canonical URLs.
 - [ ] Run the tests and confirm the candidate intake cannot yet masquerade as
   complete canonical records.
-- [ ] Implement the deterministic migration audit so it creates or verifies the
-  sorted `<id>.json` registry records without deleting the intake source.
+- [ ] Preserve the reviewed sorted `<id>.json` registry records without
+  inventing classifications from historical intake.
 - [ ] Preserve `data/catalog/projects.json` as historical intake; do not make it
   the runtime source of truth.
 - [ ] Implement cross-record checks for duplicate IDs, duplicate canonical
   sources, unknown frontend IDs, and invalid relationship targets.
 - [ ] Implement `catalog:build` to join curated records and snapshots, sort
   arrays deterministically, and emit `src/generated/catalog.json`.
-- [ ] Run `npm run catalog:migrate`, `npm run catalog:validate`, and
-  `npm run catalog:build` twice; confirm the second run creates no diff.
+- [ ] Run `npm run catalog:validate` and `npm run catalog:build` twice; confirm
+  the second run creates no diff.
 - [ ] Commit as `feat(data): add validated project registry`.
 
 ### Task 4: Implement catalog query behavior test-first

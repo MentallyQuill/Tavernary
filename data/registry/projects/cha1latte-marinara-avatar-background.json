@@ -11,7 +11,7 @@
     "repository_id": 1220472991
   },
   "frontends": ["marinara-engine"],
-  "primary_function": "frontend",
+  "primary_function": "interface-workflow",
   "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",

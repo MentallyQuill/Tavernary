@@ -15,6 +15,7 @@ function project(
     id,
     name: id,
     kind: "extension",
+    primary_function: "interface-workflow",
     summary: `${id} summary`,
     visibility: "published",
     refresh_policy: "automatic",
@@ -100,7 +101,9 @@ describe("fork dependency backfill planning", () => {
         parentRepository: "upstream/parent",
         dependentProjectIds: ["child-a", "child-b"],
         manifest: expect.objectContaining({
+          schema_version: 3,
           project_type: "extension",
+          primary_function: "interface-workflow",
           source_url: "https://github.com/upstream/parent",
           name: "parent",
           frontends: { known_ids: ["sillytavern"], other: [] },
@@ -138,6 +141,23 @@ describe("fork dependency backfill planning", () => {
         ],
       }),
     ).toThrow(/incompatible child kinds/iu);
+  });
+
+  test("fails closed when child forks disagree on the parent primary function", () => {
+    expect(() =>
+      planForkDependencyBackfill({
+        projects: [
+          project("workflow-child", 42),
+          project("memory-child", 43, {
+            primary_function: "memory-retrieval",
+          }),
+        ],
+        snapshots: [
+          snapshot("workflow-child", 42, parent),
+          snapshot("memory-child", 43, parent),
+        ],
+      }),
+    ).toThrow(/incompatible child primary functions/iu);
   });
 
   test("sorts candidates by numeric parent repository ID", () => {
@@ -239,8 +259,9 @@ describe("fork dependency backfill apply gate", () => {
     dependentProjectIds: ["child"],
     dependentRepositoryIds: [42],
     manifest: {
-      schema_version: 1 as const,
+      schema_version: 3 as const,
       project_type: "extension" as const,
+      primary_function: "interface-workflow",
       source_url: "https://github.com/owner/child",
       name: "child",
       description: null,

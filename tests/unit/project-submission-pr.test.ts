@@ -40,6 +40,7 @@ const reviewFixture = {
       primary_function: "generation-reasoning",
       capabilities: ["planning-reasoning"],
     },
+    classificationReview: null,
     warnings: ["Repository is archived."],
   },
   marker,
@@ -101,6 +102,49 @@ test("renders the issue link, evidence groups, warnings, checklist, and marker",
     "- **Canonical url:** [https://example.com/a\\_\\(b\\)?x=1&y=2](<https://example.com/a_(b)?x=1&y=2>)",
   );
   expect(parseSubmissionPullRequestMarker(body)).toEqual(marker);
+});
+
+test("renders a dedicated non-mutating classification mismatch warning", () => {
+  const body = renderSubmissionPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      classificationReview: {
+        status: "possible-mismatch",
+        submitted_primary_function: "memory-retrieval",
+        suggested_primary_function: "interface-workflow",
+        explanation:
+          "The source primarily describes user-facing editing controls.",
+      },
+    },
+  });
+
+  expect(body).toContain("## Classification review");
+  expect(body).toContain("Memory and retrieval");
+  expect(body).toContain("Interface and workflow");
+  expect(body).toContain("submitted value remains");
+  expect(body).toContain(
+    "- [ ] Possible primary-function mismatch was reviewed",
+  );
+});
+
+test("does not render a mismatch checklist item for unavailable review", () => {
+  const body = renderSubmissionPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      classificationReview: {
+        status: "classification-check-unavailable",
+        submitted_primary_function: "generation-reasoning",
+        suggested_primary_function: null,
+        explanation: "The optional classification check was unavailable.",
+      },
+    },
+  });
+
+  expect(body).not.toContain(
+    "- [ ] Possible primary-function mismatch was reviewed",
+  );
 });
 
 test("renders invalid URL diagnostics safely instead of throwing", () => {
