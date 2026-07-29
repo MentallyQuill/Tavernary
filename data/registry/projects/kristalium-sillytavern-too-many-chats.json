@@ -1,0 +1,22 @@
+{
+  "schema_version": 5,
+  "id": "kristalium-sillytavern-too-many-chats",
+  "name": "Too-Many-Chats Continued",
+  "kind": "extension",
+  "summary": "Organize, search, and actually find your SillyTavern chats.",
+  "metadata_status": "provisional",
+  "source": {
+    "type": "github",
+    "repository": "kristalium/SillyTavern-Too-Many-Chats",
+    "repository_id": 1189308698
+  },
+  "frontends": ["sillytavern"],
+  "primary_function": "uncategorized",
+  "capabilities": [],
+  "cataloged_at": "2026-07-29T06:09:48.520Z",
+  "catalog_cohort": "standard",
+  "visibility": "published",
+  "visibility_reason": null,
+  "refresh_policy": "automatic",
+  "enrichment_policy": "automatic"
+}
