@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
 import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { resolveForkRelationship } from "./fork-relationship.mjs";
@@ -397,6 +398,13 @@ export async function buildCatalog(options = {}) {
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
   for (const record of records) {
+    const classificationIssue = classificationError(
+      record.kind,
+      record.primary_function,
+    );
+    if (classificationIssue) {
+      throw new Error(`${record.id}: classification ${classificationIssue}`);
+    }
     if (record.visibility !== "published") {
       continue;
     }
@@ -481,7 +489,7 @@ export async function buildCatalog(options = {}) {
           projectId,
           name: record?.name ?? projectId,
           kind: record?.kind ?? "extension",
-          primaryFunction: record?.primary_function ?? "uncategorized",
+          primaryFunction: record?.primary_function ?? "",
           availability,
           unavailableReason,
           canonicalUrl:
@@ -505,7 +513,10 @@ export async function buildCatalog(options = {}) {
       const purposes = labeled(
         unique(
           components
-            .filter(({ kind }) => kind !== "frontend")
+            .filter(
+              ({ kind, primaryFunction }) =>
+                kind !== "frontend" && primaryFunction,
+            )
             .map(({ primaryFunction }) => primaryFunction),
         ),
         vocabularies.primaryFunctions,

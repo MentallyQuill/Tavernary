@@ -11,7 +11,7 @@
     "repository_id": 1246232030
   },
   "frontends": ["sillytavern"],
-  "primary_function": "character-worldbuilding",
+  "primary_function": "preset",
   "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "model_families": ["model-agnostic", "claude", "gpt", "glm", "deepseek"],
   "completion_formats": ["chat-completion"],

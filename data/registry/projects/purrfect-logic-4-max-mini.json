@@ -15,7 +15,7 @@
     "license_spdx_id": null
   },
   "frontends": ["sillytavern"],
-  "primary_function": "generation-reasoning",
+  "primary_function": "preset",
   "capabilities": ["prompt-engineering", "instruction-control"],
   "model_families": ["model-agnostic", "deepseek", "glm"],
   "completion_formats": ["chat-completion"],

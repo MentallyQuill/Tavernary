@@ -29,31 +29,53 @@ function countBy<T>(items: T[], selector: (item: T) => string) {
   return Object.fromEntries(counts);
 }
 
-const fixtureProject = (overrides: Record<string, unknown> = {}) => ({
-  schema_version: 3,
-  id: "fixture",
-  name: "Fixture",
-  kind: "preset",
-  summary: "Fixture summary.",
-  metadata_status: "provisional",
-  source: {
-    type: "url",
-    url: "https://example.com/fixture",
-    published_at: null,
-    version: null,
-    artifact_size_bytes: null,
-    license_status: "missing",
-    license_spdx_id: null,
-  },
-  frontends: ["sillytavern"],
-  primary_function: "generation-reasoning",
-  capabilities: [],
-  cataloged_at: "2026-07-23T00:00:00Z",
-  catalog_cohort: "seed",
-  visibility: "published",
-  visibility_reason: null,
-  refresh_policy: "paused",
-  ...overrides,
+const fixtureProject = (overrides: Record<string, unknown> = {}) => {
+  const kind = typeof overrides.kind === "string" ? overrides.kind : "preset";
+  return {
+    schema_version: 3,
+    id: "fixture",
+    name: "Fixture",
+    kind,
+    summary: "Fixture summary.",
+    metadata_status: "provisional",
+    source: {
+      type: "url",
+      url: "https://example.com/fixture",
+      published_at: null,
+      version: null,
+      artifact_size_bytes: null,
+      license_status: "missing",
+      license_spdx_id: null,
+    },
+    frontends: ["sillytavern"],
+    primary_function:
+      kind === "frontend"
+        ? "frontend"
+        : kind === "preset"
+          ? "preset"
+          : "generation-reasoning",
+    capabilities: [],
+    cataloged_at: "2026-07-23T00:00:00Z",
+    catalog_cohort: "seed",
+    visibility: "published",
+    visibility_reason: null,
+    refresh_policy: "paused",
+    ...overrides,
+  };
+};
+
+test("rejects a structurally invalid kind and primary-function pair", async () => {
+  await expect(
+    buildCatalog({
+      write: false,
+      records: [
+        fixtureProject({
+          kind: "frontend",
+          primary_function: "interface-workflow",
+        }),
+      ],
+    }),
+  ).rejects.toThrow(/classification/iu);
 });
 
 const fixtureSnapshot = (overrides: Record<string, unknown> = {}) => ({
@@ -853,7 +875,7 @@ test("builds every eligible public card with consolidated manual sources", async
     canonicalUrl:
       "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
     metadataStatus: "curated",
-    primaryFunction: "character-worldbuilding",
+    primaryFunction: "preset",
   });
   expect(
     catalog.projects.find(({ id }) => id === "tavern-rpg-suite"),
@@ -865,12 +887,7 @@ test("builds every eligible public card with consolidated manual sources", async
   expect(
     catalog.projects
       .filter((project) => project.metadataStatus === "curated")
-      .every(
-        (project) =>
-          project.primaryFunction !== "uncategorized" ||
-          (project.summary === "No README file found." &&
-            project.capabilities.length === 0),
-      ),
+      .every((project) => project.primaryFunction !== "uncategorized"),
   ).toBe(true);
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
@@ -953,7 +970,7 @@ test("builds Kits from complete project records and nullable support", async () 
       id: "preset",
       name: "Preset",
       kind: "preset",
-      primary_function: "generation-reasoning",
+      primary_function: "preset",
       model_families: ["claude"],
       completion_formats: ["chat-completion"],
     }),
@@ -1023,7 +1040,7 @@ test("builds Kits from complete project records and nullable support", async () 
         modelFamilies: [expect.objectContaining({ id: "claude" })],
         purposes: [
           expect.objectContaining({ id: "memory-retrieval" }),
-          expect.objectContaining({ id: "generation-reasoning" }),
+          expect.objectContaining({ id: "preset" }),
         ],
         supporterCount: 2,
         supportStale: false,

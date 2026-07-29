@@ -16,7 +16,7 @@ const record = {
   metadata_status: "provisional",
   source: { type: "github", repository: "Creator/Project", repository_id: 1 },
   frontends: ["sillytavern"],
-  primary_function: "uncategorized",
+  primary_function: "interface-workflow",
   capabilities: [],
   cataloged_at: "2026-07-24T00:00:00.000Z",
   catalog_cohort: "seed",
@@ -56,7 +56,7 @@ test("atomically merges only editorial enrichment fields", async () => {
     metadata_status: output.metadata_status,
     capabilities: output.capabilities,
   });
-  expect(written.primary_function).toBe("uncategorized");
+  expect(written.primary_function).toBe("interface-workflow");
   expect(written).not.toHaveProperty("classification_review");
   expect(written.source).toEqual(record.source);
   expect(serialized).toContain('"frontends": ["sillytavern"]');

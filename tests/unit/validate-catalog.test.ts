@@ -18,7 +18,7 @@ const validRecord = {
     repository_id: 1,
   },
   frontends: ["sillytavern"],
-  primary_function: "generation-reasoning",
+  primary_function: "preset",
   capabilities: ["prompt-engineering"],
   model_families: ["claude"],
   completion_formats: ["chat-completion"],
@@ -105,6 +105,7 @@ describe("catalog validation", () => {
       ...extensionBase,
       id: "targren-lumiverse-swipescrubber",
       kind: "extension",
+      primary_function: "interface-workflow",
       source: {
         type: "codeberg",
         repository: "targren/Lumiverse-SwipeScrubber",
@@ -454,14 +455,14 @@ describe("catalog validation", () => {
     expect(result.errors).toEqual([]);
   });
 
-  test("accepts provisional GitHub null identity and uncategorized metadata", async () => {
+  test("accepts provisional GitHub null identity with a structural Preset classification", async () => {
     const result = await validateCatalog({
       records: [
         {
           ...validRecord,
           id: "provisional-github",
           metadata_status: "provisional",
-          primary_function: "uncategorized",
+          primary_function: "preset",
           source: {
             type: "github",
             repository: "example/provisional-github",
@@ -474,6 +475,31 @@ describe("catalog validation", () => {
     expect(result.errors).toEqual([]);
     expect(result.snapshotCount).toBe(0);
   });
+
+  test.each([
+    ["frontend", "interface-workflow"],
+    ["preset", "generation-reasoning"],
+    ["extension", "frontend"],
+    ["extension", "preset"],
+    ["extension", "uncategorized"],
+  ])(
+    "rejects an invalid %s / %s classification pair",
+    async (kind, primaryFunction) => {
+      const result = await validateCatalog({
+        records: [
+          {
+            ...validRecord,
+            kind,
+            primary_function: primaryFunction,
+          },
+        ],
+      });
+
+      expect(result.errors).toEqual(
+        expect.arrayContaining([expect.stringContaining("classification")]),
+      );
+    },
+  );
 
   test("rejects curated GitHub null identity", async () => {
     const result = await validateCatalog({
@@ -569,7 +595,7 @@ describe("catalog validation", () => {
           name: "Tavern RPG Suite",
           kind: "extension",
           metadata_status: "provisional",
-          primary_function: "uncategorized",
+          primary_function: "rpg-systems",
           refresh_policy: "paused",
           enrichment_policy: "manual",
           enrichment_note: "Multi-repository suite; requires manual curation.",
@@ -597,7 +623,7 @@ describe("catalog validation", () => {
           name: "Another Organization",
           kind: "extension",
           metadata_status: "provisional",
-          primary_function: "uncategorized",
+          primary_function: "rpg-systems",
           refresh_policy: "paused",
           enrichment_policy: "manual",
           enrichment_note: "Multi-repository suite; requires manual curation.",

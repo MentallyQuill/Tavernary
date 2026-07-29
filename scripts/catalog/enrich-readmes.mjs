@@ -11,6 +11,7 @@ import {
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createEnrichmentProvider,
   validateProviderConfiguration,
@@ -45,11 +46,10 @@ function entriesToSet(entries) {
   );
 }
 
-function sourceBackedPrimaryFunctions(entries) {
+function extensionPrimaryFunctions(entries) {
+  const extensionIds = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
   return entries.filter((entry) =>
-    typeof entry === "string"
-      ? entry !== "uncategorized"
-      : entry.id !== "uncategorized",
+    extensionIds.has(typeof entry === "string" ? entry : entry.id),
   );
 }
 
@@ -184,13 +184,13 @@ export async function writeEnrichedRecord(
   vocabularies = {
     primaryFunctions: [
       "frontend",
+      "preset",
       "memory-retrieval",
       "generation-reasoning",
       "character-worldbuilding",
       "rpg-systems",
       "interface-workflow",
       "developer-infrastructure",
-      "uncategorized",
     ],
     capabilities: [
       "automation",
@@ -211,7 +211,7 @@ export async function writeEnrichedRecord(
   const classificationReviewRequest = output.classification_review
     ? {
         submittedPrimaryFunction: current.primary_function,
-        allowedPrimaryFunctions: sourceBackedPrimaryFunctions(
+        allowedPrimaryFunctions: extensionPrimaryFunctions(
           vocabularies.primaryFunctions,
         ),
       }

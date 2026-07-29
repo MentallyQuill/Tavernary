@@ -11,7 +11,7 @@
     "repository_id": 1100996755
   },
   "frontends": ["sillytavern"],
-  "primary_function": "generation-reasoning",
+  "primary_function": "preset",
   "capabilities": ["prompt-engineering", "instruction-control"],
   "model_families": ["glm"],
   "completion_formats": ["chat-completion"],

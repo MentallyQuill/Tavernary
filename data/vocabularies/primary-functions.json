@@ -39,11 +39,6 @@
       "id": "developer-infrastructure",
       "label": "Developer infrastructure",
       "description": "Provides developer-facing APIs, scripting, proxies, interoperability, diagnostics, build support, or operational plumbing."
-    },
-    {
-      "id": "uncategorized",
-      "label": "Uncategorized",
-      "description": "Temporary legacy category retained only until the classification migration completes."
     }
   ]
 }

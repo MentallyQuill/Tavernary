@@ -182,8 +182,8 @@ export function selectProjects(
     (project) =>
       (!search || project.searchableText.includes(search)) &&
       (!query.category ||
-        (query.category === "preset"
-          ? project.kind === "preset"
+        (query.category === "frontend" || query.category === "preset"
+          ? project.kind === query.category
           : project.primaryFunction === query.category)) &&
       matchesAny(
         query.frontends,

@@ -48,10 +48,7 @@ const snapshot = {
 };
 
 const vocabularies = {
-  primaryFunctions: [
-    { id: "developer-infrastructure", label: "Developer" },
-    { id: "uncategorized", label: "Uncategorized" },
-  ],
+  primaryFunctions: [{ id: "developer-infrastructure", label: "Developer" }],
   capabilities: [{ id: "automation", label: "Automation" }],
 };
 
@@ -455,7 +452,7 @@ test("rejects a model-owned primary function when source text exists", async () 
             summary:
               "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
             metadata_status: "curated",
-            primary_function: "uncategorized",
+            primary_function: "developer-infrastructure",
             capabilities: [],
             classification_review: null,
           },

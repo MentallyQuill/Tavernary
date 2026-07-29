@@ -11,7 +11,7 @@
     "repository_id": 772263541
   },
   "frontends": ["sillytavern"],
-  "primary_function": "frontend",
+  "primary_function": "character-worldbuilding",
   "capabilities": ["prompt-engineering", "instruction-control"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",

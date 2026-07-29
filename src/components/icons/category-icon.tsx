@@ -10,7 +10,6 @@ type IconName =
   | "rpg-systems"
   | "interface-workflow"
   | "developer-infrastructure"
-  | "uncategorized"
   | "filter"
   | "community"
   | "search"

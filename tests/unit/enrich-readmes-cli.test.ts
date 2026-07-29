@@ -22,7 +22,6 @@ const providerConfiguration = {
 const vocabularies = {
   primaryFunctions: [
     { id: "developer-infrastructure", label: "Developer infrastructure" },
-    { id: "uncategorized", label: "Uncategorized" },
   ],
   capabilities: [{ id: "automation", label: "Automation" }],
 };

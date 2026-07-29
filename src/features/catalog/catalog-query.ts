@@ -85,11 +85,6 @@ export const CATEGORY_OPTIONS = [
     label: "Developer Infrastructure",
     shortLabel: "Developer Infrastructure",
   },
-  {
-    id: "uncategorized",
-    label: "Uncategorized",
-    shortLabel: "Uncategorized",
-  },
 ] as const;
 
 const validCategories = new Set([
@@ -101,7 +96,6 @@ const validCategories = new Set([
   "rpg-systems",
   "interface-workflow",
   "developer-infrastructure",
-  "uncategorized",
 ]);
 const validPurposes = new Set([
   "memory-retrieval",
@@ -110,7 +104,6 @@ const validPurposes = new Set([
   "rpg-systems",
   "interface-workflow",
   "developer-infrastructure",
-  "uncategorized",
 ]);
 const validFrontends = new Set(
   frontendVocabulary.frontends.map(({ id }) => id),
@@ -309,7 +302,7 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     if (relationship) {
       parameters.set("relationship", relationship);
     }
-    if (query.category) {
+    if (validCategories.has(query.category)) {
       parameters.set("category", query.category);
     }
     if (query.view !== DEFAULT_QUERY.view) {

@@ -125,13 +125,13 @@
     "primary_function": {
       "enum": [
         "frontend",
+        "preset",
         "memory-retrieval",
         "generation-reasoning",
         "character-worldbuilding",
         "rpg-systems",
         "interface-workflow",
-        "developer-infrastructure",
-        "uncategorized"
+        "developer-infrastructure"
       ]
     },
     "capabilities": {

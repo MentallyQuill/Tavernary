@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv from "ajv";
 
+import { classificationError } from "../../src/features/catalog/primary-function-contract.mjs";
 import { validateKitData } from "../kits/validation.mjs";
 import { validateTrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
 import { supportsAutomaticEnrichmentSource } from "./enrichment-policy.mjs";
@@ -411,6 +412,13 @@ export async function validateCatalog(options = {}) {
       if (!frontendIds.has(frontend)) {
         errors.push(`${id}: unknown frontend ${frontend}`);
       }
+    }
+    const classificationIssue = classificationError(
+      record.kind,
+      record.primary_function,
+    );
+    if (classificationIssue) {
+      errors.push(`${id}: classification ${classificationIssue}`);
     }
     if (record.primary_function && !functionIds.has(record.primary_function)) {
       errors.push(`${id}: unknown primary function ${record.primary_function}`);

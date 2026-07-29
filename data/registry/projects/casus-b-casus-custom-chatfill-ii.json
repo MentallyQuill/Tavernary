@@ -11,7 +11,7 @@
     "repository_id": 1245539495
   },
   "frontends": ["lumiverse", "sillytavern"],
-  "primary_function": "interface-workflow",
+  "primary_function": "preset",
   "capabilities": [
     "multi-frontend",
     "instruction-control",
