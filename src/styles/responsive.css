@@ -3,10 +3,6 @@
     grid-template-columns: 175px minmax(260px, 1fr) auto;
   }
 
-  .header-actions .top-link {
-    display: none;
-  }
-
   .catalog-layout {
     --kit-builder-expanded-width: clamp(280px, 32vw, 340px);
     grid-template-columns: 210px minmax(0, 1fr) clamp(280px, 32vw, 340px);
@@ -51,7 +47,7 @@
     grid-area: actions;
   }
 
-  .header-actions .top-link {
+  .header-actions .about-link {
     display: none;
   }
 

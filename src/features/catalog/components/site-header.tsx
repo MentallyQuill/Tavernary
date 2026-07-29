@@ -49,10 +49,10 @@ export function SiteHeader({
         <kbd>/</kbd>
       </label>
       <nav className="header-actions" aria-label="Site actions">
-        <a className="top-link" href="./about/">
+        <a className="top-link about-link" href="./about/">
           About
         </a>
-        <Link className="top-link" href="/help/">
+        <Link className="top-link help-link" href="/help/">
           Help
         </Link>
         <Link className="submit-link" href="/submit/project/">
