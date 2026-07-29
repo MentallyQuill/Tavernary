@@ -15,20 +15,24 @@ const sourceIdentity = {
 
 function createInput(overrides: Record<string, unknown> = {}) {
   return {
+    schema_version: 2 as const,
     operation: "create" as const,
     producer: "project-submission" as const,
+    publication_mode: "automatic" as const,
     issue_number: 72,
-    project_id: "owner-project",
+    project_ids: ["owner-project"],
+    source_id: "github-42",
     source_identity: sourceIdentity,
     actor: { id: 11, login: "Submitter", type: "User" as const },
     authority_type: "community-submitter" as const,
     input_digest: "a".repeat(64),
-    record_fingerprint: null,
+    input_fingerprints: { projects: {}, source: null },
     base_sha: "b".repeat(40),
     generated_head_sha: "c".repeat(40),
     generated_paths: [
-      "data/snapshots/github/owner-project.json",
       "data/registry/projects/owner-project.json",
+      "data/registry/sources/github-42.json",
+      "data/snapshots/github/github-42.json",
     ],
     policy_version: "2026-07-29",
     copy_result: {
@@ -41,80 +45,103 @@ function createInput(overrides: Record<string, unknown> = {}) {
   };
 }
 
-test("normalizes a create transaction with exact keys and path order", () => {
+test("accepts a source/card/snapshot create transaction with exact paths", () => {
   const transaction = createProjectPublicationTransaction(createInput());
 
-  expect(transaction).toEqual({
-    schema_version: 1,
+  expect(transaction).toMatchObject({
+    schema_version: 2,
     operation: "create",
-    producer: "project-submission",
-    issue_number: 72,
-    project_id: "owner-project",
-    source_identity: sourceIdentity,
-    actor: { id: 11, login: "Submitter", type: "User" },
-    authority_type: "community-submitter",
-    input_digest: "a".repeat(64),
-    record_fingerprint: null,
-    base_sha: "b".repeat(40),
-    generated_head_sha: "c".repeat(40),
-    generated_paths: [
-      "data/registry/projects/owner-project.json",
-      "data/snapshots/github/owner-project.json",
-    ],
-    policy_version: "2026-07-29",
-    copy_result: {
-      mode: "synthesize",
-      result: "accepted-with-light-edits",
-      change_reasons: ["whitespace-normalized"],
-      policy_signal: "none",
-    },
+    publication_mode: "automatic",
+    project_ids: ["owner-project"],
+    source_id: "github-42",
+    input_fingerprints: { projects: {}, source: null },
   });
   expect(expectedTransactionPaths(transaction)).toEqual(
     transaction.generated_paths,
   );
 });
 
+test("accepts one atomic manual add-card batch", () => {
+  const transaction = createProjectPublicationTransaction(
+    createInput({
+      operation: "add-cards",
+      producer: "project-owner-request",
+      publication_mode: "manual",
+      project_ids: ["card-a", "card-b"],
+      authority_type: "repository-owner",
+      input_fingerprints: {
+        projects: {},
+        source: "d".repeat(64),
+      },
+      generated_paths: [
+        "data/registry/projects/card-a.json",
+        "data/registry/projects/card-b.json",
+      ],
+      copy_result: null,
+    }),
+  );
+
+  expect(expectedTransactionPaths(transaction)).toEqual(
+    transaction.generated_paths,
+  );
+});
+
 test.each([
-  ["edit-card", ["data/registry/projects/owner-project.json"]],
+  ["edit-card", ["data/registry/projects/owner-project.json"], "card"],
+  ["retire-card", ["data/registry/projects/owner-project.json"], "card"],
+  ["restore-card", ["data/registry/projects/owner-project.json"], "card"],
   [
     "move-source",
     [
-      "data/registry/projects/owner-project.json",
-      "data/snapshots/github/owner-project.json",
+      "data/registry/sources/github-42.json",
+      "data/snapshots/github/github-42.json",
     ],
+    "source",
   ],
-  ["delist", ["data/registry/projects/owner-project.json"]],
-] as const)("accepts owner %s transactions", (operation, generatedPaths) => {
-  expect(
-    createProjectPublicationTransaction(
-      createInput({
-        operation,
-        producer: "project-owner-request",
-        authority_type: "repository-owner",
-        record_fingerprint: "d".repeat(64),
-        generated_paths: [...generatedPaths].reverse(),
-        copy_result: null,
-      }),
-    ).generated_paths,
-  ).toEqual(generatedPaths);
-});
-
-test("allows a nullable source identity only for owner edit or delist", () => {
-  for (const operation of ["edit-card", "delist"] as const) {
+  ["delist-source", ["data/registry/sources/github-42.json"], "source"],
+] as const)(
+  "accepts owner %s transactions",
+  (operation, generatedPaths, fingerprintKind) => {
     expect(
       createProjectPublicationTransaction(
         createInput({
           operation,
           producer: "project-owner-request",
-          authority_type: "tavernary-staff",
-          source_identity: null,
-          record_fingerprint: "d".repeat(64),
-          generated_paths: ["data/registry/projects/owner-project.json"],
+          publication_mode: "automatic",
+          authority_type: "repository-owner",
+          input_fingerprints:
+            fingerprintKind === "card"
+              ? {
+                  projects: { "owner-project": "d".repeat(64) },
+                  source: null,
+                }
+              : { projects: {}, source: "d".repeat(64) },
+          generated_paths: generatedPaths,
           copy_result: null,
         }),
-      ).source_identity,
-    ).toBeNull();
-  }
+      ).generated_paths,
+    ).toEqual(generatedPaths);
+  },
+);
+
+test("allows a nullable source identity only for trusted staff owner operations", () => {
+  expect(
+    createProjectPublicationTransaction(
+      createInput({
+        operation: "edit-card",
+        producer: "project-owner-request",
+        publication_mode: "automatic",
+        authority_type: "tavernary-staff",
+        source_identity: null,
+        input_fingerprints: {
+          projects: { "owner-project": "d".repeat(64) },
+          source: null,
+        },
+        generated_paths: ["data/registry/projects/owner-project.json"],
+        copy_result: null,
+      }),
+    ).source_identity,
+  ).toBeNull();
   expect(() =>
     createProjectPublicationTransaction(createInput({ source_identity: null })),
   ).toThrow(/source identity/iu);
@@ -122,17 +149,34 @@ test("allows a nullable source identity only for owner edit or delist", () => {
 
 test.each([
   ["unknown key", { unexpected: true }],
+  ["old schema", { schema_version: 1 }],
   ["invalid actor", { actor: { id: 11, login: 7, type: "User" } }],
   ["invalid SHA", { base_sha: "not-a-sha" }],
   ["wrong producer", { producer: "project-owner-request" }],
+  ["unsorted projects", { project_ids: ["z-card", "a-card"] }],
+  [
+    "automatic add cards",
+    {
+      operation: "add-cards",
+      producer: "project-owner-request",
+      project_ids: ["owner-project"],
+      authority_type: "repository-owner",
+      input_fingerprints: { projects: {}, source: "d".repeat(64) },
+      generated_paths: ["data/registry/projects/owner-project.json"],
+      copy_result: null,
+    },
+  ],
   [
     "outside path",
     { generated_paths: ["scripts/publication/project-publication.mjs"] },
   ],
   [
-    "missing registry",
+    "missing source registry",
     {
-      generated_paths: ["data/snapshots/github/owner-project.json"],
+      generated_paths: [
+        "data/registry/projects/owner-project.json",
+        "data/snapshots/github/github-42.json",
+      ],
     },
   ],
   [
@@ -140,7 +184,9 @@ test.each([
     {
       generated_paths: [
         "data/registry/projects/owner-project.json",
-        "data/registry/projects/owner-project.json",
+        "data/registry/sources/github-42.json",
+        "data/registry/sources/github-42.json",
+        "data/snapshots/github/github-42.json",
       ],
     },
   ],

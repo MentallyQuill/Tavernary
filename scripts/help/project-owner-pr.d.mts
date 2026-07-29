@@ -34,8 +34,11 @@ export function renderOwnerRequestPullRequest(input: {
   projectName: string;
   report: {
     issue_number: number;
-    project_id: string;
-    operation: OwnerPrMarker["operation"];
+    project_id?: string;
+    project_ids: string[];
+    source_id: string;
+    publication_mode: "automatic" | "manual";
+    operation: ProjectPublicationTransaction["operation"];
     repository_id: number | null;
     authority_type: OwnerPrMarker["authority_type"];
     actor_login: string;

@@ -2,6 +2,7 @@ import { parseSubmissionPullRequestMarker } from "../submissions/project-submiss
 import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
 import {
   createProjectPublicationTransaction,
+  expectedTransactionPaths,
   parseProjectPublicationTransaction,
   PROJECT_PUBLICATION_TRANSACTION_MARKER,
 } from "../publication/project-publication-transaction.mjs";
@@ -113,7 +114,7 @@ function exactPaths(paths, expected) {
 
 function validMarker(marker) {
   if (
-    marker?.schema_version === 1 &&
+    marker?.schema_version === 2 &&
     marker?.producer === "project-owner-request"
   ) {
     try {
@@ -122,7 +123,7 @@ function validMarker(marker) {
         transaction.operation !== "create" &&
         exactPaths(
           transaction.generated_paths,
-          expectedPaths(transaction.project_id, transaction.operation),
+          expectedTransactionPaths(transaction),
         )
       );
     } catch {
@@ -172,8 +173,11 @@ function ownerMarkerValues(marker) {
   if (marker?.producer === "project-owner-request") {
     return {
       issueNumber: marker.issue_number,
-      projectId: marker.project_id,
+      projectIds: marker.project_ids,
+      projectId: marker.project_ids[0],
+      sourceId: marker.source_id,
       operation: marker.operation,
+      publicationMode: marker.publication_mode,
       repositoryId: marker.source_identity?.repository_id ?? null,
       authorityType: marker.authority_type,
       actorLogin: marker.actor?.login,
@@ -203,13 +207,20 @@ export function ownerRequestBranch(issueNumber) {
 export function renderOwnerRequestPullRequest(input) {
   const transaction = createProjectPublicationTransaction(input?.marker);
   const marker = ownerMarkerValues(transaction);
+  const reportProjectIds =
+    input?.report?.project_ids ??
+    (typeof input?.report?.project_id === "string"
+      ? [input.report.project_id]
+      : []);
   if (
     transaction.producer !== "project-owner-request" ||
     transaction.operation === "create" ||
     input?.issueNumber !== marker.issueNumber ||
     input?.report?.issue_number !== input?.issueNumber ||
     !validMarker(transaction) ||
-    input.report.project_id !== marker.projectId ||
+    JSON.stringify(reportProjectIds) !== JSON.stringify(marker.projectIds) ||
+    input.report.source_id !== marker.sourceId ||
+    input.report.publication_mode !== marker.publicationMode ||
     input.report.operation !== marker.operation ||
     input.report.repository_id !== marker.repositoryId ||
     input.report.authority_type !== marker.authorityType ||
@@ -239,6 +250,12 @@ export function renderOwnerRequestPullRequest(input) {
       : `Authorized Tavernary staff actor: \`${marker.actorLogin}\``,
     "",
     `Operation: \`${marker.operation}\``,
+    "",
+    `Projects: \`${marker.projectIds.join(", ")}\``,
+    "",
+    `Source: \`${marker.sourceId}\``,
+    "",
+    `Publication: \`${marker.publicationMode}\``,
     "",
     "This pull request is the validation and audit transaction for the authorized project change. Eligible transactions publish automatically after required checks pass.",
     "",
@@ -292,7 +309,10 @@ export function parseOwnerRequestPullRequestMarker(body) {
 function sourceOwnedPath(path) {
   return (
     /^data\/registry\/projects\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(path) ||
-    /^data\/snapshots\/github\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(path)
+    /^data\/registry\/sources\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(path) ||
+    /^data\/snapshots\/(?:github|codeberg)\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/u.test(
+      path,
+    )
   );
 }
 

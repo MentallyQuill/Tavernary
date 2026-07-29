@@ -9,11 +9,13 @@ import {
 } from "../../scripts/submissions/project-submission-pr.mjs";
 
 const marker = {
-  schema_version: 1 as const,
+  schema_version: 2 as const,
   operation: "create" as const,
   producer: "project-submission" as const,
+  publication_mode: "automatic" as const,
   issue_number: 123,
-  project_id: "owner-repo",
+  project_ids: ["owner-repo"],
+  source_id: "github-42",
   source_identity: {
     type: "github" as const,
     canonical: "github:42",
@@ -22,12 +24,13 @@ const marker = {
   actor: { id: 11, login: "Submitter", type: "User" as const },
   authority_type: "community-submitter" as const,
   input_digest: "d".repeat(64),
-  record_fingerprint: null,
+  input_fingerprints: { projects: {}, source: null },
   base_sha: "b".repeat(40),
   generated_head_sha: "a".repeat(40),
   generated_paths: [
     "data/registry/projects/owner-repo.json",
-    "data/snapshots/github/owner-repo.json",
+    "data/registry/sources/github-42.json",
+    "data/snapshots/github/github-42.json",
   ],
   policy_version: "2026-07-29",
   copy_result: null,

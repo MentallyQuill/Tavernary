@@ -21,11 +21,13 @@ const marker = {
 };
 
 const transactionMarker: ProjectPublicationTransaction = {
-  schema_version: 1 as const,
+  schema_version: 2 as const,
   operation: "edit-card" as const,
   producer: "project-owner-request" as const,
+  publication_mode: "automatic" as const,
   issue_number: 123,
-  project_id: "owner-alpha",
+  project_ids: ["owner-alpha"],
+  source_id: "github-42",
   source_identity: {
     type: "github" as const,
     canonical: "github:42",
@@ -34,7 +36,10 @@ const transactionMarker: ProjectPublicationTransaction = {
   actor: { id: 11, login: "Owner", type: "User" as const },
   authority_type: "repository-owner" as const,
   input_digest: "d".repeat(64),
-  record_fingerprint: "e".repeat(64),
+  input_fingerprints: {
+    projects: { "owner-alpha": "e".repeat(64) },
+    source: null,
+  },
   base_sha: "b".repeat(40),
   generated_head_sha: "a".repeat(40),
   generated_paths: marker.generated_paths,
@@ -54,6 +59,9 @@ const reviewFixture = {
     schema_version: 1 as const,
     issue_number: 123,
     project_id: "owner-alpha",
+    project_ids: ["owner-alpha"],
+    source_id: "github-42",
+    publication_mode: "automatic" as const,
     operation: "edit-card" as const,
     repository_id: 42,
     authority_type: "repository-owner" as const,

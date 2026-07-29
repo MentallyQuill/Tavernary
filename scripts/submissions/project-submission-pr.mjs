@@ -91,8 +91,11 @@ export function renderSubmissionPullRequest(input) {
   if (
     transaction.producer !== "project-submission" ||
     transaction.operation !== "create" ||
+    transaction.publication_mode !== "automatic" ||
     transaction.issue_number !== input.issueNumber ||
-    transaction.project_id !== input.report.project_id
+    transaction.project_ids.length !== 1 ||
+    transaction.project_ids[0] !== input.report.project_id ||
+    transaction.source_id !== input.report.source_id
   ) {
     throw new Error("Submission pull request transaction is inconsistent.");
   }

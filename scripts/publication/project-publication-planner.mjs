@@ -107,14 +107,31 @@ export function planProjectPublication(input) {
   if (input.current.inputDigest !== transaction.input_digest) {
     return regenerate(transaction, "input-digest-stale");
   }
+  for (const [projectId, fingerprint] of Object.entries(
+    transaction.input_fingerprints.projects,
+  )) {
+    if (input.current.projectFingerprints?.[projectId] !== fingerprint) {
+      return regenerate(transaction, "project-fingerprint-stale");
+    }
+  }
   if (
-    transaction.record_fingerprint !== null &&
-    input.current.recordFingerprint !== transaction.record_fingerprint
+    transaction.input_fingerprints.source !== null &&
+    input.current.sourceFingerprint !== transaction.input_fingerprints.source
   ) {
-    return regenerate(transaction, "record-fingerprint-stale");
+    return regenerate(transaction, "source-fingerprint-stale");
   }
   if (input.current.mainSha !== transaction.base_sha) {
     return regenerate(transaction, "base-behind-main");
+  }
+  if (transaction.publication_mode === "manual") {
+    return {
+      action: "await-maintainer",
+      reasonCode: "manual-approval-required",
+      producer: transaction.producer,
+      issueNumber: transaction.issue_number,
+      projectIds: transaction.project_ids,
+      sourceId: transaction.source_id,
+    };
   }
   if (pull.mergeable === null || pull.mergeable === undefined) {
     return {
@@ -133,6 +150,7 @@ export function planProjectPublication(input) {
     expectedHeadSha: transaction.generated_head_sha,
     producer: transaction.producer,
     issueNumber: transaction.issue_number,
-    projectId: transaction.project_id,
+    projectIds: transaction.project_ids,
+    sourceId: transaction.source_id,
   };
 }
