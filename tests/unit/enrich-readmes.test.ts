@@ -9,6 +9,7 @@ import {
   mapWithConcurrency,
   runEnrichmentBatch,
   selectEnrichmentRecords,
+  writeEnrichedRecord,
 } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
@@ -56,6 +57,11 @@ const providerMetadata = {
   requestedModel: "MiniMax-M3" as const,
   returnedModel: "MiniMax-M3",
   latencyMs: 10,
+};
+const copyMetadata = {
+  result: "accepted-unchanged" as const,
+  change_reasons: [] as [],
+  policy_signal: "none" as const,
 };
 
 function recordFor(id: string) {
@@ -107,6 +113,9 @@ test("passes normalized source and only allowed vocabulary entries to provider",
       metadata_status: "curated" as const,
       capabilities: [input.allowedCapabilities[0].id],
       classification_review: null,
+      result: "accepted-unchanged" as const,
+      change_reasons: [],
+      policy_signal: "none" as const,
     },
     metadata: providerMetadata,
   }));
@@ -143,6 +152,15 @@ test("passes normalized source and only allowed vocabulary entries to provider",
         identity: "github:creator/project",
         text: "A short project description.",
       },
+      summaryMode: "synthesize",
+      submittedDescription: "Generic intake details.",
+      evidence: {
+        readme: null,
+        repositoryDescription: "A short project description.",
+        submissionDescription: "Generic intake details.",
+      },
+      protectedTerms: ["Fixture", "Creator", "Project"],
+      policyVersion: "2026-07-29",
       allowedCapabilities: vocabularies.capabilities,
     }),
   );
@@ -151,6 +169,117 @@ test("passes normalized source and only allowed vocabulary entries to provider",
   );
   expect(generate.mock.calls[0][0]).not.toHaveProperty(
     "classificationReviewRequest",
+  );
+});
+
+test("labels conflicting intake evidence in README-first priority order", async () => {
+  const generate = vi.fn(async () => ({
+    output: {
+      summary:
+        "README-grounded purpose takes priority for this SillyTavern project. Repository and submitted descriptions fill only factual gaps without overriding the canonical README evidence or its stated purpose.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: null,
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      summaryMode: "synthesize",
+      submittedDescription:
+        "The submitter claims a conflicting primary purpose.",
+      loadSource: async () => ({
+        status: "ready" as const,
+        sourceKind: "readme" as const,
+        sourceIdentity: "github:creator/project",
+        text: "README canonical purpose.",
+        repositoryDescription: "Repository description says something else.",
+        readmeText: "README canonical purpose.",
+        readmePath: "README.md",
+        readmeRef: "a".repeat(40),
+        readmeIdentity: `github:creator/project@${"a".repeat(40)}:README.md`,
+        repositoryId: 42,
+        headSha: "a".repeat(40),
+      }),
+    },
+  );
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      summaryMode: "synthesize",
+      evidence: {
+        readme: {
+          identity: `github:creator/project@${"a".repeat(40)}:README.md`,
+          text: "README canonical purpose.",
+        },
+        repositoryDescription: "Repository description says something else.",
+        submissionDescription:
+          "The submitter claims a conflicting primary purpose.",
+      },
+    }),
+  );
+});
+
+test("repairs one invalid preservation result with sanitized validation context", async () => {
+  const submittedSummary = "ST-QuickReply keeps the owner's wording";
+  const generate = vi
+    .fn()
+    .mockResolvedValueOnce({
+      output: {
+        summary: "QuickReply keeps the owner's wording.",
+        metadata_status: "curated",
+        capabilities: ["automation"],
+        classification_review: null,
+        result: "accepted-with-light-edits",
+        change_reasons: ["punctuation-corrected"],
+        policy_signal: "none",
+      },
+      metadata: providerMetadata,
+    })
+    .mockResolvedValueOnce({
+      output: {
+        summary: submittedSummary,
+        metadata_status: "curated",
+        capabilities: ["automation"],
+        classification_review: null,
+        ...copyMetadata,
+      },
+      metadata: providerMetadata,
+    });
+
+  await expect(
+    enrichRecord(
+      record,
+      snapshot,
+      { generate },
+      {
+        vocabularies,
+        summaryMode: "preserve",
+        submittedDescription: submittedSummary,
+        protectedTerms: ["ST-QuickReply"],
+        loadSource: async () => readySource("fixture"),
+      },
+    ),
+  ).resolves.toMatchObject({
+    summary: submittedSummary,
+    result: "accepted-unchanged",
+  });
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate.mock.calls[1][0]).toMatchObject({
+    repair: {
+      reasonCode: "output-invalid",
+      message: expect.stringContaining("preserve every protected term"),
+    },
+  });
+  expect(generate.mock.calls[1][0].repair.message).not.toContain(
+    "QuickReply keeps",
   );
 });
 
@@ -190,6 +319,7 @@ test("enriches a Reddit source without a repository snapshot", async () => {
       metadata_status: "curated" as const,
       capabilities: ["automation"],
       classification_review: null,
+      ...copyMetadata,
     },
     metadata: providerMetadata,
   }));
@@ -343,6 +473,7 @@ test("preserves an owner edit made after automatic enrichment selection", async 
           metadata_status: "curated",
           capabilities: ["automation"],
           classification_review: null,
+          ...copyMetadata,
         },
         metadata: providerMetadata,
       }),
@@ -361,6 +492,29 @@ test("preserves an owner edit made after automatic enrichment selection", async 
     },
   ]);
   expect(JSON.parse(await readFile(path, "utf8"))).toEqual(ownerEdited);
+});
+
+test("writes the accepted summary without persisting copy-audit metadata", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-copy-audit-"));
+  const path = join(root, "fixture.json");
+  await writeFile(path, JSON.stringify(record, null, 2));
+
+  await writeEnrichedRecord(path, record, {
+    summary:
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator controls, and keeps complex configuration work clear and accessible to users throughout.",
+    metadata_status: "curated",
+    capabilities: ["automation"],
+    classification_review: null,
+    result: "accepted-with-light-edits",
+    change_reasons: ["punctuation-corrected"],
+    policy_signal: "none",
+  });
+
+  const written = JSON.parse(await readFile(path, "utf8"));
+  expect(written.summary).toContain("Fixture organizes");
+  expect(written).not.toHaveProperty("result");
+  expect(written).not.toHaveProperty("change_reasons");
+  expect(written).not.toHaveProperty("policy_signal");
 });
 
 test("uses the exact fallback when both source texts are unavailable", async () => {
@@ -387,7 +541,51 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     metadata_status: "curated",
     capabilities: [],
     classification_review: null,
+    ...copyMetadata,
   });
+});
+
+test("uses the submitted description as third-priority evidence when repository text is absent", async () => {
+  const generate = vi.fn(async () => ({
+    output: {
+      summary:
+        "Submitted evidence identifies this SillyTavern extension and its purpose. The catalog summary remains grounded only in the available intake description when repository text is unavailable.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: null,
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    { ...snapshot, repository: { ...snapshot.repository, description: null } },
+    { generate },
+    {
+      vocabularies,
+      submittedDescription: "Only the submitted description is available.",
+      loadSource: async () => ({
+        status: "fallback" as const,
+        sourceKind: "confirmed-fallback" as const,
+        sourceIdentity: "github:creator/project",
+        repositoryId: 42,
+        headSha: "a".repeat(40),
+        readmePath: null,
+        readmeRef: "a".repeat(40),
+      }),
+    },
+  );
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      evidence: {
+        readme: null,
+        repositoryDescription: null,
+        submissionDescription: "Only the submitted description is available.",
+      },
+    }),
+  );
 });
 
 test.each(["source-not-ready", "failed"] as const)(
@@ -455,6 +653,7 @@ test("rejects a model-owned primary function when source text exists", async () 
             primary_function: "developer-infrastructure",
             capabilities: [],
             classification_review: null,
+            ...copyMetadata,
           },
           metadata: providerMetadata,
         }),
@@ -485,6 +684,7 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
         metadata_status: "curated" as const,
         capabilities: ["automation"],
         classification_review: null,
+        ...copyMetadata,
       },
       metadata: providerMetadata,
     };
@@ -575,6 +775,7 @@ test("runs no more than four model calls concurrently and preserves order", asyn
             metadata_status: "curated" as const,
             capabilities: ["automation"],
             classification_review: null,
+            ...copyMetadata,
           },
           metadata: providerMetadata,
         };
@@ -615,6 +816,7 @@ test("backs off new model work after repeated provider rate limits", async () =>
         metadata_status: "curated" as const,
         capabilities: ["automation"],
         classification_review: null,
+        ...copyMetadata,
       },
       metadata: providerMetadata,
     };

@@ -32,6 +32,9 @@ const providerOutput = {
     metadata_status: "curated" as const,
     capabilities: ["automation"],
     classification_review: null,
+    result: "accepted-unchanged" as const,
+    change_reasons: [],
+    policy_signal: "none" as const,
   },
   metadata: {
     requestedModel: model,
@@ -560,6 +563,9 @@ test("repairs invalid provider output immediately with the rejected summary", as
       e: {
         attempt: 1,
         outcome: "enriched",
+        copy_result: "accepted-unchanged",
+        copy_change_reasons: [],
+        copy_policy_signal: "none",
         provider_calls: 2,
         provider_repair_calls: 1,
         provider_latency_ms_total: 20,

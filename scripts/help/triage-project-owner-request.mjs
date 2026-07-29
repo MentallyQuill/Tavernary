@@ -172,6 +172,7 @@ function fallbackManifest(fields, record) {
   }
   return {
     ...common,
+    delist_confirmation: fields.get("Delist confirmation"),
     original: { visibility: record?.visibility },
     proposed: {
       visibility: "disabled",
@@ -359,17 +360,6 @@ export async function processProjectOwnerTriage(input) {
     parsed.source === "manifest"
       ? parsed.manifest
       : fallbackManifest(parsed.fields, record);
-  if (
-    parsed.source === "fallback" &&
-    rawManifest.operation === "delist" &&
-    parsed.fields.get("Delist confirmation") !==
-      "I am requesting that Tavernary delist this project"
-  ) {
-    return needsInformation(
-      "owner-request-invalid",
-      "Owner delisting requires the exact confirmation text.",
-    );
-  }
   const normalized = normalizeProjectOwnerManifest(
     rawManifest,
     input.vocabularies,
@@ -379,6 +369,16 @@ export async function processProjectOwnerTriage(input) {
       "owner-request-invalid",
       normalized.errors.join(" "),
       { errors: normalized.errors },
+    );
+  }
+  if (
+    normalized.manifest.operation === "delist" &&
+    normalized.manifest.delist_confirmation.trim().toLocaleLowerCase() !==
+      String(record.name).trim().toLocaleLowerCase()
+  ) {
+    return needsInformation(
+      "owner-request-invalid",
+      "Owner delisting confirmation must match the current complete project name.",
     );
   }
 

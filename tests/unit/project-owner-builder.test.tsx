@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -214,11 +214,9 @@ test("keeps edit, source, and delist fields in separate branches", async () => {
   expect(screen.queryByLabelText("Display name")).not.toBeInTheDocument();
 
   await user.click(screen.getByRole("radio", { name: "Delist this project" }));
-  expect(
-    screen.getByRole("checkbox", {
-      name: "I am requesting that Tavernary delist this project",
-    }),
-  ).toBeVisible();
+  expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Public note (optional)")).toBeVisible();
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   expect(
     screen.queryByLabelText("Public GitHub repository URL"),
   ).not.toBeInTheDocument();
@@ -252,6 +250,28 @@ test("shows a live summary counter and exact controlled metadata", async () => {
   expect(
     screen.queryByRole("checkbox", { name: "Claude" }),
   ).not.toBeInTheDocument();
+});
+
+test("removes emoji from an owner summary while preserving its wording", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  const summary = screen.getByLabelText("Summary");
+  await user.clear(summary);
+  await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
+
+  expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
+  expect(
+    screen.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toHaveAttribute("role", "status");
+  expect(screen.getByRole("link", { name: "Catalog Policy" })).toHaveAttribute(
+    "href",
+    "/catalog-policy",
+  );
 });
 
 test("shows compatibility controls only for Presets", async () => {
@@ -324,8 +344,13 @@ test("connects each required owner choice to its inline error", async () => {
   await user.click(screen.getByRole("radio", { name: "Delist this project" }));
   await user.click(screen.getByRole("button", { name: "Review request" }));
   expect(
-    screen.getByRole("group", { name: "Confirm delisting" }),
-  ).toHaveAttribute("aria-invalid", "true");
+    screen.getByRole("dialog", {
+      name: "Permanently delist Owner Extension?",
+    }),
+  ).toBeVisible();
+  expect(
+    screen.getByRole("button", { name: "Permanently delist project" }),
+  ).toBeDisabled();
 });
 
 test("connects required owner card text to its inline errors", async () => {
@@ -350,34 +375,63 @@ test("connects required owner card text to its inline errors", async () => {
   );
 });
 
-test("requires the exact delist confirmation and explains the retained effect", async () => {
+test("requires typed project confirmation before reviewing a permanent delist", async () => {
   const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Delist this project" }));
-  await user.click(screen.getByRole("button", { name: "Review request" }));
-
-  expect(screen.getByRole("alert")).toHaveTextContent(
-    "Confirm that Tavernary should delist this project.",
-  );
-  await user.click(
-    screen.getByRole("checkbox", {
-      name: "I am requesting that Tavernary delist this project",
-    }),
-  );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
+  const reviewButton = screen.getByRole("button", { name: "Review request" });
+  vi.spyOn(reviewButton, "getClientRects").mockReturnValue({
+    length: 1,
+  } as unknown as DOMRectList);
+  await user.click(reviewButton);
 
   expect(
-    screen.getByText("Delisting disables, pauses, and retains the record."),
+    screen.getByRole("heading", {
+      name: "Permanently delist Owner Extension?",
+    }),
   ).toBeVisible();
-  expectReviewRow("Before: visibility", "published");
-  expectReviewRow("Before: visibility reason", "None");
-  expectReviewRow("Before: refresh policy", "automatic");
-  expectReviewRow("Before: enrichment policy", "automatic");
+  expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
+  await user.click(screen.getByRole("button", { name: "Cancel" }));
+  expect(
+    screen.queryByRole("heading", {
+      name: "Permanently delist Owner Extension?",
+    }),
+  ).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Review request" }),
+    ).toHaveFocus(),
+  );
+
+  await user.click(reviewButton);
+  await user.type(
+    screen.getByLabelText(
+      "Type Owner Extension to confirm permanent delisting.",
+    ),
+    "owner extension",
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Permanently delist project" }),
+  );
+
+  expect(
+    screen.getByText(
+      "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.",
+    ),
+  ).toBeVisible();
+  expectReviewRow("Confirmation", "owner extension");
   expectReviewRow("After: visibility", "disabled");
-  expectReviewRow("After: visibility reason", "removed");
-  expectReviewRow("After: refresh policy", "paused");
-  expectReviewRow("After: enrichment policy", "manual");
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "delist",
+    delist_confirmation: "owner extension",
+  });
 });
 
 test("reviews card values before and after without claiming browser-side identity verification", async () => {

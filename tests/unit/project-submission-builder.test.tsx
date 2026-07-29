@@ -168,6 +168,25 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
   ).toBeVisible();
 });
 
+test("removes emoji from the submitted description while preserving its wording", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  const description = screen.getByLabelText(/Short Description/u);
+  await user.type(description, "This is damn useful 🧭 for ST-QuickReply.");
+
+  expect(description).toHaveValue("This is damn useful  for ST-QuickReply.");
+  expect(
+    screen.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toHaveAttribute("role", "status");
+  expect(screen.getByRole("link", { name: "Catalog Policy" })).toHaveAttribute(
+    "href",
+    "/catalog-policy",
+  );
+});
+
 test("rejects a generic public source host for a Frontend", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);

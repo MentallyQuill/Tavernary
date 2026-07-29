@@ -334,6 +334,86 @@
   background: var(--color-bg-disabled);
 }
 
+.permanent-delist-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  overflow-y: auto;
+  padding: 24px;
+  background: var(--color-bg-overlay);
+  place-items: center;
+}
+
+.permanent-delist-dialog {
+  display: grid;
+  width: min(100%, 560px);
+  gap: 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+  padding: 24px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-raised);
+  box-shadow: var(--shadow-overlay);
+}
+
+.permanent-delist-dialog h2,
+.permanent-delist-dialog p {
+  margin: 0;
+}
+
+.permanent-delist-dialog label {
+  font-weight: 720;
+}
+
+.permanent-delist-dialog input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  color: var(--color-control-text);
+  background: var(--color-control-bg);
+}
+
+.permanent-delist-match {
+  color: var(--color-accent-teal-text);
+  font-weight: 700;
+}
+
+.permanent-delist-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.permanent-delist-actions button {
+  min-height: 44px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 6px;
+  padding: 0 18px;
+  font-weight: 750;
+}
+
+.permanent-delist-confirm {
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+  cursor: pointer;
+}
+
+.permanent-delist-confirm:is(:hover, :focus-visible) {
+  border-color: var(--color-danger);
+  background: var(--color-danger-border);
+}
+
+.permanent-delist-confirm:disabled {
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  background: var(--color-bg-disabled);
+  cursor: not-allowed;
+}
+
 @media (max-width: 560px) {
   .help-page {
     padding-top: 20px;
@@ -355,6 +435,19 @@
 
   .help-actions button,
   .help-security-actions a {
+    width: 100%;
+  }
+
+  .permanent-delist-backdrop {
+    padding: 16px;
+  }
+
+  .permanent-delist-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .permanent-delist-actions button {
     width: 100%;
   }
 }

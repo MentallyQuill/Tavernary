@@ -847,11 +847,14 @@ test("handles submission closure from default-branch code only", async () => {
     "pull-requests": "read",
     actions: "write",
   });
-  expect(lifecycle.jobs.close.if).toBe(
+  expect(lifecycle.jobs.close.if).toContain(
     "startsWith(github.event.pull_request.head.ref, 'automation/project-submission-')",
   );
+  expect(lifecycle.jobs.close.if).toContain(
+    "github.event_name == 'workflow_dispatch'",
+  );
   expect(checkout?.with?.ref).toBe(
-    "${{ github.event.repository.default_branch }}",
+    "${{ github.event.repository.default_branch || 'main' }}",
   );
   expect(source).toContain("github.event.pull_request.head.sha");
   expect(source).toContain("submission-declined");
@@ -942,6 +945,11 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
     "cancel-in-progress": false,
   });
   expect(checkout?.with).toMatchObject({ "fetch-depth": 0, ref: "main" });
+  expect(generation.jobs.generate.env).toMatchObject({
+    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+  });
   expect(source).toContain("npm ci");
   expect(source).toContain("generate-project-owner-request.mjs");
   expect(
@@ -965,6 +973,8 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("npm run catalog:build");
   expect(source).toContain("tests/unit/project-owner-");
   expect(source).toContain("tests/unit/trusted-editor-authority.test.ts");
+  expect(source).toContain("tests/unit/catalog-copy-provider.test.ts");
+  expect(source).toContain("tests/unit/catalog-copy-contract.test.ts");
   expect(source).toContain("authorityType: report.authority_type");
   expect(source).toContain("actorLogin: report.actor_login");
   expect(source).not.toContain("verifiedOwnerLogin");
@@ -1003,14 +1013,18 @@ test("handles owner closure from default-branch code and exact head state", asyn
     "pull-requests": "read",
   });
   expect(lifecycle.concurrency).toEqual({
-    group: "project-owner-lifecycle-${{ github.event.pull_request.number }}",
+    group:
+      "project-owner-lifecycle-${{ inputs.pull_number || github.event.pull_request.number }}",
     "cancel-in-progress": false,
   });
-  expect(lifecycle.jobs.close.if).toBe(
+  expect(lifecycle.jobs.close.if).toContain(
     "startsWith(github.event.pull_request.head.ref, 'automation/project-owner-request-')",
   );
+  expect(lifecycle.jobs.close.if).toContain(
+    "github.event_name == 'workflow_dispatch'",
+  );
   expect(checkout?.with?.ref).toBe(
-    "${{ github.event.repository.default_branch }}",
+    "${{ github.event.repository.default_branch || 'main' }}",
   );
   expect(source).toContain("planProjectOwnerClosure");
   expect(source).toContain("github.event.pull_request.head.sha");

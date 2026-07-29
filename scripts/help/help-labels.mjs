@@ -19,6 +19,11 @@ export const HELP_LABEL_DEFINITIONS = Object.freeze({
     color: "0e8a16",
     description: "Listing request from a project owner or maintainer.",
   }),
+  "owner-delist-notice": Object.freeze({
+    color: "6e7781",
+    description:
+      "Maintenance notice for a completed verified-owner project delisting.",
+  }),
   "safety-review": Object.freeze({
     color: "b60205",
     description: "Public content requires a maintainer safety review.",

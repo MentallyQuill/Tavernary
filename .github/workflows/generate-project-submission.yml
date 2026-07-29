@@ -330,25 +330,45 @@ jobs:
         env:
           BRANCH: ${{ steps.state.outputs.branch }}
           HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
           PROJECT_ID: ${{ steps.commit.outputs.project_id }}
         run: |
           set -euo pipefail
           node --input-type=module -e "
             import fs from 'node:fs';
+            import { execFileSync } from 'node:child_process';
+            import { CATALOG_POLICY_VERSION } from './src/features/catalog/catalog-policy.mjs';
+            import { createProjectPublicationTransaction } from './scripts/publication/project-publication-transaction.mjs';
             import { renderSubmissionPullRequest } from './scripts/submissions/project-submission-pr.mjs';
             const report = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/admission-report.json', 'utf8'));
             const paths = fs.readFileSync(process.env.RUNNER_TEMP + '/generated-paths.txt', 'utf8').trim().split(/\r?\n/u).filter(Boolean);
+            const authorityType = report.summary_authority?.authorityType;
+            const copyMode =
+              authorityType === 'community-submitter' ? 'synthesize' : 'preserve';
+            const transaction = createProjectPublicationTransaction({
+              operation: 'create',
+              producer: 'project-submission',
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              project_id: report.project_id,
+              source_identity: report.source_identity,
+              actor: report.actor,
+              authority_type: authorityType,
+              input_digest: report.input_digest,
+              record_fingerprint: null,
+              base_sha: execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim(),
+              generated_head_sha: process.env.HEAD_SHA || process.env.REMOTE_SHA,
+              generated_paths: paths,
+              policy_version: CATALOG_POLICY_VERSION,
+              copy_result: report.copy_result
+                ? { mode: copyMode, ...report.copy_result }
+                : null,
+            });
             const body = renderSubmissionPullRequest({
               issueNumber: Number(process.env.ISSUE_NUMBER),
               projectName: report.inferred.name ?? report.project_id,
               report,
-              marker: {
-                schema_version: 1,
-                issue_number: Number(process.env.ISSUE_NUMBER),
-                generated_head_sha: process.env.HEAD_SHA,
-                generated_paths: paths,
-              },
+              marker: transaction,
             });
             fs.writeFileSync(process.env.RUNNER_TEMP + '/project-submission-pr.md', body);
           "

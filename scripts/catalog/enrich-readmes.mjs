@@ -39,6 +39,7 @@ import {
   selectNextRunBatch,
 } from "./enrichment-run-state.mjs";
 import { createSnapshotValidator } from "./readme-source.mjs";
+import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 
 function entriesToSet(entries) {
   return new Set(
@@ -106,7 +107,7 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     return null;
   }
 
-  const source = await (options.loadSource ?? loadEnrichmentSource)(
+  let source = await (options.loadSource ?? loadEnrichmentSource)(
     record,
     snapshot,
     options,
@@ -119,17 +120,43 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     throw new Error(source.message);
   }
   if (source.status === "fallback") {
-    const fallback = {
-      summary: "No README file found.",
-      metadata_status: "curated",
-      capabilities: [],
-      classification_review: null,
+    const submittedDescription =
+      typeof options.submittedDescription === "string"
+        ? options.submittedDescription.trim()
+        : "";
+    if (!submittedDescription) {
+      const fallback = {
+        summary: "No README file found.",
+        metadata_status: "curated",
+        capabilities: [],
+        classification_review: null,
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      };
+      const validation = validateEnrichmentOutput(
+        fallback,
+        {
+          capabilities: entriesToSet(vocabularies.capabilities),
+        },
+        null,
+        {
+          mode: "synthesize",
+          submittedSummary: "",
+          protectedTerms: [],
+        },
+      );
+      if (!validation.valid) throw new Error(validation.errors.join("; "));
+      return fallback;
+    }
+    source = {
+      ...source,
+      status: "ready",
+      text: submittedDescription,
+      repositoryDescription: null,
+      readmeText: null,
+      readmeIdentity: null,
     };
-    const validation = validateEnrichmentOutput(fallback, {
-      capabilities: entriesToSet(vocabularies.capabilities),
-    });
-    if (!validation.valid) throw new Error(validation.errors.join("; "));
-    return fallback;
   }
 
   const input = providerInputForRecord(
@@ -137,22 +164,54 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     source,
     vocabularies,
     options.classificationReviewRequest,
+    options,
   );
   if (!provider?.generate) {
     throw new Error(
       "enrichment provider configuration is required for source-backed records",
     );
   }
-  const generated = await provider.generate(input);
-  const output = generated.output;
-  const validation = validateEnrichmentOutput(
+  let generated = await provider.generate(input);
+  let output = generated.output;
+  let validation = validateEnrichmentOutput(
     output,
     {
       capabilities: entriesToSet(vocabularies.capabilities),
     },
     input.classificationReviewRequest ?? null,
+    {
+      mode: input.summaryMode,
+      submittedSummary: input.submittedDescription ?? "",
+      protectedTerms: input.protectedTerms,
+    },
   );
-  if (!validation.valid) throw new Error(validation.errors.join("; "));
+  if (!validation.valid) {
+    generated = await provider.generate({
+      ...input,
+      repair: {
+        reasonCode: "output-invalid",
+        message: [...new Set(validation.errors)].join("; "),
+      },
+    });
+    output = generated.output;
+    validation = validateEnrichmentOutput(
+      output,
+      {
+        capabilities: entriesToSet(vocabularies.capabilities),
+      },
+      input.classificationReviewRequest ?? null,
+      {
+        mode: input.summaryMode,
+        submittedSummary: input.submittedDescription ?? "",
+        protectedTerms: input.protectedTerms,
+      },
+    );
+  }
+  if (!validation.valid) {
+    const error = new Error([...new Set(validation.errors)].join("; "));
+    error.code = "output-invalid";
+    throw error;
+  }
   return output;
 }
 
@@ -161,7 +220,24 @@ function providerInputForRecord(
   source,
   vocabularies,
   classificationReviewRequest = null,
+  options = {},
 ) {
+  const repositoryParts =
+    typeof record.source?.repository === "string"
+      ? record.source.repository.split("/").filter(Boolean)
+      : [];
+  const protectedTerms = [
+    ...new Set(
+      (options.protectedTerms ?? [record.name, ...repositoryParts]).filter(
+        (term) => typeof term === "string" && term.length > 0,
+      ),
+    ),
+  ];
+  const submittedDescription =
+    options.submittedDescription ?? record.summary ?? null;
+  const repositoryDescription =
+    source.repositoryDescription ??
+    (source.sourceKind === "description" ? source.text : null);
   return {
     id: record.id,
     name: record.name,
@@ -171,6 +247,25 @@ function providerInputForRecord(
       identity: source.sourceIdentity,
       text: source.text,
     },
+    summaryMode: options.summaryMode ?? "synthesize",
+    submittedDescription,
+    evidence: {
+      readme:
+        typeof source.readmeText === "string" && source.readmeText.length > 0
+          ? {
+              identity:
+                source.readmeIdentity ??
+                source.readmeRef ??
+                source.readmePath ??
+                source.sourceIdentity,
+              text: source.readmeText,
+            }
+          : null,
+      repositoryDescription,
+      submissionDescription: submittedDescription,
+    },
+    protectedTerms,
+    policyVersion: options.policyVersion ?? CATALOG_POLICY_VERSION,
     frontends: record.frontends ?? [],
     allowedCapabilities: vocabularies.capabilities,
     ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
@@ -265,6 +360,9 @@ function fallbackOutput() {
     metadata_status: "curated",
     capabilities: [],
     classification_review: null,
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
   };
 }
 

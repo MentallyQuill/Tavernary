@@ -19,6 +19,9 @@ const valid = {
   metadata_status: "curated" as const,
   capabilities: ["automation", "prompt-engineering"],
   classification_review: null,
+  result: "accepted-unchanged" as const,
+  change_reasons: [],
+  policy_signal: "none" as const,
 };
 
 test("accepts a natural two-sentence curated enrichment", () => {
@@ -121,6 +124,24 @@ test("rejects a model-owned primary function field", () => {
     valid: false,
     errors: ["primary_function is not allowed in enrichment output"],
   });
+});
+
+test("rejects missing or inconsistent copy-result metadata", () => {
+  const { result: _result, ...missingResult } = valid;
+  expect(
+    validateEnrichmentOutput(missingResult as never, vocabularies),
+  ).toMatchObject({ valid: false });
+  expect(
+    validateEnrichmentOutput(
+      {
+        ...valid,
+        result: "accepted-with-policy-rewrite",
+        change_reasons: ["punctuation-corrected"],
+        policy_signal: "catalog-policy-rewrite",
+      },
+      vocabularies,
+    ),
+  ).toMatchObject({ valid: false });
 });
 
 test("accepts only a bounded requested classification review", () => {

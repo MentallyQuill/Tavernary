@@ -10,12 +10,27 @@ import {
 
 const marker = {
   schema_version: 1 as const,
+  operation: "create" as const,
+  producer: "project-submission" as const,
   issue_number: 123,
+  project_id: "owner-repo",
+  source_identity: {
+    type: "github" as const,
+    canonical: "github:42",
+    repository_id: 42,
+  },
+  actor: { id: 11, login: "Submitter", type: "User" as const },
+  authority_type: "community-submitter" as const,
+  input_digest: "d".repeat(64),
+  record_fingerprint: null,
+  base_sha: "b".repeat(40),
   generated_head_sha: "a".repeat(40),
   generated_paths: [
     "data/registry/projects/owner-repo.json",
     "data/snapshots/github/owner-repo.json",
   ],
+  policy_version: "2026-07-29",
+  copy_result: null,
 };
 
 const reviewFixture = {
@@ -40,6 +55,11 @@ const reviewFixture = {
       primary_function: "generation-reasoning",
       capabilities: ["planning-reasoning"],
     },
+    summary_authority: null,
+    copy_result: null,
+    input_digest: "d".repeat(64),
+    source_identity: marker.source_identity,
+    actor: marker.actor,
     classificationReview: null,
     warnings: ["Repository is archived."],
   },

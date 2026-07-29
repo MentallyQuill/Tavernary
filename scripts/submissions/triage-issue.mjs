@@ -544,6 +544,24 @@ function submissionForkFacts(observation) {
   };
 }
 
+function repositoryOwnerIdentity(owner) {
+  if (
+    !Number.isSafeInteger(owner?.id) ||
+    owner.id < 1 ||
+    typeof owner?.login !== "string" ||
+    owner.login.length === 0 ||
+    typeof owner?.type !== "string" ||
+    owner.type.length === 0
+  ) {
+    return null;
+  }
+  return {
+    id: owner.id,
+    login: owner.login,
+    type: owner.type,
+  };
+}
+
 export async function inspectProjectSubmissionSource(
   manifest,
   { request, probe, providers },
@@ -569,7 +587,13 @@ export async function inspectProjectSubmissionSource(
   ) {
     try {
       const provider = repositoryProvider(parsed.provider, providers);
-      const identity = await provider.resolve(parsed);
+      const resolvedIdentity = await provider.resolve(parsed);
+      const repositoryOwner =
+        resolvedIdentity.provider === "github"
+          ? repositoryOwnerIdentity(resolvedIdentity.repositoryOwner)
+          : null;
+      const { repositoryOwner: _repositoryOwner, ...identity } =
+        resolvedIdentity;
       let observation = null;
       if (typeof provider.observe === "function") {
         const observed = await provider.observe([
@@ -606,6 +630,7 @@ export async function inspectProjectSubmissionSource(
               }
             : null,
         },
+        ...(identity.provider === "github" ? { repositoryOwner } : {}),
       };
     } catch (error) {
       const label = parsed.provider === "github" ? "GitHub" : "Codeberg";
@@ -654,6 +679,7 @@ export async function inspectProjectSubmissionSource(
           archived: observation.archived === true,
           ...submissionForkFacts(observation),
         },
+        repositoryOwner: repositoryOwnerIdentity(observation.owner),
       };
     } catch (error) {
       if (error.status === 404) {

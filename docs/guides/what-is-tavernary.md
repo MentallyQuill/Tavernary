@@ -62,6 +62,12 @@ the source projects remain in their own repositories.
 This keeps the project small to operate, makes the catalog inspectable in Git,
 and keeps ownership of project files with their creators.
 
+Project intake and authorized owner/staff changes use generated pull requests
+as CI, audit, and rollback transactions. Tavernary can automatically publish
+an exact validated transaction; the PR does not imply routine staff approval.
+A separate post-publication Catalog Policy advisory can notify staff without
+blocking, hiding, or removing the project.
+
 ## Learn more
 
 - [Using the catalog](using-the-catalog.md)

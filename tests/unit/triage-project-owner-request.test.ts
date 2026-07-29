@@ -74,6 +74,29 @@ function manifest(current = record()) {
   };
 }
 
+function delistManifest(
+  current = record(),
+  confirmation: string = String(current.name),
+) {
+  return {
+    schema_version: 1,
+    request_kind: "project-owner",
+    operation: "delist",
+    project_id: "owner-alpha",
+    repository_id: 42,
+    source_fingerprint: fingerprintProjectRecord(current),
+    delist_confirmation: confirmation,
+    original: { visibility: "published" },
+    proposed: {
+      visibility: "disabled",
+      visibility_reason: "removed",
+      refresh_policy: "paused",
+      enrichment_policy: "manual",
+    },
+    explanation: null,
+  };
+}
+
 function issue(bodyManifest: Record<string, unknown> = manifest()) {
   return {
     number: 123,
@@ -387,6 +410,111 @@ test("constructs and validates a direct fallback without trusting its repository
       project_id: "owner-alpha",
       proposed: { summary: "Fallback owner summary." },
     },
+  });
+});
+
+test("requires the project display name in a direct delist fallback", async () => {
+  const fallback = (confirmation: string) => {
+    const fallbackIssue = {
+      ...issue(),
+      body: [
+        ["Request type", "Delist this project"],
+        ["Project ID", "owner-alpha"],
+        ["Current repository", "https://github.com/Owner/Alpha"],
+        ["Proposed display name", "_No response_"],
+        ["Proposed summary", "_No response_"],
+        ["Supported frontends", "_No response_"],
+        ["Primary function", "_No response_"],
+        ["Capabilities", "_No response_"],
+        ["Model families", "_No response_"],
+        ["Completion formats", "_No response_"],
+        ["Proposed repository", "_No response_"],
+        ["Explanation or public note", "_No response_"],
+        ["Delist confirmation", confirmation],
+        ["Owner request manifest", "_No response_"],
+      ]
+        .map(([heading, value]) => `### ${heading}\n\n${value}`)
+        .join("\n\n"),
+    };
+    return fallbackIssue;
+  };
+
+  const accepted = fallback("ALPHA");
+  await expect(
+    processProjectOwnerTriage({
+      issue: accepted,
+      record: record(),
+      repository,
+      hostRepository: "Tavernary/Tavernary",
+      request: vi.fn(async () => accepted),
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "admitted",
+    manifest: {
+      operation: "delist",
+      delist_confirmation: "ALPHA",
+    },
+  });
+
+  await expect(
+    processProjectOwnerTriage({
+      issue: fallback("Al"),
+      record: record(),
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "owner-request-invalid",
+  });
+});
+
+test("matches delist confirmation to the current complete project name", async () => {
+  const current = record();
+  const partialIssue = issue(delistManifest(current, "Al"));
+  await expect(
+    processProjectOwnerTriage({
+      issue: partialIssue,
+      record: current,
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "owner-request-invalid",
+    message:
+      "Owner delisting confirmation must match the current complete project name.",
+  });
+
+  const acceptedIssue = issue(delistManifest(current, "  aLpHa  "));
+  await expect(
+    processProjectOwnerTriage({
+      issue: acceptedIssue,
+      record: current,
+      repository,
+      hostRepository: "Tavernary/Tavernary",
+      request: vi.fn(async () => acceptedIssue),
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "admitted",
+    manifest: { delist_confirmation: "aLpHa" },
+  });
+
+  const renamed = record({ name: "Alpha Renamed" });
+  await expect(
+    processProjectOwnerTriage({
+      issue: issue(delistManifest(current, "Alpha")),
+      record: renamed,
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "owner-request-invalid",
+    message:
+      "Owner delisting confirmation must match the current complete project name.",
   });
 });
 

@@ -793,7 +793,7 @@ test("normalizes an immediate GitHub fork parent during source inspection", asyn
     {
       request: vi.fn().mockResolvedValue({
         id: 42,
-        owner: { login: "owner" },
+        owner: { id: 11, login: "owner", type: "User" },
         name: "child",
         html_url: "https://github.com/owner/child",
         visibility: "public",
@@ -824,6 +824,12 @@ test("normalizes an immediate GitHub fork parent during source inspection", asyn
       canonicalUrl: "https://github.com/owner/parent",
     },
   });
+  expect(result.repositoryOwner).toEqual({
+    id: 11,
+    login: "owner",
+    type: "User",
+  });
+  expect(result.identity).not.toHaveProperty("repositoryOwner");
 });
 
 test.each([

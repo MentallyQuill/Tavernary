@@ -182,5 +182,10 @@ export function inspectProjectSubmissionSource(
   identity: SourceIdentity | null;
   sourceProbe: SourceProbeDecision;
   repository?: SubmissionRepositoryObservation;
+  repositoryOwner?: {
+    id: number;
+    login: string;
+    type: string;
+  } | null;
   errors?: string[];
 }>;

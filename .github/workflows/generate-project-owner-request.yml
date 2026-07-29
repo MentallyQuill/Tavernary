@@ -32,6 +32,9 @@ jobs:
       ISSUE_NUMBER: ${{ inputs.issue_number }}
       FORCE_REGENERATION: ${{ inputs.force_regeneration }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+      TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+      TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
     steps:
       - name: Check out full current main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -201,6 +204,8 @@ jobs:
           npm run catalog:build
           npm test -- \
             tests/unit/trusted-editor-authority.test.ts \
+            tests/unit/catalog-copy-provider.test.ts \
+            tests/unit/catalog-copy-contract.test.ts \
             tests/unit/project-owner-authority.test.ts \
             tests/unit/apply-project-owner-request.test.ts \
             tests/unit/triage-project-owner-request.test.ts \
@@ -421,10 +426,13 @@ jobs:
           HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
           PROJECT_ID: ${{ steps.paths.outputs.project_id }}
+          REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
           import fs from "node:fs";
+          import { execFileSync } from "node:child_process";
+          import { createProjectPublicationTransaction } from "./scripts/publication/project-publication-transaction.mjs";
           import { renderOwnerRequestPullRequest } from "./scripts/help/project-owner-pr.mjs";
           const report = JSON.parse(
             fs.readFileSync(
@@ -432,21 +440,38 @@ jobs:
               "utf8",
             ),
           );
+          const transaction = createProjectPublicationTransaction({
+            operation: report.operation,
+            producer: "project-owner-request",
+            issue_number: Number(process.env.ISSUE_NUMBER),
+            project_id: report.project_id,
+            source_identity: report.source_identity,
+            actor: {
+              id: report.actor_id,
+              login: report.actor_login,
+              type: report.actor_type,
+            },
+            authority_type: report.authority_type,
+            input_digest: report.request_fingerprint,
+            record_fingerprint: report.record_fingerprint,
+            base_sha: execFileSync(
+              "git",
+              ["rev-parse", "origin/main"],
+              { encoding: "utf8" },
+            ).trim(),
+            generated_head_sha:
+              process.env.HEAD_SHA || process.env.REMOTE_SHA,
+            generated_paths: report.generated_paths,
+            policy_version: report.policy_version,
+            copy_result: report.copy_result
+              ? { mode: "preserve", ...report.copy_result }
+              : null,
+          });
           const body = renderOwnerRequestPullRequest({
             issueNumber: Number(process.env.ISSUE_NUMBER),
             projectName: report.project_id,
             report,
-            marker: {
-              schema_version: 1,
-              issue_number: Number(process.env.ISSUE_NUMBER),
-              project_id: report.project_id,
-              operation: report.operation,
-              repository_id: report.repository_id,
-              authority_type: report.authority_type,
-              actor_login: report.actor_login,
-              generated_head_sha: process.env.HEAD_SHA,
-              generated_paths: report.generated_paths,
-            },
+            marker: transaction,
           });
           fs.writeFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.md`, body);
           NODE

@@ -39,16 +39,26 @@ export function renderOwnerRequestPullRequest(input: {
     repository_id: number | null;
     authority_type: OwnerPrMarker["authority_type"];
     actor_login: string;
+    submitted_summary?: string;
+    published_summary?: string;
+    copy_result?: {
+      result:
+        | "accepted-unchanged"
+        | "accepted-with-light-edits"
+        | "accepted-with-policy-rewrite";
+      change_reasons: string[];
+      policy_signal: "none" | "catalog-policy-rewrite";
+    };
     before: Record<string, unknown>;
     after: Record<string, unknown>;
     warnings: string[];
     generated_paths: string[];
   };
-  marker: OwnerPrMarker;
+  marker: ProjectPublicationTransaction;
 }): string;
 export function parseOwnerRequestPullRequestMarker(
   body: string,
-): OwnerPrMarker | null;
+): OwnerPrMarker | ProjectPublicationTransaction | null;
 export function findOwnerRequestPathCollision(input: {
   repository: string;
   issueNumber: number;
@@ -71,7 +81,10 @@ export function planOwnerPrUpdate(input: {
   remoteHeadSha: string | null;
   markerHeadSha?: string | null;
   existingMarker:
-    | { kind: "project-owner"; marker: OwnerPrMarker }
+    | {
+        kind: "project-owner";
+        marker: OwnerPrMarker | ProjectPublicationTransaction;
+      }
     | { kind: "project-submission"; marker: Record<string, unknown> }
     | null;
   generatedContentChanged: boolean;
@@ -79,3 +92,4 @@ export function planOwnerPrUpdate(input: {
   generatedPaths: string[];
   pulls?: any[];
 }): OwnerPrUpdatePlan;
+import type { ProjectPublicationTransaction } from "../publication/project-publication-transaction.mjs";

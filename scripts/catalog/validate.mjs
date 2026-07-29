@@ -185,6 +185,7 @@ export async function validateCatalog(options = {}) {
     modelFamilyVocabulary,
     completionFormatVocabulary,
     trustedEditorSchema,
+    policyReviewSchema,
   ] = await Promise.all([
     readJson("data/schemas/project.schema.json"),
     readJson("data/schemas/repository-snapshot.schema.json"),
@@ -195,6 +196,7 @@ export async function validateCatalog(options = {}) {
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
     readJson("data/schemas/trusted-tavernary-editors.schema.json"),
+    readJson("data/schemas/catalog-policy-review.schema.json"),
   ]);
 
   const ajv = new Ajv({ allErrors: true, strict: false });
@@ -218,6 +220,7 @@ export async function validateCatalog(options = {}) {
   const validateSnapshot = ajv.compile(snapshotSchema);
   const validateRefreshManifest = ajv.compile(refreshManifestSchema);
   const validateTrustedEditors = ajv.compile(trustedEditorSchema);
+  const validatePolicyReview = ajv.compile(policyReviewSchema);
   const records = options.records ?? (await loadRecords());
   const snapshots =
     options.snapshots ?? (options.records ? [] : await loadSnapshots());
@@ -239,6 +242,11 @@ export async function validateCatalog(options = {}) {
   const trustedEditors =
     options.trustedEditors ??
     (await readJson("data/maintenance/trusted-tavernary-editors.json"));
+  const policyReviewStates =
+    options.policyReviewStates ??
+    (options.records
+      ? []
+      : await loadJsonDirectory("data/snapshots/policy-review"));
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
   const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
@@ -251,6 +259,19 @@ export async function validateCatalog(options = {}) {
   const sources = new Set();
   const repositoryIds = new Set();
   const errors = [];
+
+  for (const state of policyReviewStates) {
+    if (!validatePolicyReview(state)) {
+      errors.push(
+        ...validatePolicyReview.errors.map((error) =>
+          schemaError(
+            { id: state?.project_id ?? "catalog-policy-review" },
+            error,
+          ),
+        ),
+      );
+    }
+  }
 
   if (!validateRefreshManifest(refreshManifest)) {
     errors.push(

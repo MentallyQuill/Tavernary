@@ -49,9 +49,14 @@ body:
       label: Short Description
       description: >-
         Optional for GitHub and Codeberg sources; required for external System
-        Presets. This helps us understand the project and may be adapted into
-        Tavernary's catalog summary for clarity and consistency. The published
-        summary may be shortened or rewritten.
+        Presets. Community submissions are summarized from README evidence
+        first, the repository description second, and this description third.
+        Keep the description suitable for a public project catalog. Mature and
+        consensual adult themes are permitted, but content promoting hatred or
+        discrimination, sexual exploitation of minors, or other material
+        prohibited by Tavernary's Catalog Policy is not. Ordinary profanity is
+        permitted. Read the policy:
+        https://mentallyquill.github.io/Tavernary/catalog-policy/
     validations:
       required: false
   - type: textarea

@@ -1,4 +1,10 @@
 import type { OwnerTriageIssue } from "./triage-project-owner-request.d.mts";
+import type {
+  CatalogCopyChangeReason,
+  CatalogCopyPolicySignal,
+  CatalogCopyResult,
+  CatalogCopyResultStatus,
+} from "../catalog/catalog-copy-contract.mjs";
 
 export interface OwnerGenerationReport {
   schema_version: 1;
@@ -7,9 +13,25 @@ export interface OwnerGenerationReport {
   operation: "edit-card" | "move-source" | "delist";
   repository_id: number | null;
   authority_type: "repository-owner" | "tavernary-staff";
+  actor_id: number;
   actor_login: string;
+  actor_type: "User";
   request_fingerprint: string;
+  record_fingerprint: string;
+  source_identity: {
+    type: "github";
+    canonical: string;
+    repository_id: number;
+  } | null;
+  policy_version: string;
   generated_at: string;
+  submitted_summary?: string;
+  published_summary?: string;
+  copy_result?: {
+    result: CatalogCopyResultStatus;
+    change_reasons: CatalogCopyChangeReason[];
+    policy_signal: CatalogCopyPolicySignal;
+  };
   before: Record<string, unknown>;
   after: Record<string, unknown>;
   warnings: string[];
@@ -41,6 +63,13 @@ export function generateProjectOwnerRequest(input: {
     encoding: "utf8",
   ) => Promise<void>;
   mkdir?: (path: string, options: { recursive: true }) => Promise<unknown>;
+  copySummary?: (input: {
+    authorityType: OwnerGenerationReport["authority_type"];
+    submittedSummary: string;
+    protectedTerms: string[];
+    policyVersion: string;
+    repair?: { reasonCode: string; message: string };
+  }) => Promise<CatalogCopyResult>;
 }): Promise<OwnerGenerationResult>;
 
 export function fingerprintProjectOwnerManifest(

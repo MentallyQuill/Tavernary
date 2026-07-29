@@ -1,6 +1,12 @@
 import type { RepositoryObservation } from "../catalog/repository-provider.mjs";
 import type { RepositorySnapshot } from "../catalog/repository-snapshot.mjs";
 import type { ClassificationReview } from "../catalog/enrichment-contract.mjs";
+import type {
+  CatalogCopyChangeReason,
+  CatalogCopyPolicySignal,
+  CatalogCopyResultStatus,
+} from "../catalog/catalog-copy-contract.mjs";
+import type { SubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
 import type { ProjectSubmissionDecision } from "./admission.mjs";
 import type {
   FrontendProject,
@@ -54,6 +60,9 @@ export type DraftEnrichment =
       summary: string;
       capabilities: string[];
       classification_review: ClassificationReview;
+      result?: CatalogCopyResultStatus;
+      change_reasons?: readonly CatalogCopyChangeReason[];
+      policy_signal?: CatalogCopyPolicySignal;
     }
   | {
       status: "failed";
@@ -89,6 +98,12 @@ export interface ProjectDraftResult {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
+  summaryAuthority: SubmissionSummaryAuthority;
+  copyResult: {
+    result: CatalogCopyResultStatus;
+    change_reasons: CatalogCopyChangeReason[];
+    policy_signal: CatalogCopyPolicySignal;
+  } | null;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -100,5 +115,8 @@ export function draftProjectRecord(input: {
   enrichment: DraftEnrichment;
   frontendVocabulary?: FrontendVocabulary;
   frontendProjects?: FrontendProject[];
+  summaryAuthority?: SubmissionSummaryAuthority;
+  sourceIssueNumber?: number;
+  copyRequired?: boolean;
   now: string;
 }): Promise<ProjectDraftResult>;

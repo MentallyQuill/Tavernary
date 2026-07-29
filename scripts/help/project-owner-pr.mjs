@@ -1,10 +1,25 @@
 import { parseSubmissionPullRequestMarker } from "../submissions/project-submission-pr.mjs";
+import { validateCatalogCopyResult } from "../catalog/catalog-copy-contract.mjs";
+import {
+  createProjectPublicationTransaction,
+  parseProjectPublicationTransaction,
+  PROJECT_PUBLICATION_TRANSACTION_MARKER,
+} from "../publication/project-publication-transaction.mjs";
 
 const markerStart = "<!-- tavernary-project-owner-pr";
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const LOGIN_PATTERN = /^(?!-)[A-Za-z0-9-]{1,39}(?<!-)$/u;
 const OPERATIONS = new Set(["edit-card", "move-source", "delist"]);
 const AUTHORITY_TYPES = new Set(["repository-owner", "tavernary-staff"]);
+const copyReasonLabels = {
+  "emoji-removed": "Emoji removed",
+  "whitespace-normalized": "Whitespace normalized",
+  "punctuation-corrected": "Punctuation corrected",
+  "obvious-spelling-corrected": "Obvious spelling corrected",
+  "graphic-wording-neutralized": "Graphic wording neutralized",
+  "slur-removed": "Slur removed",
+  "discriminatory-framing-neutralized": "Discriminatory framing neutralized",
+};
 
 function safeText(value, limit = 400) {
   const rendered =
@@ -37,6 +52,47 @@ function renderValues(values) {
     .join("\n");
 }
 
+function renderCopyReview(report) {
+  const fields = [
+    report?.submitted_summary,
+    report?.published_summary,
+    report?.copy_result,
+  ];
+  if (fields.every((value) => value === undefined)) return null;
+  if (fields.some((value) => value === undefined)) {
+    throw new Error("Owner pull request copy report is incomplete.");
+  }
+  const validation = validateCatalogCopyResult(
+    {
+      summary: report.published_summary,
+      result: report.copy_result.result,
+      change_reasons: report.copy_result.change_reasons,
+      policy_signal: report.copy_result.policy_signal,
+    },
+    {
+      mode: "preserve",
+      submittedSummary: report.submitted_summary,
+      protectedTerms: [],
+    },
+  );
+  if (!validation.valid) {
+    throw new Error("Owner pull request copy report is invalid.");
+  }
+  const status =
+    report.copy_result.result === "accepted-unchanged"
+      ? "The automated preservation pass kept the submitted summary unchanged."
+      : report.copy_result.result === "accepted-with-light-edits"
+        ? "The automated preservation pass made limited preservation edits."
+        : "The automated preservation pass neutralized wording for the public catalog policy.";
+  const reasons =
+    report.copy_result.change_reasons.length === 0
+      ? "- None."
+      : report.copy_result.change_reasons
+          .map((reason) => `- ${copyReasonLabels[reason]}`)
+          .join("\n");
+  return ["## Catalog copy", "", status, "", "Change categories:", "", reasons];
+}
+
 function expectedPaths(projectId, operation) {
   if (!PROJECT_ID_PATTERN.test(projectId) || !OPERATIONS.has(operation)) {
     return null;
@@ -56,6 +112,23 @@ function exactPaths(paths, expected) {
 }
 
 function validMarker(marker) {
+  if (
+    marker?.schema_version === 1 &&
+    marker?.producer === "project-owner-request"
+  ) {
+    try {
+      const transaction = createProjectPublicationTransaction(marker);
+      return (
+        transaction.operation !== "create" &&
+        exactPaths(
+          transaction.generated_paths,
+          expectedPaths(transaction.project_id, transaction.operation),
+        )
+      );
+    } catch {
+      return false;
+    }
+  }
   const allowed = new Set([
     "schema_version",
     "issue_number",
@@ -95,6 +168,31 @@ function validMarker(marker) {
   );
 }
 
+function ownerMarkerValues(marker) {
+  if (marker?.producer === "project-owner-request") {
+    return {
+      issueNumber: marker.issue_number,
+      projectId: marker.project_id,
+      operation: marker.operation,
+      repositoryId: marker.source_identity?.repository_id ?? null,
+      authorityType: marker.authority_type,
+      actorLogin: marker.actor?.login,
+      generatedHeadSha: marker.generated_head_sha,
+      generatedPaths: marker.generated_paths,
+    };
+  }
+  return {
+    issueNumber: marker?.issue_number,
+    projectId: marker?.project_id,
+    operation: marker?.operation,
+    repositoryId: marker?.repository_id,
+    authorityType: marker?.authority_type,
+    actorLogin: marker?.actor_login,
+    generatedHeadSha: marker?.generated_head_sha,
+    generatedPaths: marker?.generated_paths,
+  };
+}
+
 export function ownerRequestBranch(issueNumber) {
   if (!Number.isSafeInteger(issueNumber) || issueNumber < 1) {
     throw new Error("Owner request issue number must be a positive integer.");
@@ -103,16 +201,20 @@ export function ownerRequestBranch(issueNumber) {
 }
 
 export function renderOwnerRequestPullRequest(input) {
+  const transaction = createProjectPublicationTransaction(input?.marker);
+  const marker = ownerMarkerValues(transaction);
   if (
-    input?.issueNumber !== input?.marker?.issue_number ||
+    transaction.producer !== "project-owner-request" ||
+    transaction.operation === "create" ||
+    input?.issueNumber !== marker.issueNumber ||
     input?.report?.issue_number !== input?.issueNumber ||
-    !validMarker(input?.marker) ||
-    input.report.project_id !== input.marker.project_id ||
-    input.report.operation !== input.marker.operation ||
-    input.report.repository_id !== input.marker.repository_id ||
-    input.report.authority_type !== input.marker.authority_type ||
-    input.report.actor_login !== input.marker.actor_login ||
-    !exactPaths(input.report.generated_paths, input.marker.generated_paths)
+    !validMarker(transaction) ||
+    input.report.project_id !== marker.projectId ||
+    input.report.operation !== marker.operation ||
+    input.report.repository_id !== marker.repositoryId ||
+    input.report.authority_type !== marker.authorityType ||
+    input.report.actor_login !== marker.actorLogin ||
+    !exactPaths(input.report.generated_paths, marker.generatedPaths)
   ) {
     throw new Error("Owner pull request review input is inconsistent.");
   }
@@ -123,21 +225,22 @@ export function renderOwnerRequestPullRequest(input) {
           .map((warning) => `- ${safeText(warning, 240)}`)
           .join("\n")
       : "- None.";
+  const copyReview = renderCopyReview(input.report);
   return [
-    markerStart,
-    JSON.stringify(input.marker),
+    PROJECT_PUBLICATION_TRANSACTION_MARKER,
+    JSON.stringify(transaction),
     "-->",
     `# Project owner request: ${safeText(input.projectName, 160)}`,
     "",
     `Closes #${input.issueNumber}`,
     "",
-    input.marker.authority_type === "repository-owner"
-      ? `Verified repository owner: \`${input.marker.actor_login}\``
-      : `Authorized Tavernary staff actor: \`${input.marker.actor_login}\``,
+    marker.authorityType === "repository-owner"
+      ? `Verified repository owner: \`${marker.actorLogin}\``
+      : `Authorized Tavernary staff actor: \`${marker.actorLogin}\``,
     "",
-    `Operation: \`${input.marker.operation}\``,
+    `Operation: \`${marker.operation}\``,
     "",
-    "This pull request is a maintainer review surface. It is never automatically merged.",
+    "This pull request is the validation and audit transaction for the authorized project change. Eligible transactions publish automatically after required checks pass.",
     "",
     "## Before",
     "",
@@ -147,6 +250,7 @@ export function renderOwnerRequestPullRequest(input) {
     "",
     renderValues(input.report.after),
     "",
+    ...(copyReview ? [...copyReview, ""] : []),
     "## Warnings",
     "",
     warnings,
@@ -162,6 +266,13 @@ export function renderOwnerRequestPullRequest(input) {
 }
 
 export function parseOwnerRequestPullRequestMarker(body) {
+  const transaction = parseProjectPublicationTransaction(body);
+  if (transaction) {
+    return transaction.producer === "project-owner-request" &&
+      transaction.operation !== "create"
+      ? transaction
+      : null;
+  }
   if (typeof body !== "string") return null;
   const start = body.indexOf(markerStart);
   if (start < 0 || body.indexOf(markerStart, start + markerStart.length) >= 0) {
@@ -247,17 +358,18 @@ export function planOwnerPrUpdate(input) {
   }
   const existing = input.existingMarker;
   const existingOwnerMarker = existing?.marker;
+  const existingValues = ownerMarkerValues(existingOwnerMarker);
   if (
     input.remoteHeadSha !== null &&
     (existing?.kind !== "project-owner" ||
       !validMarker(existingOwnerMarker) ||
-      existingOwnerMarker.issue_number !== input.issueNumber ||
-      existingOwnerMarker.project_id !== input.projectId ||
-      existingOwnerMarker.operation !== input.operation ||
-      existingOwnerMarker.repository_id !== input.repositoryId ||
-      existingOwnerMarker.authority_type !== input.authorityType ||
-      existingOwnerMarker.actor_login !== input.actorLogin ||
-      !exactPaths(existingOwnerMarker.generated_paths, input.generatedPaths))
+      existingValues.issueNumber !== input.issueNumber ||
+      existingValues.projectId !== input.projectId ||
+      existingValues.operation !== input.operation ||
+      existingValues.repositoryId !== input.repositoryId ||
+      existingValues.authorityType !== input.authorityType ||
+      existingValues.actorLogin !== input.actorLogin ||
+      !exactPaths(existingValues.generatedPaths, input.generatedPaths))
   ) {
     return {
       action: "conflict",
@@ -283,7 +395,7 @@ export function planOwnerPrUpdate(input) {
   if (input.remoteHeadSha === null) {
     return { action: "create", replacePaths: [...input.generatedPaths] };
   }
-  if (input.remoteHeadSha !== existingOwnerMarker.generated_head_sha) {
+  if (input.remoteHeadSha !== existingValues.generatedHeadSha) {
     return {
       action: "conflict",
       reasonCode: "maintainer-divergence",

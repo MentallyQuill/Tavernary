@@ -40,6 +40,21 @@ export function validateProviderConfiguration(input: {
 
 export function parseProviderMessage(message: unknown): EnrichmentOutput;
 
+export function createStructuredProviderTransport(options: {
+  apiUrl?: string;
+  apiKey?: string;
+  model?: string;
+  fetchImpl?: typeof fetch;
+  timeoutMs?: number;
+  now?: () => number;
+}): {
+  configuration: { apiUrl: string; apiKey: string; model: string };
+  request(body: Record<string, unknown>): Promise<{
+    output: unknown;
+    metadata: ProviderResult["metadata"];
+  }>;
+};
+
 export function createEnrichmentProvider(options: {
   apiUrl?: string;
   apiKey?: string;

@@ -89,6 +89,11 @@ jobs:
         id: commit
         shell: bash
         run: |
+          git diff --name-only -- \
+            data/snapshots/github \
+            data/snapshots/codeberg \
+            | grep -E '^data/snapshots/(github|codeberg)/[^/]+\.json$' \
+            > "${RUNNER_TEMP}/refreshed-policy-projects.txt" || true
           git add data/snapshots/github/*.json
           git add data/snapshots/codeberg/*.json
           git add data/snapshots/github-refresh.json
@@ -121,6 +126,23 @@ jobs:
             fi
           done
           echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Dispatch advisory review for refreshed evidence
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_SHA: ${{ steps.commit.outputs.head_sha }}
+        shell: bash
+        run: |
+          while IFS= read -r snapshot_path; do
+            [[ -z "$snapshot_path" ]] && continue
+            project_id="$(basename "$snapshot_path" .json)"
+            gh workflow run review-catalog-policy.yml --ref main \
+              -f project_id="$project_id" \
+              -f transaction_issue_number=0 \
+              -f transaction_pull_number=0 \
+              -f merge_sha="$MERGE_SHA"
+          done < "${RUNNER_TEMP}/refreshed-policy-projects.txt"
       - name: Redeploy refreshed catalog
         if: steps.commit.outputs.changed == 'true'
         env:

@@ -79,6 +79,26 @@ function editManifest(current = record()) {
   };
 }
 
+function delistManifest(current = record()) {
+  return {
+    schema_version: 1 as const,
+    request_kind: "project-owner",
+    operation: "delist" as const,
+    project_id: "owner-alpha",
+    repository_id: 42,
+    source_fingerprint: fingerprintProjectRecord(current),
+    delist_confirmation: "Alpha",
+    original: { visibility: "published" },
+    proposed: {
+      visibility: "disabled",
+      visibility_reason: "removed",
+      refresh_policy: "paused",
+      enrichment_policy: "manual",
+    },
+    explanation: null,
+  };
+}
+
 function issue(manifest: Record<string, unknown> = editManifest()) {
   return {
     number: 123,
@@ -109,7 +129,10 @@ function vocabularyJson(path: string) {
     return JSON.stringify({ frontends: [{ id: "sillytavern" }] });
   if (path.endsWith("primary-functions.json"))
     return JSON.stringify({
-      primary_functions: [{ id: "interface-workflow" }],
+      primary_functions: [
+        { id: "interface-workflow" },
+        { id: "generation-reasoning" },
+      ],
     });
   if (path.endsWith("capabilities.json"))
     return JSON.stringify({ capabilities: [{ id: "automation" }] });
@@ -156,6 +179,15 @@ function harness(
     writes.push({ path: path.replaceAll("\\", "/"), value });
   });
   return { latest, request, readFile, writeFile, writes, events };
+}
+
+function acceptedCopySummary(summary = "Owner-authored summary.") {
+  return vi.fn(async () => ({
+    summary,
+    result: "accepted-unchanged" as const,
+    change_reasons: [],
+    policy_signal: "none" as const,
+  }));
 }
 
 function sourceMoveTransactionHarness({
@@ -280,8 +312,17 @@ test("accepts only an equivalent freshly regenerated owner report", () => {
     operation: "edit-card" as const,
     repository_id: 42,
     authority_type: "repository-owner" as const,
+    actor_id: 100,
     actor_login: "Owner",
+    actor_type: "User" as const,
     request_fingerprint: "a".repeat(64),
+    record_fingerprint: "b".repeat(64),
+    source_identity: {
+      type: "github" as const,
+      canonical: "github:42",
+      repository_id: 42,
+    },
+    policy_version: "2026-07-29",
     generated_at: "2026-07-28T13:00:00.000Z",
     before: { summary: "Original summary." },
     after: { summary: "Owner-authored summary." },
@@ -311,6 +352,7 @@ test("accepts only an equivalent freshly regenerated owner report", () => {
 
 test("revalidates latest authority and state before writing only the approved registry path", async () => {
   const fixture = harness();
+  const copySummary = acceptedCopySummary();
 
   const generated = await generateProjectOwnerRequest({
     issue: fixture.latest,
@@ -320,6 +362,7 @@ test("revalidates latest authority and state before writing only the approved re
     request: fixture.request,
     readFile: fixture.readFile,
     writeFile: fixture.writeFile,
+    copySummary,
     now: "2026-07-28T13:00:00.000Z",
   });
 
@@ -343,9 +386,25 @@ test("revalidates latest authority and state before writing only the approved re
     operation: "edit-card",
     repository_id: 42,
     authority_type: "repository-owner",
+    actor_id: 100,
     actor_login: "Owner",
+    actor_type: "User",
     request_fingerprint: expect.stringMatching(/^[a-f0-9]{64}$/u),
+    record_fingerprint: expect.stringMatching(/^[a-f0-9]{64}$/u),
+    source_identity: {
+      type: "github",
+      canonical: "github:42",
+      repository_id: 42,
+    },
+    policy_version: "2026-07-29",
     generated_at: "2026-07-28T13:00:00.000Z",
+    submitted_summary: "Owner-authored summary.",
+    published_summary: "Owner-authored summary.",
+    copy_result: {
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
     before: expect.any(Object),
     after: expect.any(Object),
     warnings: [],
@@ -357,10 +416,158 @@ test("revalidates latest authority and state before writing only the approved re
   expect(
     fixture.events.filter((event) => event === "request:/repositories/42"),
   ).toHaveLength(2);
+  expect(copySummary).toHaveBeenCalledWith({
+    authorityType: "repository-owner",
+    submittedSummary: "Owner-authored summary.",
+    protectedTerms: expect.arrayContaining(["Alpha", "Owner"]),
+    policyVersion: "2026-07-29",
+  });
   expect(JSON.stringify(fixture.events)).not.toContain("Attacker/Wrong");
   expect(JSON.stringify(fixture.writes)).not.toContain(
     "src/generated/catalog.json",
   );
+});
+
+test("does not require model configuration when an edit leaves summary unchanged", async () => {
+  const current = record();
+  const fixture = harness({
+    manifest: editManifest(current),
+  });
+  fixture.latest.body = `### Owner request manifest
+
+\`\`\`json
+${JSON.stringify({
+  ...editManifest(current),
+  proposed: {
+    ...editManifest(current).proposed,
+    summary: "Original summary.",
+    primary_function: "generation-reasoning",
+  },
+})}
+\`\`\``;
+  const copySummary = vi.fn(async () => {
+    throw new Error("copy provider must not be called");
+  });
+
+  const generated = await generateProjectOwnerRequest({
+    issue: fixture.latest,
+    hostRepository: "Tavernary/Tavernary",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
+    request: fixture.request,
+    readFile: fixture.readFile,
+    writeFile: fixture.writeFile,
+    copySummary,
+    now: "2026-07-28T13:00:00.000Z",
+  });
+
+  expect(copySummary).not.toHaveBeenCalled();
+  expect(generated.report).not.toHaveProperty("submitted_summary");
+  expect(generated.report).not.toHaveProperty("published_summary");
+  expect(generated.report).not.toHaveProperty("copy_result");
+  expect(JSON.parse(fixture.writes[0].value)).toMatchObject({
+    summary: "Original summary.",
+    primary_function: "generation-reasoning",
+  });
+});
+
+test("repairs an invalid owner-copy result once without exposing rejected text", async () => {
+  const fixture = harness();
+  const copySummary = vi
+    .fn()
+    .mockResolvedValueOnce({
+      summary: "Rewritten summary without the protected handle.",
+      result: "accepted-with-light-edits",
+      change_reasons: ["punctuation-corrected"],
+      policy_signal: "none",
+    })
+    .mockResolvedValueOnce({
+      summary: "Owner-authored summary.",
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    });
+
+  await generateProjectOwnerRequest({
+    issue: fixture.latest,
+    hostRepository: "Tavernary/Tavernary",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
+    request: fixture.request,
+    readFile: fixture.readFile,
+    writeFile: fixture.writeFile,
+    copySummary,
+    now: "2026-07-28T13:00:00.000Z",
+  });
+
+  expect(copySummary).toHaveBeenCalledTimes(2);
+  expect(copySummary.mock.calls[1][0]).toMatchObject({
+    repair: {
+      reasonCode: "output-invalid",
+      message: "summary must preserve every protected term exactly",
+    },
+  });
+  expect(copySummary.mock.calls[1][0].repair.message).not.toContain(
+    "Rewritten summary",
+  );
+});
+
+test("stops without writes after two invalid owner-copy results", async () => {
+  const fixture = harness();
+  const copySummary = vi.fn(async () => ({
+    summary: "Rewritten summary without the protected handle.",
+    result: "accepted-with-light-edits" as const,
+    change_reasons: ["punctuation-corrected"] as const,
+    policy_signal: "none" as const,
+  }));
+
+  await expect(
+    generateProjectOwnerRequest({
+      issue: fixture.latest,
+      hostRepository: "Tavernary/Tavernary",
+      root: ownerRepositoryRoot,
+      reportPath: ownerReportPath,
+      request: fixture.request,
+      readFile: fixture.readFile,
+      writeFile: fixture.writeFile,
+      copySummary,
+      now: "2026-07-28T13:00:00.000Z",
+    }),
+  ).rejects.toMatchObject({ code: "catalog-copy-invalid" });
+  expect(copySummary).toHaveBeenCalledTimes(2);
+  expect(fixture.writeFile).not.toHaveBeenCalled();
+});
+
+test("publishes a bounded policy rewrite without retaining raw provider output", async () => {
+  const fixture = harness();
+  const copySummary = vi.fn(async () => ({
+    summary: "Owner-authored wording suitable for the public catalog.",
+    result: "accepted-with-policy-rewrite" as const,
+    change_reasons: ["discriminatory-framing-neutralized"] as const,
+    policy_signal: "catalog-policy-rewrite" as const,
+  }));
+
+  const generated = await generateProjectOwnerRequest({
+    issue: fixture.latest,
+    hostRepository: "Tavernary/Tavernary",
+    root: ownerRepositoryRoot,
+    reportPath: ownerReportPath,
+    request: fixture.request,
+    readFile: fixture.readFile,
+    writeFile: fixture.writeFile,
+    copySummary,
+    now: "2026-07-28T13:00:00.000Z",
+  });
+
+  expect(JSON.parse(fixture.writes[0].value).summary).toBe(
+    "Owner-authored wording suitable for the public catalog.",
+  );
+  expect(generated.report.copy_result).toEqual({
+    result: "accepted-with-policy-rewrite",
+    change_reasons: ["discriminatory-framing-neutralized"],
+    policy_signal: "catalog-policy-rewrite",
+  });
+  expect(JSON.stringify(generated.report)).not.toContain("raw_provider_output");
 });
 
 test("revalidates a trusted staff edit without resolving repository identity", async () => {
@@ -401,6 +608,7 @@ test("revalidates a trusted staff edit without resolving repository identity", a
     writeFile: vi.fn(async (path: string, value: string) => {
       writes.push({ path: path.replaceAll("\\", "/"), value });
     }),
+    copySummary: acceptedCopySummary(),
     now: "2026-07-28T13:00:00.000Z",
   });
 
@@ -442,6 +650,29 @@ test("stops without writes when an overlapping value changes before final apply"
   expect(fixture.writeFile).not.toHaveBeenCalled();
 });
 
+test("stops a delist when the current project name changes before final apply", async () => {
+  const fixture = harness({
+    records: [record(), record({ name: "Alpha Renamed" })],
+    manifest: delistManifest(),
+  });
+
+  await expect(
+    generateProjectOwnerRequest({
+      issue: fixture.latest,
+      hostRepository: "Tavernary/Tavernary",
+      root: ownerRepositoryRoot,
+      reportPath: ownerReportPath,
+      request: fixture.request,
+      readFile: fixture.readFile,
+      writeFile: fixture.writeFile,
+      now: "2026-07-28T13:00:00.000Z",
+    }),
+  ).rejects.toThrow(
+    "Owner delisting confirmation must match the current complete project name.",
+  );
+  expect(fixture.writeFile).not.toHaveBeenCalled();
+});
+
 test("preserves a final non-overlap change and reports the fingerprint warning", async () => {
   const fixture = harness({
     records: [record(), record({ catalog_cohort: "current" })],
@@ -455,6 +686,7 @@ test("preserves a final non-overlap change and reports the fingerprint warning",
     request: fixture.request,
     readFile: fixture.readFile,
     writeFile: fixture.writeFile,
+    copySummary: acceptedCopySummary(),
     now: "2026-07-28T13:00:00.000Z",
   });
 

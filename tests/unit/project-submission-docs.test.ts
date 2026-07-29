@@ -34,16 +34,26 @@ test("documents project submission automation and recovery controls", async () =
   expect(runbook).toContain(
     "Allow GitHub Actions to create and\napprove pull requests",
   );
-  expect(runbook).toContain("Automation creates but never approves its own PR");
-  expect(contributorGuide).toContain(
-    "The generated PR is the sole human review",
+  expect(runbook).toContain("PROJECT_AUTO_PUBLICATION_ENABLED");
+  expect(runbook).toContain("publish-project-transaction.yml");
+  expect(runbook).toContain("exact validated head SHA");
+  expect(runbook).toContain("post-publication");
+  expect(runbook).not.toContain(
+    "Automation creates but never approves its own PR",
   );
+  expect(contributorGuide).toContain(
+    "automatically publishes valid create, edit, source-move, and delist transactions",
+  );
+  expect(contributorGuide).toContain("PR remains the CI and audit transaction");
+  expect(contributorGuide).toContain("consensual adult content");
+  expect(contributorGuide).toContain("ordinary profanity");
+  expect(contributorGuide).toContain("advisory and post-publication");
+  expect(contributorGuide).toContain("owner-facing permanent");
+  expect(contributorGuide).toContain("manual Tavernary staff maintenance");
   expect(contributorGuide).toContain(
     "builder's frontend choices come from the current catalog",
   );
-  expect(contributorGuide).toContain(
-    "Contributors should edit the issue only until its generated PR exists",
-  );
+  expect(contributorGuide).toContain("The source issue remains authoritative");
   expect(lifecycle).toContain(
     "Closing the generated PR without\n   merge declines the submission",
   );

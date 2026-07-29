@@ -1,4 +1,4 @@
-# Submission and maintainer review flow
+# Submission and automated publication flow
 
 Tavernary accepts user-facing intake only through structured GitHub issue forms. No
 form publishes records directly.
@@ -38,11 +38,11 @@ human-reviewed `project-information` reports. No third-party project support is
 provided through Tavernary; refer users to that project's own channel.
 
 An admitted owner request generates or safely updates
-`automation/project-owner-request-<issue-number>` and its review PR. The PR is
-the sole review surface. A rerun is safe only while marker-owned generated paths
-remain unchanged; a maintainer-edited branch is preserved for review instead of
-being overwritten. Merge applies the edit/source move/delist; closing without
-merge declines the request. Summary or capability edits switch to manual
+`automation/project-owner-request-<issue-number>` and its transaction PR. The
+PR remains the CI and audit transaction, while valid requests publish
+automatically after exact-SHA validation. A rerun is safe only while
+marker-owned generated paths remain unchanged; a divergent branch is preserved
+and automation pauses that transaction. Summary or capability edits switch to manual
 enrichment so automation cannot overwrite approved editorial content. A
 primary-function-only edit preserves the current enrichment policy. This is
 separate from `refresh_policy`, which only governs automatic source-evidence
@@ -75,17 +75,20 @@ same rule.
 3. An obvious duplicate is labeled and closed before a pull request is created.
    A correctable problem remains open with `needs-information` and an exact
    explanation.
-4. An admitted issue creates one deterministic branch and one generated review
+4. An admitted issue creates one deterministic branch and one generated
+   transaction
    PR containing the proposed registry record, initial snapshot when available,
    and any required frontend-vocabulary addition.
-5. The generated PR is the sole human review. Maintainers verify the source,
-   project type, frontends, factual summary, classification, and warnings. They
-   may correct the generated files directly in the PR. An intake model may
+5. Required CI validates the generated paths, source, catalog record, and
+   browser export. An intake model may
    confirm the submitted category or add a sanitized `classification-review`
    mismatch warning, but it never changes `primary_function`.
-6. Merging publishes through the normal catalog and Pages path. The PR's
+6. `publish-project-transaction.yml` rechecks current issue input, authority,
+   source identity, record fingerprint, base SHA, and exact changed paths, then
+   merges only the exact CI-validated head SHA.
+7. Merging publishes through the normal catalog and Pages path. The PR's
    `Closes #<issue-number>` link closes the intake issue.
-7. Closing the generated PR without merging marks the issue
+8. Closing a legacy or manually stopped generated PR without merging marks the issue
    `submission-declined`, closes it as not planned, and safely removes the
    unchanged automation branch.
 
@@ -98,9 +101,9 @@ declined/unavailable state, the retry workflow resumes the downstream review.
 This repeats root-to-leaf for a fork of a fork, one immediate parent at a time.
 A terminal upstream does not prevent the child from receiving its own review.
 
-Contributors should edit the issue only until its generated PR exists. Once the
-issue carries `submission-pr-open`, corrections belong on the PR so its review
-state remains authoritative. Maintainers do not perform a second issue review.
+The source issue remains authoritative. Editing it invalidates the prior input
+digest and causes safe regeneration from current `main`; generated PRs are not
+an invitation for routine staff copy edits.
 
 Implementation path:
 
@@ -113,10 +116,32 @@ Implementation path:
 - `project-submission-lifecycle.yml` synchronizes merge or decline back to the
   issue and deletes only the unchanged generated branch.
 
-Fork ancestry changes sequencing, not the review boundary. Every generated
-upstream is a normal Project submission and PR; automation never auto-approves
-it. Cycles and ancestry beyond 16 repositories stop at
+Fork ancestry changes sequencing, not the validation boundary. Every generated
+upstream is a normal Project submission and transaction PR and uses the same
+automatic publication checks. Cycles and ancestry beyond 16 repositories stop at
 `needs-maintainer-review`.
+
+## Summary authority and Catalog Policy
+
+For a verified personal GitHub repository owner or trusted Tavernary staff
+actor, Tavernary preserves the submitted wording and structure whenever
+possible. The copy pass removes emoji and makes only necessary high-confidence
+spelling, punctuation, whitespace, or Catalog Policy corrections. Project and
+community terminology is protected. Community-submitter summaries are
+synthesized from README evidence first, repository description second, and
+submitted description third.
+
+The public Catalog Policy permits consensual adult content, kink, fetish
+content, and ordinary profanity. A separate model review is advisory and post-publication;
+it cannot block, remove, or reverse a listing. Community
+reports remain the primary enforcement-review path.
+
+Verified-owner delisting is owner-facing permanent for that repository.
+Internally supported exceptional restoration is available only through manual Tavernary staff maintenance;
+it is not a self-service resubmission path.
+
+Tavernary automatically publishes valid create, edit, source-move, and delist transactions.
+The generated PR remains the CI and audit transaction.
 
 Frontends and Extensions require a public GitHub or Codeberg repository.
 The code must be visible without signing in, but an open-source license is not
@@ -170,8 +195,8 @@ Issue labels include both queue ownership (`project-submission`,
 `kit-withdrawal`) and automation state (`needs-information`,
 `kit-publication-ready`, `kit-published`, `waiting-on-fork-parent`,
 `needs-maintainer-review`, `submission-pr-open`, `submission-declined`).
-Project publication still occurs through a maintainer merge; valid Kit creates
-and edits publish automatically.
+Project and valid Kit publication occur automatically after their respective
+authoritative validation gates.
 
 For full Kit maintainer constraints and safety paths, see
 [Kit submission and moderation](kits.md) and
@@ -191,7 +216,7 @@ See maintainer operating flow for exact sequencing in
 
 - Keep contributions to one intent per issue.
 - Include evidence links (release notes, announcements, docs, changelog).
-- Do not bypass the Project review PR or the reviewed Kit safety-repair path.
+- Do not bypass the Project transaction PR or the reviewed Kit safety-repair path.
 - Correct an automatically rejected Kit by editing its open issue.
 - Keep generated artifacts deterministic and avoid hand-editing generated files
   outside the approved scripts.

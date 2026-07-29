@@ -258,9 +258,6 @@ function normalizeDelist(value, errors) {
 
 export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   const errors = [];
-  if (!hasOnlyKeys(value, ENVELOPE_KEYS)) {
-    errors.push("Owner request contains unknown properties.");
-  }
   if (value?.schema_version !== 1) {
     errors.push("Owner request must use schema version 1.");
   }
@@ -270,6 +267,13 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
   const operation = requiredText(value?.operation);
   if (!["edit-card", "move-source", "delist"].includes(operation)) {
     errors.push("Owner request operation is invalid.");
+  }
+  const envelopeKeys =
+    operation === "delist"
+      ? [...ENVELOPE_KEYS, "delist_confirmation"]
+      : ENVELOPE_KEYS;
+  if (!hasOnlyKeys(value, envelopeKeys)) {
+    errors.push("Owner request contains unknown properties.");
   }
   const projectId = requiredText(value?.project_id);
   if (!projectId || projectId.length > 120) {
@@ -299,6 +303,11 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     errors.push("Owner request explanation member is required.");
   }
   const explanation = nullableText(value?.explanation, errors);
+  const delistConfirmation =
+    operation === "delist" ? requiredText(value?.delist_confirmation) : null;
+  if (operation === "delist" && !delistConfirmation) {
+    errors.push("Owner delisting confirmation is required.");
+  }
   const explanationLimit = operation === "delist" ? 500 : 1_000;
   if (explanation && explanation.length > explanationLimit) {
     errors.push(
@@ -349,6 +358,9 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
       source_fingerprint: sourceFingerprint,
       ...values,
       explanation,
+      ...(operation === "delist"
+        ? { delist_confirmation: delistConfirmation }
+        : {}),
     },
   };
 }

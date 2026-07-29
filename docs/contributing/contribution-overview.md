@@ -8,8 +8,9 @@ and code contributions follow different review paths.
 
 Use the site's **Submit Project** form or the repository's project-submission
 issue form. Automation checks the submission shape, source eligibility, and
-obvious duplicates. A maintainer still reviews and creates or edits the
-canonical catalog record before publication.
+obvious duplicates. A generated PR isolates the proposed files for CI and
+audit; valid transactions automatically publish by exact SHA without routine
+staff involvement.
 
 See [what is Tavernary?](../guides/what-is-tavernary.md) for the current source
 rules. For issue routing and maintainer handoff details, see
@@ -92,3 +93,9 @@ source vocabulary and documentation.
 
 Tavernary's [licensing policy](../../LICENSING.md), [security policy](../../SECURITY.md),
 and [trademark policy](../../TRADEMARKS.md) apply to contributions.
+
+Verified owners and trusted Tavernary staff receive preservation-oriented
+summary handling. Community submissions use README evidence first. The
+[Catalog Policy](/catalog-policy/) permits consensual adult content and
+ordinary profanity; its automated evidence review is advisory and happens
+after publication.

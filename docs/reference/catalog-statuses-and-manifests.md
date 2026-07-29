@@ -15,6 +15,19 @@ the V1 catalog.
 | `enrichment_policy` | `automatic`, `manual` | Whether model enrichment may update editorial fields. |
 | `enrichment_note` | non-empty string when manual | Maintainer-facing reason that automatic enrichment is locked. |
 
+Administrative publication provenance is not part of the public project
+record. Generated create/edit/source-move/delist PRs contain a versioned
+`tavernary-project-publication-transaction` marker with immutable actor/source
+identity, normalized input digest, optional current-record fingerprint, exact
+base/head SHAs, allowed paths, policy version, and bounded copy result.
+
+Post-publication advisory state lives under
+`data/snapshots/policy-review/<project-id>.json`. Its status is `clear`,
+`review-suggested`, or `review-unavailable`; it stores fingerprints, retry
+state, and an optional maintenance issue number, but never README excerpts,
+submitted summaries, or model reasoning. It is excluded from the generated
+public catalog.
+
 ### Source status derivation
 
 - `pending`: no snapshot exists yet for a project that has a repository source.

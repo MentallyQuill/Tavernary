@@ -66,6 +66,91 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
   expect(manifest.source_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
 });
 
+test("keeps owner wording while removing emoji and linking the policy", async ({
+  page,
+}) => {
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.getByRole("radio", { name: "Edit card details" }).check();
+
+  const summary = page.getByLabel("Summary");
+  await summary.fill("This is damn useful 🧭 for ST-QuickReply.");
+
+  await expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
+  await expect(
+    page.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Catalog Policy" }),
+  ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
+});
+
+test("requires the typed project name before handing off a permanent delist", async ({
+  page,
+}) => {
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.evaluate(() => {
+    Object.defineProperty(window, "open", {
+      configurable: true,
+      value: (url: string | URL) => {
+        window.sessionStorage.setItem("tavernary-opened-url", String(url));
+        return window;
+      },
+    });
+  });
+
+  await page.getByRole("radio", { name: "Delist this project" }).check();
+  await page.getByRole("button", { name: "Review request" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Permanently delist Directive?" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "You are about to remove Directive from Tavernary. This delisting applies to MentallyQuill/Directive.",
+    ),
+  ).toBeVisible();
+  const confirmation = page.getByLabel(
+    "Type Directive to confirm permanent delisting.",
+  );
+  const delist = page.getByRole("button", {
+    name: "Permanently delist project",
+  });
+  await confirmation.fill("Direct");
+  await expect(delist).toBeDisabled();
+  await confirmation.fill("directive");
+  await expect(delist).toBeEnabled();
+  await expect(
+    page.getByText(
+      "Project name matches. Permanent delisting is now available.",
+    ),
+  ).toBeVisible();
+  await delist.click();
+
+  await expect(
+    page.getByText(
+      "This permanently removes the project from the public catalog. You will not be able to reverse the decision or resubmit it.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/retains the record|refresh policy|enrichment policy/iu),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+
+  const openedUrl = await page.evaluate(() =>
+    window.sessionStorage.getItem("tavernary-opened-url"),
+  );
+  const opened = new URL(openedUrl ?? "");
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "delist",
+    project_id: projectId,
+    delist_confirmation: "directive",
+  });
+});
+
 test("keeps organization listings editable for trusted staff with a report fallback", async ({
   page,
 }) => {

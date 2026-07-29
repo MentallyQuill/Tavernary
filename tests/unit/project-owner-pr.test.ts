@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import type { ProjectPublicationTransaction } from "../../scripts/publication/project-publication-transaction.mjs";
 import {
   ownerRequestBranch,
   parseOwnerRequestPullRequestMarker,
@@ -19,6 +20,33 @@ const marker = {
   generated_paths: ["data/registry/projects/owner-alpha.json"],
 };
 
+const transactionMarker: ProjectPublicationTransaction = {
+  schema_version: 1 as const,
+  operation: "edit-card" as const,
+  producer: "project-owner-request" as const,
+  issue_number: 123,
+  project_id: "owner-alpha",
+  source_identity: {
+    type: "github" as const,
+    canonical: "github:42",
+    repository_id: 42,
+  },
+  actor: { id: 11, login: "Owner", type: "User" as const },
+  authority_type: "repository-owner" as const,
+  input_digest: "d".repeat(64),
+  record_fingerprint: "e".repeat(64),
+  base_sha: "b".repeat(40),
+  generated_head_sha: "a".repeat(40),
+  generated_paths: marker.generated_paths,
+  policy_version: "2026-07-29",
+  copy_result: {
+    mode: "preserve" as const,
+    result: "accepted-with-light-edits" as const,
+    change_reasons: ["punctuation-corrected"],
+    policy_signal: "none" as const,
+  },
+};
+
 const reviewFixture = {
   issueNumber: 123,
   projectName: "Alpha [Tool]",
@@ -30,6 +58,13 @@ const reviewFixture = {
     repository_id: 42,
     authority_type: "repository-owner" as const,
     actor_login: "Owner",
+    submitted_summary: "New owner summary",
+    published_summary: "New owner summary.",
+    copy_result: {
+      result: "accepted-with-light-edits" as const,
+      change_reasons: ["punctuation-corrected"],
+      policy_signal: "none" as const,
+    },
     before: {
       summary: "Old summary.",
       enrichment_policy: "automatic",
@@ -41,7 +76,7 @@ const reviewFixture = {
     warnings: ["source-fingerprint-changed"],
     generated_paths: marker.generated_paths,
   },
-  marker,
+  marker: transactionMarker,
 };
 
 function ownerPull({
@@ -133,16 +168,22 @@ test("renders verified identity, before/after values, and policy effects", () =>
   expect(body).toContain("## Before");
   expect(body).toContain("## After");
   expect(body).toContain("Enrichment policy");
+  expect(body).toContain("## Catalog copy");
+  expect(body).toContain("limited preservation edits");
+  expect(body).toContain("Punctuation corrected");
   expect(body).toContain("Alpha \\[Tool\\]");
-  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(marker);
+  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(transactionMarker);
 });
 
 test("accepts a trusted staff marker without repository identity", () => {
   const staffMarker = {
-    ...marker,
-    repository_id: null,
+    ...transactionMarker,
+    source_identity: null,
     authority_type: "tavernary-staff" as const,
-    actor_login: "MentallyQuill",
+    actor: {
+      ...transactionMarker.actor,
+      login: "MentallyQuill",
+    },
   };
   const body = renderOwnerRequestPullRequest({
     ...reviewFixture,
@@ -171,7 +212,9 @@ test("bounds and escapes untrusted Markdown without creating a second marker", (
     },
   });
 
-  expect(body.match(/<!-- tavernary-project-owner-pr/gu)).toHaveLength(1);
+  expect(
+    body.match(/<!-- tavernary-project-publication-transaction/gu),
+  ).toHaveLength(1);
   expect(body).not.toContain("```sh");
   expect(body).not.toContain("\n# injected");
   expect(body.length).toBeLessThan(6_000);

@@ -23,6 +23,7 @@ export type EnrichmentSource =
       headSha?: string;
       readmePath?: string | null;
       readmeRef?: string | null;
+      readmeIdentity?: string | null;
       redditPostId?: string;
     }
   | {

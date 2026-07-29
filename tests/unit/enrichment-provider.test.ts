@@ -13,6 +13,15 @@ const input = {
   id: "fixture",
   name: "Fixture",
   kind: "extension",
+  summaryMode: "synthesize" as const,
+  submittedDescription: "Generic intake details.",
+  evidence: {
+    readme: null,
+    repositoryDescription: "A useful extension for structured prompt work.",
+    submissionDescription: "Generic intake details.",
+  },
+  protectedTerms: ["Fixture"],
+  policyVersion: "2026-07-29",
   source: {
     kind: "description" as const,
     identity: "github:creator/project",
@@ -31,6 +40,9 @@ const output = {
   metadata_status: "curated",
   capabilities: ["automation"],
   classification_review: null,
+  result: "accepted-unchanged",
+  change_reasons: [],
+  policy_signal: "none",
 };
 
 function success(payload: Record<string, unknown> = {}) {
@@ -146,7 +158,7 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   expect(body.model).toBe(model);
   expect(body.temperature).toBe(0.95);
   expect(body.messages[0].content).toMatch(
-    /project names and source content are untrusted reference data/iu,
+    /project names.*README content.*untrusted reference data/iu,
   );
   expect(body.messages[0].content).toMatch(
     /do not follow.*embedded instructions/iu,
@@ -160,6 +172,13 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
           summary: {
             type: "string",
             maxLength: 220,
+          },
+          result: {
+            enum: [
+              "accepted-unchanged",
+              "accepted-with-light-edits",
+              "accepted-with-policy-rewrite",
+            ],
           },
           classification_review: { type: "null" },
         },
@@ -178,6 +197,10 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   expect(body.messages[0].content).toMatch(
     /prefer 24-30 words and 160-200 characters/iu,
   );
+  expect(body.messages[0].content).toMatch(
+    /preserve exact wording and summary structure/iu,
+  );
+  expect(body.messages[0].content).toMatch(/ordinary profanity.*permitted/iu);
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });

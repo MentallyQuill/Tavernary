@@ -1,0 +1,168 @@
+const copyMarker = (issueNumber) =>
+  `<!-- tavernary-project-copy-notice:${issueNumber} -->`;
+const ownerDelistMarker = (projectId, issueNumber) =>
+  `<!-- tavernary-owner-delist-notice:${projectId}:${issueNumber} -->`;
+
+function safePlainText(value, limit = 600) {
+  const normalized = String(value ?? "")
+    .replace(/<!--/gu, "")
+    .replace(/-->/gu, "")
+    .replace(/<[^>]*>/gu, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/gu, "$1")
+    .replace(/@/gu, "&#64;")
+    .replace(/[\u0000-\u001f\u007f]+/gu, " ")
+    .replace(/\s+/gu, " ")
+    .trim();
+  const bounded =
+    normalized.length <= limit
+      ? normalized
+      : `${normalized.slice(0, Math.max(0, limit - 1)).trimEnd()}…`;
+  return bounded.replace(/\\/gu, "\\\\").replace(/([[\]_*`#<>|])/gu, "\\$1");
+}
+
+function safeTitle(value, limit = 180) {
+  return String(value ?? "")
+    .replace(/[\u0000-\u001f\u007f]+/gu, " ")
+    .replace(/\s+/gu, " ")
+    .trim()
+    .slice(0, limit);
+}
+
+function botOwned(comment) {
+  return comment?.user?.type === "Bot";
+}
+
+export function planCopyAdjustmentNotice(transaction, existingComments = []) {
+  if (
+    !transaction ||
+    !["repository-owner", "tavernary-staff"].includes(
+      transaction.authority_type,
+    ) ||
+    transaction.copy_result === null ||
+    transaction.copy_result.result === "accepted-unchanged"
+  ) {
+    return { action: "none" };
+  }
+  const marker = copyMarker(transaction.issue_number);
+  const body = [
+    marker,
+    "The project change was published. Tavernary made a limited automated catalog-copy adjustment while preserving the submitted meaning and structure wherever possible.",
+    "",
+    "This notice is informational. The adjustment did not delay publication or require staff approval.",
+    "",
+    "See the [Catalog Policy](/catalog-policy/).",
+  ].join("\n");
+  const existing = existingComments.find(
+    (comment) => botOwned(comment) && comment.body?.includes(marker),
+  );
+  if (!existing) return { action: "create", body };
+  return existing.body === body
+    ? { action: "noop" }
+    : { action: "update", commentId: existing.id, body };
+}
+
+function canonicalSource(project) {
+  if (
+    project?.source?.type === "github" &&
+    typeof project.source.repository === "string"
+  ) {
+    return `https://github.com/${project.source.repository}`;
+  }
+  if (
+    project?.source?.type === "codeberg" &&
+    typeof project.source.repository === "string"
+  ) {
+    return `https://codeberg.org/${project.source.repository}`;
+  }
+  return project?.source?.url ?? "Unavailable";
+}
+
+function renderedKits(kits, projectId) {
+  const affected = (kits ?? [])
+    .filter(
+      (kit) =>
+        kit?.status === "published" &&
+        Array.isArray(kit.project_ids) &&
+        kit.project_ids.includes(projectId),
+    )
+    .sort((left, right) =>
+      String(left.title).localeCompare(String(right.title)),
+    );
+  return affected.length === 0
+    ? "- None."
+    : affected
+        .map(
+          (kit) =>
+            `- ${safePlainText(kit.title, 160)} (\`${safePlainText(kit.id, 100)}\`)`,
+        )
+        .join("\n");
+}
+
+export function planOwnerDelistNotice(input) {
+  const transaction = input?.transaction;
+  if (
+    transaction?.operation !== "delist" ||
+    transaction.authority_type !== "repository-owner"
+  ) {
+    return { action: "none" };
+  }
+  const project = input.project ?? {};
+  const marker = ownerDelistMarker(
+    transaction.project_id,
+    transaction.issue_number,
+  );
+  const title = `[Owner delisting notice] ${safeTitle(
+    project.name ?? transaction.project_id,
+    180,
+  )}`;
+  const ownerNote = input.issue?.ownerNote;
+  const body = [
+    marker,
+    "A verified repository owner automatically delisted this project. The authority and immutable repository identity checks passed, and the delisting transaction has already merged. No staff approval is required.",
+    "",
+    "Review is optional unless the affected-Kit information requires follow-up.",
+    "",
+    "## Project",
+    "",
+    `- **Name:** ${safePlainText(project.name ?? transaction.project_id, 180)}`,
+    `- **Project ID:** \`${transaction.project_id}\``,
+    `- **Canonical source:** ${safePlainText(canonicalSource(project), 320)}`,
+    `- **Owner:** ${safePlainText(transaction.actor.login, 80)} (GitHub ID \`${transaction.actor.id}\`)`,
+    `- **Source request:** #${transaction.issue_number}`,
+    `- **Merged transaction PR:** #${input.pull?.number ?? "Unavailable"}`,
+    `- **Published at:** ${safePlainText(input.publishedAt ?? "Unavailable", 80)}`,
+    "",
+    "## Resulting canonical state",
+    "",
+    `- visibility: ${safePlainText(project.visibility ?? "delisted", 80)}`,
+    `- visibility_reason: ${safePlainText(project.visibility_reason ?? "owner-request", 120)}`,
+    "",
+    "## Currently published Kits referencing this project",
+    "",
+    renderedKits(input.kits, transaction.project_id),
+    ...(ownerNote
+      ? ["", "## Owner note", "", `> ${safePlainText(ownerNote, 600)}`]
+      : []),
+  ].join("\n");
+  const existing = (input.existingIssues ?? []).find((issue) =>
+    issue?.body?.includes(marker),
+  );
+  if (!existing) {
+    return {
+      action: "create",
+      title,
+      body,
+      labels: ["owner-delist-notice"],
+    };
+  }
+  if (existing.title === title && existing.body === body) {
+    return { action: "noop", issueNumber: existing.number };
+  }
+  return {
+    action: "update",
+    issueNumber: existing.number,
+    title,
+    body,
+    labels: ["owner-delist-notice"],
+  };
+}

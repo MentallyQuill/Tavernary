@@ -1,4 +1,5 @@
 import { assertSuccessfulCanaryEntries } from "./enrichment-run-state.mjs";
+import { validateCatalogCopyMetadata } from "./catalog-copy-contract.mjs";
 
 const outcomeNames = [
   "enriched",
@@ -79,12 +80,30 @@ function sanitizedEntry(entry) {
     "provider_repair_calls",
     "provider_rate_limit_events",
     "provider_latency_ms_total",
+    "copy_result",
+    "copy_change_reasons",
+    "copy_policy_signal",
     "reason_code",
     "enrichment_note",
     "diagnostic_code",
     "repair_hint",
   ]) {
     if (entry[key] !== undefined) result[key] = entry[key];
+  }
+  const copyValues = [
+    result.copy_result,
+    result.copy_change_reasons,
+    result.copy_policy_signal,
+  ];
+  if (copyValues.some((value) => value !== undefined)) {
+    const copyValidation = validateCatalogCopyMetadata({
+      result: result.copy_result,
+      change_reasons: result.copy_change_reasons,
+      policy_signal: result.copy_policy_signal,
+    });
+    if (!copyValidation.valid) {
+      throw new Error("enrichment report copy metadata is invalid");
+    }
   }
   const providerTelemetry = [
     result.provider_calls,

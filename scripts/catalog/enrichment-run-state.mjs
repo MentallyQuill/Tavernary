@@ -1,3 +1,5 @@
+import { validateCatalogCopyMetadata } from "./catalog-copy-contract.mjs";
+
 const outcomes = [
   "enriched",
   "fallback",
@@ -200,6 +202,19 @@ function entryForResult(result, attempt, outcome, now, previousEntry) {
     entry.requested_model = result.provider.requestedModel;
     entry.returned_model = result.provider.returnedModel;
     entry.latency_ms = result.provider.latencyMs;
+  }
+  if (result.output) {
+    const copyValidation = validateCatalogCopyMetadata({
+      result: result.output.result,
+      change_reasons: result.output.change_reasons,
+      policy_signal: result.output.policy_signal,
+    });
+    if (!copyValidation.valid) {
+      throw new Error("attempt copy metadata is invalid");
+    }
+    entry.copy_result = result.output.result;
+    entry.copy_change_reasons = [...result.output.change_reasons];
+    entry.copy_policy_signal = result.output.policy_signal;
   }
   const currentProviderCalls =
     result.providerCallCount ?? (result.provider ? 1 : 0);
