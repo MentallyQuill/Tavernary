@@ -241,6 +241,55 @@ test("normalizes a null no-signal sentinel from the provider", async () => {
   });
 });
 
+test("canonicalizes a confirmed classification review to the submitted ID", async () => {
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) =>
+      success({
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                ...output,
+                classification_review: {
+                  status: "confirmed",
+                  suggested_primary_function: "model-invented-category",
+                  explanation: null,
+                },
+              }),
+            },
+          },
+        ],
+      }),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test/v1/chat/completions",
+    apiKey: "do-not-log",
+    model,
+    fetchImpl,
+  });
+
+  await expect(
+    provider.generate({
+      ...input,
+      classificationReviewRequest: {
+        submittedPrimaryFunction: "memory-retrieval",
+        allowedPrimaryFunctions: [
+          { id: "memory-retrieval", label: "Memory and retrieval" },
+          { id: "interface-workflow", label: "Interface and workflow" },
+        ],
+      },
+    }),
+  ).resolves.toMatchObject({
+    output: {
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "memory-retrieval",
+        explanation: null,
+      },
+    },
+  });
+});
+
 test("bounds a requested Extension classification review without making it authoritative", async () => {
   const reviewedOutput = {
     ...output,
@@ -264,7 +313,7 @@ test("bounds a requested Extension classification review without making it autho
     fetchImpl,
   });
 
-  await provider.generate({
+  const response = await provider.generate({
     ...input,
     classificationReviewRequest: {
       submittedPrimaryFunction: "memory-retrieval",
@@ -274,6 +323,9 @@ test("bounds a requested Extension classification review without making it autho
       ],
     },
   });
+  expect(response.output.classification_review).toEqual(
+    reviewedOutput.classification_review,
+  );
 
   const [, init] = fetchImpl.mock.calls[0];
   const body = JSON.parse(String(init?.body));
