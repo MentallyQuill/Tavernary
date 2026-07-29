@@ -12,7 +12,7 @@ automation that publishes the catalog.
 Read the [Tavernary documentation](docs/README.md) for the product overview,
 catalog guide, contribution paths, and local development setup.
 
-The canonical registry contains 304 projects, with 302 currently published in
+The canonical registry contains 305 projects, with 303 currently published in
 the browser catalog. Repository enrichment and editorial review may improve
 summaries and capabilities without changing a project's primary function.
 

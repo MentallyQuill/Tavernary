@@ -64,8 +64,8 @@ Playwright, GitHub Actions, and GitHub Pages.
 The repository is no longer at the five-project production-vertical-slice
 stage. The current launch baseline is:
 
-- 304 canonical registry records in `data/registry/projects/`;
-- 302 records in the public generated catalog;
+- 305 canonical registry records in `data/registry/projects/`;
+- 303 records in the public generated catalog;
 - schema-version-5 project records with structural/human-owned classification;
 - snapshotless publication for valid published GitHub records whose first
   refresh has not succeeded yet; and
