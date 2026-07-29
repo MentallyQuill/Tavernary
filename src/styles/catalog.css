@@ -620,7 +620,7 @@
 }
 
 .tag-results-bounded {
-  max-height: min(360px, 46vh);
+  max-block-size: min(24rem, 45vh);
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 1px solid var(--color-divider);
@@ -659,7 +659,7 @@
 
 .tag-browser-option {
   display: inline-flex;
-  min-height: 27px;
+  min-block-size: 44px;
   align-items: center;
   gap: 5px;
   border: 1px solid var(--color-control-border);
