@@ -118,6 +118,46 @@ test("normalizes a builder manifest without trusting whitespace", () => {
   });
 });
 
+test("accepts a Short Description with exactly 220 normalized characters", () => {
+  const description = "x".repeat(220);
+
+  expect(
+    normalizeProjectSubmissionManifest({
+      schema_version: 3,
+      project_type: "frontend",
+      primary_function: "frontend",
+      source_url: "https://github.com/example/frontend",
+      name: null,
+      description: `  ${description}  `,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+  ).toMatchObject({
+    valid: true,
+    manifest: { description },
+  });
+});
+
+test("rejects a Short Description over 220 normalized characters", () => {
+  expect(
+    normalizeProjectSubmissionManifest({
+      schema_version: 3,
+      project_type: "frontend",
+      primary_function: "frontend",
+      source_url: "https://github.com/example/frontend",
+      name: null,
+      description: `  ${"x".repeat(221)}  `,
+      frontends: { known_ids: [], other: [] },
+      frontend_independent: false,
+      additional_context: null,
+    }),
+  ).toEqual({
+    valid: false,
+    errors: ["Short Description must be 220 characters or fewer."],
+  });
+});
+
 test("requires name and description for an external preset", () => {
   const result = normalizeProjectSubmissionManifest({
     schema_version: 3,

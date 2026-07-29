@@ -446,6 +446,7 @@ export function ProjectSubmissionBuilder({
           <textarea
             id="project-description"
             value={description}
+            maxLength={220}
             onChange={(event) => {
               const sanitized = stripEmoji(event.target.value);
               setDescription(sanitized.value);
@@ -456,10 +457,13 @@ export function ProjectSubmissionBuilder({
             aria-invalid={Boolean(errorFor("project-description"))}
             aria-describedby={
               errorFor("project-description")
-                ? "project-description-hint project-description-error"
-                : "project-description-hint"
+                ? "project-description-hint project-description-count project-description-error"
+                : "project-description-hint project-description-count"
             }
           />
+          <p className="submission-hint" id="project-description-count">
+            {description.length}/220 characters
+          </p>
           <p className="submission-hint" id="project-description-hint">
             {CATALOG_DESCRIPTION_GUIDANCE}{" "}
             <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
