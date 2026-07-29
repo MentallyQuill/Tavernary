@@ -70,6 +70,7 @@ test("documents project submission automation and recovery controls", async () =
   expect(contributorGuide).toContain(
     "submitted Extension primary function is authoritative",
   );
+  expect(issueForm).toContain("Maximum 220 characters.");
   expect(lifecycle).toContain(
     "Frontends always use `frontend`; System Presets always use `preset`",
   );
