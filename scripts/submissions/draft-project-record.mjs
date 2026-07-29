@@ -207,8 +207,15 @@ export async function draftProjectRecord(input) {
       : fallbackEnrichment(input, name);
   const acceptedCopyResult = copyResult(input.enrichment);
   if (input.copyRequired && !acceptedCopyResult) {
+    const failureReason =
+      input.enrichment?.status === "failed" &&
+      typeof input.enrichment.message === "string"
+        ? input.enrichment.message.trim()
+        : "";
     throw new Error(
-      "Validated catalog copy is required before this project can be drafted.",
+      `Validated catalog copy is required before this project can be drafted${
+        failureReason ? `: ${failureReason}` : "."
+      }`,
     );
   }
   const classificationReview = sanitizedClassificationReview(input);
