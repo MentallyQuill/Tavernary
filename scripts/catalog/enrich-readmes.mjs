@@ -208,6 +208,31 @@ export async function enrichRecord(record, snapshot, provider, options = {}) {
     );
   }
   if (!validation.valid) {
+    const classificationReviewOnly =
+      input.classificationReviewRequest &&
+      validation.errors.length > 0 &&
+      validation.errors.every((error) =>
+        error.startsWith("classification_review"),
+      );
+    if (classificationReviewOnly) {
+      const withoutClassificationReview = {
+        ...output,
+        classification_review: null,
+      };
+      const copyValidation = validateEnrichmentOutput(
+        withoutClassificationReview,
+        {
+          capabilities: entriesToSet(vocabularies.capabilities),
+        },
+        null,
+        {
+          mode: input.summaryMode,
+          submittedSummary: input.submittedDescription ?? "",
+          protectedTerms: input.protectedTerms,
+        },
+      );
+      if (copyValidation.valid) return withoutClassificationReview;
+    }
     const error = new Error([...new Set(validation.errors)].join("; "));
     error.code = "output-invalid";
     throw error;
