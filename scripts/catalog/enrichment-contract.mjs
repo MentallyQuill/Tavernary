@@ -40,7 +40,71 @@ function summaryErrors(summary) {
   return errors;
 }
 
-export function validateEnrichmentOutput(output, vocabularies) {
+function classificationReviewErrors(review, request) {
+  if (!request) {
+    return review === null
+      ? []
+      : ["classification_review must be null when no review was requested"];
+  }
+  if (!review || typeof review !== "object" || Array.isArray(review)) {
+    return [
+      "classification_review must be an object when review was requested",
+    ];
+  }
+
+  const errors = [];
+  const allowedPrimaryFunctions = request.allowedPrimaryFunctions ?? [];
+  if (!["confirmed", "possible-mismatch"].includes(review.status)) {
+    errors.push("classification_review status is invalid");
+  }
+  if (
+    !vocabularyIncludes(
+      allowedPrimaryFunctions,
+      review.suggested_primary_function,
+    )
+  ) {
+    errors.push(
+      "classification_review suggested_primary_function is not allowed",
+    );
+  }
+  if (review.status === "confirmed") {
+    if (
+      review.suggested_primary_function !== request.submittedPrimaryFunction
+    ) {
+      errors.push(
+        "confirmed classification_review must repeat the submitted primary function",
+      );
+    }
+    if (review.explanation !== null) {
+      errors.push("confirmed classification_review explanation must be null");
+    }
+  }
+  if (review.status === "possible-mismatch") {
+    if (
+      review.suggested_primary_function === request.submittedPrimaryFunction
+    ) {
+      errors.push(
+        "possible-mismatch classification_review must suggest a different primary function",
+      );
+    }
+    if (
+      typeof review.explanation !== "string" ||
+      review.explanation.trim().length === 0 ||
+      review.explanation.length > 240
+    ) {
+      errors.push(
+        "possible-mismatch classification_review explanation must contain 1-240 characters",
+      );
+    }
+  }
+  return errors;
+}
+
+export function validateEnrichmentOutput(
+  output,
+  vocabularies,
+  classificationReviewRequest = null,
+) {
   const errors = [];
   errors.push(...summaryErrors(output?.summary));
 
@@ -49,12 +113,11 @@ export function validateEnrichmentOutput(output, vocabularies) {
   }
 
   if (
-    !vocabularyIncludes(
-      vocabularies?.primaryFunctions,
-      output?.primary_function,
-    )
+    output &&
+    typeof output === "object" &&
+    Object.hasOwn(output, "primary_function")
   ) {
-    errors.push("primary_function is not in the controlled vocabulary");
+    errors.push("primary_function is not allowed in enrichment output");
   }
 
   if (!Array.isArray(output?.capabilities)) {
@@ -68,6 +131,13 @@ export function validateEnrichmentOutput(output, vocabularies) {
       }
     }
   }
+
+  errors.push(
+    ...classificationReviewErrors(
+      output?.classification_review,
+      classificationReviewRequest,
+    ),
+  );
 
   return errors.length === 0 ? { valid: true } : { valid: false, errors };
 }

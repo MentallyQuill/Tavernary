@@ -1,5 +1,9 @@
 import type { EnrichmentSource } from "./enrichment-source.d.mts";
 import type {
+  ClassificationReview,
+  ClassificationReviewRequest,
+} from "./enrichment-contract.mjs";
+import type {
   EnrichmentRunState,
   ProjectAttemptResult,
 } from "./enrichment-run-state.d.mts";
@@ -7,7 +11,11 @@ import type {
 export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
 export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS: readonly [5000, 15000, 30000];
 
-export type VocabularyEntry = { id: string; label?: string };
+export type VocabularyEntry = {
+  id: string;
+  label?: string;
+  description?: string;
+};
 export type EnrichmentInput = {
   id: string;
   name: string;
@@ -18,8 +26,8 @@ export type EnrichmentInput = {
     text: string;
   };
   frontends: string[];
-  allowedPrimaryFunctions: VocabularyEntry[];
   allowedCapabilities: VocabularyEntry[];
+  classificationReviewRequest?: ClassificationReviewRequest;
   repair?: {
     reasonCode: string;
     message: string;
@@ -29,8 +37,8 @@ export type EnrichmentInput = {
 export type EnrichmentOutput = {
   summary: string;
   metadata_status: "curated";
-  primary_function: string;
   capabilities: readonly string[];
+  classification_review: ClassificationReview;
 };
 export type RegistryRecord = {
   id: string;
@@ -42,6 +50,7 @@ export type RegistryRecord = {
   summary?: string;
   visibility?: string;
   frontends?: string[];
+  primary_function?: string;
   source?: {
     type: string;
     repository?: string;
@@ -116,6 +125,7 @@ export function enrichRecord(
       primaryFunctions: VocabularyEntry[];
       capabilities: VocabularyEntry[];
     };
+    classificationReviewRequest?: ClassificationReviewRequest;
     loadSource?: (
       record: RegistryRecord,
       snapshot: RepositorySnapshot | undefined,

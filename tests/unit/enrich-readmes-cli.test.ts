@@ -31,8 +31,8 @@ const providerOutput = {
     summary:
       "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
     metadata_status: "curated" as const,
-    primary_function: "developer-infrastructure",
     capabilities: ["automation"],
+    classification_review: null,
   },
   metadata: {
     requestedModel: model,

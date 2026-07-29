@@ -505,12 +505,6 @@ describe("full catalog data", () => {
   });
 
   test("validates the contract used by generated curated summaries", async () => {
-    const primaryFunctions = JSON.parse(
-      await readFile(
-        resolve(rootDirectory, "data/vocabularies/primary-functions.json"),
-        "utf8",
-      ),
-    ).primary_functions;
     const capabilities = JSON.parse(
       await readFile(
         resolve(rootDirectory, "data/vocabularies/capabilities.json"),
@@ -522,10 +516,10 @@ describe("full catalog data", () => {
         summary:
           "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
         metadata_status: "curated",
-        primary_function: "developer-infrastructure",
         capabilities: ["automation"],
+        classification_review: null,
       },
-      { primaryFunctions, capabilities },
+      { capabilities },
     );
     expect(result).toEqual({ valid: true });
   });

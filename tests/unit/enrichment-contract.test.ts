@@ -17,8 +17,8 @@ const valid = {
   summary:
     "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated" as const,
-  primary_function: "developer-infrastructure",
   capabilities: ["automation", "prompt-engineering"],
+  classification_review: null,
 };
 
 test("accepts a natural two-sentence curated enrichment", () => {
@@ -92,7 +92,6 @@ test("rejects unknown vocabulary IDs and non-curated metadata", () => {
     {
       ...valid,
       metadata_status: "provisional" as "curated",
-      primary_function: "unknown-function",
       capabilities: ["unknown-capability"],
     },
     vocabularies,
@@ -103,9 +102,120 @@ test("rejects unknown vocabulary IDs and non-curated metadata", () => {
     expect(result.errors).toEqual(
       expect.arrayContaining([
         "metadata_status must be curated",
-        "primary_function is not in the controlled vocabulary",
         "capabilities contains an unknown controlled vocabulary ID: unknown-capability",
       ]),
     );
   }
 });
+
+test("rejects a model-owned primary function field", () => {
+  const result = validateEnrichmentOutput(
+    {
+      ...valid,
+      primary_function: "developer-infrastructure",
+    } as never,
+    vocabularies,
+  );
+
+  expect(result).toEqual({
+    valid: false,
+    errors: ["primary_function is not allowed in enrichment output"],
+  });
+});
+
+test("accepts only a bounded requested classification review", () => {
+  const request = {
+    submittedPrimaryFunction: "memory-retrieval",
+    allowedPrimaryFunctions: [
+      { id: "memory-retrieval", label: "Memory and retrieval" },
+      { id: "interface-workflow", label: "Interface and workflow" },
+    ],
+  };
+
+  expect(
+    validateEnrichmentOutput(
+      {
+        ...valid,
+        classification_review: {
+          status: "confirmed",
+          suggested_primary_function: "memory-retrieval",
+          explanation: null,
+        },
+      },
+      vocabularies,
+      request,
+    ),
+  ).toEqual({ valid: true });
+
+  expect(
+    validateEnrichmentOutput(
+      {
+        ...valid,
+        classification_review: {
+          status: "possible-mismatch",
+          suggested_primary_function: "interface-workflow",
+          explanation:
+            "The source primarily describes user-facing editing controls.",
+        },
+      },
+      vocabularies,
+      request,
+    ),
+  ).toEqual({ valid: true });
+});
+
+test.each([
+  [
+    "unrequested review",
+    null,
+    {
+      status: "confirmed",
+      suggested_primary_function: "memory-retrieval",
+      explanation: null,
+    },
+  ],
+  [
+    "missing requested review",
+    { submittedPrimaryFunction: "memory-retrieval" },
+    null,
+  ],
+  [
+    "confirmed alternate",
+    { submittedPrimaryFunction: "memory-retrieval" },
+    {
+      status: "confirmed",
+      suggested_primary_function: "interface-workflow",
+      explanation: null,
+    },
+  ],
+  [
+    "mismatch without explanation",
+    { submittedPrimaryFunction: "memory-retrieval" },
+    {
+      status: "possible-mismatch",
+      suggested_primary_function: "interface-workflow",
+      explanation: null,
+    },
+  ],
+] as const)(
+  "rejects %s classification review",
+  (_name, partialRequest, review) => {
+    const request =
+      partialRequest === null
+        ? null
+        : {
+            ...partialRequest,
+            allowedPrimaryFunctions: [
+              { id: "memory-retrieval", label: "Memory and retrieval" },
+              { id: "interface-workflow", label: "Interface and workflow" },
+            ],
+          };
+    expect(
+      validateEnrichmentOutput(
+        { ...valid, classification_review: review },
+        vocabularies,
+        request,
+      ),
+    ).toMatchObject({ valid: false });
+  },
+);

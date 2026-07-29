@@ -29,8 +29,8 @@ const output = {
   summary:
     "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated",
-  primary_function: "developer-infrastructure",
   capabilities: ["automation"],
+  classification_review: null,
 };
 
 function success(payload: Record<string, unknown> = {}) {
@@ -161,10 +161,15 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
             type: "string",
             maxLength: 220,
           },
+          classification_review: { type: "null" },
         },
       },
     },
   });
+  expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
+    "primary_function",
+  );
+  expect(body.messages[0].content).toMatch(/never.*change.*primary.function/iu);
   expect(body.messages[0].content).toMatch(/exactly two sentences/iu);
   expect(body.messages[0].content).toMatch(/purpose/iu);
   expect(body.messages[0].content).toMatch(
@@ -175,6 +180,62 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
   );
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
+  });
+});
+
+test("bounds a requested Extension classification review without making it authoritative", async () => {
+  const reviewedOutput = {
+    ...output,
+    classification_review: {
+      status: "possible-mismatch",
+      suggested_primary_function: "interface-workflow",
+      explanation:
+        "The source primarily describes user-facing editing controls.",
+    },
+  };
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) =>
+      success({
+        choices: [{ message: { content: JSON.stringify(reviewedOutput) } }],
+      }),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test/v1/chat/completions",
+    apiKey: "do-not-log",
+    model,
+    fetchImpl,
+  });
+
+  await provider.generate({
+    ...input,
+    classificationReviewRequest: {
+      submittedPrimaryFunction: "memory-retrieval",
+      allowedPrimaryFunctions: [
+        { id: "memory-retrieval", label: "Memory and retrieval" },
+        { id: "interface-workflow", label: "Interface and workflow" },
+      ],
+    },
+  });
+
+  const [, init] = fetchImpl.mock.calls[0];
+  const body = JSON.parse(String(init?.body));
+  expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
+    "primary_function",
+  );
+  expect(
+    body.response_format.json_schema.schema.properties.classification_review,
+  ).toMatchObject({
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      status: { enum: ["confirmed", "possible-mismatch"] },
+      suggested_primary_function: {
+        enum: ["memory-retrieval", "interface-workflow"],
+      },
+      explanation: {
+        anyOf: [{ type: "null" }, { type: "string", maxLength: 240 }],
+      },
+    },
   });
 });
 

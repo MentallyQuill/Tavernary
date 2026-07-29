@@ -29,8 +29,12 @@ const output = {
   summary:
     "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   metadata_status: "curated",
-  primary_function: "developer-infrastructure",
   capabilities: ["automation"],
+  classification_review: {
+    status: "possible-mismatch",
+    suggested_primary_function: "developer-infrastructure",
+    explanation: "The source emphasizes developer-facing automation.",
+  },
 } as const;
 
 test("atomically merges only editorial enrichment fields", async () => {
@@ -46,7 +50,14 @@ test("atomically merges only editorial enrichment fields", async () => {
 
   const serialized = await readFile(path, "utf8");
   const written = JSON.parse(serialized);
-  expect(written).toEqual({ ...record, ...output });
+  expect(written).toEqual({
+    ...record,
+    summary: output.summary,
+    metadata_status: output.metadata_status,
+    capabilities: output.capabilities,
+  });
+  expect(written.primary_function).toBe("uncategorized");
+  expect(written).not.toHaveProperty("classification_review");
   expect(written.source).toEqual(record.source);
   expect(serialized).toContain('"frontends": ["sillytavern"]');
   expect(serialized).toContain('"capabilities": ["automation"]');
@@ -115,12 +126,7 @@ test("preserves every non-editorial field across concurrent record writes", asyn
   const written = await Promise.all(
     paths.map(async (path) => JSON.parse(await readFile(path, "utf8"))),
   );
-  const editorial = new Set([
-    "summary",
-    "metadata_status",
-    "primary_function",
-    "capabilities",
-  ]);
+  const editorial = new Set(["summary", "metadata_status", "capabilities"]);
   const nonEditorial = (candidate: Record<string, unknown>) =>
     Object.fromEntries(
       Object.entries(candidate).filter(([key]) => !editorial.has(key)),
