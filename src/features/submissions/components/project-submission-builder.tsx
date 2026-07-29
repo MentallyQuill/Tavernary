@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
@@ -14,6 +15,12 @@ import {
   EXTENSION_PRIMARY_FUNCTION_IDS,
   STRUCTURAL_PRIMARY_FUNCTIONS,
 } from "@/features/catalog/primary-function-contract.mjs";
+import {
+  CATALOG_DESCRIPTION_GUIDANCE,
+  CATALOG_EMOJI_REMOVED_NOTICE,
+  CATALOG_POLICY_ROUTE,
+} from "@/features/catalog/catalog-policy.mjs";
+import { stripEmoji } from "@/features/catalog/emoji-free-text.mjs";
 
 const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
@@ -133,6 +140,7 @@ export function ProjectSubmissionBuilder({
   const [primaryFunction, setPrimaryFunction] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [emojiNotice, setEmojiNotice] = useState(false);
   const [additionalContext, setAdditionalContext] = useState("");
   const [frontendSearch, setFrontendSearch] = useState("");
   const [knownFrontendIds, setKnownFrontendIds] = useState<string[]>([]);
@@ -438,7 +446,11 @@ export function ProjectSubmissionBuilder({
           <textarea
             id="project-description"
             value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            onChange={(event) => {
+              const sanitized = stripEmoji(event.target.value);
+              setDescription(sanitized.value);
+              if (sanitized.removed) setEmojiNotice(true);
+            }}
             rows={4}
             required={externalMetadataRequired}
             aria-invalid={Boolean(errorFor("project-description"))}
@@ -449,10 +461,19 @@ export function ProjectSubmissionBuilder({
             }
           />
           <p className="submission-hint" id="project-description-hint">
-            This helps us understand the project and may be adapted into
-            Tavernary&apos;s catalog summary for clarity and consistency. The
-            published summary may be shortened or rewritten.
+            {CATALOG_DESCRIPTION_GUIDANCE}{" "}
+            <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
           </p>
+          {emojiNotice ? (
+            <p
+              className="submission-hint"
+              id="project-description-emoji-status"
+              role="status"
+              aria-live="polite"
+            >
+              {CATALOG_EMOJI_REMOVED_NOTICE}
+            </p>
+          ) : null}
           <InlineError
             id="project-description-error"
             message={errorFor("project-description")}

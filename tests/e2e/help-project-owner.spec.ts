@@ -66,6 +66,26 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
   expect(manifest.source_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
 });
 
+test("keeps owner wording while removing emoji and linking the policy", async ({
+  page,
+}) => {
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.getByRole("radio", { name: "Edit card details" }).check();
+
+  const summary = page.getByLabel("Summary");
+  await summary.fill("This is damn useful 🧭 for ST-QuickReply.");
+
+  await expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
+  await expect(
+    page.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Catalog Policy" }),
+  ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
+});
+
 test("keeps organization listings editable for trusted staff with a report fallback", async ({
   page,
 }) => {

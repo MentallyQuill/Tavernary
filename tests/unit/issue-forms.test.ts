@@ -119,6 +119,14 @@ test("owner requests have an accessible readable fallback in exact review order"
   ).toContain(
     "Edit card details; Update repository location; Delist this project",
   );
+  expect(
+    fields.find((field) => field.id === "proposed-summary")?.attributes
+      ?.description,
+  ).toContain("Mature and consensual adult themes are permitted");
+  expect(
+    fields.find((field) => field.id === "proposed-summary")?.attributes
+      ?.description,
+  ).toContain("https://mentallyquill.github.io/Tavernary/catalog-policy/");
 });
 
 test("Kit submission is a readable review form without redundant machine fields", async () => {
@@ -226,8 +234,12 @@ test("project submission is a structured fallback for automated intake", async (
   expect(fields[5].attributes.description).toContain(
     "comma- or newline-separated",
   );
+  expect(fields[4].attributes.description).toContain("README evidence first");
   expect(fields[4].attributes.description).toContain(
-    "may be adapted into Tavernary's catalog summary",
+    "Mature and consensual adult themes are permitted",
+  );
+  expect(fields[4].attributes.description).toContain(
+    "https://mentallyquill.github.io/Tavernary/catalog-policy/",
   );
   expect(fields[3].attributes.description).toContain(
     "GitHub and Codeberg sources",

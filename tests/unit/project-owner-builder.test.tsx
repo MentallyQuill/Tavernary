@@ -254,6 +254,28 @@ test("shows a live summary counter and exact controlled metadata", async () => {
   ).not.toBeInTheDocument();
 });
 
+test("removes emoji from an owner summary while preserving its wording", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  const summary = screen.getByLabelText("Summary");
+  await user.clear(summary);
+  await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
+
+  expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
+  expect(
+    screen.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toHaveAttribute("role", "status");
+  expect(screen.getByRole("link", { name: "Catalog Policy" })).toHaveAttribute(
+    "href",
+    "/catalog-policy",
+  );
+});
+
 test("shows compatibility controls only for Presets", async () => {
   const user = userEvent.setup();
   renderBuilder();

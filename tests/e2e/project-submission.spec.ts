@@ -38,6 +38,27 @@ test("exports and renders the project submission builder", async ({ page }) => {
   await expect(page.getByLabel("Primary function")).toHaveCount(0);
 });
 
+test("keeps description prose while removing emoji and linking the policy", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/submit/project/"));
+
+  const description = page.getByLabel("Short Description (optional)");
+  await description.fill("This is damn useful 🧭 for ST-QuickReply.");
+
+  await expect(description).toHaveValue(
+    "This is damn useful  for ST-QuickReply.",
+  );
+  await expect(
+    page.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Catalog Policy" }),
+  ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
+});
+
 test("selects multiple current frontends for an Extension", async ({
   page,
 }) => {

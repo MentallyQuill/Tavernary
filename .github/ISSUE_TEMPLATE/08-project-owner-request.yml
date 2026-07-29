@@ -44,7 +44,14 @@ body:
     id: proposed-summary
     attributes:
       label: Proposed summary
-      description: Used only for a card-details edit. Plain text, 220 characters maximum.
+      description: >-
+        Used only for a card-details edit. Plain text, 220 characters maximum.
+        Tavernary preserves owner and authorized staff wording whenever
+        possible. Mature and consensual adult themes are permitted, but content
+        promoting hatred or discrimination, sexual exploitation of minors, or
+        other material prohibited by Tavernary's Catalog Policy is not.
+        Ordinary profanity is permitted. Read the policy:
+        https://mentallyquill.github.io/Tavernary/catalog-policy/
     validations:
       required: false
   - type: textarea

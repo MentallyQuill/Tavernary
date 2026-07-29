@@ -8,6 +8,12 @@ import {
   EXTENSION_PRIMARY_FUNCTION_IDS,
   STRUCTURAL_PRIMARY_FUNCTIONS,
 } from "@/features/catalog/primary-function-contract.mjs";
+import {
+  CATALOG_DESCRIPTION_GUIDANCE,
+  CATALOG_EMOJI_REMOVED_NOTICE,
+  CATALOG_POLICY_ROUTE,
+} from "@/features/catalog/catalog-policy.mjs";
+import { stripEmoji } from "@/features/catalog/emoji-free-text.mjs";
 import type {
   OwnerCardOriginal,
   OwnerEditableValues,
@@ -346,6 +352,7 @@ export function ProjectOwnerBuilder({
   const [summary, setSummary] = useState(
     startingProject?.editable.summary ?? "",
   );
+  const [emojiNotice, setEmojiNotice] = useState(false);
   const [frontends, setFrontends] = useState(
     startingProject?.editable.frontends ?? [],
   );
@@ -690,13 +697,27 @@ export function ProjectOwnerBuilder({
                 label="Summary"
                 value={summary}
                 maxLength={220}
-                onChange={(event) => setSummary(event.target.value)}
+                onChange={(event) => {
+                  const sanitized = stripEmoji(event.target.value);
+                  setSummary(sanitized.value);
+                  if (sanitized.removed) setEmojiNotice(true);
+                }}
                 error={errors.find((error) =>
                   error.startsWith("Owner summary"),
                 )}
                 count={`${summary.length} / 220`}
-                hint="Plain text. Line breaks are collapsed to spaces; automatic model-summary word rules do not apply."
+                hint={
+                  <>
+                    {CATALOG_DESCRIPTION_GUIDANCE}{" "}
+                    <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
+                  </>
+                }
               />
+              {emojiNotice ? (
+                <p className="help-hint" role="status" aria-live="polite">
+                  {CATALOG_EMOJI_REMOVED_NOTICE}
+                </p>
+              ) : null}
               <OptionCheckboxes
                 legend="Supported frontends"
                 options={vocabularies.frontends}
