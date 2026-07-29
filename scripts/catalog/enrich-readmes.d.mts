@@ -4,6 +4,12 @@ import type {
   ClassificationReviewRequest,
 } from "./enrichment-contract.mjs";
 import type {
+  CatalogCopyChangeReason,
+  CatalogCopyMode,
+  CatalogCopyPolicySignal,
+  CatalogCopyResultStatus,
+} from "./catalog-copy-contract.mjs";
+import type {
   EnrichmentRunState,
   ProjectAttemptResult,
 } from "./enrichment-run-state.d.mts";
@@ -20,6 +26,15 @@ export type EnrichmentInput = {
   id: string;
   name: string;
   kind: string;
+  summaryMode: CatalogCopyMode;
+  submittedDescription: string | null;
+  evidence: {
+    readme: { identity: string; text: string } | null;
+    repositoryDescription: string | null;
+    submissionDescription: string | null;
+  };
+  protectedTerms: readonly string[];
+  policyVersion: string;
   source: {
     kind: string;
     identity: string;
@@ -36,6 +51,9 @@ export type EnrichmentInput = {
 };
 export type EnrichmentOutput = {
   summary: string;
+  result: CatalogCopyResultStatus;
+  change_reasons: readonly CatalogCopyChangeReason[];
+  policy_signal: CatalogCopyPolicySignal;
   metadata_status: "curated";
   capabilities: readonly string[];
   classification_review: ClassificationReview;
@@ -126,6 +144,10 @@ export function enrichRecord(
       capabilities: VocabularyEntry[];
     };
     classificationReviewRequest?: ClassificationReviewRequest;
+    summaryMode?: CatalogCopyMode;
+    submittedDescription?: string | null;
+    protectedTerms?: readonly string[];
+    policyVersion?: string;
     loadSource?: (
       record: RegistryRecord,
       snapshot: RepositorySnapshot | undefined,

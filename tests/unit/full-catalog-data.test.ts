@@ -600,6 +600,9 @@ describe("full catalog data", () => {
       {
         summary:
           "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
         metadata_status: "curated",
         capabilities: ["automation"],
         classification_review: null,

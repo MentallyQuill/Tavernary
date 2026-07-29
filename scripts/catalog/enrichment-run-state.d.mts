@@ -1,3 +1,9 @@
+import type {
+  CatalogCopyChangeReason,
+  CatalogCopyPolicySignal,
+  CatalogCopyResultStatus,
+} from "./catalog-copy-contract.mjs";
+
 export type AttemptOutcome =
   | "enriched"
   | "fallback"
@@ -41,6 +47,11 @@ export type ProjectAttemptResult = {
   providerRepairCallCount?: number;
   providerRateLimitCount?: number;
   providerLatencyMsTotal?: number;
+  output?: {
+    result: CatalogCopyResultStatus;
+    change_reasons: readonly CatalogCopyChangeReason[];
+    policy_signal: CatalogCopyPolicySignal;
+  };
   reasonCode?: string;
   enrichmentNote?: string;
   diagnosticCode?: string | null;
@@ -58,6 +69,12 @@ export type EnrichmentRunEntry = {
   provider_repair_calls?: number;
   provider_rate_limit_events?: number;
   provider_latency_ms_total?: number;
+  copy_result?:
+    | "accepted-unchanged"
+    | "accepted-with-light-edits"
+    | "accepted-with-policy-rewrite";
+  copy_change_reasons?: string[];
+  copy_policy_signal?: "none" | "catalog-policy-rewrite";
   [key: string]: unknown;
 };
 

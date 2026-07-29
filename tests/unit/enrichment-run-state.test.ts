@@ -204,6 +204,34 @@ test("rejects attempt metadata from a different model", () => {
   ).toThrow("configured model");
 });
 
+test("rejects inconsistent bounded copy metadata", () => {
+  const state = createEnrichmentRunState({
+    mode: "full",
+    manifest: ["a"],
+    runId: "copy-metadata",
+    now,
+  });
+
+  expect(() =>
+    applyAttemptResults(
+      state,
+      [
+        {
+          id: "a",
+          phase: "primary",
+          outcome: "enriched",
+          output: {
+            result: "accepted-with-policy-rewrite",
+            change_reasons: ["punctuation-corrected"],
+            policy_signal: "catalog-policy-rewrite",
+          },
+        },
+      ],
+      later,
+    ),
+  ).toThrow("copy metadata");
+});
+
 test("attempts every frozen manifest ID after earlier records complete", () => {
   let state = createEnrichmentRunState({
     mode: "full",

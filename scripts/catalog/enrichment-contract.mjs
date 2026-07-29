@@ -1,3 +1,5 @@
+import { validateCatalogCopyResult } from "./catalog-copy-contract.mjs";
+
 const FALLBACK_SUMMARY = "No README file found.";
 
 function wordCount(value) {
@@ -13,7 +15,7 @@ function vocabularyIncludes(vocabulary, value) {
         );
 }
 
-function summaryErrors(summary) {
+function summaryErrors(summary, summaryMode) {
   if (typeof summary !== "string" || summary.trim().length === 0) {
     return ["summary must be a non-empty string"];
   }
@@ -23,7 +25,10 @@ function summaryErrors(summary) {
   const errors = [];
   if (summary.length > 220)
     errors.push("summary must be 220 characters or fewer");
-  if (wordCount(summary) < 24 || wordCount(summary) > 36) {
+  if (
+    summaryMode === "synthesize" &&
+    (wordCount(summary) < 24 || wordCount(summary) > 36)
+  ) {
     errors.push("summary must contain between 24 and 36 words");
   }
   if (/[\r\n\u2028\u2029]/u.test(summary))
@@ -33,7 +38,10 @@ function summaryErrors(summary) {
   }
 
   const endings = summary.match(/[.!?](?=\s|$)/gu) ?? [];
-  if (endings.length !== 2 || !/[.!?]$/u.test(summary.trim())) {
+  if (
+    summaryMode === "synthesize" &&
+    (endings.length !== 2 || !/[.!?]$/u.test(summary.trim()))
+  ) {
     errors.push("summary must be exactly two sentences");
   }
 
@@ -104,9 +112,24 @@ export function validateEnrichmentOutput(
   output,
   vocabularies,
   classificationReviewRequest = null,
+  copyContext = {
+    mode: "synthesize",
+    submittedSummary: "",
+    protectedTerms: [],
+  },
 ) {
   const errors = [];
-  errors.push(...summaryErrors(output?.summary));
+  errors.push(...summaryErrors(output?.summary, copyContext.mode));
+  const copyValidation = validateCatalogCopyResult(
+    {
+      summary: output?.summary,
+      result: output?.result,
+      change_reasons: output?.change_reasons,
+      policy_signal: output?.policy_signal,
+    },
+    copyContext,
+  );
+  if (!copyValidation.valid) errors.push(...copyValidation.errors);
 
   if (output?.metadata_status !== "curated") {
     errors.push("metadata_status must be curated");

@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { expect, test } from "vitest";
 
 import { writeEnrichedRecord } from "../../scripts/catalog/enrich-readmes.mjs";
+import type { EnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 
 const record = {
   schema_version: 5,
@@ -35,7 +36,10 @@ const output = {
     suggested_primary_function: "developer-infrastructure",
     explanation: "The source emphasizes developer-facing automation.",
   },
-} as const;
+  result: "accepted-unchanged",
+  change_reasons: [],
+  policy_signal: "none",
+} satisfies EnrichmentOutput;
 
 test("atomically merges only editorial enrichment fields", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));

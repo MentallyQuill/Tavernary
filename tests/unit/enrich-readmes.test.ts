@@ -9,6 +9,7 @@ import {
   mapWithConcurrency,
   runEnrichmentBatch,
   selectEnrichmentRecords,
+  writeEnrichedRecord,
 } from "../../scripts/catalog/enrich-readmes.mjs";
 
 const record = {
@@ -56,6 +57,11 @@ const providerMetadata = {
   requestedModel: "MiniMax-M3" as const,
   returnedModel: "MiniMax-M3",
   latencyMs: 10,
+};
+const copyMetadata = {
+  result: "accepted-unchanged" as const,
+  change_reasons: [] as [],
+  policy_signal: "none" as const,
 };
 
 function recordFor(id: string) {
@@ -107,6 +113,9 @@ test("passes normalized source and only allowed vocabulary entries to provider",
       metadata_status: "curated" as const,
       capabilities: [input.allowedCapabilities[0].id],
       classification_review: null,
+      result: "accepted-unchanged" as const,
+      change_reasons: [],
+      policy_signal: "none" as const,
     },
     metadata: providerMetadata,
   }));
@@ -143,6 +152,15 @@ test("passes normalized source and only allowed vocabulary entries to provider",
         identity: "github:creator/project",
         text: "A short project description.",
       },
+      summaryMode: "synthesize",
+      submittedDescription: "Generic intake details.",
+      evidence: {
+        readme: null,
+        repositoryDescription: "A short project description.",
+        submissionDescription: "Generic intake details.",
+      },
+      protectedTerms: ["Fixture", "Creator", "Project"],
+      policyVersion: "2026-07-29",
       allowedCapabilities: vocabularies.capabilities,
     }),
   );
@@ -190,6 +208,7 @@ test("enriches a Reddit source without a repository snapshot", async () => {
       metadata_status: "curated" as const,
       capabilities: ["automation"],
       classification_review: null,
+      ...copyMetadata,
     },
     metadata: providerMetadata,
   }));
@@ -343,6 +362,7 @@ test("preserves an owner edit made after automatic enrichment selection", async 
           metadata_status: "curated",
           capabilities: ["automation"],
           classification_review: null,
+          ...copyMetadata,
         },
         metadata: providerMetadata,
       }),
@@ -361,6 +381,29 @@ test("preserves an owner edit made after automatic enrichment selection", async 
     },
   ]);
   expect(JSON.parse(await readFile(path, "utf8"))).toEqual(ownerEdited);
+});
+
+test("writes the accepted summary without persisting copy-audit metadata", async () => {
+  const root = await mkdtemp(join(tmpdir(), "tavernary-copy-audit-"));
+  const path = join(root, "fixture.json");
+  await writeFile(path, JSON.stringify(record, null, 2));
+
+  await writeEnrichedRecord(path, record, {
+    summary:
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator controls, and keeps complex configuration work clear and accessible to users throughout.",
+    metadata_status: "curated",
+    capabilities: ["automation"],
+    classification_review: null,
+    result: "accepted-with-light-edits",
+    change_reasons: ["punctuation-corrected"],
+    policy_signal: "none",
+  });
+
+  const written = JSON.parse(await readFile(path, "utf8"));
+  expect(written.summary).toContain("Fixture organizes");
+  expect(written).not.toHaveProperty("result");
+  expect(written).not.toHaveProperty("change_reasons");
+  expect(written).not.toHaveProperty("policy_signal");
 });
 
 test("uses the exact fallback when both source texts are unavailable", async () => {
@@ -387,6 +430,7 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     metadata_status: "curated",
     capabilities: [],
     classification_review: null,
+    ...copyMetadata,
   });
 });
 
@@ -455,6 +499,7 @@ test("rejects a model-owned primary function when source text exists", async () 
             primary_function: "developer-infrastructure",
             capabilities: [],
             classification_review: null,
+            ...copyMetadata,
           },
           metadata: providerMetadata,
         }),
@@ -485,6 +530,7 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
         metadata_status: "curated" as const,
         capabilities: ["automation"],
         classification_review: null,
+        ...copyMetadata,
       },
       metadata: providerMetadata,
     };
@@ -575,6 +621,7 @@ test("runs no more than four model calls concurrently and preserves order", asyn
             metadata_status: "curated" as const,
             capabilities: ["automation"],
             classification_review: null,
+            ...copyMetadata,
           },
           metadata: providerMetadata,
         };
@@ -615,6 +662,7 @@ test("backs off new model work after repeated provider rate limits", async () =>
         metadata_status: "curated" as const,
         capabilities: ["automation"],
         classification_review: null,
+        ...copyMetadata,
       },
       metadata: providerMetadata,
     };

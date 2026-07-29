@@ -12,6 +12,12 @@ import {
 
 const now = "2026-07-24T00:00:00.000Z";
 const model = "minimax/minimax-m3:thinking";
+const privateProviderOutput = {
+  summary: "Private submitter wording must never enter the report.",
+  result: "accepted-with-light-edits" as const,
+  change_reasons: ["emoji-removed"] as const,
+  policy_signal: "none" as const,
+};
 
 test("serializes only sanitized deterministic run-state fields", () => {
   let state = createEnrichmentRunState({
@@ -44,6 +50,7 @@ test("serializes only sanitized deterministic run-state fields", () => {
           returnedModel: model,
           latencyMs: 250,
         },
+        output: privateProviderOutput,
       },
     ],
     "2026-07-24T00:01:00.000Z",
@@ -67,7 +74,11 @@ test("serializes only sanitized deterministic run-state fields", () => {
     provider_calls: 1,
     provider_repair_calls: 0,
     provider_latency_ms_total: 250,
+    copy_result: "accepted-with-light-edits",
+    copy_change_reasons: ["emoji-removed"],
+    copy_policy_signal: "none",
   });
+  expect(serialized).not.toContain("Private submitter wording");
   expect(report.provider_metrics).toEqual({
     call_count: 1,
     repair_call_count: 0,
@@ -75,6 +86,10 @@ test("serializes only sanitized deterministic run-state fields", () => {
     latency_ms_total: 250,
   });
   expect(validateEnrichmentReport(JSON.parse(serialized))).toEqual(report);
+
+  const tampered = structuredClone(report);
+  tampered.entries.b.copy_result = "invented" as never;
+  expect(() => validateEnrichmentReport(tampered)).toThrow("copy metadata");
 });
 
 test("does not hard-code a timeout duration in durable report messages", () => {
