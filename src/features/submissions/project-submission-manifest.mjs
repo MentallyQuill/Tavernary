@@ -118,6 +118,9 @@ export function normalizeProjectSubmissionManifest(value) {
     if (classification) errors.push(classification);
   }
   if (!sourceUrl) errors.push("Project URL is required.");
+  if (description && description.length > 220) {
+    errors.push("Short Description must be 220 characters or fewer.");
+  }
   if (projectType === "frontend" && (knownIds.length || other.length)) {
     errors.push("Frontend submissions cannot declare supported frontends.");
   }

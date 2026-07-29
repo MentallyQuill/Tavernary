@@ -199,6 +199,24 @@ test("removes emoji from the submitted description while preserving its wording"
   );
 });
 
+test("limits the Short Description to 220 characters with live feedback", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  const description = screen.getByLabelText(/Short Description/u);
+  expect(description).toHaveAttribute("maxlength", "220");
+  expect(screen.getByText("0/220 characters")).toBeVisible();
+
+  await user.type(description, "x".repeat(221));
+
+  expect(description).toHaveValue("x".repeat(220));
+  expect(screen.getByText("220/220 characters")).toBeVisible();
+  expect(description).toHaveAttribute(
+    "aria-describedby",
+    expect.stringContaining("project-description-count"),
+  );
+});
+
 test("rejects a generic public source host for a Frontend", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
