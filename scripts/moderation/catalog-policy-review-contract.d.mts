@@ -10,7 +10,7 @@ export interface CatalogPolicyReviewOutput {
 export const CATALOG_POLICY_REVIEW_CATEGORIES: readonly CatalogPolicyReviewCategory[];
 export function createPolicyEvidenceFingerprint(input: {
   projectId: string;
-  sourceIdentity: string;
+  sourceId: string;
   headSha: string;
   policyVersion: string;
 }): string;

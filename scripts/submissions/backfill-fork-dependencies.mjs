@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { format } from "prettier";
 
+import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { GitHubRepositoryProvider } from "../catalog/github-repository-provider.mjs";
 import { snapshotFromObservation } from "../catalog/repository-snapshot.mjs";
 import { ensureForkParentSubmission } from "./fork-dependency.mjs";
@@ -47,16 +48,20 @@ function candidateManifest(children, parentRepository, parentName) {
   return manifest;
 }
 
-export function planForkDependencyBackfill({ projects, snapshots }) {
-  const projectsById = new Map(
-    projects.map((project) => [project.id, project]),
-  );
+export function planForkDependencyBackfill({ projects, sources, snapshots }) {
+  const sourcesById = new Map(sources.map((source) => [source.id, source]));
+  const projectsBySourceId = new Map();
+  for (const project of projects) {
+    const siblings = projectsBySourceId.get(project.source_id) ?? [];
+    siblings.push(project);
+    projectsBySourceId.set(project.source_id, siblings);
+  }
   const knownRepositoryIds = new Set(
-    projects.flatMap((project) =>
-      project.source?.type === "github" &&
-      Number.isInteger(project.source.repository_id) &&
-      project.source.repository_id > 0
-        ? [project.source.repository_id]
+    sources.flatMap((source) =>
+      source.type === "github" &&
+      Number.isInteger(source.repository_id) &&
+      source.repository_id > 0
+        ? [source.repository_id]
         : [],
     ),
   );
@@ -64,14 +69,20 @@ export function planForkDependencyBackfill({ projects, snapshots }) {
 
   for (const snapshot of snapshots) {
     const parent = snapshot.repository?.parent;
-    const child = projectsById.get(snapshot.project_id);
+    const source = sourcesById.get(snapshot.source_id);
+    const children = source
+      ? (projectsBySourceId.get(snapshot.source_id) ?? []).filter(
+          (project) =>
+            effectiveListingState({ project, source, snapshot }).public,
+        )
+      : [];
     if (
       snapshot.repository?.fork !== true ||
       !parent ||
-      !child ||
-      child.visibility !== "published" ||
-      child.refresh_policy !== "automatic" ||
-      child.source?.type !== "github" ||
+      children.length === 0 ||
+      source?.status !== "active" ||
+      source.refresh_policy !== "automatic" ||
+      source.type !== "github" ||
       knownRepositoryIds.has(parent.id)
     ) {
       continue;
@@ -88,14 +99,14 @@ export function planForkDependencyBackfill({ projects, snapshots }) {
       );
     }
     if (existing) {
-      existing.children.push(child);
+      existing.children.push(...children);
       existing.dependentRepositoryIds.push(snapshot.repository.id);
     } else {
       groups.set(parent.id, {
         parentRepositoryId: parent.id,
         parentName: parent.name,
         parentRepository: repository,
-        children: [child],
+        children,
         dependentRepositoryIds: [snapshot.repository.id],
       });
     }
@@ -143,22 +154,35 @@ export function planForkDependencyBackfill({ projects, snapshots }) {
 
 export async function observeForkBackfillParents({
   projects,
+  sources,
   snapshots,
   token,
   observe,
   now = new Date().toISOString(),
 }) {
-  const snapshotsById = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+  const snapshotsBySourceId = new Map(
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
-  const records = projects
-    .filter(
-      (project) =>
-        project.visibility === "published" &&
-        project.refresh_policy === "automatic" &&
-        project.source?.type === "github" &&
-        snapshotsById.get(project.id)?.repository?.fork === true,
-    )
+  const projectsBySourceId = new Map();
+  for (const project of projects) {
+    const siblings = projectsBySourceId.get(project.source_id) ?? [];
+    siblings.push(project);
+    projectsBySourceId.set(project.source_id, siblings);
+  }
+  const records = sources
+    .filter((source) => {
+      const snapshot = snapshotsBySourceId.get(source.id);
+      return (
+        source.status === "active" &&
+        source.refresh_policy === "automatic" &&
+        source.type === "github" &&
+        snapshot?.repository?.fork === true &&
+        (projectsBySourceId.get(source.id) ?? []).some(
+          (project) =>
+            effectiveListingState({ project, source, snapshot }).public,
+        )
+      );
+    })
     .sort((left, right) => left.id.localeCompare(right.id));
   const provider = new GitHubRepositoryProvider({
     ...(observe ? { observeRepositories: observe } : {}),
@@ -167,13 +191,13 @@ export async function observeForkBackfillParents({
   const observation = await provider.observe(records);
   const updatedById = new Map();
   for (const item of observation.observations) {
-    const previous = snapshotsById.get(item.projectId);
+    const previous = snapshotsBySourceId.get(item.sourceId);
     if (!previous) continue;
     updatedById.set(
-      item.projectId,
+      item.sourceId,
       snapshotFromObservation({
         provider: "github",
-        projectId: item.projectId,
+        sourceId: item.sourceId,
         observation: item,
         previous,
         now,
@@ -182,15 +206,16 @@ export async function observeForkBackfillParents({
     );
   }
   const projectedSnapshots = snapshots.map(
-    (snapshot) => updatedById.get(snapshot.project_id) ?? snapshot,
+    (snapshot) => updatedById.get(snapshot.source_id) ?? snapshot,
   );
   return {
     candidates: planForkDependencyBackfill({
       projects,
+      sources,
       snapshots: projectedSnapshots,
     }),
     updatedSnapshots: [...updatedById.values()].sort((left, right) =>
-      left.project_id.localeCompare(right.project_id),
+      left.source_id.localeCompare(right.source_id),
     ),
   };
 }
@@ -304,24 +329,26 @@ async function main() {
     throw new Error("GITHUB_REPOSITORY is required with --apply.");
   }
 
-  const [projects, snapshots] = await Promise.all([
+  const [projects, sources, snapshots] = await Promise.all([
     readJsonDirectory("data/registry/projects"),
+    readJsonDirectory("data/registry/sources"),
     readJsonDirectory("data/snapshots/github"),
   ]);
   const observation = await observeForkBackfillParents({
     projects,
+    sources,
     snapshots,
     token,
   });
   const updatedSnapshotPaths = observation.updatedSnapshots.map(
-    ({ project_id }) => `data/snapshots/github/${project_id}.json`,
+    ({ source_id }) => `data/snapshots/github/${source_id}.json`,
   );
 
   if (apply) {
     for (const snapshot of observation.updatedSnapshots) {
       const path = resolve(
         rootDirectory,
-        `data/snapshots/github/${snapshot.project_id}.json`,
+        `data/snapshots/github/${snapshot.source_id}.json`,
       );
       const temporaryPath = `${path}.tmp`;
       await writeFile(

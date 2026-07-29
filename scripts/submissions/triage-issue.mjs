@@ -389,19 +389,28 @@ export async function synchronizeProjectSubmissionTriage(
 }
 
 export async function loadProjectSubmissionCatalogData() {
-  const directory = resolve("data/registry/projects");
-  const files = (await readdir(directory))
+  const projectDirectory = resolve("data/registry/projects");
+  const projectFiles = (await readdir(projectDirectory))
     .filter((file) => file.endsWith(".json"))
     .sort();
   const projects = await Promise.all(
-    files.map(async (file) =>
-      JSON.parse(await readFile(resolve(directory, file), "utf8")),
+    projectFiles.map(async (file) =>
+      JSON.parse(await readFile(resolve(projectDirectory, file), "utf8")),
+    ),
+  );
+  const sourceDirectory = resolve("data/registry/sources");
+  const sourceFiles = (await readdir(sourceDirectory))
+    .filter((file) => file.endsWith(".json"))
+    .sort();
+  const sources = await Promise.all(
+    sourceFiles.map(async (file) =>
+      JSON.parse(await readFile(resolve(sourceDirectory, file), "utf8")),
     ),
   );
   const vocabulary = JSON.parse(
     await readFile(resolve("data/vocabularies/frontends.json"), "utf8"),
   );
-  return { projects, vocabulary };
+  return { projects, sources, vocabulary };
 }
 
 async function github(path, options = {}) {

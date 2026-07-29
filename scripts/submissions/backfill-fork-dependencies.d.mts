@@ -20,11 +20,13 @@ export interface BackfillReport {
 
 export function planForkDependencyBackfill(input: {
   projects: any[];
+  sources: any[];
   snapshots: any[];
 }): ForkBackfillCandidate[];
 
 export function observeForkBackfillParents(input: {
   projects: any[];
+  sources: any[];
   snapshots: any[];
   token: string;
   observe?: (projects: any[], options: { token: string }) => Promise<any>;

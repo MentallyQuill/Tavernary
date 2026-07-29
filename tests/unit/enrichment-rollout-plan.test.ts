@@ -16,6 +16,20 @@ import {
 const model = "minimax/minimax-m3:thinking";
 const now = "2026-07-25T00:00:00.000Z";
 
+function sourcesFor(records: Array<{ source_id: string }>) {
+  return Object.fromEntries(
+    records.map(({ source_id }) => [
+      source_id,
+      {
+        id: source_id,
+        type: "github",
+        repository: `Creator/${source_id}`,
+        refresh_policy: "automatic",
+      },
+    ]),
+  );
+}
+
 function passedCanary(selectionMode: "pending" | "all-automatic" = "pending") {
   const awaiting = applyAttemptResults(
     createEnrichmentRunState({
@@ -278,14 +292,15 @@ test("catalog inspection reports the action and exact eligible count", () => {
       index === 5 ? "A curated project summary." : "Generic intake details.",
     metadata_status: index === 5 ? "curated" : "provisional",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/project-${index}` },
+    listing_status: "active",
+    source_id: `github-project-${index}`,
   }));
 
   expect(
     createEnrichmentRolloutPlan({
       model,
       records,
+      sourcesById: sourcesFor(records),
       fullReport: null,
       canaryReport: null,
     }),
@@ -303,8 +318,8 @@ test("all-automatic planning counts eligible records and manual exclusions separ
     summary: "A complete editorial description.",
     metadata_status: "curated",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/automatic-${index}` },
+    listing_status: "active",
+    source_id: `github-automatic-${index}`,
   }));
   const manual = Array.from({ length: 7 }, (_, index) => ({
     id: `manual-${index}`,
@@ -313,14 +328,15 @@ test("all-automatic planning counts eligible records and manual exclusions separ
     metadata_status: "curated",
     enrichment_policy: "manual",
     enrichment_note: "Requires review.",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/manual-${index}` },
+    listing_status: "active",
+    source_id: `github-manual-${index}`,
   }));
 
   expect(
     createEnrichmentRolloutPlan({
       model,
       records: [...automatic, ...manual],
+      sourcesById: sourcesFor([...automatic, ...manual]),
       fullReport: null,
       canaryReport: null,
       selectionMode: "all-automatic",
@@ -385,14 +401,15 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
     summary: "Generic intake details.",
     metadata_status: "provisional",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/project-${index}` },
+    listing_status: "active",
+    source_id: `github-project-${index}`,
   }));
 
   await expect(
     runPlannerCli({
       model,
       records,
+      sources: Object.values(sourcesFor(records)),
       fullReport: null,
       canaryReport: null,
     }),
@@ -409,8 +426,8 @@ test("planner CLI quarantines a pre-hardening terminal full ledger", async () =>
     summary: "Generic intake details.",
     metadata_status: "provisional",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/project-${index}` },
+    listing_status: "active",
+    source_id: `github-project-${index}`,
   }));
   const manifest = records.map(({ id }) => id);
   const entries = Object.fromEntries(
@@ -430,6 +447,7 @@ test("planner CLI quarantines a pre-hardening terminal full ledger", async () =>
     runPlannerCli({
       model,
       records,
+      sources: Object.values(sourcesFor(records)),
       fullReport: {
         schema_version: 1,
         run_id: "legacy-full",
@@ -464,8 +482,8 @@ test("planner CLI still rejects corrupt current-format terminal ledgers", async 
     summary: "Generic intake details.",
     metadata_status: "provisional",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/project-${index}` },
+    listing_status: "active",
+    source_id: `github-project-${index}`,
   }));
   const manifest = records.map(({ id }) => id);
   const entries = Object.fromEntries(
@@ -485,6 +503,7 @@ test("planner CLI still rejects corrupt current-format terminal ledgers", async 
     runPlannerCli({
       model,
       records,
+      sources: Object.values(sourcesFor(records)),
       fullReport: {
         schema_version: 1,
         run_id: "current-full",
@@ -518,14 +537,15 @@ test("planner CLI rejects a corrupt durable ledger before taking action", async 
     summary: "Generic intake details.",
     metadata_status: "provisional",
     enrichment_policy: "automatic",
-    visibility: "published",
-    source: { type: "github", repository: `Creator/project-${index}` },
+    listing_status: "active",
+    source_id: `github-project-${index}`,
   }));
 
   await expect(
     runPlannerCli({
       model,
       records,
+      sources: Object.values(sourcesFor(records)),
       fullReport: null,
       canaryReport: {
         mode: "canary",

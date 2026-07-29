@@ -22,12 +22,15 @@ export interface SubmissionRepositoryObservation {
 
 export interface ForkDependencyProject {
   id: string;
-  visibility: string;
+  listing_status: string;
   repositoryId?: number | null;
-  source: {
-    type: string;
-    repository_id?: number | null;
-  };
+  source_id: string;
+}
+
+export interface ForkDependencySource {
+  id: string;
+  type: string;
+  repository_id?: number | null;
 }
 
 export interface SubmissionLookup {
@@ -65,6 +68,7 @@ export type ForkDependencyDecision =
 export function classifyForkDependency(input: {
   repository: SubmissionRepositoryObservation | undefined;
   projects: ForkDependencyProject[];
+  sources: ForkDependencySource[];
   priorSubmission: SubmissionLookup | null;
   ancestryRepositoryIds: number[];
 }): ForkDependencyDecision;

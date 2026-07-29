@@ -6,18 +6,16 @@ import {
 } from "../../scripts/catalog/readme-source.mjs";
 
 const record = {
-  id: "fixture",
-  source: {
-    type: "github",
-    repository: "Creator/Project",
-    repository_id: 42,
-  },
+  id: "github-42",
+  type: "github",
+  repository: "Creator/Project",
+  repository_id: 42,
 };
 
 const healthy = {
-  schema_version: 3,
+  schema_version: 4,
   provider: "github",
-  project_id: "fixture",
+  source_id: "github-42",
   source_health: "healthy",
   stale_since: null,
   repository: {
@@ -36,19 +34,17 @@ const healthy = {
 };
 
 const codebergRecord = {
-  id: "targren-lumiverse-swipescrubber",
-  source: {
-    type: "codeberg",
-    repository: "targren/Lumiverse-SwipeScrubber",
-    repository_id: 1699613,
-  },
+  id: "codeberg-1699613",
+  type: "codeberg",
+  repository: "targren/Lumiverse-SwipeScrubber",
+  repository_id: 1699613,
 };
 
 const codebergSnapshot = {
   ...healthy,
-  schema_version: 3,
+  schema_version: 4,
   provider: "codeberg",
-  project_id: codebergRecord.id,
+  source_id: codebergRecord.id,
   repository: {
     ...healthy.repository,
     id: 1699613,
@@ -59,7 +55,7 @@ const codebergSnapshot = {
 };
 
 const validateSnapshot = (value: unknown) =>
-  (value as { schema_version?: number })?.schema_version === 3;
+  (value as { schema_version?: number })?.schema_version === 4;
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -74,7 +70,7 @@ test("loads a Codeberg README through the repository provider", async () => {
   });
   const result = await loadReadmeSource(codebergRecord, codebergSnapshot, {
     validateSnapshot: (value) =>
-      (value as { schema_version?: number })?.schema_version === 3,
+      (value as { schema_version?: number })?.schema_version === 4,
     providers: {
       codeberg: { readRootReadme },
     },
@@ -111,9 +107,9 @@ test.each([
     record,
   ],
   [
-    "wrong project",
-    { ...healthy, project_id: "other" },
-    "project-mismatch",
+    "wrong source",
+    { ...healthy, source_id: "other" },
+    "source-mismatch",
     record,
   ],
   [
@@ -140,7 +136,7 @@ test.each([
     "missing-permanent-identity",
     {
       ...record,
-      source: { ...record.source, repository_id: null },
+      repository_id: null,
     },
   ],
 ] as const)(

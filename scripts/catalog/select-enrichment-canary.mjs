@@ -12,12 +12,14 @@ function forceForSelectionMode(selectionMode) {
   return selectionMode === "all-automatic";
 }
 
-export function selectRandomCanaryIds(records, options = {}) {
+export function selectRandomCanaryIds(records, sourcesById, options = {}) {
   const count = options.count ?? 5;
   const draw = options.randomInt ?? randomInt;
   const force = forceForSelectionMode(options.selectionMode ?? "pending");
-  const candidates = selectEnrichmentRecords(records, { force })
-    .filter((record) => record.refresh_policy === "automatic")
+  const candidates = selectEnrichmentRecords(records, sourcesById, { force })
+    .filter(
+      (record) => sourcesById[record.source_id]?.refresh_policy === "automatic",
+    )
     .map(({ id }) => id);
 
   if (candidates.length < count) {
@@ -39,13 +41,16 @@ export function selectRandomCanaryIds(records, options = {}) {
 
 export function selectRepresentativeCanaryIds(
   records,
+  sourcesById,
   snapshots,
   options = {},
 ) {
   const count = options.count ?? 7;
   const force = forceForSelectionMode(options.selectionMode ?? "pending");
-  const candidates = selectEnrichmentRecords(records, { force })
-    .filter((record) => record.refresh_policy === "automatic")
+  const candidates = selectEnrichmentRecords(records, sourcesById, { force })
+    .filter(
+      (record) => sourcesById[record.source_id]?.refresh_policy === "automatic",
+    )
     .sort((left, right) => left.id.localeCompare(right.id));
   if (candidates.length < 5) {
     throw new Error(
@@ -54,7 +59,7 @@ export function selectRepresentativeCanaryIds(
   }
   const snapshotsById = Array.isArray(snapshots)
     ? Object.fromEntries(
-        snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+        snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
       )
     : snapshots;
   const selected = [];
@@ -65,7 +70,7 @@ export function selectRepresentativeCanaryIds(
     if (match) selected.push(match.id);
   };
   const healthySnapshot = (record) => {
-    const snapshot = snapshotsById?.[record.id];
+    const snapshot = snapshotsById?.[record.source_id];
     return snapshot?.source_health === "healthy" &&
       snapshot.stale_since === null
       ? snapshot
@@ -98,6 +103,7 @@ export function selectRepresentativeCanaryIds(
 async function loadCatalog() {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   const recordDirectory = resolve(root, "data/registry/projects");
+  const sourceDirectory = resolve(root, "data/registry/sources");
   const recordFiles = (await readdir(recordDirectory))
     .filter((name) => name.endsWith(".json"))
     .sort();
@@ -112,7 +118,7 @@ async function loadCatalog() {
             const snapshot = JSON.parse(
               await readFile(resolve(snapshotDirectory, name), "utf8"),
             );
-            return [snapshot.project_id, snapshot];
+            return [snapshot.source_id, snapshot];
           }),
       );
     } catch (error) {
@@ -120,23 +126,35 @@ async function loadCatalog() {
       throw error;
     }
   }
-  const [records, snapshotEntries] = await Promise.all([
+  const [records, sources, snapshotEntries] = await Promise.all([
     Promise.all(
       recordFiles.map(async (name) =>
         JSON.parse(await readFile(resolve(recordDirectory, name), "utf8")),
       ),
+    ),
+    Promise.all(
+      (await readdir(sourceDirectory))
+        .filter((name) => name.endsWith(".json"))
+        .sort()
+        .map(async (name) =>
+          JSON.parse(await readFile(resolve(sourceDirectory, name), "utf8")),
+        ),
     ),
     Promise.all([
       loadSnapshotEntries("github"),
       loadSnapshotEntries("codeberg"),
     ]).then((entries) => entries.flat()),
   ]);
-  return { records, snapshots: Object.fromEntries(snapshotEntries) };
+  return {
+    records,
+    sources: Object.fromEntries(sources.map((source) => [source.id, source])),
+    snapshots: Object.fromEntries(snapshotEntries),
+  };
 }
 
 async function main() {
-  const { records, snapshots } = await loadCatalog();
-  const selected = selectRepresentativeCanaryIds(records, snapshots, {
+  const { records, sources, snapshots } = await loadCatalog();
+  const selected = selectRepresentativeCanaryIds(records, sources, snapshots, {
     selectionMode: process.env.ENRICHMENT_SELECTION_MODE ?? "pending",
   });
   process.stdout.write(`${selected.join("\n")}\n`);

@@ -41,7 +41,7 @@ test("rejects unknown keys, categories, and unsafe explanations", () => {
 test("fingerprints project, immutable source evidence, and policy version", () => {
   const input = {
     projectId: "alpha",
-    sourceIdentity: "github:owner/alpha",
+    sourceId: "github-42",
     headSha: "a".repeat(40),
     policyVersion: "2026-07-29",
   };

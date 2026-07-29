@@ -112,8 +112,11 @@ jobs:
           const project = JSON.parse(
             fs.readFileSync(`data/registry/projects/${process.env.PROJECT_ID}.json`, "utf8"),
           );
+          const source = JSON.parse(
+            fs.readFileSync(`data/registry/sources/${project.source_id}.json`, "utf8"),
+          );
           const snapshotPath =
-            `data/snapshots/${project.source.type}/${process.env.PROJECT_ID}.json`;
+            `data/snapshots/${source.type}/${source.id}.json`;
           const snapshot = fs.existsSync(snapshotPath)
             ? JSON.parse(fs.readFileSync(snapshotPath, "utf8"))
             : null;
@@ -138,6 +141,7 @@ jobs:
           }
           const result = await reviewCatalogPolicy({
             project,
+            source,
             snapshot,
             previous,
             provider,
@@ -189,16 +193,17 @@ jobs:
           const report = JSON.parse(fs.readFileSync(`${process.env.RUNNER_TEMP}/catalog-policy-review-report.json`, "utf8"));
           const transaction = parseProjectPublicationTransaction(pull?.body ?? "");
           const project = JSON.parse(fs.readFileSync(`data/registry/projects/${process.env.PROJECT_ID}.json`, "utf8"));
+          const source = JSON.parse(fs.readFileSync(`data/registry/sources/${project.source_id}.json`, "utf8"));
           const marker = `<!-- tavernary-catalog-policy-review:${project.id} -->`;
           const existing = JSON.parse(
             fs.readFileSync(`${process.env.RUNNER_TEMP}/catalog-policy-review-issues.json`, "utf8"),
           ).find((candidate) => candidate.body?.includes(marker));
-          const sourceUrl = ["github", "codeberg"].includes(project.source.type)
-            ? `https://${project.source.type === "github" ? "github.com" : "codeberg.org"}/${project.source.repository}`
-            : project.source.url;
+          const sourceUrl = ["github", "codeberg"].includes(source.type)
+            ? `https://${source.type === "github" ? "github.com" : "codeberg.org"}/${source.repository}`
+            : source.url;
           const readmeUrl =
-            process.env.README_REF && process.env.README_PATH && project.source.type === "github"
-              ? `https://github.com/${project.source.repository}/blob/${process.env.README_REF}/${process.env.README_PATH}`
+            process.env.README_REF && process.env.README_PATH && source.type === "github"
+              ? `https://github.com/${source.repository}/blob/${process.env.README_REF}/${process.env.README_PATH}`
               : null;
           let submittedSummary = "";
           if (transaction?.producer === "project-submission") {

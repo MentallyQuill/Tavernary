@@ -153,6 +153,13 @@ export function resolveProjectSubmissionEvent(
 export function loadProjectSubmissionCatalogData(): Promise<{
   vocabulary: FrontendVocabulary;
   projects: FrontendProject[];
+  sources: Array<{
+    id: string;
+    type: string;
+    repository?: string;
+    repository_id?: number | null;
+    url?: string;
+  }>;
 }>;
 
 export function projectSubmissionExistingProject(

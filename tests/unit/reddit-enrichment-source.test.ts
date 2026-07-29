@@ -3,11 +3,9 @@ import { expect, test, vi } from "vitest";
 import { loadRedditEnrichmentSource } from "../../scripts/catalog/reddit-enrichment-source.mjs";
 
 const record = {
-  id: "reddit-1v64r6z",
-  source: {
-    type: "url",
-    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
-  },
+  id: "url-reddit-1v64r6z",
+  type: "url",
+  url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update_writers_block_5_a_prose_and_narrative/",
 };
 
 function listing(overrides: Record<string, unknown> = {}) {
@@ -223,7 +221,8 @@ test("rejects a non-Reddit source without fetching", async () => {
     loadRedditEnrichmentSource(
       {
         id: "external",
-        source: { type: "url", url: "https://example.com/preset" },
+        type: "url",
+        url: "https://example.com/preset",
       },
       {
         readSource: async () => {

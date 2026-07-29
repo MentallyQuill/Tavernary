@@ -8,19 +8,25 @@ import {
 function record(
   id: string,
   overrides: Record<string, unknown> = {},
-): { id: string } & Record<string, unknown> {
+): { id: string; source_id: string } & Record<string, unknown> {
   return {
     id,
-    visibility: "published",
+    listing_status: "active",
     metadata_status: "provisional",
     enrichment_policy: "automatic",
     summary: "An extension for SillyTavern.",
+    source_id: `source-${id}`,
+    ...overrides,
+  };
+}
+
+function source(id: string, overrides: Record<string, unknown> = {}) {
+  return {
+    id: `source-${id}`,
+    type: "github",
+    repository: `owner/${id}`,
+    repository_id: null,
     refresh_policy: "automatic",
-    source: {
-      type: "github",
-      repository: `owner/${id}`,
-      repository_id: null,
-    },
     ...overrides,
   };
 }
@@ -28,17 +34,30 @@ function record(
 test("selects five unique random IDs from refreshable enrichment records", () => {
   const records = [
     ...Array.from({ length: 7 }, (_, index) => record(`eligible-${index}`)),
-    record("manual", { refresh_policy: "manual" }),
-    record("hidden", { visibility: "hidden" }),
+    record("manual"),
+    record("hidden", { listing_status: "retired" }),
     record("curated", {
       metadata_status: "curated",
       summary: "A complete editorial description.",
     }),
-    record("external", { source: { type: "url" } }),
+    record("external"),
   ];
+  const sources = Object.fromEntries(
+    records.map(({ id }) => [
+      `source-${id}`,
+      source(
+        id,
+        id === "manual"
+          ? { refresh_policy: "paused" }
+          : id === "external"
+            ? { type: "url", refresh_policy: "paused" }
+            : {},
+      ),
+    ]),
+  );
   const draws = [6, 0, 4, 1, 2];
 
-  const selected = selectRandomCanaryIds(records, {
+  const selected = selectRandomCanaryIds(records, sources, {
     randomInt: (maximum) => draws.shift()! % maximum,
   });
 
@@ -51,6 +70,12 @@ test("fails clearly when fewer than five candidates are available", () => {
   expect(() =>
     selectRandomCanaryIds(
       Array.from({ length: 4 }, (_, index) => record(`eligible-${index}`)),
+      Object.fromEntries(
+        Array.from({ length: 4 }, (_, index) => [
+          `source-eligible-${index}`,
+          source(`eligible-${index}`),
+        ]),
+      ),
     ),
   ).toThrow("at least five");
 });
@@ -68,9 +93,9 @@ test("deterministically selects a representative seven-project pool", () => {
   ];
   const snapshots = Object.fromEntries(
     records.map(({ id }) => [
-      id,
+      `source-${id}`,
       {
-        project_id: id,
+        source_id: `source-${id}`,
         source_health: "healthy",
         stale_since: null,
         repository: {
@@ -84,10 +109,14 @@ test("deterministically selects a representative seven-project pool", () => {
       },
     ]),
   );
+  const sources = Object.fromEntries(
+    records.map(({ id }) => [`source-${id}`, source(id)]),
+  );
 
-  const first = selectRepresentativeCanaryIds(records, snapshots);
+  const first = selectRepresentativeCanaryIds(records, sources, snapshots);
   const second = selectRepresentativeCanaryIds(
     [...records].reverse(),
+    sources,
     snapshots,
   );
 
@@ -122,28 +151,31 @@ test("honors pending versus all-automatic selection without weakening manual loc
   ];
   const snapshots = Object.fromEntries(
     records.map(({ id }) => [
-      id,
+      `source-${id}`,
       {
-        project_id: id,
+        source_id: `source-${id}`,
         source_health: "healthy",
         stale_since: null,
         repository: { description: `Description for ${id}.` },
       },
     ]),
   );
+  const sources = Object.fromEntries(
+    records.map(({ id }) => [`source-${id}`, source(id)]),
+  );
 
   expect(
-    selectRepresentativeCanaryIds(records, snapshots, {
+    selectRepresentativeCanaryIds(records, sources, snapshots, {
       selectionMode: "pending",
     }),
   ).not.toContain("curated-preset");
   expect(
-    selectRepresentativeCanaryIds(records, snapshots, {
+    selectRepresentativeCanaryIds(records, sources, snapshots, {
       selectionMode: "all-automatic",
     }),
   ).toContain("curated-preset");
   expect(
-    selectRepresentativeCanaryIds(records, snapshots, {
+    selectRepresentativeCanaryIds(records, sources, snapshots, {
       selectionMode: "all-automatic",
     }),
   ).not.toContain("manual-github");

@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { parseKitIssueFields } from "./triage-kit-issue.mjs";
 import { validateKitSubmission } from "./validate-kit-submission.mjs";
 
@@ -36,6 +37,31 @@ function projectSetKey(projectIds) {
     : "";
 }
 
+function projectsWithEffectiveListing(
+  projects,
+  sourcesById,
+  snapshotsBySourceId,
+) {
+  return projects.map((project) => {
+    const source = sourcesById[project.source_id];
+    if (
+      source &&
+      effectiveListingState({
+        project,
+        source,
+        snapshot: snapshotsBySourceId[project.source_id],
+      }).public
+    ) {
+      return project;
+    }
+    return {
+      ...project,
+      listing_status: "quarantined",
+      listing_status_reason: "source-unavailable",
+    };
+  });
+}
+
 export function reconcileOwnedKitLabels({ currentLabels, desiredOwnedLabels }) {
   return [
     ...currentLabels.filter((label) => !ownedKitLabels.has(label)),
@@ -46,6 +72,8 @@ export function reconcileOwnedKitLabels({ currentLabels, desiredOwnedLabels }) {
 export function classifyKitSubmissionHistory({
   issue,
   projects,
+  sourcesById = {},
+  snapshotsBySourceId = {},
   kits,
   blockedUsers,
 }) {
@@ -119,7 +147,11 @@ export function classifyKitSubmissionHistory({
   const validation = validateKitSubmission({
     manifest: parseKitIssueFields(issue.body ?? "").manifest,
     actor: issue.user,
-    projects,
+    projects: projectsWithEffectiveListing(
+      projects,
+      sourcesById,
+      snapshotsBySourceId,
+    ),
     kits,
     blockedUsers,
     sourceIssueNumber: issue.number,
@@ -149,6 +181,8 @@ export function classifyKitSubmissionHistory({
 export function buildKitReconciliationLedger({
   issues,
   projects,
+  sourcesById,
+  snapshotsBySourceId,
   kits,
   blockedUsers,
 }) {
@@ -158,6 +192,8 @@ export function buildKitReconciliationLedger({
       const classification = classifyKitSubmissionHistory({
         issue,
         projects,
+        sourcesById,
+        snapshotsBySourceId,
         kits,
         blockedUsers,
       });
@@ -204,6 +240,8 @@ export async function runKitReconciliation({
   apply,
   gh,
   projects,
+  sourcesById,
+  snapshotsBySourceId,
   kits,
   blockedUsers,
 }) {
@@ -224,6 +262,8 @@ export async function runKitReconciliation({
   const ledger = buildKitReconciliationLedger({
     issues,
     projects,
+    sourcesById,
+    snapshotsBySourceId,
     kits,
     blockedUsers,
   });
@@ -375,8 +415,10 @@ export function executeGh(args, stdin) {
 
 async function main() {
   const options = parseReconciliationArgs(process.argv.slice(2));
-  const [projects, kits, blockedUsers] = await Promise.all([
+  const [projects, sources, snapshots, kits, blockedUsers] = await Promise.all([
     readJsonDirectory("data/registry/projects"),
+    readJsonDirectory("data/registry/sources"),
+    readJsonDirectory("data/snapshots/github"),
     readJsonDirectory("data/registry/kits"),
     readFile("data/moderation/blocked-github-users.json", "utf8").then(
       JSON.parse,
@@ -386,6 +428,12 @@ async function main() {
     ...options,
     gh: executeGh,
     projects,
+    sourcesById: Object.fromEntries(
+      sources.map((source) => [source.id, source]),
+    ),
+    snapshotsBySourceId: Object.fromEntries(
+      snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+    ),
     kits,
     blockedUsers,
   });

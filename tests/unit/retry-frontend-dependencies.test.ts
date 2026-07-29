@@ -26,15 +26,24 @@ function markerComment(
 }
 
 test("matches dependencies by canonical frontend repository URL", () => {
-  const indexedUrls = indexedFrontendUrls([
+  const indexedUrls = indexedFrontendUrls(
+    [
+      {
+        id: "aikobots",
+        name: "Aikobots",
+        kind: "frontend",
+        source_id: "github-10",
+        frontends: ["aikobots"],
+      },
+    ],
     {
-      id: "aikobots",
-      name: "Aikobots",
-      kind: "frontend",
-      source: { type: "github", repository: "aikohanasaki/Aikobots" },
-      frontends: ["aikobots"],
+      "github-10": {
+        id: "github-10",
+        type: "github",
+        repository: "aikohanasaki/Aikobots",
+      },
     },
-  ]);
+  );
 
   expect(
     hasResolvableFrontendDependency({
@@ -55,15 +64,24 @@ test("matches dependencies by canonical frontend repository URL", () => {
 });
 
 test("matches dependencies by canonical external Frontend URL", () => {
-  const indexedUrls = indexedFrontendUrls([
+  const indexedUrls = indexedFrontendUrls(
+    [
+      {
+        id: "nova",
+        name: "Nova",
+        kind: "frontend",
+        source_id: "url-nova",
+        frontends: ["nova"],
+      },
+    ],
     {
-      id: "nova",
-      name: "Nova",
-      kind: "frontend",
-      source: { type: "url", url: "https://codeberg.org/example/nova" },
-      frontends: ["nova"],
+      "url-nova": {
+        id: "url-nova",
+        type: "url",
+        url: "https://codeberg.org/example/nova",
+      },
     },
-  ]);
+  );
 
   expect(
     hasResolvableFrontendDependency({
@@ -119,8 +137,15 @@ test("dispatches ordinary triage only for matching blocked issues", async () => 
           id: "aikobots",
           name: "Aikobots",
           kind: "frontend",
-          source: { type: "github", repository: "aikohanasaki/Aikobots" },
+          source_id: "github-10",
           frontends: ["aikobots"],
+        },
+      ],
+      sources: [
+        {
+          id: "github-10",
+          type: "github",
+          repository: "aikohanasaki/Aikobots",
         },
       ],
       request,

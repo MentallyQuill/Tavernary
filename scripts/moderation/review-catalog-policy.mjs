@@ -6,11 +6,11 @@ import {
 } from "./catalog-policy-review-contract.mjs";
 import { applyCatalogPolicyReviewState } from "./catalog-policy-review-state.mjs";
 
-function sourceIdentity(project) {
-  if (["github", "codeberg"].includes(project?.source?.type)) {
-    return `${project.source.type}:${project.source.repository.toLocaleLowerCase()}`;
+function sourceIdentity(source) {
+  if (["github", "codeberg"].includes(source?.type)) {
+    return `${source.type}:${source.repository.toLocaleLowerCase()}`;
   }
-  return `url:${project?.source?.url ?? ""}`;
+  return `url:${source?.url ?? ""}`;
 }
 
 function evidenceHead(snapshot) {
@@ -21,10 +21,10 @@ function evidenceHead(snapshot) {
 
 export async function reviewCatalogPolicy(input) {
   const policyVersion = input.policyVersion ?? CATALOG_POLICY_VERSION;
-  const identity = sourceIdentity(input.project);
+  const identity = sourceIdentity(input.source);
   const fingerprint = createPolicyEvidenceFingerprint({
     projectId: input.project.id,
-    sourceIdentity: identity,
+    sourceId: input.source.id,
     headSha: evidenceHead(input.snapshot),
     policyVersion,
   });
@@ -39,6 +39,7 @@ export async function reviewCatalogPolicy(input) {
   try {
     source = await (input.loadSource ?? loadEnrichmentSource)(
       input.project,
+      input.source,
       input.snapshot,
       input.sourceOptions,
     );
@@ -70,6 +71,7 @@ export async function reviewCatalogPolicy(input) {
   const reviewedAt = new Date(input.now ?? Date.now()).toISOString();
   const applied = applyCatalogPolicyReviewState(input.previous ?? null, {
     projectId: input.project.id,
+    sourceId: input.source.id,
     sourceIdentity: identity,
     evidenceFingerprint: fingerprint,
     policyVersion,

@@ -1,9 +1,7 @@
-export interface ForkDependencyProjectRecord {
+export interface ForkDependencySourceRecord {
   id: string;
-  source?: {
-    type: string;
-    repository_id?: number | null;
-  };
+  type: string;
+  repository_id?: number | null;
 }
 
 export interface ForkDependencyComment {
@@ -17,14 +15,14 @@ export type ForkDependencyRetryRequest = (
 
 export function hasTerminalForkDependency(input: {
   comments: ForkDependencyComment[];
-  projectsByRepositoryId: Map<number, ForkDependencyProjectRecord>;
+  sourcesByRepositoryId: Map<number, ForkDependencySourceRecord>;
   closedUpstreamIssueNumber?: number;
 }): boolean;
 
 export function retryForkDependencies(input: {
   repository: string;
   ref?: string;
-  projects: ForkDependencyProjectRecord[];
+  sources: ForkDependencySourceRecord[];
   closedUpstreamIssueNumber?: number;
   request: ForkDependencyRetryRequest;
 }): Promise<number[]>;

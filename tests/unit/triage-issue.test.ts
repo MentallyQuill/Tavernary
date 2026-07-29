@@ -48,6 +48,7 @@ test("retains catalog visibility, kind, and stable repository ID for fork classi
       name: "Parent",
       kind: "extension",
       visibility: "disabled",
+      source_id: "github-41",
       source: {
         type: "github",
         repository: "owner/parent",

@@ -129,14 +129,14 @@ async function loadOEmbedTitle(identity, provenance, readSource) {
   };
 }
 
-export async function loadRedditEnrichmentSource(record, options = {}) {
+export async function loadRedditEnrichmentSource(source, options = {}) {
   let identity;
   try {
-    identity = parseSourceIdentity(record?.source?.url);
+    identity = parseSourceIdentity(source?.url);
   } catch {
     identity = null;
   }
-  if (record?.source?.type !== "url" || identity?.kind !== "reddit") {
+  if (source?.type !== "url" || identity?.kind !== "reddit") {
     return failed("unsupported-enrichment-source");
   }
 

@@ -18,6 +18,7 @@ export function createEnrichmentRolloutPlan(input: {
   model: string;
   selectionMode?: "pending" | "all-automatic";
   records: Array<Record<string, unknown>>;
+  sourcesById: Record<string, Record<string, unknown>>;
   fullReport?: Record<string, unknown> | null;
   canaryReport?: Record<string, unknown> | null;
 }): {
@@ -30,6 +31,7 @@ export function runPlannerCli(options?: {
   model?: string;
   selectionMode?: "pending" | "all-automatic";
   records?: Array<Record<string, unknown>>;
+  sources?: Array<Record<string, unknown>>;
   fullReport?: Record<string, unknown> | null;
   canaryReport?: Record<string, unknown> | null;
   reportPath?: string;

@@ -4,6 +4,7 @@ import { applyCatalogPolicyReviewState } from "../../scripts/moderation/catalog-
 function result(overrides: Record<string, unknown> = {}) {
   return {
     projectId: "alpha",
+    sourceId: "github-42",
     sourceIdentity: "github:owner/alpha",
     evidenceFingerprint: "a".repeat(64),
     policyVersion: "2026-07-29",
@@ -18,6 +19,7 @@ test("writes clear state without source excerpts or reasoning", () => {
   expect(applied).toMatchObject({
     action: "write",
     state: {
+      source_id: "github-42",
       status: "clear",
       retry: { attempts: 0, last_failure_at: null },
     },
