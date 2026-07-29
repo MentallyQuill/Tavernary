@@ -42,7 +42,7 @@ test("documents project submission automation and recovery controls", async () =
     "Automation creates but never approves its own PR",
   );
   expect(contributorGuide).toContain(
-    "automatically publishes valid create, edit, source-move, and delist transactions",
+    "automatically publishes valid create, card-edit, source-move",
   );
   expect(contributorGuide).toContain("PR remains the CI and audit transaction");
   expect(contributorGuide).toContain("consensual adult content");
