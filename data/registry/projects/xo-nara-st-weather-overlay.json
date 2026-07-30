@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "xo-nara-st-weather-overlay",
+  "name": "st-weather-overlay",
+  "kind": "extension",
+  "summary": "SillyTavern extension that paints a full-screen ambient weather overlay — rain, snow, storms, wind, and day/night lighting — synced to your roleplay, with optional ambient audio and a manual Free Mode.",
+  "metadata_status": "curated",
+  "source_id": "github-1291504198",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["add-music-and-audio", "add-visual-immersion"],
+  "cataloged_at": "2026-07-30T21:57:19.181Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

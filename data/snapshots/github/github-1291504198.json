@@ -1,0 +1,59 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1291504198",
+  "repository": {
+    "id": 1291504198,
+    "owner": "xo-nara",
+    "name": "st-weather-overlay",
+    "url": "https://github.com/xo-nara/st-weather-overlay",
+    "description": "Full-screen ambient weather overlay for SillyTavern — rain, snow, storms, and wind synced to your roleplay, with day/night lighting, optional ambient audio, and a manual Free Mode for when you don't want to wait on the AI.",
+    "default_branch": "main",
+    "head_sha": "93c01c5f4fb6bed6cd6acbf3798dcffa437b443c",
+    "head_committed_at": "2026-07-07T02:41:58.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-06T21:33:42.000Z",
+    "size_kb": 37
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-06T21:52:02.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-06T21:52:02.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-06T22:01:41.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-30T21:57:19.181Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "93c01c5f4fb6bed6cd6acbf3798dcffa437b443c"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-30T21:57:19.181Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "xo-nara", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-30T21:57:19.181Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
