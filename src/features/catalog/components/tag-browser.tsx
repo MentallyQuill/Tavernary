@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 
+import { FilterChoiceChip } from "./filter-choice-chip";
 import { searchTags, type PublicTagDefinition } from "../tag-vocabulary";
+
+export const TAG_FACET_PREVIEW_LIMIT = 8;
 
 export function TagBrowser({
   tags,
   selected,
   onToggle,
+  previewLimit,
   maxSelections,
   counts = {},
   searchLabel,
@@ -16,34 +20,36 @@ export function TagBrowser({
   tags: readonly PublicTagDefinition[];
   selected: readonly string[];
   onToggle: (id: string) => void;
+  previewLimit: number;
   maxSelections?: number;
   counts?: Readonly<Record<string, number>>;
   searchLabel: string;
   limitLabel?: string;
 }) {
   const [query, setQuery] = useState("");
+  const [expandedFacets, setExpandedFacets] = useState({
+    goal: false,
+    trait: false,
+  });
   const selectedSet = new Set(selected);
+  const searching = query.trim().length > 0;
   const matchedIds = new Set(searchTags(tags, query).map((tag) => tag.id));
-  const visibleTags = tags.filter(
-    (tag) => selectedSet.has(tag.id) || matchedIds.has(tag.id),
-  );
-  const selectionOrder = new Map(selected.map((id, index) => [id, index]));
+  const selectedTags = selected
+    .map((id) => tags.find((tag) => tag.id === id))
+    .filter((tag): tag is PublicTagDefinition => tag !== undefined);
   const atLimit =
     maxSelections !== undefined && selected.length >= maxSelections;
 
   function tagsForFacet(facet: PublicTagDefinition["facet"]) {
-    return visibleTags
-      .filter((tag) => tag.facet === facet)
-      .sort((left, right) => {
-        const leftSelected = selectionOrder.get(left.id);
-        const rightSelected = selectionOrder.get(right.id);
-        if (leftSelected !== undefined && rightSelected !== undefined) {
-          return leftSelected - rightSelected;
-        }
-        if (leftSelected !== undefined) return -1;
-        if (rightSelected !== undefined) return 1;
-        return left.label.localeCompare(right.label);
-      });
+    return tags
+      .filter(
+        (tag) => tag.facet === facet && (!searching || matchedIds.has(tag.id)),
+      )
+      .sort(
+        (left, right) =>
+          (counts[right.id] ?? 0) - (counts[left.id] ?? 0) ||
+          left.label.localeCompare(right.label),
+      );
   }
 
   const groups = [
@@ -69,56 +75,76 @@ export function TagBrowser({
         </span>
         {limitLabel ? <span>{limitLabel}</span> : null}
       </div>
-      <div className="tag-results-bounded" data-testid="tag-results">
+      {selectedTags.length > 0 ? (
+        <div
+          className="tag-browser-selected"
+          aria-label="Selected goals and traits"
+        >
+          {selectedTags.map((tag) => (
+            <button
+              className="filter-selected-chip"
+              type="button"
+              aria-label={`Remove ${tag.label}`}
+              onClick={() => onToggle(tag.id)}
+              key={tag.id}
+            >
+              <span aria-hidden="true">{"\u2713"}</span>
+              <span>{tag.label}</span>
+              <span aria-hidden="true">{"\u00d7"}</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+      <div className="tag-browser-facets">
         {groups.map(({ facet, label }) => {
           const groupTags = tagsForFacet(facet);
+          if (groupTags.length === 0) return null;
+          const expanded = expandedFacets[facet];
+          const visibleGroupTags =
+            searching || expanded
+              ? groupTags
+              : groupTags.slice(0, previewLimit);
+          const hiddenCount = groupTags.length - visibleGroupTags.length;
           return (
             <fieldset className="tag-browser-group" key={facet}>
               <legend>{label}</legend>
               <div className="tag-browser-options">
-                {groupTags.map((tag) => {
+                {visibleGroupTags.map((tag) => {
                   const isSelected = selectedSet.has(tag.id);
                   const isDisabled = !isSelected && atLimit;
-                  const count = counts[tag.id];
                   return (
-                    <label
-                      className={[
-                        "tag-browser-option",
-                        isSelected ? "selected" : "",
-                        isDisabled ? "disabled" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
+                    <FilterChoiceChip
+                      className="tag-browser-option"
+                      label={tag.label}
+                      count={counts[tag.id]}
+                      checked={isSelected}
+                      disabled={isDisabled}
                       title={tag.description}
+                      onChange={() => onToggle(tag.id)}
                       key={tag.id}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        disabled={isDisabled}
-                        aria-label={tag.label}
-                        onChange={() => onToggle(tag.id)}
-                      />
-                      <span className="tag-browser-check" aria-hidden="true">
-                        ✓
-                      </span>
-                      <span>{tag.label}</span>
-                      {count !== undefined ? (
-                        <span
-                          className="tag-browser-count"
-                          aria-label={`${count} ${count === 1 ? "project" : "projects"}`}
-                        >
-                          {count}
-                        </span>
-                      ) : null}
-                    </label>
+                    />
                   );
                 })}
               </div>
+              {!searching && (hiddenCount > 0 || expanded) ? (
+                <button
+                  className="more-frontends tag-browser-disclosure"
+                  type="button"
+                  aria-expanded={expanded}
+                  onClick={() =>
+                    setExpandedFacets((current) => ({
+                      ...current,
+                      [facet]: !current[facet],
+                    }))
+                  }
+                >
+                  {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
+                </button>
+              ) : null}
             </fieldset>
           );
         })}
-        {visibleTags.length === 0 ? (
+        {searching && matchedIds.size === 0 ? (
           <p className="tag-browser-empty">No matching goals or traits.</p>
         ) : null}
       </div>

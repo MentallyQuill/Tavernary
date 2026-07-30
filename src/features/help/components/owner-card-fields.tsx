@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import {
+  TAG_FACET_PREVIEW_LIMIT,
+  TagBrowser,
+} from "@/features/catalog/components/tag-browser";
 import {
   CATALOG_DESCRIPTION_GUIDANCE,
   CATALOG_EMOJI_REMOVED_NOTICE,
@@ -247,6 +250,7 @@ export function OwnerCardFields({
                 : [...card.tags, id],
             })
           }
+          previewLimit={TAG_FACET_PREVIEW_LIMIT}
           maxSelections={6}
           searchLabel={fieldLabel(index, compact, "tag search")}
           limitLabel="Up to six per card"

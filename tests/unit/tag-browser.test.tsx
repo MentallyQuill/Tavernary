@@ -62,10 +62,12 @@ function Harness({
   tags = hundredTags,
   initialSelected = [],
   maxSelections = 6,
+  counts = Object.fromEntries(tags.map((tag, index) => [tag.id, index])),
 }: {
   tags?: PublicTagDefinition[];
   initialSelected?: string[];
   maxSelections?: number;
+  counts?: Readonly<Record<string, number>>;
 }) {
   const [selected, setSelected] = useState(initialSelected);
   return (
@@ -79,8 +81,9 @@ function Harness({
             : [...current, id],
         )
       }
+      previewLimit={2}
       maxSelections={maxSelections}
-      counts={Object.fromEntries(tags.map((tag, index) => [tag.id, index]))}
+      counts={counts}
       searchLabel="Search goals and traits"
       limitLabel="6 tags maximum"
     />
@@ -114,7 +117,7 @@ test("filters the visible tag browser by searchable metadata", async () => {
   expect(screen.queryByLabelText("Generate images")).not.toBeInTheDocument();
 });
 
-test("pins selected tags and prevents a seventh selection", async () => {
+test("prevents a seventh selection until a selected tag is removed", async () => {
   const user = userEvent.setup();
   const sixIds = [
     "maintain-long-term-memory",
@@ -127,37 +130,140 @@ test("pins selected tags and prevents a seventh selection", async () => {
   render(<Harness tags={coreTags} initialSelected={sixIds} />);
 
   expect(screen.getByText("6 / 6 selected")).toBeVisible();
-  expect(screen.getByLabelText("Generate images")).toBeDisabled();
   const goals = screen.getByRole("group", { name: "Goals" });
-  expect(within(goals).getAllByRole("checkbox")[0]).toHaveAccessibleName(
-    "Maintain long-term memory",
+  await user.click(
+    within(goals).getByRole("button", { name: /Show \d+ more/u }),
   );
+  expect(screen.getByLabelText("Generate images")).toBeDisabled();
 
-  await user.click(screen.getByLabelText("Goal 5"));
+  await user.click(screen.getByRole("button", { name: "Remove Goal 5" }));
   expect(screen.getByText("5 / 6 selected")).toBeVisible();
   expect(screen.getByLabelText("Generate images")).toBeEnabled();
 });
 
-test("renders separate Goals and Traits groups in one bounded region", () => {
+test("ranks facet previews and derives disclosure counts", () => {
+  render(
+    <Harness
+      tags={coreTags}
+      counts={{
+        "maintain-long-term-memory": 2,
+        "generate-images": 9,
+        "local-first": 4,
+        "goal-1": 9,
+      }}
+    />,
+  );
+
+  const goals = screen.getByRole("group", { name: "Goals" });
+  expect(
+    within(goals)
+      .getAllByRole("checkbox")
+      .map((input) => input.getAttribute("aria-label")),
+  ).toEqual(["Generate images", "Goal 1"]);
+  expect(
+    within(goals).getByRole("button", { name: "Show 5 more" }),
+  ).toHaveAttribute("aria-expanded", "false");
+});
+
+test("expands Goals and Traits independently", async () => {
+  const user = userEvent.setup();
   render(<Harness />);
 
+  const goals = screen.getByRole("group", { name: "Goals" });
+  const traits = screen.getByRole("group", { name: "Traits" });
+  const initialTraitCount = within(traits).getAllByRole("checkbox").length;
+
+  await user.click(
+    within(goals).getByRole("button", { name: /Show \d+ more/u }),
+  );
+  expect(
+    within(goals).getByRole("button", { name: "Show fewer" }),
+  ).toHaveAttribute("aria-expanded", "true");
+  expect(within(traits).getAllByRole("checkbox")).toHaveLength(
+    initialTraitCount,
+  );
+});
+
+test("keeps selected tags removable outside the collapsed preview", async () => {
+  const user = userEvent.setup();
+  render(
+    <Harness
+      tags={coreTags}
+      initialSelected={["maintain-long-term-memory"]}
+      counts={{ "maintain-long-term-memory": 0, "generate-images": 10 }}
+    />,
+  );
+
+  const remove = screen.getByRole("button", {
+    name: "Remove Maintain long-term memory",
+  });
+  expect(remove).toBeVisible();
+  await user.click(remove);
+  expect(
+    screen.queryByRole("button", {
+      name: "Remove Maintain long-term memory",
+    }),
+  ).toBeNull();
+});
+
+test("searches all metadata without clearing selections or expansion", async () => {
+  const user = userEvent.setup();
+  render(<Harness tags={coreTags} initialSelected={["local-first"]} />);
+
+  const goals = screen.getByRole("group", { name: "Goals" });
+  await user.click(
+    within(goals).getByRole("button", { name: /Show \d+ more/u }),
+  );
+  const search = screen.getByRole("searchbox", {
+    name: "Search goals and traits",
+  });
+  await user.type(search, "persistent context");
+
+  expect(screen.getByLabelText("Maintain long-term memory")).toBeVisible();
+  expect(screen.queryByLabelText("Generate images")).toBeNull();
+  expect(
+    screen.getByRole("button", { name: "Remove Local-first" }),
+  ).toBeVisible();
+  expect(screen.queryByRole("button", { name: /Show/u })).toBeNull();
+
+  await user.clear(search);
+  expect(
+    within(screen.getByRole("group", { name: "Goals" })).getByRole("button", {
+      name: "Show fewer",
+    }),
+  ).toBeVisible();
+});
+
+test("uses an unbounded facet layout and omits empty searched facets", async () => {
+  const user = userEvent.setup();
+  render(<Harness tags={coreTags} />);
+
+  await user.type(
+    screen.getByRole("searchbox", { name: "Search goals and traits" }),
+    "persistent context",
+  );
+
+  expect(screen.queryByTestId("tag-results")).toBeNull();
   expect(screen.getByRole("group", { name: "Goals" })).toBeVisible();
-  expect(screen.getByRole("group", { name: "Traits" })).toBeVisible();
-  expect(screen.getByTestId("tag-results")).toHaveClass("tag-results-bounded");
-  expect(screen.queryByRole("button", { name: /show more/iu })).toBeNull();
-  expect(screen.getByText("6 tags maximum")).toBeVisible();
+  expect(screen.queryByRole("group", { name: "Traits" })).toBeNull();
 });
 
 test("allows keyboard selection and announces per-tag counts", async () => {
   const user = userEvent.setup();
-  render(<Harness tags={coreTags} />);
+  render(
+    <Harness tags={coreTags} counts={{ "maintain-long-term-memory": 100 }} />,
+  );
 
   const memory = screen.getByLabelText("Maintain long-term memory");
+  expect(memory.closest("label")).toHaveClass(
+    "filter-choice",
+    "tag-browser-option",
+  );
   memory.focus();
   await user.keyboard(" ");
 
   expect(memory).toBeChecked();
   expect(
-    within(memory.closest("label") as HTMLLabelElement).getByText("0"),
-  ).toHaveAccessibleName("0 projects");
+    within(memory.closest("label") as HTMLLabelElement).getByText("100"),
+  ).toHaveAccessibleName("100 projects");
 });

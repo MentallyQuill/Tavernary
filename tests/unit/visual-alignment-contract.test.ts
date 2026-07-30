@@ -539,6 +539,17 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(
       /\.metadata-options\.collapsed\s*\{[^}]*max-height:\s*calc\(26px \* 4 \+ 6px \* 3\)[^}]*overflow:\s*hidden/s,
     );
+    expect(css).toMatch(
+      /\.tag-browser-facets\s*\{[^}]*display:\s*grid[^}]*gap:\s*12px/s,
+    );
+    expect(css).not.toContain(".tag-results-bounded");
+    expect(css).not.toMatch(/\.tag-browser-option\s*\{[^}]*44px/s);
+    expect(css).toMatch(
+      /\.filter-selected-chip\s*\{[^}]*min-height:\s*26px[^}]*border-radius:\s*4px[^}]*background:\s*var\(--color-accent-teal-bg\)/s,
+    );
+    expect(css).toMatch(
+      /\.filter-selected-chip:focus-visible\s*\{[^}]*inset[^}]*var\(--color-focus-ring\)/s,
+    );
   });
 
   test("adds the compact legal footer to the shared filter surface", () => {
