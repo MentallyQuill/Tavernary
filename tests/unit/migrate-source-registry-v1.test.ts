@@ -179,6 +179,129 @@ test("reports every card claiming contradictory facts for one source", () => {
   );
 });
 
+test("migrates one extension and two distinct Presets onto one shared source", () => {
+  const sharedSource = {
+    type: "github" as const,
+    repository: "owner/megumin-like-suite",
+    repository_id: 42,
+  };
+  const extension = {
+    ...project("suite-extension", 42, "published"),
+    name: "Suite Extension",
+    source: structuredClone(sharedSource),
+  };
+  const roleplayPreset = {
+    ...project("suite-roleplay-preset", 42, "published"),
+    name: "Suite Roleplay Preset",
+    kind: "preset" as const,
+    primary_function: "preset",
+    source: structuredClone(sharedSource),
+    model_families: ["claude"],
+    completion_formats: ["chat-completion"],
+  };
+  const reasoningPreset = {
+    ...project("suite-reasoning-preset", 42, "published"),
+    name: "Suite Reasoning Preset",
+    kind: "preset" as const,
+    primary_function: "preset",
+    source: structuredClone(sharedSource),
+    model_families: ["deepseek"],
+    completion_formats: ["text-completion"],
+  };
+
+  const plan = planSourceRegistryMigration({
+    projects: [extension, roleplayPreset, reasoningPreset],
+    snapshots: [snapshot(extension.id, 42)],
+    refreshManifest: {
+      schema_version: 2,
+      project_timings: [{ project_id: extension.id, outcome: "unchanged" }],
+    },
+    metadataByProjectId: new Map([
+      [
+        extension.id,
+        {
+          tags: ["extend-sillytavern"],
+          metadata_policy: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+        },
+      ],
+      [
+        roleplayPreset.id,
+        {
+          tags: ["support-roleplay"],
+          metadata_policy: {
+            summary: {
+              mode: "manual",
+              note: "Trusted Tavernary editor selection.",
+            },
+            tags: { mode: "automatic" },
+          },
+        },
+      ],
+      [
+        reasoningPreset.id,
+        {
+          tags: ["guide-reasoning"],
+          metadata_policy: {
+            summary: { mode: "automatic" },
+            tags: {
+              mode: "manual",
+              note: "Verified repository owner selection.",
+            },
+          },
+        },
+      ],
+    ]),
+  });
+
+  expect(plan.counts).toEqual({
+    projects: 3,
+    sources: 1,
+    snapshots: 1,
+    delistedSources: 0,
+  });
+  expect(plan.sources).toEqual([
+    expect.objectContaining({
+      id: "github-42",
+      repository: "owner/megumin-like-suite",
+    }),
+  ]);
+  expect(plan.snapshots).toEqual([
+    expect.objectContaining({ source_id: "github-42" }),
+  ]);
+  expect(plan.projects).toEqual([
+    expect.objectContaining({
+      id: extension.id,
+      source_id: "github-42",
+      tags: ["extend-sillytavern"],
+    }),
+    expect.objectContaining({
+      id: roleplayPreset.id,
+      source_id: "github-42",
+      tags: ["support-roleplay"],
+      metadata_policy: expect.objectContaining({
+        summary: {
+          mode: "manual",
+          note: "Trusted Tavernary editor selection.",
+        },
+      }),
+    }),
+    expect.objectContaining({
+      id: reasoningPreset.id,
+      source_id: "github-42",
+      tags: ["guide-reasoning"],
+      metadata_policy: expect.objectContaining({
+        tags: {
+          mode: "manual",
+          note: "Verified repository owner selection.",
+        },
+      }),
+    }),
+  ]);
+});
+
 test("rejects duplicate legacy project IDs before planning paths", () => {
   const duplicate = project("card-a", 42, "published");
 
