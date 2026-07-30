@@ -250,6 +250,115 @@
   border-color: var(--color-danger-border);
 }
 
+.submission-review {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.submission-review > h2,
+.submission-review > p,
+.submission-review-recovery > p {
+  margin: 0;
+}
+
+.submission-review-rows {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+  margin: 0;
+}
+
+.submission-review-rows > div {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+  gap: 12px;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 12px;
+}
+
+.submission-review-rows dt {
+  color: var(--color-text-secondary);
+  font-weight: 700;
+}
+
+.submission-review-rows dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.submission-review-rows code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.submission-review-status {
+  color: var(--color-info-text);
+}
+
+.submission-review-recovery {
+  display: grid;
+  gap: 8px;
+  color: var(--color-danger-text);
+}
+
+.submission-review-recovery a {
+  width: fit-content;
+  color: var(--color-link);
+}
+
+.submission-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.submission-review-actions button {
+  min-height: 44px;
+  border-radius: 6px;
+  padding: 0 18px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.submission-review-secondary,
+.submission-review-cancel {
+  border: 1px solid var(--color-control-border);
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+}
+
+.submission-review-cancel {
+  border-color: transparent;
+  color: var(--color-link);
+}
+
+.submission-review-continue {
+  border: 1px solid var(--color-action-primary-bg);
+  color: var(--color-action-primary-text);
+  background: var(--color-action-primary-bg);
+}
+
+.submission-review-actions button:hover,
+.submission-review-actions button:focus-visible {
+  border-color: var(--color-action-primary-hover);
+}
+
+.submission-review-continue:hover,
+.submission-review-continue:focus-visible {
+  background: var(--color-action-primary-hover);
+}
+
+.submission-review-actions button:disabled {
+  cursor: wait;
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+  background: var(--color-bg-disabled);
+}
+
 .submission-actions {
   display: flex;
   align-items: center;
@@ -314,16 +423,23 @@
   }
 
   .submission-section-heading,
-  .submission-actions {
+  .submission-actions,
+  .submission-review-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .submission-review-rows > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
   }
 
   .submission-other-fields {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .submission-actions button {
+  .submission-actions button,
+  .submission-review-actions button {
     width: 100%;
   }
 }

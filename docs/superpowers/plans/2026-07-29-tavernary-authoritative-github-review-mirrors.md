@@ -429,7 +429,7 @@ Actions, GitHub CLI, PowerShell.
 - Modify: `src/styles/submission.css`
 - Modify: `src/styles/responsive.css`
 
-- [ ] **Step 1: Add failing review-state tests**
+- [x] **Step 1: Add failing review-state tests**
 
   Render a review with rows and an `openReview` spy. Assert:
 
@@ -447,7 +447,7 @@ Actions, GitHub CLI, PowerShell.
     for pasting; and
   - back/edit runs the callback and focuses `returnFocusId`.
 
-- [ ] **Step 2: Run the review red test**
+- [x] **Step 2: Run the review red test**
 
   ```powershell
   npm.cmd test -- tests/unit/submission-review.test.tsx
@@ -456,7 +456,7 @@ Actions, GitHub CLI, PowerShell.
   Expected: FAIL because the shared component and its opened/recovery states do
   not exist.
 
-- [ ] **Step 3: Implement the component state machine**
+- [x] **Step 3: Implement the component state machine**
 
   Use a discriminated local state, not independent booleans:
 
@@ -474,7 +474,7 @@ Actions, GitHub CLI, PowerShell.
   `role="alert"` for recovery. A plain anchor may reopen the exact prepared URL
   only in recovery; label it **Open prepared GitHub review**, never “fallback.”
 
-- [ ] **Step 4: Add responsive styling**
+- [x] **Step 4: Add responsive styling**
 
   Reuse existing button tokens. Ensure:
 
@@ -484,7 +484,7 @@ Actions, GitHub CLI, PowerShell.
   - the live-status copy remains adjacent to the review actions; and
   - focus-visible and disabled states remain distinct.
 
-- [ ] **Step 5: Run focused component and format checks**
+- [x] **Step 5: Run focused component and format checks**
 
   ```powershell
   npm.cmd test -- tests/unit/submission-review.test.tsx
@@ -494,7 +494,7 @@ Actions, GitHub CLI, PowerShell.
 
   Expected: all PASS.
 
-- [ ] **Step 6: Commit the shared review**
+- [x] **Step 6: Commit the shared review**
 
   ```powershell
   git add src/features/submissions/components/submission-review.tsx src/styles/help.css src/styles/submission.css src/styles/responsive.css tests/unit/submission-review.test.tsx
