@@ -13,7 +13,12 @@ interface GeneratedCatalogProject {
   license: { status: string };
   community: { aggregate: number } | null;
   frontends: Array<{ id: string; label: string }>;
-  capabilities: Array<{ id: string; label: string }>;
+  tags: Array<{
+    id: string;
+    label: string;
+    facet: "goal" | "trait";
+    description: string;
+  }>;
   searchableText: string;
   fork: {
     parentName: string;
@@ -29,6 +34,13 @@ export const generatedCatalog = JSON.parse(
   readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
 ) as {
   generatedAt: string;
+  tagVocabulary: Array<{
+    id: string;
+    label: string;
+    facet: "goal" | "trait";
+    description: string;
+    aliases: string[];
+  }>;
   projects: GeneratedCatalogProject[];
 };
 
@@ -46,16 +58,20 @@ function vocabularyLength(path: string, property: string) {
 }
 
 export const metadataFilterChipCount =
-  new Set(
-    generatedCatalog.projects.flatMap(({ capabilities }) =>
-      capabilities.map(({ id }) => id),
-    ),
-  ).size +
   vocabularyLength("data/vocabularies/model-families.json", "model_families") +
   vocabularyLength(
     "data/vocabularies/completion-formats.json",
     "completion_formats",
   );
+
+export const tagSearchFixture =
+  generatedCatalog.tagVocabulary.find(
+    ({ aliases, id }) =>
+      aliases.length > 0 &&
+      generatedCatalog.projects.some(({ tags }) =>
+        tags.some((tag) => tag.id === id),
+      ),
+  ) ?? generatedCatalog.tagVocabulary[0];
 
 const frontendVocabulary = JSON.parse(
   readFileSync(

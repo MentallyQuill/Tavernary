@@ -9,6 +9,7 @@ import {
   initiallyVisibleFrontendOptions,
   metadataFilterChipCount,
   projectCountLabel,
+  tagSearchFixture,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
@@ -263,18 +264,16 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByRole("searchbox", {
-      name: "Search capabilities and characteristics",
+      name: "Search goals and traits",
     }),
-  ).toHaveCount(0);
+  ).toBeVisible();
   const frontendSearch = await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
     .boundingBox();
   expect(frontendSearch?.width).toBeGreaterThan(100);
   expect(frontendSearch?.height).toBe(32);
   await expect(page.getByText("Project kind", { exact: true })).toBeVisible();
-  await expect(
-    page.getByText("Capabilities & characteristics", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Goals & traits", { exact: true })).toBeVisible();
   await expect(page.locator(".metadata-options").first()).toHaveCSS(
     "display",
     "flex",
@@ -352,35 +351,45 @@ test("filters Presets and Kits by model family with shareable state", async ({
   ).toBeVisible();
 });
 
-test("collapses capabilities to four rows and keeps selections visible", async ({
+test("bounds searchable goals and traits and keeps selections visible", async ({
   page,
 }) => {
-  const group = page.locator(".filter-panel").getByRole("group", {
-    name: "Capabilities & characteristics",
-  });
-  const options = group.locator(".metadata-options");
-  const disclosure = group.getByRole("button", { name: "Show more" });
+  if (!tagSearchFixture) throw new Error("Missing tag search fixture");
 
-  await expect(disclosure).toBeVisible();
+  const browser = page.locator(".filter-panel .filter-tag-browser");
+  const search = browser.getByRole("searchbox", {
+    name: "Search goals and traits",
+  });
+  const results = browser.getByTestId("tag-results");
+
+  await expect(browser.getByText("Goals", { exact: true })).toBeVisible();
+  await expect(browser.getByText("Traits", { exact: true })).toBeVisible();
+  await expect(browser.getByRole("button", { name: /Show/u })).toHaveCount(0);
   expect(
-    await options.evaluate(
+    await results.evaluate(
       (element) => element.scrollHeight > element.clientHeight,
     ),
   ).toBe(true);
 
-  await disclosure.click();
-  const selected = group.locator(".metadata-option").last();
-  await selected.click();
-  await expect(selected.getByRole("checkbox")).toBeChecked();
-  await group.getByRole("button", { name: "Show fewer" }).click();
+  await search.fill(
+    tagSearchFixture.aliases[0] ?? tagSearchFixture.description,
+  );
+  const selected = browser.getByLabel(tagSearchFixture.label, { exact: true });
+  await expect(selected).toBeVisible();
+  await selected.check();
+  await expect(selected).toBeChecked();
 
-  expect(
-    await selected.evaluate(
-      (element) =>
-        element.getBoundingClientRect().bottom <=
-        element.parentElement!.getBoundingClientRect().bottom + 1,
-    ),
-  ).toBe(true);
+  await search.fill("no tag matches this deliberate query");
+  await expect(selected).toBeVisible();
+  await expect(
+    browser.getByText("No matching goals or traits.", { exact: true }),
+  ).toHaveCount(0);
+
+  await selected.click();
+  await expect(selected).toHaveCount(0);
+  await expect(
+    browser.getByText("No matching goals or traits.", { exact: true }),
+  ).toBeVisible();
 });
 
 test("keeps canonical frontends ordered and expands the remainder", async ({
@@ -1106,7 +1115,7 @@ test("matches the approved tablet and mobile breakpoints", async ({ page }) => {
     mainRight: 828,
     columns: 1,
     workspaceLeft: 828,
-    topLinkDisplay: "none",
+    topLinkDisplay: "block",
   });
 
   await page.setViewportSize({ width: 390, height: 844 });
