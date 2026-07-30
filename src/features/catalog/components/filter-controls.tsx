@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
+import { FilterChoiceChip } from "@/features/catalog/components/filter-choice-chip";
 
 export interface FilterOption {
   id: string;
@@ -146,25 +147,16 @@ export function FilterGroup({
           {visibleOptions.map((option) => {
             const isSelected = selected.includes(option.id);
             return (
-              <label
-                className={`metadata-option${isSelected ? " selected" : ""}`}
+              <FilterChoiceChip
+                className="metadata-option"
+                type={selectionMode === "single" ? "radio" : "checkbox"}
+                name={selectionMode === "single" ? title : undefined}
+                label={option.label}
+                count={option.count}
+                checked={isSelected}
+                onChange={() => onToggle(option.id)}
                 key={option.id}
-              >
-                <span className="metadata-filter-chip">
-                  <input
-                    type={selectionMode === "single" ? "radio" : "checkbox"}
-                    name={selectionMode === "single" ? title : undefined}
-                    aria-label={option.label}
-                    checked={isSelected}
-                    onChange={() => onToggle(option.id)}
-                  />
-                  <span className="metadata-check" aria-hidden="true">
-                    ✓
-                  </span>
-                  <span>{option.label}</span>
-                  <b className="metadata-count">{option.count}</b>
-                </span>
-              </label>
+              />
             );
           })}
         </div>

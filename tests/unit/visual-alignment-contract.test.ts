@@ -522,14 +522,22 @@ describe("catalog visual alignment", () => {
     expect(filters).toContain("Search compatible frontends");
     expect(filters).not.toContain("Search capabilities and characteristics");
     expect(controls).toContain("metadata-options");
-    expect(controls).toContain("metadata-filter-chip");
-    expect(controls).toContain("metadata-check");
+    expect(controls).toContain("FilterChoiceChip");
     expect(controls).toContain("metadata-disclosure");
     expect(css).toMatch(
-      /\.metadata-filter-chip\s*\{[^}]*min-height:\s*25px[^}]*border-radius:\s*999px/s,
+      /\.filter-choice-chip\s*\{[^}]*min-height:\s*26px[^}]*border-radius:\s*4px/s,
     );
     expect(css).toMatch(
-      /\.metadata-options\.collapsed\s*\{[^}]*max-height:\s*calc\(25px \* 4 \+ 6px \* 3\)[^}]*overflow:\s*hidden/s,
+      /\.filter-choice:has\(input:focus-visible\) \.filter-choice-chip\s*\{[^}]*inset[^}]*var\(--color-focus-ring\)/s,
+    );
+    expect(css).not.toMatch(
+      /\.metadata-option:focus-within \.metadata-filter-chip/,
+    );
+    expect(css).toMatch(
+      /\.filter-choice\.selected \.filter-choice-chip\s*\{[^}]*border:\s*1px solid var\(--color-accent-teal-border\)[^}]*background:\s*var\(--color-accent-teal-bg\)/s,
+    );
+    expect(css).toMatch(
+      /\.metadata-options\.collapsed\s*\{[^}]*max-height:\s*calc\(26px \* 4 \+ 6px \* 3\)[^}]*overflow:\s*hidden/s,
     );
   });
 
