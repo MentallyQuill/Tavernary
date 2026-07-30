@@ -2,6 +2,8 @@
 
 import { useId, useState, type ReactNode } from "react";
 
+import { CategoryIcon } from "@/components/icons/category-icon";
+import { Tooltip } from "@/components/ui/tooltip";
 import {
   GitHubHandoffError,
   type GitHubHandoffResult,
@@ -18,6 +20,7 @@ export interface SubmissionReviewProps {
   onBack: () => void;
   onCancel: () => void;
   openReview: () => Promise<GitHubHandoffResult>;
+  copyReviewUrl?: () => Promise<GitHubHandoffResult>;
   title?: string;
   introduction?: ReactNode;
   className?: string;
@@ -27,6 +30,12 @@ type HandoffState =
   | { phase: "idle" }
   | { phase: "opening" }
   | { phase: "opened"; mode: GitHubHandoffResult["mode"] }
+  | { phase: "recovery"; message: string; url: string | null };
+
+type CopyState =
+  | { phase: "idle" }
+  | { phase: "copying" }
+  | { phase: "copied" }
   | { phase: "recovery"; message: string; url: string | null };
 
 function openedMessage(mode: GitHubHandoffResult["mode"]) {
@@ -41,12 +50,14 @@ export function SubmissionReview({
   onBack,
   onCancel,
   openReview,
+  copyReviewUrl,
   title = "Review your request",
   introduction,
   className = "",
 }: SubmissionReviewProps) {
   const headingId = useId();
   const [handoff, setHandoff] = useState<HandoffState>({ phase: "idle" });
+  const [copyState, setCopyState] = useState<CopyState>({ phase: "idle" });
 
   function returnToForm(callback: () => void) {
     callback();
@@ -56,6 +67,7 @@ export function SubmissionReview({
   }
 
   async function handleOpen() {
+    setCopyState({ phase: "idle" });
     setHandoff({ phase: "opening" });
     try {
       const result = await openReview();
@@ -72,7 +84,46 @@ export function SubmissionReview({
     }
   }
 
+  async function handleCopy() {
+    if (!copyReviewUrl) return;
+    setCopyState({ phase: "copying" });
+    try {
+      await copyReviewUrl();
+      setCopyState({ phase: "copied" });
+    } catch (error) {
+      setCopyState({
+        phase: "recovery",
+        message:
+          error instanceof Error
+            ? error.message
+            : "GitHub form URL could not be copied.",
+        url: error instanceof GitHubHandoffError ? error.url : null,
+      });
+    }
+  }
+
   const classNames = ["submission-review", className].filter(Boolean).join(" ");
+  const continueAction =
+    handoff.phase === "idle" || handoff.phase === "opening" ? (
+      <button
+        type="button"
+        className="submission-review-continue"
+        onClick={() => void handleOpen()}
+        disabled={handoff.phase === "opening"}
+      >
+        {handoff.phase === "opening"
+          ? "Taking you to GitHub..."
+          : "Continue on GitHub"}
+      </button>
+    ) : handoff.phase === "opened" ? (
+      <button
+        type="button"
+        className="submission-review-continue"
+        onClick={() => void handleOpen()}
+      >
+        Open GitHub review again
+      </button>
+    ) : null;
 
   return (
     <section className={classNames} aria-labelledby={headingId}>
@@ -87,7 +138,7 @@ export function SubmissionReview({
         ))}
       </dl>
 
-      {handoff.phase === "opening" ? (
+      {handoff.phase === "opening" && copyState.phase === "idle" ? (
         <p
           className="submission-review-status"
           role="status"
@@ -96,7 +147,7 @@ export function SubmissionReview({
           Taking you to GitHub...
         </p>
       ) : null}
-      {handoff.phase === "opened" ? (
+      {handoff.phase === "opened" && copyState.phase === "idle" ? (
         <p
           className="submission-review-status"
           role="status"
@@ -105,7 +156,7 @@ export function SubmissionReview({
           {openedMessage(handoff.mode)}
         </p>
       ) : null}
-      {handoff.phase === "recovery" ? (
+      {handoff.phase === "recovery" && copyState.phase === "idle" ? (
         <div
           className="submission-review-recovery"
           role="alert"
@@ -116,6 +167,34 @@ export function SubmissionReview({
             <a href={handoff.url} target="_blank" rel="noopener noreferrer">
               Open prepared GitHub review
             </a>
+          ) : null}
+        </div>
+      ) : null}
+      {copyState.phase === "copied" ? (
+        <p
+          className="submission-review-status"
+          role="status"
+          aria-live="polite"
+        >
+          GitHub form URL copied. Paste it into your browser&apos;s address bar.
+        </p>
+      ) : null}
+      {copyState.phase === "recovery" ? (
+        <div
+          className="submission-review-copy-recovery"
+          role="alert"
+          aria-live="assertive"
+        >
+          <p>{copyState.message}</p>
+          {copyState.url ? (
+            <label>
+              GitHub form URL
+              <input
+                readOnly
+                value={copyState.url}
+                onFocus={(event) => event.currentTarget.select()}
+              />
+            </label>
           ) : null}
         </div>
       ) : null}
@@ -139,28 +218,35 @@ export function SubmissionReview({
             Cancel
           </button>
         ) : null}
-        {handoff.phase === "idle" || handoff.phase === "opening" ? (
-          <button
-            type="button"
-            className="submission-review-continue"
-            onClick={() => void handleOpen()}
-            disabled={handoff.phase === "opening"}
-          >
-            {handoff.phase === "opening"
-              ? "Taking you to GitHub..."
-              : "Continue on GitHub"}
-          </button>
-        ) : null}
-        {handoff.phase === "opened" ? (
-          <button
-            type="button"
-            className="submission-review-continue"
-            onClick={() => void handleOpen()}
-          >
-            Open GitHub review again
-          </button>
-        ) : null}
+        {copyReviewUrl ? (
+          <div className="submission-review-primary-actions">
+            {continueAction}
+            <Tooltip
+              id={`${headingId}-copy-url-tooltip`}
+              label="Copy URL and paste into browser"
+              className="control-tooltip"
+            >
+              <button
+                type="button"
+                className="submission-review-copy-url"
+                aria-label="Copy GitHub form URL"
+                onClick={() => void handleCopy()}
+                disabled={copyState.phase === "copying"}
+              >
+                <CategoryIcon name="copy-link" />
+              </button>
+            </Tooltip>
+          </div>
+        ) : (
+          continueAction
+        )}
       </div>
+      {copyReviewUrl ? (
+        <p className="submission-review-copy-help">
+          Prefer to open it yourself? Copy the completed URL and paste it into
+          your browser.
+        </p>
+      ) : null}
     </section>
   );
 }

@@ -15,7 +15,10 @@ import {
   type ProjectSubmissionManifest,
   type ProjectSubmissionType,
 } from "../project-submission-manifest.mjs";
-import { openProjectSubmission } from "../submission-transport";
+import {
+  copyProjectSubmissionUrl,
+  openProjectSubmission,
+} from "../submission-transport";
 import modelFamilyVocabulary from "../../../../data/vocabularies/model-families.json";
 import {
   EXTENSION_PRIMARY_FUNCTION_IDS,
@@ -388,6 +391,17 @@ export function ProjectSubmissionBuilder({
     return openProjectSubmission(projectSubmissionUrl, manifest);
   }
 
+  async function copyReviewUrl() {
+    const manifest = buildManifest();
+    if (!manifest) {
+      throw new Error(
+        "The project submission changed and needs another Tavernary review.",
+      );
+    }
+    setReviewManifest(manifest);
+    return copyProjectSubmissionUrl(projectSubmissionUrl, manifest);
+  }
+
   if (reviewManifest) {
     const selectedFrontendLabels = [
       ...reviewManifest.frontends.known_ids.map(
@@ -448,6 +462,7 @@ export function ProjectSubmissionBuilder({
         onBack={() => setReviewManifest(null)}
         onCancel={() => setReviewManifest(null)}
         openReview={openReview}
+        copyReviewUrl={copyReviewUrl}
         rows={[
           {
             label: "Project Type",

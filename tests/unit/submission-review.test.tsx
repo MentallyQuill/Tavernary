@@ -1,7 +1,7 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { afterEach, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import {
   SubmissionReview,
@@ -9,9 +9,31 @@ import {
 } from "@/features/submissions/components/submission-review";
 import { GitHubHandoffError } from "@/features/submissions/github-handoff";
 
+const originalMatchMedia = window.matchMedia;
+
+beforeEach(() => {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn(() => ({
+      matches: false,
+      media: "",
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+});
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: originalMatchMedia,
+  });
 });
 
 function props(
@@ -212,4 +234,153 @@ test("returns focus to the authoritative field after Cancel", async () => {
   await waitFor(() =>
     expect(screen.getByLabelText("Project Type")).toHaveFocus(),
   );
+});
+
+test("copies the prepared URL without opening GitHub", async () => {
+  const user = userEvent.setup();
+  const copyReviewUrl = vi.fn().mockResolvedValue({
+    mode: "prefilled" as const,
+    url: "https://github.com/example/prepared",
+  });
+  const openReview = vi.fn();
+
+  render(
+    <SubmissionReview
+      {...props({
+        copyReviewUrl,
+        openReview,
+      })}
+    />,
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Copy GitHub form URL" }),
+  );
+
+  expect(copyReviewUrl).toHaveBeenCalledOnce();
+  expect(openReview).not.toHaveBeenCalled();
+  expect(screen.getByRole("status")).toHaveTextContent(
+    "GitHub form URL copied. Paste it into your browser's address bar.",
+  );
+});
+
+test("explains the opt-in copy action with the existing link icon and tooltip", async () => {
+  const user = userEvent.setup();
+  render(
+    <SubmissionReview
+      {...props({
+        copyReviewUrl: vi.fn().mockResolvedValue({
+          mode: "prefilled",
+          url: "https://github.com/example/prepared",
+        }),
+      })}
+    />,
+  );
+
+  const copy = screen.getByRole("button", {
+    name: "Copy GitHub form URL",
+  });
+  expect(copy.querySelector("svg")).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      "Prefer to open it yourself? Copy the completed URL and paste it into your browser.",
+    ),
+  ).toBeVisible();
+
+  await user.hover(copy);
+  expect(
+    screen.getByRole("tooltip", {
+      name: "Copy URL and paste into browser",
+    }),
+  ).toBeVisible();
+});
+
+test("reveals denied clipboard URLs as selectable non-links", async () => {
+  const user = userEvent.setup();
+  const preparedUrl = "https://github.com/example/prepared?manifest=one";
+  render(
+    <SubmissionReview
+      {...props({
+        copyReviewUrl: vi
+          .fn()
+          .mockRejectedValue(
+            new GitHubHandoffError(
+              "Tavernary could not copy the GitHub form URL. Copy it below instead.",
+              preparedUrl,
+            ),
+          ),
+      })}
+    />,
+  );
+
+  await user.click(
+    screen.getByRole("button", { name: "Copy GitHub form URL" }),
+  );
+
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Tavernary could not copy the GitHub form URL. Copy it below instead.",
+  );
+  expect(screen.getByRole("textbox", { name: "GitHub form URL" })).toHaveValue(
+    preparedUrl,
+  );
+  expect(screen.queryByRole("link")).not.toBeInTheDocument();
+});
+
+test("groups the primary and square copy actions together", () => {
+  render(
+    <SubmissionReview
+      {...props({
+        copyReviewUrl: vi.fn().mockResolvedValue({
+          mode: "prefilled",
+          url: "https://github.com/example/prepared",
+        }),
+      })}
+    />,
+  );
+
+  const primary = screen.getByRole("button", { name: "Continue on GitHub" });
+  const copy = screen.getByRole("button", { name: "Copy GitHub form URL" });
+  expect(copy).toHaveClass("submission-review-copy-url");
+  expect(primary.closest(".submission-review-primary-actions")).toBe(
+    copy.closest(".submission-review-primary-actions"),
+  );
+});
+
+test("leaves reviews without a copy callback unchanged", () => {
+  render(<SubmissionReview {...props()} />);
+
+  expect(
+    screen.queryByRole("button", { name: "Copy GitHub form URL" }),
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText(/Prefer to open it yourself/u),
+  ).not.toBeInTheDocument();
+});
+
+test("shows oversized copy guidance without exposing an incomplete URL", async () => {
+  const user = userEvent.setup();
+  render(
+    <SubmissionReview
+      {...props({
+        copyReviewUrl: vi
+          .fn()
+          .mockRejectedValue(
+            new GitHubHandoffError(
+              "This submission is too large to fit in a single URL. Use Continue on GitHub so Tavernary can copy the manifest separately.",
+              null,
+            ),
+          ),
+      })}
+    />,
+  );
+
+  await user.click(
+    screen.getByRole("button", { name: "Copy GitHub form URL" }),
+  );
+
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "This submission is too large to fit in a single URL. Use Continue on GitHub so Tavernary can copy the manifest separately.",
+  );
+  expect(
+    screen.queryByRole("textbox", { name: "GitHub form URL" }),
+  ).not.toBeInTheDocument();
 });
