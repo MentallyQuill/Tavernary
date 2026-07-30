@@ -45,7 +45,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-30T04:42:45.777Z",
+    "baseline_completed_at": "2026-07-30T04:53:54.074Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "9419f13b1bb58e3d0da8760dea000608ff5a78d8"
   },
@@ -56,20 +56,20 @@
     "aggregate": 0
   },
   "license": {
-    "status": "proprietary",
-    "spdx_id": null,
+    "status": "osi-approved",
+    "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-30T04:42:45.777Z",
+  "refreshed_at": "2026-07-30T04:53:54.074Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
       { "login": "BlueOwler", "type": "User", "provider": "github" }
     ],
     "method": "merged-pull-requests",
-    "baseline_completed_at": "2026-07-30T04:42:45.777Z",
+    "baseline_completed_at": "2026-07-30T04:53:54.074Z",
     "scan": null,
-    "refreshed_at": "2026-07-30T04:42:45.777Z",
+    "refreshed_at": "2026-07-30T04:53:54.074Z",
     "stale_since": null
   },
   "activity_scan": null
