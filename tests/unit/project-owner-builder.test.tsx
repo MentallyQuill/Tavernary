@@ -374,6 +374,27 @@ test("uses independent metadata choices for ordinary edits", async () => {
   });
 });
 
+test("removes emoji from an owner summary and explains the edit", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  const summary = screen.getByRole("textbox", {
+    name: "Summary",
+    exact: true,
+  });
+  await user.clear(summary);
+  await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
+
+  expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
+  expect(
+    screen.getByText(
+      "Emojis aren't supported in catalog descriptions. The rest of your text has been kept.",
+    ),
+  ).toBeVisible();
+});
+
 test("describes retire and restore as reversible one-card maintenance", async () => {
   const user = userEvent.setup();
   renderBuilder();

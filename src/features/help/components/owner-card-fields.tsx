@@ -1,8 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import {
+  CATALOG_DESCRIPTION_GUIDANCE,
+  CATALOG_EMOJI_REMOVED_NOTICE,
+  CATALOG_POLICY_ROUTE,
+} from "@/features/catalog/catalog-policy.mjs";
 import type { PublicTagDefinition } from "@/features/catalog/tag-vocabulary";
 import { STRUCTURAL_PRIMARY_FUNCTIONS } from "@/features/catalog/primary-function-contract.mjs";
 import { stripEmoji } from "@/features/catalog/emoji-free-text.mjs";
@@ -136,12 +142,22 @@ export function OwnerCardFields({
         maxLength={220}
         rows={4}
         count={`${card.summary.length} / 220`}
-        onChange={(event) =>
+        hint={
+          <>
+            {CATALOG_DESCRIPTION_GUIDANCE}{" "}
+            <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
+          </>
+        }
+        onChange={(event) => {
+          const sanitized = stripEmoji(event.target.value);
+          if (sanitized.removed) {
+            setNotice(CATALOG_EMOJI_REMOVED_NOTICE);
+          }
           onChange({
             ...card,
-            summary: stripEmoji(event.target.value).value,
-          })
-        }
+            summary: sanitized.value,
+          });
+        }}
       />
       <HelpSelectField
         id={`${idPrefix}-summary-policy`}
