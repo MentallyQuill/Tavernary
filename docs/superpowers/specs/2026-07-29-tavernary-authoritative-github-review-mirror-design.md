@@ -43,6 +43,19 @@ also restore URL-prefilled Issue Form values after the contributor edits them.
 A contributor can therefore believe they changed Project Type while the
 readable GitHub field returns to Frontend.
 
+Live evidence now shows the same delayed reset for every URL-prefilled GitHub
+Issue Form dropdown, including Description choice and Tag choice. Text prefills
+remain present while the dropdowns visibly return to `None` after GitHub
+hydrates the form. Enum-like readable mirrors therefore use plain text inputs
+or textareas; GitHub dropdowns are not a reliable review surface.
+
+Issue #158 also exposed a separate Tavernary-side authority defect. The owner
+builder allowed an automatically managed summary to be edited without changing
+its summary policy. It then serialized the new text with
+`metadata.summary.mode: "automatic"`, so generation ignored the intended
+owner-authored text and invoked enrichment. This is independent of GitHub's
+readable-field reset: GitHub cannot rewrite an already-serialized manifest.
+
 The completed schema-v6 and Multi Projects work makes the same boundary more
 important:
 
@@ -65,6 +78,10 @@ must preserve, not work that this design needs to repeat.
 - Give every public flow an explicit Tavernary review before GitHub opens.
 - Fix Project Type by requiring a deliberate Tavernary selection and retaining
   it through review and handoff.
+- Keep every URL-prefilled GitHub mirror value in a plain text field so GitHub
+  cannot replace a supplied enum choice with `None`.
+- Make direct owner summary or tag edits select the corresponding manual policy
+  in Tavernary's authoritative state.
 - Preserve form, review, Kit draft, and multi-card draft state after handoff.
 - Give clear, accessible feedback while GitHub opens and after it has opened.
 - Let contributors return to Tavernary, edit, and regenerate a fresh mirror.
@@ -182,6 +199,12 @@ The owner form continues generating complete operation-specific manifests:
 - automatic modes do not inherit manual provenance;
 - source moves retain immutable repository identity checks; and
 - source delisting retains its typed repository-wide confirmation.
+
+For editable owner cards, changing summary text sets the summary policy to
+`manual` in the same state update. Changing the selected Goals and traits tags
+sets the tag policy to `manual`. The user may deliberately choose `automatic`
+again afterward. Tavernary never reviews a changed summary or tag set while
+silently serializing that field as automatic.
 
 The shared handoff layer must pass these manifests through unchanged. It must
 not flatten them into a generic card edit or rebuild them from readable GitHub
@@ -354,6 +377,12 @@ Readable fields remain useful to contributors and maintainers. They may be
 optional where GitHub allows so delayed prefill behavior cannot prevent issue
 creation. The generated manifest field remains required in the corresponding
 review template.
+
+No public review mirror uses a GitHub Issue Form `dropdown` for a URL-prefilled
+value. Project Type, Primary function, Description choice, Tag choice, owner
+metadata modes, and any future enum-like mirror are plain text inputs or
+textareas. Their descriptions constrain the readable vocabulary, but readable
+drift remains non-fatal and cannot change the manifest.
 
 ## Manifest-Only Automation
 

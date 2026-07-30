@@ -578,7 +578,7 @@ Actions, GitHub CLI, PowerShell.
 Complete this read-only gate after Tavernary review surfaces exist and before
 Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
-- [ ] **Step 1: Verify GitHub CLI authentication**
+- [x] **Step 1: Verify GitHub CLI authentication**
 
   Use network-enabled GitHub CLI:
 
@@ -590,7 +590,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: authenticated against `MentallyQuill/Tavernary`. If the token is
   expired, stop and ask the user to reauthenticate.
 
-- [ ] **Step 2: Inventory the open admitted backlog**
+- [x] **Step 2: Inventory the open admitted backlog**
 
   Run:
 
@@ -623,7 +623,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   a maintainer-authored recovery manifest is allowed only when an existing
   trusted automation artifact contains the complete payload.
 
-- [ ] **Step 4: Capture the gate result**
+- [x] **Step 4: Capture the gate result**
 
   Add the counts and issue numbers to the implementation handoff notes, not to
   a runtime allowlist. This preserves historical admitted-version recovery
@@ -922,6 +922,11 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - move source; and
   - delist source.
 
+  Reproduce issue #158 with a card whose current summary and tag policies are
+  automatic. Edit the summary and tags and assert Tavernary changes each edited
+  field's policy to manual before review. Then explicitly switch one field back
+  to automatic and assert that deliberate choice survives review and handoff.
+
   For `add-cards`, test one and ten complete drafts. Compare the decoded
   manifest before and after back/edit/reopen, including `source_id`,
   `repository_id`, vocabulary hash, card IDs, fingerprints, metadata modes,
@@ -948,6 +953,11 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Keep `reviewManifest` as a fully normalized `ProjectOwnerManifest`. Pass the
   existing operation-specific `reviewRows()` to `HelpReview`. Replace local
   handoff booleans with `openReview`.
+
+  In `OwnerCardFields`, update summary text and its manual policy atomically.
+  Do the same for Goals and traits tag changes. Keep the separate policy
+  selectors so a user can deliberately restore automatic handling after an
+  edit.
 
   Correct prefills to actual Issue Form IDs:
 
@@ -1260,6 +1270,10 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - intro contains its exact Tavernary correction route;
   - the domain manifest field is a required textarea;
   - readable fields are optional where GitHub permits;
+  - no public template contains a GitHub `dropdown`;
+  - `project-type`, `primary-function`, `description-choice`, `tag-choice`,
+    `summary-metadata-mode`, and `tag-metadata-mode` are plain text readable
+    mirrors with stable prefill IDs;
   - no text says “fallback,” “edit this issue to correct it,” or reconstructs
     automation from readable fields; and
   - the private security route remains absent from public forms.
@@ -1300,6 +1314,13 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - `manifest`
   - `withdrawal-manifest`
   - `owner-request-manifest`
+
+  Replace the project template's Description choice and Tag choice dropdowns
+  with optional plain text inputs. Describe their exact readable values and
+  provide matching placeholders. Project Type and Primary function remain
+  plain text inputs, as do the owner summary/tag metadata modes. Do not leave
+  any URL-prefilled enum mirror capable of hydrating to GitHub's misleading
+  `None` state.
 
   Preserve readable fields and labels so maintainers can scan the issue. Do not
   compare them with the manifest.
@@ -1392,6 +1413,8 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - no default Project Type;
   - Extension selection retained after source URL typing;
   - automatic/manual summary and tag choices;
+  - every GitHub-readable enum mirror rendering as plain text rather than a
+    dropdown and retaining its supplied value after delayed hydration;
   - six tags;
   - review/back/edit/review;
   - opening and reopening with two different current manifests; and
