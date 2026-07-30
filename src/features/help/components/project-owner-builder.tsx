@@ -480,9 +480,13 @@ export function ProjectOwnerBuilder({
       manifest: reviewManifest,
       prefills: [
         ["request-type", operationLabels[operation]],
-        ["project-id", selected.id],
+        ["source-id", reviewManifest.source_id],
+        [
+          "project-id",
+          "project_id" in reviewManifest ? reviewManifest.project_id : "",
+        ],
         ["repository", selected.sourceUrl ?? ""],
-        ["public-note", explanation.trim()],
+        ["explanation", explanation.trim()],
       ],
       pasteInstruction:
         "Paste the copied Tavernary owner request manifest into this field.",

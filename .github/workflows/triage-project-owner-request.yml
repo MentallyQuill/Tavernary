@@ -129,6 +129,41 @@ jobs:
             retryable: "submission-retryable",
           }[decision.status];
           if (!desired) throw new Error(`Unsupported owner triage state: ${decision.status}`);
+          const correctionMarker = "<!-- tavernary-owner-request-correction -->";
+          const comments = await request(
+            `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
+          );
+          const correctionComments = comments.filter((comment) =>
+            String(comment.body ?? "").includes(correctionMarker),
+          );
+          if (decision.status === "needs-information") {
+            const correctionBody = [
+              correctionMarker,
+              "Tavernary needs a corrected owner request:",
+              "",
+              decision.message,
+              "",
+              "Readable GitHub fields are review-only and are not the automation payload.",
+              "Return to https://tavernary.org/help/manage-project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.",
+            ].join("\n");
+            const current = correctionComments.shift();
+            if (current) {
+              await request(`/repos/${repository}/issues/comments/${current.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ body: correctionBody }),
+              });
+            } else {
+              await request(`/repos/${repository}/issues/${issueNumber}/comments`, {
+                method: "POST",
+                body: JSON.stringify({ body: correctionBody }),
+              });
+            }
+          }
+          for (const comment of correctionComments) {
+            await request(`/repos/${repository}/issues/comments/${comment.id}`, {
+              method: "DELETE",
+            });
+          }
           for (const [name, definition] of Object.entries(owned)) {
             try {
               await request(`/repos/${repository}/labels`, {

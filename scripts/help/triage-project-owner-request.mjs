@@ -5,10 +5,6 @@ import {
   normalizeProjectOwnerManifest,
   STALE_TAG_VOCABULARY_ERROR,
 } from "../../src/features/help/project-owner-manifest.mjs";
-import {
-  fingerprintProjectRecord,
-  fingerprintSourceRecord,
-} from "../../src/features/help/project-owner-record.mjs";
 import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
 import { verifyTrustedEditor } from "../maintenance/trusted-editor-authority.mjs";
 import {
@@ -22,6 +18,12 @@ const PROJECT_OPERATIONS = new Set([
   "edit-card",
   "retire-card",
   "restore-card",
+]);
+const OWNER_OPERATIONS = new Set([
+  ...PROJECT_OPERATIONS,
+  "add-cards",
+  "move-source",
+  "delist-source",
 ]);
 const OWNER_HEADINGS = new Set([
   "Request type",
@@ -98,184 +100,23 @@ function preliminary(body) {
   const manifestValue = collected.fields.get("Owner request manifest") ?? "";
   if (!manifestValue) {
     return {
-      valid: true,
-      source: "fallback",
-      manifest: null,
-      fields: collected.fields,
+      valid: false,
+      errors: [
+        "This owner operation requires the complete generated request manifest.",
+      ],
     };
   }
   try {
     return {
       valid: true,
-      source: "manifest",
       manifest: JSON.parse(renderedJson(manifestValue)),
-      fields: collected.fields,
     };
   } catch {
     return {
       valid: false,
-      errors: [
-        "Owner request manifest is not valid JSON. Correct it or leave it empty to use the readable fields.",
-      ],
+      errors: ["Owner request manifest is not valid JSON."],
     };
   }
-}
-
-function lineValues(value) {
-  return [
-    ...new Set(
-      String(value)
-        .split(/[\r\n,]+/u)
-        .map((entry) => entry.trim())
-        .filter(Boolean),
-    ),
-  ];
-}
-
-function metadataMode(value, fallback) {
-  return ["automatic", "manual"].includes(value) ? value : fallback;
-}
-
-function originalCard(project) {
-  return {
-    kind: project.kind,
-    name: project.name,
-    summary: project.summary,
-    frontends: project.frontends,
-    primary_function: project.primary_function,
-    tags: project.tags,
-    metadata: {
-      summary: {
-        mode: project.metadata_policy?.summary?.mode ?? "automatic",
-      },
-      tags: { mode: project.metadata_policy?.tags?.mode ?? "automatic" },
-    },
-    model_families: Array.isArray(project.model_families)
-      ? project.model_families
-      : [],
-    completion_formats: Array.isArray(project.completion_formats)
-      ? project.completion_formats
-      : [],
-  };
-}
-
-function parseRepositoryLocation(value) {
-  const text = readable(value);
-  if (/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(text)) return text;
-  try {
-    const url = new URL(text);
-    const parts = url.pathname.split("/").filter(Boolean);
-    if (
-      url.protocol === "https:" &&
-      url.hostname.toLocaleLowerCase() === "github.com" &&
-      !url.port &&
-      !url.username &&
-      !url.password &&
-      !url.search &&
-      !url.hash &&
-      parts.length === 2
-    ) {
-      return `${parts[0]}/${parts[1]}`;
-    }
-  } catch {
-    return null;
-  }
-  return null;
-}
-
-function fallbackManifest(fields, project, source) {
-  const operation = {
-    "Edit card details": "edit-card",
-    "Add cards from this source": "add-cards",
-    "Retire this card": "retire-card",
-    "Restore this card": "restore-card",
-    "Update repository location": "move-source",
-    "Permanently delist this source": "delist-source",
-  }[fields.get("Request type")];
-  if (!operation || operation === "add-cards") return null;
-
-  const common = {
-    schema_version: 2,
-    request_kind: "project-owner",
-    operation,
-    source_id: source?.id,
-    repository_id: source?.repository_id,
-    explanation: fields.get("Explanation or public note") || null,
-  };
-  if (operation === "edit-card") {
-    const original = originalCard(project);
-    return {
-      ...common,
-      project_id: project?.id,
-      project_fingerprint: fingerprintProjectRecord(project),
-      original,
-      proposed: {
-        name: fields.get("Proposed display name"),
-        summary: fields.get("Proposed summary"),
-        frontends: lineValues(fields.get("Supported frontends")),
-        primary_function: fields.get("Primary function"),
-        tags: lineValues(fields.get("Tags")),
-        metadata: {
-          summary: {
-            mode: metadataMode(
-              fields.get("Summary metadata mode"),
-              original.metadata.summary.mode,
-            ),
-          },
-          tags: {
-            mode: metadataMode(
-              fields.get("Tag metadata mode"),
-              original.metadata.tags.mode,
-            ),
-          },
-        },
-        model_families: lineValues(fields.get("Model families")),
-        completion_formats: lineValues(fields.get("Completion formats")),
-      },
-    };
-  }
-  if (operation === "retire-card" || operation === "restore-card") {
-    const retiring = operation === "retire-card";
-    return {
-      ...common,
-      project_id: project?.id,
-      project_fingerprint: fingerprintProjectRecord(project),
-      original: retiring
-        ? { listing_status: "active", listing_status_reason: null }
-        : { listing_status: "retired", listing_status_reason: "owner-request" },
-      proposed: retiring
-        ? {
-            listing_status: "retired",
-            listing_status_reason: "owner-request",
-          }
-        : { listing_status: "active", listing_status_reason: null },
-    };
-  }
-  if (operation === "move-source") {
-    return {
-      ...common,
-      source_fingerprint: fingerprintSourceRecord(source),
-      original: {
-        repository: source?.repository,
-        repository_id: source?.repository_id,
-      },
-      proposed: {
-        repository: parseRepositoryLocation(fields.get("Proposed repository")),
-        repository_id: source?.repository_id,
-      },
-    };
-  }
-  return {
-    ...common,
-    source_fingerprint: fingerprintSourceRecord(source),
-    original: { status: "active" },
-    proposed: {
-      status: "delisted",
-      status_reason: "removed",
-      refresh_policy: "paused",
-    },
-    delist_confirmation: fields.get("Delist confirmation"),
-  };
 }
 
 function needsInformation(reasonCode, message, extra = {}) {
@@ -367,27 +208,11 @@ async function resolveRepositoryIdentity(input, source) {
 }
 
 function rawIdentifiers(parsed) {
-  const operation =
-    parsed.source === "manifest"
-      ? parsed.manifest?.operation
-      : {
-          "Edit card details": "edit-card",
-          "Add cards from this source": "add-cards",
-          "Retire this card": "retire-card",
-          "Restore this card": "restore-card",
-          "Update repository location": "move-source",
-          "Permanently delist this source": "delist-source",
-        }[parsed.fields.get("Request type")];
-  const projectId =
-    parsed.source === "manifest"
-      ? parsed.manifest?.project_id
-      : parsed.fields.get("Project ID");
-  const sourceId =
-    parsed.source === "manifest"
-      ? parsed.manifest?.source_id
-      : parsed.fields.get("Source ID");
+  const operation = parsed.manifest?.operation;
+  const projectId = parsed.manifest?.project_id;
+  const sourceId = parsed.manifest?.source_id;
   return {
-    operation,
+    operation: OWNER_OPERATIONS.has(operation) ? operation : null,
     projectId:
       typeof projectId === "string" && ID_PATTERN.test(projectId)
         ? projectId
@@ -416,16 +241,14 @@ export async function processProjectOwnerTriage(input) {
 
   const identifiers = rawIdentifiers(parsed);
   const usesProject = PROJECT_OPERATIONS.has(identifiers.operation);
-  if (!identifiers.operation || (usesProject && !identifiers.projectId)) {
+  if (
+    !identifiers.operation ||
+    !identifiers.sourceId ||
+    (usesProject && !identifiers.projectId)
+  ) {
     return needsInformation(
       "owner-request-invalid",
-      "Owner request operation or project ID is invalid.",
-    );
-  }
-  if (!identifiers.sourceId && !usesProject) {
-    return needsInformation(
-      "owner-request-invalid",
-      "Owner request source ID is invalid.",
+      "Owner request operation, source ID, or required project ID is invalid.",
     );
   }
 
@@ -436,8 +259,7 @@ export async function processProjectOwnerTriage(input) {
       project = await readRecord(input, "projects", identifiers.projectId);
       if (project?.id !== identifiers.projectId) throw new Error("project");
     }
-    const sourceId = identifiers.sourceId ?? project?.source_id;
-    if (!ID_PATTERN.test(sourceId ?? "")) throw new Error("source");
+    const sourceId = identifiers.sourceId;
     source = await readRecord(input, "sources", sourceId);
     if (source?.id !== sourceId) throw new Error("source");
     if (project && project.source_id !== source.id) throw new Error("join");
@@ -450,17 +272,7 @@ export async function processProjectOwnerTriage(input) {
     );
   }
 
-  const rawManifest =
-    parsed.source === "manifest"
-      ? parsed.manifest
-      : fallbackManifest(parsed.fields, project, source);
-  if (!rawManifest) {
-    return needsInformation(
-      "owner-request-invalid",
-      "This owner operation requires the complete generated request manifest.",
-    );
-  }
-  const normalized = normalizeProjectOwnerManifest(rawManifest, {
+  const normalized = normalizeProjectOwnerManifest(parsed.manifest, {
     ...input.vocabularies,
     source,
   });

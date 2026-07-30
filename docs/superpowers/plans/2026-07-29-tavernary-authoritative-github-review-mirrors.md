@@ -912,7 +912,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/unit/full-catalog-data.test.ts`
 - Modify: `tests/unit/workflows.test.ts`
 
-- [ ] **Step 1: Add failing owner review and authority tests**
+- [x] **Step 1: Add failing owner review and authority tests**
 
   Cover all six operations:
 
@@ -923,10 +923,10 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - move source; and
   - delist source.
 
-  Reproduce issue #158 with a card whose current summary and tag policies are
-  automatic. Edit the summary and tags and assert Tavernary changes each edited
-  field's policy to manual before review. Then explicitly switch one field back
-  to automatic and assert that deliberate choice survives review and handoff.
+  Start with a card whose current summary and tag policies are automatic. Edit
+  the summary and tags and assert Tavernary changes each edited field's policy
+  to manual before review. Then explicitly switch one field back to automatic
+  and assert that deliberate choice survives review and handoff.
 
   For `add-cards`, test one and ten complete drafts. Compare the decoded
   manifest before and after back/edit/reopen, including `source_id`,
@@ -951,7 +951,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   In the owner generator suite, prove this edit still produces exactly one
   generated path for the selected card and does not widen the transaction.
 
-- [ ] **Step 2: Run the owner suites red**
+- [x] **Step 2: Run the owner suites red**
 
   ```powershell
   npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts
@@ -960,7 +960,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL because owner handoff is one-shot and backend preliminary
   parsing still derives identifiers/operations from readable fields.
 
-- [ ] **Step 3: Integrate shared review without flattening v2**
+- [x] **Step 3: Integrate shared review without flattening v2**
 
   Keep `reviewManifest` as a fully normalized `ProjectOwnerManifest`. Pass the
   existing operation-specific `reviewRows()` to `HelpReview`. Replace local
@@ -985,7 +985,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Do not use readable values to rebuild any omitted v2 field.
 
-- [ ] **Step 4: Require the manifest before owner record lookup**
+- [x] **Step 4: Require the manifest before owner record lookup**
 
   In triage:
 
@@ -1002,7 +1002,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   identifiers. Return `needs-information` with `/help/manage-project/` when the
   manifest is absent, malformed, or unsupported.
 
-- [ ] **Step 5: Synchronize owner correction guidance**
+- [x] **Step 5: Synchronize owner correction guidance**
 
   In `triage-project-owner-request.yml`, keep the issue open and existing label
   lifecycle. For `needs-information`, create or update one marker comment with
@@ -1011,7 +1011,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   correction marker when it no longer applies. Do not dispatch the generation
   workflow unless the outcome is admitted.
 
-- [ ] **Step 6: Run owner and source-registry regression suites**
+- [x] **Step 6: Run owner and source-registry regression suites**
 
   ```powershell
   npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts tests/unit/project-owner-manifest.test.ts tests/unit/project-owner-authority.test.ts tests/unit/source-request-lock.test.ts tests/unit/workflows.test.ts
@@ -1020,7 +1020,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: PASS, including the existing manual-merge rule for add-card
   batches and all stale/fingerprint failures.
 
-- [ ] **Step 7: Commit owner review and manifest authority**
+- [x] **Step 7: Commit owner review and manifest authority**
 
   ```powershell
   git add src/features/help/components/project-owner-builder.tsx scripts/help/triage-project-owner-request.mjs scripts/help/generate-project-owner-request.mjs .github/workflows/triage-project-owner-request.yml tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts tests/unit/workflows.test.ts

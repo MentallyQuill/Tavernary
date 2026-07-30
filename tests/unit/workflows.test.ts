@@ -929,6 +929,13 @@ test("triages owner requests through a read-only repository gate", async () => {
   );
   expect(source).toContain('-f issue_number="$ISSUE_NUMBER"');
   expect(source).toContain("-f force_regeneration=false");
+  expect(source).toContain("<!-- tavernary-owner-request-correction -->");
+  expect(source).toContain("/help/manage-project/");
+  expect(source).toContain("Readable GitHub fields are review-only");
+  expect(source).toContain("decision.message");
+  expect(source).toContain("/comments?per_page=100");
+  expect(source).toContain('method: "PATCH"');
+  expect(source).toContain('method: "DELETE"');
   for (const label of [
     "needs-information",
     "needs-maintainer-review",
