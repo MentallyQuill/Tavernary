@@ -10,6 +10,7 @@ export const HELP_LABEL_DEFINITIONS: Readonly<
 >;
 export const HELP_ROUTE_BY_LABEL: Readonly<Record<string, string>>;
 export const HELP_LABEL_BY_ROUTE: Readonly<Record<string, string>>;
+export const NEEDS_INFORMATION_LABEL: "needs-information";
 export const PUBLIC_HELP_TRIAGE_LABELS: readonly string[];
 
 export function categoryLabels(manifest: PublicHelpManifest): string[];

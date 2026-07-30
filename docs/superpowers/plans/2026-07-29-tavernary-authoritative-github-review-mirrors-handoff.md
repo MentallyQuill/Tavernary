@@ -9,8 +9,7 @@ Audit performed 2026-07-29 with the network-enabled GitHub CLI against
 - Open generated review/publication pull requests: 1 (`#159` for `#151`).
 - Missing domain manifests: 0.
 - Manifests accepted by current normalizers: 2.
-- Pending requests requiring continuity action before parser cutover: 1
-  (`#158`).
+- Pending requests assigned to this implementation for continuity action: 0.
 
 ### Issue #151
 
@@ -38,10 +37,14 @@ Audit performed 2026-07-29 with the network-enabled GitHub CLI against
   loss. Tavernary independently retained the card's prior automatic summary
   policy while accepting edited summary text, then serialized that mismatch
   into the authoritative manifest.
-- Gate action: keep parser cutovers paused. Obtain explicit approval before
-  changing issue state. Preferred continuity is a fresh Tavernary-authored
-  owner review from `/help/manage-project/?project=ryah-st-freaky-d20-preset`;
-  do not reconstruct a replacement manifest from readable GitHub headings.
+- Gate action: none in this worktree. The user assigned repair of `#158` to a
+  separate chat and explicitly directed this implementation to ignore it. Do
+  not change its issue state or reconstruct a replacement manifest here.
+- Repository follow-up retained here: content checks currently freeze the
+  pre-owner-edit tag migration snapshot, forbid all manual tag policies, and
+  require every known manual-summary card to keep tags automatic. Task 7 must
+  replace those historical snapshots with semantic current-data invariants
+  while retaining the owner's exact one-card generated transaction.
 
 ## Implementation checkpoints
 

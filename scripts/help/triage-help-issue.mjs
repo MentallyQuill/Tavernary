@@ -5,11 +5,19 @@ import {
   categoryLabels,
   HELP_LABEL_BY_ROUTE,
   HELP_ROUTE_BY_LABEL,
+  NEEDS_INFORMATION_LABEL,
   PUBLIC_HELP_TRIAGE_LABELS,
 } from "./help-labels.mjs";
 import { parseHelpIssue } from "./parse-help-issue.mjs";
 
 export const HELP_TRIAGE_MARKER = "<!-- tavernary-help-triage -->";
+
+const returnUrlByRoute = Object.freeze({
+  "project-report": "https://tavernary.org/help/report-project/",
+  "website-bug": "https://tavernary.org/help/report-website/",
+  "kit-report": "https://tavernary.org/help/report-kit/",
+  "other-help": "https://tavernary.org/help/other/",
+});
 
 function labelNames(labels = []) {
   return new Set(
@@ -32,14 +40,16 @@ function admittedHelpRoute(issue) {
   return routes.length > 1 ? "conflict" : "none";
 }
 
-function buildCorrectionComment(errors) {
+function buildCorrectionComment(errors, route) {
+  const returnUrl = returnUrlByRoute[route] ?? "https://tavernary.org/help/";
   return [
     HELP_TRIAGE_MARKER,
     "Tavernary could not validate this Help request:",
     "",
     ...errors.map((error) => `- ${error}`),
     "",
-    "Edit the issue fields above. Help triage will run again from the latest issue body.",
+    "This issue remains open. The readable GitHub fields are review-only and are not the automation payload.",
+    `Return to Tavernary at ${returnUrl}, correct the request, and create a new GitHub review with a complete manifest.`,
   ].join("\n");
 }
 
@@ -62,6 +72,7 @@ async function synchronizeCorrectionComment({
   repository,
   issueNumber,
   errors,
+  route,
   request,
 }) {
   const existing = await findCorrectionComment(
@@ -69,7 +80,7 @@ async function synchronizeCorrectionComment({
     issueNumber,
     request,
   );
-  const body = buildCorrectionComment(errors);
+  const body = buildCorrectionComment(errors, route);
   if (existing) {
     if (existing.body !== body) {
       await request(`/repos/${repository}/issues/comments/${existing.id}`, {
@@ -126,14 +137,25 @@ async function synchronizeHelpLabels({ repository, issue, labels, request }) {
   });
 }
 
-async function invalidDecision({ repository, issueNumber, errors, request }) {
-  await synchronizeCorrectionComment({
+async function invalidDecision({ repository, issue, route, errors, request }) {
+  const currentLabels = labelNames(issue.labels);
+  const routeLabels = Object.keys(HELP_ROUTE_BY_LABEL).filter((label) =>
+    currentLabels.has(label),
+  );
+  await synchronizeHelpLabels({
     repository,
-    issueNumber,
-    errors,
+    issue,
+    labels: [...routeLabels, NEEDS_INFORMATION_LABEL],
     request,
   });
-  return { valid: false, issueNumber, errors };
+  await synchronizeCorrectionComment({
+    repository,
+    issueNumber: issue.number,
+    errors,
+    route,
+    request,
+  });
+  return { valid: false, issueNumber: issue.number, errors };
 }
 
 export async function processHelpIssueTriage({ event, request }) {
@@ -149,21 +171,23 @@ export async function processHelpIssueTriage({ event, request }) {
     throw new Error("Help issue is not open and admitted.");
   }
 
+  const route = admittedHelpRoute(issue);
   const parsed = parseHelpIssue(issue.body ?? "");
   if (!parsed.valid) {
     return invalidDecision({
       repository,
-      issueNumber,
+      issue,
+      route,
       errors: parsed.errors,
       request,
     });
   }
 
-  const route = admittedHelpRoute(issue);
   if (route !== parsed.manifest.request_kind) {
     return invalidDecision({
       repository,
-      issueNumber,
+      issue,
+      route,
       errors: [
         `Help request kind ${parsed.manifest.request_kind} does not match the admitted ${route} route.`,
       ],

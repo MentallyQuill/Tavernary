@@ -417,7 +417,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "project-report",
+    "none",
   ],
   [
     [
@@ -457,7 +457,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "website-bug",
+    "none",
   ],
   [
     [
@@ -489,7 +489,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "kit-report",
+    "none",
   ],
   [
     [
@@ -513,13 +513,13 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "other-help",
+    "none",
   ],
-])("recovers the %s Help route from exact fallback headings", (body, route) => {
+])("does not recover a Help route from readable headings", (body, route) => {
   expect(issueRouteFromBody(body)).toBe(route);
 });
 
-test("fails closed when multiple complete Help route signatures conflict", () => {
+test("ignores overlapping readable Help signatures", () => {
   expect(
     issueRouteFromBody(
       [
@@ -560,11 +560,14 @@ test("fails closed when multiple complete Help route signatures conflict", () =>
         "_No response_",
       ].join("\n"),
     ),
-  ).toBe("conflict");
+  ).toBe("none");
 });
 
-test("restores a missing public Help route label during admission", async () => {
-  const request = vi.fn(async () => null);
+test("does not restore a missing public Help route label from headings", async () => {
+  const request = vi.fn(
+    async (_path: string, _options?: { method?: string; body?: string }) =>
+      null,
+  );
   const baseEvent = event(120, "COLLABORATOR");
   const helpEvent = {
     ...baseEvent,
@@ -596,14 +599,15 @@ test("restores a missing public Help route label during admission", async () => 
 
   await expect(
     processIssueAdmission({ event: helpEvent, request }),
-  ).resolves.toMatchObject({ admitted: true, route: "other-help" });
-  expect(request).toHaveBeenCalledWith(
-    "/repos/MentallyQuill/Tavernary/issues/120/labels",
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({ labels: ["other"] }),
-    }),
-  );
+  ).resolves.toMatchObject({ admitted: true, route: "none" });
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path === "/repos/MentallyQuill/Tavernary/issues/120/labels" &&
+        options?.method === "POST" &&
+        options.body === JSON.stringify({ labels: ["other"] }),
+    ),
+  ).toBe(false);
   for (const name of [
     "project-information",
     "website-bug",

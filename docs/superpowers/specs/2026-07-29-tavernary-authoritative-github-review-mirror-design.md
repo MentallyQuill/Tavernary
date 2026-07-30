@@ -206,6 +206,14 @@ sets the tag policy to `manual`. The user may deliberately choose `automatic`
 again afterward. Tavernary never reviews a changed summary or tag set while
 silently serializing that field as automatic.
 
+Catalog verification treats manual summary and manual tag policies as valid,
+independent production states. Historical migration reports remain immutable
+audit snapshots; they do not require every current card to retain the tags or
+policy combination recorded at migration time. Content checks validate current
+schema, vocabulary, limits, policy notes, and report self-consistency without
+freezing catalog-wide tag totals or forbidding the first owner-selected manual
+tag set.
+
 The shared handoff layer must pass these manifests through unchanged. It must
 not flatten them into a generic card edit or rebuild them from readable GitHub
 fields.

@@ -605,7 +605,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   version, and whether a generated publication/review PR or terminal automation
   result already exists.
 
-- [ ] **Step 3: Reconcile without readable reconstruction**
+- [x] **Step 3: Reconcile without readable reconstruction**
 
   - A valid v4 project, v2 owner, existing Kit, or v1 Help manifest needs no
     change.
@@ -642,7 +642,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/unit/help-labels.test.ts`
 - Modify: `tests/unit/admit-issue.test.ts`
 
-- [ ] **Step 1: Replace fallback tests with manifest-authority regressions**
+- [x] **Step 1: Replace fallback tests with manifest-authority regressions**
 
   Add assertions that:
 
@@ -655,7 +655,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
     and
   - valid category labels still derive only from the manifest.
 
-- [ ] **Step 2: Run the parser/triage tests red**
+- [x] **Step 2: Run the parser/triage tests red**
 
   ```powershell
   npm.cmd test -- tests/unit/parse-help-issue.test.ts tests/unit/triage-help-issue.test.ts tests/unit/help-labels.test.ts
@@ -664,7 +664,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL because readable fallback construction still succeeds and
   invalid triage does not own `needs-information`.
 
-- [ ] **Step 3: Reduce the parser to the manifest boundary**
+- [x] **Step 3: Reduce the parser to the manifest boundary**
 
   Keep only recognized-heading collection sufficient to locate and reject a
   duplicated `Help manifest`, fenced-JSON extraction, `JSON.parse`, and
@@ -682,7 +682,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   when the field is absent/empty. Delete fallback origins, display-category
   maps, payload builders, and `HELP_FALLBACK_HEADINGS`.
 
-- [ ] **Step 4: Remove Help heading-based route recovery immediately**
+- [x] **Step 4: Remove Help heading-based route recovery immediately**
 
   Remove the `HELP_FALLBACK_HEADINGS` import and generated Help route entries
   from `scripts/submissions/admit-issue.mjs`. Delete or invert the Help-specific
@@ -690,7 +690,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   labels continue to dispatch unchanged. Task 10 removes the remaining project,
   Kit, withdrawal, and owner heading recovery.
 
-- [ ] **Step 5: Add route-specific return guidance and label lifecycle**
+- [x] **Step 5: Add route-specific return guidance and label lifecycle**
 
   Map the admitted route label (and, after successful parsing, the manifest
   request kind) to:
@@ -707,7 +707,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   already created by issue admission. Valid triage removes it through the
   existing owned-label synchronization.
 
-- [ ] **Step 6: Run focused and adjacent Help tests**
+- [x] **Step 6: Run focused and adjacent Help tests**
 
   ```powershell
   npm.cmd test -- tests/unit/parse-help-issue.test.ts tests/unit/triage-help-issue.test.ts tests/unit/help-labels.test.ts tests/unit/help-manifest.test.ts tests/unit/admit-issue.test.ts
@@ -716,7 +716,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: PASS. Do not retain exported fallback headings just to make old
   routing pass.
 
-- [ ] **Step 7: Commit manifest-only Help**
+- [x] **Step 7: Commit manifest-only Help**
 
   ```powershell
   git add scripts/help/parse-help-issue.mjs scripts/help/triage-help-issue.mjs scripts/help/help-labels.mjs scripts/submissions/admit-issue.mjs tests/unit/parse-help-issue.test.ts tests/unit/triage-help-issue.test.ts tests/unit/help-labels.test.ts tests/unit/admit-issue.test.ts
@@ -909,6 +909,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `.github/workflows/triage-project-owner-request.yml`
 - Modify: `tests/unit/triage-project-owner-request.test.ts`
 - Modify: `tests/unit/generate-project-owner-request.test.ts`
+- Modify: `tests/unit/full-catalog-data.test.ts`
 - Modify: `tests/unit/workflows.test.ts`
 
 - [ ] **Step 1: Add failing owner review and authority tests**
@@ -939,10 +940,21 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   requests stay open, receive a marker comment with
   `/help/manage-project/`, and lose that comment after a valid retry.
 
+  Add a production-data regression that permits independent manual summary and
+  manual tag policies, including one card with both manual and six tags. Replace
+  frozen catalog-wide tag totals and the historical assumption that no manual
+  tags exist with semantic schema/vocabulary/limit assertions. Validate
+  `tag-migration-report.json` as an internally consistent historical snapshot;
+  do not require its old tag arrays to equal every card's current tags or its
+  manual-summary cohort to remain the complete current cohort.
+
+  In the owner generator suite, prove this edit still produces exactly one
+  generated path for the selected card and does not widen the transaction.
+
 - [ ] **Step 2: Run the owner suites red**
 
   ```powershell
-  npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts
+  npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts
   ```
 
   Expected: FAIL because owner handoff is one-shot and backend preliminary
@@ -1002,7 +1014,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - [ ] **Step 6: Run owner and source-registry regression suites**
 
   ```powershell
-  npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/project-owner-manifest.test.ts tests/unit/project-owner-authority.test.ts tests/unit/source-request-lock.test.ts tests/unit/workflows.test.ts
+  npm.cmd test -- tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts tests/unit/project-owner-manifest.test.ts tests/unit/project-owner-authority.test.ts tests/unit/source-request-lock.test.ts tests/unit/workflows.test.ts
   ```
 
   Expected: PASS, including the existing manual-merge rule for add-card
@@ -1011,7 +1023,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - [ ] **Step 7: Commit owner review and manifest authority**
 
   ```powershell
-  git add src/features/help/components/project-owner-builder.tsx scripts/help/triage-project-owner-request.mjs scripts/help/generate-project-owner-request.mjs .github/workflows/triage-project-owner-request.yml tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/workflows.test.ts
+  git add src/features/help/components/project-owner-builder.tsx scripts/help/triage-project-owner-request.mjs scripts/help/generate-project-owner-request.mjs .github/workflows/triage-project-owner-request.yml tests/unit/project-owner-builder.test.tsx tests/unit/triage-project-owner-request.test.ts tests/unit/generate-project-owner-request.test.ts tests/unit/full-catalog-data.test.ts tests/unit/workflows.test.ts
   git commit -m "fix(help): preserve owner review manifests"
   ```
 

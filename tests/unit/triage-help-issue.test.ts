@@ -19,7 +19,28 @@ function event(issueNumber = 41) {
   };
 }
 
-function websiteBody(manifest = "_No response_") {
+const websiteManifest = {
+  schema_version: 1,
+  request_kind: "website-bug",
+  origin: {
+    page_url: "/help/report-website/",
+    site_revision: "test",
+  },
+  payload: {
+    category: "accessibility",
+    page_url: "/help/",
+    actual_behavior: "The focus indicator disappears.",
+    expected_behavior: "The focused control remains visible.",
+    reproduction_steps: "Open Help and press Tab.",
+    browser: "Firefox 128",
+    device: "Windows 11",
+    additional_context: null,
+  },
+} as const;
+
+function websiteBody(
+  manifest = `\`\`\`json\n${JSON.stringify(websiteManifest)}\n\`\`\``,
+) {
   return issueBody([
     ["Category", "Accessibility"],
     ["Page URL", "https://tavernary.org/help/"],
@@ -42,6 +63,7 @@ test("fetches the latest admitted issue and replaces only Help-owned labels", as
       { name: "issue-admitted" },
       { name: "website-bug" },
       { name: "rights-review" },
+      { name: "needs-information" },
       { name: "maintainer-priority" },
     ],
   };
@@ -72,6 +94,10 @@ test("fetches the latest admitted issue and replaces only Help-owned labels", as
   ]);
   expect(request).toHaveBeenCalledWith(
     "/repos/MentallyQuill/Tavernary/issues/41/labels/rights-review",
+    { method: "DELETE" },
+  );
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/41/labels/needs-information",
     { method: "DELETE" },
   );
   expect(request).toHaveBeenCalledWith(
@@ -168,21 +194,32 @@ test("posts one marker-owned correction comment for invalid manifest input", asy
   expect(decision).toEqual({
     valid: false,
     issueNumber: 41,
-    errors: [
-      "Help manifest is not valid JSON. Correct the Help manifest or leave it empty to use the readable fields.",
-    ],
+    errors: ["Help manifest is not valid JSON."],
   });
+  expect(request).toHaveBeenCalledWith(
+    "/repos/MentallyQuill/Tavernary/issues/41/labels",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        labels: ["website-bug", "needs-information"],
+      }),
+    },
+  );
   expect(request).toHaveBeenCalledWith(
     "/repos/MentallyQuill/Tavernary/issues/41/comments",
     expect.objectContaining({
       method: "POST",
-      body: expect.stringContaining(HELP_TRIAGE_MARKER),
+      body: expect.stringMatching(
+        /tavernary-help-triage[\s\S]+remains open[\s\S]+\/help\/report-website\//iu,
+      ),
     }),
   );
   expect(
     request.mock.calls.some(
       ([path, options]) =>
-        path.endsWith("/issues/41/labels") && options?.method === "POST",
+        path.endsWith("/issues/41") &&
+        options?.method === "PATCH" &&
+        String(options.body).includes("closed"),
     ),
   ).toBe(false);
 });
