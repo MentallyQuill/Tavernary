@@ -111,7 +111,7 @@ test("associates a website category error with its select", async () => {
   );
 });
 
-test("serializes only approved website diagnostics", async () => {
+test("retains website diagnostics and regenerates only current approved values", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderWebsiteForm();
@@ -140,6 +140,28 @@ test("serializes only approved website diagnostics", async () => {
   );
   expect(manifest.payload).not.toHaveProperty("search");
   expect(manifest.payload).not.toHaveProperty("viewport");
+
+  await user.click(
+    await screen.findByRole("button", { name: "Back and edit" }),
+  );
+  const actual = screen.getByLabelText("What happens instead?");
+  expect(actual).toHaveValue("The keyboard focus disappears.");
+  await user.clear(actual);
+  await user.type(actual, "The focus ring is clipped.");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const reopened = new URL(open.mock.calls[1]?.[0] as string);
+  expect(
+    JSON.parse(reopened.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    payload: {
+      category: "accessibility",
+      page_url: "/help/",
+      actual_behavior: "The focus ring is clipped.",
+      expected_behavior: "Keyboard focus remains visible.",
+    },
+  });
 });
 
 test("keeps security reporting on the private route", () => {

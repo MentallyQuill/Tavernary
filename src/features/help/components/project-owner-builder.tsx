@@ -11,10 +11,7 @@ import type {
   ProjectOwnerManifest,
 } from "@/features/help/project-owner-manifest.mjs";
 import { normalizeProjectOwnerManifest } from "@/features/help/project-owner-manifest.mjs";
-import {
-  HelpHandoffError,
-  openHelpRequest,
-} from "@/features/help/help-transport";
+import { openHelpRequest } from "@/features/help/help-transport";
 import type { OwnerProjectOption } from "@/lib/help/load-owner-project-options";
 
 import {
@@ -314,9 +311,6 @@ export function ProjectOwnerBuilder({
   const [reviewManifest, setReviewManifest] =
     useState<ProjectOwnerManifest | null>(null);
   const [delistDialogOpen, setDelistDialogOpen] = useState(false);
-  const [continuing, setContinuing] = useState(false);
-  const [handoffError, setHandoffError] = useState("");
-  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const selected = projects.find((project) => project.id === projectId);
   const availableOperations = selected ? operationsFor(selected) : [];
@@ -340,8 +334,6 @@ export function ProjectOwnerBuilder({
     setReviewing(false);
     setReviewManifest(null);
     setDelistDialogOpen(false);
-    setHandoffError("");
-    setFallbackUrl("");
   }
 
   function chooseOperation(next: OwnerOperation) {
@@ -477,33 +469,24 @@ export function ProjectOwnerBuilder({
     return unique.length === 0;
   }
 
-  async function continueOnGitHub() {
-    if (!selected || !operation || !reviewManifest) return;
-    setContinuing(true);
-    setHandoffError("");
-    try {
-      await openHelpRequest({
-        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
-        template: "08-project-owner-request.yml",
-        manifestFieldId: "owner-request-manifest",
-        manifest: reviewManifest,
-        prefills: [
-          ["request-type", operationLabels[operation]],
-          ["project-id", selected.id],
-          ["repository", selected.sourceUrl ?? ""],
-          ["public-note", explanation.trim()],
-        ],
-        pasteInstruction:
-          "Paste the copied Tavernary owner request manifest into this field.",
-      });
-    } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url ?? "");
-      setHandoffError(
-        error instanceof Error ? error.message : "GitHub could not be opened.",
-      );
-    } finally {
-      setContinuing(false);
+  async function openReview() {
+    if (!selected || !operation || !reviewManifest) {
+      throw new Error("The owner request is no longer ready for review.");
     }
+    return openHelpRequest({
+      formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+      template: "08-project-owner-request.yml",
+      manifestFieldId: "owner-request-manifest",
+      manifest: reviewManifest,
+      prefills: [
+        ["request-type", operationLabels[operation]],
+        ["project-id", selected.id],
+        ["repository", selected.sourceUrl ?? ""],
+        ["public-note", explanation.trim()],
+      ],
+      pasteInstruction:
+        "Paste the copied Tavernary owner request manifest into this field.",
+    });
   }
 
   if (reviewing && selected && reviewManifest) {
@@ -516,11 +499,6 @@ export function ProjectOwnerBuilder({
         <p className="owner-policy-statement">
           {policyStatement(reviewManifest, selected)}
         </p>
-        {handoffError ? (
-          <div className="help-error-summary" role="alert">
-            {handoffError}
-          </div>
-        ) : null}
         <HelpReview
           rows={[
             {
@@ -535,10 +513,8 @@ export function ProjectOwnerBuilder({
             setReviewing(false);
             setReviewManifest(null);
           }}
-          onContinue={continueOnGitHub}
+          openReview={openReview}
           returnFocusId="owner-review"
-          continuing={continuing}
-          fallbackUrl={fallbackUrl}
         />
       </>
     );

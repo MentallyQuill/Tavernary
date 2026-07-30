@@ -346,6 +346,9 @@ test("reviews and hands off one atomic multi-card manifest", async () => {
   expect(screen.getByText("Summary policy: automatic")).toBeVisible();
   expect(screen.getByText("Tag policy: automatic")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  expect(
+    await screen.findByText(/GitHub review opened in a new tab/u),
+  ).toBeVisible();
 
   const opened = new URL(open.mock.calls[0]?.[0] as string);
   const manifest = JSON.parse(

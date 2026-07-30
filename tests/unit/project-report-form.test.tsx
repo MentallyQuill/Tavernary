@@ -139,7 +139,7 @@ test("links owners and Tavernary security reporters to the correct private paths
   ).toHaveAttribute("href", "/help/security");
 });
 
-test("reviews readable public values and hands off an authoritative manifest", async () => {
+test("retains project report state and regenerates the manifest after editing", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   search = "project=wandlight";
@@ -200,4 +200,25 @@ test("reviews readable public values and hands off an authoritative manifest", a
       },
     }),
   );
+
+  await user.click(
+    await screen.findByRole("button", { name: "Back and edit" }),
+  );
+  const report = screen.getByLabelText("What should Tavernary review?");
+  expect(report).toHaveValue("The listed frontend is outdated.");
+  await user.clear(report);
+  await user.type(report, "The project name is outdated.");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const reopened = new URL(open.mock.calls[1]?.[0] as string);
+  expect(
+    JSON.parse(reopened.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    payload: {
+      project_id: "wandlight",
+      report: "The project name is outdated.",
+      requested_outcome: "Update the listing.",
+    },
+  });
 });

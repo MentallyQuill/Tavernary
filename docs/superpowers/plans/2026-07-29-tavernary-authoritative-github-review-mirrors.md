@@ -520,7 +520,7 @@ Actions, GitHub CLI, PowerShell.
 - Modify: `tests/unit/kit-report-form.test.tsx`
 - Modify: `tests/unit/other-help-form.test.tsx`
 
-- [ ] **Step 1: Add a failing form-level state-retention case per domain**
+- [x] **Step 1: Add a failing form-level state-retention case per domain**
 
   For each form, fill valid data, enter review, open GitHub, return to edit,
   change one field, review again, and reopen. Assert the second URL contains a
@@ -530,7 +530,7 @@ Actions, GitHub CLI, PowerShell.
   Also add one blocked-popup case that proves the recovery link appears without
   clearing the form.
 
-- [ ] **Step 2: Run the four focused suites red**
+- [x] **Step 2: Run the four focused suites red**
 
   ```powershell
   npm.cmd test -- tests/unit/project-report-form.test.tsx tests/unit/website-report-form.test.tsx tests/unit/kit-report-form.test.tsx tests/unit/other-help-form.test.tsx
@@ -539,7 +539,7 @@ Actions, GitHub CLI, PowerShell.
   Expected: FAIL because existing forms own one-shot boolean/error state and do
   not expose persistent opened/reopen behavior.
 
-- [ ] **Step 3: Replace duplicated handoff state**
+- [x] **Step 3: Replace duplicated handoff state**
 
   First make `HelpReview` a Help-named wrapper around `SubmissionReview`. It
   supplies the public-data warning and existing Help class names, and accepts
@@ -558,7 +558,7 @@ Actions, GitHub CLI, PowerShell.
     explicitly returns to editing or cancels; and
   - preserve all entered values.
 
-- [ ] **Step 4: Run focused Help frontend tests**
+- [x] **Step 4: Run focused Help frontend tests**
 
   ```powershell
   npm.cmd test -- tests/unit/project-report-form.test.tsx tests/unit/website-report-form.test.tsx tests/unit/kit-report-form.test.tsx tests/unit/other-help-form.test.tsx tests/unit/help-review.test.tsx tests/unit/help-transport.test.ts
@@ -566,7 +566,7 @@ Actions, GitHub CLI, PowerShell.
 
   Expected: PASS.
 
-- [ ] **Step 5: Commit the Help review migration**
+- [x] **Step 5: Commit the Help review migration**
 
   ```powershell
   git add src/features/help/components/help-review.tsx src/features/help/components/project-report-form.tsx src/features/help/components/website-report-form.tsx src/features/help/components/kit-report-form.tsx src/features/help/components/other-help-form.tsx tests/unit/help-review.test.tsx tests/unit/project-report-form.test.tsx tests/unit/website-report-form.test.tsx tests/unit/kit-report-form.test.tsx tests/unit/other-help-form.test.tsx

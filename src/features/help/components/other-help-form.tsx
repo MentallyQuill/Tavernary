@@ -8,10 +8,7 @@ import type {
   OtherHelpPayload,
 } from "@/features/help/help-manifest.mjs";
 import { OTHER_HELP_CATEGORIES } from "@/features/help/help-options";
-import {
-  HelpHandoffError,
-  openHelpRequest,
-} from "@/features/help/help-transport";
+import { openHelpRequest } from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -60,9 +57,6 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
   const [relevantUrl, setRelevantUrl] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [reviewing, setReviewing] = useState(false);
-  const [continuing, setContinuing] = useState(false);
-  const [handoffError, setHandoffError] = useState("");
-  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const payload: OtherHelpPayload | null = isOtherHelpCategory(category)
     ? {
@@ -95,41 +89,29 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
     return nextErrors.length === 0;
   }
 
-  async function continueOnGitHub() {
-    if (!payload) return;
-    setHandoffError("");
-    setFallbackUrl("");
-    setContinuing(true);
-    try {
-      await openHelpRequest({
-        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
-        template: "04-other.yml",
-        manifestFieldId: "help-manifest",
-        manifest: {
-          schema_version: 1,
-          request_kind: "other-help",
-          origin: { page_url: "/help/other/", site_revision: siteRevision },
-          payload,
-        },
-        prefills: [
-          ["category", displayOtherHelpCategory(payload.category)],
-          ["subject", payload.subject],
-          ["description", payload.description],
-          ["relevant-url", payload.relevant_url ?? ""],
-        ],
-        pasteInstruction:
-          "Paste the Help manifest copied by Tavernary into the manifest field.",
-      });
-    } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url ?? "");
-      setHandoffError(
-        error instanceof Error
-          ? error.message
-          : "GitHub could not be opened. Please try again.",
-      );
-    } finally {
-      setContinuing(false);
+  async function openReview() {
+    if (!payload) {
+      throw new Error("The Help request is no longer ready for review.");
     }
+    return openHelpRequest({
+      formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+      template: "04-other.yml",
+      manifestFieldId: "help-manifest",
+      manifest: {
+        schema_version: 1,
+        request_kind: "other-help",
+        origin: { page_url: "/help/other/", site_revision: siteRevision },
+        payload,
+      },
+      prefills: [
+        ["category", displayOtherHelpCategory(payload.category)],
+        ["subject", payload.subject],
+        ["description", payload.description],
+        ["relevant-url", payload.relevant_url ?? ""],
+      ],
+      pasteInstruction:
+        "Paste the Help manifest copied by Tavernary into the manifest field.",
+    });
   }
 
   const relevantUrlLabel =
@@ -143,29 +125,21 @@ export function OtherHelpForm({ siteRevision }: { siteRevision: string }) {
 
   if (reviewing && payload) {
     return (
-      <>
-        <HelpErrorSummary
-          errors={handoffError ? [handoffError] : []}
-          heading="GitHub could not be opened automatically."
-        />
-        <HelpReview
-          rows={[
-            {
-              label: "Category",
-              value: displayOtherHelpCategory(payload.category),
-            },
-            { label: "Subject", value: payload.subject },
-            { label: "Description", value: payload.description },
-            { label: "Relevant URL", value: payload.relevant_url ?? "" },
-          ]}
-          onBack={() => setReviewing(false)}
-          onCancel={() => setReviewing(false)}
-          onContinue={continueOnGitHub}
-          returnFocusId="other-category"
-          continuing={continuing}
-          fallbackUrl={fallbackUrl}
-        />
-      </>
+      <HelpReview
+        rows={[
+          {
+            label: "Category",
+            value: displayOtherHelpCategory(payload.category),
+          },
+          { label: "Subject", value: payload.subject },
+          { label: "Description", value: payload.description },
+          { label: "Relevant URL", value: payload.relevant_url ?? "" },
+        ]}
+        onBack={() => setReviewing(false)}
+        onCancel={() => setReviewing(false)}
+        openReview={openReview}
+        returnFocusId="other-category"
+      />
     );
   }
 
