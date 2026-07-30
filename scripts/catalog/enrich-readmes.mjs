@@ -339,6 +339,17 @@ function validateOutput(output, record, vocabularies, providerInput) {
   });
   if (!validation.valid) {
     const repairHints = validation.errors.map((error) => {
+      if (error === "summary must be an object") {
+        return 'Return summary as an object with "value" and "evidence" fields.';
+      }
+      if (
+        [
+          "generated tag entries must be objects",
+          "tags was requested but is missing",
+        ].includes(error)
+      ) {
+        return 'Return each tag as an object with "id" and "evidence" fields.';
+      }
       if (
         [
           "summary must be a non-empty string",

@@ -591,6 +591,41 @@ test("uses the latest invalid output for a second validation repair", async () =
   );
 });
 
+test("restates structured field shapes when repairing primitive output", async () => {
+  const validOutput = outputFor({
+    requestedFields: ["summary", "tags"],
+    allowedTags: vocabularies.tags,
+  });
+  const malformedOutput = {
+    ...validOutput,
+    summary,
+    tags: ["interface-workflow"],
+  } as unknown as ReturnType<typeof outputFor>;
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: generate.mock.calls.length === 1 ? malformedOutput : validOutput,
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      loadSource: async () => readySource(),
+      maxProviderAttempts: 2,
+    },
+  );
+
+  expect(generate.mock.calls[1]?.[0].repair?.message).toContain(
+    'Return summary as an object with "value" and "evidence" fields.',
+  );
+  expect(generate.mock.calls[1]?.[0].repair?.message).toContain(
+    'Return each tag as an object with "id" and "evidence" fields.',
+  );
+});
+
 test("stops after the first validation repair succeeds", async () => {
   const validOutput = outputFor({
     requestedFields: ["summary", "tags"],
