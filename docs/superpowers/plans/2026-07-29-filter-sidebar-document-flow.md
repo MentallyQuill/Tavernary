@@ -1,63 +1,141 @@
-# Filter Sidebar Document-Flow Implementation Plan
+# Filter Sidebar Layout Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Give the desktop Filters sidebar natural document-flow height without changing the persistent, internally scrollable Kit Builder.
+**Goal:** Give the desktop Filters sidebar natural document-flow height, repair mobile Filter sheet clipping and scrollbar clearance, and preserve the persistent, internally scrollable Kit Builder.
 
-**Architecture:** Keep the existing three-column catalog grid and make the desktop `.filter-panel` opt out of CSS Grid's default cross-axis stretching with `align-self: start`. Lock the distinction in both the static CSS contract and a browser regression that exercises an active empty-result filter state, restores the long catalog, and compares the document-flow Filters sidebar with the sticky Kit Builder.
+**Architecture:** Keep the existing three-column desktop grid and opt `.filter-panel` out of CSS Grid cross-axis stretching with `align-self: start`. At the mobile breakpoint, size collapsed metadata from 44px touch rows and add 16px inline padding to filter groups. Runtime Playwright regressions protect both viewport behaviors.
 
-**Tech Stack:** Next.js 16, React 19, TypeScript 6, CSS Grid, Vitest, Playwright
+**Tech Stack:** Next.js 16, React 19, TypeScript 6, CSS Grid, Playwright
 
 ## Global Constraints
 
 - The desktop Filters sidebar has natural content height, no viewport-height cap, no sticky positioning, and no internal vertical scrollbar.
-- The final filter group and `.filter-legal` footer remain fully reachable when filters are selected.
-- The desktop Kit Builder keeps its current sticky positioning, viewport-bound height calculation, and internal scrollbar in collapsed, inspect, and build modes.
-- The mobile Filter sheet and mobile Kit Builder remain unchanged.
-- Do not change filter semantics, URL state, catalog result calculation, responsive breakpoints, or Kit Builder scroll restoration.
-- Add no dependencies and do not update visual baselines for this focused layout correction.
-- Preserve unrelated working-tree changes; execute in an isolated worktree created from the committed plan state.
+- The desktop Kit Builder keeps its sticky positioning, viewport-bound height calculation, and internal scrollbar.
+- The mobile Filter sheet keeps bounded modal scrolling and 44px touch targets.
+- Mobile metadata chips fit inside a four-row collapsed region.
+- Mobile filter labels and counts have at least 16px inline clearance from the scrollport.
+- The mobile Kit Builder remains unchanged.
+- Do not alter filter semantics, URL state, catalog result calculation, responsive breakpoints, or Kit Builder scroll restoration.
+- Add no dependencies and do not update visual baselines.
+- Preserve unrelated working-tree changes by executing in the isolated worktree.
 
 ---
 
 ## File Structure
 
-- Modify `src/styles/catalog.css`: define the desktop Filters sidebar's cross-axis sizing contract.
-- Modify `tests/unit/visual-alignment-contract.test.ts`: lock the CSS distinction between the natural-height Filters sidebar and viewport-bound Kit Builder.
-- Modify `tests/e2e/catalog.spec.ts`: reproduce the selected-filter state and prove runtime document-flow behavior.
+- Modify `src/styles/catalog.css`: set the desktop Filters sidebar's cross-axis sizing.
+- Modify `src/styles/responsive.css`: set mobile collapsed-row sizing and filter-group clearance.
+- Modify `tests/e2e/catalog.spec.ts`: prove desktop document-flow behavior.
+- Modify `tests/e2e/mobile.spec.ts`: prove mobile chip and count containment.
 
-### Task 1: Separate Filters flow from the sticky Kit Builder
+### Task 1: Repair mobile Filter sheet containment
 
 **Files:**
-- Modify: `tests/unit/visual-alignment-contract.test.ts:330-350`
-- Modify: `tests/e2e/catalog.spec.ts:175-220`
-- Modify: `src/styles/catalog.css:430-437`
+- Modify: `tests/e2e/mobile.spec.ts`
+- Modify: `src/styles/responsive.css`
 
 **Interfaces:**
-- Consumes: Existing `.catalog-layout`, `.filter-panel`, `.filter-legal`, `.catalog-main`, `.kit-builder-panel`, and `FilterPanel` checkbox labels.
-- Produces: A desktop `.filter-panel { align-self: start; }` layout contract. No TypeScript interface or component API changes.
+- Consumes: `.filter-sheet`, `.filter-group`, `.metadata-options.collapsed`, `.filter-choice-chip`, and `.filter-legal`.
+- Produces: Four visible 44px metadata rows and 16px filter-group inline clearance at widths of 760px or less.
 
-- [ ] **Step 1: Add the failing static layout contract**
+- [ ] **Step 1: Add the failing mobile regression**
 
-In `tests/unit/visual-alignment-contract.test.ts`, extend
-`"uses the mockup desktop workspace and toolbar geometry"` with:
+Extend `"uses mobile browse and filter sheets without page overflow"` after
+the dialog becomes visible:
 
 ```ts
-expect(css).toMatch(
-  /\.filter-panel\s*\{[^}]*align-self:\s*start[^}]*padding:\s*20px 18px 50px[^}]*border-right:/s,
+const modelGroup = dialog.getByRole("group", { name: "Model family" });
+const modelOptions = modelGroup.locator(".metadata-options");
+const visibleModelChips = modelOptions.locator(".filter-choice-chip:visible");
+const visibleModelChipCount = await visibleModelChips.count();
+const modelContainment = await modelOptions.evaluate((element) => {
+  const chips = Array.from(
+    element.querySelectorAll<HTMLElement>(".filter-choice-chip"),
+  ).filter((chip) => chip.getClientRects().length > 0);
+  const bounds = element.getBoundingClientRect();
+  return {
+    bottom: bounds.bottom,
+    chipBottoms: chips.map((chip) => chip.getBoundingClientRect().bottom),
+  };
+});
+expect(visibleModelChipCount).toBeGreaterThan(0);
+expect(Math.max(...modelContainment.chipBottoms)).toBeLessThanOrEqual(
+  modelContainment.bottom + 1,
 );
-expect(css).toMatch(
-  /\.kit-builder-panel\s*\{[^}]*position:\s*sticky[^}]*height:\s*var\(--kit-builder-visible-height,/s,
-);
+
+const development = dialog.getByRole("group", { name: "Development" });
+const countClearances = await development.locator("b").evaluateAll((counts) => {
+  const sheet = document.querySelector<HTMLElement>(".filter-sheet");
+  if (!sheet) throw new Error("Missing Filter sheet");
+  const scrollportRight = sheet.getBoundingClientRect().left + sheet.clientWidth;
+  return counts.map(
+    (count) => scrollportRight - count.getBoundingClientRect().right,
+  );
+});
+expect(Math.min(...countClearances)).toBeGreaterThanOrEqual(16);
 ```
 
-Replace the existing `.filter-panel` padding-only expectation so the test
-requires one unambiguous desktop rule rather than duplicating assertions.
+The production mutation caught is either restoring the 26px-based cap or
+removing the mobile group padding.
 
-- [ ] **Step 2: Add the failing browser regression**
+- [ ] **Step 2: Run the mobile regression to verify RED**
 
-In `tests/e2e/catalog.spec.ts`, immediately after
-`"uses the approved desktop workspace and matched toolbar controls"`, add:
+Run:
+
+```powershell
+npm.cmd run build
+npm.cmd run test:e2e -- mobile.spec.ts --grep "uses mobile browse and filter sheets"
+```
+
+Expected: FAIL because a visible 44px model chip extends below the 122px
+collapsed container and Development counts have approximately 0px scrollport
+clearance.
+
+- [ ] **Step 3: Implement the mobile CSS**
+
+Inside `@media (max-width: 760px)` in `src/styles/responsive.css`, add:
+
+```css
+.filter-sheet .filter-group {
+  padding-inline: 16px;
+}
+
+.filter-sheet .metadata-options.collapsed {
+  max-height: calc(44px * 4 + 6px * 3);
+}
+```
+
+Keep `.filter-sheet .filter-group label { min-height: 44px; }`, the sheet's
+bounded overflow, and all mobile Kit Builder rules unchanged.
+
+- [ ] **Step 4: Verify the mobile regression GREEN**
+
+Run:
+
+```powershell
+npm.cmd exec prettier -- --write src/styles/responsive.css tests/e2e/mobile.spec.ts
+npm.cmd run build
+npm.cmd run test:e2e -- mobile.spec.ts --grep "uses mobile browse and filter sheets"
+```
+
+Expected: PASS with every visible chip inside the collapsed region and every
+Development count at least 16px from the scrollport edge.
+
+### Task 2: Stop the desktop Filters sidebar at its content
+
+**Files:**
+- Modify: `tests/e2e/catalog.spec.ts`
+- Modify: `src/styles/catalog.css`
+
+**Interfaces:**
+- Consumes: `.catalog-layout`, `.filter-panel`, `.filter-legal`, and `.kit-builder-panel`.
+- Produces: A natural-height desktop Filters column without changing Kit Builder behavior.
+
+- [ ] **Step 1: Add the failing desktop regression**
+
+After `"uses the approved desktop workspace and matched toolbar controls"` in
+`tests/e2e/catalog.spec.ts`, add:
 
 ```ts
 test("lets desktop Filters end in page flow while Kit Builder stays sticky", async ({
@@ -74,24 +152,17 @@ test("lets desktop Filters end in page flow while Kit Builder stays sticky", asy
     const footer = element.querySelector<HTMLElement>(".filter-legal");
     if (!footer) throw new Error("Missing Filters legal footer");
     const panelBounds = element.getBoundingClientRect();
-    const footerBounds = footer.getBoundingClientRect();
-    const style = getComputedStyle(element);
     return {
-      alignSelf: style.alignSelf,
-      overflowY: style.overflowY,
-      position: style.position,
+      alignSelf: getComputedStyle(element).alignSelf,
+      overflowY: getComputedStyle(element).overflowY,
       panelBottom: panelBounds.bottom,
-      footerBottom: footerBounds.bottom,
+      footerBottom: footer.getBoundingClientRect().bottom,
       clientHeight: element.clientHeight,
       scrollHeight: element.scrollHeight,
     };
   });
-
-  expect(selectedState).toMatchObject({
-    alignSelf: "start",
-    overflowY: "visible",
-    position: "static",
-  });
+  expect(selectedState.alignSelf).toBe("start");
+  expect(selectedState.overflowY).toBe("visible");
   expect(selectedState.footerBottom).toBeLessThanOrEqual(
     selectedState.panelBottom + 1,
   );
@@ -104,57 +175,39 @@ test("lets desktop Filters end in page flow while Kit Builder stays sticky", asy
   await page.evaluate(() =>
     window.scrollTo(0, document.documentElement.scrollHeight),
   );
-
   const scrolledState = await page.evaluate(() => {
-    const filtersPanel =
-      document.querySelector<HTMLElement>(".filter-panel");
-    const kitBuilder =
-      document.querySelector<HTMLElement>(".kit-builder-panel");
-    if (!filtersPanel || !kitBuilder) {
-      throw new Error("Missing desktop sidebar");
-    }
-    const filterBounds = filtersPanel.getBoundingClientRect();
-    const kitBounds = kitBuilder.getBoundingClientRect();
+    const filterPanel = document.querySelector<HTMLElement>(".filter-panel");
+    const kitBuilder = document.querySelector<HTMLElement>(
+      ".kit-builder-panel",
+    );
+    if (!filterPanel || !kitBuilder) throw new Error("Missing desktop sidebar");
     return {
-      filterBottom: filterBounds.bottom,
+      filterBottom: filterPanel.getBoundingClientRect().bottom,
       kitPosition: getComputedStyle(kitBuilder).position,
-      kitBottomGap: window.innerHeight - kitBounds.bottom,
+      kitBottomGap:
+        window.innerHeight - kitBuilder.getBoundingClientRect().bottom,
     };
   });
-
   expect(scrolledState.filterBottom).toBeLessThan(0);
   expect(scrolledState.kitPosition).toBe("sticky");
   expect(scrolledState.kitBottomGap).toBeCloseTo(0, 0);
 });
 ```
 
-This single scenario covers the reported active-filter state, footer
-reachability, absence of a nested Filters scrollbar, the long-catalog
-document-flow boundary, and the unchanged sticky Kit Builder.
-
-- [ ] **Step 3: Build the current export and verify RED**
+- [ ] **Step 2: Run the desktop regression to verify RED**
 
 Run:
 
 ```powershell
-npm.cmd run build
-npm.cmd test -- tests/unit/visual-alignment-contract.test.ts
 npm.cmd run test:e2e -- catalog.spec.ts --grep "lets desktop Filters end in page flow"
 ```
 
-Expected:
+Expected: FAIL because the grid-stretched Filters sidebar reports
+`alignSelf: "stretch"` and continues through the long catalog row.
 
-- the unit test fails because `.filter-panel` does not declare
-  `align-self: start`;
-- the Playwright regression fails because the grid-stretched Filters sidebar
-  reports `alignSelf: "stretch"` and continues through the long catalog row;
-- existing build output completes so the browser failure reflects current
-  source rather than a stale static export.
+- [ ] **Step 3: Implement the desktop CSS**
 
-- [ ] **Step 4: Implement the smallest CSS change**
-
-In the existing desktop `.filter-panel` rule in `src/styles/catalog.css`, add
-`align-self: start` before the padding declaration:
+In `src/styles/catalog.css`:
 
 ```css
 .filter-panel {
@@ -168,79 +221,68 @@ In the existing desktop `.filter-panel` rule in `src/styles/catalog.css`, add
 ```
 
 Do not add `position`, `height`, `max-height`, or `overflow-y`. Do not edit
-`.kit-builder-panel`, `availableBuilderHeight`, or either mobile media query.
+`.kit-builder-panel` or `availableBuilderHeight`.
 
-- [ ] **Step 5: Format and verify GREEN**
+- [ ] **Step 4: Verify the desktop regression GREEN**
 
 Run:
 
 ```powershell
-npm.cmd exec prettier -- --write src/styles/catalog.css tests/unit/visual-alignment-contract.test.ts tests/e2e/catalog.spec.ts
-npm.cmd test -- tests/unit/visual-alignment-contract.test.ts
+npm.cmd exec prettier -- --write src/styles/catalog.css tests/e2e/catalog.spec.ts
 npm.cmd run build
 npm.cmd run test:e2e -- catalog.spec.ts --grep "lets desktop Filters end in page flow"
 ```
 
-Expected: formatting succeeds, the focused Vitest file passes, the static
-export builds, and the new Playwright regression passes.
+Expected: PASS.
 
-- [ ] **Step 6: Verify the unchanged desktop Kit Builder and mobile surfaces**
+### Task 3: Verify and commit the combined responsive correction
 
-Run:
+**Files:**
+- Verify: `src/styles/catalog.css`
+- Verify: `src/styles/responsive.css`
+- Verify: `tests/e2e/catalog.spec.ts`
+- Verify: `tests/e2e/mobile.spec.ts`
+
+**Interfaces:**
+- Consumes: Tasks 1 and 2.
+- Produces: One verified responsive layout commit.
+
+- [ ] **Step 1: Run focused preservation coverage**
 
 ```powershell
 npm.cmd run test:kits-e2e -- --grep "desktop Kit Builder stays flush|desktop long Kit stacks scroll"
 npm.cmd run test:e2e -- mobile.spec.ts
 ```
 
-Expected:
+Expected: Kit Builder sticky/internal scrolling and all mobile coverage pass.
 
-- the Kit Builder remains flush with the viewport after the header scrolls
-  away;
-- a long Kit still scrolls internally through its final row and submit
-  controls;
-- the mobile Filter sheet and Kit Builder coverage passes unchanged.
-
-- [ ] **Step 7: Run the complete focused quality gate**
-
-Run:
+- [ ] **Step 2: Run the complete quality gate**
 
 ```powershell
 npm.cmd run format:check
 npm.cmd run lint
 npm.cmd run typecheck
 npm.cmd test
+npm.cmd run build
 npm.cmd run test:e2e -- catalog.spec.ts mobile.spec.ts
 npm.cmd run test:kits-e2e
 git diff --check
 git status --short
 ```
 
-Expected: every command passes. `git status --short` lists only
-`src/styles/catalog.css`, `tests/unit/visual-alignment-contract.test.ts`, and
-`tests/e2e/catalog.spec.ts` as implementation changes, plus this plan if it
-was not committed before execution.
+Expected: every command passes and only the two CSS files, two E2E files, and
+approved documentation updates are modified.
 
-- [ ] **Step 8: Inspect the selected-filter layout**
+- [ ] **Step 3: Inspect both responsive layouts**
 
-Using the rebuilt static export at a `1440 × 900` viewport:
+At `390 × 844`, confirm model-family chips are whole and Development/License
+counts clear the scrollbar. At `1440 × 900` and `900 × 900`, confirm Filters
+leave the viewport after their content while Kit Builder stays pinned and
+internally scrollable.
 
-1. Select `Frontend` and `Chat Completion`.
-2. Confirm the empty catalog state does not cover or clip `.filter-legal`.
-3. Clear filters and scroll past the Filters sidebar.
-4. Confirm the Filters sidebar leaves the viewport while the Kit Builder
-   remains visible and its internal scrollbar still reaches all Kit cards.
-5. Repeat at `900 × 900` to cover the tablet desktop layout.
-
-Expected: the visual result matches the approved asymmetric behavior without
-horizontal overflow, clipped footer content, or Kit Builder movement.
-
-- [ ] **Step 9: Commit the implementation**
+- [ ] **Step 4: Commit**
 
 ```powershell
-git add -- src/styles/catalog.css tests/unit/visual-alignment-contract.test.ts tests/e2e/catalog.spec.ts
-git commit -m "fix(catalog): stop filter sidebar stretch"
+git add -- docs/superpowers/specs/2026-07-29-filter-sidebar-document-flow-design.md docs/superpowers/plans/2026-07-29-filter-sidebar-document-flow.md src/styles/catalog.css src/styles/responsive.css tests/e2e/catalog.spec.ts tests/e2e/mobile.spec.ts
+git commit -m "fix(catalog): repair filter layout"
 ```
-
-Expected: one focused implementation commit following the already committed
-design and plan documentation.
