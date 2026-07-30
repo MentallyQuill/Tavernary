@@ -1275,7 +1275,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `docs/contributing/kits.md`
 - Modify: `docs/maintenance/operations-runbook.md`
 
-- [ ] **Step 1: Replace Issue Form tests with the review-mirror contract**
+- [x] **Step 1: Replace Issue Form tests with the review-mirror contract**
 
   Assert for every public Issue Form:
 
@@ -1303,7 +1303,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Add admission tests proving exact readable heading sets now return `"none"`
   and explicit labels still return their domain route.
 
-- [ ] **Step 2: Run Issue Form and admission tests red**
+- [x] **Step 2: Run Issue Form and admission tests red**
 
   ```powershell
   npm.cmd test -- tests/unit/issue-forms.test.ts tests/unit/admit-issue.test.ts
@@ -1312,7 +1312,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL on fallback wording, optional manifests, missing contact links,
   and heading-based route recovery.
 
-- [ ] **Step 3: Update each Issue Form honestly**
+- [x] **Step 3: Update each Issue Form honestly**
 
   Do not claim GitHub fields are technically locked. Use consistent language:
 
@@ -1339,20 +1339,20 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Preserve readable fields and labels so maintainers can scan the issue. Do not
   compare them with the manifest.
 
-- [ ] **Step 4: Add Tavernary issue-chooser links**
+- [x] **Step 4: Add Tavernary issue-chooser links**
 
   Give every contact link a clear name and explanation. Keep blank issues
   disabled. Do not add a public security link that bypasses the existing
   private advisory page.
 
-- [ ] **Step 5: Remove body-heading routing**
+- [x] **Step 5: Remove body-heading routing**
 
   Delete imports/constants/functions used only by `issueRouteFromBody`.
   `effectiveIssueRoute(issue)` returns the explicit label route only. Preserve
   conflict behavior when multiple owned route labels exist. Existing
   issue-admission limits and trusted-author behavior remain unchanged.
 
-- [ ] **Step 6: Update active contributor copy**
+- [x] **Step 6: Update active contributor copy**
 
   Run:
 
@@ -1366,7 +1366,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   historical decision records. Any unexpected active match is a plan
   discovery: add its exact path to this task before editing it.
 
-- [ ] **Step 7: Validate YAML and routing**
+- [x] **Step 7: Validate YAML and routing**
 
   ```powershell
   npm.cmd test -- tests/unit/issue-forms.test.ts tests/unit/admit-issue.test.ts tests/unit/parse-project-submission.test.ts tests/unit/parse-help-issue.test.ts tests/unit/triage-project-owner-request.test.ts tests/unit/apply-kit-withdrawal.test.ts
@@ -1376,7 +1376,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: PASS. No public payload can be reconstructed from readable
   headings.
 
-- [ ] **Step 8: Commit review-mirror forms and copy**
+- [x] **Step 8: Commit review-mirror forms and copy**
 
   ```powershell
   git add .github/ISSUE_TEMPLATE scripts/submissions/admit-issue.mjs tests/unit/issue-forms.test.ts tests/unit/admit-issue.test.ts docs/contributing/contribution-overview.md docs/contributing/submission-and-review.md docs/contributing/kits.md docs/maintenance/operations-runbook.md
@@ -1401,7 +1401,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/kits-e2e/kits.spec.ts`
 - Modify visual tests/snapshots only if the approved states require them
 
-- [ ] **Step 1: Add a reusable popup recorder**
+- [x] **Step 1: Add a reusable popup recorder**
 
   In the existing Playwright fixture/helper location, override `window.open`
   before page scripts execute:
@@ -1420,7 +1420,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Add a null-return variant for popup recovery. Use the recorded URL to decode
   the domain manifest and inspect exact current values.
 
-- [ ] **Step 2: Cover the full project path**
+- [x] **Step 2: Cover the full project path**
 
   Test at least:
 
@@ -1434,7 +1434,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - opening and reopening with two different current manifests; and
   - readable `project-type` drift being irrelevant to parsed manifest tests.
 
-- [ ] **Step 3: Cover Help and owner paths**
+- [x] **Step 3: Cover Help and owner paths**
 
   Exercise all four Help routes once. For owner:
 
@@ -1444,13 +1444,13 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - verify source move and permanent delist review text; and
   - verify security still links to a private advisory.
 
-- [ ] **Step 4: Cover Kit paths**
+- [x] **Step 4: Cover Kit paths**
 
   Exercise Kit create/edit review, successful open, popup failure, back/edit,
   reopen, and explicit discard. Follow **Request withdrawal** into Tavernary,
   validate the confirmation, and decode its version-1 manifest.
 
-- [ ] **Step 5: Add 320-pixel assertions**
+- [x] **Step 5: Add 320-pixel assertions**
 
   At viewport `320 x 800`, assert:
 
@@ -1461,7 +1461,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - Kit review retains usable controls; and
   - focus returns to the expected field after **Back and edit**.
 
-- [ ] **Step 6: Run all browser suites**
+- [x] **Step 6: Run all browser suites**
 
   ```powershell
   npm.cmd run test:e2e
@@ -1475,7 +1475,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   and confirming it represents the approved review state rather than masking a
   regression.
 
-- [ ] **Step 7: Commit cross-flow coverage**
+- [x] **Step 7: Commit cross-flow coverage**
 
   ```powershell
   git add tests/e2e tests/kits-e2e tests/visual
@@ -1489,7 +1489,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify only files needed to fix failures that demonstrably belong to this
   feature
 
-- [ ] **Step 1: Audit all public entrypoints and payload parsers**
+- [x] **Step 1: Audit all public entrypoints and payload parsers**
 
   Run:
 
@@ -1507,7 +1507,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - no Kit withdrawal production path parses `Kit ID`; and
   - historical specs/plans may still describe prior behavior.
 
-- [ ] **Step 2: Run the full repository gate**
+- [x] **Step 2: Run the full repository gate**
 
   ```powershell
   npm.cmd run check
@@ -1517,7 +1517,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   all Vitest suites, Next static build, and export verification PASS. Record
   the project/Kit export counts and total passing test count in the handoff.
 
-- [ ] **Step 3: Re-run every browser gate after the production build**
+- [x] **Step 3: Re-run every browser gate after the production build**
 
   ```powershell
   npm.cmd run test:e2e
@@ -1529,7 +1529,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Expected: all PASS at desktop and mobile sizes.
 
-- [ ] **Step 4: Inspect the complete diff**
+- [x] **Step 4: Inspect the complete diff**
 
   ```powershell
   git status --short
@@ -1549,7 +1549,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   - Kit and owner drafts survive handoff; and
   - only the approved Kit-withdrawal manifest is new.
 
-- [ ] **Step 5: Inspect current GitHub authentication without mutation**
+- [x] **Step 5: Inspect current GitHub authentication without mutation**
 
   Use network-enabled GitHub CLI:
 
@@ -1575,7 +1575,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   With approval, use the signed-in browser, make no submission, capture exact
   observed behavior, and close/cancel the form.
 
-- [ ] **Step 7: Finish with verification evidence**
+- [x] **Step 7: Finish with verification evidence**
 
   Re-run `git status --short` after any smoke-only activity. Use
   `superpowers:verification-before-completion` before claiming the branch is
