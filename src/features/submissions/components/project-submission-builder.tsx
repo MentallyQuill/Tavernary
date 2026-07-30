@@ -446,6 +446,12 @@ export function ProjectSubmissionBuilder({
           options={summaryChoices}
           onChange={(value) => setSummaryMode(value as "automatic" | "manual")}
         />
+        <p className="submission-hint" id="project-description-authority">
+          Only the verified repository owner or trusted Tavernary staff can set
+          this description. If you are not the owner, leave this set to Let
+          TavernAI write the description; any description you enter will be
+          ignored.
+        </p>
         {summaryMode === "automatic" ? (
           <p className="submission-hint">
             TavernAI writes the description from the root README first and the
@@ -472,10 +478,6 @@ export function ProjectSubmissionBuilder({
                   : "project-description-authority project-description-hint project-description-count"
               }
             />
-            <p className="submission-hint" id="project-description-authority">
-              This value is honored only for the verified repository owner or
-              trusted Tavernary staff. Other submitter text is discarded.
-            </p>
             <p className="submission-hint" id="project-description-count">
               {description.length}/220 characters
             </p>
@@ -508,6 +510,11 @@ export function ProjectSubmissionBuilder({
           options={tagChoices}
           onChange={(value) => setTagMode(value as "automatic" | "manual")}
         />
+        <p className="submission-hint">
+          Only the verified repository owner or trusted Tavernary staff can set
+          these tags. If you are not the owner, leave this set to Let Tavernary
+          select tags; any tags you select will be ignored.
+        </p>
         {tagMode === "manual" ? (
           <div className="submission-field">
             <span className="submission-field-label">Goals and traits</span>
@@ -525,10 +532,6 @@ export function ProjectSubmissionBuilder({
               searchLabel="Search goals and traits"
               limitLabel="Up to six"
             />
-            <p className="submission-hint">
-              These values are honored only for the verified repository owner or
-              trusted Tavernary staff. Other submitter selections are discarded.
-            </p>
             <InlineError
               id="project-tags-error"
               message={errorFor("project-tags")}

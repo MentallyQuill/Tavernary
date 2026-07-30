@@ -42,9 +42,10 @@ body:
       label: Description choice
       description: >-
         Let TavernAI draft from the root README first and the repository
-        description second, or request your own wording. Manual wording is
-        honored only for the verified personal repository owner or trusted
-        Tavernary staff; other submitter text is discarded.
+        description second, or request your own wording. Only the verified
+        personal repository owner or trusted Tavernary staff can set the
+        description. If you are not the owner, leave this set to Let TavernAI
+        write the description; any description you enter will be ignored.
       options:
         - Let TavernAI write the description
         - Write the description myself
@@ -72,9 +73,10 @@ body:
       label: Tag choice
       description: >-
         Let Tavernary classify this project from repository evidence, or
-        request up to six controlled Goals and traits tag IDs. Manual tags are
-        honored only for the verified personal repository owner or trusted
-        Tavernary staff; other submitter values are discarded.
+        request up to six controlled Goals and traits tag IDs. Only the verified
+        personal repository owner or trusted Tavernary staff can set tags. If
+        you are not the owner, leave this set to Let Tavernary select tags; any
+        tags you select will be ignored.
       options:
         - Let Tavernary select tags
         - Set tags myself

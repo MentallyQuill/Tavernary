@@ -90,7 +90,7 @@ test("joins cards to sources with separate fingerprints and sibling state", asyn
         model_families: ["claude"],
         completion_formats: ["chat-completion"],
         listing_status: "retired",
-        listing_status_reason: "removed",
+        listing_status_reason: "owner-request",
       },
     ],
     [githubSource],

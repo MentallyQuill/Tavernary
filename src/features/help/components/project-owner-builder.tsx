@@ -397,7 +397,7 @@ export function ProjectOwnerBuilder({
         original: { listing_status: "active", listing_status_reason: null },
         proposed: {
           listing_status: "retired",
-          listing_status_reason: "removed",
+          listing_status_reason: "owner-request",
         },
       };
     }
@@ -408,7 +408,7 @@ export function ProjectOwnerBuilder({
         project_fingerprint: selected.projectFingerprint,
         original: {
           listing_status: "retired",
-          listing_status_reason: "removed",
+          listing_status_reason: "owner-request",
         },
         proposed: { listing_status: "active", listing_status_reason: null },
       };

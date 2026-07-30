@@ -13,6 +13,7 @@ import {
   generateProjectOwnerRequest,
   sameProjectOwnerGenerationReport,
 } from "../../scripts/help/generate-project-owner-request.mjs";
+import { PROJECT_PUBLICATION_TRANSACTION_MARKER } from "../../scripts/publication/project-publication-transaction.mjs";
 
 const root = resolve("test-fixtures", "owner-request-repository");
 const reportPath = resolve(
@@ -191,6 +192,41 @@ ${JSON.stringify(manifest)}
     user: { id: 100, login: "Owner" },
     author_association: "NONE",
     updated_at: "2026-07-29T12:00:00Z",
+  };
+}
+
+function addCardsPull(issueNumber: number) {
+  return {
+    number: issueNumber + 1_000,
+    state: "open",
+    merged_at: null,
+    body: [
+      PROJECT_PUBLICATION_TRANSACTION_MARKER,
+      JSON.stringify({
+        schema_version: 2,
+        operation: "add-cards",
+        producer: "project-owner-request",
+        publication_mode: "manual",
+        issue_number: issueNumber,
+        project_ids: ["owner-alpha-extra"],
+        source_id: "github-42",
+        source_identity: {
+          type: "github",
+          canonical: "github:42",
+          repository_id: 42,
+        },
+        actor: { id: 100, login: "Owner", type: "User" },
+        authority_type: "repository-owner",
+        input_digest: "b".repeat(64),
+        input_fingerprints: { projects: {}, source: "c".repeat(64) },
+        base_sha: "d".repeat(40),
+        generated_head_sha: "e".repeat(40),
+        generated_paths: ["data/registry/projects/owner-alpha-extra.json"],
+        policy_version: "2026-07-29",
+        copy_result: null,
+      }),
+      "-->",
+    ].join("\n"),
   };
 }
 
@@ -659,6 +695,124 @@ test("generates automatic summary and tags independently for every add-card sibl
     });
   }
   expect(generated.report.metadata_results).toHaveLength(2);
+});
+
+test("loads shared source evidence once while generating sibling cards independently", async () => {
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards) {
+    card.metadata = {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    };
+  }
+  const fixture = harness(manifest);
+  const loadEnrichmentSource = vi.fn(async () => ({
+    status: "ready" as const,
+    sourceKind: "readme" as const,
+    sourceIdentity: "github:owner/alpha",
+    text: "Shared README evidence for the repository.",
+    repositoryDescription: "Repository description.",
+    readmeText: "Shared README evidence for the repository.",
+    readmePath: "README.md",
+    readmeRef: "a".repeat(40),
+    readmeIdentity: `github:owner/alpha@${"a".repeat(40)}:README.md`,
+    repositoryId: 42,
+    headSha: "a".repeat(40),
+  }));
+  const generateMetadata = vi.fn(async (input) => ({
+    output: {
+      summary: {
+        value: `${input.id} provides a distinct repository offering with source-grounded catalog metadata. It reuses one shared README load while classifying this sibling independently from other offerings.`,
+        evidence: [`readme:${input.id}`],
+      },
+      tags: [{ id: "automation", evidence: [`readme:${input.id}`] }],
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+    metadata: {
+      requestedModel: "MiniMax-M3",
+      returnedModel: "MiniMax-M3",
+      latencyMs: 10,
+    },
+  }));
+
+  await generate(fixture, {
+    loadEnrichmentSource,
+    enrichmentProvider: { generate: generateMetadata },
+  });
+
+  expect(loadEnrichmentSource).toHaveBeenCalledOnce();
+  expect(generateMetadata).toHaveBeenCalledTimes(2);
+  expect(generateMetadata.mock.calls.map(([input]) => input.id)).toEqual([
+    "owner-alpha-beta",
+    "owner-alpha-gamma",
+  ]);
+});
+
+test("blocks the atomic batch when automatic summary evidence has no usable copy", async () => {
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards) {
+    card.metadata = {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    };
+  }
+  const fixture = harness(manifest);
+
+  await expect(
+    generate(fixture, {
+      loadEnrichmentSource: vi.fn(async () => ({
+        status: "fallback",
+        sourceKind: "confirmed-fallback",
+        sourceIdentity: "github:owner/alpha",
+        repositoryId: 42,
+        headSha: "a".repeat(40),
+        readmePath: null,
+        readmeRef: "a".repeat(40),
+      })),
+      enrichmentProvider: { generate: vi.fn() },
+    }),
+  ).rejects.toThrow(/summary|sentence|placeholder/iu);
+  expect(fixture.writes).toEqual([]);
+});
+
+test("paginates open pull requests before admitting a source-scoped batch", async () => {
+  const fixture = harness(addManifest());
+  const firstPullPage = Array.from({ length: 100 }, (_, index) => ({
+    number: index + 1,
+    state: "open",
+    merged_at: null,
+    body: "ordinary pull request",
+  }));
+  const request = vi.fn(async (path: string) => {
+    if (path === "/repos/Tavernary/Tavernary/issues/123") {
+      return fixture.latest;
+    }
+    if (
+      path ===
+      "/repos/Tavernary/Tavernary/issues?state=open&labels=project-owner-request&per_page=100"
+    ) {
+      return [fixture.latest];
+    }
+    if (path === "/repos/Tavernary/Tavernary/pulls?state=open&per_page=100") {
+      return firstPullPage;
+    }
+    if (
+      path === "/repos/Tavernary/Tavernary/pulls?state=open&per_page=100&page=2"
+    ) {
+      return [addCardsPull(124)];
+    }
+    return fixture.request(path);
+  });
+
+  await expect(generate(fixture, { request })).rejects.toThrow(
+    "source-request-already-open",
+  );
+  expect(request).toHaveBeenCalledWith(
+    "/repos/Tavernary/Tavernary/pulls?state=open&per_page=100&page=2",
+  );
+  expect(fixture.writes).toEqual([]);
 });
 
 test("falls back to no tags when tag-only generation fails", async () => {

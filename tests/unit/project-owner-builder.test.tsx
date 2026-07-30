@@ -266,6 +266,43 @@ test("enforces the ten-card batch boundary and keeps at least one draft", async 
   expect(screen.getByRole("button", { name: /Remove Card 1/u })).toBeDisabled();
 });
 
+test("gives each add-card draft its own six-tag allowance", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Add cards from this source" }),
+  );
+  await user.click(screen.getByRole("button", { name: "Add another card" }));
+  const [first, second] = screen.getAllByRole("group", {
+    name: /^Card \d+:/u,
+  });
+
+  for (const label of [
+    "Creative writing",
+    "Trait 1",
+    "Trait 2",
+    "Trait 3",
+    "Trait 4",
+  ]) {
+    await user.click(within(first!).getByLabelText(label));
+  }
+  expect(within(first!).getByText("6 / 6 selected")).toBeVisible();
+  expect(within(second!).getByLabelText("Creative writing")).toBeEnabled();
+
+  for (const label of [
+    "Creative writing",
+    "Trait 1",
+    "Trait 2",
+    "Trait 3",
+    "Trait 4",
+  ]) {
+    await user.click(within(second!).getByLabelText(label));
+  }
+  expect(within(second!).getByText("6 / 6 selected")).toBeVisible();
+  expect(within(first!).getByText("6 / 6 selected")).toBeVisible();
+});
+
 test("blocks the whole batch for duplicate generated IDs or one invalid card", async () => {
   const user = userEvent.setup();
   renderBuilder();

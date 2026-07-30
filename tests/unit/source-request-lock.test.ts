@@ -132,6 +132,21 @@ test("open add-card pull requests retain the lock", () => {
   });
 });
 
+test("an existing open pull retains the lock even when its issue number is higher", () => {
+  expect(
+    planSourceRequestAdmission({
+      sourceId: "github-42",
+      issueNumber: 11,
+      issues: [],
+      pulls: [addCardsPull(12)],
+    }),
+  ).toEqual({
+    action: "reject",
+    reasonCode: "source-request-already-open",
+    conflictingIssueNumber: 12,
+  });
+});
+
 test("simultaneous candidates deterministically admit the lower issue number", () => {
   expect(
     planSourceRequestAdmission({

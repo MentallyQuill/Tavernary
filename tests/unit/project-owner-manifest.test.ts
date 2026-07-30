@@ -403,11 +403,11 @@ describe("owner card edits and lifecycle", () => {
     [
       "retire-card",
       { listing_status: "active", listing_status_reason: null },
-      { listing_status: "retired", listing_status_reason: "removed" },
+      { listing_status: "retired", listing_status_reason: "owner-request" },
     ],
     [
       "restore-card",
-      { listing_status: "retired", listing_status_reason: "removed" },
+      { listing_status: "retired", listing_status_reason: "owner-request" },
       { listing_status: "active", listing_status_reason: null },
     ],
   ] as const)(

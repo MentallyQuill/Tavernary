@@ -12,6 +12,7 @@ import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-polic
 import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
 import { validateEnrichmentOutput } from "../catalog/enrichment-contract.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
+import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import {
@@ -214,16 +215,22 @@ async function loadSnapshot(root, sourceId, readFile) {
 
 async function loadOpenRequests(hostRepository, request) {
   const repository = repositoryName(hostRepository);
+  async function loadPages(path) {
+    const values = [];
+    for (let page = 1; ; page += 1) {
+      const result = await request(page === 1 ? path : `${path}&page=${page}`);
+      const entries = Array.isArray(result) ? result : [];
+      values.push(...entries);
+      if (entries.length < 100) return values;
+    }
+  }
   const [issues, pulls] = await Promise.all([
-    request(
+    loadPages(
       `/repos/${repository}/issues?state=open&labels=project-owner-request&per_page=100`,
     ),
-    request(`/repos/${repository}/pulls?state=open&per_page=100`),
+    loadPages(`/repos/${repository}/pulls?state=open&per_page=100`),
   ]);
-  return {
-    issues: Array.isArray(issues) ? issues : [],
-    pulls: Array.isArray(pulls) ? pulls : [],
-  };
+  return { issues, pulls };
 }
 
 function admitted(decision) {
@@ -484,7 +491,13 @@ async function injectedEnrichment(input, context) {
   return output;
 }
 
-async function generatedMetadataOutput(input, final, snapshot, context) {
+async function generatedMetadataOutput(
+  input,
+  final,
+  snapshot,
+  context,
+  loadSource,
+) {
   if (input.enrichMetadata) return injectedEnrichment(input, context);
   const provider =
     input.enrichmentProvider ??
@@ -497,9 +510,7 @@ async function generatedMetadataOutput(input, final, snapshot, context) {
     force: true,
     vocabularies: { tags: final.vocabularies.tags },
     protectedTerms: context.protectedTerms,
-    ...(input.loadEnrichmentSource
-      ? { loadSource: input.loadEnrichmentSource }
-      : {}),
+    loadSource,
   });
 }
 
@@ -530,6 +541,12 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
   const resolvedMetadataByProjectId = {};
   const copyResults = [];
   const metadataResults = [];
+  const sourceLoader = input.loadEnrichmentSource ?? loadEnrichmentSource;
+  let sourceEvidencePromise;
+  const loadSourceOnce = (...arguments_) => {
+    sourceEvidencePromise ??= sourceLoader(...arguments_);
+    return sourceEvidencePromise;
+  };
 
   for (const record of candidates) {
     const request = proposed.get(record.id);
@@ -576,12 +593,34 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
       };
       let output;
       try {
-        output = await generatedMetadataOutput(input, final, snapshot, context);
+        output = await generatedMetadataOutput(
+          input,
+          final,
+          snapshot,
+          context,
+          loadSourceOnce,
+        );
         if (!output) {
           const error = new Error(
             `Automatic metadata generation returned no output for ${record.id}.`,
           );
           error.code = "enrichment-output-missing";
+          throw error;
+        }
+        if (
+          requestedFields.includes("summary") &&
+          output.summary?.value === "No README file found."
+        ) {
+          const error = new Error(
+            `Automatic summary generation has no usable source copy for ${record.id}.`,
+          );
+          error.code = "enrichment-source-missing";
+          throw error;
+        }
+        const validation = validateInjectedEnrichment(output, context);
+        if (!validation.valid) {
+          const error = new Error([...new Set(validation.errors)].join("; "));
+          error.code = "output-invalid";
           throw error;
         }
       } catch (error) {

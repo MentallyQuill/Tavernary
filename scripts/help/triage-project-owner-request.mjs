@@ -242,9 +242,12 @@ function fallbackManifest(fields, project, source) {
       project_fingerprint: fingerprintProjectRecord(project),
       original: retiring
         ? { listing_status: "active", listing_status_reason: null }
-        : { listing_status: "retired", listing_status_reason: "removed" },
+        : { listing_status: "retired", listing_status_reason: "owner-request" },
       proposed: retiring
-        ? { listing_status: "retired", listing_status_reason: "removed" }
+        ? {
+            listing_status: "retired",
+            listing_status_reason: "owner-request",
+          }
         : { listing_status: "active", listing_status_reason: null },
     };
   }

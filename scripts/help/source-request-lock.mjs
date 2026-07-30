@@ -123,19 +123,28 @@ export function planSourceRequestAdmission(input) {
       "Source request admission requires a source ID and positive issue number.",
     );
   }
-  const references = [
-    ...(input?.issues ?? []).map(openIssueReference),
-    ...(input?.pulls ?? []).map(openPullReference),
-  ].filter(Boolean);
-  const conflictingIssueNumber = references
+  const pullConflict = (input?.pulls ?? [])
+    .map(openPullReference)
     .filter(
       (reference) =>
+        reference &&
+        reference.sourceId === sourceId &&
+        reference.issueNumber !== issueNumber,
+    )
+    .map((reference) => reference.issueNumber)
+    .sort((left, right) => left - right)[0];
+  const issueConflict = (input?.issues ?? [])
+    .map(openIssueReference)
+    .filter(
+      (reference) =>
+        reference &&
         reference.sourceId === sourceId &&
         reference.issueNumber !== issueNumber &&
         reference.issueNumber < issueNumber,
     )
     .map((reference) => reference.issueNumber)
     .sort((left, right) => left - right)[0];
+  const conflictingIssueNumber = pullConflict ?? issueConflict;
   return conflictingIssueNumber === undefined
     ? { action: "admit" }
     : {

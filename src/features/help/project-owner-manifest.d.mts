@@ -41,7 +41,7 @@ export interface OwnerSourceMove {
 
 export interface OwnerCardState {
   listing_status: "active" | "retired";
-  listing_status_reason: "removed" | null;
+  listing_status_reason: "owner-request" | null;
 }
 
 export interface OwnerSourceDelist {
@@ -94,14 +94,14 @@ export interface OwnerRetireCardManifest extends OwnerProjectEnvelope<"retire-ca
   };
   proposed: {
     listing_status: "retired";
-    listing_status_reason: "removed";
+    listing_status_reason: "owner-request";
   };
 }
 
 export interface OwnerRestoreCardManifest extends OwnerProjectEnvelope<"restore-card"> {
   original: {
     listing_status: "retired";
-    listing_status_reason: "removed";
+    listing_status_reason: "owner-request";
   };
   proposed: {
     listing_status: "active";

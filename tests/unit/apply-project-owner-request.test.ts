@@ -288,7 +288,7 @@ test("retires and restores one card without touching its siblings", () => {
       original: { listing_status: "active", listing_status_reason: null },
       proposed: {
         listing_status: "retired",
-        listing_status_reason: "removed",
+        listing_status_reason: "owner-request",
       },
     }),
   );
@@ -296,7 +296,7 @@ test("retires and restores one card without touching its siblings", () => {
     expect.objectContaining({
       id: "owner-alpha",
       listing_status: "retired",
-      listing_status_reason: "removed",
+      listing_status_reason: "owner-request",
     }),
   ]);
 
@@ -309,7 +309,7 @@ test("retires and restores one card without touching its siblings", () => {
         project_fingerprint: fingerprintProjectRecord(retiredProject),
         original: {
           listing_status: "retired",
-          listing_status_reason: "removed",
+          listing_status_reason: "owner-request",
         },
         proposed: { listing_status: "active", listing_status_reason: null },
       },
@@ -326,7 +326,7 @@ test("rejects restoration when the source is permanently delisted", () => {
   const retiredProject = {
     ...project,
     listing_status: "retired",
-    listing_status_reason: "removed",
+    listing_status_reason: "owner-request",
   };
   expect(() =>
     applyProjectOwnerRequest(
@@ -337,7 +337,7 @@ test("rejects restoration when the source is permanently delisted", () => {
           project_fingerprint: fingerprintProjectRecord(retiredProject),
           original: {
             listing_status: "retired",
-            listing_status_reason: "removed",
+            listing_status_reason: "owner-request",
           },
           proposed: { listing_status: "active", listing_status_reason: null },
         },

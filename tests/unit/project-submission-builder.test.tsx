@@ -103,6 +103,16 @@ test("defaults summary and tags to Tavernary automation", async () => {
   expect(
     screen.getByText(/root README first.+GitHub description second/iu),
   ).toBeVisible();
+  expect(
+    screen.getByText(
+      "Only the verified repository owner or trusted Tavernary staff can set this description. If you are not the owner, leave this set to Let TavernAI write the description; any description you enter will be ignored.",
+    ),
+  ).toBeVisible();
+  expect(
+    screen.getByText(
+      "Only the verified repository owner or trusted Tavernary staff can set these tags. If you are not the owner, leave this set to Let Tavernary select tags; any tags you select will be ignored.",
+    ),
+  ).toBeVisible();
 });
 
 test("reveals independent bounded manual metadata controls", async () => {
@@ -125,9 +135,7 @@ test("reveals independent bounded manual metadata controls", async () => {
   expect(screen.getByLabelText("Short description")).toBeVisible();
   expect(screen.getByLabelText("Search goals and traits")).toBeVisible();
   expect(
-    screen.getAllByText(
-      /only for the verified repository owner or trusted Tavernary staff/iu,
-    ),
+    screen.getAllByText(/only the verified repository owner/iu),
   ).toHaveLength(2);
   expect(screen.getByText("0 / 6 selected")).toBeVisible();
 
