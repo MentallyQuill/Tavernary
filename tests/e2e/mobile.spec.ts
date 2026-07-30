@@ -81,6 +81,40 @@ test("uses mobile browse and filter sheets without page overflow", async ({
   const dialog = page.getByRole("dialog", { name: "Filters" });
   await expect(dialog).toBeVisible();
   await expect(page.locator("body")).toHaveClass(/sheet-open/);
+
+  const modelGroup = dialog.getByRole("group", { name: "Model family" });
+  const modelOptions = modelGroup.locator(".metadata-options");
+  const modelContainment = await modelOptions.evaluate((element) => {
+    const chips = Array.from(
+      element.querySelectorAll<HTMLElement>(".filter-choice-chip"),
+    ).filter((chip) => chip.getClientRects().length > 0);
+    const bounds = element.getBoundingClientRect();
+    return {
+      bottom: bounds.bottom,
+      chipBottoms: chips.map((chip) => chip.getBoundingClientRect().bottom),
+    };
+  });
+  expect(modelContainment.chipBottoms.length).toBeGreaterThan(0);
+  expect
+    .soft(Math.max(...modelContainment.chipBottoms))
+    .toBeLessThanOrEqual(modelContainment.bottom + 1);
+
+  const development = dialog.getByRole("group", { name: "Development" });
+  const countClearances = await development
+    .locator("b")
+    .evaluateAll((counts) => {
+      const sheet = document.querySelector<HTMLElement>(".filter-sheet");
+      if (!sheet) throw new Error("Missing Filter sheet");
+      const scrollportRight =
+        sheet.getBoundingClientRect().left +
+        sheet.clientLeft +
+        sheet.clientWidth;
+      return counts.map(
+        (count) => scrollportRight - count.getBoundingClientRect().right,
+      );
+    });
+  expect.soft(Math.min(...countClearances)).toBeGreaterThanOrEqual(16);
+
   await expect(
     dialog.getByRole("searchbox", {
       name: "Search goals and traits",

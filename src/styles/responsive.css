@@ -479,6 +479,14 @@
     );
   }
 
+  .filter-sheet .filter-group {
+    padding-inline: 16px;
+  }
+
+  .filter-sheet .metadata-options.collapsed {
+    max-height: calc(44px * 4 + 6px * 3);
+  }
+
   .filter-sheet-heading button,
   .filter-sheet input[type="search"],
   .filter-sheet input[type="number"],
