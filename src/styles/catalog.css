@@ -686,7 +686,7 @@
   line-height: 1;
 }
 
-.tag-browser-option input {
+.tag-browser-option > input[type="checkbox"] {
   position: absolute;
   width: 1px;
   height: 1px;

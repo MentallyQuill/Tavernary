@@ -114,7 +114,7 @@ test("keeps description prose while removing emoji and linking the policy", asyn
 test("keeps the manual tag picker searchable and bounded at mobile width", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+  await page.setViewportSize({ width: 320, height: 700 });
   await page.goto(sitePath("/submit/project/"));
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
   await page.getByLabel("Tag choice").click();
@@ -141,6 +141,11 @@ test("keeps the manual tag picker searchable and bounded at mobile width", async
   await expect(
     page.getByLabel("Manage characters and personas"),
   ).toBeDisabled();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("selects multiple current frontends for an Extension", async ({
