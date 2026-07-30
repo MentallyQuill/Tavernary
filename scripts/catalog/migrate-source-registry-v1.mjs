@@ -1,15 +1,24 @@
 import {
   access as fsAccess,
   mkdir as fsMkdir,
+  readFile as fsReadFile,
+  readdir as fsReaddir,
   rename as fsRename,
   rm as fsRm,
   writeFile as fsWriteFile,
 } from "node:fs/promises";
-import { isAbsolute, relative, resolve } from "node:path";
-import { dirname } from "node:path";
+import { dirname, isAbsolute, relative, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { legacySourceId } from "../../src/features/catalog/source-record.mjs";
+import { planTagBackfill } from "./backfill-project-tags.mjs";
 import { formatJson } from "./json-format.mjs";
+import { validateCatalog } from "./validate.mjs";
+
+const repositoryRoot = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "../..",
+);
 
 export class SourceMigrationConflictError extends Error {
   constructor({ sourceId, projectIds }) {
@@ -387,4 +396,214 @@ export async function writeSourceRegistryMigration(
     written: true,
     paths: operations.map(({ path }) => path),
   };
+}
+
+async function readJson(path) {
+  return JSON.parse(await fsReadFile(path, "utf8"));
+}
+
+async function readJsonDirectory(path, { optional = false } = {}) {
+  let files;
+  try {
+    files = (await fsReaddir(path))
+      .filter((file) => file.endsWith(".json"))
+      .sort();
+  } catch (error) {
+    if (optional && error?.code === "ENOENT") return [];
+    throw error;
+  }
+  return Promise.all(files.map((file) => readJson(resolve(path, file))));
+}
+
+async function readOptionalJson(path) {
+  try {
+    return await readJson(path);
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  }
+}
+
+async function loadMigrationInput(root) {
+  const [
+    projects,
+    sources,
+    githubSnapshots,
+    codebergSnapshots,
+    refreshManifest,
+    vocabulary,
+    classifierResults,
+    kits,
+    supportSnapshots,
+    blockedUsers,
+  ] = await Promise.all([
+    readJsonDirectory(resolve(root, "data/registry/projects")),
+    readJsonDirectory(resolve(root, "data/registry/sources"), {
+      optional: true,
+    }),
+    readJsonDirectory(resolve(root, "data/snapshots/github")),
+    readJsonDirectory(resolve(root, "data/snapshots/codeberg"), {
+      optional: true,
+    }),
+    readJson(resolve(root, "data/snapshots/github-refresh.json")),
+    readJson(resolve(root, "data/vocabularies/tags.json")),
+    readOptionalJson(
+      resolve(
+        root,
+        "local-data/catalog-evidence/tag-classifier-results.audit.json",
+      ),
+    ),
+    readJsonDirectory(resolve(root, "data/registry/kits")),
+    readJsonDirectory(resolve(root, "data/snapshots/github/kits"), {
+      optional: true,
+    }),
+    readJson(resolve(root, "data/moderation/blocked-github-users.json")),
+  ]);
+  return {
+    projects,
+    sources,
+    snapshots: [...githubSnapshots, ...codebergSnapshots],
+    refreshManifest,
+    vocabulary,
+    classifierResults,
+    kits,
+    supportSnapshots,
+    blockedUsers,
+  };
+}
+
+function parseMigrationArguments(arguments_) {
+  if (arguments_.length === 0) return { write: false };
+  if (arguments_.length === 1 && arguments_[0] === "--write") {
+    return { write: true };
+  }
+  throw new Error("Usage: migrate-source-registry-v1.mjs [--write]");
+}
+
+function migrationCounts(plan, input, writes) {
+  return {
+    projects: plan.projects.length,
+    sources: plan.sources.length,
+    repositorySnapshots: plan.snapshots.length,
+    delistedSources: plan.sources.filter(({ status }) => status === "delisted")
+      .length,
+    kits: input.kits.length,
+    kitProjectReferences: input.kits.reduce(
+      (count, kit) => count + (kit.project_ids?.length ?? 0),
+      0,
+    ),
+    writes,
+  };
+}
+
+function formatMigrationCounts(counts) {
+  return [
+    `projects=${counts.projects}`,
+    `sources=${counts.sources}`,
+    `repository_snapshots=${counts.repositorySnapshots}`,
+    `delisted_sources=${counts.delistedSources}`,
+    `kits=${counts.kits}`,
+    `kit_project_references=${counts.kitProjectReferences}`,
+    `writes=${counts.writes}`,
+  ].join(" ");
+}
+
+async function validateMigrationCandidate(plan, input) {
+  const result = await validateCatalog({
+    records: plan.projects,
+    sources: plan.sources,
+    snapshots: plan.snapshots,
+    refreshManifest: plan.refreshManifest,
+    tagVocabulary: input.vocabulary,
+    kitRecords: input.kits,
+    supportSnapshots: input.supportSnapshots,
+    blockedUsers: input.blockedUsers,
+  });
+  if (result.errors.length > 0) {
+    throw new Error(
+      `Combined source/tag migration is invalid:\n${result.errors.join("\n")}`,
+    );
+  }
+}
+
+function canonicalNoopPlan(input) {
+  return {
+    counts: {
+      projects: input.projects.length,
+      sources: input.sources.length,
+      snapshots: input.snapshots.length,
+      delistedSources: input.sources.filter(
+        ({ status }) => status === "delisted",
+      ).length,
+    },
+    projects: input.projects,
+    sources: input.sources,
+    snapshots: input.snapshots,
+    refreshManifest: input.refreshManifest,
+    operations: [],
+  };
+}
+
+export async function runSourceRegistryMigrationCli(arguments_, options = {}) {
+  const { write } = parseMigrationArguments(arguments_);
+  const root = options.root ?? repositoryRoot;
+  const input = await (options.loadInput ?? loadMigrationInput)(root);
+  const versions = new Set(
+    input.projects.map(({ schema_version: schemaVersion }) => schemaVersion),
+  );
+  if (versions.size !== 1 || ![5, 6].includes([...versions][0])) {
+    throw new Error(
+      "Source registry migration requires one complete project schema version.",
+    );
+  }
+
+  let plan;
+  if (versions.has(6)) {
+    plan = canonicalNoopPlan(input);
+  } else {
+    if (!Array.isArray(input.classifierResults)) {
+      throw new Error(
+        "Schema-v5 migration requires complete local tag classifier results.",
+      );
+    }
+    const tagPlan = (options.planTags ?? planTagBackfill)({
+      projects: input.projects,
+      vocabulary: input.vocabulary,
+      classifierResults: input.classifierResults,
+    });
+    plan = planSourceRegistryMigration({
+      projects: input.projects,
+      snapshots: input.snapshots,
+      refreshManifest: input.refreshManifest,
+      metadataByProjectId: tagPlan.metadataByProjectId,
+    });
+    plan.operations.push({
+      kind: "update",
+      path: "data/reports/tag-migration-report.json",
+      value: tagPlan.report,
+    });
+  }
+
+  const validatePlan =
+    options.validatePlan ??
+    ((candidate) => validateMigrationCandidate(candidate, input));
+  await validatePlan(plan);
+  const report = await (options.writeMigration ?? writeSourceRegistryMigration)(
+    plan,
+    {
+      root,
+      write,
+      validatePlan: async () => {},
+    },
+  );
+  const counts = migrationCounts(plan, input, write ? report.paths.length : 0);
+  (options.logger ?? console).log(formatMigrationCounts(counts));
+  return { plan, report, counts };
+}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  await runSourceRegistryMigrationCli(process.argv.slice(2));
 }

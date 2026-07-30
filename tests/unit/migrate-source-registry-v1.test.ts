@@ -11,10 +11,11 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import {
   planSourceRegistryMigration,
+  runSourceRegistryMigrationCli,
   SourceMigrationConflictError,
   writeSourceRegistryMigration,
 } from "../../scripts/catalog/migrate-source-registry-v1.mjs";
@@ -433,6 +434,125 @@ test("reports every path without writing during a dry run", async () => {
     written: false,
     paths: plan.operations.map(({ path }) => path),
   });
+});
+
+test("runs one dry-run CLI plan that composes tag metadata and reports catalog invariants", async () => {
+  const projects = [
+    project("active-card", 42, "published"),
+    project("removed-card", 84, "disabled"),
+  ];
+  const logger = { log: vi.fn() };
+  const planTags = vi.fn(() => ({
+    metadataByProjectId: new Map([
+      ["active-card", automaticMetadata],
+      ["removed-card", automaticMetadata],
+    ]),
+    report: {
+      schema_version: 1,
+      vocabulary_hash: "a".repeat(64),
+      project_count: 2,
+      projects: [],
+    },
+  }));
+  const writeMigration = vi.fn(async (plan: SourceMigrationPlan) => ({
+    written: false,
+    paths: plan.operations.map(({ path }) => path),
+  }));
+
+  const result = await runSourceRegistryMigrationCli([], {
+    root: "C:\\fixture",
+    loadInput: async () => ({
+      projects,
+      sources: [],
+      snapshots: [snapshot("active-card", 42), snapshot("removed-card", 84)],
+      refreshManifest: {
+        schema_version: 2,
+        project_timings: [],
+      },
+      vocabulary: { schema_version: 1, tags: [] },
+      classifierResults: [],
+      kits: [{ project_ids: ["active-card", "removed-card"] }],
+    }),
+    planTags,
+    validatePlan: async () => {},
+    writeMigration,
+    logger,
+  });
+
+  expect(planTags).toHaveBeenCalledOnce();
+  expect(writeMigration).toHaveBeenCalledWith(
+    expect.objectContaining({
+      operations: expect.arrayContaining([
+        expect.objectContaining({
+          path: "data/reports/tag-migration-report.json",
+        }),
+      ]),
+    }),
+    expect.objectContaining({ root: "C:\\fixture", write: false }),
+  );
+  expect(result.counts).toEqual({
+    projects: 2,
+    sources: 2,
+    repositorySnapshots: 2,
+    delistedSources: 1,
+    kits: 1,
+    kitProjectReferences: 2,
+    writes: 0,
+  });
+  expect(logger.log).toHaveBeenCalledWith(
+    "projects=2 sources=2 repository_snapshots=2 delisted_sources=1 kits=1 kit_project_references=2 writes=0",
+  );
+});
+
+test("reports a validated version-six registry as an idempotent no-op without local classifier results", async () => {
+  const planTags = vi.fn();
+  const validatePlan = vi.fn();
+  const writeMigration = vi.fn(async (plan: SourceMigrationPlan) => ({
+    written: false,
+    paths: plan.operations.map(({ path }) => path),
+  }));
+
+  const result = await runSourceRegistryMigrationCli([], {
+    root: "C:\\fixture",
+    loadInput: async () => ({
+      projects: [
+        {
+          schema_version: 6,
+          id: "active-card",
+          source_id: "github-42",
+        },
+      ],
+      sources: [
+        {
+          schema_version: 1,
+          id: "github-42",
+          type: "github",
+          repository: "owner/active-card",
+          repository_id: 42,
+          status: "active",
+          status_reason: null,
+          refresh_policy: "automatic",
+        },
+      ],
+      snapshots: [{ schema_version: 4, source_id: "github-42" }],
+      refreshManifest: { schema_version: 3 },
+      vocabulary: { schema_version: 1, tags: [] },
+      classifierResults: null,
+      kits: [],
+    }),
+    planTags,
+    validatePlan,
+    writeMigration,
+    logger: { log: vi.fn() },
+  });
+
+  expect(planTags).not.toHaveBeenCalled();
+  expect(validatePlan).toHaveBeenCalledOnce();
+  expect(writeMigration).toHaveBeenCalledWith(
+    expect.objectContaining({ operations: [] }),
+    expect.objectContaining({ write: false }),
+  );
+  expect(result.counts.writes).toBe(0);
 });
 
 test("writes a contained source-first migration and retires old snapshot paths last", async () => {

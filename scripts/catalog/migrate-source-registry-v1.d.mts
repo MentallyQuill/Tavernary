@@ -84,3 +84,55 @@ export function writeSourceRegistryMigration(
     access?: (path: string) => Promise<unknown>;
   },
 ): Promise<SourceMigrationReport>;
+
+export interface SourceMigrationCliInput {
+  projects: Array<Record<string, unknown> & { schema_version: number }>;
+  sources: SourceRecord[];
+  snapshots: Array<Record<string, unknown>>;
+  refreshManifest: Record<string, unknown>;
+  vocabulary: Record<string, unknown>;
+  classifierResults: unknown[] | null;
+  kits: Array<Record<string, unknown> & { project_ids?: string[] }>;
+  supportSnapshots?: Array<Record<string, unknown>>;
+  blockedUsers?: Record<string, unknown>;
+}
+
+export interface SourceMigrationCliCounts {
+  projects: number;
+  sources: number;
+  repositorySnapshots: number;
+  delistedSources: number;
+  kits: number;
+  kitProjectReferences: number;
+  writes: number;
+}
+
+export function runSourceRegistryMigrationCli(
+  arguments_: string[],
+  options?: {
+    root?: string;
+    loadInput?: (root: string) => Promise<SourceMigrationCliInput>;
+    planTags?: (input: {
+      projects: SourceMigrationCliInput["projects"];
+      vocabulary: SourceMigrationCliInput["vocabulary"];
+      classifierResults: unknown[];
+    }) => {
+      metadataByProjectId: Map<string, MigrationMetadata>;
+      report: Record<string, unknown>;
+    };
+    validatePlan?: (plan: SourceMigrationPlan) => Promise<unknown> | unknown;
+    writeMigration?: (
+      plan: SourceMigrationPlan,
+      options: {
+        root: string;
+        write: boolean;
+        validatePlan: (plan: SourceMigrationPlan) => Promise<void>;
+      },
+    ) => Promise<SourceMigrationReport>;
+    logger?: { log(message: string): void };
+  },
+): Promise<{
+  plan: SourceMigrationPlan;
+  report: SourceMigrationReport;
+  counts: SourceMigrationCliCounts;
+}>;
