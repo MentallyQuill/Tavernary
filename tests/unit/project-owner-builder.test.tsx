@@ -107,6 +107,30 @@ const projects: OwnerProjectOption[] = [
     },
     editable: { ...commonEditable, name: "Removed Card" },
   },
+  {
+    id: "reddit-card",
+    name: "Reddit Card",
+    kind: "extension",
+    sourceId: "url-reddit-1v9u18m",
+    sourceType: "url",
+    sourceUrl:
+      "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/example/",
+    repository: null,
+    repositoryId: null,
+    eligibleShape: false,
+    ineligibilityReason:
+      "Only GitHub repository listings can use owner maintenance.",
+    projectFingerprint: "f".repeat(64),
+    sourceFingerprint: "e".repeat(64),
+    siblings: [],
+    sourceState: { status: "active", refreshPolicy: "automatic" },
+    listingState: {
+      metadataStatus: "curated",
+      listingStatus: "active",
+      listingStatusReason: null,
+    },
+    editable: { ...commonEditable, name: "Reddit Card" },
+  },
 ];
 
 const vocabularies = {
@@ -209,6 +233,22 @@ test("displays a URL-prefilled project's current catalog name", () => {
   expect(screen.getByRole("combobox", { name: "Project" })).toHaveValue(
     "Alpha Preset",
   );
+});
+
+test("lets staff prepare a card edit for an active non-GitHub listing", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user, "reddit-card");
+
+  expect(
+    screen.getByRole("radio", { name: "Edit card details" }),
+  ).toBeVisible();
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+  await user.clear(screen.getByLabelText("Display name"));
+  await user.type(screen.getByLabelText("Display name"), "Reddit Card Updated");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByText("Reddit Card Updated")).toBeVisible();
 });
 
 test("offers only source- and card-valid maintenance operations", async () => {

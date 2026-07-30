@@ -55,7 +55,7 @@ interface OwnerEnvelope<K extends OwnerOperation> {
   request_kind: "project-owner";
   operation: K;
   source_id: string;
-  repository_id: number;
+  repository_id: number | null;
   explanation: string | null;
 }
 
@@ -149,9 +149,9 @@ export interface OwnerVocabularies {
   tagVocabularyHash: string;
   source?: {
     id: string;
-    type: "github";
-    repository: string;
-    repository_id: number;
+    type: "github" | "codeberg" | "github-organization" | "url";
+    repository: string | null;
+    repository_id: number | null;
   };
 }
 

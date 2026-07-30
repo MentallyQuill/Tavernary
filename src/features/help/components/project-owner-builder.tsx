@@ -122,16 +122,18 @@ function parseGitHubRepository(value: string) {
 }
 
 function operationsFor(project: OwnerProjectOption): OwnerOperation[] {
-  if (!project.eligibleShape || project.sourceState.status !== "active") {
+  if (project.sourceState.status !== "active") {
     return [];
   }
-  const operations: OwnerOperation[] = ["edit-card", "add-cards"];
+  const operations: OwnerOperation[] = ["edit-card"];
   if (project.listingState.listingStatus === "active") {
     operations.push("retire-card");
   } else if (project.listingState.listingStatus === "retired") {
     operations.push("restore-card");
   }
-  operations.push("move-source", "delist-source");
+  if (project.eligibleShape) {
+    operations.push("add-cards", "move-source", "delist-source");
+  }
   return operations;
 }
 
@@ -343,8 +345,9 @@ export function ProjectOwnerBuilder({
     if (
       !selected ||
       !operation ||
-      !selected.repository ||
-      !selected.repositoryId
+      !selected.sourceId ||
+      (operation === "move-source" &&
+        (!selected.repository || !selected.repositoryId))
     ) {
       return null;
     }
@@ -448,9 +451,9 @@ export function ProjectOwnerBuilder({
         tagVocabularyHash,
         source: {
           id: selected.sourceId,
-          type: "github",
-          repository: selected.repository ?? "",
-          repository_id: selected.repositoryId ?? 0,
+          type: selected.sourceType,
+          repository: selected.repository,
+          repository_id: selected.repositoryId,
         },
       });
       if (!result.valid) nextErrors.push(...result.errors);
@@ -534,8 +537,9 @@ export function ProjectOwnerBuilder({
       >
         <p className="help-hint">
           GitHub verifies current personal repository ownership after
-          submission. Tavernary editors may also submit reviewed maintenance
-          requests.
+          submission. Trusted Tavernary staff may submit reviewed maintenance
+          requests for any active listing, including listings from other
+          sources.
         </p>
         <HelpErrorSummary errors={errors} />
         <ProjectPicker
@@ -548,8 +552,17 @@ export function ProjectOwnerBuilder({
         {selected?.ineligibilityReason ? (
           <div className="help-inline-note">
             <p>{selected.ineligibilityReason}</p>
+            {selected.sourceType !== "github" &&
+            selected.sourceState.status === "active" ? (
+              <p>
+                If you own this listing, use the help request below so staff can
+                review proof of ownership before making changes.
+              </p>
+            ) : null}
             <Link href={`/help/report-project?project=${selected.id}`}>
-              Report this listing instead
+              {selected.sourceType === "github"
+                ? "Report this listing instead"
+                : "Request staff help with this listing"}
             </Link>
           </div>
         ) : null}

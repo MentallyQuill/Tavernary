@@ -317,6 +317,27 @@ describe("owner add-card batches", () => {
 });
 
 describe("owner card edits and lifecycle", () => {
+  test("accepts a non-GitHub source identity for staff maintenance", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        {
+          ...editFixture(),
+          source_id: "url-reddit-1v9u18m",
+          repository_id: null,
+        },
+        {
+          ...vocabularies,
+          source: {
+            id: "url-reddit-1v9u18m",
+            type: "url" as const,
+            repository: null,
+            repository_id: null,
+          },
+        },
+      ),
+    ).toMatchObject({ valid: true });
+  });
+
   test("normalizes complete editable values and explanation", () => {
     const result = normalizeProjectOwnerManifest(
       {

@@ -161,21 +161,23 @@ test("requires the typed repository before handing off a permanent source delist
   });
 });
 
-test("routes non-GitHub listings to the report workflow", async ({ page }) => {
+test("offers staff maintenance and owner help for non-GitHub listings", async ({
+  page,
+}) => {
   await page.goto(sitePath("/help/manage-project/?project=tavern-rpg-suite"));
 
   await expect(
     page.getByText(/Only GitHub repository listings/iu),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Report this listing instead" }),
+    page.getByRole("link", { name: "Request staff help with this listing" }),
   ).toHaveAttribute(
     "href",
     /\/help\/report-project\/?\?project=tavern-rpg-suite$/u,
   );
   await expect(
     page.getByRole("radio", { name: "Edit card details" }),
-  ).toHaveCount(0);
+  ).toHaveCount(1);
 });
 
 test("reviews an atomic add-card request with independent automatic metadata", async ({

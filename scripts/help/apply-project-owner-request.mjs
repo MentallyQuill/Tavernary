@@ -89,12 +89,17 @@ function normalizeManifest(input) {
 }
 
 function requireCurrentSource(manifest, source) {
+  const identityMatches =
+    source?.type === "github"
+      ? Number.isSafeInteger(source.repository_id) &&
+        source.repository_id > 0 &&
+        source.repository_id === manifest.repository_id
+      : manifest.repository_id === null;
   if (
     !source ||
     source.schema_version !== 1 ||
-    source.type !== "github" ||
     source.id !== manifest.source_id ||
-    source.repository_id !== manifest.repository_id
+    !identityMatches
   ) {
     fail(
       "repository-identity-mismatch",

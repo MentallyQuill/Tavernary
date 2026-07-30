@@ -366,6 +366,48 @@ test("admits trusted staff while still validating source identity", async () => 
   expect(request).toHaveBeenCalledTimes(1);
 });
 
+test("admits trusted staff maintenance for a non-GitHub source", async () => {
+  const currentSource = source({
+    id: "url-reddit-1v9u18m",
+    type: "url",
+    repository: undefined,
+    repository_id: undefined,
+  });
+  const currentProject = project({
+    id: "reddit-card",
+    source_id: currentSource.id,
+  });
+  const manifest = {
+    ...editManifest(currentProject),
+    source_id: currentSource.id,
+    repository_id: null,
+    project_id: currentProject.id,
+    project_fingerprint: fingerprintProjectRecord(currentProject),
+  };
+  const latest = {
+    ...issue(manifest),
+    user: { id: 2_625_904, login: "MentallyQuill" },
+    author_association: "OWNER",
+  };
+  const request = vi.fn(async () => latest);
+
+  await expect(
+    processProjectOwnerTriage({
+      issue: latest,
+      project: currentProject,
+      source: currentSource,
+      hostRepository: "Tavernary/Tavernary",
+      request,
+      vocabularies,
+      trustedEditorRegistry,
+    }),
+  ).resolves.toMatchObject({
+    status: "admitted",
+    authorityType: "tavernary-staff",
+    actorLogin: "MentallyQuill",
+  });
+});
+
 test("scopes stale checks to the operation target", async () => {
   const changedProject = project({ summary: "Maintainer changed the card." });
   await expect(

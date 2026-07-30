@@ -809,9 +809,11 @@ export async function generateProjectOwnerRequest(input) {
   const needsAutomaticMetadata = metadataCandidates.some(
     (record) => metadataFieldsToGenerate(record).length > 0,
   );
-  const metadataSnapshotRecord = needsAutomaticMetadata
-    ? await loadSnapshot(root, final.source.id, readFile)
-    : null;
+  const metadataSnapshotRecord =
+    needsAutomaticMetadata &&
+    (final.source.type === "github" || final.source.type === "codeberg")
+      ? await loadSnapshot(root, final.source.id, readFile)
+      : null;
   const metadata = await resolveOwnerMetadata(
     input,
     final,

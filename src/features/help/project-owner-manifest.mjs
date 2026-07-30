@@ -398,8 +398,13 @@ function normalizeSource(value, errors, label) {
   if (!REPOSITORY_PATTERN.test(repository)) {
     errors.push(`Owner ${label} repository is invalid.`);
   }
-  if (!Number.isSafeInteger(repositoryId) || repositoryId <= 0) {
-    errors.push(`Owner ${label} repository ID must be a positive integer.`);
+  if (
+    repositoryId !== null &&
+    (!Number.isSafeInteger(repositoryId) || repositoryId <= 0)
+  ) {
+    errors.push(
+      `Owner ${label} repository ID must be a positive integer or null for non-GitHub sources.`,
+    );
   }
   return { repository, repository_id: repositoryId };
 }
@@ -492,12 +497,19 @@ function normalizeDelistSource(value, source, errors) {
 function sourceContext(rawVocabularies, sourceId, repositoryId, errors) {
   const source = rawVocabularies?.source;
   if (source === undefined) return null;
+  const isGitHub = source?.type === "github";
+  const validGitHubIdentity =
+    isGitHub &&
+    Number.isSafeInteger(repositoryId) &&
+    repositoryId > 0 &&
+    source.repository_id === repositoryId &&
+    REPOSITORY_PATTERN.test(source.repository ?? "");
+  const validNonGitHubIdentity =
+    isObject(source) && !isGitHub && repositoryId === null;
   if (
     !isObject(source) ||
-    source.type !== "github" ||
     source.id !== sourceId ||
-    source.repository_id !== repositoryId ||
-    !REPOSITORY_PATTERN.test(source.repository ?? "")
+    (!validGitHubIdentity && !validNonGitHubIdentity)
   ) {
     errors.push("Owner request source context is inconsistent.");
     return null;
@@ -526,8 +538,13 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
     errors.push("Owner request source ID is invalid.");
   }
   const repositoryId = value?.repository_id;
-  if (!Number.isSafeInteger(repositoryId) || repositoryId <= 0) {
-    errors.push("Owner request repository ID must be a positive integer.");
+  if (
+    repositoryId !== null &&
+    (!Number.isSafeInteger(repositoryId) || repositoryId <= 0)
+  ) {
+    errors.push(
+      "Owner request repository ID must be a positive integer or null for non-GitHub sources.",
+    );
   }
   const usesProject = ["edit-card", "retire-card", "restore-card"].includes(
     operation,
