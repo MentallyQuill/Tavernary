@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-933528919",
   "repository": {
     "id": 933528919,
     "owner": "p-e-w",
@@ -27,17 +28,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 190,
+    "stars_count": 191,
     "forks_count": 16,
     "watchers_count": 9,
-    "aggregate": 215
+    "aggregate": 216
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -47,8 +48,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-933528919"
+  }
 }

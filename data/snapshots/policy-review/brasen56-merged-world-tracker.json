@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "brasen56-merged-world-tracker",
+  "source_id": "github-1256623355",
+  "source_identity": "github:brasen56/merged_world_tracker",
+  "evidence_fingerprint": "a885412d41c7532883ece88a0aca76c5f5fccdf912103e0a6fe87c01205e211d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:55:30.211Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:55:30.211Z"
+  },
+  "maintenance_issue_number": null
+}

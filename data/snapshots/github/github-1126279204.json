@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1126279204",
   "repository": {
     "id": 1126279204,
     "owner": "AventurasTeam",
@@ -60,16 +61,16 @@
   },
   "community": {
     "stars_count": 167,
-    "forks_count": 28,
+    "forks_count": 27,
     "watchers_count": 14,
-    "aggregate": 209
+    "aggregate": 208
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -88,8 +89,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1126279204"
+  }
 }

@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1305306157",
   "repository": {
     "id": 1305306157,
     "owner": "ganon3264",
@@ -8,8 +9,8 @@
     "url": "https://github.com/ganon3264/focus",
     "description": "A roleplaying frontend for use with LLMs.",
     "default_branch": "master",
-    "head_sha": "e24a014592b5e34636bc9270159f1f37daa2b880",
-    "head_committed_at": "2026-07-28T21:01:23.000Z",
+    "head_sha": "e19d24064e0641a1c87c04efbf96ba15e17344aa",
+    "head_committed_at": "2026-07-29T16:41:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
@@ -18,11 +19,11 @@
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-28T21:01:23.000Z",
+    "latest_source_activity_at": "2026-07-29T16:41:44.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-28T21:01:23.000Z",
+        "latest_at": "2026-07-29T16:41:44.000Z",
         "precision": "exact"
       },
       {
@@ -41,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-28T17:41:57.321Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "e24a014592b5e34636bc9270159f1f37daa2b880"
+    "evidence_head_sha": "e19d24064e0641a1c87c04efbf96ba15e17344aa"
   },
   "community": {
     "stars_count": 3,
@@ -54,7 +55,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -64,8 +65,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1305306157"
+  }
 }

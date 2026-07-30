@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "prolix-oc-lumiverse-xtimeline",
+  "source_id": "github-1296928830",
+  "source_identity": "github:prolix-oc/lumiverse-xtimeline",
+  "evidence_fingerprint": "bf2874af6f1cbb0b463ac8c80ad587f93de6e362b60da61d843c857981399af0",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:56:09.163Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:56:09.163Z"
+  },
+  "maintenance_issue_number": null
+}
