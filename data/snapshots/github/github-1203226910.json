@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1203226910",
   "repository": {
     "id": 1203226910,
     "owner": "wewwaistyping",
@@ -50,8 +51,9 @@
     "aggregate": 7
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-29T22:05:54.971Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "rotteneve", "type": "User", "provider": "github" },
@@ -61,9 +63,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T22:05:54.971Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "source_id": "github-1203226910"
+  }
 }

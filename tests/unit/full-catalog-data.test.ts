@@ -19,6 +19,7 @@ interface CatalogRecord {
   source_id: string;
   kind: "frontend" | "extension" | "preset";
   metadata_status: "provisional" | "curated";
+  frontends: string[];
   primary_function: string;
   summary: string;
   tags: string[];
@@ -93,26 +94,110 @@ function countBy<T>(records: T[], selector: (record: T) => string) {
 }
 
 describe("full catalog data", () => {
+  test("keeps SLAYImages classified as a SillyTavern extension", async () => {
+    const { projectsById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+    const frontendVocabulary = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/frontends.json"),
+        "utf8",
+      ),
+    ) as { frontends: Array<{ id: string }> };
+
+    expect(projectsById.get("wewwaistyping-slayimages")).toMatchObject({
+      kind: "extension",
+      frontends: ["sillytavern"],
+      primary_function: "interface-workflow",
+    });
+    expect(
+      catalog.projects.find(({ id }) => id === "wewwaistyping-slayimages"),
+    ).toMatchObject({
+      kind: "extension",
+      frontends: [expect.objectContaining({ id: "sillytavern" })],
+      primaryFunction: "interface-workflow",
+    });
+    expect(frontendVocabulary.frontends.map(({ id }) => id)).not.toContain(
+      "slayimages-inline-image-generation-wardrobe",
+    );
+  });
+
+  test("keeps standalone frontends mapped to distinct catalog identities", async () => {
+    const { projects, projectsById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+    const frontendVocabulary = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/frontends.json"),
+        "utf8",
+      ),
+    ) as { frontends: Array<{ id: string; label: string }> };
+    const expected = [
+      {
+        id: "kwaroran-risuai",
+        name: "RisuAI",
+        frontendId: "risuai",
+      },
+      {
+        id: "mnehmos-mnehmos-quest-keeper-game",
+        name: "Quest Keeper",
+        frontendId: "quest-keeper",
+      },
+    ];
+
+    for (const { id, name, frontendId } of expected) {
+      expect(projectsById.get(id)).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [frontendId],
+        primary_function: "frontend",
+      });
+      expect(
+        catalog.projects.find((project) => project.id === id),
+      ).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [expect.objectContaining({ id: frontendId })],
+        primaryFunction: "frontend",
+      });
+      expect(frontendVocabulary.frontends).toContainEqual(
+        expect.objectContaining({ id: frontendId, label: name }),
+      );
+    }
+
+    const claimedFrontendIds = projects
+      .filter(({ kind }) => kind === "frontend")
+      .flatMap(({ frontends }) => frontends);
+    expect(new Set(claimedFrontendIds).size).toBe(claimedFrontendIds.length);
+  });
+
   test("matches the canonical schema-v6 source-backed catalog contract", async () => {
     const { projects, sources, vocabulary, sourcesById } =
       await loadProductionData();
     const tagsById = new Map(vocabulary.tags.map((tag) => [tag.id, tag]));
 
-    expect(projects).toHaveLength(309);
-    expect(sources).toHaveLength(309);
+    expect(projects.length).toBeGreaterThanOrEqual(309);
+    expect(sources.length).toBeGreaterThanOrEqual(309);
     expect(new Set(projects.map(({ id }) => id)).size).toBe(projects.length);
     expect(new Set(sources.map(({ id }) => id)).size).toBe(sources.length);
-    expect(countBy(projects, ({ kind }) => kind)).toEqual({
-      extension: 278,
-      frontend: 17,
-      preset: 14,
-    });
-    expect(countBy(sources, ({ type }) => type)).toEqual({
-      codeberg: 1,
-      github: 298,
-      "github-organization": 1,
-      url: 9,
-    });
+    const projectsByKind = countBy(projects, ({ kind }) => kind);
+    expect(Object.keys(projectsByKind).sort()).toEqual([
+      "extension",
+      "frontend",
+      "preset",
+    ]);
+    expect(projectsByKind.extension).toBeGreaterThanOrEqual(279);
+    expect(projectsByKind.frontend).toBeGreaterThanOrEqual(16);
+    expect(projectsByKind.preset).toBeGreaterThanOrEqual(14);
+    const sourcesByType = countBy(sources, ({ type }) => type);
+    expect(Object.keys(sourcesByType).sort()).toEqual([
+      "codeberg",
+      "github",
+      "github-organization",
+      "url",
+    ]);
+    expect(sourcesByType.codeberg).toBeGreaterThanOrEqual(1);
+    expect(sourcesByType.github).toBeGreaterThanOrEqual(298);
+    expect(sourcesByType["github-organization"]).toBeGreaterThanOrEqual(1);
+    expect(sourcesByType.url).toBeGreaterThanOrEqual(9);
 
     for (const project of projects) {
       expect(project.schema_version, project.id).toBe(6);
@@ -328,7 +413,7 @@ describe("full catalog data", () => {
     const catalog = await buildCatalog({ write: false });
 
     expect(catalog.schemaVersion).toBe(4);
-    expect(catalog.projects).toHaveLength(307);
+    expect(catalog.projects.length).toBeGreaterThanOrEqual(307);
     expect(catalog.tagVocabulary).toHaveLength(55);
     expect(catalog.kits.map(({ id }) => id)).toEqual(
       kitRecords

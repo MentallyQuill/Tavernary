@@ -132,19 +132,25 @@ export async function enrichRecord(
       "enrichment provider configuration is required for source-backed records",
     );
   }
+  const validateOutput = (candidate) =>
+    validateEnrichmentOutput(candidate, {
+      requestedFields,
+      kind: record.kind,
+      tagVocabulary: vocabularies,
+      copyContext: {
+        mode: "synthesize",
+        submittedSummary: "",
+        protectedTerms: input.protectedTerms,
+      },
+    });
   let generated = await provider.generate(input);
   let output = generated.output;
-  let validation = validateEnrichmentOutput(output, {
-    requestedFields,
-    kind: record.kind,
-    tagVocabulary: vocabularies,
-    copyContext: {
-      mode: "synthesize",
-      submittedSummary: "",
-      protectedTerms: input.protectedTerms,
-    },
-  });
-  if (!validation.valid) {
+  let validation = validateOutput(output);
+  for (
+    let repairAttempt = 0;
+    !validation.valid && repairAttempt < 2;
+    repairAttempt += 1
+  ) {
     generated = await provider.generate({
       ...input,
       repair: {
@@ -156,16 +162,7 @@ export async function enrichRecord(
       },
     });
     output = generated.output;
-    validation = validateEnrichmentOutput(output, {
-      requestedFields,
-      kind: record.kind,
-      tagVocabulary: vocabularies,
-      copyContext: {
-        mode: "synthesize",
-        submittedSummary: "",
-        protectedTerms: input.protectedTerms,
-      },
-    });
+    validation = validateOutput(output);
   }
   if (!validation.valid) {
     const tagFallback =
@@ -176,16 +173,7 @@ export async function enrichRecord(
         ? { ...output, tags: [] }
         : null;
     const fallbackValidation = tagFallback
-      ? validateEnrichmentOutput(tagFallback, {
-          requestedFields,
-          kind: record.kind,
-          tagVocabulary: vocabularies,
-          copyContext: {
-            mode: "synthesize",
-            submittedSummary: "",
-            protectedTerms: input.protectedTerms,
-          },
-        })
+      ? validateOutput(tagFallback)
       : { valid: false };
     if (fallbackValidation.valid) {
       return {

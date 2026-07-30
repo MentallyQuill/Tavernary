@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "subzero5544-preset-search",
+  "source_id": "github-999180993",
+  "source_identity": "github:subzero5544/preset-search",
+  "evidence_fingerprint": "13f76cd97026ff2f57141d4536dc49368a045dc9a8d0866b4afb427a9c7dfacd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:58:21.286Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:58:21.286Z"
+  },
+  "maintenance_issue_number": null
+}

@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1200081605",
   "repository": {
     "id": 1200081605,
     "owner": "senjinthedragon",
@@ -63,17 +64,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 38,
+    "stars_count": 39,
     "forks_count": 4,
     "watchers_count": 1,
-    "aggregate": 43
+    "aggregate": 44
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -82,8 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1200081605"
+  }
 }

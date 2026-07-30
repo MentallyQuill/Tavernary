@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1263145747",
   "repository": {
     "id": 1263145747,
     "owner": "starlitcode",
@@ -8,13 +9,13 @@
     "url": "https://github.com/starlitcode/Lumiverse-Auto-Retry",
     "description": "Retries AI replies that fail, come back empty, stall, or get cut off, so you are not the one pressing regenerate. A Lumiverse Spindle extension.",
     "default_branch": "main",
-    "head_sha": "335ac4cdff2c3faaa112d50d76caed8b78fa300e",
-    "head_committed_at": "2026-07-29T05:28:13.000Z",
+    "head_sha": "331becd1729beb117a946521f4065c23221db5fc",
+    "head_committed_at": "2026-07-30T04:34:01.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-08T17:04:25.000Z",
-    "size_kb": 759
+    "size_kb": 782
   },
   "source_health": "healthy",
   "activity": {
@@ -59,9 +60,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-29T10:00:10.862Z",
+    "baseline_completed_at": "2026-07-30T09:45:32.765Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "335ac4cdff2c3faaa112d50d76caed8b78fa300e"
+    "evidence_head_sha": "331becd1729beb117a946521f4065c23221db5fc"
   },
   "community": {
     "stars_count": 1,
@@ -71,11 +72,12 @@
   },
   "license": {
     "status": "osi-approved",
-    "spdx_id": "MIT",
+    "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "starlitcode", "type": "User", "provider": "github" }
@@ -83,9 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "source_id": "github-1263145747"
+  }
 }

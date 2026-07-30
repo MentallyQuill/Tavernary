@@ -293,7 +293,7 @@ test("production preserves the approved mockup layout profile", async ({
     catalog: ".catalog-main",
     sort: ".sort-projects",
     metadataOptions: ".metadata-options",
-    metadataChip: ".metadata-filter-chip",
+    metadataChip: ".filter-choice-chip",
     grid: ".project-grid",
     cardTop: ".card-top",
     symbol: ".function-symbol",

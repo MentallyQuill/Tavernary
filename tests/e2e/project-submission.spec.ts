@@ -127,7 +127,7 @@ test("keeps description prose while removing emoji and linking the policy", asyn
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
-test("reviews six manual tags at 320px and regenerates the current manifest", async ({
+test("reviews six progressive manual tags at 320px and regenerates the current manifest", async ({
   page,
 }) => {
   await installGitHubReviewRecorder(page);
@@ -157,6 +157,14 @@ test("reviews six manual tags at 320px and regenerates the current manifest", as
   await search.fill("memory");
   await expect(page.getByLabel("Maintain long-term memory")).toBeVisible();
   await search.fill("");
+
+  for (const groupName of ["Goals", "Traits"]) {
+    const group = page.getByRole("group", { name: groupName });
+    const disclosure = group.getByRole("button", {
+      name: /Show \d+ more/u,
+    });
+    if ((await disclosure.count()) > 0) await disclosure.click();
+  }
 
   for (const label of [
     "Maintain long-term memory",
@@ -217,7 +225,9 @@ test("reviews six manual tags at 320px and regenerates the current manifest", as
 
   await page.getByRole("button", { name: "Back and edit" }).click();
   await expect(page.getByLabel("Project Type")).toBeFocused();
-  await page.getByLabel("Maintain long-term memory").uncheck();
+  await page
+    .getByRole("button", { name: "Remove Maintain long-term memory" })
+    .click();
   await page
     .getByLabel("Short description")
     .fill("A revised manually described memory project.");

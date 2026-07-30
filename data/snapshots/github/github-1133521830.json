@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1133521830",
   "repository": {
     "id": 1133521830,
     "owner": "platberlitz",
@@ -14,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-01-13T13:14:46.000Z",
-    "size_kb": 1511
+    "size_kb": 1875
   },
   "source_health": "healthy",
   "activity": {
@@ -85,7 +86,7 @@
     "aggregate": 22
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -97,8 +98,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1133521830"
+  }
 }

@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { DescribedSelect } from "@/components/forms/described-select";
-import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import {
+  TAG_FACET_PREVIEW_LIMIT,
+  TagBrowser,
+} from "@/features/catalog/components/tag-browser";
 import type { PublicTagDefinition } from "@/features/catalog/tag-vocabulary";
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
 import {
@@ -668,6 +671,7 @@ export function ProjectSubmissionBuilder({
                     : [...current, id],
                 )
               }
+              previewLimit={TAG_FACET_PREVIEW_LIMIT}
               maxSelections={6}
               searchLabel="Search goals and traits"
               limitLabel="Up to six"

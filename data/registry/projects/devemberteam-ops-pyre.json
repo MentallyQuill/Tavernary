@@ -3,7 +3,7 @@
   "id": "devemberteam-ops-pyre",
   "name": "Pyre",
   "kind": "frontend",
-  "summary": "Pyre is a roleplay frontend project hosted on GitHub by the devemberteam-ops organization. The repository's readme introduces a Features section but contains no further implementation details in the available source.",
+  "summary": "Pyre is a private, local-first, bring-your-own-key AI roleplay frontend for Android, Windows, Linux, and the web. It keeps characters and chats on-device without accounts, cloud storage, or a hosted backend.",
   "metadata_status": "curated",
   "frontends": ["pyre"],
   "primary_function": "frontend",

@@ -204,7 +204,7 @@ test("defaults summary and tags to Tavernary automation", async () => {
   ).toBeVisible();
 });
 
-test("reveals independent bounded manual metadata controls", async () => {
+test("reveals independent progressive manual metadata controls", async () => {
   const user = userEvent.setup();
   render(
     <ProjectSubmissionBuilder
@@ -227,6 +227,13 @@ test("reveals independent bounded manual metadata controls", async () => {
     screen.getAllByText(/only the verified repository owner/iu),
   ).toHaveLength(2);
   expect(screen.getByText("0 / 6 selected")).toBeVisible();
+
+  for (const groupName of ["Goals", "Traits"]) {
+    const disclosure = within(
+      screen.getByRole("group", { name: groupName }),
+    ).queryByRole("button", { name: /Show \d+ more/u });
+    if (disclosure) await user.click(disclosure);
+  }
 
   for (const label of [
     "Maintain long-term memory",

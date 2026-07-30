@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1226998015",
   "repository": {
     "id": 1226998015,
     "owner": "AMousePad",
@@ -14,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-05-02T04:32:14.000Z",
-    "size_kb": 9511
+    "size_kb": 11230
   },
   "source_health": "healthy",
   "activity": {
@@ -73,7 +74,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -82,8 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1226998015"
+  }
 }
