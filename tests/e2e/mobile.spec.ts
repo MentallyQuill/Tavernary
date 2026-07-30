@@ -187,7 +187,7 @@ test("keeps the project submission builder inside a 320px viewport", async ({
   expect(overflow).toBeLessThanOrEqual(0);
   expect(
     await page
-      .getByRole("button", { name: "Continue to GitHub" })
+      .getByRole("button", { name: "Review submission" })
       .evaluate((element) => element.getBoundingClientRect().height),
   ).toBeGreaterThanOrEqual(44);
 });

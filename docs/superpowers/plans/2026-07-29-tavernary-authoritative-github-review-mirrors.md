@@ -733,7 +733,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/unit/project-submission-builder.test.tsx`
 - Modify: `tests/e2e/project-submission.spec.ts`
 
-- [ ] **Step 1: Write the reported-regression tests**
+- [x] **Step 1: Write the reported-regression tests**
 
   Add component assertions that:
 
@@ -750,7 +750,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Add parallel successful review cases for Frontend and System Preset.
 
-- [ ] **Step 2: Run the project builder suite red**
+- [x] **Step 2: Run the project builder suite red**
 
   ```powershell
   npm.cmd test -- tests/unit/project-submission-builder.test.tsx
@@ -759,7 +759,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL because Project Type currently initializes to `frontend` and
   submit opens GitHub directly.
 
-- [ ] **Step 3: Introduce deliberate type selection**
+- [x] **Step 3: Introduce deliberate type selection**
 
   Change state to:
 
@@ -785,7 +785,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   expose no applicable tags. Narrow to `ProjectSubmissionType` before calling
   `.includes()` on tag applicability or building the manifest.
 
-- [ ] **Step 4: Separate validation from handoff**
+- [x] **Step 4: Separate validation from handoff**
 
   Store the normalized v4 manifest as the review snapshot only after validation
   succeeds. Render `SubmissionReview` instead of the form while reviewing.
@@ -796,13 +796,13 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   The review labels values with human-readable vocabulary labels while the
   serialized manifest retains canonical IDs.
 
-- [ ] **Step 5: Remove direct-GitHub fallback copy**
+- [x] **Step 5: Remove direct-GitHub fallback copy**
 
   Update the project page lead/actions to state that Tavernary validates and
   reviews the request before opening GitHub for creation. Keep the normal
   GitHub identity requirement.
 
-- [ ] **Step 6: Run project frontend and E2E tests**
+- [x] **Step 6: Run project frontend and E2E tests**
 
   ```powershell
   npm.cmd test -- tests/unit/project-submission-builder.test.tsx tests/unit/project-submission-transport.test.ts tests/unit/project-submission-manifest.test.ts
@@ -812,7 +812,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: PASS. The Playwright test continues stubbing `window.open` but now
   asserts original-tab opened/reopen feedback and the final URL.
 
-- [ ] **Step 7: Commit the project fix**
+- [x] **Step 7: Commit the project fix**
 
   ```powershell
   git add src/features/submissions/components/project-submission-builder.tsx src/app/submit/project/page.tsx tests/unit/project-submission-builder.test.tsx tests/e2e/project-submission.spec.ts

@@ -11,13 +11,25 @@ test("exports and renders the project submission builder", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Submit a project" }),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: /fallback form/iu })).toHaveCount(
+    0,
+  );
+  await expect(page.getByLabel("Project Type")).toHaveValue("");
+  await expect(
+    page.getByLabel("Project Type").getByRole("option", {
+      name: "Select a project type",
+    }),
+  ).toHaveCount(1);
   await expect(
     page.getByRole("combobox", { name: "Search supported frontends" }),
   ).toHaveCount(0);
   const eligibility = page.getByText(
     "Frontends and Extensions require a public GitHub or Codeberg repository.",
   );
-  await expect(eligibility).toBeVisible();
+  await expect(eligibility).toHaveCount(0);
+  await expect(
+    page.getByText("Choose a project type to see its source requirements."),
+  ).toBeVisible();
   await expect(page.getByLabel("Primary function")).toHaveCount(0);
   await expect(page.getByLabel("Description choice")).toHaveAttribute(
     "value",
@@ -212,7 +224,7 @@ test("supports frontend-independent and not-listed submission paths", async ({
       configurable: true,
       value: (url: string | URL) => {
         window.sessionStorage.setItem("tavernary-opened-url", String(url));
-        return null;
+        return {};
       },
     });
   });
@@ -230,7 +242,13 @@ test("supports frontend-independent and not-listed submission paths", async ({
     .fill("https://github.com/example/future-frontend");
   await page.getByLabel("Claude", { exact: true }).check();
   await page.getByLabel("Chat Completion", { exact: true }).check();
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  await expect(page.getByText("System Preset", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("Claude")).toBeVisible();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
 
   const openedUrl = await page.evaluate(() =>
     window.sessionStorage.getItem("tavernary-opened-url"),
@@ -274,7 +292,14 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
       configurable: true,
       value: (url: string | URL) => {
         window.sessionStorage.setItem("tavernary-opened-url", String(url));
-        return null;
+        const count = Number(
+          window.sessionStorage.getItem("tavernary-open-count") ?? "0",
+        );
+        window.sessionStorage.setItem(
+          "tavernary-open-count",
+          String(count + 1),
+        );
+        return {};
       },
     });
   });
@@ -286,7 +311,21 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
     .getByLabel("Project URL")
     .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");
   await page.getByLabel("SillyTavern").check();
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(page.getByText("Extension")).toBeVisible();
+  await expect(page.getByText("Interface and workflow")).toBeVisible();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
+    page.getByText(
+      "GitHub review opened in a new tab. Create the issue there, or return here to make changes.",
+    ),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open GitHub review again" }).click();
+  expect(
+    await page.evaluate(() =>
+      window.sessionStorage.getItem("tavernary-open-count"),
+    ),
+  ).toBe("2");
 
   const openedUrl = await page.evaluate(() =>
     window.sessionStorage.getItem("tavernary-opened-url"),

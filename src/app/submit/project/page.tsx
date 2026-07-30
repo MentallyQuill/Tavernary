@@ -12,9 +12,6 @@ import {
 import { orderFrontendOptionsByPopularity } from "@/features/catalog/frontend-option-order";
 import { loadCatalog } from "@/lib/catalog/load-catalog";
 
-const fallbackUrl =
-  "https://github.com/MentallyQuill/Tavernary/issues/new?template=01-project-submission.yml";
-
 export const metadata = {
   title: "Submit a project | Tavernary",
   description: "Propose an AI roleplay project for the Tavernary catalog.",
@@ -51,19 +48,16 @@ export default function ProjectSubmissionPage() {
         <p className="submission-kicker">Contribute</p>
         <h1>Submit a project</h1>
         <p className="submission-lead">
-          Tell us what the project is and where it belongs. Tavernary will
-          prepare a GitHub issue for you to review before anything is sent.
+          Tell us what the project is and where it belongs. Tavernary validates
+          the request and shows the authoritative submission for review before
+          opening GitHub, where you can create the issue with your GitHub
+          identity.
         </p>
 
         <ProjectSubmissionBuilder
           frontends={frontends}
           tagVocabulary={publicTagVocabulary(tags as TagVocabulary)}
         />
-
-        <p className="submission-fallback">
-          Prefer GitHub&apos;s standard form?{" "}
-          <a href={fallbackUrl}>Open the accessible fallback form.</a>
-        </p>
       </article>
     </main>
   );
