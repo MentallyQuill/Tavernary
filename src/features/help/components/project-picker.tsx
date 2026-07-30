@@ -42,10 +42,6 @@ export function ProjectPicker({
   );
 
   useEffect(() => {
-    if (selected) setQuery(selected.name);
-  }, [selected]);
-
-  useEffect(() => {
     if (!open) return;
 
     function handlePointerDown(event: PointerEvent) {

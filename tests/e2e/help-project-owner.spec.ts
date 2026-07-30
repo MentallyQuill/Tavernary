@@ -28,7 +28,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
   });
 
   await expect(page.getByLabel("Project", { exact: true })).toHaveValue(
-    projectId,
+    "Directive",
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
   await page
