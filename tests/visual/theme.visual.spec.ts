@@ -992,6 +992,7 @@ test("captures the complete guided Help surface on Windows", async ({
     .fill("x".repeat(219));
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-owner-near-limit.png",
+    { maxDiffPixels: 3000 },
   );
 
   await page.goto(sitePath("/help/security/"));

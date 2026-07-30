@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "mentallyquill-tavernary",
+  "name": "Tavernary",
+  "kind": "extension",
+  "summary": "Tavernary is a search and discovery catalog for AI roleplay tools, indexing public project info and linking to each creator's source page. It hosts a curated registry of 309 project cards published through a static Next.",
+  "metadata_status": "curated",
+  "source_id": "github-1309605115",
+  "frontends": ["lumiverse", "marinara-engine", "sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "manage-character-libraries",
+    "organize-chats-and-messages",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-07-30T13:39:36.368Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
