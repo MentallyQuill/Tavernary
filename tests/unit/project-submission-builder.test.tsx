@@ -1,6 +1,6 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import ProjectSubmissionPage from "@/app/submit/project/page";
 import { ProjectSubmissionBuilder } from "@/features/submissions/components/project-submission-builder";
@@ -10,7 +10,11 @@ import {
   type TagVocabulary,
 } from "../../scripts/catalog/tag-vocabulary.mjs";
 
-const { openProjectSubmission } = vi.hoisted(() => ({
+const { copyProjectSubmissionUrl, openProjectSubmission } = vi.hoisted(() => ({
+  copyProjectSubmissionUrl: vi.fn().mockResolvedValue({
+    mode: "prefilled",
+    url: new URL("https://github.com/MentallyQuill/Tavernary/issues/new"),
+  }),
   openProjectSubmission: vi.fn().mockResolvedValue({
     mode: "prefilled",
     url: new URL("https://github.com/MentallyQuill/Tavernary/issues/new"),
@@ -18,6 +22,7 @@ const { openProjectSubmission } = vi.hoisted(() => ({
 }));
 
 vi.mock("@/features/submissions/submission-transport", () => ({
+  copyProjectSubmissionUrl,
   openProjectSubmission,
 }));
 
@@ -63,6 +68,23 @@ const publicTags = publicTagVocabulary(trackedTags as TagVocabulary);
 
 const frontendEligibility =
   "Frontends and Extensions require a public GitHub or Codeberg repository.";
+const originalMatchMedia = window.matchMedia;
+
+beforeEach(() => {
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: vi.fn(() => ({
+      matches: false,
+      media: "",
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+});
 
 async function choosePrimaryFunction(
   user: ReturnType<typeof userEvent.setup>,
@@ -103,6 +125,10 @@ function reviewRow(label: string) {
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    value: originalMatchMedia,
+  });
 });
 
 test("requires a deliberate Project Type selection", async () => {
@@ -120,6 +146,37 @@ test("requires a deliberate Project Type selection", async () => {
   expect(await screen.findByText("Project Type is required.")).toBeVisible();
   expect(projectType).toHaveFocus();
   expect(openProjectSubmission).not.toHaveBeenCalled();
+});
+
+test("copies the reviewed project URL without opening GitHub", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/frontend",
+  );
+  await reviewSubmission(user);
+  await user.click(
+    screen.getByRole("button", { name: "Copy GitHub form URL" }),
+  );
+
+  expect(copyProjectSubmissionUrl).toHaveBeenCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      schema_version: 4,
+      project_type: "frontend",
+      source_url: "https://github.com/example/frontend",
+    }),
+  );
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+  expect(
+    screen.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  expect(screen.getByRole("status")).toHaveTextContent(
+    "GitHub form URL copied. Paste it into your browser's address bar.",
+  );
 });
 
 test("keeps Extension selected through review, edit, and a fresh handoff", async () => {

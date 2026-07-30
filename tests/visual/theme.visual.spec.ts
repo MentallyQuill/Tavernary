@@ -416,6 +416,43 @@ test("project review handoff statuses use distinct semantic families", async ({
   await expectStyle(error, "color", graphiteTeal.dangerText);
 });
 
+test("project URL copy action retains its square secondary treatment", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 820, height: 900 });
+  await page.goto(sitePath("/submit/project/"));
+  await page.getByLabel("Project Type").selectOption("frontend");
+  await page
+    .getByRole("textbox", { name: "Project URL" })
+    .fill("https://github.com/example/frontend");
+  await page.getByRole("button", { name: "Review submission" }).click();
+
+  const primary = page.getByRole("button", { name: "Continue on GitHub" });
+  const copy = page.getByRole("button", { name: "Copy GitHub form URL" });
+  await expectStyle(copy, "background-color", graphiteTeal.surface);
+  await expectStyle(copy, "color", graphiteTeal.secondaryText);
+  await expect(copy).toHaveCSS("width", "44px");
+  await expect(copy).toHaveCSS("height", "44px");
+  await copy.hover();
+  await expectStyle(copy, "background-color", graphiteTeal.surfaceHover);
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Copy URL and paste into browser",
+    }),
+  ).toBeVisible();
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const [primaryBox, copyBox] = await Promise.all([
+    primary.boundingBox(),
+    copy.boundingBox(),
+  ]);
+  expect(primaryBox).not.toBeNull();
+  expect(copyBox).not.toBeNull();
+  expect(copyBox!.x).toBeGreaterThan(primaryBox!.x + primaryBox!.width);
+  expect(copyBox!.width).toBe(44);
+  expect(copyBox!.height).toBe(44);
+});
+
 test("project submission renders its complete graphite control treatment", async ({
   page,
 }) => {

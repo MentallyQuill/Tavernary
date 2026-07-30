@@ -316,6 +316,21 @@
   gap: 12px;
 }
 
+.submission-review-primary-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.submission-review-primary-actions .submission-review-continue {
+  flex: 1 1 auto;
+}
+
+.submission-review-primary-actions > .control-tooltip {
+  display: inline-flex;
+  flex: 0 0 44px;
+}
+
 .submission-review-actions button {
   min-height: 44px;
   border-radius: 6px;
@@ -340,6 +355,58 @@
   border: 1px solid var(--color-action-primary-bg);
   color: var(--color-action-primary-text);
   background: var(--color-action-primary-bg);
+}
+
+.submission-review-actions .submission-review-copy-url {
+  width: 44px;
+  min-width: 44px;
+  border: 1px solid var(--color-control-border);
+  padding: 0;
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+}
+
+.submission-review-copy-url svg {
+  width: 20px;
+  height: 20px;
+}
+
+.submission-review-copy-url:hover,
+.submission-review-copy-url:focus-visible {
+  border-color: var(--color-control-border-hover);
+  background: var(--color-bg-surface-hover);
+}
+
+.submission-review-copy-help {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.submission-review-copy-recovery {
+  display: grid;
+  gap: 8px;
+  color: var(--color-danger-text);
+}
+
+.submission-review-copy-recovery label {
+  display: grid;
+  gap: 6px;
+  color: var(--color-text-secondary);
+}
+
+.submission-review-copy-recovery input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--color-control-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+}
+
+.submission-review-copy-recovery input:focus-visible {
+  border-color: var(--color-control-border-focus);
 }
 
 .submission-review-actions button:hover,
@@ -441,5 +508,13 @@
   .submission-actions button,
   .submission-review-actions button {
     width: 100%;
+  }
+
+  .submission-review-primary-actions {
+    width: 100%;
+  }
+
+  .submission-review-primary-actions .submission-review-copy-url {
+    width: 44px;
   }
 }

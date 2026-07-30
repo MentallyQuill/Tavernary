@@ -3,6 +3,7 @@ import { access } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
 
 import {
+  copiedGitHubManifest,
   installGitHubReviewRecorder,
   openedGitHubReviews,
 } from "../helpers/github-review";
@@ -375,6 +376,44 @@ test("supports frontend-independent and not-listed submission paths", async ({
       },
     }),
   );
+});
+
+test("copies the exact prepared URL without opening GitHub", async ({
+  page,
+}) => {
+  await installGitHubReviewRecorder(page);
+  await page.goto(sitePath("/submit/project/"));
+  await page.getByLabel("Project Type").selectOption("frontend");
+  await page
+    .getByRole("textbox", { name: "Project URL" })
+    .fill("https://github.com/example/frontend");
+  await page.getByRole("button", { name: "Review submission" }).click();
+
+  const copy = page.getByRole("button", { name: "Copy GitHub form URL" });
+  await copy.hover();
+  await expect(
+    page.getByRole("tooltip", {
+      name: "Copy URL and paste into browser",
+    }),
+  ).toBeVisible();
+
+  await copy.click();
+  const copiedUrl = await copiedGitHubManifest(page);
+  expect(copiedUrl).not.toBeNull();
+  expect(await openedGitHubReviews(page)).toHaveLength(0);
+  await expect(page.getByRole("status")).toHaveText(
+    "GitHub form URL copied. Paste it into your browser's address bar.",
+  );
+
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  expect((await openedGitHubReviews(page))[0]).toBe(copiedUrl);
+  const manifest = JSON.parse(
+    new URL(copiedUrl!).searchParams.get("project-manifest") ?? "",
+  );
+  expect(manifest).toMatchObject({
+    schema_version: 4,
+    source_url: "https://github.com/example/frontend",
+  });
 });
 
 test("opens a reviewable GitHub issue containing the stable manifest", async ({

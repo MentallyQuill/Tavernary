@@ -243,6 +243,46 @@ test("keeps the project submission builder inside a 320px viewport", async ({
       .getByRole("button", { name: "Review submission" })
       .evaluate((element) => element.getBoundingClientRect().height),
   ).toBeGreaterThanOrEqual(44);
+
+  await page.getByLabel("Primary function").click();
+  await page.getByRole("option", { name: /Interface and workflow/u }).click();
+  await page
+    .getByRole("textbox", { name: "Project URL" })
+    .fill("https://github.com/example/extension");
+  await page.getByLabel("Other frontend name").fill("Example Frontend");
+  await page
+    .getByLabel("Other frontend URL")
+    .fill("https://github.com/example/frontend");
+  await page.getByRole("button", { name: "Review submission" }).click();
+
+  const primary = page.getByRole("button", { name: "Continue on GitHub" });
+  const copy = page.getByRole("button", { name: "Copy GitHub form URL" });
+  const [primaryBox, copyBox] = await Promise.all([
+    primary.boundingBox(),
+    copy.boundingBox(),
+  ]);
+  expect(primaryBox).not.toBeNull();
+  expect(copyBox).not.toBeNull();
+  expect(copyBox!.width).toBeGreaterThanOrEqual(44);
+  expect(copyBox!.height).toBeGreaterThanOrEqual(44);
+  expect(copyBox!.x).toBeGreaterThan(primaryBox!.x + primaryBox!.width);
+  expect(
+    Math.abs(
+      primaryBox!.y +
+        primaryBox!.height / 2 -
+        (copyBox!.y + copyBox!.height / 2),
+    ),
+  ).toBeLessThanOrEqual(1);
+  await expect(
+    page.getByText(
+      "Prefer to open it yourself? Copy the completed URL and paste it into your browser.",
+    ),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 });
 
 test("keeps Help controls and private reporting inside a 320px viewport", async ({

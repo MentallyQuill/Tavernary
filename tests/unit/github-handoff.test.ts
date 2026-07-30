@@ -1,6 +1,7 @@
 import { beforeEach, expect, test, vi } from "vitest";
 
 import {
+  copyGitHubReviewUrl,
   GitHubHandoffError,
   openGitHubReview,
   type GitHubHandoffInput,
@@ -48,6 +49,53 @@ test("opens a short generated review and returns its exact URL", async () => {
     "_blank",
     "noopener,noreferrer",
   ]);
+});
+
+test("copies the exact short review URL without opening it", async () => {
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  const writeText = vi.mocked(navigator.clipboard.writeText);
+
+  const result = await copyGitHubReviewUrl(input());
+
+  expect(result.mode).toBe("prefilled");
+  expect(writeText).toHaveBeenCalledWith(result.url);
+  expect(open).not.toHaveBeenCalled();
+});
+
+test("returns the prepared URL when URL copying is denied", async () => {
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
+  });
+
+  await expect(copyGitHubReviewUrl(input())).rejects.toMatchObject({
+    message:
+      "Tavernary could not copy the GitHub form URL. Copy it below instead.",
+    url: expect.stringContaining("manifest="),
+  });
+});
+
+test("does not copy an incomplete URL for an oversized submission", async () => {
+  const writeText = vi.mocked(navigator.clipboard.writeText);
+
+  await expect(
+    copyGitHubReviewUrl(input({ serializedManifest: "x".repeat(7_100) })),
+  ).rejects.toMatchObject({
+    message:
+      "This submission is too large to fit in a single URL. Use Continue on GitHub so Tavernary can copy the manifest separately.",
+    url: null,
+  });
+  expect(writeText).not.toHaveBeenCalled();
+});
+
+test("uses the same prepared URL for copy and open actions", async () => {
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  const writeText = vi.mocked(navigator.clipboard.writeText);
+
+  await copyGitHubReviewUrl(input());
+  await openGitHubReview(input());
+
+  expect(writeText.mock.calls[0]?.[0]).toBe(open.mock.calls[0]?.[0]);
 });
 
 test("reports a blocked popup as recovery instead of success", async () => {
