@@ -171,7 +171,15 @@ async function selectProject(
   user: ReturnType<typeof userEvent.setup>,
   id = "owner-alpha",
 ) {
-  await user.selectOptions(screen.getByLabelText("Project"), id);
+  const project = projects.find((candidate) => candidate.id === id)!;
+  const picker = screen.getByRole("combobox", { name: "Project" });
+  await user.clear(picker);
+  await user.type(picker, project.id);
+  await user.click(
+    screen.getByRole("option", {
+      name: new RegExp(`${project.id}$`, "iu"),
+    }),
+  );
 }
 
 afterEach(cleanup);
@@ -179,6 +187,28 @@ afterEach(cleanup);
 beforeEach(() => {
   search = "";
   vi.restoreAllMocks();
+});
+
+test("uses one exact-selection project combobox", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+
+  expect(screen.queryByLabelText("Search listed projects")).toBeNull();
+  const picker = screen.getByRole("combobox", { name: "Project" });
+  await user.type(picker, "unknown card");
+  expect(screen.getByText("No matching projects")).toBeVisible();
+
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByText("Select a listed project.")).toBeVisible();
+});
+
+test("displays a URL-prefilled project's current catalog name", () => {
+  search = "?project=owner-alpha-preset";
+  renderBuilder();
+
+  expect(screen.getByRole("combobox", { name: "Project" })).toHaveValue(
+    "Alpha Preset",
+  );
 });
 
 test("offers only source- and card-valid maintenance operations", async () => {
