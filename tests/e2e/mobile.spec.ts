@@ -313,7 +313,7 @@ test("keeps the owner project selector usable at 320px", async ({ page }) => {
   );
 
   const project = page.getByLabel("Project", { exact: true });
-  await expect(project).toHaveValue("mentallyquill-directive");
+  await expect(project).toHaveValue("Directive");
   const bounds = await project.evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return {

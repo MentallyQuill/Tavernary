@@ -315,6 +315,48 @@
   border-color: var(--color-danger-border);
 }
 
+.project-picker-listbox {
+  display: grid;
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--color-control-border);
+  border-radius: 7px;
+  padding: 5px;
+  background: var(--color-control-bg);
+}
+
+.project-picker-option {
+  display: grid;
+  gap: 3px;
+  border-radius: 5px;
+  padding: 9px 10px;
+  color: var(--color-control-text);
+  cursor: pointer;
+}
+
+.project-picker-option:hover,
+.project-picker-option[data-active="true"] {
+  background: var(--color-control-bg-hover);
+}
+
+.project-picker-option[aria-selected="true"] {
+  color: var(--color-accent-teal-text);
+}
+
+.project-picker-option-identity {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.project-picker-empty {
+  margin: 0;
+  padding: 10px;
+  color: var(--color-text-muted);
+}
+
 .help-field-error {
   margin: 0;
   color: var(--color-danger-text);

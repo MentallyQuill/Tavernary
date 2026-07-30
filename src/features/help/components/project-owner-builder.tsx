@@ -26,6 +26,7 @@ import {
   type OwnerCardFieldVocabularies,
 } from "./owner-card-fields";
 import { PermanentDelistDialog } from "./permanent-delist-dialog";
+import { ProjectPicker } from "./project-picker";
 import {
   createSourceCardDraft,
   SourceCardBatchEditor,
@@ -295,7 +296,6 @@ export function ProjectOwnerBuilder({
   const searchParams = useSearchParams();
   const initialId = startingProjectId(projects, searchParams.get("project"));
   const initialProject = projects.find((project) => project.id === initialId);
-  const [search, setSearch] = useState("");
   const [projectId, setProjectId] = useState(initialId);
   const [operation, setOperation] = useState<OwnerOperation | "">("");
   const [editCard, setEditCard] = useState<OwnerCardDraft | null>(
@@ -314,13 +314,6 @@ export function ProjectOwnerBuilder({
 
   const selected = projects.find((project) => project.id === projectId);
   const availableOperations = selected ? operationsFor(selected) : [];
-  const visibleProjects = projects.filter(
-    (project) =>
-      project.id === projectId ||
-      `${project.name} ${project.id} ${project.repository ?? ""}`
-        .toLocaleLowerCase()
-        .includes(search.trim().toLocaleLowerCase()),
-  );
 
   function selectProject(id: string) {
     const project = projects.find((candidate) => candidate.id === id);
@@ -545,29 +538,12 @@ export function ProjectOwnerBuilder({
           requests.
         </p>
         <HelpErrorSummary errors={errors} />
-        <HelpTextField
-          id="owner-project-search"
-          label="Search listed projects"
-          value={search}
-          hint="Search by project name, repository, or project ID."
-          onChange={(event) => setSearch(event.target.value)}
+        <ProjectPicker
+          projects={projects}
+          value={projectId}
+          invalid={errors.includes("Select a listed project.")}
+          onChange={selectProject}
         />
-        <div className="help-field">
-          <label htmlFor="owner-project">Project</label>
-          <select
-            id="owner-project"
-            value={projectId}
-            aria-invalid={errors.includes("Select a listed project.")}
-            onChange={(event) => selectProject(event.target.value)}
-          >
-            <option value="">Select a listed project</option>
-            {visibleProjects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name} — {project.repository ?? project.sourceUrl}
-              </option>
-            ))}
-          </select>
-        </div>
 
         {selected?.ineligibilityReason ? (
           <div className="help-inline-note">

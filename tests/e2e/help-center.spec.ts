@@ -199,6 +199,38 @@ test("spaces every interactive Help form without mobile overflow", async ({
   }
 });
 
+test("searches and selects owner projects in one responsive combobox", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/help/manage-project/"));
+  const picker = page.getByRole("combobox", { name: "Project" });
+
+  await picker.click();
+  expect(await page.getByRole("option").count()).toBeGreaterThan(300);
+
+  await picker.fill("mentallyquill-directive");
+  await expect(
+    page.getByRole("option", {
+      name: /Directive.*mentallyquill-directive/iu,
+    }),
+  ).toBeVisible();
+  await picker.press("ArrowDown");
+  await picker.press("Enter");
+  await expect(picker).toHaveValue("Directive");
+  await expect(
+    page.getByRole("radio", { name: "Edit card details" }),
+  ).toBeVisible();
+
+  await page.setViewportSize({ width: 320, height: 720 });
+  await picker.fill("");
+  await expect(page.getByRole("listbox")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+});
+
 test("renders one clean Kit-author routing reminder", async ({ page }) => {
   await page.goto(sitePath("/help/report-kit/"));
 
