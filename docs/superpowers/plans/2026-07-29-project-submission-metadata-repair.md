@@ -121,12 +121,12 @@
   - Wait for completion and inspect logs if it fails.
   - If all three outputs remain invalid, stop and report the workflow evidence without bypassing validation.
 
-- [ ] **Step 4: Audit the generated submission transaction**
+- [x] **Step 4: Audit the generated submission transaction**
   - Inspect the generated branch and pull request.
   - Verify changed files, catalog copy, tags, fork relationship, checks, and automation labels.
   - Follow the repository's official publication path; do not manually edit generated metadata or prematurely close the issue.
 
-- [ ] **Step 5: Verify publication and live deployment**
+- [x] **Step 5: Verify publication and live deployment**
   - Confirm the publication commit and its workflows.
   - Confirm issue #151's final state and expected labels/comments.
   - Verify the live catalog exposes the new project card with its published metadata.
@@ -161,7 +161,7 @@
   - Run `npm.cmd run check`.
   - Inspect the diff and commit only these discovered blocker repairs.
 
-- [ ] **Step 5: Reconcile and retry**
+- [x] **Step 5: Reconcile and retry**
   - Push and deploy the blocker repairs.
   - Redispatch issue #151 so its generated snapshot uses the corrected license.
   - Refresh or otherwise reconcile the already-published upstream snapshot through the repository's official automation.
