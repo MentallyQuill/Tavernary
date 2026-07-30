@@ -3,7 +3,10 @@ import { resolveRequestedMetadata } from "../catalog/metadata-policy.mjs";
 import { validateCatalogCopyMetadata } from "../catalog/catalog-copy-contract.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
-import { isRepositoryIdentity } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  sourceIdentityName,
+} from "./source-identity.mjs";
 import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 
 const extensionPrimaryFunctions = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
@@ -233,8 +236,7 @@ export async function draftProjectRecord(input) {
       "Repository snapshot does not match the permanent repository identity.",
     );
   }
-  const name =
-    observation?.repository?.name || identity.name || identity.pathSlug;
+  const name = observation?.repository?.name || sourceIdentityName(identity);
   const primaryFunction = admitted.manifest.primary_function;
   const request = metadataRequest(input);
   const curated =

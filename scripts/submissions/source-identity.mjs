@@ -209,6 +209,17 @@ function humanizeSlug(slug) {
     .replace(/\b\p{L}/gu, (letter) => letter.toUpperCase());
 }
 
+export function sourceIdentityName(identity) {
+  if (identity.kind === "reddit-share") {
+    throw new Error("Reddit share identity must be resolved before naming.");
+  }
+  if (isRepositoryIdentity(identity)) return identity.name;
+  if (identity.kind === "reddit") {
+    return identity.slug ? humanizeSlug(identity.slug) : identity.postId;
+  }
+  return identity.pathSlug;
+}
+
 export function projectSubmissionTitle(identity) {
   if (identity.kind === "reddit-share") {
     throw new Error("Reddit share identity must be resolved before titling.");
@@ -218,8 +229,7 @@ export function projectSubmissionTitle(identity) {
   }
   if (identity.kind === "reddit") {
     const location = identity.subreddit ? `r/${identity.subreddit}` : "Reddit";
-    const label = identity.slug ? humanizeSlug(identity.slug) : identity.postId;
-    return `${projectSubmissionPrefix} ${location}: ${label}`;
+    return `${projectSubmissionPrefix} ${location}: ${sourceIdentityName(identity)}`;
   }
   return `${projectSubmissionPrefix} ${identity.hostname}/${identity.pathSlug}`;
 }

@@ -544,6 +544,55 @@ test("drafts external presets with manual source policy", async () => {
   expect(result.snapshot).toBeUndefined();
 });
 
+test("drafts Reddit presets with a readable name from the permalink slug", async () => {
+  const result = await draftProjectRecord({
+    admitted: {
+      status: "admitted",
+      manifest: {
+        schema_version: 4,
+        project_type: "preset",
+        primary_function: "preset",
+        source_url:
+          "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
+        frontends: { known_ids: ["sillytavern"], other: [] },
+        frontend_independent: false,
+        additional_context: null,
+        metadata: {
+          summary: { mode: "automatic" },
+          tags: { mode: "automatic" },
+        },
+        preset_compatibility: {
+          model_families: {
+            known_ids: ["claude"],
+            other: [],
+          },
+          completion_formats: ["chat-completion"],
+        },
+      },
+      identity: {
+        kind: "reddit",
+        canonicalUrl:
+          "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
+        postId: "1v9u18m",
+        subreddit: "SillyTavernAI",
+        slug: "preset_introducing_freaky_frankenstein_50",
+      },
+      frontendIds: ["sillytavern"],
+      warnings: [],
+    },
+    observation: null,
+    snapshot: null,
+    enrichment: null,
+    now: "2026-07-30T13:50:33.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    id: "reddit-1v9u18m",
+    name: "Preset Introducing Freaky Frankenstein 50",
+    source_id: "url-reddit-1v9u18m",
+  });
+});
+
 test("drafts a frontend and its vocabulary proposal together", async () => {
   const result = await draftProjectRecord({
     admitted: {
