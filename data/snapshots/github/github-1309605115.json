@@ -1,0 +1,68 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1309605115",
+  "repository": {
+    "id": 1309605115,
+    "owner": "MentallyQuill",
+    "name": "Tavernary",
+    "url": "https://github.com/MentallyQuill/Tavernary",
+    "description": "A GitHub-native catalog for AI roleplaying tools, extensions, and systems.",
+    "default_branch": "main",
+    "head_sha": "6bc912d5ba4f4f46dfe8a870995956aa0364ee57",
+    "head_committed_at": "2026-07-30T13:25:46.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-23T06:31:00.000Z",
+    "size_kb": 49452
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-30T13:03:45.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-30T13:03:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T23:26:56.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-30T13:39:36.368Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "6bc912d5ba4f4f46dfe8a870995956aa0364ee57"
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 3
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-30T13:39:36.368Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "MentallyQuill", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-30T13:39:36.368Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
