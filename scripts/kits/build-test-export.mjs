@@ -15,27 +15,40 @@ async function readJson(name) {
 function projectRecord(descriptor, index) {
   const visibility = descriptor.visibility ?? "published";
   return {
-    schema_version: 3,
+    schema_version: 6,
     id: descriptor.id,
+    source_id: `github-${10_000 + index}`,
     name: descriptor.name,
     kind: descriptor.kind,
     summary: `${descriptor.name} is deterministic Kit fixture project ${index + 1}.`,
     metadata_status: "curated",
-    source: {
-      type: "github",
-      repository: `fixture/${descriptor.id}`,
-      repository_id: 10_000 + index,
-    },
     frontends: ["sillytavern"],
     primary_function: descriptor.primary_function,
-    capabilities: [],
+    tags: [],
     cataloged_at: "2026-07-01T00:00:00.000Z",
-    catalog_cohort: "fixture",
-    visibility,
-    visibility_reason:
-      descriptor.visibility_reason ??
-      (visibility === "published" ? null : "flagged"),
-    refresh_policy: "paused",
+    catalog_cohort: "standard",
+    listing_status: visibility === "published" ? "active" : "retired",
+    listing_status_reason:
+      visibility === "published"
+        ? null
+        : (descriptor.visibility_reason ?? "owner-request"),
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  };
+}
+
+function sourceRecord(descriptor, index) {
+  return {
+    schema_version: 1,
+    id: `github-${10_000 + index}`,
+    type: "github",
+    repository: `fixture/${descriptor.id}`,
+    repository_id: 10_000 + index,
+    status: "active",
+    status_reason: null,
+    refresh_policy: "automatic",
   };
 }
 
@@ -54,10 +67,13 @@ async function buildFixtureExport() {
       readJson("blocked-users"),
     ]);
   const records = projectDescriptors.map(projectRecord);
+  const sources = projectDescriptors.map(sourceRecord);
   await buildCatalog({
     write: true,
     now: "2026-07-24T12:00:00.000Z",
     records,
+    sources,
+    snapshots: [],
     kitRecords,
     kitSnapshots,
     blockedUsers,

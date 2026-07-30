@@ -347,9 +347,7 @@ jobs:
             import { renderSubmissionPullRequest } from './scripts/submissions/project-submission-pr.mjs';
             const report = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/admission-report.json', 'utf8'));
             const paths = fs.readFileSync(process.env.RUNNER_TEMP + '/generated-paths.txt', 'utf8').trim().split(/\r?\n/u).filter(Boolean);
-            const authorityType = report.summary_authority?.authorityType;
-            const copyMode =
-              authorityType === 'community-submitter' ? 'synthesize' : 'preserve';
+            const authorityType = report.metadata_authority?.authorityType;
             const transaction = createProjectPublicationTransaction({
               schema_version: 2,
               operation: 'create',
@@ -368,7 +366,7 @@ jobs:
               generated_paths: paths,
               policy_version: CATALOG_POLICY_VERSION,
               copy_result: report.copy_result
-                ? { mode: copyMode, ...report.copy_result }
+                ? { mode: 'synthesize', ...report.copy_result }
                 : null,
             });
             const body = renderSubmissionPullRequest({

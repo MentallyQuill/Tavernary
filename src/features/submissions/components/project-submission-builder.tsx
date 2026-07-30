@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { DescribedSelect } from "@/components/forms/described-select";
+import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import type { PublicTagDefinition } from "@/features/catalog/tag-vocabulary";
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
+import tagVocabulary from "../../../../data/vocabularies/tags.json";
 import {
   normalizeProjectSubmissionManifest,
   type ProjectSubmissionManifest,
@@ -34,6 +37,36 @@ const extensionPrimaryFunctions =
     EXTENSION_PRIMARY_FUNCTION_IDS.includes(option.id),
   );
 
+const summaryChoices = [
+  {
+    id: "automatic",
+    label: "Let TavernAI write the description",
+    description:
+      "Uses the root README first and the repository's GitHub description second.",
+  },
+  {
+    id: "manual",
+    label: "Write the description myself",
+    description:
+      "Available to the verified repository owner or trusted Tavernary staff.",
+  },
+];
+
+const tagChoices = [
+  {
+    id: "automatic",
+    label: "Let Tavernary select tags",
+    description:
+      "Uses repository evidence to select up to six goals and traits.",
+  },
+  {
+    id: "manual",
+    label: "Set tags myself",
+    description:
+      "Available to the verified repository owner or trusted Tavernary staff.",
+  },
+];
+
 export interface SubmissionFrontendOption {
   id: string;
   label: string;
@@ -42,8 +75,8 @@ export interface SubmissionFrontendOption {
 
 type SubmissionField =
   | "project-url"
-  | "project-name"
   | "project-description"
+  | "project-tags"
   | "primary-function"
   | "frontend-selection"
   | "other-frontend-name"
@@ -88,18 +121,10 @@ function repositoryProviderFromUrl(
   return parts.length === 2 ? provider : null;
 }
 
-function requiresExternalMetadata(
-  projectType: ProjectSubmissionType,
-  sourceUrl: string,
-) {
-  if (projectType !== "preset") return false;
-  return Boolean(sourceUrl.trim()) && !repositoryProviderFromUrl(sourceUrl);
-}
-
 function manifestErrorField(message: string): SubmissionField {
   if (message.includes("primary function")) return "primary-function";
-  if (message.includes("project name")) return "project-name";
-  if (message.includes("short description")) return "project-description";
+  if (/description|summary/iu.test(message)) return "project-description";
+  if (/tag/iu.test(message)) return "project-tags";
   if (
     message.includes("supported frontend") ||
     message.includes("frontend-independent")
@@ -139,8 +164,12 @@ export function ProjectSubmissionBuilder({
     useState<ProjectSubmissionType>("frontend");
   const [sourceUrl, setSourceUrl] = useState("");
   const [primaryFunction, setPrimaryFunction] = useState("");
-  const [name, setName] = useState("");
+  const [summaryMode, setSummaryMode] = useState<"automatic" | "manual">(
+    "automatic",
+  );
   const [description, setDescription] = useState("");
+  const [tagMode, setTagMode] = useState<"automatic" | "manual">("automatic");
+  const [tags, setTags] = useState<string[]>([]);
   const [emojiNotice, setEmojiNotice] = useState(false);
   const [additionalContext, setAdditionalContext] = useState("");
   const [frontendSearch, setFrontendSearch] = useState("");
@@ -177,9 +206,28 @@ export function ProjectSubmissionBuilder({
   const showFrontendFields =
     projectType === "extension" ||
     (projectType === "preset" && !frontendIndependent);
-  const externalMetadataRequired = requiresExternalMetadata(
-    projectType,
-    sourceUrl,
+  const applicableTags = useMemo(
+    () =>
+      tagVocabulary.tags
+        .filter((tag) => tag.applicable_kinds.includes(projectType))
+        .map(
+          ({
+            id,
+            label,
+            facet,
+            description: tagDescription,
+            aliases,
+            applicable_kinds,
+          }) => ({
+            id,
+            label,
+            facet,
+            description: tagDescription,
+            aliases,
+            applicable_kinds,
+          }),
+        ) as PublicTagDefinition[],
+    [projectType],
   );
   const errorFor = (field: SubmissionField) =>
     errors.find((error) => error.field === field)?.message;
@@ -224,31 +272,42 @@ export function ProjectSubmissionBuilder({
               ? [{ name: otherFrontendName, url: otherFrontendUrl }]
               : [],
           };
-    const validation = normalizeProjectSubmissionManifest({
-      schema_version: 3,
-      project_type: projectType,
-      primary_function: submittedPrimaryFunction,
-      source_url: sourceUrl,
-      name,
-      description,
-      frontends: activeFrontends,
-      frontend_independent: projectType === "preset" && frontendIndependent,
-      additional_context: additionalContext,
-      ...(projectType === "preset"
-        ? {
-            preset_compatibility: {
-              model_families: {
-                known_ids: modelFamilies,
-                other:
-                  includeOtherModelFamily && otherModelFamily.trim()
-                    ? [otherModelFamily]
-                    : [],
+    const validation = normalizeProjectSubmissionManifest(
+      {
+        schema_version: 4,
+        project_type: projectType,
+        primary_function: submittedPrimaryFunction,
+        source_url: sourceUrl,
+        frontends: activeFrontends,
+        frontend_independent: projectType === "preset" && frontendIndependent,
+        additional_context: additionalContext,
+        metadata: {
+          summary:
+            summaryMode === "manual"
+              ? { mode: "manual", value: description }
+              : { mode: "automatic" },
+          tags:
+            tagMode === "manual"
+              ? { mode: "manual", values: tags }
+              : { mode: "automatic" },
+        },
+        ...(projectType === "preset"
+          ? {
+              preset_compatibility: {
+                model_families: {
+                  known_ids: modelFamilies,
+                  other:
+                    includeOtherModelFamily && otherModelFamily.trim()
+                      ? [otherModelFamily]
+                      : [],
+                },
+                completion_formats: completionFormats,
               },
-              completion_formats: completionFormats,
-            },
-          }
-        : {}),
-    });
+            }
+          : {}),
+      },
+      { tagVocabulary },
+    );
     const nextErrors: SubmissionError[] = validation.valid
       ? []
       : validation.errors.map((message) => ({
@@ -336,6 +395,7 @@ export function ProjectSubmissionBuilder({
             onChange={(event) => {
               setProjectType(event.target.value as ProjectSubmissionType);
               setPrimaryFunction("");
+              setTags([]);
               setFrontendIndependent(false);
               setModelFamilies([]);
               setIncludeOtherModelFamily(false);
@@ -393,72 +453,103 @@ export function ProjectSubmissionBuilder({
           />
         </div>
 
-        <div className="submission-field">
-          <label htmlFor="project-name">
-            Project Name
-            {externalMetadataRequired ? " (required)" : " (optional)"}
-          </label>
-          <input
-            id="project-name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required={externalMetadataRequired}
-            aria-invalid={Boolean(errorFor("project-name"))}
-            aria-describedby={
-              errorFor("project-name") ? "project-name-error" : undefined
-            }
-          />
-          <InlineError
-            id="project-name-error"
-            message={errorFor("project-name")}
-          />
-        </div>
-
-        <div className="submission-field">
-          <label htmlFor="project-description">
-            Short Description
-            {externalMetadataRequired ? " (required)" : " (optional)"}
-          </label>
-          <textarea
-            id="project-description"
-            value={description}
-            maxLength={220}
-            onChange={(event) => {
-              const sanitized = stripEmoji(event.target.value);
-              setDescription(sanitized.value);
-              if (sanitized.removed) setEmojiNotice(true);
-            }}
-            rows={4}
-            required={externalMetadataRequired}
-            aria-invalid={Boolean(errorFor("project-description"))}
-            aria-describedby={
-              errorFor("project-description")
-                ? "project-description-hint project-description-count project-description-error"
-                : "project-description-hint project-description-count"
-            }
-          />
-          <p className="submission-hint" id="project-description-count">
-            {description.length}/220 characters
+        <DescribedSelect
+          id="project-summary-choice"
+          label="Description choice"
+          value={summaryMode}
+          placeholder="Choose how the description is written"
+          options={summaryChoices}
+          onChange={(value) => setSummaryMode(value as "automatic" | "manual")}
+        />
+        {summaryMode === "automatic" ? (
+          <p className="submission-hint">
+            TavernAI writes the description from the root README first and the
+            repository&apos;s GitHub description second.
           </p>
-          <p className="submission-hint" id="project-description-hint">
-            {CATALOG_DESCRIPTION_GUIDANCE}{" "}
-            <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
-          </p>
-          {emojiNotice ? (
-            <p
-              className="submission-hint"
-              id="project-description-emoji-status"
-              role="status"
-              aria-live="polite"
-            >
-              {CATALOG_EMOJI_REMOVED_NOTICE}
+        ) : (
+          <div className="submission-field">
+            <label htmlFor="project-description">Short description</label>
+            <textarea
+              id="project-description"
+              value={description}
+              maxLength={220}
+              onChange={(event) => {
+                const sanitized = stripEmoji(event.target.value);
+                setDescription(sanitized.value);
+                if (sanitized.removed) setEmojiNotice(true);
+              }}
+              rows={4}
+              required
+              aria-invalid={Boolean(errorFor("project-description"))}
+              aria-describedby={
+                errorFor("project-description")
+                  ? "project-description-authority project-description-hint project-description-count project-description-error"
+                  : "project-description-authority project-description-hint project-description-count"
+              }
+            />
+            <p className="submission-hint" id="project-description-authority">
+              This value is honored only for the verified repository owner or
+              trusted Tavernary staff. Other submitter text is discarded.
             </p>
-          ) : null}
-          <InlineError
-            id="project-description-error"
-            message={errorFor("project-description")}
-          />
-        </div>
+            <p className="submission-hint" id="project-description-count">
+              {description.length}/220 characters
+            </p>
+            <p className="submission-hint" id="project-description-hint">
+              {CATALOG_DESCRIPTION_GUIDANCE}{" "}
+              <Link href={CATALOG_POLICY_ROUTE}>Catalog Policy</Link>
+            </p>
+            {emojiNotice ? (
+              <p
+                className="submission-hint"
+                id="project-description-emoji-status"
+                role="status"
+                aria-live="polite"
+              >
+                {CATALOG_EMOJI_REMOVED_NOTICE}
+              </p>
+            ) : null}
+            <InlineError
+              id="project-description-error"
+              message={errorFor("project-description")}
+            />
+          </div>
+        )}
+
+        <DescribedSelect
+          id="project-tag-choice"
+          label="Tag choice"
+          value={tagMode}
+          placeholder="Choose how tags are selected"
+          options={tagChoices}
+          onChange={(value) => setTagMode(value as "automatic" | "manual")}
+        />
+        {tagMode === "manual" ? (
+          <div className="submission-field">
+            <span className="submission-field-label">Goals and traits</span>
+            <TagBrowser
+              tags={applicableTags}
+              selected={tags}
+              onToggle={(id) =>
+                setTags((current) =>
+                  current.includes(id)
+                    ? current.filter((tag) => tag !== id)
+                    : [...current, id],
+                )
+              }
+              maxSelections={6}
+              searchLabel="Search goals and traits"
+              limitLabel="Up to six"
+            />
+            <p className="submission-hint">
+              These values are honored only for the verified repository owner or
+              trusted Tavernary staff. Other submitter selections are discarded.
+            </p>
+            <InlineError
+              id="project-tags-error"
+              message={errorFor("project-tags")}
+            />
+          </div>
+        ) : null}
       </section>
 
       {projectType === "preset" ? (

@@ -71,7 +71,7 @@ This page maps Tavernary workflows to common operational tasks.
    - `model_concurrency` (default `6`, allowed range `1`-`8`)
    - `model_timeout_seconds` (default `120` per provider request)
 3. Run on `main`. The workflow:
-   - writes only summary, `metadata_status`, and capabilities into catalog
+   - writes only automatic summary/tag fields and `metadata_status` into catalog
      records
    - never changes `primary_function`; an optional intake-only classification
      review can warn about a submitted Extension category

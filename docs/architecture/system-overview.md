@@ -68,7 +68,7 @@ Canonical source-of-truth intent:
 
 - URL state is normalized through `CatalogQuery` and parsed from:
   - `q`, `view`, `sort`, `category`
-  - `frontend`, `kind`, `capability`, `development`, `license`
+  - `frontend`, `kind`, repeated `tag`, `development`, `license`
   - `density`, `mode=projects|kits`
 - Project mode queries `kinds` and `frontends`.
 - Kit mode supports separate filters (`frontends`, `purpose`, `includes`, size bounds, pick flag, sort).

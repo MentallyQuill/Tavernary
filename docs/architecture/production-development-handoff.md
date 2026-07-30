@@ -10,12 +10,14 @@ static Next.js application hosted on GitHub Pages, driven by a validated,
 registry-plus-snapshot catalog pipeline.
 
 **Architecture:** Tavernary is a static catalog, not a hosted application
-backend. Canonical project records live in `data/registry/projects/`, the
-historical intake remains in `data/catalog/projects.json`, generated GitHub
-snapshots live in `data/snapshots/github/`, and `scripts/catalog/build.mjs`
-joins those layers into `src/generated/catalog.json` before Next.js builds a
-static export. The browser receives normalized catalog data and handles search,
-filters, sorting, responsive layout, and URL query state locally.
+backend. Canonical project cards live in `data/registry/projects/`, stable
+source identity/lifecycle lives in `data/registry/sources/`, the historical
+intake remains in `data/catalog/projects.json`, and provider snapshots live in
+`data/snapshots/github/` and `data/snapshots/codeberg/`.
+`scripts/catalog/build.mjs` joins those layers into
+`src/generated/catalog.json` before Next.js builds a static export. The browser
+receives normalized catalog data and handles search, filters, sorting,
+responsive layout, and URL query state locally.
 
 **Tech Stack:** Node.js 24 LTS, npm, Next.js App Router with static export,
 React, TypeScript, plain CSS, JSON Schema with Ajv, Vitest, Testing Library,
@@ -48,9 +50,10 @@ Playwright, GitHub Actions, and GitHub Pages.
 - A root `LICENSE*` file recognized as an OSI-approved license is shown by SPDX
   identifier. No root license is `Missing`. A present but unrecognized,
   source-available, custom, or restrictive license is `Proprietary`.
-- Frontend compatibility selections use OR logic. Metadata selections use OR
-  logic. Different filter groups combine with AND logic. With no filters,
-  every project is visible.
+- Frontend compatibility selections use OR logic. Goals use OR within their
+  facet, Traits use OR within their facet, and the two facets combine with AND.
+  Different filter groups also combine with AND. With no filters, every
+  project is visible.
 - Generated files are never hand-edited. Human-authored records, generated
   snapshots, and browser-ready catalog output remain separate.
 - Do not add Tailwind, a component library, a global state library, or an
@@ -64,13 +67,13 @@ Playwright, GitHub Actions, and GitHub Pages.
 The repository is no longer at the five-project production-vertical-slice
 stage. The current launch baseline is:
 
-- 305 canonical registry records in `data/registry/projects/`;
-- 303 records in the public generated catalog;
-- schema-version-5 project records with structural/human-owned classification;
-- snapshotless publication for valid published GitHub records whose first
-  refresh has not succeeded yet; and
-- a deterministic identity-backfill step
-  (`npm run catalog:backfill-identities -- --write`) after healthy refreshes.
+- 309 schema-version-6 project cards in `data/registry/projects/`;
+- 309 version-1 source records in `data/registry/sources/`;
+- 307 cards in the public generated catalog;
+- stable source IDs derived from immutable provider repository IDs;
+- source-level delist tombstones separate from soft card retirement; and
+- zero-to-six Goals and traits tags with independent summary/tag metadata
+  policies.
 
 Treat `data/catalog/projects.json` as historical intake only. The completed
 seed migration command has been retired; this file is not a runtime input.
@@ -252,15 +255,14 @@ Filter groups:
 - Compatible Frontend, with a search field, SillyTavern, Lumiverse, and
   Marinara visible by default, plus a clickable `+N more frontends` expansion;
 - Project Kind, with colored checkbox outlines and no separate color dots;
-- Capabilities & Characteristics, as a wrapping non-scrolling chip cloud;
+- Goals and Traits, as separate searchable bounded groups;
 - Development;
 - License.
 
-The capability cloud displays approximately four rows when collapsed. Its
-button reads `+ N more tags`; expanded state reads `Show fewer tags`. Selected
-tags remain visible, appear first, and use a checkmark, raised surface, strong
-border, and primary text. Searching tags changes only the available tag cloud;
-it does not filter cards until a tag is selected.
+The tag browser has a bounded scrolling results area. Selected tags remain
+visible, appear first, and use a checkmark, raised surface, strong border, and
+primary text. Searching changes only the available tag list; it does not
+filter cards until a tag is selected.
 
 The catalog toolbar contains:
 
@@ -315,7 +317,7 @@ Tooltips must cover:
 - community aggregate: individual stars, forks, and subscribers/watchers;
 - repository size;
 - frontend chips: `Compatible with SillyTavern`;
-- capability chips: `Contains Tracking Features`;
+- Goals and traits chips: the controlled tag description;
 - licenses: `MIT, OSI-approved open-source license`, `License missing`, or
   `Proprietary license`.
 
@@ -387,7 +389,7 @@ top-level directories:
 │   │   └── github/
 │   │       └── <project-id>.json
 │   └── vocabularies/
-│       ├── capabilities.json
+│       ├── tags.json
 │       ├── frontends.json
 │       └── primary-functions.json
 ├── docs/
@@ -532,7 +534,8 @@ keeps GitHub Actions, dependency updates, and local commands straightforward.
 
 `data/registry/projects/<id>.json` is human-authored and validated by
 `data/schemas/project.schema.json`. The current launched contract is schema
-version 5.
+version 6. Source identity and lifecycle are separate version-1 records under
+`data/registry/sources/`; multiple cards may reference one source.
 
 At minimum, each canonical record carries:
 
@@ -549,70 +552,44 @@ type PrimaryFunction =
   | "interface-workflow"
   | "developer-infrastructure";
 
-type CanonicalSource =
-  | {
-      type: "github";
-      repository: string;
-      repository_id: number | null;
-    }
-  | {
-      type: "codeberg";
-      repository: string;
-      repository_id: number;
-    }
-  | {
-      type: "github-organization";
-      organization: string;
-      url: string;
-    }
-  | {
-      type: "url";
-      url: string;
-      published_at: string | null;
-      version: string | null;
-      artifact_size_bytes: number | null;
-      license_status: "osi-approved" | "proprietary" | "missing" | "pending";
-      license_spdx_id: string | null;
-    };
+type MetadataPolicy =
+  | { mode: "automatic" }
+  | { mode: "manual"; note: string };
 
 interface ProjectRecord {
-  schema_version: 5;
+  schema_version: 6;
   metadata_status: MetadataStatus;
   id: string;
+  source_id: string;
   name: string;
   kind: ProjectKind;
   summary: string;
-  source: CanonicalSource;
   frontends: string[];
   primary_function: PrimaryFunction;
-  capabilities: string[];
+  tags: string[];
   cataloged_at: string;
   catalog_cohort: "seed" | "standard";
-  visibility: "published" | "quarantined" | "disabled";
-  visibility_reason:
-    | null
-    | "identity-change"
-    | "source-unavailable"
-    | "removed"
-    | "safety-review";
-  refresh_policy: "automatic" | "paused";
-  enrichment_policy: "automatic" | "manual";
-  enrichment_note?: string;
+  listing_status: "active" | "quarantined" | "retired";
+  listing_status_reason: null | "safety-review" | "owner-request";
+  metadata_policy: {
+    summary: MetadataPolicy;
+    tags: MetadataPolicy;
+  };
 }
 ```
 
 The launched model intentionally separates editorial truth from generated
 repository facts. Provisional records still require a valid authoritative
 classification. Enrichment writes only summary, `metadata_status`, and
-capabilities; it never changes `primary_function`.
+tags whose policies are automatic; it never changes `primary_function`.
 
 ### 5.2 Generated repository snapshot
 
-`data/snapshots/github/<id>.json` is machine-authored. It carries repository,
-activity, community, license, and refresh state, including:
+`data/snapshots/<provider>/<source-id>.json` is machine-authored. It carries
+repository, activity, community, license, and refresh state, including:
 
 - `source_health: "healthy" | "unavailable" | "identity-change" | "deleted" | "private"`;
-- `repository.id`, the immutable GitHub repository ID used for backfill;
+- `repository.id`, the immutable provider repository ID;
 - `refreshed_at`; and
 - `stale_since`.
 
@@ -632,7 +609,7 @@ The browser-ready card record has already-computed display facts, including:
 
 - canonical URL;
 - normalized searchable text;
-- frontend and capability labels;
+- frontend labels and Goals and traits definitions;
 - license display label and tooltip;
 - activity ratio and six display-bar heights;
 - relative-time timestamp source;
@@ -656,7 +633,12 @@ interface CatalogProject {
   catalogedAt: string;
   catalogCohort: "seed";
   frontends: Array<{ id: string; label: string }>;
-  capabilities: Array<{ id: string; label: string }>;
+  tags: Array<{
+    id: string;
+    label: string;
+    description: string;
+    facet: "goal" | "trait";
+  }>;
   searchableText: string;
   sourceStatus: "healthy" | "stale" | "pending" | "manual";
   activity: {
@@ -713,7 +695,7 @@ interface CatalogQuery {
   sort: CatalogSort;
   frontends: string[];
   kinds: ProjectKind[];
-  capabilities: string[];
+  tags: string[];
 }
 
 interface CatalogQueryController {
@@ -1026,7 +1008,7 @@ separate group so framework changes receive deliberate review.
 - Create: `data/schemas/project.schema.json`
 - Create: `data/schemas/repository-snapshot.schema.json`
 - Create: `data/vocabularies/frontends.json`
-- Create: `data/vocabularies/capabilities.json`
+- Create: `data/vocabularies/tags.json`
 - Create: `data/vocabularies/primary-functions.json`
 - Create: `scripts/catalog/validate.mjs`
 - Create: `scripts/catalog/build.mjs`
@@ -1040,7 +1022,7 @@ separate group so framework changes receive deliberate review.
   catalog consumed by `src/app/page.tsx`.
 
 - [ ] Write schema tests for IDs, source types, three project kinds,
-  controlled frontend IDs, controlled capabilities, required summaries, and
+  controlled frontend IDs, controlled Goals and traits tags, required summaries, and
   canonical URLs.
 - [ ] Run the tests and confirm the candidate intake cannot yet masquerade as
   complete canonical records.

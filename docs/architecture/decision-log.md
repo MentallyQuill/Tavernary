@@ -14,9 +14,10 @@ This file records non-historical decisions shaping current behavior.
 
 - Human-authored canonical catalog records are in
   `data/registry/projects/*.json`.
-- Machine-authored evidence is in `data/snapshots/github/*.json`.
+- Stable source identity and lifecycle are in `data/registry/sources/*.json`.
+- Machine-authored evidence is in provider-qualified snapshot directories.
 - Browser runtime input is `src/generated/catalog.json`.
-- This split prevents automated refresh from editing editorial text, capabilities, or
+- This split prevents automated refresh from editing editorial text, tags, or
   compatibility decisions.
 
 ## 3) Intake migration and legacy data
@@ -26,10 +27,11 @@ This file records non-historical decisions shaping current behavior.
 - Canonical records are one JSON file per project for conflict-safe edits and stable
   review boundaries.
 
-## 4) Quality and visibility gates
+## 4) Quality and publication gates
 
-- `visibility` and `visibility_reason` are maintainer-authored publication controls.
-- `published` can still be provisional while enrichment finishes.
+- Card `listing_status` and source `status` are separate maintainer-authored
+  publication controls.
+- An active card can still be provisional while enrichment finishes.
 - Source health states (`unavailable`, `identity-change`, `deleted`, `private`) do not
   replace deterministic editorial review.
 - Stale visibility handling favors preserving last-known data over silent removals when
@@ -48,4 +50,3 @@ This file records non-historical decisions shaping current behavior.
 - No ranking-as-quality system. Popularity is optional sort, not a trust score.
 - No comments, ratings, or runtime safety classifiers as new product surface.
 - No automatic moderation actions beyond visibility/refresh policy changes.
-

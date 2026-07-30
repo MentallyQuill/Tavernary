@@ -36,27 +36,58 @@ body:
       placeholder: Extension category only
     validations:
       required: false
-  - type: input
-    id: project-name
+  - type: dropdown
+    id: description-choice
     attributes:
-      label: Project Name
-      description: Optional for GitHub and Codeberg sources; required for external System Presets.
+      label: Description choice
+      description: >-
+        Let TavernAI draft from the root README first and the repository
+        description second, or request your own wording. Manual wording is
+        honored only for the verified personal repository owner or trusted
+        Tavernary staff; other submitter text is discarded.
+      options:
+        - Let TavernAI write the description
+        - Write the description myself
     validations:
-      required: false
+      required: true
   - type: textarea
     id: project-description
     attributes:
       label: Short Description
       description: >-
-        Optional for GitHub and Codeberg sources; required for external System
-        Presets. Maximum 220 characters. Community submissions are summarized
-        from README evidence first, the repository description second, and this
-        description third. Keep the description suitable for a public project
-        catalog. Mature and consensual adult themes are permitted, but content
-        promoting hatred or discrimination, sexual exploitation of minors, or
-        other material prohibited by Tavernary's Catalog Policy is not.
-        Ordinary profanity is permitted. Read the policy:
+        Required only when you chose to write the description. Maximum 220
+        characters. Manual wording is honored only for the verified personal
+        repository owner or trusted Tavernary staff. Keep the description
+        suitable for a public project catalog. Mature and consensual adult
+        themes are permitted, but content promoting hatred or discrimination,
+        sexual exploitation of minors, or other material prohibited by
+        Tavernary's Catalog Policy is not. Ordinary profanity is permitted.
+        Read the policy:
         https://mentallyquill.github.io/Tavernary/catalog-policy/
+    validations:
+      required: false
+  - type: dropdown
+    id: tag-choice
+    attributes:
+      label: Tag choice
+      description: >-
+        Let Tavernary classify this project from repository evidence, or
+        request up to six controlled Goals and traits tag IDs. Manual tags are
+        honored only for the verified personal repository owner or trusted
+        Tavernary staff; other submitter values are discarded.
+      options:
+        - Let Tavernary select tags
+        - Set tags myself
+    validations:
+      required: true
+  - type: textarea
+    id: tags
+    attributes:
+      label: Tags
+      description: >-
+        Required only when you chose to set tags. Enter up to six controlled
+        tag IDs, one per line. Use Tavernary's submission builder to search the
+        applicable vocabulary and create the authoritative project manifest.
     validations:
       required: false
   - type: textarea

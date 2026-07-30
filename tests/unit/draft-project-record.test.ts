@@ -5,15 +5,17 @@ import { draftProjectRecord } from "../../scripts/submissions/draft-project-reco
 const admittedGithubExtension = {
   status: "admitted" as const,
   manifest: {
-    schema_version: 3 as const,
+    schema_version: 4 as const,
     project_type: "extension" as const,
     primary_function: "generation-reasoning",
     source_url: "https://github.com/Owner/Repo",
-    name: "Repository Tool",
-    description: "Submitted description.",
     frontends: { known_ids: ["sillytavern"], other: [] },
     frontend_independent: false,
     additional_context: null,
+    metadata: {
+      summary: { mode: "automatic" as const },
+      tags: { mode: "automatic" as const },
+    },
   },
   identity: {
     kind: "repository" as const,
@@ -119,7 +121,7 @@ test("drafts a source-backed GitHub card with permanent identity", async () => {
   expect(result.record).toMatchObject({
     schema_version: 6,
     id: "owner-repo",
-    name: "Repository Tool",
+    name: "Repo",
     kind: "extension",
     metadata_status: "curated",
     source_id: "github-42",
@@ -182,27 +184,38 @@ test("keeps a submitted primary function when intake review suggests a mismatch"
 
 test("protects a preserved repository-owner summary from scheduled enrichment", async () => {
   const result = await draftProjectRecord({
-    admitted: admittedGithubExtension,
+    admitted: {
+      ...admittedGithubExtension,
+      manifest: {
+        ...admittedGithubExtension.manifest,
+        metadata: {
+          summary: {
+            mode: "manual" as const,
+            value: "Submitted description.",
+          },
+          tags: { mode: "automatic" as const },
+        },
+      },
+    },
     observation,
     snapshot,
-    summaryAuthority: {
+    metadataAuthority: {
       authorityType: "repository-owner",
       actorId: 11,
       actorLogin: "Owner",
     },
-    sourceIssueNumber: 128,
+    metadataRequest: {
+      summary: { mode: "manual", value: "Submitted description." },
+      tags: { mode: "automatic" },
+    },
     enrichment: {
       status: "curated",
-      summary: "Submitted description.",
       tags: ["add-structured-reasoning"],
       classification_review: {
         status: "confirmed",
         suggested_primary_function: "generation-reasoning",
         explanation: null,
       },
-      result: "accepted-unchanged",
-      change_reasons: [],
-      policy_signal: "none",
     },
     now: "2026-07-25T18:00:00.000Z",
   });
@@ -213,35 +226,24 @@ test("protects a preserved repository-owner summary from scheduled enrichment", 
     metadata_policy: {
       summary: {
         mode: "manual",
-        note: "Catalog summary preserved from repository-owner submission issue #128.",
+        note: "Verified repository owner selection.",
       },
       tags: { mode: "automatic" },
     },
   });
-  expect(result.copyResult).toEqual({
-    result: "accepted-unchanged",
-    change_reasons: [],
-    policy_signal: "none",
-  });
+  expect(result.copyResult).toBeNull();
 });
 
 test("keeps synthesized owner intake eligible for automatic enrichment", async () => {
   const result = await draftProjectRecord({
-    admitted: {
-      ...admittedGithubExtension,
-      manifest: {
-        ...admittedGithubExtension.manifest,
-        description: null,
-      },
-    },
+    admitted: admittedGithubExtension,
     observation,
     snapshot,
-    summaryAuthority: {
+    metadataAuthority: {
       authorityType: "repository-owner",
       actorId: 11,
       actorLogin: "Owner",
     },
-    sourceIssueNumber: 129,
     enrichment: {
       status: "curated",
       summary:
@@ -263,6 +265,144 @@ test("keeps synthesized owner intake eligible for automatic enrichment", async (
     summary: { mode: "automatic" },
     tags: { mode: "automatic" },
   });
+});
+
+test("keeps manual tags independent from automatic summary generation", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    metadataAuthority: {
+      authorityType: "repository-owner",
+      actorId: 11,
+      actorLogin: "Owner",
+    },
+    metadataRequest: {
+      summary: { mode: "automatic" },
+      tags: {
+        mode: "manual",
+        values: ["manage-context-limits", "retrieve-relevant-context"],
+      },
+    },
+    enrichment: {
+      status: "curated",
+      summary:
+        "Repository evidence defines this structured roleplay tool and its purpose. Its documented controls support focused work while keeping the surrounding conversation accessible.",
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "generation-reasoning",
+        explanation: null,
+      },
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    metadata_status: "curated",
+    tags: ["manage-context-limits", "retrieve-relevant-context"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
+    },
+  });
+  expect(result.copyResult).toEqual({
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  });
+});
+
+test("discards unauthorized manual metadata before the record and report", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    metadataAuthority: {
+      authorityType: "community-submitter",
+      actorId: 29,
+      actorLogin: "community-user",
+    },
+    metadataRequest: {
+      summary: { mode: "manual", value: "Unauthorized private wording." },
+      tags: { mode: "manual", values: ["unauthorized-tag"] },
+    },
+    enrichment: {
+      status: "curated",
+      summary:
+        "Repository evidence defines the project without using untrusted submitter copy.",
+      tags: ["add-structured-reasoning"],
+      classification_review: {
+        status: "confirmed",
+        suggested_primary_function: "generation-reasoning",
+        explanation: null,
+      },
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    summary:
+      "Repository evidence defines the project without using untrusted submitter copy.",
+    tags: ["add-structured-reasoning"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(result.submitted).toMatchObject({
+    metadata: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(JSON.stringify(result)).not.toContain("Unauthorized private wording");
+  expect(JSON.stringify(result)).not.toContain("unauthorized-tag");
+});
+
+test("drafts fully manual trusted metadata without an enrichment warning", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    metadataAuthority: {
+      authorityType: "tavernary-staff",
+      actorId: 7,
+      actorLogin: "maintainer",
+    },
+    metadataRequest: {
+      summary: { mode: "manual", value: "Maintainer-curated summary." },
+      tags: { mode: "manual", values: ["add-structured-reasoning"] },
+    },
+    enrichment: null,
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    summary: "Maintainer-curated summary.",
+    tags: ["add-structured-reasoning"],
+    metadata_status: "curated",
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+      tags: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+    },
+  });
+  expect(result.classificationReview).toBeNull();
+  expect(result.warnings).toEqual([]);
 });
 
 test("stores only a bounded plain-text mismatch explanation", async () => {
@@ -289,7 +429,7 @@ test("stores only a bounded plain-text mismatch explanation", async () => {
   expect(explanation).not.toMatch(/[\r\n<>]/u);
 });
 
-test("falls back to submitted description when enrichment is unavailable", async () => {
+test("falls back to repository description when enrichment is unavailable", async () => {
   const result = await draftProjectRecord({
     admitted: admittedGithubExtension,
     observation,
@@ -303,7 +443,7 @@ test("falls back to submitted description when enrichment is unavailable", async
   });
 
   expect(result.record).toMatchObject({
-    summary: "Submitted description.",
+    summary: "Repository description.",
     metadata_status: "provisional",
     primary_function: "generation-reasoning",
     tags: [],
@@ -346,15 +486,17 @@ test("drafts external presets with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 3,
+        schema_version: 4,
         project_type: "preset",
         primary_function: "preset",
         source_url: "https://example.com/presets/Nova/",
-        name: "Nova Preset",
-        description: "A submitted external system preset.",
         frontends: { known_ids: [], other: [] },
         frontend_independent: true,
         additional_context: null,
+        metadata: {
+          summary: { mode: "automatic" },
+          tags: { mode: "automatic" },
+        },
       },
       identity: {
         kind: "external",
@@ -410,7 +552,6 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
         ...admittedGithubExtension.manifest,
         project_type: "frontend",
         primary_function: "frontend",
-        name: "Nova Frontend",
         frontends: { known_ids: [], other: [] },
       },
       frontendIds: [],
@@ -437,13 +578,13 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
 
   expect(result.record).toMatchObject({
     kind: "frontend",
-    frontends: ["nova-frontend"],
+    frontends: ["repo"],
     primary_function: "frontend",
   });
   expect(result.frontendVocabulary?.frontends).toContainEqual({
-    id: "nova-frontend",
-    label: "Nova Frontend",
-    description: "Works with the Nova Frontend roleplay frontend.",
+    id: "repo",
+    label: "Repo",
+    description: "Works with the Repo roleplay frontend.",
   });
 });
 
@@ -452,15 +593,17 @@ test("drafts an external Frontend with manual source policy", async () => {
     admitted: {
       status: "admitted",
       manifest: {
-        schema_version: 3,
+        schema_version: 4,
         project_type: "frontend",
         primary_function: "frontend",
         source_url: "https://codeberg.org/example/nova",
-        name: "Nova Frontend",
-        description: "A public-source roleplay frontend.",
         frontends: { known_ids: [], other: [] },
         frontend_independent: false,
         additional_context: null,
+        metadata: {
+          summary: { mode: "automatic" },
+          tags: { mode: "automatic" },
+        },
       },
       identity: {
         kind: "external",
@@ -500,7 +643,7 @@ test("drafts an external Frontend with manual source policy", async () => {
     refresh_policy: "paused",
   });
   expect(result.record).toMatchObject({
-    frontends: ["nova-frontend"],
+    frontends: ["nova"],
     primary_function: "frontend",
     metadata_policy: {
       summary: { mode: "manual" },
@@ -515,15 +658,17 @@ test("keeps external project IDs distinct across source owners", async () => {
       admitted: {
         status: "admitted",
         manifest: {
-          schema_version: 3,
+          schema_version: 4,
           project_type: "frontend",
           primary_function: "frontend",
           source_url: `https://codeberg.org/${owner}/nova`,
-          name: "Nova Frontend",
-          description: "A public-source roleplay frontend.",
           frontends: { known_ids: [], other: [] },
           frontend_independent: false,
           additional_context: null,
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
         },
         identity: {
           kind: "external",
@@ -563,16 +708,16 @@ test("refuses to draft a GitHub record when permanent identity changed", async (
   ).rejects.toThrow(/permanent repository identity/iu);
 });
 
-test("bounds a submitted fallback summary to the project schema limit", async () => {
+test("bounds a repository fallback summary to the project schema limit", async () => {
   const result = await draftProjectRecord({
-    admitted: {
-      ...admittedGithubExtension,
-      manifest: {
-        ...admittedGithubExtension.manifest,
+    admitted: admittedGithubExtension,
+    observation: {
+      ...observation,
+      repository: {
+        ...observation.repository,
         description: "word ".repeat(60),
       },
     },
-    observation,
     snapshot,
     enrichment: null,
     now: "2026-07-25T18:00:00.000Z",

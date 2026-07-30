@@ -128,7 +128,7 @@ test("returns only deterministic canonical submission files and its report", asy
         explanation:
           "The source primarily describes user-facing editing controls.",
       },
-      summaryAuthority: {
+      metadataAuthority: {
         authorityType: "repository-owner",
         actorId: 11,
         actorLogin: "Owner",
@@ -166,7 +166,7 @@ test("returns only deterministic canonical submission files and its report", asy
     schema_version: 1,
     issue_number: 123,
     project_id: "owner-repo",
-    summary_authority: {
+    metadata_authority: {
       authorityType: "repository-owner",
       actorId: 11,
       actorLogin: "Owner",
@@ -214,7 +214,7 @@ test("preserves a generated GitHub bot actor in the audit report", async () => {
       submitted: {},
       observed: {},
       inferred: {},
-      summaryAuthority: {
+      metadataAuthority: {
         authorityType: "community-submitter",
         actorId: 41_898_282,
         actorLogin: "github-actions[bot]",

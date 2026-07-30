@@ -88,6 +88,7 @@ export function DescribedSelect({
       <button
         ref={triggerRef}
         id={id}
+        value={value}
         className="described-select-trigger"
         type="button"
         role="combobox"

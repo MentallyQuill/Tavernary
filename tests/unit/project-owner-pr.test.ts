@@ -75,11 +75,20 @@ const reviewFixture = {
     },
     before: {
       summary: "Old summary.",
-      enrichment_policy: "automatic",
+      metadata_policy: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
     },
     after: {
       summary: "New owner summary.",
-      enrichment_policy: "manual",
+      metadata_policy: {
+        summary: {
+          mode: "manual",
+          note: "Verified repository owner selection.",
+        },
+        tags: { mode: "automatic" },
+      },
     },
     warnings: ["source-fingerprint-changed"],
     generated_paths: marker.generated_paths,

@@ -98,7 +98,8 @@ when `PROJECT_AUTO_PUBLICATION_ENABLED` equals `true` and every authoritative
 check matches the exact validated head SHA.
 
 1. The static Tavernary builder or `01-project-submission.yml` creates an issue
-   carrying `project-submission`.
+   carrying `project-submission`. New intake uses manifest version 4 with
+   independent summary/tag requests; manual values claim no authority.
 2. `triage-submission.yml` normalizes the URL, maintains the generated title,
    inspects source facts, reconciles frontend vocabulary, and checks duplicates.
 3. A duplicate receives the triage explanation and closes before generation. A
@@ -141,6 +142,13 @@ rebases the branch onto current `main`, replaces only the declared generated
 paths, preserves unrelated branch files, and pushes with `--force-with-lease`.
 It never uses an unguarded force push. If the generated branch moved after PR
 closure, lifecycle cleanup leaves it intact for manual inspection.
+
+New triage rejects retired manifest version 3 and asks the submitter to
+regenerate through the current form. The generation path may upgrade version 3
+only when an issue was already admitted before the cutover
+(`needs-maintainer-review` or `submission-pr-open`). This compatibility path
+prevents an admitted request from being stranded; it is not accepted for new
+intake.
 
 ### Fork dependency recovery
 
@@ -353,7 +361,7 @@ Workflow: `.github/workflows/refresh-catalog.yml`
 Baseline mode loops while provisional queue remains > 0 by reading
 `data/snapshots/github-refresh.json` counts.
 
-The refresh manifest uses schema version 2. Its aggregate counts remain the
+The refresh manifest uses schema version 3. Its aggregate counts remain the
 dashboard contract, while `providers.github` and `providers.codeberg` report
 isolated checked, changed, failed, request, and remaining-budget values.
 Provider failures do not discard successful work from the other provider.
@@ -376,14 +384,15 @@ Workflow: `.github/workflows/enrich-catalog.yml`
   preparation, batching, and resume behavior through the tested durable
   orchestrator.
 - `enrichment_scope` controls selection:
-  - `pending` (default) processes automatic records that still need enrichment.
-  - `all-automatic` re-enriches every automatic record and is intended for
-    provider-contract migrations such as a one-time summary rewrite.
+  - `pending` (default) processes cards whose automatic fields still need
+    enrichment.
+  - `all-automatic` re-enriches every card with at least one automatic field
+    and is intended for provider-contract migrations.
 - `model_timeout_seconds` defaults to `120` and applies independently to each
   provider request, not to a batch or the five-hour workflow job.
-- Neither scope overrides a record's manual enrichment policy.
-- Enrichment writes only summary, `metadata_status`, and capabilities. It never
-  writes or changes `primary_function`.
+- Neither scope overrides either field's manual metadata policy.
+- Enrichment writes only automatic summary/tag fields and `metadata_status`.
+  It never writes or changes `primary_function`.
 - An intake-only classification review may confirm a submitted Extension
   category or emit a sanitized mismatch warning. The warning does not mutate
   canonical classification and raw provider/source payloads are not published.
@@ -418,30 +427,40 @@ Provider mode uses environment secrets:
 - `TAVERNARY_ENRICHMENT_API_KEY`
 - `TAVERNARY_ENRICHMENT_MODEL`
 
-### Excluding a project from model enrichment
+### Locking a metadata field from model enrichment
 
-The canonical toggle lives on the project record in
-`data/registry/projects/<id>.json`. To require manual processing, set:
-
-```json
-"enrichment_policy": "manual",
-"enrichment_note": "Multi-repository suite; requires manual curation."
-```
-
-Use a short, maintainer-facing note that explains why automation is unsafe or
-insufficient. Selection, direct execution, and atomic writes all enforce the
-manual lock.
-
-To return the project to automatic enrichment, set:
+The canonical policies live on the project card in
+`data/registry/projects/<id>.json`. To preserve a trusted manual summary while
+leaving tags automatic, set:
 
 ```json
-"enrichment_policy": "automatic"
+"metadata_policy": {
+  "summary": {
+    "mode": "manual",
+    "note": "Trusted Tavernary editor selection."
+  },
+  "tags": {
+    "mode": "automatic"
+  }
+}
 ```
 
-Remove `enrichment_note` at the same time; automatic records must not retain
-one. This setting is independent of `refresh_policy`: refresh controls
-repository evidence collection, while enrichment controls model-written
-editorial fields.
+Use a short, trusted maintainer-facing note. Selection, provider requests, and
+atomic writes all enforce each field lock independently. A card with both
+fields manual is excluded from enrichment.
+
+To return the summary to automatic enrichment, set:
+
+```json
+"summary": {
+  "mode": "automatic"
+}
+```
+
+Remove that field's manual `note` at the same time; automatic policies cannot
+retain one. Metadata policy is card-owned and independent of the source-owned
+`refresh_policy`: refresh controls repository evidence collection, while
+metadata policy controls model-written editorial fields.
 
 ## Kit workflow
 

@@ -34,7 +34,7 @@ Marinara Engine, where the catalog data supports that classification.
 Tavernary combines two kinds of information:
 
 - **Curated metadata**, such as the project name, summary, project kind,
-  supported frontends, capabilities, and canonical source.
+  supported frontends, Goals and traits tags, and canonical source.
 - **Observed source facts**, such as repository identity, meaningful activity,
   releases, community counts, repository size, and root-license information.
 

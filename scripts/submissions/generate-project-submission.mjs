@@ -18,7 +18,11 @@ import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
 import { isRepositoryIdentity } from "./source-identity.mjs";
-import { classifySubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
+import {
+  classifySubmissionMetadataAuthority,
+  resolveSubmissionMetadataRequest,
+} from "./submission-summary-authority.mjs";
+import { metadataFieldsToGenerate } from "../catalog/metadata-policy.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 import {
@@ -89,18 +93,19 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       submitted: draft.submitted,
       observed: draft.observed,
       inferred: draft.inferred,
-      summary_authority: draft.summaryAuthority ?? null,
+      metadata_authority: draft.metadataAuthority ?? null,
       copy_result: draft.copyResult ?? null,
       input_digest: draft.inputDigest ?? null,
       source_identity: draft.sourceIdentity ?? null,
       actor:
-        Number.isSafeInteger(draft.summaryAuthority?.actorId) &&
-        draft.summaryAuthority.actorId > 0 &&
-        typeof draft.summaryAuthority?.actorLogin === "string"
+        Number.isSafeInteger(draft.metadataAuthority?.actorId) &&
+        draft.metadataAuthority.actorId > 0 &&
+        typeof draft.metadataAuthority?.actorLogin === "string"
           ? {
-              id: draft.summaryAuthority.actorId,
-              login: draft.summaryAuthority.actorLogin,
-              type: draft.summaryAuthority.actorType === "Bot" ? "Bot" : "User",
+              id: draft.metadataAuthority.actorId,
+              login: draft.metadataAuthority.actorLogin,
+              type:
+                draft.metadataAuthority.actorType === "Bot" ? "Bot" : "User",
             }
           : null,
       classificationReview: draft.classificationReview ?? null,
@@ -288,12 +293,36 @@ function protectedTermsForSubmission({
   ].slice(0, 64);
 }
 
+function requestedEnrichmentResult(result, requestedFields) {
+  if (result?.status !== "curated") return result;
+  return {
+    status: "curated",
+    ...(requestedFields.includes("summary") &&
+    typeof result.summary === "string"
+      ? {
+          summary: result.summary,
+          result: result.result,
+          change_reasons: result.change_reasons,
+          policy_signal: result.policy_signal,
+        }
+      : {}),
+    ...(requestedFields.includes("tags") && Array.isArray(result.tags)
+      ? { tags: [...result.tags] }
+      : {}),
+    classification_review: result.classification_review ?? null,
+  };
+}
+
 export async function prepareProjectSubmissionDraft({
   issue,
   now,
   sourceClients = {},
 }) {
-  const parsed = parseProjectSubmissionIssue(issue.body ?? "");
+  const parsed = parseProjectSubmissionIssue(issue.body ?? "", {
+    allowLegacyV3:
+      issueLabels(issue).includes("needs-maintainer-review") ||
+      issueLabels(issue).includes("submission-pr-open"),
+  });
   if (!parsed.valid) throw new Error(parsed.errors.join(" "));
   const request = sourceClients.request ?? defaultGithubRequest;
   const inspection = await inspectProjectSubmissionSource(parsed.manifest, {
@@ -342,13 +371,17 @@ export async function prepareProjectSubmissionDraft({
   if (decision.status !== "admitted") {
     throw new Error(decisionFailure(decision));
   }
-  const summaryAuthority = classifySubmissionSummaryAuthority({
+  const metadataAuthority = classifySubmissionMetadataAuthority({
     issueActor: issue.user,
     authorAssociation: issue.author_association,
     sourceIdentity: decision.identity,
     repositoryOwner: inspection.repositoryOwner,
     trustedEditorRegistry:
       sourceClients.trustedEditorRegistry ?? trustedEditorRegistry,
+  });
+  const metadataRequest = resolveSubmissionMetadataRequest({
+    requested: decision.manifest.metadata,
+    authority: metadataAuthority,
   });
 
   if (!isRepositoryIdentity(decision.identity)) {
@@ -359,8 +392,8 @@ export async function prepareProjectSubmissionDraft({
       enrichment: null,
       frontendVocabulary: data.vocabulary,
       frontendProjects: data.projects,
-      summaryAuthority,
-      sourceIssueNumber: issue.number,
+      metadataAuthority,
+      metadataRequest,
       now,
     });
     assertProjectIdAvailable(draft.record, data.projects);
@@ -400,6 +433,8 @@ export async function prepareProjectSubmissionDraft({
     enrichment: null,
     frontendVocabulary: data.vocabulary,
     frontendProjects: data.projects,
+    metadataAuthority,
+    metadataRequest,
     now,
   });
   assertProjectIdAvailable(preliminary.record, data.projects);
@@ -440,33 +475,33 @@ export async function prepareProjectSubmissionDraft({
           ),
         }
       : null;
-  const submittedDescription = decision.manifest.description?.trim() ?? "";
-  const summaryMode =
-    submittedDescription.length > 0 &&
-    ["repository-owner", "tavernary-staff"].includes(
-      summaryAuthority.authorityType,
-    )
-      ? "preserve"
-      : "synthesize";
+  const requestedFields = metadataFieldsToGenerate(preliminary.record);
   const protectedTerms = protectedTermsForSubmission({
     record: preliminary.record,
     decision,
     data,
-    submittedDescription,
+    submittedDescription: "",
   });
-  let enrichment;
+  let enrichment = null;
   try {
-    if (sourceClients.enrich) {
-      enrichment = await sourceClients.enrich({
-        record: preliminary.record,
-        source: preliminary.source,
-        snapshot,
-        summaryAuthority,
-        summaryMode,
-        submittedDescription: submittedDescription || null,
-        protectedTerms,
-        ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
-      });
+    if (requestedFields.length === 0) {
+      enrichment = null;
+    } else if (sourceClients.enrich) {
+      enrichment = requestedEnrichmentResult(
+        await sourceClients.enrich({
+          record: preliminary.record,
+          source: preliminary.source,
+          snapshot,
+          metadataAuthority,
+          metadataRequest,
+          requestedFields,
+          protectedTerms,
+          ...(classificationReviewRequest
+            ? { classificationReviewRequest }
+            : {}),
+        }),
+        requestedFields,
+      );
     } else {
       const provider = createEnrichmentProvider({
         apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
@@ -480,8 +515,6 @@ export async function prepareProjectSubmissionDraft({
         provider,
         {
           vocabularies,
-          summaryMode,
-          submittedDescription: submittedDescription || null,
           protectedTerms,
           ...(sourceClients.loadEnrichmentSource
             ? { loadSource: sourceClients.loadEnrichmentSource }
@@ -494,8 +527,10 @@ export async function prepareProjectSubmissionDraft({
       enrichment = output
         ? {
             status: "curated",
-            summary: output.summary.value,
-            tags: output.tags.map(({ id }) => id),
+            ...(output.summary ? { summary: output.summary.value } : {}),
+            ...(Array.isArray(output.tags)
+              ? { tags: output.tags.map(({ id }) => id) }
+              : {}),
             classification_review: null,
             result: output.result,
             change_reasons: [...output.change_reasons],
@@ -519,9 +554,9 @@ export async function prepareProjectSubmissionDraft({
       enrichment,
       frontendVocabulary: data.vocabulary,
       frontendProjects: data.projects,
-      summaryAuthority,
-      sourceIssueNumber: issue.number,
-      copyRequired: true,
+      metadataAuthority,
+      metadataRequest,
+      copyRequired: requestedFields.includes("summary"),
       now,
     }),
     decision,

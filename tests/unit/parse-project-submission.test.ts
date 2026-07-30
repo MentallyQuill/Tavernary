@@ -2,6 +2,46 @@ import { expect, test } from "vitest";
 
 import { parseProjectSubmissionIssue } from "../../scripts/submissions/parse-project-submission.mjs";
 
+test("fails closed on a new schema-v3 manifest but recovers it when already admitted", () => {
+  const body = `
+### Project manifest
+\`\`\`json
+{
+  "schema_version": 3,
+  "project_type": "extension",
+  "primary_function": "generation-reasoning",
+  "source_url": "https://github.com/Owner/Repo",
+  "name": "Example",
+  "description": null,
+  "frontends": { "known_ids": ["sillytavern"], "other": [] },
+  "frontend_independent": false,
+  "additional_context": null
+}
+\`\`\`
+`;
+
+  expect(parseProjectSubmissionIssue(body)).toEqual({
+    valid: false,
+    source: "manifest",
+    errors: [
+      "Submission manifest version 3 is retired. Regenerate the request with Tavernary's current project form.",
+    ],
+  });
+  expect(
+    parseProjectSubmissionIssue(body, { allowLegacyV3: true }),
+  ).toMatchObject({
+    valid: true,
+    source: "manifest",
+    manifest: {
+      schema_version: 4,
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
+    },
+  });
+});
+
 test("parses the fallback form into the shared contract", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
@@ -10,9 +50,13 @@ Extension
 Interface and workflow
 ### Project URL
 https://github.com/Owner/Repo
-### Project Name
-Example
+### Description choice
+Let TavernAI write the description
 ### Short Description
+_No response_
+### Tag choice
+Let Tavernary select tags
+### Tags
 _No response_
 ### Supported frontends
 SillyTavern, https://github.com/prolix-oc/Lumiverse
@@ -28,10 +72,14 @@ _No response_
     valid: true,
     source: "headings",
     manifest: {
+      schema_version: 4,
       project_type: "extension",
       primary_function: "interface-workflow",
       source_url: "https://github.com/Owner/Repo",
-      name: "Example",
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
       frontends: {
         known_ids: [],
         other: [
@@ -51,10 +99,12 @@ Extension
 Memory and retrieval
 ### Project URL
 https://codeberg.org/targren/Lumiverse-SwipeScrubber
-### Project Name
-Swipe Scrubber
+### Description choice
+Write the description myself
 ### Short Description
 Remove unused swipes from message history.
+### Tag choice
+Let Tavernary select tags
 ### Supported frontends
 Lumiverse
 ### Frontend-independent
@@ -74,7 +124,13 @@ Entered manually.
       project_type: "extension",
       primary_function: "memory-retrieval",
       source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
-      name: "Swipe Scrubber",
+      metadata: {
+        summary: {
+          mode: "manual",
+          value: "Remove unused swipes from message history.",
+        },
+        tags: { mode: "automatic" },
+      },
     },
   });
 });
@@ -88,15 +144,17 @@ https://github.com/Wrong/Heading
 ### Project manifest
 \`\`\`json
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "project_type": "extension",
   "primary_function": "generation-reasoning",
   "source_url": "https://github.com/Owner/Repo",
-  "name": "Example",
-  "description": null,
   "frontends": { "known_ids": ["sillytavern"], "other": [] },
   "frontend_independent": false,
-  "additional_context": null
+  "additional_context": null,
+  "metadata": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }
 \`\`\`
 `);
@@ -109,6 +167,76 @@ https://github.com/Wrong/Heading
       primary_function: "generation-reasoning",
       source_url: "https://github.com/Owner/Repo",
     },
+  });
+});
+
+test("parses independent manual tag requests from controlled labels and IDs", () => {
+  const result = parseProjectSubmissionIssue(`
+### Project Type
+Extension
+### Primary function
+Memory and retrieval
+### Project URL
+https://github.com/Owner/Repo
+### Description choice
+Let TavernAI write the description
+### Short Description
+_No response_
+### Tag choice
+Set tags myself
+### Tags
+Maintain long-term memory
+manage-context-limits
+### Supported frontends
+SillyTavern
+### Frontend-independent
+No
+### Project manifest
+_No response_
+`);
+
+  expect(result).toMatchObject({
+    valid: true,
+    source: "headings",
+    manifest: {
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: {
+          mode: "manual",
+          values: ["maintain-long-term-memory", "manage-context-limits"],
+        },
+      },
+    },
+  });
+});
+
+test("rejects tampered fallback metadata choices", () => {
+  expect(
+    parseProjectSubmissionIssue(`
+### Project Type
+Extension
+### Primary function
+Memory and retrieval
+### Project URL
+https://github.com/Owner/Repo
+### Description choice
+Trust my prose
+### Tag choice
+Use every tag
+### Supported frontends
+SillyTavern
+### Frontend-independent
+No
+### Project manifest
+_No response_
+`),
+  ).toEqual({
+    valid: false,
+    source: "headings",
+    errors: [
+      "Description choice must be automatic or manual.",
+      "Tag choice must be automatic or manual.",
+    ],
   });
 });
 
@@ -129,7 +257,7 @@ https://github.com/Owner/Valid
   });
 });
 
-test("parses fallback Preset compatibility fields into manifest version 2", () => {
+test("parses fallback Preset compatibility fields into manifest version 4", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 System Preset
@@ -137,8 +265,6 @@ System Preset
 
 ### Project URL
 https://github.com/Owner/Preset
-### Project Name
-Example
 ### Supported frontends
 SillyTavern
 ### Frontend-independent
@@ -160,7 +286,7 @@ _No response_
     valid: true,
     source: "headings",
     manifest: {
-      schema_version: 3,
+      schema_version: 4,
       project_type: "preset",
       primary_function: "preset",
       preset_compatibility: {
@@ -174,7 +300,7 @@ _No response_
   });
 });
 
-test("parses text Preset compatibility fields into manifest version 2", () => {
+test("parses text Preset compatibility fields into manifest version 4", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 System Preset
@@ -182,8 +308,6 @@ System Preset
 preset
 ### Project URL
 https://github.com/Owner/Preset
-### Project Name
-Example
 ### Supported frontends
 SillyTavern
 ### Frontend-independent
@@ -203,7 +327,7 @@ _No response_
     valid: true,
     source: "headings",
     manifest: {
-      schema_version: 3,
+      schema_version: 4,
       project_type: "preset",
       primary_function: "preset",
       frontend_independent: false,

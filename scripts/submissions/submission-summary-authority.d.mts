@@ -35,3 +35,13 @@ export function classifySubmissionMetadataAuthority(
 ): SubmissionMetadataAuthority;
 
 export const classifySubmissionSummaryAuthority: typeof classifySubmissionMetadataAuthority;
+
+export interface SubmissionMetadataRequest {
+  summary: { mode: "automatic" } | { mode: "manual"; value: string };
+  tags: { mode: "automatic" } | { mode: "manual"; values: string[] };
+}
+
+export function resolveSubmissionMetadataRequest(input: {
+  requested: SubmissionMetadataRequest;
+  authority: SubmissionMetadataAuthority;
+}): SubmissionMetadataRequest;

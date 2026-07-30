@@ -19,6 +19,17 @@ test("exports and renders the project submission builder", async ({ page }) => {
   );
   await expect(eligibility).toBeVisible();
   await expect(page.getByLabel("Primary function")).toHaveCount(0);
+  await expect(page.getByLabel("Description choice")).toHaveAttribute(
+    "value",
+    "automatic",
+  );
+  await expect(page.getByLabel("Tag choice")).toHaveAttribute(
+    "value",
+    "automatic",
+  );
+  await expect(page.getByLabel("Short description")).toHaveCount(0);
+  await expect(page.getByLabel("Search goals and traits")).toHaveCount(0);
+  await expect(page.getByLabel(/Project Name/u)).toHaveCount(0);
 
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
   await expect(eligibility).toBeVisible();
@@ -80,7 +91,11 @@ test("keeps description prose while removing emoji and linking the policy", asyn
 }) => {
   await page.goto(sitePath("/submit/project/"));
 
-  const description = page.getByLabel("Short Description (optional)");
+  await page.getByLabel("Description choice").click();
+  await page
+    .getByRole("option", { name: /Write the description myself/u })
+    .click();
+  const description = page.getByLabel("Short description");
   await description.fill("This is damn useful 🧭 for ST-QuickReply.");
 
   await expect(description).toHaveValue(
@@ -94,6 +109,38 @@ test("keeps description prose while removing emoji and linking the policy", asyn
   await expect(
     page.getByRole("link", { name: "Catalog Policy" }),
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
+});
+
+test("keeps the manual tag picker searchable and bounded at mobile width", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(sitePath("/submit/project/"));
+  await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page.getByLabel("Tag choice").click();
+  await page.getByRole("option", { name: /Set tags myself/u }).click();
+
+  const search = page.getByLabel("Search goals and traits");
+  await expect(search).toBeVisible();
+  await search.fill("memory");
+  await expect(page.getByLabel("Maintain long-term memory")).toBeVisible();
+  await search.fill("");
+
+  for (const label of [
+    "Maintain long-term memory",
+    "Manage context limits",
+    "Retrieve relevant context",
+    "Build worlds and lore",
+    "Manage lorebooks",
+    "Create character cards",
+  ]) {
+    await page.getByLabel(label).focus();
+    await page.keyboard.press("Space");
+  }
+  await expect(page.getByText("6 / 6 selected")).toBeVisible();
+  await expect(
+    page.getByLabel("Manage characters and personas"),
+  ).toBeDisabled();
 });
 
 test("selects multiple current frontends for an Extension", async ({
@@ -165,9 +212,12 @@ test("supports frontend-independent and not-listed submission paths", async ({
     });
   });
   await page.getByLabel("Project URL").fill("https://example.com/preset");
-  await page.getByLabel("Project Name (required)").fill("Example Preset");
+  await page.getByLabel("Description choice").click();
   await page
-    .getByLabel("Short Description (required)")
+    .getByRole("option", { name: /Write the description myself/u })
+    .click();
+  await page
+    .getByLabel("Short description")
     .fill("A portable roleplay preset.");
   await page.getByLabel("Other frontend name").fill("Future Frontend");
   await page
@@ -183,7 +233,7 @@ test("supports frontend-independent and not-listed submission paths", async ({
   const opened = new URL(openedUrl ?? "");
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "preset",
       primary_function: "preset",
       preset_compatibility: {
@@ -198,6 +248,13 @@ test("supports frontend-independent and not-listed submission paths", async ({
             url: "https://github.com/example/future-frontend",
           },
         ],
+      },
+      metadata: {
+        summary: {
+          mode: "manual",
+          value: "A portable roleplay preset.",
+        },
+        tags: { mode: "automatic" },
       },
     }),
   );
@@ -235,13 +292,17 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
   expect(opened.searchParams.get("template")).toBe("01-project-submission.yml");
   expect(JSON.parse(opened.searchParams.get("project-manifest") ?? "")).toEqual(
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "extension",
       primary_function: "interface-workflow",
       source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
       frontends: {
         known_ids: ["sillytavern"],
         other: [],
+      },
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
       },
     }),
   );

@@ -12,9 +12,10 @@ automation that publishes the catalog.
 Read the [Tavernary documentation](docs/README.md) for the product overview,
 catalog guide, contribution paths, and local development setup.
 
-The canonical registry contains 305 projects, with 303 currently published in
-the browser catalog. Repository enrichment and editorial review may improve
-summaries and capabilities without changing a project's primary function.
+The canonical registry contains 309 project cards backed by 309 source
+records, with 307 cards currently published in the browser catalog. Repository
+enrichment and editorial review may improve summaries and Goals and traits
+tags without changing a card's primary function.
 
 ## Local development
 
@@ -71,7 +72,8 @@ Tavernary keeps four distinct layers:
 
 `data/catalog/projects.json` is the historical 213-row intake file. It is not a
 runtime input. Canonical catalog records live in `data/registry/projects/`, and
-source refreshes never edit those files. Provider-derived facts live in
+source identity and lifecycle live in `data/registry/sources/`; source
+refreshes never edit project cards. Provider-derived facts live in
 `data/snapshots/github/` and `data/snapshots/codeberg/`, and
 `npm run catalog:build` joins registry records, snapshots, and controlled
 vocabularies into `src/generated/catalog.json`.
@@ -79,10 +81,12 @@ vocabularies into `src/generated/catalog.json`.
 manifest; it records aggregate and provider-isolated counts, API usage, timings,
 and the catalog-wide refresh timestamp for the latest completed run.
 
-Registry records use schema version 5. Every record carries
-`metadata_status: "curated"` or `"provisional"`. Provisional GitHub records may
-publish with `source.repository_id: null` until a successful refresh and
-identity backfill fill the immutable GitHub repository ID.
+Project records use schema version 6 and reference a source by stable
+`source_id`. Every card carries `metadata_status: "curated"` or
+`"provisional"`, zero to six controlled `tags`, and independent
+`metadata_policy.summary` and `metadata_policy.tags` modes. Repository source
+records use immutable provider repository IDs, so a repository rename updates
+one source record without changing card identity or sibling-card membership.
 
 Frontends and Extensions require a public GitHub or Codeberg repository.
 System Presets may use another stable public HTTPS page. Non-GitHub presets are
@@ -231,11 +235,13 @@ request for any card. A current trusted repository association is also
 required; association alone does not grant authority. Automation creates
 `automation/project-owner-request-<issue-number>` and a generated review PR.
 Merging publishes the reviewed change; closing the PR without merge declines
-it. Summary or capability edits switch enrichment to manual, while a
-classification-only edit preserves the existing enrichment policy.
+it. Each summary or tag field may remain automatic or switch independently to
+manual, while a classification-only edit preserves both metadata policies.
+The same reviewed form can add up to ten distinct cards from one existing
+source in a single request.
 `refresh_policy` controls repository evidence collection, while
-`enrichment_policy` controls model-written summary and capabilities; neither
-allows enrichment to change `primary_function`.
+the two `metadata_policy` fields control model-written summary and tags;
+neither allows enrichment to change `primary_function`.
 
 For a Tavernary vulnerability, use the private security route
 `/help/security/` or GitHub's private form at

@@ -3,12 +3,10 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { openProjectSubmission } from "@/features/submissions/submission-transport";
 
 const manifest = {
-  schema_version: 3 as const,
+  schema_version: 4 as const,
   project_type: "extension" as const,
   primary_function: "interface-workflow",
   source_url: "https://github.com/example/project",
-  name: "Example Project",
-  description: "Adds useful roleplay tools.",
   frontends: {
     known_ids: ["sillytavern", "lumiverse"],
     other: [
@@ -20,6 +18,16 @@ const manifest = {
   },
   frontend_independent: false,
   additional_context: "Thank you for reviewing it.",
+  metadata: {
+    summary: {
+      mode: "manual" as const,
+      value: "Adds useful roleplay tools.",
+    },
+    tags: {
+      mode: "manual" as const,
+      values: ["customize-interface", "improve-accessibility"],
+    },
+  },
 };
 
 const presetManifest = {
@@ -59,8 +67,10 @@ test("prefills every readable project field and the stable manifest", async () =
     "project-type": "Extension",
     "primary-function": "interface-workflow",
     "project-url": "https://github.com/example/project",
-    "project-name": "Example Project",
+    "description-choice": "Write the description myself",
     "project-description": "Adds useful roleplay tools.",
+    "tag-choice": "Set tags myself",
+    tags: "customize-interface\nimprove-accessibility",
     "supported-frontends":
       "sillytavern\nlumiverse\nNew Frontend — https://github.com/example/frontend",
     "frontend-independent": "No",
@@ -128,7 +138,7 @@ test("copies an oversized manifest while preserving readable prefills", async ()
   ).resolves.toBe("clipboard");
 
   expect(writeText).toHaveBeenCalledWith(
-    expect.stringContaining('"schema_version": 3'),
+    expect.stringContaining('"schema_version": 4'),
   );
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(opened.toString().length).toBeLessThanOrEqual(7_000);
@@ -172,8 +182,11 @@ test("keeps short identity and compatibility fields in oversized handoffs", asyn
 
   await openProjectSubmission("https://github.com/example/repo/issues/new", {
     ...presetManifest,
-    description: "x".repeat(7_100),
     additional_context: "y".repeat(7_100),
+    metadata: {
+      ...presetManifest.metadata,
+      summary: { mode: "manual", value: "x".repeat(7_100) },
+    },
   });
 
   const opened = new URL(String(open.mock.calls[0]?.[0]));

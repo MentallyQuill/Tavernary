@@ -127,8 +127,6 @@ export function renderForkParentIssue({
   const upstreamManifest = {
     ...manifest,
     source_url: dependency.canonicalUrl,
-    name: dependency.name,
-    description: null,
     additional_context:
       `This project was automatically discovered as the immediate upstream of ${dependentDescription}. ` +
       "Its classification was inherited from the dependent fork for review.",

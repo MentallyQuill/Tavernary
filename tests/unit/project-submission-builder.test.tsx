@@ -65,9 +65,76 @@ async function choosePrimaryFunction(
   );
 }
 
+async function chooseMetadataOption(
+  user: ReturnType<typeof userEvent.setup>,
+  label: "Description choice" | "Tag choice",
+  option: string,
+) {
+  await user.click(screen.getByLabelText(label));
+  await user.click(
+    screen.getByRole("option", { name: new RegExp(option, "u") }),
+  );
+}
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+});
+
+test("defaults summary and tags to Tavernary automation", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+
+  expect(screen.getByLabelText("Description choice")).toHaveValue("automatic");
+  expect(screen.getByLabelText("Tag choice")).toHaveValue("automatic");
+  expect(screen.queryByLabelText("Short description")).not.toBeInTheDocument();
+  expect(
+    screen.queryByLabelText("Search goals and traits"),
+  ).not.toBeInTheDocument();
+  expect(screen.queryByLabelText(/Project Name/u)).not.toBeInTheDocument();
+  expect(
+    screen.getByText(/root README first.+GitHub description second/iu),
+  ).toBeVisible();
+});
+
+test("reveals independent bounded manual metadata controls", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await chooseMetadataOption(
+    user,
+    "Description choice",
+    "Write the description myself",
+  );
+  await chooseMetadataOption(user, "Tag choice", "Set tags myself");
+
+  expect(screen.getByLabelText("Short description")).toBeVisible();
+  expect(screen.getByLabelText("Search goals and traits")).toBeVisible();
+  expect(
+    screen.getAllByText(
+      /only for the verified repository owner or trusted Tavernary staff/iu,
+    ),
+  ).toHaveLength(2);
+  expect(screen.getByText("0 / 6 selected")).toBeVisible();
+
+  for (const label of [
+    "Maintain long-term memory",
+    "Manage context limits",
+    "Retrieve relevant context",
+    "Build worlds and lore",
+    "Manage lorebooks",
+    "Create character cards",
+  ]) {
+    await user.click(screen.getByLabelText(label));
+  }
+
+  expect(screen.getByText("6 / 6 selected")).toBeVisible();
+  expect(
+    screen.getByLabelText("Manage characters and personas"),
+  ).toBeDisabled();
 });
 
 test("offers the six defined primary functions only for Extensions", async () => {
@@ -117,7 +184,7 @@ test("submits selected and structural primary functions without stale values", a
   expect(openProjectSubmission).toHaveBeenLastCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "frontend",
       primary_function: "frontend",
     }),
@@ -135,7 +202,7 @@ test("submits selected and structural primary functions without stale values", a
   expect(openProjectSubmission).toHaveBeenLastCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "extension",
       primary_function: "interface-workflow",
     }),
@@ -184,7 +251,12 @@ test("removes emoji from the submitted description while preserving its wording"
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
-  const description = screen.getByLabelText(/Short Description/u);
+  await chooseMetadataOption(
+    user,
+    "Description choice",
+    "Write the description myself",
+  );
+  const description = screen.getByLabelText(/Short description/iu);
   await user.type(description, "This is damn useful 🧭 for ST-QuickReply.");
 
   expect(description).toHaveValue("This is damn useful  for ST-QuickReply.");
@@ -203,7 +275,12 @@ test("limits the Short Description to 220 characters with live feedback", async 
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
-  const description = screen.getByLabelText(/Short Description/u);
+  await chooseMetadataOption(
+    user,
+    "Description choice",
+    "Write the description myself",
+  );
+  const description = screen.getByLabelText(/Short description/iu);
   expect(description).toHaveAttribute("maxlength", "220");
   expect(screen.getByText("0/220 characters")).toBeVisible();
 
@@ -263,8 +340,12 @@ test("does not request metadata as a substitute for a repository", async () => {
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
   expect(openProjectSubmission).not.toHaveBeenCalled();
-  expect(screen.getByLabelText("Project Name (optional)")).toBeVisible();
-  expect(screen.getByLabelText("Short Description (optional)")).toBeVisible();
+  expect(screen.queryByLabelText(/Project Name/u)).not.toBeInTheDocument();
+  expect(
+    screen.queryByLabelText(/Short description/iu),
+  ).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Description choice")).toBeVisible();
+  expect(screen.getByLabelText("Tag choice")).toBeVisible();
   expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
 });
 
@@ -295,7 +376,7 @@ test("submits multiple current frontend identities in the manifest", async () =>
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "extension",
       primary_function: "developer-infrastructure",
       source_url: "https://github.com/example/extension",
@@ -401,11 +482,6 @@ test("requires an enabled unlisted model family without clearing Model-Agnostic"
     screen.getByLabelText("Project URL"),
     "https://example.com/preset",
   );
-  await user.type(screen.getByLabelText("Project Name (required)"), "Preset");
-  await user.type(
-    screen.getByLabelText("Short Description (required)"),
-    "A preset.",
-  );
   await user.click(screen.getByLabelText("Chat Completion"));
   await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
 
@@ -474,7 +550,7 @@ test("serializes multiple model families and both completion formats for a Prese
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
-      schema_version: 3,
+      schema_version: 4,
       project_type: "preset",
       primary_function: "preset",
       preset_compatibility: {

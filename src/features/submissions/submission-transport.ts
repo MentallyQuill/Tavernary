@@ -30,8 +30,19 @@ function readablePrefills(
     ["project-type", displayKind(manifest.project_type)],
     ["primary-function", manifest.primary_function],
     ["project-url", manifest.source_url],
-    ["project-name", manifest.name ?? ""],
     ["frontend-independent", manifest.frontend_independent ? "Yes" : "No"],
+    [
+      "description-choice",
+      manifest.metadata.summary.mode === "manual"
+        ? "Write the description myself"
+        : "Let TavernAI write the description",
+    ],
+    [
+      "tag-choice",
+      manifest.metadata.tags.mode === "manual"
+        ? "Set tags myself"
+        : "Let Tavernary select tags",
+    ],
   ];
   if (manifest.project_type === "preset") {
     const compatibility = manifest.preset_compatibility;
@@ -49,7 +60,18 @@ function readablePrefills(
   }
   prefills.push(
     ["supported-frontends", readableFrontendSelection(manifest)],
-    ["project-description", manifest.description ?? ""],
+    [
+      "project-description",
+      manifest.metadata.summary.mode === "manual"
+        ? manifest.metadata.summary.value
+        : "",
+    ],
+    [
+      "tags",
+      manifest.metadata.tags.mode === "manual"
+        ? manifest.metadata.tags.values.join("\n")
+        : "",
+    ],
     ["additional-context", manifest.additional_context ?? ""],
   );
   return prefills;

@@ -12,8 +12,8 @@ export interface GeneratedSubmissionReport {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
-  summary_authority:
-    | import("./submission-summary-authority.mjs").SubmissionSummaryAuthority
+  metadata_authority:
+    | import("./submission-summary-authority.mjs").SubmissionMetadataAuthority
     | null;
   copy_result: {
     result: import("../catalog/catalog-copy-contract.mjs").CatalogCopyResultStatus;
@@ -46,7 +46,7 @@ export interface GeneratedSubmissionDraft {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
-  summaryAuthority?: import("./submission-summary-authority.mjs").SubmissionSummaryAuthority;
+  metadataAuthority?: import("./submission-summary-authority.mjs").SubmissionMetadataAuthority;
   copyResult?: GeneratedSubmissionReport["copy_result"];
   inputDigest?: string;
   sourceIdentity?: NonNullable<GeneratedSubmissionReport["source_identity"]>;

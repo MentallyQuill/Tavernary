@@ -4,15 +4,17 @@ import { evaluateProjectSubmission } from "../../scripts/submissions/admission.m
 import { inspectProjectSubmissionSource } from "../../scripts/submissions/triage-issue.mjs";
 
 const manifest = {
-  schema_version: 3 as const,
+  schema_version: 4 as const,
   project_type: "extension" as const,
   primary_function: "interface-workflow",
   source_url: "https://github.com/NewOwner/NewName",
-  name: "Example",
-  description: null,
   frontends: { known_ids: ["sillytavern"], other: [] },
   frontend_independent: false,
   additional_context: null,
+  metadata: {
+    summary: { mode: "automatic" as const },
+    tags: { mode: "automatic" as const },
+  },
 };
 
 const githubIdentity = {
@@ -447,13 +449,13 @@ test("admits a public external Frontend source for maintainer review", () => {
   });
 });
 
-test("keeps legacy preset submissions open until compatibility is supplied", () => {
+test("keeps preset submissions open until compatibility is supplied", () => {
   expect(
     evaluateProjectSubmission(
       admittedFixture({
         manifest: {
           ...manifest,
-          schema_version: 3,
+          schema_version: 4,
           project_type: "preset",
           primary_function: "preset",
         },
@@ -474,7 +476,7 @@ test("keeps unlisted model families out of canonical project drafts", () => {
       admittedFixture({
         manifest: {
           ...manifest,
-          schema_version: 3,
+          schema_version: 4,
           project_type: "preset",
           primary_function: "preset",
           preset_compatibility: {

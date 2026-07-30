@@ -1,28 +1,34 @@
 # Catalog data model
 
-Tavernary uses two authoritative data layers and one browser output artifact.
+Tavernary uses a curated project-card registry, a curated source registry,
+provider evidence snapshots, and one generated browser artifact.
 
 ## Layer 1 - curated registry
 
-Canonical records live in `data/registry/projects/*.json`.
+Canonical project cards live in `data/registry/projects/*.json`. Canonical
+source identity and source lifecycle live separately in
+`data/registry/sources/*.json`.
 
 - Schema: `data/schemas/project.schema.json`
-- Schema version: `5`
+- Schema version: `6`
 - Mutated only by PRs or approved workflows
-- `source.type` determines source behavior:
+- Each card references exactly one stable `source_id`; multiple cards may
+  intentionally share that source.
+- `tags` contains zero to six controlled Goals and traits IDs.
+- `metadata_policy.summary` and `metadata_policy.tags` independently select
+  automatic or trusted-manual maintenance. Manual fields require a bounded
+  provenance note.
+- Source schema: `data/schemas/source.schema.json`, version `1`
+- A source record owns `status`, `status_reason`, `refresh_policy`, and its
+  provider identity. `type` determines source behavior:
   - `github` for regular frontends and extensions
   - `codeberg` for regular frontends and extensions hosted on Codeberg
   - `github-organization` for source collections
   - `url` for curated preset-like entries
-- `enrichment_policy` is canonical maintainer-owned rollout eligibility:
-  - `automatic` when the source has a registered automatic enrichment adapter
-    (currently GitHub repositories, Codeberg repositories, and canonical Reddit
-    post permalinks)
-  - `manual` for unsupported external URLs, organization collections, and
-    documented repository exceptions
-- Manual records require `enrichment_note`; automatic records forbid it.
-- `refresh_policy` controls source evidence refresh and is independent of
-  `enrichment_policy`, which protects model-written editorial fields.
+- `refresh_policy` controls source evidence refresh and is independent of both
+  card-owned metadata policies.
+- Delisting is source-level and removes every linked card from publication;
+  retiring or editing one card does not delist its source or siblings.
 
 ## Layer 2 - evidence snapshots
 
@@ -30,13 +36,13 @@ Machine evidence lives in `data/snapshots/github/*.json` and
 `data/snapshots/codeberg/*.json`.
 
 - Schema: `data/schemas/repository-snapshot.schema.json`
-- Schema version: `3`
+- Schema version: `4`
 - Refreshed by `npm run catalog:refresh`.
 - Contains: provider-qualified repository identity and head, linked
   provider-local contributor identities, neutral community counts, license,
   activity evidence, API refresh timestamps, and health state.
 
-Repository snapshot v3 may contain generated `contributors` facts: each linked
+Repository snapshot v4 may contain generated `contributors` facts: each linked
 account's provider, login, and account type, the last successful contributor
 refresh timestamp, and contributor-specific staleness. Codeberg contributor
 evidence is derived from bounded recent commit and merged-pull-request scans.
@@ -87,32 +93,33 @@ automatic editorial enrichment.
 
 ## Publication gates
 
-A registry record is visible when:
+A project card is visible when:
 
-- `visibility: published`
-- snapshot source health is not `identity-change`, `deleted`, or `private`
+- `listing_status` is `active`;
+- its source `status` is `active`;
+- snapshot source health is not `identity-change`, `deleted`, or `private`; and
 - kind/source pair passes the same boundary rules as production code.
 
 `source_health: unavailable` keeps a published record visible with stale indicators.
 
 ## Repository identity flow
 
-1. New GitHub-backed record can start with `repository_id: null`; Codeberg
-   admission resolves the immutable ID before review.
-2. Successful refresh can establish repository identity.
-3. `npm run catalog:backfill-identities -- --write` copies identity into registry.
+1. Admission resolves the provider's immutable repository ID.
+2. The source ID is derived from provider plus that immutable ID.
+3. Repository owner/name and canonical URL may refresh after a rename without
+   changing the source ID or any linked project ID.
 4. `identity-change` requires curator repair before re-publication.
 
 ## Seed and counts
 
-The current V1 catalog has:
+The current catalog has:
 
-- 275 registry records
-- 273 curated, 2 provisional
-- 265 GitHub repositories
+- 309 project cards: 295 curated and 14 provisional
+- 309 sources: 307 active and 2 delisted
+- 298 GitHub repositories
+- 1 Codeberg repository
 - 1 GitHub organization source
 - 9 URL-backed records
-- 266 automatic-enrichment records and 9 manual-enrichment records
 
 These numbers are audit context and may change with intake and curation.
 
@@ -123,7 +130,7 @@ The UI supports:
 - search: `q`
 - views: `all`, `active`, `new`, `released`
 - sort: `recent`, `sustained`, `popularity`, `alphabetical`
-- category, frontends, kind, capabilities, development, license
+- category, frontends, kind, Goals, Traits, development, license
 - density and kit mode query set
 
 See `src/features/catalog/catalog-query.ts` for exact canonical params.

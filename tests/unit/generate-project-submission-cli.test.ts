@@ -105,9 +105,9 @@ test("writes only declared repository files and the external report", async () =
   }
 });
 
-test("prepares a GitHub draft through injected source clients", async () => {
+test("recovers an admitted v3 owner request without leaking manual copy to enrichment", async () => {
   const headSha = "a".repeat(40);
-  const enrich = vi.fn(async () => ({
+  const enrich = vi.fn(async (_input: unknown) => ({
     status: "curated" as const,
     summary:
       "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
@@ -256,7 +256,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
     metadata_policy: {
       summary: {
         mode: "manual",
-        note: "Catalog summary preserved from repository-owner submission issue #128.",
+        note: "Verified repository owner selection.",
       },
       tags: { mode: "automatic" },
     },
@@ -265,16 +265,12 @@ test("prepares a GitHub draft through injected source clients", async () => {
     id: "github-42",
     repository_id: 42,
   });
-  expect(draft.summaryAuthority).toEqual({
+  expect(draft.metadataAuthority).toEqual({
     authorityType: "repository-owner",
     actorId: 11,
     actorLogin: "owner",
   });
-  expect(draft.copyResult).toEqual({
-    result: "accepted-unchanged",
-    change_reasons: [],
-    policy_signal: "none",
-  });
+  expect(draft.copyResult).toBeNull();
   expect(draft.classificationReview).toMatchObject({
     status: "possible-mismatch",
     submitted_primary_function: "memory-retrieval",
@@ -289,21 +285,25 @@ test("prepares a GitHub draft through injected source clients", async () => {
           expect.objectContaining({ id: "interface-workflow" }),
         ]),
       },
-      summaryAuthority: {
+      metadataAuthority: {
         authorityType: "repository-owner",
         actorId: 11,
         actorLogin: "owner",
       },
-      summaryMode: "preserve",
-      submittedDescription: "Submitted description.",
+      metadataRequest: {
+        summary: { mode: "manual", value: "Submitted description." },
+        tags: { mode: "automatic" },
+      },
+      requestedFields: ["tags"],
       protectedTerms: expect.arrayContaining([
-        "Repository Tool",
+        "Repo",
         "Owner",
         "Repo",
         "SillyTavern",
       ]),
     }),
   );
+  expect(enrich.mock.calls[0]?.[0]).not.toHaveProperty("submittedDescription");
   expect(draft.snapshot).toMatchObject({
     schema_version: 4,
     provider: "github",
@@ -398,15 +398,17 @@ test("prepares a Codeberg draft through the repository provider", async () => {
         "",
         "```json",
         JSON.stringify({
-          schema_version: 3,
+          schema_version: 4,
           project_type: "extension",
           primary_function: "interface-workflow",
           source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
-          name: "Swipe Scrubber",
-          description: "Swipe controls.",
           frontends: { known_ids: ["sillytavern"], other: [] },
           frontend_independent: false,
           additional_context: null,
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
         }),
         "```",
       ].join("\n"),
@@ -473,15 +475,17 @@ test("rejects a generic external Frontend before source probing", async () => {
           "",
           "```json",
           JSON.stringify({
-            schema_version: 3,
+            schema_version: 4,
             project_type: "frontend",
             primary_function: "frontend",
             source_url: "https://example.com/nova",
-            name: "Nova Frontend",
-            description: "A public-source roleplay frontend.",
             frontends: { known_ids: [], other: [] },
             frontend_independent: false,
             additional_context: null,
+            metadata: {
+              summary: { mode: "automatic" },
+              tags: { mode: "automatic" },
+            },
           }),
           "```",
         ].join("\n"),

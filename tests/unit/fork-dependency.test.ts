@@ -43,15 +43,17 @@ const parentSource = {
 };
 
 const childManifest = {
-  schema_version: 3 as const,
+  schema_version: 4 as const,
   project_type: "preset" as const,
   primary_function: "preset",
   source_url: "https://github.com/owner/child",
-  name: "Child",
-  description: "Child description.",
   frontends: { known_ids: ["sillytavern"], other: [] },
   frontend_independent: false,
   additional_context: "Child context.",
+  metadata: {
+    summary: { mode: "automatic" as const },
+    tags: { mode: "automatic" as const },
+  },
   preset_compatibility: {
     model_families: { known_ids: ["claude"], other: [] },
     completion_formats: ["chat-completion"],
@@ -205,7 +207,6 @@ describe("fork parent submission issues", () => {
       manifest: {
         project_type: "preset",
         source_url: "https://github.com/owner/parent",
-        name: "parent",
         frontends: childManifest.frontends,
         preset_compatibility: childManifest.preset_compatibility,
       },

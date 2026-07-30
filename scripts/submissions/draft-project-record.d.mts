@@ -6,7 +6,10 @@ import type {
   CatalogCopyPolicySignal,
   CatalogCopyResultStatus,
 } from "../catalog/catalog-copy-contract.mjs";
-import type { SubmissionSummaryAuthority } from "./submission-summary-authority.mjs";
+import type {
+  SubmissionMetadataAuthority,
+  SubmissionMetadataRequest,
+} from "./submission-summary-authority.mjs";
 import type { SourceRecord } from "../../src/features/catalog/source-record.mjs";
 import type { ProjectSubmissionDecision } from "./admission.mjs";
 import type {
@@ -45,8 +48,8 @@ export interface DraftedProjectRecord {
 export type DraftEnrichment =
   | {
       status: "curated";
-      summary: string;
-      tags: string[];
+      summary?: string;
+      tags?: string[];
       classification_review: ClassificationReview;
       result?: CatalogCopyResultStatus;
       change_reasons?: readonly CatalogCopyChangeReason[];
@@ -87,7 +90,7 @@ export interface ProjectDraftResult {
   submitted: Record<string, unknown>;
   observed: Record<string, unknown>;
   inferred: Record<string, unknown>;
-  summaryAuthority: SubmissionSummaryAuthority;
+  metadataAuthority: SubmissionMetadataAuthority;
   copyResult: {
     result: CatalogCopyResultStatus;
     change_reasons: CatalogCopyChangeReason[];
@@ -104,8 +107,8 @@ export function draftProjectRecord(input: {
   enrichment: DraftEnrichment;
   frontendVocabulary?: FrontendVocabulary;
   frontendProjects?: FrontendProject[];
-  summaryAuthority?: SubmissionSummaryAuthority;
-  sourceIssueNumber?: number;
+  metadataAuthority?: SubmissionMetadataAuthority;
+  metadataRequest?: SubmissionMetadataRequest;
   copyRequired?: boolean;
   now: string;
 }): Promise<ProjectDraftResult>;

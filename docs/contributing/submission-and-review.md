@@ -85,27 +85,33 @@ same rule.
    than a separately maintained dropdown. Only Extensions show the
    primary-function dropdown: the submitted Extension primary function is authoritative.
    Frontends receive `frontend` and System Presets receive `preset`
-   structurally.
-2. Automation normalizes the source, updates an automatically generated issue
+   structurally. The card name is derived from the resolved source rather than
+   typed into the form.
+2. The version-4 manifest requests summary and tag handling independently.
+   Both default to automatic. Manual summary wording and up to six manual tags
+   are honored only for the verified personal repository owner or trusted
+   Tavernary staff; unauthorized values are discarded before model input,
+   reports, records, or pull requests.
+3. Automation normalizes the source, updates an automatically generated issue
    title, checks URL and source eligibility, reconciles supported frontends,
    probes public source facts, and checks duplicate URL/repository identity.
-3. An obvious duplicate is labeled and closed before a pull request is created.
+4. An obvious duplicate is labeled and closed before a pull request is created.
    A correctable problem remains open with `needs-information` and an exact
    explanation.
-4. An admitted issue creates one deterministic branch and one generated
+5. An admitted issue creates one deterministic branch and one generated
    transaction
    PR containing the proposed registry record, initial snapshot when available,
    and any required frontend-vocabulary addition.
-5. Required CI validates the generated paths, source, catalog record, and
+6. Required CI validates the generated paths, source, catalog record, and
    browser export. An intake model may
    confirm the submitted category or add a sanitized `classification-review`
    mismatch warning, but it never changes `primary_function`.
-6. `publish-project-transaction.yml` rechecks current issue input, authority,
+7. `publish-project-transaction.yml` rechecks current issue input, authority,
    source identity, record fingerprint, base SHA, and exact changed paths, then
    merges only the exact CI-validated head SHA.
-7. Merging publishes through the normal catalog and Pages path. The PR's
+8. Merging publishes through the normal catalog and Pages path. The PR's
    `Closes #<issue-number>` link closes the intake issue.
-8. Closing a legacy or manually stopped generated PR without merging marks the issue
+9. Closing a legacy or manually stopped generated PR without merging marks the issue
    `submission-declined`, closes it as not planned, and safely removes the
    unchanged automation branch.
 
@@ -138,15 +144,19 @@ upstream is a normal Project submission and transaction PR and uses the same
 automatic publication checks. Cycles and ancestry beyond 16 repositories stop at
 `needs-maintainer-review`.
 
-## Summary authority and Catalog Policy
+New triage rejects retired manifest version 3 and directs the submitter back to
+the current form. An issue already admitted before the cutover may be upgraded
+during generation so an in-flight review is not stranded.
+
+## Metadata authority and Catalog Policy
 
 For a verified personal GitHub repository owner or trusted Tavernary staff
-actor, Tavernary preserves the submitted wording and structure whenever
-possible. The copy pass removes emoji and makes only necessary high-confidence
-spelling, punctuation, whitespace, or Catalog Policy corrections. Project and
-community terminology is protected. Community-submitter summaries are
-synthesized from README evidence first, repository description second, and
-submitted description third.
+actor, explicit manual summary and tag requests become trusted field-level
+policy. Automatic summary generation reads the root README first and the
+repository description second. Automatic tag generation uses the controlled
+Goals and traits vocabulary and may return zero tags when evidence is
+insufficient. A community submitter's attempted manual summary or tags are
+discarded completely; they are not fallback evidence.
 
 The public Catalog Policy permits consensual adult content, kink, fetish
 content, and ordinary profanity. A separate model review is advisory and post-publication;

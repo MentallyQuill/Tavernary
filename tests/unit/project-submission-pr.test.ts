@@ -46,9 +46,11 @@ const reviewFixture = {
     source_id: "github-42",
     source_provider: "github" as const,
     submitted: {
-      name: "Owner [Repo]",
-      description: "Submitted description.",
       source_url: "https://github.com/envy-ai/ai_rpg",
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
     },
     observed: {
       repository: "Owner/Repo",
@@ -57,9 +59,9 @@ const reviewFixture = {
     },
     inferred: {
       primary_function: "generation-reasoning",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
     },
-    summary_authority: null,
+    metadata_authority: null,
     copy_result: null,
     input_digest: "d".repeat(64),
     source_identity: marker.source_identity,

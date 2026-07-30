@@ -38,11 +38,6 @@ export interface OwnerProjectOption {
     metadataStatus: string;
     listingStatus: ListingStatus;
     listingStatusReason: string | null;
-    // Temporary aliases retained until the Task 9 editor cutover.
-    visibility: string;
-    visibilityReason: string | null;
-    refreshPolicy: string;
-    enrichmentPolicy: string;
   };
   editable: {
     name: string;
@@ -54,8 +49,6 @@ export interface OwnerProjectOption {
       summary: { mode: MetadataMode };
       tags: { mode: MetadataMode };
     };
-    // Temporary compatibility field removed by the combined tag-system cutover.
-    capabilities: string[];
     modelFamilies: string[];
     completionFormats: string[];
   };
@@ -129,11 +122,6 @@ function ineligibilityReason(source: RegistrySource) {
     return "This GitHub listing does not have a verified immutable repository ID.";
   }
   return null;
-}
-
-function legacyVisibility(status: ListingStatus) {
-  if (status === "active") return "published";
-  return status === "quarantined" ? "quarantined" : "disabled";
 }
 
 export async function loadOwnerProjectOptions(
@@ -210,10 +198,6 @@ export async function loadOwnerProjectOptions(
           metadataStatus: project.metadata_status,
           listingStatus: project.listing_status,
           listingStatusReason: project.listing_status_reason,
-          visibility: legacyVisibility(project.listing_status),
-          visibilityReason: project.listing_status_reason,
-          refreshPolicy: source.refresh_policy,
-          enrichmentPolicy: project.metadata_policy.summary.mode,
         },
         editable: {
           name: project.name,
@@ -225,7 +209,6 @@ export async function loadOwnerProjectOptions(
             summary: { mode: project.metadata_policy.summary.mode },
             tags: { mode: project.metadata_policy.tags.mode },
           },
-          capabilities: [],
           modelFamilies: [...(project.model_families ?? [])],
           completionFormats: [...(project.completion_formats ?? [])],
         },

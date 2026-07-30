@@ -138,7 +138,7 @@ export function renderSubmissionPullRequest(input) {
     "- [ ] Canonical source and permanent identity are correct",
     "- [ ] Project kind and supported frontends are correct",
     "- [ ] Name and summary are factual",
-    "- [ ] Primary function and capabilities are appropriate",
+    "- [ ] Primary function and Goals and traits tags are appropriate",
     ...(classificationReview
       ? ["- [ ] Possible primary-function mismatch was reviewed"]
       : []),

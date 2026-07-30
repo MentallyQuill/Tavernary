@@ -17,6 +17,7 @@ export type ProjectSubmissionParseResult =
 
 export function parseProjectSubmissionIssue(
   body: string,
+  options?: { allowLegacyV3?: boolean },
 ): ProjectSubmissionParseResult;
 
 export type { ManifestValidation };

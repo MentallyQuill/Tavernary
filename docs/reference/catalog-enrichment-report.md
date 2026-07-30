@@ -80,8 +80,9 @@ Each `entries` item includes:
 
 - This report is written alongside registry project snapshots during enrichment
   operations, not during `catalog:refresh` runs.
-- Enrichment writes only summary, `metadata_status`, and `capabilities` to a
-  canonical project record. It cannot write or change `primary_function`.
+- Enrichment writes summary, tags, and `metadata_status` to a canonical
+  project record, but only for fields whose current metadata policy is
+  automatic. It cannot write or change `primary_function`.
 - A provider classification result is an intake-only classification review. It
   can support a sanitized mismatch warning on a new submission, but is never
   canonical classification state and is not copied into this report.

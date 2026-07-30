@@ -1,39 +1,39 @@
 # Project registry schema reference (`data/schemas/project.schema.json`)
 
-Tavernary registry records are schema versioned (`schema_version: 5`).
+Tavernary project-card records are schema versioned (`schema_version: 6`).
 
 ## Required fields
 
-- `schema_version`: integer `5`
+- `schema_version`: integer `6`
 - `id`: kebab-case identifier
+- `source_id`: stable reference to `data/registry/sources/<source-id>.json`
 - `name`: non-empty string
 - `kind`: `frontend | extension | preset`
 - `summary`: 1-220 characters
 - `metadata_status`: `provisional | curated`
-- `source`: one of four source object shapes
 - `frontends`: array of frontend IDs
 - `primary_function`: structural `frontend`/`preset`, or one of the six
   controlled Extension primary-function IDs
-- `capabilities`: array of capability IDs
+- `tags`: zero to six controlled Goals and traits IDs
 - `cataloged_at`: ISO date-time
 - `catalog_cohort`: `seed | standard`
-- `visibility`: `published | quarantined | disabled`
-- `visibility_reason`: null or one reason enum
-- `refresh_policy`: `automatic | paused`
-- `enrichment_policy`: `automatic | manual`
-- `enrichment_note`: required only when enrichment is manual
+- `listing_status`: `active | quarantined | retired`
+- `listing_status_reason`: null, `safety-review`, or `owner-request`
+- `metadata_policy`: independent `summary` and `tags` policies; each is either
+  `{ "mode": "automatic" }` or
+  `{ "mode": "manual", "note": "<trusted provenance>" }`
 
-## Source object
+## Source record
 
-### `github`
+Source identity and lifecycle are not embedded in each card. Source records use
+`data/schemas/source.schema.json` version 1 and may be shared by multiple
+project cards. Every source carries `status`, `status_reason`, and
+`refresh_policy`.
 
-- `type`: `github`
-- `repository`: `owner/repo`
-- `repository_id`: positive integer or null
+### `github` and `codeberg`
 
-### `codeberg`
-
-- `type`: `codeberg`
+- `id`: `<provider>-<immutable-repository-id>`
+- `type`: `github` or `codeberg`
 - `repository`: `owner/repo`
 - `repository_id`: positive integer
 
@@ -53,25 +53,29 @@ Tavernary registry records are schema versioned (`schema_version: 5`).
 - `license_status`: `osi-approved | proprietary | missing | pending`
 - `license_spdx_id`: string or null
 
-## Visibility rules
+## Lifecycle rules
 
-- Published records require `visibility_reason: null`.
-- Quarantined/disabled entries require one non-null reason:
-  - `identity-change`
-  - `source-unavailable`
-  - `removed`
-  - `safety-review`
+- Active cards require `listing_status_reason: null`.
+- Quarantined or retired cards require `safety-review` or `owner-request`.
+- Active sources require `status_reason: null`.
+- Delisted sources require `status_reason: removed` and
+  `refresh_policy: paused`; all linked cards are excluded from publication.
 
 ## Integrity rules
 
 - `additionalProperties: false`.
-- `frontends`, `capabilities`, and `id` lists are deduplicated.
+- `frontends`, `tags`, and compatibility ID lists are deduplicated.
+- `tags` has a maximum of six values and every value must exist in the
+  controlled vocabulary and apply to the card kind.
 - Registry ID and source identity should be stable across editorial edits.
-- URL-preset records should normally use source `refresh_policy: paused` unless explicitly revalidated.
+- Repository renames update the source record's repository coordinates without
+  changing its ID or linked card IDs.
+- URL sources use `refresh_policy: paused`.
 - Frontends always use `primary_function: "frontend"`.
 - System Presets always use `primary_function: "preset"`.
 - Extensions use only `memory-retrieval`, `generation-reasoning`,
   `character-worldbuilding`, `rpg-systems`, `interface-workflow`, or
   `developer-infrastructure`.
-- Enrichment may update summary, `metadata_status`, and capabilities, but never
+- Enrichment may update summary, tags, and `metadata_status` only where the
+  corresponding metadata policy is automatic. It never changes
   `primary_function`.

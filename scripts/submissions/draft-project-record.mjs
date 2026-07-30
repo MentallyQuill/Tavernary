@@ -1,4 +1,5 @@
 import { defaultEnrichmentFields } from "../catalog/enrichment-policy.mjs";
+import { resolveRequestedMetadata } from "../catalog/metadata-policy.mjs";
 import { validateCatalogCopyMetadata } from "../catalog/catalog-copy-contract.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import { proposeFrontendVocabularyEntry } from "./frontend-reconciliation.mjs";
@@ -62,21 +63,32 @@ function boundedSummary(value) {
   return (boundary >= 180 ? candidate.slice(0, boundary) : candidate).trimEnd();
 }
 
-function fallbackEnrichment(input, name) {
-  const summary = boundedSummary(
-    input.admitted.manifest.description?.trim() ||
+function metadataRequest(input) {
+  return resolveRequestedMetadata({
+    request: input.metadataRequest ?? {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+    authority: input.metadataAuthority ?? {
+      authorityType: "community-submitter",
+      actorId: null,
+      actorLogin: null,
+    },
+  });
+}
+
+function fallbackSummary(input, request) {
+  return boundedSummary(
+    (request.summary.mode === "manual" ? request.summary.value : "") ||
       input.observation?.repository?.description?.trim() ||
       "No README file found.",
   );
-  return {
-    summary,
-    metadata_status: "provisional",
-    tags: [],
-    warning: input.enrichment?.message
-      ? `Automated enrichment failed: ${input.enrichment.message}`
-      : "Automated enrichment was unavailable; deterministic provisional metadata was used.",
-    name,
-  };
+}
+
+function enrichmentWarning(input) {
+  return input.enrichment?.message
+    ? `Automated enrichment failed: ${input.enrichment.message}`
+    : "Automated enrichment was unavailable; deterministic provisional metadata was used.";
 }
 
 function copyResult(enrichment) {
@@ -95,26 +107,20 @@ function copyResult(enrichment) {
     : null;
 }
 
-function enrichmentFields(input, source, acceptedCopyResult) {
-  const authorityType = input.summaryAuthority?.authorityType;
-  const submittedDescription = input.admitted.manifest.description?.trim();
-  if (
-    acceptedCopyResult &&
-    submittedDescription &&
-    ["repository-owner", "tavernary-staff"].includes(authorityType)
-  ) {
-    const defaults = defaultEnrichmentFields(source).metadata_policy;
-    return {
-      metadata_policy: {
-        ...defaults,
-        summary: {
-          mode: "manual",
-          note: `Catalog summary preserved from ${authorityType} submission issue #${input.sourceIssueNumber}.`,
-        },
-      },
-    };
-  }
-  return defaultEnrichmentFields(source);
+function metadataFields(source, request) {
+  const defaults = defaultEnrichmentFields(source).metadata_policy;
+  return {
+    metadata_policy: {
+      summary:
+        request.summary.mode === "manual"
+          ? { mode: "manual", note: request.summary.note }
+          : defaults.summary,
+      tags:
+        request.tags.mode === "manual"
+          ? { mode: "manual", note: request.tags.note }
+          : defaults.tags,
+    },
+  };
 }
 
 function unavailableClassificationReview(submittedPrimaryFunction) {
@@ -130,8 +136,15 @@ function unavailableClassificationReview(submittedPrimaryFunction) {
   };
 }
 
-function sanitizedClassificationReview(input) {
+function sanitizedClassificationReview(input, request) {
   if (input.admitted.manifest.project_type !== "extension") {
+    return { review: null, warning: null };
+  }
+  if (
+    !input.enrichment &&
+    request.summary.mode === "manual" &&
+    request.tags.mode === "manual"
+  ) {
     return { review: null, warning: null };
   }
   const submittedPrimaryFunction = input.admitted.manifest.primary_function;
@@ -208,20 +221,28 @@ export async function draftProjectRecord(input) {
     );
   }
   const name =
-    admitted.manifest.name?.trim() ||
-    observation?.repository?.name ||
-    identity.name ||
-    identity.pathSlug;
+    observation?.repository?.name || identity.name || identity.pathSlug;
   const primaryFunction = admitted.manifest.primary_function;
-  const enrichment =
-    input.enrichment?.status === "curated"
-      ? {
-          summary: input.enrichment.summary,
-          metadata_status: "curated",
-          tags: [...input.enrichment.tags],
-          warning: null,
-        }
-      : fallbackEnrichment(input, name);
+  const request = metadataRequest(input);
+  const curated =
+    input.enrichment?.status === "curated" ? input.enrichment : null;
+  const summary =
+    request.summary.mode === "manual"
+      ? request.summary.value
+      : typeof curated?.summary === "string"
+        ? curated.summary
+        : fallbackSummary(input, request);
+  const tags =
+    request.tags.mode === "manual"
+      ? [...request.tags.values]
+      : Array.isArray(curated?.tags)
+        ? [...curated.tags]
+        : [];
+  const metadataStatus =
+    curated ||
+    (request.summary.mode === "manual" && request.tags.mode === "manual")
+      ? "curated"
+      : "provisional";
   const acceptedCopyResult = copyResult(input.enrichment);
   if (input.copyRequired && !acceptedCopyResult) {
     const failureReason =
@@ -235,7 +256,7 @@ export async function draftProjectRecord(input) {
       }`,
     );
   }
-  const classificationReview = sanitizedClassificationReview(input);
+  const classificationReview = sanitizedClassificationReview(input, request);
   let frontendIds = [...admitted.frontendIds];
   let frontendVocabulary;
   const warnings = [...admitted.warnings];
@@ -255,7 +276,12 @@ export async function draftProjectRecord(input) {
     };
     if (proposal.warning) warnings.push(proposal.warning);
   }
-  if (enrichment.warning) warnings.push(enrichment.warning);
+  if (
+    !curated &&
+    (request.summary.mode === "automatic" || request.tags.mode === "automatic")
+  ) {
+    warnings.push(enrichmentWarning(input));
+  }
   if (classificationReview.warning) warnings.push(classificationReview.warning);
 
   const record = {
@@ -263,12 +289,12 @@ export async function draftProjectRecord(input) {
     id,
     name,
     kind: admitted.manifest.project_type,
-    summary: enrichment.summary,
-    metadata_status: enrichment.metadata_status,
+    summary,
+    metadata_status: metadataStatus,
     source_id: source.id,
     frontends: [...new Set(frontendIds)].sort(),
     primary_function: primaryFunction,
-    tags: [...new Set(enrichment.tags)].sort(),
+    tags: [...new Set(tags)].sort(),
     ...(admitted.manifest.project_type === "preset" &&
     admitted.manifest.preset_compatibility
       ? {
@@ -284,7 +310,7 @@ export async function draftProjectRecord(input) {
     catalog_cohort: "standard",
     listing_status: "active",
     listing_status_reason: null,
-    ...enrichmentFields(input, source, acceptedCopyResult),
+    ...metadataFields(source, request),
   };
 
   return {
@@ -296,11 +322,19 @@ export async function draftProjectRecord(input) {
       project_type: admitted.manifest.project_type,
       primary_function: primaryFunction,
       source_url: admitted.manifest.source_url,
-      name: admitted.manifest.name,
-      description: admitted.manifest.description,
       frontends: admitted.manifest.frontends,
       frontend_independent: admitted.manifest.frontend_independent,
       additional_context: admitted.manifest.additional_context,
+      metadata: {
+        summary:
+          request.summary.mode === "manual"
+            ? { mode: "manual", value: request.summary.value }
+            : { mode: "automatic" },
+        tags:
+          request.tags.mode === "manual"
+            ? { mode: "manual", values: [...request.tags.values] }
+            : { mode: "automatic" },
+      },
       preset_compatibility: admitted.manifest.preset_compatibility,
     },
     observed: isRepositoryIdentity(identity)
@@ -315,11 +349,11 @@ export async function draftProjectRecord(input) {
     inferred: {
       project_id: id,
       name,
-      summary: enrichment.summary,
-      tags: enrichment.tags,
+      summary,
+      tags,
       frontend_ids: frontendIds,
     },
-    summaryAuthority: input.summaryAuthority ?? {
+    metadataAuthority: input.metadataAuthority ?? {
       authorityType: "community-submitter",
       actorId: null,
       actorLogin: null,

@@ -10,18 +10,20 @@ function projectBody(sourceUrl: string) {
     "### Project manifest",
     "```json",
     JSON.stringify({
-      schema_version: 3,
+      schema_version: 4,
       project_type: repositorySource ? "extension" : "preset",
       primary_function: repositorySource ? "interface-workflow" : "preset",
       source_url: sourceUrl,
-      name: "Example",
-      description: repositorySource ? null : "Example external preset.",
       frontends: {
         known_ids: repositorySource ? ["sillytavern"] : [],
         other: [],
       },
       frontend_independent: !repositorySource,
       additional_context: null,
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
       ...(!repositorySource
         ? {
             preset_compatibility: {

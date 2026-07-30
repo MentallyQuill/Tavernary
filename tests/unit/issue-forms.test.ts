@@ -191,8 +191,10 @@ test("project submission is a structured fallback for automated intake", async (
     "project-type",
     "project-url",
     "primary-function",
-    "project-name",
+    "description-choice",
     "project-description",
+    "tag-choice",
+    "tags",
     "supported-frontends",
     "frontend-independent",
     "additional-context",
@@ -209,8 +211,10 @@ test("project submission is a structured fallback for automated intake", async (
     "Project Type",
     "Project URL",
     "Primary function",
-    "Project Name",
+    "Description choice",
     "Short Description",
+    "Tag choice",
+    "Tags",
     "Supported frontends",
     "Frontend-independent",
     "Anything we should know?",
@@ -223,7 +227,9 @@ test("project submission is a structured fallback for automated intake", async (
     "input",
     "input",
     "input",
-    "input",
+    "dropdown",
+    "textarea",
+    "dropdown",
     "textarea",
     "textarea",
     "input",
@@ -246,10 +252,10 @@ test("project submission is a structured fallback for automated intake", async (
   );
   expect(fields[2].validations?.required ?? false).toBe(false);
   expect(fields[2].attributes.description).toContain("memory-retrieval");
-  expect(fields[5].attributes.description).toContain(
+  expect(fields[7].attributes.description).toContain(
     "comma- or newline-separated",
   );
-  expect(fields[4].attributes.description).toContain("README evidence first");
+  expect(fields[3].attributes.description).toContain("root README first");
   expect(fields[4].attributes.description).toContain(
     "Mature and consensual adult themes are permitted",
   );
@@ -257,16 +263,19 @@ test("project submission is a structured fallback for automated intake", async (
     "https://mentallyquill.github.io/Tavernary/catalog-policy/",
   );
   expect(fields[3].attributes.description).toContain(
-    "GitHub and Codeberg sources",
+    "verified personal repository owner",
   );
-  expect(fields[4].attributes.description).toContain("external System Presets");
-  expect(fields[6].attributes.placeholder).toBe("Yes or No");
-  expect(fields[6].validations.required).toBe(true);
-  expect(fields[8].validations?.required ?? false).toBe(false);
-  expect(fields[8].attributes.description).toContain(
+  expect(fields[5].attributes.description).toContain(
+    "up to six controlled Goals and traits tag IDs",
+  );
+  expect(fields[6].attributes.description).toContain("one per line");
+  expect(fields[8].attributes.placeholder).toBe("Yes or No");
+  expect(fields[8].validations.required).toBe(true);
+  expect(fields[10].validations?.required ?? false).toBe(false);
+  expect(fields[10].attributes.description).toContain(
     "one canonical family ID per line",
   );
-  expect(fields[10].attributes.description).toContain(
+  expect(fields[12].attributes.description).toContain(
     "one canonical format ID per line",
   );
   expect(submission.body[0].attributes.value).toContain(

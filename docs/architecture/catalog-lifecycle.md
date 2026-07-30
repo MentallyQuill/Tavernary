@@ -10,16 +10,20 @@ Each record includes:
 
 - `schema_version`
 - `id`, `name`, `kind`, `summary`
-- `source` (`github` | `codeberg` | `github-organization` | `url`)
-- `frontends` and `capabilities`
+- `source_id` (stable reference to `data/registry/sources/*.json`)
+- `frontends` and zero to six `tags`
 - `primary_function`
 - `metadata_status` (`provisional` or `curated`)
 - `cataloged_at`, `catalog_cohort`
-- `visibility` (`published`/`quarantined`/`disabled`)
-- `visibility_reason` (only nullable when visible)
-- `refresh_policy` (`automatic`/`paused`)
-- `enrichment_policy` (`automatic`/`manual`)
-- `enrichment_note` (required only for manual enrichment)
+- `listing_status` (`active`/`quarantined`/`retired`)
+- `listing_status_reason`
+- `metadata_policy.summary` and `metadata_policy.tags`, each independently
+  `automatic` or `manual` with a trusted provenance note
+
+The linked source record owns provider identity, source status, delisting, and
+`refresh_policy`. Several cards may share one source. Card retirement and
+editing are ordinary maintenance; source delisting is the destructive action
+that suppresses every linked card.
 
 Project kinds:
 
@@ -34,10 +38,12 @@ Uncategorized state.
 
 ## Draft -> reviewed -> public
 
-1. A submission issue is intake, not a second approval surface. The submitted
-   Extension primary function is authoritative. Frontend and Preset values are
-   derived structurally before URL normalization, duplicate identity, source
-   probing, and frontend reconciliation run.
+1. A submission issue is intake, not a second approval surface. Manifest
+   version 4 carries independent requested summary/tag modes but no trusted
+   provenance. The submitted Extension primary function is authoritative.
+   Frontend and Preset values are derived structurally before URL
+   normalization, duplicate identity, source probing, and frontend
+   reconciliation run.
 2. Confirmed duplicates close before PR generation. Correctable failures remain
    open with `needs-information`.
 3. An admitted issue creates one deterministic
@@ -48,18 +54,20 @@ Uncategorized state.
    a valid kind/primary-function pair. An intake-only model review may confirm
    the submitted Extension value or attach a `classification-review` mismatch
    warning. It does not mutate the proposal.
-5. `source` must satisfy rules:
-   - `github` requires `repository` and optional `repository_id` (nullable before identity confirmed).
+5. The linked source record must satisfy rules:
+   - `github` requires `repository` and a resolved `repository_id`.
    - `codeberg` requires `repository` and a resolved `repository_id`.
    - `github-organization` identifies collection-style sources.
    - `url` is restricted to preset/source-like entries.
-6. A record can be in `published` visibility and still be provisional for
-   metadata, as long as required source constraints pass.
+6. An active card can still be provisional for metadata, as long as the linked
+   source and required constraints pass.
 7. Merge places the reviewed record on `main`, closes the linked issue, and
    publishes through the normal static build. Closing the generated PR without
    merge declines the submission and does not publish it.
 8. Curated metadata may still evolve after merge if a reviewed human update
-   changes summary, primary function, capabilities, or visibility.
+   changes summary, primary function, tags, or card listing status. The owner
+   workflow can also add up to ten sibling cards from one source in one
+   maintainer-approved request.
 
 External System Presets follow the same PR review boundary. Their source
 refresh can remain paused, while editorial enrichment may be automatic only
@@ -67,27 +75,30 @@ when a registered adapter recognizes the canonical source.
 
 ## Enrichment eligibility and durable scope
 
-Regular GitHub and Codeberg repositories default to
-`enrichment_policy: automatic`, including repository-hosted presets. Canonical
-Reddit post sources also default to
-automatic because Tavernary has a bounded allowlisted adapter for them.
-Unsupported external URLs and GitHub organization collections default to
-`manual` with a required reason. A maintainer may also lock an otherwise
-supported source to manual when it requires human review.
+Regular GitHub and Codeberg cards default both metadata fields to `automatic`,
+including repository-hosted presets. Canonical Reddit post sources may also use
+automatic metadata because Tavernary has a bounded allowlisted adapter for
+them. Unsupported external URLs and GitHub organization collections default
+both fields to `manual` with a required reason. A trusted editor may lock or
+unlock summary and tags independently.
 
 The enrichment action offers two selection scopes:
 
-- `pending`: automatic records whose editorial metadata still needs work.
-- `all-automatic`: every automatic record, including already curated records.
+- `pending`: cards with an automatic field whose editorial metadata still
+  needs work.
+- `all-automatic`: every card with at least one automatic field, including
+  already curated cards.
 
-Manual records are excluded from both. A run persists its `selection_mode` and
-`manual_exclusions` in the canary and full reports, then uses that frozen scope
-for every resume. The write boundary re-reads the canonical record before
-replacement, so a newly added manual lock wins even after selection.
+Cards with both fields manual are excluded from both. A run persists its
+`selection_mode` and `manual_exclusions` in the canary and full reports, then
+uses that frozen scope for every resume. The write boundary re-reads the
+canonical record before replacement, so a newly added per-field manual lock
+wins even after selection.
 
-Enrichment owns exactly three canonical fields: summary, `metadata_status`, and
-capabilities. Its optional classification result exists only to support the
-intake warning path and never changes the canonical `primary_function`.
+Enrichment owns summary, tags, and `metadata_status`, but writes only fields
+whose current metadata policy is automatic. Its optional classification result
+exists only to support the intake warning path and never changes the canonical
+`primary_function`.
 
 `refresh_policy` remains separate: it controls source observation and snapshot
 updates, not permission to overwrite editorial enrichment.
@@ -111,8 +122,10 @@ Snapshot records in `data/snapshots/github/*.json` and
 
 ### Health impact on visibility
 
-- `healthy`: normal update path; project visible when `visibility: published`.
-- `unavailable`: snapshot stays visible if already published, with `stale` status and `stale_since`.
+- `healthy`: normal update path; an active card with an active source is
+  visible.
+- `unavailable`: the card stays visible if its card and source remain active,
+  with `stale` status and `stale_since`.
 - `identity-change`: removed from public build until curator confirms identity and updates registry.
 - `deleted` / `private`: removed from public build.
 
@@ -161,14 +174,14 @@ When snapshot is missing or stale, curated records can still render as pending-d
   - `complete`: stable 12-week graph available.
   - `degraded`: baseline attempted repeatedly without completion.
 
-## Visibility exceptions
+## Listing and source exceptions
 
-- `visibility: quarantined` or `disabled` is always removed from public cards.
-- `visibility_reason` must be non-null for non-published entries and one of:
-  - `identity-change`
-  - `source-unavailable`
-  - `removed`
-  - `safety-review`
+- Card `listing_status: quarantined` or `retired` is removed from public cards
+  without changing sibling cards.
+- A non-active card requires `listing_status_reason: safety-review` or
+  `owner-request`.
+- Source `status: delisted` removes all linked cards and requires
+  `status_reason: removed` plus `refresh_policy: paused`.
 
 ## Backfill and recovery
 
@@ -176,5 +189,6 @@ When snapshot is missing or stale, curated records can still render as pending-d
 - `npm run submissions:backfill-forks` reports fork snapshot updates and
   missing-upstream submission candidates without writing. The same command
   with `-- --apply` is an explicit operator-controlled mutation.
-- Recovering from transient failure is usually a refresh + validation + visibility decision.
+- Recovering from transient failure is usually a refresh plus validation
+  decision; it does not require changing durable card/source lifecycle state.
 - Source identity mismatch requires explicit curator repair path (record identity check, fix, refresh, validate, then writeback).

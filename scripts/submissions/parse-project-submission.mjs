@@ -2,6 +2,7 @@ import { normalizeProjectSubmissionManifest } from "../../src/features/submissio
 import completionFormatVocabulary from "../../data/vocabularies/completion-formats.json" with { type: "json" };
 import modelFamilyVocabulary from "../../data/vocabularies/model-families.json" with { type: "json" };
 import primaryFunctionVocabulary from "../../data/vocabularies/primary-functions.json" with { type: "json" };
+import tagVocabulary from "../../data/vocabularies/tags.json" with { type: "json" };
 import { STRUCTURAL_PRIMARY_FUNCTIONS } from "../../src/features/catalog/primary-function-contract.mjs";
 
 function issueFields(body) {
@@ -70,7 +71,15 @@ function fieldIds(value, options) {
   );
 }
 
-export function parseProjectSubmissionIssue(body) {
+function requestedMode(value, automaticPattern, manualPattern) {
+  const normalized = value.trim();
+  if (!normalized) return null;
+  if (manualPattern.test(normalized)) return "manual";
+  if (automaticPattern.test(normalized)) return "automatic";
+  return "invalid";
+}
+
+export function parseProjectSubmissionIssue(body, options = {}) {
   const fields = issueFields(body);
   const embedded = fields.get("Project manifest") ?? "";
   const embeddedJson = manifestJson(embedded).trim();
@@ -78,6 +87,10 @@ export function parseProjectSubmissionIssue(body) {
     try {
       const result = normalizeProjectSubmissionManifest(
         JSON.parse(embeddedJson),
+        {
+          allowLegacyV3: options.allowLegacyV3 === true,
+          tagVocabulary,
+        },
       );
       return { ...result, source: "manifest" };
     } catch {
@@ -111,33 +124,73 @@ export function parseProjectSubmissionIssue(body) {
       : parsedProjectType === "preset"
         ? submittedPrimaryFunction || STRUCTURAL_PRIMARY_FUNCTIONS.preset
         : submittedPrimaryFunction || "";
+  const legacyDescription = fields.get("Short Description") ?? "";
+  const summaryMode =
+    requestedMode(
+      fields.get("Description choice") ?? "",
+      /let.+tavernai.+write|automatic/iu,
+      /write.+myself|manual/iu,
+    ) ?? (legacyDescription.trim() ? "manual" : "automatic");
+  const tagsMode =
+    requestedMode(
+      fields.get("Tag choice") ?? "",
+      /let.+tavernary.+select|automatic/iu,
+      /set.+myself|manual/iu,
+    ) ?? "automatic";
+  const choiceErrors = [
+    ...(summaryMode === "invalid"
+      ? ["Description choice must be automatic or manual."]
+      : []),
+    ...(tagsMode === "invalid"
+      ? ["Tag choice must be automatic or manual."]
+      : []),
+  ];
+  if (choiceErrors.length > 0) {
+    return { valid: false, source: "headings", errors: choiceErrors };
+  }
+  const requestedTags = fieldIds(fields.get("Tags") ?? "", tagVocabulary.tags);
 
-  const result = normalizeProjectSubmissionManifest({
-    schema_version: 3,
-    project_type: parsedProjectType,
-    primary_function: primaryFunction,
-    source_url: fields.get("Project URL") ?? "",
-    name: fields.get("Project Name") ?? "",
-    description: fields.get("Short Description") ?? "",
-    frontends: {
-      known_ids: [],
-      other: fallbackFrontends(fields.get("Supported frontends") ?? ""),
-    },
-    frontend_independent: frontendIndependentValue.toLowerCase() === "yes",
-    additional_context: fields.get("Anything we should know?") ?? "",
-    preset_compatibility: {
-      model_families: {
-        known_ids: fieldIds(
-          fields.get("Supported model families") ?? "",
-          modelFamilyVocabulary.model_families,
-        ),
-        other: [fields.get("Other model family") ?? ""].filter(Boolean),
+  const result = normalizeProjectSubmissionManifest(
+    {
+      schema_version: 4,
+      project_type: parsedProjectType,
+      primary_function: primaryFunction,
+      source_url: fields.get("Project URL") ?? "",
+      frontends: {
+        known_ids: [],
+        other: fallbackFrontends(fields.get("Supported frontends") ?? ""),
       },
-      completion_formats: fieldIds(
-        fields.get("Completion formats") ?? "",
-        completionFormatVocabulary.completion_formats,
-      ),
+      frontend_independent: frontendIndependentValue.toLowerCase() === "yes",
+      additional_context: fields.get("Anything we should know?") ?? "",
+      metadata: {
+        summary:
+          summaryMode === "manual"
+            ? { mode: "manual", value: legacyDescription }
+            : { mode: "automatic" },
+        tags:
+          tagsMode === "manual"
+            ? { mode: "manual", values: requestedTags }
+            : { mode: "automatic" },
+      },
+      ...(parsedProjectType === "preset"
+        ? {
+            preset_compatibility: {
+              model_families: {
+                known_ids: fieldIds(
+                  fields.get("Supported model families") ?? "",
+                  modelFamilyVocabulary.model_families,
+                ),
+                other: [fields.get("Other model family") ?? ""].filter(Boolean),
+              },
+              completion_formats: fieldIds(
+                fields.get("Completion formats") ?? "",
+                completionFormatVocabulary.completion_formats,
+              ),
+            },
+          }
+        : {}),
     },
-  });
+    { tagVocabulary },
+  );
   return { ...result, source: "headings" };
 }

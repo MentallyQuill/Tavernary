@@ -52,3 +52,15 @@ export function classifySubmissionMetadataAuthority(input) {
 
 export const classifySubmissionSummaryAuthority =
   classifySubmissionMetadataAuthority;
+
+export function resolveSubmissionMetadataRequest({ requested, authority }) {
+  if (
+    !["repository-owner", "tavernary-staff"].includes(authority?.authorityType)
+  ) {
+    return {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    };
+  }
+  return structuredClone(requested);
+}

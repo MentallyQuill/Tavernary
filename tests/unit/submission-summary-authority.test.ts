@@ -3,6 +3,7 @@ import { expect, test } from "vitest";
 import {
   classifySubmissionMetadataAuthority,
   classifySubmissionSummaryAuthority,
+  resolveSubmissionMetadataRequest,
 } from "../../scripts/submissions/submission-summary-authority.mjs";
 
 const trustedEditorRegistry = {
@@ -188,5 +189,45 @@ test("retains an immutable GitHub bot actor for generated submissions", () => {
     actorId: 41_898_282,
     actorLogin: "github-actions[bot]",
     actorType: "Bot",
+  });
+});
+
+test("honors independent manual metadata only for an authorized owner", () => {
+  const requested = {
+    summary: { mode: "manual" as const, value: "Owner summary." },
+    tags: {
+      mode: "manual" as const,
+      values: ["automate-workflows", "creative-writing"],
+    },
+  };
+
+  expect(
+    resolveSubmissionMetadataRequest({
+      requested,
+      authority: {
+        authorityType: "repository-owner",
+        actorId: 11,
+        actorLogin: "projectowner",
+      },
+    }),
+  ).toEqual(requested);
+});
+
+test("discards community manual values before drafting or generation", () => {
+  expect(
+    resolveSubmissionMetadataRequest({
+      requested: {
+        summary: { mode: "manual", value: "Untrusted summary." },
+        tags: { mode: "manual", values: ["automate-workflows"] },
+      },
+      authority: {
+        authorityType: "community-submitter",
+        actorId: 12,
+        actorLogin: "contributor",
+      },
+    }),
+  ).toEqual({
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
   });
 });

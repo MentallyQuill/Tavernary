@@ -70,14 +70,14 @@ test("documents project submission automation and recovery controls", async () =
   expect(contributorGuide).toContain(
     "submitted Extension primary function is authoritative",
   );
-  expect(issueForm).toContain("Maximum 220 characters.");
+  expect(issueForm).toMatch(/Maximum 220\s+characters\./u);
   expect(lifecycle).toContain(
     "Frontends always use `frontend`; System Presets always use `preset`",
   );
-  expect(lifecycle).toContain("never changes the canonical `primary_function`");
-  expect(enrichmentReference).toContain(
-    "summary, `metadata_status`, and `capabilities`",
+  expect(lifecycle).toMatch(
+    /never changes the canonical\s+`primary_function`/u,
   );
+  expect(enrichmentReference).toContain("summary, tags, and `metadata_status`");
   expect(enrichmentReference).toContain("intake-only classification review");
   expect(schemaReference).not.toContain("`uncategorized`");
 });
