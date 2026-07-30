@@ -367,10 +367,7 @@ test("removes emoji from an owner summary and explains the edit", async () => {
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
 
-  const summary = screen.getByRole("textbox", {
-    name: "Summary",
-    exact: true,
-  });
+  const summary = screen.getByRole("textbox", { name: /^Summary$/u });
   await user.clear(summary);
   await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
 
