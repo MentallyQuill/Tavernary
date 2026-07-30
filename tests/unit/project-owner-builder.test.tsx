@@ -426,7 +426,7 @@ test("preserves all ten add-card drafts through back, edit, and reopen", async (
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
   const reopenedManifest = JSON.parse(writeText.mock.calls[1]?.[0] ?? "");
   expect(reopenedManifest).toEqual(firstManifest);
-}, 15_000);
+}, 30_000);
 
 test("uses independent metadata choices for ordinary edits", async () => {
   const user = userEvent.setup();

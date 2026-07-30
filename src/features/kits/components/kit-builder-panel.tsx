@@ -13,7 +13,7 @@ import Link from "next/link";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import type { CatalogKit } from "@/features/kits/kit-types";
+import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
 import type { GitHubHandoffResult } from "@/features/submissions/github-handoff";
@@ -105,7 +105,7 @@ export function KitBuilderPanel({
   hidePhoneDraftAccess?: boolean;
 }) {
   const [discardOpen, setDiscardOpen] = useState(false);
-  const [reviewing, setReviewing] = useState(false);
+  const [reviewingDraft, setReviewingDraft] = useState<KitDraft | null>(null);
   const { phone } = useResponsiveCapabilities();
   const workspaceRef = useRef<HTMLElement>(null);
   const panelBodyRef = useRef<HTMLDivElement>(null);
@@ -154,12 +154,6 @@ export function KitBuilderPanel({
     setDiscardOpen(false);
     window.setTimeout(() => discardRef.current?.focus(), 0);
   }, []);
-
-  useEffect(() => {
-    if (state.mode !== "build") {
-      setReviewing(false);
-    }
-  }, [state.mode]);
 
   useEffect(() => {
     if (phoneSheetVisible) {
@@ -479,7 +473,7 @@ export function KitBuilderPanel({
                   draft.
                 </p>
               ) : null}
-              {reviewing ? (
+              {reviewingDraft === state.draft ? (
                 <SubmissionReview
                   title="Review your Kit request"
                   introduction={
@@ -522,8 +516,8 @@ export function KitBuilderPanel({
                     },
                   ]}
                   returnFocusId="kit-review-request"
-                  onBack={() => setReviewing(false)}
-                  onCancel={() => setReviewing(false)}
+                  onBack={() => setReviewingDraft(null)}
+                  onCancel={() => setReviewingDraft(null)}
                   openReview={async () => {
                     if (!onSubmitDraft) {
                       throw new Error(
@@ -540,7 +534,7 @@ export function KitBuilderPanel({
                   originalProjectIds={originalProjectIds}
                   onRevealFrontends={onRevealFrontends}
                   onUpdate={(patch) => onUpdateDraft?.(patch)}
-                  onSubmit={() => setReviewing(true)}
+                  onSubmit={() => setReviewingDraft(state.draft)}
                 />
               )}
             </div>

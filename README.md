@@ -185,12 +185,13 @@ Before clearing a quarantine:
 
 The **Submit Project** link opens Tavernary's static submission builder. Its
 frontend choices come from the current catalog, and it prepares a structured
-GitHub issue with a stable manifest. The native GitHub issue form remains
-available as a readable fallback. Only Extension submissions choose a primary
-function. That submitted Extension category is authoritative; Frontends and
-System Presets receive their structural values automatically. Intake may add a
-`classification-review` warning when source evidence suggests a mismatch, but
-the model never changes the submitted value.
+GitHub issue with a stable manifest. The GitHub issue form is a review mirror:
+return to Tavernary to make changes, then create or cancel the prepared issue
+on GitHub. Only Extension submissions choose a primary function. That submitted
+Extension category is authoritative; Frontends and System Presets receive their
+structural values automatically. Intake may add a `classification-review`
+warning when source evidence suggests a mismatch, but the model never changes
+the submitted value.
 
 Automation normalizes the source, checks eligibility and obvious duplicates,
 and prepares admitted submissions as a generated pull request. Duplicates close

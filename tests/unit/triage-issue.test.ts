@@ -469,8 +469,9 @@ test("keeps missing frontend dependencies open with an actionable response", () 
     "**Aikobots is not currently indexed as a Tavernary frontend.**",
   );
   expect(mutation.commentBody).toContain(
-    "project-type=Frontend&project-url=https%3A%2F%2Fgithub.com%2Faikohanasaki%2FAikobots",
+    "[Submit Aikobots as a frontend first](https://tavernary.org/submit/project/)",
   );
+  expect(mutation.commentBody).not.toContain("/issues/new");
   expect(mutation.commentBody).toContain(
     "This issue will remain open and retry automatically after that frontend is merged.",
   );
