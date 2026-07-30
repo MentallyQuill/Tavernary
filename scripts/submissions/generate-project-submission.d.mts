@@ -15,6 +15,7 @@ export interface GeneratedSubmissionReport {
   metadata_authority:
     | import("./submission-summary-authority.mjs").SubmissionMetadataAuthority
     | null;
+  copy_mode: "preserve" | "synthesize" | null;
   copy_result: {
     result: import("../catalog/catalog-copy-contract.mjs").CatalogCopyResultStatus;
     change_reasons: import("../catalog/catalog-copy-contract.mjs").CatalogCopyChangeReason[];
@@ -48,6 +49,7 @@ export interface GeneratedSubmissionDraft {
   inferred: Record<string, unknown>;
   metadataAuthority?: import("./submission-summary-authority.mjs").SubmissionMetadataAuthority;
   copyResult?: GeneratedSubmissionReport["copy_result"];
+  copyMode?: GeneratedSubmissionReport["copy_mode"];
   inputDigest?: string;
   sourceIdentity?: NonNullable<GeneratedSubmissionReport["source_identity"]>;
   classificationReview?: GeneratedClassificationReview | null;

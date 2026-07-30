@@ -3,12 +3,16 @@ import type { GitHubRepositoryIdentity } from "./project-owner-authority.mjs";
 
 export interface OwnerMutationInput {
   issueNumber: number;
+  authorityType: "repository-owner" | "tavernary-staff" | "community-submitter";
   manifest: unknown;
   projects: Array<Record<string, unknown>>;
   source: Record<string, unknown>;
   snapshot?: Record<string, unknown> | null;
   repository?: GitHubRepositoryIdentity;
-  publishedSummary?: string;
+  resolvedMetadataByProjectId: Record<
+    string,
+    { summary: string; tags: string[] }
+  >;
   catalogedAt?: string;
   vocabularies: Record<string, unknown>;
 }

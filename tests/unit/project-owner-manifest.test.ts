@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { normalizeProjectOwnerManifest } from "@/features/help/project-owner-manifest.mjs";
 
+const currentTagVocabularyHash = "f".repeat(64);
 const vocabularies = {
   frontends: ["sillytavern", "risuai"],
   primaryFunctions: [
@@ -12,6 +13,7 @@ const vocabularies = {
   ],
   modelFamilies: ["claude", "gemini"],
   completionFormats: ["chat-completion", "text-completion"],
+  tagVocabularyHash: currentTagVocabularyHash,
   tags: [
     {
       id: "automate-workflows",
@@ -90,6 +92,7 @@ function base(operation: string) {
 function editFixture(proposed: Record<string, unknown> = {}) {
   return {
     ...base("edit-card"),
+    tag_vocabulary_hash: currentTagVocabularyHash,
     project_id: "owner-alpha",
     project_fingerprint: "b".repeat(64),
     original: originalEdit,
@@ -100,6 +103,7 @@ function editFixture(proposed: Record<string, unknown> = {}) {
 function addFixture(cards: object[] = [validDraft]) {
   return {
     ...base("add-cards"),
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_fingerprint: "a".repeat(64),
     proposed_cards: cards,
   };
@@ -136,6 +140,23 @@ describe("owner add-card batches", () => {
         operation: "add-cards",
         proposed_cards: [validDraft],
       },
+    });
+  });
+
+  test("rejects a request created against a different tracked tag vocabulary", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        {
+          ...addFixture(),
+          tag_vocabulary_hash: "e".repeat(64),
+        },
+        vocabularies,
+      ),
+    ).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining([
+        "Owner request tag vocabulary is stale. Rebuild and resubmit the request.",
+      ]),
     });
   });
 

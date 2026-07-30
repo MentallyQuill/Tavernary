@@ -62,6 +62,7 @@ const reviewFixture = {
       tags: ["add-structured-reasoning"],
     },
     metadata_authority: null,
+    copy_mode: null,
     copy_result: null,
     input_digest: "d".repeat(64),
     source_identity: marker.source_identity,

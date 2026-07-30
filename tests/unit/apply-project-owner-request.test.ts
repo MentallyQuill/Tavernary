@@ -55,6 +55,7 @@ const snapshot = {
   activity: { marker: "history stays" },
 };
 
+const currentTagVocabularyHash = "f".repeat(64);
 const vocabularies = {
   frontends: ["sillytavern", "risuai"],
   primaryFunctions: [
@@ -75,6 +76,7 @@ const vocabularies = {
   ],
   modelFamilies: ["claude", "gemini"],
   completionFormats: ["chat-completion", "text-completion"],
+  tagVocabularyHash: currentTagVocabularyHash,
 };
 
 const originalCard = {
@@ -99,6 +101,9 @@ function base(operation: string) {
     operation,
     source_id: source.id,
     repository_id: source.repository_id,
+    ...(["edit-card", "add-cards"].includes(operation)
+      ? { tag_vocabulary_hash: currentTagVocabularyHash }
+      : {}),
     explanation: null,
   };
 }
@@ -146,14 +151,43 @@ function draft(name: string, kind: "extension" | "preset" = "extension") {
 }
 
 function input(manifest: object, overrides: Record<string, unknown> = {}) {
+  const request = manifest as {
+    operation?: string;
+    project_id?: string;
+    proposed?: {
+      summary?: string;
+      tags?: string[];
+    };
+    proposed_cards?: Array<{
+      project_id: string;
+      summary: string;
+      tags: string[];
+    }>;
+  };
+  const resolvedMetadataByProjectId =
+    request.operation === "edit-card" && request.project_id && request.proposed
+      ? {
+          [request.project_id]: {
+            summary: request.proposed.summary ?? "",
+            tags: request.proposed.tags ?? [],
+          },
+        }
+      : Object.fromEntries(
+          (request.proposed_cards ?? []).map((card) => [
+            card.project_id,
+            { summary: card.summary, tags: card.tags },
+          ]),
+        );
   return {
     issueNumber: 123,
+    authorityType: "repository-owner" as const,
     manifest,
     projects: [structuredClone(project)],
     source: structuredClone(source),
     snapshot: structuredClone(snapshot),
     catalogedAt: "2026-07-29T18:00:00.000Z",
     vocabularies,
+    resolvedMetadataByProjectId,
     ...overrides,
   };
 }
@@ -174,7 +208,7 @@ test("edits one card with independent trusted metadata policies", () => {
       metadata_policy: {
         summary: {
           mode: "manual",
-          note: "Owner-authored summary approved through issue #123.",
+          note: "Verified repository owner selection.",
         },
         tags: { mode: "automatic" },
       },
@@ -207,7 +241,7 @@ test("adds one to ten complete cards atomically without changing the source", ()
     metadata_policy: {
       summary: {
         mode: "manual",
-        note: "Owner-authored summary approved through issue #123.",
+        note: "Verified repository owner selection.",
       },
       tags: { mode: "automatic" },
     },
@@ -396,6 +430,53 @@ test("permanently delists only the source tombstone", () => {
     status_reason: "removed",
     refresh_policy: "paused",
   });
+});
+
+test("records trusted staff provenance independently for manual summary and tags", () => {
+  const manifest = editManifest();
+  manifest.proposed.metadata = {
+    summary: { mode: "manual" },
+    tags: { mode: "manual" },
+  };
+  const result = applyProjectOwnerRequest(
+    input(manifest, { authorityType: "tavernary-staff" }),
+  );
+
+  expect(result.projects[0]).toMatchObject({
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+      tags: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+    },
+  });
+});
+
+test("rejects manual metadata without verified owner or staff authority", () => {
+  expect(() =>
+    applyProjectOwnerRequest(
+      input(editManifest(), { authorityType: "community-submitter" }),
+    ),
+  ).toThrow(/manual metadata.*authority/iu);
+});
+
+test("rejects a stale tag vocabulary before applying a card mutation", () => {
+  try {
+    applyProjectOwnerRequest(
+      input({
+        ...editManifest(),
+        tag_vocabulary_hash: "e".repeat(64),
+      }),
+    );
+    throw new Error("expected stale tag vocabulary rejection");
+  } catch (error) {
+    expect(error).toMatchObject({ code: "tag-vocabulary-stale" });
+    expect((error as Error).message).toContain("Rebuild and resubmit");
+  }
 });
 
 test("rejects stale operation-scoped fingerprints", () => {

@@ -6,6 +6,8 @@ import {
   fingerprintProjectRecord,
   fingerprintSourceRecord,
 } from "../../src/features/help/project-owner-record.mjs";
+import { tagVocabularyHash } from "../../scripts/catalog/tag-vocabulary.mjs";
+import type { TagVocabulary } from "../../scripts/catalog/tag-vocabulary.mjs";
 import {
   fingerprintProjectOwnerManifest,
   generateProjectOwnerRequest,
@@ -23,6 +25,22 @@ const normalizedReportPath = reportPath.replaceAll("\\", "/");
 const projectPath = `${normalizedRoot}/data/registry/projects/owner-alpha.json`;
 const sourcePath = `${normalizedRoot}/data/registry/sources/github-42.json`;
 const snapshotPath = `${normalizedRoot}/data/snapshots/github/github-42.json`;
+const trackedTagVocabulary: TagVocabulary = {
+  schema_version: 1,
+  tags: [
+    {
+      id: "automation",
+      label: "Automation",
+      facet: "goal",
+      description: "Automate repository workflows.",
+      aliases: [],
+      applicable_kinds: ["extension"],
+      inclusion_guidance: ["The project automates a workflow."],
+      exclusion_guidance: [],
+    },
+  ],
+};
+const currentTagVocabularyHash = tagVocabularyHash(trackedTagVocabulary);
 
 function source(overrides: Record<string, unknown> = {}) {
   return {
@@ -62,16 +80,25 @@ function project(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function editable(summary = "Owner-authored summary.") {
+function editable(
+  summary = "Owner-authored summary.",
+  options: {
+    summaryMode?: "automatic" | "manual";
+    tagMode?: "automatic" | "manual";
+    tags?: string[];
+  } = {},
+) {
+  const summaryMode = options.summaryMode ?? "manual";
+  const tagMode = options.tagMode ?? "automatic";
   return {
     name: "Alpha",
     summary,
     frontends: ["sillytavern"],
     primary_function: "interface-workflow",
-    tags: ["automation"],
+    tags: options.tags ?? ["automation"],
     metadata: {
-      summary: { mode: "manual" },
-      tags: { mode: "automatic" },
+      summary: { mode: summaryMode },
+      tags: { mode: tagMode },
     },
     model_families: [],
     completion_formats: [],
@@ -83,6 +110,7 @@ function editManifest(current = project()) {
     schema_version: 2,
     request_kind: "project-owner",
     operation: "edit-card",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     project_id: "owner-alpha",
     repository_id: 42,
@@ -105,6 +133,7 @@ function addManifest(currentSource = source()) {
     schema_version: 2,
     request_kind: "project-owner",
     operation: "add-cards",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     repository_id: 42,
     source_fingerprint: fingerprintSourceRecord(currentSource),
@@ -199,9 +228,7 @@ function vocabularyFiles() {
     ],
     [
       `${normalizedRoot}/data/vocabularies/tags.json`,
-      JSON.stringify({
-        tags: [{ id: "automation", applicable_kinds: ["extension"] }],
-      }),
+      JSON.stringify(trackedTagVocabulary),
     ],
     [
       `${normalizedRoot}/data/vocabularies/model-families.json`,
@@ -220,9 +247,14 @@ function harness(
     repository?: Record<string, unknown>;
     failWritePath?: string;
     mutateProjectOnFinalRead?: boolean;
+    staff?: boolean;
   } = {},
 ) {
   const latest = issue(manifest);
+  if (options.staff) {
+    latest.user = { id: 2_625_904, login: "MentallyQuill" };
+    latest.author_association = "OWNER";
+  }
   const storage = vocabularyFiles();
   storage.set(projectPath, JSON.stringify(project()));
   storage.set(sourcePath, JSON.stringify(source()));
@@ -364,8 +396,16 @@ test("compares reports with sorted project arrays while preserving exact source 
 });
 
 test("revalidates and writes one card edit with a card-scoped input fingerprint", async () => {
-  const fixture = harness(editManifest());
-  const generated = await generate(fixture);
+  const manifest = editManifest();
+  manifest.proposed.summary = "Owner-authored summary";
+  const fixture = harness(manifest);
+  const copySummary = vi.fn(async () => ({
+    summary: "Owner-authored summary.",
+    result: "accepted-with-light-edits",
+    change_reasons: ["punctuation-corrected"],
+    policy_signal: "none",
+  }));
+  const generated = await generate(fixture, { copySummary });
   expect(generated.generatedPaths).toEqual([
     "data/registry/projects/owner-alpha.json",
   ]);
@@ -375,11 +415,17 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
     metadata_policy: {
       summary: {
         mode: "manual",
-        note: "Owner-authored summary approved through issue #123.",
+        note: "Verified repository owner selection.",
       },
       tags: { mode: "automatic" },
     },
   });
+  expect(copySummary).toHaveBeenCalledWith(
+    expect.objectContaining({
+      authorityType: "repository-owner",
+      submittedSummary: "Owner-authored summary",
+    }),
+  );
   expect(generated.report).toMatchObject({
     schema_version: 2,
     project_ids: ["owner-alpha"],
@@ -392,12 +438,38 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
       },
       source: null,
     },
+    submitted_summary: "Owner-authored summary",
+    published_summary: "Owner-authored summary.",
+    copy_mode: "preserve",
+    copy_result: {
+      result: "accepted-with-light-edits",
+      change_reasons: ["punctuation-corrected"],
+      policy_signal: "none",
+    },
   });
 });
 
 test("writes a two-card add batch atomically and marks the combined publication manual", async () => {
-  const fixture = harness(addManifest());
-  const generated = await generate(fixture);
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards) {
+    card.metadata = {
+      summary: { mode: "manual" },
+      tags: { mode: "manual" },
+    };
+  }
+  const fixture = harness(manifest);
+  const generated = await generate(fixture, {
+    copySummary: async ({
+      submittedSummary,
+    }: {
+      submittedSummary: string;
+    }) => ({
+      summary: submittedSummary,
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    }),
+  });
   const betaPath = `${normalizedRoot}/data/registry/projects/owner-alpha-beta.json`;
   const gammaPath = `${normalizedRoot}/data/registry/projects/owner-alpha-gamma.json`;
   expect(generated.generatedPaths).toEqual([
@@ -417,6 +489,273 @@ test("writes a two-card add batch atomically and marks the combined publication 
   });
   expect(fixture.storage.has(sourcePath)).toBe(true);
   expect(fixture.writes).not.toContain(sourcePath);
+});
+
+test("preserves a manual summary and generates only automatic tags", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Owner summary.", {
+    summaryMode: "manual",
+    tagMode: "automatic",
+  });
+  const fixture = harness(manifest);
+  const copySummary = vi.fn(async () => ({
+    summary: "Owner summary.",
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+  const enrichMetadata = vi.fn(async () => ({
+    tags: [{ id: "automation", evidence: ["readme:12-18"] }],
+  }));
+
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata,
+  });
+  const written = JSON.parse(fixture.storage.get(projectPath) ?? "");
+
+  expect(copySummary).toHaveBeenCalledOnce();
+  expect(enrichMetadata).toHaveBeenCalledWith(
+    expect.objectContaining({
+      requestedFields: ["tags"],
+      record: expect.objectContaining({
+        metadata_policy: {
+          summary: expect.objectContaining({ mode: "manual" }),
+          tags: { mode: "automatic" },
+        },
+      }),
+    }),
+  );
+  expect(written).toMatchObject({
+    summary: "Owner summary.",
+    tags: ["automation"],
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(generated.report.metadata_results).toEqual([
+    expect.objectContaining({
+      project_id: "owner-alpha",
+      requested_fields: ["tags"],
+    }),
+  ]);
+});
+
+test("generates an automatic summary without changing manual tags", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Cloned summary must not be published.", {
+    summaryMode: "automatic",
+    tagMode: "manual",
+    tags: ["automation"],
+  });
+  const fixture = harness(manifest);
+  const copySummary = vi.fn();
+  const enrichMetadata = vi.fn(async () => ({
+    summary: {
+      value:
+        "Alpha generates source-grounded metadata for repository projects and keeps each catalog entry aligned with its documented behavior. It explains the workflow without reusing cloned card copy.",
+      evidence: ["readme:4-10"],
+    },
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata,
+  });
+  const written = JSON.parse(fixture.storage.get(projectPath) ?? "");
+
+  expect(copySummary).not.toHaveBeenCalled();
+  expect(enrichMetadata).toHaveBeenCalledWith(
+    expect.objectContaining({ requestedFields: ["summary"] }),
+  );
+  expect(written).toMatchObject({
+    summary:
+      "Alpha generates source-grounded metadata for repository projects and keeps each catalog entry aligned with its documented behavior. It explains the workflow without reusing cloned card copy.",
+    tags: ["automation"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
+    },
+  });
+  expect(generated.report).toMatchObject({
+    copy_mode: "synthesize",
+    copy_result: {
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+  });
+});
+
+test("generates automatic summary and tags independently for every add-card sibling", async () => {
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards) {
+    card.metadata = {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    };
+  }
+  const fixture = harness(manifest);
+  const copySummary = vi.fn();
+  const enrichMetadata = vi.fn(
+    async ({
+      record,
+    }: {
+      record: { id: string };
+      requestedFields: string[];
+    }) => ({
+      summary: {
+        value: `${record.id} provides a distinct repository offering with source-grounded behavior and independently selected catalog metadata. This summary stays specific to the sibling card instead of cloning another entry.`,
+        evidence: [`readme:${record.id}`],
+      },
+      tags: [{ id: "automation", evidence: [`readme:${record.id}`] }],
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    }),
+  );
+
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata,
+  });
+
+  expect(copySummary).not.toHaveBeenCalled();
+  expect(enrichMetadata).toHaveBeenCalledTimes(2);
+  expect(
+    enrichMetadata.mock.calls.map(([call]) => ({
+      id: call.record.id,
+      requestedFields: call.requestedFields,
+    })),
+  ).toEqual([
+    {
+      id: "owner-alpha-beta",
+      requestedFields: ["summary", "tags"],
+    },
+    {
+      id: "owner-alpha-gamma",
+      requestedFields: ["summary", "tags"],
+    },
+  ]);
+  for (const projectId of ["owner-alpha-beta", "owner-alpha-gamma"] as const) {
+    const path = `${normalizedRoot}/data/registry/projects/${projectId}.json`;
+    expect(JSON.parse(fixture.storage.get(path) ?? "")).toMatchObject({
+      summary: `${projectId} provides a distinct repository offering with source-grounded behavior and independently selected catalog metadata. This summary stays specific to the sibling card instead of cloning another entry.`,
+      tags: ["automation"],
+      metadata_policy: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
+    });
+  }
+  expect(generated.report.metadata_results).toHaveLength(2);
+});
+
+test("falls back to no tags when tag-only generation fails", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Owner summary.", {
+    summaryMode: "manual",
+    tagMode: "automatic",
+  });
+  const fixture = harness(manifest);
+  const generated = await generate(fixture, {
+    copySummary: async () => ({
+      summary: "Owner summary.",
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    }),
+    enrichMetadata: async () => {
+      throw Object.assign(new Error("provider unavailable"), {
+        code: "provider-network-error",
+      });
+    },
+  });
+
+  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
+    summary: "Owner summary.",
+    tags: [],
+  });
+  expect(generated.report.metadata_results).toEqual([
+    expect.objectContaining({
+      project_id: "owner-alpha",
+      requested_fields: ["tags"],
+      tag_generation_diagnostic: "provider-network-error",
+    }),
+  ]);
+});
+
+test("fails the atomic write when automatic summary generation fails", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Cloned summary.", {
+    summaryMode: "automatic",
+    tagMode: "manual",
+  });
+  const fixture = harness(manifest);
+
+  await expect(
+    generate(fixture, {
+      enrichMetadata: async () => {
+        throw Object.assign(new Error("provider unavailable"), {
+          code: "provider-network-error",
+        });
+      },
+    }),
+  ).rejects.toThrow("provider unavailable");
+  expect(fixture.writes).toEqual([]);
+});
+
+test("records trusted staff provenance for manual summary and tags", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Staff-authored summary.", {
+    summaryMode: "manual",
+    tagMode: "manual",
+  });
+  const fixture = harness(manifest, { staff: true });
+  const generated = await generate(fixture, {
+    copySummary: async () => ({
+      summary: "Staff-authored summary.",
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    }),
+  });
+
+  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+      tags: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+    },
+  });
+  expect(generated.report.authority_type).toBe("tavernary-staff");
+});
+
+test("rejects a stale tag vocabulary before generation writes", async () => {
+  const fixture = harness({
+    ...editManifest(),
+    tag_vocabulary_hash: "e".repeat(64),
+  });
+
+  await expect(generate(fixture)).rejects.toMatchObject({
+    code: "tag-vocabulary-stale",
+  });
+  expect(fixture.writes).toEqual([]);
 });
 
 test("moves only the shared source and source-owned snapshot", async () => {
@@ -478,8 +817,28 @@ test("rejects a report path inside repository output before any request or write
 test("removes a newly written card when a later file in the batch fails", async () => {
   const betaPath = `${normalizedRoot}/data/registry/projects/owner-alpha-beta.json`;
   const gammaPath = `${normalizedRoot}/data/registry/projects/owner-alpha-gamma.json`;
-  const fixture = harness(addManifest(), { failWritePath: gammaPath });
-  await expect(generate(fixture)).rejects.toThrow("write failed");
+  const manifest = addManifest();
+  for (const card of manifest.proposed_cards) {
+    card.metadata = {
+      summary: { mode: "manual" },
+      tags: { mode: "manual" },
+    };
+  }
+  const fixture = harness(manifest, { failWritePath: gammaPath });
+  await expect(
+    generate(fixture, {
+      copySummary: async ({
+        submittedSummary,
+      }: {
+        submittedSummary: string;
+      }) => ({
+        summary: submittedSummary,
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      }),
+    }),
+  ).rejects.toThrow("write failed");
   expect(fixture.storage.has(betaPath)).toBe(false);
   expect(fixture.storage.has(gammaPath)).toBe(false);
   expect(fixture.removals).toContain(betaPath);

@@ -332,13 +332,6 @@ function validateTransaction(value) {
     return false;
   }
   if (
-    value.copy_result !== null &&
-    ["repository-owner", "tavernary-staff"].includes(value.authority_type) &&
-    value.copy_result.mode !== "preserve"
-  ) {
-    return false;
-  }
-  if (
     !Array.isArray(value.generated_paths) ||
     value.generated_paths.length < 1 ||
     new Set(value.generated_paths).size !== value.generated_paths.length

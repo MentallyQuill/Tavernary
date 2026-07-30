@@ -912,6 +912,7 @@ test("triages owner requests through a read-only repository gate", async () => {
     "${{ github.event.repository.default_branch }}",
   );
   expect(source).toContain("processProjectOwnerTriage");
+  expect(source).toContain("tagVocabularyHash");
   expect(source).toContain('tags: ["tags.json", "tags"]');
   expect(source).not.toContain(
     'capabilities: ["capabilities.json", "capabilities"]',
@@ -1000,6 +1001,7 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("tests/unit/catalog-copy-contract.test.ts");
   expect(source).toContain("report,");
   expect(source).toContain("authority_type: report.authority_type");
+  expect(source).toContain("mode: report.copy_mode");
   expect(source).toContain("login: report.actor_login");
   expect(source).not.toContain("verifiedOwnerLogin");
   expect(source).toContain("npm run check:content");

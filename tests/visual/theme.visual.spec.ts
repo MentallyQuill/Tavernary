@@ -370,8 +370,12 @@ test("submission inputs and textareas retain border focus plus the global ring",
   await expectStyle(projectUrl, "border-top-color", graphiteTeal.controlFocus);
   await expectStyle(projectUrl, "outline-color", graphiteTeal.focusRing);
 
+  await page.getByLabel("Description choice").click();
+  await page
+    .getByRole("option", { name: /Write the description myself/u })
+    .click();
   const description = page.getByRole("textbox", {
-    name: /Short Description/,
+    name: "Short description",
   });
   await description.focus();
   await expectStyle(description, "border-top-color", graphiteTeal.controlFocus);
@@ -918,10 +922,14 @@ test("guided Help states retain the approved graphite and teal treatment", async
     sitePath("/help/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
-  await page.getByLabel("Summary").fill("x".repeat(219));
+  const ownerSummary = page.getByRole("textbox", {
+    name: "Summary",
+    exact: true,
+  });
+  await ownerSummary.fill("x".repeat(219));
   await expect(page.getByText("219 / 220")).toBeVisible();
   await expectStyle(
-    page.getByLabel("Summary"),
+    ownerSummary,
     "background-color",
     graphiteTeal.controlBackground,
   );
@@ -974,7 +982,9 @@ test("captures the complete guided Help surface on Windows", async ({
     sitePath("/help/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
-  await page.getByLabel("Summary").fill("x".repeat(219));
+  await page
+    .getByRole("textbox", { name: "Summary", exact: true })
+    .fill("x".repeat(219));
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-owner-near-limit.png",
   );

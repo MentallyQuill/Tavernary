@@ -155,10 +155,15 @@ const vocabularies = {
     { id: "text-completion", label: "Text Completion" },
   ],
 };
+const currentTagVocabularyHash = "f".repeat(64);
 
 function renderBuilder() {
   return render(
-    <ProjectOwnerBuilder projects={projects} vocabularies={vocabularies} />,
+    <ProjectOwnerBuilder
+      projects={projects}
+      tagVocabularyHash={currentTagVocabularyHash}
+      vocabularies={vocabularies}
+    />,
   );
 }
 
@@ -312,6 +317,7 @@ test("reviews and hands off one atomic multi-card manifest", async () => {
   expect(manifest).toMatchObject({
     schema_version: 2,
     operation: "add-cards",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     source_fingerprint: "a".repeat(64),
     proposed_cards: [
@@ -348,6 +354,7 @@ test("uses independent metadata choices for ordinary edits", async () => {
     JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
   ).toMatchObject({
     operation: "edit-card",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     project_id: "owner-alpha",
     project_fingerprint: "b".repeat(64),

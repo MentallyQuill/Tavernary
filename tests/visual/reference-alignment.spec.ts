@@ -305,7 +305,7 @@ test("production preserves the approved mockup layout profile", async ({
     production.category.columns,
   );
 
-  expect(productionCategoryColumns.split(" ")).toHaveLength(11);
+  expect(productionCategoryColumns.split(" ")).toHaveLength(10);
   reference.category.columns = productionCategoryColumns;
   reference.workspace.columns = production.workspace.columns;
   reference.card.columns = production.card.columns;

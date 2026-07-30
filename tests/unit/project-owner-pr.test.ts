@@ -68,6 +68,7 @@ const reviewFixture = {
     actor_login: "Owner",
     submitted_summary: "New owner summary",
     published_summary: "New owner summary.",
+    copy_mode: "preserve" as const,
     copy_result: {
       result: "accepted-with-light-edits" as const,
       change_reasons: ["punctuation-corrected"],
@@ -190,6 +191,37 @@ test("renders verified identity, before/after values, and policy effects", () =>
   expect(body).toContain("Punctuation corrected");
   expect(body).toContain("Alpha \\[Tool\\]");
   expect(parseOwnerRequestPullRequestMarker(body)).toEqual(transactionMarker);
+});
+
+test("renders source-synthesized owner copy and preserves its transaction mode", () => {
+  const synthesizeMarker = {
+    ...transactionMarker,
+    copy_result: {
+      mode: "synthesize" as const,
+      result: "accepted-unchanged" as const,
+      change_reasons: [],
+      policy_signal: "none" as const,
+    },
+  };
+  const body = renderOwnerRequestPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      submitted_summary: null,
+      published_summary:
+        "Repository evidence supports an independently generated catalog summary for the Alpha workflow and its documented behavior. It describes the project without reusing submitted copy.",
+      copy_mode: "synthesize",
+      copy_result: {
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      },
+    },
+    marker: synthesizeMarker,
+  });
+
+  expect(body).toContain("synthesized this summary");
+  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(synthesizeMarker);
 });
 
 test("accepts a trusted staff marker without repository identity", () => {

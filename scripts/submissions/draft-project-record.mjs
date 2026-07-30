@@ -107,6 +107,19 @@ function copyResult(enrichment) {
     : null;
 }
 
+function acceptedCopyResult(input) {
+  if (input.copyResult !== undefined) {
+    const validation = validateCatalogCopyMetadata(input.copyResult);
+    if (!validation.valid) return null;
+    return {
+      result: input.copyResult.result,
+      change_reasons: [...input.copyResult.change_reasons],
+      policy_signal: input.copyResult.policy_signal,
+    };
+  }
+  return copyResult(input.enrichment);
+}
+
 function metadataFields(source, request) {
   const defaults = defaultEnrichmentFields(source).metadata_policy;
   return {
@@ -228,7 +241,7 @@ export async function draftProjectRecord(input) {
     input.enrichment?.status === "curated" ? input.enrichment : null;
   const summary =
     request.summary.mode === "manual"
-      ? request.summary.value
+      ? (input.publishedSummary ?? request.summary.value)
       : typeof curated?.summary === "string"
         ? curated.summary
         : fallbackSummary(input, request);
@@ -243,8 +256,8 @@ export async function draftProjectRecord(input) {
     (request.summary.mode === "manual" && request.tags.mode === "manual")
       ? "curated"
       : "provisional";
-  const acceptedCopyResult = copyResult(input.enrichment);
-  if (input.copyRequired && !acceptedCopyResult) {
+  const acceptedCopy = acceptedCopyResult(input);
+  if (input.copyRequired && !acceptedCopy) {
     const failureReason =
       input.enrichment?.status === "failed" &&
       typeof input.enrichment.message === "string"
@@ -358,7 +371,11 @@ export async function draftProjectRecord(input) {
       actorId: null,
       actorLogin: null,
     },
-    copyResult: acceptedCopyResult,
+    copyResult: acceptedCopy,
+    copyMode: acceptedCopy
+      ? (input.copyMode ??
+        (request.summary.mode === "manual" ? "preserve" : "synthesize"))
+      : null,
     classificationReview: classificationReview.review,
     warnings: [...new Set(warnings)],
   };

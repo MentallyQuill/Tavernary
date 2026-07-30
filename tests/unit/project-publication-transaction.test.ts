@@ -86,6 +86,24 @@ test("accepts one atomic manual add-card batch", () => {
   );
 });
 
+test("accepts synthesized copy for an owner-selected automatic summary", () => {
+  const transaction = createProjectPublicationTransaction(
+    createInput({
+      operation: "edit-card",
+      producer: "project-owner-request",
+      project_ids: ["owner-project"],
+      authority_type: "repository-owner",
+      input_fingerprints: {
+        projects: { "owner-project": "d".repeat(64) },
+        source: null,
+      },
+      generated_paths: ["data/registry/projects/owner-project.json"],
+    }),
+  );
+
+  expect(transaction.copy_result?.mode).toBe("synthesize");
+});
+
 test("accepts an immutable GitHub bot actor for a generated submission", () => {
   expect(
     createProjectPublicationTransaction(

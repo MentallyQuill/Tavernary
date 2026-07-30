@@ -53,26 +53,40 @@ function renderValues(values) {
     .join("\n");
 }
 
-function renderCopyReview(report) {
+function reportCopyEntries(report) {
+  if (Array.isArray(report?.copy_results)) return report.copy_results;
   const fields = [
     report?.submitted_summary,
     report?.published_summary,
+    report?.copy_mode,
     report?.copy_result,
   ];
-  if (fields.every((value) => value === undefined)) return null;
+  if (fields.every((value) => value === undefined)) return [];
   if (fields.some((value) => value === undefined)) {
     throw new Error("Owner pull request copy report is incomplete.");
   }
+  return [
+    {
+      project_id: report.project_id,
+      mode: report.copy_mode,
+      submitted_summary: report.submitted_summary,
+      published_summary: report.published_summary,
+      copy_result: report.copy_result,
+    },
+  ];
+}
+
+function renderCopyEntry(entry, includeProjectHeading) {
   const validation = validateCatalogCopyResult(
     {
-      summary: report.published_summary,
-      result: report.copy_result.result,
-      change_reasons: report.copy_result.change_reasons,
-      policy_signal: report.copy_result.policy_signal,
+      summary: entry.published_summary,
+      result: entry.copy_result?.result,
+      change_reasons: entry.copy_result?.change_reasons,
+      policy_signal: entry.copy_result?.policy_signal,
     },
     {
-      mode: "preserve",
-      submittedSummary: report.submitted_summary,
+      mode: entry.mode,
+      submittedSummary: entry.submitted_summary ?? "",
       protectedTerms: [],
     },
   );
@@ -80,18 +94,52 @@ function renderCopyReview(report) {
     throw new Error("Owner pull request copy report is invalid.");
   }
   const status =
-    report.copy_result.result === "accepted-unchanged"
-      ? "The automated preservation pass kept the submitted summary unchanged."
-      : report.copy_result.result === "accepted-with-light-edits"
-        ? "The automated preservation pass made limited preservation edits."
-        : "The automated preservation pass neutralized wording for the public catalog policy.";
+    entry.mode === "synthesize"
+      ? "The automated metadata pass synthesized this summary from repository evidence."
+      : entry.copy_result.result === "accepted-unchanged"
+        ? "The automated preservation pass kept the submitted summary unchanged."
+        : entry.copy_result.result === "accepted-with-light-edits"
+          ? "The automated preservation pass made limited preservation edits."
+          : "The automated preservation pass neutralized wording for the public catalog policy.";
   const reasons =
-    report.copy_result.change_reasons.length === 0
+    entry.copy_result.change_reasons.length === 0
       ? "- None."
-      : report.copy_result.change_reasons
+      : entry.copy_result.change_reasons
           .map((reason) => `- ${copyReasonLabels[reason]}`)
           .join("\n");
-  return ["## Catalog copy", "", status, "", "Change categories:", "", reasons];
+  return [
+    ...(includeProjectHeading
+      ? [`### ${safeText(entry.project_id, 120)}`, ""]
+      : []),
+    status,
+    "",
+    "Change categories:",
+    "",
+    reasons,
+  ];
+}
+
+function renderCopyReview(report) {
+  const entries = reportCopyEntries(report);
+  if (entries.length === 0) return null;
+  if (
+    entries.some(
+      (entry) =>
+        !entry ||
+        typeof entry.project_id !== "string" ||
+        !["preserve", "synthesize"].includes(entry.mode),
+    )
+  ) {
+    throw new Error("Owner pull request copy report is incomplete.");
+  }
+  return [
+    "## Catalog copy",
+    "",
+    ...entries.flatMap((entry, index) => [
+      ...renderCopyEntry(entry, entries.length > 1),
+      ...(index < entries.length - 1 ? [""] : []),
+    ]),
+  ];
 }
 
 function expectedPaths(projectId, operation) {
@@ -451,7 +499,7 @@ function transactionFromReport(report) {
     generated_paths: report?.generated_paths,
     policy_version: report?.policy_version,
     copy_result: report?.copy_result
-      ? { mode: "preserve", ...report.copy_result }
+      ? { mode: report.copy_mode, ...report.copy_result }
       : null,
   });
 }

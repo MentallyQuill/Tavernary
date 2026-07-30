@@ -18,6 +18,7 @@ function addCardsManifest(issueNumber: number, sourceId = "github-42") {
         operation: "add-cards",
         source_id: sourceId,
         repository_id: 42,
+        tag_vocabulary_hash: "f".repeat(64),
         source_fingerprint: "a".repeat(64),
         proposed_cards: [{ draft_id: "draft-1" }],
         explanation: null,

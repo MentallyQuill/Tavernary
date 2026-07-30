@@ -41,6 +41,7 @@ jobs:
           node --input-type=module <<'NODE'
           import fs from "node:fs";
           import { readFile } from "node:fs/promises";
+          import { tagVocabularyHash } from "./scripts/catalog/tag-vocabulary.mjs";
           import { processProjectOwnerTriage } from "./scripts/help/triage-project-owner-request.mjs";
 
           const repository = process.env.GITHUB_REPOSITORY;
@@ -72,16 +73,26 @@ jobs:
             modelFamilies: ["model-families.json", "model_families"],
             completionFormats: ["completion-formats.json", "completion_formats"],
           };
-          const vocabularies = Object.fromEntries(
+          const vocabularyDocuments = Object.fromEntries(
             await Promise.all(
               Object.entries(vocabularyFiles).map(async ([name, [file, key]]) => {
                 const document = JSON.parse(
                   await readFile(`data/vocabularies/${file}`, "utf8"),
                 );
-                return [name, document[key] ?? []];
+                return [name, { document, key }];
               }),
             ),
           );
+          const vocabularies = {
+            ...Object.fromEntries(
+              Object.entries(vocabularyDocuments).map(
+                ([name, { document, key }]) => [name, document[key] ?? []],
+              ),
+            ),
+            tagVocabularyHash: tagVocabularyHash(
+              vocabularyDocuments.tags.document,
+            ),
+          };
           const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
           const [openIssues, openPulls] = await Promise.all([
             request(

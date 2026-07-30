@@ -96,6 +96,7 @@ export interface ProjectDraftResult {
     change_reasons: CatalogCopyChangeReason[];
     policy_signal: CatalogCopyPolicySignal;
   } | null;
+  copyMode: "preserve" | "synthesize" | null;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -109,6 +110,9 @@ export function draftProjectRecord(input: {
   frontendProjects?: FrontendProject[];
   metadataAuthority?: SubmissionMetadataAuthority;
   metadataRequest?: SubmissionMetadataRequest;
+  publishedSummary?: string;
+  copyResult?: ProjectDraftResult["copyResult"];
+  copyMode?: "preserve" | "synthesize";
   copyRequired?: boolean;
   now: string;
 }): Promise<ProjectDraftResult>;
