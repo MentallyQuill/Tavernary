@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1124349811",
   "repository": {
     "id": 1124349811,
     "owner": "elouannd",
@@ -38,16 +39,15 @@
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T22:22:20.673Z",
+  "refreshed_at": "2026-07-30T05:02:24.772Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "elouannd", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T22:22:20.673Z",
+    "refreshed_at": "2026-07-30T05:02:24.772Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "source_id": "github-1124349811"
+  }
 }
