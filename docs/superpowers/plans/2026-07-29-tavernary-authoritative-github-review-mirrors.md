@@ -1134,12 +1134,14 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Create: `tests/unit/kit-withdrawal-form.test.tsx`
 - Modify: `src/features/kits/components/kit-builder-panel.tsx`
 - Modify: `scripts/kits/apply-withdrawal.mjs`
+- Modify: `scripts/kits/apply-withdrawal.d.mts`
 - Modify: `.github/workflows/apply-kit-withdrawal.yml`
 - Modify: `tests/unit/apply-kit-withdrawal.test.ts`
+- Modify: `tests/unit/workflows.test.ts`
 - Modify: `tests/e2e/help-center.spec.ts`
 - Modify: `tests/kits-e2e/kits.spec.ts`
 
-- [ ] **Step 1: Write failing manifest and form tests**
+- [x] **Step 1: Write failing manifest and form tests**
 
   Define the only accepted new payload:
 
@@ -1166,7 +1168,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
     the issue stays open; and
   - an already withdrawn Kit stays idempotent.
 
-- [ ] **Step 2: Run the withdrawal tests red**
+- [x] **Step 2: Run the withdrawal tests red**
 
   ```powershell
   npm.cmd test -- tests/unit/kit-withdrawal-form.test.tsx tests/unit/apply-kit-withdrawal.test.ts
@@ -1175,14 +1177,14 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL because no Tavernary flow/manifest exists and the script reads
   `Kit ID` directly.
 
-- [ ] **Step 3: Implement the pure manifest normalizer**
+- [x] **Step 3: Implement the pure manifest normalizer**
 
   Follow existing `.mjs` plus `.d.mts` domain patterns. Reject extra keys,
   unsupported versions, non-slug IDs, false/missing confirmation, arrays, and
   non-objects. Export normalization and serialization helpers used by both
   frontend and script tests.
 
-- [ ] **Step 4: Build the static Tavernary withdrawal page**
+- [x] **Step 4: Build the static Tavernary withdrawal page**
 
   Reuse `loadCatalog()` and the safe mapping pattern from
   `src/app/help/report-kit/page.tsx`. The form:
@@ -1198,7 +1200,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Change the Kit panel link to the Tavernary route in the current tab.
 
-- [ ] **Step 5: Make the application script return a controlled result**
+- [x] **Step 5: Make the application script return a controlled result**
 
   Add a parser for only the `Kit withdrawal manifest` section. Export a
   testable `processKitWithdrawal()` that returns:
@@ -1221,7 +1223,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   It must not write before the manifest, issue state/labels, numeric author,
   canonical Kit, and ownership all validate.
 
-- [ ] **Step 6: Gate the workflow**
+- [x] **Step 6: Gate the workflow**
 
   Have the script write `status` and `kit_id` to `GITHUB_OUTPUT`. On
   `needs-information`, apply the label and synchronize a marker comment with
@@ -1234,7 +1236,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   On a later applied retry, remove `needs-information` before closing.
 
-- [ ] **Step 7: Run withdrawal, Help, and Kit routing tests**
+- [x] **Step 7: Run withdrawal, Help, and Kit routing tests**
 
   ```powershell
   npm.cmd test -- tests/unit/kit-withdrawal-form.test.tsx tests/unit/apply-kit-withdrawal.test.ts tests/unit/kit-builder-panel.test.tsx
@@ -1245,7 +1247,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Expected: PASS.
 
-- [ ] **Step 8: Commit Tavernary withdrawal**
+- [x] **Step 8: Commit Tavernary withdrawal**
 
   ```powershell
   git add src/features/kits/kit-withdrawal-manifest.mjs src/features/kits/kit-withdrawal-manifest.d.mts src/features/help/components/kit-withdrawal-form.tsx src/app/help/withdraw-kit/page.tsx src/features/kits/components/kit-builder-panel.tsx scripts/kits/apply-withdrawal.mjs .github/workflows/apply-kit-withdrawal.yml tests/unit/kit-withdrawal-form.test.tsx tests/unit/apply-kit-withdrawal.test.ts tests/e2e/help-center.spec.ts tests/kits-e2e/kits.spec.ts

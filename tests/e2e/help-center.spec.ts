@@ -162,6 +162,7 @@ test("spaces every interactive Help form without mobile overflow", async ({
     "/help/report-project/",
     "/help/report-website/",
     "/help/report-kit/",
+    "/help/withdraw-kit/",
     "/help/other/",
   ]) {
     await page.goto(sitePath(path));
@@ -329,6 +330,54 @@ test("takes a Kit report from source control through validation, review, cancel,
       kit_id: "aiko-s-loadout-30",
       affected_project_ids: ["sillytavern-sillytavern"],
     },
+  });
+});
+
+test("withdraws a selected Kit through Tavernary review and a versioned manifest", async ({
+  page,
+}) => {
+  await page.goto(sitePath("/help/withdraw-kit/?kit=aiko-s-loadout-30"));
+  await interceptHelpWindow(page);
+
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
+    "aiko-s-loadout-30",
+  );
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(page.locator(".help-error-summary")).toContainText(
+    "Confirm that you request withdrawal of this Kit.",
+  );
+  await page
+    .getByRole("checkbox", {
+      name: "I request withdrawal of this Kit",
+    })
+    .check();
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your public request" }),
+  ).toBeVisible();
+  await expect(page.getByText("aiko-s-loadout-30")).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(
+    page.getByRole("checkbox", {
+      name: "I request withdrawal of this Kit",
+    }),
+  ).toBeChecked();
+
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  const opened = new URL(
+    await page.evaluate(
+      () => (window as Window & { openedHelpUrl?: string }).openedHelpUrl ?? "",
+    ),
+  );
+  expect(opened.searchParams.get("template")).toBe("07-kit-withdrawal.yml");
+  expect(
+    JSON.parse(opened.searchParams.get("withdrawal-manifest") ?? ""),
+  ).toEqual({
+    schema_version: 1,
+    request_kind: "kit-withdrawal",
+    kit_id: "aiko-s-loadout-30",
+    confirmation: true,
   });
 });
 

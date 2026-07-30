@@ -1,8 +1,10 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import {
   applyKitWithdrawal,
   fetchWithdrawalIssue,
+  parseKitWithdrawalIssue,
+  processKitWithdrawal,
 } from "../../scripts/kits/apply-withdrawal.mjs";
 
 const kit = {
@@ -17,6 +19,178 @@ const kit = {
   published_at: "2026-07-01T00:00:00.000Z",
   updated_at: "2026-07-02T00:00:00.000Z",
 };
+
+const manifest = {
+  schema_version: 1,
+  request_kind: "kit-withdrawal",
+  kit_id: "story-kit-241",
+  confirmation: true,
+};
+
+function withdrawalBody(value: unknown = manifest) {
+  return [
+    "### Kit ID",
+    "",
+    "readable-drift",
+    "",
+    "### Kit share URL",
+    "",
+    "https://example.invalid/wrong",
+    "",
+    "### Confirmation",
+    "",
+    "- [ ] I request withdrawal of a different Kit.",
+    "",
+    "### Kit withdrawal manifest",
+    "",
+    "```json",
+    JSON.stringify(value),
+    "```",
+  ].join("\n");
+}
+
+function issue(overrides: Record<string, unknown> = {}) {
+  return {
+    number: 88,
+    state: "open",
+    body: withdrawalBody(),
+    labels: [{ name: "kit-withdrawal" }],
+    user: { id: 42, login: "author" },
+    ...overrides,
+  };
+}
+
+test("parses only the versioned Kit withdrawal manifest", () => {
+  expect(parseKitWithdrawalIssue(withdrawalBody())).toEqual({
+    valid: true,
+    manifest,
+  });
+});
+
+test.each([
+  ["", "complete Kit withdrawal manifest"],
+  [
+    "### Kit withdrawal manifest\n\n{not json",
+    "Kit withdrawal manifest is not valid JSON",
+  ],
+  [
+    [
+      "### Kit withdrawal manifest",
+      "",
+      JSON.stringify(manifest),
+      "",
+      "### Kit withdrawal manifest",
+      "",
+      JSON.stringify(manifest),
+    ].join("\n"),
+    "duplicate recognized form heading",
+  ],
+])("rejects missing, malformed, or duplicate manifests", (body, error) => {
+  expect(parseKitWithdrawalIssue(body)).toMatchObject({
+    valid: false,
+    errors: [expect.stringContaining(error)],
+  });
+});
+
+test("applies a valid author request while ignoring every readable mirror", async () => {
+  const writes: unknown[] = [];
+  const result = await processKitWithdrawal({
+    issue: issue(),
+    now: "2026-07-24T18:00:00.000Z",
+    loadKit: async (kitId: string) => {
+      expect(kitId).toBe("story-kit-241");
+      return kit;
+    },
+    writeKit: async (kitId: string, value: unknown) => {
+      writes.push({ kitId, value });
+    },
+  });
+
+  expect(result).toEqual({
+    status: "applied",
+    kitId: "story-kit-241",
+    changed: true,
+  });
+  expect(writes).toEqual([
+    {
+      kitId: "story-kit-241",
+      value: {
+        ...kit,
+        status: "withdrawn",
+        withdrawn_at: "2026-07-24T18:00:00.000Z",
+      },
+    },
+  ]);
+});
+
+test.each([
+  ["missing manifest", issue({ body: "" })],
+  [
+    "malformed manifest",
+    issue({ body: withdrawalBody({ ...manifest, confirmation: false }) }),
+  ],
+  ["closed issue", issue({ state: "closed" })],
+  ["missing label", issue({ labels: [] })],
+  ["missing numeric author", issue({ user: { id: "42", login: "author" } })],
+])("returns a controlled no-write result for %s", async (_name, inputIssue) => {
+  const loadKit = vi.fn();
+  const writeKit = vi.fn();
+
+  await expect(
+    processKitWithdrawal({
+      issue: inputIssue,
+      now: "2026-07-24T18:00:00.000Z",
+      loadKit,
+      writeKit,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    errors: expect.any(Array),
+    returnUrl: expect.stringMatching(
+      /^https:\/\/tavernary\.org\/help\/withdraw-kit\/(?:\?kit=story-kit-241)?$/u,
+    ),
+  });
+  expect(loadKit).not.toHaveBeenCalled();
+  expect(writeKit).not.toHaveBeenCalled();
+});
+
+test("keeps a non-author request open without writing", async () => {
+  const writeKit = vi.fn();
+  await expect(
+    processKitWithdrawal({
+      issue: issue({ user: { id: 7, login: "other-user" } }),
+      now: "2026-07-24T18:00:00.000Z",
+      loadKit: async () => kit,
+      writeKit,
+    }),
+  ).resolves.toEqual({
+    status: "needs-information",
+    errors: ["Only the Kit author may withdraw this Kit."],
+    returnUrl: "https://tavernary.org/help/withdraw-kit/?kit=story-kit-241",
+  });
+  expect(writeKit).not.toHaveBeenCalled();
+});
+
+test("treats an existing author tombstone as an applied no-op", async () => {
+  const writeKit = vi.fn();
+  await expect(
+    processKitWithdrawal({
+      issue: issue(),
+      now: "2026-07-25T18:00:00.000Z",
+      loadKit: async () => ({
+        ...kit,
+        status: "withdrawn",
+        withdrawn_at: "2026-07-24T18:00:00.000Z",
+      }),
+      writeKit,
+    }),
+  ).resolves.toEqual({
+    status: "applied",
+    kitId: "story-kit-241",
+    changed: false,
+  });
+  expect(writeKit).not.toHaveBeenCalled();
+});
 
 test("rejects withdrawal by a different durable GitHub identity", () => {
   expect(() =>
@@ -83,36 +257,18 @@ test("fetches an open labeled withdrawal issue for dispatched processing", async
   expect(requestedPaths).toEqual(["/repos/MentallyQuill/Tavernary/issues/88"]);
 });
 
-test("rejects a dispatched issue without the withdrawal label", async () => {
+test("fetches current issue state without interpreting readable or lifecycle fields", async () => {
+  const fetched = {
+    number: 88,
+    state: "open",
+    labels: [{ name: "project-submission" }],
+    user: { id: "42", login: "author" },
+  };
   await expect(
     fetchWithdrawalIssue({
       repository: "MentallyQuill/Tavernary",
       issueNumber: 88,
-      request: async () => ({
-        number: 88,
-        state: "open",
-        labels: [{ name: "project-submission" }],
-        user: { id: 42, login: "author" },
-      }),
+      request: async () => fetched,
     }),
-  ).rejects.toThrow("Issue is not an open Kit withdrawal request.");
-});
-
-test.each([
-  { user: { id: "42", login: "author" } },
-  { user: { id: 0, login: "author" } },
-  { user: undefined },
-])("rejects a withdrawal issue without a numeric author", async ({ user }) => {
-  await expect(
-    fetchWithdrawalIssue({
-      repository: "MentallyQuill/Tavernary",
-      issueNumber: 88,
-      request: async () => ({
-        number: 88,
-        state: "open",
-        labels: [{ name: "kit-withdrawal" }],
-        user,
-      }),
-    }),
-  ).rejects.toThrow("Kit withdrawal issue has no valid numeric author.");
+  ).resolves.toBe(fetched);
 });

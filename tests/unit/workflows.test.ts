@@ -171,6 +171,39 @@ test("publishes Kits only by manual dispatch and serializes registry writes", as
   );
 });
 
+test("gates Kit withdrawal writes behind manifest validation and synchronizes correction state", async () => {
+  const withdrawal = await workflow("apply-kit-withdrawal");
+  const source = await readFile(
+    resolve(workflowDirectory, "apply-kit-withdrawal.yml"),
+    "utf8",
+  );
+  const steps = withdrawal.jobs.withdraw.steps as Array<{
+    id?: string;
+    name?: string;
+    if?: string;
+  }>;
+  const apply = steps.find(
+    ({ name }) => name === "Verify numeric author and write tombstone",
+  );
+  expect(apply?.id).toBe("withdraw");
+  for (const name of [
+    "Validate withdrawal",
+    "Commit Kit tombstone",
+    "Close withdrawal request",
+    "Deploy updated catalog",
+  ]) {
+    expect(steps.find((step) => step.name === name)?.if).toBe(
+      "steps.withdraw.outputs.status == 'applied'",
+    );
+  }
+  expect(source).toContain("tavernary-kit-withdrawal-correction");
+  expect(source).toContain("needs-information");
+  expect(source).toContain("https://tavernary.org/help/withdraw-kit/");
+  expect(source).toContain("STATUS: ${{ steps.withdraw.outputs.status }}");
+  expect(source).toContain('status === "needs-information"');
+  expect(source).toContain("steps.withdraw.outputs.status == 'applied'");
+});
+
 test("initializes Kit support before publishing the new registry record", async () => {
   const publication = await workflow("apply-kit-submission");
   const steps = publication.jobs.publish.steps as Array<{

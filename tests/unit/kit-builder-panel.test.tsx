@@ -845,6 +845,9 @@ describe("Kit Builder", () => {
       "kit-withdrawal-action",
     );
     expect(
+      screen.getByRole("link", { name: "Request withdrawal" }),
+    ).toHaveAttribute("href", "/help/withdraw-kit?kit=story-kit-41");
+    expect(
       screen
         .getByRole("button", { name: "Duplicate" })
         .querySelector('[data-kit-preview-icon="duplicate"]'),

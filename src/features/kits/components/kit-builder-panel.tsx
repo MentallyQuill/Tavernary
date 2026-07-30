@@ -13,7 +13,6 @@ import Link from "next/link";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
@@ -35,14 +34,6 @@ const builderBackground = [
   ".catalog-layout > .filter-panel",
   ".catalog-main",
 ];
-
-function withdrawalIssueUrl(kit: CatalogKit) {
-  const url = new URL("https://github.com/MentallyQuill/Tavernary/issues/new");
-  url.searchParams.set("template", "07-kit-withdrawal.yml");
-  url.searchParams.set("kit-id", kit.id);
-  url.searchParams.set("share-url", kitShareUrl(kit.id));
-  return url.toString();
-}
 
 function formatProjectKindSummary(kit: CatalogKit) {
   const counts = kit.components.reduce(
@@ -432,13 +423,12 @@ export function KitBuilderPanel({
                       <KitPreviewActionIcon name="report" />
                       Report Kit
                     </Link>
-                    <a
+                    <Link
                       className="control-secondary kit-preview-action kit-withdrawal-action"
-                      href={withdrawalIssueUrl(kit)}
-                      target="_blank"
+                      href={`/help/withdraw-kit/?kit=${encodeURIComponent(kit.id)}`}
                     >
                       Request withdrawal
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

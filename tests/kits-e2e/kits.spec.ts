@@ -1083,11 +1083,10 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     "href",
     "/help/report-kit/?kit=alpha-kit-101",
   );
-  const withdrawalUrl = new URL((await withdrawal.getAttribute("href"))!);
-  expect(withdrawalUrl.searchParams.get("template")).toBe(
-    "07-kit-withdrawal.yml",
+  await expect(withdrawal).toHaveAttribute(
+    "href",
+    "/help/withdraw-kit/?kit=alpha-kit-101",
   );
-  expect(withdrawalUrl.searchParams.get("kit-id")).toBe("alpha-kit-101");
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
   await expect(
@@ -1098,6 +1097,23 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const flagged = page.locator(".kit-project-stack li.flagged");
   await expect(flagged).toContainText("Fixture Flagged Tool");
   await expect(flagged.locator("a")).toHaveCount(0);
+});
+
+test("routes Kit withdrawal through Tavernary with the current Kit selected", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  await page.getByRole("link", { name: "Request withdrawal" }).click();
+
+  await expect(page).toHaveURL(/\/help\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
+  await expect(
+    page.getByRole("heading", { name: "Withdraw a Kit" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
+    "alpha-kit-101",
+  );
 });
 
 test("scrolls one desktop inspector body without a nested project scroll", async ({
