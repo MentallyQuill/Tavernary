@@ -1128,11 +1128,11 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const withdrawal = page.getByRole("link", { name: "Request withdrawal" });
   await expect(report).toHaveAttribute(
     "href",
-    "/help/report-kit/?kit=alpha-kit-101",
+    sitePath("/help/report-kit/?kit=alpha-kit-101"),
   );
   await expect(withdrawal).toHaveAttribute(
     "href",
-    "/help/withdraw-kit/?kit=alpha-kit-101",
+    sitePath("/help/withdraw-kit/?kit=alpha-kit-101"),
   );
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
