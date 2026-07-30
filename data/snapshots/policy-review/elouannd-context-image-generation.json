@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "elouannd-context-image-generation",
+  "source_id": "github-1124349811",
+  "source_identity": "github:elouannd/context-image-generation",
+  "evidence_fingerprint": "49a01497e0385c57be0c7648c544262cb03971da2e85ac8bbdba462bb39d80a4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T05:07:14.396Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T05:07:14.396Z"
+  },
+  "maintenance_issue_number": null
+}
