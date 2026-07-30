@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1208471920",
   "repository": {
     "id": 1208471920,
     "owner": "jschm42",
@@ -14,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-04-12T10:29:44.000Z",
-    "size_kb": 230488
+    "size_kb": 230531
   },
   "source_health": "healthy",
   "activity": {
@@ -79,7 +80,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -91,8 +92,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1208471920"
+  }
 }

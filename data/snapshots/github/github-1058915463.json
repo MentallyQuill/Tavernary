@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1058915463",
   "repository": {
     "id": 1058915463,
     "owner": "SpicyMarinara",
@@ -38,15 +39,14 @@
     "aggregate": 4
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [],
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1058915463"
+  }
 }

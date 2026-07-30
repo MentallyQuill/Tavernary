@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1114224048",
   "repository": {
     "id": 1114224048,
     "owner": "lazuli-s",
@@ -45,8 +46,9 @@
     "aggregate": 21
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-29T23:49:05.593Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "pugavocado", "type": "User", "provider": "github" },
@@ -58,9 +60,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T23:49:05.593Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "activity_scan": null,
-  "source_id": "github-1114224048"
+  }
 }

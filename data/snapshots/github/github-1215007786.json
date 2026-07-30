@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1215007786",
   "repository": {
     "id": 1215007786,
     "owner": "Sagesheep",
@@ -8,21 +9,21 @@
     "url": "https://github.com/Sagesheep/NarrativeEngine-P",
     "description": "Self-hosted AI Dungeon Master - run extended TTRPG campaigns with smart memory, living NPCs, and any OpenAI-compatible LLM",
     "default_branch": "main",
-    "head_sha": "95139fb7d46f762cef3dc4d0d1e296a34aa3956e",
-    "head_committed_at": "2026-07-28T06:13:49.000Z",
+    "head_sha": "b92af84807d2939c2fc10393f1ad2e5e7bcb36ae",
+    "head_committed_at": "2026-07-30T01:23:36.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-19T11:01:33.000Z",
-    "size_kb": 61373
+    "size_kb": 61150
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-28T06:13:49.000Z",
+    "latest_source_activity_at": "2026-07-30T01:23:36.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-28T06:13:49.000Z",
+        "latest_at": "2026-07-30T01:23:36.000Z",
         "precision": "exact"
       },
       {
@@ -86,20 +87,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T21:27:18.926Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "95139fb7d46f762cef3dc4d0d1e296a34aa3956e"
+    "evidence_head_sha": "b92af84807d2939c2fc10393f1ad2e5e7bcb36ae"
   },
   "community": {
-    "stars_count": 72,
+    "stars_count": 73,
     "forks_count": 14,
     "watchers_count": 3,
-    "aggregate": 89
+    "aggregate": 90
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -112,8 +113,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1215007786"
+  }
 }

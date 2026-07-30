@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1305919833",
   "repository": {
     "id": 1305919833,
     "owner": "N0819",
@@ -8,21 +9,21 @@
     "url": "https://github.com/N0819/Sonder_Engine",
     "description": "An engine for creating coherent fiction with LLMs",
     "default_branch": "main",
-    "head_sha": "124c89676ca592bfde1bafc591b3daf712439fb4",
-    "head_committed_at": "2026-07-29T09:47:15.000Z",
+    "head_sha": "a254a6947d2f376a5c25c1a763c4df2f1a57a65e",
+    "head_committed_at": "2026-07-29T22:24:37.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-19T17:55:36.000Z",
-    "size_kb": 12317
+    "size_kb": 9751
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-29T09:47:15.000Z",
+    "latest_source_activity_at": "2026-07-29T22:24:37.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-29T09:47:15.000Z",
+        "latest_at": "2026-07-29T22:24:37.000Z",
         "precision": "exact"
       },
       {
@@ -37,24 +38,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-29T09:52:59.000Z",
+    "latest_release_at": "2026-07-29T17:46:29.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T06:46:55.988Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "124c89676ca592bfde1bafc591b3daf712439fb4"
+    "evidence_head_sha": "a254a6947d2f376a5c25c1a763c4df2f1a57a65e"
   },
   "community": {
-    "stars_count": 46,
+    "stars_count": 47,
     "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 52
+    "aggregate": 53
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -65,8 +66,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1305919833"
+  }
 }

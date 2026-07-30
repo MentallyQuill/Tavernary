@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-1204673207",
   "repository": {
     "id": 1204673207,
     "owner": "Lodactio",
@@ -49,8 +50,8 @@
     "evidence_head_sha": "c67626ab83ee86ec1be4f55b9b3d1d19adb79999"
   },
   "community": {
-    "stars_count": 121,
-    "forks_count": 16,
+    "stars_count": 120,
+    "forks_count": 17,
     "watchers_count": 1,
     "aggregate": 138
   },
@@ -59,7 +60,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -71,8 +72,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-1204673207"
+  }
 }

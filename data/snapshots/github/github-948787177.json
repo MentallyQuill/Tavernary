@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-948787177",
   "repository": {
     "id": 948787177,
     "owner": "bmen25124",
@@ -33,17 +34,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 76,
+    "stars_count": 77,
     "forks_count": 12,
     "watchers_count": 2,
-    "aggregate": 90
+    "aggregate": 91
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -52,8 +53,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-948787177"
+  }
 }
