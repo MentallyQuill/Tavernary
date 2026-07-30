@@ -9,7 +9,17 @@ import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
+import { validateEnrichmentOutput } from "../catalog/enrichment-contract.mjs";
+import { enrichRecord } from "../catalog/enrich-readmes.mjs";
+import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
+import {
+  automaticMetadataPolicy,
+  manualMetadataPolicy,
+  metadataFieldsToGenerate,
+} from "../catalog/metadata-policy.mjs";
+import { tagVocabularyHash } from "../catalog/tag-vocabulary.mjs";
 import { fingerprintProjectPublicationInput } from "../publication/project-publication-transaction.mjs";
 import { applyProjectOwnerRequest } from "./apply-project-owner-request.mjs";
 import { processProjectOwnerTriage } from "./triage-project-owner-request.mjs";
@@ -100,16 +110,25 @@ function issuePath(hostRepository, issueNumber) {
 }
 
 async function loadVocabularies(root, readFile) {
-  return Object.fromEntries(
+  const raw = Object.fromEntries(
     await Promise.all(
       VOCABULARY_FILES.map(async ([name, file, key]) => [
         name,
         parseJson(
           await readFile(resolve(root, "data", "vocabularies", file), "utf8"),
-        )?.[key] ?? [],
+        ),
       ]),
     ),
   );
+  return {
+    ...Object.fromEntries(
+      VOCABULARY_FILES.map(([name, _file, key]) => [
+        name,
+        raw[name]?.[key] ?? [],
+      ]),
+    ),
+    tagVocabularyHash: tagVocabularyHash(raw.tags),
+  };
 }
 
 function sectionValue(body, heading) {
@@ -293,6 +312,320 @@ function generatedAt(now) {
   return date.toISOString();
 }
 
+function trustedMetadataPolicy(metadata, authorityType) {
+  return {
+    summary:
+      metadata.summary.mode === "manual"
+        ? manualMetadataPolicy(authorityType)
+        : automaticMetadataPolicy(),
+    tags:
+      metadata.tags.mode === "manual"
+        ? manualMetadataPolicy(authorityType)
+        : automaticMetadataPolicy(),
+  };
+}
+
+function ownerMetadataCandidates(final, catalogedAt) {
+  const { decision, source } = final;
+  if (decision.operation === "edit-card") {
+    const current = decision.project;
+    const proposed = decision.manifest.proposed;
+    return [
+      {
+        ...structuredClone(current),
+        name: proposed.name,
+        summary: proposed.summary,
+        frontends: structuredClone(proposed.frontends),
+        primary_function: proposed.primary_function,
+        tags: structuredClone(proposed.tags),
+        ...(current.kind === "preset"
+          ? {
+              model_families: structuredClone(proposed.model_families),
+              completion_formats: structuredClone(proposed.completion_formats),
+            }
+          : {}),
+        metadata_status: "provisional",
+        metadata_policy: trustedMetadataPolicy(
+          proposed.metadata,
+          decision.authorityType,
+        ),
+      },
+    ];
+  }
+  if (decision.operation !== "add-cards") return [];
+  return decision.manifest.proposed_cards
+    .map((draft) => ({
+      schema_version: 6,
+      id: draft.project_id,
+      name: draft.name,
+      kind: draft.kind,
+      summary: draft.summary,
+      metadata_status: "provisional",
+      source_id: source.id,
+      frontends: structuredClone(draft.frontends),
+      primary_function: draft.primary_function,
+      tags: structuredClone(draft.tags),
+      metadata_policy: trustedMetadataPolicy(
+        draft.metadata,
+        decision.authorityType,
+      ),
+      ...(draft.kind === "preset"
+        ? {
+            model_families: structuredClone(draft.model_families),
+            completion_formats: structuredClone(draft.completion_formats),
+          }
+        : {}),
+      cataloged_at: catalogedAt,
+      catalog_cohort: "standard",
+      listing_status: "active",
+      listing_status_reason: null,
+    }))
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function proposedMetadataByProjectId(decision) {
+  if (decision.operation === "edit-card") {
+    return new Map([
+      [
+        decision.projectId,
+        {
+          original: decision.manifest.original,
+          proposed: decision.manifest.proposed,
+          isNew: false,
+        },
+      ],
+    ]);
+  }
+  return new Map(
+    (decision.manifest.proposed_cards ?? []).map((card) => [
+      card.project_id,
+      { original: null, proposed: card, isNew: true },
+    ]),
+  );
+}
+
+function ownerProtectedTerms(final, record, submittedSummary = "") {
+  const repositoryParts =
+    typeof final.source.repository === "string"
+      ? final.source.repository.split("/").filter(Boolean)
+      : [];
+  const frontendIds = new Set(record.frontends ?? []);
+  const frontendLabels = final.vocabularies.frontends
+    .filter(({ id }) => frontendIds.has(id))
+    .map(({ label }) => label)
+    .filter(Boolean);
+  const stableIdentifiers =
+    submittedSummary.match(
+      /\b[\p{Letter}\p{Number}]+(?:[-_.:/][\p{Letter}\p{Number}]+)+\b/gu,
+    ) ?? [];
+  return [
+    ...new Set(
+      [
+        record.name,
+        ...repositoryParts,
+        ...frontendLabels,
+        ...stableIdentifiers,
+      ].filter(
+        (term) =>
+          typeof term === "string" && term.length > 0 && term.length <= 100,
+      ),
+    ),
+  ].slice(0, 64);
+}
+
+function validateInjectedEnrichment(output, context) {
+  return validateEnrichmentOutput(output, {
+    requestedFields: context.requestedFields,
+    kind: context.record.kind,
+    tagVocabulary: { tags: context.vocabularies.tags },
+    copyContext: {
+      mode: "synthesize",
+      submittedSummary: "",
+      protectedTerms: context.protectedTerms,
+    },
+  });
+}
+
+async function injectedEnrichment(input, context) {
+  let output = await input.enrichMetadata(context);
+  let validation = validateInjectedEnrichment(output, context);
+  if (!validation.valid) {
+    const repairMessage = [...new Set(validation.errors)].join("; ");
+    output = await input.enrichMetadata({
+      ...context,
+      repair: {
+        reasonCode: "output-invalid",
+        message: repairMessage,
+        ...(typeof output?.summary?.value === "string"
+          ? { rejectedSummary: output.summary.value.slice(0, 1_000) }
+          : {}),
+      },
+    });
+    validation = validateInjectedEnrichment(output, context);
+  }
+  if (!validation.valid) {
+    const tagFallback =
+      context.requestedFields.includes("tags") &&
+      output &&
+      typeof output === "object" &&
+      !Array.isArray(output)
+        ? { ...output, tags: [] }
+        : null;
+    if (tagFallback && validateInjectedEnrichment(tagFallback, context).valid) {
+      return {
+        ...tagFallback,
+        tag_generation_diagnostic: "invalid-output-fell-back-empty",
+      };
+    }
+    const error = new Error([...new Set(validation.errors)].join("; "));
+    error.code = "output-invalid";
+    throw error;
+  }
+  return output;
+}
+
+async function generatedMetadataOutput(input, final, snapshot, context) {
+  if (input.enrichMetadata) return injectedEnrichment(input, context);
+  const provider =
+    input.enrichmentProvider ??
+    createEnrichmentProvider({
+      apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+      apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+      model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+    });
+  return enrichRecord(context.record, final.source, snapshot, provider, {
+    force: true,
+    vocabularies: { tags: final.vocabularies.tags },
+    protectedTerms: context.protectedTerms,
+    ...(input.loadEnrichmentSource
+      ? { loadSource: input.loadEnrichmentSource }
+      : {}),
+  });
+}
+
+function automaticMetadataResult(record, requestedFields, output) {
+  return {
+    project_id: record.id,
+    requested_fields: [...requestedFields],
+    ...(output?.summary
+      ? { summary_evidence: [...output.summary.evidence] }
+      : {}),
+    ...(Array.isArray(output?.tags)
+      ? {
+          tag_evidence: output.tags.map((tag) => ({
+            id: tag.id,
+            evidence: [...tag.evidence],
+          })),
+        }
+      : {}),
+    ...(output?.tag_generation_diagnostic
+      ? { tag_generation_diagnostic: output.tag_generation_diagnostic }
+      : {}),
+  };
+}
+
+async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
+  const candidates = ownerMetadataCandidates(final, catalogedAt);
+  const proposed = proposedMetadataByProjectId(final.decision);
+  const resolvedMetadataByProjectId = {};
+  const copyResults = [];
+  const metadataResults = [];
+
+  for (const record of candidates) {
+    const request = proposed.get(record.id);
+    if (!request) {
+      throw new Error(`Owner metadata request is missing for ${record.id}.`);
+    }
+    const requestedFields = metadataFieldsToGenerate(record);
+    let summary = request.proposed.summary;
+    let tags = structuredClone(request.proposed.tags);
+
+    if (record.metadata_policy.summary.mode === "manual") {
+      const summaryChanged =
+        request.isNew || request.original?.summary !== request.proposed.summary;
+      if (summaryChanged) {
+        const copied = await preserveCatalogSummary({
+          authorityType: final.decision.authorityType,
+          submittedSummary: request.proposed.summary,
+          protectedTerms: ownerProtectedTerms(
+            final,
+            record,
+            request.proposed.summary,
+          ),
+          copySummary: input.copySummary,
+        });
+        summary = copied.publishedSummary;
+        copyResults.push({
+          project_id: record.id,
+          mode: copied.mode,
+          submitted_summary: copied.submittedSummary,
+          published_summary: copied.publishedSummary,
+          copy_result: copied.copyResult,
+        });
+      }
+    }
+
+    if (requestedFields.length > 0) {
+      const context = {
+        record,
+        source: final.source,
+        snapshot,
+        requestedFields,
+        vocabularies: { tags: final.vocabularies.tags },
+        protectedTerms: ownerProtectedTerms(final, record),
+      };
+      let output;
+      try {
+        output = await generatedMetadataOutput(input, final, snapshot, context);
+        if (!output) {
+          const error = new Error(
+            `Automatic metadata generation returned no output for ${record.id}.`,
+          );
+          error.code = "enrichment-output-missing";
+          throw error;
+        }
+      } catch (error) {
+        if (requestedFields.length === 1 && requestedFields[0] === "tags") {
+          output = {
+            tags: [],
+            tag_generation_diagnostic: error.code ?? "tag-generation-failed",
+          };
+        } else {
+          throw error;
+        }
+      }
+      if (requestedFields.includes("summary")) {
+        summary = output.summary.value;
+        copyResults.push({
+          project_id: record.id,
+          mode: "synthesize",
+          submitted_summary: null,
+          published_summary: summary,
+          copy_result: {
+            result: output.result,
+            change_reasons: [...output.change_reasons],
+            policy_signal: output.policy_signal,
+          },
+        });
+      }
+      if (requestedFields.includes("tags")) {
+        tags = output.tags.map(({ id }) => id);
+      }
+      metadataResults.push(
+        automaticMetadataResult(record, requestedFields, output),
+      );
+    }
+
+    resolvedMetadataByProjectId[record.id] = { summary, tags };
+  }
+
+  return {
+    resolvedMetadataByProjectId,
+    copyResults,
+    metadataResults,
+  };
+}
+
 async function writeOwnerGenerationTransaction({
   root,
   reportPath,
@@ -436,21 +769,37 @@ export async function generateProjectOwnerRequest(input) {
     readdir,
   );
   const final = await triagePhase(input, issueApiPath, root, readFile, readdir);
+  const catalogedAt = generatedAt(input.now);
 
   let snapshotRecord = null;
   if (final.decision.operation === "move-source") {
     snapshotRecord = await loadSnapshot(root, final.source.id, readFile);
     final.priorContents.set(snapshotRecord.path, snapshotRecord.contents);
   }
+  const metadataCandidates = ownerMetadataCandidates(final, catalogedAt);
+  const needsAutomaticMetadata = metadataCandidates.some(
+    (record) => metadataFieldsToGenerate(record).length > 0,
+  );
+  const metadataSnapshotRecord = needsAutomaticMetadata
+    ? await loadSnapshot(root, final.source.id, readFile)
+    : null;
+  const metadata = await resolveOwnerMetadata(
+    input,
+    final,
+    metadataSnapshotRecord?.value ?? null,
+    catalogedAt,
+  );
   const mutation = applyProjectOwnerRequest({
     issueNumber: final.decision.issueNumber,
+    authorityType: final.decision.authorityType,
     manifest: final.decision.manifest,
     projects: final.projects,
     source: final.source,
     snapshot: snapshotRecord?.value ?? null,
     repository: final.decision.repository ?? undefined,
     vocabularies: final.vocabularies,
-    catalogedAt: generatedAt(input.now),
+    catalogedAt,
+    resolvedMetadataByProjectId: metadata.resolvedMetadataByProjectId,
   });
   const projectIds = reportProjectIds(final, mutation);
   const allowedPaths = expectedPaths(
@@ -464,6 +813,12 @@ export async function generateProjectOwnerRequest(input) {
     );
   }
 
+  const primaryCopy =
+    final.decision.operation === "edit-card"
+      ? (metadata.copyResults.find(
+          (entry) => entry.project_id === final.decision.projectId,
+        ) ?? null)
+      : null;
   const report = {
     schema_version: 2,
     issue_number: final.decision.issueNumber,
@@ -487,7 +842,17 @@ export async function generateProjectOwnerRequest(input) {
     input_fingerprints: inputFingerprints(final.decision),
     source_identity: sourceIdentity(final.source),
     policy_version: CATALOG_POLICY_VERSION,
-    generated_at: generatedAt(input.now),
+    generated_at: catalogedAt,
+    copy_results: metadata.copyResults,
+    metadata_results: metadata.metadataResults,
+    ...(primaryCopy
+      ? {
+          submitted_summary: primaryCopy.submitted_summary,
+          published_summary: primaryCopy.published_summary,
+          copy_mode: primaryCopy.mode,
+          copy_result: primaryCopy.copy_result,
+        }
+      : {}),
     before: mutation.before,
     after: mutation.after,
     warnings: [

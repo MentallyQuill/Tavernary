@@ -42,8 +42,9 @@ export function renderOwnerRequestPullRequest(input: {
     repository_id: number | null;
     authority_type: OwnerPrMarker["authority_type"];
     actor_login: string;
-    submitted_summary?: string;
+    submitted_summary?: string | null;
     published_summary?: string;
+    copy_mode?: "preserve" | "synthesize";
     copy_result?: {
       result:
         | "accepted-unchanged"
@@ -52,6 +53,20 @@ export function renderOwnerRequestPullRequest(input: {
       change_reasons: string[];
       policy_signal: "none" | "catalog-policy-rewrite";
     };
+    copy_results?: Array<{
+      project_id: string;
+      mode: "preserve" | "synthesize";
+      submitted_summary: string | null;
+      published_summary: string;
+      copy_result: {
+        result:
+          | "accepted-unchanged"
+          | "accepted-with-light-edits"
+          | "accepted-with-policy-rewrite";
+        change_reasons: string[];
+        policy_signal: "none" | "catalog-policy-rewrite";
+      };
+    }>;
     before: unknown;
     after: unknown;
     warnings: string[];
@@ -111,6 +126,7 @@ export function planOwnerPrUpdate(input: {
     request_fingerprint: string;
     input_fingerprints: ProjectPublicationTransaction["input_fingerprints"];
     policy_version: string;
+    copy_mode?: "preserve" | "synthesize";
     copy_result?: {
       result:
         | "accepted-unchanged"

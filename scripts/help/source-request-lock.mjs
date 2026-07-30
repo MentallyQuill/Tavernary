@@ -8,6 +8,7 @@ const ISSUE_MANIFEST_KEYS = new Set([
   "operation",
   "source_id",
   "repository_id",
+  "tag_vocabulary_hash",
   "source_fingerprint",
   "proposed_cards",
   "explanation",
@@ -55,6 +56,7 @@ function issueManifest(body) {
       !SOURCE_ID_PATTERN.test(manifest.source_id) ||
       !Number.isSafeInteger(manifest.repository_id) ||
       manifest.repository_id < 1 ||
+      !FINGERPRINT_PATTERN.test(manifest.tag_vocabulary_hash) ||
       !FINGERPRINT_PATTERN.test(manifest.source_fingerprint) ||
       !Array.isArray(manifest.proposed_cards) ||
       manifest.proposed_cards.length < 1 ||

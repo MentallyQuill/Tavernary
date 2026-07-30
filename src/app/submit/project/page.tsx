@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+import tags from "../../../../data/vocabularies/tags.json";
+import {
+  publicTagVocabulary,
+  type TagVocabulary,
+} from "../../../../scripts/catalog/tag-vocabulary.mjs";
 import {
   ProjectSubmissionBuilder,
   type SubmissionFrontendOption,
@@ -50,7 +55,10 @@ export default function ProjectSubmissionPage() {
           prepare a GitHub issue for you to review before anything is sent.
         </p>
 
-        <ProjectSubmissionBuilder frontends={frontends} />
+        <ProjectSubmissionBuilder
+          frontends={frontends}
+          tagVocabulary={publicTagVocabulary(tags as TagVocabulary)}
+        />
 
         <p className="submission-fallback">
           Prefer GitHub&apos;s standard form?{" "}

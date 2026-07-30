@@ -1,7 +1,10 @@
 import { readFile as defaultReadFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
+import {
+  normalizeProjectOwnerManifest,
+  STALE_TAG_VOCABULARY_ERROR,
+} from "../../src/features/help/project-owner-manifest.mjs";
 import {
   fingerprintProjectRecord,
   fingerprintSourceRecord,
@@ -459,8 +462,11 @@ export async function processProjectOwnerTriage(input) {
     source,
   });
   if (!normalized.valid) {
+    const staleVocabulary = normalized.errors.includes(
+      STALE_TAG_VOCABULARY_ERROR,
+    );
     return needsInformation(
-      "owner-request-invalid",
+      staleVocabulary ? "tag-vocabulary-stale" : "owner-request-invalid",
       normalized.errors.join(" "),
       { errors: normalized.errors },
     );

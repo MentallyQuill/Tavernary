@@ -288,9 +288,11 @@ function policyStatement(
 
 export function ProjectOwnerBuilder({
   projects,
+  tagVocabularyHash,
   vocabularies,
 }: {
   projects: OwnerProjectOption[];
+  tagVocabularyHash: string;
   vocabularies: OwnerBuilderVocabularies;
 }) {
   const searchParams = useSearchParams();
@@ -372,6 +374,7 @@ export function ProjectOwnerBuilder({
     if (operation === "edit-card" && editCard) {
       return {
         ...base,
+        tag_vocabulary_hash: tagVocabularyHash,
         project_id: selected.id,
         project_fingerprint: selected.projectFingerprint,
         original: originalValues(selected),
@@ -381,6 +384,7 @@ export function ProjectOwnerBuilder({
     if (operation === "add-cards") {
       return {
         ...base,
+        tag_vocabulary_hash: tagVocabularyHash,
         source_fingerprint: selected.sourceFingerprint,
         proposed_cards: batchCards,
       };
@@ -456,6 +460,7 @@ export function ProjectOwnerBuilder({
     if (candidate && selected) {
       const result = normalizeProjectOwnerManifest(candidate, {
         ...vocabularies,
+        tagVocabularyHash,
         source: {
           id: selected.sourceId,
           type: "github",

@@ -7,7 +7,6 @@ import { DescribedSelect } from "@/components/forms/described-select";
 import { TagBrowser } from "@/features/catalog/components/tag-browser";
 import type { PublicTagDefinition } from "@/features/catalog/tag-vocabulary";
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
-import tagVocabulary from "../../../../data/vocabularies/tags.json";
 import {
   normalizeProjectSubmissionManifest,
   type ProjectSubmissionManifest,
@@ -157,8 +156,10 @@ function InlineError({
 
 export function ProjectSubmissionBuilder({
   frontends,
+  tagVocabulary = [],
 }: {
   frontends: SubmissionFrontendOption[];
+  tagVocabulary?: readonly PublicTagDefinition[];
 }) {
   const [projectType, setProjectType] =
     useState<ProjectSubmissionType>("frontend");
@@ -208,26 +209,10 @@ export function ProjectSubmissionBuilder({
     (projectType === "preset" && !frontendIndependent);
   const applicableTags = useMemo(
     () =>
-      tagVocabulary.tags
+      tagVocabulary
         .filter((tag) => tag.applicable_kinds.includes(projectType))
-        .map(
-          ({
-            id,
-            label,
-            facet,
-            description: tagDescription,
-            aliases,
-            applicable_kinds,
-          }) => ({
-            id,
-            label,
-            facet,
-            description: tagDescription,
-            aliases,
-            applicable_kinds,
-          }),
-        ) as PublicTagDefinition[],
-    [projectType],
+        .map((tag) => ({ ...tag })),
+    [projectType, tagVocabulary],
   );
   const errorFor = (field: SubmissionField) =>
     errors.find((error) => error.field === field)?.message;
@@ -306,7 +291,7 @@ export function ProjectSubmissionBuilder({
             }
           : {}),
       },
-      { tagVocabulary },
+      { tagVocabulary: { tags: tagVocabulary } },
     );
     const nextErrors: SubmissionError[] = validation.valid
       ? []

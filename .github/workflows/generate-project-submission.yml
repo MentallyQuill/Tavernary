@@ -366,7 +366,7 @@ jobs:
               generated_paths: paths,
               policy_version: CATALOG_POLICY_VERSION,
               copy_result: report.copy_result
-                ? { mode: 'synthesize', ...report.copy_result }
+                ? { mode: report.copy_mode, ...report.copy_result }
                 : null,
             });
             const body = renderSubmissionPullRequest({

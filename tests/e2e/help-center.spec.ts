@@ -407,13 +407,9 @@ test("covers owner source-move and delist-source review branches", async ({
     .check();
   await page.getByRole("button", { name: "Review request" }).click();
   await page
-    .getByLabel(
-      "Type MentallyQuill/Directive to confirm permanent delisting.",
-    )
+    .getByLabel("Type MentallyQuill/Directive to confirm permanent delisting.")
     .fill("MentallyQuill/Directive");
-  await page
-    .getByRole("button", { name: "Permanently delist source" })
-    .click();
+  await page.getByRole("button", { name: "Permanently delist source" }).click();
   await expect(
     page.getByText(
       "This permanently delists MentallyQuill/Directive and every card from that source.",

@@ -8,6 +8,7 @@ import primaryFunctions from "../../../../data/vocabularies/primary-functions.js
 import tags from "../../../../data/vocabularies/tags.json";
 import {
   publicTagVocabulary,
+  tagVocabularyHash,
   type TagVocabulary,
 } from "../../../../scripts/catalog/tag-vocabulary.mjs";
 import { HelpPageShell } from "@/features/help/components/help-page-shell";
@@ -46,6 +47,7 @@ export default async function ManageProjectPage() {
       <Suspense fallback={<p>Loading owner request form…</p>}>
         <ProjectOwnerBuilder
           projects={projects}
+          tagVocabularyHash={tagVocabularyHash(tags as TagVocabulary)}
           vocabularies={{
             frontends: frontends.frontends,
             primaryFunctions: primaryFunctions.primary_functions,

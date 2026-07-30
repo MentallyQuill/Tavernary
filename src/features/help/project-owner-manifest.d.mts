@@ -59,6 +59,10 @@ interface OwnerEnvelope<K extends OwnerOperation> {
   explanation: string | null;
 }
 
+interface OwnerTagVocabularyEnvelope {
+  tag_vocabulary_hash: string;
+}
+
 interface OwnerProjectEnvelope<
   K extends OwnerOperation,
 > extends OwnerEnvelope<K> {
@@ -72,12 +76,14 @@ interface OwnerSourceEnvelope<
   source_fingerprint: string;
 }
 
-export interface OwnerEditCardManifest extends OwnerProjectEnvelope<"edit-card"> {
+export interface OwnerEditCardManifest
+  extends OwnerProjectEnvelope<"edit-card">, OwnerTagVocabularyEnvelope {
   original: OwnerCardOriginal;
   proposed: OwnerEditableValues;
 }
 
-export interface OwnerAddCardsManifest extends OwnerSourceEnvelope<"add-cards"> {
+export interface OwnerAddCardsManifest
+  extends OwnerSourceEnvelope<"add-cards">, OwnerTagVocabularyEnvelope {
   proposed_cards: OwnerCardDraft[];
 }
 
@@ -140,6 +146,7 @@ export interface OwnerVocabularies {
   tags: VocabularyInput<"tags"> | readonly TagVocabularyEntry[];
   modelFamilies: VocabularyInput<"model_families">;
   completionFormats: VocabularyInput<"completion_formats">;
+  tagVocabularyHash: string;
   source?: {
     id: string;
     type: "github";
@@ -147,6 +154,8 @@ export interface OwnerVocabularies {
     repository_id: number;
   };
 }
+
+export const STALE_TAG_VOCABULARY_ERROR: string;
 
 export type OwnerManifestValidation =
   | { valid: true; manifest: ProjectOwnerManifest }

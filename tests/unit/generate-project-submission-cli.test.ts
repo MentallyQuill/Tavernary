@@ -10,6 +10,135 @@ import {
   runGenerateProjectSubmissionCli,
 } from "../../scripts/submissions/generate-project-submission.mjs";
 
+function repositorySubmissionFixture({
+  user,
+  ownerId,
+  metadata,
+  enrich,
+  copySummary,
+}: {
+  user: { id: number; login: string };
+  ownerId: number;
+  metadata: {
+    summary: { mode: "automatic" } | { mode: "manual"; value: string };
+    tags: { mode: "automatic" } | { mode: "manual"; values: string[] };
+  };
+  enrich: (input: unknown) => Promise<Record<string, unknown>>;
+  copySummary: (input: unknown) => Promise<Record<string, unknown>>;
+}) {
+  const headSha = "b".repeat(40);
+  return {
+    issue: {
+      number: 144,
+      state: "open",
+      labels: [{ name: "needs-maintainer-review" }],
+      user,
+      author_association: user.id === 2_625_904 ? "OWNER" : "NONE",
+      body: [
+        "### Project manifest",
+        "",
+        "```json",
+        JSON.stringify({
+          schema_version: 4,
+          project_type: "extension",
+          primary_function: "generation-reasoning",
+          source_url: "https://github.com/Owner/Repo",
+          frontends: { known_ids: ["sillytavern"], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+          metadata,
+        }),
+        "```",
+      ].join("\n"),
+    },
+    now: "2026-07-29T18:00:00.000Z",
+    sourceClients: {
+      request: async () => ({
+        id: 42,
+        owner: { id: ownerId, login: "Owner", type: "User" },
+        name: "Repo",
+        html_url: "https://github.com/Owner/Repo",
+        visibility: "public",
+        private: false,
+        archived: false,
+      }),
+      catalogData: {
+        vocabulary: {
+          frontends: [
+            {
+              id: "sillytavern",
+              label: "SillyTavern",
+              description: "Works with the SillyTavern roleplay frontend.",
+            },
+          ],
+        },
+        projects: [],
+        sources: [],
+      },
+      observe: async () => ({
+        observations: [
+          {
+            sourceId: "github-42",
+            repository: {
+              id: 42,
+              owner: "Owner",
+              name: "Repo",
+              url: "https://github.com/Owner/Repo",
+              description: "Repository description.",
+              defaultBranch: "main",
+              headSha,
+              headCommittedAt: "2026-07-29T17:00:00.000Z",
+              archived: false,
+              fork: false,
+              createdAt: "2026-01-01T00:00:00.000Z",
+              sizeKb: 12,
+            },
+            community: {
+              stargazersCount: 3,
+              forksCount: 2,
+              subscribersCount: 1,
+            },
+            latestReleaseAt: null,
+            coarseLicenseSpdxId: "MIT",
+          },
+        ],
+        failures: [],
+        usage: { requestCount: 1, pointCost: 2, remainingPoints: 4_998 },
+      }),
+      inspectActivity: async () => ({
+        complete: false,
+        activity: {
+          evidence_head_sha: headSha,
+          latest_source_activity_at: null,
+          source_weeks: [],
+          provisional_weeks: Array.from({ length: 12 }, () => false),
+          latest_release_at: null,
+          evidence_status: "provisional",
+          baseline_completed_at: null,
+          baseline_attempts: 0,
+        },
+        license: {
+          status: "osi-approved",
+          spdxId: "MIT",
+          sourcePath: "LICENSE",
+        },
+        requestCount: 2,
+        scan: null,
+      }),
+      fetchContributors: async () => ({
+        accounts: [],
+        requestCount: 1,
+        method: "merged-pull-requests",
+        baselineCompletedAt: null,
+        refreshedAt: null,
+        scan: null,
+      }),
+      enrich,
+      copySummary,
+    },
+  };
+}
+
 test("parses the generation CLI boundary", () => {
   expect(
     parseGenerateProjectSubmissionCli([
@@ -107,6 +236,12 @@ test("writes only declared repository files and the external report", async () =
 
 test("recovers an admitted v3 owner request without leaking manual copy to enrichment", async () => {
   const headSha = "a".repeat(40);
+  const copySummary = vi.fn(async () => ({
+    summary: "Submitted description.",
+    result: "accepted-unchanged" as const,
+    change_reasons: [],
+    policy_signal: "none" as const,
+  }));
   const enrich = vi.fn(async (_input: unknown) => ({
     status: "curated" as const,
     summary:
@@ -243,6 +378,7 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
         },
       }),
       fetchContributors,
+      copySummary,
       enrich,
     },
   });
@@ -270,7 +406,12 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
     actorId: 11,
     actorLogin: "owner",
   });
-  expect(draft.copyResult).toBeNull();
+  expect(draft.copyResult).toEqual({
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  });
+  expect(draft.copyMode).toBe("preserve");
   expect(draft.classificationReview).toMatchObject({
     status: "possible-mismatch",
     submitted_primary_function: "memory-retrieval",
@@ -304,6 +445,13 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
     }),
   );
   expect(enrich.mock.calls[0]?.[0]).not.toHaveProperty("submittedDescription");
+  expect(copySummary).toHaveBeenCalledWith(
+    expect.objectContaining({
+      authorityType: "repository-owner",
+      submittedSummary: "Submitted description.",
+      policyVersion: expect.any(String),
+    }),
+  );
   expect(draft.snapshot).toMatchObject({
     schema_version: 4,
     provider: "github",
@@ -331,6 +479,121 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
     }),
     { now: "2026-07-25T18:00:00.000Z", previous: undefined },
   );
+});
+
+test("preserves a trusted staff summary while leaving manual tags untouched", async () => {
+  const enrich = vi.fn(async () => {
+    throw new Error("Manual metadata must not enter enrichment.");
+  });
+  const copySummary = vi.fn(async () => ({
+    summary: "Staff-authored summary.",
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+  const draft = await prepareProjectSubmissionDraft(
+    repositorySubmissionFixture({
+      user: { id: 2_625_904, login: "MentallyQuill" },
+      ownerId: 11,
+      metadata: {
+        summary: { mode: "manual", value: "Staff-authored summary." },
+        tags: {
+          mode: "manual",
+          values: ["add-structured-reasoning"],
+        },
+      },
+      enrich,
+      copySummary,
+    }),
+  );
+
+  expect(enrich).not.toHaveBeenCalled();
+  expect(copySummary).toHaveBeenCalledWith(
+    expect.objectContaining({
+      authorityType: "tavernary-staff",
+      submittedSummary: "Staff-authored summary.",
+    }),
+  );
+  expect(draft.record).toMatchObject({
+    summary: "Staff-authored summary.",
+    tags: ["add-structured-reasoning"],
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+      tags: {
+        mode: "manual",
+        note: "Trusted Tavernary editor selection.",
+      },
+    },
+  });
+  expect(draft.copyMode).toBe("preserve");
+});
+
+test("discards community manual metadata before synthesized enrichment", async () => {
+  const enrich = vi.fn(async () => ({
+    status: "curated",
+    summary:
+      "Synthesized source-grounded summary for the repository. It describes the verified workflow without using community prose.",
+    tags: ["add-structured-reasoning"],
+    classification_review: {
+      status: "confirmed",
+      suggested_primary_function: "generation-reasoning",
+      explanation: null,
+    },
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+  const copySummary = vi.fn(async () => {
+    throw new Error("Unauthorized copy must not reach preservation.");
+  });
+  const draft = await prepareProjectSubmissionDraft(
+    repositorySubmissionFixture({
+      user: { id: 77, login: "Community" },
+      ownerId: 11,
+      metadata: {
+        summary: {
+          mode: "manual",
+          value: "Do not send this community text to a model.",
+        },
+        tags: {
+          mode: "manual",
+          values: ["maintain-long-term-memory"],
+        },
+      },
+      enrich,
+      copySummary,
+    }),
+  );
+
+  expect(copySummary).not.toHaveBeenCalled();
+  expect(enrich).toHaveBeenCalledWith(
+    expect.objectContaining({
+      requestedFields: ["summary", "tags"],
+      metadataRequest: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
+    }),
+  );
+  expect(JSON.stringify(enrich.mock.calls)).not.toContain(
+    "Do not send this community text to a model.",
+  );
+  expect(JSON.stringify(draft)).not.toContain(
+    "Do not send this community text to a model.",
+  );
+  expect(draft.record).toMatchObject({
+    summary:
+      "Synthesized source-grounded summary for the repository. It describes the verified workflow without using community prose.",
+    tags: ["add-structured-reasoning"],
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(draft.copyMode).toBe("synthesize");
 });
 
 test("prepares a Codeberg draft through the repository provider", async () => {

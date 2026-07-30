@@ -3,6 +3,7 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
+import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
@@ -94,6 +95,12 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       observed: draft.observed,
       inferred: draft.inferred,
       metadata_authority: draft.metadataAuthority ?? null,
+      copy_mode: draft.copyResult
+        ? (draft.copyMode ??
+          (draft.record.metadata_policy?.summary?.mode === "manual"
+            ? "preserve"
+            : "synthesize"))
+        : null,
       copy_result: draft.copyResult ?? null,
       input_digest: draft.inputDigest ?? null,
       source_identity: draft.sourceIdentity ?? null,
@@ -259,9 +266,10 @@ function protectedTermsForSubmission({
   data,
   submittedDescription,
 }) {
-  const repositoryParts = decision.identity.repository
-    .split("/")
-    .filter(Boolean);
+  const repositoryParts =
+    typeof decision.identity.repository === "string"
+      ? decision.identity.repository.split("/").filter(Boolean)
+      : [];
   const frontendLabels = data.vocabulary.frontends
     .filter(({ id }) => decision.frontendIds.includes(id))
     .map(({ label }) => label);
@@ -383,6 +391,26 @@ export async function prepareProjectSubmissionDraft({
     requested: decision.manifest.metadata,
     authority: metadataAuthority,
   });
+  const manualSummaryCopy =
+    metadataRequest.summary.mode === "manual"
+      ? await preserveCatalogSummary({
+          authorityType: metadataAuthority.authorityType,
+          submittedSummary: metadataRequest.summary.value,
+          protectedTerms: protectedTermsForSubmission({
+            record: {
+              name:
+                inspection.repository?.name ??
+                decision.identity.name ??
+                decision.identity.pathSlug ??
+                "",
+            },
+            decision,
+            data,
+            submittedDescription: metadataRequest.summary.value,
+          }),
+          copySummary: sourceClients.copySummary,
+        })
+      : null;
 
   if (!isRepositoryIdentity(decision.identity)) {
     const draft = await draftProjectRecord({
@@ -394,6 +422,14 @@ export async function prepareProjectSubmissionDraft({
       frontendProjects: data.projects,
       metadataAuthority,
       metadataRequest,
+      ...(manualSummaryCopy
+        ? {
+            publishedSummary: manualSummaryCopy.publishedSummary,
+            copyResult: manualSummaryCopy.copyResult,
+            copyMode: manualSummaryCopy.mode,
+            copyRequired: true,
+          }
+        : {}),
       now,
     });
     assertProjectIdAvailable(draft.record, data.projects);
@@ -556,7 +592,15 @@ export async function prepareProjectSubmissionDraft({
       frontendProjects: data.projects,
       metadataAuthority,
       metadataRequest,
-      copyRequired: requestedFields.includes("summary"),
+      ...(manualSummaryCopy
+        ? {
+            publishedSummary: manualSummaryCopy.publishedSummary,
+            copyResult: manualSummaryCopy.copyResult,
+            copyMode: manualSummaryCopy.mode,
+          }
+        : {}),
+      copyRequired:
+        manualSummaryCopy !== null || requestedFields.includes("summary"),
       now,
     }),
     decision,

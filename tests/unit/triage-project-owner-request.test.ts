@@ -10,12 +10,14 @@ import { processProjectOwnerTriage } from "../../scripts/help/triage-project-own
 
 const root = resolve("test-fixtures", "owner-request-repository");
 const normalizedRoot = root.replaceAll("\\", "/");
+const currentTagVocabularyHash = "f".repeat(64);
 const vocabularies = {
   frontends: ["sillytavern"],
   primaryFunctions: ["interface-workflow"],
   tags: [{ id: "automation", applicable_kinds: ["extension"] }],
   modelFamilies: ["claude"],
   completionFormats: ["chat-completion"],
+  tagVocabularyHash: currentTagVocabularyHash,
 };
 
 function source(overrides: Record<string, unknown> = {}) {
@@ -75,6 +77,7 @@ function editManifest(current = project()) {
     schema_version: 2,
     request_kind: "project-owner",
     operation: "edit-card",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     project_id: "owner-alpha",
     repository_id: 42,
@@ -90,6 +93,7 @@ function addManifest(currentSource = source()) {
     schema_version: 2,
     request_kind: "project-owner",
     operation: "add-cards",
+    tag_vocabulary_hash: currentTagVocabularyHash,
     source_id: "github-42",
     repository_id: 42,
     source_fingerprint: fingerprintSourceRecord(currentSource),
@@ -242,6 +246,26 @@ test("admits a source-scoped add-card batch without requiring a selected card", 
   });
 });
 
+test("rejects a tag-bearing request created against a stale vocabulary hash", async () => {
+  const latest = issue({
+    ...editManifest(),
+    tag_vocabulary_hash: "e".repeat(64),
+  });
+  await expect(
+    processProjectOwnerTriage({
+      issue: latest,
+      project: project(),
+      source: source(),
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "tag-vocabulary-stale",
+    message: expect.stringContaining("Rebuild and resubmit"),
+  });
+});
+
 test("rejects a later unresolved add-card batch for the same immutable source", async () => {
   const currentSource = source();
   const latest = issue(addManifest(currentSource));
@@ -378,7 +402,7 @@ test("requires repository-wide delisting confirmation", async () => {
   });
 });
 
-test("constructs and validates the readable edit fallback without trusting its repository URL", async () => {
+test("invalidates a readable edit fallback that has no vocabulary hash", async () => {
   const currentProject = project();
   const fallbackIssue = {
     ...issue(),
@@ -415,11 +439,8 @@ test("constructs and validates the readable edit fallback without trusting its r
       vocabularies,
     }),
   ).resolves.toMatchObject({
-    status: "admitted",
-    manifest: {
-      project_id: "owner-alpha",
-      proposed: { summary: "Fallback owner summary." },
-    },
+    status: "needs-information",
+    reasonCode: "tag-vocabulary-stale",
   });
 });
 

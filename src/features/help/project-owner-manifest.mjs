@@ -23,15 +23,23 @@ const BASE_KEYS = [
   "repository_id",
   "explanation",
 ];
+export const STALE_TAG_VOCABULARY_ERROR =
+  "Owner request tag vocabulary is stale. Rebuild and resubmit the request.";
 const OPERATION_KEYS = {
   "edit-card": [
     ...BASE_KEYS,
+    "tag_vocabulary_hash",
     "project_id",
     "project_fingerprint",
     "original",
     "proposed",
   ],
-  "add-cards": [...BASE_KEYS, "source_fingerprint", "proposed_cards"],
+  "add-cards": [
+    ...BASE_KEYS,
+    "tag_vocabulary_hash",
+    "source_fingerprint",
+    "proposed_cards",
+  ],
   "retire-card": [
     ...BASE_KEYS,
     "project_id",
@@ -547,6 +555,18 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
       `Owner request explanation must be ${explanationLimit.toLocaleString("en-US")} characters or fewer.`,
     );
   }
+  const usesTags = operation === "edit-card" || operation === "add-cards";
+  const tagVocabularyHash = usesTags
+    ? requiredText(value?.tag_vocabulary_hash)
+    : null;
+  if (
+    usesTags &&
+    (!FINGERPRINT_PATTERN.test(tagVocabularyHash) ||
+      !FINGERPRINT_PATTERN.test(rawVocabularies?.tagVocabularyHash ?? "") ||
+      tagVocabularyHash !== rawVocabularies.tagVocabularyHash)
+  ) {
+    errors.push(STALE_TAG_VOCABULARY_ERROR);
+  }
 
   const tagIndex = tagVocabulary(rawVocabularies);
   const vocabularies = {
@@ -600,6 +620,7 @@ export function normalizeProjectOwnerManifest(value, rawVocabularies) {
       operation,
       source_id: sourceId,
       repository_id: repositoryId,
+      ...(usesTags ? { tag_vocabulary_hash: tagVocabularyHash } : {}),
       ...(usesProject
         ? {
             project_id: projectId,

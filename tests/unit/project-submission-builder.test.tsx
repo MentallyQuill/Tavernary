@@ -4,6 +4,11 @@ import { afterEach, expect, test, vi } from "vitest";
 
 import ProjectSubmissionPage from "@/app/submit/project/page";
 import { ProjectSubmissionBuilder } from "@/features/submissions/components/project-submission-builder";
+import trackedTags from "../../data/vocabularies/tags.json";
+import {
+  publicTagVocabulary,
+  type TagVocabulary,
+} from "../../scripts/catalog/tag-vocabulary.mjs";
 
 const { openProjectSubmission } = vi.hoisted(() => ({
   openProjectSubmission: vi.fn().mockResolvedValue("prefilled"),
@@ -51,6 +56,7 @@ const frontends = [
     canonicalUrl: "https://github.com/prolix-oc/Lumiverse",
   },
 ];
+const publicTags = publicTagVocabulary(trackedTags as TagVocabulary);
 
 const frontendEligibility =
   "Frontends and Extensions require a public GitHub or Codeberg repository.";
@@ -101,7 +107,12 @@ test("defaults summary and tags to Tavernary automation", async () => {
 
 test("reveals independent bounded manual metadata controls", async () => {
   const user = userEvent.setup();
-  render(<ProjectSubmissionBuilder frontends={frontends} />);
+  render(
+    <ProjectSubmissionBuilder
+      frontends={frontends}
+      tagVocabulary={publicTags}
+    />,
+  );
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
   await chooseMetadataOption(

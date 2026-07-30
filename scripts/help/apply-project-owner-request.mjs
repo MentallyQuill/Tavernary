@@ -1,8 +1,15 @@
-import { normalizeProjectOwnerManifest } from "../../src/features/help/project-owner-manifest.mjs";
+import {
+  normalizeProjectOwnerManifest,
+  STALE_TAG_VOCABULARY_ERROR,
+} from "../../src/features/help/project-owner-manifest.mjs";
 import {
   fingerprintProjectRecord,
   fingerprintSourceRecord,
 } from "../../src/features/help/project-owner-record.mjs";
+import {
+  automaticMetadataPolicy,
+  manualMetadataPolicy,
+} from "../catalog/metadata-policy.mjs";
 
 const PROJECT_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const PROJECT_OPERATIONS = new Set([
@@ -71,7 +78,12 @@ function normalizeManifest(input) {
     },
   });
   if (!normalized.valid) {
-    fail("owner-request-invalid", normalized.errors.join(" "));
+    fail(
+      normalized.errors.includes(STALE_TAG_VOCABULARY_ERROR)
+        ? "tag-vocabulary-stale"
+        : "owner-request-invalid",
+      normalized.errors.join(" "),
+    );
   }
   return normalized.manifest;
 }
@@ -114,38 +126,86 @@ function requireOperationFingerprint(manifest, projects, source) {
   return null;
 }
 
-function metadataPolicy(metadata, issueNumber) {
+function metadataPolicy(metadata, authorityType) {
+  function policy(field) {
+    if (field.mode === "automatic") return automaticMetadataPolicy();
+    try {
+      return manualMetadataPolicy(authorityType);
+    } catch {
+      fail(
+        "owner-request-invalid",
+        "Manual metadata requires verified repository-owner or tavernary-staff authority.",
+      );
+    }
+  }
   return {
-    summary:
-      metadata.summary.mode === "manual"
-        ? {
-            mode: "manual",
-            note: `Owner-authored summary approved through issue #${issueNumber}.`,
-          }
-        : { mode: "automatic" },
-    tags:
-      metadata.tags.mode === "manual"
-        ? {
-            mode: "manual",
-            note: `Owner-authored tags approved through issue #${issueNumber}.`,
-          }
-        : { mode: "automatic" },
+    summary: policy(metadata.summary),
+    tags: policy(metadata.tags),
+  };
+}
+
+function resolvedMetadata(input, draft, projectId) {
+  const resolved = input.resolvedMetadataByProjectId?.[projectId];
+  if (
+    !resolved ||
+    typeof resolved.summary !== "string" ||
+    resolved.summary.trim().length === 0 ||
+    resolved.summary.length > 220 ||
+    !Array.isArray(resolved.tags) ||
+    resolved.tags.length > 6 ||
+    resolved.tags.some((tag) => typeof tag !== "string" || !tag) ||
+    new Set(resolved.tags).size !== resolved.tags.length
+  ) {
+    fail(
+      "owner-request-invalid",
+      `Resolved metadata is missing or invalid for ${projectId}.`,
+    );
+  }
+  if (
+    draft.metadata.tags.mode === "manual" &&
+    JSON.stringify(resolved.tags) !== JSON.stringify(draft.tags)
+  ) {
+    fail(
+      "owner-request-invalid",
+      `Manual tags changed during generation for ${projectId}.`,
+    );
+  }
+  const definitions = new Map(
+    (input.vocabularies?.tags ?? []).map((tag) => [tag.id, tag]),
+  );
+  for (const tag of resolved.tags) {
+    const definition = definitions.get(tag);
+    if (
+      !definition ||
+      !Array.isArray(definition.applicable_kinds) ||
+      !definition.applicable_kinds.includes(draft.kind)
+    ) {
+      fail(
+        "owner-request-invalid",
+        `Resolved metadata contains an unknown or inapplicable tag for ${projectId}.`,
+      );
+    }
+  }
+  return {
+    summary: resolved.summary,
+    tags: structuredClone(resolved.tags),
   };
 }
 
 function cardFromDraft(input, draft) {
+  const resolved = resolvedMetadata(input, draft, draft.project_id);
   const record = {
     schema_version: 6,
     id: draft.project_id,
     name: draft.name,
     kind: draft.kind,
-    summary: draft.summary,
+    summary: resolved.summary,
     metadata_status: "curated",
     source_id: input.source.id,
     frontends: structuredClone(draft.frontends),
     primary_function: draft.primary_function,
-    tags: structuredClone(draft.tags),
-    metadata_policy: metadataPolicy(draft.metadata, input.issueNumber),
+    tags: resolved.tags,
+    metadata_policy: metadataPolicy(draft.metadata, input.authorityType),
     ...(draft.kind === "preset"
       ? {
           model_families: structuredClone(draft.model_families),
@@ -186,26 +246,17 @@ function applyCardEdit(input, manifest, project) {
     }
     updated[field] = structuredClone(manifest.proposed[field]);
   }
-  if (
-    manifest.original.summary !== manifest.proposed.summary &&
-    input.publishedSummary !== undefined
-  ) {
-    if (
-      typeof input.publishedSummary !== "string" ||
-      input.publishedSummary.length < 1 ||
-      input.publishedSummary.length > 220
-    ) {
-      fail(
-        "owner-request-invalid",
-        "Published owner summary must be one to 220 characters.",
-      );
-    }
-    updated.summary = input.publishedSummary;
-  }
+  const resolved = resolvedMetadata(
+    input,
+    { ...manifest.proposed, kind: project.kind },
+    project.id,
+  );
+  updated.summary = resolved.summary;
+  updated.tags = resolved.tags;
   updated.metadata_status = "curated";
   updated.metadata_policy = metadataPolicy(
     manifest.proposed.metadata,
-    input.issueNumber,
+    input.authorityType,
   );
   return {
     projects: [updated],

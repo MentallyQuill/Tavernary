@@ -1,4 +1,33 @@
+import type {
+  CatalogCopyChangeReason,
+  CatalogCopyPolicySignal,
+  CatalogCopyResultStatus,
+} from "../catalog/catalog-copy-contract.mjs";
+import type {
+  EnrichmentOutput,
+  MetadataField,
+} from "../catalog/enrichment-contract.mjs";
 import type { OwnerTriageIssue } from "./triage-project-owner-request.d.mts";
+
+export interface OwnerCopyResult {
+  project_id: string;
+  mode: "preserve" | "synthesize";
+  submitted_summary: string | null;
+  published_summary: string;
+  copy_result: {
+    result: CatalogCopyResultStatus;
+    change_reasons: CatalogCopyChangeReason[];
+    policy_signal: CatalogCopyPolicySignal;
+  };
+}
+
+export interface OwnerMetadataResult {
+  project_id: string;
+  requested_fields: MetadataField[];
+  summary_evidence?: string[];
+  tag_evidence?: Array<{ id: string; evidence: string[] }>;
+  tag_generation_diagnostic?: string;
+}
 
 export interface OwnerGenerationReport {
   schema_version: 2;
@@ -31,6 +60,12 @@ export interface OwnerGenerationReport {
   } | null;
   policy_version: string;
   generated_at: string;
+  copy_results: OwnerCopyResult[];
+  metadata_results: OwnerMetadataResult[];
+  submitted_summary?: string | null;
+  published_summary?: string;
+  copy_mode?: "preserve" | "synthesize";
+  copy_result?: OwnerCopyResult["copy_result"];
   before: unknown;
   after: unknown;
   warnings: string[];
@@ -67,6 +102,17 @@ export function generateProjectOwnerRequest(input: {
   ) => Promise<void>;
   mkdir?: (path: string, options: { recursive: true }) => Promise<unknown>;
   rm?: (path: string, options: { force: true }) => Promise<unknown>;
+  copySummary?: (input: Record<string, unknown>) => Promise<{
+    summary: string;
+    result: CatalogCopyResultStatus;
+    change_reasons: CatalogCopyChangeReason[];
+    policy_signal: CatalogCopyPolicySignal;
+  }>;
+  enrichMetadata?: (
+    input: Record<string, unknown>,
+  ) => Promise<EnrichmentOutput>;
+  enrichmentProvider?: unknown;
+  loadEnrichmentSource?: (...args: any[]) => Promise<any>;
 }): Promise<OwnerGenerationResult>;
 
 export function fingerprintProjectOwnerManifest(
