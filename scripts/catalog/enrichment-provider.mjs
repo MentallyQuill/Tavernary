@@ -276,7 +276,7 @@ export function createEnrichmentProvider(options) {
   const transport = createStructuredProviderTransport(options);
   return {
     async generate(input) {
-      return transport.request({
+      const response = await transport.request({
         model: transport.configuration.model,
         temperature: input.repair
           ? 0
@@ -296,6 +296,37 @@ export function createEnrichmentProvider(options) {
           },
         },
       });
+      let normalizedOutput = response.output;
+      if (
+        response.output?.policy_signal === null &&
+        ["accepted-unchanged", "accepted-with-light-edits"].includes(
+          response.output?.result,
+        )
+      ) {
+        normalizedOutput = {
+          ...normalizedOutput,
+          policy_signal: "none",
+        };
+      }
+      const review = response.output?.classification_review;
+      const submittedPrimaryFunction =
+        input.classificationReviewRequest?.submittedPrimaryFunction;
+      if (
+        review?.status === "confirmed" &&
+        typeof submittedPrimaryFunction === "string" &&
+        review.suggested_primary_function !== submittedPrimaryFunction
+      ) {
+        normalizedOutput = {
+          ...normalizedOutput,
+          classification_review: {
+            ...review,
+            suggested_primary_function: submittedPrimaryFunction,
+          },
+        };
+      }
+      return normalizedOutput === response.output
+        ? response
+        : { ...response, output: normalizedOutput };
     },
   };
 }

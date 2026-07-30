@@ -293,6 +293,95 @@ test("repairs one invalid preservation result with sanitized validation context"
   );
 });
 
+test("degrades an invalid optional classification review without losing valid copy", async () => {
+  const generate = vi.fn(async (_input: unknown) => ({
+    output: {
+      summary:
+        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: {
+        status: "possible-mismatch" as const,
+        suggested_primary_function: "interface-workflow",
+        explanation: null,
+      },
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await expect(
+    enrichRecord(
+      record,
+      sourceRecord,
+      snapshot,
+      { generate },
+      {
+        vocabularies,
+        classificationReviewRequest: {
+          submittedPrimaryFunction: "developer-infrastructure",
+          allowedPrimaryFunctions: [
+            { id: "developer-infrastructure", label: "Developer" },
+            { id: "interface-workflow", label: "Interface" },
+          ],
+        },
+        loadSource: async () => readySource("fixture"),
+      },
+    ),
+  ).resolves.toMatchObject({
+    metadata_status: "curated",
+    classification_review: null,
+    ...copyMetadata,
+  });
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate.mock.calls[1][0]).toMatchObject({
+    repair: {
+      reasonCode: "output-invalid",
+      message: expect.stringContaining(
+        "possible-mismatch classification_review explanation",
+      ),
+    },
+  });
+});
+
+test("does not hide invalid catalog copy behind an invalid classification review", async () => {
+  const generate = vi.fn(async (_input: unknown) => ({
+    output: {
+      summary: "Too short.",
+      metadata_status: "curated" as const,
+      capabilities: ["automation"],
+      classification_review: {
+        status: "provider-invented-status" as "confirmed",
+        suggested_primary_function: "provider-invented-category",
+        explanation: null,
+      },
+      ...copyMetadata,
+    },
+    metadata: providerMetadata,
+  }));
+
+  await expect(
+    enrichRecord(
+      record,
+      sourceRecord,
+      snapshot,
+      { generate },
+      {
+        vocabularies,
+        classificationReviewRequest: {
+          submittedPrimaryFunction: "developer-infrastructure",
+          allowedPrimaryFunctions: [
+            { id: "developer-infrastructure", label: "Developer" },
+            { id: "interface-workflow", label: "Interface" },
+          ],
+        },
+        loadSource: async () => readySource("fixture"),
+      },
+    ),
+  ).rejects.toThrow("summary must contain between 24 and 36 words");
+  expect(generate).toHaveBeenCalledTimes(2);
+});
+
 test("selects an automatic published Reddit record without a repository snapshot", () => {
   const reddit = {
     ...record,

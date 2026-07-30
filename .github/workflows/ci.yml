@@ -112,3 +112,29 @@ jobs:
         run: npm run test:kits-e2e
       - name: Run Kit fixture layout regression tests
         run: npm run test:kits-visual
+
+  dispatch-project-publication:
+    name: Dispatch validated project publication
+    needs:
+      - verify
+      - visual
+    if: >-
+      always() &&
+      github.event_name == 'workflow_dispatch' &&
+      (startsWith(github.ref_name, 'automation/project-submission-') ||
+       startsWith(github.ref_name, 'automation/project-owner-request-')) &&
+      needs.verify.result == 'success' &&
+      (needs.visual.result == 'success' || needs.visual.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch exact validation run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh workflow run publish-project-transaction.yml
+          --repo "$GITHUB_REPOSITORY"
+          --ref main
+          -f validation_run_id="$GITHUB_RUN_ID"

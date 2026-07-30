@@ -5,13 +5,14 @@ function positiveInteger(value) {
 }
 
 function actorIdentity(actor) {
-  return {
+  const identity = {
     actorId: positiveInteger(actor?.id) ? actor.id : null,
     actorLogin:
       typeof actor?.login === "string" && actor.login.length > 0
         ? actor.login
         : null,
   };
+  return actor?.type === "Bot" ? { ...identity, actorType: "Bot" } : identity;
 }
 
 export function classifySubmissionMetadataAuthority(input) {

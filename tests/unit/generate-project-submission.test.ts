@@ -201,6 +201,33 @@ test("fails closed when a snapshot belongs to a different source", async () => {
   ).rejects.toThrow("source and snapshot records do not match");
 });
 
+test("preserves a generated GitHub bot actor in the audit report", async () => {
+  const generated = await generateProjectSubmission({
+    issueNumber: 152,
+    draft: {
+      record,
+      source,
+      snapshot,
+      submitted: {},
+      observed: {},
+      inferred: {},
+      summaryAuthority: {
+        authorityType: "community-submitter",
+        actorId: 41_898_282,
+        actorLogin: "github-actions[bot]",
+        actorType: "Bot",
+      },
+      warnings: [],
+    },
+  });
+
+  expect(generated.report.actor).toEqual({
+    id: 41_898_282,
+    login: "github-actions[bot]",
+    type: "Bot",
+  });
+});
+
 test("includes a sorted vocabulary update only for a frontend proposal", async () => {
   const generated = await generateProjectSubmission({
     issueNumber: 124,
