@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "xo-nara-st-weather-overlay",
+  "source_id": "github-1291504198",
+  "source_identity": "github:xo-nara/st-weather-overlay",
+  "evidence_fingerprint": "651251481191534a913f68bc4c9fe4c1f178c0e6814a89c04afb5bb3ab057d65",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T22:06:28.839Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T22:06:28.839Z"
+  },
+  "maintenance_issue_number": null
+}
