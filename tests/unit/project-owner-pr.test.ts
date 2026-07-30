@@ -224,6 +224,42 @@ test("renders source-synthesized owner copy and preserves its transaction mode",
   expect(parseOwnerRequestPullRequestMarker(body)).toEqual(synthesizeMarker);
 });
 
+test("renders unavailable manual owner copy as required maintainer review", () => {
+  const manualMarker = {
+    ...transactionMarker,
+    publication_mode: "manual" as const,
+    copy_result: null,
+  };
+  const body = renderOwnerRequestPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      publication_mode: "manual",
+      submitted_summary: "Exact owner wording.",
+      published_summary: "Exact owner wording.",
+      copy_mode: "preserve",
+      copy_result: null,
+      copy_results: [
+        {
+          project_id: "owner-alpha",
+          mode: "preserve",
+          review_status: "unavailable",
+          reason_code: "copy-review-unavailable",
+          submitted_summary: "Exact owner wording.",
+          published_summary: "Exact owner wording.",
+          copy_result: null,
+        },
+      ],
+    },
+    marker: manualMarker,
+  });
+
+  expect(body).toContain("Publication: `manual`");
+  expect(body).toContain("Contextual catalog-copy review was unavailable");
+  expect(body).toContain("maintainer must inspect the owner wording");
+  expect(parseOwnerRequestPullRequestMarker(body)).toEqual(manualMarker);
+});
+
 test("accepts a trusted staff marker without repository identity", () => {
   const staffMarker = {
     ...transactionMarker,

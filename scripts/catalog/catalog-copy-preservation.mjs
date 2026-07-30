@@ -4,6 +4,17 @@ import { createCatalogCopyProvider } from "./catalog-copy-provider.mjs";
 
 const trustedAuthorities = new Set(["repository-owner", "tavernary-staff"]);
 
+function unavailableCopyReview(submittedSummary) {
+  return {
+    mode: "preserve",
+    reviewStatus: "unavailable",
+    reasonCode: "copy-review-unavailable",
+    submittedSummary,
+    publishedSummary: submittedSummary,
+    copyResult: null,
+  };
+}
+
 async function defaultCopySummary(input) {
   const provider = createCatalogCopyProvider({
     apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
@@ -57,20 +68,29 @@ export async function preserveCatalogSummary(input) {
     policyVersion: input.policyVersion ?? CATALOG_POLICY_VERSION,
   };
   const copySummary = input.copySummary ?? defaultCopySummary;
-  let output = await copySummary(request);
+  let output;
+  try {
+    output = await copySummary(request);
+  } catch {
+    return unavailableCopyReview(request.submittedSummary);
+  }
   let validation = validateCatalogCopyResult(output, {
     mode: "preserve",
     submittedSummary: request.submittedSummary,
     protectedTerms: request.protectedTerms,
   });
   if (!validation.valid) {
-    output = await copySummary({
-      ...request,
-      repair: {
-        reasonCode: "output-invalid",
-        message: validation.repairHint,
-      },
-    });
+    try {
+      output = await copySummary({
+        ...request,
+        repair: {
+          reasonCode: "output-invalid",
+          message: validation.repairHint,
+        },
+      });
+    } catch {
+      return unavailableCopyReview(request.submittedSummary);
+    }
     validation = validateCatalogCopyResult(output, {
       mode: "preserve",
       submittedSummary: request.submittedSummary,
@@ -78,12 +98,11 @@ export async function preserveCatalogSummary(input) {
     });
   }
   if (!validation.valid) {
-    const error = new Error(validation.repairHint);
-    error.code = "catalog-copy-invalid";
-    throw error;
+    return unavailableCopyReview(request.submittedSummary);
   }
   return {
     mode: "preserve",
+    reviewStatus: "validated",
     submittedSummary: request.submittedSummary,
     publishedSummary: output.summary,
     copyResult: {

@@ -77,6 +77,26 @@ function reportCopyEntries(report) {
 }
 
 function renderCopyEntry(entry, includeProjectHeading) {
+  if (entry.review_status === "unavailable") {
+    if (
+      entry.mode !== "preserve" ||
+      entry.reason_code !== "copy-review-unavailable" ||
+      entry.copy_result !== null ||
+      typeof entry.submitted_summary !== "string" ||
+      entry.submitted_summary.length === 0 ||
+      entry.published_summary !== entry.submitted_summary
+    ) {
+      throw new Error("Owner pull request copy report is invalid.");
+    }
+    return [
+      ...(includeProjectHeading
+        ? [`### ${safeText(entry.project_id, 120)}`, ""]
+        : []),
+      "Contextual catalog-copy review was unavailable, so the submitted owner summary was preserved exactly.",
+      "",
+      "A maintainer must inspect the owner wording before merging this manual publication transaction.",
+    ];
+  }
   const validation = validateCatalogCopyResult(
     {
       summary: entry.published_summary,

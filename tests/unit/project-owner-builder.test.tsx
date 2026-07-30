@@ -490,7 +490,7 @@ test("uses independent metadata choices for ordinary edits", async () => {
   });
 });
 
-test("makes edited summary and tags manual while preserving an explicit automatic choice", async () => {
+test("keeps automatic metadata policies while editing proposal context", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
@@ -505,23 +505,18 @@ test("makes edited summary and tags manual while preserving an explicit automati
   await user.type(summary, "An owner-authored replacement summary.");
   await user.click(screen.getByRole("checkbox", { name: "Creative writing" }));
 
-  expect(screen.getByLabelText("Summary policy")).toHaveValue("manual");
-  expect(screen.getByLabelText("Tag policy")).toHaveValue("manual");
-
-  await user.selectOptions(
-    screen.getByLabelText("Summary policy"),
-    "automatic",
-  );
+  expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
+  expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
   await user.type(
     screen.getByLabelText("Public note (optional)"),
     "Keep automatic summary generation.",
   );
   await user.click(screen.getByRole("button", { name: "Review request" }));
 
-  expect(screen.getByText("Summary: automatic; tags: manual")).toBeVisible();
+  expect(screen.getByText("Summary: automatic; tags: automatic")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Back and edit" }));
   expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
-  expect(screen.getByLabelText("Tag policy")).toHaveValue("manual");
+  expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
   await user.click(screen.getByRole("button", { name: "Review request" }));
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
@@ -539,7 +534,7 @@ test("makes edited summary and tags manual while preserving an explicit automati
       tags: ["automate-workflows", "creative-writing"],
       metadata: {
         summary: { mode: "automatic" },
-        tags: { mode: "manual" },
+        tags: { mode: "automatic" },
       },
     },
   });

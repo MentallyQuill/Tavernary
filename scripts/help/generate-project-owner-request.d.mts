@@ -12,13 +12,15 @@ import type { OwnerTriageIssue } from "./triage-project-owner-request.d.mts";
 export interface OwnerCopyResult {
   project_id: string;
   mode: "preserve" | "synthesize";
+  review_status?: "validated" | "unavailable";
+  reason_code?: "copy-review-unavailable";
   submitted_summary: string | null;
   published_summary: string;
   copy_result: {
     result: CatalogCopyResultStatus;
     change_reasons: CatalogCopyChangeReason[];
     policy_signal: CatalogCopyPolicySignal;
-  };
+  } | null;
 }
 
 export interface OwnerMetadataResult {

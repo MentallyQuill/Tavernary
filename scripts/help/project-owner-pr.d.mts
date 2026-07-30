@@ -52,10 +52,12 @@ export function renderOwnerRequestPullRequest(input: {
         | "accepted-with-policy-rewrite";
       change_reasons: string[];
       policy_signal: "none" | "catalog-policy-rewrite";
-    };
+    } | null;
     copy_results?: Array<{
       project_id: string;
       mode: "preserve" | "synthesize";
+      review_status?: "validated" | "unavailable";
+      reason_code?: "copy-review-unavailable";
       submitted_summary: string | null;
       published_summary: string;
       copy_result: {
@@ -65,7 +67,7 @@ export function renderOwnerRequestPullRequest(input: {
           | "accepted-with-policy-rewrite";
         change_reasons: string[];
         policy_signal: "none" | "catalog-policy-rewrite";
-      };
+      } | null;
     }>;
     before: unknown;
     after: unknown;
@@ -134,7 +136,7 @@ export function planOwnerPrUpdate(input: {
         | "accepted-with-policy-rewrite";
       change_reasons: string[];
       policy_signal: "none" | "catalog-policy-rewrite";
-    };
+    } | null;
     generated_paths: string[];
   };
   repository: string;

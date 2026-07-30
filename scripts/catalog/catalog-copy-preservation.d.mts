@@ -5,8 +5,9 @@ import type {
   CatalogCopyResultStatus,
 } from "./catalog-copy-contract.mjs";
 
-export interface PreservedCatalogSummary {
+export interface ValidatedPreservedCatalogSummary {
   mode: "preserve";
+  reviewStatus: "validated";
   submittedSummary: string;
   publishedSummary: string;
   copyResult: {
@@ -15,6 +16,18 @@ export interface PreservedCatalogSummary {
     policy_signal: CatalogCopyPolicySignal;
   };
 }
+
+export interface UnavailablePreservedCatalogSummary {
+  mode: "preserve";
+  reviewStatus: "unavailable";
+  reasonCode: "copy-review-unavailable";
+  submittedSummary: string;
+  publishedSummary: string;
+  copyResult: null;
+}
+
+export type PreservedCatalogSummary =
+  ValidatedPreservedCatalogSummary | UnavailablePreservedCatalogSummary;
 
 export function preserveCatalogSummary(input: {
   authorityType: "repository-owner" | "tavernary-staff";
