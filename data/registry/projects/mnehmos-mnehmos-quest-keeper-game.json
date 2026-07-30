@@ -1,11 +1,11 @@
 {
   "schema_version": 6,
   "id": "mnehmos-mnehmos-quest-keeper-game",
-  "name": "Narrative Engine",
+  "name": "Quest Keeper",
   "kind": "frontend",
   "summary": "Quest Keeper AI is a desktop RPG companion that pairs an AI Dungeon Master with a visual game engine. It gives every action mechanical weight, tracks quest progress, and keeps the world persistent across sessions.",
   "metadata_status": "curated",
-  "frontends": ["narrative-engine"],
+  "frontends": ["quest-keeper"],
   "primary_function": "frontend",
   "cataloged_at": "2026-07-27T21:28:32.641Z",
   "catalog_cohort": "standard",

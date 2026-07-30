@@ -121,6 +121,54 @@ describe("full catalog data", () => {
     );
   });
 
+  test("keeps standalone frontends mapped to distinct catalog identities", async () => {
+    const { projects, projectsById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+    const frontendVocabulary = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/frontends.json"),
+        "utf8",
+      ),
+    ) as { frontends: Array<{ id: string; label: string }> };
+    const expected = [
+      {
+        id: "kwaroran-risuai",
+        name: "RisuAI",
+        frontendId: "risuai",
+      },
+      {
+        id: "mnehmos-mnehmos-quest-keeper-game",
+        name: "Quest Keeper",
+        frontendId: "quest-keeper",
+      },
+    ];
+
+    for (const { id, name, frontendId } of expected) {
+      expect(projectsById.get(id)).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [frontendId],
+        primary_function: "frontend",
+      });
+      expect(
+        catalog.projects.find((project) => project.id === id),
+      ).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [expect.objectContaining({ id: frontendId })],
+        primaryFunction: "frontend",
+      });
+      expect(frontendVocabulary.frontends).toContainEqual(
+        expect.objectContaining({ id: frontendId, label: name }),
+      );
+    }
+
+    const claimedFrontendIds = projects
+      .filter(({ kind }) => kind === "frontend")
+      .flatMap(({ frontends }) => frontends);
+    expect(new Set(claimedFrontendIds).size).toBe(claimedFrontendIds.length);
+  });
+
   test("matches the canonical schema-v6 source-backed catalog contract", async () => {
     const { projects, sources, vocabulary, sourcesById } =
       await loadProductionData();
