@@ -1069,6 +1069,35 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).not.toContain("gh pr merge");
 });
 
+test.each([
+  ["generate-project-submission", "project-submission"],
+  ["generate-project-owner-request", "project-owner-request"],
+])("reconciles non-cancelled %s failures", async (name, producer) => {
+  const generation = await workflow(name);
+  const steps = generation.jobs.generate.steps as Array<{
+    name?: string;
+    if?: string;
+    run?: string;
+    env?: Record<string, string>;
+  }>;
+  const reconcile = steps.find(
+    (step) => step.name === "Reconcile failed generation",
+  );
+
+  expect(reconcile).toMatchObject({
+    if: "failure() && !cancelled()",
+    run: "node scripts/submissions/project-generation-failure.mjs",
+    env: {
+      ISSUE_NUMBER: "${{ inputs.issue_number }}",
+      GENERATION_PRODUCER: producer,
+      GENERATION_REASON_CODE: "generation-failed",
+      GENERATION_RUN_URL:
+        "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+    },
+  });
+});
+
 test("handles owner closure from default-branch code and exact head state", async () => {
   const lifecycle = await workflow("project-owner-request-lifecycle");
   const source = await readFile(

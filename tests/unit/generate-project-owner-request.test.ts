@@ -478,7 +478,12 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
     change_reasons: ["punctuation-corrected"],
     policy_signal: "none",
   }));
-  const generated = await generate(fixture, { copySummary });
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata: async () => ({
+      tags: [{ id: "automation", evidence: ["readme:1-2"] }],
+    }),
+  });
   expect(generated.generatedPaths).toEqual([
     "data/registry/projects/owner-alpha.json",
   ]);
@@ -519,6 +524,52 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
       change_reasons: ["punctuation-corrected"],
       policy_signal: "none",
     },
+  });
+});
+
+test("keeps verified owner copy for manual review when copy review is unavailable", async () => {
+  const manifest = editManifest();
+  manifest.proposed.summary = "Owner-authored summary stays exact";
+  const fixture = harness(manifest);
+  const copySummary = vi.fn(async () => ({
+    status: "accepted",
+    summary: "",
+  }));
+
+  const generated = await generate(fixture, {
+    copySummary,
+    enrichMetadata: async () => ({
+      tags: [{ id: "automation", evidence: ["readme:1-2"] }],
+    }),
+  });
+
+  expect(copySummary).toHaveBeenCalledTimes(2);
+  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
+    summary: "Owner-authored summary stays exact",
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
+    },
+  });
+  expect(generated.report).toMatchObject({
+    publication_mode: "manual",
+    submitted_summary: "Owner-authored summary stays exact",
+    published_summary: "Owner-authored summary stays exact",
+    copy_mode: "preserve",
+    copy_result: null,
+    copy_results: [
+      {
+        project_id: "owner-alpha",
+        mode: "preserve",
+        review_status: "unavailable",
+        reason_code: "copy-review-unavailable",
+        submitted_summary: "Owner-authored summary stays exact",
+        published_summary: "Owner-authored summary stays exact",
+        copy_result: null,
+      },
+    ],
   });
 });
 
@@ -902,38 +953,29 @@ test("paginates open pull requests before admitting a source-scoped batch", asyn
   expect(fixture.writes).toEqual([]);
 });
 
-test("falls back to no tags when tag-only generation fails", async () => {
+test("fails closed when tag-only automatic generation fails", async () => {
   const manifest = editManifest();
   manifest.proposed = editable("Owner summary.", {
     summaryMode: "manual",
     tagMode: "automatic",
   });
   const fixture = harness(manifest);
-  const generated = await generate(fixture, {
-    copySummary: async () => ({
-      summary: "Owner summary.",
-      result: "accepted-unchanged",
-      change_reasons: [],
-      policy_signal: "none",
+  await expect(
+    generate(fixture, {
+      copySummary: async () => ({
+        summary: "Owner summary.",
+        result: "accepted-unchanged",
+        change_reasons: [],
+        policy_signal: "none",
+      }),
+      enrichMetadata: async () => {
+        throw Object.assign(new Error("provider unavailable"), {
+          code: "provider-network-error",
+        });
+      },
     }),
-    enrichMetadata: async () => {
-      throw Object.assign(new Error("provider unavailable"), {
-        code: "provider-network-error",
-      });
-    },
-  });
-
-  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
-    summary: "Owner summary.",
-    tags: [],
-  });
-  expect(generated.report.metadata_results).toEqual([
-    expect.objectContaining({
-      project_id: "owner-alpha",
-      requested_fields: ["tags"],
-      tag_generation_diagnostic: "provider-network-error",
-    }),
-  ]);
+  ).rejects.toThrow("provider unavailable");
+  expect(fixture.writes).toEqual([]);
 });
 
 test("fails the atomic write when automatic summary generation fails", async () => {

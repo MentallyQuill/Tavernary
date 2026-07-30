@@ -573,6 +573,10 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
         copyResults.push({
           project_id: record.id,
           mode: copied.mode,
+          review_status: copied.reviewStatus,
+          ...(copied.reviewStatus === "unavailable"
+            ? { reason_code: copied.reasonCode }
+            : {}),
           submitted_summary: copied.submittedSummary,
           published_summary: copied.publishedSummary,
           copy_result: copied.copyResult,
@@ -589,47 +593,35 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
         vocabularies: { tags: final.vocabularies.tags },
         protectedTerms: ownerProtectedTerms(final, record),
       };
-      let output;
-      try {
-        output = await generatedMetadataOutput(
-          input,
-          final,
-          snapshot,
-          context,
-          loadSourceOnce,
+      const output = await generatedMetadataOutput(
+        input,
+        final,
+        snapshot,
+        context,
+        loadSourceOnce,
+      );
+      if (!output) {
+        const error = new Error(
+          `Automatic metadata generation returned no output for ${record.id}.`,
         );
-        if (!output) {
-          const error = new Error(
-            `Automatic metadata generation returned no output for ${record.id}.`,
-          );
-          error.code = "enrichment-output-missing";
-          throw error;
-        }
-        if (
-          requestedFields.includes("summary") &&
-          output.summary?.value === "No README file found."
-        ) {
-          const error = new Error(
-            `Automatic summary generation has no usable source copy for ${record.id}.`,
-          );
-          error.code = "enrichment-source-missing";
-          throw error;
-        }
-        const validation = validateInjectedEnrichment(output, context);
-        if (!validation.valid) {
-          const error = new Error([...new Set(validation.errors)].join("; "));
-          error.code = "output-invalid";
-          throw error;
-        }
-      } catch (error) {
-        if (requestedFields.length === 1 && requestedFields[0] === "tags") {
-          output = {
-            tags: [],
-            tag_generation_diagnostic: error.code ?? "tag-generation-failed",
-          };
-        } else {
-          throw error;
-        }
+        error.code = "enrichment-output-missing";
+        throw error;
+      }
+      if (
+        requestedFields.includes("summary") &&
+        output.summary?.value === "No README file found."
+      ) {
+        const error = new Error(
+          `Automatic summary generation has no usable source copy for ${record.id}.`,
+        );
+        error.code = "enrichment-source-missing";
+        throw error;
+      }
+      const validation = validateInjectedEnrichment(output, context);
+      if (!validation.valid) {
+        const error = new Error([...new Set(validation.errors)].join("; "));
+        error.code = "output-invalid";
+        throw error;
       }
       if (requestedFields.includes("summary")) {
         summary = output.summary.value;
@@ -867,7 +859,12 @@ export async function generateProjectOwnerRequest(input) {
     source_id: final.source.id,
     operation: final.decision.operation,
     publication_mode:
-      final.decision.operation === "add-cards" ? "manual" : "automatic",
+      final.decision.operation === "add-cards" ||
+      metadata.copyResults.some(
+        (entry) => entry.review_status === "unavailable",
+      )
+        ? "manual"
+        : "automatic",
     repository_id: final.decision.manifest.repository_id,
     authority_type: final.decision.authorityType,
     actor_id: final.issue.user?.id,

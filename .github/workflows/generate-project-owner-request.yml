@@ -558,3 +558,12 @@ jobs:
         env:
           BRANCH: ${{ steps.state.outputs.branch }}
         run: gh workflow run ci.yml --ref "$BRANCH"
+      - name: Reconcile failed generation
+        if: failure() && !cancelled()
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          GENERATION_PRODUCER: project-owner-request
+          GENERATION_REASON_CODE: generation-failed
+          GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/submissions/project-generation-failure.mjs
