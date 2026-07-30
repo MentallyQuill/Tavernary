@@ -4,6 +4,10 @@ import {
   CATALOG_COPY_RESULT_VALUES,
   catalogCopyInstructions,
 } from "./catalog-copy-contract.mjs";
+import {
+  GENERATED_SUMMARY_MAX_LENGTH,
+  GENERATED_SUMMARY_MIN_LENGTH,
+} from "./generated-summary-contract.mjs";
 
 export const ENRICHMENT_TIMEOUT_MS = 120_000;
 
@@ -11,7 +15,7 @@ const systemPrompt = `${catalogCopyInstructions()}
 
 Extract only the requested factual project metadata grounded in the supplied source. The root README is primary evidence and the repository description is secondary evidence. Return only the requested fields and, when summary is requested, the required copy-policy diagnostics. Never return, change, or claim authority over primary_function or any compatibility field.
 
-For summary, write natural source-grounded copy of exactly two sentences, 24-36 words total, and at most 220 characters; prefer 24-30 words and 160-200 characters. The first sentence explains the project's purpose. The second highlights a distinctive workflow, capability, or benefit. Include at least one compact evidence reference.
+For summary, write one natural source-grounded description between 120 and 220 characters inclusive. Use single-line plain text without Markdown, list syntax, URLs, or domain-style links. Explain the project's purpose and a distinctive workflow, capability, or benefit supported by source evidence without enforcing a word count or sentence count. Include at least one compact evidence reference.
 
 For tags, select zero to six allowed tag IDs. Use each tag's inclusion and exclusion guidance. Do not invent a tag, infer a sibling card's behavior, use isolated keyword matching, or force a selection when evidence is insufficient. Include at least one compact source or line evidence reference for every selected tag.
 
@@ -146,7 +150,11 @@ function responseSchema(input) {
       additionalProperties: false,
       required: ["value", "evidence"],
       properties: {
-        value: { type: "string", minLength: 1, maxLength: 220 },
+        value: {
+          type: "string",
+          minLength: GENERATED_SUMMARY_MIN_LENGTH,
+          maxLength: GENERATED_SUMMARY_MAX_LENGTH,
+        },
         evidence: evidenceSchema,
       },
     };

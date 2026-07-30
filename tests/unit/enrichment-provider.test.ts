@@ -197,7 +197,7 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
     type: "object",
     additionalProperties: false,
     properties: {
-      value: { type: "string", maxLength: 220 },
+      value: { type: "string", minLength: 120, maxLength: 220 },
       evidence: { type: "array", minItems: 1 },
     },
   });
@@ -208,13 +208,14 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   expect(schema.properties).not.toHaveProperty("primary_function");
   expect(schema.properties).not.toHaveProperty("metadata_status");
   expect(body.messages[0].content).toMatch(/never.*change.*primary.function/iu);
-  expect(body.messages[0].content).toMatch(/exactly two sentences/iu);
-  expect(body.messages[0].content).toMatch(/purpose/iu);
+  expect(body.messages[0].content).toMatch(/between 120 and 220 characters/iu);
+  expect(body.messages[0].content).toMatch(
+    /without Markdown.*URLs.*domain-style links/iu,
+  );
+  expect(body.messages[0].content).not.toMatch(/exactly two sentences/iu);
+  expect(body.messages[0].content).not.toMatch(/24-36|24-30/iu);
   expect(body.messages[0].content).toMatch(
     /distinctive workflow, capability, or benefit/iu,
-  );
-  expect(body.messages[0].content).toMatch(
-    /prefer 24-30 words and 160-200 characters/iu,
   );
   expect(body.messages[0].content).toMatch(
     /preserve exact wording and summary structure/iu,

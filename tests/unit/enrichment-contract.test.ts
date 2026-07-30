@@ -112,7 +112,7 @@ test.each([
     "Fixture organizes repeatable prompt workflows for SillyTavern projects with a deliberately excessive amount of qualifying language. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout every unusually elaborate creative project.",
   ],
   [
-    "too few words",
+    "under minimum",
     "Fixture organizes prompt workflows. It keeps configuration clear and accessible.",
   ],
   [
@@ -122,10 +122,6 @@ test.each([
   [
     "markdown",
     "- Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  ],
-  [
-    "one sentence",
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects while automating routine setup, preserving creator-facing controls, and keeping complex configuration work clear and accessible throughout.",
   ],
 ] as const)("rejects invalid summary: %s", (_name, value) => {
   expect(

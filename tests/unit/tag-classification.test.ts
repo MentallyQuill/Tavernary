@@ -151,3 +151,138 @@ test("validates a requested summary independently from tags", () => {
     summaryEvidence: ["readme:1-18"],
   });
 });
+
+test("rejects generated summaries shorter than 120 characters", () => {
+  const result = validateTagGenerationOutput(
+    {
+      summary: {
+        value: "A".repeat(119),
+        evidence: ["readme:1-4"],
+      },
+    },
+    {
+      fields: ["summary"],
+      vocabulary,
+      kind: "extension",
+    },
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain(
+      "summary value must be at least 120 characters",
+    );
+  }
+});
+
+test("accepts a 120-character summary without word or sentence rules", () => {
+  const value = "A".repeat(120);
+
+  expect(
+    validateTagGenerationOutput(
+      {
+        summary: {
+          value,
+          evidence: ["readme:1-4"],
+        },
+      },
+      {
+        fields: ["summary"],
+        vocabulary,
+        kind: "extension",
+      },
+    ),
+  ).toMatchObject({ valid: true, summary: value });
+});
+
+test("rejects an absolute URL in a generated summary", () => {
+  const result = validateTagGenerationOutput(
+    {
+      summary: {
+        value: `${"Source-grounded catalog text ".repeat(5)}https://example.com`,
+        evidence: ["readme:1-4"],
+      },
+    },
+    {
+      fields: ["summary"],
+      vocabulary,
+      kind: "extension",
+    },
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain(
+      "summary value must not contain URLs or domain-style links",
+    );
+  }
+});
+
+test("rejects a protocol-relative URL in a generated summary", () => {
+  const result = validateTagGenerationOutput(
+    {
+      summary: {
+        value: `${"Source-grounded catalog text ".repeat(5)}//example.com/path`,
+        evidence: ["readme:1-4"],
+      },
+    },
+    {
+      fields: ["summary"],
+      vocabulary,
+      kind: "extension",
+    },
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain(
+      "summary value must not contain URLs or domain-style links",
+    );
+  }
+});
+
+test("rejects a www address in a generated summary", () => {
+  const result = validateTagGenerationOutput(
+    {
+      summary: {
+        value: `${"Source-grounded catalog text ".repeat(5)}www.example.com`,
+        evidence: ["readme:1-4"],
+      },
+    },
+    {
+      fields: ["summary"],
+      vocabulary,
+      kind: "extension",
+    },
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain(
+      "summary value must not contain URLs or domain-style links",
+    );
+  }
+});
+
+test("rejects a bare domain in a generated summary", () => {
+  const result = validateTagGenerationOutput(
+    {
+      summary: {
+        value: `${"Source-grounded catalog text ".repeat(5)}example.com`,
+        evidence: ["readme:1-4"],
+      },
+    },
+    {
+      fields: ["summary"],
+      vocabulary,
+      kind: "extension",
+    },
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain(
+      "summary value must not contain URLs or domain-style links",
+    );
+  }
+});

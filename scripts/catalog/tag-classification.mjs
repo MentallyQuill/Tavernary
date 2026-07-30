@@ -1,3 +1,5 @@
+import { generatedSummaryTextErrors } from "./generated-summary-contract.mjs";
+
 function tagIndex(vocabulary) {
   return new Map(
     (Array.isArray(vocabulary?.tags) ? vocabulary.tags : []).map((tag) => [
@@ -80,23 +82,7 @@ function summaryErrors(summary) {
       errors.push(...evidenceErrors(summary.evidence, "summary"));
       return errors;
     }
-    const wordCount = value.trim().split(/\s+/u).filter(Boolean).length;
-    if (value.length > 220) {
-      errors.push("summary value must be 220 characters or fewer");
-    }
-    if (wordCount < 24 || wordCount > 36) {
-      errors.push("summary value must contain between 24 and 36 words");
-    }
-    if (/[\r\n\u2028\u2029]/u.test(value)) {
-      errors.push("summary value must not contain line breaks");
-    }
-    if (/```|`|[*_#[\]>]|^\s*(?:[-*+]\s|\d+[.)]\s)/mu.test(value)) {
-      errors.push("summary value must not contain markdown or list syntax");
-    }
-    const endings = value.match(/[.!?](?=\s|$)/gu) ?? [];
-    if (endings.length !== 2 || !/[.!?]$/u.test(value.trim())) {
-      errors.push("summary value must be exactly two sentences");
-    }
+    errors.push(...generatedSummaryTextErrors(value));
   }
   errors.push(...evidenceErrors(summary.evidence, "summary"));
   return errors;
