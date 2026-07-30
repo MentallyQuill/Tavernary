@@ -302,6 +302,57 @@ test("migrates one extension and two distinct Presets onto one shared source", (
   ]);
 });
 
+test("moves Codeberg snapshots within the Codeberg snapshot directory", () => {
+  const codebergProject = {
+    ...project("codeberg-card", 1_699_613, "published"),
+    source: {
+      type: "codeberg" as const,
+      repository: "owner/codeberg-card",
+      repository_id: 1_699_613,
+    },
+  };
+  const codebergSnapshot = {
+    ...snapshot(codebergProject.id, 1_699_613),
+    provider: "codeberg" as const,
+    repository: {
+      id: 1_699_613,
+      owner: "owner",
+      name: "codeberg-card",
+      url: "https://codeberg.org/owner/codeberg-card",
+    },
+  };
+
+  const plan = planSourceRegistryMigration({
+    projects: [codebergProject],
+    snapshots: [codebergSnapshot],
+    refreshManifest: {
+      schema_version: 2,
+      project_timings: [],
+    },
+    metadataByProjectId: {
+      [codebergProject.id]: automaticMetadata,
+    },
+  });
+
+  expect(plan.operations).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        kind: "create",
+        path: "data/snapshots/codeberg/codeberg-1699613.json",
+      }),
+      expect.objectContaining({
+        kind: "delete",
+        path: "data/snapshots/codeberg/codeberg-card.json",
+      }),
+    ]),
+  );
+  expect(
+    plan.operations.some(({ path }) =>
+      path.startsWith("data/snapshots/github/codeberg-"),
+    ),
+  ).toBe(false);
+});
+
 test("rejects duplicate legacy project IDs before planning paths", () => {
   const duplicate = project("card-a", 42, "published");
 

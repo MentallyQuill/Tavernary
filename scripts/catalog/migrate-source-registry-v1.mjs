@@ -112,6 +112,13 @@ function migrateSnapshot(snapshot, sourceId) {
   };
 }
 
+function snapshotDirectory(provider) {
+  if (provider !== "github" && provider !== "codeberg") {
+    throw new Error(`Unsupported snapshot provider: ${provider}`);
+  }
+  return `data/snapshots/${provider}`;
+}
+
 function migrateRefreshManifest(refreshManifest, sourceIdByProjectId) {
   const { project_timings: projectTimings = [], ...manifest } = refreshManifest;
   return {
@@ -211,8 +218,9 @@ export function planSourceRegistryMigration({
     })),
     ...migratedSnapshots.flatMap((snapshot, index) => {
       const prior = snapshots[index];
-      const destination = `data/snapshots/github/${snapshot.source_id}.json`;
-      const priorPath = `data/snapshots/github/${prior.project_id}.json`;
+      const directory = snapshotDirectory(snapshot.provider);
+      const destination = `${directory}/${snapshot.source_id}.json`;
+      const priorPath = `${directory}/${prior.project_id}.json`;
       return [
         { kind: "create", path: destination, value: snapshot },
         ...(priorPath === destination
