@@ -93,6 +93,14 @@ const providerMetadata = {
   latencyMs: 10,
 };
 
+type ProviderInput = {
+  repair?: {
+    reasonCode: string;
+    message: string;
+    rejectedSummary?: string;
+  };
+};
+
 function outputFor(input: {
   requestedFields: readonly string[];
   allowedTags: Array<{ id: string }>;
@@ -506,7 +514,140 @@ test("uses an explicit empty-tag fallback when repository text is unavailable", 
   });
 });
 
-test("falls back to zero tags after one malformed tag repair without failing the summary", async () => {
+test("uses the latest invalid output for a second validation repair", async () => {
+  const initialSummary = `Initial rejected summary ${"initial ".repeat(28)}ends here.`;
+  const firstRepairSummary = `First repair rejected summary ${"repaired ".repeat(27)}ends here.`;
+  const responses = [
+    {
+      ...outputFor({
+        requestedFields: ["summary", "tags"],
+        allowedTags: vocabularies.tags,
+      }),
+      summary: {
+        value: initialSummary,
+        evidence: [`readme:${"initial-evidence".repeat(12)}`],
+      },
+    },
+    {
+      ...outputFor({
+        requestedFields: ["summary", "tags"],
+        allowedTags: vocabularies.tags,
+      }),
+      summary: {
+        value: firstRepairSummary,
+        evidence: ["readme:1-3"],
+      },
+      tags: [
+        {
+          id: "automate-roleplay-workflows",
+          evidence: [`readme:${"repair-evidence".repeat(13)}`],
+        },
+      ],
+    },
+    outputFor({
+      requestedFields: ["summary", "tags"],
+      allowedTags: vocabularies.tags,
+    }),
+  ];
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: responses[generate.mock.calls.length - 1],
+    metadata: providerMetadata,
+  }));
+
+  const output = await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    { vocabularies, loadSource: async () => readySource() },
+  );
+
+  expect(output).toEqual(responses[2]);
+  expect(generate).toHaveBeenCalledTimes(3);
+  expect(generate.mock.calls[1]?.[0].repair).toMatchObject({
+    reasonCode: "output-invalid",
+    rejectedSummary: initialSummary,
+  });
+  expect(generate.mock.calls[1]?.[0].repair?.message).toContain(
+    "summary evidence references must be non-empty single-line strings of 160 characters or fewer",
+  );
+  expect(generate.mock.calls[2]?.[0].repair).toMatchObject({
+    reasonCode: "output-invalid",
+    rejectedSummary: firstRepairSummary,
+  });
+  expect(generate.mock.calls[2]?.[0].repair?.message).toContain(
+    "tag automate-roleplay-workflows evidence references must be non-empty single-line strings of 160 characters or fewer",
+  );
+  expect(generate.mock.calls[2]?.[0].repair?.message).not.toContain(
+    "summary evidence references must be non-empty single-line strings of 160 characters or fewer",
+  );
+});
+
+test("stops after the first validation repair succeeds", async () => {
+  const validOutput = outputFor({
+    requestedFields: ["summary", "tags"],
+    allowedTags: vocabularies.tags,
+  });
+  const responses = [
+    {
+      ...validOutput,
+      tags: [{ id: "invented", evidence: ["readme:1"] }],
+    },
+    validOutput,
+  ];
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: responses[generate.mock.calls.length - 1],
+    metadata: providerMetadata,
+  }));
+
+  await expect(
+    enrichRecord(
+      record,
+      sourceRecord,
+      snapshot,
+      { generate },
+      { vocabularies, loadSource: async () => readySource() },
+    ),
+  ).resolves.toEqual(validOutput);
+  expect(generate).toHaveBeenCalledTimes(2);
+});
+
+test("stops after two validation repairs and throws the latest errors", async () => {
+  const responses = ["initial", "first repair", "second repair"].map(
+    (attempt) => ({
+      ...outputFor({
+        requestedFields: ["summary", "tags"],
+        allowedTags: vocabularies.tags,
+      }),
+      summary: {
+        value: `${attempt} rejected summary ${"overlong ".repeat(30)}ends here.`,
+        evidence: ["readme:1-3"],
+      },
+    }),
+  );
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: responses[generate.mock.calls.length - 1],
+    metadata: providerMetadata,
+  }));
+
+  await expect(
+    enrichRecord(
+      record,
+      sourceRecord,
+      snapshot,
+      { generate },
+      { vocabularies, loadSource: async () => readySource() },
+    ),
+  ).rejects.toMatchObject({
+    code: "output-invalid",
+    message: expect.stringContaining(
+      "summary value must be 220 characters or fewer",
+    ),
+  });
+  expect(generate).toHaveBeenCalledTimes(3);
+});
+
+test("falls back to zero tags after malformed tag repairs without failing the summary", async () => {
   const generate = vi.fn(async () => ({
     output: {
       ...outputFor({
@@ -526,7 +667,7 @@ test("falls back to zero tags after one malformed tag repair without failing the
     { vocabularies, loadSource: async () => readySource() },
   );
 
-  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate).toHaveBeenCalledTimes(3);
   expect(output).toMatchObject({
     tags: [],
     tag_generation_diagnostic: "invalid-output-fell-back-empty",
