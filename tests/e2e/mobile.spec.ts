@@ -4,6 +4,7 @@ import {
   collapsedFrontendOptions,
   frontendExpansionLabel,
   initiallyVisibleFrontendOptions,
+  tagSearchFixture,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
 
@@ -42,7 +43,7 @@ test("matches the approved mobile header hierarchy", async ({ page }) => {
   await expect(actions).toContainText("About");
   await expect(actions).toContainText("Help");
   await expect(actions.getByRole("link", { name: "About" })).toBeHidden();
-  await expect(actions.getByRole("link", { name: "Help" })).toBeHidden();
+  await expect(actions.getByRole("link", { name: "Help" })).toBeVisible();
 
   const browse = page.getByRole("button", { name: "Browse categories" });
   await expect(browse).toContainText("All Projects");
@@ -81,24 +82,25 @@ test("uses mobile browse and filter sheets without page overflow", async ({
   await expect(page.locator("body")).toHaveClass(/sheet-open/);
   await expect(
     dialog.getByRole("searchbox", {
-      name: "Search capabilities and characteristics",
+      name: "Search goals and traits",
     }),
-  ).toHaveCount(0);
-  const capabilityOptions = dialog
-    .getByRole("group", { name: "Capabilities & characteristics" })
-    .locator(".metadata-options");
+  ).toBeVisible();
+  const tagResults = dialog.getByTestId("tag-results");
   expect(
-    await capabilityOptions
-      .locator("label")
-      .evaluateAll(
-        (labels) =>
-          new Set(
-            labels.map((label) =>
-              Math.round(label.getBoundingClientRect().top),
-            ),
-          ).size,
-      ),
-  ).toBeLessThanOrEqual(4);
+    await tagResults.evaluate(
+      (element) => element.scrollHeight > element.clientHeight,
+    ),
+  ).toBe(true);
+  if (!tagSearchFixture) throw new Error("Missing tag search fixture");
+  const tagSearch = dialog.getByRole("searchbox", {
+    name: "Search goals and traits",
+  });
+  await tagSearch.fill(
+    tagSearchFixture.aliases[0] ?? tagSearchFixture.description,
+  );
+  await expect(
+    dialog.getByLabel(tagSearchFixture.label, { exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close filters" }).click();
   await expect(filters).toBeFocused();
   await expect(page.locator("body")).not.toHaveClass(/sheet-open/);

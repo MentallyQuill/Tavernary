@@ -26,7 +26,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
   await page
-    .getByLabel("Summary")
+    .getByRole("textbox", { name: "Summary", exact: true })
     .fill("An owner-authored summary for the Directive listing.");
   await expect(page.getByText("52 / 220")).toBeVisible();
   await page.getByRole("button", { name: "Review request" }).click();
@@ -74,7 +74,10 @@ test("keeps owner wording while removing emoji and linking the policy", async ({
   await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
   await page.getByRole("radio", { name: "Edit card details" }).check();
 
-  const summary = page.getByLabel("Summary");
+  const summary = page.getByRole("textbox", {
+    name: "Summary",
+    exact: true,
+  });
   await summary.fill("This is damn useful 🧭 for ST-QuickReply.");
 
   await expect(summary).toHaveValue("This is damn useful  for ST-QuickReply.");
