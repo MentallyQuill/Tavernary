@@ -19,6 +19,7 @@ interface CatalogRecord {
   source_id: string;
   kind: "frontend" | "extension" | "preset";
   metadata_status: "provisional" | "curated";
+  frontends: string[];
   primary_function: string;
   summary: string;
   tags: string[];
@@ -93,6 +94,33 @@ function countBy<T>(records: T[], selector: (record: T) => string) {
 }
 
 describe("full catalog data", () => {
+  test("keeps SLAYImages classified as a SillyTavern extension", async () => {
+    const { projectsById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+    const frontendVocabulary = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/frontends.json"),
+        "utf8",
+      ),
+    ) as { frontends: Array<{ id: string }> };
+
+    expect(projectsById.get("wewwaistyping-slayimages")).toMatchObject({
+      kind: "extension",
+      frontends: ["sillytavern"],
+      primary_function: "interface-workflow",
+    });
+    expect(
+      catalog.projects.find(({ id }) => id === "wewwaistyping-slayimages"),
+    ).toMatchObject({
+      kind: "extension",
+      frontends: [expect.objectContaining({ id: "sillytavern" })],
+      primaryFunction: "interface-workflow",
+    });
+    expect(frontendVocabulary.frontends.map(({ id }) => id)).not.toContain(
+      "slayimages-inline-image-generation-wardrobe",
+    );
+  });
+
   test("matches the canonical schema-v6 source-backed catalog contract", async () => {
     const { projects, sources, vocabulary, sourcesById } =
       await loadProductionData();
@@ -108,8 +136,8 @@ describe("full catalog data", () => {
       "frontend",
       "preset",
     ]);
-    expect(projectsByKind.extension).toBeGreaterThanOrEqual(278);
-    expect(projectsByKind.frontend).toBeGreaterThanOrEqual(17);
+    expect(projectsByKind.extension).toBeGreaterThanOrEqual(279);
+    expect(projectsByKind.frontend).toBeGreaterThanOrEqual(16);
     expect(projectsByKind.preset).toBeGreaterThanOrEqual(14);
     const sourcesByType = countBy(sources, ({ type }) => type);
     expect(Object.keys(sourcesByType).sort()).toEqual([
