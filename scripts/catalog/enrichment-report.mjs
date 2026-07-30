@@ -83,6 +83,13 @@ function sanitizedEntry(entry) {
     "copy_result",
     "copy_change_reasons",
     "copy_policy_signal",
+    "source_id",
+    "requested_fields",
+    "vocabulary_hash",
+    "final_tags",
+    "tag_evidence",
+    "summary_evidence",
+    "tag_generation_diagnostic",
     "reason_code",
     "enrichment_note",
     "diagnostic_code",
@@ -125,6 +132,71 @@ function sanitizedEntry(entry) {
   if (entry.reason_code !== undefined) {
     result.message =
       safeMessages[entry.reason_code] ?? "Enrichment attempt failed.";
+  }
+  if (result.requested_fields !== undefined) {
+    if (
+      !Array.isArray(result.requested_fields) ||
+      result.requested_fields.length === 0 ||
+      new Set(result.requested_fields).size !==
+        result.requested_fields.length ||
+      result.requested_fields.some(
+        (field) => !["summary", "tags"].includes(field),
+      )
+    ) {
+      throw new Error("enrichment report requested fields are invalid");
+    }
+  }
+  if (
+    result.vocabulary_hash !== undefined &&
+    !/^[a-f0-9]{64}$/u.test(result.vocabulary_hash)
+  ) {
+    throw new Error("enrichment report vocabulary hash is invalid");
+  }
+  if (result.final_tags !== undefined) {
+    if (
+      !Array.isArray(result.final_tags) ||
+      result.final_tags.length > 6 ||
+      new Set(result.final_tags).size !== result.final_tags.length ||
+      result.final_tags.some(
+        (tag) => typeof tag !== "string" || tag.length === 0,
+      )
+    ) {
+      throw new Error("enrichment report final tags are invalid");
+    }
+  }
+  const evidenceCollections = [
+    result.summary_evidence,
+    ...Object.values(result.tag_evidence ?? {}),
+  ].filter((value) => value !== undefined);
+  if (
+    evidenceCollections.some(
+      (references) =>
+        !Array.isArray(references) ||
+        references.length === 0 ||
+        references.some(
+          (reference) =>
+            typeof reference !== "string" ||
+            reference.length === 0 ||
+            reference.length > 160 ||
+            /[\r\n\u2028\u2029]/u.test(reference),
+        ),
+    )
+  ) {
+    throw new Error("enrichment report evidence references are invalid");
+  }
+  if (
+    result.tag_evidence !== undefined &&
+    (!result.tag_evidence ||
+      typeof result.tag_evidence !== "object" ||
+      Array.isArray(result.tag_evidence))
+  ) {
+    throw new Error("enrichment report tag evidence is invalid");
+  }
+  if (
+    result.tag_generation_diagnostic !== undefined &&
+    result.tag_generation_diagnostic !== "invalid-output-fell-back-empty"
+  ) {
+    throw new Error("enrichment report tag diagnostic is invalid");
   }
   result.completed_at = entry.completed_at;
   return result;

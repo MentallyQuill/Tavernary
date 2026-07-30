@@ -1,49 +1,43 @@
 import type {
   CatalogCopyChangeReason,
-  CatalogCopyMode,
   CatalogCopyPolicySignal,
   CatalogCopyResultStatus,
   CatalogCopyValidationContext,
 } from "./catalog-copy-contract.mjs";
 
-export interface ClassificationReviewRequest {
-  submittedPrimaryFunction: string;
-  allowedPrimaryFunctions: readonly (
-    | string
-    | {
-        id: string;
-        label?: string;
-        description?: string;
-      }
-  )[];
-}
+export type MetadataField = "summary" | "tags";
 
-export type ClassificationReview = null | {
-  status: "confirmed" | "possible-mismatch";
-  suggested_primary_function: string;
-  explanation: string | null;
+export type EvidenceBackedSummary = {
+  value: string;
+  evidence: string[];
+};
+
+export type EvidenceBackedTag = {
+  id: string;
+  evidence: string[];
 };
 
 export type EnrichmentOutput = {
-  summary: string;
-  result: CatalogCopyResultStatus;
-  change_reasons: readonly CatalogCopyChangeReason[];
-  policy_signal: CatalogCopyPolicySignal;
-  metadata_status: "curated";
-  capabilities: string[];
-  classification_review: ClassificationReview;
+  summary?: EvidenceBackedSummary;
+  tags?: EvidenceBackedTag[];
+  result?: CatalogCopyResultStatus;
+  change_reasons?: readonly CatalogCopyChangeReason[];
+  policy_signal?: CatalogCopyPolicySignal;
 };
 
-export type VocabularySet = {
-  primaryFunctions?: ReadonlySet<string> | readonly (string | { id: string })[];
-  capabilities: ReadonlySet<string> | readonly (string | { id: string })[];
+export type EnrichmentValidationContext = {
+  requestedFields: readonly MetadataField[];
+  kind: string;
+  tagVocabulary: {
+    tags: readonly {
+      id: string;
+      applicable_kinds: readonly string[];
+    }[];
+  };
+  copyContext?: CatalogCopyValidationContext;
 };
 
 export function validateEnrichmentOutput(
   output: EnrichmentOutput,
-  vocabularies: VocabularySet,
-  classificationReviewRequest?: ClassificationReviewRequest | null,
-  copyContext?: CatalogCopyValidationContext,
+  context: EnrichmentValidationContext,
 ): { valid: true } | { valid: false; errors: string[] };
-
-export type { CatalogCopyMode };

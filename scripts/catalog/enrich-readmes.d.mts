@@ -1,11 +1,6 @@
 import type { EnrichmentSource } from "./enrichment-source.d.mts";
 import type {
-  ClassificationReview,
-  ClassificationReviewRequest,
-} from "./enrichment-contract.mjs";
-import type {
   CatalogCopyChangeReason,
-  CatalogCopyMode,
   CatalogCopyPolicySignal,
   CatalogCopyResultStatus,
 } from "./catalog-copy-contract.mjs";
@@ -17,21 +12,34 @@ import type {
 export const PREFLIGHT_RETRY_DELAYS_MS: readonly [5000, 15000, 30000];
 export const MODEL_RATE_LIMIT_BACKOFF_DELAYS_MS: readonly [5000, 15000, 30000];
 
-export type VocabularyEntry = {
+export type MetadataField = "summary" | "tags";
+
+export type TagDefinition = {
   id: string;
-  label?: string;
-  description?: string;
+  label: string;
+  facet: string;
+  description: string;
+  aliases: string[];
+  applicable_kinds: string[];
+  inclusion_guidance: string[];
+  exclusion_guidance?: string[];
 };
+
+export type TagVocabulary = {
+  schema_version?: number;
+  tags: TagDefinition[];
+};
+
 export type EnrichmentInput = {
   id: string;
+  sourceId: string;
   name: string;
   kind: string;
-  summaryMode: CatalogCopyMode;
-  submittedDescription: string | null;
+  requestedFields: readonly MetadataField[];
+  vocabularyHash: string;
   evidence: {
     readme: { identity: string; text: string } | null;
     repositoryDescription: string | null;
-    submissionDescription: string | null;
   };
   protectedTerms: readonly string[];
   policyVersion: string;
@@ -41,38 +49,42 @@ export type EnrichmentInput = {
     text: string;
   };
   frontends: string[];
-  allowedCapabilities: VocabularyEntry[];
-  classificationReviewRequest?: ClassificationReviewRequest;
+  allowedTags: TagDefinition[];
   repair?: {
     reasonCode: string;
     message: string;
     rejectedSummary?: string;
   };
 };
+
 export type EnrichmentOutput = {
-  summary: string;
-  result: CatalogCopyResultStatus;
-  change_reasons: readonly CatalogCopyChangeReason[];
-  policy_signal: CatalogCopyPolicySignal;
-  metadata_status: "curated";
-  capabilities: readonly string[];
-  classification_review: ClassificationReview;
+  summary?: { value: string; evidence: string[] };
+  tags?: Array<{ id: string; evidence: string[] }>;
+  result?: CatalogCopyResultStatus;
+  change_reasons?: readonly CatalogCopyChangeReason[];
+  policy_signal?: CatalogCopyPolicySignal;
+  tag_generation_diagnostic?: "invalid-output-fell-back-empty";
 };
+
 export type RegistryRecord = {
   id: string;
+  source_id: string;
   name?: string;
   kind?: string;
   metadata_status?: string;
-  enrichment_policy?: "automatic" | "manual";
-  enrichment_note?: string;
   summary?: string;
+  tags?: string[];
+  metadata_policy?: {
+    summary?: { mode?: "automatic" | "manual"; note?: string };
+    tags?: { mode?: "automatic" | "manual"; note?: string };
+  };
   listing_status?: string;
   frontends?: string[];
   primary_function?: string;
-  source_id: string;
   path?: string;
   [key: string]: unknown;
 };
+
 export type SourceRecord = {
   id: string;
   type: string;
@@ -81,7 +93,9 @@ export type SourceRecord = {
   repository_id?: number | null;
   [key: string]: unknown;
 };
+
 export type RepositorySnapshot = Record<string, unknown>;
+
 export type EnrichmentProvider = {
   generate(input: EnrichmentInput): Promise<{
     output: EnrichmentOutput;
@@ -92,6 +106,7 @@ export type EnrichmentProvider = {
     };
   }>;
 };
+
 export type EnrichmentOptions = {
   mode?:
     | "preflight"
@@ -109,10 +124,7 @@ export type EnrichmentOptions = {
   reportPath?: string | null;
   canaryReportPath?: string | null;
   selectionMode?: "pending" | "all-automatic";
-  vocabularies?: {
-    primaryFunctions: VocabularyEntry[];
-    capabilities: VocabularyEntry[];
-  };
+  vocabularies?: TagVocabulary;
 };
 
 export type PreflightResult = {
@@ -144,13 +156,7 @@ export function enrichRecord(
   provider: EnrichmentProvider,
   options?: {
     force?: boolean;
-    vocabularies?: {
-      primaryFunctions: VocabularyEntry[];
-      capabilities: VocabularyEntry[];
-    };
-    classificationReviewRequest?: ClassificationReviewRequest;
-    summaryMode?: CatalogCopyMode;
-    submittedDescription?: string | null;
+    vocabularies?: TagVocabulary;
     protectedTerms?: readonly string[];
     policyVersion?: string;
     loadSource?: (
@@ -159,6 +165,7 @@ export function enrichRecord(
       snapshot: RepositorySnapshot | undefined,
       options?: Record<string, unknown>,
     ) => Promise<EnrichmentSource>;
+    [key: string]: unknown;
   },
 ): Promise<EnrichmentOutput | null>;
 
@@ -166,10 +173,7 @@ export function writeEnrichedRecord(
   path: string,
   record: RegistryRecord,
   output: EnrichmentOutput,
-  vocabularies?: {
-    primaryFunctions: readonly (string | VocabularyEntry)[];
-    capabilities: readonly (string | VocabularyEntry)[];
-  },
+  vocabularies?: TagVocabulary,
 ): Promise<void>;
 
 export function mapWithConcurrency<T, R>(
@@ -184,10 +188,7 @@ export function runEnrichmentBatch(options: {
   sourcesById: Record<string, SourceRecord>;
   snapshotsBySourceId: Record<string, RepositorySnapshot>;
   phase: "primary" | "retry";
-  vocabularies: {
-    primaryFunctions: VocabularyEntry[];
-    capabilities: VocabularyEntry[];
-  };
+  vocabularies: TagVocabulary;
   provider: EnrichmentProvider;
   validateSnapshot: (snapshot: unknown) => boolean;
   concurrency?: number;
@@ -200,10 +201,7 @@ export function runEnrichmentBatch(options: {
   writeRecord?: (
     record: RegistryRecord,
     output: EnrichmentOutput,
-    vocabularies: {
-      primaryFunctions: VocabularyEntry[];
-      capabilities: VocabularyEntry[];
-    },
+    vocabularies: TagVocabulary,
   ) => Promise<void>;
   previousEntries?: EnrichmentRunState["entries"];
   force?: boolean;
@@ -240,10 +238,7 @@ export type RunCliOptions = Omit<EnrichmentOptions, "mode"> & {
   writeRecord?: (
     record: RegistryRecord,
     output: EnrichmentOutput,
-    vocabularies: {
-      primaryFunctions: VocabularyEntry[];
-      capabilities: VocabularyEntry[];
-    },
+    vocabularies: TagVocabulary,
   ) => Promise<void>;
   writeReport?: (report: EnrichmentRunState) => Promise<void>;
 };

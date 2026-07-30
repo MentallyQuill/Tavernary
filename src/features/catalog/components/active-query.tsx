@@ -15,13 +15,12 @@ const compatibilityLabels = new Map(
 
 function labelMaps(projects: CatalogProject[]) {
   const frontends = new Map<string, string>();
-  const capabilities = new Map<string, string>();
+  const tags = new Map<string, string>();
   for (const project of projects) {
     for (const item of project.frontends) frontends.set(item.id, item.label);
-    for (const item of project.capabilities)
-      capabilities.set(item.id, item.label);
+    for (const item of project.tags) tags.set(item.id, item.label);
   }
-  return { frontends, capabilities };
+  return { frontends, tags };
 }
 
 const staticLabels: Record<string, string> = {
@@ -185,11 +184,11 @@ export function ActiveQuery({
       value,
       label: staticLabels[value] ?? value,
     });
-  for (const value of query.capabilities)
+  for (const value of query.tags)
     tokens.push({
-      key: "capabilities",
+      key: "tags",
       value,
-      label: maps.capabilities.get(value) ?? value,
+      label: maps.tags.get(value) ?? value,
     });
   for (const value of query.modelFamilies ?? [])
     tokens.push({

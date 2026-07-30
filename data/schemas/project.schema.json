@@ -1,122 +1,37 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://tavernary.org/schemas/project.schema.json",
-  "title": "Tavernary curated project",
+  "title": "Tavernary curated project card",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
     "id",
+    "source_id",
     "name",
     "kind",
     "summary",
     "metadata_status",
-    "source",
     "frontends",
     "primary_function",
-    "capabilities",
+    "tags",
     "cataloged_at",
     "catalog_cohort",
-    "visibility",
-    "visibility_reason",
-    "refresh_policy",
-    "enrichment_policy"
+    "listing_status",
+    "listing_status_reason",
+    "metadata_policy"
   ],
   "properties": {
-    "schema_version": { "const": 5 },
+    "schema_version": { "const": 6 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
-    "name": { "type": "string", "minLength": 1 },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 100 },
     "kind": { "enum": ["frontend", "extension", "preset"] },
     "summary": { "type": "string", "minLength": 1, "maxLength": 220 },
     "metadata_status": { "enum": ["provisional", "curated"] },
-    "source": {
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "repository", "repository_id"],
-          "properties": {
-            "type": { "const": "github" },
-            "repository": {
-              "type": "string",
-              "pattern": "^[^/\\s]+/[^/\\s]+$"
-            },
-            "repository_id": {
-              "anyOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }]
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "repository", "repository_id"],
-          "properties": {
-            "type": { "const": "codeberg" },
-            "repository": {
-              "type": "string",
-              "pattern": "^[^/\\s]+/[^/\\s]+$"
-            },
-            "repository_id": {
-              "anyOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }]
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "organization", "url"],
-          "properties": {
-            "type": { "const": "github-organization" },
-            "organization": {
-              "type": "string",
-              "pattern": "^[^/\\s]+$"
-            },
-            "url": { "type": "string", "format": "uri" }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "type",
-            "url",
-            "published_at",
-            "version",
-            "artifact_size_bytes",
-            "license_status",
-            "license_spdx_id"
-          ],
-          "properties": {
-            "type": { "const": "url" },
-            "url": { "type": "string", "format": "uri" },
-            "published_at": {
-              "anyOf": [
-                { "type": "string", "format": "date-time" },
-                { "type": "null" }
-              ]
-            },
-            "version": {
-              "anyOf": [
-                { "type": "string", "minLength": 1 },
-                { "type": "null" }
-              ]
-            },
-            "artifact_size_bytes": {
-              "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }]
-            },
-            "license_status": {
-              "enum": ["osi-approved", "proprietary", "missing", "pending"]
-            },
-            "license_spdx_id": {
-              "anyOf": [
-                { "type": "string", "minLength": 1 },
-                { "type": "null" }
-              ]
-            }
-          }
-        }
-      ]
-    },
     "frontends": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
@@ -134,8 +49,9 @@
         "developer-infrastructure"
       ]
     },
-    "capabilities": {
+    "tags": {
       "type": "array",
+      "maxItems": 6,
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
     },
@@ -153,22 +69,39 @@
     },
     "cataloged_at": { "type": "string", "format": "date-time" },
     "catalog_cohort": { "enum": ["seed", "standard"] },
-    "visibility": { "enum": ["published", "quarantined", "disabled"] },
-    "visibility_reason": {
-      "enum": [
-        "identity-change",
-        "source-unavailable",
-        "removed",
-        "safety-review",
-        null
-      ]
+    "listing_status": { "enum": ["active", "quarantined", "retired"] },
+    "listing_status_reason": {
+      "enum": ["safety-review", "owner-request", null]
     },
-    "refresh_policy": { "enum": ["automatic", "paused"] },
-    "enrichment_policy": { "enum": ["automatic", "manual"] },
-    "enrichment_note": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 240
+    "metadata_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "tags"],
+      "properties": {
+        "summary": { "$ref": "#/definitions/metadataPolicy" },
+        "tags": { "$ref": "#/definitions/metadataPolicy" }
+      }
+    }
+  },
+  "definitions": {
+    "metadataPolicy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": { "mode": { "const": "automatic" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "note"],
+          "properties": {
+            "mode": { "const": "manual" },
+            "note": { "type": "string", "minLength": 1, "maxLength": 240 }
+          }
+        }
+      ]
     }
   },
   "allOf": [
@@ -190,64 +123,23 @@
       }
     },
     {
-      "if": { "properties": { "visibility": { "const": "published" } } },
-      "then": { "properties": { "visibility_reason": { "type": "null" } } }
-    },
-    {
       "if": {
-        "properties": {
-          "visibility": { "enum": ["quarantined", "disabled"] }
-        }
+        "properties": { "listing_status": { "const": "active" } },
+        "required": ["listing_status"]
       },
       "then": {
-        "properties": {
-          "visibility_reason": {
-            "enum": [
-              "identity-change",
-              "source-unavailable",
-              "removed",
-              "safety-review"
-            ]
-          }
-        }
+        "properties": { "listing_status_reason": { "type": "null" } }
       }
     },
     {
       "if": {
         "properties": {
-          "enrichment_policy": { "const": "manual" }
+          "listing_status": { "enum": ["quarantined", "retired"] }
         },
-        "required": ["enrichment_policy"]
-      },
-      "then": { "required": ["enrichment_note"] }
-    },
-    {
-      "if": {
-        "properties": {
-          "enrichment_policy": { "const": "automatic" }
-        },
-        "required": ["enrichment_policy"]
+        "required": ["listing_status"]
       },
       "then": {
-        "not": { "required": ["enrichment_note"] }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "source": {
-            "properties": {
-              "type": { "const": "github-organization" }
-            },
-            "required": ["type"]
-          }
-        },
-        "required": ["source"]
-      },
-      "then": {
-        "properties": {
-          "enrichment_policy": { "const": "manual" }
-        }
+        "properties": { "listing_status_reason": { "type": "string" } }
       }
     }
   ]

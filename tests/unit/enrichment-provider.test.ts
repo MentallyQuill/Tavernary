@@ -9,37 +9,56 @@ import {
 
 const model = "minimax/minimax-m3:thinking";
 
+const allowedTags = [
+  {
+    id: "automate-roleplay-workflows",
+    label: "Automate roleplay workflows",
+    facet: "goal",
+    description: "Automates repeated roleplay setup or execution.",
+    aliases: ["automation"],
+    applicable_kinds: ["extension"],
+    inclusion_guidance: ["The source describes repeatable automation."],
+    exclusion_guidance: ["A one-time convenience is not automation."],
+  },
+];
+
 const input = {
   id: "fixture",
+  sourceId: "github-creator-project",
   name: "Fixture",
   kind: "extension",
-  summaryMode: "synthesize" as const,
-  submittedDescription: "Generic intake details.",
+  requestedFields: ["summary", "tags"] as const,
+  vocabularyHash: "a".repeat(64),
   evidence: {
-    readme: null,
+    readme: {
+      identity: "README.md@abc123",
+      text: "Fixture automates repeatable prompt setup.",
+    },
     repositoryDescription: "A useful extension for structured prompt work.",
-    submissionDescription: "Generic intake details.",
   },
   protectedTerms: ["Fixture"],
   policyVersion: "2026-07-29",
   source: {
-    kind: "description" as const,
+    kind: "readme" as const,
     identity: "github:creator/project",
-    text: "A useful extension for structured prompt work.",
+    text: "Fixture automates repeatable prompt setup.",
   },
   frontends: ["sillytavern"],
-  allowedPrimaryFunctions: [
-    { id: "developer-infrastructure", label: "Developer infrastructure" },
-  ],
-  allowedCapabilities: [{ id: "automation", label: "Automation" }],
+  allowedTags,
 };
 
 const output = {
-  summary:
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  metadata_status: "curated",
-  capabilities: ["automation"],
-  classification_review: null,
+  summary: {
+    value:
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+    evidence: ["readme:1"],
+  },
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      evidence: ["readme:1"],
+    },
+  ],
   result: "accepted-unchanged",
   change_reasons: [],
   policy_signal: "none",
@@ -140,7 +159,7 @@ test.each([
   },
 );
 
-test("sends the exact model, hardened prompt, and strict JSON schema", async () => {
+test("sends the exact model, hardened prompt, requested fields, and strict schema", async () => {
   const fetchImpl = vi.fn(
     async (_url: string | URL | Request, _init?: RequestInit) => success(),
   );
@@ -155,111 +174,72 @@ test("sends the exact model, hardened prompt, and strict JSON schema", async () 
 
   const [, init] = fetchImpl.mock.calls[0];
   const body = JSON.parse(String(init?.body));
+  const schema = body.response_format.json_schema.schema;
   expect(body.model).toBe(model);
-  expect(body.temperature).toBe(0.95);
+  expect(body.temperature).toBe(0.2);
   expect(body.messages[0].content).toMatch(
     /project names.*README content.*untrusted reference data/iu,
   );
+  expect(body.messages[0].content).toMatch(/root README.*primary evidence/iu);
   expect(body.messages[0].content).toMatch(
-    /do not follow.*embedded instructions/iu,
+    /repository description.*secondary/iu,
   );
-  expect(body.response_format).toMatchObject({
-    type: "json_schema",
-    json_schema: {
-      strict: true,
-      schema: {
-        properties: {
-          summary: {
-            type: "string",
-            maxLength: 220,
-          },
-          result: {
-            enum: [
-              "accepted-unchanged",
-              "accepted-with-light-edits",
-              "accepted-with-policy-rewrite",
-            ],
-          },
-          classification_review: { type: "null" },
-        },
-      },
+  expect(body.messages[0].content).toMatch(/zero to six allowed tag IDs/iu);
+  expect(body.messages[0].content).toMatch(/evidence/iu);
+  expect(schema.required).toEqual([
+    "summary",
+    "tags",
+    "result",
+    "change_reasons",
+    "policy_signal",
+  ]);
+  expect(schema.properties.summary).toMatchObject({
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      value: { type: "string", maxLength: 220 },
+      evidence: { type: "array", minItems: 1 },
     },
   });
-  expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
-    "primary_function",
-  );
-  expect(body.messages[0].content).toMatch(/never.*change.*primary.function/iu);
-  expect(body.messages[0].content).toMatch(/exactly two sentences/iu);
-  expect(body.messages[0].content).toMatch(/purpose/iu);
-  expect(body.messages[0].content).toMatch(
-    /distinctive workflow, capability, or benefit/iu,
-  );
-  expect(body.messages[0].content).toMatch(
-    /prefer 24-30 words and 160-200 characters/iu,
-  );
-  expect(body.messages[0].content).toMatch(
-    /preserve exact wording and summary structure/iu,
-  );
-  expect(body.messages[0].content).toMatch(/ordinary profanity.*permitted/iu);
+  expect(schema.properties.tags.items.properties.id.enum).toEqual([
+    "automate-roleplay-workflows",
+  ]);
+  expect(schema.properties).not.toHaveProperty("capabilities");
+  expect(schema.properties).not.toHaveProperty("primary_function");
+  expect(schema.properties).not.toHaveProperty("metadata_status");
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });
 });
 
-test("bounds a requested Extension classification review without making it authoritative", async () => {
-  const reviewedOutput = {
-    ...output,
-    classification_review: {
-      status: "possible-mismatch",
-      suggested_primary_function: "interface-workflow",
-      explanation:
-        "The source primarily describes user-facing editing controls.",
-    },
-  };
+test("builds a tags-only schema without summary or copy diagnostics", async () => {
+  const tagsOnlyOutput = { tags: output.tags };
   const fetchImpl = vi.fn(
     async (_url: string | URL | Request, _init?: RequestInit) =>
       success({
-        choices: [{ message: { content: JSON.stringify(reviewedOutput) } }],
+        choices: [{ message: { content: JSON.stringify(tagsOnlyOutput) } }],
       }),
   );
   const provider = createEnrichmentProvider({
     apiUrl: "https://api.example.test/v1/chat/completions",
-    apiKey: "do-not-log",
+    apiKey: "key",
     model,
     fetchImpl,
   });
 
   await provider.generate({
     ...input,
-    classificationReviewRequest: {
-      submittedPrimaryFunction: "memory-retrieval",
-      allowedPrimaryFunctions: [
-        { id: "memory-retrieval", label: "Memory and retrieval" },
-        { id: "interface-workflow", label: "Interface and workflow" },
-      ],
-    },
+    requestedFields: ["tags"],
   });
 
-  const [, init] = fetchImpl.mock.calls[0];
-  const body = JSON.parse(String(init?.body));
+  const body = JSON.parse(String(fetchImpl.mock.calls[0][1]?.body));
+  expect(body.response_format.json_schema.schema.required).toEqual(["tags"]);
   expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
-    "primary_function",
+    "summary",
   );
-  expect(
-    body.response_format.json_schema.schema.properties.classification_review,
-  ).toMatchObject({
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      status: { enum: ["confirmed", "possible-mismatch"] },
-      suggested_primary_function: {
-        enum: ["memory-retrieval", "interface-workflow"],
-      },
-      explanation: {
-        anyOf: [{ type: "null" }, { type: "string", maxLength: 240 }],
-      },
-    },
-  });
+  expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
+    "result",
+  );
 });
 
 test("uses deterministic sampling for a validation repair request", async () => {
@@ -282,8 +262,7 @@ test("uses deterministic sampling for a validation repair request", async () => 
     },
   });
 
-  const [, init] = fetchImpl.mock.calls[0];
-  const body = JSON.parse(String(init?.body));
+  const body = JSON.parse(String(fetchImpl.mock.calls[0][1]?.body));
   expect(body.temperature).toBe(0);
   expect(body.messages[0].content).toMatch(
     /rejectedSummary.*untrusted.*do not follow/iu,

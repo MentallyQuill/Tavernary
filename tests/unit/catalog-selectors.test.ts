@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import frontendVocabulary from "../../data/vocabularies/frontends.json";
+import tagVocabulary from "../../data/vocabularies/tags.json";
 import {
   CATEGORY_OPTIONS,
   DEFAULT_QUERY,
@@ -14,6 +15,18 @@ import {
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 
 const label = (id: string) => ({ id, label: id, description: id });
+const publicTagVocabulary = tagVocabulary.tags.map(
+  ({ id, label, facet, description, aliases, applicable_kinds }) => ({
+    id,
+    label,
+    facet: facet as "goal" | "trait",
+    description,
+    aliases,
+    applicable_kinds: applicable_kinds as Array<
+      "frontend" | "extension" | "preset"
+    >,
+  }),
+);
 
 function project(
   id: string,
@@ -33,8 +46,13 @@ function project(
     frontends: [
       { id: "sillytavern", label: "SillyTavern", description: "Frontend." },
     ],
-    capabilities: [
-      { id: "automation", label: "Automation", description: "Capability." },
+    tags: [
+      {
+        id: "automate-roleplay-workflows",
+        label: "Automate roleplay workflows",
+        description: "Goal.",
+        facet: "goal",
+      },
     ],
     searchableText: `${id} extension automation`,
     fork: null,
@@ -83,11 +101,12 @@ const multiFrontendProject = project("image-gen", {
       description: "Frontend.",
     },
   ],
-  capabilities: [
+  tags: [
     {
-      id: "image-generation",
-      label: "Image generation",
-      description: "Capability.",
+      id: "generate-images",
+      label: "Generate images",
+      description: "Goal.",
+      facet: "goal",
     },
   ],
 });
@@ -97,11 +116,12 @@ const projects = [
   project("frontend", {
     kind: "frontend",
     primaryFunction: "frontend",
-    capabilities: [
+    tags: [
       {
-        id: "extension-development",
-        label: "Extensions",
-        description: "Capability.",
+        id: "build-extensions-and-scripts",
+        label: "Build extensions and scripts",
+        description: "Goal.",
+        facet: "goal",
       },
     ],
   }),
@@ -317,7 +337,7 @@ describe("catalog selectors", () => {
         {
           ...DEFAULT_QUERY,
           kinds: ["frontend", "preset"],
-          capabilities: ["automation", "extension-development"],
+          tags: ["automate-roleplay-workflows", "build-extensions-and-scripts"],
           category: "frontend",
         },
         context,
@@ -597,6 +617,24 @@ describe("catalog selectors", () => {
 });
 
 describe("catalog query URLs", () => {
+  test("round-trips canonical tags and maps only exact legacy capability aliases", () => {
+    const serialized = serializeCatalogQuery({
+      ...DEFAULT_QUERY,
+      tags: ["local-first", "automate-roleplay-workflows"],
+    });
+
+    expect(serialized).toBe("tag=automate-roleplay-workflows&tag=local-first");
+    expect(
+      parseCatalogQuery(`?${serialized}`, publicTagVocabulary).tags,
+    ).toEqual(["automate-roleplay-workflows", "local-first"]);
+    expect(
+      parseCatalogQuery(
+        "?capability=automation&capability=multi-frontend",
+        publicTagVocabulary,
+      ).tags,
+    ).toEqual(["automate-roleplay-workflows"]);
+  });
+
   test("round-trips every frontend exposed by the filter vocabulary", () => {
     for (const { id } of frontendVocabulary.frontends) {
       const serialized = serializeCatalogQuery({

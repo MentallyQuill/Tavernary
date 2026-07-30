@@ -18,6 +18,7 @@ import type {
   LicenseFilter,
 } from "../catalog-query";
 import type { CatalogProject } from "../catalog-types";
+import type { PublicTagDefinition } from "../tag-vocabulary";
 import {
   FilterGroup,
   FilterLegal,
@@ -25,11 +26,12 @@ import {
   FilterSheetHeading,
   type FilterOption,
 } from "./filter-controls";
+import { TagBrowser } from "./tag-browser";
 
 type FilterArray =
   | "frontends"
   | "kinds"
-  | "capabilities"
+  | "tags"
   | "modelFamilies"
   | "completionFormats"
   | "development"
@@ -66,10 +68,7 @@ const completionOptions = completionFormatVocabulary.completion_formats.map(
 );
 const modalBackground = [".site-header", ".mobile-category", ".catalog-layout"];
 
-function uniqueLabels(
-  projects: CatalogProject[],
-  property: "frontends" | "capabilities",
-) {
+function uniqueLabels(projects: CatalogProject[], property: "frontends") {
   const values = new Map<string, string>();
   for (const project of projects) {
     for (const item of project[property]) {
@@ -88,7 +87,7 @@ function countFor(
   now: string,
 ) {
   return projects.filter((project) => {
-    if (group === "frontends" || group === "capabilities") {
+    if (group === "frontends" || group === "tags") {
       return project[group].some(({ id }) => id === value);
     }
     if (group === "modelFamilies") {
@@ -136,6 +135,7 @@ function withCounts(
 export function FilterPanel({
   query,
   projects,
+  tagVocabulary,
   onToggle,
   onClear,
   mobile = false,
@@ -145,6 +145,7 @@ export function FilterPanel({
 }: {
   query: CatalogQuery;
   projects: CatalogProject[];
+  tagVocabulary: PublicTagDefinition[];
   onToggle: (group: FilterArray, value: string) => void;
   onClear: () => void;
   mobile?: boolean;
@@ -197,18 +198,24 @@ export function FilterPanel({
         onToggle={(value) => onToggle("kinds", value)}
         kindColors
       />
-      <FilterGroup
-        title="Capabilities & characteristics"
-        options={withCounts(
-          uniqueLabels(projects, "capabilities"),
-          projects,
-          "capabilities",
-          now,
-        )}
-        selected={query.capabilities}
-        onToggle={(value) => onToggle("capabilities", value)}
-        presentation="chips"
-      />
+      <section
+        className="filter-tag-browser"
+        aria-labelledby="project-tag-filter-heading"
+      >
+        <h3 id="project-tag-filter-heading">Goals &amp; traits</h3>
+        <TagBrowser
+          tags={tagVocabulary}
+          selected={query.tags}
+          onToggle={(value) => onToggle("tags", value)}
+          counts={Object.fromEntries(
+            tagVocabulary.map(({ id }) => [
+              id,
+              countFor(projects, "tags", id, now),
+            ]),
+          )}
+          searchLabel="Search goals and traits"
+        />
+      </section>
       <FilterGroup
         title="Model family"
         options={withCounts(modelOptions, projects, "modelFamilies", now)}

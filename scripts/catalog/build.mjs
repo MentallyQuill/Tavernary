@@ -51,6 +51,18 @@ function labeled(ids, entries) {
   });
 }
 
+function tagged(ids, entries) {
+  return ids.map((id) => {
+    const entry = entries.get(id);
+    return {
+      id,
+      label: entry?.label ?? id,
+      description: entry?.description ?? `Catalog tag: ${entry?.label ?? id}.`,
+      facet: entry?.facet ?? "goal",
+    };
+  });
+}
+
 function presetCompatibility(record, vocabularies) {
   return {
     modelFamilies: labeled(
@@ -125,10 +137,7 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
 
 function repositoryProject(record, source, snapshot, vocabularies, now) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(
-    record.capabilities ?? [],
-    vocabularies.capabilities,
-  );
+  const tags = tagged(record.tags, vocabularies.tags);
   const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
@@ -148,13 +157,14 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
     record.summary,
     primaryFunction.label,
     ...frontends.map(({ label }) => label),
-    ...capabilities.map(({ label }) => label),
+    ...tags.map(({ label }) => label),
     ...compatibility.modelFamilies.map(({ label }) => label),
     ...compatibility.completionFormats.map(({ label }) => label),
     ...vocabularyAliases(
       record.model_families ?? [],
       vocabularies.modelFamilies,
     ),
+    ...vocabularyAliases(record.tags, vocabularies.tags),
     attribution.owner.login,
     attribution.owner.provider,
     ...attribution.contributors.map(({ login }) => login),
@@ -188,7 +198,7 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
-    capabilities,
+    tags,
     searchableText,
     attribution,
     activity: snapshot
@@ -229,10 +239,7 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
 
 function urlProject(record, source, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(
-    record.capabilities ?? [],
-    vocabularies.capabilities,
-  );
+  const tags = tagged(record.tags, vocabularies.tags);
   const compatibility = presetCompatibility(record, vocabularies);
   const primaryFunction = {
     id: record.primary_function,
@@ -258,20 +265,21 @@ function urlProject(record, source, vocabularies) {
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
-    capabilities,
+    tags,
     searchableText: [
       record.name,
       record.kind,
       record.summary,
       primaryFunction.label,
       ...frontends.map(({ label }) => label),
-      ...capabilities.map(({ label }) => label),
+      ...tags.map(({ label }) => label),
       ...compatibility.modelFamilies.map(({ label }) => label),
       ...compatibility.completionFormats.map(({ label }) => label),
       ...vocabularyAliases(
         record.model_families ?? [],
         vocabularies.modelFamilies,
       ),
+      ...vocabularyAliases(record.tags, vocabularies.tags),
     ]
       .join(" ")
       .toLowerCase(),
@@ -297,10 +305,7 @@ function urlProject(record, source, vocabularies) {
 
 function manualProject(record, source, vocabularies) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
-  const capabilities = labeled(
-    record.capabilities ?? [],
-    vocabularies.capabilities,
-  );
+  const tags = tagged(record.tags, vocabularies.tags);
   const primaryFunction = {
     id: record.primary_function,
     label:
@@ -320,14 +325,15 @@ function manualProject(record, source, vocabularies) {
     catalogedAt: record.cataloged_at,
     catalogCohort: record.catalog_cohort,
     frontends,
-    capabilities,
+    tags,
     searchableText: [
       record.name,
       record.kind,
       record.summary,
       primaryFunction.label,
       ...frontends.map(({ label }) => label),
-      ...capabilities.map(({ label }) => label),
+      ...tags.map(({ label }) => label),
+      ...vocabularyAliases(record.tags, vocabularies.tags),
     ]
       .join(" ")
       .toLowerCase(),
@@ -355,7 +361,7 @@ export async function buildCatalog(options = {}) {
     siteConfig,
     frontendVocabulary,
     primaryFunctionVocabulary,
-    capabilityVocabulary,
+    tagVocabulary,
     modelFamilyVocabulary,
     completionFormatVocabulary,
   ] = await Promise.all([
@@ -381,7 +387,7 @@ export async function buildCatalog(options = {}) {
     options.siteConfig ?? readJson("data/site.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
-    readJson("data/vocabularies/capabilities.json"),
+    readJson("data/vocabularies/tags.json"),
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
   ]);
@@ -391,40 +397,37 @@ export async function buildCatalog(options = {}) {
       primaryFunctionVocabulary,
       "primary_functions",
     ),
-    capabilities: entriesById(capabilityVocabulary, "capabilities"),
+    tags: entriesById(tagVocabulary, "tags"),
     modelFamilies: entriesById(modelFamilyVocabulary, "model_families"),
     completionFormats: entriesById(
       completionFormatVocabulary,
       "completion_formats",
     ),
   };
+  const publicTagVocabulary = tagVocabulary.tags.map(
+    ({ id, label, facet, description, aliases, applicable_kinds }) => ({
+      id,
+      label,
+      facet,
+      description,
+      aliases,
+      applicable_kinds,
+    }),
+  );
   const snapshotsBySource = new Map(
-    snapshots.map((snapshot) => [
-      snapshot.source_id ?? snapshot.project_id,
-      snapshot,
-    ]),
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const generatedAt = options.now ?? refreshManifest.completed_at;
   const generatedAtIso = new Date(generatedAt).toISOString();
   const recordsByProject = new Map(
     records.map((record) => [record.id, record]),
   );
-  const sourceBackedRecords = records.filter(
-    ({ schema_version: version }) => version === 6,
-  );
-  const sourceBackedSnapshots = snapshots.filter(
-    ({ schema_version: version }) => version === 4,
-  );
-  const registry =
-    sourceBackedRecords.length > 0
-      ? indexRegistry({
-          projects: sourceBackedRecords,
-          sources,
-          snapshots: sourceBackedSnapshots,
-        })
-      : null;
+  const registry = indexRegistry({
+    projects: records,
+    sources,
+    snapshots,
+  });
   let projects = [];
-  const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
 
   for (const record of records) {
     const classificationIssue = classificationError(
@@ -434,26 +437,10 @@ export async function buildCatalog(options = {}) {
     if (classificationIssue) {
       throw new Error(`${record.id}: classification ${classificationIssue}`);
     }
-    const sourceBacked = record.schema_version === 6;
-    const source = sourceBacked
-      ? registry.sourcesById.get(record.source_id)
-      : record.source;
-    const snapshot = snapshotsBySource.get(
-      sourceBacked ? record.source_id : record.id,
-    );
-    if (sourceBacked) {
-      if (
-        !effectiveListingState({ project: record, source, snapshot }).public
-      ) {
-        continue;
-      }
-    } else {
-      if (record.visibility !== "published") {
-        continue;
-      }
-      if (snapshot && hiddenSourceStates.has(snapshot.source_health)) {
-        continue;
-      }
+    const source = registry.sourcesById.get(record.source_id);
+    const snapshot = snapshotsBySource.get(record.source_id);
+    if (!effectiveListingState({ project: record, source, snapshot }).public) {
+      continue;
     }
     if (source.type === "url") {
       if (record.kind === "preset" || record.kind === "frontend") {
@@ -478,19 +465,6 @@ export async function buildCatalog(options = {}) {
   }
 
   projects.sort((left, right) => left.id.localeCompare(right.id));
-  const recordsByRepositoryId = new Map(
-    records
-      .filter(
-        (record) =>
-          ["github", "codeberg"].includes(record.source?.type) &&
-          Number.isInteger(record.source.repository_id),
-      )
-      .map((record) => [
-        `${record.source.type}:${record.source.repository_id}`,
-        record,
-      ]),
-  );
-  const publicProjectIds = new Set(projects.map(({ id }) => id));
   const publicProjectsBySourceId = new Map();
   for (const project of projects) {
     const sourceId = recordsByProject.get(project.id)?.source_id;
@@ -502,21 +476,13 @@ export async function buildCatalog(options = {}) {
   }
   projects = projects.map((project) => ({
     ...project,
-    fork:
-      recordsByProject.get(project.id)?.schema_version === 6
-        ? resolveForkRelationship({
-            snapshot:
-              snapshotsBySource.get(
-                recordsByProject.get(project.id)?.source_id,
-              ) ?? null,
-            sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
-            publicProjectsBySourceId,
-          })
-        : resolveForkRelationship({
-            snapshot: snapshotsBySource.get(project.id) ?? null,
-            recordsByRepositoryId,
-            publicProjectIds,
-          }),
+    fork: resolveForkRelationship({
+      snapshot:
+        snapshotsBySource.get(recordsByProject.get(project.id)?.source_id) ??
+        null,
+      sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
+      publicProjectsBySourceId,
+    }),
   }));
   const publicProjectsById = new Map(
     projects.map((project) => [project.id, project]),
@@ -532,21 +498,17 @@ export async function buildCatalog(options = {}) {
     .map((kit) => {
       const components = kit.project_ids.map((projectId) => {
         const record = recordsByProject.get(projectId);
-        const sourceBacked = record?.schema_version === 6;
-        const source = sourceBacked
-          ? registry.sourcesById.get(record.source_id)
-          : record?.source;
-        const snapshot = snapshotsBySource.get(
-          sourceBacked ? record.source_id : projectId,
-        );
+        const source = registry.sourcesById.get(record?.source_id);
+        const snapshot = snapshotsBySource.get(record?.source_id);
         const sourceHealth = snapshot?.source_health;
-        const sourceFlagged = hiddenSourceStates.has(sourceHealth);
-        const listing = sourceBacked
-          ? effectiveListingState({ project: record, source, snapshot })
-          : {
-              public: record?.visibility === "published" && !sourceFlagged,
-              reason: record?.visibility_reason ?? sourceHealth ?? null,
-            };
+        const listing =
+          record && source
+            ? effectiveListingState({
+                project: record,
+                source,
+                snapshot,
+              })
+            : { public: false, reason: "missing-record" };
         const registryFlagged = !listing.public;
         const availability =
           !record || registryFlagged ? "flagged" : "available";
@@ -655,8 +617,9 @@ export async function buildCatalog(options = {}) {
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     generatedAt: generatedAtIso,
+    tagVocabulary: publicTagVocabulary,
     projects,
     kits,
   };

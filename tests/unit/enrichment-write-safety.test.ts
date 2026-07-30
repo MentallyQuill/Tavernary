@@ -1,5 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -8,39 +7,60 @@ import { expect, test } from "vitest";
 import { writeEnrichedRecord } from "../../scripts/catalog/enrich-readmes.mjs";
 import type { EnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 
+const vocabularies = {
+  schema_version: 1 as const,
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      label: "Automate roleplay workflows",
+      facet: "goal" as const,
+      description: "Automates repeated roleplay setup or execution.",
+      aliases: ["automation"],
+      applicable_kinds: ["extension" as const],
+      inclusion_guidance: ["The source describes repeatable automation."],
+      exclusion_guidance: [],
+    },
+  ],
+};
+
 const record = {
   schema_version: 6,
   id: "fixture",
   name: "Fixture",
   kind: "extension",
   summary: "Generic intake details.",
+  tags: [],
   metadata_status: "provisional",
   source_id: "github-1",
   frontends: ["sillytavern"],
   primary_function: "interface-workflow",
-  capabilities: [],
   cataloged_at: "2026-07-24T00:00:00.000Z",
   catalog_cohort: "seed",
   listing_status: "active",
-  enrichment_policy: "automatic" as const,
+  metadata_policy: {
+    summary: { mode: "automatic" as const },
+    tags: { mode: "automatic" as const },
+  },
 };
 
 const output = {
-  summary:
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  metadata_status: "curated",
-  capabilities: ["automation"],
-  classification_review: {
-    status: "possible-mismatch",
-    suggested_primary_function: "developer-infrastructure",
-    explanation: "The source emphasizes developer-facing automation.",
+  summary: {
+    value:
+      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+    evidence: ["readme:1-4"],
   },
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      evidence: ["readme:5-8"],
+    },
+  ],
   result: "accepted-unchanged",
   change_reasons: [],
   policy_signal: "none",
 } satisfies EnrichmentOutput;
 
-test("atomically merges only editorial enrichment fields", async () => {
+test("atomically merges only canonical generated metadata fields", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
   const path = join(root, "fixture.json");
   await writeFile(path, JSON.stringify(record, null, 2));
@@ -49,21 +69,21 @@ test("atomically merges only editorial enrichment fields", async () => {
     path,
     { ...record, source_id: "github-99" },
     output,
+    vocabularies,
   );
 
   const serialized = await readFile(path, "utf8");
   const written = JSON.parse(serialized);
   expect(written).toEqual({
     ...record,
-    summary: output.summary,
-    metadata_status: output.metadata_status,
-    capabilities: output.capabilities,
+    summary: output.summary.value,
+    tags: ["automate-roleplay-workflows"],
+    metadata_status: "curated",
   });
   expect(written.primary_function).toBe("interface-workflow");
-  expect(written).not.toHaveProperty("classification_review");
   expect(written.source_id).toEqual(record.source_id);
-  expect(serialized).toContain('"frontends": ["sillytavern"]');
-  expect(serialized).toContain('"capabilities": ["automation"]');
+  expect(written).not.toHaveProperty("evidence");
+  expect(written).not.toHaveProperty("result");
 });
 
 test("refuses invalid output without changing the record", async () => {
@@ -73,35 +93,48 @@ test("refuses invalid output without changing the record", async () => {
   await writeFile(path, original);
 
   await expect(
-    writeEnrichedRecord(path, record, {
-      ...output,
-      metadata_status: "provisional",
-    } as never),
-  ).rejects.toThrow();
+    writeEnrichedRecord(
+      path,
+      record,
+      {
+        ...output,
+        tags: [{ id: "invented", evidence: ["readme:1"] }],
+      },
+      vocabularies,
+    ),
+  ).rejects.toThrow("unknown ID");
   expect(await readFile(path, "utf8")).toBe(original);
 });
 
-test("re-reads and refuses a record changed to manual after selection", async () => {
+test("re-reads and refuses a record with no automatic fields after selection", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
   const path = join(root, "fixture.json");
   const manual = {
     ...record,
-    enrichment_policy: "manual",
-    enrichment_note: "Maintainer locked this record.",
+    metadata_policy: {
+      summary: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+      tags: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+    },
   };
   const original = JSON.stringify(manual, null, 2);
   await writeFile(path, original);
 
-  await expect(writeEnrichedRecord(path, record, output)).rejects.toMatchObject(
-    {
-      code: "manual-enrichment-policy",
-      enrichmentNote: "Maintainer locked this record.",
-    },
-  );
+  await expect(
+    writeEnrichedRecord(path, record, output, vocabularies),
+  ).rejects.toMatchObject({
+    code: "manual-enrichment-policy",
+    enrichmentNote: "Summary and tags are manually managed.",
+  });
   expect(await readFile(path, "utf8")).toBe(original);
 });
 
-test("preserves every non-editorial field across concurrent record writes", async () => {
+test("preserves every non-generated field across concurrent record writes", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-enrichment-"));
   const records = ["alpha", "beta"].map((id, index) => ({
     ...record,
@@ -118,18 +151,18 @@ test("preserves every non-editorial field across concurrent record writes", asyn
 
   await Promise.all(
     records.map((candidate, index) =>
-      writeEnrichedRecord(paths[index], candidate, output),
+      writeEnrichedRecord(paths[index], candidate, output, vocabularies),
     ),
   );
 
   const written = await Promise.all(
     paths.map(async (path) => JSON.parse(await readFile(path, "utf8"))),
   );
-  const editorial = new Set(["summary", "metadata_status", "capabilities"]);
-  const nonEditorial = (candidate: Record<string, unknown>) =>
+  const generated = new Set(["summary", "tags", "metadata_status"]);
+  const stableFields = (candidate: Record<string, unknown>) =>
     Object.fromEntries(
-      Object.entries(candidate).filter(([key]) => !editorial.has(key)),
+      Object.entries(candidate).filter(([key]) => !generated.has(key)),
     );
 
-  expect(written.map(nonEditorial)).toEqual(records.map(nonEditorial));
+  expect(written.map(stableFields)).toEqual(records.map(stableFields));
 });

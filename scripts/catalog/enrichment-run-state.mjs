@@ -189,6 +189,13 @@ function entryForResult(result, attempt, outcome, now, previousEntry) {
     ["readmePath", "readme_path"],
     ["readmeRef", "readme_ref"],
     ["redditPostId", "reddit_post_id"],
+    ["sourceId", "source_id"],
+    ["requestedFields", "requested_fields"],
+    ["vocabularyHash", "vocabulary_hash"],
+    ["finalTags", "final_tags"],
+    ["tagEvidence", "tag_evidence"],
+    ["summaryEvidence", "summary_evidence"],
+    ["tagGenerationDiagnostic", "tag_generation_diagnostic"],
     ["reasonCode", "reason_code"],
     ["enrichmentNote", "enrichment_note"],
     ["diagnosticCode", "diagnostic_code"],
@@ -203,7 +210,12 @@ function entryForResult(result, attempt, outcome, now, previousEntry) {
     entry.returned_model = result.provider.returnedModel;
     entry.latency_ms = result.provider.latencyMs;
   }
-  if (result.output) {
+  if (
+    result.output &&
+    ["result", "change_reasons", "policy_signal"].some(
+      (key) => result.output[key] !== undefined,
+    )
+  ) {
     const copyValidation = validateCatalogCopyMetadata({
       result: result.output.result,
       change_reasons: result.output.change_reasons,

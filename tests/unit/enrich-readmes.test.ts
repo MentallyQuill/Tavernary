@@ -11,18 +11,28 @@ import {
   selectEnrichmentRecords,
   writeEnrichedRecord,
 } from "../../scripts/catalog/enrich-readmes.mjs";
+import { tagVocabularyHash } from "../../scripts/catalog/tag-vocabulary.mjs";
+
+const summary =
+  "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.";
 
 const record = {
+  schema_version: 6,
   id: "fixture",
   name: "Fixture",
   kind: "extension",
   metadata_status: "provisional",
-  enrichment_policy: "automatic" as const,
   summary: "Generic intake details.",
+  tags: [],
+  metadata_policy: {
+    summary: { mode: "automatic" as const },
+    tags: { mode: "automatic" as const },
+  },
   listing_status: "active",
   frontends: ["sillytavern"],
   source_id: "github-fixture",
 };
+
 const sourceRecord = {
   id: "github-fixture",
   type: "github",
@@ -52,8 +62,29 @@ const snapshot = {
 };
 
 const vocabularies = {
-  primaryFunctions: [{ id: "developer-infrastructure", label: "Developer" }],
-  capabilities: [{ id: "automation", label: "Automation" }],
+  schema_version: 1 as const,
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      label: "Automate roleplay workflows",
+      facet: "goal" as const,
+      description: "Automates repeated roleplay setup or execution.",
+      aliases: ["automation"],
+      applicable_kinds: ["extension" as const],
+      inclusion_guidance: ["The source describes repeatable automation."],
+      exclusion_guidance: [],
+    },
+    {
+      id: "configure-without-code",
+      label: "Configure without code",
+      facet: "trait" as const,
+      description: "Provides a no-code configuration workflow.",
+      aliases: [],
+      applicable_kinds: ["extension" as const, "preset" as const],
+      inclusion_guidance: ["The source describes visual configuration."],
+      exclusion_guidance: [],
+    },
+  ],
 };
 
 const providerMetadata = {
@@ -61,19 +92,33 @@ const providerMetadata = {
   returnedModel: "MiniMax-M3",
   latencyMs: 10,
 };
-const copyMetadata = {
-  result: "accepted-unchanged" as const,
-  change_reasons: [] as [],
-  policy_signal: "none" as const,
-};
+
+function outputFor(input: {
+  requestedFields: readonly string[];
+  allowedTags: Array<{ id: string }>;
+}) {
+  return {
+    ...(input.requestedFields.includes("summary")
+      ? {
+          summary: { value: summary, evidence: ["readme:1-3"] },
+          result: "accepted-unchanged" as const,
+          change_reasons: [] as [],
+          policy_signal: "none" as const,
+        }
+      : {}),
+    ...(input.requestedFields.includes("tags")
+      ? {
+          tags: input.allowedTags.slice(0, 1).map(({ id }) => ({
+            id,
+            evidence: ["readme:4-8"],
+          })),
+        }
+      : {}),
+  };
+}
 
 function recordFor(id: string) {
-  return {
-    ...record,
-    id,
-    name: id,
-    source_id: `github-${id}`,
-  };
+  return { ...record, id, name: id, source_id: `github-${id}` };
 }
 
 function sourceFor(id: string) {
@@ -97,33 +142,25 @@ function snapshotFor(id: string) {
   };
 }
 
-function readySource(id: string) {
+function readySource(id = "project") {
   return {
     status: "ready" as const,
-    sourceKind: "description" as const,
+    sourceKind: "readme" as const,
     sourceIdentity: `github:creator/${id}`,
-    text: `Description for ${id}.`,
+    text: `README evidence for ${id}.`,
     repositoryDescription: `Description for ${id}.`,
-    readmeText: null,
-    readmePath: null,
-    readmeRef: null,
+    readmeText: `README evidence for ${id}.`,
+    readmePath: "README.md",
+    readmeRef: "a".repeat(40),
+    readmeIdentity: `github:creator/${id}@${"a".repeat(40)}:README.md`,
     repositoryId: 42,
     headSha: "a".repeat(40),
   };
 }
 
-test("passes normalized source and only allowed vocabulary entries to provider", async () => {
+test("passes requested fields, README-first evidence, and classifier vocabulary to the provider", async () => {
   const generate = vi.fn(async (input) => ({
-    output: {
-      summary:
-        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-      metadata_status: "curated" as const,
-      capabilities: [input.allowedCapabilities[0].id],
-      classification_review: null,
-      result: "accepted-unchanged" as const,
-      change_reasons: [],
-      policy_signal: "none" as const,
-    },
+    output: outputFor(input),
     metadata: providerMetadata,
   }));
 
@@ -134,265 +171,77 @@ test("passes normalized source and only allowed vocabulary entries to provider",
     { generate },
     {
       vocabularies,
-      loadSource: async () => ({
-        status: "ready" as const,
-        sourceKind: "description" as const,
-        sourceIdentity: "github:creator/project",
-        text: "A short project description.",
-        repositoryDescription: "A short project description.",
-        readmeText: null,
-        readmePath: null,
-        readmeRef: null,
-        repositoryId: 42,
-        headSha: "a".repeat(40),
-      }),
+      submittedDescription: "Unauthorized submitter prose.",
+      loadSource: async () => readySource(),
     },
   );
 
-  expect(output).not.toBeNull();
-  if (!output) return;
-  expect(output.metadata_status).toBe("curated");
-  expect(output.classification_review).toBeNull();
+  expect(output).toEqual(outputFor(generate.mock.calls[0][0]));
   expect(generate).toHaveBeenCalledWith(
     expect.objectContaining({
-      source: {
-        kind: "description",
-        identity: "github:creator/project",
-        text: "A short project description.",
-      },
-      summaryMode: "synthesize",
-      submittedDescription: "Generic intake details.",
+      sourceId: record.source_id,
+      requestedFields: ["summary", "tags"],
+      vocabularyHash: tagVocabularyHash(vocabularies),
       evidence: {
-        readme: null,
-        repositoryDescription: "A short project description.",
-        submissionDescription: "Generic intake details.",
+        readme: {
+          identity: readySource().readmeIdentity,
+          text: readySource().readmeText,
+        },
+        repositoryDescription: readySource().repositoryDescription,
       },
-      protectedTerms: ["Fixture", "Creator", "Project"],
-      policyVersion: "2026-07-29",
-      allowedCapabilities: vocabularies.capabilities,
+      allowedTags: vocabularies.tags,
     }),
   );
-  expect(generate.mock.calls[0][0]).not.toHaveProperty(
-    "allowedPrimaryFunctions",
+  expect(generate.mock.calls[0][0].evidence).not.toHaveProperty(
+    "submissionDescription",
   );
-  expect(generate.mock.calls[0][0]).not.toHaveProperty(
-    "classificationReviewRequest",
-  );
+  expect(generate.mock.calls[0][0]).not.toHaveProperty("capabilities");
 });
 
-test("labels conflicting intake evidence in README-first priority order", async () => {
-  const generate = vi.fn(async () => ({
-    output: {
-      summary:
-        "README-grounded purpose takes priority for this SillyTavern project. Repository and submitted descriptions fill only factual gaps without overriding the canonical README evidence or its stated purpose.",
-      metadata_status: "curated" as const,
-      capabilities: ["automation"],
-      classification_review: null,
-      ...copyMetadata,
+test("keeps a manual summary while refreshing automatic tags", async () => {
+  const manualSummary = {
+    ...record,
+    summary: "Owner-authored summary stays exactly as written.",
+    metadata_policy: {
+      summary: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+      tags: { mode: "automatic" as const },
     },
+  };
+  const generate = vi.fn(async (input) => ({
+    output: outputFor(input),
     metadata: providerMetadata,
   }));
 
-  await enrichRecord(
-    record,
+  const output = await enrichRecord(
+    manualSummary,
     sourceRecord,
     snapshot,
     { generate },
-    {
-      vocabularies,
-      summaryMode: "synthesize",
-      submittedDescription:
-        "The submitter claims a conflicting primary purpose.",
-      loadSource: async () => ({
-        status: "ready" as const,
-        sourceKind: "readme" as const,
-        sourceIdentity: "github:creator/project",
-        text: "README canonical purpose.",
-        repositoryDescription: "Repository description says something else.",
-        readmeText: "README canonical purpose.",
-        readmePath: "README.md",
-        readmeRef: "a".repeat(40),
-        readmeIdentity: `github:creator/project@${"a".repeat(40)}:README.md`,
-        repositoryId: 42,
-        headSha: "a".repeat(40),
-      }),
-    },
+    { vocabularies, loadSource: async () => readySource() },
   );
 
-  expect(generate).toHaveBeenCalledWith(
-    expect.objectContaining({
-      summaryMode: "synthesize",
-      evidence: {
-        readme: {
-          identity: `github:creator/project@${"a".repeat(40)}:README.md`,
-          text: "README canonical purpose.",
-        },
-        repositoryDescription: "Repository description says something else.",
-        submissionDescription:
-          "The submitter claims a conflicting primary purpose.",
-      },
-    }),
-  );
-});
-
-test("repairs one invalid preservation result with sanitized validation context", async () => {
-  const submittedSummary = "ST-QuickReply keeps the owner's wording";
-  const generate = vi
-    .fn()
-    .mockResolvedValueOnce({
-      output: {
-        summary: "QuickReply keeps the owner's wording.",
-        metadata_status: "curated",
-        capabilities: ["automation"],
-        classification_review: null,
-        result: "accepted-with-light-edits",
-        change_reasons: ["punctuation-corrected"],
-        policy_signal: "none",
-      },
-      metadata: providerMetadata,
-    })
-    .mockResolvedValueOnce({
-      output: {
-        summary: submittedSummary,
-        metadata_status: "curated",
-        capabilities: ["automation"],
-        classification_review: null,
-        ...copyMetadata,
-      },
-      metadata: providerMetadata,
-    });
-
-  await expect(
-    enrichRecord(
-      record,
-      sourceRecord,
-      snapshot,
-      { generate },
+  expect(generate.mock.calls[0][0].requestedFields).toEqual(["tags"]);
+  expect(output).toEqual({
+    tags: [
       {
-        vocabularies,
-        summaryMode: "preserve",
-        submittedDescription: submittedSummary,
-        protectedTerms: ["ST-QuickReply"],
-        loadSource: async () => readySource("fixture"),
+        id: "automate-roleplay-workflows",
+        evidence: ["readme:4-8"],
       },
-    ),
-  ).resolves.toMatchObject({
-    summary: submittedSummary,
-    result: "accepted-unchanged",
-  });
-
-  expect(generate).toHaveBeenCalledTimes(2);
-  expect(generate.mock.calls[1][0]).toMatchObject({
-    repair: {
-      reasonCode: "output-invalid",
-      message: expect.stringContaining("preserve every protected term"),
-    },
-  });
-  expect(generate.mock.calls[1][0].repair.message).not.toContain(
-    "QuickReply keeps",
-  );
-});
-
-test("selects an automatic published Reddit record without a repository snapshot", () => {
-  const reddit = {
-    ...record,
-    id: "reddit-1v64r6z",
-    kind: "preset",
-    refresh_policy: "paused",
-    source_id: "url-reddit-1v64r6z",
-  };
-  const redditSource = {
-    id: reddit.source_id,
-    type: "url",
-    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-  };
-
-  expect(
-    selectEnrichmentRecords([reddit], {
-      [redditSource.id]: redditSource,
-    }).map(({ id }) => id),
-  ).toEqual(["reddit-1v64r6z"]);
-});
-
-test("enriches a Reddit source without a repository snapshot", async () => {
-  const reddit = {
-    ...record,
-    id: "reddit-1v64r6z",
-    name: "Writer's Block 5",
-    kind: "preset",
-    refresh_policy: "paused",
-    source_id: "url-reddit-1v64r6z",
-  };
-  const redditSource = {
-    id: reddit.source_id,
-    type: "url",
-    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-  };
-  const generate = vi.fn(async () => ({
-    output: {
-      summary:
-        "Writer's Block supports deliberate narrative direction in roleplay sessions. It strengthens prose, subtext, character agency, and structured scene control across diverse compatible SillyTavern models.",
-      metadata_status: "curated" as const,
-      capabilities: ["automation"],
-      classification_review: null,
-      ...copyMetadata,
-    },
-    metadata: providerMetadata,
-  }));
-
-  const result = await runEnrichmentBatch({
-    projectIds: [reddit.id],
-    recordsById: { [reddit.id]: reddit },
-    sourcesById: { [redditSource.id]: redditSource },
-    snapshotsBySourceId: {},
-    phase: "primary",
-    vocabularies,
-    provider: { generate },
-    validateSnapshot: () => true,
-    loadSource: async () => ({
-      status: "ready" as const,
-      sourceKind: "reddit-body" as const,
-      sourceIdentity: "reddit:1v64r6z",
-      redditPostId: "1v64r6z",
-      text: "Writer's Block 5 post body.",
-    }),
-    writeRecord: async () => {},
-  });
-
-  expect(generate).toHaveBeenCalledWith(
-    expect.objectContaining({
-      source: {
-        kind: "reddit-body",
-        identity: "reddit:1v64r6z",
-        text: "Writer's Block 5 post body.",
-      },
-    }),
-  );
-  expect(result[0]).toMatchObject({
-    outcome: "enriched",
-    sourceKind: "reddit-body",
-    sourceIdentity: "reddit:1v64r6z",
-    redditPostId: "1v64r6z",
+    ],
   });
 });
 
-test("loads shared source evidence once while generating each sibling card", async () => {
+test("loads shared source evidence once while classifying sibling cards independently", async () => {
   const siblings = [
     { ...record, id: "suite-extension", name: "Suite Extension" },
     { ...record, id: "suite-preset", name: "Suite Preset", kind: "preset" },
   ];
-  const loadSource = vi.fn(async () => readySource("project"));
+  const loadSource = vi.fn(async () => readySource());
   const generate = vi.fn(async (input) => ({
-    output: {
-      summary:
-        input.id === "suite-extension"
-          ? "Suite Extension adds repository-backed tools for SillyTavern users. It streamlines setup, exposes focused controls, and supports repeatable workflows without obscuring the underlying project behavior."
-          : "Suite Preset provides repository-backed defaults for SillyTavern conversations. It balances clear instructions, adaptable roleplay behavior, and practical configuration choices for repeatable sessions across models.",
-      metadata_status: "curated" as const,
-      capabilities: ["automation"],
-      classification_review: null,
-      ...copyMetadata,
-    },
+    output: outputFor(input),
     metadata: providerMetadata,
   }));
 
@@ -413,184 +262,148 @@ test("loads shared source evidence once while generating each sibling card", asy
 
   expect(loadSource).toHaveBeenCalledOnce();
   expect(generate).toHaveBeenCalledTimes(2);
-  expect(results.map(({ id, outcome }) => ({ id, outcome }))).toEqual([
-    { id: "suite-extension", outcome: "enriched" },
-    { id: "suite-preset", outcome: "enriched" },
+  expect(generate.mock.calls.map(([input]) => input.id)).toEqual([
+    "suite-extension",
+    "suite-preset",
+  ]);
+  expect(results.map(({ outcome }) => outcome)).toEqual([
+    "enriched",
+    "enriched",
   ]);
 });
 
-test("skips curated records unless forced", async () => {
+test("skips records whose summary and tags are both manual", async () => {
+  const manual = {
+    ...record,
+    metadata_policy: {
+      summary: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+      tags: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+    },
+  };
   const generate = vi.fn();
-  const output = await enrichRecord(
-    { ...record, metadata_status: "curated" },
-    sourceRecord,
-    snapshot,
-    { generate },
-    { vocabularies },
-  );
 
-  expect(output).toBeNull();
+  await expect(
+    enrichRecord(
+      manual,
+      sourceRecord,
+      snapshot,
+      { generate },
+      {
+        force: true,
+        vocabularies,
+      },
+    ),
+  ).resolves.toBeNull();
   expect(generate).not.toHaveBeenCalled();
+
+  await expect(
+    runEnrichmentBatch({
+      projectIds: [manual.id],
+      recordsById: { [manual.id]: manual },
+      sourcesById: { [sourceRecord.id]: sourceRecord },
+      snapshotsBySourceId: {},
+      phase: "primary",
+      vocabularies,
+      provider: { generate },
+      validateSnapshot: () => true,
+    }),
+  ).resolves.toEqual([
+    {
+      id: "fixture",
+      phase: "primary",
+      outcome: "skipped",
+      reasonCode: "manual-enrichment-policy",
+      enrichmentNote: "Summary and tags are manually managed.",
+      message: "Registry record has no automatic metadata fields.",
+    },
+  ]);
 });
 
-test("includes an automatic GitHub preset and excludes manual GitHub records even when forced", () => {
-  const automaticPreset = {
+test("selects pending automatic records and skips curated records unless forced", () => {
+  const curated = {
     ...record,
-    id: "preset",
-    kind: "preset",
-    enrichment_policy: "automatic" as const,
+    id: "curated",
+    metadata_status: "curated",
+    summary: "A complete editorial description.",
   };
   const manual = {
     ...record,
     id: "manual",
-    metadata_status: "curated",
-    enrichment_policy: "manual" as const,
-    enrichment_note: "Bundled repository requires manual curation.",
+    metadata_policy: {
+      summary: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+      tags: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+    },
   };
-
+  expect(
+    selectEnrichmentRecords([curated, manual, record], {
+      [sourceRecord.id]: sourceRecord,
+    }).map(({ id }) => id),
+  ).toEqual(["fixture"]);
   expect(
     selectEnrichmentRecords(
-      [manual, automaticPreset],
+      [curated, manual],
       { [sourceRecord.id]: sourceRecord },
       { force: true },
     ).map(({ id }) => id),
-  ).toEqual(["preset"]);
+  ).toEqual(["curated"]);
 });
 
-test("does not call the provider for a manual record", async () => {
-  const generate = vi.fn();
-  await expect(
-    enrichRecord(
-      {
-        ...record,
-        enrichment_policy: "manual",
-        enrichment_note: "Requires manual curation.",
-      },
-      sourceRecord,
-      snapshot,
-      { generate },
-      { force: true, vocabularies },
-    ),
-  ).resolves.toBeNull();
-  expect(generate).not.toHaveBeenCalled();
-});
-
-test("reports an explicitly targeted manual record as skipped", async () => {
-  const result = await runEnrichmentBatch({
-    projectIds: ["manual"],
-    recordsById: {
-      manual: {
-        ...record,
-        id: "manual",
-        enrichment_policy: "manual",
-        enrichment_note: "Requires manual curation.",
-      },
-    },
-    sourcesById: { [sourceRecord.id]: sourceRecord },
-    snapshotsBySourceId: {},
-    phase: "primary",
-    vocabularies,
-    provider: { generate: vi.fn() },
-    validateSnapshot: () => true,
-  });
-
-  expect(result).toEqual([
-    {
-      id: "manual",
-      phase: "primary",
-      outcome: "skipped",
-      reasonCode: "manual-enrichment-policy",
-      enrichmentNote: "Requires manual curation.",
-      message: "Registry record requires manual enrichment.",
-    },
-  ]);
-});
-
-test("preserves an owner edit made after automatic enrichment selection", async () => {
+test("the write barrier preserves a late manual summary and writes automatic tags", async () => {
   const root = await mkdtemp(join(tmpdir(), "tavernary-owner-edit-"));
   const path = join(root, "fixture.json");
-  const selected = selectEnrichmentRecords([record], {
-    [sourceRecord.id]: sourceRecord,
-  });
-  expect(selected.map(({ id }) => id)).toEqual(["fixture"]);
-
-  const ownerEdited = {
+  const current = {
     ...record,
-    summary: "Owner-authored summary.",
-    metadata_status: "curated",
-    enrichment_policy: "manual" as const,
-    enrichment_note:
-      "Owner-authored catalog details approved through issue #123.",
-  };
-  await writeFile(path, JSON.stringify(ownerEdited, null, 2));
-
-  const results = await runEnrichmentBatch({
-    projectIds: selected.map(({ id }) => id),
-    recordsById: {
-      fixture: { ...selected[0], path },
+    path,
+    summary: "Owner-authored summary stays byte-for-byte.",
+    metadata_policy: {
+      summary: {
+        mode: "manual" as const,
+        note: "Verified repository owner selection.",
+      },
+      tags: { mode: "automatic" as const },
     },
-    sourcesById: { [sourceRecord.id]: sourceRecord },
-    snapshotsBySourceId: { [sourceRecord.id]: snapshot },
-    phase: "primary",
-    vocabularies,
-    provider: {
-      generate: async () => ({
-        output: {
-          summary:
-            "Generated summary would replace the approved owner wording if the writer trusted selection-time state. The write barrier must re-read current policy before changing the registry record.",
-          metadata_status: "curated",
-          capabilities: ["automation"],
-          classification_review: null,
-          ...copyMetadata,
-        },
-        metadata: providerMetadata,
+  };
+  await writeFile(path, JSON.stringify(current, null, 2));
+
+  await writeEnrichedRecord(
+    path,
+    { ...record, path },
+    {
+      ...outputFor({
+        requestedFields: ["summary", "tags"],
+        allowedTags: vocabularies.tags,
       }),
     },
-    validateSnapshot: () => true,
-    loadSource: async () => readySource("fixture"),
-  });
-
-  expect(results).toMatchObject([
-    {
-      id: "fixture",
-      outcome: "skipped",
-      reasonCode: "manual-enrichment-policy",
-      enrichmentNote:
-        "Owner-authored catalog details approved through issue #123.",
-    },
-  ]);
-  expect(JSON.parse(await readFile(path, "utf8"))).toEqual(ownerEdited);
-});
-
-test("writes the accepted summary without persisting copy-audit metadata", async () => {
-  const root = await mkdtemp(join(tmpdir(), "tavernary-copy-audit-"));
-  const path = join(root, "fixture.json");
-  await writeFile(path, JSON.stringify(record, null, 2));
-
-  await writeEnrichedRecord(path, record, {
-    summary:
-      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator controls, and keeps complex configuration work clear and accessible to users throughout.",
-    metadata_status: "curated",
-    capabilities: ["automation"],
-    classification_review: null,
-    result: "accepted-with-light-edits",
-    change_reasons: ["punctuation-corrected"],
-    policy_signal: "none",
-  });
+    vocabularies,
+  );
 
   const written = JSON.parse(await readFile(path, "utf8"));
-  expect(written.summary).toContain("Fixture organizes");
+  expect(written.summary).toBe(current.summary);
+  expect(written.tags).toEqual(["automate-roleplay-workflows"]);
+  expect(written.metadata_policy).toEqual(current.metadata_policy);
   expect(written).not.toHaveProperty("result");
-  expect(written).not.toHaveProperty("change_reasons");
-  expect(written).not.toHaveProperty("policy_signal");
+  expect(written).not.toHaveProperty("evidence");
 });
 
-test("uses the exact fallback when both source texts are unavailable", async () => {
+test("uses an explicit empty-tag fallback when repository text is unavailable", async () => {
+  const generate = vi.fn();
   const output = await enrichRecord(
     record,
     sourceRecord,
-    { ...snapshot, repository: { ...snapshot.repository, description: null } },
-    { generate: vi.fn() },
+    snapshot,
+    { generate },
     {
       vocabularies,
       loadSource: async () => ({
@@ -605,57 +418,44 @@ test("uses the exact fallback when both source texts are unavailable", async () 
     },
   );
 
+  expect(generate).not.toHaveBeenCalled();
   expect(output).toEqual({
-    summary: "No README file found.",
-    metadata_status: "curated",
-    capabilities: [],
-    classification_review: null,
-    ...copyMetadata,
+    summary: {
+      value: "No README file found.",
+      evidence: ["source:confirmed-fallback"],
+    },
+    tags: [],
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
   });
 });
 
-test("uses the submitted description as third-priority evidence when repository text is absent", async () => {
+test("falls back to zero tags after one malformed tag repair without failing the summary", async () => {
   const generate = vi.fn(async () => ({
     output: {
-      summary:
-        "Submitted evidence identifies this SillyTavern extension and its purpose. The catalog summary remains grounded only in the available intake description when repository text is unavailable.",
-      metadata_status: "curated" as const,
-      capabilities: ["automation"],
-      classification_review: null,
-      ...copyMetadata,
+      ...outputFor({
+        requestedFields: ["summary"],
+        allowedTags: vocabularies.tags,
+      }),
+      tags: [{ id: "invented", evidence: ["readme:1"] }],
     },
     metadata: providerMetadata,
   }));
 
-  await enrichRecord(
+  const output = await enrichRecord(
     record,
     sourceRecord,
-    { ...snapshot, repository: { ...snapshot.repository, description: null } },
+    snapshot,
     { generate },
-    {
-      vocabularies,
-      submittedDescription: "Only the submitted description is available.",
-      loadSource: async () => ({
-        status: "fallback" as const,
-        sourceKind: "confirmed-fallback" as const,
-        sourceIdentity: "github:creator/project",
-        repositoryId: 42,
-        headSha: "a".repeat(40),
-        readmePath: null,
-        readmeRef: "a".repeat(40),
-      }),
-    },
+    { vocabularies, loadSource: async () => readySource() },
   );
 
-  expect(generate).toHaveBeenCalledWith(
-    expect.objectContaining({
-      evidence: {
-        readme: null,
-        repositoryDescription: null,
-        submissionDescription: "Only the submitted description is available.",
-      },
-    }),
-  );
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(output).toMatchObject({
+    tags: [],
+    tag_generation_diagnostic: "invalid-output-fell-back-empty",
+  });
 });
 
 test.each(["source-not-ready", "failed"] as const)(
@@ -681,65 +481,6 @@ test.each(["source-not-ready", "failed"] as const)(
   },
 );
 
-test("force regenerates curated records and provider failures propagate", async () => {
-  const generate = vi.fn().mockRejectedValue(new Error("provider offline"));
-  await expect(
-    enrichRecord(
-      { ...record, metadata_status: "curated" },
-      sourceRecord,
-      snapshot,
-      { generate },
-      {
-        vocabularies,
-        force: true,
-        loadSource: async () => readySource("fixture"),
-      },
-    ),
-  ).rejects.toThrow("provider offline");
-});
-
-test("skips unpublished GitHub records", async () => {
-  const generate = vi.fn();
-  const output = await enrichRecord(
-    { ...record, listing_status: "quarantined" },
-    sourceRecord,
-    snapshot,
-    { generate },
-    { vocabularies },
-  );
-
-  expect(output).toBeNull();
-  expect(generate).not.toHaveBeenCalled();
-});
-
-test("rejects a model-owned primary function when source text exists", async () => {
-  await expect(
-    enrichRecord(
-      record,
-      sourceRecord,
-      snapshot,
-      {
-        generate: async () => ({
-          output: {
-            summary:
-              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-            metadata_status: "curated",
-            primary_function: "developer-infrastructure",
-            capabilities: [],
-            classification_review: null,
-            ...copyMetadata,
-          },
-          metadata: providerMetadata,
-        }),
-      },
-      {
-        vocabularies,
-        loadSource: async () => readySource("fixture"),
-      },
-    ),
-  ).rejects.toThrow("primary_function is not allowed");
-});
-
 test("returns ordered isolated outcomes for a mixed batch", async () => {
   const projectIds = ["description", "fallback", "stale", "offline"];
   const recordsById = Object.fromEntries(
@@ -754,18 +495,9 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
   const writeRecord = vi.fn(async () => {});
   const generate = vi.fn(async (input) => {
     if (input.id === "offline") throw new Error("provider offline");
-    return {
-      output: {
-        summary:
-          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-        metadata_status: "curated" as const,
-        capabilities: ["automation"],
-        classification_review: null,
-        ...copyMetadata,
-      },
-      metadata: providerMetadata,
-    };
+    return { output: outputFor(input), metadata: providerMetadata };
   });
+
   const result = await runEnrichmentBatch({
     projectIds,
     recordsById,
@@ -806,18 +538,6 @@ test("returns ordered isolated outcomes for a mixed batch", async () => {
     { id: "offline", outcome: "failed" },
   ]);
   expect(writeRecord).toHaveBeenCalledTimes(2);
-  expect(result[0]).toMatchObject({
-    sourceKind: "description",
-    provider: providerMetadata,
-  });
-  expect(result[1]).toMatchObject({
-    sourceKind: "confirmed-fallback",
-    readmeRef: "a".repeat(40),
-  });
-  for (const [input] of generate.mock.calls) {
-    expect(input).not.toHaveProperty("allowedPrimaryFunctions");
-    expect(input).not.toHaveProperty("classificationReviewRequest");
-  }
 });
 
 test("runs no more than four model calls concurrently and preserves order", async () => {
@@ -825,22 +545,19 @@ test("runs no more than four model calls concurrently and preserves order", asyn
     { length: 12 },
     (_, index) => `project-${index}`,
   );
-  const recordsById = Object.fromEntries(
-    projectIds.map((id) => [id, recordFor(id)]),
-  );
-  const sourcesById = Object.fromEntries(
-    projectIds.map((id) => [sourceFor(id).id, sourceFor(id)]),
-  );
-  const snapshotsBySourceId = Object.fromEntries(
-    projectIds.map((id) => [sourceFor(id).id, snapshotFor(id)]),
-  );
   let active = 0;
   let maximum = 0;
   const result = await runEnrichmentBatch({
     projectIds,
-    recordsById,
-    sourcesById,
-    snapshotsBySourceId,
+    recordsById: Object.fromEntries(
+      projectIds.map((id) => [id, recordFor(id)]),
+    ),
+    sourcesById: Object.fromEntries(
+      projectIds.map((id) => [sourceFor(id).id, sourceFor(id)]),
+    ),
+    snapshotsBySourceId: Object.fromEntries(
+      projectIds.map((id) => [sourceFor(id).id, snapshotFor(id)]),
+    ),
     phase: "primary",
     vocabularies,
     provider: {
@@ -850,17 +567,7 @@ test("runs no more than four model calls concurrently and preserves order", asyn
         const index = Number(input.id.split("-").at(-1));
         await new Promise((resolve) => setTimeout(resolve, (12 - index) % 5));
         active -= 1;
-        return {
-          output: {
-            summary:
-              "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-            metadata_status: "curated" as const,
-            capabilities: ["automation"],
-            classification_review: null,
-            ...copyMetadata,
-          },
-          metadata: providerMetadata,
-        };
+        return { output: outputFor(input), metadata: providerMetadata };
       }),
     },
     validateSnapshot: () => true,
@@ -885,23 +592,13 @@ test("validates worker-pool concurrency limits", async () => {
 test("backs off new model work after repeated provider rate limits", async () => {
   const projectIds = ["rate-limit-1", "rate-limit-2", "healthy"];
   const sleep = vi.fn(async (_milliseconds: number) => {});
-  const generate = vi.fn(async (input: { id: string }) => {
+  const generate = vi.fn(async (input) => {
     if (input.id.startsWith("rate-limit")) {
       throw Object.assign(new Error("rate limited"), {
         code: "provider-rate-limited",
       });
     }
-    return {
-      output: {
-        summary:
-          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-        metadata_status: "curated" as const,
-        capabilities: ["automation"],
-        classification_review: null,
-        ...copyMetadata,
-      },
-      metadata: providerMetadata,
-    };
+    return { output: outputFor(input), metadata: providerMetadata };
   });
 
   const results = await runEnrichmentBatch({

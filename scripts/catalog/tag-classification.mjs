@@ -76,6 +76,10 @@ function summaryErrors(summary) {
   if (typeof value !== "string" || value.trim().length === 0) {
     errors.push("summary value must be a non-empty string");
   } else {
+    if (value === "No README file found.") {
+      errors.push(...evidenceErrors(summary.evidence, "summary"));
+      return errors;
+    }
     const wordCount = value.trim().split(/\s+/u).filter(Boolean).length;
     if (value.length > 220) {
       errors.push("summary value must be 220 characters or fewer");

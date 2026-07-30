@@ -53,7 +53,7 @@ function project(
         description: "Works with SillyTavern.",
       },
     ],
-    capabilities: [],
+    tags: [],
     searchableText: `${name.toLowerCase()} relationship`,
     fork: null,
     attribution: null,
@@ -106,7 +106,8 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 3,
+  schemaVersion: 4,
+  tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],
   kits: [],

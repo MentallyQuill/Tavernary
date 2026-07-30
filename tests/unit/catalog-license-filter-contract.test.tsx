@@ -29,11 +29,12 @@ function project(
         description: "Works with SillyTavern.",
       },
     ],
-    capabilities: [
+    tags: [
       {
-        id: "automation",
-        label: "Automation",
+        id: "automate-roleplay-workflows",
+        label: "Automate roleplay workflows",
         description: "Automates roleplay tasks.",
+        facet: "goal",
       },
     ],
     searchableText: `${id} extension automation`,
@@ -118,6 +119,7 @@ describe("catalog license filter contract", () => {
       <FilterPanel
         query={DEFAULT_QUERY}
         projects={projects}
+        tagVocabulary={[]}
         now="2026-07-23T00:00:00Z"
         onToggle={() => {}}
         onClear={() => {}}
@@ -246,6 +248,7 @@ describe("catalog license filter contract", () => {
       <FilterPanel
         query={DEFAULT_QUERY}
         projects={projects}
+        tagVocabulary={[]}
         now="2026-07-23T00:00:00Z"
         onToggle={() => {}}
         onClear={() => {}}
@@ -270,6 +273,7 @@ describe("catalog license filter contract", () => {
       <FilterPanel
         query={DEFAULT_QUERY}
         projects={[project("legal-link")]}
+        tagVocabulary={[]}
         now="2026-07-23T00:00:00Z"
         onToggle={() => {}}
         onClear={() => {}}

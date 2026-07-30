@@ -471,6 +471,20 @@
   padding-bottom: 0;
 }
 
+.filter-tag-browser {
+  border-top: 1px solid var(--color-divider);
+  padding: 18px 0;
+}
+
+.filter-tag-browser > h3 {
+  margin: 0 0 8px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
 .filter-legal {
   display: flex;
   align-items: center;

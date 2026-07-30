@@ -8,7 +8,6 @@ import { classificationError } from "../../src/features/catalog/primary-function
 import { repositorySourceId } from "../../src/features/catalog/source-record.mjs";
 import { validateKitData } from "../kits/validation.mjs";
 import { validateTrustedEditorRegistry } from "../maintenance/trusted-editor-authority.mjs";
-import { supportsAutomaticEnrichmentSource } from "./enrichment-policy.mjs";
 import { validateTagVocabulary } from "./tag-vocabulary.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -62,159 +61,6 @@ async function loadJsonDirectory(path) {
 
 function vocabularyIds(vocabulary, property) {
   return new Set(vocabulary[property].map(({ id }) => id));
-}
-
-function sourceKey(source) {
-  if (source.type === "github" || source.type === "codeberg") {
-    return `${source.type}:${source.repository.toLowerCase()}`;
-  }
-  if (source.type === "github-organization") {
-    return `github-organization:${source.organization.toLowerCase()}`;
-  }
-
-  try {
-    const url = new URL(source.url);
-    url.hash = "";
-    return `url:${url.href}`;
-  } catch {
-    return `url:${source.url}`;
-  }
-}
-
-function sourceBackedProjectSchema(legacySchema) {
-  const schema = structuredClone(legacySchema);
-  schema.$id = "https://tavernary.org/schemas/project-source-v6.schema.json";
-  schema.required = schema.required
-    .filter(
-      (property) =>
-        ![
-          "source",
-          "capabilities",
-          "visibility",
-          "visibility_reason",
-          "refresh_policy",
-          "enrichment_policy",
-        ].includes(property),
-    )
-    .concat([
-      "source_id",
-      "tags",
-      "listing_status",
-      "listing_status_reason",
-      "metadata_policy",
-    ]);
-  schema.properties.schema_version = { const: 6 };
-  for (const property of [
-    "source",
-    "capabilities",
-    "visibility",
-    "visibility_reason",
-    "refresh_policy",
-    "enrichment_policy",
-    "enrichment_note",
-  ]) {
-    delete schema.properties[property];
-  }
-  schema.properties.source_id = {
-    type: "string",
-    pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-  };
-  schema.properties.tags = {
-    type: "array",
-    maxItems: 6,
-    uniqueItems: true,
-    items: { type: "string", minLength: 1 },
-  };
-  schema.properties.listing_status = {
-    enum: ["active", "quarantined", "retired"],
-  };
-  schema.properties.listing_status_reason = {
-    enum: ["safety-review", "owner-request", null],
-  };
-  const policy = {
-    oneOf: [
-      {
-        type: "object",
-        additionalProperties: false,
-        required: ["mode"],
-        properties: { mode: { const: "automatic" } },
-      },
-      {
-        type: "object",
-        additionalProperties: false,
-        required: ["mode", "note"],
-        properties: {
-          mode: { const: "manual" },
-          note: { type: "string", minLength: 1, maxLength: 240 },
-        },
-      },
-    ],
-  };
-  schema.properties.metadata_policy = {
-    type: "object",
-    additionalProperties: false,
-    required: ["summary", "tags"],
-    properties: {
-      summary: structuredClone(policy),
-      tags: structuredClone(policy),
-    },
-  };
-  schema.allOf = [
-    schema.allOf[0],
-    {
-      if: {
-        properties: { listing_status: { const: "active" } },
-        required: ["listing_status"],
-      },
-      then: {
-        properties: { listing_status_reason: { type: "null" } },
-      },
-    },
-    {
-      if: {
-        properties: {
-          listing_status: { enum: ["quarantined", "retired"] },
-        },
-        required: ["listing_status"],
-      },
-      then: {
-        properties: { listing_status_reason: { type: "string" } },
-      },
-    },
-  ];
-  return schema;
-}
-
-function sourceBackedSnapshotSchema(legacySchema) {
-  const schema = structuredClone(legacySchema);
-  schema.$id =
-    "https://tavernary.org/schemas/repository-snapshot-source-v4.schema.json";
-  schema.required = schema.required.map((property) =>
-    property === "project_id" ? "source_id" : property,
-  );
-  schema.properties.schema_version = { const: 4 };
-  delete schema.properties.project_id;
-  schema.properties.source_id = { type: "string", minLength: 1 };
-  return schema;
-}
-
-function sourceBackedRefreshSchema(legacySchema) {
-  const schema = structuredClone(legacySchema);
-  schema.$id =
-    "https://tavernary.org/schemas/github-refresh-source-v3.schema.json";
-  schema.required = schema.required.map((property) =>
-    property === "project_timings" ? "source_timings" : property,
-  );
-  schema.properties.schema_version = { const: 3 };
-  const timings = schema.properties.project_timings;
-  timings.items.required = timings.items.required.map((property) =>
-    property === "project_id" ? "source_id" : property,
-  );
-  delete timings.items.properties.project_id;
-  timings.items.properties.source_id = { type: "string", minLength: 1 };
-  delete schema.properties.project_timings;
-  schema.properties.source_timings = timings;
-  return schema;
 }
 
 function schemaError(record, error) {
@@ -320,7 +166,6 @@ export async function validateCatalog(options = {}) {
     refreshManifestSchema,
     frontendVocabulary,
     functionVocabulary,
-    capabilityVocabulary,
     modelFamilyVocabulary,
     completionFormatVocabulary,
     tagVocabularySchema,
@@ -334,7 +179,6 @@ export async function validateCatalog(options = {}) {
     readJson("data/schemas/github-refresh.schema.json"),
     readJson("data/vocabularies/frontends.json"),
     readJson("data/vocabularies/primary-functions.json"),
-    readJson("data/vocabularies/capabilities.json"),
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
     readJson("data/schemas/tag-vocabulary.schema.json"),
@@ -360,19 +204,10 @@ export async function validateCatalog(options = {}) {
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/,
   );
 
-  const validateLegacyRecord = ajv.compile(schema);
-  const validateSourceBackedRecord = ajv.compile(
-    sourceBackedProjectSchema(schema),
-  );
+  const validateRecord = ajv.compile(schema);
   const validateSource = ajv.compile(sourceSchema);
-  const validateLegacySnapshot = ajv.compile(snapshotSchema);
-  const validateSourceBackedSnapshot = ajv.compile(
-    sourceBackedSnapshotSchema(snapshotSchema),
-  );
-  const validateLegacyRefreshManifest = ajv.compile(refreshManifestSchema);
-  const validateSourceBackedRefreshManifest = ajv.compile(
-    sourceBackedRefreshSchema(refreshManifestSchema),
-  );
+  const validateSnapshot = ajv.compile(snapshotSchema);
+  const validateRefreshManifest = ajv.compile(refreshManifestSchema);
   const validateTagVocabularySchema = ajv.compile(tagVocabularySchema);
   const validateTrustedEditors = ajv.compile(trustedEditorSchema);
   const validatePolicyReview = ajv.compile(policyReviewSchema);
@@ -407,15 +242,15 @@ export async function validateCatalog(options = {}) {
       : await loadJsonDirectory("data/snapshots/policy-review"));
   const frontendIds = vocabularyIds(frontendVocabulary, "frontends");
   const functionIds = vocabularyIds(functionVocabulary, "primary_functions");
-  const capabilityIds = vocabularyIds(capabilityVocabulary, "capabilities");
   const modelFamilyIds = vocabularyIds(modelFamilyVocabulary, "model_families");
   const completionFormatIds = vocabularyIds(
     completionFormatVocabulary,
     "completion_formats",
   );
+  const tagDefinitions = new Map(
+    tagVocabulary.tags.map((tag) => [tag.id, tag]),
+  );
   const ids = new Set();
-  const sources = new Set();
-  const repositoryIds = new Set();
   const sourceIds = new Set();
   const sourceRecordsById = new Map();
   const errors = [];
@@ -511,10 +346,6 @@ export async function validateCatalog(options = {}) {
     }
   }
 
-  const validateRefreshManifest =
-    refreshManifest?.schema_version === 3
-      ? validateSourceBackedRefreshManifest
-      : validateLegacyRefreshManifest;
   if (!validateRefreshManifest(refreshManifest)) {
     errors.push(
       ...validateRefreshManifest.errors.map((error) =>
@@ -539,10 +370,6 @@ export async function validateCatalog(options = {}) {
   }
 
   for (const record of records) {
-    const sourceBacked = record.schema_version === 6;
-    const validateRecord = sourceBacked
-      ? validateSourceBackedRecord
-      : validateLegacyRecord;
     if (!validateRecord(record)) {
       errors.push(
         ...validateRecord.errors.map((error) => schemaError(record, error)),
@@ -554,96 +381,9 @@ export async function validateCatalog(options = {}) {
       errors.push(`${id}: duplicate project id`);
     }
     ids.add(id);
-    const recordSource = sourceBacked
-      ? sourceRecordsById.get(record.source_id)
-      : record.source;
-    if (sourceBacked && !recordSource) {
+    const recordSource = sourceRecordsById.get(record.source_id);
+    if (!recordSource) {
       errors.push(`${id}: source ${record.source_id} does not exist`);
-    }
-
-    if (
-      !sourceBacked &&
-      (record.source?.type === "github" || record.source?.type === "codeberg")
-    ) {
-      const providerLabel =
-        record.source.type === "github" ? "GitHub" : "Codeberg";
-      const repositoryId = record.source.repository_id;
-      if (
-        record.metadata_status === "curated" &&
-        (!Number.isInteger(repositoryId) || repositoryId <= 0)
-      ) {
-        errors.push(
-          `${id}: curated ${providerLabel} source requires permanent repository_id`,
-        );
-      } else if (
-        repositoryId !== null &&
-        (!Number.isInteger(repositoryId) || repositoryId <= 0)
-      ) {
-        errors.push(
-          `${id}: ${providerLabel} repository_id must be null or positive`,
-        );
-      } else if (repositoryId !== null) {
-        const providerRepositoryId = `${record.source.type}:${repositoryId}`;
-        if (repositoryIds.has(providerRepositoryId)) {
-          errors.push(
-            `${id}: duplicate ${providerLabel} repository_id ${repositoryId}`,
-          );
-        }
-        repositoryIds.add(providerRepositoryId);
-      }
-    } else if (record.source?.type === "github-organization") {
-      if (id !== approvedOrganizationRecord.id) {
-        errors.push(
-          `${id}: github-organization is reserved for tavern-rpg-suite`,
-        );
-      }
-      if (
-        record.source.organization !== approvedOrganizationRecord.organization
-      ) {
-        errors.push(
-          `${id}: github-organization organization must be ${approvedOrganizationRecord.organization}`,
-        );
-      }
-      if (record.source.url !== approvedOrganizationRecord.url) {
-        errors.push(
-          `${id}: github-organization url must be ${approvedOrganizationRecord.url}`,
-        );
-      }
-      if (
-        record.kind !== "extension" ||
-        record.refresh_policy !== "paused" ||
-        record.enrichment_policy !== "manual" ||
-        record.enrichment_note !==
-          "Multi-repository suite; requires manual curation."
-      ) {
-        errors.push(
-          `${id}: github-organization requires paused extension with manual enrichment policy`,
-        );
-      }
-    } else if (record.source?.type === "url") {
-      let protocol;
-      try {
-        protocol = new URL(record.source.url).protocol;
-      } catch {
-        protocol = null;
-      }
-      if (protocol !== "https:") {
-        errors.push(`${id}: URL source requires https protocol`);
-      }
-      if (!["frontend", "preset"].includes(record.kind)) {
-        errors.push(
-          `${id}: only frontends and presets may use source.type url`,
-        );
-      }
-      if (
-        record.kind === "frontend" &&
-        (record.refresh_policy !== "paused" ||
-          record.enrichment_policy !== "manual")
-      ) {
-        errors.push(
-          `${id}: URL frontends require paused refresh and manual enrichment`,
-        );
-      }
     }
 
     const repositoryBacked =
@@ -663,25 +403,6 @@ export async function validateCatalog(options = {}) {
       errors.push(`${id}: frontend requires a GitHub, Codeberg, or URL source`);
     }
 
-    if (
-      !sourceBacked &&
-      record.enrichment_policy === "automatic" &&
-      record.source &&
-      !supportsAutomaticEnrichmentSource(record.source)
-    ) {
-      errors.push(
-        `${id}: automatic enrichment requires a supported source adapter`,
-      );
-    }
-
-    if (!sourceBacked && record.source) {
-      const canonicalSource = sourceKey(record.source);
-      if (sources.has(canonicalSource)) {
-        errors.push(`${id}: duplicate canonical source`);
-      }
-      sources.add(canonicalSource);
-    }
-
     for (const frontend of record.frontends ?? []) {
       if (!frontendIds.has(frontend)) {
         errors.push(`${id}: unknown frontend ${frontend}`);
@@ -697,9 +418,12 @@ export async function validateCatalog(options = {}) {
     if (record.primary_function && !functionIds.has(record.primary_function)) {
       errors.push(`${id}: unknown primary function ${record.primary_function}`);
     }
-    for (const capability of record.capabilities ?? []) {
-      if (!capabilityIds.has(capability)) {
-        errors.push(`${id}: unknown capability ${capability}`);
+    for (const tagId of record.tags ?? []) {
+      const tag = tagDefinitions.get(tagId);
+      if (!tag) {
+        errors.push(`${id}: unknown tag ${tagId}`);
+      } else if (!tag.applicable_kinds.includes(record.kind)) {
+        errors.push(`${id}: tag ${tagId} does not apply to ${record.kind}`);
       }
     }
     for (const family of record.model_families ?? []) {
@@ -714,18 +438,13 @@ export async function validateCatalog(options = {}) {
     }
   }
 
-  const recordsById = new Map(records.map((record) => [record.id, record]));
   const snapshotIds = new Set();
   for (const snapshot of snapshots) {
-    const sourceBacked = snapshot.schema_version === 4;
-    const snapshotId = sourceBacked ? snapshot.source_id : snapshot.project_id;
+    const snapshotId = snapshot.source_id;
     if (snapshotIds.has(snapshotId)) {
       errors.push(`${snapshotId}: duplicate repository snapshot`);
     }
     snapshotIds.add(snapshotId);
-    const validateSnapshot = sourceBacked
-      ? validateSourceBackedSnapshot
-      : validateLegacySnapshot;
     const validSnapshotShape = validateSnapshot(snapshot);
     if (!validSnapshotShape) {
       errors.push(
@@ -736,16 +455,9 @@ export async function validateCatalog(options = {}) {
     } else {
       errors.push(...validateSnapshotEvidence(snapshot));
     }
-    const recordOrSource = sourceBacked
-      ? sourceRecordsById.get(snapshot.source_id)
-      : recordsById.get(snapshot.project_id);
-    const source = sourceBacked ? recordOrSource : recordOrSource?.source;
-    if (!recordOrSource) {
-      errors.push(
-        sourceBacked
-          ? `${snapshot.source_id}: snapshot has no source record`
-          : `${snapshot.project_id}: snapshot has no curated record`,
-      );
+    const source = sourceRecordsById.get(snapshot.source_id);
+    if (!source) {
+      errors.push(`${snapshot.source_id}: snapshot has no source record`);
     } else if (source.type !== "github" && source.type !== "codeberg") {
       errors.push(`${snapshotId}: URL source cannot have a snapshot`);
     } else if (snapshot.provider !== source.type) {

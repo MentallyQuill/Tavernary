@@ -1,4 +1,6 @@
 import frontendVocabulary from "../../../data/vocabularies/frontends.json";
+import { legacyCapabilityTagIds } from "./catalog-tag-filter";
+import type { PublicTagDefinition } from "./tag-vocabulary";
 
 export type CatalogView = "all" | "active" | "new" | "released";
 export type CatalogSort =
@@ -20,7 +22,7 @@ export interface CatalogQuery {
   density: CatalogDensity;
   frontends: string[];
   kinds: CatalogKind[];
-  capabilities: string[];
+  tags: string[];
   modelFamilies?: string[];
   completionFormats?: string[];
   development: DevelopmentFilter[];
@@ -39,7 +41,7 @@ export const DEFAULT_QUERY: CatalogQuery = {
   density: "standard",
   frontends: [],
   kinds: [],
-  capabilities: [],
+  tags: [],
   modelFamilies: [],
   completionFormats: [],
   development: [],
@@ -108,18 +110,6 @@ const validPurposes = new Set([
 const validFrontends = new Set(
   frontendVocabulary.frontends.map(({ id }) => id),
 );
-const validCapabilities = new Set([
-  "automation",
-  "character-worldbuilding",
-  "extension-development",
-  "image-generation",
-  "instruction-control",
-  "model-routing",
-  "multi-frontend",
-  "planning-reasoning",
-  "prompt-engineering",
-  "review-validation",
-]);
 const validModelFamilies = new Set([
   "model-agnostic",
   "claude",
@@ -177,8 +167,12 @@ function manyOf<T extends string>(values: string[], valid: Set<T>): T[] {
   ].sort();
 }
 
-export function parseCatalogQuery(search: string): CatalogQuery {
+export function parseCatalogQuery(
+  search: string,
+  tagVocabulary: PublicTagDefinition[] = [],
+): CatalogQuery {
   const parameters = new URLSearchParams(search);
+  const validTags = new Set(tagVocabulary.map(({ id }) => id));
   const category = parameters.get("category");
   const selectedKitId = parameters.get("kit")?.trim() ?? "";
   const mode =
@@ -229,9 +223,18 @@ export function parseCatalogQuery(search: string): CatalogQuery {
         : [],
     kinds:
       mode === "projects" ? manyOf(parameters.getAll("kind"), validKinds) : [],
-    capabilities:
+    tags:
       mode === "projects"
-        ? manyOf(parameters.getAll("capability"), validCapabilities)
+        ? manyOf(
+            [
+              ...parameters.getAll("tag"),
+              ...legacyCapabilityTagIds(
+                parameters.getAll("capability"),
+                tagVocabulary,
+              ),
+            ],
+            validTags,
+          )
         : [],
     modelFamilies:
       mode === "projects"
@@ -313,7 +316,7 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     }
     appendMany(parameters, "frontend", query.frontends);
     appendMany(parameters, "kind", query.kinds);
-    appendMany(parameters, "capability", query.capabilities);
+    appendMany(parameters, "tag", query.tags);
     appendMany(parameters, "model", query.modelFamilies ?? []);
     appendMany(parameters, "completion", query.completionFormats ?? []);
     appendMany(parameters, "development", query.development);

@@ -590,24 +590,34 @@ describe("full catalog data", () => {
   });
 
   test("validates the contract used by generated curated summaries", async () => {
-    const capabilities = JSON.parse(
+    const tagVocabulary = JSON.parse(
       await readFile(
-        resolve(rootDirectory, "data/vocabularies/capabilities.json"),
+        resolve(rootDirectory, "data/vocabularies/tags.json"),
         "utf8",
       ),
-    ).capabilities;
+    );
     const result = validateEnrichmentOutput(
       {
-        summary:
-          "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+        summary: {
+          value:
+            "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+          evidence: ["readme:1-4"],
+        },
+        tags: [],
         result: "accepted-unchanged",
         change_reasons: [],
         policy_signal: "none",
-        metadata_status: "curated",
-        capabilities: ["automation"],
-        classification_review: null,
       },
-      { capabilities },
+      {
+        requestedFields: ["summary", "tags"],
+        kind: "extension",
+        tagVocabulary,
+        copyContext: {
+          mode: "synthesize",
+          submittedSummary: "",
+          protectedTerms: ["Fixture"],
+        },
+      },
     );
     expect(result).toEqual({ valid: true });
   });

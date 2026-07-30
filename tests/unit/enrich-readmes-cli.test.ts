@@ -20,18 +20,33 @@ const providerConfiguration = {
   model,
 };
 const vocabularies = {
-  primaryFunctions: [
-    { id: "developer-infrastructure", label: "Developer infrastructure" },
+  schema_version: 1 as const,
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      label: "Automate roleplay workflows",
+      facet: "goal",
+      description: "Automates repeated roleplay setup or execution.",
+      aliases: ["automation"],
+      applicable_kinds: ["extension"],
+      inclusion_guidance: ["The source describes repeatable automation."],
+      exclusion_guidance: [],
+    },
   ],
-  capabilities: [{ id: "automation", label: "Automation" }],
 };
 const providerOutput = {
   output: {
-    summary:
-      "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-    metadata_status: "curated" as const,
-    capabilities: ["automation"],
-    classification_review: null,
+    summary: {
+      value:
+        "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
+      evidence: ["readme:1-4"],
+    },
+    tags: [
+      {
+        id: "automate-roleplay-workflows",
+        evidence: ["readme:5-8"],
+      },
+    ],
     result: "accepted-unchanged" as const,
     change_reasons: [],
     policy_signal: "none" as const,
@@ -45,12 +60,17 @@ const providerOutput = {
 
 function record(id: string) {
   return {
+    schema_version: 6,
     id,
     name: id,
     kind: "extension",
     summary: "Generic intake details.",
+    tags: [],
     metadata_status: "provisional",
-    enrichment_policy: "automatic" as const,
+    metadata_policy: {
+      summary: { mode: "automatic" as const },
+      tags: { mode: "automatic" as const },
+    },
     listing_status: "active",
     frontends: [],
     source_id: `github-${id}`,
@@ -338,7 +358,10 @@ test("preflight repairs one invalid structured response before failing", async (
           ...providerOutput,
           output: {
             ...providerOutput.output,
-            summary: rejectedSummary,
+            summary: {
+              value: rejectedSummary,
+              evidence: ["readme:1-4"],
+            },
           },
         }
       : providerOutput,
@@ -374,8 +397,11 @@ test("preflight retries a transient validation-repair failure", async () => {
     ...providerOutput,
     output: {
       ...providerOutput.output,
-      summary:
-        "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+      summary: {
+        value:
+          "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+        evidence: ["readme:1-4"],
+      },
     },
   };
   const generate = vi
@@ -404,8 +430,11 @@ test("preflight reports the sanitized defect when its repair remains invalid", a
     ...providerOutput,
     output: {
       ...providerOutput.output,
-      summary:
-        "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+      summary: {
+        value:
+          "Provider preflight coordinates repeatable, carefully documented catalog workflows across expansive SillyTavern installations for maintainers managing intricate metadata projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.",
+        evidence: ["readme:1-4"],
+      },
     },
   };
   const generate = vi.fn(async (_input: unknown) => invalid);
@@ -554,7 +583,10 @@ test("repairs invalid provider output immediately with the rejected summary", as
           ...providerOutput,
           output: {
             ...providerOutput.output,
-            summary: rejectedSummary,
+            summary: {
+              value: rejectedSummary,
+              evidence: ["readme:1-4"],
+            },
           },
         }
       : providerOutput,

@@ -51,6 +51,15 @@ test("serializes only sanitized deterministic run-state fields", () => {
           latencyMs: 250,
         },
         output: privateProviderOutput,
+        sourceId: "github-b",
+        requestedFields: ["summary", "tags"],
+        vocabularyHash: "a".repeat(64),
+        finalTags: ["automate-roleplay-workflows"],
+        tagEvidence: {
+          "automate-roleplay-workflows": ["readme:5-8"],
+        },
+        summaryEvidence: ["readme:1-4"],
+        tagGenerationDiagnostic: "invalid-output-fell-back-empty",
       },
     ],
     "2026-07-24T00:01:00.000Z",
@@ -77,6 +86,15 @@ test("serializes only sanitized deterministic run-state fields", () => {
     copy_result: "accepted-with-light-edits",
     copy_change_reasons: ["emoji-removed"],
     copy_policy_signal: "none",
+    source_id: "github-b",
+    requested_fields: ["summary", "tags"],
+    vocabulary_hash: "a".repeat(64),
+    final_tags: ["automate-roleplay-workflows"],
+    tag_evidence: {
+      "automate-roleplay-workflows": ["readme:5-8"],
+    },
+    summary_evidence: ["readme:1-4"],
+    tag_generation_diagnostic: "invalid-output-fell-back-empty",
   });
   expect(serialized).not.toContain("Private submitter wording");
   expect(report.provider_metrics).toEqual({

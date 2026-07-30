@@ -25,7 +25,7 @@ function project({
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],
-    capabilities: [],
+    tags: [],
     searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {

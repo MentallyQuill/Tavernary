@@ -30,11 +30,12 @@ function project(
         description: "Works with SillyTavern.",
       },
     ],
-    capabilities: [
+    tags: [
       {
-        id: "automation",
-        label: "Automation",
+        id: "automate-roleplay-workflows",
+        label: "Automate roleplay workflows",
         description: "Automates roleplay tasks.",
+        facet: "goal",
       },
     ],
     searchableText: `${id} extension automation`,

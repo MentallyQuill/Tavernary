@@ -65,7 +65,7 @@ function project(): CatalogProject {
     catalogedAt: "2026-07-01T00:00:00.000Z",
     catalogCohort: "standard",
     frontends: [],
-    capabilities: [],
+    tags: [],
     searchableText: "memory",
     fork: null,
     attribution: null,
@@ -87,7 +87,8 @@ function project(): CatalogProject {
 }
 
 const catalog: Catalog = {
-  schemaVersion: 3,
+  schemaVersion: 4,
+  tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00.000Z",
   projects: [project()],
   kits: [],

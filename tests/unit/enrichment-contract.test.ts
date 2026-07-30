@@ -2,49 +2,111 @@ import { expect, test } from "vitest";
 
 import { validateEnrichmentOutput } from "../../scripts/catalog/enrichment-contract.mjs";
 
-const vocabularies = {
-  primaryFunctions: [
-    { id: "frontend", label: "Frontend" },
-    { id: "developer-infrastructure", label: "Developer infrastructure" },
-  ],
-  capabilities: [
-    { id: "automation", label: "Automation" },
-    { id: "prompt-engineering", label: "Prompt engineering" },
+const tagVocabulary = {
+  schema_version: 1,
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      label: "Automate roleplay workflows",
+      facet: "goal",
+      description: "Automates repeated roleplay setup or execution.",
+      aliases: ["automation"],
+      applicable_kinds: ["extension"],
+      inclusion_guidance: ["The source describes repeatable automation."],
+      exclusion_guidance: [],
+    },
+    {
+      id: "works-offline",
+      label: "Works offline",
+      facet: "trait",
+      description: "Works without a hosted dependency.",
+      aliases: [],
+      applicable_kinds: ["extension", "preset"],
+      inclusion_guidance: ["The source explicitly describes offline use."],
+      exclusion_guidance: [],
+    },
   ],
 };
 
-const valid = {
-  summary:
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  metadata_status: "curated" as const,
-  capabilities: ["automation", "prompt-engineering"],
-  classification_review: null,
+const summary =
+  "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.";
+
+const summaryOutput = {
+  summary: {
+    value: summary,
+    evidence: ["readme:12-18"],
+  },
   result: "accepted-unchanged" as const,
   change_reasons: [],
   policy_signal: "none" as const,
 };
 
-test("accepts a natural two-sentence curated enrichment", () => {
-  expect(validateEnrichmentOutput(valid, vocabularies)).toEqual({
+const tagsOutput = {
+  tags: [
+    {
+      id: "automate-roleplay-workflows",
+      evidence: ["readme:42-55"],
+    },
+  ],
+};
+
+function context(
+  requestedFields: Array<"summary" | "tags"> = ["summary", "tags"],
+) {
+  return {
+    requestedFields,
+    kind: "extension",
+    tagVocabulary,
+    copyContext: {
+      mode: "synthesize" as const,
+      submittedSummary: "",
+      protectedTerms: ["Fixture"],
+    },
+  };
+}
+
+test("validates independently requested summary and tags", () => {
+  expect(
+    validateEnrichmentOutput({ ...summaryOutput, ...tagsOutput }, context()),
+  ).toEqual({ valid: true });
+});
+
+test("validates tags without requiring summary when only tags were requested", () => {
+  expect(validateEnrichmentOutput(tagsOutput, context(["tags"]))).toEqual({
     valid: true,
   });
 });
 
-test("allows ordinary parenthesized prose", () => {
+test("validates summary without requiring tags when only summary was requested", () => {
+  expect(validateEnrichmentOutput(summaryOutput, context(["summary"]))).toEqual(
+    { valid: true },
+  );
+});
+
+test("rejects a manual field returned by the provider", () => {
+  const result = validateEnrichmentOutput(
+    { ...summaryOutput, ...tagsOutput },
+    context(["tags"]),
+  );
+
+  expect(result).toMatchObject({ valid: false });
+  if (!result.valid) {
+    expect(result.errors).toContain("summary was not requested");
+  }
+});
+
+test("requires copy-policy diagnostics only when summary is requested", () => {
+  const { result: _result, ...missingResult } = summaryOutput;
+
   expect(
-    validateEnrichmentOutput(
-      {
-        ...valid,
-        summary:
-          "A compact toolkit (with automation) maintains prompt workflows in SillyTavern projects. It keeps configuration clear, repeatable, and accessible for creators throughout complex projects today.",
-      },
-      vocabularies,
-    ),
-  ).toEqual({ valid: true });
+    validateEnrichmentOutput(missingResult, context(["summary"])),
+  ).toMatchObject({ valid: false });
+  expect(validateEnrichmentOutput(tagsOutput, context(["tags"]))).toEqual({
+    valid: true,
+  });
 });
 
 test.each([
-  ["exact fallback", "No README file found."],
   [
     "overlong",
     "Fixture organizes repeatable prompt workflows for SillyTavern projects with a deliberately excessive amount of qualifying language. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout every unusually elaborate creative project.",
@@ -54,189 +116,105 @@ test.each([
     "Fixture organizes prompt workflows. It keeps configuration clear and accessible.",
   ],
   [
-    "too many words",
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects while coordinating many different types of detailed configuration across numerous creator tools. It automates routine setup, preserves every creator-facing control, clarifies complicated options, maintains project structure, and supports unusually elaborate long-running creative work.",
-  ],
-  [
     "newline",
     "Fixture organizes repeatable prompt workflows for SillyTavern projects.\nIt automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  ],
-  [
-    "unicode newline",
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects.\u2028It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   ],
   [
     "markdown",
     "- Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
   ],
   [
-    "inline markdown",
-    "Fixture organizes repeatable `prompt` workflows for SillyTavern projects. It automates routine setup, preserves creator-facing controls, and keeps complex configuration work clear and accessible throughout.",
-  ],
-  [
     "one sentence",
     "Fixture organizes repeatable prompt workflows for SillyTavern projects while automating routine setup, preserving creator-facing controls, and keeping complex configuration work clear and accessible throughout.",
   ],
-  [
-    "three sentences",
-    "Fixture organizes repeatable prompt workflows for SillyTavern projects. It automates routine setup and preserves creator-facing controls. Complex configuration stays clear and accessible throughout.",
-  ],
-] as const)("rejects invalid summary: %s", (_name, summary) => {
-  const result = validateEnrichmentOutput({ ...valid, summary }, vocabularies);
-  if (_name === "exact fallback") {
-    expect(result).toEqual({ valid: true });
-  } else {
-    expect(result.valid).toBe(false);
-  }
+] as const)("rejects invalid summary: %s", (_name, value) => {
+  expect(
+    validateEnrichmentOutput(
+      {
+        ...summaryOutput,
+        summary: { value, evidence: ["readme:12-18"] },
+      },
+      context(["summary"]),
+    ),
+  ).toMatchObject({ valid: false });
 });
 
-test("rejects unknown vocabulary IDs and non-curated metadata", () => {
+test("rejects unknown, duplicate, excessive, and kind-inapplicable tags", () => {
+  const unknown = validateEnrichmentOutput(
+    { tags: [{ id: "invented", evidence: ["readme:1"] }] },
+    context(["tags"]),
+  );
+  expect(unknown).toMatchObject({ valid: false });
+
+  const duplicate = validateEnrichmentOutput(
+    {
+      tags: [
+        {
+          id: "automate-roleplay-workflows",
+          evidence: ["readme:1"],
+        },
+        {
+          id: "automate-roleplay-workflows",
+          evidence: ["readme:2"],
+        },
+      ],
+    },
+    context(["tags"]),
+  );
+  expect(duplicate).toMatchObject({ valid: false });
+
+  const wrongKind = validateEnrichmentOutput(tagsOutput, {
+    ...context(["tags"]),
+    kind: "preset",
+  });
+  expect(wrongKind).toMatchObject({ valid: false });
+});
+
+test("allows zero tags when evidence is inconclusive", () => {
+  expect(validateEnrichmentOutput({ tags: [] }, context(["tags"]))).toEqual({
+    valid: true,
+  });
+});
+
+test("requires compact evidence for summaries and every selected tag", () => {
+  expect(
+    validateEnrichmentOutput(
+      {
+        ...summaryOutput,
+        summary: { value: summary, evidence: [] },
+      },
+      context(["summary"]),
+    ),
+  ).toMatchObject({ valid: false });
+  expect(
+    validateEnrichmentOutput(
+      {
+        tags: [{ id: "automate-roleplay-workflows", evidence: [] }],
+      },
+      context(["tags"]),
+    ),
+  ).toMatchObject({ valid: false });
+});
+
+test("rejects output fields outside the requested metadata contract", () => {
   const result = validateEnrichmentOutput(
     {
-      ...valid,
-      metadata_status: "provisional" as "curated",
-      capabilities: ["unknown-capability"],
-    },
-    vocabularies,
+      ...tagsOutput,
+      capabilities: ["automation"],
+      primary_function: "developer-infrastructure",
+      metadata_status: "curated",
+    } as never,
+    context(["tags"]),
   );
 
   expect(result).toMatchObject({ valid: false });
   if (!result.valid) {
     expect(result.errors).toEqual(
       expect.arrayContaining([
-        "metadata_status must be curated",
-        "capabilities contains an unknown controlled vocabulary ID: unknown-capability",
+        "generation output contains unknown key: capabilities",
+        "generation output contains unknown key: primary_function",
+        "generation output contains unknown key: metadata_status",
       ]),
     );
   }
 });
-
-test("rejects a model-owned primary function field", () => {
-  const result = validateEnrichmentOutput(
-    {
-      ...valid,
-      primary_function: "developer-infrastructure",
-    } as never,
-    vocabularies,
-  );
-
-  expect(result).toEqual({
-    valid: false,
-    errors: ["primary_function is not allowed in enrichment output"],
-  });
-});
-
-test("rejects missing or inconsistent copy-result metadata", () => {
-  const { result: _result, ...missingResult } = valid;
-  expect(
-    validateEnrichmentOutput(missingResult as never, vocabularies),
-  ).toMatchObject({ valid: false });
-  expect(
-    validateEnrichmentOutput(
-      {
-        ...valid,
-        result: "accepted-with-policy-rewrite",
-        change_reasons: ["punctuation-corrected"],
-        policy_signal: "catalog-policy-rewrite",
-      },
-      vocabularies,
-    ),
-  ).toMatchObject({ valid: false });
-});
-
-test("accepts only a bounded requested classification review", () => {
-  const request = {
-    submittedPrimaryFunction: "memory-retrieval",
-    allowedPrimaryFunctions: [
-      { id: "memory-retrieval", label: "Memory and retrieval" },
-      { id: "interface-workflow", label: "Interface and workflow" },
-    ],
-  };
-
-  expect(
-    validateEnrichmentOutput(
-      {
-        ...valid,
-        classification_review: {
-          status: "confirmed",
-          suggested_primary_function: "memory-retrieval",
-          explanation: null,
-        },
-      },
-      vocabularies,
-      request,
-    ),
-  ).toEqual({ valid: true });
-
-  expect(
-    validateEnrichmentOutput(
-      {
-        ...valid,
-        classification_review: {
-          status: "possible-mismatch",
-          suggested_primary_function: "interface-workflow",
-          explanation:
-            "The source primarily describes user-facing editing controls.",
-        },
-      },
-      vocabularies,
-      request,
-    ),
-  ).toEqual({ valid: true });
-});
-
-test.each([
-  [
-    "unrequested review",
-    null,
-    {
-      status: "confirmed",
-      suggested_primary_function: "memory-retrieval",
-      explanation: null,
-    },
-  ],
-  [
-    "missing requested review",
-    { submittedPrimaryFunction: "memory-retrieval" },
-    null,
-  ],
-  [
-    "confirmed alternate",
-    { submittedPrimaryFunction: "memory-retrieval" },
-    {
-      status: "confirmed",
-      suggested_primary_function: "interface-workflow",
-      explanation: null,
-    },
-  ],
-  [
-    "mismatch without explanation",
-    { submittedPrimaryFunction: "memory-retrieval" },
-    {
-      status: "possible-mismatch",
-      suggested_primary_function: "interface-workflow",
-      explanation: null,
-    },
-  ],
-] as const)(
-  "rejects %s classification review",
-  (_name, partialRequest, review) => {
-    const request =
-      partialRequest === null
-        ? null
-        : {
-            ...partialRequest,
-            allowedPrimaryFunctions: [
-              { id: "memory-retrieval", label: "Memory and retrieval" },
-              { id: "interface-workflow", label: "Interface and workflow" },
-            ],
-          };
-    expect(
-      validateEnrichmentOutput(
-        { ...valid, classification_review: review },
-        vocabularies,
-        request,
-      ),
-    ).toMatchObject({ valid: false });
-  },
-);

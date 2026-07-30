@@ -11,18 +11,15 @@ import {
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
   createEnrichmentProvider,
   validateProviderConfiguration,
 } from "./enrichment-provider.mjs";
 import {
   MANUAL_ENRICHMENT_REASON_CODE,
-  assertAutomaticEnrichment,
-  isAutomaticEnrichment,
-  manualEnrichmentExclusions,
   supportsAutomaticEnrichmentSource,
 } from "./enrichment-policy.mjs";
+import { metadataFieldsToGenerate } from "./metadata-policy.mjs";
 import {
   createEnrichmentReport,
   isPreHardeningTerminalFullReport,
@@ -40,19 +37,7 @@ import {
 } from "./enrichment-run-state.mjs";
 import { createSnapshotValidator } from "./readme-source.mjs";
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
-
-function entriesToSet(entries) {
-  return new Set(
-    entries.map((entry) => (typeof entry === "string" ? entry : entry.id)),
-  );
-}
-
-function extensionPrimaryFunctions(entries) {
-  const extensionIds = new Set(EXTENSION_PRIMARY_FUNCTION_IDS);
-  return entries.filter((entry) =>
-    extensionIds.has(typeof entry === "string" ? entry : entry.id),
-  );
-}
+import { tagVocabularyHash, tagsForKind } from "./tag-vocabulary.mjs";
 
 const genericSummaries = new Set([
   "Generic intake details.",
@@ -69,16 +54,19 @@ function forceForSelectionMode(selectionMode) {
 }
 
 function durableManualExclusions(records) {
-  return manualEnrichmentExclusions(records).map((entry) => ({
-    id: entry.projectId,
-    reason_code: entry.reason,
-    enrichment_note: entry.note,
-  }));
+  return records
+    .filter((record) => metadataFieldsToGenerate(record).length === 0)
+    .map((record) => ({
+      id: record.id,
+      reason_code: MANUAL_ENRICHMENT_REASON_CODE,
+      enrichment_note: "Summary and tags are manually managed.",
+    }))
+    .sort((left, right) => left.id.localeCompare(right.id));
 }
 
 function isEligible(record, source, force = false) {
   if (
-    !isAutomaticEnrichment(record) ||
+    metadataFieldsToGenerate(record).length === 0 ||
     record.listing_status !== "active" ||
     !supportsAutomaticEnrichmentSource(source)
   ) {
@@ -103,7 +91,8 @@ export async function enrichRecord(
   provider,
   options = {},
 ) {
-  if (!isAutomaticEnrichment(record)) return null;
+  const requestedFields = metadataFieldsToGenerate(record);
+  if (requestedFields.length === 0) return null;
   if (record.listing_status !== "active") return null;
   if (!supportsAutomaticEnrichmentSource(sourceRecord)) return null;
   if (record.metadata_status === "curated" && !options.force) return null;
@@ -122,50 +111,13 @@ export async function enrichRecord(
     options,
   );
   const vocabularies = options.vocabularies ?? {
-    primaryFunctions: [],
-    capabilities: [],
+    tags: [],
   };
   if (source.status === "source-not-ready" || source.status === "failed") {
     throw new Error(source.message);
   }
   if (source.status === "fallback") {
-    const submittedDescription =
-      typeof options.submittedDescription === "string"
-        ? options.submittedDescription.trim()
-        : "";
-    if (!submittedDescription) {
-      const fallback = {
-        summary: "No README file found.",
-        metadata_status: "curated",
-        capabilities: [],
-        classification_review: null,
-        result: "accepted-unchanged",
-        change_reasons: [],
-        policy_signal: "none",
-      };
-      const validation = validateEnrichmentOutput(
-        fallback,
-        {
-          capabilities: entriesToSet(vocabularies.capabilities),
-        },
-        null,
-        {
-          mode: "synthesize",
-          submittedSummary: "",
-          protectedTerms: [],
-        },
-      );
-      if (!validation.valid) throw new Error(validation.errors.join("; "));
-      return fallback;
-    }
-    source = {
-      ...source,
-      status: "ready",
-      text: submittedDescription,
-      repositoryDescription: null,
-      readmeText: null,
-      readmeIdentity: null,
-    };
+    return fallbackOutput(requestedFields);
   }
 
   const input = providerInputForRecord(
@@ -173,7 +125,6 @@ export async function enrichRecord(
     sourceRecord,
     source,
     vocabularies,
-    options.classificationReviewRequest,
     options,
   );
   if (!provider?.generate) {
@@ -183,41 +134,65 @@ export async function enrichRecord(
   }
   let generated = await provider.generate(input);
   let output = generated.output;
-  let validation = validateEnrichmentOutput(
-    output,
-    {
-      capabilities: entriesToSet(vocabularies.capabilities),
-    },
-    input.classificationReviewRequest ?? null,
-    {
-      mode: input.summaryMode,
-      submittedSummary: input.submittedDescription ?? "",
+  let validation = validateEnrichmentOutput(output, {
+    requestedFields,
+    kind: record.kind,
+    tagVocabulary: vocabularies,
+    copyContext: {
+      mode: "synthesize",
+      submittedSummary: "",
       protectedTerms: input.protectedTerms,
     },
-  );
+  });
   if (!validation.valid) {
     generated = await provider.generate({
       ...input,
       repair: {
         reasonCode: "output-invalid",
         message: [...new Set(validation.errors)].join("; "),
+        ...(typeof output?.summary?.value === "string"
+          ? { rejectedSummary: output.summary.value.slice(0, 1_000) }
+          : {}),
       },
     });
     output = generated.output;
-    validation = validateEnrichmentOutput(
-      output,
-      {
-        capabilities: entriesToSet(vocabularies.capabilities),
-      },
-      input.classificationReviewRequest ?? null,
-      {
-        mode: input.summaryMode,
-        submittedSummary: input.submittedDescription ?? "",
+    validation = validateEnrichmentOutput(output, {
+      requestedFields,
+      kind: record.kind,
+      tagVocabulary: vocabularies,
+      copyContext: {
+        mode: "synthesize",
+        submittedSummary: "",
         protectedTerms: input.protectedTerms,
       },
-    );
+    });
   }
   if (!validation.valid) {
+    const tagFallback =
+      requestedFields.includes("tags") &&
+      output &&
+      typeof output === "object" &&
+      !Array.isArray(output)
+        ? { ...output, tags: [] }
+        : null;
+    const fallbackValidation = tagFallback
+      ? validateEnrichmentOutput(tagFallback, {
+          requestedFields,
+          kind: record.kind,
+          tagVocabulary: vocabularies,
+          copyContext: {
+            mode: "synthesize",
+            submittedSummary: "",
+            protectedTerms: input.protectedTerms,
+          },
+        })
+      : { valid: false };
+    if (fallbackValidation.valid) {
+      return {
+        ...tagFallback,
+        tag_generation_diagnostic: "invalid-output-fell-back-empty",
+      };
+    }
     const error = new Error([...new Set(validation.errors)].join("; "));
     error.code = "output-invalid";
     throw error;
@@ -230,7 +205,6 @@ function providerInputForRecord(
   sourceRecord,
   source,
   vocabularies,
-  classificationReviewRequest = null,
   options = {},
 ) {
   const repositoryParts =
@@ -244,13 +218,13 @@ function providerInputForRecord(
       ),
     ),
   ];
-  const submittedDescription =
-    options.submittedDescription ?? record.summary ?? null;
   const repositoryDescription =
     source.repositoryDescription ??
     (source.sourceKind === "description" ? source.text : null);
+  const requestedFields = metadataFieldsToGenerate(record);
   return {
     id: record.id,
+    sourceId: record.source_id,
     name: record.name,
     kind: record.kind,
     source: {
@@ -258,8 +232,8 @@ function providerInputForRecord(
       identity: source.sourceIdentity,
       text: source.text,
     },
-    summaryMode: options.summaryMode ?? "synthesize",
-    submittedDescription,
+    requestedFields,
+    vocabularyHash: tagVocabularyHash(vocabularies),
     evidence: {
       readme:
         typeof source.readmeText === "string" && source.readmeText.length > 0
@@ -273,13 +247,11 @@ function providerInputForRecord(
             }
           : null,
       repositoryDescription,
-      submissionDescription: submittedDescription,
     },
     protectedTerms,
     policyVersion: options.policyVersion ?? CATALOG_POLICY_VERSION,
     frontends: record.frontends ?? [],
-    allowedCapabilities: vocabularies.capabilities,
-    ...(classificationReviewRequest ? { classificationReviewRequest } : {}),
+    allowedTags: tagsForKind(vocabularies, record.kind),
   };
 }
 
@@ -287,54 +259,53 @@ export async function writeEnrichedRecord(
   path,
   record,
   output,
-  vocabularies = {
-    primaryFunctions: [
-      "frontend",
-      "preset",
-      "memory-retrieval",
-      "generation-reasoning",
-      "character-worldbuilding",
-      "rpg-systems",
-      "interface-workflow",
-      "developer-infrastructure",
-    ],
-    capabilities: [
-      "automation",
-      "character-worldbuilding",
-      "extension-development",
-      "image-generation",
-      "instruction-control",
-      "model-routing",
-      "multi-frontend",
-      "planning-reasoning",
-      "prompt-engineering",
-      "review-validation",
-    ],
-  },
+  vocabularies = { tags: [] },
 ) {
   const current = JSON.parse(await readFile(path, "utf8"));
-  assertAutomaticEnrichment(current);
-  const classificationReviewRequest = output.classification_review
-    ? {
-        submittedPrimaryFunction: current.primary_function,
-        allowedPrimaryFunctions: extensionPrimaryFunctions(
-          vocabularies.primaryFunctions,
-        ),
-      }
-    : null;
+  const requestedFields = metadataFieldsToGenerate(current).filter((field) =>
+    Object.hasOwn(output, field),
+  );
+  if (requestedFields.length === 0) {
+    const error = new Error(
+      `${current.id}: ${MANUAL_ENRICHMENT_REASON_CODE}: Summary and tags are manually managed.`,
+    );
+    error.code = MANUAL_ENRICHMENT_REASON_CODE;
+    error.enrichmentNote = "Summary and tags are manually managed.";
+    throw error;
+  }
+  const filteredOutput = Object.fromEntries(
+    Object.entries(output).filter(
+      ([key]) =>
+        requestedFields.includes(key) ||
+        (requestedFields.includes("summary") &&
+          ["result", "change_reasons", "policy_signal"].includes(key)),
+    ),
+  );
   const validation = validateEnrichmentOutput(
-    output,
     {
-      capabilities: entriesToSet(vocabularies.capabilities),
+      ...filteredOutput,
     },
-    classificationReviewRequest,
+    {
+      requestedFields,
+      kind: current.kind,
+      tagVocabulary: vocabularies,
+      copyContext: {
+        mode: "synthesize",
+        submittedSummary: "",
+        protectedTerms: [current.name].filter(Boolean),
+      },
+    },
   );
   if (!validation.valid) throw new Error(validation.errors.join("; "));
   const updated = {
     ...current,
-    summary: output.summary,
-    metadata_status: output.metadata_status,
-    capabilities: output.capabilities,
+    ...(requestedFields.includes("summary")
+      ? { summary: filteredOutput.summary.value }
+      : {}),
+    ...(requestedFields.includes("tags")
+      ? { tags: filteredOutput.tags.map((entry) => entry.id) }
+      : {}),
+    metadata_status: "curated",
   };
   const temporaryPath = `${path}.${randomUUID()}.tmp`;
   try {
@@ -365,64 +336,93 @@ export async function mapWithConcurrency(items, limit, worker) {
   return results;
 }
 
-function fallbackOutput() {
+function fallbackOutput(requestedFields) {
   return {
-    summary: "No README file found.",
-    metadata_status: "curated",
-    capabilities: [],
-    classification_review: null,
-    result: "accepted-unchanged",
-    change_reasons: [],
-    policy_signal: "none",
+    ...(requestedFields.includes("summary")
+      ? {
+          summary: {
+            value: "No README file found.",
+            evidence: ["source:confirmed-fallback"],
+          },
+          result: "accepted-unchanged",
+          change_reasons: [],
+          policy_signal: "none",
+        }
+      : {}),
+    ...(requestedFields.includes("tags") ? { tags: [] } : {}),
   };
 }
 
-function validateOutput(
-  output,
-  vocabularies,
-  classificationReviewRequest = null,
-) {
-  const validation = validateEnrichmentOutput(
-    output,
-    {
-      capabilities: entriesToSet(vocabularies.capabilities),
+function validateOutput(output, record, vocabularies, providerInput) {
+  const validation = validateEnrichmentOutput(output, {
+    requestedFields: providerInput.requestedFields,
+    kind: record.kind,
+    tagVocabulary: vocabularies,
+    copyContext: {
+      mode: "synthesize",
+      submittedSummary: "",
+      protectedTerms: providerInput.protectedTerms,
     },
-    classificationReviewRequest,
-  );
+  });
   if (!validation.valid) {
     const repairHints = validation.errors.map((error) => {
-      if (error === "summary must be a non-empty string") {
+      if (
+        [
+          "summary must be a non-empty string",
+          "summary value must be a non-empty string",
+        ].includes(error)
+      ) {
         return "Summary must be a non-empty string.";
       }
-      if (error === "summary must be 220 characters or fewer") {
+      if (
+        [
+          "summary must be 220 characters or fewer",
+          "summary value must be 220 characters or fewer",
+        ].includes(error)
+      ) {
         return "Summary must be at most 220 characters.";
       }
-      if (error === "summary must contain between 24 and 36 words") {
+      if (
+        [
+          "summary must contain between 24 and 36 words",
+          "summary value must contain between 24 and 36 words",
+        ].includes(error)
+      ) {
         return "Summary must contain 24-36 words.";
       }
-      if (error === "summary must not contain line breaks") {
+      if (
+        [
+          "summary must not contain line breaks",
+          "summary value must not contain line breaks",
+        ].includes(error)
+      ) {
         return "Summary must not contain line breaks.";
       }
-      if (error === "summary must not contain markdown or list syntax") {
+      if (
+        [
+          "summary must not contain markdown or list syntax",
+          "summary value must not contain markdown or list syntax",
+        ].includes(error)
+      ) {
         return "Summary must not contain Markdown or list syntax.";
       }
-      if (error === "summary must be exactly two sentences") {
+      if (
+        [
+          "summary must be exactly two sentences",
+          "summary value must be exactly two sentences",
+        ].includes(error)
+      ) {
         return "Summary must be exactly two sentences.";
       }
-      if (error === "metadata_status must be curated") {
-        return "Set metadata_status to curated.";
+      if (error.includes("evidence")) {
+        return "Include compact source evidence references.";
       }
-      if (error === "capabilities must be an array") {
-        return "Return capabilities as an array.";
-      }
-      if (error.startsWith("capabilities contains an unknown")) {
-        return "Use only allowed capability IDs.";
-      }
-      if (error.startsWith("classification_review")) {
-        return "Return the requested bounded classification_review value.";
-      }
-      if (error === "primary_function is not allowed in enrichment output") {
-        return "Do not return primary_function.";
+      if (
+        error.includes("tags") ||
+        error.startsWith("tag ") ||
+        error.includes("generated tag")
+      ) {
+        return "Return zero to six unique allowed tag IDs with evidence.";
       }
       return "Return an object that satisfies the enrichment schema.";
     });
@@ -467,8 +467,8 @@ function summaryMeasurements(summary) {
 
 function validationRepairInput(providerInput, validation, output) {
   const rejectedSummary =
-    typeof output?.summary === "string"
-      ? output.summary.slice(0, 1_000)
+    typeof output?.summary?.value === "string"
+      ? output.summary.value.slice(0, 1_000)
       : undefined;
   const summaryGuidance =
     rejectedSummary === undefined
@@ -500,14 +500,14 @@ async function processProject(input, id) {
   } = input;
   const record = recordsById[id];
   const sourceRecord = record ? sourcesById[record.source_id] : null;
-  if (record && !isAutomaticEnrichment(record)) {
+  if (record && metadataFieldsToGenerate(record).length === 0) {
     return {
       id,
       phase,
       outcome: "skipped",
       reasonCode: MANUAL_ENRICHMENT_REASON_CODE,
-      enrichmentNote: record.enrichment_note,
-      message: "Registry record requires manual enrichment.",
+      enrichmentNote: "Summary and tags are manually managed.",
+      message: "Registry record has no automatic metadata fields.",
     };
   }
   if (!record || !sourceRecord || !isEligible(record, sourceRecord, force)) {
@@ -577,7 +577,7 @@ async function processProject(input, id) {
     }
   };
   if (source.status === "fallback") {
-    output = fallbackOutput();
+    output = fallbackOutput(metadataFieldsToGenerate(record));
   } else {
     if (!provider?.generate) {
       return {
@@ -624,10 +624,14 @@ async function processProject(input, id) {
     }
   }
 
+  const validationInput =
+    providerInput ??
+    providerInputForRecord(record, sourceRecord, source, vocabularies);
   let validation = validateOutput(
     output,
+    record,
     vocabularies,
-    providerInput?.classificationReviewRequest ?? null,
+    validationInput,
   );
   if (!validation.valid && providerInput) {
     providerInput = validationRepairInput(providerInput, validation, output);
@@ -647,11 +651,31 @@ async function processProject(input, id) {
         ...providerTelemetry(),
       };
     }
-    validation = validateOutput(
-      output,
-      vocabularies,
-      providerInput?.classificationReviewRequest ?? null,
-    );
+    validation = validateOutput(output, record, vocabularies, providerInput);
+  }
+  if (!validation.valid) {
+    const tagFallback =
+      validationInput.requestedFields.includes("tags") &&
+      output &&
+      typeof output === "object" &&
+      !Array.isArray(output)
+        ? { ...output, tags: [] }
+        : null;
+    if (tagFallback) {
+      const fallbackValidation = validateOutput(
+        tagFallback,
+        record,
+        vocabularies,
+        validationInput,
+      );
+      if (fallbackValidation.valid) {
+        output = {
+          ...tagFallback,
+          tag_generation_diagnostic: "invalid-output-fell-back-empty",
+        };
+        validation = { valid: true };
+      }
+    }
   }
   if (!validation.valid) {
     return {
@@ -698,6 +722,19 @@ async function processProject(input, id) {
     phase,
     outcome: source.status === "fallback" ? "fallback" : "enriched",
     output,
+    sourceId: record.source_id,
+    requestedFields: validationInput.requestedFields,
+    vocabularyHash: validationInput.vocabularyHash,
+    finalTags: Array.isArray(output.tags)
+      ? output.tags.map((entry) => entry.id)
+      : undefined,
+    tagEvidence: Array.isArray(output.tags)
+      ? Object.fromEntries(
+          output.tags.map((entry) => [entry.id, [...entry.evidence]]),
+        )
+      : undefined,
+    summaryEvidence: output.summary?.evidence,
+    tagGenerationDiagnostic: output.tag_generation_diagnostic,
     ...sourceProvenance(source),
     ...providerTelemetry(),
     ...(providerMetadata ? { provider: providerMetadata } : {}),
@@ -860,6 +897,7 @@ async function writeJsonAtomic(path, value) {
 
 const preflightInput = {
   id: "provider-preflight",
+  sourceId: "provider-preflight",
   name: "Provider preflight",
   kind: "extension",
   source: {
@@ -868,7 +906,37 @@ const preflightInput = {
     text: "A synthetic source used only to verify structured catalog enrichment.",
   },
   frontends: ["sillytavern"],
-  allowedCapabilities: [{ id: "automation", label: "Automation" }],
+  requestedFields: ["summary", "tags"],
+  vocabularyHash: "0".repeat(64),
+  evidence: {
+    readme: null,
+    repositoryDescription:
+      "A synthetic source used only to verify structured catalog enrichment.",
+  },
+  protectedTerms: ["Provider preflight"],
+  policyVersion: CATALOG_POLICY_VERSION,
+  allowedTags: [
+    {
+      id: "automate-roleplay-workflows",
+      label: "Automate roleplay workflows",
+      facet: "goal",
+      description: "Automates repeated roleplay setup or execution.",
+      aliases: ["automation"],
+      applicable_kinds: ["extension"],
+      inclusion_guidance: ["The source describes repeatable automation."],
+      exclusion_guidance: [],
+    },
+  ],
+};
+
+const preflightRecord = {
+  id: preflightInput.id,
+  kind: preflightInput.kind,
+};
+
+const preflightVocabulary = {
+  schema_version: 1,
+  tags: preflightInput.allowedTags,
 };
 
 export const PREFLIGHT_RETRY_DELAYS_MS = [5_000, 15_000, 30_000];
@@ -897,18 +965,24 @@ async function generatePreflight(provider, input, sleep) {
 
 async function runPreflight(provider, sleep) {
   let result = await generatePreflight(provider, preflightInput, sleep);
-  const vocabularies = {
-    primaryFunctions: [],
-    capabilities: preflightInput.allowedCapabilities,
-  };
-  let validation = validateOutput(result.output, vocabularies);
+  let validation = validateOutput(
+    result.output,
+    preflightRecord,
+    preflightVocabulary,
+    preflightInput,
+  );
   if (!validation.valid) {
     result = await generatePreflight(
       provider,
       validationRepairInput(preflightInput, validation, result.output),
       sleep,
     );
-    validation = validateOutput(result.output, vocabularies);
+    validation = validateOutput(
+      result.output,
+      preflightRecord,
+      preflightVocabulary,
+      preflightInput,
+    );
   }
   if (!validation.valid) {
     throw new Error(
@@ -1108,14 +1182,8 @@ export async function runCli(options = {}) {
       );
   const vocabularyFiles = options.vocabularies
     ? null
-    : await Promise.all([
-        readJson(resolve(root, "data/vocabularies/primary-functions.json")),
-        readJson(resolve(root, "data/vocabularies/capabilities.json")),
-      ]);
-  const vocabularies = options.vocabularies ?? {
-    primaryFunctions: vocabularyFiles[0].primary_functions,
-    capabilities: vocabularyFiles[1].capabilities,
-  };
+    : await readJson(resolve(root, "data/vocabularies/tags.json"));
+  const vocabularies = options.vocabularies ?? vocabularyFiles;
   const validateSnapshot =
     options.validateSnapshot ??
     createSnapshotValidator(

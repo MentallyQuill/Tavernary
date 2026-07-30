@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 
 import { expect, test } from "vitest";
 
-import { buildCatalog } from "../../scripts/catalog/build.mjs";
+import { buildCatalog as buildCatalogRaw } from "../../scripts/catalog/build.mjs";
+import { legacySourceId } from "../../src/features/catalog/source-record.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -27,6 +28,92 @@ function countBy<T>(items: T[], selector: (item: T) => string) {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   return Object.fromEntries(counts);
+}
+
+async function buildCatalog(
+  options: Parameters<typeof buildCatalogRaw>[0] = {},
+) {
+  const records = (options.records ?? []) as Array<Record<string, any>>;
+  const legacyRecords = records.filter(
+    ({ schema_version }) => schema_version !== 6,
+  );
+  if (legacyRecords.length === 0) return buildCatalogRaw(options);
+
+  const sourceIdByProjectId = new Map<string, string>();
+  const sourcesById = new Map<string, Record<string, unknown>>();
+  const projects = records.map((record) => {
+    if (record.schema_version === 6) return record;
+    const sourceId = legacySourceId(
+      record as Parameters<typeof legacySourceId>[0],
+    );
+    sourceIdByProjectId.set(record.id, sourceId);
+    const removed =
+      record.visibility === "disabled" &&
+      record.visibility_reason === "removed";
+    sourcesById.set(sourceId, {
+      schema_version: 1,
+      id: sourceId,
+      ...structuredClone(record.source),
+      status: removed ? "delisted" : "active",
+      status_reason: removed ? "removed" : null,
+      refresh_policy: removed ? "paused" : record.refresh_policy,
+    });
+    const {
+      source: _source,
+      capabilities: _capabilities,
+      visibility: _visibility,
+      visibility_reason: _visibilityReason,
+      refresh_policy: _refreshPolicy,
+      enrichment_policy: enrichmentPolicy,
+      enrichment_note: enrichmentNote,
+      ...card
+    } = record;
+    return {
+      ...card,
+      schema_version: 6,
+      source_id: sourceId,
+      tags: [],
+      listing_status:
+        record.visibility === "quarantined"
+          ? "quarantined"
+          : record.visibility === "disabled" && !removed
+            ? "retired"
+            : "active",
+      listing_status_reason:
+        record.visibility === "published" || removed
+          ? null
+          : record.visibility_reason,
+      metadata_policy: {
+        summary:
+          enrichmentPolicy === "manual"
+            ? { mode: "manual", note: enrichmentNote }
+            : { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
+    };
+  });
+  const snapshots = (
+    (options.snapshots ?? []) as Array<Record<string, any>>
+  ).map((snapshot) => {
+    if (snapshot.schema_version === 4) return snapshot;
+    const {
+      project_id: projectId,
+      schema_version: _schemaVersion,
+      ...facts
+    } = snapshot;
+    return {
+      ...facts,
+      schema_version: 4,
+      source_id: sourceIdByProjectId.get(projectId),
+    };
+  });
+
+  return buildCatalogRaw({
+    ...options,
+    records: projects,
+    sources: options.sources ?? [...sourcesById.values()],
+    snapshots,
+  });
 }
 
 const fixtureProject = (overrides: Record<string, unknown> = {}) => {
@@ -153,7 +240,8 @@ test("builds sibling extension and preset cards from one source snapshot", async
     metadata_status: "curated",
     frontends: ["sillytavern"],
     primary_function: kind === "preset" ? "preset" : "interface-workflow",
-    tags: [],
+    tags:
+      kind === "preset" ? ["model-agnostic"] : ["maintain-long-term-memory"],
     ...(kind === "preset"
       ? {
           model_families: ["claude"],
@@ -201,6 +289,22 @@ test("builds sibling extension and preset cards from one source snapshot", async
     catalog.projects[1].canonicalUrl,
   );
   expect(catalog.projects[0].community).toEqual(catalog.projects[1].community);
+  expect(catalog.projects[0].tags).toEqual([
+    expect.objectContaining({
+      id: "maintain-long-term-memory",
+      label: "Maintain long-term memory",
+      facet: "goal",
+    }),
+  ]);
+  expect(catalog.projects[0]).not.toHaveProperty("capabilities");
+  expect(catalog.projects[0].searchableText).toContain("persistent memory");
+  expect(catalog.schemaVersion).toBe(4);
+  expect(
+    catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
+  ).not.toHaveProperty("inclusion_guidance");
+  expect(JSON.stringify(catalog.tagVocabulary)).not.toContain(
+    "exclusion_guidance",
+  );
 });
 
 test("derives temporary browser activity from version two evidence", async () => {
@@ -368,7 +472,7 @@ test("publishes snapshotless github records with pending source facts", async ()
         source: {
           type: "github",
           repository: "example/fixture",
-          repository_id: null,
+          repository_id: 123,
         },
       }),
     ],
@@ -596,13 +700,13 @@ test("keeps a disabled fork parent name without exposing a link or coordinates",
   const relationship = catalog.projects[0].fork;
 
   expect(relationship).toEqual({
-    parentName: "Curated Parent",
+    parentName: "private-parent",
     parentProjectId: null,
     parentUrl: null,
-    status: "not-listed",
+    status: "unavailable",
   });
   expect(JSON.stringify(relationship)).not.toMatch(
-    /private-owner|private-parent|github\.com|9001/,
+    /private-owner|github\.com|9001/,
   );
 });
 
@@ -747,7 +851,7 @@ test("publishes provider-qualified Codeberg evidence", async () => {
     snapshots: [snapshot],
   });
 
-  expect(catalog.schemaVersion).toBe(3);
+  expect(catalog.schemaVersion).toBe(4);
   expect(catalog.projects[0]).toMatchObject({
     canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     attribution: {
@@ -966,7 +1070,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(3);
+  expect(catalog.schemaVersion).toBe(4);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -978,7 +1082,7 @@ test("builds every eligible public card with consolidated manual sources", async
   );
   const labels = catalog.projects.flatMap((project) => [
     ...project.frontends,
-    ...project.capabilities,
+    ...project.tags,
   ]);
   expect(labels.length).toBeGreaterThan(0);
   expect(labels.every(({ description }) => description.length > 0)).toBe(true);
@@ -1086,7 +1190,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 3,
+    schemaVersion: 4,
     kits: [
       {
         id: "flagged-kit-42",

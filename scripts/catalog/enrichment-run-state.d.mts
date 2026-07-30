@@ -38,6 +38,13 @@ export type ProjectAttemptResult = {
   readmePath?: string | null;
   readmeRef?: string | null;
   redditPostId?: string;
+  sourceId?: string;
+  requestedFields?: readonly ("summary" | "tags")[];
+  vocabularyHash?: string;
+  finalTags?: readonly string[];
+  tagEvidence?: Readonly<Record<string, readonly string[]>>;
+  summaryEvidence?: readonly string[];
+  tagGenerationDiagnostic?: "invalid-output-fell-back-empty";
   provider?: {
     requestedModel: string;
     returnedModel: string | null;
@@ -48,9 +55,10 @@ export type ProjectAttemptResult = {
   providerRateLimitCount?: number;
   providerLatencyMsTotal?: number;
   output?: {
-    result: CatalogCopyResultStatus;
-    change_reasons: readonly CatalogCopyChangeReason[];
-    policy_signal: CatalogCopyPolicySignal;
+    result?: CatalogCopyResultStatus;
+    change_reasons?: readonly CatalogCopyChangeReason[];
+    policy_signal?: CatalogCopyPolicySignal;
+    [key: string]: unknown;
   };
   reasonCode?: string;
   enrichmentNote?: string;

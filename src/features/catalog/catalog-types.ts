@@ -25,6 +25,15 @@ export interface CatalogLabel {
   description: string;
 }
 
+export interface CatalogTag extends CatalogLabel {
+  facet: "goal" | "trait";
+}
+
+export interface CatalogTagDefinition extends CatalogTag {
+  aliases: string[];
+  applicable_kinds: ProjectKind[];
+}
+
 export interface CatalogAccount {
   provider: "github" | "codeberg";
   login: string;
@@ -60,7 +69,7 @@ export interface CatalogProject {
   catalogedAt: string;
   catalogCohort: "seed" | "standard";
   frontends: CatalogLabel[];
-  capabilities: CatalogLabel[];
+  tags: CatalogTag[];
   searchableText: string;
   fork: CatalogForkRelationship | null;
   attribution: CatalogAttribution | null;
@@ -96,8 +105,9 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 3;
+  schemaVersion: 4;
   generatedAt: string;
+  tagVocabulary: CatalogTagDefinition[];
   projects: CatalogProject[];
   kits: import("@/features/kits/kit-types").CatalogKit[];
 }

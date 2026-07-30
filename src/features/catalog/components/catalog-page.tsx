@@ -59,7 +59,9 @@ type AddedStatus = {
 
 export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const router = useRouter();
-  const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery();
+  const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery(
+    catalog.tagVocabulary,
+  );
   const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
@@ -72,7 +74,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const addedStatusTimerRef = useRef<number | null>(null);
   const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
   const [selectionAnnouncement, setSelectionAnnouncement] = useState("");
-  const context = useMemo(() => ({ now: catalog.generatedAt }), [catalog]);
+  const context = useMemo(
+    () => ({
+      now: catalog.generatedAt,
+      tagVocabulary: catalog.tagVocabulary,
+    }),
+    [catalog.generatedAt, catalog.tagVocabulary],
+  );
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
     projects: catalog.projects,
@@ -321,7 +329,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         Number(query.kits.allComponentsAvailable)
       : query.frontends.length +
         query.kinds.length +
-        query.capabilities.length +
+        query.tags.length +
         (query.modelFamilies?.length ?? 0) +
         (query.completionFormats?.length ?? 0) +
         query.development.length +
@@ -392,6 +400,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           <FilterPanel
             query={query}
             projects={catalog.projects}
+            tagVocabulary={catalog.tagVocabulary}
             now={catalog.generatedAt}
             onToggle={toggleFilter}
             onClear={clearFilters}
@@ -532,6 +541,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             motionPhase={filterPresence.phase}
             query={query}
             projects={catalog.projects}
+            tagVocabulary={catalog.tagVocabulary}
             now={catalog.generatedAt}
             onToggle={toggleFilter}
             onClear={clearFilters}

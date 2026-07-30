@@ -13,12 +13,12 @@
     "api",
     "providers",
     "duration_ms",
-    "project_timings",
+    "source_timings",
     "snapshot_changes",
     "deployment_requested"
   ],
   "properties": {
-    "schema_version": { "const": 2 },
+    "schema_version": { "const": 3 },
     "mode": {
       "enum": ["incremental", "baseline", "project", "forensic"]
     },
@@ -82,15 +82,15 @@
       }
     },
     "duration_ms": { "type": "integer", "minimum": 0 },
-    "project_timings": {
+    "source_timings": {
       "type": "array",
       "maxItems": 250,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["project_id", "outcome", "duration_ms", "error_code"],
+        "required": ["source_id", "outcome", "duration_ms", "error_code"],
         "properties": {
-          "project_id": { "type": "string", "minLength": 1 },
+          "source_id": { "type": "string", "minLength": 1 },
           "outcome": {
             "enum": [
               "unchanged",

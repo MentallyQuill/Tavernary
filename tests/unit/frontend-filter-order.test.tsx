@@ -32,7 +32,7 @@ function frontendCard(
         description: `Works with ${name}.`,
       },
     ],
-    capabilities: [],
+    tags: [],
     searchableText: name,
     fork: null,
     attribution: null,
@@ -78,6 +78,7 @@ describe("Compatible frontend filter order", () => {
       <FilterPanel
         query={DEFAULT_QUERY}
         projects={projects}
+        tagVocabulary={[]}
         onToggle={() => undefined}
         onClear={() => undefined}
         now="2026-07-26T00:00:00Z"

@@ -23,7 +23,12 @@ const project: CatalogProject = {
   catalogedAt: "2026-07-01T00:00:00.000Z",
   catalogCohort: "standard",
   frontends: [label("sillytavern")],
-  capabilities: [label("model-routing", "Model routing")],
+  tags: [
+    {
+      ...label("route-tasks-across-models", "Route tasks across models"),
+      facet: "goal",
+    },
+  ],
   searchableText: "routing",
   fork: null,
   attribution: null,

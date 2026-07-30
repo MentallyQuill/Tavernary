@@ -2,6 +2,8 @@ import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
 import type { CatalogQuery } from "./catalog-query";
 import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
+import { matchesSelectedTags } from "./catalog-tag-filter";
+import type { PublicTagDefinition } from "./tag-vocabulary";
 import {
   matchesCompletionFormats,
   matchesModelFamilies,
@@ -175,9 +177,19 @@ function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
 export function selectProjects(
   projects: CatalogProject[],
   query: CatalogQuery,
-  context: { now: string },
+  context: { now: string; tagVocabulary?: PublicTagDefinition[] },
 ): CatalogProject[] {
   const search = query.search.trim().toLowerCase();
+  const tagVocabulary = context.tagVocabulary ?? [
+    ...new Map(
+      projects.flatMap(({ tags }) =>
+        tags.map((tag) => [
+          tag.id,
+          { ...tag, aliases: [], applicable_kinds: [] },
+        ]),
+      ),
+    ).values(),
+  ];
   const selected = projects.filter(
     (project) =>
       (!search || project.searchableText.includes(search)) &&
@@ -190,9 +202,10 @@ export function selectProjects(
         project.frontends.map(({ id }) => id),
       ) &&
       matchesAny(query.kinds, [project.kind]) &&
-      matchesAny(
-        query.capabilities,
-        project.capabilities.map(({ id }) => id),
+      matchesSelectedTags(
+        query.tags,
+        project.tags.map(({ id }) => id),
+        tagVocabulary,
       ) &&
       matchesModelFamilies(
         query.modelFamilies ?? [],

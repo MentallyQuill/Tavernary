@@ -7,7 +7,7 @@
   "required": [
     "schema_version",
     "provider",
-    "project_id",
+    "source_id",
     "repository",
     "source_health",
     "activity",
@@ -17,9 +17,9 @@
     "stale_since"
   ],
   "properties": {
-    "schema_version": { "const": 3 },
+    "schema_version": { "const": 4 },
     "provider": { "enum": ["github", "codeberg"] },
-    "project_id": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "minLength": 1 },
     "repository": {
       "type": "object",
       "additionalProperties": false,

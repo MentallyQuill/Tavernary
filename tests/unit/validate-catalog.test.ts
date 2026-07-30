@@ -3,37 +3,35 @@ import { resolve } from "node:path";
 
 import { describe, expect, test } from "vitest";
 
-import { validateCatalog } from "../../scripts/catalog/validate.mjs";
+import { validateCatalog as validateCatalogRaw } from "../../scripts/catalog/validate.mjs";
 
 const validRecord = {
-  schema_version: 5,
+  schema_version: 6,
   id: "valid-preset",
+  source_id: "github-1",
   name: "Valid Preset",
   kind: "preset",
   summary: "A valid test fixture.",
   metadata_status: "curated",
-  source: {
-    type: "github",
-    repository: "example/valid-preset",
-    repository_id: 1,
-  },
   frontends: ["sillytavern"],
   primary_function: "preset",
-  capabilities: ["prompt-engineering"],
+  tags: ["guide-model-responses"],
   model_families: ["claude"],
   completion_formats: ["chat-completion"],
   cataloged_at: "2026-07-23T00:00:00Z",
   catalog_cohort: "seed",
-  visibility: "published",
-  visibility_reason: null,
-  refresh_policy: "automatic",
-  enrichment_policy: "automatic",
+  listing_status: "active",
+  listing_status_reason: null,
+  metadata_policy: {
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
+  },
 };
 
 const validSnapshotV2: Record<string, any> = {
-  schema_version: 3,
+  schema_version: 4,
   provider: "github",
-  project_id: "valid-preset",
+  source_id: "github-1",
   repository: {
     id: 1,
     owner: "example",
@@ -88,8 +86,13 @@ const validSourceV1 = {
   refresh_policy: "automatic",
 };
 
+const {
+  model_families: _validModelFamilies,
+  completion_formats: _validCompletionFormats,
+  ...validRecordWithoutPresetFields
+} = validRecord;
 const validRecordV6 = {
-  schema_version: 6,
+  ...validRecordWithoutPresetFields,
   id: "valid-extension",
   source_id: validSourceV1.id,
   name: "Valid Extension",
@@ -99,22 +102,60 @@ const validRecordV6 = {
   frontends: ["sillytavern"],
   primary_function: "interface-workflow",
   tags: [],
-  cataloged_at: "2026-07-29T00:00:00Z",
-  catalog_cohort: "standard",
-  listing_status: "active",
-  listing_status_reason: null,
-  metadata_policy: {
-    summary: { mode: "automatic" },
-    tags: { mode: "automatic" },
-  },
 };
 
-const { project_id: _legacyProjectId, ...validSnapshotFacts } = validSnapshotV2;
-const validSnapshotV4 = {
-  ...validSnapshotFacts,
-  schema_version: 4,
-  source_id: validSourceV1.id,
+const validSnapshotV4 = structuredClone(validSnapshotV2);
+const emptyCounts = {
+  total: 0,
+  checked: 0,
+  changed: 0,
+  unchanged: 0,
+  provisional: 0,
+  degraded: 0,
+  unavailable: 0,
+  failed: 0,
+  compared: 0,
+  baseline: 0,
+  fallback: 0,
 };
+const emptyProvider = {
+  checked: 0,
+  changed: 0,
+  failed: 0,
+  requests: 0,
+  remaining: null,
+};
+const validRefreshManifest = {
+  schema_version: 3,
+  mode: "incremental",
+  started_at: "2026-07-29T00:00:00Z",
+  completed_at: "2026-07-29T00:00:00Z",
+  counts: emptyCounts,
+  api: {
+    graphql_requests: 0,
+    graphql_points: 0,
+    graphql_remaining: null,
+    rest_requests: 0,
+  },
+  providers: {
+    github: emptyProvider,
+    codeberg: emptyProvider,
+  },
+  duration_ms: 0,
+  source_timings: [],
+  snapshot_changes: false,
+  deployment_requested: false,
+};
+
+function validateCatalog(options?: Parameters<typeof validateCatalogRaw>[0]) {
+  if (options === undefined) return validateCatalogRaw();
+  return validateCatalogRaw({
+    sources: [validSourceV1],
+    snapshots: [],
+    refreshManifest: validRefreshManifest,
+    ...options,
+  });
+}
 
 describe("catalog validation", () => {
   test("rejects an invalid Goals-and-Traits vocabulary", async () => {
@@ -210,18 +251,25 @@ describe("catalog validation", () => {
     const record = {
       ...extensionBase,
       id: "targren-lumiverse-swipescrubber",
+      source_id: "codeberg-1699613",
       kind: "extension",
       primary_function: "interface-workflow",
-      source: {
-        type: "codeberg",
-        repository: "targren/Lumiverse-SwipeScrubber",
-        repository_id: 1699613,
-      },
+      tags: [],
+    };
+    const source = {
+      schema_version: 1,
+      id: "codeberg-1699613",
+      type: "codeberg",
+      repository: "targren/Lumiverse-SwipeScrubber",
+      repository_id: 1699613,
+      status: "active",
+      status_reason: null,
+      refresh_policy: "automatic",
     };
     const snapshot = {
       ...validSnapshotV2,
       provider: "codeberg",
-      project_id: record.id,
+      source_id: source.id,
       repository: {
         ...validSnapshotV2.repository,
         id: 1699613,
@@ -241,6 +289,7 @@ describe("catalog validation", () => {
 
     const result = await validateCatalog({
       records: [record],
+      sources: [source],
       snapshots: [snapshot],
     });
     expect(result.errors).toEqual([]);
@@ -301,89 +350,30 @@ describe("catalog validation", () => {
   );
 
   test("rejects mismatched and duplicate provider snapshots", async () => {
+    const codebergSource = {
+      ...validSourceV1,
+      id: "codeberg-1",
+      type: "codeberg",
+    };
     const codebergRecord = {
       ...validRecord,
-      source: {
-        type: "codeberg",
-        repository: "example/valid-preset",
-        repository_id: 1,
-      },
+      source_id: codebergSource.id,
     };
     const result = await validateCatalog({
       records: [codebergRecord],
-      snapshots: [validSnapshotV2, { ...validSnapshotV2 }],
-    });
-
-    expect(result.errors).toContain(
-      "valid-preset: snapshot provider does not match record source",
-    );
-    expect(result.errors).toContain(
-      "valid-preset: duplicate repository snapshot",
-    );
-  });
-
-  test("requires an explicit enrichment policy", async () => {
-    const { enrichment_policy: _removed, ...record } = validRecord;
-    const result = await validateCatalog({ records: [record] });
-
-    expect(result.errors.join("\n")).toContain("enrichment_policy");
-  });
-
-  test("requires a note only for manual enrichment", async () => {
-    const missingNote = await validateCatalog({
-      records: [{ ...validRecord, enrichment_policy: "manual" }],
-    });
-    expect(missingNote.errors.join("\n")).toContain("enrichment_note");
-
-    const automaticWithNote = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          enrichment_policy: "automatic",
-          enrichment_note: "This note must not be retained.",
-        },
-      ],
-    });
-    expect(automaticWithNote.errors.join("\n")).toContain("must NOT be valid");
-  });
-
-  test("requires unsupported external sources to remain manual", async () => {
-    const result = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          source: {
-            type: "url",
-            url: "https://example.com/preset",
-            published_at: null,
-            version: null,
-            artifact_size_bytes: null,
-            license_status: "missing",
-            license_spdx_id: null,
-          },
-          refresh_policy: "paused",
-          enrichment_policy: "automatic",
-        },
+      sources: [codebergSource],
+      snapshots: [
+        { ...validSnapshotV4, source_id: codebergSource.id },
+        { ...validSnapshotV4, source_id: codebergSource.id },
       ],
     });
 
     expect(result.errors).toContain(
-      "valid-preset: automatic enrichment requires a supported source adapter",
+      "codeberg-1: snapshot provider does not match record source",
     );
-  });
-
-  test("allows a documented manual GitHub exception", async () => {
-    const result = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          enrichment_policy: "manual",
-          enrichment_note: "Bundled repository requires manual curation.",
-        },
-      ],
-    });
-
-    expect(result.errors).toEqual([]);
+    expect(result.errors).toContain(
+      "codeberg-1: duplicate repository snapshot",
+    );
   });
 
   test("rejects an invalid global refresh manifest", async () => {
@@ -399,28 +389,32 @@ describe("catalog validation", () => {
   });
 
   test("rejects a non-GitHub extension", async () => {
+    const source = {
+      schema_version: 1,
+      id: "url-bad-extension",
+      type: "url",
+      url: "https://example.com/tool",
+      published_at: null,
+      version: null,
+      artifact_size_bytes: null,
+      license_status: "missing",
+      license_spdx_id: null,
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
-          schema_version: 5,
+          ...validRecordV6,
           id: "bad-extension",
+          source_id: source.id,
           name: "Bad Extension",
-          kind: "extension",
           summary: "Invalid source fixture.",
-          metadata_status: "curated",
-          source: { type: "url", url: "https://example.com/tool" },
-          frontends: ["sillytavern"],
           primary_function: "generation-reasoning",
-          capabilities: [],
-          cataloged_at: "2026-07-23T00:00:00Z",
-          catalog_cohort: "seed",
-          visibility: "published",
-          visibility_reason: null,
-          refresh_policy: "automatic",
-          enrichment_policy: "manual",
-          enrichment_note: "External URL source; requires manual curation.",
         },
       ],
+      sources: [source],
     });
 
     expect(result.errors).toContain(
@@ -439,21 +433,27 @@ describe("catalog validation", () => {
         {
           ...frontend,
           id: "codeberg-frontend",
+          source_id: "url-codeberg-frontend",
           name: "Codeberg Frontend",
           kind: "frontend",
-          source: {
-            type: "url",
-            url: "https://codeberg.org/example/frontend",
-            published_at: null,
-            version: null,
-            artifact_size_bytes: null,
-            license_status: "missing",
-            license_spdx_id: null,
-          },
           primary_function: "frontend",
+          tags: [],
+        },
+      ],
+      sources: [
+        {
+          schema_version: 1,
+          id: "url-codeberg-frontend",
+          type: "url",
+          url: "https://codeberg.org/example/frontend",
+          published_at: null,
+          version: null,
+          artifact_size_bytes: null,
+          license_status: "missing",
+          license_spdx_id: null,
+          status: "active",
+          status_reason: null,
           refresh_policy: "paused",
-          enrichment_policy: "manual",
-          enrichment_note: "External URL source; requires manual curation.",
         },
       ],
       snapshots: [],
@@ -462,75 +462,54 @@ describe("catalog validation", () => {
     expect(result.errors).toEqual([]);
   });
 
-  test("rejects duplicate identities and canonical sources", async () => {
+  test("rejects duplicate project and source identities", async () => {
     const result = await validateCatalog({
-      records: [
-        validRecord,
-        {
-          ...validRecord,
-          source: {
-            ...validRecord.source,
-            repository: "EXAMPLE/VALID-PRESET",
-          },
-        },
-      ],
+      records: [validRecord, structuredClone(validRecord)],
+      sources: [validSourceV1, structuredClone(validSourceV1)],
     });
 
     expect(result.errors).toContain("valid-preset: duplicate project id");
-    expect(result.errors).toContain("valid-preset: duplicate canonical source");
+    expect(result.errors).toContain("github-1: duplicate source id");
   });
 
   test("rejects duplicate permanent GitHub repository IDs", async () => {
     const result = await validateCatalog({
-      records: [
-        validRecord,
+      records: [validRecord],
+      sources: [
+        validSourceV1,
         {
-          ...validRecord,
-          id: "second-preset",
-          name: "Second Preset",
-          source: {
-            ...validRecord.source,
-            repository: "example/second-preset",
-          },
+          ...validSourceV1,
+          id: "github-2",
+          repository: "example/second-preset",
         },
       ],
     });
 
     expect(result.errors).toContain(
-      "second-preset: duplicate GitHub repository_id 1",
+      "github-2: duplicate github repository_id 1",
     );
   });
 
-  test("rejects unknown vocabulary values and missing GitHub identity", async () => {
+  test("rejects unknown project vocabulary values", async () => {
     const result = await validateCatalog({
       records: [
         {
           ...validRecord,
           id: "bad-vocabulary",
-          source: {
-            type: "github",
-            repository: "example/bad-vocabulary",
-            repository_id: 0,
-          },
           frontends: ["unknown-frontend"],
           primary_function: "unknown-function",
-          capabilities: ["unknown-capability"],
+          tags: ["unknown-tag"],
         },
       ],
     });
 
-    expect(result.errors).toContain(
-      "bad-vocabulary: curated GitHub source requires permanent repository_id",
-    );
     expect(result.errors).toContain(
       "bad-vocabulary: unknown frontend unknown-frontend",
     );
     expect(result.errors).toContain(
       "bad-vocabulary: unknown primary function unknown-function",
     );
-    expect(result.errors).toContain(
-      "bad-vocabulary: unknown capability unknown-capability",
-    );
+    expect(result.errors).toContain("bad-vocabulary: unknown tag unknown-tag");
   });
 
   test("rejects an unknown Preset model family", async () => {
@@ -561,27 +540,6 @@ describe("catalog validation", () => {
     expect(result.errors).toEqual([]);
   });
 
-  test("accepts provisional GitHub null identity with a structural Preset classification", async () => {
-    const result = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          id: "provisional-github",
-          metadata_status: "provisional",
-          primary_function: "preset",
-          source: {
-            type: "github",
-            repository: "example/provisional-github",
-            repository_id: null,
-          },
-        },
-      ],
-    });
-
-    expect(result.errors).toEqual([]);
-    expect(result.snapshotCount).toBe(0);
-  });
-
   test.each([
     ["frontend", "interface-workflow"],
     ["preset", "generation-reasoning"],
@@ -607,219 +565,184 @@ describe("catalog validation", () => {
     },
   );
 
-  test("rejects curated GitHub null identity", async () => {
-    const result = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          source: {
-            type: "github",
-            repository: "example/valid-preset",
-            repository_id: null,
-          },
-        },
-      ],
-    });
-
-    expect(result.errors).toContain(
-      "valid-preset: curated GitHub source requires permanent repository_id",
-    );
-  });
-
   test("accepts curated metadata for the paused Tavern RPG Suite organization", async () => {
+    const source = {
+      schema_version: 1,
+      id: "github-organization-tavern-rpg-suite",
+      type: "github-organization",
+      organization: "tavern-rpg-suite",
+      url: "https://github.com/tavern-rpg-suite",
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
-          ...validRecord,
+          ...validRecordV6,
           id: "tavern-rpg-suite",
+          source_id: source.id,
           name: "Tavern RPG Suite",
-          kind: "extension",
           summary:
             "A SillyTavern extension suite adding maps, inventory, vitals, equipment, memory, minigames, and secondary-model roleplay tools.",
-          metadata_status: "curated",
           primary_function: "rpg-systems",
-          capabilities: [
-            "automation",
-            "character-worldbuilding",
-            "image-generation",
-            "instruction-control",
-            "model-routing",
-          ],
-          model_families: undefined,
-          completion_formats: undefined,
-          refresh_policy: "paused",
-          enrichment_policy: "manual",
-          enrichment_note: "Multi-repository suite; requires manual curation.",
-          source: {
-            type: "github-organization",
-            organization: "tavern-rpg-suite",
-            url: "https://github.com/tavern-rpg-suite",
-          },
+          tags: ["manage-inventory-and-quests"],
         },
       ],
+      sources: [source],
       snapshots: [],
     });
 
     expect(result.errors).toEqual([]);
   });
 
-  test("requires the Tavern RPG Suite organization to remain paused", async () => {
+  test("requires the Tavern RPG Suite organization source to remain paused", async () => {
+    const source = {
+      schema_version: 1,
+      id: "github-organization-tavern-rpg-suite",
+      type: "github-organization",
+      organization: "tavern-rpg-suite",
+      url: "https://github.com/tavern-rpg-suite",
+      status: "active",
+      status_reason: null,
+      refresh_policy: "automatic",
+    };
     const result = await validateCatalog({
       records: [
         {
-          ...validRecord,
+          ...validRecordV6,
           id: "tavern-rpg-suite",
+          source_id: source.id,
           name: "Tavern RPG Suite",
-          kind: "extension",
-          metadata_status: "curated",
           primary_function: "rpg-systems",
-          capabilities: ["automation"],
-          refresh_policy: "automatic",
-          enrichment_policy: "manual",
-          enrichment_note: "Multi-repository suite; requires manual curation.",
-          source: {
-            type: "github-organization",
-            organization: "tavern-rpg-suite",
-            url: "https://github.com/tavern-rpg-suite",
-          },
         },
       ],
+      sources: [source],
       snapshots: [],
     });
 
-    expect(result.errors).toContain(
-      "tavern-rpg-suite: github-organization requires paused extension with manual enrichment policy",
-    );
+    expect(result.errors.join("\n")).toContain("refresh_policy");
   });
 
   test("rejects the reserved organization when the exact pair does not match", async () => {
+    const source = {
+      schema_version: 1,
+      id: "github-organization-tavern-rpg-suite",
+      type: "github-organization",
+      organization: "tavern-rpg-suite",
+      url: "https://github.com/tavern-rpg-suite-wrong",
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
-          ...validRecord,
+          ...validRecordV6,
           id: "tavern-rpg-suite",
+          source_id: source.id,
           name: "Tavern RPG Suite",
-          kind: "extension",
-          metadata_status: "provisional",
           primary_function: "rpg-systems",
-          refresh_policy: "paused",
-          enrichment_policy: "manual",
-          enrichment_note: "Multi-repository suite; requires manual curation.",
-          source: {
-            type: "github-organization",
-            organization: "tavern-rpg-suite",
-            url: "https://github.com/tavern-rpg-suite-wrong",
-          },
         },
       ],
+      sources: [source],
       snapshots: [],
     });
 
     expect(result.errors).toContain(
-      "tavern-rpg-suite: github-organization url must be https://github.com/tavern-rpg-suite",
+      "github-organization-tavern-rpg-suite: github-organization must identify https://github.com/tavern-rpg-suite",
     );
   });
 
   test("rejects other github organizations", async () => {
+    const source = {
+      schema_version: 1,
+      id: "github-organization-someone-else",
+      type: "github-organization",
+      organization: "someone-else",
+      url: "https://github.com/someone-else",
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
-          ...validRecord,
+          ...validRecordV6,
           id: "another-organization",
+          source_id: source.id,
           name: "Another Organization",
-          kind: "extension",
-          metadata_status: "provisional",
           primary_function: "rpg-systems",
-          refresh_policy: "paused",
-          enrichment_policy: "manual",
-          enrichment_note: "Multi-repository suite; requires manual curation.",
-          source: {
-            type: "github-organization",
-            organization: "someone-else",
-            url: "https://github.com/someone-else",
-          },
         },
       ],
+      sources: [source],
       snapshots: [],
     });
 
     expect(result.errors).toContain(
-      "another-organization: github-organization is reserved for tavern-rpg-suite",
+      "github-organization-someone-else: github-organization must identify https://github.com/tavern-rpg-suite",
     );
   });
 
   test("requires URL sources to use https", async () => {
+    const source = {
+      schema_version: 1,
+      id: "url-unsafe",
+      type: "url",
+      url: "http://example.com/preset",
+      published_at: null,
+      version: null,
+      artifact_size_bytes: null,
+      license_status: "missing",
+      license_spdx_id: null,
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
           ...validRecord,
           id: "unsafe-url",
-          source: {
-            type: "url",
-            url: "http://example.com/preset",
-            published_at: null,
-            version: null,
-            artifact_size_bytes: null,
-            license_status: "missing",
-            license_spdx_id: null,
-          },
+          source_id: source.id,
         },
       ],
+      sources: [source],
     });
 
     expect(result.errors).toContain(
-      "unsafe-url: URL source requires https protocol",
+      "url-unsafe: URL source requires https protocol",
     );
   });
 
-  test("allows automatic enrichment for a canonical Reddit post", async () => {
+  test("allows automatic metadata policies for an external URL source", async () => {
+    const source = {
+      schema_version: 1,
+      id: "url-reddit-preset",
+      type: "url",
+      url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+      published_at: null,
+      version: null,
+      artifact_size_bytes: null,
+      license_status: "pending",
+      license_spdx_id: null,
+      status: "active",
+      status_reason: null,
+      refresh_policy: "paused",
+    };
     const result = await validateCatalog({
       records: [
         {
           ...validRecord,
           id: "reddit-preset",
-          refresh_policy: "paused",
-          source: {
-            type: "url",
-            url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
-            published_at: null,
-            version: null,
-            artifact_size_bytes: null,
-            license_status: "pending",
-            license_spdx_id: null,
-          },
+          source_id: source.id,
         },
       ],
+      sources: [source],
       snapshots: [],
     });
 
     expect(result.errors).toEqual([]);
-  });
-
-  test("rejects automatic enrichment for an unsupported external URL", async () => {
-    const result = await validateCatalog({
-      records: [
-        {
-          ...validRecord,
-          id: "external-preset",
-          refresh_policy: "paused",
-          source: {
-            type: "url",
-            url: "https://example.com/preset",
-            published_at: null,
-            version: null,
-            artifact_size_bytes: null,
-            license_status: "pending",
-            license_spdx_id: null,
-          },
-        },
-      ],
-      snapshots: [],
-    });
-
-    expect(result.errors).toContain(
-      "external-preset: automatic enrichment requires a supported source adapter",
-    );
   });
 
   test("accepts complete version two activity evidence", async () => {
@@ -878,7 +801,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "valid-preset: repository cannot be its own fork parent",
+      "github-1: repository cannot be its own fork parent",
     );
   });
 
@@ -898,7 +821,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "valid-preset: non-fork repository cannot have a fork parent",
+      "github-1: non-fork repository cannot have a fork parent",
     );
   });
 
@@ -1021,7 +944,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "valid-preset: duplicate contributor username alice",
+      "github-1: duplicate contributor username alice",
     );
   });
 
@@ -1123,19 +1046,19 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "valid-preset: null head_committed_at is allowed only for provisional evidence",
+      "github-1: null head_committed_at is allowed only for provisional evidence",
     );
     expect(result.errors).toContain(
-      "valid-preset: complete evidence cannot retain provisional_weeks",
+      "github-1: complete evidence cannot retain provisional_weeks",
     );
     expect(result.errors).toContain(
-      "valid-preset: complete evidence requires baseline_completed_at",
+      "github-1: complete evidence requires baseline_completed_at",
     );
     expect(result.errors).toContain(
-      "valid-preset: provisional evidence cannot have baseline_completed_at",
+      "github-1: provisional evidence cannot have baseline_completed_at",
     );
     expect(result.errors).toContain(
-      "valid-preset: activity scan requires provisional evidence",
+      "github-1: activity scan requires provisional evidence",
     );
   });
 
@@ -1165,13 +1088,13 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors).toContain(
-      "valid-preset: source week 2026-07-07 is not a Monday UTC",
+      "github-1: source week 2026-07-07 is not a Monday UTC",
     );
     expect(result.errors).toContain(
-      "valid-preset: duplicate source week 2026-07-06",
+      "github-1: duplicate source week 2026-07-06",
     );
     expect(result.errors).toContain(
-      "valid-preset: source_weeks must be sorted newest to oldest",
+      "github-1: source_weeks must be sorted newest to oldest",
     );
   });
 
@@ -1187,7 +1110,7 @@ describe("catalog validation", () => {
     });
 
     expect(result.errors.join("\n")).toContain(
-      "valid-preset: schema /schema_version must be equal to constant",
+      "github-1: schema /schema_version must be equal to constant",
     );
   });
 });

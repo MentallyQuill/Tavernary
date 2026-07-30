@@ -7,6 +7,7 @@ import {
   serializeCatalogQuery,
   type CatalogQuery,
 } from "./catalog-query";
+import type { PublicTagDefinition } from "./tag-vocabulary";
 
 const queryChangeEvent = "tavernary-querychange";
 
@@ -41,16 +42,19 @@ function serverSearch() {
   return "";
 }
 
-export function useCatalogQuery() {
+export function useCatalogQuery(tagVocabulary: PublicTagDefinition[] = []) {
   const search = useSyncExternalStore(subscribe, currentSearch, serverSearch);
-  const query = useMemo(() => parseCatalogQuery(search), [search]);
+  const query = useMemo(
+    () => parseCatalogQuery(search, tagVocabulary),
+    [search, tagVocabulary],
+  );
 
   const updateQuery = useCallback(
     (
       method: "pushState" | "replaceState",
       next: CatalogQuery | ((current: CatalogQuery) => CatalogQuery),
     ) => {
-      const current = parseCatalogQuery(window.location.search);
+      const current = parseCatalogQuery(window.location.search, tagVocabulary);
       const resolved = typeof next === "function" ? next(current) : next;
       const nextSearch = serializeCatalogQuery(resolved);
       const url = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ""}${window.location.hash}`;
@@ -59,7 +63,7 @@ export function useCatalogQuery() {
       window.history[method](state, "", url);
       window.dispatchEvent(new Event(queryChangeEvent));
     },
-    [],
+    [tagVocabulary],
   );
 
   const setQuery = useCallback<CatalogQueryHistory["setQuery"]>(
@@ -77,7 +81,7 @@ export function useCatalogQuery() {
   );
 
   const removeRelationship = useCallback(() => {
-    const current = parseCatalogQuery(window.location.search);
+    const current = parseCatalogQuery(window.location.search, tagVocabulary);
     if (!current.relationship) {
       return;
     }
@@ -87,7 +91,7 @@ export function useCatalogQuery() {
       return;
     }
     updateQuery("replaceState", { ...current, relationship: "" });
-  }, [updateQuery]);
+  }, [tagVocabulary, updateQuery]);
 
   return { query, setQuery, pushQuery, removeRelationship };
 }

@@ -239,8 +239,8 @@ export function ProjectCard({
     project.frontends.length
       ? `Compatible frontends: ${project.frontends.map(({ label }) => label).join(", ")}.`
       : null,
-    project.capabilities.length
-      ? `Capabilities: ${project.capabilities.map(({ label }) => label).join(", ")}.`
+    project.tags.length
+      ? `Goals and traits: ${project.tags.map(({ label }) => label).join(", ")}.`
       : null,
     project.preset?.modelFamilies?.length
       ? `Supported model families: ${project.preset.modelFamilies.map(({ label }) => label).join(", ")}.`
@@ -420,14 +420,14 @@ export function ProjectCard({
               {frontend.label}
             </Tooltip>
           ))}
-          {project.capabilities.map((capability) => (
+          {project.tags.map((tag) => (
             <Tooltip
-              id={`${project.id}-capability-${capability.id}`}
-              label={capability.description}
-              className="chip"
-              key={capability.id}
+              id={`${project.id}-tag-${tag.id}`}
+              label={tag.description}
+              className={`chip tag-chip tag-${tag.facet}`}
+              key={tag.id}
             >
-              {capability.label}
+              {tag.label}
             </Tooltip>
           ))}
           {project.preset?.modelFamilies?.map((family) => (
