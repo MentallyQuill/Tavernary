@@ -237,6 +237,63 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
   await expect(logo).toHaveCSS("transform", "none");
 });
 
+test("lets desktop Filters end in page flow while Kit Builder stays sticky", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  const filters = page.locator(".filter-panel");
+  await filters
+    .getByRole("group", { name: "Project kind" })
+    .getByLabel("Frontend", { exact: true })
+    .check();
+  await filters
+    .getByRole("group", { name: "Completion format" })
+    .getByText("Chat Completion", { exact: true })
+    .click();
+  await expect(page.locator(".project-card")).toHaveCount(0);
+
+  const selectedState = await filters.evaluate((element) => {
+    const footer = element.querySelector<HTMLElement>(".filter-legal");
+    if (!footer) throw new Error("Missing Filters legal footer");
+    const panelBounds = element.getBoundingClientRect();
+    return {
+      alignSelf: getComputedStyle(element).alignSelf,
+      overflowY: getComputedStyle(element).overflowY,
+      panelBottom: panelBounds.bottom,
+      footerBottom: footer.getBoundingClientRect().bottom,
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+    };
+  });
+  expect(selectedState.alignSelf).toBe("start");
+  expect(selectedState.overflowY).toBe("visible");
+  expect(selectedState.footerBottom).toBeLessThanOrEqual(
+    selectedState.panelBottom + 1,
+  );
+  expect(selectedState.scrollHeight).toBeLessThanOrEqual(
+    selectedState.clientHeight + 1,
+  );
+
+  await filters.getByRole("button", { name: "Clear all" }).click();
+  await expect(page.locator(".project-card").first()).toBeVisible();
+  await page.evaluate(() =>
+    window.scrollTo(0, document.documentElement.scrollHeight),
+  );
+  const scrolledState = await page.evaluate(() => {
+    const filterPanel = document.querySelector<HTMLElement>(".filter-panel");
+    const kitBuilder =
+      document.querySelector<HTMLElement>(".kit-builder-panel");
+    if (!filterPanel || !kitBuilder) throw new Error("Missing desktop sidebar");
+    return {
+      filterBottom: filterPanel.getBoundingClientRect().bottom,
+      kitPosition: getComputedStyle(kitBuilder).position,
+    };
+  });
+  expect(scrolledState.filterBottom).toBeLessThan(0);
+  expect(scrolledState.kitPosition).toBe("sticky");
+});
+
 test("uses one focus boundary for the main search", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search projects" });
 

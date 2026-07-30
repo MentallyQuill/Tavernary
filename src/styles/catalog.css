@@ -428,6 +428,7 @@
 }
 
 .filter-panel {
+  align-self: start;
   padding: 20px 18px 50px;
   border: 0;
   border-right: 1px solid var(--color-divider);
