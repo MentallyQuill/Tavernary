@@ -39,17 +39,119 @@ jobs:
           git fetch origin main
           git checkout -B main origin/main
       - name: Verify numeric author and write tombstone
+        id: withdraw
         run: node scripts/kits/apply-withdrawal.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
+      - name: Synchronize withdrawal review state
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          STATUS: ${{ steps.withdraw.outputs.status }}
+          KIT_ID: ${{ steps.withdraw.outputs.kit_id }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const repository = process.env.GITHUB_REPOSITORY;
+          const issueNumber = Number(process.env.ISSUE_NUMBER);
+          const token = process.env.GITHUB_TOKEN;
+          const status = process.env.STATUS;
+          const kitId = process.env.KIT_ID;
+          const marker = "<!-- tavernary-kit-withdrawal-correction -->";
+          async function request(path, options = {}) {
+            const response = await fetch(`https://api.github.com${path}`, {
+              ...options,
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "Tavernary-kit-withdrawal",
+                "X-GitHub-Api-Version": "2022-11-28",
+                ...options.headers,
+              },
+            });
+            if (!response.ok) {
+              const error = new Error(`GitHub ${response.status}: ${await response.text()}`);
+              error.status = response.status;
+              throw error;
+            }
+            return response.status === 204 ? null : response.json();
+          }
+          const comments = await request(
+            `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
+          );
+          const correctionComments = comments.filter((comment) =>
+            String(comment.body ?? "").includes(marker),
+          );
+          if (status === "needs-information") {
+            try {
+              await request(`/repos/${repository}/labels`, {
+                method: "POST",
+                body: JSON.stringify({
+                  name: "needs-information",
+                  color: "d93f0b",
+                  description: "Submission needs corrected public information.",
+                }),
+              });
+            } catch (error) {
+              if (error.status !== 422) throw error;
+            }
+            await request(`/repos/${repository}/issues/${issueNumber}/labels`, {
+              method: "POST",
+              body: JSON.stringify({ labels: ["needs-information"] }),
+            });
+            const returnUrl = new URL(
+              "https://tavernary.org/help/withdraw-kit/",
+            );
+            if (kitId) returnUrl.searchParams.set("kit", kitId);
+            const body = [
+              marker,
+              "Tavernary could not apply this Kit withdrawal.",
+              "",
+              "Readable GitHub fields are review-only and are not the automation payload.",
+              `Return to ${returnUrl}, correct the request, and open a new GitHub review. This issue will remain open with \`needs-information\`.`,
+            ].join("\n");
+            const current = correctionComments.shift();
+            if (current) {
+              await request(`/repos/${repository}/issues/comments/${current.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ body }),
+              });
+            } else {
+              await request(`/repos/${repository}/issues/${issueNumber}/comments`, {
+                method: "POST",
+                body: JSON.stringify({ body }),
+              });
+            }
+          } else if (status === "applied") {
+            try {
+              await request(
+                `/repos/${repository}/issues/${issueNumber}/labels/needs-information`,
+                { method: "DELETE" },
+              );
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+          } else {
+            throw new Error(`Unsupported Kit withdrawal status: ${status}`);
+          }
+          for (const comment of correctionComments) {
+            await request(`/repos/${repository}/issues/comments/${comment.id}`, {
+              method: "DELETE",
+            });
+          }
+          NODE
       - name: Validate withdrawal
+        if: steps.withdraw.outputs.status == 'applied'
         run: |
           npm run catalog:validate
           npm run catalog:build
           npm test
       - name: Commit Kit tombstone
         id: commit
+        if: steps.withdraw.outputs.status == 'applied'
         shell: bash
         run: |
           git add data/registry/kits
@@ -75,10 +177,12 @@ jobs:
           done
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Close withdrawal request
+        if: steps.withdraw.outputs.status == 'applied'
         run: gh issue close "${{ inputs.issue_number }}" --comment "Verified author withdrawal applied."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy updated catalog
+        if: steps.withdraw.outputs.status == 'applied'
         run: gh workflow run deploy-pages.yml --ref main -f source_sha="${{ steps.commit.outputs.sha }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

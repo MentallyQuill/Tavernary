@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "targren-lumiverse-swipescrubber",
+  "source_id": "codeberg-1699613",
+  "source_identity": "codeberg:targren/lumiverse-swipescrubber",
+  "evidence_fingerprint": "d9f13484594beb50c0d02c3c65ff9090fcabe6796d2a093062c7ca0d6831702a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:51:54.489Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:51:54.489Z"
+  },
+  "maintenance_issue_number": null
+}

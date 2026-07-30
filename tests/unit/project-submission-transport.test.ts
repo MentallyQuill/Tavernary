@@ -52,14 +52,14 @@ beforeEach(() => {
 });
 
 test("prefills every readable project field and the stable manifest", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
 
   await expect(
     openProjectSubmission(
       "https://github.com/example/repo/issues/new",
       manifest,
     ),
-  ).resolves.toBe("prefilled");
+  ).resolves.toMatchObject({ mode: "prefilled" });
 
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(Object.fromEntries(opened.searchParams)).toMatchObject({
@@ -86,7 +86,7 @@ test("prefills every readable project field and the stable manifest", async () =
 });
 
 test("prefills every Preset compatibility field", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
 
   await openProjectSubmission(
     "https://github.com/example/repo/issues/new",
@@ -105,7 +105,7 @@ test("prefills every Preset compatibility field", async () => {
 });
 
 test("omits Preset-only fields for Extensions", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
 
   await openProjectSubmission(
     "https://github.com/example/repo/issues/new",
@@ -119,7 +119,7 @@ test("omits Preset-only fields for Extensions", async () => {
 });
 
 test("copies an oversized manifest while preserving readable prefills", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   const writeText = vi.fn().mockResolvedValue(undefined);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
@@ -135,7 +135,7 @@ test("copies an oversized manifest while preserving readable prefills", async ()
       "https://github.com/example/repo/issues/new",
       oversizedManifest,
     ),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
 
   expect(writeText).toHaveBeenCalledWith(
     expect.stringContaining('"schema_version": 4'),
@@ -149,7 +149,7 @@ test("copies an oversized manifest while preserving readable prefills", async ()
 });
 
 test("offers selectable manifest text when clipboard access fails", async () => {
-  vi.spyOn(window, "open").mockImplementation(() => null);
+  vi.spyOn(window, "open").mockReturnValue(window);
   const prompt = vi.spyOn(window, "prompt").mockImplementation(() => null);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
@@ -165,16 +165,16 @@ test("offers selectable manifest text when clipboard access fails", async () => 
       "https://github.com/example/repo/issues/new",
       oversizedManifest,
     ),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
 
   expect(prompt).toHaveBeenCalledWith(
-    "Copy this project manifest, then paste it into the GitHub form:",
+    "Copy this project manifest, then paste it into the GitHub review:",
     expect.stringContaining('"project_type": "extension"'),
   );
 });
 
 test("keeps short identity and compatibility fields in oversized handoffs", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
     value: { writeText: vi.fn().mockResolvedValue(undefined) },
@@ -197,4 +197,18 @@ test("keeps short identity and compatibility fields in oversized handoffs", asyn
   expect(opened.searchParams.get("completion-formats")).toBe(
     "chat-completion\ntext-completion",
   );
+});
+
+test("reports a blocked project review without losing its prepared URL", async () => {
+  vi.spyOn(window, "open").mockReturnValue(null);
+
+  await expect(
+    openProjectSubmission(
+      "https://github.com/example/repo/issues/new",
+      manifest,
+    ),
+  ).rejects.toMatchObject({
+    message: "GitHub review could not be opened.",
+    url: expect.stringContaining("project-manifest="),
+  });
 });

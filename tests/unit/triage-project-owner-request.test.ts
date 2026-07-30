@@ -136,7 +136,19 @@ function issue(bodyManifest: Record<string, unknown> = editManifest()) {
   return {
     number: 123,
     state: "open",
-    body: `### Current repository
+    body: `### Request type
+
+Permanently delist this source
+
+### Source ID
+
+github-999
+
+### Project ID
+
+attacker-project
+
+### Current repository
 
 https://github.com/Attacker/Wrong
 
@@ -402,7 +414,7 @@ test("requires repository-wide delisting confirmation", async () => {
   });
 });
 
-test("invalidates a readable edit fallback that has no vocabulary hash", async () => {
+test("rejects complete readable owner fields without loading a target", async () => {
   const currentProject = project();
   const fallbackIssue = {
     ...issue(),
@@ -428,6 +440,7 @@ test("invalidates a readable edit fallback that has no vocabulary hash", async (
       .map(([heading, value]) => `### ${heading}\n\n${value}`)
       .join("\n\n"),
   };
+  const request = vi.fn(async () => fallbackIssue);
   await expect(
     processProjectOwnerTriage({
       issue: fallbackIssue,
@@ -435,13 +448,15 @@ test("invalidates a readable edit fallback that has no vocabulary hash", async (
       source: source(),
       repository,
       hostRepository: "Tavernary/Tavernary",
-      request: vi.fn(async () => fallbackIssue),
+      request,
       vocabularies,
     }),
   ).resolves.toMatchObject({
     status: "needs-information",
-    reasonCode: "tag-vocabulary-stale",
+    reasonCode: "owner-request-invalid",
+    message: expect.stringContaining("complete generated request manifest"),
   });
+  expect(request).not.toHaveBeenCalled();
 });
 
 test("fails closed when the issue changes during triage", async () => {

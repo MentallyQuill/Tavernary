@@ -63,6 +63,8 @@ export const HELP_LABEL_BY_ROUTE = Object.freeze(
   ),
 );
 
+export const NEEDS_INFORMATION_LABEL = "needs-information";
+
 export const PUBLIC_HELP_TRIAGE_LABELS = Object.freeze([
   "project-information",
   "website-bug",
@@ -74,6 +76,7 @@ export const PUBLIC_HELP_TRIAGE_LABELS = Object.freeze([
   "bug",
   "question",
   "duplicate-candidate",
+  NEEDS_INFORMATION_LABEL,
 ]);
 
 const projectSecondaryLabels = Object.freeze({

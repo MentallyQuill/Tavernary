@@ -80,7 +80,7 @@ export function buildKitValidationComment(validation) {
     "",
     ...validation.errors.map((error) => `- ${error}`),
     "",
-    "Edit the issue fields above and automated validation will run again.",
+    "Return to https://tavernary.org/?mode=kits, correct the draft, and open a new GitHub review. This issue remains open with `needs-information`.",
   ].join("\n");
 }
 

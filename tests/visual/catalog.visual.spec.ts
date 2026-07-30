@@ -22,10 +22,10 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   const ages = page.locator(".relationship-pair .commit-age");
   await expect(ages).toHaveCount(2);
   await ages.nth(0).evaluate((label) => {
-    label.textContent = "1d ago";
+    label.textContent = "2d ago";
   });
   await ages.nth(1).evaluate((label) => {
-    label.textContent = "10d ago";
+    label.textContent = "11d ago";
   });
 }
 

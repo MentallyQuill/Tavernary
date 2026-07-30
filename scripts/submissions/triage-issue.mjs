@@ -26,6 +26,8 @@ import {
 
 const validationMarker = "<!-- tavernary-submission-validation -->";
 const projectSubmissionStateMarker = "<!-- tavernary-project-submission-state";
+const correctionGuidance =
+  "Return to https://tavernary.org/submit/project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.";
 const triageLabels = {
   "project-submission": {
     color: "1d76db",
@@ -95,7 +97,7 @@ export function buildValidationComment(validation) {
     "",
     ...validation.errors.map((error) => `- ${error}`),
     "",
-    "Edit the issue fields above and automated validation will run again.",
+    correctionGuidance,
   ].join("\n");
 }
 
@@ -190,16 +192,11 @@ function decisionLabel(decision, currentLabels) {
 }
 
 function frontendDependencyComment(dependency) {
-  const target = new URL(
-    "https://github.com/MentallyQuill/Tavernary/issues/new",
-  );
-  target.searchParams.set("template", "01-project-submission.yml");
-  target.searchParams.set("project-type", "Frontend");
-  target.searchParams.set("project-url", dependency.canonicalUrl);
+  const target = "https://tavernary.org/submit/project/";
   return [
     `**${dependency.name} is not currently indexed as a Tavernary frontend.**`,
     "",
-    `Extensions and presets can only reference frontends that have completed Tavernary review. [Submit ${dependency.name} as a frontend first](${target.toString()}). This issue will remain open and retry automatically after that frontend is merged.`,
+    `Extensions and presets can only reference frontends that have completed Tavernary review. [Submit ${dependency.name} as a frontend first](${target}). This issue will remain open and retry automatically after that frontend is merged.`,
   ].join("\n");
 }
 
@@ -241,6 +238,8 @@ function decisionComment(decision) {
               ...remainingErrors.map((error) => `- ${error}`),
             ]
           : []),
+        "",
+        correctionGuidance,
       ].join("\n");
     }
     return [
@@ -248,7 +247,7 @@ function decisionComment(decision) {
       "",
       ...decision.errors.map((error) => `- ${error}`),
       "",
-      "Edit the issue fields above and automated triage will run again.",
+      correctionGuidance,
     ].join("\n");
   }
   if (decision.status === "retryable") {

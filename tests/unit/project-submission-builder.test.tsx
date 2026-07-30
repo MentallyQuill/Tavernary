@@ -11,7 +11,10 @@ import {
 } from "../../scripts/catalog/tag-vocabulary.mjs";
 
 const { openProjectSubmission } = vi.hoisted(() => ({
-  openProjectSubmission: vi.fn().mockResolvedValue("prefilled"),
+  openProjectSubmission: vi.fn().mockResolvedValue({
+    mode: "prefilled",
+    url: new URL("https://github.com/MentallyQuill/Tavernary/issues/new"),
+  }),
 }));
 
 vi.mock("@/features/submissions/submission-transport", () => ({
@@ -82,9 +85,95 @@ async function chooseMetadataOption(
   );
 }
 
+async function reviewSubmission(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole("button", { name: "Review submission" }));
+}
+
+async function reviewAndContinue(user: ReturnType<typeof userEvent.setup>) {
+  await reviewSubmission(user);
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+}
+
+function reviewRow(label: string) {
+  const term = screen.getByText(label, { selector: "dt" });
+  if (!term.parentElement) throw new Error(`Missing review row: ${label}`);
+  return within(term.parentElement);
+}
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+});
+
+test("requires a deliberate Project Type selection", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  const projectType = screen.getByLabelText("Project Type");
+  expect(projectType).toHaveValue("");
+  expect(
+    screen.getByRole("option", { name: "Select a project type" }),
+  ).toBeVisible();
+
+  await user.click(screen.getByRole("button", { name: "Review submission" }));
+
+  expect(await screen.findByText("Project Type is required.")).toBeVisible();
+  expect(projectType).toHaveFocus();
+  expect(openProjectSubmission).not.toHaveBeenCalled();
+});
+
+test("keeps Extension selected through review, edit, and a fresh handoff", async () => {
+  const user = userEvent.setup();
+  render(<ProjectSubmissionBuilder frontends={frontends} />);
+
+  await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
+  await choosePrimaryFunction(user, "Interface and workflow");
+  const sourceUrl = screen.getByLabelText("Project URL");
+  await user.type(sourceUrl, "https://github.com/example/first");
+  await user.clear(sourceUrl);
+  await user.type(sourceUrl, "https://github.com/example/extension");
+  await user.click(screen.getByLabelText("SillyTavern"));
+  await user.type(
+    screen.getByLabelText("Anything we should know? (optional)"),
+    "Owner-tested workflow.",
+  );
+
+  await user.click(screen.getByRole("button", { name: "Review submission" }));
+
+  expect(
+    screen.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  expect(screen.getByText("Extension")).toBeVisible();
+  expect(screen.getByText("Interface and workflow")).toBeVisible();
+  expect(
+    screen.getByText("https://github.com/example/extension"),
+  ).toBeVisible();
+  expect(screen.getByText("Let TavernAI write the description")).toBeVisible();
+  expect(screen.getByText("Let Tavernary select tags")).toBeVisible();
+  expect(screen.getByText("SillyTavern")).toBeVisible();
+  expect(screen.getByText("Owner-tested workflow.")).toBeVisible();
+
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+
+  expect(screen.getByLabelText("Project Type")).toHaveValue("extension");
+  expect(screen.getByLabelText("Project Type")).toHaveFocus();
+  await user.clear(screen.getByLabelText("Project URL"));
+  await user.type(
+    screen.getByLabelText("Project URL"),
+    "https://github.com/example/reviewed-extension",
+  );
+  await user.click(screen.getByRole("button", { name: "Review submission" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  expect(openProjectSubmission).toHaveBeenCalledWith(
+    "https://github.com/MentallyQuill/Tavernary/issues/new",
+    expect.objectContaining({
+      schema_version: 4,
+      project_type: "extension",
+      primary_function: "interface-workflow",
+      source_url: "https://github.com/example/reviewed-extension",
+    }),
+  );
 });
 
 test("defaults summary and tags to Tavernary automation", async () => {
@@ -115,7 +204,7 @@ test("defaults summary and tags to Tavernary automation", async () => {
   ).toBeVisible();
 });
 
-test("reveals independent bounded manual metadata controls", async () => {
+test("reveals independent progressive manual metadata controls", async () => {
   const user = userEvent.setup();
   render(
     <ProjectSubmissionBuilder
@@ -138,6 +227,13 @@ test("reveals independent bounded manual metadata controls", async () => {
     screen.getAllByText(/only the verified repository owner/iu),
   ).toHaveLength(2);
   expect(screen.getByText("0 / 6 selected")).toBeVisible();
+
+  for (const groupName of ["Goals", "Traits"]) {
+    const disclosure = within(
+      screen.getByRole("group", { name: groupName }),
+    ).queryByRole("button", { name: /Show \d+ more/u });
+    if (disclosure) await user.click(disclosure);
+  }
 
   for (const label of [
     "Maintain long-term memory",
@@ -198,7 +294,9 @@ test("submits selected and structural primary functions without stale values", a
     screen.getByLabelText("Project URL"),
     "https://github.com/example/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
+  expect(reviewRow("Project Type").getByText("Frontend")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
   expect(openProjectSubmission).toHaveBeenLastCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
@@ -210,13 +308,14 @@ test("submits selected and structural primary functions without stale values", a
   );
 
   openProjectSubmission.mockClear();
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
   expect(screen.getByLabelText("Primary function")).toHaveTextContent(
     "Select a primary function",
   );
   await choosePrimaryFunction(user, "Interface and workflow");
   await user.click(screen.getByLabelText("SillyTavern"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewAndContinue(user);
 
   expect(openProjectSubmission).toHaveBeenLastCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
@@ -243,7 +342,10 @@ test("shows Frontend eligibility only at relevant submission decisions", async (
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
-  expect(screen.getByText(frontendEligibility)).toBeVisible();
+  expect(screen.queryByText(frontendEligibility)).not.toBeInTheDocument();
+  expect(
+    screen.getByText("Choose a project type to see its source requirements."),
+  ).toBeVisible();
 
   await user.selectOptions(screen.getByLabelText("Project Type"), "extension");
 
@@ -317,11 +419,12 @@ test("rejects a generic public source host for a Frontend", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://example.com/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
 
   expect(openProjectSubmission).not.toHaveBeenCalled();
   expect(screen.getAllByText(frontendEligibility)).toHaveLength(2);
@@ -338,7 +441,7 @@ test("accepts an exact public Codeberg repository for an Extension", async () =>
     "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
   );
   await user.click(screen.getByLabelText("Lumiverse"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewAndContinue(user);
 
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
@@ -352,11 +455,12 @@ test("does not request metadata as a substitute for a repository", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://example.com/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
 
   expect(openProjectSubmission).not.toHaveBeenCalled();
   expect(screen.queryByLabelText(/Project Name/u)).not.toBeInTheDocument();
@@ -390,7 +494,7 @@ test("submits multiple current frontend identities in the manifest", async () =>
   );
   await user.click(screen.getByLabelText("SillyTavern"));
   await user.click(screen.getByLabelText("Lumiverse"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewAndContinue(user);
 
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
@@ -408,48 +512,55 @@ test("submits multiple current frontend identities in the manifest", async () =>
   );
 });
 
-test("exposes a successful GitHub handoff as a success status", async () => {
+test("exposes a successful GitHub handoff in the retained review", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://github.com/example/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewAndContinue(user);
 
   const status = await screen.findByRole("status");
-  expect(status).toHaveTextContent("GitHub opened with your submission.");
-  expect(status).toHaveAttribute("data-status", "success");
+  expect(status).toHaveTextContent(
+    "GitHub review opened in a new tab. Create the issue there, or return here to make changes.",
+  );
+  expect(
+    screen.getByRole("button", { name: "Open GitHub review again" }),
+  ).toBeVisible();
 });
 
-test("exposes a failed GitHub handoff as an error alert", async () => {
+test("exposes a failed GitHub handoff without discarding the review", async () => {
   openProjectSubmission.mockRejectedValueOnce(new Error("popup failed"));
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
     "https://github.com/example/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewAndContinue(user);
 
   const status = await screen.findByRole("alert");
-  expect(status).toHaveTextContent(
-    "Tavernary could not open GitHub. Please try again.",
-  );
-  expect(status).toHaveAttribute("data-status", "error");
+  expect(status).toHaveTextContent("popup failed");
+  expect(
+    screen.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
 });
 
 test("blocks a non-HTTPS Frontend source before GitHub handoff", async () => {
   const user = userEvent.setup();
   render(<ProjectSubmissionBuilder frontends={frontends} />);
 
+  await user.selectOptions(screen.getByLabelText("Project Type"), "frontend");
   await user.type(
     screen.getByLabelText("Project URL"),
     "http://github.com/example/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
 
   expect(openProjectSubmission).not.toHaveBeenCalled();
   expect(screen.getByLabelText("Project URL")).toHaveAttribute(
@@ -474,7 +585,7 @@ test("associates an invalid not-listed frontend URL with its field", async () =>
     screen.getByLabelText("Other frontend URL"),
     "http://example.com/frontend",
   );
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
 
   const otherUrl = screen.getByLabelText("Other frontend URL");
   expect(openProjectSubmission).not.toHaveBeenCalled();
@@ -502,7 +613,7 @@ test("requires an enabled unlisted model family without clearing Model-Agnostic"
     "https://example.com/preset",
   );
   await user.click(screen.getByLabelText("Chat Completion"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
 
   const otherModel = screen.getByLabelText("Other model family name");
   expect(openProjectSubmission).not.toHaveBeenCalled();
@@ -533,10 +644,10 @@ test("serializes Model-Agnostic with recommended and unlisted families", async (
     "FutureModel",
   );
   await user.click(screen.getByLabelText("Chat Completion"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
-
   expect(screen.getByLabelText("Model-Agnostic")).toBeChecked();
   expect(screen.getByLabelText("Claude")).toBeChecked();
+  await reviewAndContinue(user);
+
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",
     expect.objectContaining({
@@ -564,7 +675,9 @@ test("serializes multiple model families and both completion formats for a Prese
   await user.click(screen.getByLabelText("Gemini"));
   await user.click(screen.getByLabelText("Chat Completion"));
   await user.click(screen.getByLabelText("Text Completion"));
-  await user.click(screen.getByRole("button", { name: "Continue to GitHub" }));
+  await reviewSubmission(user);
+  expect(reviewRow("Project Type").getByText("System Preset")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
   expect(openProjectSubmission).toHaveBeenCalledWith(
     "https://github.com/MentallyQuill/Tavernary/issues/new",

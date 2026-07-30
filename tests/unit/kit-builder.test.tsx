@@ -685,9 +685,9 @@ describe("Kit builder controls", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Submit Kit" })).toHaveClass(
-      "control-primary",
-    );
+    expect(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    ).toHaveClass("control-primary");
   });
 
   test("pins the Frontend outside the ordered project stack", () => {
@@ -809,7 +809,9 @@ describe("Kit builder controls", () => {
     expect(
       screen.queryByRole("list", { name: "Kit validation" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Submit Kit" })).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    ).toBeEnabled();
 
     await user.click(title);
     await user.tab();
@@ -820,7 +822,9 @@ describe("Kit builder controls", () => {
       screen.queryByText("A Kit must contain 3–50 projects."),
     ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     expect(onSubmit).not.toHaveBeenCalled();
     expect(screen.getByText("A Kit must contain 3–50 projects.")).toBeVisible();
 
@@ -833,7 +837,9 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
@@ -850,7 +856,9 @@ describe("Kit builder controls", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     const title = screen.getByRole("textbox", { name: "Title" });
     expect(title).toHaveFocus();
     expect(title).toHaveAttribute("aria-invalid", "true");
@@ -872,7 +880,9 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     const description = screen.getByRole("textbox", {
       name: "Description",
     });
@@ -899,7 +909,9 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     expect(onSubmit).not.toHaveBeenCalled();
     expect(
       screen.getByText("A duplicate must change the selected project set."),
@@ -917,7 +929,9 @@ describe("Kit builder controls", () => {
         onSubmit={onSubmit}
       />,
     );
-    await user.click(screen.getByRole("button", { name: "Submit Kit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 

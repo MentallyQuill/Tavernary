@@ -60,8 +60,9 @@
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-30T04:53:54.074Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "BlueOwler", "type": "User", "provider": "github" }
@@ -69,8 +70,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-30T04:53:54.074Z",
     "scan": null,
-    "refreshed_at": "2026-07-30T04:53:54.074Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

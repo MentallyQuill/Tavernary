@@ -9,10 +9,7 @@ import type {
   KitReportPayload,
 } from "@/features/help/help-manifest.mjs";
 import { KIT_REPORT_CATEGORIES } from "@/features/help/help-options";
-import {
-  HelpHandoffError,
-  openHelpRequest,
-} from "@/features/help/help-transport";
+import { openHelpRequest } from "@/features/help/help-transport";
 
 import {
   HelpChoiceGroup,
@@ -88,9 +85,6 @@ export function KitReportForm({
   const [evidence, setEvidence] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [reviewing, setReviewing] = useState(false);
-  const [continuing, setContinuing] = useState(false);
-  const [handoffError, setHandoffError] = useState("");
-  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const selected = kits.find((kit) => kit.id === kitId);
   const otherKit = kits.find((kit) => kit.id === otherKitId);
@@ -168,89 +162,69 @@ export function KitReportForm({
     return nextErrors.length === 0;
   }
 
-  async function continueOnGitHub() {
-    if (!payload) return;
-    setHandoffError("");
-    setFallbackUrl("");
-    setContinuing(true);
-    try {
-      await openHelpRequest({
-        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
-        template: "06-kit-report.yml",
-        manifestFieldId: "help-manifest",
-        manifest: {
-          schema_version: 1,
-          request_kind: "kit-report",
-          origin: {
-            page_url: "/help/report-kit/",
-            site_revision: siteRevision,
-          },
-          payload: payload satisfies KitReportPayload,
-        },
-        prefills: [
-          ["kit-id", selected?.id ?? ""],
-          ["share-url", selected?.shareUrl ?? ""],
-          ["category", displayKitReportCategory(payload.category)],
-          ["affected-project-ids", payload.affected_project_ids.join(", ")],
-          ["details", payload.details],
-          ["evidence", payload.evidence ?? ""],
-        ],
-        pasteInstruction:
-          "Paste the Help manifest copied by Tavernary into the manifest field.",
-      });
-    } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
-      setHandoffError(
-        error instanceof Error
-          ? error.message
-          : "GitHub could not be opened. Please try again.",
-      );
-    } finally {
-      setContinuing(false);
+  async function openReview() {
+    if (!payload) {
+      throw new Error("The Kit report is no longer ready for review.");
     }
+    return openHelpRequest({
+      formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+      template: "06-kit-report.yml",
+      manifestFieldId: "help-manifest",
+      manifest: {
+        schema_version: 1,
+        request_kind: "kit-report",
+        origin: {
+          page_url: "/help/report-kit/",
+          site_revision: siteRevision,
+        },
+        payload: payload satisfies KitReportPayload,
+      },
+      prefills: [
+        ["kit-id", selected?.id ?? ""],
+        ["share-url", selected?.shareUrl ?? ""],
+        ["category", displayKitReportCategory(payload.category)],
+        ["affected-project-ids", payload.affected_project_ids.join(", ")],
+        ["details", payload.details],
+        ["evidence", payload.evidence ?? ""],
+      ],
+      pasteInstruction:
+        "Paste the Help manifest copied by Tavernary into the manifest field.",
+    });
   }
 
   if (reviewing && payload) {
     return (
-      <>
-        <HelpErrorSummary
-          errors={handoffError ? [handoffError] : []}
-          heading="GitHub could not be opened automatically."
-        />
-        <HelpReview
-          rows={[
-            {
-              label: "Kit",
-              value: `${selected?.title} — @${selected?.author}`,
-            },
-            {
-              label: "Category",
-              value: displayKitReportCategory(payload.category),
-            },
-            {
-              label: "Affected Kit projects",
-              value:
-                selected?.projects
-                  .filter((project) =>
-                    payload.affected_project_ids.includes(project.id),
-                  )
-                  .map((project) => project.name)
-                  .join(", ") ?? "",
-            },
-            { label: "What Tavernary should review", value: payload.details },
-            {
-              label: "Public supporting evidence",
-              value: payload.evidence ?? "",
-            },
-          ]}
-          onBack={() => setReviewing(false)}
-          onCancel={() => setReviewing(false)}
-          onContinue={continueOnGitHub}
-          returnFocusId="kit-search"
-          continuing={continuing}
-          fallbackUrl={fallbackUrl}
-        />
-      </>
+      <HelpReview
+        rows={[
+          {
+            label: "Kit",
+            value: `${selected?.title} — @${selected?.author}`,
+          },
+          {
+            label: "Category",
+            value: displayKitReportCategory(payload.category),
+          },
+          {
+            label: "Affected Kit projects",
+            value:
+              selected?.projects
+                .filter((project) =>
+                  payload.affected_project_ids.includes(project.id),
+                )
+                .map((project) => project.name)
+                .join(", ") ?? "",
+          },
+          { label: "What Tavernary should review", value: payload.details },
+          {
+            label: "Public supporting evidence",
+            value: payload.evidence ?? "",
+          },
+        ]}
+        onBack={() => setReviewing(false)}
+        onCancel={() => setReviewing(false)}
+        openReview={openReview}
+        returnFocusId="kit-search"
+      />
     );
   }
 

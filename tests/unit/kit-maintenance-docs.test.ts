@@ -78,7 +78,8 @@ test("documents automatic Kit publication and severe-language revalidation", asy
   expect(publicCopy).toMatch(/publish(?:es|ed)? automatically/i);
   expect(publicCopy).toMatch(/title and (?:description|summary)/i);
   expect(publicCopy).toMatch(/severe language/i);
-  expect(publicCopy).toMatch(/edit the issue/i);
+  expect(publicCopy).toMatch(/return to the retained Tavernary draft/i);
+  expect(publicCopy).not.toMatch(/edit the issue/i);
   expect(publicCopy).not.toMatch(/Kit.*maintainer review/i);
 
   expect(maintenance).toContain("## Safety repair");

@@ -9,10 +9,7 @@ import type {
   WebsiteBugPayload,
 } from "@/features/help/help-manifest.mjs";
 import { WEBSITE_BUG_CATEGORIES } from "@/features/help/help-options";
-import {
-  HelpHandoffError,
-  openHelpRequest,
-} from "@/features/help/help-transport";
+import { openHelpRequest } from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -87,9 +84,6 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
   const [additionalContext, setAdditionalContext] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [reviewing, setReviewing] = useState(false);
-  const [continuing, setContinuing] = useState(false);
-  const [handoffError, setHandoffError] = useState("");
-  const [fallbackUrl, setFallbackUrl] = useState("");
   const normalizedPageUrl = safeTavernaryPage(pageUrl);
   const categoryError = errors.find(
     (error) => error === "Choose what kind of website problem this is.",
@@ -149,82 +143,62 @@ export function WebsiteReportForm({ siteRevision }: { siteRevision: string }) {
     return nextErrors.length === 0;
   }
 
-  async function continueOnGitHub() {
-    if (!payload) return;
-    setHandoffError("");
-    setFallbackUrl("");
-    setContinuing(true);
-    try {
-      await openHelpRequest({
-        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
-        template: "03-website-bug.yml",
-        manifestFieldId: "help-manifest",
-        manifest: {
-          schema_version: 1,
-          request_kind: "website-bug",
-          origin: {
-            page_url: "/help/report-website/",
-            site_revision: siteRevision,
-          },
-          payload,
-        },
-        prefills: [
-          ["category", displayWebsiteBugCategory(payload.category)],
-          ["page-url", payload.page_url],
-          ["actual-behavior", payload.actual_behavior],
-          ["expected-behavior", payload.expected_behavior],
-          ["reproduction-steps", payload.reproduction_steps],
-          ["browser", payload.browser ?? ""],
-          ["device", payload.device ?? ""],
-          ["additional-context", payload.additional_context ?? ""],
-        ],
-        pasteInstruction:
-          "Paste the Help manifest copied by Tavernary into the manifest field.",
-      });
-    } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
-      setHandoffError(
-        error instanceof Error
-          ? error.message
-          : "GitHub could not be opened. Please try again.",
-      );
-    } finally {
-      setContinuing(false);
+  async function openReview() {
+    if (!payload) {
+      throw new Error("The website report is no longer ready for review.");
     }
+    return openHelpRequest({
+      formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+      template: "03-website-bug.yml",
+      manifestFieldId: "help-manifest",
+      manifest: {
+        schema_version: 1,
+        request_kind: "website-bug",
+        origin: {
+          page_url: "/help/report-website/",
+          site_revision: siteRevision,
+        },
+        payload,
+      },
+      prefills: [
+        ["category", displayWebsiteBugCategory(payload.category)],
+        ["page-url", payload.page_url],
+        ["actual-behavior", payload.actual_behavior],
+        ["expected-behavior", payload.expected_behavior],
+        ["reproduction-steps", payload.reproduction_steps],
+        ["browser", payload.browser ?? ""],
+        ["device", payload.device ?? ""],
+        ["additional-context", payload.additional_context ?? ""],
+      ],
+      pasteInstruction:
+        "Paste the Help manifest copied by Tavernary into the manifest field.",
+    });
   }
 
   if (reviewing && payload) {
     return (
-      <>
-        <HelpErrorSummary
-          errors={handoffError ? [handoffError] : []}
-          heading="GitHub could not be opened automatically."
-        />
-        <HelpReview
-          rows={[
-            {
-              label: "Category",
-              value: displayWebsiteBugCategory(payload.category),
-            },
-            { label: "Page", value: payload.page_url },
-            { label: "What happens instead", value: payload.actual_behavior },
-            { label: "What should happen", value: payload.expected_behavior },
-            { label: "How to reproduce it", value: payload.reproduction_steps },
-            { label: "Browser", value: payload.browser ?? "" },
-            { label: "Device", value: payload.device ?? "" },
-            {
-              label: "Additional public context",
-              value: payload.additional_context ?? "",
-            },
-          ]}
-          onBack={() => setReviewing(false)}
-          onCancel={() => setReviewing(false)}
-          onContinue={continueOnGitHub}
-          returnFocusId="website-category"
-          continuing={continuing}
-          fallbackUrl={fallbackUrl}
-        />
-      </>
+      <HelpReview
+        rows={[
+          {
+            label: "Category",
+            value: displayWebsiteBugCategory(payload.category),
+          },
+          { label: "Page", value: payload.page_url },
+          { label: "What happens instead", value: payload.actual_behavior },
+          { label: "What should happen", value: payload.expected_behavior },
+          { label: "How to reproduce it", value: payload.reproduction_steps },
+          { label: "Browser", value: payload.browser ?? "" },
+          { label: "Device", value: payload.device ?? "" },
+          {
+            label: "Additional public context",
+            value: payload.additional_context ?? "",
+          },
+        ]}
+        onBack={() => setReviewing(false)}
+        onCancel={() => setReviewing(false)}
+        openReview={openReview}
+        returnFocusId="website-category"
+      />
     );
   }
 

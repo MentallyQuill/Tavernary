@@ -86,8 +86,8 @@ Project triage does not publish a catalog record. An admitted decision
 dispatches the separate generation workflow.
 
 Valid Kit triage dispatches the separate serialized Kit publisher
-automatically. Invalid Kit issues remain open for correction; edit the issue to
-rerun triage.
+automatically. Invalid Kit issues remain open for correction; direct the author
+back to the retained Tavernary draft to open a fresh GitHub review.
 
 ## Project submission path
 
@@ -97,14 +97,15 @@ Project transaction PRs are merged by `publish-project-transaction.yml` only
 when `PROJECT_AUTO_PUBLICATION_ENABLED` equals `true` and every authoritative
 check matches the exact validated head SHA.
 
-1. The static Tavernary builder or `01-project-submission.yml` creates an issue
-   carrying `project-submission`. New intake uses manifest version 4 with
+1. The static Tavernary builder creates the authoritative manifest and opens
+   `01-project-submission.yml` as a review mirror carrying
+   `project-submission`. New intake uses manifest version 4 with
    independent summary/tag requests; manual values claim no authority.
 2. `triage-submission.yml` normalizes the URL, maintains the generated title,
    inspects source facts, reconciles frontend vocabulary, and checks duplicates.
 3. A duplicate receives the triage explanation and closes before generation. A
-   correctable failure remains open with `needs-information`; edit the issue to
-   rerun triage.
+   correctable failure remains open with `needs-information`; direct the author
+   back to `/submit/project/` to open a fresh review.
 4. An admitted issue dispatches `generate-project-submission.yml` with its issue
    number. The workflow creates
    `automation/project-submission-<issue-number>`, writes only declared registry,
@@ -214,17 +215,17 @@ the manual catalog verification checklist below before committing.
 
 ## Help report triage and owner-listing recovery
 
-The Help hub has five ordinary public routes: /help/manage-project/,
+The Help hub has ordinary public routes: /help/manage-project/,
 /help/report-project/, /help/report-website/, /help/report-kit/, and
-/help/other/. Their text is public GitHub issue content. The private
+/help/withdraw-kit/, and /help/other/. Their text is public GitHub issue content. The private
 /help/security/ route goes to security/advisories/new and must never be
 replaced with an /issues/new form. Tavernary does not provide support for
 third-party projects; route those users to the listed project's own channel.
 
 Triage project-information, website-bug, kit-report, and other-help reports as
 maintainer-owned queues. Preserve the supplied manifest and public evidence in
-the issue, request clarification through the issue when needed, and make a
-normal reviewed PR for site or catalog changes. A serious listing report may
+the issue, and direct corrections to the matching Tavernary route before a
+fresh GitHub review. Make a normal reviewed PR for site or catalog changes. A serious listing report may
 retire or quarantine one card, pause source refresh, or preserve a source
 delist tombstone rather than deleting historical records.
 

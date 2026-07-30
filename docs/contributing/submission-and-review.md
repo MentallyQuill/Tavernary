@@ -1,19 +1,20 @@
 # Submission and automated publication flow
 
-Tavernary accepts user-facing intake only through structured GitHub issue forms. No
-form publishes records directly.
+All public intake begins in Tavernary. Tavernary generates the authoritative
+manifest and opens a structured GitHub Issue Form as a public review mirror;
+no form publishes records directly.
 
 ## Contribution routing
 
-Use the issue chooser and choose the narrowest form:
+Use the narrowest Tavernary route:
 
-- **Project submission** - new catalog entry requests.
-- **Project information** - corrections for existing catalog records.
-- **Website bug** - search, filter, sorting, rendering, and copy issues.
-- **Kit submission** - new Kit creation or draft edit.
-- **Kit report** - unsafe, duplicate, misleading, or broken Kit concerns.
-- **Kit withdrawal** - project author requests to pull their Kit.
-- **Other** - non-critical support questions.
+- `/submit/project/` - new catalog entry requests.
+- `/help/report-project/` - corrections for existing catalog records.
+- `/help/report-website/` - search, filter, sorting, rendering, and copy issues.
+- `/?mode=kits` - new Kit creation or draft edit.
+- `/help/report-kit/` - unsafe, duplicate, misleading, or broken Kit concerns.
+- `/help/withdraw-kit/` - Kit author withdrawal requests.
+- `/help/other/` - non-critical support questions.
 
 Security issues are always handled via `SECURITY.md` private reporting and never
 through public issue forms.
@@ -21,9 +22,9 @@ through public issue forms.
 ## Help reports and project-owner requests
 
 The site Help hub (`/help/`) prepares public GitHub reports only after the
-visitor reviews the request. Its five ordinary routes are `/help/manage-project/`,
+visitor reviews the request. Its ordinary routes are `/help/manage-project/`,
 `/help/report-project/`, `/help/report-website/`, `/help/report-kit/`, and
-`/help/other/`; `/help/security/` leads only to GitHub's private
+`/help/withdraw-kit/`, and `/help/other/`; `/help/security/` leads only to GitHub's private
 `security/advisories/new` flow. Do not put credentials, private personal data,
 or unreported Tavernary vulnerability details in an ordinary report.
 
@@ -80,8 +81,8 @@ same rule.
 
 ### Projects
 
-1. The submitter uses Tavernary's static builder or the native GitHub fallback
-   form. The builder's frontend choices come from the current catalog rather
+1. The submitter uses Tavernary's static builder and reviews the current draft
+   before opening GitHub. The builder's frontend choices come from the current catalog rather
    than a separately maintained dropdown. Only Extensions show the
    primary-function dropdown: the submitted Extension primary function is authoritative.
    Frontends receive `frontend` and System Presets receive `preset`
@@ -124,14 +125,16 @@ declined/unavailable state, the retry workflow resumes the downstream review.
 This repeats root-to-leaf for a fork of a fork, one immediate parent at a time.
 A terminal upstream does not prevent the child from receiving its own review.
 
-The source issue remains authoritative. Editing it invalidates the prior input
-digest and causes safe regeneration from current `main`; generated PRs are not
-an invitation for routine staff copy edits.
+The versioned Tavernary manifest in the source issue is the automation
+authority. Readable GitHub fields are review-only and may drift without
+changing the transaction. Corrections return to Tavernary and open a fresh
+GitHub review; generated PRs are not an invitation for routine staff copy
+edits.
 
 Implementation path:
 
-- `01-project-submission.yml` accepts the stable manifest or readable fallback
-  fields.
+- `01-project-submission.yml` requires the stable manifest and exposes readable
+  review fields only.
 - `triage-submission.yml` handles idempotent validation, title updates,
   duplicate closure, and dispatch.
 - `generate-project-submission.yml` creates or updates
@@ -200,8 +203,9 @@ through normal gates.
 - A valid issue dispatches `apply-kit-submission.yml` automatically. The
   publisher revalidates, writes the registry record, runs repository gates,
   pushes `main`, requests exact-SHA Pages deployment, and closes the issue.
-- A correctable validation failure remains open. Edit the issue and automation
-  reruns without consuming another issue slot.
+- A correctable validation failure remains open with `needs-information`.
+  Return to the Kit builder, correct the retained draft, and open a fresh
+  GitHub review without consuming another issue slot.
 
 Trusted Kit edit authority is recorded as `tavernary-staff` only when the
 actor's immutable ID appears in
@@ -214,7 +218,8 @@ that actor. A staff edit preserves the canonical Kit author, source issue,
 The currently published Kit remains unchanged until every publication gate
 passes. Near-duplicate composition is a non-blocking warning; exact duplicate
 project sets remain invalid.
-Withdrawals are submitted with `07-kit-withdrawal.yml` and applied via
+Withdrawals begin at `/help/withdraw-kit/`, review through
+`07-kit-withdrawal.yml`, and are applied via
 `apply-kit-withdrawal.yml`; GitHub identity must match the recorded author.
 
 ## Labels and maintainer actions
@@ -246,6 +251,7 @@ See maintainer operating flow for exact sequencing in
 - Keep contributions to one intent per issue.
 - Include evidence links (release notes, announcements, docs, changelog).
 - Do not bypass the Project transaction PR or the reviewed Kit safety-repair path.
-- Correct an automatically rejected Kit by editing its open issue.
+- Correct an automatically rejected Kit in Tavernary and open a fresh GitHub
+  review.
 - Keep generated artifacts deterministic and avoid hand-editing generated files
   outside the approved scripts.

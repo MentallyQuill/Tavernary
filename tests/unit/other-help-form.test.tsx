@@ -96,7 +96,7 @@ test("associates an Other Help category error with its select", async () => {
   );
 });
 
-test("reviews public values and hands off Other Help through the manifest", async () => {
+test("retains Other Help values and regenerates the current manifest", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderOtherHelpForm();
@@ -128,4 +128,52 @@ test("reviews public values and hands off Other Help through the manifest", asyn
       },
     }),
   );
+
+  await user.click(
+    await screen.findByRole("button", { name: "Back and edit" }),
+  );
+  expect(screen.getByLabelText("Description")).toHaveValue(
+    "I need help understanding the Kit builder.",
+  );
+  await user.clear(screen.getByLabelText("Subject"));
+  await user.type(screen.getByLabelText("Subject"), "Need help with tags");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const reopened = new URL(open.mock.calls[1]?.[0] as string);
+  expect(
+    JSON.parse(reopened.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    payload: {
+      category: "using-tavernary",
+      subject: "Need help with tags",
+      description: "I need help understanding the Kit builder.",
+    },
+  });
+});
+
+test("keeps Other Help review visible when the popup is blocked", async () => {
+  const user = userEvent.setup();
+  vi.spyOn(window, "open").mockReturnValue(null);
+  renderOtherHelpForm();
+
+  await user.selectOptions(
+    screen.getByLabelText("What do you need help with?"),
+    "using-tavernary",
+  );
+  await user.type(screen.getByLabelText("Subject"), "Need help with Kits");
+  await user.type(
+    screen.getByLabelText("Description"),
+    "I need help understanding the Kit builder.",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "GitHub review could not be opened.",
+  );
+  expect(screen.getByText("Need help with Kits")).toBeVisible();
+  expect(
+    screen.getByRole("link", { name: "Open prepared GitHub review" }),
+  ).toHaveAttribute("href", expect.stringContaining("help-manifest="));
 });

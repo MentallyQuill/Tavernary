@@ -2,6 +2,10 @@ import { access } from "node:fs/promises";
 
 import { expect, test } from "@playwright/test";
 
+import {
+  installGitHubReviewRecorder,
+  openedGitHubReviews,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 test("exports and renders the project submission builder", async ({ page }) => {
@@ -11,13 +15,25 @@ test("exports and renders the project submission builder", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Submit a project" }),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: /fallback form/iu })).toHaveCount(
+    0,
+  );
+  await expect(page.getByLabel("Project Type")).toHaveValue("");
+  await expect(
+    page.getByLabel("Project Type").getByRole("option", {
+      name: "Select a project type",
+    }),
+  ).toHaveCount(1);
   await expect(
     page.getByRole("combobox", { name: "Search supported frontends" }),
   ).toHaveCount(0);
   const eligibility = page.getByText(
     "Frontends and Extensions require a public GitHub or Codeberg repository.",
   );
-  await expect(eligibility).toBeVisible();
+  await expect(eligibility).toHaveCount(0);
+  await expect(
+    page.getByText("Choose a project type to see its source requirements."),
+  ).toBeVisible();
   await expect(page.getByLabel("Primary function")).toHaveCount(0);
   await expect(page.getByLabel("Description choice")).toHaveAttribute(
     "value",
@@ -111,12 +127,28 @@ test("keeps description prose while removing emoji and linking the policy", asyn
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
-test("keeps the manual tag picker searchable and bounded at mobile width", async ({
+test("reviews six progressive manual tags at 320px and regenerates the current manifest", async ({
   page,
 }) => {
+  await installGitHubReviewRecorder(page);
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto(sitePath("/submit/project/"));
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page
+    .getByLabel("Project URL")
+    .fill("https://github.com/example/manual-project");
+  await page.waitForTimeout(2_750);
+  await expect(page.getByLabel("Project Type")).toHaveValue("extension");
+  await page.getByLabel("Primary function").click();
+  await page.getByRole("option", { name: /Memory and retrieval/u }).click();
+  await page.getByLabel("SillyTavern").check();
+  await page.getByLabel("Description choice").click();
+  await page
+    .getByRole("option", { name: /Write the description myself/u })
+    .click();
+  await page
+    .getByLabel("Short description")
+    .fill("A manually described memory project.");
   await page.getByLabel("Tag choice").click();
   await page.getByRole("option", { name: /Set tags myself/u }).click();
 
@@ -125,6 +157,14 @@ test("keeps the manual tag picker searchable and bounded at mobile width", async
   await search.fill("memory");
   await expect(page.getByLabel("Maintain long-term memory")).toBeVisible();
   await search.fill("");
+
+  for (const groupName of ["Goals", "Traits"]) {
+    const group = page.getByRole("group", { name: groupName });
+    const disclosure = group.getByRole("button", {
+      name: /Show \d+ more/u,
+    });
+    if ((await disclosure.count()) > 0) await disclosure.click();
+  }
 
   for (const label of [
     "Maintain long-term memory",
@@ -146,6 +186,72 @@ test("keeps the manual tag picker searchable and bounded at mobile width", async
       () => document.documentElement.scrollWidth - window.innerWidth,
     ),
   ).toBeLessThanOrEqual(0);
+
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Continue on GitHub" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  const firstManifest = JSON.parse(
+    new URL((await openedGitHubReviews(page))[0]!).searchParams.get(
+      "project-manifest",
+    ) ?? "",
+  );
+  expect(firstManifest.metadata).toEqual({
+    summary: {
+      mode: "manual",
+      value: "A manually described memory project.",
+    },
+    tags: {
+      mode: "manual",
+      values: [
+        "maintain-long-term-memory",
+        "manage-context-limits",
+        "retrieve-relevant-context",
+        "build-worlds-and-lore",
+        "manage-lorebooks",
+        "create-character-cards",
+      ],
+    },
+  });
+
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(page.getByLabel("Project Type")).toBeFocused();
+  await page
+    .getByRole("button", { name: "Remove Maintain long-term memory" })
+    .click();
+  await page
+    .getByLabel("Short description")
+    .fill("A revised manually described memory project.");
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+
+  const reviews = await openedGitHubReviews(page);
+  expect(reviews).toHaveLength(2);
+  const secondUrl = new URL(reviews[1]!);
+  expect(secondUrl.searchParams.get("project-type")).toBe("Extension");
+  expect(secondUrl.searchParams.get("primary-function")).toBe(
+    "memory-retrieval",
+  );
+  expect(secondUrl.searchParams.get("description-choice")).toBe(
+    "Write the description myself",
+  );
+  expect(secondUrl.searchParams.get("tag-choice")).toBe("Set tags myself");
+  const secondManifest = JSON.parse(
+    secondUrl.searchParams.get("project-manifest") ?? "",
+  );
+  expect(secondManifest.metadata.summary.value).toBe(
+    "A revised manually described memory project.",
+  );
+  expect(secondManifest.metadata.tags.values).toHaveLength(5);
 });
 
 test("selects multiple current frontends for an Extension", async ({
@@ -212,7 +318,7 @@ test("supports frontend-independent and not-listed submission paths", async ({
       configurable: true,
       value: (url: string | URL) => {
         window.sessionStorage.setItem("tavernary-opened-url", String(url));
-        return null;
+        return {};
       },
     });
   });
@@ -230,7 +336,13 @@ test("supports frontend-independent and not-listed submission paths", async ({
     .fill("https://github.com/example/future-frontend");
   await page.getByLabel("Claude", { exact: true }).check();
   await page.getByLabel("Chat Completion", { exact: true }).check();
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  await expect(page.getByText("System Preset", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("Claude")).toBeVisible();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
 
   const openedUrl = await page.evaluate(() =>
     window.sessionStorage.getItem("tavernary-opened-url"),
@@ -274,7 +386,14 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
       configurable: true,
       value: (url: string | URL) => {
         window.sessionStorage.setItem("tavernary-opened-url", String(url));
-        return null;
+        const count = Number(
+          window.sessionStorage.getItem("tavernary-open-count") ?? "0",
+        );
+        window.sessionStorage.setItem(
+          "tavernary-open-count",
+          String(count + 1),
+        );
+        return {};
       },
     });
   });
@@ -286,7 +405,21 @@ test("opens a reviewable GitHub issue containing the stable manifest", async ({
     .getByLabel("Project URL")
     .fill("https://codeberg.org/targren/Lumiverse-SwipeScrubber");
   await page.getByLabel("SillyTavern").check();
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(page.getByText("Extension")).toBeVisible();
+  await expect(page.getByText("Interface and workflow")).toBeVisible();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
+    page.getByText(
+      "GitHub review opened in a new tab. Create the issue there, or return here to make changes.",
+    ),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open GitHub review again" }).click();
+  expect(
+    await page.evaluate(() =>
+      window.sessionStorage.getItem("tavernary-open-count"),
+    ),
+  ).toBe("2");
 
   const openedUrl = await page.evaluate(() =>
     window.sessionStorage.getItem("tavernary-opened-url"),

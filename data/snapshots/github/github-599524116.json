@@ -1,6 +1,7 @@
 {
   "schema_version": 4,
   "provider": "github",
+  "source_id": "github-599524116",
   "repository": {
     "id": 599524116,
     "owner": "SillyTavern",
@@ -33,17 +34,17 @@
     "baseline_attempts": 1
   },
   "community": {
-    "stars_count": 31292,
-    "forks_count": 5902,
-    "watchers_count": 145,
-    "aggregate": 37339
+    "stars_count": 31344,
+    "forks_count": 5918,
+    "watchers_count": 146,
+    "aggregate": 37408
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "refreshed_at": "2026-07-30T09:45:32.765Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -406,8 +407,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "refreshed_at": "2026-07-30T09:45:32.765Z",
     "stale_since": null
-  },
-  "source_id": "github-599524116"
+  }
 }

@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { DescribedSelect } from "@/components/forms/described-select";
-import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import {
+  TAG_FACET_PREVIEW_LIMIT,
+  TagBrowser,
+} from "@/features/catalog/components/tag-browser";
 import type { PublicTagDefinition } from "@/features/catalog/tag-vocabulary";
 import primaryFunctionVocabulary from "../../../../data/vocabularies/primary-functions.json";
 import {
@@ -24,6 +27,7 @@ import {
   CATALOG_POLICY_ROUTE,
 } from "@/features/catalog/catalog-policy.mjs";
 import { stripEmoji } from "@/features/catalog/emoji-free-text.mjs";
+import { SubmissionReview } from "@/features/submissions/components/submission-review";
 
 const projectSubmissionUrl =
   "https://github.com/MentallyQuill/Tavernary/issues/new";
@@ -73,6 +77,7 @@ export interface SubmissionFrontendOption {
 }
 
 type SubmissionField =
+  | "project-type"
   | "project-url"
   | "project-description"
   | "project-tags"
@@ -120,6 +125,19 @@ function repositoryProviderFromUrl(
   return parts.length === 2 ? provider : null;
 }
 
+function projectTypeLabel(projectType: ProjectSubmissionType) {
+  if (projectType === "frontend") return "Frontend";
+  if (projectType === "extension") return "Extension";
+  return "System Preset";
+}
+
+function vocabularyLabel(
+  options: readonly { id: string; label: string }[],
+  id: string,
+) {
+  return options.find((option) => option.id === id)?.label ?? id;
+}
+
 function manifestErrorField(message: string): SubmissionField {
   if (message.includes("primary function")) return "primary-function";
   if (/description|summary/iu.test(message)) return "project-description";
@@ -161,8 +179,9 @@ export function ProjectSubmissionBuilder({
   frontends: SubmissionFrontendOption[];
   tagVocabulary?: readonly PublicTagDefinition[];
 }) {
-  const [projectType, setProjectType] =
-    useState<ProjectSubmissionType>("frontend");
+  const [projectType, setProjectType] = useState<ProjectSubmissionType | "">(
+    "",
+  );
   const [sourceUrl, setSourceUrl] = useState("");
   const [primaryFunction, setPrimaryFunction] = useState("");
   const [summaryMode, setSummaryMode] = useState<"automatic" | "manual">(
@@ -184,11 +203,8 @@ export function ProjectSubmissionBuilder({
   const [otherModelFamily, setOtherModelFamily] = useState("");
   const [completionFormats, setCompletionFormats] = useState<string[]>([]);
   const [errors, setErrors] = useState<SubmissionError[]>([]);
-  const [status, setStatus] = useState("");
-  const [statusKind, setStatusKind] = useState<"success" | "error" | null>(
-    null,
-  );
-  const [submitting, setSubmitting] = useState(false);
+  const [reviewManifest, setReviewManifest] =
+    useState<ProjectSubmissionManifest | null>(null);
 
   const filteredFrontends = useMemo(() => {
     const query = frontendSearch.trim().toLocaleLowerCase();
@@ -207,13 +223,12 @@ export function ProjectSubmissionBuilder({
   const showFrontendFields =
     projectType === "extension" ||
     (projectType === "preset" && !frontendIndependent);
-  const applicableTags = useMemo(
-    () =>
-      tagVocabulary
-        .filter((tag) => tag.applicable_kinds.includes(projectType))
-        .map((tag) => ({ ...tag })),
-    [projectType, tagVocabulary],
-  );
+  const applicableTags = useMemo(() => {
+    if (!projectType) return [];
+    return tagVocabulary
+      .filter((tag) => tag.applicable_kinds.includes(projectType))
+      .map((tag) => ({ ...tag }));
+  }, [projectType, tagVocabulary]);
   const errorFor = (field: SubmissionField) =>
     errors.find((error) => error.field === field)?.message;
 
@@ -242,6 +257,19 @@ export function ProjectSubmissionBuilder({
   }
 
   function buildManifest(): ProjectSubmissionManifest | null {
+    if (!projectType) {
+      setErrors([
+        {
+          field: "project-type",
+          message: "Project Type is required.",
+        },
+      ]);
+      window.setTimeout(() => {
+        document.getElementById("project-type")?.focus();
+      }, 0);
+      return null;
+    }
+
     const submittedPrimaryFunction =
       projectType === "frontend"
         ? STRUCTURAL_PRIMARY_FUNCTIONS.frontend
@@ -344,29 +372,134 @@ export function ProjectSubmissionBuilder({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("");
-    setStatusKind(null);
     const manifest = buildManifest();
     if (!manifest) return;
+    setReviewManifest(manifest);
+  }
 
-    setSubmitting(true);
-    try {
-      const handoff = await openProjectSubmission(
-        projectSubmissionUrl,
-        manifest,
+  async function openReview() {
+    const manifest = buildManifest();
+    if (!manifest) {
+      throw new Error(
+        "The project submission changed and needs another Tavernary review.",
       );
-      setStatus(
-        handoff === "prefilled"
-          ? "GitHub opened with your submission."
-          : "GitHub opened. Paste the copied manifest into the form.",
-      );
-      setStatusKind("success");
-    } catch {
-      setStatus("Tavernary could not open GitHub. Please try again.");
-      setStatusKind("error");
-    } finally {
-      setSubmitting(false);
     }
+    setReviewManifest(manifest);
+    return openProjectSubmission(projectSubmissionUrl, manifest);
+  }
+
+  if (reviewManifest) {
+    const selectedFrontendLabels = [
+      ...reviewManifest.frontends.known_ids.map(
+        (id) => frontends.find((frontend) => frontend.id === id)?.label ?? id,
+      ),
+      ...reviewManifest.frontends.other.map(({ name, url }) =>
+        [name, url].filter(Boolean).join(" — "),
+      ),
+    ];
+    const summary =
+      reviewManifest.metadata.summary.mode === "manual"
+        ? reviewManifest.metadata.summary.value
+        : "TavernAI will draft this from repository evidence.";
+    const tagValues =
+      reviewManifest.metadata.tags.mode === "manual"
+        ? reviewManifest.metadata.tags.values.map((id) =>
+            vocabularyLabel(tagVocabulary, id),
+          )
+        : [];
+    const compatibilityRows =
+      reviewManifest.project_type === "preset"
+        ? [
+            {
+              label: "Model families",
+              value: [
+                ...(reviewManifest.preset_compatibility?.model_families.known_ids.map(
+                  (id) =>
+                    vocabularyLabel(modelFamilyVocabulary.model_families, id),
+                ) ?? []),
+                ...(reviewManifest.preset_compatibility?.model_families.other ??
+                  []),
+              ].join(", "),
+            },
+            {
+              label: "Completion formats",
+              value:
+                reviewManifest.preset_compatibility?.completion_formats
+                  .map((id) =>
+                    id === "chat-completion"
+                      ? "Chat Completion"
+                      : "Text Completion",
+                  )
+                  .join(", ") ?? "",
+            },
+          ]
+        : [];
+
+    return (
+      <SubmissionReview
+        title="Review your project submission"
+        introduction={
+          <p>
+            Tavernary will use this manifest as the authoritative submission.
+            GitHub will open next as a readable review and issue-creation step.
+          </p>
+        }
+        returnFocusId="project-type"
+        onBack={() => setReviewManifest(null)}
+        onCancel={() => setReviewManifest(null)}
+        openReview={openReview}
+        rows={[
+          {
+            label: "Project Type",
+            value: projectTypeLabel(reviewManifest.project_type),
+          },
+          { label: "Project URL", value: reviewManifest.source_url },
+          {
+            label: "Primary function",
+            value: vocabularyLabel(
+              primaryFunctionVocabulary.primary_functions,
+              reviewManifest.primary_function,
+            ),
+          },
+          {
+            label: "Description choice",
+            value:
+              reviewManifest.metadata.summary.mode === "manual"
+                ? "Write the description myself"
+                : "Let TavernAI write the description",
+          },
+          { label: "Description", value: summary },
+          {
+            label: "Tag choice",
+            value:
+              reviewManifest.metadata.tags.mode === "manual"
+                ? "Set tags myself"
+                : "Let Tavernary select tags",
+          },
+          {
+            label: "Tags",
+            value:
+              reviewManifest.metadata.tags.mode === "manual"
+                ? tagValues.join(", ")
+                : "Tavernary will select tags from repository evidence.",
+          },
+          {
+            label: "Supported frontends",
+            value:
+              reviewManifest.project_type === "frontend"
+                ? "Not applicable — this project is a frontend."
+                : reviewManifest.frontend_independent
+                  ? "Frontend-independent"
+                  : selectedFrontendLabels.join(", ") || "None selected",
+          },
+          ...compatibilityRows,
+          {
+            label: "Additional context",
+            value: reviewManifest.additional_context || "None provided",
+          },
+        ]}
+      />
+    );
   }
 
   return (
@@ -377,8 +510,13 @@ export function ProjectSubmissionBuilder({
           <select
             id="project-type"
             value={projectType}
+            required
+            aria-invalid={Boolean(errorFor("project-type"))}
+            aria-describedby={
+              errorFor("project-type") ? "project-type-error" : undefined
+            }
             onChange={(event) => {
-              setProjectType(event.target.value as ProjectSubmissionType);
+              setProjectType(event.target.value as ProjectSubmissionType | "");
               setPrimaryFunction("");
               setTags([]);
               setFrontendIndependent(false);
@@ -387,14 +525,17 @@ export function ProjectSubmissionBuilder({
               setOtherModelFamily("");
               setCompletionFormats([]);
               setErrors([]);
-              setStatus("");
-              setStatusKind(null);
             }}
           >
+            <option value="">Select a project type</option>
             <option value="frontend">Frontend</option>
             <option value="extension">Extension</option>
             <option value="preset">System Preset</option>
           </select>
+          <InlineError
+            id="project-type-error"
+            message={errorFor("project-type")}
+          />
         </div>
 
         {projectType === "extension" ? (
@@ -430,7 +571,9 @@ export function ProjectSubmissionBuilder({
           <p className="submission-hint" id="project-url-hint">
             {projectType === "frontend" || projectType === "extension"
               ? frontendEligibility
-              : "System Presets may use a stable public HTTPS source URL."}
+              : projectType === "preset"
+                ? "System Presets may use a stable public HTTPS source URL."
+                : "Choose a project type to see its source requirements."}
           </p>
           <InlineError
             id="project-url-error"
@@ -528,6 +671,7 @@ export function ProjectSubmissionBuilder({
                     : [...current, id],
                 )
               }
+              previewLimit={TAG_FACET_PREVIEW_LIMIT}
               maxSelections={6}
               searchLabel="Search goals and traits"
               limitLabel="Up to six"
@@ -830,28 +974,12 @@ export function ProjectSubmissionBuilder({
       ) : null}
 
       <div className="submission-actions">
-        <button type="submit" disabled={submitting}>
-          {submitting ? "Opening GitHub…" : "Continue to GitHub"}
-        </button>
+        <button type="submit">Review submission</button>
         <p>
-          GitHub will show the completed issue for you to review before
-          submitting it.
+          Review the complete Tavernary submission before opening GitHub to
+          create the issue.
         </p>
       </div>
-      <p
-        className="submission-status"
-        data-status={statusKind ?? undefined}
-        role={
-          statusKind === "success"
-            ? "status"
-            : statusKind === "error"
-              ? "alert"
-              : undefined
-        }
-        aria-live="polite"
-      >
-        {status}
-      </p>
     </form>
   );
 }

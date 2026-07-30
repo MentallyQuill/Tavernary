@@ -3,6 +3,8 @@ import { expect, test } from "vitest";
 import {
   categoryLabels,
   HELP_LABEL_DEFINITIONS,
+  NEEDS_INFORMATION_LABEL,
+  PUBLIC_HELP_TRIAGE_LABELS,
 } from "../../scripts/help/help-labels.mjs";
 import type { PublicHelpManifest } from "../../src/features/help/help-manifest.mjs";
 
@@ -40,6 +42,12 @@ test("owns the complete public Help label inventory", () => {
       description: expect.any(String),
     });
   }
+});
+
+test("reuses the admission-owned needs-information label during Help triage", () => {
+  expect(NEEDS_INFORMATION_LABEL).toBe("needs-information");
+  expect(PUBLIC_HELP_TRIAGE_LABELS).toContain(NEEDS_INFORMATION_LABEL);
+  expect(HELP_LABEL_DEFINITIONS).not.toHaveProperty(NEEDS_INFORMATION_LABEL);
 });
 
 test.each([

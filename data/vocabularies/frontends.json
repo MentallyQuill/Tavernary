@@ -46,6 +46,16 @@
       "description": "Works with the Pyre roleplay frontend."
     },
     {
+      "id": "quest-keeper",
+      "label": "Quest Keeper",
+      "description": "Works with the Quest Keeper roleplay frontend."
+    },
+    {
+      "id": "risuai",
+      "label": "RisuAI",
+      "description": "Works with the RisuAI roleplay frontend."
+    },
+    {
       "id": "rpgraph",
       "label": "RPGraph",
       "description": "Works with the RPGraph roleplay frontend."

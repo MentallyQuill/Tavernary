@@ -2,8 +2,7 @@ import { expect, test } from "vitest";
 
 import { parseProjectSubmissionIssue } from "../../scripts/submissions/parse-project-submission.mjs";
 
-test("fails closed on a new schema-v3 manifest but recovers it when already admitted", () => {
-  const body = `
+const legacyV3Body = `
 ### Project manifest
 \`\`\`json
 {
@@ -20,7 +19,8 @@ test("fails closed on a new schema-v3 manifest but recovers it when already admi
 \`\`\`
 `;
 
-  expect(parseProjectSubmissionIssue(body)).toEqual({
+test("fails closed on a new schema-v3 manifest but recovers it when already admitted", () => {
+  expect(parseProjectSubmissionIssue(legacyV3Body)).toEqual({
     valid: false,
     source: "manifest",
     errors: [
@@ -28,7 +28,7 @@ test("fails closed on a new schema-v3 manifest but recovers it when already admi
     ],
   });
   expect(
-    parseProjectSubmissionIssue(body, { allowLegacyV3: true }),
+    parseProjectSubmissionIssue(legacyV3Body, { allowLegacyV3: true }),
   ).toMatchObject({
     valid: true,
     source: "manifest",
@@ -42,105 +42,30 @@ test("fails closed on a new schema-v3 manifest but recovers it when already admi
   });
 });
 
-test("parses the fallback form into the shared contract", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-Extension
-### Primary function
-Interface and workflow
-### Project URL
-https://github.com/Owner/Repo
-### Description choice
-Let TavernAI write the description
-### Short Description
-_No response_
-### Tag choice
-Let Tavernary select tags
-### Tags
-_No response_
-### Supported frontends
-SillyTavern, https://github.com/prolix-oc/Lumiverse
-### Frontend-independent
-No
-### Anything we should know?
-_No response_
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: true,
-    source: "headings",
-    manifest: {
-      schema_version: 4,
-      project_type: "extension",
-      primary_function: "interface-workflow",
-      source_url: "https://github.com/Owner/Repo",
-      metadata: {
-        summary: { mode: "automatic" },
-        tags: { mode: "automatic" },
-      },
-      frontends: {
-        known_ids: [],
-        other: [
-          { name: "SillyTavern", url: "" },
-          { name: "", url: "https://github.com/prolix-oc/Lumiverse" },
-        ],
-      },
-    },
-  });
-});
-
-test("treats GitHub's empty rendered JSON fence as an omitted manifest", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-Extension
-### Primary function
-Memory and retrieval
-### Project URL
-https://codeberg.org/targren/Lumiverse-SwipeScrubber
-### Description choice
-Write the description myself
-### Short Description
-Remove unused swipes from message history.
-### Tag choice
-Let Tavernary select tags
-### Supported frontends
-Lumiverse
-### Frontend-independent
-No
-### Anything we should know?
-Entered manually.
-### Project manifest
-\`\`\`json
-
-\`\`\`
-`);
-
-  expect(result).toMatchObject({
-    valid: true,
-    source: "headings",
-    manifest: {
-      project_type: "extension",
-      primary_function: "memory-retrieval",
-      source_url: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
-      metadata: {
-        summary: {
-          mode: "manual",
-          value: "Remove unused swipes from message history.",
-        },
-        tags: { mode: "automatic" },
-      },
-    },
-  });
-});
-
-test("prefers a non-empty embedded manifest over readable headings", () => {
+test("uses a valid v4 manifest when every readable field contradicts it", () => {
   const result = parseProjectSubmissionIssue(`
 ### Project Type
 Frontend
+### Primary function
+Frontend
 ### Project URL
 https://github.com/Wrong/Heading
+### Description choice
+Write the description myself
+### Short Description
+Wrong readable summary.
+### Tag choice
+Set tags myself
+### Tags
+manage-context-limits
+### Supported frontends
+Wrong Frontend
+### Frontend-independent
+Yes
+### Supported model families
+gpt
+### Completion formats
+text-completion
 ### Project manifest
 \`\`\`json
 {
@@ -150,7 +75,7 @@ https://github.com/Wrong/Heading
   "source_url": "https://github.com/Owner/Repo",
   "frontends": { "known_ids": ["sillytavern"], "other": [] },
   "frontend_independent": false,
-  "additional_context": null,
+  "additional_context": "Manifest context.",
   "metadata": {
     "summary": { "mode": "automatic" },
     "tags": { "mode": "automatic" }
@@ -166,81 +91,68 @@ https://github.com/Wrong/Heading
       project_type: "extension",
       primary_function: "generation-reasoning",
       source_url: "https://github.com/Owner/Repo",
-    },
-  });
-});
-
-test("parses independent manual tag requests from controlled labels and IDs", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-Extension
-### Primary function
-Memory and retrieval
-### Project URL
-https://github.com/Owner/Repo
-### Description choice
-Let TavernAI write the description
-### Short Description
-_No response_
-### Tag choice
-Set tags myself
-### Tags
-Maintain long-term memory
-manage-context-limits
-### Supported frontends
-SillyTavern
-### Frontend-independent
-No
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: true,
-    source: "headings",
-    manifest: {
+      frontends: { known_ids: ["sillytavern"], other: [] },
+      frontend_independent: false,
+      additional_context: "Manifest context.",
       metadata: {
         summary: { mode: "automatic" },
-        tags: {
-          mode: "manual",
-          values: ["maintain-long-term-memory", "manage-context-limits"],
-        },
+        tags: { mode: "automatic" },
       },
     },
   });
 });
 
-test("rejects tampered fallback metadata choices", () => {
-  expect(
-    parseProjectSubmissionIssue(`
+test.each([
+  {
+    name: "has no manifest field",
+    body: `
 ### Project Type
 Extension
-### Primary function
-Memory and retrieval
 ### Project URL
 https://github.com/Owner/Repo
-### Description choice
-Trust my prose
-### Tag choice
-Use every tag
-### Supported frontends
-SillyTavern
 ### Frontend-independent
 No
+`,
+  },
+  {
+    name: "has an empty manifest response",
+    body: `
+### Project Type
+System Preset
+### Project URL
+https://github.com/Owner/Preset
+### Supported model families
+claude
+### Completion formats
+chat-completion
 ### Project manifest
 _No response_
-`),
-  ).toEqual({
+`,
+  },
+  {
+    name: "has GitHub's empty rendered JSON fence",
+    body: `
+### Project Type
+Frontend
+### Project URL
+https://github.com/Owner/Frontend
+### Project manifest
+\`\`\`json
+
+\`\`\`
+`,
+  },
+])("rejects readable project fields when the issue $name", ({ body }) => {
+  expect(parseProjectSubmissionIssue(body)).toEqual({
     valid: false,
-    source: "headings",
+    source: "manifest",
     errors: [
-      "Description choice must be automatic or manual.",
-      "Tag choice must be automatic or manual.",
+      "This issue needs the complete Project manifest generated by Tavernary.",
     ],
   });
 });
 
-test("rejects malformed embedded JSON instead of falling back to headings", () => {
+test("rejects malformed embedded JSON without consulting readable fields", () => {
   expect(
     parseProjectSubmissionIssue(`
 ### Project Type
@@ -254,164 +166,5 @@ https://github.com/Owner/Valid
     valid: false,
     source: "manifest",
     errors: ["Project manifest must be valid JSON."],
-  });
-});
-
-test("parses fallback Preset compatibility fields into manifest version 4", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-System Preset
-### Primary function
-
-### Project URL
-https://github.com/Owner/Preset
-### Supported frontends
-SillyTavern
-### Frontend-independent
-No
-### Supported model families
-- [x] claude
-- [ ] gpt
-- [x] gemini
-### Other model family
-FutureModel
-### Completion formats
-- [x] chat-completion
-- [x] text-completion
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: true,
-    source: "headings",
-    manifest: {
-      schema_version: 4,
-      project_type: "preset",
-      primary_function: "preset",
-      preset_compatibility: {
-        model_families: {
-          known_ids: ["claude", "gemini"],
-          other: ["FutureModel"],
-        },
-        completion_formats: ["chat-completion", "text-completion"],
-      },
-    },
-  });
-});
-
-test("parses text Preset compatibility fields into manifest version 4", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-System Preset
-### Primary function
-preset
-### Project URL
-https://github.com/Owner/Preset
-### Supported frontends
-SillyTavern
-### Frontend-independent
-No
-### Supported model families
-claude
-gemini
-### Other model family
-FutureModel
-### Completion formats
-chat-completion, text-completion
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: true,
-    source: "headings",
-    manifest: {
-      schema_version: 4,
-      project_type: "preset",
-      primary_function: "preset",
-      frontend_independent: false,
-      preset_compatibility: {
-        model_families: {
-          known_ids: ["claude", "gemini"],
-          other: ["FutureModel"],
-        },
-        completion_formats: ["chat-completion", "text-completion"],
-      },
-    },
-  });
-});
-
-test("rejects invalid frontend-independent fallback text", () => {
-  expect(
-    parseProjectSubmissionIssue(`
-### Project Type
-Frontend
-### Primary function
-
-### Project URL
-https://github.com/Owner/Frontend
-### Frontend-independent
-Sometimes
-### Project manifest
-_No response_
-`),
-  ).toEqual({
-    valid: false,
-    source: "headings",
-    errors: ["Frontend-independent must be Yes or No."],
-  });
-});
-
-test("rejects an Extension fallback without a primary function", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-Extension
-### Primary function
-_No response_
-### Project URL
-https://github.com/Owner/Extension
-### Supported frontends
-SillyTavern
-### Frontend-independent
-No
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: false,
-    source: "headings",
-    errors: expect.arrayContaining([
-      "Extensions must use one approved Extension primary function.",
-    ]),
-  });
-});
-
-test("rejects unknown text compatibility values", () => {
-  const result = parseProjectSubmissionIssue(`
-### Project Type
-System Preset
-### Project URL
-https://github.com/Owner/Preset
-### Frontend-independent
-No
-### Supported model families
-claude
-unknown-family
-### Completion formats
-chat-completion
-unknown-format
-### Project manifest
-_No response_
-`);
-
-  expect(result).toMatchObject({
-    valid: false,
-    source: "headings",
-    errors: expect.arrayContaining([
-      "Unknown model family: unknown-family.",
-      "Unknown completion format: unknown-format.",
-    ]),
   });
 });

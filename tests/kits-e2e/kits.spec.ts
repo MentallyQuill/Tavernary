@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import {
+  installGitHubReviewRecorder,
+  openedGitHubReviews,
+  setGitHubReviewsBlocked,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 async function openKits(page: import("@playwright/test").Page) {
@@ -206,7 +211,7 @@ test("blocks severe Kit text before GitHub opens", async ({ page }) => {
   await page
     .getByLabel("Description", { exact: true })
     .fill("A complete storytelling stack.");
-  await page.getByRole("button", { name: "Submit Kit" }).click();
+  await page.getByRole("button", { name: "Review Kit request" }).click();
 
   await expect(
     page.getByText("Title contains language Tavernary doesn't allow."),
@@ -219,6 +224,173 @@ test("blocks severe Kit text before GitHub opens", async ({ page }) => {
         [],
     ),
   ).toEqual([]);
+});
+
+test("reviews a created Kit in Tavernary and retains the draft after GitHub opens", async ({
+  page,
+}) => {
+  await installGitHubReviewRecorder(page, { blocked: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(sitePath());
+  await selectProject(page, "Fixture Frontend");
+  await selectProject(page, "Fixture Tool 02");
+  await selectProject(page, "Fixture Tool 03");
+  await page.getByRole("button", { name: "Add 3 projects to Kit" }).click();
+  const title = page.getByLabel("Title", { exact: true });
+  if (!(await title.isVisible())) {
+    await page
+      .getByRole("button", { name: /Open Kit Builder, 3 projects in draft/ })
+      .click();
+  }
+  await title.fill("Reviewed Story Stack");
+  await page
+    .getByLabel("Description", { exact: true })
+    .fill("A complete storytelling stack.");
+
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your Kit request" }),
+  ).toBeVisible();
+  await expect(page.getByText("Reviewed Story Stack")).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(title).toHaveValue("Reviewed Story Stack");
+
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
+    page.getByRole("link", { name: "Open prepared GitHub review" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(title).toHaveValue("Reviewed Story Stack");
+  await setGitHubReviewsBlocked(page, false);
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
+    page.getByText(/GitHub review opened in a new tab/u),
+  ).toBeVisible();
+
+  const openedUrl = (await openedGitHubReviews(page)).at(-1);
+  const reviewUrl = new URL(openedUrl!);
+  expect(reviewUrl.searchParams.get("template")).toBe("05-kit-submission.yml");
+  expect(JSON.parse(reviewUrl.searchParams.get("manifest") ?? "")).toEqual({
+    operation: "create",
+    kit_id: null,
+    title: "Reviewed Story Stack",
+    description: "A complete storytelling stack.",
+    project_ids: ["fixture-frontend", "fixture-tool-02", "fixture-tool-03"],
+  });
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+      ),
+    )
+    .toContain("Reviewed Story Stack");
+});
+
+test("reviews an edited Kit with its canonical identity and supports reopening", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "open", {
+      configurable: true,
+      value: (url: string | URL) => {
+        const opened = JSON.parse(
+          window.sessionStorage.getItem("kit-review-urls") ?? "[]",
+        ) as string[];
+        opened.push(String(url));
+        window.sessionStorage.setItem(
+          "kit-review-urls",
+          JSON.stringify(opened),
+        );
+        return window;
+      },
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  await page.getByRole("button", { name: "Edit" }).click();
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+
+  await expect(page.getByText("alpha-kit-101")).toBeVisible();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await page.getByRole("button", { name: "Open GitHub review again" }).click();
+
+  const openedUrls = await page.evaluate(
+    () =>
+      JSON.parse(
+        window.sessionStorage.getItem("kit-review-urls") ?? "[]",
+      ) as string[],
+  );
+  expect(openedUrls).toHaveLength(2);
+  for (const openedUrl of openedUrls) {
+    expect(
+      JSON.parse(new URL(openedUrl).searchParams.get("manifest") ?? ""),
+    ).toMatchObject({
+      operation: "edit",
+      kit_id: "alpha-kit-101",
+      title: "Alpha Kit",
+    });
+  }
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
+    "Alpha Kit",
+  );
+});
+
+test("keeps Kit review actions usable and returns focus at 320px", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-24T12:00:00.000Z",
+        draftOrigin: "create",
+        originalProjectIds: [],
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "Mobile Story Stack",
+          description: "A complete mobile storytelling stack.",
+          projectIds: [
+            "fixture-frontend",
+            "fixture-tool-02",
+            "fixture-tool-03",
+          ],
+        },
+      }),
+    );
+  });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(sitePath());
+  await page
+    .getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    })
+    .click();
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Review your Kit request" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Continue on GitHub" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(
+    page.getByRole("button", { name: "Review Kit request" }),
+  ).toBeFocused();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
+    "Mobile Story Stack",
+  );
 });
 
 test("mobile Frontend discovery returns from Kits to the filtered cards", async ({
@@ -426,10 +598,9 @@ test("filled desktop actions use Graphite Teal ink and card Kit glyphs are cente
   });
   await expect(addSelection).toHaveCSS("color", expectedInk);
   await addSelection.click();
-  await expect(page.getByRole("button", { name: "Submit Kit" })).toHaveCSS(
-    "color",
-    expectedInk,
-  );
+  await expect(
+    page.getByRole("button", { name: "Review Kit request" }),
+  ).toHaveCSS("color", expectedInk);
 });
 
 test("matches expanded project-card typography on Kit cards", async ({
@@ -665,7 +836,9 @@ test("desktop long Kit stacks scroll through the final row and submit controls",
 
   await expect(panel.locator(".kit-builder-row").last()).toBeInViewport();
   await expect(panel.locator(".kit-builder-footer")).toBeInViewport();
-  await expect(panel.getByRole("button", { name: "Submit Kit" })).toBeVisible();
+  await expect(
+    panel.getByRole("button", { name: "Review Kit request" }),
+  ).toBeVisible();
 });
 
 test("desktop Kit inspection keeps fixed actions reachable with a 600-character description", async ({
@@ -957,11 +1130,10 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     "href",
     sitePath("/help/report-kit/?kit=alpha-kit-101"),
   );
-  const withdrawalUrl = new URL((await withdrawal.getAttribute("href"))!);
-  expect(withdrawalUrl.searchParams.get("template")).toBe(
-    "07-kit-withdrawal.yml",
+  await expect(withdrawal).toHaveAttribute(
+    "href",
+    "/help/withdraw-kit/?kit=alpha-kit-101",
   );
-  expect(withdrawalUrl.searchParams.get("kit-id")).toBe("alpha-kit-101");
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
   await expect(
@@ -972,6 +1144,23 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   const flagged = page.locator(".kit-project-stack li.flagged");
   await expect(flagged).toContainText("Fixture Flagged Tool");
   await expect(flagged.locator("a")).toHaveCount(0);
+});
+
+test("routes Kit withdrawal through Tavernary with the current Kit selected", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openKits(page);
+  await page.getByRole("button", { name: "Open Alpha Kit" }).click();
+  await page.getByRole("link", { name: "Request withdrawal" }).click();
+
+  await expect(page).toHaveURL(/\/help\/withdraw-kit\/?\?kit=alpha-kit-101$/u);
+  await expect(
+    page.getByRole("heading", { name: "Withdraw a Kit" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Kit", { exact: true })).toHaveValue(
+    "alpha-kit-101",
+  );
 });
 
 test("scrolls one desktop inspector body without a nested project scroll", async ({
@@ -1367,7 +1556,9 @@ test("mobile 50-project builder keeps sticky controls usable", async ({
 
   await expect(header).toBeInViewport();
   await expect(footer).toBeInViewport();
-  await expect(page.getByRole("button", { name: "Submit Kit" })).toBeEnabled();
+  await expect(
+    page.getByRole("button", { name: "Review Kit request" }),
+  ).toBeEnabled();
   expect(
     await body.evaluate((element) => element.scrollWidth),
   ).toBeLessThanOrEqual(await body.evaluate((element) => element.clientWidth));

@@ -157,10 +157,8 @@ function generatedManifest(body) {
 
 function contextIdentifiers(issue) {
   const manifest = generatedManifest(issue?.body);
-  const projectId =
-    manifest?.project_id ?? sectionValue(issue?.body, "Project ID");
-  const sourceId =
-    manifest?.source_id ?? sectionValue(issue?.body, "Source ID");
+  const projectId = manifest?.project_id;
+  const sourceId = manifest?.source_id;
   return {
     projectId:
       typeof projectId === "string" && ID_PATTERN.test(projectId)

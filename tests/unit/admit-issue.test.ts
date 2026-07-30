@@ -2,7 +2,6 @@ import { expect, test, vi } from "vitest";
 
 import {
   effectiveIssueRoute,
-  issueRouteFromBody,
   issueRouteFromLabels,
   issueAdmissionOutputs,
   listOpenIssues,
@@ -82,6 +81,10 @@ const ownerBody = [
   "",
   "_No response_",
 ].join("\n");
+
+function routeFromReadableBody(body: string) {
+  return effectiveIssueRoute({ body, labels: [] });
+}
 
 function event(
   number = 11,
@@ -256,8 +259,11 @@ test("trusted collaborators bypass lookup and admission limits", async () => {
   ).toBe(false);
 });
 
-test("restores a missing Kit route label during admission", async () => {
-  const request = vi.fn(async () => null);
+test("does not infer a missing route label during admission", async () => {
+  const request = vi.fn(
+    async (_path: string, _options?: { method?: string; body?: string }) =>
+      null,
+  );
   const baseEvent = event(109, "COLLABORATOR");
   const kitEvent = {
     ...baseEvent,
@@ -265,17 +271,18 @@ test("restores a missing Kit route label during admission", async () => {
   };
 
   const decision = await processIssueAdmission({ event: kitEvent, request });
-  expect(decision).toMatchObject({ admitted: true, route: "kit" });
+  expect(decision).toMatchObject({ admitted: true, route: "none" });
   expect(issueAdmissionOutputs(decision, kitEvent)).toMatchObject({
-    route: "kit",
+    route: "none",
   });
-  expect(request).toHaveBeenCalledWith(
-    "/repos/MentallyQuill/Tavernary/issues/109/labels",
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({ labels: ["kit-submission"] }),
-    }),
-  );
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path === "/repos/MentallyQuill/Tavernary/issues/109/labels" &&
+        options?.method === "POST" &&
+        options.body === JSON.stringify({ labels: ["kit-submission"] }),
+    ),
+  ).toBe(false);
   for (const name of [
     "project-submission",
     "kit-submission",
@@ -335,14 +342,14 @@ test.each([
   expect(issueRouteFromLabels(labels)).toBe(expected);
 });
 
-test("recovers an unlabeled Kit route from the complete structured form", () => {
-  expect(issueRouteFromBody(kitBody)).toBe("kit");
-  expect(effectiveIssueRoute({ body: kitBody, labels: [] })).toBe("kit");
+test("does not recover an unlabeled Kit route from readable fields", () => {
+  expect(routeFromReadableBody(kitBody)).toBe("none");
+  expect(effectiveIssueRoute({ body: kitBody, labels: [] })).toBe("none");
 });
 
-test("recovers an unlabeled Project route from the complete structured form", () => {
+test("does not recover an unlabeled Project route from readable fields", () => {
   expect(
-    issueRouteFromBody(
+    routeFromReadableBody(
       [
         "### Project Type",
         "",
@@ -357,22 +364,20 @@ test("recovers an unlabeled Project route from the complete structured form", ()
         "No",
       ].join("\n"),
     ),
-  ).toBe("project");
-});
-
-test("recovers only the complete owner-request form route", () => {
-  expect(issueRouteFromBody(ownerBody)).toBe("project-owner");
-  expect(effectiveIssueRoute({ body: ownerBody, labels: [] })).toBe(
-    "project-owner",
-  );
-  expect(
-    issueRouteFromBody(ownerBody.replace("### Owner request manifest", "")),
   ).toBe("none");
 });
 
-test("recovers an unlabeled Kit withdrawal route from the complete structured form", () => {
+test("does not recover an owner-request route from readable fields", () => {
+  expect(routeFromReadableBody(ownerBody)).toBe("none");
+  expect(effectiveIssueRoute({ body: ownerBody, labels: [] })).toBe("none");
   expect(
-    issueRouteFromBody(
+    routeFromReadableBody(ownerBody.replace("### Owner request manifest", "")),
+  ).toBe("none");
+});
+
+test("does not recover a Kit withdrawal route from readable fields", () => {
+  expect(
+    routeFromReadableBody(
       [
         "### Kit ID",
         "",
@@ -387,7 +392,7 @@ test("recovers an unlabeled Kit withdrawal route from the complete structured fo
         "- [x] I request withdrawal of this Kit.",
       ].join("\n"),
     ),
-  ).toBe("kit-withdrawal");
+  ).toBe("none");
 });
 
 test.each([
@@ -417,7 +422,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "project-report",
+    "none",
   ],
   [
     [
@@ -457,7 +462,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "website-bug",
+    "none",
   ],
   [
     [
@@ -489,7 +494,7 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "kit-report",
+    "none",
   ],
   [
     [
@@ -513,15 +518,15 @@ test.each([
       "",
       "_No response_",
     ].join("\n"),
-    "other-help",
+    "none",
   ],
-])("recovers the %s Help route from exact fallback headings", (body, route) => {
-  expect(issueRouteFromBody(body)).toBe(route);
+])("does not recover a Help route from readable headings", (body, route) => {
+  expect(routeFromReadableBody(body)).toBe(route);
 });
 
-test("fails closed when multiple complete Help route signatures conflict", () => {
+test("ignores overlapping readable Help signatures", () => {
   expect(
-    issueRouteFromBody(
+    routeFromReadableBody(
       [
         "### Project",
         "",
@@ -560,11 +565,14 @@ test("fails closed when multiple complete Help route signatures conflict", () =>
         "_No response_",
       ].join("\n"),
     ),
-  ).toBe("conflict");
+  ).toBe("none");
 });
 
-test("restores a missing public Help route label during admission", async () => {
-  const request = vi.fn(async () => null);
+test("does not restore a missing public Help route label from headings", async () => {
+  const request = vi.fn(
+    async (_path: string, _options?: { method?: string; body?: string }) =>
+      null,
+  );
   const baseEvent = event(120, "COLLABORATOR");
   const helpEvent = {
     ...baseEvent,
@@ -596,14 +604,15 @@ test("restores a missing public Help route label during admission", async () => 
 
   await expect(
     processIssueAdmission({ event: helpEvent, request }),
-  ).resolves.toMatchObject({ admitted: true, route: "other-help" });
-  expect(request).toHaveBeenCalledWith(
-    "/repos/MentallyQuill/Tavernary/issues/120/labels",
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({ labels: ["other"] }),
-    }),
-  );
+  ).resolves.toMatchObject({ admitted: true, route: "none" });
+  expect(
+    request.mock.calls.some(
+      ([path, options]) =>
+        path === "/repos/MentallyQuill/Tavernary/issues/120/labels" &&
+        options?.method === "POST" &&
+        options.body === JSON.stringify({ labels: ["other"] }),
+    ),
+  ).toBe(false);
   for (const name of [
     "project-information",
     "website-bug",
@@ -627,9 +636,9 @@ test("restores a missing public Help route label during admission", async () => 
   }
 });
 
-test("fails closed when complete structured form shapes conflict", () => {
+test("does not route overlapping readable form shapes", () => {
   expect(
-    issueRouteFromBody(
+    routeFromReadableBody(
       [
         kitBody,
         "",
@@ -646,11 +655,11 @@ test("fails closed when complete structured form shapes conflict", () => {
         "- [x] I request withdrawal of this Kit.",
       ].join("\n"),
     ),
-  ).toBe("conflict");
+  ).toBe("none");
 });
 
 test("does not recover a route from a partial form or title", () => {
-  expect(issueRouteFromBody("### Kit title\n\nIncomplete")).toBe("none");
+  expect(routeFromReadableBody("### Kit title\n\nIncomplete")).toBe("none");
   expect(
     effectiveIssueRoute({
       title: "[Kit submission]: title only",
@@ -687,7 +696,7 @@ test("routes an admitted issue edit without changing admission state", async () 
   expect(request).not.toHaveBeenCalled();
 });
 
-test("restores a missing Kit route label on an admitted issue edit", async () => {
+test("does not infer a missing Kit route label on an admitted issue edit", async () => {
   const request = vi.fn(async () => null);
   const baseEvent = event(109, "NONE", "edited", ["issue-admitted"]);
   const kitEvent = {
@@ -700,15 +709,9 @@ test("restores a missing Kit route label on an admitted issue edit", async () =>
   ).resolves.toMatchObject({
     admitted: true,
     reason: "existing-admission",
-    route: "kit",
+    route: "none",
   });
-  expect(request).toHaveBeenCalledWith(
-    "/repos/MentallyQuill/Tavernary/issues/109/labels",
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({ labels: ["kit-submission"] }),
-    }),
-  );
+  expect(request).not.toHaveBeenCalled();
 });
 
 test("provisions public Help labels before routing an admitted issue edit", async () => {

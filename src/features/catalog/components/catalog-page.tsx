@@ -494,13 +494,11 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           omittedProjectCount={workspace.omittedProjectCount}
           onSubmitDraft={
             buildState
-              ? async () => {
-                  await openKitSubmission(
-                    "https://github.com/MentallyQuill/Tavernary/issues/new?template=05-kit-submission.yml",
+              ? () =>
+                  openKitSubmission(
+                    "https://github.com/MentallyQuill/Tavernary/issues/new",
                     buildState.draft,
-                  );
-                  workspace.discardDraft();
-                }
+                  )
               : undefined
           }
           active={query.mode === "kits" || workspace.state.mode !== "intro"}

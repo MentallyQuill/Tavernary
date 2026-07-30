@@ -9,6 +9,7 @@ import {
   initiallyVisibleFrontendOptions,
   metadataFilterChipCount,
   projectCountLabel,
+  tagOptionsByFacet,
   tagSearchFixture,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
@@ -236,6 +237,63 @@ test("uses the approved desktop workspace and matched toolbar controls", async (
   await expect(logo).toHaveCSS("transform", "none");
 });
 
+test("lets desktop Filters end in page flow while Kit Builder stays sticky", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  const filters = page.locator(".filter-panel");
+  await filters
+    .getByRole("group", { name: "Project kind" })
+    .getByLabel("Frontend", { exact: true })
+    .check();
+  await filters
+    .getByRole("group", { name: "Completion format" })
+    .getByText("Chat Completion", { exact: true })
+    .click();
+  await expect(page.locator(".project-card")).toHaveCount(0);
+
+  const selectedState = await filters.evaluate((element) => {
+    const footer = element.querySelector<HTMLElement>(".filter-legal");
+    if (!footer) throw new Error("Missing Filters legal footer");
+    const panelBounds = element.getBoundingClientRect();
+    return {
+      alignSelf: getComputedStyle(element).alignSelf,
+      overflowY: getComputedStyle(element).overflowY,
+      panelBottom: panelBounds.bottom,
+      footerBottom: footer.getBoundingClientRect().bottom,
+      clientHeight: element.clientHeight,
+      scrollHeight: element.scrollHeight,
+    };
+  });
+  expect(selectedState.alignSelf).toBe("start");
+  expect(selectedState.overflowY).toBe("visible");
+  expect(selectedState.footerBottom).toBeLessThanOrEqual(
+    selectedState.panelBottom + 1,
+  );
+  expect(selectedState.scrollHeight).toBeLessThanOrEqual(
+    selectedState.clientHeight + 1,
+  );
+
+  await filters.getByRole("button", { name: "Clear all" }).click();
+  await expect(page.locator(".project-card").first()).toBeVisible();
+  await page.evaluate(() =>
+    window.scrollTo(0, document.documentElement.scrollHeight),
+  );
+  const scrolledState = await page.evaluate(() => {
+    const filterPanel = document.querySelector<HTMLElement>(".filter-panel");
+    const kitBuilder =
+      document.querySelector<HTMLElement>(".kit-builder-panel");
+    if (!filterPanel || !kitBuilder) throw new Error("Missing desktop sidebar");
+    return {
+      filterBottom: filterPanel.getBoundingClientRect().bottom,
+      kitPosition: getComputedStyle(kitBuilder).position,
+    };
+  });
+  expect(scrolledState.filterBottom).toBeLessThan(0);
+  expect(scrolledState.kitPosition).toBe("sticky");
+});
+
 test("uses one focus boundary for the main search", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: "Search projects" });
 
@@ -282,9 +340,9 @@ test("uses the approved desktop filter controls", async ({ page }) => {
   await expect(
     page.getByText("Completion format", { exact: true }),
   ).toBeVisible();
-  await expect(page.locator(".metadata-filter-chip")).toHaveCount(
-    metadataFilterChipCount,
-  );
+  await expect(
+    page.locator(".metadata-options .filter-choice-chip"),
+  ).toHaveCount(metadataFilterChipCount);
 
   await page
     .getByRole("searchbox", { name: "Search compatible frontends" })
@@ -351,45 +409,129 @@ test("filters Presets and Kits by model family with shareable state", async ({
   ).toBeVisible();
 });
 
-test("bounds searchable goals and traits and keeps selections visible", async ({
-  page,
-}) => {
+test("ranks and progressively discloses goals and traits", async ({ page }) => {
   if (!tagSearchFixture) throw new Error("Missing tag search fixture");
 
   const browser = page.locator(".filter-panel .filter-tag-browser");
   const search = browser.getByRole("searchbox", {
     name: "Search goals and traits",
   });
-  const results = browser.getByTestId("tag-results");
 
-  await expect(browser.getByText("Goals", { exact: true })).toBeVisible();
-  await expect(browser.getByText("Traits", { exact: true })).toBeVisible();
-  await expect(browser.getByRole("button", { name: /Show/u })).toHaveCount(0);
-  expect(
-    await results.evaluate(
-      (element) => element.scrollHeight > element.clientHeight,
-    ),
-  ).toBe(true);
+  const initialCounts = { goal: 0, trait: 0 };
+  for (const facet of ["goal", "trait"] as const) {
+    const group = browser.getByRole("group", {
+      name: facet === "goal" ? "Goals" : "Traits",
+    });
+    const visibleLabels = await group
+      .getByRole("checkbox")
+      .evaluateAll((inputs) =>
+        inputs.map((input) => input.getAttribute("aria-label")),
+      );
+    initialCounts[facet] = visibleLabels.length;
+    expect(visibleLabels).toEqual(
+      tagOptionsByFacet[facet]
+        .slice(0, visibleLabels.length)
+        .map(({ label }) => label),
+    );
+    const hiddenCount = tagOptionsByFacet[facet].length - visibleLabels.length;
+    if (hiddenCount > 0) {
+      await expect(
+        group.getByRole("button", {
+          name: `Show ${hiddenCount} more`,
+        }),
+      ).toBeVisible();
+    }
+  }
+
+  const goals = browser.getByRole("group", { name: "Goals" });
+  const traits = browser.getByRole("group", { name: "Traits" });
+  const goalsHidden = tagOptionsByFacet.goal.length - initialCounts.goal;
+  await goals.getByRole("button", { name: `Show ${goalsHidden} more` }).click();
+  await expect(goals.getByRole("checkbox")).toHaveCount(
+    tagOptionsByFacet.goal.length,
+  );
+  await expect(goals.getByRole("button", { name: "Show fewer" })).toBeVisible();
+  await expect(traits.getByRole("checkbox")).toHaveCount(initialCounts.trait);
 
   await search.fill(
     tagSearchFixture.aliases[0] ?? tagSearchFixture.description,
   );
   const selected = browser.getByLabel(tagSearchFixture.label, { exact: true });
   await expect(selected).toBeVisible();
-  await selected.check();
+  await selected.locator("xpath=ancestor::label").click();
   await expect(selected).toBeChecked();
+  await expect(page).toHaveURL(new RegExp(`tag=${tagSearchFixture.id}`, "u"));
 
   await search.fill("no tag matches this deliberate query");
-  await expect(selected).toBeVisible();
-  await expect(
-    browser.getByText("No matching goals or traits.", { exact: true }),
-  ).toHaveCount(0);
-
-  await selected.click();
   await expect(selected).toHaveCount(0);
+  await expect(
+    browser.getByRole("button", {
+      name: `Remove ${tagSearchFixture.label}`,
+    }),
+  ).toBeVisible();
+
+  await browser
+    .getByRole("button", {
+      name: `Remove ${tagSearchFixture.label}`,
+    })
+    .click();
   await expect(
     browser.getByText("No matching goals or traits.", { exact: true }),
   ).toBeVisible();
+  await expect(browser.locator(".tag-results-bounded")).toHaveCount(0);
+  await expect(browser.locator(".tag-browser-facets")).toHaveCSS(
+    "overflow-y",
+    "visible",
+  );
+});
+
+test("uses subtle selection and contained keyboard focus for filter chips", async ({
+  page,
+}) => {
+  await page
+    .getByRole("button", { name: "System Presets", exact: true })
+    .click();
+  const presetModelGroup = page
+    .locator(".filter-panel")
+    .getByRole("group", { name: "Model family" });
+  const glm = presetModelGroup.getByLabel("GLM", { exact: true });
+  const glmChoice = glm.locator("xpath=ancestor::label");
+  await glmChoice.click();
+  const glmChip = glmChoice.locator(".filter-choice-chip");
+
+  expect(await glm.evaluate((input) => input.matches(":focus-visible"))).toBe(
+    false,
+  );
+  await expect(glmChip).toHaveCSS("background-color", "rgb(21, 59, 57)");
+  await expect(glmChip).toHaveCSS("border-top-width", "1px");
+
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Shift+Tab");
+  expect(await glm.evaluate((input) => input.matches(":focus-visible"))).toBe(
+    true,
+  );
+  expect(
+    await glmChip.evaluate((element) => getComputedStyle(element).boxShadow),
+  ).toContain("inset");
+
+  const bounds = await glmChip.evaluate((element) => {
+    const chip = element.getBoundingClientRect();
+    const options = element
+      .closest(".metadata-options")!
+      .getBoundingClientRect();
+    return {
+      left: chip.left >= options.left,
+      top: chip.top >= options.top,
+      right: chip.right <= options.right,
+      bottom: chip.bottom <= options.bottom,
+    };
+  });
+  expect(bounds).toEqual({
+    left: true,
+    top: true,
+    right: true,
+    bottom: true,
+  });
 });
 
 test("keeps canonical frontends ordered and expands the remainder", async ({
@@ -775,7 +917,10 @@ test("matches the approved card anatomy", async ({ page }) => {
     "border-top-style",
     "solid",
   );
-  await expect(card.locator(".license")).toHaveCSS("border-top-width", "0px");
+  await expect(page.locator(".project-card .license").first()).toHaveCSS(
+    "border-top-width",
+    "0px",
+  );
   await expect(card.locator(".function-symbol")).toHaveCSS("width", "23px");
   await expect(card.locator(".function-symbol")).toHaveCSS("height", "23px");
   await expect(card.locator(".function-symbol")).toHaveCSS(

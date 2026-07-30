@@ -13,10 +13,11 @@ import Link from "next/link";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import { kitShareUrl } from "@/features/kits/share-kit";
-import type { CatalogKit } from "@/features/kits/kit-types";
+import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
+import type { GitHubHandoffResult } from "@/features/submissions/github-handoff";
+import { SubmissionReview } from "@/features/submissions/components/submission-review";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
@@ -33,14 +34,6 @@ const builderBackground = [
   ".catalog-layout > .filter-panel",
   ".catalog-main",
 ];
-
-function withdrawalIssueUrl(kit: CatalogKit) {
-  const url = new URL("https://github.com/MentallyQuill/Tavernary/issues/new");
-  url.searchParams.set("template", "07-kit-withdrawal.yml");
-  url.searchParams.set("kit-id", kit.id);
-  url.searchParams.set("share-url", kitShareUrl(kit.id));
-  return url.toString();
-}
 
 function formatProjectKindSummary(kit: CatalogKit) {
   const counts = kit.components.reduce(
@@ -104,7 +97,7 @@ export function KitBuilderPanel({
   onUpdateDraft?: (
     patch: Partial<import("@/features/kits/kit-types").KitDraft>,
   ) => void;
-  onSubmitDraft?: () => void;
+  onSubmitDraft?: () => Promise<GitHubHandoffResult>;
   onDiscardDraft?: () => void;
   omittedProjectCount?: number;
   active?: boolean;
@@ -112,6 +105,7 @@ export function KitBuilderPanel({
   hidePhoneDraftAccess?: boolean;
 }) {
   const [discardOpen, setDiscardOpen] = useState(false);
+  const [reviewingDraft, setReviewingDraft] = useState<KitDraft | null>(null);
   const { phone } = useResponsiveCapabilities();
   const workspaceRef = useRef<HTMLElement>(null);
   const panelBodyRef = useRef<HTMLDivElement>(null);
@@ -423,13 +417,12 @@ export function KitBuilderPanel({
                       <KitPreviewActionIcon name="report" />
                       Report Kit
                     </Link>
-                    <a
+                    <Link
                       className="control-secondary kit-preview-action kit-withdrawal-action"
-                      href={withdrawalIssueUrl(kit)}
-                      target="_blank"
+                      href={`/help/withdraw-kit/?kit=${encodeURIComponent(kit.id)}`}
                     >
                       Request withdrawal
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -480,14 +473,70 @@ export function KitBuilderPanel({
                   draft.
                 </p>
               ) : null}
-              <KitBuilder
-                draft={state.draft}
-                projects={projects}
-                originalProjectIds={originalProjectIds}
-                onRevealFrontends={onRevealFrontends}
-                onUpdate={(patch) => onUpdateDraft?.(patch)}
-                onSubmit={() => onSubmitDraft?.()}
-              />
+              {reviewingDraft === state.draft ? (
+                <SubmissionReview
+                  title="Review your Kit request"
+                  introduction={
+                    <p>
+                      Tavernary will prepare this Kit request for public review
+                      on GitHub. Return here if you need to make changes.
+                    </p>
+                  }
+                  rows={[
+                    {
+                      label: "Operation",
+                      value:
+                        state.draft.operation === "edit" ? "Edit" : "Create",
+                    },
+                    ...(state.draft.kitId
+                      ? [
+                          {
+                            label: "Kit ID",
+                            value: state.draft.kitId,
+                          },
+                        ]
+                      : []),
+                    {
+                      label: "Title",
+                      value: state.draft.title,
+                    },
+                    {
+                      label: "Description",
+                      value: state.draft.description,
+                    },
+                    {
+                      label: "Projects",
+                      value: state.draft.projectIds
+                        .map(
+                          (projectId) =>
+                            projects.find(({ id }) => id === projectId)?.name ??
+                            projectId,
+                        )
+                        .join(" → "),
+                    },
+                  ]}
+                  returnFocusId="kit-review-request"
+                  onBack={() => setReviewingDraft(null)}
+                  onCancel={() => setReviewingDraft(null)}
+                  openReview={async () => {
+                    if (!onSubmitDraft) {
+                      throw new Error(
+                        "This Kit request cannot be opened for GitHub review.",
+                      );
+                    }
+                    return onSubmitDraft();
+                  }}
+                />
+              ) : (
+                <KitBuilder
+                  draft={state.draft}
+                  projects={projects}
+                  originalProjectIds={originalProjectIds}
+                  onRevealFrontends={onRevealFrontends}
+                  onUpdate={(patch) => onUpdateDraft?.(patch)}
+                  onSubmit={() => setReviewingDraft(state.draft)}
+                />
+              )}
             </div>
           ) : (
             <div />

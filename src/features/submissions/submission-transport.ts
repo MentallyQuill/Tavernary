@@ -2,8 +2,8 @@ import {
   serializeProjectSubmissionManifest,
   type ProjectSubmissionManifest,
 } from "./project-submission-manifest.mjs";
+import { openGitHubReview, type GitHubHandoffResult } from "./github-handoff";
 
-const MAX_PREFILL_URL_LENGTH = 7_000;
 const pasteInstruction = "Paste the project manifest copied by Tavernary here.";
 
 function displayKind(kind: ProjectSubmissionManifest["project_type"]) {
@@ -80,42 +80,15 @@ function readablePrefills(
 export async function openProjectSubmission(
   formUrl: string | URL,
   manifest: ProjectSubmissionManifest,
-): Promise<"prefilled" | "clipboard"> {
-  const target = new URL(formUrl.toString());
-  const serializedManifest = serializeProjectSubmissionManifest(manifest);
-
-  target.searchParams.set("template", "01-project-submission.yml");
-  for (const [key, value] of readablePrefills(manifest)) {
-    target.searchParams.set(key, value);
-  }
-  target.searchParams.set("project-manifest", serializedManifest);
-
-  if (target.toString().length <= MAX_PREFILL_URL_LENGTH) {
-    window.open(target, "_blank", "noopener,noreferrer");
-    return "prefilled";
-  }
-
-  try {
-    await navigator.clipboard.writeText(serializedManifest);
-  } catch {
-    window.prompt(
-      "Copy this project manifest, then paste it into the GitHub form:",
-      serializedManifest,
-    );
-  }
-  const fallback = new URL(formUrl.toString());
-  fallback.search = "";
-  fallback.searchParams.set("template", "01-project-submission.yml");
-  fallback.searchParams.set("project-manifest", pasteInstruction);
-  for (const [key, value] of readablePrefills(manifest)) {
-    fallback.searchParams.set(key, value);
-    if (fallback.toString().length > MAX_PREFILL_URL_LENGTH) {
-      fallback.searchParams.delete(key);
-    }
-  }
-  if (fallback.toString().length > MAX_PREFILL_URL_LENGTH) {
-    throw new Error("GitHub issue form URL exceeds the safe handoff limit.");
-  }
-  window.open(fallback, "_blank", "noopener,noreferrer");
-  return "clipboard";
+): Promise<GitHubHandoffResult> {
+  return openGitHubReview({
+    formUrl,
+    template: "01-project-submission.yml",
+    manifestFieldId: "project-manifest",
+    serializedManifest: serializeProjectSubmissionManifest(manifest),
+    prefills: readablePrefills(manifest),
+    pasteInstruction,
+    copyPrompt:
+      "Copy this project manifest, then paste it into the GitHub review:",
+  });
 }

@@ -1,1 +1,14 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Submit a project in Tavernary
+    url: https://tavernary.org/submit/project/
+    about: Build and review a new public project submission.
+  - name: Create or edit a Kit in Tavernary
+    url: https://tavernary.org/?mode=kits
+    about: Build, edit, and review a public Kit request.
+  - name: Manage a project listing in Tavernary
+    url: https://tavernary.org/help/manage-project/
+    about: Prepare an owner-authorized card or source request.
+  - name: Get Help in Tavernary
+    url: https://tavernary.org/help/
+    about: Report a project, website problem, Kit concern, or another public request.

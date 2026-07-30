@@ -117,7 +117,9 @@ test("mobile Kits controls meet the touch-target and overflow contract", async (
     );
     await expectTouchTarget(page.getByRole("textbox", { name: "Title" }));
     await expectTouchTarget(page.getByRole("textbox", { name: "Description" }));
-    await expectTouchTarget(page.getByRole("button", { name: "Submit Kit" }));
+    await expectTouchTarget(
+      page.getByRole("button", { name: "Review Kit request" }),
+    );
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,

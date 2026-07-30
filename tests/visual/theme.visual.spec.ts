@@ -1,5 +1,9 @@
 import { expect, test, type Locator } from "@playwright/test";
 
+import {
+  installGitHubReviewRecorder,
+  setGitHubReviewsBlocked,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 const graphiteTeal = {
@@ -382,32 +386,33 @@ test("submission inputs and textareas retain border focus plus the global ring",
   await expectStyle(description, "outline-color", graphiteTeal.focusRing);
 });
 
-test("project submission statuses use distinct semantic families", async ({
+test("project review handoff statuses use distinct semantic families", async ({
   page,
 }) => {
+  await installGitHubReviewRecorder(page);
   await page.goto(sitePath("/submit/project/"));
-  await page.evaluate(() => {
-    window.open = () => null;
-  });
+  await page
+    .getByRole("combobox", { name: "Project Type" })
+    .selectOption("extension");
+  await page.getByLabel("Primary function").click();
+  await page.getByRole("option", { name: /Interface and workflow/u }).click();
   await page
     .getByRole("textbox", { name: "Project URL" })
     .fill("https://github.com/example/frontend");
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
+  await page.getByLabel("SillyTavern").check();
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
 
-  const status = page.locator('.submission-status[data-status="success"]');
-  await expect(status).toHaveText("GitHub opened with your submission.");
-  await expectStyle(status, "color", graphiteTeal.successText);
-
-  await page.evaluate(() => {
-    window.open = () => {
-      throw new Error("popup blocked");
-    };
-  });
-  await page.getByRole("button", { name: "Continue to GitHub" }).click();
-  const error = page.locator('.submission-status[data-status="error"]');
-  await expect(error).toHaveText(
-    "Tavernary could not open GitHub. Please try again.",
+  const status = page.locator(".submission-review-status");
+  await expect(status).toHaveText(
+    "GitHub review opened in a new tab. Create the issue there, or return here to make changes.",
   );
+  await expectStyle(status, "color", graphiteTeal.infoText);
+
+  await setGitHubReviewsBlocked(page, true);
+  await page.getByRole("button", { name: "Open GitHub review again" }).click();
+  const error = page.locator(".submission-review-recovery");
+  await expect(error).toContainText("GitHub review could not be opened.");
   await expectStyle(error, "color", graphiteTeal.dangerText);
 });
 
@@ -442,7 +447,7 @@ test("project submission renders its complete graphite control treatment", async
   await expectStyle(chip, "border-top-color", graphiteTeal.frontendBorder);
   await expectStyle(chip, "color", graphiteTeal.frontendText);
 
-  const submit = page.getByRole("button", { name: "Continue to GitHub" });
+  const submit = page.getByRole("button", { name: "Review submission" });
   await expectStyle(submit, "background-color", graphiteTeal.primaryBackground);
   await expectStyle(submit, "color", graphiteTeal.primaryText);
   await submit.hover();
@@ -987,7 +992,6 @@ test("captures the complete guided Help surface on Windows", async ({
     .fill("x".repeat(219));
   await expect(page.locator(".help-content")).toHaveScreenshot(
     "help-owner-near-limit.png",
-    { maxDiffPixels: 2000 },
   );
 
   await page.goto(sitePath("/help/security/"));

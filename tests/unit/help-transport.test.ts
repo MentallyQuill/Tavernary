@@ -44,7 +44,9 @@ beforeEach(() => {
 test("opens a readable GitHub form with the authoritative manifest", async () => {
   const open = vi.spyOn(window, "open").mockReturnValue(window);
 
-  await expect(openHelpRequest(baseInput)).resolves.toBe("prefilled");
+  await expect(openHelpRequest(baseInput)).resolves.toMatchObject({
+    mode: "prefilled",
+  });
 
   const opened = new URL(open.mock.calls[0]?.[0] as string);
   expect(opened.searchParams.get("template")).toBe("03-website-bug.yml");
@@ -86,7 +88,7 @@ test("copies the complete manifest and retains higher-priority fallback prefills
         ["page-url", "https://tavernary.org/"],
       ],
     }),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
 
   expect(writeText).toHaveBeenCalledWith(
     `${JSON.stringify(oversizedManifest, null, 2)}\n`,
@@ -120,7 +122,7 @@ test("offers the manifest as selectable text when clipboard access fails", async
         },
       },
     }),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
 
   expect(prompt).toHaveBeenCalledWith(
     "Paste the Help manifest copied by Tavernary here.",
@@ -143,7 +145,7 @@ test("throws before opening an impossible fallback URL", async () => {
         },
       },
     }),
-  ).rejects.toThrow("GitHub issue form URL exceeds the safe handoff limit.");
+  ).rejects.toThrow("GitHub review URL exceeds the safe handoff limit.");
 
   expect(open).not.toHaveBeenCalled();
 });
@@ -152,7 +154,7 @@ test("throws a recoverable handoff error when GitHub cannot be opened", async ()
   vi.spyOn(window, "open").mockReturnValue(null);
 
   await expect(openHelpRequest(baseInput)).rejects.toMatchObject({
-    message: "GitHub issue form could not be opened.",
+    message: "GitHub review could not be opened.",
     url: expect.stringContaining("help-manifest="),
   });
 });

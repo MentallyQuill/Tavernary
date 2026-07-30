@@ -5,429 +5,251 @@ import { expect, test } from "vitest";
 import { parse } from "yaml";
 
 const templateDirectory = resolve(".github/ISSUE_TEMPLATE");
+const contracts = {
+  "01-project-submission.yml": {
+    name: "Submit a project",
+    route: "https://tavernary.org/submit/project/",
+    manifest: "project-manifest",
+    ids: [
+      "project-type",
+      "project-url",
+      "primary-function",
+      "description-choice",
+      "project-description",
+      "tag-choice",
+      "tags",
+      "supported-frontends",
+      "frontend-independent",
+      "additional-context",
+      "supported-model-families",
+      "other-model-family",
+      "completion-formats",
+      "project-manifest",
+    ],
+  },
+  "02-project-information.yml": {
+    name: "Report project information",
+    route: "https://tavernary.org/help/report-project/",
+    manifest: "help-manifest",
+    ids: [
+      "project",
+      "category",
+      "report",
+      "requested-outcome",
+      "evidence",
+      "help-manifest",
+    ],
+  },
+  "03-website-bug.yml": {
+    name: "Report a website bug",
+    route: "https://tavernary.org/help/report-website/",
+    manifest: "help-manifest",
+    ids: [
+      "category",
+      "page-url",
+      "actual-behavior",
+      "expected-behavior",
+      "reproduction-steps",
+      "browser",
+      "device",
+      "additional-context",
+      "help-manifest",
+    ],
+  },
+  "04-other.yml": {
+    name: "Other",
+    route: "https://tavernary.org/help/other/",
+    manifest: "help-manifest",
+    ids: [
+      "category",
+      "subject",
+      "description",
+      "relevant-url",
+      "help-manifest",
+    ],
+  },
+  "05-kit-submission.yml": {
+    name: "Submit or edit a Kit",
+    route: "https://tavernary.org/?mode=kits",
+    manifest: "manifest",
+    ids: ["kit-title", "kit-description", "manifest"],
+  },
+  "06-kit-report.yml": {
+    name: "Report a Kit",
+    route: "https://tavernary.org/help/report-kit/",
+    manifest: "help-manifest",
+    ids: [
+      "kit-id",
+      "share-url",
+      "category",
+      "affected-project-ids",
+      "details",
+      "evidence",
+      "help-manifest",
+    ],
+  },
+  "07-kit-withdrawal.yml": {
+    name: "Withdraw a Kit",
+    route: "https://tavernary.org/help/withdraw-kit/",
+    manifest: "withdrawal-manifest",
+    ids: ["kit-id", "share-url", "confirmation", "withdrawal-manifest"],
+  },
+  "08-project-owner-request.yml": {
+    name: "Manage a project listing",
+    route: "https://tavernary.org/help/manage-project/",
+    manifest: "owner-request-manifest",
+    ids: [
+      "request-type",
+      "source-id",
+      "project-id",
+      "repository",
+      "proposed-name",
+      "proposed-summary",
+      "supported-frontends",
+      "primary-function",
+      "tags",
+      "summary-metadata-mode",
+      "tag-metadata-mode",
+      "model-families",
+      "completion-formats",
+      "proposed-repository",
+      "explanation",
+      "delist-confirmation",
+      "owner-request-manifest",
+    ],
+  },
+} as const;
 
-test("publishes valid, uniquely named issue forms", async () => {
+type IssueForm = {
+  name: string;
+  description: string;
+  title: string;
+  body: Array<{
+    type: string;
+    id?: string;
+    attributes?: {
+      value?: string;
+      label?: string;
+      description?: string;
+      placeholder?: string;
+    };
+    validations?: { required?: boolean };
+  }>;
+};
+
+async function form(file: keyof typeof contracts) {
+  return parse(
+    await readFile(resolve(templateDirectory, file), "utf8"),
+  ) as IssueForm;
+}
+
+test("publishes the ordered public review forms and leaves security private", async () => {
   const files = (await readdir(templateDirectory))
     .filter((file) => file.endsWith(".yml") && file !== "config.yml")
     .sort();
+  expect(files).toEqual(Object.keys(contracts));
   const forms = await Promise.all(
-    files.map(async (file) => ({
-      file,
-      document: parse(await readFile(resolve(templateDirectory, file), "utf8")),
-    })),
+    files.map((file) => form(file as keyof typeof contracts)),
   );
-
-  expect(forms.map(({ document }) => document.name)).toEqual([
-    ...new Set(forms.map(({ document }) => document.name)),
-  ]);
-  for (const { document } of forms) {
-    expect(document.name).toEqual(expect.any(String));
-    expect(document.description).toEqual(expect.any(String));
-    expect(document.title).toEqual(expect.any(String));
-    expect(document.body).toEqual(expect.any(Array));
-    expect(document.body.length).toBeGreaterThan(0);
-  }
-});
-
-test("orders the repository forms and leaves security reporting to GitHub", async () => {
-  const config = parse(
-    await readFile(resolve(templateDirectory, "config.yml"), "utf8"),
+  expect(forms.map(({ name }) => name)).toEqual(
+    Object.values(contracts).map(({ name }) => name),
   );
-  const formFiles = (await readdir(templateDirectory))
-    .filter((file) => file.endsWith(".yml") && file !== "config.yml")
-    .sort();
-  const formNames = await Promise.all(
-    formFiles.map(async (file) => {
-      const form = parse(
-        await readFile(resolve(templateDirectory, file), "utf8"),
-      );
-      return form.name;
-    }),
-  );
-
-  expect(config.blank_issues_enabled).toBe(false);
-  expect(config.contact_links ?? []).toEqual([]);
-  expect(formFiles).toEqual([
-    "01-project-submission.yml",
-    "02-project-information.yml",
-    "03-website-bug.yml",
-    "04-other.yml",
-    "05-kit-submission.yml",
-    "06-kit-report.yml",
-    "07-kit-withdrawal.yml",
-    "08-project-owner-request.yml",
+  expect(forms.map(({ name }) => name)).toEqual([
+    ...new Set(forms.map(({ name }) => name)),
   ]);
-  expect(formNames).toEqual([
-    "Submit a project",
-    "Report project information",
-    "Report a website bug",
-    "Other",
-    "Submit or edit a Kit",
-    "Report a Kit",
-    "Withdraw a Kit",
-    "Manage a project listing",
-  ]);
-  expect(formNames).not.toContain("Request help");
-  expect(formNames).not.toContain("Report a security vulnerability");
-});
-
-test("owner requests have an accessible readable fallback in exact review order", async () => {
-  const form = parse(
-    await readFile(
-      resolve(templateDirectory, "08-project-owner-request.yml"),
-      "utf8",
+  expect(
+    forms.some((document) =>
+      JSON.stringify(document).includes("/security/advisories/new"),
     ),
-  ) as {
-    body: Array<{
-      type: string;
-      id?: string;
-      attributes?: { label?: string; description?: string };
-      validations?: { required?: boolean };
-    }>;
-  };
-  const fields = form.body.filter((field) => field.id);
-
-  expect(fields.map((field) => field.id)).toEqual([
-    "request-type",
-    "source-id",
-    "project-id",
-    "repository",
-    "proposed-name",
-    "proposed-summary",
-    "supported-frontends",
-    "primary-function",
-    "tags",
-    "summary-metadata-mode",
-    "tag-metadata-mode",
-    "model-families",
-    "completion-formats",
-    "proposed-repository",
-    "explanation",
-    "delist-confirmation",
-    "owner-request-manifest",
-  ]);
-  expect(
-    fields
-      .filter((field) => field.validations?.required)
-      .map((field) => field.id),
-  ).toEqual(["request-type", "source-id"]);
-  expect(fields.at(-1)).toMatchObject({
-    id: "owner-request-manifest",
-    type: "textarea",
-    validations: { required: false },
-  });
-  expect(
-    fields.find((field) => field.id === "request-type")?.attributes
-      ?.description,
-  ).toContain(
-    "Edit card details; Add cards from this source; Retire this card; Restore this card; Update repository location; Permanently delist this source",
-  );
-  expect(
-    fields.find((field) => field.id === "proposed-summary")?.attributes
-      ?.description,
-  ).toContain("Mature and consensual adult themes are permitted");
-  expect(
-    fields.find((field) => field.id === "proposed-summary")?.attributes
-      ?.description,
-  ).toContain("https://mentallyquill.github.io/Tavernary/catalog-policy/");
-  expect(
-    fields.find((field) => field.id === "delist-confirmation")?.attributes
-      ?.description,
-  ).toContain("complete owner/repository");
-  expect(
-    fields.find((field) => field.id === "delist-confirmation")?.attributes
-      ?.description,
-  ).toContain("permanently reserves the immutable repository identity");
-  expect(
-    fields.find((field) => field.id === "owner-request-manifest")?.attributes
-      ?.description,
-  ).toContain("required for add-card batches");
+  ).toBe(false);
 });
 
-test("Kit submission is a readable review form without redundant machine fields", async () => {
-  const submission = parse(
-    await readFile(resolve(templateDirectory, "05-kit-submission.yml"), "utf8"),
-  );
-  const ids = submission.body
-    .map((field: { id?: string }) => field.id)
-    .filter(Boolean);
-  expect(ids).toEqual(["kit-title", "kit-description", "manifest"]);
-  expect(
-    submission.body
-      .filter((field: { id?: string }) => field.id)
-      .map(
-        (field: { attributes: { label: string } }) => field.attributes.label,
-      ),
-  ).toEqual(["Kit title", "Kit description", "Kit manifest"]);
-
-  const report = parse(
-    await readFile(resolve(templateDirectory, "06-kit-report.yml"), "utf8"),
-  );
-  const category = report.body.find(
-    (field: { id?: string }) => field.id === "category",
-  );
-  expect(category.type).toBe("input");
-  expect(category.attributes.description).toContain("Compatibility problem");
-  expect(category.attributes.description).toContain("Duplicate Kit");
-  for (const file of ["06-kit-report.yml", "07-kit-withdrawal.yml"]) {
+test("makes every public Issue Form a Tavernary-first review mirror", async () => {
+  for (const [file, contract] of Object.entries(contracts)) {
+    const document = await form(file as keyof typeof contracts);
+    const fields = document.body.filter((field) => field.id);
+    const intro = document.body[0];
     const source = await readFile(resolve(templateDirectory, file), "utf8");
-    expect(source).toContain("id: kit-id");
-    expect(source).toContain("id: share-url");
-    expect(source).toMatch(/required: true/g);
+
+    expect(document.description).toContain("Begin in Tavernary");
+    expect(intro.type).toBe("markdown");
+    expect(intro.attributes?.value).toContain(
+      "Tavernary prepared this review.",
+    );
+    expect(intro.attributes?.value).toContain(
+      "The generated manifest is the automation payload; the readable fields are review-only.",
+    );
+    expect(intro.attributes?.value).toContain(contract.route);
+    expect(fields.map(({ id }) => id)).toEqual(contract.ids);
+    expect(fields.some(({ type }) => type === "dropdown")).toBe(false);
+
+    const manifest = fields.find(({ id }) => id === contract.manifest);
+    expect(manifest).toMatchObject({
+      type: "textarea",
+      validations: { required: true },
+    });
+    for (const field of fields.filter(({ id }) => id !== contract.manifest)) {
+      expect(field.validations?.required ?? false).toBe(false);
+    }
+    expect(source).not.toMatch(
+      /fallback|edit (?:the|this) issue|structured fallback/iu,
+    );
   }
 });
 
-test("project submission is a structured fallback for automated intake", async () => {
-  const submission = parse(
-    await readFile(
-      resolve(templateDirectory, "01-project-submission.yml"),
-      "utf8",
-    ),
-  );
-  const fields = submission.body.filter((field: { id?: string }) => field.id);
-
-  expect(submission.title).toBe("[Project submission]");
-  expect(fields.map((field: { id: string }) => field.id)).toEqual([
+test("keeps every URL-prefilled enum mirror as optional plain text", async () => {
+  const project = await form("01-project-submission.yml");
+  const owner = await form("08-project-owner-request.yml");
+  const fields = [...project.body, ...owner.body];
+  for (const id of [
     "project-type",
-    "project-url",
     "primary-function",
     "description-choice",
-    "project-description",
     "tag-choice",
-    "tags",
-    "supported-frontends",
-    "frontend-independent",
-    "additional-context",
-    "supported-model-families",
-    "other-model-family",
-    "completion-formats",
-    "project-manifest",
-  ]);
-  expect(
-    fields.map(
-      (field: { attributes: { label: string } }) => field.attributes.label,
-    ),
-  ).toEqual([
-    "Project Type",
-    "Project URL",
-    "Primary function",
-    "Description choice",
-    "Short Description",
-    "Tag choice",
-    "Tags",
-    "Supported frontends",
-    "Frontend-independent",
-    "Anything we should know?",
-    "Supported model families",
-    "Other model family",
-    "Completion formats",
-    "Project manifest",
-  ]);
-  expect(fields.map((field: { type: string }) => field.type)).toEqual([
-    "input",
-    "input",
-    "input",
-    "dropdown",
-    "textarea",
-    "dropdown",
-    "textarea",
-    "textarea",
-    "input",
-    "textarea",
-    "textarea",
-    "input",
-    "textarea",
-    "textarea",
-  ]);
-  expect(fields[0].attributes.placeholder).toBe(
-    "Frontend, Extension, or System Preset",
-  );
-  expect(fields[0].attributes.description).toContain(
-    "Frontend, Extension, or System Preset",
-  );
-  expect(fields[0].validations.required).toBe(true);
-  expect(fields[1].validations.required).toBe(true);
-  expect(fields[1].attributes.placeholder).toBe(
-    "https://github.com/owner/repository or https://codeberg.org/owner/repository",
-  );
-  expect(fields[2].validations?.required ?? false).toBe(false);
-  expect(fields[2].attributes.description).toContain("memory-retrieval");
-  expect(fields[7].attributes.description).toContain(
-    "comma- or newline-separated",
-  );
-  expect(fields[3].attributes.description).toContain("root README first");
-  expect(fields[4].attributes.description).toContain(
-    "Mature and consensual adult themes are permitted",
-  );
-  expect(fields[4].attributes.description).toContain(
-    "https://mentallyquill.github.io/Tavernary/catalog-policy/",
-  );
-  expect(fields[3].attributes.description).toContain(
-    "verified personal repository owner",
-  );
-  expect(fields[5].attributes.description).toContain(
-    "up to six controlled Goals and traits tag IDs",
-  );
-  expect(fields[6].attributes.description).toContain("one per line");
-  expect(fields[8].attributes.placeholder).toBe("Yes or No");
-  expect(fields[8].validations.required).toBe(true);
-  expect(fields[10].validations?.required ?? false).toBe(false);
-  expect(fields[10].attributes.description).toContain(
-    "one canonical family ID per line",
-  );
-  expect(fields[12].attributes.description).toContain(
-    "one canonical format ID per line",
-  );
-  expect(submission.body[0].attributes.value).toContain(
-    "Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type.",
-  );
-  expect(submission.body[0].attributes.value).toContain(
-    "Tavernary submission builder",
-  );
-});
-
-test("public Help forms expose readable prefillable fields before an optional manifest", async () => {
-  const expected = {
-    "02-project-information.yml": {
-      ids: [
-        "project",
-        "category",
-        "report",
-        "requested-outcome",
-        "evidence",
-        "help-manifest",
-      ],
-      types: ["input", "input", "textarea", "textarea", "textarea", "textarea"],
-      required: ["project", "category", "report"],
-      categories: [
-        "Incorrect or outdated card information",
-        "Repository moved, renamed, archived, or disappeared",
-        "Duplicate or wrong listing",
-        "Unsafe or malicious project",
-        "Abusive or inappropriate content",
-        "Copyright, trademark, or other rights concern",
-        "Something else about this listing",
-      ],
-    },
-    "03-website-bug.yml": {
-      ids: [
-        "category",
-        "page-url",
-        "actual-behavior",
-        "expected-behavior",
-        "reproduction-steps",
-        "browser",
-        "device",
-        "additional-context",
-        "help-manifest",
-      ],
-      types: [
-        "input",
-        "input",
-        "textarea",
-        "textarea",
-        "textarea",
-        "input",
-        "input",
-        "textarea",
-        "textarea",
-      ],
-      required: [
-        "category",
-        "page-url",
-        "actual-behavior",
-        "expected-behavior",
-        "reproduction-steps",
-      ],
-      categories: [
-        "Search, filters, or sorting",
-        "Navigation or link",
-        "Display, layout, or theme",
-        "Form submission or GitHub handoff",
-        "Kit builder or catalog interaction",
-        "Accessibility",
-        "Performance or loading",
-        "Other website behavior",
-      ],
-    },
-    "04-other.yml": {
-      ids: [
-        "category",
-        "subject",
-        "description",
-        "relevant-url",
-        "help-manifest",
-      ],
-      types: ["input", "input", "textarea", "input", "textarea"],
-      required: ["category", "subject", "description"],
-      categories: [
-        "Using Tavernary",
-        "An existing request",
-        "Suggest an improvement",
-        "Documentation or policy",
-        "Something else",
-      ],
-    },
-    "06-kit-report.yml": {
-      ids: [
-        "kit-id",
-        "share-url",
-        "category",
-        "affected-project-ids",
-        "details",
-        "evidence",
-        "help-manifest",
-      ],
-      types: [
-        "input",
-        "input",
-        "input",
-        "textarea",
-        "textarea",
-        "textarea",
-        "textarea",
-      ],
-      required: ["kit-id", "share-url", "category", "details"],
-      categories: [
-        "Compatibility problem",
-        "Unsafe or malicious included project",
-        "Abusive or inappropriate content",
-        "Broken, removed, or unavailable project",
-        "Misleading title or description",
-        "Duplicate Kit",
-        "Author or attribution concern",
-        "Other Kit concern",
-      ],
-    },
-  } as const;
-
-  for (const [file, contract] of Object.entries(expected)) {
-    const form = parse(
-      await readFile(resolve(templateDirectory, file), "utf8"),
-    ) as {
-      body: Array<{
-        type: string;
-        id?: string;
-        attributes?: { description?: string };
-        validations?: { required?: boolean };
-      }>;
-    };
-    const fields = form.body.filter((field) => field.id);
-
-    expect(fields.map((field) => field.id)).toEqual(contract.ids);
-    expect(fields.map((field) => field.type)).toEqual(contract.types);
-    expect(
-      fields
-        .filter((field) => field.validations?.required)
-        .map((field) => field.id),
-    ).toEqual(contract.required);
-    expect(fields.at(-1)).toMatchObject({
-      id: "help-manifest",
-      type: "textarea",
+    "summary-metadata-mode",
+    "tag-metadata-mode",
+  ]) {
+    expect(fields.find((field) => field.id === id)).toMatchObject({
+      id,
+      type: "input",
       validations: { required: false },
     });
-    expect(
-      fields.find((field) => field.id === "category")?.attributes?.description,
-    ).toContain(contract.categories.join("; "));
+  }
+
+  const descriptionChoice = project.body.find(
+    ({ id }) => id === "description-choice",
+  );
+  expect(descriptionChoice?.attributes?.description).toContain(
+    "Let TavernAI write the description; Write the description myself",
+  );
+  expect(descriptionChoice?.attributes?.placeholder).toBe(
+    "Let TavernAI write the description",
+  );
+  const tagChoice = project.body.find(({ id }) => id === "tag-choice");
+  expect(tagChoice?.attributes?.description).toContain(
+    "Let Tavernary select tags; Set tags myself",
+  );
+  expect(tagChoice?.attributes?.placeholder).toBe("Let Tavernary select tags");
+});
+
+test("routes the GitHub issue chooser back to every Tavernary intake", async () => {
+  const config = parse(
+    await readFile(resolve(templateDirectory, "config.yml"), "utf8"),
+  ) as {
+    blank_issues_enabled: boolean;
+    contact_links: Array<{ name: string; url: string; about: string }>;
+  };
+  expect(config.blank_issues_enabled).toBe(false);
+  expect(config.contact_links.map(({ url }) => url)).toEqual([
+    "https://tavernary.org/submit/project/",
+    "https://tavernary.org/?mode=kits",
+    "https://tavernary.org/help/manage-project/",
+    "https://tavernary.org/help/",
+  ]);
+  for (const link of config.contact_links) {
+    expect(link.name).toEqual(expect.any(String));
+    expect(link.name.length).toBeGreaterThan(0);
+    expect(link.about).toEqual(expect.any(String));
+    expect(link.about.length).toBeGreaterThan(0);
   }
 });

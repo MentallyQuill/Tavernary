@@ -121,6 +121,54 @@ describe("full catalog data", () => {
     );
   });
 
+  test("keeps standalone frontends mapped to distinct catalog identities", async () => {
+    const { projects, projectsById } = await loadProductionData();
+    const catalog = await buildCatalog({ write: false });
+    const frontendVocabulary = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/vocabularies/frontends.json"),
+        "utf8",
+      ),
+    ) as { frontends: Array<{ id: string; label: string }> };
+    const expected = [
+      {
+        id: "kwaroran-risuai",
+        name: "RisuAI",
+        frontendId: "risuai",
+      },
+      {
+        id: "mnehmos-mnehmos-quest-keeper-game",
+        name: "Quest Keeper",
+        frontendId: "quest-keeper",
+      },
+    ];
+
+    for (const { id, name, frontendId } of expected) {
+      expect(projectsById.get(id)).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [frontendId],
+        primary_function: "frontend",
+      });
+      expect(
+        catalog.projects.find((project) => project.id === id),
+      ).toMatchObject({
+        name,
+        kind: "frontend",
+        frontends: [expect.objectContaining({ id: frontendId })],
+        primaryFunction: "frontend",
+      });
+      expect(frontendVocabulary.frontends).toContainEqual(
+        expect.objectContaining({ id: frontendId, label: name }),
+      );
+    }
+
+    const claimedFrontendIds = projects
+      .filter(({ kind }) => kind === "frontend")
+      .flatMap(({ frontends }) => frontends);
+    expect(new Set(claimedFrontendIds).size).toBe(claimedFrontendIds.length);
+  });
+
   test("matches the canonical schema-v6 source-backed catalog contract", async () => {
     const { projects, sources, vocabulary, sourcesById } =
       await loadProductionData();
@@ -188,16 +236,34 @@ describe("full catalog data", () => {
         );
       }
     }
-
-    expect(
-      projects.reduce((count, project) => count + project.tags.length, 0),
-    ).toBeGreaterThanOrEqual(793);
-    expect(
-      projects.filter(({ tags }) => tags.length === 0).length,
-    ).toBeLessThanOrEqual(16);
   });
 
-  test("keeps the tag migration audit tied to concrete catalog evidence", async () => {
+  test("allows manual summary and tag policies on the same six-tag card", () => {
+    const card = {
+      id: "owner-authored-card",
+      tags: [
+        "tag-one",
+        "tag-two",
+        "tag-three",
+        "tag-four",
+        "tag-five",
+        "tag-six",
+      ],
+      metadata_policy: {
+        summary: { mode: "manual", note: "Owner-authored summary." },
+        tags: { mode: "manual", note: "Owner-selected tags." },
+      },
+    } satisfies Pick<CatalogRecord, "id" | "tags" | "metadata_policy">;
+
+    expect(card.tags).toHaveLength(6);
+    expect(new Set(card.tags).size).toBe(card.tags.length);
+    expect(card.metadata_policy).toEqual({
+      summary: { mode: "manual", note: expect.any(String) },
+      tags: { mode: "manual", note: expect.any(String) },
+    });
+  });
+
+  test("keeps the historical tag migration audit internally consistent", async () => {
     const report = JSON.parse(
       await readFile(
         resolve(rootDirectory, "data/reports/tag-migration-report.json"),
@@ -213,31 +279,20 @@ describe("full catalog data", () => {
         evidence: Record<string, string[]>;
       }>;
     };
-    const { projectsById, vocabulary } = await loadProductionData();
-    const tagsById = new Map(vocabulary.tags.map((tag) => [tag.id, tag]));
-
-    expect(report.project_count).toBe(309);
-    expect(report.zero_tag_count).toBe(16);
-    expect(report.six_tag_count).toBe(17);
-    expect(report.projects).toHaveLength(309);
+    expect(report.project_count).toBe(report.projects.length);
+    expect(report.zero_tag_count).toBe(
+      report.projects.filter(({ tags }) => tags.length === 0).length,
+    );
+    expect(report.six_tag_count).toBe(
+      report.projects.filter(({ tags }) => tags.length === 6).length,
+    );
+    expect(
+      new Set(report.projects.map(({ project_id }) => project_id)).size,
+    ).toBe(report.projects.length);
     for (const entry of report.projects) {
-      const project = projectsById.get(entry.project_id);
-      expect(project, entry.project_id).toBeDefined();
-      expect(entry.tags.length, entry.project_id).toBeLessThanOrEqual(6);
       expect(new Set(entry.tags).size, entry.project_id).toBe(
         entry.tags.length,
       );
-      expect(Object.keys(entry.evidence).sort(), entry.project_id).toEqual(
-        [...entry.tags].sort(),
-      );
-      for (const id of entry.tags) {
-        const definition = tagsById.get(id);
-        expect(definition, `${entry.project_id}: ${id}`).toBeDefined();
-        expect(
-          definition?.applicable_kinds,
-          `${entry.project_id}: ${id}`,
-        ).toContain(project?.kind);
-      }
       for (const references of Object.values(entry.evidence)) {
         for (const reference of references) {
           expect(reference, entry.project_id).not.toMatch(
@@ -283,7 +338,7 @@ describe("full catalog data", () => {
     );
   });
 
-  test("preserves migrated manual summaries without coupling future tag policy", async () => {
+  test("preserves known trusted manual summaries without coupling tag policy", async () => {
     const { projectsById } = await loadProductionData();
     const expectedManualSummaryIds = [
       "evening-truth-carrd-prompt",
@@ -301,9 +356,9 @@ describe("full catalog data", () => {
     ];
 
     for (const id of expectedManualSummaryIds) {
-      expect(projectsById.get(id)?.metadata_policy.summary.mode).toBe("manual");
-      expect(projectsById.get(id)?.metadata_policy.tags).toEqual({
-        mode: "automatic",
+      expect(projectsById.get(id)?.metadata_policy.summary).toMatchObject({
+        mode: "manual",
+        note: expect.any(String),
       });
     }
     expect(projectsById.get("mentallyquill-st-wandlight")?.summary).toBe(

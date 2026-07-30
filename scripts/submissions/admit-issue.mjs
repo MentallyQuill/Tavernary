@@ -5,7 +5,6 @@ import {
   HELP_LABEL_DEFINITIONS,
   HELP_ROUTE_BY_LABEL,
 } from "../help/help-labels.mjs";
-import { HELP_FALLBACK_HEADINGS } from "../help/parse-help-issue.mjs";
 import {
   buildIssueLimitComment,
   decideIssueAdmission,
@@ -69,65 +68,8 @@ export function issueRouteFromLabels(labels = []) {
   return routes[0]?.[1] ?? "none";
 }
 
-function issueHeadings(body = "") {
-  return new Set(
-    String(body)
-      .split(/^### /m)
-      .slice(1)
-      .map((section) => section.split(/\r?\n/, 1)[0]?.trim())
-      .filter(Boolean),
-  );
-}
-
-export function issueRouteFromBody(body = "") {
-  const headings = issueHeadings(body);
-  const routes = [
-    {
-      route: "project",
-      headings: ["Project Type", "Project URL", "Frontend-independent"],
-    },
-    {
-      route: "kit",
-      headings: ["Kit title", "Kit description", "Kit manifest"],
-    },
-    {
-      route: "kit-withdrawal",
-      headings: ["Kit ID", "Kit share URL", "Confirmation"],
-    },
-    {
-      route: "project-owner",
-      headings: [
-        "Request type",
-        "Project ID",
-        "Current repository",
-        "Proposed display name",
-        "Proposed summary",
-        "Supported frontends",
-        "Primary function",
-        "Capabilities",
-        "Model families",
-        "Completion formats",
-        "Proposed repository",
-        "Explanation or public note",
-        "Delist confirmation",
-        "Owner request manifest",
-      ],
-    },
-    ...Object.entries(HELP_FALLBACK_HEADINGS).map(([route, headings]) => ({
-      route,
-      headings,
-    })),
-  ];
-  const matches = routes.filter(({ headings: required }) =>
-    required.every((heading) => headings.has(heading)),
-  );
-  if (matches.length > 1) return "conflict";
-  return matches[0]?.route ?? "none";
-}
-
 export function effectiveIssueRoute(issue = {}) {
-  const explicit = issueRouteFromLabels(issue.labels);
-  return explicit === "none" ? issueRouteFromBody(issue.body) : explicit;
+  return issueRouteFromLabels(issue.labels);
 }
 
 export async function listOpenIssues({ repository, creator, request }) {
@@ -176,27 +118,6 @@ async function addOwnedLabel(repository, issueNumber, label, request) {
   });
 }
 
-async function restoreRecoveredRouteLabel({
-  repository,
-  issue,
-  route,
-  request,
-  ensureLabels,
-}) {
-  const routeLabel = Object.entries(routeByLabel).find(
-    ([, candidate]) => candidate === route,
-  )?.[0];
-  if (
-    !routeLabel ||
-    labelNames(issue.labels).has(routeLabel) ||
-    issueRouteFromLabels(issue.labels) !== "none"
-  ) {
-    return;
-  }
-  if (ensureLabels) await ensureOwnedLabels(repository, request);
-  await addOwnedLabel(repository, issue.number, routeLabel, request);
-}
-
 async function synchronizeLimitComment(repository, issueNumber, request) {
   const comments = await request(
     `/repos/${repository}/issues/${issueNumber}/comments?per_page=100`,
@@ -240,13 +161,6 @@ export async function processIssueAdmission({ event, request }) {
     const route = effectiveIssueRoute(currentIssue);
     const helpRoute = publicHelpRoutes.has(route);
     if (helpRoute) await ensureOwnedLabels(repository, request);
-    await restoreRecoveredRouteLabel({
-      repository,
-      issue: currentIssue,
-      route,
-      request,
-      ensureLabels: !helpRoute,
-    });
     return { ...decision, route };
   }
 
@@ -295,13 +209,6 @@ export async function processIssueAdmission({ event, request }) {
       request,
     );
     const route = effectiveIssueRoute(currentIssue);
-    await restoreRecoveredRouteLabel({
-      repository,
-      issue: currentIssue,
-      route,
-      request,
-      ensureLabels: false,
-    });
     return { ...decision, route };
   }
 

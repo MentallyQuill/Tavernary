@@ -39,6 +39,16 @@ const trackedTagVocabulary: TagVocabulary = {
       inclusion_guidance: ["The project automates a workflow."],
       exclusion_guidance: [],
     },
+    ...Array.from({ length: 5 }, (_, index) => ({
+      id: `manual-tag-${index + 2}`,
+      label: `Manual tag ${index + 2}`,
+      facet: "trait" as const,
+      description: `Manual owner tag ${index + 2}.`,
+      aliases: [],
+      applicable_kinds: ["extension" as const],
+      inclusion_guidance: ["The owner selected this applicable trait."],
+      exclusion_guidance: [],
+    })),
   ],
 };
 const currentTagVocabularyHash = tagVocabularyHash(trackedTagVocabulary);
@@ -401,6 +411,33 @@ test("fingerprints every normalized request field", () => {
   ).not.toBe(fingerprintProjectOwnerManifest(manifest));
 });
 
+test("does not load generator targets from readable owner identifiers", async () => {
+  const fixture = harness(editManifest());
+  fixture.latest.body = `
+### Request type
+
+Edit card details
+
+### Source ID
+
+github-42
+
+### Project ID
+
+owner-alpha
+
+### Owner request manifest
+
+_No response_
+`;
+
+  await expect(generate(fixture)).rejects.toThrow(
+    "owner-request-invalid: Source ID is missing.",
+  );
+  expect(fixture.reads).toEqual([]);
+  expect(fixture.writes).toEqual([]);
+});
+
 test("compares reports with sorted project arrays while preserving exact source identity", () => {
   const base = {
     schema_version: 2,
@@ -481,6 +518,56 @@ test("revalidates and writes one card edit with a card-scoped input fingerprint"
       result: "accepted-with-light-edits",
       change_reasons: ["punctuation-corrected"],
       policy_signal: "none",
+    },
+  });
+});
+
+test("writes one owner-selected summary and six manual tags to only the selected card", async () => {
+  const manifest = editManifest();
+  const manualTags = [
+    "automation",
+    "manual-tag-2",
+    "manual-tag-3",
+    "manual-tag-4",
+    "manual-tag-5",
+    "manual-tag-6",
+  ];
+  manifest.proposed = editable("Owner-authored manual summary.", {
+    summaryMode: "manual",
+    tagMode: "manual",
+    tags: manualTags,
+  });
+  const fixture = harness(manifest);
+
+  const generated = await generate(fixture, {
+    copySummary: async ({
+      submittedSummary,
+    }: {
+      submittedSummary: string;
+    }) => ({
+      summary: submittedSummary,
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    }),
+  });
+
+  expect(generated.generatedPaths).toEqual([
+    "data/registry/projects/owner-alpha.json",
+  ]);
+  expect(fixture.writes).toEqual([projectPath, normalizedReportPath]);
+  expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
+    summary: "Owner-authored manual summary.",
+    tags: manualTags,
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
+      tags: {
+        mode: "manual",
+        note: "Verified repository owner selection.",
+      },
     },
   });
 });

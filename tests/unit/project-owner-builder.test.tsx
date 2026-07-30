@@ -12,8 +12,8 @@ vi.mock("next/navigation", () => ({
 }));
 
 const metadataPolicy = {
-  summary: { mode: "manual" as const },
-  tags: { mode: "manual" as const },
+  summary: { mode: "automatic" as const },
+  tags: { mode: "automatic" as const },
 };
 
 const commonEditable = {
@@ -346,6 +346,9 @@ test("reviews and hands off one atomic multi-card manifest", async () => {
   expect(screen.getByText("Summary policy: automatic")).toBeVisible();
   expect(screen.getByText("Tag policy: automatic")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  expect(
+    await screen.findByText(/GitHub review opened in a new tab/u),
+  ).toBeVisible();
 
   const opened = new URL(open.mock.calls[0]?.[0] as string);
   const manifest = JSON.parse(
@@ -371,7 +374,59 @@ test("reviews and hands off one atomic multi-card manifest", async () => {
   expect(manifest.proposed_cards[0].draft_id).not.toBe(
     manifest.proposed_cards[0].project_id,
   );
+
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+  expect(screen.getByLabelText("Card 1 display name")).toHaveValue("V9 Mirage");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  const reopenedManifest = JSON.parse(
+    new URL(open.mock.calls[1]?.[0] as string).searchParams.get(
+      "owner-request-manifest",
+    ) ?? "",
+  );
+  expect(reopenedManifest).toEqual(manifest);
 });
+
+test("preserves all ten add-card drafts through back, edit, and reopen", async () => {
+  const user = userEvent.setup();
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText },
+  });
+  vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Add cards from this source" }),
+  );
+
+  const add = screen.getByRole("button", { name: "Add another card" });
+  for (let index = 2; index <= 10; index += 1) {
+    await user.click(add);
+    const name = screen.getByLabelText(`Card ${index} display name`);
+    await user.clear(name);
+    await user.type(name, `Alpha Card ${index}`);
+  }
+  await user.type(
+    screen.getByLabelText("Public note (optional)"),
+    "Review this complete ten-card source batch.",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByText("Card 10: Alpha Card 10")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  const firstManifest = JSON.parse(writeText.mock.calls[0]?.[0] ?? "");
+  expect(firstManifest.proposed_cards).toHaveLength(10);
+
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+  expect(screen.getByLabelText("Card 10 display name")).toHaveValue(
+    "Alpha Card 10",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  const reopenedManifest = JSON.parse(writeText.mock.calls[1]?.[0] ?? "");
+  expect(reopenedManifest).toEqual(firstManifest);
+}, 30_000);
 
 test("uses independent metadata choices for ordinary edits", async () => {
   const user = userEvent.setup();
@@ -405,6 +460,68 @@ test("uses independent metadata choices for ordinary edits", async () => {
   });
 });
 
+test("makes edited summary and tags manual while preserving an explicit automatic choice", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
+  expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
+
+  const summary = screen.getByRole("textbox", { name: /^Summary$/u });
+  await user.clear(summary);
+  await user.type(summary, "An owner-authored replacement summary.");
+  await user.click(screen.getByRole("checkbox", { name: "Creative writing" }));
+
+  expect(screen.getByLabelText("Summary policy")).toHaveValue("manual");
+  expect(screen.getByLabelText("Tag policy")).toHaveValue("manual");
+
+  await user.selectOptions(
+    screen.getByLabelText("Summary policy"),
+    "automatic",
+  );
+  await user.type(
+    screen.getByLabelText("Public note (optional)"),
+    "Keep automatic summary generation.",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByText("Summary: automatic; tags: manual")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+  expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
+  expect(screen.getByLabelText("Tag policy")).toHaveValue("manual");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  const manifest = JSON.parse(
+    opened.searchParams.get("owner-request-manifest") ?? "",
+  );
+  expect(manifest).toMatchObject({
+    operation: "edit-card",
+    source_id: "github-42",
+    project_id: "owner-alpha",
+    repository_id: 42,
+    proposed: {
+      summary: "An owner-authored replacement summary.",
+      tags: ["automate-workflows", "creative-writing"],
+      metadata: {
+        summary: { mode: "automatic" },
+        tags: { mode: "manual" },
+      },
+    },
+  });
+  expect(opened.searchParams.get("request-type")).toBe("Edit card details");
+  expect(opened.searchParams.get("source-id")).toBe("github-42");
+  expect(opened.searchParams.get("project-id")).toBe("owner-alpha");
+  expect(opened.searchParams.get("explanation")).toBe(
+    "Keep automatic summary generation.",
+  );
+  expect(opened.searchParams.has("public-note")).toBe(false);
+});
+
 test("removes emoji from an owner summary and explains the edit", async () => {
   const user = userEvent.setup();
   renderBuilder();
@@ -425,6 +542,7 @@ test("removes emoji from an owner summary and explains the edit", async () => {
 
 test("describes retire and restore as reversible one-card maintenance", async () => {
   const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Retire this card" }));
@@ -435,6 +553,21 @@ test("describes retire and restore as reversible one-card maintenance", async ()
   ).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Review request" }));
   expect(screen.getByText("After: retired")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  expect(
+    JSON.parse(
+      new URL(open.mock.calls[0]?.[0] as string).searchParams.get(
+        "owner-request-manifest",
+      ) ?? "",
+    ),
+  ).toMatchObject({
+    operation: "retire-card",
+    project_id: "owner-alpha",
+    proposed: {
+      listing_status: "retired",
+      listing_status_reason: "owner-request",
+    },
+  });
 
   await user.click(screen.getByRole("button", { name: "Back and edit" }));
   await selectProject(user, "owner-alpha-preset");
@@ -444,6 +577,64 @@ test("describes retire and restore as reversible one-card maintenance", async ()
       "Restoring Alpha Preset returns this card to the public catalog without changing its repository or sibling cards.",
     ),
   ).toBeVisible();
+});
+
+test("reviews and hands off a restore-card transaction", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user, "owner-alpha-preset");
+  await user.click(screen.getByRole("radio", { name: "Restore this card" }));
+  await user.type(
+    screen.getByLabelText("Public note (optional)"),
+    "Restore the retired sibling.",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByText("After: active")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "restore-card",
+    source_id: "github-42",
+    project_id: "owner-alpha-preset",
+    proposed: { listing_status: "active", listing_status_reason: null },
+    explanation: "Restore the retired sibling.",
+  });
+});
+
+test("reviews and hands off a move-source transaction", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Update repository location" }),
+  );
+  await user.type(
+    screen.getByLabelText("Public GitHub repository URL"),
+    "https://github.com/Owner/Alpha-Renamed",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(screen.getByText("Owner/Alpha")).toBeVisible();
+  expect(screen.getByText("Owner/Alpha-Renamed")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const opened = new URL(open.mock.calls[0]?.[0] as string);
+  expect(
+    JSON.parse(opened.searchParams.get("owner-request-manifest") ?? ""),
+  ).toMatchObject({
+    operation: "move-source",
+    source_id: "github-42",
+    repository_id: 42,
+    original: { repository: "Owner/Alpha", repository_id: 42 },
+    proposed: { repository: "Owner/Alpha-Renamed", repository_id: 42 },
+  });
+  expect(opened.searchParams.get("project-id")).toBe("");
 });
 
 test("permanently delists one source only after repository confirmation", async () => {

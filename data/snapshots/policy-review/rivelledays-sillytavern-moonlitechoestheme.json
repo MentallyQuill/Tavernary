@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rivelledays-sillytavern-moonlitechoestheme",
+  "source_id": "github-932766847",
+  "source_identity": "github:rivelledays/sillytavern-moonlitechoestheme",
+  "evidence_fingerprint": "20dd9a21bf58975bf96131bb6f52089f6352169bf9582e1a434be4135b6b1ed7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:57:29.887Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:57:29.887Z"
+  },
+  "maintenance_issue_number": null
+}

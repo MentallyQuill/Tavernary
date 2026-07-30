@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { validateKitIssue } from "../../scripts/submissions/triage-kit-issue.mjs";
+import {
+  buildKitValidationComment,
+  validateKitIssue,
+} from "../../scripts/submissions/triage-kit-issue.mjs";
 
 const projects = [
   { id: "frontend", kind: "frontend", visibility: "published" },
@@ -43,6 +46,21 @@ function issue(actor: { id: number; login: string; association: string }) {
     author_association: actor.association,
   };
 }
+
+test("keeps invalid Kit requests open with Tavernary correction guidance", () => {
+  expect(
+    buildKitValidationComment({
+      valid: false,
+      manifest: null,
+      editAuthority: null,
+      labels: ["needs-information"],
+      errors: ["Kit manifest is required."],
+      warnings: [],
+    }),
+  ).toContain(
+    "Return to https://tavernary.org/?mode=kits, correct the draft, and open a new GitHub review. This issue remains open with `needs-information`.",
+  );
+});
 
 test("threads the refreshed issue actor and association into staff validation", () => {
   expect(

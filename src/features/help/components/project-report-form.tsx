@@ -9,10 +9,7 @@ import type {
   ProjectReportPayload,
 } from "@/features/help/help-manifest.mjs";
 import { PROJECT_REPORT_CATEGORIES } from "@/features/help/help-options";
-import {
-  HelpHandoffError,
-  openHelpRequest,
-} from "@/features/help/help-transport";
+import { openHelpRequest } from "@/features/help/help-transport";
 
 import {
   HelpErrorSummary,
@@ -99,9 +96,6 @@ export function ProjectReportForm({
   const [evidence, setEvidence] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [reviewing, setReviewing] = useState(false);
-  const [continuing, setContinuing] = useState(false);
-  const [handoffError, setHandoffError] = useState("");
-  const [fallbackUrl, setFallbackUrl] = useState("");
 
   const selected = projects.find((project) => project.id === projectId);
   const normalizedSearch = search.trim().toLocaleLowerCase();
@@ -142,82 +136,62 @@ export function ProjectReportForm({
     return nextErrors.length === 0;
   }
 
-  async function continueOnGitHub() {
-    if (!selected || !isProjectReportCategory(category) || !payload) return;
-    setHandoffError("");
-    setFallbackUrl("");
-    setContinuing(true);
-    try {
-      await openHelpRequest({
-        formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
-        template: "02-project-information.yml",
-        manifestFieldId: "help-manifest",
-        manifest: {
-          schema_version: 1,
-          request_kind: "project-report",
-          origin: {
-            page_url: "/help/report-project/",
-            site_revision: siteRevision,
-          },
-          payload: payload satisfies ProjectReportPayload,
-        },
-        prefills: [
-          ["project", `${selected.name} — ${selected.canonicalUrl}`],
-          ["category", displayProjectReportCategory(category)],
-          ["report", report.trim()],
-          ["requested-outcome", requestedOutcome.trim()],
-          ["evidence", evidence.trim()],
-        ],
-        pasteInstruction:
-          "Paste the Help manifest copied by Tavernary into the manifest field.",
-      });
-    } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
-      setHandoffError(
-        error instanceof Error
-          ? error.message
-          : "GitHub could not be opened. Please try again.",
-      );
-    } finally {
-      setContinuing(false);
+  async function openReview() {
+    if (!selected || !isProjectReportCategory(category) || !payload) {
+      throw new Error("The project report is no longer ready for review.");
     }
+    return openHelpRequest({
+      formUrl: "https://github.com/MentallyQuill/Tavernary/issues/new",
+      template: "02-project-information.yml",
+      manifestFieldId: "help-manifest",
+      manifest: {
+        schema_version: 1,
+        request_kind: "project-report",
+        origin: {
+          page_url: "/help/report-project/",
+          site_revision: siteRevision,
+        },
+        payload: payload satisfies ProjectReportPayload,
+      },
+      prefills: [
+        ["project", `${selected.name} — ${selected.canonicalUrl}`],
+        ["category", displayProjectReportCategory(category)],
+        ["report", report.trim()],
+        ["requested-outcome", requestedOutcome.trim()],
+        ["evidence", evidence.trim()],
+      ],
+      pasteInstruction:
+        "Paste the Help manifest copied by Tavernary into the manifest field.",
+    });
   }
 
   if (reviewing && selected && isProjectReportCategory(category) && payload) {
     return (
-      <>
-        <HelpErrorSummary
-          errors={handoffError ? [handoffError] : []}
-          heading="GitHub could not be opened automatically."
-        />
-        <HelpReview
-          rows={[
-            {
-              label: "Project",
-              value: `${selected.name} — ${selected.canonicalUrl}`,
-            },
-            {
-              label: "Category",
-              value: displayProjectReportCategory(category),
-            },
-            { label: "What Tavernary should review", value: payload.report },
-            {
-              label: "Requested outcome",
-              value: payload.requested_outcome ?? "",
-            },
-            {
-              label: "Public supporting evidence",
-              value: payload.evidence ?? "",
-            },
-          ]}
-          onBack={() => setReviewing(false)}
-          onCancel={() => setReviewing(false)}
-          onContinue={continueOnGitHub}
-          returnFocusId="project-search"
-          continuing={continuing}
-          fallbackUrl={fallbackUrl}
-        />
-      </>
+      <HelpReview
+        rows={[
+          {
+            label: "Project",
+            value: `${selected.name} — ${selected.canonicalUrl}`,
+          },
+          {
+            label: "Category",
+            value: displayProjectReportCategory(category),
+          },
+          { label: "What Tavernary should review", value: payload.report },
+          {
+            label: "Requested outcome",
+            value: payload.requested_outcome ?? "",
+          },
+          {
+            label: "Public supporting evidence",
+            value: payload.evidence ?? "",
+          },
+        ]}
+        onBack={() => setReviewing(false)}
+        onCancel={() => setReviewing(false)}
+        openReview={openReview}
+        returnFocusId="project-search"
+      />
     );
   }
 

@@ -188,7 +188,7 @@ test("connects required Kit choices to their inline errors", async () => {
   );
 });
 
-test("reviews a constrained Kit report without moderation side effects", async () => {
+test("retains a constrained Kit report and regenerates current details", async () => {
   const user = userEvent.setup();
   const open = vi.spyOn(window, "open").mockReturnValue(window);
   search = "kit=alpha-kit";
@@ -223,6 +223,27 @@ test("reviews a constrained Kit report without moderation side effects", async (
       kit_id: "alpha-kit",
       affected_project_ids: ["extension-alpha"],
       category: "compatibility-problem",
+    },
+  });
+
+  await user.click(
+    await screen.findByRole("button", { name: "Back and edit" }),
+  );
+  const details = screen.getByLabelText("What should Tavernary review?");
+  expect(details).toHaveValue("This Kit fails after the extension loads.");
+  await user.clear(details);
+  await user.type(details, "This Kit fails when the preset loads.");
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+
+  const reopened = new URL(open.mock.calls[1]?.[0] as string);
+  expect(
+    JSON.parse(reopened.searchParams.get("help-manifest") ?? ""),
+  ).toMatchObject({
+    payload: {
+      kit_id: "alpha-kit",
+      affected_project_ids: ["extension-alpha"],
+      details: "This Kit fails when the preset loads.",
     },
   });
 });

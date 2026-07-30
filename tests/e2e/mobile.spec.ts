@@ -4,6 +4,7 @@ import {
   collapsedFrontendOptions,
   frontendExpansionLabel,
   initiallyVisibleFrontendOptions,
+  tagOptionsByFacet,
   tagSearchFixture,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
@@ -80,17 +81,69 @@ test("uses mobile browse and filter sheets without page overflow", async ({
   const dialog = page.getByRole("dialog", { name: "Filters" });
   await expect(dialog).toBeVisible();
   await expect(page.locator("body")).toHaveClass(/sheet-open/);
+
+  const modelGroup = dialog.getByRole("group", { name: "Model family" });
+  const modelOptions = modelGroup.locator(".metadata-options");
+  const modelContainment = await modelOptions.evaluate((element) => {
+    const chips = Array.from(
+      element.querySelectorAll<HTMLElement>(".filter-choice-chip"),
+    ).filter((chip) => chip.getClientRects().length > 0);
+    const bounds = element.getBoundingClientRect();
+    return {
+      bottom: bounds.bottom,
+      chipBottoms: chips.map((chip) => chip.getBoundingClientRect().bottom),
+    };
+  });
+  expect(modelContainment.chipBottoms.length).toBeGreaterThan(0);
+  expect
+    .soft(Math.max(...modelContainment.chipBottoms))
+    .toBeLessThanOrEqual(modelContainment.bottom + 1);
+
+  const development = dialog.getByRole("group", { name: "Development" });
+  const countClearances = await development
+    .locator("b")
+    .evaluateAll((counts) => {
+      const sheet = document.querySelector<HTMLElement>(".filter-sheet");
+      if (!sheet) throw new Error("Missing Filter sheet");
+      const scrollportRight =
+        sheet.getBoundingClientRect().left +
+        sheet.clientLeft +
+        sheet.clientWidth;
+      return counts.map(
+        (count) => scrollportRight - count.getBoundingClientRect().right,
+      );
+    });
+  expect.soft(Math.min(...countClearances)).toBeGreaterThanOrEqual(16);
+
   await expect(
     dialog.getByRole("searchbox", {
       name: "Search goals and traits",
     }),
   ).toBeVisible();
-  const tagResults = dialog.getByTestId("tag-results");
-  expect(
-    await tagResults.evaluate(
-      (element) => element.scrollHeight > element.clientHeight,
-    ),
-  ).toBe(true);
+  await expect(dialog.locator(".tag-results-bounded")).toHaveCount(0);
+  await expect(dialog.locator(".tag-browser-facets")).toHaveCSS(
+    "overflow-y",
+    "visible",
+  );
+  for (const facet of ["goal", "trait"] as const) {
+    const group = dialog.getByRole("group", {
+      name: facet === "goal" ? "Goals" : "Traits",
+    });
+    const visibleCount = await group.getByRole("checkbox").count();
+    const hiddenCount = tagOptionsByFacet[facet].length - visibleCount;
+    if (hiddenCount > 0) {
+      await expect(
+        group.getByRole("button", {
+          name: `Show ${hiddenCount} more`,
+        }),
+      ).toBeVisible();
+    }
+  }
+  const goals = dialog.getByRole("group", { name: "Goals" });
+  const goalsDisclosure = goals.getByRole("button", {
+    name: /Show \d+ more/u,
+  });
+  if ((await goalsDisclosure.count()) > 0) await goalsDisclosure.click();
   if (!tagSearchFixture) throw new Error("Missing tag search fixture");
   const tagSearch = dialog.getByRole("searchbox", {
     name: "Search goals and traits",
@@ -187,7 +240,7 @@ test("keeps the project submission builder inside a 320px viewport", async ({
   expect(overflow).toBeLessThanOrEqual(0);
   expect(
     await page
-      .getByRole("button", { name: "Continue to GitHub" })
+      .getByRole("button", { name: "Review submission" })
       .evaluate((element) => element.getBoundingClientRect().height),
   ).toBeGreaterThanOrEqual(44);
 });

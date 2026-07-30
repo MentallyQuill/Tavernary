@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { TagBrowser } from "@/features/catalog/components/tag-browser";
+import {
+  TAG_FACET_PREVIEW_LIMIT,
+  TagBrowser,
+} from "@/features/catalog/components/tag-browser";
 import {
   CATALOG_DESCRIPTION_GUIDANCE,
   CATALOG_EMOJI_REMOVED_NOTICE,
@@ -156,6 +159,10 @@ export function OwnerCardFields({
           onChange({
             ...card,
             summary: sanitized.value,
+            metadata: {
+              ...card.metadata,
+              summary: { mode: "manual" },
+            },
           });
         }}
       />
@@ -245,8 +252,13 @@ export function OwnerCardFields({
               tags: card.tags.includes(id)
                 ? card.tags.filter((tag) => tag !== id)
                 : [...card.tags, id],
+              metadata: {
+                ...card.metadata,
+                tags: { mode: "manual" },
+              },
             })
           }
+          previewLimit={TAG_FACET_PREVIEW_LIMIT}
           maxSelections={6}
           searchLabel={fieldLabel(index, compact, "tag search")}
           limitLabel="Up to six per card"
