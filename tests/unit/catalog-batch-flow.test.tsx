@@ -352,7 +352,10 @@ describe("catalog Kit batch flow", () => {
         dispatchEvent: vi.fn(),
       })),
     });
-    vi.mocked(openKitSubmission).mockResolvedValue("prefilled");
+    vi.mocked(openKitSubmission).mockResolvedValue({
+      mode: "prefilled",
+      url: "https://github.com/example/repo/issues/new",
+    });
     window.localStorage.setItem(
       "tavernary:kit-builder-draft:v1",
       JSON.stringify({

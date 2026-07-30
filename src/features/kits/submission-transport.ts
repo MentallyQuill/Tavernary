@@ -1,6 +1,9 @@
 import type { KitDraft } from "@/features/kits/kit-types";
+import {
+  openGitHubReview,
+  type GitHubHandoffResult,
+} from "@/features/submissions/github-handoff";
 
-const MAX_PREFILL_URL_LENGTH = 7_000;
 const pasteInstruction = "Paste the Kit manifest copied by Tavernary here.";
 
 export function serializeKitManifest(draft: KitDraft): string {
@@ -20,30 +23,20 @@ export function serializeKitManifest(draft: KitDraft): string {
 export async function openKitSubmission(
   formUrl: string | URL,
   draft: KitDraft,
-): Promise<"prefilled" | "clipboard"> {
-  const target = new URL(formUrl.toString());
+): Promise<GitHubHandoffResult> {
   const title = draft.title.trim();
   const description = draft.description.trim();
-  const manifest = serializeKitManifest(draft);
-  target.searchParams.set("title", `[Kit submission]: ${title}`);
-  target.searchParams.set("kit-title", title);
-  target.searchParams.set("kit-description", description);
-  target.searchParams.set("manifest", manifest);
-  if (target.toString().length <= MAX_PREFILL_URL_LENGTH) {
-    window.open(target, "_blank", "noopener,noreferrer");
-    return "prefilled";
-  }
-
-  try {
-    await navigator.clipboard.writeText(manifest);
-  } catch {
-    window.prompt(
-      "Copy this Kit manifest, then paste it into the GitHub form:",
-      manifest,
-    );
-  }
-  target.searchParams.delete("manifest");
-  target.searchParams.set("manifest", pasteInstruction);
-  window.open(target, "_blank", "noopener,noreferrer");
-  return "clipboard";
+  return openGitHubReview({
+    formUrl,
+    template: "05-kit-submission.yml",
+    manifestFieldId: "manifest",
+    serializedManifest: serializeKitManifest(draft),
+    prefills: [
+      ["title", `[Kit submission]: ${title}`],
+      ["kit-title", title],
+      ["kit-description", description],
+    ],
+    pasteInstruction,
+    copyPrompt: "Copy this Kit manifest, then paste it into the GitHub review:",
+  });
 }

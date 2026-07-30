@@ -307,7 +307,7 @@ Actions, GitHub CLI, PowerShell.
 - Modify: `tests/unit/submission-transport.test.ts`
 - Modify: `tests/unit/help-transport.test.ts`
 
-- [ ] **Step 1: Add the failing shared-adapter tests**
+- [x] **Step 1: Add the failing shared-adapter tests**
 
   Define the public result and failure contract in the test:
 
@@ -334,7 +334,7 @@ Actions, GitHub CLI, PowerShell.
   - an unshrinkable base/template/manifest-placeholder URL failing without
     opening a tab.
 
-- [ ] **Step 2: Run the focused red test**
+- [x] **Step 2: Run the focused red test**
 
   Run:
 
@@ -344,7 +344,7 @@ Actions, GitHub CLI, PowerShell.
 
   Expected: FAIL because `github-handoff.ts` does not exist.
 
-- [ ] **Step 3: Implement the shared browser adapter**
+- [x] **Step 3: Implement the shared browser adapter**
 
   Use this input boundary:
 
@@ -372,7 +372,7 @@ Actions, GitHub CLI, PowerShell.
      7,000 characters; and
   7. treats a null popup handle as recovery, never success.
 
-- [ ] **Step 4: Make the domain transports thin adapters**
+- [x] **Step 4: Make the domain transports thin adapters**
 
   Preserve all domain-specific serializers and readable mappings. Their
   exported open functions now return `Promise<GitHubHandoffResult>`, for
@@ -394,14 +394,14 @@ Actions, GitHub CLI, PowerShell.
   Keep `HelpHandoffError` as a compatibility alias/re-export during call-site
   migration so this task does not require a partially broken Help tree.
 
-- [ ] **Step 5: Adapt the current project call site**
+- [x] **Step 5: Adapt the current project call site**
 
   Until Task 5 replaces the one-shot status UI with `SubmissionReview`, change
   its branch from `handoff === "prefilled"` to
   `handoff.mode === "prefilled"`. This is an API adaptation only; retain the
   current user-visible behavior in this task.
 
-- [ ] **Step 6: Run the shared and domain transport tests**
+- [x] **Step 6: Run the shared and domain transport tests**
 
   Run:
 
@@ -411,7 +411,7 @@ Actions, GitHub CLI, PowerShell.
 
   Expected: PASS, including null-popup recovery for all three domain adapters.
 
-- [ ] **Step 7: Commit the transport**
+- [x] **Step 7: Commit the transport**
 
   ```powershell
   git add src/features/submissions/github-handoff.ts src/features/submissions/submission-transport.ts src/features/submissions/components/project-submission-builder.tsx src/features/kits/submission-transport.ts src/features/help/help-transport.ts tests/unit/github-handoff.test.ts tests/unit/project-submission-transport.test.ts tests/unit/submission-transport.test.ts tests/unit/help-transport.test.ts

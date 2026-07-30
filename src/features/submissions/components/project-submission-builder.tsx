@@ -356,7 +356,7 @@ export function ProjectSubmissionBuilder({
         manifest,
       );
       setStatus(
-        handoff === "prefilled"
+        handoff.mode === "prefilled"
           ? "GitHub opened with your submission."
           : "GitHub opened. Paste the copied manifest into the form.",
       );

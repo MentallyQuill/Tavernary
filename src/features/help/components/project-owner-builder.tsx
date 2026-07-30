@@ -497,7 +497,7 @@ export function ProjectOwnerBuilder({
           "Paste the copied Tavernary owner request manifest into this field.",
       });
     } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url ?? "");
       setHandoffError(
         error instanceof Error ? error.message : "GitHub could not be opened.",
       );

@@ -199,7 +199,7 @@ export function KitReportForm({
           "Paste the Help manifest copied by Tavernary into the manifest field.",
       });
     } catch (error) {
-      if (error instanceof HelpHandoffError) setFallbackUrl(error.url);
+      if (error instanceof HelpHandoffError) setFallbackUrl(error.url ?? "");
       setHandoffError(
         error instanceof Error
           ? error.message

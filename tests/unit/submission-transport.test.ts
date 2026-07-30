@@ -34,7 +34,7 @@ test("serializes a stable pretty manifest using submission field names", () => {
 });
 
 test("prefills a readable create submission from the Kit draft", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   const share = vi.fn();
   Object.defineProperty(navigator, "share", {
     configurable: true,
@@ -46,7 +46,7 @@ test("prefills a readable create submission from the Kit draft", async () => {
       "https://github.com/example/repo/issues/new?template=05-kit-submission.yml",
       draft,
     ),
-  ).resolves.toBe("prefilled");
+  ).resolves.toMatchObject({ mode: "prefilled" });
 
   const opened = new URL(String(open.mock.calls[0]?.[0]));
   expect(opened.searchParams.get("template")).toBe("05-kit-submission.yml");
@@ -64,7 +64,7 @@ test("prefills a readable create submission from the Kit draft", async () => {
 });
 
 test("prefills edit identity through the generated manifest", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   const editDraft = {
     ...draft,
     operation: "edit" as const,
@@ -95,7 +95,7 @@ test("prefills edit identity through the generated manifest", async () => {
 });
 
 test("copies oversized manifests while preserving readable prefills", async () => {
-  const open = vi.spyOn(window, "open").mockImplementation(() => null);
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
   const writeText = vi.fn().mockResolvedValue(undefined);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
@@ -112,7 +112,7 @@ test("copies oversized manifests while preserving readable prefills", async () =
       "https://github.com/example/repo/issues/new",
       oversizedDraft,
     ),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
 
   expect(writeText).toHaveBeenCalledWith(manifest);
   const opened = new URL(String(open.mock.calls[0]?.[0]));
@@ -127,7 +127,7 @@ test("copies oversized manifests while preserving readable prefills", async () =
 });
 
 test("offers selectable text when clipboard access fails", async () => {
-  vi.spyOn(window, "open").mockImplementation(() => null);
+  vi.spyOn(window, "open").mockReturnValue(window);
   const prompt = vi.spyOn(window, "prompt").mockImplementation(() => null);
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
@@ -144,9 +144,20 @@ test("offers selectable text when clipboard access fails", async () => {
       "https://github.com/example/repo/issues/new",
       oversizedDraft,
     ),
-  ).resolves.toBe("clipboard");
+  ).resolves.toMatchObject({ mode: "clipboard" });
   expect(prompt).toHaveBeenCalledWith(
-    "Copy this Kit manifest, then paste it into the GitHub form:",
+    "Copy this Kit manifest, then paste it into the GitHub review:",
     manifest,
   );
+});
+
+test("reports a blocked Kit review without losing its prepared URL", async () => {
+  vi.spyOn(window, "open").mockReturnValue(null);
+
+  await expect(
+    openKitSubmission("https://github.com/example/repo/issues/new", draft),
+  ).rejects.toMatchObject({
+    message: "GitHub review could not be opened.",
+    url: expect.stringContaining("manifest="),
+  });
 });
