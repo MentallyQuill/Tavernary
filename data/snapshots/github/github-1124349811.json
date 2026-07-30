@@ -24,7 +24,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-29T22:22:20.673Z",
+    "baseline_completed_at": "2026-07-30T05:10:41.835Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "4e3968d31101c518f9aaa82fbbdd83e8fca0b220"
   },
@@ -35,11 +35,11 @@
     "aggregate": 7
   },
   "license": {
-    "status": "proprietary",
-    "spdx_id": null,
+    "status": "osi-approved",
+    "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-30T05:02:24.772Z",
+  "refreshed_at": "2026-07-30T05:10:41.835Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -47,7 +47,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-30T05:02:24.772Z",
+    "refreshed_at": "2026-07-30T05:10:41.835Z",
     "stale_since": null
   }
 }
