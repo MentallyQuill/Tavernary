@@ -324,11 +324,11 @@ files; never repair a partial migration by hand.
 Publication transaction schema version 2 is required after cutover. A
 transaction version 1 PR must merge before the cutover or regenerate from its
 still-open issue afterward; the publisher rejects it rather than guessing how
-to map project-keyed paths. The read-only cutover audit on 2026-07-29 found four
-open version-1 submission PRs: #154 (issue #148), #155 (issue #150), #156
-(issue #152), and #157 (issue #149). Do not close, rerun, or mutate them as part
-of the migration. Operators must either merge them before cutover or regenerate
-each from its source issue after cutover.
+to map project-keyed paths. The read-only cutover audit on 2026-07-29 initially
+found four open version-1 submission PRs: #154 (issue #148), #155 (issue #150),
+#156 (issue #152), and #157 (issue #149). All four merged into `main` before
+cutover, so none requires regeneration. Issue #151 remained open without a
+generated PR and must be audited again immediately before the final migration.
 
 ## Refresh automation
 
