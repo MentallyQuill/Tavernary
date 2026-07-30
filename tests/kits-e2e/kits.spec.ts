@@ -1132,7 +1132,7 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
   );
   await expect(withdrawal).toHaveAttribute(
     "href",
-    "/help/withdraw-kit/?kit=alpha-kit-101",
+    sitePath("/help/withdraw-kit/?kit=alpha-kit-101"),
   );
 
   await page.getByRole("button", { name: "Open Flagged Stack" }).click();
