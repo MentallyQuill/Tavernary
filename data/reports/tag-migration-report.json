@@ -75,7 +75,7 @@
       ],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b03de4b8: semantic catalog review"
         ],
         "run-group-roleplay": [
           "README: group-chats.js → groups, openGroupById, selected_group"
@@ -97,15 +97,13 @@
       ],
       "evidence": {
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8f8bde18: semantic catalog review"
         ],
         "visual-workflow": [
           "repository description: Visual workflow extension for SillyTavern to view, clip, and merge message swipes.",
           "README: **Swipe Sculpt** is a visual workflow extension for [SillyTavern](https://github.com/SillyTavern/SillyTavern) that lets you view, clip, and merge multip"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@8f8bde18: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -117,9 +115,7 @@
       "project_id": "aikohanasaki-aikobots",
       "tags": ["run-group-roleplay", "multi-user"],
       "evidence": {
-        "run-group-roleplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "run-group-roleplay": ["readme.md@ded37fad: semantic catalog review"],
         "multi-user": [
           "README: Aikobots is a multi-user fork of SillyTavern built around chat completion APIs. It does not include support for legacy text generation APIs. Aikobots or",
           "README: 1. Support roleplay communities by making it easier for bot creators to share their work and collaborate in a multi-user environment."
@@ -136,7 +132,7 @@
       "tags": ["organize-chats-and-messages"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@78286fe2: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -167,7 +163,7 @@
           "README: **Work In Progress**: currently working on adding chat completion prompt management that is separate from presets"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@208ec33a: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -181,10 +177,10 @@
       "tags": ["guide-model-responses", "manage-prompts-and-presets"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f0ad9a5e: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f0ad9a5e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -198,11 +194,9 @@
       "tags": ["manage-context-limits", "manage-lorebooks"],
       "evidence": {
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9243b9c1: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@9243b9c1: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -221,16 +215,14 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@cae7ee71: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@cae7ee71: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["readme.md@cae7ee71: semantic catalog review"],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@cae7ee71: semantic catalog review"
         ],
         "persistent-state": [
           "README: - Persistent state changes that should remain stable"
@@ -247,10 +239,10 @@
       "tags": ["guide-model-responses", "manage-prompts-and-presets"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@4e4c3d0c: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@4e4c3d0c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -264,7 +256,7 @@
       "tags": ["inspect-prompts-and-generations"],
       "evidence": {
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c08d3d4c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -277,11 +269,9 @@
       "project_id": "aikohanasaki-sillytavern-worldinfolocks",
       "tags": ["manage-lorebooks", "manage-prompts-and-presets"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@91cb6afb: semantic catalog review"],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@91cb6afb: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -295,7 +285,7 @@
       "tags": ["plan-stories-and-scenes"],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@68d34b58: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -309,7 +299,7 @@
       "tags": ["organize-chats-and-messages"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5ed60138: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -329,19 +319,17 @@
       ],
       "evidence": {
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0538b853: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
           "README: Full feature tour: [Interaction Surfaces](https://github.com/AMousePad/Hone/wiki/Interaction-Surfaces), [Pipeline Editor](https://github.com/AMousePad/H"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0538b853: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "background-operation": ["README.md@0538b853: semantic catalog review"],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0538b853: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -365,7 +353,7 @@
       "tags": ["maintain-long-term-memory"],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          ".github/README.md@b1484334: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -379,10 +367,10 @@
       "tags": ["connect-external-services", "manage-character-libraries"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3576f02f: semantic catalog review"
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3576f02f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -400,11 +388,9 @@
       ],
       "evidence": {
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@61d93e73: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@61d93e73: semantic catalog review"],
         "semantic-retrieval": [
           "README: - **Vector RAG** is closer, but still pattern-matching on embeddings. It finds text that *looks similar* to the query. It has no concept of *what the sc"
         ]
@@ -434,14 +420,12 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3dc4ebf2: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3dc4ebf2: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@3dc4ebf2: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -453,9 +437,7 @@
       "project_id": "archkr-lumiverse-lumiweather",
       "tags": ["add-visual-immersion"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@e7ecfea6: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -473,16 +455,16 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b2d012ad: semantic catalog review"
         ],
         "add-structured-reasoning": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b2d012ad: semantic catalog review"
         ],
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b2d012ad: semantic catalog review"
         ],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b2d012ad: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -500,9 +482,7 @@
           "README: Open **Settings → Extensions → Character Visuals → Outfits**. The editor auto-saves changes after each interaction, and automation stays active for ever",
           "README: These values feed directly into the live detector, so characters you configure in the lab participate in automation without an extra mapping table."
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@6b390a29: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -523,9 +503,7 @@
           "README: Think of Outfit Switcher as the little brother carved out of the Outfit Lab. Costume Switcher remains the flagship, dressing the whole cast, sharing tel",
           "README: - **Manual safety net** – Fire any variant from the panel without waiting for automation."
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@2052f747: semantic catalog review"],
         "non-destructive": [
           "README: - **Non-destructive switching** – Every action resolves to `/costume` calls; speaker focus never changes, avoiding accidental role swaps."
         ]
@@ -540,11 +518,9 @@
       "project_id": "archkr-st-basicspotify",
       "tags": ["add-music-and-audio", "connect-external-services"],
       "evidence": {
-        "add-music-and-audio": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-music-and-audio": ["README.md@c6bb84e6: semantic catalog review"],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c6bb84e6: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -570,7 +546,7 @@
           "README: Image Gen Kazuma is a power-user extension designed to seamlessly bridge **SillyTavern** with **ComfyUI**. It goes beyond simple image generation by giv"
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f5c62541: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -594,13 +570,13 @@
           "README: > *\"Everything your preset should have been: persistent memory, chain-of-thought reasoning, automated NPC tracking, and ComfyUI image generation in a si"
         ],
         "add-structured-reasoning": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c60255b2: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
           "README: Megumin Suite is free and always will be. If it saved you hours of prompt engineering or made your sessions better, consider tossing a few bucks — it ke"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c60255b2: semantic catalog review"
         ],
         "generate-images": [
           "README heading: Image Generation Upgrades",
@@ -608,7 +584,7 @@
           "README: **Megumin Suite** is a full-stack overhaul to how SillyTavern presets work. It replaces your preset, your memory system, your NPC management, and your i"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c60255b2: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -629,19 +605,15 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@6877c4c0: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@6877c4c0: semantic catalog review"],
         "generate-images": [
           "README heading: Image Generation",
           "README: Image Generation",
           "README: - Embedded image generation in story entries"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@6877c4c0: semantic catalog review"],
         "track-characters-and-world-state": [
           "README: - Dynamic state tracking (relationships, inventory, discoveries)"
         ],
@@ -660,10 +632,10 @@
       "tags": ["manage-characters-and-personas", "manage-character-libraries"],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@01f868f7: semantic catalog review"
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@01f868f7: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -676,9 +648,7 @@
       "project_id": "ayvencore-sillytavern-lorebook-manager",
       "tags": ["manage-lorebooks"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@93a08b9b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -695,13 +665,11 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3694c90b: semantic catalog review"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@3694c90b: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3694c90b: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -715,7 +683,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2876e81f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -736,11 +704,9 @@
           "README: CharMemory gives your characters persistent memory across chats. Here's the short version:"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@96f528b9: semantic catalog review"
         ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "semantic-retrieval": ["README.md@96f528b9: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -753,10 +719,10 @@
       "tags": ["manage-context-limits", "automate-roleplay-workflows"],
       "evidence": {
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f1374cd5: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f1374cd5: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -780,10 +746,10 @@
       "tags": ["improve-writing-and-prose", "edit-and-refine-messages"],
       "evidence": {
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@cfbe2603: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@cfbe2603: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -801,13 +767,13 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@17ca911e: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@17ca911e: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@17ca911e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -837,10 +803,10 @@
       "tags": ["create-character-cards", "plan-stories-and-scenes"],
       "evidence": {
         "create-character-cards": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@bf207fa1: semantic catalog review"
         ],
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@bf207fa1: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -858,14 +824,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@b7c091b0: semantic catalog review"
         ],
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@b7c091b0: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["readme.md@b7c091b0: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -878,7 +842,7 @@
       "tags": ["automate-roleplay-workflows", "translate-roleplay-content"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@a2207bbf: semantic catalog review"
         ],
         "translate-roleplay-content": [
           "README: 3. **Translate Messages:**",
@@ -901,14 +865,12 @@
       ],
       "evidence": {
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@04fdfe44: semantic catalog review"
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@04fdfe44: semantic catalog review"
         ],
-        "agentic-tool-use": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "agentic-tool-use": ["readme.md@04fdfe44: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -921,7 +883,7 @@
       "tags": ["plan-stories-and-scenes"],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@8bd72bdb: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -939,14 +901,10 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@8a5e42e6: semantic catalog review"
         ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "secondary-model": ["readme.md@8a5e42e6: semantic catalog review"],
+        "persistent-state": ["readme.md@8a5e42e6: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -970,7 +928,7 @@
           "README: **A unified SillyTavern extension combining World State tracking, Session Chronicle, NPC Knowledge management, Story Planning, and NPC Interiority into"
         ],
         "manage-inventory-and-quests": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3bf4ad69: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -984,7 +942,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d93c056c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -998,10 +956,10 @@
       "tags": ["add-visual-immersion", "customize-the-interface"],
       "evidence": {
         "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
+          ".github/README.md@9cf09fb3: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          ".github/README.md@9cf09fb3: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1015,7 +973,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fae29f21: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1029,10 +987,10 @@
       "tags": ["track-characters-and-world-state", "customize-the-interface"],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a31eb321: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a31eb321: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1045,9 +1003,7 @@
       "project_id": "casus-b-casus-custom-chatfill-ii",
       "tags": ["guide-model-responses"],
       "evidence": {
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@c517598b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1060,7 +1016,7 @@
       "tags": ["inspect-prompts-and-generations"],
       "evidence": {
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@53717916: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1078,13 +1034,13 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f76ab246: semantic catalog review"
         ],
         "generate-images": [
           "README: - Generate images from a floating widget or input bar action."
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f76ab246: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1102,11 +1058,9 @@
         "persistent-state"
       ],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@715fae81: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@715fae81: semantic catalog review"
         ],
         "local-first": [
           "README: - **State persistence via IndexedDB** — character state, persona state, and lore modules are stored locally and survive page reloads"
@@ -1127,9 +1081,7 @@
       "project_id": "cha1latte-marinara-avatar-background",
       "tags": ["add-visual-immersion", "run-group-roleplay"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@46f2bc72: semantic catalog review"],
         "run-group-roleplay": [
           "README: A client-side extension for [Marinara Engine](https://github.com/Pasta-Devs/Marinara-Engine) that renders the currently-speaking character's avatar as a",
           "README: - In 1:1 chats this is just the one assistant's avatar; in group chats it follows whoever spoke most recently."
@@ -1146,7 +1098,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b9599933: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1160,7 +1112,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ecadd96b: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1178,13 +1130,11 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0226317f: semantic catalog review"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@0226317f: semantic catalog review"],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0226317f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1198,7 +1148,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c3660bc: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1216,7 +1166,7 @@
       ],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1ed8ac8b: semantic catalog review"
         ],
         "mobile-friendly": [
           "README: - Mobile friendly - Full-screen popup on mobile devices"
@@ -1235,12 +1185,8 @@
       "project_id": "chesswoodspixel-sillytavern-lorebookstickysort",
       "tags": ["manage-lorebooks", "persistent-state"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@5deba7ba: semantic catalog review"],
+        "persistent-state": ["README.md@5deba7ba: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1257,14 +1203,12 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8f34af01: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8f34af01: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@8f34af01: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1286,10 +1230,10 @@
           "README: You can find a more detailed roadmap in the wiki by following [this link](https://github.com/cierru/st-stepped-thinking/wiki/Roadmap)."
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b58956c: semantic catalog review"
         ],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b58956c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1303,7 +1247,7 @@
       "tags": ["manage-character-libraries"],
       "evidence": {
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8c699ccd: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1317,10 +1261,10 @@
       "tags": ["improve-writing-and-prose", "edit-and-refine-messages"],
       "evidence": {
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c248c711: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c248c711: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1334,7 +1278,7 @@
       "tags": ["add-structured-reasoning"],
       "evidence": {
         "add-structured-reasoning": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7a61c9f0: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1347,11 +1291,9 @@
       "project_id": "coneja-chibi-carrotkernel",
       "tags": ["manage-lorebooks", "manage-characters-and-personas"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@145c2737: semantic catalog review"],
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@145c2737: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1369,13 +1311,11 @@
       ],
       "evidence": {
         "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5faa096a: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@5faa096a: semantic catalog review"],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5faa096a: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1389,10 +1329,10 @@
       "tags": ["guide-model-responses", "increase-narrative-variety"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@45097b49: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@45097b49: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1410,7 +1350,7 @@
       ],
       "evidence": {
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@56b86643: semantic catalog review"
         ],
         "agentic-tool-use": [
           "README: - **An API that supports tool calling** (Claude, GPT-4, Gemini, etc.)",
@@ -1453,12 +1393,8 @@
       "project_id": "countcandy-sillytavern-extension-candyexpressions",
       "tags": ["add-visual-immersion", "persistent-state"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@7e8a8ac9: semantic catalog review"],
+        "persistent-state": ["README.md@7e8a8ac9: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1470,9 +1406,7 @@
       "project_id": "daddytorgo-hash-frankengarage",
       "tags": ["guide-model-responses"],
       "evidence": {
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@36a35861: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1490,17 +1424,13 @@
         "manage-inventory-and-quests"
       ],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@503cad53: semantic catalog review"],
         "add-voice-interaction": [
-          "undefined repository README: semantic catalog review"
+          "README.md@503cad53: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@503cad53: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@503cad53: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
           "README heading: Quest Tracking",
@@ -1518,10 +1448,10 @@
       "tags": ["connect-external-services", "manage-character-libraries"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@34abe49a: semantic catalog review"
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@34abe49a: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1535,7 +1465,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@47d443f5: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1559,11 +1489,9 @@
       "tags": ["manage-character-libraries", "semantic-retrieval"],
       "evidence": {
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a76c788a: semantic catalog review"
         ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "semantic-retrieval": ["README.md@a76c788a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1576,10 +1504,10 @@
       "tags": ["automate-roleplay-workflows", "customize-the-interface"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@54fd0085: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@54fd0085: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1592,11 +1520,9 @@
       "project_id": "dfaker-st-wordrunner",
       "tags": ["add-visual-immersion", "customize-the-interface"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@2b4b66d3: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2b4b66d3: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1614,16 +1540,14 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4e3968d3: semantic catalog review"
         ],
         "generate-images": [
           "README heading: Context Image Generation 🍌",
           "README: Context Image Generation 🍌",
           "README: A SillyTavern extension that adds Gemini-powered image generation with character context and avatar references."
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@4e3968d3: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1640,14 +1564,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3d25ed60: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3d25ed60: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@3d25ed60: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1660,7 +1582,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b51fe222: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1679,15 +1601,11 @@
       ],
       "evidence": {
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e0da6549: semantic catalog review"
         ],
-        "local-first": ["undefined repository README: semantic catalog review"],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "local-first": ["README.md@e0da6549: semantic catalog review"],
+        "background-operation": ["README.md@e0da6549: semantic catalog review"],
+        "persistent-state": ["README.md@e0da6549: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1700,11 +1618,9 @@
       "tags": ["route-tasks-across-models", "secondary-model"],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7ddbed80: semantic catalog review"
         ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "secondary-model": ["README.md@7ddbed80: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1722,17 +1638,15 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7566b914: semantic catalog review"
         ],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7566b914: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7566b914: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@7566b914: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -1752,7 +1666,7 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bea1dd19: semantic catalog review"
         ],
         "manage-context-limits": [
           "README: - Summarization and context compression that divides the story by scene rather than by line to catch important plot beats and memorable NPC quotes."
@@ -1761,14 +1675,12 @@
           "README: - Toggle `imagegen.enabled` or update the ComfyUI settings under `imagegen.server`. You can also set up external image generation that supports the Open",
           "README: - When image generation is disabled the game continues without art; re-enable it after your ComfyUI host is healthy."
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@bea1dd19: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bea1dd19: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bea1dd19: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1794,11 +1706,9 @@
           "README: - Uses Marinara's existing `image_generation` connection routing for the actual image request.",
           "README: - Works with any supported Marinara image generation connection, not only NovelAI."
         ],
-        "agentic-tool-use": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "agentic-tool-use": ["README.md@2fc48335: semantic catalog review"],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2fc48335: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1833,13 +1743,13 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1f92ac5f: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1f92ac5f: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1f92ac5f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1876,13 +1786,13 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0510988b: semantic catalog review"
         ],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0510988b: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0510988b: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1896,7 +1806,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@78e11ff7: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1917,7 +1827,7 @@
           "README: 1. Open Persona Management in SillyTavern"
         ],
         "move-and-back-up-data": [
-          "undefined repository README: semantic catalog review"
+          "README.md@6b643986: semantic catalog review"
         ],
         "mobile-friendly": [
           "README: - 📱 Mobile Friendly: Responsive design for all devices(I hope so...)"
@@ -1934,7 +1844,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e19d2406: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1952,13 +1862,13 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b3a332e: semantic catalog review"
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b3a332e: semantic catalog review"
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b3a332e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -1975,14 +1885,10 @@
         "track-characters-and-world-state"
       ],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@d51c1754: semantic catalog review"],
+        "add-rpg-gameplay": ["README.md@d51c1754: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d51c1754: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2002,24 +1908,18 @@
         "model-agnostic"
       ],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@bf457839: semantic catalog review"],
+        "add-rpg-gameplay": ["README.md@bf457839: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bf457839: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bf457839: semantic catalog review"
         ],
         "local-first": [
           "README: **Universal Immersion Engine: Fugue** is a local-first visual-novel RPG frontend for long-running, character-driven stories. It combines freeform rolepl"
         ],
-        "model-agnostic": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "model-agnostic": ["README.md@bf457839: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2037,17 +1937,13 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fa1d9a1d: semantic catalog review"
         ],
         "track-characters-and-world-state": [
           "README: BetterSimTracker is a SillyTavern extension for relationship/state tracking in roleplay chats."
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@fa1d9a1d: semantic catalog review"],
+        "persistent-state": ["README.md@fa1d9a1d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2064,13 +1960,11 @@
       ],
       "evidence": {
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5abdb349: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@5abdb349: semantic catalog review"],
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5abdb349: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2088,13 +1982,13 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9d81c16f: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9d81c16f: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9d81c16f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2118,10 +2012,10 @@
       "tags": ["route-tasks-across-models", "automate-roleplay-workflows"],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2f381c87: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2f381c87: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2139,11 +2033,9 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@be02bb10: semantic catalog review"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@be02bb10: semantic catalog review"],
         "non-destructive": [
           "README: * **Non-Destructive**: Select \"None\" to instantly revert to the original look."
         ]
@@ -2166,19 +2058,19 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c3d0529a: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c3d0529a: semantic catalog review"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c3d0529a: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c3d0529a: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c3d0529a: semantic catalog review"
         ],
         "semantic-retrieval": [
           "README: - **Semantic Search** - Retrieves relevant context based on meaning, not just keywords"
@@ -2195,7 +2087,7 @@
       "tags": ["manage-character-libraries"],
       "evidence": {
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b8cde7c9: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2213,14 +2105,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4f04c4f8: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4f04c4f8: semantic catalog review"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@4f04c4f8: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2232,15 +2122,11 @@
       "project_id": "hibanan-disable-global-lore",
       "tags": ["manage-lorebooks", "guide-model-responses", "persistent-state"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@0695ea25: semantic catalog review"],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0695ea25: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@0695ea25: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2257,14 +2143,10 @@
       ],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@aa017e07: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@aa017e07: semantic catalog review"],
+        "secondary-model": ["README.md@aa017e07: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2281,14 +2163,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@c0be21c5: semantic catalog review"
         ],
         "recover-failed-generations": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@c0be21c5: semantic catalog review"
         ],
-        "streaming-aware": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "streaming-aware": ["readme.md@c0be21c5: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2305,18 +2185,14 @@
         "persistent-state"
       ],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@722c6f3a: semantic catalog review"],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@722c6f3a: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@722c6f3a: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@722c6f3a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2334,17 +2210,15 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c2abfee7: semantic catalog review"
         ],
         "add-structured-reasoning": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c2abfee7: semantic catalog review"
         ],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c2abfee7: semantic catalog review"
         ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "secondary-model": ["README.md@c2abfee7: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2357,7 +2231,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f8b167e1: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2377,20 +2251,18 @@
         "local-first"
       ],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@29087068: semantic catalog review"],
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@29087068: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@29087068: semantic catalog review"
         ],
         "inspect-prompts-and-generations": [
           "README: * **[SillyTavern Prompt Inspector](https://github.com/SillyTavern/Extension-PromptInspector)**: Inspiration and core design patterns for prompt inspecti"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@29087068: semantic catalog review"
         ],
         "local-first": [
           "README: * Local-first storage: history is stored in browser IndexedDB"
@@ -2407,11 +2279,9 @@
       "tags": ["customize-the-interface", "visual-workflow"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@52a7461a: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@52a7461a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2424,7 +2294,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b4008235: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2443,17 +2313,13 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0a984577: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0a984577: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "streaming-aware": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@0a984577: semantic catalog review"],
+        "streaming-aware": ["README.md@0a984577: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2466,7 +2332,7 @@
       "tags": ["automate-roleplay-workflows", "generate-images"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fdca3f70: semantic catalog review"
         ],
         "generate-images": [
           "repository description: SillyTavern extension for automatic AI image generation with tag replacements, character prompts, and folder management",
@@ -2485,7 +2351,7 @@
       "tags": ["organize-chats-and-messages"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@164ef300: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2503,13 +2369,13 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c366257: semantic catalog review"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c366257: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c366257: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2523,10 +2389,10 @@
       "tags": ["customize-the-interface", "modular-and-extensible"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d63f5f05: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d63f5f05: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2545,17 +2411,13 @@
       ],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@6591bf18: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@6591bf18: semantic catalog review"
         ],
-        "generate-images": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "generate-images": ["README.md@6591bf18: semantic catalog review"],
+        "secondary-model": ["README.md@6591bf18: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2568,7 +2430,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a7a86165: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2582,7 +2444,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e107581f: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2600,16 +2462,14 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d757aa9d: semantic catalog review"
         ],
         "generate-images": [
           "repository description: Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/Co",
           "README: Lumiverse extension for persistent, context-aware character image generation.",
           "README: - Persistent character image generation across a chat"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@d757aa9d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2629,14 +2489,12 @@
         "automate-roleplay-workflows": [
           "README: * **Context-Aware Automation:** The AI analyzes the ongoing story and automatically moves characters around the map. Prefer to be the Dungeon Master? Yo"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@c8e352e3: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c8e352e3: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c8e352e3: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2655,17 +2513,15 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8e5bc326: semantic catalog review"
         ],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8e5bc326: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8e5bc326: semantic catalog review"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@8e5bc326: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2685,19 +2541,17 @@
       ],
       "evidence": {
         "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f5d4b1eb: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@f5d4b1eb: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f5d4b1eb: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f5d4b1eb: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f5d4b1eb: semantic catalog review"
         ],
         "self-hosted": [
           "README: * **Self-Hosted & Tenant-Ready:** Run the backend completely on your own hardware via Docker. Built on SQLite with UUID-based primary keys, your game pr",
@@ -2715,7 +2569,7 @@
       "tags": ["track-characters-and-world-state"],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@65e0acb3: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2739,10 +2593,10 @@
       "tags": ["route-tasks-across-models", "automate-roleplay-workflows"],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@42c283b6: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@42c283b6: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2755,13 +2609,11 @@
       "project_id": "kenhito-marinara-rpg-extension",
       "tags": ["add-rpg-gameplay", "modular-and-extensible", "rules-driven"],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@39160a66: semantic catalog review"],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@39160a66: semantic catalog review"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@39160a66: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2779,17 +2631,15 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3c166573: semantic catalog review"
         ],
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3c166573: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3c166573: semantic catalog review"
         ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "secondary-model": ["README.md@3c166573: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2802,7 +2652,7 @@
       "tags": ["organize-chats-and-messages", "mobile-friendly"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5e4b8284: semantic catalog review"
         ],
         "mobile-friendly": [
           "README: **🎨 folder colors**, **📱 mobile-friendly**."
@@ -2818,9 +2668,7 @@
       "project_id": "kristyku-inlinesummary",
       "tags": ["manage-context-limits"],
       "evidence": {
-        "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-context-limits": ["readme.md@708247c5: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2842,19 +2690,17 @@
           "README: > *Persistent memory for long-running roleplay stories*. VectFox delivers LLM-extracted story events, native sparse-vector hybrid search, and scalable p"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@706bd208: semantic catalog review"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@706bd208: semantic catalog review"
         ],
         "semantic-retrieval": [
           "README heading: 🦊 VectFox — Advanced RAG for SillyTavern",
           "README: 🦊 VectFox — Advanced RAG for SillyTavern",
           "README: - ⏳ **Semantic search can't *guarantee* the AI remembers what just happened.** Retrieval surfaces old events by relevance — but the last few turns of co"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@706bd208: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2867,7 +2713,7 @@
       "tags": ["monitor-token-usage-and-cost", "background-operation"],
       "evidence": {
         "monitor-token-usage-and-cost": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c6b36a1: semantic catalog review"
         ],
         "background-operation": [
           "README: - **Background Generation Tracking:** Hooks SillyTavern's `ConnectionManagerRequestService` and quiet generation pipelines to capture token usage consum"
@@ -2890,20 +2736,18 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@316e430b: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@316e430b: semantic catalog review"
         ],
         "run-group-roleplay": [
           "README: - **Group Chats**: Multiple characters in one chat."
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@316e430b: semantic catalog review"
         ],
-        "model-agnostic": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "model-agnostic": ["README.md@316e430b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -2926,7 +2770,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9b266304: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -2942,12 +2786,8 @@
         "build-worlds-and-lore": [
           "README: - Adds a full screen drawer layout for editing lorebook entries, so you can focus entirely on lore and worldbuilding."
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@31fac3cb: semantic catalog review"],
+        "visual-workflow": ["README.md@31fac3cb: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3005,15 +2845,11 @@
         "persistent-state"
       ],
       "evidence": {
-        "run-group-roleplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "run-group-roleplay": ["README.md@f2d9ef8e: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f2d9ef8e: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@f2d9ef8e: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3026,11 +2862,9 @@
       "tags": ["connect-external-services", "background-operation"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c20af6d5: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@c20af6d5: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3050,11 +2884,9 @@
           "README: This extension adds a prompt shortcut for your chats. Think of it as a Prompt Manager individual for each character, that is saved per char and only sen"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@140f57d2: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@140f57d2: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3071,14 +2903,12 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@86e13a2a: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
-          "undefined repository README: semantic catalog review"
+          "README.md@86e13a2a: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@86e13a2a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3105,7 +2935,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@835d5f78: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3119,11 +2949,9 @@
       "tags": ["organize-chats-and-messages", "persistent-state"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1ba5491d: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@1ba5491d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3136,10 +2964,10 @@
       "tags": ["organize-chats-and-messages", "manage-character-libraries"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@62e39827: semantic catalog review"
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@62e39827: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3153,10 +2981,10 @@
       "tags": ["recover-failed-generations", "edit-and-refine-messages"],
       "evidence": {
         "recover-failed-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@569ec366: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@569ec366: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3170,7 +2998,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0d7feb81: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3184,7 +3012,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "repository description: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3197,11 +3025,9 @@
       "project_id": "lenanderson-sillytavern-videobackgrounds",
       "tags": ["add-visual-immersion", "customize-the-interface"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@6a7a607b: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@6a7a607b: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3215,7 +3041,7 @@
       "tags": ["inspect-prompts-and-generations"],
       "evidence": {
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@86a3bbba: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3228,9 +3054,7 @@
       "project_id": "lenanderson-sillytavern-worldinfopresets",
       "tags": ["manage-lorebooks"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@99b7e814: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3246,13 +3070,11 @@
         "rules-driven"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@b1ee009d: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b1ee009d: semantic catalog review"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@b1ee009d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3265,11 +3087,9 @@
       "tags": ["maintain-long-term-memory", "manage-context-limits"],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c67626ab: semantic catalog review"
         ],
-        "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-context-limits": ["README.md@c67626ab: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3282,7 +3102,7 @@
       "tags": ["manage-characters-and-personas"],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a533cc03: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3295,9 +3115,7 @@
       "project_id": "loggo-presets-sillytavern-spellbook",
       "tags": ["build-worlds-and-lore"],
       "evidence": {
-        "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "build-worlds-and-lore": ["README.md@c826e745: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3310,7 +3128,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e222639d: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3329,17 +3147,11 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@657b8a89: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@657b8a89: semantic catalog review"],
+        "secondary-model": ["README.md@657b8a89: semantic catalog review"],
+        "persistent-state": ["README.md@657b8a89: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3362,10 +3174,10 @@
       "tags": ["route-tasks-across-models", "connect-external-services"],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@595daa74: semantic catalog review"
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@595daa74: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3411,11 +3223,9 @@
       "tags": ["build-worlds-and-lore", "model-agnostic", "multilingual"],
       "evidence": {
         "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
+          "README.md@44239d3f: semantic catalog review"
         ],
-        "model-agnostic": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "model-agnostic": ["README.md@44239d3f: semantic catalog review"],
         "multilingual": [
           "README: - **🌐 Multilingual (TH / EN):** สลับภาษาทั้ง UI ได้ทุกจุด รวมถึง dropdown labels ทั้ง 158 รายการ ตั้ง Language เป็น Auto/TH/EN ได้ในแถบ Extensions",
           "README: - **🌐 Multilingual (TH / EN):** Every UI string switches with the locale, including all 158 dropdown labels. Language choice is `Auto` / `🇹🇭 ไทย` / `"
@@ -3439,20 +3249,16 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@02ee2417: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@02ee2417: semantic catalog review"
         ],
         "add-structured-reasoning": [
-          "undefined repository README: semantic catalog review"
+          "README.md@02ee2417: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@02ee2417: semantic catalog review"],
+        "rules-driven": ["README.md@02ee2417: semantic catalog review"],
         "persistent-state": [
           "README: **Modular AI Dungeon Master system** for long-form roleplay with durable state, enforced multi-step processes, and recovery under context loss."
         ]
@@ -3472,13 +3278,11 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@284d0287: semantic catalog review"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@284d0287: semantic catalog review"],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@284d0287: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3496,13 +3300,13 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f8eadedb: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f8eadedb: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f8eadedb: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3522,20 +3326,16 @@
       ],
       "evidence": {
         "create-character-cards": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5c1929cb: semantic catalog review"
         ],
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5c1929cb: semantic catalog review"
         ],
-        "generate-images": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "generate-images": ["README.md@5c1929cb: semantic catalog review"],
         "translate-roleplay-content": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5c1929cb: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@5c1929cb: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3554,20 +3354,16 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d2d71221: semantic catalog review"
         ],
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d2d71221: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d2d71221: semantic catalog review"
         ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "rules-driven": ["README.md@d2d71221: semantic catalog review"],
+        "non-destructive": ["README.md@d2d71221: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3582,9 +3378,7 @@
         "manage-characters-and-personas": [
           "README: - Open the **Persona Management** panel (click your name/avatar at top)"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@b08838e9: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3602,19 +3396,17 @@
         "rules-driven"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@ef8e1f89: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ef8e1f89: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ef8e1f89: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
           "README: A **Roguelike RPG Adventure Toolkit** for SillyTavern featuring procedurally generated dungeons, LLM-enhanced narration, 8 combat mini games, and full i"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@ef8e1f89: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3631,14 +3423,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@78d8f55e: semantic catalog review"
         ],
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "README.md@78d8f55e: semantic catalog review"
         ],
-        "agentic-tool-use": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "agentic-tool-use": ["README.md@78d8f55e: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3656,19 +3446,15 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ab04dfdb: semantic catalog review"
         ],
         "local-first": [
           "README heading: Why local-first matters",
           "repository description: OpenAlma — AI companion memory, local-first",
           "README: Why local-first matters"
         ],
-        "privacy-focused": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "privacy-focused": ["README.md@ab04dfdb: semantic catalog review"],
+        "persistent-state": ["README.md@ab04dfdb: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3688,22 +3474,18 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c262bc50: semantic catalog review"
         ],
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c262bc50: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@c262bc50: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c262bc50: semantic catalog review"
         ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "rules-driven": ["README.md@c262bc50: semantic catalog review"],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c262bc50: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3722,7 +3504,7 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1bce1fa7: semantic catalog review"
         ],
         "add-structured-reasoning": [
           "README heading: Recursion vs Stepped Thinking",
@@ -3734,7 +3516,7 @@
           "README: Post-process Cards run after the assistant reply lands. Recursion freezes the source response, bounded visible evidence, the Pre-process Prompt Packet,"
         ],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1bce1fa7: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3752,13 +3534,11 @@
       ],
       "evidence": {
         "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2294dd1e: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@2294dd1e: semantic catalog review"],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2294dd1e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3776,14 +3556,12 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9686c388: semantic catalog review"
         ],
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9686c388: semantic catalog review"
         ],
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@9686c388: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3804,7 +3582,7 @@
       ],
       "evidence": {
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2d4f818c: semantic catalog review"
         ],
         "build-worlds-and-lore": [
           "README: The full timeline visualizer gives long-form stories an audit trail for lore creation, update, deletion, restoration, pin/mute changes, and metadata cha",
@@ -3836,16 +3614,16 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@66ac526a: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@66ac526a: semantic catalog review"
         ],
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "README.md@66ac526a: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@66ac526a: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3858,11 +3636,9 @@
       "project_id": "mitaska-weathertweaker",
       "tags": ["add-visual-immersion", "customize-the-interface"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@8c55914c: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8c55914c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3880,13 +3656,11 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@75100e0c: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@75100e0c: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@75100e0c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3906,24 +3680,16 @@
         "persistent-state"
       ],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@84a067d6: semantic catalog review"],
+        "add-rpg-gameplay": ["README.md@84a067d6: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@84a067d6: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
           "README: | **Quest System** | ✅ | Full quest tracking with objectives, rewards, and progress |"
         ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "rules-driven": ["README.md@84a067d6: semantic catalog review"],
+        "persistent-state": ["README.md@84a067d6: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3936,11 +3702,9 @@
       "tags": ["automate-roleplay-workflows", "add-music-and-audio"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@56663e0c: semantic catalog review"
         ],
-        "add-music-and-audio": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-music-and-audio": ["README.md@56663e0c: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -3957,13 +3721,13 @@
       ],
       "evidence": {
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1908d628: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1908d628: semantic catalog review"
         ],
         "increase-narrative-variety": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1908d628: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3977,10 +3741,10 @@
       "tags": ["organize-chats-and-messages", "edit-and-refine-messages"],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "repository description: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "repository description: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -3994,12 +3758,10 @@
       "tags": ["guide-model-responses", "add-rpg-gameplay", "rules-driven"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@55faf8b6: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "add-rpg-gameplay": ["README.md@55faf8b6: semantic catalog review"],
+        "rules-driven": ["README.md@55faf8b6: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4020,16 +3782,14 @@
         "manage-context-limits": [
           "README: - 🧠 **[Summaryception](https://github.com/Lodactio/Extension-Summaryception):** A brilliant summarizer/context compression extension. Also handy for cr"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@bb3feb69: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bb3feb69: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bb3feb69: semantic catalog review"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@bb3feb69: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4047,17 +3807,15 @@
       ],
       "evidence": {
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a254a694: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a254a694: semantic catalog review"
         ],
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a254a694: semantic catalog review"
         ],
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@a254a694: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4070,10 +3828,10 @@
       "tags": ["automate-roleplay-workflows", "background-operation"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "repository description: semantic catalog review"
         ],
         "background-operation": [
-          "undefined repository README: semantic catalog review"
+          "repository description: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4087,11 +3845,9 @@
       "tags": ["manage-characters-and-personas", "persistent-state"],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@980f932c: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@980f932c: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4108,13 +3864,13 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8d4adc6d: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8d4adc6d: semantic catalog review"
         ],
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8d4adc6d: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4133,17 +3889,13 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@04e4d0a4: semantic catalog review"
         ],
-        "add-music-and-audio": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-music-and-audio": ["README.md@04e4d0a4: semantic catalog review"],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@04e4d0a4: semantic catalog review"
         ],
-        "secondary-model": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "secondary-model": ["README.md@04e4d0a4: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4166,7 +3918,7 @@
           "README: A multi-model orchestration extension for SillyTavern. Define complex, user-governed reasoning pipelines that allow a single user message to trigger a m"
         ],
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0fff5159: semantic catalog review"
         ],
         "recover-failed-generations": [
           "README: - **Streaming Loop Detection**: When streaming tokens from a model, Polyceph can detect and halt token loops during tasks, triggering automatic retry or"
@@ -4176,11 +3928,9 @@
           "README: - **Agentic Tool Calling**: Supports multi-pass \"thought\" cycles. If a model generates tool calls, Polyceph will execute them and provide the results ba",
           "README: Native Tool Calling & Recursion"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "background-operation": ["README.md@0fff5159: semantic catalog review"],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0fff5159: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4198,13 +3948,11 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@860c4691: semantic catalog review"
         ],
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@860c4691: semantic catalog review"],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@860c4691: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4222,14 +3970,10 @@
       ],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@9ea4112b: semantic catalog review"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@9ea4112b: semantic catalog review"],
+        "persistent-state": ["README.md@9ea4112b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4241,11 +3985,9 @@
       "project_id": "oldaccountpendingdelete-sillytavern-loretips",
       "tags": ["manage-lorebooks", "inspect-prompts-and-generations"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@4c7b0062: semantic catalog review"],
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4c7b0062: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4273,14 +4015,12 @@
       ],
       "evidence": {
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2daade16: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2daade16: semantic catalog review"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@2daade16: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4317,9 +4057,7 @@
         "agentic-tool-use": [
           "README: <em>Roleplay Mode — Character sprites, custom backgrounds, weather effects, and AI agents</em>"
         ],
-        "model-agnostic": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "model-agnostic": ["README.md@dc0b3928: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4331,11 +4069,9 @@
       "project_id": "phampyk-sillytavern-avatarbanner",
       "tags": ["add-visual-immersion", "customize-the-interface"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@f51b177b: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@f51b177b: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4353,14 +4089,10 @@
       ],
       "evidence": {
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@dc2345af: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@dc2345af: semantic catalog review"],
+        "semantic-retrieval": ["README.md@dc2345af: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4378,7 +4110,7 @@
       ],
       "evidence": {
         "route-tasks-across-models": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d7d17add: semantic catalog review"
         ],
         "generate-images": [
           "repository description: Multi-backend image generation proxy with OpenAI-compatible API and comprehensive web dashboard",
@@ -4412,11 +4144,9 @@
           "README: - **Group profiles**: define scoped group styles and automation rules. Group profiles are stored with the active color table and apply materialized styl",
           "README: Appearance and Automation"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@0b799477: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0b799477: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4444,7 +4174,7 @@
           "README: Enable this for proxies that expose image generation through `chat/completions` instead of the normal `/images/generations` route."
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4cc4baa4: semantic catalog review"
         ],
         "visual-workflow": [
           "README: Without custom JSON, QIG builds a workflow based on **Model Loader**: choose **Checkpoint** for files with embedded CLIP and VAE models, or **Diffusion/"
@@ -4469,12 +4199,10 @@
         "generate-images": [
           "README: | `/api/v1/image-gen` | AI image generation (Google Gemini, NanoGPT, NovelAI) |"
         ],
-        "self-hosted": ["undefined repository README: semantic catalog review"],
-        "model-agnostic": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "self-hosted": ["README.md@ee545baa: semantic catalog review"],
+        "model-agnostic": ["README.md@ee545baa: semantic catalog review"],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ee545baa: semantic catalog review"
         ],
         "multi-stage-generation": [
           "README: The full stack suite for Lumiverse, a full-featured AI chat application. Provides the data layer, real-time event bus, LLM generation pipeline, and exte"
@@ -4505,18 +4233,12 @@
         "persistent-state"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@428e063a: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@428e063a: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@428e063a: semantic catalog review"],
+        "persistent-state": ["README.md@428e063a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4539,9 +4261,9 @@
       "tags": ["manage-characters-and-personas", "multi-user"],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d353ed92: semantic catalog review"
         ],
-        "multi-user": ["undefined repository README: semantic catalog review"]
+        "multi-user": ["README.md@d353ed92: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4557,15 +4279,11 @@
         "visual-workflow"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@2ab0c814: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2ab0c814: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@2ab0c814: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4578,11 +4296,9 @@
       "tags": ["maintain-long-term-memory", "manage-context-limits"],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@17c3f9ad: semantic catalog review"
         ],
-        "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-context-limits": ["README.md@17c3f9ad: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4599,14 +4315,12 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@90d6877d: semantic catalog review"
         ],
         "plan-stories-and-scenes": [
-          "undefined repository README: semantic catalog review"
+          "README.md@90d6877d: semantic catalog review"
         ],
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@90d6877d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4662,12 +4376,12 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5554e485: semantic catalog review"
         ],
         "manage-maps-and-locations": [
           "README: - Will keep Save States between chats. Chat 1 vs Chat 2 can have different location tracking in place, so the player character's position isn't forgotte"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@5554e485: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4706,15 +4420,9 @@
       "project_id": "q-atastrophe-lore-atlas",
       "tags": ["manage-lorebooks", "visual-workflow", "non-destructive"],
       "evidence": {
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "manage-lorebooks": ["README.md@a5bec9d8: semantic catalog review"],
+        "visual-workflow": ["README.md@a5bec9d8: semantic catalog review"],
+        "non-destructive": ["README.md@a5bec9d8: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4727,7 +4435,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@9fdceffa: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4746,18 +4454,16 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@81b3326c: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@81b3326c: semantic catalog review"
         ],
         "secondary-model": [
           "README: - **Separate Connection Profile**: Choose a separate connection profile to be used for summaries.",
           "README: - You can also set a separate `Connection Profile` to be used specifically for summarizations."
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@81b3326c: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4770,7 +4476,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c28b4f21: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4882,14 +4588,10 @@
       ],
       "evidence": {
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5aa5631d: semantic catalog review"
         ],
-        "generate-images": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "generate-images": ["README.md@5aa5631d: semantic catalog review"],
+        "add-visual-immersion": ["README.md@5aa5631d: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4902,10 +4604,10 @@
       "tags": ["guide-model-responses", "modular-and-extensible"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@db5c9686: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@db5c9686: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4919,10 +4621,10 @@
       "tags": ["manage-prompts-and-presets", "customize-the-interface"],
       "evidence": {
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a427446a: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a427446a: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4936,7 +4638,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a84cfebb: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -4950,11 +4652,9 @@
       "tags": ["add-voice-interaction", "background-operation"],
       "evidence": {
         "add-voice-interaction": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a910f6a3: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@a910f6a3: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4966,9 +4666,7 @@
       "project_id": "rossascends-st-samplerkillswitches",
       "tags": ["guide-model-responses"],
       "evidence": {
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@d4002397: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -4981,10 +4679,10 @@
       "tags": ["add-voice-interaction", "modular-and-extensible"],
       "evidence": {
         "add-voice-interaction": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@94c6e1dc: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "readme.md@94c6e1dc: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5007,14 +4705,12 @@
           "README: - Commentary and plot direction brainstorming of CURRENT SCENE. No failure condition – MUST write something."
         ],
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1688d84e: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@1688d84e: semantic catalog review"
         ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "rules-driven": ["README.md@1688d84e: semantic catalog review"],
         "persistent-state": [
           "README: All persistent state is stored as HTML comments in the **Plot Momentum** block. Variables follow concise shorthand."
         ]
@@ -5072,7 +4768,7 @@
           "repository description: Another character management interface for SillyTavern."
         ],
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fcfa71af: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5086,7 +4782,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@83bf8288: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5100,10 +4796,10 @@
       "tags": ["guide-model-responses", "modular-and-extensible"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@64456d42: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@64456d42: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5139,10 +4835,10 @@
           "README: 2. Open the Persona Management slider/drawer and use the Multi Persona Composer panel inside it."
         ],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@26c11ce9: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@26c11ce9: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5156,7 +4852,7 @@
       "tags": ["automate-roleplay-workflows", "generate-images"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@25878313: semantic catalog review"
         ],
         "generate-images": ["README: No tag = no image generation."]
       },
@@ -5185,13 +4881,13 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d33f8f56: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d33f8f56: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d33f8f56: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5208,9 +4904,9 @@
           "README: When `/newchat` is used, the character's greeting is automatically forwarded to Discord. In group chats, each member's individual greeting is sent in tu"
         ],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e3a2678c: semantic catalog review"
         ],
-        "multi-user": ["undefined repository README: semantic catalog review"]
+        "multi-user": ["README.md@e3a2678c: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5229,22 +4925,20 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@194a011b: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@194a011b: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@194a011b: semantic catalog review"
         ],
         "secondary-model": [
           "README: Smart Memory uses a small helper model to understand whether two memories are saying the same thing, even if the wording is completely different. For ex",
           "README: This helper model is tiny and runs on CPU - it does not compete with your main roleplay model for VRAM or slow anything down.",
           "README: | Use semantic embeddings | On | Use the helper model to compare memories by meaning rather than by shared words |"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@194a011b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5261,12 +4955,12 @@
       ],
       "evidence": {
         "create-character-cards": [
-          "undefined repository README: semantic catalog review"
+          "README.md@549b6efd: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@549b6efd: semantic catalog review"
         ],
-        "self-hosted": ["undefined repository README: semantic catalog review"]
+        "self-hosted": ["README.md@549b6efd: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5282,14 +4976,12 @@
         "manage-maps-and-locations"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@51718f8c: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@51718f8c: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@51718f8c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5322,10 +5014,10 @@
       "tags": ["customize-the-interface", "modular-and-extensible"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2205d1d0: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2205d1d0: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5339,10 +5031,10 @@
       "tags": ["guide-model-responses", "customize-the-interface"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@758aa6f6: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@758aa6f6: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5356,7 +5048,7 @@
       "tags": ["guide-model-responses", "run-group-roleplay"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@52e74dd3: semantic catalog review"
         ],
         "run-group-roleplay": [
           "repository description: Allows setting alternate greetings that are specific to group chats.",
@@ -5373,12 +5065,8 @@
       "project_id": "sillytavern-extension-mermaid",
       "tags": ["add-visual-immersion", "visual-workflow"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@62265d55: semantic catalog review"],
+        "visual-workflow": ["README.md@62265d55: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5405,13 +5093,13 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@97a9fd90: semantic catalog review"
         ],
         "inspect-prompts-and-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@97a9fd90: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@97a9fd90: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5425,10 +5113,10 @@
       "tags": ["automate-roleplay-workflows", "customize-the-interface"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d56a64c9: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d56a64c9: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5442,7 +5130,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@930be549: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5456,7 +5144,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3c5ef68e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5470,7 +5158,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@c169a3ca: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5491,23 +5179,23 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          ".github/readme.md@8172dcd0: semantic catalog review"
         ],
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          ".github/readme.md@8172dcd0: semantic catalog review"
         ],
         "generate-images": [
           "README: SillyTavern provides a single unified interface for many LLM APIs (KoboldAI/CPP, Horde, NovelAI, Ooba, Tabby, OpenAI, OpenRouter, Claude, Mistral and mo",
           "README: SillyTavern (or ST for short) is a locally installed user interface that allows you to interact with text generation LLMs, image generation engines, and"
         ],
         "run-group-roleplay": [
-          "undefined repository README: semantic catalog review"
+          ".github/readme.md@8172dcd0: semantic catalog review"
         ],
         "mobile-friendly": [
           "README: SillyTavern provides a single unified interface for many LLM APIs (KoboldAI/CPP, Horde, NovelAI, Ooba, Tabby, OpenAI, OpenRouter, Claude, Mistral and mo"
         ],
         "model-agnostic": [
-          "undefined repository README: semantic catalog review"
+          ".github/readme.md@8172dcd0: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5521,10 +5209,10 @@
       "tags": ["manage-characters-and-personas", "automate-roleplay-workflows"],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@30dbe54e: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@30dbe54e: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5541,9 +5229,7 @@
           "README: Set nicknames for characters and personas to be used in the UI, chat messages, and prompts. Features a dedicated nickname editor in Persona/Character Ma",
           "README: A dedicated nickname editor appears directly in **Persona Management** (for user/persona nicknames) and **Character Management** (for character nickname"
         ],
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@b43ddb9f: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5571,9 +5257,7 @@
       "project_id": "sillytavern-sillytavern-pushnotifications",
       "tags": ["background-operation"],
       "evidence": {
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@49e5d246: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5590,18 +5274,14 @@
         "persistent-state"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@39132a8f: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@39132a8f: semantic catalog review"
         ],
         "manage-inventory-and-quests": [
-          "undefined repository README: semantic catalog review"
+          "README.md@39132a8f: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@39132a8f: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5614,7 +5294,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@5c1ae5f9: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5634,11 +5314,9 @@
         "automate-roleplay-workflows": [
           "README: - **Frontend**: SillyTavern extension with event-driven automation"
         ],
-        "add-music-and-audio": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-music-and-audio": ["README.md@979cbe39: semantic catalog review"],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@979cbe39: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5657,17 +5335,13 @@
       ],
       "evidence": {
         "improve-writing-and-prose": [
-          "undefined repository README: semantic catalog review"
+          "README.md@019f5f53: semantic catalog review"
         ],
         "edit-and-refine-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@019f5f53: semantic catalog review"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "streaming-aware": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@019f5f53: semantic catalog review"],
+        "streaming-aware": ["README.md@019f5f53: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5684,14 +5358,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7125de7a: semantic catalog review"
         ],
         "recover-failed-generations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7125de7a: semantic catalog review"
         ],
-        "streaming-aware": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "streaming-aware": ["README.md@7125de7a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5714,7 +5386,7 @@
       "tags": ["manage-prompts-and-presets"],
       "evidence": {
         "manage-prompts-and-presets": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7d67370c: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5732,13 +5404,11 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4f059334: semantic catalog review"
         ],
-        "generate-images": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "generate-images": ["README.md@4f059334: semantic catalog review"],
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@4f059334: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5758,20 +5428,14 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fea575ad: semantic catalog review"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fea575ad: semantic catalog review"
         ],
-        "agentic-tool-use": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "agentic-tool-use": ["README.md@fea575ad: semantic catalog review"],
+        "semantic-retrieval": ["README.md@fea575ad: semantic catalog review"],
+        "persistent-state": ["README.md@fea575ad: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5784,7 +5448,7 @@
       "tags": ["automate-roleplay-workflows"],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@14809604: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5802,14 +5466,12 @@
       ],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bf99ff88: semantic catalog review"
         ],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bf99ff88: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@bf99ff88: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5826,14 +5488,12 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@111978ba: semantic catalog review"
         ],
         "organize-chats-and-messages": [
-          "undefined repository README: semantic catalog review"
+          "README.md@111978ba: semantic catalog review"
         ],
-        "non-destructive": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "non-destructive": ["README.md@111978ba: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5893,11 +5553,9 @@
           "README: ├── characters/<id>/ # a character's persistent memory (same layout) plus:"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@e2ac6706: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@e2ac6706: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5909,9 +5567,7 @@
       "project_id": "thejackals-sillytavern-imageembedexpressions",
       "tags": ["add-visual-immersion"],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@328afdd9: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5928,14 +5584,12 @@
       ],
       "evidence": {
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@435ff13a: semantic catalog review"
         ],
         "manage-maps-and-locations": [
-          "undefined repository README: semantic catalog review"
+          "README.md@435ff13a: semantic catalog review"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@435ff13a: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -5953,16 +5607,16 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@43ee8b02: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@43ee8b02: semantic catalog review"
         ],
         "preserve-story-continuity": [
-          "undefined repository README: semantic catalog review"
+          "README.md@43ee8b02: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@43ee8b02: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -5980,13 +5634,13 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fc972dd8: semantic catalog review"
         ],
         "build-extensions-and-scripts": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fc972dd8: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@fc972dd8: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6016,7 +5670,7 @@
       "tags": ["guide-model-responses", "run-group-roleplay"],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "Readme.md@5492153c: semantic catalog review"
         ],
         "run-group-roleplay": [
           "repository description: A SillyTavern extension for group chats: adds a button next to the message box that pops open every character's avatar so you can force",
@@ -6044,7 +5698,7 @@
       "tags": ["customize-the-interface"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@bad3bcee: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6058,7 +5712,7 @@
       "tags": ["manage-character-libraries"],
       "evidence": {
         "manage-character-libraries": [
-          "undefined repository README: semantic catalog review"
+          "README.md@982d840d: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6075,15 +5729,11 @@
         "persistent-state"
       ],
       "evidence": {
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-visual-immersion": ["README.md@738afedf: semantic catalog review"],
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@738afedf: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@738afedf: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6100,18 +5750,12 @@
         "persistent-state"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@2fa4ba41: semantic catalog review"],
         "local-first": [
           "README: RPGraph Studio is a **local-first desktop app** for interactive AI roleplay. Instead of a plain chatbox, you get a full studio: a **visual node workflow"
         ],
-        "visual-workflow": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "visual-workflow": ["README.md@2fa4ba41: semantic catalog review"],
+        "persistent-state": ["README.md@2fa4ba41: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6128,10 +5772,10 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b5aefb17: semantic catalog review"
         ],
         "manage-context-limits": [
-          "undefined repository README: semantic catalog review"
+          "README.md@b5aefb17: semantic catalog review"
         ],
         "non-destructive": [
           "README: Summaryception is designed to be non-destructive. Summaries live in chat metadata. Settings live in extension settings. Ghosted messages are marked with"
@@ -6154,20 +5798,16 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@69eca239: semantic catalog review"
         ],
         "retrieve-relevant-context": [
-          "undefined repository README: semantic catalog review"
+          "README.md@69eca239: semantic catalog review"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@69eca239: semantic catalog review"
         ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "semantic-retrieval": ["README.md@69eca239: semantic catalog review"],
+        "persistent-state": ["README.md@69eca239: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6184,14 +5824,12 @@
       ],
       "evidence": {
         "manage-characters-and-personas": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7d7970b4: semantic catalog review"
         ],
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@7d7970b4: semantic catalog review"
         ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "persistent-state": ["README.md@7d7970b4: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6209,17 +5847,17 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3ea04366: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3ea04366: semantic catalog review"
         ],
         "run-group-roleplay": [
           "README: Aspect: Vocalia is a SillyTavern extension for intelligently automating character responses in group chats.",
           "README: - Makes group chats scene-aware instead of leaving speaker choice to random routing"
         ],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@3ea04366: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6243,7 +5881,7 @@
       "tags": ["monitor-token-usage-and-cost"],
       "evidence": {
         "monitor-token-usage-and-cost": [
-          "undefined repository README: semantic catalog review"
+          "README.md@8d7aae32: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6288,16 +5926,14 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a7d7456b: semantic catalog review"
         ],
         "generate-images": [
           "repository description: Auto Background — SillyTavern Extension. Automatically detects scene/location changes in your chat and triggers background image generat",
           "README: Automatically detects scene/location changes in your chat and triggers background image generation via the **Image Generation** extension.",
           "README: | **Image Generation extension** | Must be installed and configured with a working background generation command |"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@a7d7456b: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6315,12 +5951,10 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ab562b03: semantic catalog review"
         ],
-        "add-music-and-audio": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "local-first": ["undefined repository README: semantic catalog review"],
+        "add-music-and-audio": ["README.md@ab562b03: semantic catalog review"],
+        "local-first": ["README.md@ab562b03: semantic catalog review"],
         "secondary-model": [
           "README: - **Optional LLM Connection Profile** — route the scene-analysis call through a separate connection profile (e.g. a cheaper or more JSON-friendly model)",
           "README: - Tick **Use a separate Connection Profile for scene analysis**"
@@ -6337,7 +5971,7 @@
       "tags": ["translate-roleplay-content"],
       "evidence": {
         "translate-roleplay-content": [
-          "undefined repository README: semantic catalog review"
+          "README.md@2c0b9fac: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6360,11 +5994,9 @@
           "README: > Build complete SillyTavern World Info / LoreBooks with an LLM — from a single idea or a guided, tabbed worldbuilding form.",
           "README: It's the worldbuilding companion to **[Character Creator](https://github.com/virgilianshailer/character-creator)** and **[AutoIllustrator](https://githu"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@729fbe89: semantic catalog review"],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@729fbe89: semantic catalog review"
         ],
         "background-operation": [
           "README: | An LLM connection in SillyTavern | Used to write all world and entry text via the quiet-generation API |",
@@ -6382,7 +6014,7 @@
       "tags": ["connect-external-services"],
       "evidence": {
         "connect-external-services": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d9772d1d: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6402,22 +6034,16 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@cfebde44: semantic catalog review"
         ],
         "generate-images": [
           "README heading: Image Generation",
           "repository description: 💅🔥 SillyTavern extension — inline image generation with wardrobe + NPC references",
           "README: **SillyTavern extension for inline image generation with wardrobe system and NPC references.**"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "mobile-friendly": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "persistent-state": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@cfebde44: semantic catalog review"],
+        "mobile-friendly": ["README.md@cfebde44: semantic catalog review"],
+        "persistent-state": ["README.md@cfebde44: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6473,17 +6099,13 @@
       ],
       "evidence": {
         "maintain-long-term-memory": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a64812c5: semantic catalog review"
         ],
-        "manage-lorebooks": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "manage-lorebooks": ["README.md@a64812c5: semantic catalog review"],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@a64812c5: semantic catalog review"
         ],
-        "background-operation": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "background-operation": ["README.md@a64812c5: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6496,11 +6118,9 @@
       "tags": ["customize-the-interface", "mobile-friendly"],
       "evidence": {
         "customize-the-interface": [
-          "undefined repository README: semantic catalog review"
+          "README.md@d64ccecd: semantic catalog review"
         ],
-        "mobile-friendly": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "mobile-friendly": ["README.md@d64ccecd: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6518,15 +6138,15 @@
       ],
       "evidence": {
         "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
+          "README.md@56a1f679: semantic catalog review"
         ],
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@56a1f679: semantic catalog review"
         ],
         "modular-and-extensible": [
-          "undefined repository README: semantic catalog review"
+          "README.md@56a1f679: semantic catalog review"
         ],
-        "rules-driven": ["undefined repository README: semantic catalog review"]
+        "rules-driven": ["README.md@56a1f679: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6543,16 +6163,14 @@
       ],
       "evidence": {
         "automate-roleplay-workflows": [
-          "undefined repository README: semantic catalog review"
+          "README.md@0aeac043: semantic catalog review"
         ],
         "generate-images": [
           "README heading: 🎨 Image Generation Sources",
           "README: **Vistalyze** is a SillyTavern extension that brings your roleplay to life by automatically detecting location changes and generating cinematic backgrou",
           "README: Vistalyze delegates all image generation to SillyTavern's native **Image Generation** extension (the \"stable-diffusion\" extension bundled with ST). This"
         ],
-        "add-visual-immersion": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "add-visual-immersion": ["README.md@0aeac043: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6570,20 +6188,14 @@
         "multi-stage-generation"
       ],
       "evidence": {
-        "add-rpg-gameplay": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "add-rpg-gameplay": ["README.md@ac6c2cc4: semantic catalog review"],
         "track-characters-and-world-state": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ac6c2cc4: semantic catalog review"
         ],
-        "semantic-retrieval": [
-          "undefined repository README: semantic catalog review"
-        ],
-        "rules-driven": [
-          "undefined repository README: semantic catalog review"
-        ],
+        "semantic-retrieval": ["README.md@ac6c2cc4: semantic catalog review"],
+        "rules-driven": ["README.md@ac6c2cc4: semantic catalog review"],
         "multi-stage-generation": [
-          "undefined repository README: semantic catalog review"
+          "README.md@ac6c2cc4: semantic catalog review"
         ]
       },
       "diagnostic": null,
@@ -6597,9 +6209,9 @@
       "tags": ["build-worlds-and-lore", "local-first"],
       "evidence": {
         "build-worlds-and-lore": [
-          "undefined repository README: semantic catalog review"
+          "README.md@00c80b53: semantic catalog review"
         ],
-        "local-first": ["undefined repository README: semantic catalog review"]
+        "local-first": ["README.md@00c80b53: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {
@@ -6630,9 +6242,7 @@
       "project_id": "zorgonatis-stabs-edh",
       "tags": ["guide-model-responses"],
       "evidence": {
-        "guide-model-responses": [
-          "undefined repository README: semantic catalog review"
-        ]
+        "guide-model-responses": ["README.md@1d4bf8ee: semantic catalog review"]
       },
       "diagnostic": null,
       "metadata_policy": {

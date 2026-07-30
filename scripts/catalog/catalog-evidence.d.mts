@@ -35,9 +35,20 @@ export interface FetchedEvidence {
 }
 
 export type EvidenceFetchResult =
-  | { status: "unchanged"; checkedAt: string }
+  | {
+      status: "unchanged";
+      checkedAt: string;
+      repositoryDescription: string | null;
+      defaultBranch: string;
+      commitSha: string;
+    }
   | FetchedEvidence
-  | { status: "missing"; repositoryDescription: string | null };
+  | {
+      status: "missing";
+      repositoryDescription: string | null;
+      defaultBranch: string;
+      commitSha: string;
+    };
 
 export interface EvidenceAdapter {
   fetch(input: EvidenceFetchInput): Promise<EvidenceFetchResult>;

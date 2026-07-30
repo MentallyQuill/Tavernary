@@ -766,11 +766,14 @@ test("validates and builds all candidates before publishing once", async () => {
   const validateCandidates = vi.fn(async () => ({ errors: [] }));
   const buildCandidates = vi.fn(async () => ({ projects: [] }));
   const publish = vi.fn(async () => undefined);
+  const sources = [record(0)];
+  const projects = [{ id: "card-000", source_id: sources[0].id }];
 
   await runRefresh({
     mode: "incremental",
     now: "2026-07-24T08:00:00.000Z",
-    records: [record(0)],
+    records: sources,
+    projects,
     snapshots: [snapshot(0)],
     observe: observer([observation(0)]),
     inspectDelta: vi.fn(),
@@ -782,6 +785,12 @@ test("validates and builds all candidates before publishing once", async () => {
 
   expect(validateCandidates).toHaveBeenCalledOnce();
   expect(buildCandidates).toHaveBeenCalledOnce();
+  expect(validateCandidates).toHaveBeenCalledWith(
+    expect.objectContaining({ records: sources, projects }),
+  );
+  expect(buildCandidates).toHaveBeenCalledWith(
+    expect.objectContaining({ records: sources, projects }),
+  );
   expect(publish).toHaveBeenCalledOnce();
   expect(validateCandidates.mock.invocationCallOrder[0]).toBeLessThan(
     publish.mock.invocationCallOrder[0],

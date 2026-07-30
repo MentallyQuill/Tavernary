@@ -87,7 +87,7 @@ test("preserves raw README bytes and records source metadata", async () => {
   }
 });
 
-test("uses stored validators and updates only checked metadata when unchanged", async () => {
+test("keeps README bytes and refreshes repository metadata when content is unchanged", async () => {
   const { refreshCatalogEvidence } =
     await import("../../scripts/catalog/catalog-evidence.mjs");
   const root = await mkdtemp(join(tmpdir(), "tavernary-evidence-"));
@@ -130,6 +130,9 @@ test("uses stored validators and updates only checked metadata when unchanged", 
           return {
             status: "unchanged",
             checkedAt: "2026-07-29T22:00:00.000Z",
+            repositoryDescription: "Updated repository description.",
+            defaultBranch: "stable",
+            commitSha: "b".repeat(40),
           };
         },
       },
@@ -145,6 +148,9 @@ test("uses stored validators and updates only checked metadata when unchanged", 
     });
     expect(await readFile(resolve(directory, "README.md"))).toEqual(before);
     expect(metadata).toMatchObject({
+      default_branch: "stable",
+      commit_sha: "b".repeat(40),
+      repository_description: "Updated repository description.",
       fetched_at: "2026-07-29T21:00:00.000Z",
       checked_at: "2026-07-29T22:00:00.000Z",
       outcome: "unchanged",
@@ -304,6 +310,8 @@ test("records a missing root README without treating it as a failed refresh", as
           return {
             status: "missing",
             repositoryDescription: "Repository description only.",
+            defaultBranch: "stable",
+            commitSha: "d".repeat(40),
           };
         },
       },
@@ -319,10 +327,11 @@ test("records a missing root README without treating it as a failed refresh", as
       source_id: "github-1001051404",
       repository_id: 1001051404,
       repository: "aikohanasaki/SillyTavern-MemoryBooks",
+      default_branch: "stable",
       readme_path: null,
       readme_filename: null,
       download_url: null,
-      commit_sha: null,
+      commit_sha: "d".repeat(40),
       etag: null,
       content_sha256: null,
       repository_description: "Repository description only.",
@@ -492,13 +501,14 @@ test("fetches GitHub README bytes through the CLI adapter and skips an unchanged
   const calls: string[] = [];
   const headSha = "f".repeat(40);
   const readmeBytes = Buffer.from("# Adapter README\n", "utf8");
+  let repositoryDescription = "Structured memory extension.";
   const githubApi = async (endpoint: string) => {
     calls.push(endpoint);
     if (endpoint === "repos/aikohanasaki/SillyTavern-MemoryBooks") {
       return {
         id: 1001051404,
         default_branch: "main",
-        description: "Structured memory extension.",
+        description: repositoryDescription,
       };
     }
     if (
@@ -543,6 +553,7 @@ test("fetches GitHub README bytes through the CLI adapter and skips an unchanged
   });
 
   calls.length = 0;
+  repositoryDescription = "Updated repository description.";
   await expect(
     adapter.fetch({
       source: githubSource,
@@ -552,6 +563,9 @@ test("fetches GitHub README bytes through the CLI adapter and skips an unchanged
   ).resolves.toEqual({
     status: "unchanged",
     checkedAt: "2026-07-30T00:00:00.000Z",
+    repositoryDescription: "Updated repository description.",
+    defaultBranch: "main",
+    commitSha: headSha,
   });
   expect(calls).toEqual([
     "repos/aikohanasaki/SillyTavern-MemoryBooks",
@@ -618,6 +632,8 @@ test("fetches Codeberg README bytes and records a missing root README", async ()
   ).resolves.toEqual({
     status: "missing",
     repositoryDescription: "A Codeberg project.",
+    defaultBranch: "main",
+    commitSha: headSha,
   });
 });
 
@@ -646,6 +662,8 @@ test("runs a project-targeted CLI refresh through the source registry", async ()
             return {
               status: "missing",
               repositoryDescription: "Description only.",
+              defaultBranch: "main",
+              commitSha: "e".repeat(40),
             };
           },
         },

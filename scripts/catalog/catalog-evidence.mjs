@@ -209,7 +209,13 @@ async function fetchGitHubEvidence(input, options) {
     throw new Error(`GitHub branch head unavailable: ${input.source.id}`);
   }
   if (commit.sha === input.commitSha) {
-    return { status: "unchanged", checkedAt: options.clock() };
+    return {
+      status: "unchanged",
+      checkedAt: options.clock(),
+      repositoryDescription: repository.description?.trim() || null,
+      defaultBranch,
+      commitSha: commit.sha,
+    };
   }
 
   const readme = await options.githubApi(
@@ -219,6 +225,8 @@ async function fetchGitHubEvidence(input, options) {
     return {
       status: "missing",
       repositoryDescription: repository.description?.trim() || null,
+      defaultBranch,
+      commitSha: commit.sha,
     };
   }
   if (
@@ -264,7 +272,13 @@ async function fetchCodebergEvidence(input, options) {
     throw new Error(`Codeberg branch head unavailable: ${input.source.id}`);
   }
   if (commit.sha === input.commitSha) {
-    return { status: "unchanged", checkedAt: options.clock() };
+    return {
+      status: "unchanged",
+      checkedAt: options.clock(),
+      repositoryDescription: repository.description?.trim() || null,
+      defaultBranch,
+      commitSha: commit.sha,
+    };
   }
 
   const rootContents = await options.codebergApi(
@@ -279,6 +293,8 @@ async function fetchCodebergEvidence(input, options) {
     return {
       status: "missing",
       repositoryDescription: repository.description?.trim() || null,
+      defaultBranch,
+      commitSha: commit.sha,
     };
   }
 
@@ -446,10 +462,11 @@ async function writeMissingEvidence({ root, source, missing, fetchedAt }) {
     source_id: source.id,
     repository_id: source.repository_id,
     repository: source.repository,
+    default_branch: missing.defaultBranch,
     readme_path: null,
     readme_filename: null,
     download_url: null,
-    commit_sha: null,
+    commit_sha: missing.commitSha,
     etag: null,
     content_sha256: null,
     repository_description: missing.repositoryDescription,
@@ -508,6 +525,13 @@ export async function refreshCatalogEvidence({
         }
         await writeMetadataAtomically(evidenceDirectory(root, source), {
           ...previousMetadata,
+          default_branch:
+            result.defaultBranch ?? previousMetadata.default_branch ?? null,
+          commit_sha: result.commitSha ?? previousMetadata.commit_sha ?? null,
+          repository_description:
+            result.repositoryDescription ??
+            previousMetadata.repository_description ??
+            null,
           checked_at: result.checkedAt,
           outcome: "unchanged",
         });

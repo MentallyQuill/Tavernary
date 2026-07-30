@@ -59,6 +59,14 @@ async function readRecords() {
   return Promise.all(files.map((file) => readJson(resolve(directory, file))));
 }
 
+async function readProjects() {
+  const directory = resolve(rootDirectory, "data/registry/projects");
+  const files = (await readdir(directory))
+    .filter((file) => file.endsWith(".json"))
+    .sort();
+  return Promise.all(files.map((file) => readJson(resolve(directory, file))));
+}
+
 async function readSnapshots() {
   let files;
   try {
@@ -388,6 +396,9 @@ export async function runRefresh(options = {}) {
   const startedAt = new Date(options.startedAt ?? Date.now()).toISOString();
   const now = new Date(options.now ?? startedAt).toISOString();
   const records = options.records ?? (await readRecords());
+  const projects =
+    options.projects ??
+    (options.records === undefined ? await readProjects() : []);
   const snapshots = options.snapshots ?? (await readSnapshots());
   const previousManifest =
     options.previousManifest ??
@@ -810,7 +821,8 @@ export async function runRefresh(options = {}) {
       options.validateCandidates ??
       ((input) =>
         validateCatalog({
-          records: input.records,
+          records: input.projects,
+          sources: input.records,
           snapshots: input.snapshots,
           refreshManifest: input.manifest,
         }));
@@ -819,12 +831,14 @@ export async function runRefresh(options = {}) {
       ((input) =>
         buildCatalog({
           write: false,
-          records: input.records,
+          records: input.projects,
+          sources: input.records,
           snapshots: input.snapshots,
           refreshManifest: input.manifest,
         }));
     const validation = await validateCandidates({
       records,
+      projects,
       snapshots: finalSnapshots,
       manifest,
     });
@@ -833,7 +847,12 @@ export async function runRefresh(options = {}) {
         `Candidate catalog validation failed:\n${validation.errors.join("\n")}`,
       );
     }
-    await buildCandidates({ records, snapshots: finalSnapshots, manifest });
+    await buildCandidates({
+      records,
+      projects,
+      snapshots: finalSnapshots,
+      manifest,
+    });
     const publish = options.publish ?? publishCandidates;
     await publish({ changedSnapshots, manifest });
   }

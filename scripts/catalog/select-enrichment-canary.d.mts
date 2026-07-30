@@ -4,9 +4,11 @@ export function selectRandomCanaryIds(
     listing_status?: string;
     metadata_status?: string;
     summary?: string;
-    refresh_policy?: string;
-    enrichment_policy?: "automatic" | "manual";
-    enrichment_note?: string;
+    tags?: string[];
+    metadata_policy?: {
+      summary?: { mode?: "automatic" | "manual"; note?: string };
+      tags?: { mode?: "automatic" | "manual"; note?: string };
+    };
     source_id: string;
   }>,
   sourcesById: Record<
@@ -27,9 +29,11 @@ export function selectRepresentativeCanaryIds(
     listing_status?: string;
     metadata_status?: string;
     summary?: string;
-    refresh_policy?: string;
-    enrichment_policy?: "automatic" | "manual";
-    enrichment_note?: string;
+    tags?: string[];
+    metadata_policy?: {
+      summary?: { mode?: "automatic" | "manual"; note?: string };
+      tags?: { mode?: "automatic" | "manual"; note?: string };
+    };
     source_id: string;
   }>,
   sourcesById: Record<

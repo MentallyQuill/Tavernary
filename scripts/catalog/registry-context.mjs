@@ -111,10 +111,15 @@ async function readJsonDirectory(directory) {
 }
 
 export async function loadRegistryContext(root = DEFAULT_ROOT) {
-  const [projects, sources, snapshots] = await Promise.all([
+  const [projects, sources, providerSnapshots] = await Promise.all([
     readJsonDirectory(resolve(root, "data/registry/projects")),
     readJsonDirectory(resolve(root, "data/registry/sources")),
-    readJsonDirectory(resolve(root, "data/snapshots/github")),
+    Promise.all(
+      ["github", "codeberg"].map((provider) =>
+        readJsonDirectory(resolve(root, `data/snapshots/${provider}`)),
+      ),
+    ),
   ]);
+  const snapshots = providerSnapshots.flat();
   return indexRegistry({ projects, sources, snapshots });
 }

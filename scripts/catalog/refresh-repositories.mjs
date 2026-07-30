@@ -39,9 +39,10 @@ async function readDirectory(path) {
 }
 
 async function readInputs() {
-  const records = await readDirectory(
-    resolve(rootDirectory, "data/registry/sources"),
-  );
+  const [records, projects] = await Promise.all([
+    readDirectory(resolve(rootDirectory, "data/registry/sources")),
+    readDirectory(resolve(rootDirectory, "data/registry/projects")),
+  ]);
   const snapshots = (
     await Promise.all(
       ["github", "codeberg"].map((provider) =>
@@ -55,7 +56,7 @@ async function readInputs() {
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
-  return { records, snapshots, previousManifest };
+  return { records, projects, snapshots, previousManifest };
 }
 
 function automaticRecords(records) {
@@ -302,14 +303,18 @@ export async function runRepositoryRefresh(options = {}) {
   const mode = options.mode ?? "incremental";
   const startedAt = new Date(options.startedAt ?? Date.now()).toISOString();
   const now = new Date(options.now ?? startedAt).toISOString();
-  const inputs =
-    options.records === undefined || options.snapshots === undefined
-      ? await readInputs()
-      : {
-          records: options.records,
-          snapshots: options.snapshots,
-          previousManifest: options.previousManifest ?? null,
-        };
+  const needsCanonicalInputs =
+    options.records === undefined ||
+    options.snapshots === undefined ||
+    (options.write !== false && options.projects === undefined);
+  const canonicalInputs = needsCanonicalInputs ? await readInputs() : null;
+  const inputs = {
+    records: options.records ?? canonicalInputs.records,
+    projects: options.projects ?? canonicalInputs?.projects ?? [],
+    snapshots: options.snapshots ?? canonicalInputs.snapshots,
+    previousManifest:
+      options.previousManifest ?? canonicalInputs?.previousManifest ?? null,
+  };
   const selected = selectRefreshSources(inputs.records, inputs.snapshots, {
     mode,
     batchSize: options.batchSize,
@@ -421,7 +426,8 @@ export async function runRepositoryRefresh(options = {}) {
 
   if (options.write !== false) {
     const validation = await (options.validateCandidates ?? validateCatalog)({
-      records: inputs.records,
+      records: inputs.projects,
+      sources: inputs.records,
       snapshots: finalSnapshots,
       refreshManifest: manifest,
     });
@@ -432,7 +438,8 @@ export async function runRepositoryRefresh(options = {}) {
     }
     await (options.buildCandidates ?? buildCatalog)({
       write: false,
-      records: inputs.records,
+      records: inputs.projects,
+      sources: inputs.records,
       snapshots: finalSnapshots,
       refreshManifest: manifest,
     });

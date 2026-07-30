@@ -163,6 +163,42 @@ describe("full catalog data", () => {
     ).toHaveLength(0);
   });
 
+  test("keeps the tag migration audit tied to concrete catalog evidence", async () => {
+    const report = JSON.parse(
+      await readFile(
+        resolve(rootDirectory, "data/reports/tag-migration-report.json"),
+        "utf8",
+      ),
+    ) as {
+      project_count: number;
+      zero_tag_count: number;
+      six_tag_count: number;
+      projects: Array<{
+        project_id: string;
+        tags: string[];
+        evidence: Record<string, string[]>;
+      }>;
+    };
+    const { projectsById } = await loadProductionData();
+
+    expect(report.project_count).toBe(309);
+    expect(report.zero_tag_count).toBe(16);
+    expect(report.six_tag_count).toBe(17);
+    expect(report.projects).toHaveLength(309);
+    for (const entry of report.projects) {
+      expect(entry.tags, entry.project_id).toEqual(
+        projectsById.get(entry.project_id)?.tags,
+      );
+      for (const references of Object.values(entry.evidence)) {
+        for (const reference of references) {
+          expect(reference, entry.project_id).not.toMatch(
+            /\bundefined repository\b/iu,
+          );
+        }
+      }
+    }
+  });
+
   test("keeps source lifecycle independent from card lifecycle", async () => {
     const { projects, sources, sourcesById } = await loadProductionData();
     const delisted = sources.filter(({ status }) => status === "delisted");

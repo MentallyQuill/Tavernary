@@ -107,3 +107,43 @@ test("isolates provider records, failures, and request telemetry", async () => {
     },
   });
 });
+
+test("validates the complete source-backed catalog before publishing production refreshes", async () => {
+  const sourceId = "github-1001051404";
+  const publish = vi.fn(async () => undefined);
+  const runGitHubRefresh = vi.fn(async ({ records, snapshots }) => ({
+    selected: records,
+    snapshots,
+    changedSnapshots: [],
+    manifest: {
+      source_timings: [
+        {
+          source_id: sourceId,
+          outcome: "unchanged",
+          duration_ms: 1,
+          error_code: null,
+        },
+      ],
+      api: {
+        graphql_requests: 1,
+        graphql_points: 1,
+        graphql_remaining: 4_999,
+        rest_requests: 0,
+      },
+    },
+  }));
+
+  await expect(
+    runRepositoryRefresh({
+      mode: "project",
+      sourceId,
+      now: "2026-07-30T01:00:00.000Z",
+      completedAt: "2026-07-30T01:00:01.000Z",
+      runGitHubRefresh,
+      publish,
+    }),
+  ).resolves.toMatchObject({
+    selected: [expect.objectContaining({ id: sourceId })],
+  });
+  expect(publish).toHaveBeenCalledOnce();
+});

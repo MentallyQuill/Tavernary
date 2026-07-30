@@ -121,11 +121,13 @@ test("loads and indexes the canonical registry directories", async () => {
   try {
     const projectsPath = resolve(root, "data/registry/projects");
     const sourcesPath = resolve(root, "data/registry/sources");
-    const snapshotsPath = resolve(root, "data/snapshots/github");
+    const githubSnapshotsPath = resolve(root, "data/snapshots/github");
+    const codebergSnapshotsPath = resolve(root, "data/snapshots/codeberg");
     await Promise.all([
       mkdir(projectsPath, { recursive: true }),
       mkdir(sourcesPath, { recursive: true }),
-      mkdir(snapshotsPath, { recursive: true }),
+      mkdir(githubSnapshotsPath, { recursive: true }),
+      mkdir(codebergSnapshotsPath, { recursive: true }),
     ]);
     await Promise.all([
       writeFile(
@@ -137,8 +139,24 @@ test("loads and indexes the canonical registry directories", async () => {
         JSON.stringify(source()),
       ),
       writeFile(
-        resolve(snapshotsPath, "github-42.json"),
+        resolve(githubSnapshotsPath, "github-42.json"),
         JSON.stringify({ source_id: "github-42" }),
+      ),
+      writeFile(
+        resolve(projectsPath, "card-b.json"),
+        JSON.stringify({ id: "card-b", source_id: "codeberg-43" }),
+      ),
+      writeFile(
+        resolve(sourcesPath, "codeberg-43.json"),
+        JSON.stringify({
+          ...source("codeberg-43", 43),
+          type: "codeberg",
+          repository: "owner/codeberg-repo",
+        }),
+      ),
+      writeFile(
+        resolve(codebergSnapshotsPath, "codeberg-43.json"),
+        JSON.stringify({ source_id: "codeberg-43" }),
       ),
     ]);
 
@@ -150,6 +168,9 @@ test("loads and indexes the canonical registry directories", async () => {
     });
     expect(context.snapshotsBySourceId.get("github-42")?.source_id).toBe(
       "github-42",
+    );
+    expect(context.snapshotsBySourceId.get("codeberg-43")?.source_id).toBe(
+      "codeberg-43",
     );
   } finally {
     await rm(root, { recursive: true, force: true });
