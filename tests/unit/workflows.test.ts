@@ -862,6 +862,9 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     source.indexOf("Reject conflicting open submission paths"),
   ).toBeLessThan(source.indexOf("git push origin"));
   expect(source).toContain("labels.includes('issue-admitted')");
+  expect(
+    source.match(/labels\.includes\('submission-retryable'\)/gu)?.length,
+  ).toBeGreaterThanOrEqual(4);
   expect(source).toContain("Refresh and revalidate issue before PR mutation");
   expect(source).toContain("Refresh and revalidate issue before labeling");
   expect(
@@ -1048,6 +1051,7 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("git clean -fX -- src/generated/catalog.json");
   expect(source).not.toContain("git checkout -- src/generated/catalog.json");
   expect(source).toContain("submission-pr-open");
+  expect(source).toMatch(/labels\.includes\(["']submission-retryable["']\)/u);
   expect(source).toContain("gh label create submission-pr-open");
   expect(source).toContain("Owner generation changed unsafe paths");
   expect(source.indexOf("Owner generation changed unsafe paths")).toBeLessThan(
