@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "kaldigo-sillytavern-tracker",
   "name": "SillyTavern-Tracker",
   "kind": "extension",
   "summary": "SillyTavern Tracker is a SillyTavern extension that adds customizable tracking for character interactions and story elements. It captures conversational details that users can tailor to fit different storytelling styles.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "kaldigo/SillyTavern-Tracker",
-    "repository_id": 884053465
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-884053465",
+  "tags": ["track-characters-and-world-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

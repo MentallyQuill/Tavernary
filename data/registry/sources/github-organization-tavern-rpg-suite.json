@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "github-organization-tavern-rpg-suite",
+  "type": "github-organization",
+  "organization": "tavern-rpg-suite",
+  "url": "https://github.com/tavern-rpg-suite",
+  "status": "active",
+  "status_reason": null,
+  "refresh_policy": "paused"
+}

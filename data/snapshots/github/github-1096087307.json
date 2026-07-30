@@ -1,0 +1,56 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1096087307,
+    "owner": "SpicyMarinara",
+    "name": "SillyTavern-Lovense",
+    "url": "https://github.com/SpicyMarinara/SillyTavern-Lovense",
+    "description": "Lovense Control Support for SillyTavern",
+    "default_branch": "master",
+    "head_sha": "5c1ae5f9ad2a7eb7fbc242e8d2ee6f3872e0756f",
+    "head_committed_at": "2026-07-05T10:21:35.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-11-13T23:28:24.000Z",
+    "size_kb": 27
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-05T10:21:35.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T10:21:35.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:16:15.267Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 22,
+    "forks_count": 6,
+    "watchers_count": 0,
+    "aggregate": 28
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SpicyMarinara", "type": "User", "provider": "github" },
+      { "login": "mccrypt1", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1096087307"
+}

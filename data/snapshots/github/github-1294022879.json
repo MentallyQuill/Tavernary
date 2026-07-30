@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1294022879,
+    "owner": "japolino",
+    "name": "inlay-illustrator",
+    "url": "https://github.com/japolino/inlay-illustrator",
+    "description": "Persistent character image generation with dynamic visual memory, context-aware prompt parsing, inline chat images, asset mode, Anima/ComfyUI prompt output, and optional tag cleanup.",
+    "default_branch": "stable",
+    "head_sha": "d757aa9d876a806775f4ca4cacf69ff4f53f4df5",
+    "head_committed_at": "2026-07-18T03:48:09.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-08T18:09:20.000Z",
+    "size_kb": 1326
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-18T03:48:09.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T03:48:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T19:09:42.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 3
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "japolino", "type": "User", "provider": "github" },
+      { "login": "prolix-oc", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1294022879"
+}

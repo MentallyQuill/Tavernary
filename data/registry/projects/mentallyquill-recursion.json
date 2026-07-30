@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mentallyquill-recursion",
   "name": "Recursion",
   "kind": "extension",
   "summary": "Recursion is a SillyTavern extension that adds recursive multi-step thinking to language model responses. It applies context-aware bounded guidance to chain intermediate reasoning steps within a controlled loop.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MentallyQuill/Recursion",
-    "repository_id": 1285208664
-  },
   "frontends": ["sillytavern"],
   "primary_function": "generation-reasoning",
-  "capabilities": ["planning-reasoning", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1285208664",
+  "tags": [
+    "guide-model-responses",
+    "add-structured-reasoning",
+    "background-operation",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

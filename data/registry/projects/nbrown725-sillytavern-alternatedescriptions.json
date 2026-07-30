@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "nbrown725-sillytavern-alternatedescriptions",
   "name": "SillyTavern Alternate Descriptions",
   "kind": "extension",
   "summary": "A SillyTavern extension for saving multiple versions of character card fields within a single card. It auto-saves originals, shows token counts, and switches via the /altfield command.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "nbrown725/SillyTavern-AlternateDescriptions",
-    "repository_id": 994448098
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-994448098",
+  "tags": ["manage-characters-and-personas", "persistent-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

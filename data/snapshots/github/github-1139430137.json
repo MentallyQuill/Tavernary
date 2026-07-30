@@ -1,0 +1,101 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1139430137,
+    "owner": "Sillyanonymous",
+    "name": "SillyTavern-CharacterLibrary",
+    "url": "https://github.com/Sillyanonymous/SillyTavern-CharacterLibrary",
+    "description": "A powerful SillyTavern extension for discovering, organizing, and managing your character library with a modern glassmorphic interface.",
+    "default_branch": "main",
+    "head_sha": "d795c9b7356ed61172704c46b2729bb481f9ae0a",
+    "head_committed_at": "2026-07-18T00:06:05.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-01-22T00:21:33.000Z",
+    "size_kb": 4444
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-18T00:06:05.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T00:06:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T16:35:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-27T10:28:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T21:26:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-01T19:09:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-27T14:29:33.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-22T08:28:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-16T16:38:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-06T22:18:05.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-18T00:06:53.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:16:15.267Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 100,
+    "forks_count": 20,
+    "watchers_count": 2,
+    "aggregate": 122
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Sillyanonymous", "type": "User", "provider": "github" },
+      { "login": "mjnitz02", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1139430137"
+}

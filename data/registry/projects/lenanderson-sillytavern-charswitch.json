@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lenanderson-sillytavern-charswitch",
   "name": "SillyTavern-CharSwitch",
   "kind": "extension",
   "summary": "SillyTavern-CharSwitch extends SillyTavern's Character Management with a context menu listing recently used characters. It enables quick switching back to frequently used characters without manual searching.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "LenAnderson/SillyTavern-CharSwitch",
-    "repository_id": 841159088
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-841159088",
+  "tags": ["manage-characters-and-personas"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

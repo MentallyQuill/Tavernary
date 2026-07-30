@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bronya-rand-guinevere-ui-extension",
   "name": "Guinevere UI Extension",
   "kind": "extension",
   "summary": "Guinevere UI Extension overhauls the SillyTavern interface so users can customize their chat environment to personal taste. It provides theming and layout controls that tailor the roleplay frontend.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Bronya-Rand/Guinevere-UI-Extension",
-    "repository_id": 929287817
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-929287817",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

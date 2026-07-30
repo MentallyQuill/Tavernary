@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lackyas-sillytavern-presence",
   "name": "SillyTavern-Presence",
   "kind": "extension",
   "summary": "SillyTavern-Presence is a community extension for the SillyTavern frontend. The original repository is no longer maintained, and users are directed to a forked version for current updates.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "lackyas/SillyTavern-Presence",
-    "repository_id": 875709373
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-27T22:02:51.162Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-875709373",
+  "tags": [],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

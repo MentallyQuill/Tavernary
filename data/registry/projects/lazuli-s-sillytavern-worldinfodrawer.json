@@ -1,23 +1,23 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lazuli-s-sillytavern-worldinfodrawer",
   "name": "WorldInfoDrawer",
   "kind": "extension",
   "summary": "Adds a full-screen drawer for editing and organizing lorebook entries with LOREBOOK FOLDERS. An ENTRY MANAGER supports mass updates, drag-to-reorder, filtering, configurable columns, and bulk changes.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "lazuli-s/SillyTavern-WorldInfoDrawer",
-    "repository_id": 1114224048
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-29T23:49:05.593Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "manual",
-  "enrichment_note": "Catalog summary preserved from repository-owner submission issue #149."
+  "source_id": "github-1114224048",
+  "tags": ["build-worlds-and-lore", "manage-lorebooks", "visual-workflow"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Catalog summary preserved from repository-owner submission issue #149."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

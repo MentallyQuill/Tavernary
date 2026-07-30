@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "noathouard-sillytavern-extension-npc-portait-switcher",
   "name": "SillyTavern NPC Portait Switcher",
   "kind": "extension",
   "summary": "SillyTavern extension showing an NPC portrait on the chat's right side when their name appears in a DM message. It supports expression overrides and tracks multiple NPCs in a switchable icon tray for manual cycling.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "NoaThouard/SillyTavern-Extension-NPC-Portait-Switcher",
-    "repository_id": 1278555504
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1278555504",
+  "tags": [
+    "manage-characters-and-personas",
+    "add-visual-immersion",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

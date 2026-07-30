@@ -1,33 +1,31 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "realistic-frankenstein-preset",
   "name": "Realistic Frankenstein",
   "kind": "preset",
   "summary": "A three-tier SillyTavern preset family promoting character autonomy, realistic behavior, living-world continuity, and scalable prompting.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://old.reddit.com/r/SillyTavernAI/comments/1tyuh6h/realistic_frankenstein_my_new_family_of_freaky",
-    "published_at": null,
-    "version": null,
-    "artifact_size_bytes": null,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": [
-    "prompt-engineering",
-    "instruction-control",
-    "planning-reasoning"
-  ],
   "model_families": ["model-agnostic", "glm", "deepseek", "gemini", "claude"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-realistic-frankenstein-preset",
+  "tags": [
+    "preserve-story-continuity",
+    "plan-stories-and-scenes",
+    "improve-writing-and-prose",
+    "guide-model-responses",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

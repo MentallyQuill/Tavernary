@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1300836750,
+    "owner": "maxime-fleury",
+    "name": "ST-cardEditor",
+    "url": "https://github.com/maxime-fleury/ST-cardEditor",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "5c1929cbb7362001db0a1b7271ca8d9ad2f08dfe",
+    "head_committed_at": "2026-07-16T10:24:20.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-14T18:36:22.000Z",
+    "size_kb": 3622
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-16T10:24:20.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-16T10:24:20.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 5,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Overfake", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1300836750"
+}

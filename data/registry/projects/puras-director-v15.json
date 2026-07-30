@@ -1,27 +1,12 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "puras-director-v15",
   "name": "Pura's Director v15.0",
   "kind": "preset",
   "summary": "A customizable SillyTavern preset combining director-style scene control, grounded prose, reasoning aids, trackers, and RPG systems.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://platberlitz.github.io",
-    "published_at": null,
-    "version": "15.0",
-    "artifact_size_bytes": null,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": [
-    "prompt-engineering",
-    "instruction-control",
-    "planning-reasoning",
-    "character-worldbuilding"
-  ],
   "model_families": [
     "model-agnostic",
     "claude",
@@ -36,9 +21,22 @@
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-puras-director-v15",
+  "tags": [
+    "plan-stories-and-scenes",
+    "improve-writing-and-prose",
+    "guide-model-responses",
+    "add-structured-reasoning",
+    "add-rpg-gameplay",
+    "track-characters-and-world-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

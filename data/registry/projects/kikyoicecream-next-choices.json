@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "kikyoicecream-next-choices",
   "name": "Next Choices",
   "kind": "extension",
   "summary": "Next Choices is a SillyTavern extension that displays three suggested player replies as buttons after each AI reply. Generation uses a separate channel that keeps prompts out of the chat log and supports dedicated model.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "kikyoicecream/next-choices",
-    "repository_id": 1305892185
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "model-routing", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1305892185",
+  "tags": [
+    "plan-stories-and-scenes",
+    "route-tasks-across-models",
+    "automate-roleplay-workflows",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

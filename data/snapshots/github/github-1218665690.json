@@ -1,0 +1,60 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1218665690,
+    "owner": "nialyn-mid",
+    "name": "polyceph",
+    "url": "https://github.com/nialyn-mid/polyceph",
+    "description": "An extension for SillyTavern which allows user-defined multi-step chain-of-thought/multi-agent response generation.",
+    "default_branch": "main",
+    "head_sha": "0fff51593aafc91298bca7dd81a804b01394568f",
+    "head_committed_at": "2026-05-14T01:20:24.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-23T05:14:07.000Z",
+    "size_kb": 482
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-14T01:20:24.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-14T01:20:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T22:51:12.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 7,
+    "forks_count": 2,
+    "watchers_count": 0,
+    "aggregate": 9
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "nialyn-mid", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1218665690"
+}

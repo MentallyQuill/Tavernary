@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bmen25124-sillytavern-wtracker",
   "name": "SillyTavern WTracker",
   "kind": "extension",
   "summary": "SillyTavern extension for tracking chat statistics with LLMs through connection profiles. You can edit the active chat schema, with separate setup requirements for Text Completion and Chat Completion profiles.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "bmen25124/SillyTavern-WTracker",
-    "repository_id": 1024412582
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1024412582",
+  "tags": [
+    "track-characters-and-world-state",
+    "secondary-model",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

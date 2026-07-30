@@ -1,26 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "archkr-lumiverse-lumiworld",
   "name": "Lumiverse LumiWorld",
   "kind": "extension",
   "summary": "Intercepts prompts to ask a controller model how the world should react before the main model replies.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Archkr/Lumiverse-LumiWorld",
-    "repository_id": 1285750198
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "instruction-control",
-    "model-routing",
-    "prompt-engineering"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1285750198",
+  "tags": [
+    "guide-model-responses",
+    "add-structured-reasoning",
+    "route-tasks-across-models",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

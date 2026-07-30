@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "chew1976-dynamic-vars",
   "name": "dynamic-vars",
   "kind": "extension",
   "summary": "This SillyTavern extension substitutes placeholders in character cards and lorebooks with random values from user pools. Session caching preserves each choice, while inline randomization supports quick swaps.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "chew1976/dynamic-vars",
-    "repository_id": 1028124712
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1028124712",
+  "tags": [
+    "guide-model-responses",
+    "increase-narrative-variety",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

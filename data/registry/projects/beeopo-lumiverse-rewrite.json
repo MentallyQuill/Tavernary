@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "beeopo-lumiverse-rewrite",
   "name": "Lumiverse Rewrite",
   "kind": "extension",
   "summary": "Lumiverse Rewrite is a Lumiverse frontend extension that ports additional functionality into the roleplay environment. It extends the platform by integrating custom workflow features tailored for Lumiverse users.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Beeopo/Lumiverse-Rewrite",
-    "repository_id": 1281629987
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1281629987",
+  "tags": [],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

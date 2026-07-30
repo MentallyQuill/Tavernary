@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "samueras-sillytavern-multipersonacomposer",
   "name": "SillyTavern-MultiPersonaComposer",
   "kind": "extension",
   "summary": "Multi Persona Composer layers extra personas into SillyTavern prompts while preserving the native base persona. It scopes extras by chat, character, or default level with loadable presets.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Samueras/SillyTavern-MultiPersonaComposer",
-    "repository_id": 1168534011
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1168534011",
+  "tags": [
+    "manage-characters-and-personas",
+    "guide-model-responses",
+    "manage-prompts-and-presets"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

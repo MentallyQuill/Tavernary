@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bmen25124-sillytavern-roadway",
   "name": "SillyTavern Roadway",
   "kind": "extension",
   "summary": "SillyTavern Roadway is a SillyTavern extension that assists users in making story decisions by offering ideas to guide the narrative. It provides an interface workflow that helps shape ongoing roleplay scenarios.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "bmen25124/SillyTavern-Roadway",
-    "repository_id": 948787177
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-948787177",
+  "tags": ["plan-stories-and-scenes"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

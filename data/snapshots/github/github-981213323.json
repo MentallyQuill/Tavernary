@@ -1,0 +1,51 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 981213323,
+    "owner": "leDissolution",
+    "name": "StatSuite",
+    "url": "https://github.com/leDissolution/StatSuite",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94",
+    "head_committed_at": "2025-08-27T10:30:45.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-05-10T15:41:25.000Z",
+    "size_kb": 483
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94"
+  },
+  "community": {
+    "stars_count": 48,
+    "forks_count": 1,
+    "watchers_count": 4,
+    "aggregate": 53
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leDissolution", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-981213323"
+}

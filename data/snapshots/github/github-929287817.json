@@ -1,0 +1,54 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 929287817,
+    "owner": "Bronya-Rand",
+    "name": "Guinevere-UI-Extension",
+    "url": "https://github.com/Bronya-Rand/Guinevere-UI-Extension",
+    "description": "An UI overhaul extension making your SillyTavern your way",
+    "default_branch": "master",
+    "head_sha": "d93c056ccdd7720253b167fe1a29ad0cbbe66f9d",
+    "head_committed_at": "2025-09-21T22:17:34.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-02-08T07:29:20.000Z",
+    "size_kb": 4977
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2025-09-06T00:05:09.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:15:54.114Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 66,
+    "forks_count": 9,
+    "watchers_count": 2,
+    "aggregate": 77
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Bronya-Rand", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-929287817"
+}

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "prolix-oc-lumiverse-spotifycontrols",
   "name": "Lumiverse SpotifyControls",
   "kind": "extension",
   "summary": "No README file found.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "prolix-oc/Lumiverse-SpotifyControls",
-    "repository_id": 1175156845
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "disabled",
-  "refresh_policy": "automatic",
-  "visibility_reason": "removed",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1175156845",
+  "tags": [],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "enerccio-sillytavern-persistentitemizedprompts",
   "name": "SillyTavern Persistent Itemized Prompts",
   "kind": "extension",
   "summary": "SillyTavern Persistent Itemized Prompts is a SillyTavern extension that saves prompt data to local disk. It preserves prompts across browser changes or when running SillyTavern as a background service.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Enerccio/SillyTavern-PersistentItemizedPrompts",
-    "repository_id": 1211877451
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1211877451",
+  "tags": [
+    "manage-prompts-and-presets",
+    "local-first",
+    "background-operation",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "nattaphat010447-nutho-autocloser",
   "name": "Nutho Autocloser",
   "kind": "extension",
   "summary": "Nutho Autocloser is a SillyTavern extension designed to automate closing operations within the frontend. It handles routine close actions in the background, reducing manual interaction during roleplay sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "nattaphat010447/nutho_autocloser",
-    "repository_id": 1275541730
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1275541730",
+  "tags": ["automate-roleplay-workflows", "background-operation"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

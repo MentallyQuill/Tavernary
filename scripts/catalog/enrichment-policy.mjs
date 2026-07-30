@@ -1,4 +1,8 @@
 import { parseSourceIdentity } from "../submissions/source-identity.mjs";
+import {
+  automaticMetadataPolicy,
+  metadataFieldsToGenerate,
+} from "./metadata-policy.mjs";
 
 export const MANUAL_ENRICHMENT_REASON_CODE = "manual-enrichment-policy";
 
@@ -22,26 +26,33 @@ export function supportsAutomaticEnrichmentSource(source) {
 export function defaultEnrichmentFields(source) {
   if (supportsAutomaticEnrichmentSource(source)) {
     return {
-      enrichment_policy: "automatic",
+      metadata_policy: {
+        summary: automaticMetadataPolicy(),
+        tags: automaticMetadataPolicy(),
+      },
     };
   }
   if (source?.type === "url") {
     return {
-      enrichment_policy: "manual",
-      enrichment_note: URL_NOTE,
+      metadata_policy: {
+        summary: { mode: "manual", note: URL_NOTE },
+        tags: { mode: "manual", note: URL_NOTE },
+      },
     };
   }
   if (source?.type === "github-organization") {
     return {
-      enrichment_policy: "manual",
-      enrichment_note: ORGANIZATION_NOTE,
+      metadata_policy: {
+        summary: { mode: "manual", note: ORGANIZATION_NOTE },
+        tags: { mode: "manual", note: ORGANIZATION_NOTE },
+      },
     };
   }
   throw new Error(`Unsupported source type: ${source?.type ?? "missing"}`);
 }
 
 export function isAutomaticEnrichment(record) {
-  return record?.enrichment_policy === "automatic";
+  return metadataFieldsToGenerate(record).length > 0;
 }
 
 export function manualEnrichmentExclusions(records) {
@@ -50,7 +61,10 @@ export function manualEnrichmentExclusions(records) {
     .map((record) => ({
       projectId: record.id,
       reason: MANUAL_ENRICHMENT_REASON_CODE,
-      note: record.enrichment_note,
+      note:
+        record.metadata_policy?.summary?.note ??
+        record.metadata_policy?.tags?.note ??
+        "Summary and tags are manually managed.",
     }))
     .sort((left, right) => left.projectId.localeCompare(right.projectId));
 }
@@ -58,7 +72,10 @@ export function manualEnrichmentExclusions(records) {
 export class ManualEnrichmentPolicyError extends Error {
   constructor(record) {
     const projectId = record?.id ?? "unknown-project";
-    const note = record?.enrichment_note ?? "Manual curation is required.";
+    const note =
+      record?.metadata_policy?.summary?.note ??
+      record?.metadata_policy?.tags?.note ??
+      "Manual curation is required.";
     super(`${projectId}: ${MANUAL_ENRICHMENT_REASON_CODE}: ${note}`);
     this.name = "ManualEnrichmentPolicyError";
     this.projectId = projectId;

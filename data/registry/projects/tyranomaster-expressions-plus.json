@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "tyranomaster-expressions-plus",
   "name": "Expressions Plus",
   "kind": "extension",
   "summary": "Expressions Plus extends SillyTavern's Expressions with advanced customization rules, profiles, and emotion classification insights.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Tyranomaster/expressions-plus",
-    "repository_id": 1140294800
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1140294800",
+  "tags": [
+    "add-visual-immersion",
+    "customize-the-interface",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

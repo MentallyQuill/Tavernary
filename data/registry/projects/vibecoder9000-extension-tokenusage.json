@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "vibecoder9000-extension-tokenusage",
   "name": "Extension TokenUsage",
   "kind": "extension",
   "summary": "Extension TokenUsage is a SillyTavern extension that tracks and visualizes token usage for chats. It provides monitoring of token consumption to help users manage API usage and optimize conversations.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Vibecoder9000/Extension-TokenUsage",
-    "repository_id": 1126135302
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1126135302",
+  "tags": ["monitor-token-usage-and-cost"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "starlitcode-lumiverse-auto-retry",
   "name": "Lumiverse Auto-Retry",
   "kind": "extension",
   "summary": "Lumiverse Auto-Retry is a Spindle extension that re-fires failed, empty, or stalled generations automatically. It rebuilds Hikarushmz's SillyTavern fetch-retry idea, resuming interrupted streams without manual retries.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "starlitcode/Lumiverse-Auto-Retry",
-    "repository_id": 1263145747
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "review-validation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1263145747",
+  "tags": [
+    "automate-roleplay-workflows",
+    "recover-failed-generations",
+    "streaming-aware"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

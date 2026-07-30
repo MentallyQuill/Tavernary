@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "coneja-chibi-vecthare",
   "name": "VectHare",
   "kind": "extension",
   "summary": "VectHare is a SillyTavern extension focused on retrieval-augmented generation for roleplay sessions. It provides tools to manage context retrieval, helping ensure responses draw from relevant stored information.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Coneja-Chibi/VectHare",
-    "repository_id": 1085333493
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1085333493",
+  "tags": ["retrieve-relevant-context", "semantic-retrieval"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

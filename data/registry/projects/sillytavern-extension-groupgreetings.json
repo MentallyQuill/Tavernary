@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-extension-groupgreetings",
   "name": "Extension-GroupGreetings",
   "kind": "extension",
   "summary": "This SillyTavern extension enables defining alternate greetings tailored to group chats. It selects the appropriate opening message based on chat context, improving multi-character roleplay setups.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/Extension-GroupGreetings",
-    "repository_id": 772263541
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["prompt-engineering", "instruction-control"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-772263541",
+  "tags": ["guide-model-responses", "run-group-roleplay"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

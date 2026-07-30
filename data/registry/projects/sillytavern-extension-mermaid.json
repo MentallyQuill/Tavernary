@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-extension-mermaid",
   "name": "SillyTavern Extension Mermaid",
   "kind": "extension",
   "summary": "Renders Mermaid diagrams and flowcharts directly inside SillyTavern chat messages. The extension parses code blocks at runtime, turning textual syntax into visual graphics that enhance storytelling and interface clarity.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/Extension-Mermaid",
-    "repository_id": 850754623
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development", "image-generation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-850754623",
+  "tags": ["add-visual-immersion", "visual-workflow"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

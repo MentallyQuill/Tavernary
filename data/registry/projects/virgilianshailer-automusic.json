@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "virgilianshailer-automusic",
   "name": "AutoMusic",
   "kind": "extension",
   "summary": "AutoMusic is a SillyTavern extension that generates ambient sounds and music from chat context via a local ComfyUI instance. An LLM analyzes each scene, producing audio with crossfades and a per-chat library.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "virgilianshailer/AutoMusic",
-    "repository_id": 1213286113
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "model-routing"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1213286113",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-music-and-audio",
+    "local-first",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

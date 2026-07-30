@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "icefog72-sillytavern-probablytoomanytabs",
   "name": "SillyTavern Probably Too Many Tabs",
   "kind": "extension",
   "summary": "SillyTavern extension that transforms the interface into a customizable tabbed workspace with multi-column layouts and draggable tabs.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "IceFog72/SillyTavern-ProbablyTooManyTabs",
-    "repository_id": 1065878471
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1065878471",
+  "tags": ["customize-the-interface", "visual-workflow"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

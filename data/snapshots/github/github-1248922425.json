@@ -1,0 +1,101 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1248922425,
+    "owner": "AMousePad",
+    "name": "LumiBooks",
+    "url": "https://github.com/AMousePad/LumiBooks",
+    "description": "A Simple Memory Extension",
+    "default_branch": "main",
+    "head_sha": "b148433416cac30511d29ee51dc6c44993ceb56d",
+    "head_committed_at": "2026-07-29T01:44:05.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-25T07:13:23.000Z",
+    "size_kb": 3205
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-29T01:44:05.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T01:44:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T05:23:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T14:37:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-07T20:21:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-25T20:34:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T13:33:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-08T15:39:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T11:01:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-29T00:14:46.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-29T10:00:10.862Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "b148433416cac30511d29ee51dc6c44993ceb56d"
+  },
+  "community": {
+    "stars_count": 9,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 10
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "AMousePad", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "activity_scan": null,
+  "source_id": "github-1248922425"
+}

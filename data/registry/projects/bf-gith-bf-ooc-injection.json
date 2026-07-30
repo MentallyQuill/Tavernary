@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bf-gith-bf-ooc-injection",
   "name": "BF OOC Injection",
   "kind": "extension",
   "summary": "BF OOC Injection is a SillyTavern extension that randomizes LLM responses to prevent repetition. It automatically injects varying prompts for narrative variety without manual configuration.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "BF-GitH/bf-ooc-injection",
-    "repository_id": 1116087330
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1116087330",
+  "tags": [
+    "guide-model-responses",
+    "automate-roleplay-workflows",
+    "increase-narrative-variety"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

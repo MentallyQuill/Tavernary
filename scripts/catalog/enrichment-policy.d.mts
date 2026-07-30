@@ -2,8 +2,10 @@ export const MANUAL_ENRICHMENT_REASON_CODE: "manual-enrichment-policy";
 
 export interface EnrichmentPolicyRecord {
   id: string;
-  enrichment_policy?: "automatic" | "manual";
-  enrichment_note?: string;
+  metadata_policy?: {
+    summary?: { mode?: "automatic" | "manual"; note?: string };
+    tags?: { mode?: "automatic" | "manual"; note?: string };
+  };
   [key: string]: unknown;
 }
 
@@ -31,8 +33,10 @@ export function defaultEnrichmentFields(source: {
   type?: string;
   [key: string]: unknown;
 }): {
-  enrichment_policy: "automatic" | "manual";
-  enrichment_note?: string;
+  metadata_policy: {
+    summary: { mode: "automatic" } | { mode: "manual"; note: string };
+    tags: { mode: "automatic" } | { mode: "manual"; note: string };
+  };
 };
 
 export function isAutomaticEnrichment(record: EnrichmentPolicyRecord): boolean;

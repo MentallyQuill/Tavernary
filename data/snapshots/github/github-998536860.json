@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 998536860,
+    "owner": "aikohanasaki",
+    "name": "SillyTavern-CharacterLocks",
+    "url": "https://github.com/aikohanasaki/SillyTavern-CharacterLocks",
+    "description": "Locks presets and connection profiles to characters and groups",
+    "default_branch": "STCL",
+    "head_sha": "208ec33a8828decdd9d7459904baabfc79e3084a",
+    "head_committed_at": "2026-05-03T16:50:48.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-06-08T20:21:28.000Z",
+    "size_kb": 357
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-04-23T00:00:58.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:06:55.971Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 20,
+    "forks_count": 3,
+    "watchers_count": 0,
+    "aggregate": 23
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-998536860"
+}

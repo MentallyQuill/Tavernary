@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "countcandy-sillytavern-extension-candyexpressions",
   "name": "CandyExpressions",
   "kind": "extension",
   "summary": "CandyExpressions is a SillyTavern extension adding two-dimensional character expressions with a sticky variant axis. It persists variants per chat while re-evaluating emotions each message using native sprite subfolders.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "CountCandy/SillyTavern-Extension-CandyExpressions",
-    "repository_id": 1314154761
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["character-worldbuilding", "image-generation"],
   "cataloged_at": "2026-07-28T05:28:43.192Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1314154761",
+  "tags": ["add-visual-immersion", "persistent-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mechamarmot-sillytavern-localimage",
   "name": "SillyTavern LocalImage",
   "kind": "extension",
   "summary": "SillyTavern LocalImage is an extension that lets users upload custom images for characters and personas. It provides per-character galleries, floating quick-send buttons, and AI-driven contextual image display.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mechamarmot/SillyTavern-LocalImage",
-    "repository_id": 1114617526
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["image-generation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1114617526",
+  "tags": ["manage-characters-and-personas", "add-visual-immersion"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

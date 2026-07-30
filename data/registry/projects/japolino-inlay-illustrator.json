@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "japolino-inlay-illustrator",
   "name": "Inlay Illustrator",
   "kind": "extension",
   "summary": "Inlay Illustrator is a Lumiverse extension that generates persistent, context-aware character images. It maintains visual continuity across sessions by tying generated artwork to evolving character context.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "japolino/inlay-illustrator",
-    "repository_id": 1294022879
-  },
   "frontends": ["lumiverse"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["image-generation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1294022879",
+  "tags": ["preserve-story-continuity", "generate-images", "persistent-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-sillytavern",
   "name": "SillyTavern",
   "kind": "frontend",
   "summary": "SillyTavern is a frontend interface designed for power users of large language models. It provides configurable controls and flexible workflows for managing advanced conversational AI interactions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/SillyTavern",
-    "repository_id": 599524116
-  },
   "frontends": ["sillytavern"],
   "primary_function": "frontend",
-  "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-599524116",
+  "tags": [
+    "guide-model-responses",
+    "manage-prompts-and-presets",
+    "generate-images",
+    "run-group-roleplay",
+    "mobile-friendly",
+    "model-agnostic"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

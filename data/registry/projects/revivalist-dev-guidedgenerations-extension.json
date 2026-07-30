@@ -1,26 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "revivalist-dev-guidedgenerations-extension",
   "name": "Guided Generations Extension",
   "kind": "extension",
   "summary": "Guided Generations Extension adds modular, context-aware controls to SillyTavern for shaping AI responses during roleplay and story chats. It exposes its tools through buttons and gear menus for quick, intuitive access.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Revivalist-Dev/GuidedGenerations-Extension",
-    "repository_id": 1125714946
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "instruction-control",
-    "prompt-engineering",
-    "extension-development"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1125714946",
+  "tags": ["guide-model-responses", "modular-and-extensible"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

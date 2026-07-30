@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "splitclover-rewrite-extension",
   "name": "Rewrite Extension",
   "kind": "extension",
   "summary": "The Rewrite Extension for SillyTavern dynamically rewrites, shortens, or expands selected chat text via AI. Custom macros and streaming output with undo and abort controls enable flexible in-place modifications.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "splitclover/rewrite-extension",
-    "repository_id": 830588458
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-830588458",
+  "tags": [
+    "improve-writing-and-prose",
+    "edit-and-refine-messages",
+    "non-destructive",
+    "streaming-aware"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

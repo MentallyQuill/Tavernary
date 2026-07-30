@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "prolix-oc-lumiverse-xtimeline",
   "name": "Lumiverse XTimeline",
   "kind": "extension",
   "summary": "Lumiverse XTimeline adds a Twitter-like timeline to the frontend for posting weaves as character personas and replying in threads.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "prolix-oc/Lumiverse-XTimeline",
-    "repository_id": 1296928830
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1296928830",
+  "tags": ["manage-characters-and-personas", "multi-user"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

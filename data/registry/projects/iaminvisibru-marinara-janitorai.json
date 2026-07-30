@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "iaminvisibru-marinara-janitorai",
   "name": "Marinara JanitorAI",
   "kind": "extension",
   "summary": "Marinara JanitorAI is a browser extension that launches JanitorAI within the Marinara Engine frontend. It acts as a custom launcher, providing a dedicated interface for accessing JanitorAI through the Marinara platform.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Iaminvisibru/MarinaraJanitorAI",
-    "repository_id": 1203245557
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1203245557",
+  "tags": ["connect-external-services"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

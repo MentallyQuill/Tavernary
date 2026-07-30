@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mattjaybe-sillytavern-echochamber",
   "name": "SillyTavern-EchoChamber",
   "kind": "extension",
   "summary": "EchoChamber is a SillyTavern extension that adds a dynamic, AI-powered audience to stories and conversations. It generates simulated audience reactions that respond to ongoing roleplay for added immersion.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mattjaybe/SillyTavern-EchoChamber",
-    "repository_id": 1128074609
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "automation"],
   "cataloged_at": "2026-07-26T19:32:08.845Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1128074609",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-visual-immersion",
+    "increase-narrative-variety"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

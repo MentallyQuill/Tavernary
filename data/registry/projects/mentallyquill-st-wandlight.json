@@ -1,25 +1,29 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mentallyquill-st-wandlight",
   "name": "Wandlight",
   "kind": "preset",
   "summary": "Wandlight is a lightweight SillyTavern preset designed for Harry Potter roleplay and fanfiction writing. It offers streamlined configuration to support immersive magical world storytelling with minimal complexity.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MentallyQuill/ST-Wandlight",
-    "repository_id": 1246232030
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "model_families": ["model-agnostic", "claude", "gpt", "glm", "deepseek"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "Owner-authored catalog details approved through issue #144."
+  "source_id": "github-1246232030",
+  "tags": [
+    "plan-stories-and-scenes",
+    "improve-writing-and-prose",
+    "guide-model-responses"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Owner-authored catalog details approved through issue #144."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

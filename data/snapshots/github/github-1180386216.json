@@ -1,0 +1,79 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1180386216,
+    "owner": "Giglio256",
+    "name": "SillyTavern-GiglioMachine",
+    "url": "https://github.com/Giglio256/SillyTavern-GiglioMachine",
+    "description": "As of march 2026, most advanced ST extension for controlling and analyzing lorebook budget and order",
+    "default_branch": "main",
+    "head_sha": "5abdb3498716752a9a286505704513fe6b12bffb",
+    "head_committed_at": "2026-07-05T10:43:50.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-13T01:45:46.000Z",
+    "size_kb": 12024
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-21T13:44:22.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T13:44:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-11T13:28:54.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-02T06:41:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T02:24:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-09T04:08:03.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 3
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Giglio256", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1180386216"
+}

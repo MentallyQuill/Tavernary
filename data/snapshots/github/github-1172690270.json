@@ -1,0 +1,169 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1172690270,
+    "owner": "Pasta-Devs",
+    "name": "Marinara-Engine",
+    "url": "https://github.com/Pasta-Devs/Marinara-Engine",
+    "description": "AI frontend",
+    "default_branch": "main",
+    "head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29",
+    "head_committed_at": "2026-07-23T00:11:48.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-04T15:37:29.000Z",
+    "size_kb": 231263
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-22T23:41:29.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-22T23:41:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T19:36:59.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T23:41:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T23:38:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T23:50:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T22:12:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T23:23:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T20:08:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-27T01:58:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T09:17:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T23:32:47.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T23:25:23.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-23T00:13:35.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "b7545a63e7e264a1cd9eeea1a5490d50c08ddb29"
+  },
+  "community": {
+    "stars_count": 531,
+    "forks_count": 141,
+    "watchers_count": 9,
+    "aggregate": 681
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SpicyMarinara", "type": "User", "provider": "github" },
+      { "login": "cha1latte", "type": "User", "provider": "github" },
+      { "login": "kolacheee", "type": "User", "provider": "github" },
+      { "login": "Romuromylus", "type": "User", "provider": "github" },
+      { "login": "thetopham", "type": "User", "provider": "github" },
+      { "login": "Gunterlie", "type": "User", "provider": "github" },
+      { "login": "LukaTheHero", "type": "User", "provider": "github" },
+      { "login": "Xelvanis", "type": "User", "provider": "github" },
+      { "login": "TheLonelyDevil9", "type": "User", "provider": "github" },
+      { "login": "Promansis", "type": "User", "provider": "github" },
+      { "login": "coxde", "type": "User", "provider": "github" },
+      { "login": "munimunigamer", "type": "User", "provider": "github" },
+      { "login": "Minsklatte", "type": "User", "provider": "github" },
+      { "login": "aeriondyseti", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "JorgeLTE", "type": "User", "provider": "github" },
+      { "login": "Sulphuratum", "type": "User", "provider": "github" },
+      { "login": "loungemeister", "type": "User", "provider": "github" },
+      { "login": "kaldigo", "type": "User", "provider": "github" },
+      { "login": "NeoKazuya", "type": "User", "provider": "github" },
+      { "login": "felorhik", "type": "User", "provider": "github" },
+      { "login": "bignast", "type": "User", "provider": "github" },
+      { "login": "jake9000", "type": "User", "provider": "github" },
+      { "login": "JurijPietrowicz", "type": "User", "provider": "github" },
+      { "login": "mm14141", "type": "User", "provider": "github" },
+      { "login": "amauragis", "type": "User", "provider": "github" },
+      { "login": "marysia", "type": "User", "provider": "github" },
+      { "login": "myaiexp", "type": "User", "provider": "github" },
+      { "login": "kh0p", "type": "User", "provider": "github" },
+      { "login": "LightD31", "type": "User", "provider": "github" },
+      { "login": "Lochalan", "type": "User", "provider": "github" },
+      { "login": "Lamboozled", "type": "User", "provider": "github" },
+      { "login": "ailthrim", "type": "User", "provider": "github" },
+      { "login": "adunato", "type": "User", "provider": "github" },
+      { "login": "Trade-Mottoes", "type": "User", "provider": "github" },
+      { "login": "RaynoldVanHeyningen", "type": "User", "provider": "github" },
+      { "login": "OnlyJimmy", "type": "User", "provider": "github" },
+      { "login": "MagicGoddess", "type": "User", "provider": "github" },
+      { "login": "Javedz678", "type": "User", "provider": "github" },
+      { "login": "Morgul", "type": "User", "provider": "github" },
+      { "login": "BahamutRU", "type": "User", "provider": "github" },
+      { "login": "smurfboyyessir", "type": "User", "provider": "github" },
+      { "login": "taiman724", "type": "User", "provider": "github" },
+      { "login": "abhi-0203", "type": "User", "provider": "github" },
+      { "login": "Yasyasyasvil", "type": "User", "provider": "github" },
+      { "login": "vanta-jack", "type": "User", "provider": "github" },
+      { "login": "pwildani", "type": "User", "provider": "github" },
+      { "login": "Lemon-will", "type": "User", "provider": "github" },
+      { "login": "kevin-ho", "type": "User", "provider": "github" },
+      { "login": "KeKKERUUU", "type": "User", "provider": "github" },
+      { "login": "Rafa-Ross", "type": "User", "provider": "github" },
+      { "login": "Dinokin", "type": "User", "provider": "github" },
+      { "login": "DarthTheMonster", "type": "User", "provider": "github" },
+      { "login": "Anarchistcowboy", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1172690270"
+}

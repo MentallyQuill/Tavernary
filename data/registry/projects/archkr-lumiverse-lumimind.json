@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "archkr-lumiverse-lumimind",
   "name": "Lumiverse LumiMind",
   "kind": "extension",
   "summary": "Lumiverse LumiMind is a work-in-progress frontend extension for the Lumiverse platform. The project contributes additional capabilities to its host frontend, with further features yet to be defined.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Archkr/Lumiverse-LumiMind",
-    "repository_id": 1303183395
-  },
   "frontends": ["lumiverse"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1303183395",
+  "tags": [],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,26 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bmen25124-sillytavern-character-creator",
   "name": "SillyTavern Character Creator",
   "kind": "extension",
   "summary": "A SillyTavern extension that creates character cards from existing SillyTavern data using LLM connection profiles. It supports both Text Completion and Chat Completion profiles with tailored configuration requirements.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "bmen25124/SillyTavern-Character-Creator",
-    "repository_id": 956654271
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "model-routing",
-    "prompt-engineering"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-956654271",
+  "tags": ["create-character-cards"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

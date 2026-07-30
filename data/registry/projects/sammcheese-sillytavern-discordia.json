@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sammcheese-sillytavern-discordia",
   "name": "SillyTavern Discordia",
   "kind": "extension",
   "summary": "SillyTavern Discordia is a work-in-progress Discord-inspired theme for the SillyTavern frontend. It redesigns the interface to mimic Discord's visual style for chat roleplay sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SammCheese/SillyTavern-Discordia",
-    "repository_id": 1104616181
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1104616181",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1168534011,
+    "owner": "Samueras",
+    "name": "SillyTavern-MultiPersonaComposer",
+    "url": "https://github.com/Samueras/SillyTavern-MultiPersonaComposer",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "26c11ce9e3d623f74904bfa52cab707bb8e610ba",
+    "head_committed_at": "2026-02-27T16:48:51.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-27T13:59:27.000Z",
+    "size_kb": 78
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "26c11ce9e3d623f74904bfa52cab707bb8e610ba"
+  },
+  "community": {
+    "stars_count": 8,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 9
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [{ "login": "Samueras", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1168534011"
+}

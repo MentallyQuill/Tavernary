@@ -1,26 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-extension-promptinspector",
   "name": "SillyTavern Extension PromptInspector",
   "kind": "extension",
   "summary": "SillyTavern PromptInspector is a frontend extension that lets users view and edit output prompts before they reach the server. It provides transparency and manual control over the exact context sent to language models.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/Extension-PromptInspector",
-    "repository_id": 811061856
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "instruction-control",
-    "prompt-engineering",
-    "review-validation"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-811061856",
+  "tags": [
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "edit-and-refine-messages"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

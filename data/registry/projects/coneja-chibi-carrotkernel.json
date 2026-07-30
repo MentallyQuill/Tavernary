@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "coneja-chibi-carrotkernel",
   "name": "CarrotKernel",
   "kind": "extension",
   "summary": "CarrotKernel is a SillyTavern extension for managing character sheets and world info entries. It serves as a spiritual successor to BunnyMoTags, continuing the lineage of professional roleplay content organization tools.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Coneja-Chibi/CarrotKernel",
-    "repository_id": 1054966103
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1054966103",
+  "tags": ["manage-lorebooks", "manage-characters-and-personas"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1125809015,
+    "owner": "GetfroggyHoe",
+    "name": "universal-immersion-engine",
+    "url": "https://github.com/GetfroggyHoe/universal-immersion-engine",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "d51c17548fa85fc667f9862f47b60f179065229e",
+    "head_committed_at": "2026-07-17T07:21:48.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-12-31T12:04:01.000Z",
+    "size_kb": 1364
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-17T07:21:48.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-17T07:21:48.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 75,
+    "forks_count": 4,
+    "watchers_count": 5,
+    "aggregate": 84
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "renoschubert", "type": "User", "provider": "github" },
+      { "login": "GeoMaciolek", "type": "User", "provider": "github" },
+      { "login": "GetfroggyHoe", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1125809015"
+}

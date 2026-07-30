@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "elthial-sillytavern-map",
   "name": "SillyTavern-Map",
   "kind": "extension",
   "summary": "SillyTavern-Map is a SillyTavern extension that wraps STscripts in a graphical user interface. Users load a map, then click or hover user-defined SVG shapes overlaid on a background image to trigger STScript commands.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Elthial/SillyTavern-Map",
-    "repository_id": 711475454
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-27T22:02:20.492Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-711475454",
+  "tags": [
+    "automate-roleplay-workflows",
+    "manage-maps-and-locations",
+    "visual-workflow"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

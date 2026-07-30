@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "kawaii-wolf-st-koboldcpp-loader-standalone",
   "name": "ST-koboldcpp-loader-standalone",
   "kind": "extension",
   "summary": "This SillyTavern extension uses KoboldCPP's admin API to load and switch .kcpps configuration files. Users pick a config from a dropdown, reload KoboldCPP, or apply it as a template when loading a .gguf model directly.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "kawaii-wolf/ST-koboldcpp-loader-standalone",
-    "repository_id": 949765337
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "model-routing", "instruction-control"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-949765337",
+  "tags": ["route-tasks-across-models", "automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

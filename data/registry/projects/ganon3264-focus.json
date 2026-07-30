@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "ganon3264-focus",
   "name": "Focus",
   "kind": "frontend",
   "summary": "My spin on sillytavern. Less cluttered and more streamlined. Work in progress, but usable overall. I made it mostly for personal use, but maybe someone else would like to give it a try.",
   "metadata_status": "provisional",
-  "source": {
-    "type": "github",
-    "repository": "ganon3264/focus",
-    "repository_id": 1305306157
-  },
   "frontends": ["focus"],
   "primary_function": "frontend",
-  "capabilities": [],
   "cataloged_at": "2026-07-28T17:41:57.321Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1305306157",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "carlosnahuelcoy-sillytavern-player2",
   "name": "SillyTavern Player2",
   "kind": "extension",
   "summary": "SillyTavern-Player2 is a SillyTavern extension that connects to the Player2 AI API for chat completions. It adds a dedicated Player2 panel in the Extensions tab where users can select a connection mode.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "CarlosNahuelcoy/SillyTavern-Player2",
-    "repository_id": 1179141243
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1179141243",
+  "tags": ["connect-external-services"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

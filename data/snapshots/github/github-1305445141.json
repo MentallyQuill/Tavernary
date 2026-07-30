@@ -1,0 +1,57 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1305445141,
+    "owner": "datacat-run",
+    "name": "datacat-sillytavern-browser",
+    "url": "https://github.com/datacat-run/datacat-sillytavern-browser",
+    "description": "Browse Data Cat from SillyTavern.",
+    "default_branch": "main",
+    "head_sha": "34abe49aba887bb0f966ba2040453d7554915905",
+    "head_committed_at": "2026-07-19T15:30:30.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-19T05:29:50.000Z",
+    "size_kb": 110
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-19T15:30:30.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T15:30:30.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 5,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 5
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "d4t4c4t", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1305445141"
+}

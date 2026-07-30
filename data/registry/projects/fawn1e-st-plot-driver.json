@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "fawn1e-st-plot-driver",
   "name": "ST Plot Driver",
   "kind": "extension",
   "summary": "ST Plot Driver is a SillyTavern extension that drives roleplay stories with AI-powered time skips and major plot twists. It adds logical out-of-character transitions between scenes to keep sessions flowing seamlessly.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "fawn1e/st-plot-driver",
-    "repository_id": 1121059972
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1121059972",
+  "tags": [
+    "plan-stories-and-scenes",
+    "automate-roleplay-workflows",
+    "increase-narrative-variety"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

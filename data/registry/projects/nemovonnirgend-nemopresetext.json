@@ -1,26 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "nemovonnirgend-nemopresetext",
   "name": "NemoPresetExt",
   "kind": "extension",
   "summary": "NemoPresetExt is a SillyTavern extension providing the core package for Nemo prompt directives and custom divider configuration. It manages NemoEngine installation and connects to Nemo Hub for related components.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "NemoVonNirgend/NemoPresetExt",
-    "repository_id": 983964699
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "extension-development",
-    "prompt-engineering",
-    "instruction-control"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-983964699",
+  "tags": [
+    "guide-model-responses",
+    "manage-prompts-and-presets",
+    "build-extensions-and-scripts"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

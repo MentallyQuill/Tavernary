@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "samueras-guidedgenerations-extension",
   "name": "Guided Generations Extension",
   "kind": "extension",
   "summary": "This SillyTavern extension offers modular tools for shaping and guiding AI responses in roleplay chats. Context-aware buttons and menus integrate directly into the interface for streamlined generation control.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Samueras/GuidedGenerations-Extension",
-    "repository_id": 957795776
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-957795776",
+  "tags": ["guide-model-responses", "modular-and-extensible"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

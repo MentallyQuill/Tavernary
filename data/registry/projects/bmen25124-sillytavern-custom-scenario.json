@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bmen25124-sillytavern-custom-scenario",
   "name": "SillyTavern-Custom-Scenario",
   "kind": "extension",
   "summary": "This SillyTavern extension enables creating and playing interactive character cards. It guides users through questions to define traits, starting locations, and other scenario details before roleplay.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "bmen25124/SillyTavern-Custom-Scenario",
-    "repository_id": 920038768
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-920038768",
+  "tags": ["create-character-cards", "plan-stories-and-scenes"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

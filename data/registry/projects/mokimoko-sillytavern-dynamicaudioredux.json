@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mokimoko-sillytavern-dynamicaudioredux",
   "name": "SillyTavern DynamicAudioRedux",
   "kind": "extension",
   "summary": "SillyTavern DynamicAudioRedux extension rebuilds Dynamic Audio with a tabbed modal, AI tagging, and improved playlist tools.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mokimoko/SillyTavern-DynamicAudioRedux",
-    "repository_id": 1249921512
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1249921512",
+  "tags": ["automate-roleplay-workflows", "add-music-and-audio"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

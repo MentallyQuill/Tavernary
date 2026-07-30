@@ -1,29 +1,29 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "village-maker-google-drive-prompt",
   "name": "Village Maker",
   "kind": "preset",
   "summary": "An interview-driven guide for creating village-as-character cards with communities, locations, events, lore, and roleplay structure.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://www.reddit.com/r/SillyTavernAI/comments/1v3rfm4/village_maker_v10_dating_sim_cards_thornbeck/",
-    "published_at": null,
-    "version": "1.0",
-    "artifact_size_bytes": null,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": ["character-worldbuilding", "prompt-engineering"],
   "model_families": ["claude"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-village-maker-google-drive-prompt",
+  "tags": [
+    "build-worlds-and-lore",
+    "create-character-cards",
+    "plan-stories-and-scenes"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

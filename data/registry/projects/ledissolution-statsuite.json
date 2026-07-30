@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "ledissolution-statsuite",
   "name": "StatSuite",
   "kind": "extension",
   "summary": "StatSuite tracks persistent character state in SillyTavern, including pose, location, outfit, and inventory. It avoids the main model, injecting only the latest stat block at prompt depth 1.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "leDissolution/StatSuite",
-    "repository_id": 981213323
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation", "instruction-control"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-981213323",
+  "tags": [
+    "track-characters-and-world-state",
+    "manage-inventory-and-quests",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

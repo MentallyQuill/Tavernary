@@ -1,0 +1,47 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1044610257,
+    "owner": "dfaker",
+    "name": "st-char-powersearch",
+    "url": "https://github.com/dfaker/st-char-powersearch",
+    "description": "More powerful and faster character search for ST",
+    "default_branch": "main",
+    "head_sha": "a76c788a3a7da179793d481a5494fe78d53611c8",
+    "head_committed_at": "2025-08-30T21:06:40.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-08-26T00:31:10.000Z",
+    "size_kb": 98
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 5,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 5
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "dfaker", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1044610257"
+}

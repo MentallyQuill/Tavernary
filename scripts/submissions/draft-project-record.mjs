@@ -71,7 +71,7 @@ function fallbackEnrichment(input, name) {
   return {
     summary,
     metadata_status: "provisional",
-    capabilities: [],
+    tags: [],
     warning: input.enrichment?.message
       ? `Automated enrichment failed: ${input.enrichment.message}`
       : "Automated enrichment was unavailable; deterministic provisional metadata was used.",
@@ -103,9 +103,15 @@ function enrichmentFields(input, source, acceptedCopyResult) {
     submittedDescription &&
     ["repository-owner", "tavernary-staff"].includes(authorityType)
   ) {
+    const defaults = defaultEnrichmentFields(source).metadata_policy;
     return {
-      enrichment_policy: "manual",
-      enrichment_note: `Catalog summary preserved from ${authorityType} submission issue #${input.sourceIssueNumber}.`,
+      metadata_policy: {
+        ...defaults,
+        summary: {
+          mode: "manual",
+          note: `Catalog summary preserved from ${authorityType} submission issue #${input.sourceIssueNumber}.`,
+        },
+      },
     };
   }
   return defaultEnrichmentFields(source);
@@ -212,7 +218,7 @@ export async function draftProjectRecord(input) {
       ? {
           summary: input.enrichment.summary,
           metadata_status: "curated",
-          capabilities: [...input.enrichment.capabilities],
+          tags: [...input.enrichment.tags],
           warning: null,
         }
       : fallbackEnrichment(input, name);
@@ -262,7 +268,7 @@ export async function draftProjectRecord(input) {
     source_id: source.id,
     frontends: [...new Set(frontendIds)].sort(),
     primary_function: primaryFunction,
-    capabilities: [...new Set(enrichment.capabilities)].sort(),
+    tags: [...new Set(enrichment.tags)].sort(),
     ...(admitted.manifest.project_type === "preset" &&
     admitted.manifest.preset_compatibility
       ? {
@@ -310,7 +316,7 @@ export async function draftProjectRecord(input) {
       project_id: id,
       name,
       summary: enrichment.summary,
-      capabilities: enrichment.capabilities,
+      tags: enrichment.tags,
       frontend_ids: frontendIds,
     },
     summaryAuthority: input.summaryAuthority ?? {

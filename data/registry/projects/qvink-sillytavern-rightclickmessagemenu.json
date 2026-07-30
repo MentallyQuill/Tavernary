@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "qvink-sillytavern-rightclickmessagemenu",
   "name": "SillyTavern Right-Click Message Menu",
   "kind": "extension",
   "summary": "SillyTavern Right-Click Message Menu is a SillyTavern extension that adds a right-click context menu to message buttons. It provides quick access to message actions directly from the chat interface.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "qvink/SillyTavern-RightClickMessageMenu",
-    "repository_id": 1069373058
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1069373058",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

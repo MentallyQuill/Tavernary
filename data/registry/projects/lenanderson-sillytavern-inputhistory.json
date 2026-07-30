@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lenanderson-sillytavern-inputhistory",
   "name": "SillyTavern-InputHistory",
   "kind": "extension",
   "summary": "SillyTavern-InputHistory lets users recall previous chat inputs and slash commands using Alt+Up and Alt+Down keyboard shortcuts. The extension retains the last ten messages and preserves the history across sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "LenAnderson/SillyTavern-InputHistory",
-    "repository_id": 735181166
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-27T04:33:33.220Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-735181166",
+  "tags": ["organize-chats-and-messages", "persistent-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "bbw3000-simplesummary",
   "name": "SimpleSummary",
   "kind": "extension",
   "summary": "SimpleSummary is a SillyTavern extension that generates condensed summaries of ongoing roleplay chat conversations. It provides an automated summarization workflow that runs directly inside the SillyTavern interface.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "bbw3000/SimpleSummary",
-    "repository_id": 1224601278
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1224601278",
+  "tags": ["manage-context-limits", "automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

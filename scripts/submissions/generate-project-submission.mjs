@@ -221,13 +221,13 @@ async function defaultGithubRequest(path, options = {}) {
 }
 
 async function loadEnrichmentVocabularies() {
-  const [primaryFunctions, capabilities] = await Promise.all([
+  const [primaryFunctions, tags] = await Promise.all([
     readFile(resolve("data/vocabularies/primary-functions.json"), "utf8"),
-    readFile(resolve("data/vocabularies/capabilities.json"), "utf8"),
+    readFile(resolve("data/vocabularies/tags.json"), "utf8"),
   ]);
   return {
     primaryFunctions: JSON.parse(primaryFunctions).primary_functions,
-    capabilities: JSON.parse(capabilities).capabilities,
+    tags: JSON.parse(tags).tags,
   };
 }
 
@@ -494,9 +494,9 @@ export async function prepareProjectSubmissionDraft({
       enrichment = output
         ? {
             status: "curated",
-            summary: output.summary,
-            capabilities: [...output.capabilities],
-            classification_review: output.classification_review,
+            summary: output.summary.value,
+            tags: output.tags.map(({ id }) => id),
+            classification_review: null,
             result: output.result,
             change_reasons: [...output.change_reasons],
             policy_signal: output.policy_signal,

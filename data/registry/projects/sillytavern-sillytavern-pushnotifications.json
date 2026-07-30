@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-sillytavern-pushnotifications",
   "name": "SillyTavern Push Notifications",
   "kind": "extension",
   "summary": "SillyTavern Push Notifications is a SillyTavern extension that delivers push notifications for incoming chat messages. It alerts users to new messages even when the interface is not actively focused.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/SillyTavern-PushNotifications",
-    "repository_id": 747410816
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-747410816",
+  "tags": ["background-operation"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

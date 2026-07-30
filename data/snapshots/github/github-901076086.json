@@ -1,0 +1,75 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 901076086,
+    "owner": "qvink",
+    "name": "SillyTavern-MessageSummarize",
+    "url": "https://github.com/qvink/SillyTavern-MessageSummarize",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "81b3326c1d81ea3411ab057280ecd5786fbe29a1",
+    "head_committed_at": "2026-05-25T19:28:41.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-12-10T02:04:15.000Z",
+    "size_kb": 987
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-05-25T19:28:41.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-25T19:28:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T22:27:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-11T17:15:13.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-08T22:23:11.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:01:47.527Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 158,
+    "forks_count": 23,
+    "watchers_count": 2,
+    "aggregate": 183
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "qvink", "type": "User", "provider": "github" },
+      { "login": "RivelleDays", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-901076086"
+}

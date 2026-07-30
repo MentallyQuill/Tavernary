@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lukathehero-sillytavern-claudesubscription",
   "name": "SillyTavern Claude Subscription",
   "kind": "extension",
   "summary": "SillyTavern plugin routes chat through Anthropic Pro or Max subscriptions via the Claude Agent SDK, avoiding API credits. A companion extension provides one-click connection with Claude-native settings.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "LukaTheHero/SillyTavern-ClaudeSubscription",
-    "repository_id": 1232282077
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1232282077",
+  "tags": ["route-tasks-across-models", "connect-external-services"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

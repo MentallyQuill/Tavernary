@@ -19,7 +19,10 @@ describe("enrichment policy", () => {
         repository_id: null,
       }),
     ).toEqual({
-      enrichment_policy: "automatic",
+      metadata_policy: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
     });
   });
 
@@ -31,7 +34,10 @@ describe("enrichment policy", () => {
         repository_id: 1699613,
       }),
     ).toEqual({
-      enrichment_policy: "automatic",
+      metadata_policy: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
     });
     expect(
       automaticEnrichmentAdapter({
@@ -48,8 +54,16 @@ describe("enrichment policy", () => {
         url: "https://example.com/preset",
       }),
     ).toEqual({
-      enrichment_policy: "manual",
-      enrichment_note: "External URL source; requires manual curation.",
+      metadata_policy: {
+        summary: {
+          mode: "manual",
+          note: "External URL source; requires manual curation.",
+        },
+        tags: {
+          mode: "manual",
+          note: "External URL source; requires manual curation.",
+        },
+      },
     });
     expect(
       defaultEnrichmentFields({
@@ -58,8 +72,16 @@ describe("enrichment policy", () => {
         url: "https://github.com/tavern-rpg-suite",
       }),
     ).toEqual({
-      enrichment_policy: "manual",
-      enrichment_note: "Multi-repository suite; requires manual curation.",
+      metadata_policy: {
+        summary: {
+          mode: "manual",
+          note: "Multi-repository suite; requires manual curation.",
+        },
+        tags: {
+          mode: "manual",
+          note: "Multi-repository suite; requires manual curation.",
+        },
+      },
     });
   });
 
@@ -69,7 +91,12 @@ describe("enrichment policy", () => {
         type: "url",
         url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
       }),
-    ).toEqual({ enrichment_policy: "automatic" });
+    ).toEqual({
+      metadata_policy: {
+        summary: { mode: "automatic" },
+        tags: { mode: "automatic" },
+      },
+    });
   });
 
   test("reports supported automatic adapters", () => {
@@ -96,17 +123,36 @@ describe("enrichment policy", () => {
   test("identifies automatic records and sorted manual exclusions", () => {
     const automatic = {
       id: "automatic-project",
-      enrichment_policy: "automatic" as const,
+      metadata_policy: {
+        summary: { mode: "automatic" as const },
+        tags: { mode: "manual" as const, note: "Owner-selected tags." },
+      },
     };
     const manualB = {
       id: "manual-b",
-      enrichment_policy: "manual" as const,
-      enrichment_note: "Requires a maintainer review.",
+      metadata_policy: {
+        summary: {
+          mode: "manual" as const,
+          note: "Requires a maintainer review.",
+        },
+        tags: {
+          mode: "manual" as const,
+          note: "Requires a maintainer review.",
+        },
+      },
     };
     const manualA = {
       id: "manual-a",
-      enrichment_policy: "manual" as const,
-      enrichment_note: "External URL source; requires manual curation.",
+      metadata_policy: {
+        summary: {
+          mode: "manual" as const,
+          note: "External URL source; requires manual curation.",
+        },
+        tags: {
+          mode: "manual" as const,
+          note: "External URL source; requires manual curation.",
+        },
+      },
     };
 
     expect(isAutomaticEnrichment(automatic)).toBe(true);
@@ -128,8 +174,16 @@ describe("enrichment policy", () => {
   test("throws a typed error when automatic enrichment is required", () => {
     const record = {
       id: "manual-project",
-      enrichment_policy: "manual" as const,
-      enrichment_note: "Requires a maintainer review.",
+      metadata_policy: {
+        summary: {
+          mode: "manual" as const,
+          note: "Requires a maintainer review.",
+        },
+        tags: {
+          mode: "manual" as const,
+          note: "Requires a maintainer review.",
+        },
+      },
     };
 
     expect(() => assertAutomaticEnrichment(record)).toThrow(

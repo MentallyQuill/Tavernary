@@ -1,0 +1,127 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1175596366,
+    "owner": "prolix-oc",
+    "name": "Lumiverse",
+    "url": "https://github.com/prolix-oc/Lumiverse",
+    "description": "A self-host AI chat frontend with a rich ecosystem and heavy emphasis on optimization, built from the ground up in TypeScript + Bun.",
+    "default_branch": "main",
+    "head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69",
+    "head_committed_at": "2026-07-19T01:49:32.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-07T23:15:01.000Z",
+    "size_kb": 92719
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-19T01:17:42.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T01:17:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T20:43:24.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T22:24:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T23:15:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T23:54:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T14:26:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T18:57:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T16:25:08.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T21:53:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T22:31:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-10T23:49:25.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-19T01:52:36.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "ee545baabb4c7be01fa5731e847f06b209b10a69"
+  },
+  "community": {
+    "stars_count": 153,
+    "forks_count": 45,
+    "watchers_count": 1,
+    "aggregate": 199
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE.md"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "AMousePad", "type": "User", "provider": "github" },
+      { "login": "Archkr", "type": "User", "provider": "github" },
+      { "login": "TheLiquorPriest", "type": "User", "provider": "github" },
+      { "login": "Sillyfrogster", "type": "User", "provider": "github" },
+      { "login": "vectoriin", "type": "User", "provider": "github" },
+      { "login": "mindbound", "type": "User", "provider": "github" },
+      { "login": "DJLegends1011", "type": "User", "provider": "github" },
+      { "login": "fazo96", "type": "User", "provider": "github" },
+      { "login": "j-dandelion", "type": "User", "provider": "github" },
+      { "login": "CloudCompile", "type": "User", "provider": "github" },
+      { "login": "Vaitas", "type": "User", "provider": "github" },
+      { "login": "Vishousdev", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "sneezejayhauser", "type": "User", "provider": "github" },
+      { "login": "Plaguis", "type": "User", "provider": "github" },
+      { "login": "aaron-j-reeves", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1175596366"
+}

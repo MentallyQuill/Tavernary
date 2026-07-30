@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hornysilicon-innervoice",
   "name": "innerVoice",
   "kind": "extension",
   "summary": "Inner Voice adds ephemeral inner monologues to scene characters in SillyTavern. A cheaper secondary model writes hidden thoughts that guide the main LLM's reply without persisting to chat history.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "hornysilicon/innerVoice",
-    "repository_id": 1297591852
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "instruction-control", "automation"],
   "cataloged_at": "2026-07-27T21:11:50.931Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1297591852",
+  "tags": [
+    "guide-model-responses",
+    "add-structured-reasoning",
+    "multi-stage-generation",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

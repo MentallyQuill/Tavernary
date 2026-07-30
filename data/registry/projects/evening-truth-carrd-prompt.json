@@ -1,26 +1,12 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "evening-truth-carrd-prompt",
   "name": "Evening Truth",
   "kind": "preset",
   "summary": "A collection of concise, model-tailored roleplay system prompts designed for broad Chat Completion compatibility.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://evening-truth.carrd.co/",
-    "published_at": null,
-    "version": null,
-    "artifact_size_bytes": null,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": [
-    "prompt-engineering",
-    "instruction-control",
-    "character-worldbuilding"
-  ],
   "model_families": [
     "qwen",
     "deepseek",
@@ -34,9 +20,15 @@
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "paused",
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-evening-truth-carrd-prompt",
+  "tags": ["guide-model-responses"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

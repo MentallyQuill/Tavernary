@@ -1,22 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sagesheep-narrativeengine-p",
   "name": "Narrative Engine",
   "kind": "frontend",
   "summary": "Narrative Engine is a frontend designed to support narrative roleplay experiences and storytelling. It integrates with the narrative-engine platform to provide an interface for ongoing interactive sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Sagesheep/NarrativeEngine-P",
-    "repository_id": 1215007786
-  },
   "frontends": ["narrative-engine"],
   "primary_function": "frontend",
-  "capabilities": [],
   "cataloged_at": "2026-07-27T21:27:18.926Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1215007786",
+  "tags": [
+    "maintain-long-term-memory",
+    "generate-images",
+    "track-characters-and-world-state",
+    "local-first",
+    "self-hosted",
+    "semantic-retrieval"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

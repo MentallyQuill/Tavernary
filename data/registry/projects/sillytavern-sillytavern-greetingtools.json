@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillytavern-sillytavern-greetingtools",
   "name": "SillyTavern Greeting Tools",
   "kind": "extension",
   "summary": "SillyTavern Greeting Tools overhauls greeting management in SillyTavern, letting users organize greetings with titles and descriptions. It adds AI-powered generation, a redesigned popup, and inline chat selection.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "SillyTavern/SillyTavern-GreetingTools",
-    "repository_id": 1158265980
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1158265980",
+  "tags": ["manage-characters-and-personas", "automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

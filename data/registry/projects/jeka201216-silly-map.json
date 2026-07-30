@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "jeka201216-silly-map",
   "name": "Silly Map",
   "kind": "extension",
   "summary": "Silly Map is a SillyTavern extension that adds a D&D-style interactive map to roleplay chats. It uses context-aware AI to read conversations and automatically open matching locations with characters placed accordingly.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Jeka201216/Silly-Map",
-    "repository_id": 1307082738
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1307082738",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-visual-immersion",
+    "track-characters-and-world-state",
+    "manage-maps-and-locations"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

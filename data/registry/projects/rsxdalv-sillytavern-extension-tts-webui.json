@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "rsxdalv-sillytavern-extension-tts-webui",
   "name": "sillytavern-extension-tts-webui",
   "kind": "extension",
   "summary": "A SillyTavern extension adds TTS WebUI as a text-to-speech provider, replacing the default TTS plugin. It documents a provider interface and lists required methods for custom TTS backends.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "rsxdalv/sillytavern-extension-tts-webui",
-    "repository_id": 997100420
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-997100420",
+  "tags": ["add-voice-interaction", "modular-and-extensible"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

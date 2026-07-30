@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mattjaybe-sillytavern-pathweaver",
   "name": "Pathweaver",
   "kind": "extension",
   "summary": "Pathweaver is a SillyTavern extension that injects fresh plot ideas, twists, and genre-appropriate moments into ongoing roleplay sessions. It triggers narrative beats at chosen moments to keep storytelling dynamic.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mattjaybe/SillyTavern-Pathweaver",
-    "repository_id": 1133781448
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "planning-reasoning"],
   "cataloged_at": "2026-07-27T20:36:12.198Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1133781448",
+  "tags": [
+    "plan-stories-and-scenes",
+    "automate-roleplay-workflows",
+    "increase-narrative-variety"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

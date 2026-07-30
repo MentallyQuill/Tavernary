@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "frostbd-st-custom-fonts",
   "name": "st-custom-fonts",
   "kind": "extension",
   "summary": "ST Custom Fonts is a SillyTavern extension that lets users apply custom fonts to the interface. It supports local fonts and Google Fonts imports, and can automatically load fonts when a chosen UI theme activates.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "FrostBD/st-custom-fonts",
-    "repository_id": 686411772
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-686411772",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

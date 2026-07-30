@@ -1,34 +1,32 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "le-emotionalism-1-1-5-prompt",
   "name": "LE_EMOTIONALISM 1.1.5",
   "kind": "preset",
   "summary": "A modular SillyTavern preset for grounded roleplay, autonomous NPCs, deliberate reasoning, continuity, pacing, and expressive prose.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://www.reddit.com/r/SillyTavernAI/comments/1v46vqe/le_emotionalism_version_115_emotionalbased_preset/",
-    "published_at": null,
-    "version": "1.1.5",
-    "artifact_size_bytes": 146359,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": [
-    "prompt-engineering",
-    "instruction-control",
-    "planning-reasoning",
-    "character-worldbuilding"
-  ],
   "model_families": ["model-agnostic", "glm", "claude", "kimi", "mimo"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-le-emotionalism-1-1-5-prompt",
+  "tags": [
+    "preserve-story-continuity",
+    "plan-stories-and-scenes",
+    "improve-writing-and-prose",
+    "guide-model-responses",
+    "add-structured-reasoning",
+    "increase-narrative-variety"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

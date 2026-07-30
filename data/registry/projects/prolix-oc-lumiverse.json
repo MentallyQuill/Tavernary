@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "prolix-oc-lumiverse",
   "name": "Lumiverse",
   "kind": "frontend",
   "summary": "Lumiverse is a self-hostable AI chat frontend built from the ground up in TypeScript and Bun. It emphasizes optimization and provides a rich ecosystem to support flexible chat experiences.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "prolix-oc/Lumiverse",
-    "repository_id": 1175596366
-  },
   "frontends": ["lumiverse"],
   "primary_function": "frontend",
-  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1175596366",
+  "tags": [
+    "generate-images",
+    "self-hosted",
+    "model-agnostic",
+    "modular-and-extensible",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

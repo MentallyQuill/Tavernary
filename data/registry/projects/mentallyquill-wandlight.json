@@ -1,26 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mentallyquill-wandlight",
   "name": "Wandlight",
   "kind": "extension",
   "summary": "Wandlight is a SillyTavern extension for Harry Potter roleplay that tracks canon timing, secrets, and story continuity. Its date-aware lore database and relevance-tiered prompts arbitrate scene-appropriate facts.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MentallyQuill/Wandlight",
-    "repository_id": 1254077407
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "prompt-engineering",
-    "review-validation"
-  ],
   "cataloged_at": "2026-07-27T23:32:09.088Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1254077407",
+  "tags": [
+    "retrieve-relevant-context",
+    "build-worlds-and-lore",
+    "preserve-story-continuity",
+    "automate-roleplay-workflows"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

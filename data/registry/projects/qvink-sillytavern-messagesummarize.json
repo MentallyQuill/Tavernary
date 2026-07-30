@@ -1,26 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "qvink-sillytavern-messagesummarize",
   "name": "SillyTavern Message Summarize",
   "kind": "extension",
   "summary": "This extension summarizes each chat message individually into short-term and long-term memory. Users flag important messages for long-term retention and can configure a separate connection profile.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "qvink/SillyTavern-MessageSummarize",
-    "repository_id": 901076086
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": [
-    "instruction-control",
-    "model-routing",
-    "prompt-engineering"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-901076086",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "secondary-model",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

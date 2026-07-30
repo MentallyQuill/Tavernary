@@ -1,0 +1,49 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1216523143,
+    "owner": "IkarusV",
+    "name": "COTAutoClean",
+    "url": "https://github.com/IkarusV/COTAutoClean",
+    "description": "SillyTavern extension - Automatically strips leftover chain-of-thought blocks from AI messages",
+    "default_branch": "main",
+    "head_sha": "0a984577a851038afe2e18e659d6b75aa806ee4a",
+    "head_committed_at": "2026-04-21T02:07:10.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-21T01:51:09.000Z",
+    "size_kb": 5
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-04-21T02:07:10.000Z",
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T11:16:10.745Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "0a984577a851038afe2e18e659d6b75aa806ee4a"
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [{ "login": "IkarusV", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1216523143"
+}

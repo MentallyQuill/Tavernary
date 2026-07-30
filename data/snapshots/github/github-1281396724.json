@@ -1,0 +1,82 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1281396724,
+    "owner": "valdoix",
+    "name": "vellum-engine",
+    "url": "https://github.com/valdoix/vellum-engine",
+    "description": "VELLUM II (Palimpsest) — living-narrative engine for Lumiverse: event-log chronicle, hybrid recall, relationship graph, in-app vault.",
+    "default_branch": "main",
+    "head_sha": "69eca239911b7224e3fccc279902eb43cb583339",
+    "head_committed_at": "2026-07-20T06:09:53.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-26T14:12:41.000Z",
+    "size_kb": 16004
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-20T05:58:48.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-20T05:58:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T11:37:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T10:10:40.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T14:47:37.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T19:42:16.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "69eca239911b7224e3fccc279902eb43cb583339"
+  },
+  "community": {
+    "stars_count": 5,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 6
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Fancyhe1", "type": "User", "provider": "github" },
+      { "login": "valdoix", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1281396724"
+}

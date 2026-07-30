@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "prolix-oc-lumiverse-simtracker",
   "name": "Lumiverse SimTracker",
   "kind": "extension",
   "summary": "Lumiverse SimTracker renders visually rich tracker cards from structured character messages for Lumiverse. It tracks stats, relationships, biology, and story progression in dating sims, RPGs, and slice-of-life roleplay.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "prolix-oc/Lumiverse-SimTracker",
-    "repository_id": 1175839267
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1175839267",
+  "tags": [
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "visual-workflow",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

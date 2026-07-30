@@ -106,7 +106,7 @@ test("drafts a source-backed GitHub card with permanent identity", async () => {
       status: "curated",
       summary:
         "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
       classification_review: {
         status: "confirmed",
         suggested_primary_function: "generation-reasoning",
@@ -125,11 +125,14 @@ test("drafts a source-backed GitHub card with permanent identity", async () => {
     source_id: "github-42",
     frontends: ["sillytavern"],
     primary_function: "generation-reasoning",
-    capabilities: ["planning-reasoning"],
+    tags: ["add-structured-reasoning"],
     catalog_cohort: "standard",
     listing_status: "active",
     listing_status_reason: null,
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
   });
   expect(result.source).toMatchObject({
     schema_version: 1,
@@ -157,7 +160,7 @@ test("keeps a submitted primary function when intake review suggests a mismatch"
       status: "curated",
       summary:
         "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
       classification_review: {
         status: "possible-mismatch",
         suggested_primary_function: "interface-workflow",
@@ -191,7 +194,7 @@ test("protects a preserved repository-owner summary from scheduled enrichment", 
     enrichment: {
       status: "curated",
       summary: "Submitted description.",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
       classification_review: {
         status: "confirmed",
         suggested_primary_function: "generation-reasoning",
@@ -207,9 +210,13 @@ test("protects a preserved repository-owner summary from scheduled enrichment", 
   expect(result.record).toMatchObject({
     summary: "Submitted description.",
     metadata_status: "curated",
-    enrichment_policy: "manual",
-    enrichment_note:
-      "Catalog summary preserved from repository-owner submission issue #128.",
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Catalog summary preserved from repository-owner submission issue #128.",
+      },
+      tags: { mode: "automatic" },
+    },
   });
   expect(result.copyResult).toEqual({
     result: "accepted-unchanged",
@@ -239,7 +246,7 @@ test("keeps synthesized owner intake eligible for automatic enrichment", async (
       status: "curated",
       summary:
         "Repository evidence defines this structured roleplay tool and its purpose. Its documented controls support focused work while keeping the surrounding conversation accessible.",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
       classification_review: {
         status: "confirmed",
         suggested_primary_function: "generation-reasoning",
@@ -252,8 +259,10 @@ test("keeps synthesized owner intake eligible for automatic enrichment", async (
     now: "2026-07-25T18:00:00.000Z",
   });
 
-  expect(result.record.enrichment_policy).toBe("automatic");
-  expect(result.record).not.toHaveProperty("enrichment_note");
+  expect(result.record.metadata_policy).toEqual({
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
+  });
 });
 
 test("stores only a bounded plain-text mismatch explanation", async () => {
@@ -265,7 +274,7 @@ test("stores only a bounded plain-text mismatch explanation", async () => {
       status: "curated",
       summary:
         "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-      capabilities: ["planning-reasoning"],
+      tags: ["add-structured-reasoning"],
       classification_review: {
         status: "possible-mismatch",
         suggested_primary_function: "interface-workflow",
@@ -297,7 +306,7 @@ test("falls back to submitted description when enrichment is unavailable", async
     summary: "Submitted description.",
     metadata_status: "provisional",
     primary_function: "generation-reasoning",
-    capabilities: [],
+    tags: [],
   });
   expect(result.warnings).toContain(
     "Automated enrichment failed: The enrichment provider timed out.",
@@ -379,8 +388,16 @@ test("drafts external presets with manual source policy", async () => {
     refresh_policy: "paused",
   });
   expect(result.record).toMatchObject({
-    enrichment_policy: "manual",
-    enrichment_note: "External URL source; requires manual curation.",
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "External URL source; requires manual curation.",
+      },
+      tags: {
+        mode: "manual",
+        note: "External URL source; requires manual curation.",
+      },
+    },
   });
   expect(result.snapshot).toBeUndefined();
 });
@@ -485,7 +502,10 @@ test("drafts an external Frontend with manual source policy", async () => {
   expect(result.record).toMatchObject({
     frontends: ["nova-frontend"],
     primary_function: "frontend",
-    enrichment_policy: "manual",
+    metadata_policy: {
+      summary: { mode: "manual" },
+      tags: { mode: "manual" },
+    },
   });
 });
 

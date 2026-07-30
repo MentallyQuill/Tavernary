@@ -1,26 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "gentleburr-sillytavern-smartimport",
   "name": "SillyTavern SmartImport",
   "kind": "extension",
   "summary": "SillyTavern SmartImport is an extension that batch-imports character files from external URLs into SillyTavern. It checks metadata before each import to prevent duplicate entries from being added to the library.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "GentleBurr/SillyTavern-SmartImport",
-    "repository_id": 1184263874
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [
-    "automation",
-    "character-worldbuilding",
-    "review-validation"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1184263874",
+  "tags": [
+    "automate-roleplay-workflows",
+    "connect-external-services",
+    "manage-character-libraries"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

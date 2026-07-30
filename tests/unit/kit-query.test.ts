@@ -59,7 +59,7 @@ test("keeps Kit-only URL facets out of the project query", () => {
 
   expect(query).toMatchObject({
     kinds: [],
-    capabilities: [],
+    tags: [],
     development: [],
     licenses: [],
   });

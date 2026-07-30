@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "devemberteam-ops-pyre",
   "name": "Pyre",
   "kind": "frontend",
   "summary": "Pyre is a roleplay frontend project hosted on GitHub by the devemberteam-ops organization. The repository's readme introduces a Features section but contains no further implementation details in the available source.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "devemberteam-ops/Pyre",
-    "repository_id": 1257302750
-  },
   "frontends": ["pyre"],
   "primary_function": "frontend",
-  "capabilities": [],
   "cataloged_at": "2026-07-27T15:18:17.769Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1257302750",
+  "tags": [],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

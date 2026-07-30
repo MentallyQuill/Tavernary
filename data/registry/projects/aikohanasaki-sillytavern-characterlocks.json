@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "aikohanasaki-sillytavern-characterlocks",
   "name": "SillyTavern Character Locks",
   "kind": "extension",
   "summary": "This SillyTavern extension remembers your preferred connection profile and preset for each character, chat, or group. It automatically applies them when switching contexts, eliminating manual reconfiguration.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "aikohanasaki/SillyTavern-CharacterLocks",
-    "repository_id": 998536860
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-998536860",
+  "tags": ["manage-prompts-and-presets", "automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

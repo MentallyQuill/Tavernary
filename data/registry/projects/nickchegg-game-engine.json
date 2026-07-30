@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "nickchegg-game-engine",
   "name": "NickChegg Game Engine",
   "kind": "extension",
   "summary": "A SillyTavern extension that hosts modular, UI-driven minigames in a pop-out window for roleplay sessions. It feeds minigame results seamlessly back to the LLM to enrich ongoing conversations.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "NickChegg/game-engine",
-    "repository_id": 1283421850
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1283421850",
+  "tags": [
+    "guide-model-responses",
+    "add-rpg-gameplay",
+    "modular-and-extensible"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

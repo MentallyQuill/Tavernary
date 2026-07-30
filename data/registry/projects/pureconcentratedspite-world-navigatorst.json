@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "pureconcentratedspite-world-navigatorst",
   "name": "world-navigatorST",
   "kind": "extension",
   "summary": "A SillyTavern extension that tracks roleplay positions on an x,y coordinate plane. It reads a World Info JSON file to calculate distance, direction, orientation, and field of view for characters.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "PureConcentratedSpite/world-navigatorST",
-    "repository_id": 1050800660
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["automation", "planning-reasoning"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1050800660",
+  "tags": [
+    "track-characters-and-world-state",
+    "manage-maps-and-locations",
+    "rules-driven"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

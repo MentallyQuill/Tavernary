@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "coneja-chibi-hoplight",
   "name": "Hoplight",
   "kind": "extension",
   "summary": "Hoplight is a local studio extension for creating portable AI-roleplay content. It provides a dedicated SillyTavern workspace to build, organize, and manage roleplay assets.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Coneja-Chibi/Hoplight",
-    "repository_id": 1305235960
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1305235960",
+  "tags": [
+    "build-worlds-and-lore",
+    "manage-lorebooks",
+    "manage-character-libraries"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

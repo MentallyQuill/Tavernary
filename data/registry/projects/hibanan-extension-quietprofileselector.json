@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hibanan-extension-quietprofileselector",
   "name": "Quiet Profile Selector",
   "kind": "extension",
   "summary": "Quiet Profile Selector is a SillyTavern extension that assigns a dedicated Connection Profile to quiet or background generations. It swaps profiles during quiet prompts and restores the original once the task finishes.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Hibanan/Extension-QuietProfileSelector",
-    "repository_id": 1194042343
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1194042343",
+  "tags": [
+    "route-tasks-across-models",
+    "background-operation",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

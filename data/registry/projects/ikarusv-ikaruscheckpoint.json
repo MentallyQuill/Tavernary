@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "ikarusv-ikaruscheckpoint",
   "name": "Ikarus-Hub(Track branch/qr/checkpoint)",
   "kind": "extension",
   "summary": "Lightweight floating navigator for SillyTavern that provides quick access to checkpoints and branches. Users can manage and jump between saved points through an unobtrusive overlay interface.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "IkarusV/IkarusCheckpoint",
-    "repository_id": 1226984172
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-27T11:13:33.740Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1226984172",
+  "tags": ["organize-chats-and-messages"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "cgstever-statefullore",
   "name": "StatefulLore",
   "kind": "extension",
   "summary": "StatefulLore is a SillyTavern extension built to replace the platform's existing lore system. It aims to provide enhanced, stateful management of world lore and books for roleplay sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "cgstever/StatefulLore",
-    "repository_id": 1181949380
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1181949380",
+  "tags": [
+    "manage-lorebooks",
+    "track-characters-and-world-state",
+    "local-first",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

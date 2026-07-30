@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "b4bysw0rld-sillytavern-smart-dialogue-colorizer",
   "name": "SillyTavern-Smart-Dialogue-Colorizer",
   "kind": "extension",
   "summary": "This SillyTavern extension automatically colors dialogue quotes based on each speaking character's avatar. It uses intelligent color extraction with built-in quality filtering to keep text readable and visually distinct.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "b4bysw0rld/SillyTavern-Smart-Dialogue-Colorizer",
-    "repository_id": 1081942864
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "review-validation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1081942864",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-visual-immersion",
+    "customize-the-interface"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

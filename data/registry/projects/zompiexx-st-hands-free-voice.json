@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "zompiexx-st-hands-free-voice",
   "name": "ST-Hands-Free-Voice",
   "kind": "extension",
   "summary": "Hands-free voice interaction for SillyTavern (TTS/STT sequencing with silence detection)",
   "metadata_status": "provisional",
-  "source": {
-    "type": "github",
-    "repository": "zompiexx/ST-Hands-Free-Voice",
-    "repository_id": 1128225923
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-27T22:03:00.592Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1128225923",
+  "tags": ["add-voice-interaction", "hands-free"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

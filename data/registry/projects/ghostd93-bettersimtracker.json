@@ -1,26 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "ghostd93-bettersimtracker",
   "name": "BetterSimTracker",
   "kind": "extension",
   "summary": "BetterSimTracker is a SillyTavern extension that tracks per-message character relationship stats. It graphs historical changes and injects current relationship state into prompts to support coherent roleplay.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "ghostd93/BetterSimTracker",
-    "repository_id": 1160848402
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "prompt-engineering",
-    "instruction-control"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1160848402",
+  "tags": [
+    "preserve-story-continuity",
+    "track-characters-and-world-state",
+    "visual-workflow",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

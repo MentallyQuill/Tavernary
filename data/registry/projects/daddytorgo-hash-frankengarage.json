@@ -1,24 +1,22 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "daddytorgo-hash-frankengarage",
   "name": "FrankenGarage",
   "kind": "preset",
   "summary": "FrankenGarage is a SillyTavern preset that bundles multiple configuration elements into a single package. This consolidated approach lets users apply one unified setup to customize their roleplay environment.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "daddytorgo-hash/FrankenGarage",
-    "repository_id": 1297772483
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": ["automation"],
   "model_families": ["model-agnostic", "claude", "gemini", "deepseek", "glm"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1297772483",
+  "tags": ["guide-model-responses"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "gu-gu-gu-gu-gu-weather-calendar-assistant",
   "name": "Weather Calendar Assistant",
   "kind": "extension",
   "summary": "Weather Calendar Assistant is a SillyTavern extension that automatically detects story time during roleplay. It injects context about holidays, weather, and physiological cycles to enrich scene continuity.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Gu-gu-gu-gu-gu/Weather-Calendar-Assistant",
-    "repository_id": 1184439628
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1184439628",
+  "tags": [
+    "preserve-story-continuity",
+    "automate-roleplay-workflows",
+    "track-characters-and-world-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

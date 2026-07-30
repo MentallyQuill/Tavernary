@@ -1,0 +1,56 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 960096638,
+    "owner": "SillyTavern",
+    "name": "Extension-CustomSliders",
+    "url": "https://github.com/SillyTavern/Extension-CustomSliders",
+    "description": "Adds customizable sliders for Custom (OpenAI-compatible) source of Chat Completion API.",
+    "default_branch": "main",
+    "head_sha": "758aa6f60ab547cc399c33a4ee9c0a961603a9a1",
+    "head_committed_at": "2026-04-05T22:02:23.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-04-03T21:16:15.000Z",
+    "size_kb": 274
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T22:02:57.806Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "758aa6f60ab547cc399c33a4ee9c0a961603a9a1"
+  },
+  "community": {
+    "stars_count": 4,
+    "forks_count": 6,
+    "watchers_count": 1,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-960096638"
+}

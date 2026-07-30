@@ -1,0 +1,80 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 882467511,
+    "owner": "leandrojofre",
+    "name": "SillyTavern-Presence",
+    "url": "https://github.com/leandrojofre/SillyTavern-Presence",
+    "description": "Gives each individual character their own memory.",
+    "default_branch": "main",
+    "head_sha": "c20af6d5a8dc110c84ecd44ce1e865eaaea23cf5",
+    "head_committed_at": "2026-07-13T03:31:04.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 875709373,
+      "owner": "lackyas",
+      "name": "SillyTavern-Presence",
+      "url": "https://github.com/lackyas/SillyTavern-Presence"
+    },
+    "created_at": "2024-11-02T21:14:58.000Z",
+    "size_kb": 489
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-13T03:25:49.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-13T03:25:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T07:15:04.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-01T02:42:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-05T21:14:42.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-13T03:31:16.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 44,
+    "forks_count": 5,
+    "watchers_count": 1,
+    "aggregate": 50
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "leandrojofre", "type": "User", "provider": "github" },
+      { "login": "cloak1505", "type": "User", "provider": "github" }
+    ],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-882467511"
+}

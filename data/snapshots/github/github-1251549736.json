@@ -1,0 +1,72 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1251549736,
+    "owner": "Enerccio",
+    "name": "SillyTavern-StickyNote",
+    "url": "https://github.com/Enerccio/SillyTavern-StickyNote",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "7566b914bf35f7b539b6258bb1af3c31e9a5ecce",
+    "head_committed_at": "2026-06-21T20:22:25.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-27T17:30:02.000Z",
+    "size_kb": 37
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-21T20:22:25.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T20:22:25.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T20:11:22.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-04T15:39:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-27T19:09:53.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T02:49:36.921Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 2,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Enerccio", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1251549736"
+}

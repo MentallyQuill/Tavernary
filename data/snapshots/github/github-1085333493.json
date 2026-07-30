@@ -1,0 +1,63 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1085333493,
+    "owner": "Coneja-Chibi",
+    "name": "VectHare",
+    "url": "https://github.com/Coneja-Chibi/VectHare",
+    "description": "A Powerful tool meant to revolutionize RAG as you know it!",
+    "default_branch": "main",
+    "head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a",
+    "head_committed_at": "2026-07-27T13:40:12.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-10-28T22:35:40.000Z",
+    "size_kb": 1356
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-27T11:38:49.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T11:38:49.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a"
+  },
+  "community": {
+    "stars_count": 65,
+    "forks_count": 19,
+    "watchers_count": 3,
+    "aggregate": 87
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "LeviTheWeasel", "type": "User", "provider": "github" },
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "prolix-oc", "type": "User", "provider": "github" },
+      { "login": "Promansis", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" },
+      { "login": "r-t-k", "type": "User", "provider": "github" },
+      { "login": "TheLiquorPriest", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1085333493"
+}

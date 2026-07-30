@@ -1,22 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mentallyquill-directive",
   "name": "Directive",
   "kind": "extension",
   "summary": "Directive is a SillyTavern extension delivering a Star Trek roleplaying experience. It integrates character and worldbuilding elements that frame sessions around the Star Trek setting.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MentallyQuill/Directive",
-    "repository_id": 1273112032
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1273112032",
+  "tags": [
+    "preserve-story-continuity",
+    "plan-stories-and-scenes",
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "rules-driven",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

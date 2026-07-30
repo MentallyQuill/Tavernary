@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "jeppsterrr-crossroads",
   "name": "CrossRoads",
   "kind": "extension",
   "summary": "Crossroads is a SillyTavern extension that proposes distinct reply directions for roleplay scenes, each tagged with a tone. Users preview, redraw, or expand individual options and steer rewrites, with nothing sent until.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "jeppsterrr/CrossRoads",
-    "repository_id": 1310212816
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "review-validation"],
   "cataloged_at": "2026-07-26T19:32:33.792Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1310212816",
+  "tags": [
+    "plan-stories-and-scenes",
+    "guide-model-responses",
+    "increase-narrative-variety",
+    "non-destructive"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

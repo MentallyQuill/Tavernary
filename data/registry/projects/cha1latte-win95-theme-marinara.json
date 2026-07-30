@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "cha1latte-win95-theme-marinara",
   "name": "Win95 Theme Marinara",
   "kind": "extension",
   "summary": "Win95 Theme Marinara is a CSS-only extension that re-skins Marinara Engine with authentic Windows 95 styling. The v3.0 release dropped the JavaScript layer for a leaner pure-CSS approach that's simpler to maintain.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "cha1latte/win95-theme-marinara",
-    "repository_id": 1221894927
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": [],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1221894927",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

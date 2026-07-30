@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "brasen56-merged-world-tracker",
   "name": "Merged World Tracker",
   "kind": "extension",
   "summary": "Bunch of different modules in one extension. World State, Knowledge (NPC)Tracker, Story Arc Planner, Interiority (NPC thoughts and intentions; makes NPCs commit and do things). Actively worked on. There are testing",
   "metadata_status": "provisional",
-  "source": {
-    "type": "github",
-    "repository": "brasen56/merged_world_tracker",
-    "repository_id": 1256623355
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": [],
   "cataloged_at": "2026-07-28T13:17:25.958Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1256623355",
+  "tags": [
+    "plan-stories-and-scenes",
+    "track-characters-and-world-state",
+    "manage-inventory-and-quests"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

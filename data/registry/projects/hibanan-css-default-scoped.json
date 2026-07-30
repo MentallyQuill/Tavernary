@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hibanan-css-default-scoped",
   "name": "CSS Default Scoped",
   "kind": "extension",
   "summary": "CSS Default Scoped is a SillyTavern extension that defaults new characters' CSS to 'Scoped to Creator's Notes only'. It removes the popup prompt on character switches while leaving any explicit preference unchanged.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Hibanan/css-default-scoped",
-    "repository_id": 1289162242
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1289162242",
+  "tags": [
+    "automate-roleplay-workflows",
+    "customize-the-interface",
+    "non-destructive"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

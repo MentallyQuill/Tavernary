@@ -1,0 +1,54 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 850754623,
+    "owner": "SillyTavern",
+    "name": "Extension-Mermaid",
+    "url": "https://github.com/SillyTavern/Extension-Mermaid",
+    "description": "Adds Mermaid diagrams & flowcharts rendering to SillyTavern chats.",
+    "default_branch": "main",
+    "head_sha": "62265d550ca3dc46737c09bddf0bf328fd1f3469",
+    "head_committed_at": "2026-03-03T15:36:46.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2024-09-01T17:27:00.000Z",
+    "size_kb": 2144
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:16:15.267Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 27,
+    "forks_count": 6,
+    "watchers_count": 2,
+    "aggregate": 35
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Cohee1207", "type": "User", "provider": "github" },
+      { "login": "dependabot[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-850754623"
+}

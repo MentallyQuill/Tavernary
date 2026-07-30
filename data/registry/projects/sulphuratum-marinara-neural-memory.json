@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sulphuratum-marinara-neural-memory",
   "name": "Marinara Neural Memory",
   "kind": "extension",
   "summary": "Marinara Engine extension providing agents and functions that store memories in Shodh for later retrieval.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Sulphuratum/marinara-neural-memory",
-    "repository_id": 1293595361
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1293595361",
+  "tags": [
+    "maintain-long-term-memory",
+    "retrieve-relevant-context",
+    "agentic-tool-use",
+    "semantic-retrieval",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

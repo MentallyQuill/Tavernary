@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "therosin-st-extension-lua",
   "name": "ST-Extension-Lua",
   "kind": "extension",
   "summary": "ST-Extension-Lua is a SillyTavern extension that adds Lua scripting support to the frontend. It enables users to write and run custom scripts to automate tasks and extend the platform's behavior.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "therosin/ST-Extension-Lua",
-    "repository_id": 826008663
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-826008663",
+  "tags": [
+    "automate-roleplay-workflows",
+    "build-extensions-and-scripts",
+    "modular-and-extensible"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "platberlitz-sd-proxy",
   "name": "SD Proxy",
   "kind": "extension",
   "summary": "SD Proxy is an image generation proxy that provides an OpenAI-compatible API across multiple backends. It includes a web dashboard for managing and monitoring generation workflows.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "platberlitz/sd-proxy",
-    "repository_id": 1132779410
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "developer-infrastructure",
-  "capabilities": ["image-generation", "model-routing"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1132779410",
+  "tags": [
+    "route-tasks-across-models",
+    "generate-images",
+    "monitor-token-usage-and-cost",
+    "multi-user"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

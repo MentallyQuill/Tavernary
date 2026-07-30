@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "amousepad-hone",
   "name": "Hone",
   "kind": "extension",
   "summary": "Hone is a Lumiverse extension that uses LLMs to refine chat messages, enhancing AI responses and user drafts. It runs multi-stage quality passes asynchronously, letting users polish content in the background.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "AMousePad/Hone",
-    "repository_id": 1205995441
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "prompt-engineering", "review-validation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1205995441",
+  "tags": [
+    "improve-writing-and-prose",
+    "automate-roleplay-workflows",
+    "edit-and-refine-messages",
+    "background-operation",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

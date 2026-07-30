@@ -1,0 +1,53 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1123999916,
+    "owner": "Prompt-And-Circumstance",
+    "name": "StoryMode",
+    "url": "https://github.com/Prompt-And-Circumstance/StoryMode",
+    "description": "A narrative story telling extension for Silly Tavern",
+    "default_branch": "main",
+    "head_sha": "90d6877dcdae9c42cb68b9ecc3bcffd89f8b4b0d",
+    "head_committed_at": "2026-02-02T02:47:29.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-12-28T05:15:30.000Z",
+    "size_kb": 4547
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T05:01:47.527Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 26,
+    "forks_count": 4,
+    "watchers_count": 3,
+    "aggregate": 33
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      {
+        "login": "Prompt-And-Circumstance",
+        "type": "User",
+        "provider": "github"
+      }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1123999916"
+}

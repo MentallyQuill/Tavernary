@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "maxime-fleury-st-card-editor",
   "name": "ST Card Editor",
   "kind": "extension",
   "summary": "ST Card Editor is a web-based tool for editing SillyTavern character cards. It combines drag-and-drop editing, AI-assisted translation, character generation, and reference image creation in a single interface.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "maxime-fleury/ST-cardEditor",
-    "repository_id": 1300836750
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["image-generation", "automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1300836750",
+  "tags": [
+    "create-character-cards",
+    "manage-characters-and-personas",
+    "generate-images",
+    "translate-roleplay-content",
+    "visual-workflow"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

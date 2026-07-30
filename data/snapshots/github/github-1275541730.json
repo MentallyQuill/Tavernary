@@ -1,0 +1,77 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1275541730,
+    "owner": "nattaphat010447",
+    "name": "nutho_autocloser",
+    "url": "https://github.com/nattaphat010447/nutho_autocloser",
+    "description": "Auto Closer Extension for SillyTavern",
+    "default_branch": "main",
+    "head_sha": "a8cf65851cff66926bbfe148563bf003bf0eec92",
+    "head_committed_at": "2026-07-27T16:58:18.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-20T20:38:42.000Z",
+    "size_kb": 23
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-27T16:58:18.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-27T16:58:18.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-14T01:51:11.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T04:12:49.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-20T20:37:33.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a8cf65851cff66926bbfe148563bf003bf0eec92"
+  },
+  "community": {
+    "stars_count": 5,
+    "forks_count": 1,
+    "watchers_count": 1,
+    "aggregate": 7
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "nattaphat010447", "type": "User", "provider": "github" },
+      { "login": "LukaTheHero", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1275541730"
+}

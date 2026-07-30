@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "city-unit-sillytavern-chub-search",
   "name": "SillyTavern-Chub-Search",
   "kind": "extension",
   "summary": "SillyTavern Chub Search is a SillyTavern extension for browsing character cards from the CHUB repository. It adds an in-app search interface that lets users discover new cards without leaving the tavern.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "city-unit/SillyTavern-Chub-Search",
-    "repository_id": 687155351
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-687155351",
+  "tags": ["manage-character-libraries"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

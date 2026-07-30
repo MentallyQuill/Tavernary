@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "platberlitz-sillytavern-character-colors",
   "name": "SillyTavern Character Colors",
   "kind": "extension",
   "summary": "This SillyTavern extension colors character dialogue and thoughts using LLM-powered processing for clearer chat readability. It streamlines installation by auto-installing required regex patterns, reducing manual setup.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "platberlitz/sillytavern-character-colors",
-    "repository_id": 1133521830
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1133521830",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-visual-immersion",
+    "customize-the-interface"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sillyanonymous-sillytavern-characterlibrary",
   "name": "SillyTavern Character Library",
   "kind": "extension",
   "summary": "A SillyTavern extension that helps users discover, organize, and manage their character library. It offers a modern glassmorphic interface for browsing and handling stored characters.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Sillyanonymous/SillyTavern-CharacterLibrary",
-    "repository_id": 1139430137
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1139430137",
+  "tags": ["manage-characters-and-personas", "manage-character-libraries"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

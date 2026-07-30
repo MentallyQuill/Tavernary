@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "wanderingmonk8-lummate",
   "name": "Lummate",
   "kind": "extension",
   "summary": "Lummate is a Lumiverse extension that enables the platform to communicate with XToys. It bridges the two tools so users can coordinate interactions and data between the Lumiverse and XToys environments.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "WanderingMonk8/lummate",
-    "repository_id": 1264708255
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development", "multi-frontend"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1264708255",
+  "tags": ["connect-external-services"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

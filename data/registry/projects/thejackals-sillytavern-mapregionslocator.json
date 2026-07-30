@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "thejackals-sillytavern-mapregionslocator",
   "name": "SillyTavern Map Regions Locator",
   "kind": "extension",
   "summary": "This SillyTavern extension converts a plain map into an interactive location-on-map view for roleplay sessions. It transforms static map references into navigable regional positioning during chats.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "THEJACKALS/SillyTavern-MapRegionsLocator",
-    "repository_id": 1248549303
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1248549303",
+  "tags": [
+    "track-characters-and-world-state",
+    "manage-maps-and-locations",
+    "visual-workflow"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

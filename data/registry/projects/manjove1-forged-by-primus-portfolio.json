@@ -1,26 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "manjove1-forged-by-primus-portfolio",
   "name": "Forged by Primus",
   "kind": "extension",
   "summary": "Forged by Primus is a modular AI Dungeon Master system for long-form roleplay with durable state and context-loss recovery. It enforces structured multi-step processes to keep narratives consistent across sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Manjove1/forged-by-primus-portfolio",
-    "repository_id": 1305418059
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": [
-    "prompt-engineering",
-    "planning-reasoning",
-    "instruction-control"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1305418059",
+  "tags": [
+    "maintain-long-term-memory",
+    "preserve-story-continuity",
+    "add-structured-reasoning",
+    "add-rpg-gameplay",
+    "rules-driven",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

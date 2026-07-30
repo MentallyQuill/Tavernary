@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "zhenyapav-sillytavern-namegen",
   "name": "SillyTavern Namegen",
   "kind": "extension",
   "summary": "SillyTavern Namegen is an offline browser-based name generator for SillyTavern, using the fantastical library with settlement aliases.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "ZhenyaPav/SillyTavern-Namegen",
-    "repository_id": 1049754491
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1049754491",
+  "tags": ["build-worlds-and-lore", "local-first"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

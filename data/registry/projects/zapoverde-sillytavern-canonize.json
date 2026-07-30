@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "zapoverde-sillytavern-canonize",
   "name": "SillyTavern Canonize",
   "kind": "extension",
   "summary": "It periodically refreshes SillyTavern's narrative hooks, lorebook entries, and vector storage files. The extension keeps those worldbuilding and memory resources synchronized through scheduled background updates.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "ZapoVerde/SillyTavern-Canonize",
-    "repository_id": 1186081011
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation", "character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1186081011",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "automate-roleplay-workflows",
+    "background-operation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

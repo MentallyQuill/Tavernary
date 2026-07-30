@@ -1,0 +1,54 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1057660249,
+    "owner": "envy-ai",
+    "name": "ai_rpg",
+    "url": "https://github.com/envy-ai/ai_rpg",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "bea1dd19a425c09eca40bf78e0a22589d3d9fb5a",
+    "head_committed_at": "2026-04-07T16:25:26.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-09-16T03:29:05.000Z",
+    "size_kb": 23906
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-02-02T23:51:15.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T21:26:07.194Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "bea1dd19a425c09eca40bf78e0a22589d3d9fb5a"
+  },
+  "community": {
+    "stars_count": 144,
+    "forks_count": 25,
+    "watchers_count": 3,
+    "aggregate": 172
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "envy-ai", "type": "User", "provider": "github" },
+      { "login": "bartkelsey", "type": "User", "provider": "github" },
+      { "login": "funteaqueue", "type": "User", "provider": "github" },
+      { "login": "fazo96", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1057660249"
+}

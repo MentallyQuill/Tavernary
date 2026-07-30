@@ -1,26 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "getfroggyhoe-universal-immersion-engine-fugue",
   "name": "Universal-Immersion-Engine-Fugue",
   "kind": "frontend",
   "summary": "Fugue is a local-first visual-novel RPG frontend for character-driven stories with persistent characters and maps. It works with any cloud API or local server while the AI writes and Fugue tracks the game.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "GetfroggyHoe/Universal-Immersion-Engine-Fugue",
-    "repository_id": 1289789562
-  },
   "frontends": ["universal-immersion-engine-fugue"],
   "primary_function": "frontend",
-  "capabilities": [
-    "character-worldbuilding",
-    "model-routing",
-    "image-generation"
-  ],
   "cataloged_at": "2026-07-28T05:14:04.478Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1289789562",
+  "tags": [
+    "add-visual-immersion",
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "manage-maps-and-locations",
+    "local-first",
+    "model-agnostic"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

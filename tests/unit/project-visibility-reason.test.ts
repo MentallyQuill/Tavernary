@@ -4,26 +4,24 @@ import Ajv from "ajv";
 import { expect, test } from "vitest";
 
 const published = {
-  schema_version: 5,
+  schema_version: 6,
   id: "fixture",
+  source_id: "github-1",
   name: "Fixture",
   kind: "extension",
   summary: "Fixture.",
   metadata_status: "curated",
-  source: {
-    type: "github",
-    repository: "example/fixture",
-    repository_id: 1,
-  },
   frontends: ["sillytavern"],
   primary_function: "generation-reasoning",
-  capabilities: [],
+  tags: [],
   cataloged_at: "2026-07-24T00:00:00Z",
   catalog_cohort: "standard",
-  visibility: "published",
-  visibility_reason: null,
-  refresh_policy: "automatic",
-  enrichment_policy: "automatic",
+  listing_status: "active",
+  listing_status_reason: null,
+  metadata_policy: {
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
+  },
 };
 
 test("requires a controlled reason for non-published projects", async () => {
@@ -36,15 +34,15 @@ test("requires a controlled reason for non-published projects", async () => {
   expect(
     validate({
       ...published,
-      visibility: "quarantined",
-      visibility_reason: "safety-review",
+      listing_status: "quarantined",
+      listing_status_reason: "safety-review",
     }),
   ).toBe(true);
   expect(
     validate({
       ...published,
-      visibility: "disabled",
-      visibility_reason: null,
+      listing_status: "retired",
+      listing_status_reason: null,
     }),
   ).toBe(false);
 });

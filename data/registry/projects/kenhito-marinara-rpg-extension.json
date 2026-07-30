@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "kenhito-marinara-rpg-extension",
   "name": "Marinara RPG Extension",
   "kind": "extension",
   "summary": "The Marinara RPG Extension provides custom tabletop RPG rulesets for Marinara Engine's Game Mode. Players can run D10, d20, and 4dF systems or author custom rulesets without forking the engine or writing TypeScript.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Kenhito/Marinara-RPG-Extension",
-    "repository_id": 1225767064
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "rpg-systems",
-  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1225767064",
+  "tags": ["add-rpg-gameplay", "modular-and-extensible", "rules-driven"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

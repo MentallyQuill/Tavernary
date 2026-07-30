@@ -1,0 +1,60 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1190531461,
+    "owner": "aimicrocot",
+    "name": "Scenarios-Extension",
+    "url": "https://github.com/aimicrocot/Scenarios-Extension",
+    "description": "An extension that allow you to add multiple scenarios to a single bot",
+    "default_branch": "main",
+    "head_sha": "68d34b58a26e73ff8de013680d9bc57a11ca5906",
+    "head_committed_at": "2026-06-19T10:32:27.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-24T11:25:50.000Z",
+    "size_kb": 1718
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-19T10:32:27.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T10:32:27.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T16:51:44.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T01:06:55.971Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 1,
+    "watchers_count": 0,
+    "aggregate": 2
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "aimicrocot", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1190531461"
+}

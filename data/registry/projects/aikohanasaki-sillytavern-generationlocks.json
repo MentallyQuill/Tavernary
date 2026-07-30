@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "aikohanasaki-sillytavern-generationlocks",
   "name": "SillyTavern-GenerationLocks",
   "kind": "extension",
   "summary": "SillyTavern Generation Locks is a SillyTavern extension that manages generation settings through multi-dimensional locking of connection profiles, presets, and templates. The locking feature lets users pin specific...",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "aikohanasaki/SillyTavern-GenerationLocks",
-    "repository_id": 1068235084
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-26T19:31:47.121Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1068235084",
+  "tags": ["guide-model-responses", "manage-prompts-and-presets"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

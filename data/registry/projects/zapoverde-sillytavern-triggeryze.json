@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "zapoverde-sillytavern-triggeryze",
   "name": "SillyTavern Triggeryze",
   "kind": "extension",
   "summary": "SillyTavern extension that scans responses for keywords and triggers automated actions when matches are detected.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "ZapoVerde/SillyTavern-Triggeryze",
-    "repository_id": 1268032451
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1268032451",
+  "tags": [
+    "guide-model-responses",
+    "automate-roleplay-workflows",
+    "modular-and-extensible",
+    "rules-driven"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

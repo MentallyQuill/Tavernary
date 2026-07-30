@@ -1,29 +1,29 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "purrfect-logic-4-max-mini",
   "name": "Purrfect Logic 4 Max Mini",
   "kind": "preset",
   "summary": "A streamlined SillyTavern roleplay preset reducing prompt overhead while strengthening structure, instruction following, and prose.",
   "metadata_status": "curated",
-  "source": {
-    "type": "url",
-    "url": "https://old.reddit.com/r/SillyTavernAI/comments/1twlef0/purrfect_logic_4_max_mini_update_token_cleanup/",
-    "published_at": null,
-    "version": "4 Max Mini",
-    "artifact_size_bytes": null,
-    "license_status": "missing",
-    "license_spdx_id": null
-  },
   "frontends": ["sillytavern"],
   "primary_function": "preset",
-  "capabilities": ["prompt-engineering", "instruction-control"],
   "model_families": ["model-agnostic", "deepseek", "glm"],
   "completion_formats": ["chat-completion"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "External URL source; requires manual curation."
+  "source_id": "url-purrfect-logic-4-max-mini",
+  "tags": [
+    "manage-context-limits",
+    "improve-writing-and-prose",
+    "guide-model-responses"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "External URL source; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "eum27-nai-inlay-illustrator",
   "name": "NAI Inlay Illustrator",
   "kind": "extension",
   "summary": "NAI Inlay Illustrator inserts inline illustrations into Marinara Engine responses via a custom planning agent. It splits text into chronological beats and routes each through the existing image connection.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "EUM27/nai-inlay-illustrator",
-    "repository_id": 1270778825
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["image-generation", "automation", "planning-reasoning"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1270778825",
+  "tags": [
+    "route-tasks-across-models",
+    "generate-images",
+    "agentic-tool-use",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

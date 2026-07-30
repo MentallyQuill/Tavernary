@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mentallyquill-saga",
   "name": "Saga",
   "kind": "extension",
   "summary": "Saga is a SillyTavern extension that organizes lore across multiple fictional fandoms. It helps maintain consistent worldbuilding details and character information across diverse roleplay settings.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MentallyQuill/Saga",
-    "repository_id": 1258773435
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1258773435",
+  "tags": [
+    "build-worlds-and-lore",
+    "manage-lorebooks",
+    "preserve-story-continuity"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

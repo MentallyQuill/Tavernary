@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "loggo-presets-sillytavern-avatarquickpaste",
   "name": "SillyTavern-AvatarQuickPaste",
   "kind": "extension",
   "summary": "This extension pastes character avatars into SillyTavern directly from the clipboard without saving files. Ctrl+clicking a sidebar avatar opens a modal that feeds the image into SillyTavern's native cropping tool.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Loggo-presets/SillyTavern-AvatarQuickPaste",
-    "repository_id": 1144634345
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1144634345",
+  "tags": ["manage-characters-and-personas"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "leandrojofre-sillytavern-stat-us-maximus",
   "name": "SillyTavern Stat-us Maximus",
   "kind": "extension",
   "summary": "SillyTavern extension that lets users add custom status trackers to chat conversations.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "leandrojofre/SillyTavern-Stat-us-Maximus",
-    "repository_id": 1005915564
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1005915564",
+  "tags": [
+    "automate-roleplay-workflows",
+    "track-characters-and-world-state",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

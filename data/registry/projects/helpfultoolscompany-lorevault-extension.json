@@ -1,26 +1,27 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "helpfultoolscompany-lorevault-extension",
   "name": "Lorevault Extension",
   "kind": "extension",
   "summary": "LoreVault is a SillyTavern extension that automatically manages long-term memory for roleplay conversations. It summarizes messages, uses semantic search, and filters context by character perspective.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "HelpfulToolsCompany/lorevault-extension",
-    "repository_id": 1110894472
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": [
-    "automation",
-    "character-worldbuilding",
-    "instruction-control"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1110894472",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "retrieve-relevant-context",
+    "preserve-story-continuity",
+    "automate-roleplay-workflows",
+    "semantic-retrieval"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

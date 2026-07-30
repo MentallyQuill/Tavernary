@@ -12,12 +12,15 @@ const record = {
   source_id: "github-42",
   frontends: ["sillytavern"],
   primary_function: "generation-reasoning",
-  capabilities: ["planning-reasoning"],
+  tags: ["add-structured-reasoning"],
   cataloged_at: "2026-07-25T18:00:00.000Z",
   catalog_cohort: "standard",
   listing_status: "active",
   listing_status_reason: null,
-  enrichment_policy: "automatic",
+  metadata_policy: {
+    summary: { mode: "automatic" },
+    tags: { mode: "automatic" },
+  },
 };
 const source = {
   schema_version: 1 as const,

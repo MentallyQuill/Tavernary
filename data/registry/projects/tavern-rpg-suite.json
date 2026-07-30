@@ -1,29 +1,30 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "tavern-rpg-suite",
   "name": "Tavern RPG Suite",
   "kind": "extension",
   "summary": "A SillyTavern extension suite adding maps, inventory, vitals, equipment, memory, minigames, and secondary-model roleplay tools.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github-organization",
-    "organization": "tavern-rpg-suite",
-    "url": "https://github.com/tavern-rpg-suite"
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": [
-    "automation",
-    "character-worldbuilding",
-    "image-generation",
-    "instruction-control",
-    "model-routing"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "paused",
-  "visibility_reason": null,
-  "enrichment_policy": "manual",
-  "enrichment_note": "Multi-repository suite; requires manual curation."
+  "source_id": "github-organization-tavern-rpg-suite",
+  "tags": [
+    "maintain-long-term-memory",
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "manage-maps-and-locations",
+    "manage-inventory-and-quests",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Multi-repository suite; requires manual curation."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

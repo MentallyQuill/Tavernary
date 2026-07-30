@@ -1,0 +1,92 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1195030528,
+    "owner": "ZapoVerde",
+    "name": "SillyTavern-Vistalyze",
+    "url": "https://github.com/ZapoVerde/SillyTavern-Vistalyze",
+    "description": "Vistalyze is a SillyTavern extension that dynamically generates and applies cinematic backgrounds as your story unfolds. It uses the SillyTavern API for all imagery, automatically detecting location changes within your chat to keep the visual setting in sync with the narrative.",
+    "default_branch": "main",
+    "head_sha": "0aeac04395724f93b813333bfd8a52520fb8588b",
+    "head_committed_at": "2026-06-24T23:19:39.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-29T05:47:51.000Z",
+    "size_kb": 2059
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-24T23:19:39.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-24T23:19:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T23:41:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-13T23:33:05.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T22:56:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-27T05:14:52.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-19T08:20:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-13T00:37:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-04",
+        "latest_at": "2026-05-07T23:10:55.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T06:20:47.793Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 14,
+    "forks_count": 2,
+    "watchers_count": 1,
+    "aggregate": 17
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1195030528"
+}

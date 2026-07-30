@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "cierru-st-stepped-thinking",
   "name": "ST Stepped Thinking",
   "kind": "extension",
   "summary": "This SillyTavern extension uses prompt chaining to generate a character's internal thoughts before the main reply. After thinking completes, it automatically triggers the standard message generation for that character.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "cierru/st-stepped-thinking",
-    "repository_id": 871361642
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "planning-reasoning", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-871361642",
+  "tags": [
+    "add-structured-reasoning",
+    "automate-roleplay-workflows",
+    "multi-stage-generation"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

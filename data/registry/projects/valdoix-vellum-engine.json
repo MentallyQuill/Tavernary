@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "valdoix-vellum-engine",
   "name": "Vellum Engine",
   "kind": "extension",
   "summary": "Vellum Engine is a Lumiverse narrative extension providing event-log chronicle, hybrid recall, relationship graph, and an in-app vault.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "valdoix/vellum-engine",
-    "repository_id": 1281396724
-  },
   "frontends": ["lumiverse"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1281396724",
+  "tags": [
+    "maintain-long-term-memory",
+    "retrieve-relevant-context",
+    "track-characters-and-world-state",
+    "semantic-retrieval",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

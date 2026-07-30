@@ -1,0 +1,82 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1249921512,
+    "owner": "mokimoko",
+    "name": "SillyTavern-DynamicAudioRedux",
+    "url": "https://github.com/mokimoko/SillyTavern-DynamicAudioRedux",
+    "description": "based on the original Dynamic Audio extension by the SillyTavern team — rebuilt around a single tabbed modal, AI tagging, and smarter playlist tools",
+    "default_branch": "main",
+    "head_sha": "56663e0cd4f9e200e7caf2871fa1db09a61d6670",
+    "head_committed_at": "2026-07-15T23:39:46.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-05-26T06:36:39.000Z",
+    "size_kb": 251
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-07T02:58:16.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-07T02:58:16.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T19:19:26.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-20T17:10:23.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-11T04:58:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-01T07:52:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-28T22:06:13.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "mokimoko", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1249921512"
+}

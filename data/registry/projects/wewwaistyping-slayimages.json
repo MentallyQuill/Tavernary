@@ -1,23 +1,29 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "wewwaistyping-slayimages",
   "name": "SLAYImages – Inline image generation + wardrobe",
   "kind": "frontend",
   "summary": "SillyTavern extension for inline image generation with wardrobe system and NPC references. Compatible with Nanabanana, GPT, Novelai.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "wewwaistyping/SLAYimages",
-    "repository_id": 1203226910
-  },
   "frontends": ["slayimages-inline-image-generation-wardrobe"],
   "primary_function": "frontend",
-  "capabilities": ["character-worldbuilding", "image-generation"],
   "cataloged_at": "2026-07-29T22:05:54.971Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "manual",
-  "enrichment_note": "Catalog summary preserved from repository-owner submission issue #150."
+  "source_id": "github-1203226910",
+  "tags": [
+    "automate-roleplay-workflows",
+    "generate-images",
+    "add-visual-immersion",
+    "mobile-friendly",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Catalog summary preserved from repository-owner submission issue #150."
+    },
+    "tags": { "mode": "automatic" }
+  }
 }

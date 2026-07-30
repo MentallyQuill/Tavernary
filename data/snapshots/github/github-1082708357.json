@@ -1,0 +1,69 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1082708357,
+    "owner": "MaxiPawlowski",
+    "name": "story-orchestrator",
+    "url": "https://github.com/MaxiPawlowski/story-orchestrator",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "d2d7122117a80a6813faee5de7e4556dcc93541e",
+    "head_committed_at": "2026-07-07T07:08:53.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-10-24T16:38:09.000Z",
+    "size_kb": 7242
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-07T07:08:53.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-07T07:08:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T23:34:12.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-02T05:27:24.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:20:38.748Z",
+    "baseline_attempts": 1
+  },
+  "community": {
+    "stars_count": 4,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "MaxiPawlowski", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1082708357"
+}

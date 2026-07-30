@@ -1,0 +1,76 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1174011234,
+    "owner": "Coneja-Chibi",
+    "name": "TunnelVision",
+    "url": "https://github.com/Coneja-Chibi/TunnelVision",
+    "description": "Fully autonomous and agentic lorebook, tracker, and summary retrieval for SillyTavern!",
+    "default_branch": "main",
+    "head_sha": "56b86643f0b198a58046e2ab528520d17f8d6e6b",
+    "head_committed_at": "2026-07-28T02:15:28.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-06T01:22:24.000Z",
+    "size_kb": 537
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-28T02:15:28.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-28T02:15:28.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T04:36:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-15T23:21:55.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "56b86643f0b198a58046e2ab528520d17f8d6e6b"
+  },
+  "community": {
+    "stars_count": 113,
+    "forks_count": 23,
+    "watchers_count": 2,
+    "aggregate": 138
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Coneja-Chibi", "type": "User", "provider": "github" },
+      { "login": "mozophe", "type": "User", "provider": "github" },
+      { "login": "phampyk", "type": "User", "provider": "github" },
+      { "login": "DrMagisto", "type": "User", "provider": "github" },
+      { "login": "tobitus", "type": "User", "provider": "github" },
+      { "login": "erratos", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1174011234"
+}

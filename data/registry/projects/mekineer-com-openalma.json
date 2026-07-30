@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mekineer-com-openalma",
   "name": "OpenAlma",
   "kind": "extension",
   "summary": "OpenAlma is a SillyTavern extension giving AI companions persistent memory across chat sessions. Memory is stored locally, keeping recollections private and under user control.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mekineer-com/OpenAlma",
-    "repository_id": 1190054879
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1190054879",
+  "tags": [
+    "maintain-long-term-memory",
+    "local-first",
+    "privacy-focused",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

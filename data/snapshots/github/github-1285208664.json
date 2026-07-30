@@ -1,0 +1,76 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1285208664,
+    "owner": "MentallyQuill",
+    "name": "Recursion",
+    "url": "https://github.com/MentallyQuill/Recursion",
+    "description": "A Recursive Multi-Step Thinking Extension for SillyTavern, Using Context-Aware Bounded Guidance",
+    "default_branch": "main",
+    "head_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720",
+    "head_committed_at": "2026-07-22T17:29:15.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-30T15:24:31.000Z",
+    "size_kb": 18554
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-22T17:29:15.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-22T17:29:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T22:39:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T20:04:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T20:37:43.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720"
+  },
+  "community": {
+    "stars_count": 13,
+    "forks_count": 0,
+    "watchers_count": 3,
+    "aggregate": 16
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "MentallyQuill", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1285208664"
+}

@@ -111,7 +111,7 @@ test("prepares a GitHub draft through injected source clients", async () => {
     status: "curated" as const,
     summary:
       "Adds a structured repository tool for roleplay workflows and keeps its key controls accessible. It supports focused work without obscuring the surrounding conversation.",
-    capabilities: ["planning-reasoning"],
+    tags: ["add-structured-reasoning"],
     classification_review: {
       status: "possible-mismatch" as const,
       suggested_primary_function: "interface-workflow",
@@ -252,9 +252,14 @@ test("prepares a GitHub draft through injected source clients", async () => {
     source_id: "github-42",
     metadata_status: "curated",
     primary_function: "memory-retrieval",
-    enrichment_policy: "manual",
-    enrichment_note:
-      "Catalog summary preserved from repository-owner submission issue #128.",
+    tags: ["add-structured-reasoning"],
+    metadata_policy: {
+      summary: {
+        mode: "manual",
+        note: "Catalog summary preserved from repository-owner submission issue #128.",
+      },
+      tags: { mode: "automatic" },
+    },
   });
   expect(draft.source).toMatchObject({
     id: "github-42",
@@ -426,7 +431,7 @@ test("prepares a Codeberg draft through the repository provider", async () => {
       enrich: async () => ({
         status: "curated",
         summary: "Adds concise swipe controls for roleplay conversations.",
-        capabilities: ["message-navigation"],
+        tags: ["organize-chats-and-messages"],
         classification_review: {
           status: "confirmed",
           suggested_primary_function: "interface-workflow",

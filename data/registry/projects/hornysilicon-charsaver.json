@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hornysilicon-charsaver",
   "name": "Character Saver",
   "kind": "extension",
   "summary": "A SillyTavern extension that automatically creates chat lorebook entries when the AI introduces new characters or updates existing ones. Features Character Creation: Automatically detects character introductions in AI",
   "metadata_status": "provisional",
-  "source": {
-    "type": "github",
-    "repository": "hornysilicon/charSaver",
-    "repository_id": 1256518687
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [],
   "cataloged_at": "2026-07-27T21:10:53.399Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1256518687",
+  "tags": [
+    "manage-lorebooks",
+    "automate-roleplay-workflows",
+    "track-characters-and-world-state",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

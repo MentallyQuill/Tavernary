@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "nemovonnirgend-sillytavern-moodmusic-extension",
   "name": "SIllytavern-Moodmusic-extension",
   "kind": "extension",
   "summary": "This SillyTavern extension plays Spotify music that matches the mood of your chat. It briefly switches to a Music AI preset to request a song suggestion, then restores your original preset.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "NemoVonNirgend/SIllytavern-Moodmusic-extension",
-    "repository_id": 980324649
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation", "model-routing"],
   "cataloged_at": "2026-07-27T22:02:58.367Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-980324649",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-music-and-audio",
+    "connect-external-services",
+    "secondary-model"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

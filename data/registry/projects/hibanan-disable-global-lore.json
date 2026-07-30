@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hibanan-disable-global-lore",
   "name": "Disable Global Lore",
   "kind": "extension",
   "summary": "A SillyTavern extension that adds a per-character toggle to exclude global lorebooks from a character's prompt context. The toggle sits inline in the Creator's Notes panel and persists its state to the character card.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Hibanan/disable-global-lore",
-    "repository_id": 1288823245
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1288823245",
+  "tags": ["manage-lorebooks", "guide-model-responses", "persistent-state"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

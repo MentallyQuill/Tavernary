@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "ayvencore-sillytavern-another-character-library",
   "name": "SillyTavern Another Character Library",
   "kind": "extension",
   "summary": "A SillyTavern extension replaces the default landing page with a full-screen character library view. It enables searching across character metadata and text fields, with modal interfaces for browsing and editing details.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "ayvencore/Sillytavern-Another-Character-Library",
-    "repository_id": 1182272252
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1182272252",
+  "tags": ["manage-characters-and-personas", "manage-character-libraries"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

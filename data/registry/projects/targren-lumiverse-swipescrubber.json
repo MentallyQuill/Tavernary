@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "targren-lumiverse-swipescrubber",
   "name": "Swipe Scrubber",
   "kind": "extension",
   "summary": "Swipe Scrubber is a Lumiverse extension that removes unwanted message swipes from chat history. It adds a button to each message's Action Bar that automatically deletes all swipes except the currently selected one.",
   "metadata_status": "curated",
-  "source": {
-    "type": "codeberg",
-    "repository": "targren/Lumiverse-SwipeScrubber",
-    "repository_id": 1699613
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-28T05:29:13.191Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "codeberg-1699613",
+  "tags": [
+    "automate-roleplay-workflows",
+    "organize-chats-and-messages",
+    "non-destructive"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

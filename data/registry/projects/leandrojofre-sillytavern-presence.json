@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "leandrojofre-sillytavern-presence",
   "name": "SillyTavern Presence",
   "kind": "extension",
   "summary": "SillyTavern Presence is a SillyTavern extension that broadcasts user activity during chats. It runs automatically and adapts its behavior based on whether the session is single-character or group chat.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "leandrojofre/SillyTavern-Presence",
-    "repository_id": 882467511
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-882467511",
+  "tags": ["connect-external-services", "background-operation"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

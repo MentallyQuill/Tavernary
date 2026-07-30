@@ -1,0 +1,118 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1001051404,
+    "owner": "aikohanasaki",
+    "name": "SillyTavern-MemoryBooks",
+    "url": "https://github.com/aikohanasaki/SillyTavern-MemoryBooks",
+    "description": "Saves SillyTavern chat memories to lorebooks",
+    "default_branch": "main",
+    "head_sha": "238dea78e57286dd7c4a195c4ff751af72c6fcf0",
+    "head_committed_at": "2026-07-29T06:11:06.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-06-12T18:30:31.000Z",
+    "size_kb": 15143
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-29T06:11:06.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T06:11:06.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T06:51:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-18T06:33:53.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T17:18:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-04T04:18:15.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T00:21:17.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-18T17:09:42.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T18:49:52.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T02:37:09.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T15:57:50.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-21T04:18:34.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-11",
+        "latest_at": "2026-05-17T21:09:28.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
+    "baseline_attempts": 3,
+    "evidence_head_sha": "238dea78e57286dd7c4a195c4ff751af72c6fcf0"
+  },
+  "community": {
+    "stars_count": 265,
+    "forks_count": 36,
+    "watchers_count": 2,
+    "aggregate": 303
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "aikohanasaki", "type": "User", "provider": "github" },
+      { "login": "paradox460", "type": "User", "provider": "github" },
+      { "login": "dddanny79", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1001051404"
+}

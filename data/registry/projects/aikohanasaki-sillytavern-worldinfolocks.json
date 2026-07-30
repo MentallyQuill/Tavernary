@@ -1,26 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "aikohanasaki-sillytavern-worldinfolocks",
   "name": "SillyTavern-WorldInfoLocks",
   "kind": "extension",
   "summary": "World Info Locks is a SillyTavern extension providing preset management for World Info functionality. Forked from World Info Presets, it organizes and applies lorebook configurations across different roleplay contexts.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "aikohanasaki/SillyTavern-WorldInfoLocks",
-    "repository_id": 1015688972
-  },
   "frontends": ["aikobots", "sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "multi-frontend",
-    "prompt-engineering"
-  ],
   "cataloged_at": "2026-07-27T04:33:27.992Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1015688972",
+  "tags": ["manage-lorebooks", "manage-prompts-and-presets"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

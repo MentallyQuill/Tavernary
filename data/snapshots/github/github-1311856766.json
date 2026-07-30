@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1311856766,
+    "owner": "selinawynters-ops",
+    "name": "ParamSentinel",
+    "url": "https://github.com/selinawynters-ops/ParamSentinel",
+    "description": "extension that auto-disables sampler parameters (`temperature`, `top_p`, penalties, `logit_bias`, `reasoning_effort`, etc.) that your currently selected model doesn't actually support. ",
+    "default_branch": "main",
+    "head_sha": "a969549292ea64f66c2567bb780efffca02afaf5",
+    "head_committed_at": "2026-07-25T09:43:39.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-07-25T09:39:04.000Z",
+    "size_kb": 26
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-25T09:43:39.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-25T09:43:39.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-27T10:52:18.639Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a969549292ea64f66c2567bb780efffca02afaf5"
+  },
+  "community": {
+    "stars_count": 3,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 4
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "activity_scan": null,
+  "contributors": {
+    "accounts": [
+      { "login": "selinawynters-ops", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1311856766"
+}

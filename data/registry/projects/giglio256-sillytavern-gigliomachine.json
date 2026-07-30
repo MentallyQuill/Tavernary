@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "giglio256-sillytavern-gigliomachine",
   "name": "SillyTavern GiglioMachine",
   "kind": "extension",
   "summary": "SillyTavern GiglioMachine is an extension for controlling and analyzing lorebook budget and order. It helps users manage token allocation and entry priority to optimize how lorebook content is sent to language models.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Giglio256/SillyTavern-GiglioMachine",
-    "repository_id": 1180386216
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["instruction-control", "review-validation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1180386216",
+  "tags": [
+    "manage-context-limits",
+    "manage-lorebooks",
+    "inspect-prompts-and-generations"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

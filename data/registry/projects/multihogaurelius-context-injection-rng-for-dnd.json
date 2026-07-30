@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "multihogaurelius-context-injection-rng-for-dnd",
   "name": "Context Injection RNG for DnD",
   "kind": "extension",
   "summary": "Context Injection RNG for DnD is a SillyTavern extension that prepends random numbers to prompts, giving the AI an RNG bank for rolls. The method replaces function calls, keeping real randomness within a single output.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "MultihogAurelius/Context-Injection-RNG-for-DnD",
-    "repository_id": 1118134327
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["instruction-control", "automation", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1118134327",
+  "tags": ["guide-model-responses", "add-rpg-gameplay", "rules-driven"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

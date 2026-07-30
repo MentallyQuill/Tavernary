@@ -1,22 +1,25 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "soyo5800-rpg-tracker-for-sillytavern",
   "name": "RPG Tracker for SillyTavern",
   "kind": "extension",
   "summary": "React-based SillyTavern sidebar extension that tracks RPG parameters including character stats, inventories, quests, and world states.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Soyo5800/rpg-tracker-for-sillytavern",
-    "repository_id": 1281058203
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1281058203",
+  "tags": [
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "manage-inventory-and-quests",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

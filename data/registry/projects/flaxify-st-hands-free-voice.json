@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "flaxify-st-hands-free-voice",
   "name": "ST Hands-Free Voice",
   "kind": "extension",
   "summary": "ST Hands-Free Voice adds hands-free voice interaction to SillyTavern by sequencing text-to-speech and speech-to-text. It uses silence detection to manage conversational flow automatically without manual input.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Flaxify/ST-Hands-Free-Voice",
-    "repository_id": 1230298474
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1230298474",
+  "tags": ["add-voice-interaction", "hands-free"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

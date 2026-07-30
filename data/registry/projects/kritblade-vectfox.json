@@ -1,22 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "kritblade-vectfox",
   "name": "VectFox",
   "kind": "extension",
   "summary": "VectFox is a SillyTavern extension providing persistent memory for long-running roleplay stories. It uses LLM-extracted story events with sparse-vector hybrid search backed by a vector database for scalable retrieval.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "KritBlade/VectFox",
-    "repository_id": 1226349225
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["extension-development", "automation"],
   "cataloged_at": "2026-07-27T16:20:49.192Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1226349225",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "retrieve-relevant-context",
+    "semantic-retrieval",
+    "persistent-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

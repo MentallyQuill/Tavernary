@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hikarushmz-fetch-retry",
   "name": "fetch-retry",
   "kind": "extension",
   "summary": "Fetch Retry is a SillyTavern extension that automatically retries failed fetch requests with configurable limits. It detects stuck thinking, incomplete responses, and HTTP 429 errors to resume broken connections.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Hikarushmz/fetch-retry",
-    "repository_id": 1035324934
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1035324934",
+  "tags": [
+    "automate-roleplay-workflows",
+    "recover-failed-generations",
+    "streaming-aware"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

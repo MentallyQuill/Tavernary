@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "supker-st-copilot",
   "name": "ST-Copilot",
   "kind": "extension",
   "summary": "ST-Copilot is a SillyTavern extension that serves as a meta-assistant for the roleplay frontend. It provides utilities to help users manage operational tasks during their sessions.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Supker/ST-Copilot",
-    "repository_id": 1218157882
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1218157882",
+  "tags": ["automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

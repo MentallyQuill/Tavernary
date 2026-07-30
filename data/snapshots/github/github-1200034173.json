@@ -1,0 +1,69 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "repository": {
+    "id": 1200034173,
+    "owner": "LukaTheHero",
+    "name": "SillyTavern-PersonaTools",
+    "url": "https://github.com/LukaTheHero/SillyTavern-PersonaTools",
+    "description": "A combined SillyTavern extension for persona management — quick switcher, folders, tags, and styled tooltips",
+    "default_branch": "main",
+    "head_sha": "d392c4d32c786608419244deebf39ab51d00b813",
+    "head_committed_at": "2026-07-09T05:27:48.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-03T01:03:02.000Z",
+    "size_kb": 86
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-09T05:27:48.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-09T05:27:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-02T00:46:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-18T22:46:54.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-09T05:28:46.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-25T03:06:18.863Z",
+    "baseline_attempts": 0
+  },
+  "community": {
+    "stars_count": 7,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 7
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-29T10:00:10.862Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "LukaTheHero", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-07-29T10:00:10.862Z",
+    "stale_since": null
+  },
+  "source_id": "github-1200034173"
+}

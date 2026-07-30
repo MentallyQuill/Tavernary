@@ -977,28 +977,36 @@ test("keeps URL Frontends public with manual source metadata", async () => {
 
 test("builds every eligible public card with consolidated manual sources", async () => {
   const catalog = await buildCatalog({ write: false });
-  const [records, snapshots] = await Promise.all([
+  const [records, sources, snapshots] = await Promise.all([
     readJsonDirectory<{
       id: string;
       kind: string;
-      visibility: string;
-      source: { type: string };
+      listing_status: string;
+      source_id: string;
     }>("data/registry/projects"),
-    readJsonDirectory<{ project_id: string; source_health: string }>(
+    readJsonDirectory<{
+      id: string;
+      type: string;
+      status: string;
+    }>("data/registry/sources"),
+    readJsonDirectory<{ source_id: string; source_health: string }>(
       "data/snapshots/github",
     ),
   ]);
-  const snapshotsByProject = new Map(
-    snapshots.map((snapshot) => [snapshot.project_id, snapshot]),
+  const sourcesById = new Map(sources.map((source) => [source.id, source]));
+  const snapshotsBySource = new Map(
+    snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
   const hiddenSourceStates = new Set(["identity-change", "deleted", "private"]);
   const expectedProjectIds = records
     .filter((record) => {
-      const snapshot = snapshotsByProject.get(record.id);
+      const source = sourcesById.get(record.source_id);
+      const snapshot = snapshotsBySource.get(record.source_id);
       return (
-        record.visibility === "published" &&
+        record.listing_status === "active" &&
+        source?.status === "active" &&
         !(snapshot && hiddenSourceStates.has(snapshot.source_health)) &&
-        (record.source.type !== "url" ||
+        (source?.type !== "url" ||
           record.kind === "preset" ||
           record.kind === "frontend")
       );

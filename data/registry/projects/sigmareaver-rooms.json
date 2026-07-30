@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "sigmareaver-rooms",
   "name": "Rooms",
   "kind": "extension",
   "summary": "Rooms is a SillyTavern extension that adds MUD-like interactive rooms to roleplay chats. It enables users to navigate and explore text-based room environments as part of their conversations.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "sigmareaver/rooms",
-    "repository_id": 1310166835
-  },
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1310166835",
+  "tags": [
+    "add-rpg-gameplay",
+    "track-characters-and-world-state",
+    "manage-maps-and-locations"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

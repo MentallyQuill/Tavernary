@@ -291,7 +291,10 @@ test("catalog inspection reports the action and exact eligible count", () => {
     summary:
       index === 5 ? "A curated project summary." : "Generic intake details.",
     metadata_status: index === 5 ? "curated" : "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-project-${index}`,
   }));
@@ -317,7 +320,10 @@ test("all-automatic planning counts eligible records and manual exclusions separ
     kind: index === 0 ? "preset" : "extension",
     summary: "A complete editorial description.",
     metadata_status: "curated",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-automatic-${index}`,
   }));
@@ -326,8 +332,10 @@ test("all-automatic planning counts eligible records and manual exclusions separ
     kind: "preset",
     summary: "A manually curated description.",
     metadata_status: "curated",
-    enrichment_policy: "manual",
-    enrichment_note: "Requires review.",
+    metadata_policy: {
+      summary: { mode: "manual", note: "Requires review." },
+      tags: { mode: "manual", note: "Requires review." },
+    },
     listing_status: "active",
     source_id: `github-manual-${index}`,
   }));
@@ -400,7 +408,10 @@ test("planner CLI returns a machine-readable recovery decision", async () => {
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-project-${index}`,
   }));
@@ -425,7 +436,10 @@ test("planner CLI quarantines a pre-hardening terminal full ledger", async () =>
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-project-${index}`,
   }));
@@ -481,7 +495,10 @@ test("planner CLI still rejects corrupt current-format terminal ledgers", async 
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-project-${index}`,
   }));
@@ -536,7 +553,10 @@ test("planner CLI rejects a corrupt durable ledger before taking action", async 
     id: `project-${index}`,
     summary: "Generic intake details.",
     metadata_status: "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     listing_status: "active",
     source_id: `github-project-${index}`,
   }));

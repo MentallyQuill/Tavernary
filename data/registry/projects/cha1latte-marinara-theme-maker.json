@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "cha1latte-marinara-theme-maker",
   "name": "Marinara Theme Maker",
   "kind": "extension",
   "summary": "Provides prompts and sample themes for generating importable custom themes for the Marinara Engine frontend.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "cha1latte/marinara-theme-maker",
-    "repository_id": 1243718543
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["prompt-engineering", "extension-development"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1243718543",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

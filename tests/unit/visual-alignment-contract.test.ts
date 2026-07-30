@@ -516,7 +516,8 @@ describe("catalog visual alignment", () => {
 
     expect(filters).toContain("Compatible frontend");
     expect(filters).toContain("Project kind");
-    expect(filters).toContain("Capabilities & characteristics");
+    expect(filters).toContain("Goals &amp; traits");
+    expect(filters).toContain("Search goals and traits");
     expect(controls).toContain("Clear all");
     expect(filters).toContain("Search compatible frontends");
     expect(filters).not.toContain("Search capabilities and characteristics");

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "hayanaga-ooba-model-reloader",
   "name": "ooba-model-reloader",
   "kind": "extension",
   "summary": "This extension lets users change the active model directly from SillyTavern's interface. It eliminates the need to open Ooba's frontend to switch models, streamlining the workflow.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Hayanaga/ooba-model-reloader",
-    "repository_id": 1146891697
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["model-routing", "automation"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-1146891697",
+  "tags": ["route-tasks-across-models", "automate-roleplay-workflows"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

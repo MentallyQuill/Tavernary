@@ -1,26 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "mkrrussell0411-star-character-stats-extension",
   "name": "Character Stats Extension",
   "kind": "extension",
   "summary": "This SillyTavern extension tracks character statistics and growth mechanics within roleplay sessions. It automatically injects contextual stat information into prompts and compares values to real-world scales.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "mkrrussell0411-star/Character-stats-extension",
-    "repository_id": 1158773851
-  },
   "frontends": ["sillytavern"],
   "primary_function": "character-worldbuilding",
-  "capabilities": [
-    "character-worldbuilding",
-    "prompt-engineering",
-    "automation"
-  ],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1158773851",
+  "tags": [
+    "automate-roleplay-workflows",
+    "add-rpg-gameplay",
+    "track-characters-and-world-state"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

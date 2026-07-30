@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "archkr-lumiverse-lumiweather",
   "name": "Lumiverse LumiWeather",
   "kind": "extension",
   "summary": "Lumiverse LumiWeather is a Lumiverse extension that displays narrative weather, date, and time as a HUD during chat scenes. It layers ambient atmospheric effects over the interface to enhance roleplay immersion.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Archkr/Lumiverse-LumiWeather",
-    "repository_id": 1190858079
-  },
   "frontends": ["lumiverse"],
   "primary_function": "interface-workflow",
-  "capabilities": ["automation"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1190858079",
+  "tags": ["add-visual-immersion"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

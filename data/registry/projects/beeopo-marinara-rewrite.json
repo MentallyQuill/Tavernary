@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "beeopo-marinara-rewrite",
   "name": "Marinara Rewrite",
   "kind": "extension",
   "summary": "Marinara Rewrite is a Marinara Engine extension that uses an AI model to rewrite selected text within chat messages. Users select text, pick a mode, and the extension replaces the chosen passage in place.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "Beeopo/Marinara-Rewrite",
-    "repository_id": 1275807674
-  },
   "frontends": ["marinara-engine"],
   "primary_function": "interface-workflow",
-  "capabilities": ["instruction-control", "prompt-engineering"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1275807674",
+  "tags": ["improve-writing-and-prose", "edit-and-refine-messages"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

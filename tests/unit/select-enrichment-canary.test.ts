@@ -13,7 +13,10 @@ function record(
     id,
     listing_status: "active",
     metadata_status: "provisional",
-    enrichment_policy: "automatic",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
     summary: "An extension for SillyTavern.",
     source_id: `source-${id}`,
     ...overrides,
@@ -145,8 +148,10 @@ test("honors pending versus all-automatic selection without weakening manual loc
     record("manual-github", {
       kind: "preset",
       metadata_status: "curated",
-      enrichment_policy: "manual",
-      enrichment_note: "Requires review.",
+      metadata_policy: {
+        summary: { mode: "manual", note: "Requires review." },
+        tags: { mode: "manual", note: "Requires review." },
+      },
     }),
   ];
   const snapshots = Object.fromEntries(

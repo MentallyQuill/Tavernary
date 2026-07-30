@@ -29,22 +29,24 @@ export interface DraftedProjectRecord {
   source_id: string;
   frontends: string[];
   primary_function: string;
-  capabilities: string[];
+  tags: string[];
   model_families?: string[];
   completion_formats?: string[];
   cataloged_at: string;
   catalog_cohort: "standard";
   listing_status: "active";
   listing_status_reason: null;
-  enrichment_policy: "automatic" | "manual";
-  enrichment_note?: string;
+  metadata_policy: {
+    summary: { mode: "automatic" } | { mode: "manual"; note: string };
+    tags: { mode: "automatic" } | { mode: "manual"; note: string };
+  };
 }
 
 export type DraftEnrichment =
   | {
       status: "curated";
       summary: string;
-      capabilities: string[];
+      tags: string[];
       classification_review: ClassificationReview;
       result?: CatalogCopyResultStatus;
       change_reasons?: readonly CatalogCopyChangeReason[];

@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "lenanderson-sillytavern-csssnippets",
   "name": "SillyTavern-CssSnippets",
   "kind": "extension",
   "summary": "Adds a user interface to manage custom CSS snippets within SillyTavern. Snippets can be activated globally, linked to a specific theme, or scoped to individual character or group chats.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "LenAnderson/SillyTavern-CssSnippets",
-    "repository_id": 739396018
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["extension-development"],
   "cataloged_at": "2026-07-26T00:00:00Z",
   "catalog_cohort": "standard",
-  "visibility": "published",
-  "visibility_reason": null,
-  "refresh_policy": "automatic",
-  "enrichment_policy": "automatic"
+  "source_id": "github-739396018",
+  "tags": ["customize-the-interface"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

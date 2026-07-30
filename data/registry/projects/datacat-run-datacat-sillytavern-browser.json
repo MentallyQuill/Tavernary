@@ -1,22 +1,20 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "datacat-run-datacat-sillytavern-browser",
   "name": "datacat SillyTavern Browser",
   "kind": "extension",
   "summary": "This SillyTavern extension lets users browse datacat characters without leaving the frontend. It imports selected characters through SillyTavern's native PNG flow and opens them in a fresh chat at the first message.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "datacat-run/datacat-sillytavern-browser",
-    "repository_id": 1305445141
-  },
   "frontends": ["sillytavern"],
   "primary_function": "interface-workflow",
-  "capabilities": ["character-worldbuilding"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1305445141",
+  "tags": ["connect-external-services", "manage-character-libraries"],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }

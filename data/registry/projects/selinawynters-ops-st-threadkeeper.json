@@ -1,22 +1,24 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "id": "selinawynters-ops-st-threadkeeper",
   "name": "ST ThreadKeeper",
   "kind": "extension",
   "summary": "ST ThreadKeeper is a SillyTavern extension that adds LLM-powered memory to long roleplay sessions. It preserves conversation facts and lore over time while reducing the cost of feeding context back to the model.",
   "metadata_status": "curated",
-  "source": {
-    "type": "github",
-    "repository": "selinawynters-ops/ST---ThreadKeeper",
-    "repository_id": 1219416060
-  },
   "frontends": ["sillytavern"],
   "primary_function": "memory-retrieval",
-  "capabilities": ["automation", "instruction-control"],
   "cataloged_at": "2026-07-23T00:00:00Z",
   "catalog_cohort": "seed",
-  "visibility": "published",
-  "refresh_policy": "automatic",
-  "visibility_reason": null,
-  "enrichment_policy": "automatic"
+  "source_id": "github-1219416060",
+  "tags": [
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "preserve-story-continuity"
+  ],
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
 }
