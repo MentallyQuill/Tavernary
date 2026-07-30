@@ -2,6 +2,10 @@ import { access } from "node:fs/promises";
 
 import { expect, test } from "@playwright/test";
 
+import {
+  installGitHubReviewRecorder,
+  openedGitHubReviews,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 test("exports and renders the project submission builder", async ({ page }) => {
@@ -123,12 +127,28 @@ test("keeps description prose while removing emoji and linking the policy", asyn
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
-test("keeps the manual tag picker searchable and bounded at mobile width", async ({
+test("reviews six manual tags at 320px and regenerates the current manifest", async ({
   page,
 }) => {
+  await installGitHubReviewRecorder(page);
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto(sitePath("/submit/project/"));
   await page.getByLabel("Project Type").selectOption({ label: "Extension" });
+  await page
+    .getByLabel("Project URL")
+    .fill("https://github.com/example/manual-project");
+  await page.waitForTimeout(2_750);
+  await expect(page.getByLabel("Project Type")).toHaveValue("extension");
+  await page.getByLabel("Primary function").click();
+  await page.getByRole("option", { name: /Memory and retrieval/u }).click();
+  await page.getByLabel("SillyTavern").check();
+  await page.getByLabel("Description choice").click();
+  await page
+    .getByRole("option", { name: /Write the description myself/u })
+    .click();
+  await page
+    .getByLabel("Short description")
+    .fill("A manually described memory project.");
   await page.getByLabel("Tag choice").click();
   await page.getByRole("option", { name: /Set tags myself/u }).click();
 
@@ -158,6 +178,70 @@ test("keeps the manual tag picker searchable and bounded at mobile width", async
       () => document.documentElement.scrollWidth - window.innerWidth,
     ),
   ).toBeLessThanOrEqual(0);
+
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Review your project submission" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Continue on GitHub" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  const firstManifest = JSON.parse(
+    new URL((await openedGitHubReviews(page))[0]!).searchParams.get(
+      "project-manifest",
+    ) ?? "",
+  );
+  expect(firstManifest.metadata).toEqual({
+    summary: {
+      mode: "manual",
+      value: "A manually described memory project.",
+    },
+    tags: {
+      mode: "manual",
+      values: [
+        "maintain-long-term-memory",
+        "manage-context-limits",
+        "retrieve-relevant-context",
+        "build-worlds-and-lore",
+        "manage-lorebooks",
+        "create-character-cards",
+      ],
+    },
+  });
+
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(page.getByLabel("Project Type")).toBeFocused();
+  await page.getByLabel("Maintain long-term memory").uncheck();
+  await page
+    .getByLabel("Short description")
+    .fill("A revised manually described memory project.");
+  await page.getByRole("button", { name: "Review submission" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+
+  const reviews = await openedGitHubReviews(page);
+  expect(reviews).toHaveLength(2);
+  const secondUrl = new URL(reviews[1]!);
+  expect(secondUrl.searchParams.get("project-type")).toBe("Extension");
+  expect(secondUrl.searchParams.get("primary-function")).toBe(
+    "memory-retrieval",
+  );
+  expect(secondUrl.searchParams.get("description-choice")).toBe(
+    "Write the description myself",
+  );
+  expect(secondUrl.searchParams.get("tag-choice")).toBe("Set tags myself");
+  const secondManifest = JSON.parse(
+    secondUrl.searchParams.get("project-manifest") ?? "",
+  );
+  expect(secondManifest.metadata.summary.value).toBe(
+    "A revised manually described memory project.",
+  );
+  expect(secondManifest.metadata.tags.values).toHaveLength(5);
 });
 
 test("selects multiple current frontends for an Extension", async ({

@@ -2,6 +2,12 @@ import { access } from "node:fs/promises";
 
 import { expect, test } from "@playwright/test";
 
+import {
+  copiedGitHubManifest,
+  installGitHubReviewRecorder,
+  openedGitHubReviews,
+  setGitHubReviewsBlocked,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 const projectId = "mentallyquill-directive";
@@ -218,6 +224,62 @@ test("reviews an atomic add-card request with independent automatic metadata", a
       },
     ],
   });
+});
+
+test("keeps a ten-card owner batch usable at 320px through popup recovery", async ({
+  page,
+}) => {
+  await installGitHubReviewRecorder(page, { blocked: true });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
+  await page.getByRole("radio", { name: "Add cards from this source" }).check();
+
+  await page.getByLabel("Card 1 display name").fill("Alpha Card 1");
+  for (let index = 2; index <= 10; index += 1) {
+    await page.getByRole("button", { name: "Add another card" }).click();
+    await page
+      .getByLabel(`Card ${index} display name`)
+      .fill(`Alpha Card ${index}`);
+  }
+  await page.getByRole("button", { name: "Review request" }).click();
+  await expect(page.getByText("Card 10: Alpha Card 10")).toBeVisible();
+  const continueReview = page.getByRole("button", {
+    name: "Continue on GitHub",
+  });
+  await continueReview.scrollIntoViewIfNeeded();
+  await expect(continueReview).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await continueReview.click();
+  await expect(
+    page.getByRole("link", { name: "Open prepared GitHub review" }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  for (let index = 1; index <= 10; index += 1) {
+    await expect(page.getByLabel(`Card ${index} display name`)).toHaveValue(
+      `Alpha Card ${index}`,
+    );
+  }
+  await setGitHubReviewsBlocked(page, false);
+  await page.getByRole("button", { name: "Review request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
+    page.getByText(/GitHub review opened in a new tab/u),
+  ).toBeVisible();
+
+  const reviews = await openedGitHubReviews(page);
+  expect(reviews).toHaveLength(2);
+  expect(
+    new URL(reviews[1]!).searchParams.get("owner-request-manifest"),
+  ).toContain("Paste the copied Tavernary owner request manifest");
+  const manifest = JSON.parse((await copiedGitHubManifest(page)) ?? "");
+  expect(manifest.operation).toBe("add-cards");
+  expect(manifest.proposed_cards).toHaveLength(10);
+  expect(manifest.proposed_cards.at(-1)?.name).toBe("Alpha Card 10");
 });
 
 test("falls back from an unknown owner project and requires a listed selection", async ({

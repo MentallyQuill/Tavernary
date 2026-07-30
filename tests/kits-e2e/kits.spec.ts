@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import {
+  installGitHubReviewRecorder,
+  openedGitHubReviews,
+  setGitHubReviewsBlocked,
+} from "../helpers/github-review";
 import { sitePath } from "../helpers/site-path";
 
 async function openKits(page: import("@playwright/test").Page) {
@@ -224,22 +229,7 @@ test("blocks severe Kit text before GitHub opens", async ({ page }) => {
 test("reviews a created Kit in Tavernary and retains the draft after GitHub opens", async ({
   page,
 }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(window, "open", {
-      configurable: true,
-      value: (url: string | URL) => {
-        const opened = JSON.parse(
-          window.sessionStorage.getItem("kit-review-urls") ?? "[]",
-        ) as string[];
-        opened.push(String(url));
-        window.sessionStorage.setItem(
-          "kit-review-urls",
-          JSON.stringify(opened),
-        );
-        return window;
-      },
-    });
-  });
+  await installGitHubReviewRecorder(page, { blocked: true });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(sitePath());
   await selectProject(page, "Fixture Frontend");
@@ -268,15 +258,18 @@ test("reviews a created Kit in Tavernary and retains the draft after GitHub open
   await page.getByRole("button", { name: "Review Kit request" }).click();
   await page.getByRole("button", { name: "Continue on GitHub" }).click();
   await expect(
+    page.getByRole("link", { name: "Open prepared GitHub review" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(title).toHaveValue("Reviewed Story Stack");
+  await setGitHubReviewsBlocked(page, false);
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+  await page.getByRole("button", { name: "Continue on GitHub" }).click();
+  await expect(
     page.getByText(/GitHub review opened in a new tab/u),
   ).toBeVisible();
 
-  const openedUrl = await page.evaluate(() => {
-    const urls = JSON.parse(
-      window.sessionStorage.getItem("kit-review-urls") ?? "[]",
-    ) as string[];
-    return urls.at(-1);
-  });
+  const openedUrl = (await openedGitHubReviews(page)).at(-1);
   const reviewUrl = new URL(openedUrl!);
   expect(reviewUrl.searchParams.get("template")).toBe("05-kit-submission.yml");
   expect(JSON.parse(reviewUrl.searchParams.get("manifest") ?? "")).toEqual({
@@ -343,6 +336,60 @@ test("reviews an edited Kit with its canonical identity and supports reopening",
   await page.getByRole("button", { name: "Back and edit" }).click();
   await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
     "Alpha Kit",
+  );
+});
+
+test("keeps Kit review actions usable and returns focus at 320px", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      "tavernary:kit-builder-draft:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        savedAt: "2026-07-24T12:00:00.000Z",
+        draftOrigin: "create",
+        originalProjectIds: [],
+        draft: {
+          operation: "create",
+          kitId: null,
+          title: "Mobile Story Stack",
+          description: "A complete mobile storytelling stack.",
+          projectIds: [
+            "fixture-frontend",
+            "fixture-tool-02",
+            "fixture-tool-03",
+          ],
+        },
+      }),
+    );
+  });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(sitePath());
+  await page
+    .getByRole("button", {
+      name: "Open Kit Builder, 3 projects in draft",
+    })
+    .click();
+  await page.getByRole("button", { name: "Review Kit request" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Review your Kit request" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Continue on GitHub" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await page.getByRole("button", { name: "Back and edit" }).click();
+  await expect(
+    page.getByRole("button", { name: "Review Kit request" }),
+  ).toBeFocused();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
+    "Mobile Story Stack",
   );
 });
 
