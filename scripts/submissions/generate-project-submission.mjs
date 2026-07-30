@@ -200,7 +200,8 @@ function assertGenerationIssue(issue, issueNumber) {
   const labels = issueLabels(issue);
   if (
     !labels.includes("needs-maintainer-review") &&
-    !labels.includes("submission-pr-open")
+    !labels.includes("submission-pr-open") &&
+    !labels.includes("submission-retryable")
   ) {
     throw new Error("Submission issue is no longer admitted for generation.");
   }
@@ -329,7 +330,8 @@ export async function prepareProjectSubmissionDraft({
   const parsed = parseProjectSubmissionIssue(issue.body ?? "", {
     allowLegacyV3:
       issueLabels(issue).includes("needs-maintainer-review") ||
-      issueLabels(issue).includes("submission-pr-open"),
+      issueLabels(issue).includes("submission-pr-open") ||
+      issueLabels(issue).includes("submission-retryable"),
   });
   if (!parsed.valid) throw new Error(parsed.errors.join(" "));
   const request = sourceClients.request ?? defaultGithubRequest;

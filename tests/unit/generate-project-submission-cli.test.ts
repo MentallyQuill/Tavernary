@@ -168,7 +168,7 @@ test("writes only declared repository files and the external report", async () =
       fetchIssue: async () => ({
         number: 123,
         state: "open",
-        labels: [{ name: "needs-maintainer-review" }],
+        labels: [{ name: "submission-retryable" }],
         body: "fixture",
       }),
       sourceClients: {
@@ -276,7 +276,7 @@ test("recovers an admitted v3 owner request without leaking manual copy to enric
     issue: {
       number: 128,
       state: "open",
-      labels: [{ name: "needs-maintainer-review" }],
+      labels: [{ name: "submission-retryable" }],
       user: { id: 11, login: "owner" },
       author_association: "NONE",
       body: [
