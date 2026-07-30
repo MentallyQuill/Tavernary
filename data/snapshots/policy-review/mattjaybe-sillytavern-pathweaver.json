@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mattjaybe-sillytavern-pathweaver",
+  "source_id": "github-1133781448",
+  "source_identity": "github:mattjaybe/sillytavern-pathweaver",
+  "evidence_fingerprint": "c2e5a06e96494df84da6079a7f67072c8f3ed22320464a88dbe0b694d5752255",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:53:30.147Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:53:30.147Z"
+  },
+  "maintenance_issue_number": null
+}
