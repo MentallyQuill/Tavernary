@@ -1,0 +1,76 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1298579218",
+  "repository": {
+    "id": 1298579218,
+    "owner": "owler-tavern",
+    "name": "context-image-generation",
+    "url": "https://github.com/owler-tavern/context-image-generation",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "9419f13b1bb58e3d0da8760dea000608ff5a78d8",
+    "head_committed_at": "2026-07-29T18:03:02.000Z",
+    "archived": false,
+    "fork": true,
+    "parent": {
+      "id": 1124349811,
+      "owner": "elouannd",
+      "name": "context-image-generation",
+      "url": "https://github.com/elouannd/context-image-generation"
+    },
+    "created_at": "2026-07-12T19:50:05.000Z",
+    "size_kb": 139
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-29T17:44:37.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T17:44:37.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-13T03:28:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T21:18:04.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-07-30T04:42:45.777Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "9419f13b1bb58e3d0da8760dea000608ff5a78d8"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "proprietary",
+    "spdx_id": null,
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-07-30T04:42:45.777Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "BlueOwler", "type": "User", "provider": "github" }
+    ],
+    "method": "merged-pull-requests",
+    "baseline_completed_at": "2026-07-30T04:42:45.777Z",
+    "scan": null,
+    "refreshed_at": "2026-07-30T04:42:45.777Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
