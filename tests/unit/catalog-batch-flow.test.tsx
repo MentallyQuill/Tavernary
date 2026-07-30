@@ -338,7 +338,7 @@ describe("catalog Kit batch flow", () => {
     );
   });
 
-  test("clears a saved draft after a successful submission handoff", async () => {
+  test("retains a saved draft through review and successful submission handoff", async () => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
       value: vi.fn((query: string) => ({
@@ -380,15 +380,28 @@ describe("catalog Kit batch flow", () => {
         name: "Open Kit Builder, 3 projects in draft",
       }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Submit Kit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Review Kit request" }));
+    expect(openKitSubmission).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole("heading", { name: "Review your Kit request" }),
+    ).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
     await waitFor(() =>
-      expect(
-        window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
-      ).toBeNull(),
+      expect(openKitSubmission).toHaveBeenCalledWith(
+        "https://github.com/MentallyQuill/Tavernary/issues/new",
+        expect.objectContaining({
+          operation: "create",
+          title: "Ready Kit",
+          projectIds: ["frontend", "memory", "preset"],
+        }),
+      ),
     );
     expect(
-      screen.getByRole("heading", { name: "Build and inspect Kits" }),
+      window.localStorage.getItem("tavernary:kit-builder-draft:v1"),
+    ).not.toBeNull();
+    expect(
+      await screen.findByText(/GitHub review opened in a new tab/u),
     ).toBeVisible();
   });
 

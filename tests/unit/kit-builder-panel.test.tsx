@@ -16,7 +16,7 @@ import {
 } from "@/features/kits/components/kit-builder-panel";
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
-import type { CatalogKit } from "@/features/kits/kit-types";
+import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -249,6 +249,91 @@ afterEach(() => {
 beforeEach(() => mockMatchMedia({}));
 
 describe("Kit Builder", () => {
+  test("reviews a current Kit draft before opening GitHub and retains it for reopen", async () => {
+    const user = userEvent.setup();
+    const submitted: Array<{
+      operation: "create" | "edit";
+      kitId: string | null;
+      title: string;
+      description: string;
+      projectIds: string[];
+    }> = [];
+    const projects = fixtureKit().components.flatMap((component) =>
+      component.project ? [component.project] : [],
+    );
+
+    function ReviewHarness() {
+      const [draft, setDraft] = useState<KitDraft>({
+        operation: "create",
+        kitId: null,
+        title: "Story Stack",
+        description: "A complete roleplay stack.",
+        projectIds: ["frontend", "memory", "preset"],
+      });
+      return (
+        <KitBuilderPanel
+          state={{ mode: "build", collapsed: false, dirty: true, draft }}
+          kit={null}
+          projects={projects}
+          onCollapse={() => undefined}
+          onUpdateDraft={(patch) =>
+            setDraft((current) => ({ ...current, ...patch }))
+          }
+          onSubmitDraft={async () => {
+            submitted.push(structuredClone(draft));
+            return {
+              mode: "prefilled",
+              url: "https://github.com/example/issues/new",
+            };
+          }}
+        />
+      );
+    }
+
+    render(<ReviewHarness />);
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
+
+    expect(submitted).toEqual([]);
+    expect(
+      screen.getByRole("heading", { name: "Review your Kit request" }),
+    ).toBeVisible();
+    expect(screen.getByText("Create")).toBeVisible();
+    expect(screen.getByText("Story Stack")).toBeVisible();
+    expect(screen.getByText("A complete roleplay stack.")).toBeVisible();
+    expect(screen.getByText("Frontend → Memory → Preset")).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Back and edit" }));
+    expect(screen.getByLabelText("Title")).toHaveValue("Story Stack");
+    expect(screen.getByLabelText("Description")).toHaveValue(
+      "A complete roleplay stack.",
+    );
+    await user.clear(screen.getByLabelText("Title"));
+    await user.type(screen.getByLabelText("Title"), "Reviewed Story Stack");
+    await user.click(
+      screen.getByRole("button", { name: "Review Kit request" }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Continue on GitHub" }),
+    );
+
+    expect(submitted).toEqual([
+      expect.objectContaining({
+        title: "Reviewed Story Stack",
+        projectIds: ["frontend", "memory", "preset"],
+      }),
+    ]);
+    expect(
+      await screen.findByText(/GitHub review opened in a new tab/u),
+    ).toBeVisible();
+    await user.click(
+      screen.getByRole("button", { name: "Open GitHub review again" }),
+    );
+    expect(submitted).toHaveLength(2);
+    expect(submitted[1]).toEqual(submitted[0]);
+  });
+
   test("explains inspect-mode Copy link on hover and focus", async () => {
     renderInspectPanel();
     const copy = screen.getByRole("button", { name: "Copy link" });

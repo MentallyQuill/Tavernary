@@ -17,6 +17,8 @@ import { kitShareUrl } from "@/features/kits/share-kit";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { useScrollBoundaries } from "@/features/kits/use-scroll-boundaries";
 import type { KitBuilderState } from "@/features/kits/use-kit-builder";
+import type { GitHubHandoffResult } from "@/features/submissions/github-handoff";
+import { SubmissionReview } from "@/features/submissions/components/submission-review";
 import { useModalSurface } from "@/hooks/use-modal-surface";
 import { useResponsiveCapabilities } from "@/hooks/use-responsive-capabilities";
 import { useTransitionPresence } from "@/hooks/use-transition-presence";
@@ -104,7 +106,7 @@ export function KitBuilderPanel({
   onUpdateDraft?: (
     patch: Partial<import("@/features/kits/kit-types").KitDraft>,
   ) => void;
-  onSubmitDraft?: () => void;
+  onSubmitDraft?: () => Promise<GitHubHandoffResult>;
   onDiscardDraft?: () => void;
   omittedProjectCount?: number;
   active?: boolean;
@@ -112,6 +114,7 @@ export function KitBuilderPanel({
   hidePhoneDraftAccess?: boolean;
 }) {
   const [discardOpen, setDiscardOpen] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
   const { phone } = useResponsiveCapabilities();
   const workspaceRef = useRef<HTMLElement>(null);
   const panelBodyRef = useRef<HTMLDivElement>(null);
@@ -160,6 +163,12 @@ export function KitBuilderPanel({
     setDiscardOpen(false);
     window.setTimeout(() => discardRef.current?.focus(), 0);
   }, []);
+
+  useEffect(() => {
+    if (state.mode !== "build") {
+      setReviewing(false);
+    }
+  }, [state.mode]);
 
   useEffect(() => {
     if (phoneSheetVisible) {
@@ -480,14 +489,70 @@ export function KitBuilderPanel({
                   draft.
                 </p>
               ) : null}
-              <KitBuilder
-                draft={state.draft}
-                projects={projects}
-                originalProjectIds={originalProjectIds}
-                onRevealFrontends={onRevealFrontends}
-                onUpdate={(patch) => onUpdateDraft?.(patch)}
-                onSubmit={() => onSubmitDraft?.()}
-              />
+              {reviewing ? (
+                <SubmissionReview
+                  title="Review your Kit request"
+                  introduction={
+                    <p>
+                      Tavernary will prepare this Kit request for public review
+                      on GitHub. Return here if you need to make changes.
+                    </p>
+                  }
+                  rows={[
+                    {
+                      label: "Operation",
+                      value:
+                        state.draft.operation === "edit" ? "Edit" : "Create",
+                    },
+                    ...(state.draft.kitId
+                      ? [
+                          {
+                            label: "Kit ID",
+                            value: state.draft.kitId,
+                          },
+                        ]
+                      : []),
+                    {
+                      label: "Title",
+                      value: state.draft.title,
+                    },
+                    {
+                      label: "Description",
+                      value: state.draft.description,
+                    },
+                    {
+                      label: "Projects",
+                      value: state.draft.projectIds
+                        .map(
+                          (projectId) =>
+                            projects.find(({ id }) => id === projectId)?.name ??
+                            projectId,
+                        )
+                        .join(" → "),
+                    },
+                  ]}
+                  returnFocusId="kit-review-request"
+                  onBack={() => setReviewing(false)}
+                  onCancel={() => setReviewing(false)}
+                  openReview={async () => {
+                    if (!onSubmitDraft) {
+                      throw new Error(
+                        "This Kit request cannot be opened for GitHub review.",
+                      );
+                    }
+                    return onSubmitDraft();
+                  }}
+                />
+              ) : (
+                <KitBuilder
+                  draft={state.draft}
+                  projects={projects}
+                  originalProjectIds={originalProjectIds}
+                  onRevealFrontends={onRevealFrontends}
+                  onUpdate={(patch) => onUpdateDraft?.(patch)}
+                  onSubmit={() => setReviewing(true)}
+                />
+              )}
             </div>
           ) : (
             <div />

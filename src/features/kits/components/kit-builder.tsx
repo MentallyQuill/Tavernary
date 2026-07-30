@@ -348,11 +348,12 @@ export function KitBuilder({
           {draft.projectIds.length} projects
         </span>
         <button
+          id="kit-review-request"
           type="submit"
           className="control-primary"
-          aria-label="Submit Kit"
+          aria-label="Review Kit request"
         >
-          Submit Kit
+          Review Kit request
         </button>
       </footer>
     </form>

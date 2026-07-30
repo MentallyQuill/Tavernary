@@ -1042,7 +1042,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/kits-e2e/kit-builder-opening.spec.ts`
 - Modify: `tests/kits-e2e/kits.spec.ts`
 
-- [ ] **Step 1: Add the failing Kit-draft regression**
+- [x] **Step 1: Add the failing Kit-draft regression**
 
   Create and edit Kit cases that:
 
@@ -1058,7 +1058,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   with `needs-information` and directs correction to Tavernary instead of
   GitHub readable fields.
 
-- [ ] **Step 2: Run the Kit unit tests red**
+- [x] **Step 2: Run the Kit unit tests red**
 
   ```powershell
   npm.cmd test -- tests/unit/catalog-batch-flow.test.tsx tests/unit/kit-builder-panel.test.tsx tests/unit/submission-transport.test.ts
@@ -1067,7 +1067,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Expected: FAIL because Kit submit opens immediately and
   `catalog-page.tsx` calls `workspace.discardDraft()`.
 
-- [ ] **Step 3: Add the in-panel review state**
+- [x] **Step 3: Add the in-panel review state**
 
   Keep Kit draft ownership in `useKitBuilder`. Make the builder's submit action
   mean **Review Kit request**. The panel renders `SubmissionReview` with rows
@@ -1080,7 +1080,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Back/edit returns to the builder. Cancel exits review but retains the draft.
   Existing explicit discard remains the sole destructive action.
 
-- [ ] **Step 4: Remove automatic draft disposal**
+- [x] **Step 4: Remove automatic draft disposal**
 
   In `catalog-page.tsx`, make the callback:
 
@@ -1094,7 +1094,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Do not call `workspace.discardDraft()` in success or error paths.
 
-- [ ] **Step 5: Update correctable Kit guidance**
+- [x] **Step 5: Update correctable Kit guidance**
 
   Keep manifest-only Kit validation, triage marker synchronization, and label
   behavior. Change only the invalid comment tail to say:
@@ -1105,7 +1105,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Use the canonical `https://tavernary.org/?mode=kits` link. Do not alter
   automatic publication or moderation.
 
-- [ ] **Step 6: Run focused Kit unit and E2E tests**
+- [x] **Step 6: Run focused Kit unit and E2E tests**
 
   ```powershell
   npm.cmd test -- tests/unit/catalog-batch-flow.test.tsx tests/unit/kit-builder-panel.test.tsx tests/unit/submission-transport.test.ts tests/unit/triage-kit-issue.test.ts
@@ -1115,7 +1115,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Expected: PASS.
 
-- [ ] **Step 7: Commit Kit review persistence**
+- [x] **Step 7: Commit Kit review persistence**
 
   ```powershell
   git add src/features/kits/components/kit-builder.tsx src/features/kits/components/kit-builder-panel.tsx src/features/catalog/components/catalog-page.tsx scripts/submissions/triage-kit-issue.mjs tests/unit/catalog-batch-flow.test.tsx tests/unit/kit-builder-panel.test.tsx tests/unit/submission-transport.test.ts tests/unit/triage-kit-issue.test.ts tests/kits-e2e/kit-builder-opening.spec.ts tests/kits-e2e/kits.spec.ts
