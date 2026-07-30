@@ -275,6 +275,10 @@ test("takes a Kit report from source control through validation, review, cancel,
     .getByRole("article", { name: "Aiko's Loadout" })
     .getByRole("button", { name: "Report Kit" })
     .click();
+  await expect
+    .poll(() => new URL(page.url()).pathname)
+    .toBe(sitePath("/help/report-kit"));
+  await expect(page.getByLabel("What is wrong?")).toBeVisible();
   await interceptHelpWindow(page);
 
   await page.getByRole("button", { name: "Review request" }).click();
@@ -379,7 +383,7 @@ test("covers conditional report branches and ignores unknown record context", as
   ).toBeVisible();
 });
 
-test("covers owner source-move and delist review branches", async ({
+test("covers owner source-move and delist-source review branches", async ({
   page,
 }) => {
   await page.goto(
@@ -398,17 +402,23 @@ test("covers owner source-move and delist review branches", async ({
     "https://github.com/MentallyQuill/Directive-Renamed",
   );
 
-  await page.getByRole("radio", { name: "Delist this project" }).check();
+  await page
+    .getByRole("radio", { name: "Permanently delist this source" })
+    .check();
   await page.getByRole("button", { name: "Review request" }).click();
   await page
-    .getByLabel("Type Directive to confirm permanent delisting.")
-    .fill("DIRECTIVE");
+    .getByLabel(
+      "Type MentallyQuill/Directive to confirm permanent delisting.",
+    )
+    .fill("MentallyQuill/Directive");
   await page
-    .getByRole("button", { name: "Permanently delist project" })
+    .getByRole("button", { name: "Permanently delist source" })
     .click();
   await expect(
-    page.getByText("After: visibility", { exact: true }),
+    page.getByText(
+      "This permanently delists MentallyQuill/Directive and every card from that source.",
+    ),
   ).toBeVisible();
-  await expect(page.getByText("disabled", { exact: true })).toBeVisible();
+  await expect(page.getByText("Permanent source delisting")).toBeVisible();
   await page.getByRole("button", { name: "Cancel" }).click();
 });
