@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "flaxify-st-hands-free-voice",
+  "source_id": "github-1230298474",
+  "source_identity": "github:flaxify/st-hands-free-voice",
+  "evidence_fingerprint": "dc6d5343ec1a8ac4fe28efd73905a897fa09ed1be54fc6e813840ae292abf84d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-30T09:54:49.576Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-30T09:54:49.576Z"
+  },
+  "maintenance_issue_number": null
+}
