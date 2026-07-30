@@ -26,6 +26,8 @@ import {
 
 const validationMarker = "<!-- tavernary-submission-validation -->";
 const projectSubmissionStateMarker = "<!-- tavernary-project-submission-state";
+const correctionGuidance =
+  "Return to https://tavernary.org/submit/project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.";
 const triageLabels = {
   "project-submission": {
     color: "1d76db",
@@ -95,7 +97,7 @@ export function buildValidationComment(validation) {
     "",
     ...validation.errors.map((error) => `- ${error}`),
     "",
-    "Edit the issue fields above and automated validation will run again.",
+    correctionGuidance,
   ].join("\n");
 }
 
@@ -241,6 +243,8 @@ function decisionComment(decision) {
               ...remainingErrors.map((error) => `- ${error}`),
             ]
           : []),
+        "",
+        correctionGuidance,
       ].join("\n");
     }
     return [
@@ -248,7 +252,7 @@ function decisionComment(decision) {
       "",
       ...decision.errors.map((error) => `- ${error}`),
       "",
-      "Edit the issue fields above and automated triage will run again.",
+      correctionGuidance,
     ].join("\n");
   }
   if (decision.status === "retryable") {

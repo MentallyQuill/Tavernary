@@ -829,7 +829,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 - Modify: `tests/unit/parse-project-submission.test.ts`
 - Modify: `tests/unit/triage-issue.test.ts`
 
-- [ ] **Step 1: Add failing parser-authority tests**
+- [x] **Step 1: Add failing parser-authority tests**
 
   Prove:
 
@@ -841,7 +841,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
     `{ allowLegacyV3: true }`; and
   - triage leaves missing/invalid requests open as `needs-information`.
 
-- [ ] **Step 2: Run the project parser tests red**
+- [x] **Step 2: Run the project parser tests red**
 
   ```powershell
   npm.cmd test -- tests/unit/parse-project-submission.test.ts tests/unit/triage-issue.test.ts
@@ -849,7 +849,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Expected: FAIL because readable headings still construct v4.
 
-- [ ] **Step 3: Delete readable payload construction**
+- [x] **Step 3: Delete readable payload construction**
 
   Retain the heading reader only to locate `Project manifest`, fenced JSON
   extraction, JSON parsing, and:
@@ -865,7 +865,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   display-label vocabulary mapping, and metadata-mode inference. Return an
   actionable manifest-required error if the field is empty.
 
-- [ ] **Step 4: Point correctable project failures back to Tavernary**
+- [x] **Step 4: Point correctable project failures back to Tavernary**
 
   In both validation-comment builders in `triage-issue.mjs`, preserve the
   existing marker, errors, labels, and open issue. Replace instructions to edit
@@ -878,12 +878,12 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
   Do not alter duplicate-closing, retryable transport, frontend dependency, or
   admitted publication behavior.
 
-- [ ] **Step 5: Narrow the declaration contract**
+- [x] **Step 5: Narrow the declaration contract**
 
   Update `ProjectSubmissionParseResult` so both valid and invalid results use
   `source: "manifest"` only. Keep `allowLegacyV3?: boolean`.
 
-- [ ] **Step 6: Run the project automation regression**
+- [x] **Step 6: Run the project automation regression**
 
   ```powershell
   npm.cmd test -- tests/unit/parse-project-submission.test.ts tests/unit/triage-issue.test.ts tests/unit/generate-project-submission.test.ts tests/unit/validate-submission.test.ts
@@ -891,7 +891,7 @@ Tasks 4, 6, 7, 9, or 10 remove any readable-field recovery.
 
   Expected: PASS; generation/publication remains unchanged for valid v4.
 
-- [ ] **Step 7: Commit manifest-only project parsing**
+- [x] **Step 7: Commit manifest-only project parsing**
 
   ```powershell
   git add scripts/submissions/parse-project-submission.mjs scripts/submissions/parse-project-submission.d.mts scripts/submissions/triage-issue.mjs tests/unit/parse-project-submission.test.ts tests/unit/triage-issue.test.ts

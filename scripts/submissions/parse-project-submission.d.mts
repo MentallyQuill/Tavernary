@@ -6,12 +6,12 @@ import type {
 export type ProjectSubmissionParseResult =
   | {
       valid: true;
-      source: "manifest" | "headings";
+      source: "manifest";
       manifest: ProjectSubmissionManifest;
     }
   | {
       valid: false;
-      source: "manifest" | "headings";
+      source: "manifest";
       errors: string[];
     };
 

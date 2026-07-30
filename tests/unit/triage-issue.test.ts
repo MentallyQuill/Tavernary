@@ -70,7 +70,7 @@ test("builds a stable marker comment for validation failures", () => {
       "",
       "- Frontends and Extensions require a public GitHub repository.",
       "",
-      "Edit the issue fields above and automated validation will run again.",
+      "Return to https://tavernary.org/submit/project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.",
     ].join("\n"),
   );
 });
@@ -473,6 +473,9 @@ test("keeps missing frontend dependencies open with an actionable response", () 
   );
   expect(mutation.commentBody).toContain(
     "This issue will remain open and retry automatically after that frontend is merged.",
+  );
+  expect(mutation.commentBody).toContain(
+    "Return to https://tavernary.org/submit/project/, correct the request, and open a new GitHub review. This issue will remain open with `needs-information`.",
   );
 });
 
