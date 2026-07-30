@@ -1,0 +1,22 @@
+{
+  "schema_version": 6,
+  "id": "reddit-1v9u18m",
+  "name": "Preset Introducing Freaky Frankenstein 50",
+  "kind": "preset",
+  "summary": "No README file found.",
+  "metadata_status": "provisional",
+  "source_id": "url-reddit-1v9u18m",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [],
+  "model_families": ["claude", "glm", "kimi", "minimax", "qwen"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-07-30T17:10:24.154Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
