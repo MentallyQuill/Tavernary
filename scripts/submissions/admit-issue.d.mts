@@ -33,8 +33,6 @@ export function issueRouteFromLabels(
   labels?: Array<string | { name: string }>,
 ): IssueRoute;
 
-export function issueRouteFromBody(body?: string): IssueRoute;
-
 export function effectiveIssueRoute(issue?: {
   title?: string;
   body?: string;

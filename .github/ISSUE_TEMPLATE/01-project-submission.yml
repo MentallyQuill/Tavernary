@@ -1,5 +1,5 @@
 name: Submit a project
-description: Propose a public AI roleplay project for maintainer review.
+description: Begin in Tavernary to prepare a public project submission, then review it here.
 title: "[Project submission]"
 labels:
   - project-submission
@@ -7,57 +7,45 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use a public project source URL. The Tavernary submission builder provides contextual guidance for each project type. This form remains available as a structured fallback.
-        Frontends and Extensions require a public GitHub or Codeberg repository.
+        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/submit/project/ and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
   - type: input
     id: project-type
     attributes:
       label: Project Type
-      description: Enter Frontend, Extension, or System Preset.
+      description: "Readable value prepared by Tavernary. Expected one of: Frontend; Extension; System Preset."
       placeholder: Frontend, Extension, or System Preset
     validations:
-      required: true
+      required: false
   - type: input
     id: project-url
     attributes:
       label: Project URL
       placeholder: https://github.com/owner/repository or https://codeberg.org/owner/repository
     validations:
-      required: true
+      required: false
   - type: input
     id: primary-function
     attributes:
       label: Primary function
-      description: >-
-        Extensions must enter one category: memory-retrieval,
-        generation-reasoning, character-worldbuilding, rpg-systems,
-        interface-workflow, or developer-infrastructure. Leave blank or enter
-        the structural value frontend or preset for those project types.
+      description: "Readable value prepared by Tavernary. Extension values use a controlled primary-function ID; Frontends and System Presets use their structural value."
       placeholder: Extension category only
     validations:
       required: false
-  - type: dropdown
+  - type: input
     id: description-choice
     attributes:
       label: Description choice
-      description: >-
-        Let TavernAI draft from the root README first and the repository
-        description second, or request your own wording. Only the verified
-        personal repository owner or trusted Tavernary staff can set the
-        description. If you are not the owner, leave this set to Let TavernAI
-        write the description; any description you enter will be ignored.
-      options:
-        - Let TavernAI write the description
-        - Write the description myself
+      description: "Readable value prepared by Tavernary. Expected one of: Let TavernAI write the description; Write the description myself."
+      placeholder: Let TavernAI write the description
     validations:
-      required: true
+      required: false
   - type: textarea
     id: project-description
     attributes:
       label: Short Description
       description: >-
-        Required only when you chose to write the description. Maximum 220
-        characters. Manual wording is honored only for the verified personal
+        Readable owner-authored description when the manifest selects manual
+        wording. Maximum 220 characters. Manual wording is honored only for the verified personal
         repository owner or trusted Tavernary staff. Keep the description
         suitable for a public project catalog. Mature and consensual adult
         themes are permitted, but content promoting hatred or discrimination,
@@ -67,21 +55,14 @@ body:
         https://mentallyquill.github.io/Tavernary/catalog-policy/
     validations:
       required: false
-  - type: dropdown
+  - type: input
     id: tag-choice
     attributes:
       label: Tag choice
-      description: >-
-        Let Tavernary classify this project from repository evidence, or
-        request up to six controlled Goals and traits tag IDs. Only the verified
-        personal repository owner or trusted Tavernary staff can set tags. If
-        you are not the owner, leave this set to Let Tavernary select tags; any
-        tags you select will be ignored.
-      options:
-        - Let Tavernary select tags
-        - Set tags myself
+      description: "Readable value prepared by Tavernary. Expected one of: Let Tavernary select tags; Set tags myself."
+      placeholder: Let Tavernary select tags
     validations:
-      required: true
+      required: false
   - type: textarea
     id: tags
     attributes:
@@ -106,7 +87,7 @@ body:
       description: Enter Yes only when a System Preset does not depend on a particular frontend; otherwise enter No.
       placeholder: Yes or No
     validations:
-      required: true
+      required: false
   - type: textarea
     id: additional-context
     attributes:
@@ -144,7 +125,7 @@ body:
     id: project-manifest
     attributes:
       label: Project manifest
-      description: Keep the JSON generated by Tavernary unchanged. Leave empty when using this fallback form directly.
+      description: Required automation payload generated by Tavernary. Keep this JSON unchanged.
       render: json
     validations:
-      required: false
+      required: true

@@ -6,8 +6,9 @@ and code contributions follow different review paths.
 
 ## Add a project
 
-Use the site's **Submit Project** form or the repository's project-submission
-issue form. Automation checks the submission shape, source eligibility, and
+Use the site's **Submit Project** form. Tavernary prepares the authoritative
+manifest and opens GitHub only as the public review-and-create surface.
+Automation checks the submission shape, source eligibility, and
 obvious duplicates. A generated PR isolates the proposed files for CI and
 audit; valid transactions automatically publish by exact SHA without routine
 staff involvement.
@@ -20,19 +21,19 @@ rules. For issue routing and maintainer handoff details, see
 ## Create or change a Kit
 
 Kits are ordered collections of catalog projects assembled by the community.
-Drafts are built in the in-browser Kit builder and submitted through GitHub
-issue forms. Valid Kits and edits publish automatically after triage and final
+Drafts are built and reviewed in the in-browser Kit builder before Tavernary
+opens the GitHub review mirror. Valid Kits and edits publish automatically after triage and final
 revalidation; a pending or invalid edit does not replace the published Kit.
 
 For full Kit workflow details (submit/edit/report/withdraw constraints and
 author eligibility checks), see [Kit submission and moderation workflows](kits.md).
 
-Use the Kit submission, report, or withdrawal forms for Kit-specific changes.
+Begin Kit submissions, reports, and withdrawals in Tavernary.
 Do not edit generated Kit output by hand.
 
-- Kit submission: `.github/ISSUE_TEMPLATE/05-kit-submission.yml`
-- Kit report: `.github/ISSUE_TEMPLATE/06-kit-report.yml`
-- Kit withdrawal: `.github/ISSUE_TEMPLATE/07-kit-withdrawal.yml`
+- Kit create/edit: `/?mode=kits`
+- Kit report: `/help/report-kit/`
+- Kit withdrawal: `/help/withdraw-kit/`
 
 ## Improve the site or tooling
 
@@ -60,20 +61,22 @@ path. The ordinary Help routes are public GitHub reports:
 - **Report a website problem** (`/help/report-website/`) for Tavernary runtime,
   layout, accessibility, navigation, or handoff problems.
 - **Report a Kit** (`/help/report-kit/`) for a published Kit concern.
+- **Withdraw a Kit** (`/help/withdraw-kit/`) for a recorded Kit author.
 - **Get other help** (`/help/other/`) for a Tavernary question or request not
   covered above.
 
-The GitHub chooser remains broader than Tavernary Help and is still available
-as a direct fallback form. Use the narrowest applicable route:
+The GitHub chooser links back to Tavernary intake. GitHub Issue Forms are
+review mirrors: create or cancel there, but return to the matching Tavernary
+form to make corrections and open a fresh review.
 
 | Need | Use |
 | --- | --- |
-| Add a project | Project submission |
-| Correct factual catalog information | Project information |
-| Report a Tavernary website problem | Website bug |
-| Report unsafe or problematic Kit content | Kit report |
-| Withdraw a Kit | Kit withdrawal |
-| Ask for help or report another issue | Help / Other |
+| Add a project | `/submit/project/` |
+| Correct factual catalog information | `/help/report-project/` |
+| Report a Tavernary website problem | `/help/report-website/` |
+| Report unsafe or problematic Kit content | `/help/report-kit/` |
+| Withdraw a Kit | `/help/withdraw-kit/` |
+| Ask for help or report another issue | `/help/other/` |
 | Report a security vulnerability | Private security path in `SECURITY.md` |
 
 Do not report a vulnerability publicly. Do not use Tavernary's issue forms to

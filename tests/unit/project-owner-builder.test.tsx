@@ -387,54 +387,46 @@ test("reviews and hands off one atomic multi-card manifest", async () => {
   expect(reopenedManifest).toEqual(manifest);
 });
 
-test(
-  "preserves all ten add-card drafts through back, edit, and reopen",
-  async () => {
-    const user = userEvent.setup();
-    const writeText = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(navigator, "clipboard", {
-      configurable: true,
-      value: { writeText },
-    });
-    vi.spyOn(window, "open").mockReturnValue(window);
-    renderBuilder();
-    await selectProject(user);
-    await user.click(
-      screen.getByRole("radio", { name: "Add cards from this source" }),
-    );
+test("preserves all ten add-card drafts through back, edit, and reopen", async () => {
+  const user = userEvent.setup();
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText },
+  });
+  vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Add cards from this source" }),
+  );
 
-    const add = screen.getByRole("button", { name: "Add another card" });
-    for (let index = 2; index <= 10; index += 1) {
-      await user.click(add);
-      const name = screen.getByLabelText(`Card ${index} display name`);
-      await user.clear(name);
-      await user.type(name, `Alpha Card ${index}`);
-    }
-    await user.type(
-      screen.getByLabelText("Public note (optional)"),
-      "Review this complete ten-card source batch.",
-    );
-    await user.click(screen.getByRole("button", { name: "Review request" }));
-    expect(screen.getByText("Card 10: Alpha Card 10")).toBeVisible();
-    await user.click(
-      screen.getByRole("button", { name: "Continue on GitHub" }),
-    );
-    const firstManifest = JSON.parse(writeText.mock.calls[0]?.[0] ?? "");
-    expect(firstManifest.proposed_cards).toHaveLength(10);
+  const add = screen.getByRole("button", { name: "Add another card" });
+  for (let index = 2; index <= 10; index += 1) {
+    await user.click(add);
+    const name = screen.getByLabelText(`Card ${index} display name`);
+    await user.clear(name);
+    await user.type(name, `Alpha Card ${index}`);
+  }
+  await user.type(
+    screen.getByLabelText("Public note (optional)"),
+    "Review this complete ten-card source batch.",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByText("Card 10: Alpha Card 10")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  const firstManifest = JSON.parse(writeText.mock.calls[0]?.[0] ?? "");
+  expect(firstManifest.proposed_cards).toHaveLength(10);
 
-    await user.click(screen.getByRole("button", { name: "Back and edit" }));
-    expect(screen.getByLabelText("Card 10 display name")).toHaveValue(
-      "Alpha Card 10",
-    );
-    await user.click(screen.getByRole("button", { name: "Review request" }));
-    await user.click(
-      screen.getByRole("button", { name: "Continue on GitHub" }),
-    );
-    const reopenedManifest = JSON.parse(writeText.mock.calls[1]?.[0] ?? "");
-    expect(reopenedManifest).toEqual(firstManifest);
-  },
-  15_000,
-);
+  await user.click(screen.getByRole("button", { name: "Back and edit" }));
+  expect(screen.getByLabelText("Card 10 display name")).toHaveValue(
+    "Alpha Card 10",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
+  const reopenedManifest = JSON.parse(writeText.mock.calls[1]?.[0] ?? "");
+  expect(reopenedManifest).toEqual(firstManifest);
+}, 15_000);
 
 test("uses independent metadata choices for ordinary edits", async () => {
   const user = userEvent.setup();

@@ -13,7 +13,8 @@ published through issue automation, not direct registry edits.
 
 ## Submit a new Kit
 
-Use the in-browser builder and send it through issue form:
+Use the in-browser builder, review the draft in Tavernary, and continue to the
+GitHub review mirror:
 
 - `[Kit submission]` (`05-kit-submission.yml`)
 
@@ -38,13 +39,14 @@ After GitHub admits the issue, Kit triage revalidates the latest manifest. A
 valid issue publishes automatically: the publisher validates again, updates
 the registry, runs repository gates, pushes `main`, requests deployment for the
 exact commit SHA, and closes the issue. A correctable failure remains open with
-`needs-information`; edit the issue and automation retries without consuming
-another issue slot.
+`needs-information`; return to the retained Tavernary draft, correct it, and
+open a fresh GitHub review without consuming another issue slot.
 
 ## Edit an existing Kit
 
-Use the same `05-kit-submission.yml` form with operation `edit` and the published
-Kit issue ID.
+Use **Edit** on the published Kit in Tavernary. Tavernary prepares the same
+`05-kit-submission.yml` review mirror with operation `edit` and the stable Kit
+ID.
 
 - The published Kit remains unchanged until server validation and publication
   gates pass.
@@ -64,10 +66,11 @@ authorship to the staff actor.
 
 Use the Help hub's **Report a Kit** route (`/help/report-kit/`) when the Kit is
 already published. It prepares the same public GitHub report for review; do not
-include secrets or private personal information. The direct GitHub chooser is
-still available as a broader fallback.
+include secrets or private personal information. Make corrections in Tavernary
+and open a fresh review.
 
-Use:
+Use `/help/withdraw-kit/`, normally from the Kit panel's **Request
+withdrawal** action. Tavernary then opens:
 
 - `[Kit report]` (`06-kit-report.yml`)
 

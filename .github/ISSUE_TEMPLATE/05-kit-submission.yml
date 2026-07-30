@@ -1,5 +1,5 @@
 name: Submit or edit a Kit
-description: Create a new Kit or submit an author revision for automatic validation and publication.
+description: Begin in Tavernary to create or edit a Kit, then review it here.
 title: "[Kit submission]: "
 labels:
   - kit-submission
@@ -7,19 +7,19 @@ body:
   - type: markdown
     attributes:
       value: |
-        Build a new Kit in Tavernary, or use **Edit Kit** on a published Kit, before submitting this form. Valid submissions publish automatically. Tavernary checks the title and description for severe language in the builder and rechecks the manifest here. If validation fails, edit this issue to correct it and automation will retry.
+        Tavernary prepared this review. Check the values, then create or cancel the issue. To make changes, return to https://tavernary.org/?mode=kits and open a fresh GitHub review. The generated manifest is the automation payload; the readable fields are review-only.
   - type: input
     id: kit-title
     attributes:
       label: Kit title
     validations:
-      required: true
+      required: false
   - type: textarea
     id: kit-description
     attributes:
       label: Kit description
     validations:
-      required: true
+      required: false
   - type: textarea
     id: manifest
     attributes:
