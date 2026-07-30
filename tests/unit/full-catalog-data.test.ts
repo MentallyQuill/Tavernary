@@ -98,21 +98,30 @@ describe("full catalog data", () => {
       await loadProductionData();
     const tagsById = new Map(vocabulary.tags.map((tag) => [tag.id, tag]));
 
-    expect(projects).toHaveLength(309);
-    expect(sources).toHaveLength(309);
+    expect(projects.length).toBeGreaterThanOrEqual(309);
+    expect(sources.length).toBeGreaterThanOrEqual(309);
     expect(new Set(projects.map(({ id }) => id)).size).toBe(projects.length);
     expect(new Set(sources.map(({ id }) => id)).size).toBe(sources.length);
-    expect(countBy(projects, ({ kind }) => kind)).toEqual({
-      extension: 278,
-      frontend: 17,
-      preset: 14,
-    });
-    expect(countBy(sources, ({ type }) => type)).toEqual({
-      codeberg: 1,
-      github: 298,
-      "github-organization": 1,
-      url: 9,
-    });
+    const projectsByKind = countBy(projects, ({ kind }) => kind);
+    expect(Object.keys(projectsByKind).sort()).toEqual([
+      "extension",
+      "frontend",
+      "preset",
+    ]);
+    expect(projectsByKind.extension).toBeGreaterThanOrEqual(278);
+    expect(projectsByKind.frontend).toBeGreaterThanOrEqual(17);
+    expect(projectsByKind.preset).toBeGreaterThanOrEqual(14);
+    const sourcesByType = countBy(sources, ({ type }) => type);
+    expect(Object.keys(sourcesByType).sort()).toEqual([
+      "codeberg",
+      "github",
+      "github-organization",
+      "url",
+    ]);
+    expect(sourcesByType.codeberg).toBeGreaterThanOrEqual(1);
+    expect(sourcesByType.github).toBeGreaterThanOrEqual(298);
+    expect(sourcesByType["github-organization"]).toBeGreaterThanOrEqual(1);
+    expect(sourcesByType.url).toBeGreaterThanOrEqual(9);
 
     for (const project of projects) {
       expect(project.schema_version, project.id).toBe(6);
@@ -154,8 +163,10 @@ describe("full catalog data", () => {
 
     expect(
       projects.reduce((count, project) => count + project.tags.length, 0),
-    ).toBe(793);
-    expect(projects.filter(({ tags }) => tags.length === 0)).toHaveLength(16);
+    ).toBeGreaterThanOrEqual(793);
+    expect(
+      projects.filter(({ tags }) => tags.length === 0).length,
+    ).toBeLessThanOrEqual(16);
     expect(
       projects.filter(
         ({ metadata_policy }) => metadata_policy.tags.mode === "manual",
@@ -316,7 +327,7 @@ describe("full catalog data", () => {
     const catalog = await buildCatalog({ write: false });
 
     expect(catalog.schemaVersion).toBe(4);
-    expect(catalog.projects).toHaveLength(307);
+    expect(catalog.projects.length).toBeGreaterThanOrEqual(307);
     expect(catalog.tagVocabulary).toHaveLength(55);
     expect(catalog.kits.map(({ id }) => id)).toEqual(
       kitRecords

@@ -107,16 +107,16 @@
 - Consumes: the verified local commits and issue `#151`
 - Produces: an exact-SHA deployment plus a catalog submission handled by the official workflow
 
-- [ ] **Step 1: Commit and push the narrow fix**
+- [x] **Step 1: Commit and push the narrow fix**
   - Confirm local `main` is based on current remote `main`.
   - Commit with a concise Conventional Commit message.
   - Push only the task commits to `origin/main`.
 
-- [ ] **Step 2: Monitor the exact pushed SHA**
+- [x] **Step 2: Monitor the exact pushed SHA**
   - Inspect every workflow associated with the SHA.
   - Require all relevant checks and the Pages deployment to succeed before redispatching the issue.
 
-- [ ] **Step 3: Redispatch issue #151**
+- [x] **Step 3: Redispatch issue #151**
   - Run `generate-project-submission.yml` on `main` with `issue_number=151`.
   - Wait for completion and inspect logs if it fails.
   - If all three outputs remain invalid, stop and report the workflow evidence without bypassing validation.
@@ -130,3 +130,39 @@
   - Confirm the publication commit and its workflows.
   - Confirm issue #151's final state and expected labels/comments.
   - Verify the live catalog exposes the new project card with its published metadata.
+
+### Task 5: Repair blockers discovered by the generated transaction
+
+**Files:**
+- Modify: `tests/unit/full-catalog-data.test.ts`
+- Modify: `tests/fixtures/github/license-cases.json`
+- Modify: `tests/unit/license.test.ts`
+- Modify: `src/lib/github/license.ts`
+
+**Interfaces:**
+- Consumes: a growing schema-v6 catalog and canonical root-license text
+- Produces: catalog tests that preserve the migration baseline without rejecting additions, plus correct `Unlicense` classification
+
+- [x] **Step 1: Add an Unlicense regression test and verify RED**
+  - Classify canonical Unlicense text from a root `LICENSE` file.
+  - Expect `osi-approved`, SPDX ID `Unlicense`, and the original source path.
+
+- [x] **Step 2: Recognize the canonical Unlicense text and verify GREEN**
+  - Add the narrow canonical text signature to the existing recognized-license table.
+  - Do not infer license status from README or package metadata.
+
+- [x] **Step 3: Make catalog baseline assertions growth-safe**
+  - Preserve the schema-v6 migration report as the exact 309-project audit anchor.
+  - Change live catalog totals, kind/source distributions, total tag assignments, and public build count from exact snapshots to minimum baselines.
+  - Keep zero-tag and manual-tag guardrails strict so new low-quality records still fail.
+
+- [x] **Step 4: Run focused and full verification**
+  - Run the license and full-catalog tests.
+  - Run `npm.cmd run check`.
+  - Inspect the diff and commit only these discovered blocker repairs.
+
+- [ ] **Step 5: Reconcile and retry**
+  - Push and deploy the blocker repairs.
+  - Redispatch issue #151 so its generated snapshot uses the corrected license.
+  - Refresh or otherwise reconcile the already-published upstream snapshot through the repository's official automation.
+  - Require the regenerated PR's content checks and publication transaction to succeed.

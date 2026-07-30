@@ -14,6 +14,16 @@ describe("root license classification", () => {
     });
   });
 
+  test("recognizes the canonical Unlicense text", () => {
+    expect(
+      classifyRootLicense([{ path: "LICENSE", content: cases.unlicense }]),
+    ).toEqual({
+      status: "osi-approved",
+      spdxId: "Unlicense",
+      sourcePath: "LICENSE",
+    });
+  });
+
   test("does not infer a license from package metadata", () => {
     expect(
       classifyRootLicense([

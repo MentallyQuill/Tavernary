@@ -18,6 +18,10 @@ const recognizedLicenses: Array<[RegExp, string]> = [
     "MIT",
   ],
   [/redistribution and use in source and binary forms/i, "BSD-3-Clause"],
+  [
+    /free and unencumbered software released into the public domain/i,
+    "Unlicense",
+  ],
 ];
 
 export function classifyRootLicense(files: RootFile[]): LicenseResult {
