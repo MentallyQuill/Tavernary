@@ -9,7 +9,9 @@ Tavernary project-card records are schema versioned (`schema_version: 6`).
 - `source_id`: stable reference to `data/registry/sources/<source-id>.json`
 - `name`: non-empty string
 - `kind`: `frontend | extension | preset`
-- `summary`: 1-220 characters
+- `summary`: 1-220 characters. Automatically generated summaries must be
+  120-220 characters, single-line plain text without Markdown, list syntax,
+  URLs, or domain-style links. Manual summaries retain the storage contract.
 - `metadata_status`: `provisional | curated`
 - `frontends`: array of frontend IDs
 - `primary_function`: structural `frontend`/`preset`, or one of the six
