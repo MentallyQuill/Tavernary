@@ -2,7 +2,12 @@ import {
   serializeProjectSubmissionManifest,
   type ProjectSubmissionManifest,
 } from "./project-submission-manifest.mjs";
-import { openGitHubReview, type GitHubHandoffResult } from "./github-handoff";
+import {
+  copyGitHubReviewUrl,
+  openGitHubReview,
+  type GitHubHandoffInput,
+  type GitHubHandoffResult,
+} from "./github-handoff";
 
 const pasteInstruction = "Paste the project manifest copied by Tavernary here.";
 
@@ -77,11 +82,11 @@ function readablePrefills(
   return prefills;
 }
 
-export async function openProjectSubmission(
+function projectHandoffInput(
   formUrl: string | URL,
   manifest: ProjectSubmissionManifest,
-): Promise<GitHubHandoffResult> {
-  return openGitHubReview({
+): GitHubHandoffInput {
+  return {
     formUrl,
     template: "01-project-submission.yml",
     manifestFieldId: "project-manifest",
@@ -90,5 +95,19 @@ export async function openProjectSubmission(
     pasteInstruction,
     copyPrompt:
       "Copy this project manifest, then paste it into the GitHub review:",
-  });
+  };
+}
+
+export function openProjectSubmission(
+  formUrl: string | URL,
+  manifest: ProjectSubmissionManifest,
+): Promise<GitHubHandoffResult> {
+  return openGitHubReview(projectHandoffInput(formUrl, manifest));
+}
+
+export function copyProjectSubmissionUrl(
+  formUrl: string | URL,
+  manifest: ProjectSubmissionManifest,
+): Promise<GitHubHandoffResult> {
+  return copyGitHubReviewUrl(projectHandoffInput(formUrl, manifest));
 }

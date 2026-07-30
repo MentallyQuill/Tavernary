@@ -25,17 +25,6 @@ export class GitHubHandoffError extends Error {
   }
 }
 
-function openReview(
-  target: URL,
-  mode: GitHubHandoffResult["mode"],
-): GitHubHandoffResult {
-  const url = target.toString();
-  if (window.open(url, "_blank", "noopener,noreferrer") === null) {
-    throw new GitHubHandoffError("GitHub review could not be opened.", url);
-  }
-  return { mode, url };
-}
-
 function recoveryTarget(input: GitHubHandoffInput) {
   const target = new URL(input.formUrl.toString());
   target.search = "";
@@ -44,9 +33,9 @@ function recoveryTarget(input: GitHubHandoffInput) {
   return target;
 }
 
-export async function openGitHubReview(
+export function prepareGitHubReview(
   input: GitHubHandoffInput,
-): Promise<GitHubHandoffResult> {
+): GitHubHandoffResult {
   const target = new URL(input.formUrl.toString());
   target.searchParams.set("template", input.template);
   for (const [fieldId, value] of input.prefills) {
@@ -55,13 +44,7 @@ export async function openGitHubReview(
   target.searchParams.set(input.manifestFieldId, input.serializedManifest);
 
   if (target.toString().length <= MAX_PREFILL_URL_LENGTH) {
-    return openReview(target, "prefilled");
-  }
-
-  try {
-    await navigator.clipboard.writeText(input.serializedManifest);
-  } catch {
-    window.prompt(input.copyPrompt, input.serializedManifest);
+    return { mode: "prefilled", url: target.toString() };
   }
 
   const recovery = recoveryTarget(input);
@@ -77,5 +60,50 @@ export async function openGitHubReview(
       null,
     );
   }
-  return openReview(recovery, "clipboard");
+  return { mode: "clipboard", url: recovery.toString() };
+}
+
+function openReview(prepared: GitHubHandoffResult): GitHubHandoffResult {
+  if (window.open(prepared.url, "_blank", "noopener,noreferrer") === null) {
+    throw new GitHubHandoffError(
+      "GitHub review could not be opened.",
+      prepared.url,
+    );
+  }
+  return prepared;
+}
+
+export async function openGitHubReview(
+  input: GitHubHandoffInput,
+): Promise<GitHubHandoffResult> {
+  const prepared = prepareGitHubReview(input);
+  if (prepared.mode === "clipboard") {
+    try {
+      await navigator.clipboard.writeText(input.serializedManifest);
+    } catch {
+      window.prompt(input.copyPrompt, input.serializedManifest);
+    }
+  }
+  return openReview(prepared);
+}
+
+export async function copyGitHubReviewUrl(
+  input: GitHubHandoffInput,
+): Promise<GitHubHandoffResult> {
+  const prepared = prepareGitHubReview(input);
+  if (prepared.mode === "clipboard") {
+    throw new GitHubHandoffError(
+      "This submission is too large to fit in a single URL. Use Continue on GitHub so Tavernary can copy the manifest separately.",
+      null,
+    );
+  }
+  try {
+    await navigator.clipboard.writeText(prepared.url);
+  } catch {
+    throw new GitHubHandoffError(
+      "Tavernary could not copy the GitHub form URL. Copy it below instead.",
+      prepared.url,
+    );
+  }
+  return prepared;
 }

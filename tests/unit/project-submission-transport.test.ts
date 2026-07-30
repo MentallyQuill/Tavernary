@@ -1,6 +1,9 @@
 import { beforeEach, expect, test, vi } from "vitest";
 
-import { openProjectSubmission } from "@/features/submissions/submission-transport";
+import {
+  copyProjectSubmissionUrl,
+  openProjectSubmission,
+} from "@/features/submissions/submission-transport";
 
 const manifest = {
   schema_version: 4 as const,
@@ -83,6 +86,26 @@ test("prefills every readable project field and the stable manifest", async () =
     "_blank",
     "noopener,noreferrer",
   ]);
+});
+
+test("copies the exact project review URL that the open action uses", async () => {
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText },
+  });
+  const formUrl = "https://github.com/example/repo/issues/new";
+
+  await copyProjectSubmissionUrl(formUrl, manifest);
+  await openProjectSubmission(formUrl, manifest);
+
+  expect(writeText).toHaveBeenCalledWith(String(open.mock.calls[0]?.[0]));
+  const copied = new URL(String(writeText.mock.calls[0]?.[0]));
+  expect(JSON.parse(copied.searchParams.get("project-manifest") ?? "")).toEqual(
+    manifest,
+  );
+  expect(copied.searchParams.get("project-type")).toBe("Extension");
 });
 
 test("prefills every Preset compatibility field", async () => {
