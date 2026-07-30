@@ -18,6 +18,17 @@ async function stabilizeRefreshLabel(page: Page) {
     });
 }
 
+async function stabilizeRelationshipActivityAge(page: Page) {
+  const ages = page.locator(".relationship-pair .commit-age");
+  await expect(ages).toHaveCount(2);
+  await ages.nth(0).evaluate((label) => {
+    label.textContent = "1d ago";
+  });
+  await ages.nth(1).evaluate((label) => {
+    label.textContent = "10d ago";
+  });
+}
+
 async function expectNoHorizontalOverflow(page: Page) {
   expect(
     await page.evaluate(
@@ -123,6 +134,7 @@ for (const scenario of [
       ).toBeHidden();
     }
     await stabilizeRefreshLabel(page);
+    await stabilizeRelationshipActivityAge(page);
 
     const pair = page.locator(".relationship-pair");
     await expect(pair).toBeVisible();
