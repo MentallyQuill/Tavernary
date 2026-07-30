@@ -385,7 +385,7 @@ test("preflight repairs one invalid structured response before failing", async (
     repair: {
       reasonCode: "output-invalid",
       message:
-        "The rejected summary has 35 words, 327 characters, and 2 sentences. Summary must be at most 220 characters. Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.",
+        "The rejected summary has 327 characters. Summary must be at most 220 characters. Keep the replacement between 120 and 220 characters as single-line plain text without Markdown, list syntax, URLs, or domain-style links.",
       rejectedSummary,
     },
   });
@@ -545,8 +545,8 @@ test("a retry tells the provider which validation defect to correct", async () =
       ...(id === "e"
         ? {
             reasonCode: "output-invalid",
-            message: "Summary must contain 24-36 words.",
-            repairHint: "Summary must contain 24-36 words.",
+            message: "summary value must be at least 120 characters",
+            repairHint: "Summary must contain at least 120 characters.",
           }
         : {}),
     })),
@@ -568,12 +568,12 @@ test("a retry tells the provider which validation defect to correct", async () =
     id: "e",
     repair: {
       reasonCode: "output-invalid",
-      message: "Summary must contain 24-36 words.",
+      message: "Summary must contain at least 120 characters.",
     },
   });
 });
 
-test("repairs invalid provider output immediately with the rejected summary", async () => {
+test("queues invalid primary output for targeted retry", async () => {
   const ids = ["a", "b", "c", "d", "e"];
   const rejectedSummary =
     "Fixture coordinates repeatable, carefully documented prompt workflows across expansive SillyTavern installations for creators managing intricate collaborative projects. It automates detailed configuration review while preserving transparent controls, dependable history, and accessible guidance for every participant.";
@@ -601,42 +601,28 @@ test("repairs invalid provider output immediately with the rejected summary", as
   });
 
   expect(report).toMatchObject({
-    status: "awaiting-deployment",
+    status: "running",
     entries: {
       e: {
         attempt: 1,
-        outcome: "enriched",
-        copy_result: "accepted-unchanged",
-        copy_change_reasons: [],
-        copy_policy_signal: "none",
-        provider_calls: 2,
-        provider_repair_calls: 1,
-        provider_latency_ms_total: 20,
+        outcome: "retry-pending",
+        provider_calls: 1,
+        provider_repair_calls: 0,
+        provider_latency_ms_total: 10,
       },
     },
     provider_metrics: {
-      call_count: 6,
-      repair_call_count: 1,
+      call_count: 5,
+      repair_call_count: 0,
       rate_limit_events: 0,
-      latency_ms_total: 60,
+      latency_ms_total: 50,
     },
   });
-  expect(
-    generate.mock.calls
-      .map(([input]) => input)
-      .filter((input) => input.id === "e"),
-  ).toEqual([
-    expect.objectContaining({ id: "e" }),
-    expect.objectContaining({
-      id: "e",
-      repair: {
-        reasonCode: "output-invalid",
-        message:
-          "The rejected summary has 34 words, 317 characters, and 2 sentences. Summary must be at most 220 characters. Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.",
-        rejectedSummary,
-      },
-    }),
-  ]);
+  const failedCalls = generate.mock.calls
+    .map(([input]) => input)
+    .filter((input) => input.id === "e");
+  expect(failedCalls).toHaveLength(1);
+  expect(failedCalls[0]).not.toHaveProperty("repair");
 });
 
 test("a structured-content retry uses its sanitized transport diagnostic", async () => {

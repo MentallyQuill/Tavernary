@@ -514,6 +514,7 @@ export async function prepareProjectSubmissionDraft({
         }
       : null;
   const requestedFields = metadataFieldsToGenerate(preliminary.record);
+  const maxProviderAttempts = 5;
   const protectedTerms = protectedTermsForSubmission({
     record: preliminary.record,
     decision,
@@ -533,6 +534,7 @@ export async function prepareProjectSubmissionDraft({
           metadataAuthority,
           metadataRequest,
           requestedFields,
+          maxProviderAttempts,
           protectedTerms,
           ...(classificationReviewRequest
             ? { classificationReviewRequest }
@@ -553,6 +555,7 @@ export async function prepareProjectSubmissionDraft({
         provider,
         {
           vocabularies,
+          maxProviderAttempts,
           protectedTerms,
           ...(sourceClients.loadEnrichmentSource
             ? { loadSource: sourceClients.loadEnrichmentSource }

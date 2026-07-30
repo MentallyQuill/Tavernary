@@ -1,5 +1,10 @@
 import { loadEnrichmentSource } from "./enrichment-source.mjs";
 import { validateEnrichmentOutput } from "./enrichment-contract.mjs";
+import { generateValidatedEnrichment } from "./enrichment-attempts.mjs";
+import {
+  GENERATED_SUMMARY_MAX_LENGTH,
+  GENERATED_SUMMARY_MIN_LENGTH,
+} from "./generated-summary-contract.mjs";
 import { randomUUID } from "node:crypto";
 import {
   mkdir,
@@ -132,38 +137,18 @@ export async function enrichRecord(
       "enrichment provider configuration is required for source-backed records",
     );
   }
-  const validateOutput = (candidate) =>
-    validateEnrichmentOutput(candidate, {
-      requestedFields,
-      kind: record.kind,
-      tagVocabulary: vocabularies,
-      copyContext: {
-        mode: "synthesize",
-        submittedSummary: "",
-        protectedTerms: input.protectedTerms,
-      },
-    });
-  let generated = await provider.generate(input);
+  const validationInput = input;
+  const validateCandidate = (candidate) =>
+    validateOutput(candidate, record, vocabularies, validationInput);
+  const generated = await generateValidatedEnrichment({
+    initialInput: input,
+    maxAttempts: options.maxProviderAttempts ?? 1,
+    generate: (providerInput) => provider.generate(providerInput),
+    validate: validateCandidate,
+    repair: validationRepairInput,
+  });
   let output = generated.output;
-  let validation = validateOutput(output);
-  for (
-    let repairAttempt = 0;
-    !validation.valid && repairAttempt < 2;
-    repairAttempt += 1
-  ) {
-    generated = await provider.generate({
-      ...input,
-      repair: {
-        reasonCode: "output-invalid",
-        message: [...new Set(validation.errors)].join("; "),
-        ...(typeof output?.summary?.value === "string"
-          ? { rejectedSummary: output.summary.value.slice(0, 1_000) }
-          : {}),
-      },
-    });
-    output = generated.output;
-    validation = validateOutput(output);
-  }
+  let validation = generated.validation;
   if (!validation.valid) {
     const tagFallback =
       requestedFields.includes("tags") &&
@@ -173,7 +158,7 @@ export async function enrichRecord(
         ? { ...output, tags: [] }
         : null;
     const fallbackValidation = tagFallback
-      ? validateOutput(tagFallback)
+      ? validateCandidate(tagFallback)
       : { valid: false };
     if (fallbackValidation.valid) {
       return {
@@ -181,7 +166,7 @@ export async function enrichRecord(
         tag_generation_diagnostic: "invalid-output-fell-back-empty",
       };
     }
-    const error = new Error([...new Set(validation.errors)].join("; "));
+    const error = new Error(validation.message);
     error.code = "output-invalid";
     throw error;
   }
@@ -371,12 +356,10 @@ function validateOutput(output, record, vocabularies, providerInput) {
         return "Summary must be at most 220 characters.";
       }
       if (
-        [
-          "summary must contain between 24 and 36 words",
-          "summary value must contain between 24 and 36 words",
-        ].includes(error)
+        error ===
+        `summary value must be at least ${GENERATED_SUMMARY_MIN_LENGTH} characters`
       ) {
-        return "Summary must contain 24-36 words.";
+        return `Summary must contain at least ${GENERATED_SUMMARY_MIN_LENGTH} characters.`;
       }
       if (
         [
@@ -395,12 +378,9 @@ function validateOutput(output, record, vocabularies, providerInput) {
         return "Summary must not contain Markdown or list syntax.";
       }
       if (
-        [
-          "summary must be exactly two sentences",
-          "summary value must be exactly two sentences",
-        ].includes(error)
+        error === "summary value must not contain URLs or domain-style links"
       ) {
-        return "Summary must be exactly two sentences.";
+        return "Summary must not contain URLs or domain-style links.";
       }
       if (error.includes("evidence")) {
         return "Include compact source evidence references.";
@@ -447,12 +427,6 @@ function retryRepairMessage(entry) {
   return diagnostics[entry.diagnostic_code] ?? entry.message;
 }
 
-function summaryMeasurements(summary) {
-  const words = summary.trim().split(/\s+/u).filter(Boolean).length;
-  const sentences = summary.match(/[.!?](?=\s|$)/gu)?.length ?? 0;
-  return `${words} words, ${summary.length} characters, and ${sentences} sentences`;
-}
-
 function validationRepairInput(providerInput, validation, output) {
   const rejectedSummary =
     typeof output?.summary?.value === "string"
@@ -461,7 +435,7 @@ function validationRepairInput(providerInput, validation, output) {
   const summaryGuidance =
     rejectedSummary === undefined
       ? validation.repairHint
-      : `The rejected summary has ${summaryMeasurements(rejectedSummary)}. ${validation.repairHint} Prefer 24-30 words and 160-200 characters while keeping the hard limits of 24-36 words and 220 characters.`;
+      : `The rejected summary has ${rejectedSummary.length} characters. ${validation.repairHint} Keep the replacement between ${GENERATED_SUMMARY_MIN_LENGTH} and ${GENERATED_SUMMARY_MAX_LENGTH} characters as single-line plain text without Markdown, list syntax, URLs, or domain-style links.`;
   return {
     ...providerInput,
     repair: {
@@ -532,6 +506,7 @@ async function processProject(input, id) {
   }
 
   let output;
+  let validation;
   let providerMetadata;
   let providerInput;
   let providerCallCount = 0;
@@ -595,9 +570,17 @@ async function processProject(input, id) {
       };
     }
     try {
-      const generated = await generate(providerInput);
+      const generated = await generateValidatedEnrichment({
+        initialInput: providerInput,
+        maxAttempts: phase === "retry" ? 5 : 1,
+        generate,
+        validate: (candidate) =>
+          validateOutput(candidate, record, vocabularies, providerInput),
+        repair: validationRepairInput,
+      });
       output = generated.output;
       providerMetadata = generated.metadata;
+      validation = generated.validation;
     } catch (error) {
       return {
         id,
@@ -615,32 +598,7 @@ async function processProject(input, id) {
   const validationInput =
     providerInput ??
     providerInputForRecord(record, sourceRecord, source, vocabularies);
-  let validation = validateOutput(
-    output,
-    record,
-    vocabularies,
-    validationInput,
-  );
-  if (!validation.valid && providerInput) {
-    providerInput = validationRepairInput(providerInput, validation, output);
-    try {
-      const generated = await generate(providerInput);
-      output = generated.output;
-      providerMetadata = generated.metadata;
-    } catch (error) {
-      return {
-        id,
-        phase,
-        outcome: "failed",
-        reasonCode: error.code ?? "provider-response-invalid",
-        diagnosticCode: error.diagnosticCode,
-        message: error.message ?? "The enrichment provider failed.",
-        ...sourceProvenance(source),
-        ...providerTelemetry(),
-      };
-    }
-    validation = validateOutput(output, record, vocabularies, providerInput);
-  }
+  validation ??= validateOutput(output, record, vocabularies, validationInput);
   if (!validation.valid) {
     const tagFallback =
       validationInput.requestedFields.includes("tags") &&

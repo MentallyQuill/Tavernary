@@ -572,6 +572,7 @@ test("discards community manual metadata before synthesized enrichment", async (
   expect(enrich).toHaveBeenCalledWith(
     expect.objectContaining({
       requestedFields: ["summary", "tags"],
+      maxProviderAttempts: 5,
       metadataRequest: {
         summary: { mode: "automatic" },
         tags: { mode: "automatic" },

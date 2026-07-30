@@ -156,6 +156,7 @@ export function enrichRecord(
   provider: EnrichmentProvider,
   options?: {
     force?: boolean;
+    maxProviderAttempts?: number;
     vocabularies?: TagVocabulary;
     protectedTerms?: readonly string[];
     policyVersion?: string;
