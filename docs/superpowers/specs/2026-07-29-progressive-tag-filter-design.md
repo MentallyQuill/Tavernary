@@ -49,6 +49,12 @@ The result is low information density and scroll-within-scroll navigation.
 The Goals & traits section also uses a different visual language from Model
 family, Completion format, and the compact metadata chips on project cards.
 
+Chip-based metadata filters have a second presentation defect. Their current
+focus rule uses `:focus-within`, so an ordinary pointer click produces the
+same bright outer halo intended for keyboard navigation. The collapsed chip
+container clips that outer shadow at its top and side boundaries. This makes
+the selected state look overemphasized and visibly cut off.
+
 ## Interaction Model
 
 The Goals & traits section renders in this order:
@@ -134,7 +140,11 @@ All chip-style filter choices share one presentation contract:
 - six-pixel wrapping gap;
 - subdued tabular count;
 - visible hover and keyboard-focus states;
-- accent border, accent surface, and checkmark when selected; and
+- a subtle teal fill, restrained one-pixel accent border, and checkmark when
+  selected;
+- no additional focus halo after an ordinary pointer click;
+- a distinct `:focus-visible` keyboard indicator rendered inside the chip
+  boundary so it cannot be clipped; and
 - disabled styling that does not rely on opacity alone.
 
 This contract applies to Goal tags, Trait tags, Model family, Completion
@@ -197,6 +207,9 @@ constraint.
 - Disclosure controls expose `aria-expanded`.
 - Selected-chip removal has an accessible name containing the public tag
   label.
+- Pointer selection does not trigger the keyboard-focus indicator.
+- Keyboard focus remains visually distinct from selection and is contained
+  within the chip boundary at every container edge.
 - Search result and selection status announcements remain polite.
 - Keyboard users can reach every visible option, disclosure control, and
   selected-chip removal action.
@@ -242,6 +255,8 @@ constraint.
 - Confirm catalog results and shareable URL state remain synchronized.
 - Confirm Goal/Traits composition semantics remain unchanged.
 - Exercise keyboard focus and disclosure state.
+- Confirm pointer selection uses only the subtle selected treatment.
+- Confirm keyboard focus adds a distinct, fully visible internal indicator.
 - Verify the mobile filter sheet has no horizontal overflow.
 
 ### Visual and contract tests
@@ -251,6 +266,9 @@ constraint.
   fully rounded radius.
 - Assert Goal and Trait options wrap compactly at desktop and mobile widths.
 - Assert the bounded tag-results presentation and its overflow rules are gone.
+- Assert pointer-selected and keyboard-focused chip states remain distinct.
+- Place a keyboard-focused chip at each collapsed-container boundary and
+  assert that its focus indicator is not clipped.
 - Keep vocabulary counts fixture-derived instead of freezing production
   inventory totals.
 
