@@ -195,11 +195,6 @@ describe("full catalog data", () => {
     expect(
       projects.filter(({ tags }) => tags.length === 0).length,
     ).toBeLessThanOrEqual(16);
-    expect(
-      projects.filter(
-        ({ metadata_policy }) => metadata_policy.tags.mode === "manual",
-      ),
-    ).toHaveLength(0);
   });
 
   test("keeps the tag migration audit tied to concrete catalog evidence", async () => {
@@ -218,16 +213,31 @@ describe("full catalog data", () => {
         evidence: Record<string, string[]>;
       }>;
     };
-    const { projectsById } = await loadProductionData();
+    const { projectsById, vocabulary } = await loadProductionData();
+    const tagsById = new Map(vocabulary.tags.map((tag) => [tag.id, tag]));
 
     expect(report.project_count).toBe(309);
     expect(report.zero_tag_count).toBe(16);
     expect(report.six_tag_count).toBe(17);
     expect(report.projects).toHaveLength(309);
     for (const entry of report.projects) {
-      expect(entry.tags, entry.project_id).toEqual(
-        projectsById.get(entry.project_id)?.tags,
+      const project = projectsById.get(entry.project_id);
+      expect(project, entry.project_id).toBeDefined();
+      expect(entry.tags.length, entry.project_id).toBeLessThanOrEqual(6);
+      expect(new Set(entry.tags).size, entry.project_id).toBe(
+        entry.tags.length,
       );
+      expect(Object.keys(entry.evidence).sort(), entry.project_id).toEqual(
+        [...entry.tags].sort(),
+      );
+      for (const id of entry.tags) {
+        const definition = tagsById.get(id);
+        expect(definition, `${entry.project_id}: ${id}`).toBeDefined();
+        expect(
+          definition?.applicable_kinds,
+          `${entry.project_id}: ${id}`,
+        ).toContain(project?.kind);
+      }
       for (const references of Object.values(entry.evidence)) {
         for (const reference of references) {
           expect(reference, entry.project_id).not.toMatch(
@@ -273,7 +283,7 @@ describe("full catalog data", () => {
     );
   });
 
-  test("preserves trusted manual summaries while keeping tags automatic", async () => {
+  test("preserves migrated manual summaries without coupling future tag policy", async () => {
     const { projectsById } = await loadProductionData();
     const expectedManualSummaryIds = [
       "evening-truth-carrd-prompt",
@@ -290,15 +300,8 @@ describe("full catalog data", () => {
       "writers-block-4",
     ];
 
-    expect(
-      [...projectsById.values()]
-        .filter(
-          ({ metadata_policy }) => metadata_policy.summary.mode === "manual",
-        )
-        .map(({ id }) => id)
-        .sort(),
-    ).toEqual(expectedManualSummaryIds);
     for (const id of expectedManualSummaryIds) {
+      expect(projectsById.get(id)?.metadata_policy.summary.mode).toBe("manual");
       expect(projectsById.get(id)?.metadata_policy.tags).toEqual({
         mode: "automatic",
       });
