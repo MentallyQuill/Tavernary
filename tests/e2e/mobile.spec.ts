@@ -4,6 +4,7 @@ import {
   collapsedFrontendOptions,
   frontendExpansionLabel,
   initiallyVisibleFrontendOptions,
+  tagOptionsByFacet,
   tagSearchFixture,
 } from "../helpers/generated-catalog";
 import { sitePath } from "../helpers/site-path";
@@ -85,12 +86,30 @@ test("uses mobile browse and filter sheets without page overflow", async ({
       name: "Search goals and traits",
     }),
   ).toBeVisible();
-  const tagResults = dialog.getByTestId("tag-results");
-  expect(
-    await tagResults.evaluate(
-      (element) => element.scrollHeight > element.clientHeight,
-    ),
-  ).toBe(true);
+  await expect(dialog.locator(".tag-results-bounded")).toHaveCount(0);
+  await expect(dialog.locator(".tag-browser-facets")).toHaveCSS(
+    "overflow-y",
+    "visible",
+  );
+  for (const facet of ["goal", "trait"] as const) {
+    const group = dialog.getByRole("group", {
+      name: facet === "goal" ? "Goals" : "Traits",
+    });
+    const visibleCount = await group.getByRole("checkbox").count();
+    const hiddenCount = tagOptionsByFacet[facet].length - visibleCount;
+    if (hiddenCount > 0) {
+      await expect(
+        group.getByRole("button", {
+          name: `Show ${hiddenCount} more`,
+        }),
+      ).toBeVisible();
+    }
+  }
+  const goals = dialog.getByRole("group", { name: "Goals" });
+  const goalsDisclosure = goals.getByRole("button", {
+    name: /Show \d+ more/u,
+  });
+  if ((await goalsDisclosure.count()) > 0) await goalsDisclosure.click();
   if (!tagSearchFixture) throw new Error("Missing tag search fixture");
   const tagSearch = dialog.getByRole("searchbox", {
     name: "Search goals and traits",

@@ -111,7 +111,7 @@ test("keeps description prose while removing emoji and linking the policy", asyn
   ).toHaveAttribute("href", /\/catalog-policy\/?$/u);
 });
 
-test("keeps the manual tag picker searchable and bounded at mobile width", async ({
+test("keeps the progressive manual tag picker usable at mobile width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
@@ -125,6 +125,14 @@ test("keeps the manual tag picker searchable and bounded at mobile width", async
   await search.fill("memory");
   await expect(page.getByLabel("Maintain long-term memory")).toBeVisible();
   await search.fill("");
+
+  for (const groupName of ["Goals", "Traits"]) {
+    const group = page.getByRole("group", { name: groupName });
+    const disclosure = group.getByRole("button", {
+      name: /Show \d+ more/u,
+    });
+    if ((await disclosure.count()) > 0) await disclosure.click();
+  }
 
   for (const label of [
     "Maintain long-term memory",

@@ -73,6 +73,32 @@ export const tagSearchFixture =
       ),
   ) ?? generatedCatalog.tagVocabulary[0];
 
+function tagProjectCount(id: string) {
+  return generatedCatalog.projects.filter(({ tags }) =>
+    tags.some((tag) => tag.id === id),
+  ).length;
+}
+
+export const tagOptionsByFacet = Object.fromEntries(
+  (["goal", "trait"] as const).map((facet) => [
+    facet,
+    generatedCatalog.tagVocabulary
+      .filter((tag) => tag.facet === facet)
+      .map(({ id, label }) => ({
+        id,
+        label,
+        count: tagProjectCount(id),
+      }))
+      .sort(
+        (left, right) =>
+          right.count - left.count || left.label.localeCompare(right.label),
+      ),
+  ]),
+) as Record<
+  "goal" | "trait",
+  Array<{ id: string; label: string; count: number }>
+>;
+
 const frontendVocabulary = JSON.parse(
   readFileSync(
     resolve(process.cwd(), "data/vocabularies/frontends.json"),

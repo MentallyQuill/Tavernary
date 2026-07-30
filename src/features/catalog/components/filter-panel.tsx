@@ -26,7 +26,7 @@ import {
   FilterSheetHeading,
   type FilterOption,
 } from "./filter-controls";
-import { TagBrowser } from "./tag-browser";
+import { TAG_FACET_PREVIEW_LIMIT, TagBrowser } from "./tag-browser";
 
 type FilterArray =
   | "frontends"
@@ -207,6 +207,7 @@ export function FilterPanel({
           tags={tagVocabulary}
           selected={query.tags}
           onToggle={(value) => onToggle("tags", value)}
+          previewLimit={TAG_FACET_PREVIEW_LIMIT}
           counts={Object.fromEntries(
             tagVocabulary.map(({ id }) => [
               id,
