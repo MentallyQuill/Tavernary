@@ -63,7 +63,9 @@ jobs:
             const labels = issue.labels.map((label) => label.name);
             if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
                 !labels.includes('project-submission') ||
-                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+                (!labels.includes('needs-maintainer-review') &&
+                 !labels.includes('submission-pr-open') &&
+                 !labels.includes('submission-retryable'))) {
               throw new Error('Submission issue is no longer admitted.');
             }
           " "$issue_path"
@@ -166,7 +168,9 @@ jobs:
             const labels = issue.labels.map((label) => label.name);
             if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
                 !labels.includes('project-submission') ||
-                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+                (!labels.includes('needs-maintainer-review') &&
+                 !labels.includes('submission-pr-open') &&
+                 !labels.includes('submission-retryable'))) {
               throw new Error('Submission issue is no longer admitted.');
             }
             const plan = planClassificationReviewNotice({
@@ -387,7 +391,9 @@ jobs:
             const labels = issue.labels.map((label) => label.name);
             if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
                 !labels.includes('project-submission') ||
-                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+                (!labels.includes('needs-maintainer-review') &&
+                 !labels.includes('submission-pr-open') &&
+                 !labels.includes('submission-retryable'))) {
               throw new Error('Submission issue is no longer admitted.');
             }
           " "${RUNNER_TEMP}/project-submission-issue.json"
@@ -405,7 +411,9 @@ jobs:
             const labels = issue.labels.map((label) => label.name);
             if (issue.state !== 'open' || !labels.includes('issue-admitted') ||
                 !labels.includes('project-submission') ||
-                (!labels.includes('needs-maintainer-review') && !labels.includes('submission-pr-open'))) {
+                (!labels.includes('needs-maintainer-review') &&
+                 !labels.includes('submission-pr-open') &&
+                 !labels.includes('submission-retryable'))) {
               throw new Error('Submission issue is no longer admitted.');
             }
             const owned = new Set([

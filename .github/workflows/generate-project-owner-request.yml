@@ -65,7 +65,8 @@ jobs:
                 !labels.includes('issue-admitted') ||
                 !labels.includes('project-owner-request') ||
                 (!labels.includes('needs-maintainer-review') &&
-                 !labels.includes('submission-pr-open'))) {
+                 !labels.includes('submission-pr-open') &&
+                 !labels.includes('submission-retryable'))) {
               throw new Error('Owner request issue is no longer admitted.');
             }
           " "$issue_path"
