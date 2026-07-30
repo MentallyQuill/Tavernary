@@ -763,7 +763,9 @@ test("supports pending-license and missing-license catalog filters at full scale
 
 test("matches the approved card anatomy", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  const card = page.locator(".project-card").first();
+  const card = page
+    .locator(".project-card-shell:not(.has-relationship-control) .project-card")
+    .first();
 
   await expect(page.locator(".project-card")).toHaveCount(
     generatedProjectCount,
