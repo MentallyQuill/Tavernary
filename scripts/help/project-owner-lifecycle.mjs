@@ -13,7 +13,8 @@ const removableLabels = [
 export function planProjectOwnerClosure(input) {
   const marker = parseOwnerRequestPullRequestMarker(input.body ?? "");
   if (
-    !marker ||
+    marker?.schema_version !== 2 ||
+    marker.producer !== "project-owner-request" ||
     input.headRepository.toLowerCase() !== input.baseRepository.toLowerCase() ||
     input.headRef !== ownerRequestBranch(marker.issue_number) ||
     input.baseRef !== input.defaultBranch ||

@@ -313,7 +313,7 @@ test("falls back to submitted description when enrichment is unavailable", async
   });
 });
 
-test("refuses an unreviewed fallback when intake marks catalog copy as required", async () => {
+test("reports why required catalog copy could not be validated", async () => {
   await expect(
     draftProjectRecord({
       admitted: admittedGithubExtension,
@@ -327,7 +327,9 @@ test("refuses an unreviewed fallback when intake marks catalog copy as required"
       copyRequired: true,
       now: "2026-07-25T18:00:00.000Z",
     }),
-  ).rejects.toThrow("Validated catalog copy is required");
+  ).rejects.toThrow(
+    "Validated catalog copy is required before this project can be drafted: The enrichment provider timed out.",
+  );
 });
 
 test("drafts external presets with manual source policy", async () => {

@@ -89,13 +89,16 @@ test("owner requests have an accessible readable fallback in exact review order"
 
   expect(fields.map((field) => field.id)).toEqual([
     "request-type",
+    "source-id",
     "project-id",
     "repository",
     "proposed-name",
     "proposed-summary",
     "supported-frontends",
     "primary-function",
-    "capabilities",
+    "tags",
+    "summary-metadata-mode",
+    "tag-metadata-mode",
     "model-families",
     "completion-formats",
     "proposed-repository",
@@ -107,7 +110,7 @@ test("owner requests have an accessible readable fallback in exact review order"
     fields
       .filter((field) => field.validations?.required)
       .map((field) => field.id),
-  ).toEqual(["request-type", "project-id"]);
+  ).toEqual(["request-type", "source-id"]);
   expect(fields.at(-1)).toMatchObject({
     id: "owner-request-manifest",
     type: "textarea",
@@ -117,7 +120,7 @@ test("owner requests have an accessible readable fallback in exact review order"
     fields.find((field) => field.id === "request-type")?.attributes
       ?.description,
   ).toContain(
-    "Edit card details; Update repository location; Delist this project",
+    "Edit card details; Add cards from this source; Retire this card; Restore this card; Update repository location; Permanently delist this source",
   );
   expect(
     fields.find((field) => field.id === "proposed-summary")?.attributes
@@ -130,11 +133,15 @@ test("owner requests have an accessible readable fallback in exact review order"
   expect(
     fields.find((field) => field.id === "delist-confirmation")?.attributes
       ?.description,
-  ).toContain("current complete project display name");
+  ).toContain("complete owner/repository");
   expect(
     fields.find((field) => field.id === "delist-confirmation")?.attributes
       ?.description,
-  ).not.toContain("I am requesting that Tavernary delist this project");
+  ).toContain("permanently reserves the immutable repository identity");
+  expect(
+    fields.find((field) => field.id === "owner-request-manifest")?.attributes
+      ?.description,
+  ).toContain("required for add-card batches");
 });
 
 test("Kit submission is a readable review form without redundant machine fields", async () => {

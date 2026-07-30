@@ -207,6 +207,22 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   expect(schema.properties).not.toHaveProperty("capabilities");
   expect(schema.properties).not.toHaveProperty("primary_function");
   expect(schema.properties).not.toHaveProperty("metadata_status");
+  expect(body.messages[0].content).toMatch(/never.*change.*primary.function/iu);
+  expect(body.messages[0].content).toMatch(/exactly two sentences/iu);
+  expect(body.messages[0].content).toMatch(/purpose/iu);
+  expect(body.messages[0].content).toMatch(
+    /distinctive workflow, capability, or benefit/iu,
+  );
+  expect(body.messages[0].content).toMatch(
+    /prefer 24-30 words and 160-200 characters/iu,
+  );
+  expect(body.messages[0].content).toMatch(
+    /preserve exact wording and summary structure/iu,
+  );
+  expect(body.messages[0].content).toMatch(
+    /accepted-unchanged.*empty change_reasons.*policy_signal.*exact string "none"/iu,
+  );
+  expect(body.messages[0].content).toMatch(/ordinary profanity.*permitted/iu);
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });
@@ -240,6 +256,38 @@ test("builds a tags-only schema without summary or copy diagnostics", async () =
   expect(body.response_format.json_schema.schema.properties).not.toHaveProperty(
     "result",
   );
+});
+
+test("normalizes a null no-signal sentinel from the provider", async () => {
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) =>
+      success({
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                ...output,
+                policy_signal: null,
+              }),
+            },
+          },
+        ],
+      }),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test/v1/chat/completions",
+    apiKey: "do-not-log",
+    model,
+    fetchImpl,
+  });
+
+  await expect(provider.generate(input)).resolves.toMatchObject({
+    output: {
+      result: "accepted-unchanged",
+      change_reasons: [],
+      policy_signal: "none",
+    },
+  });
 });
 
 test("uses deterministic sampling for a validation repair request", async () => {

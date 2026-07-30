@@ -134,13 +134,17 @@ jobs:
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in
-                data/registry/projects/*.json|data/snapshots/github/*.json) ;;
+                data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json) ;;
                 *)
                   echo "::error::Refusing unsafe previous owner path: $generated_path"
                   exit 1
                   ;;
               esac
-              git checkout origin/main -- "$generated_path"
+              if git cat-file -e "origin/main:${generated_path}" 2>/dev/null; then
+                git checkout origin/main -- "$generated_path"
+              else
+                rm -f -- "$generated_path"
+              fi
             done < "${RUNNER_TEMP}/previous-owner-paths.txt"
           else
             git checkout -B "$BRANCH" origin/main
@@ -162,12 +166,23 @@ jobs:
               "utf8",
             ),
           );
-          const registry = `data/registry/projects/${report.project_id}.json`;
-          const expected = report.operation === "move-source"
-            ? [registry, `data/snapshots/github/${report.project_id}.json`]
-            : [registry];
+          const cardPaths = report.project_ids.map(
+            (projectId) => `data/registry/projects/${projectId}.json`,
+          );
+          const sourcePath = `data/registry/sources/${report.source_id}.json`;
+          const snapshotPath = `data/snapshots/github/${report.source_id}.json`;
+          const expected = ["edit-card", "add-cards", "retire-card", "restore-card"]
+            .includes(report.operation)
+            ? cardPaths
+            : report.operation === "move-source"
+              ? [sourcePath, snapshotPath]
+              : report.operation === "delist-source"
+                ? [sourcePath]
+                : [];
           if (
+            report.schema_version !== 2 ||
             !Array.isArray(report.generated_paths) ||
+            expected.length === 0 ||
             JSON.stringify(report.generated_paths) !== JSON.stringify(expected)
           ) {
             throw new Error("Owner generator returned paths outside the exact operation.");
@@ -178,10 +193,13 @@ jobs:
           );
           fs.appendFileSync(
             process.env.GITHUB_OUTPUT,
-            `project_id=${report.project_id}\noperation=${report.operation}\n`,
+            `project_label=${report.project_ids.join(",") || report.source_id}\noperation=${report.operation}\nsource_id=${report.source_id}\n`,
           );
           NODE
-          git diff --name-only -z > "${RUNNER_TEMP}/owner-dirty-paths.bin"
+          {
+            git diff --no-renames --name-only -z
+            git ls-files --others --exclude-standard -z
+          } > "${RUNNER_TEMP}/owner-dirty-paths.bin"
           node --input-type=module <<'NODE'
           import fs from "node:fs";
           const allowed = new Set(
@@ -214,7 +232,10 @@ jobs:
             tests/unit/project-owner-lifecycle.test.ts
           npm run check:content
           git clean -fX -- src/generated/catalog.json
-          git diff --name-only -z > "${RUNNER_TEMP}/owner-validated-paths.bin"
+          {
+            git diff --no-renames --name-only -z
+            git ls-files --others --exclude-standard -z
+          } > "${RUNNER_TEMP}/owner-validated-paths.bin"
           node --input-type=module <<'NODE'
           import { createHash } from "node:crypto";
           import fs from "node:fs";
@@ -284,7 +305,13 @@ jobs:
             exit 1
           fi
           mapfile -t generated_paths < "${RUNNER_TEMP}/owner-generated-paths.txt"
-          git checkout origin/main -- "${generated_paths[@]}"
+          for generated_path in "${generated_paths[@]}"; do
+            if git cat-file -e "origin/main:${generated_path}" 2>/dev/null; then
+              git checkout origin/main -- "$generated_path"
+            else
+              rm -f -- "$generated_path"
+            fi
+          done
           node scripts/help/generate-project-owner-request.mjs \
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
@@ -336,7 +363,7 @@ jobs:
         run: |
           set -euo pipefail
           mapfile -t generated_paths < "${RUNNER_TEMP}/owner-generated-paths.txt"
-          if git diff --quiet -- "${generated_paths[@]}"; then
+          if [[ -z "$(git status --porcelain=v1 -- "${generated_paths[@]}")" ]]; then
             changed=false
           else
             changed=true
@@ -363,19 +390,11 @@ jobs:
             ? parseOwnerRequestPullRequestMarker(existingPull.body ?? "")
             : null;
           const plan = planOwnerPrUpdate({
-            issueNumber: Number(process.env.ISSUE_NUMBER),
-            projectId: report.project_id,
-            operation: report.operation,
-            repositoryId: report.repository_id,
-            authorityType: report.authority_type,
-            actorLogin: report.actor_login,
+            report,
             repository: process.env.GITHUB_REPOSITORY,
             remoteHeadSha: process.env.REMOTE_SHA || null,
-            markerHeadSha: process.env.MARKER_SHA || null,
             existingMarker: marker ? { kind: "project-owner", marker } : null,
             generatedContentChanged: process.env.CHANGED === "true",
-            forceRegeneration: process.env.FORCE_REGENERATION === "true",
-            generatedPaths: report.generated_paths,
             pulls,
           });
           if (plan.action === "conflict") throw new Error(plan.message);
@@ -425,7 +444,7 @@ jobs:
           BRANCH: ${{ steps.state.outputs.branch }}
           HEAD_SHA: ${{ steps.commit.outputs.head_sha }}
           PR_NUMBER: ${{ steps.state.outputs.pr_number }}
-          PROJECT_ID: ${{ steps.paths.outputs.project_id }}
+          PROJECT_LABEL: ${{ steps.paths.outputs.project_label }}
           REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
         run: |
           set -euo pipefail
@@ -441,10 +460,13 @@ jobs:
             ),
           );
           const transaction = createProjectPublicationTransaction({
+            schema_version: 2,
             operation: report.operation,
             producer: "project-owner-request",
+            publication_mode: report.publication_mode,
             issue_number: Number(process.env.ISSUE_NUMBER),
-            project_id: report.project_id,
+            project_ids: report.project_ids,
+            source_id: report.source_id,
             source_identity: report.source_identity,
             actor: {
               id: report.actor_id,
@@ -453,7 +475,7 @@ jobs:
             },
             authority_type: report.authority_type,
             input_digest: report.request_fingerprint,
-            record_fingerprint: report.record_fingerprint,
+            input_fingerprints: report.input_fingerprints,
             base_sha: execFileSync(
               "git",
               ["rev-parse", "origin/main"],
@@ -469,13 +491,13 @@ jobs:
           });
           const body = renderOwnerRequestPullRequest({
             issueNumber: Number(process.env.ISSUE_NUMBER),
-            projectName: report.project_id,
+            projectName: report.project_ids.join(", ") || report.source_id,
             report,
             marker: transaction,
           });
           fs.writeFileSync(`${process.env.RUNNER_TEMP}/project-owner-pr.md`, body);
           NODE
-          title="[Project owner request] ${PROJECT_ID}"
+          title="[Project owner request] ${PROJECT_LABEL}"
           if [[ -n "$PR_NUMBER" ]]; then
             gh pr edit "$PR_NUMBER" --title "$title" \
               --body-file "${RUNNER_TEMP}/project-owner-pr.md"

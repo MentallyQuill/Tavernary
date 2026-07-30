@@ -8,6 +8,7 @@ release controls added after initial implementation.
 Do not edit generated artifacts manually.
 
 - Human-authored:
+  - `data/registry/sources/*.json`
   - `data/registry/projects/*.json`
   - `data/registry/kits/*.json`
   - `data/moderation/*.json`
@@ -216,15 +217,15 @@ Triage project-information, website-bug, kit-report, and other-help reports as
 maintainer-owned queues. Preserve the supplied manifest and public evidence in
 the issue, request clarification through the issue when needed, and make a
 normal reviewed PR for site or catalog changes. A serious listing report may
-set visibility/visibility_reason, pause source refresh, or preserve a delist
-tombstone rather than deleting the historical record.
+retire or quarantine one card, pause source refresh, or preserve a source
+delist tombstone rather than deleting historical records.
 
 project-owner-request automation accepts the current personal GitHub owner of a
 listing's verified repository ID and reviewed Tavernary staff. Staff authority
 requires an immutable GitHub user ID in
 `data/maintenance/trusted-tavernary-editors.json` plus a current trusted
 repository association. Association alone does not grant authority. Trusted
-owners, admins, and maintainers may edit or delist any catalog card; source
+owners, admins, and maintainers may edit any catalog card or source; source
 moves still require an immutable GitHub repository identity. Other
 rights-holder requests return to a human-reviewed project report. Common owner
 failure reason codes are issue-author-not-owner, stale-owner-request,
@@ -234,12 +235,30 @@ closes it.
 
 For an admitted owner request, the generated
 automation/project-owner-request-<issue-number> PR is the validation and audit
-transaction for card edits, same-repository source moves, and delists. Summary or
-capability changes set `enrichment_policy: manual` so automatic editorial
-enrichment cannot replace approved content. A primary-function-only edit
-preserves the current enrichment policy. This does not pause source collection:
-`refresh_policy` controls automatic source evidence while `enrichment_policy`
-controls model-written summary and capabilities.
+transaction for:
+
+- editing one card;
+- **Add cards from this source**, as one to ten cards in one atomic batch;
+- updating the repository location after a rename or transfer while preserving
+  the immutable source ID and every project ID;
+- retiring one card;
+- restoring one retired card; and
+- permanently delisting one source.
+
+Only one unresolved add-card request per source may exist at a time. The lock
+is source-wide, so sibling cards cannot open parallel batches. Add-card
+transactions use manual publication mode and await maintainer merge even when
+the actor is the verified repository owner. Values may be cloned into a draft,
+but metadata-policy provenance is never cloned.
+
+Retire or restore is a soft card operation. It changes only
+`listing_status`/`listing_status_reason` and preserves the source, snapshot,
+other cards, and Kit references. Permanent delist is the nuclear operation: it
+marks the source tombstone, pauses refresh, and hides every card associated
+with that source. Do not model routine card removal as a source delist.
+
+`refresh_policy` is source-owned. Summary and tag policy are independently
+card-owned under `metadata_policy`.
 
 If generation failed or a retryable dependency recovered, rerun the owner
 triage/generation workflow from main. Regeneration may update only marker-owned
@@ -252,8 +271,9 @@ with its reason so it cannot be silently recreated.
 ## Automatic project publication operations
 
 `PROJECT_AUTO_PUBLICATION_ENABLED` is the single emergency merge switch. Set it
-to the exact string `true` to enable create, edit, source-move, and delist
-publication. Intake and generation continue while it is absent or false;
+to the exact string `true` to enable ordinary create, edit, source-move, retire,
+restore, and source-delist publication. Add-card batches still await maintainer
+merge. Intake and generation continue while it is absent or false;
 queued transactions are reconstructed from current issues and current `main`
 when publication resumes.
 
@@ -282,9 +302,33 @@ profanity are not policy conflicts.
 
 Exceptional restoration of an owner-delisted repository is manual Tavernary
 staff maintenance. Verify the current repository identity and ownership,
-document the exception, restore the canonical visibility fields, validate the
+document the exception, restore the canonical source status, validate the
 catalog, and publish through an ordinary staff-maintained change. Do not reopen
 self-service submission for that repository.
+
+### Source-registry migration and transaction cutover
+
+The combined cutover starts with a dry run and preserves rollback:
+
+```powershell
+node scripts/catalog/migrate-source-registry-v1.mjs
+node scripts/catalog/migrate-source-registry-v1.mjs --write
+```
+
+The first command reports every planned source, card, snapshot, refresh
+manifest, and tag-policy change with `writes=0`. The `--write` command validates
+the complete staged candidate before committing any file. If a write or rename
+fails, rollback restores the prior version-5 card and project-keyed snapshot
+files; never repair a partial migration by hand.
+
+Publication transaction schema version 2 is required after cutover. A
+transaction version 1 PR must merge before the cutover or regenerate from its
+still-open issue afterward; the publisher rejects it rather than guessing how
+to map project-keyed paths. The read-only cutover audit on 2026-07-29 initially
+found four open version-1 submission PRs: #154 (issue #148), #155 (issue #150),
+#156 (issue #152), and #157 (issue #149). All four merged into `main` before
+cutover, so none requires regeneration. Issue #151 remained open without a
+generated PR and must be audited again immediately before the final migration.
 
 ## Refresh automation
 

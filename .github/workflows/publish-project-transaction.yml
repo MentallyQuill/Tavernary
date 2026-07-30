@@ -1,12 +1,13 @@
 name: "Projects: Publish validated transaction"
-run-name: "Project publication for ${{ github.event.workflow_run.head_branch }}"
+run-name: "Project publication for validation #${{ inputs.validation_run_id }}"
 
 on:
-  workflow_run:
-    workflows:
-      - "Site: Validate changes"
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      validation_run_id:
+        description: Completed Site validation workflow run
+        required: true
+        type: number
 
 permissions:
   contents: write
@@ -20,17 +21,57 @@ concurrency:
 
 jobs:
   publish:
-    if: >-
-      github.event.workflow_run.event == 'workflow_dispatch' &&
-      (startsWith(github.event.workflow_run.head_branch, 'automation/project-submission-') ||
-       startsWith(github.event.workflow_run.head_branch, 'automation/project-owner-request-'))
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       AUTO_PUBLICATION_ENABLED: ${{ vars.PROJECT_AUTO_PUBLICATION_ENABLED }}
-      RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
-      RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+      VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
     steps:
+      - name: Resolve successful generated validation
+        id: validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          validation="${RUNNER_TEMP}/project-publication-validation.json"
+          for attempt in $(seq 1 12); do
+            gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${VALIDATION_RUN_ID}" \
+              > "$validation"
+            status="$(
+              node -p "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8')).status" \
+                "$validation"
+            )"
+            [[ "$status" == "completed" ]] && break
+            sleep 5
+          done
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const validation = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-publication-validation.json`,
+              "utf8",
+            ),
+          );
+          const generatedBranch =
+            validation.head_branch?.startsWith("automation/project-submission-") ||
+            validation.head_branch?.startsWith("automation/project-owner-request-");
+          if (
+            validation.path !== ".github/workflows/ci.yml" ||
+            validation.event !== "workflow_dispatch" ||
+            validation.status !== "completed" ||
+            validation.conclusion !== "success" ||
+            !generatedBranch ||
+            !/^[0-9a-f]{40}$/u.test(validation.head_sha ?? "")
+          ) {
+            throw new Error(
+              "Publication requires a successful generated-branch Site validation run.",
+            );
+          }
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, [
+            `head_sha=${validation.head_sha}`,
+            `head_branch=${validation.head_branch}`,
+            `conclusion=${validation.conclusion}`,
+          ].join("\n") + "\n");
+          NODE
       - name: Check out current default-branch publisher
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -43,6 +84,9 @@ jobs:
       - name: Load exact pull request transaction state
         id: state
         shell: bash
+        env:
+          RUN_HEAD_SHA: ${{ steps.validation.outputs.head_sha }}
+          RUN_HEAD_BRANCH: ${{ steps.validation.outputs.head_branch }}
         run: |
           set -euo pipefail
           pulls="${RUNNER_TEMP}/project-publication-pulls.json"
@@ -67,7 +111,11 @@ jobs:
             throw new Error("Expected exactly one open PR for the generated branch.");
           }
           const transaction = parseProjectPublicationTransaction(pulls[0].body ?? "");
-          if (!transaction) throw new Error("Generated PR has no valid transaction.");
+          if (!transaction) {
+            throw new Error(
+              "Generated PR has no valid transaction. Schema version 2 is required; regenerate this request.",
+            );
+          }
           fs.writeFileSync(
             `${process.env.RUNNER_TEMP}/project-publication-pull.json`,
             JSON.stringify(pulls[0]),
@@ -79,7 +127,9 @@ jobs:
           fs.appendFileSync(process.env.GITHUB_OUTPUT, [
             `pull_number=${pulls[0].number}`,
             `issue_number=${transaction.issue_number}`,
-            `project_id=${transaction.project_id}`,
+            `project_id=${transaction.project_ids[0] ?? ""}`,
+            `project_ids=${transaction.project_ids.join(",")}`,
+            `source_id=${transaction.source_id}`,
             `producer=${transaction.producer}`,
             `source_repository_id=${transaction.source_identity?.repository_id ?? ""}`,
           ].join("\n") + "\n");
@@ -102,6 +152,9 @@ jobs:
         shell: bash
         env:
           CURRENT_MAIN_SHA: ${{ github.event.repository.default_branch == 'main' && github.sha || '' }}
+          RUN_CONCLUSION: ${{ steps.validation.outputs.conclusion }}
+          RUN_HEAD_SHA: ${{ steps.validation.outputs.head_sha }}
+          RUN_HEAD_BRANCH: ${{ steps.validation.outputs.head_branch }}
         run: |
           set -euo pipefail
           main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${{ github.event.repository.default_branch }}" --jq '.sha')"
@@ -110,11 +163,14 @@ jobs:
           import trustedEditors from "./data/maintenance/trusted-tavernary-editors.json" with { type: "json" };
           import frontends from "./data/vocabularies/frontends.json" with { type: "json" };
           import primaryFunctions from "./data/vocabularies/primary-functions.json" with { type: "json" };
-          import capabilities from "./data/vocabularies/capabilities.json" with { type: "json" };
+          import tags from "./data/vocabularies/tags.json" with { type: "json" };
           import modelFamilies from "./data/vocabularies/model-families.json" with { type: "json" };
           import completionFormats from "./data/vocabularies/completion-formats.json" with { type: "json" };
           import { normalizeProjectOwnerManifest } from "./src/features/help/project-owner-manifest.mjs";
-          import { fingerprintProjectRecord } from "./src/features/help/project-owner-record.mjs";
+          import {
+            fingerprintProjectRecord,
+            fingerprintSourceRecord,
+          } from "./src/features/help/project-owner-record.mjs";
           import { verifyTrustedEditor } from "./scripts/maintenance/trusted-editor-authority.mjs";
           import { parseProjectSubmissionIssue } from "./scripts/submissions/parse-project-submission.mjs";
           import { planProjectPublication } from "./scripts/publication/project-publication-planner.mjs";
@@ -129,8 +185,14 @@ jobs:
           const repository = read("project-publication-source-repository.json");
           const filePages = read("project-publication-files.json");
           const changedPaths = filePages.flat().map(({ filename }) => filename);
+          const sourcePath =
+            `data/registry/sources/${transaction.source_id}.json`;
+          const source = fs.existsSync(sourcePath)
+            ? JSON.parse(fs.readFileSync(sourcePath, "utf8"))
+            : null;
           const actorMatches =
             issue.user?.id === transaction.actor.id &&
+            issue.user?.type === transaction.actor.type &&
             issue.user?.login?.toLocaleLowerCase() ===
               transaction.actor.login.toLocaleLowerCase();
           const staff = verifyTrustedEditor({
@@ -168,9 +230,10 @@ jobs:
                 {
                   frontends: frontends.frontends,
                   primaryFunctions: primaryFunctions.primary_functions,
-                  capabilities: capabilities.capabilities,
+                  tags: tags.tags,
                   modelFamilies: modelFamilies.model_families,
                   completionFormats: completionFormats.completion_formats,
+                  source,
                 },
               );
               inputDigest = normalized.valid
@@ -180,15 +243,20 @@ jobs:
               inputDigest = null;
             }
           }
-          const recordPath =
-            `data/registry/projects/${transaction.project_id}.json`;
-          const record = fs.existsSync(recordPath)
-            ? JSON.parse(fs.readFileSync(recordPath, "utf8"))
-            : null;
-          const recordFingerprint =
-            transaction.operation === "create"
-              ? null
-              : fingerprintProjectRecord(record);
+          const projectFingerprints = Object.fromEntries(
+            Object.keys(transaction.input_fingerprints.projects).map((projectId) => {
+              const projectPath = `data/registry/projects/${projectId}.json`;
+              const project = fs.existsSync(projectPath)
+                ? JSON.parse(fs.readFileSync(projectPath, "utf8"))
+                : null;
+              return [
+                projectId,
+                project ? fingerprintProjectRecord(project) : null,
+              ];
+            }),
+          );
+          const sourceFingerprint =
+            source === null ? null : fingerprintSourceRecord(source);
           const sourceIdentityValid =
             transaction.source_identity === null ||
             transaction.source_identity.repository_id === null ||
@@ -198,7 +266,7 @@ jobs:
             workflowRun: {
               name: "Site: Validate changes",
               event: "workflow_dispatch",
-              conclusion: "${{ github.event.workflow_run.conclusion }}",
+              conclusion: process.env.RUN_CONCLUSION,
               head_sha: process.env.RUN_HEAD_SHA,
               head_branch: process.env.RUN_HEAD_BRANCH,
             },
@@ -211,7 +279,8 @@ jobs:
             current: {
               mainSha: process.env.CURRENT_MAIN_SHA,
               inputDigest,
-              recordFingerprint,
+              projectFingerprints,
+              sourceFingerprint,
               authorityValid,
               sourceIdentityValid,
             },
@@ -252,6 +321,10 @@ jobs:
         run: |
           echo "::error::Project publication is retryable: ${{ steps.plan.outputs.reason }}"
           exit 1
+      - name: Await maintainer merge
+        if: steps.plan.outputs.action == 'await-maintainer'
+        run: |
+          echo "This combined add-card request passed validation. A Tavernary maintainer must review and merge the single PR; this run will not merge or close the source issue." >> "$GITHUB_STEP_SUMMARY"
       - name: Merge exact validated head
         id: merge
         if: steps.plan.outputs.action == 'merge'
@@ -337,11 +410,17 @@ jobs:
           const issue = read("project-publication-issue.json");
           const comments = read("project-publication-comments.json").flat();
           const existingIssues = read("project-owner-delist-issues.json");
-          const projectPath =
-            `data/registry/projects/${transaction.project_id}.json`;
-          const project = fs.existsSync(projectPath)
-            ? JSON.parse(fs.readFileSync(projectPath, "utf8"))
+          const sourcePath =
+            `data/registry/sources/${transaction.source_id}.json`;
+          const source = fs.existsSync(sourcePath)
+            ? JSON.parse(fs.readFileSync(sourcePath, "utf8"))
             : {};
+          const projects = transaction.project_ids.map((projectId) => {
+            const projectPath = `data/registry/projects/${projectId}.json`;
+            return fs.existsSync(projectPath)
+              ? JSON.parse(fs.readFileSync(projectPath, "utf8"))
+              : { id: projectId, source_id: transaction.source_id };
+          });
           const kits = fs.existsSync("data/registry/kits")
             ? fs.readdirSync("data/registry/kits")
                 .filter((name) => name.endsWith(".json"))
@@ -366,7 +445,8 @@ jobs:
           const copy = planCopyAdjustmentNotice(transaction, comments);
           const delist = planOwnerDelistNotice({
             transaction,
-            project,
+            source,
+            projects,
             kits,
             pull,
             issue: { ...issue, ownerNote },

@@ -86,6 +86,24 @@ test("accepts one atomic manual add-card batch", () => {
   );
 });
 
+test("accepts an immutable GitHub bot actor for a generated submission", () => {
+  expect(
+    createProjectPublicationTransaction(
+      createInput({
+        actor: {
+          id: 41_898_282,
+          login: "github-actions[bot]",
+          type: "Bot",
+        },
+      }),
+    ).actor,
+  ).toEqual({
+    id: 41_898_282,
+    login: "github-actions[bot]",
+    type: "Bot",
+  });
+});
+
 test.each([
   ["edit-card", ["data/registry/projects/owner-project.json"], "card"],
   ["retire-card", ["data/registry/projects/owner-project.json"], "card"],
@@ -151,6 +169,28 @@ test.each([
   ["unknown key", { unexpected: true }],
   ["old schema", { schema_version: 1 }],
   ["invalid actor", { actor: { id: 11, login: 7, type: "User" } }],
+  [
+    "bot login presented as a user",
+    {
+      actor: {
+        id: 41_898_282,
+        login: "github-actions[bot]",
+        type: "User",
+      },
+    },
+  ],
+  [
+    "human login presented as a bot",
+    { actor: { id: 11, login: "Submitter", type: "Bot" } },
+  ],
+  [
+    "malformed bot suffix",
+    { actor: { id: 11, login: "github-actions[bot", type: "Bot" } },
+  ],
+  [
+    "unknown actor type",
+    { actor: { id: 11, login: "Submitter", type: "Robot" } },
+  ],
   ["invalid SHA", { base_sha: "not-a-sha" }],
   ["wrong producer", { producer: "project-owner-request" }],
   ["unsorted projects", { project_ids: ["z-card", "a-card"] }],

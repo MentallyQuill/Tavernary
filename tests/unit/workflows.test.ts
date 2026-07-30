@@ -345,6 +345,11 @@ test("classifies pull request and dispatched branch diffs fail closed", async ()
   expect(source).toContain("git diff --no-renames --name-only -z");
   expect(source).toContain("classify-pr-paths.mjs --paths-file");
   expect(source).toContain('route="full"');
+  const classifier = await readFile(
+    resolve("scripts", "ci", "classify-pr-paths.mjs"),
+    "utf8",
+  );
+  expect(classifier).toContain("^data\\/registry\\/sources\\/[^/]+\\.json$");
 });
 
 test("runs mutually selected content and full Linux stacks", async () => {
@@ -810,6 +815,13 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   );
   expect(source).toContain("gh api --paginate --slurp");
   expect(source).toContain("generated-paths.txt");
+  expect(source).toContain("project_ids: [report.project_id]");
+  expect(source).toContain("source_id: report.source_id");
+  expect(source).toContain("publication_mode: 'automatic'");
+  expect(source).toContain(
+    "input_fingerprints: { projects: {}, source: null }",
+  );
+  expect(source).not.toContain("record_fingerprint: null");
   expect(
     source.indexOf("Reject conflicting open submission paths"),
   ).toBeLessThan(source.indexOf("git commit -m"));
@@ -900,6 +912,16 @@ test("triages owner requests through a read-only repository gate", async () => {
     "${{ github.event.repository.default_branch }}",
   );
   expect(source).toContain("processProjectOwnerTriage");
+  expect(source).toContain('tags: ["tags.json", "tags"]');
+  expect(source).not.toContain(
+    'capabilities: ["capabilities.json", "capabilities"]',
+  );
+  expect(source).toContain(
+    "issues?state=open&labels=project-owner-request&per_page=100",
+  );
+  expect(source).toContain("pulls?state=open&per_page=100");
+  expect(source).toContain("issues: openIssues");
+  expect(source).toContain("pulls: openPulls");
   expect(source).toContain("steps.triage.outputs.admitted == 'true'");
   expect(source).toContain(
     "gh workflow run generate-project-owner-request.yml",
@@ -976,8 +998,9 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("tests/unit/trusted-editor-authority.test.ts");
   expect(source).toContain("tests/unit/catalog-copy-provider.test.ts");
   expect(source).toContain("tests/unit/catalog-copy-contract.test.ts");
-  expect(source).toContain("authorityType: report.authority_type");
-  expect(source).toContain("actorLogin: report.actor_login");
+  expect(source).toContain("report,");
+  expect(source).toContain("authority_type: report.authority_type");
+  expect(source).toContain("login: report.actor_login");
   expect(source).not.toContain("verifiedOwnerLogin");
   expect(source).toContain("npm run check:content");
   expect(source).toContain("git clean -fX -- src/generated/catalog.json");
@@ -991,7 +1014,14 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).toContain("actions/upload-artifact@");
   expect(source).toContain("gh workflow run ci.yml");
   expect(source).toContain("data/registry/projects/");
+  expect(source).toContain("data/registry/sources/");
   expect(source).toContain("data/snapshots/github/");
+  expect(source).toContain("project_ids: report.project_ids");
+  expect(source).toContain("source_id: report.source_id");
+  expect(source).toContain("publication_mode: report.publication_mode");
+  expect(source).toContain("input_fingerprints: report.input_fingerprints");
+  expect(source).toContain("report,");
+  expect(source).not.toContain("record_fingerprint: report.record_fingerprint");
   expect(source).not.toContain("git add src/generated/catalog.json");
   expect(source).not.toMatch(/git add[^;\n]*(?:\.github\/workflows|scripts\/)/);
   expect(source).not.toContain("gh pr merge");

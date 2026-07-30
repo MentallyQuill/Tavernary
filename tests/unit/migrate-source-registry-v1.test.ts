@@ -11,10 +11,11 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 import {
   planSourceRegistryMigration,
+  runSourceRegistryMigrationCli,
   SourceMigrationConflictError,
   writeSourceRegistryMigration,
 } from "../../scripts/catalog/migrate-source-registry-v1.mjs";
@@ -179,6 +180,180 @@ test("reports every card claiming contradictory facts for one source", () => {
   );
 });
 
+test("migrates one extension and two distinct Presets onto one shared source", () => {
+  const sharedSource = {
+    type: "github" as const,
+    repository: "owner/megumin-like-suite",
+    repository_id: 42,
+  };
+  const extension = {
+    ...project("suite-extension", 42, "published"),
+    name: "Suite Extension",
+    source: structuredClone(sharedSource),
+  };
+  const roleplayPreset = {
+    ...project("suite-roleplay-preset", 42, "published"),
+    name: "Suite Roleplay Preset",
+    kind: "preset" as const,
+    primary_function: "preset",
+    source: structuredClone(sharedSource),
+    model_families: ["claude"],
+    completion_formats: ["chat-completion"],
+  };
+  const reasoningPreset = {
+    ...project("suite-reasoning-preset", 42, "published"),
+    name: "Suite Reasoning Preset",
+    kind: "preset" as const,
+    primary_function: "preset",
+    source: structuredClone(sharedSource),
+    model_families: ["deepseek"],
+    completion_formats: ["text-completion"],
+  };
+
+  const plan = planSourceRegistryMigration({
+    projects: [extension, roleplayPreset, reasoningPreset],
+    snapshots: [snapshot(extension.id, 42)],
+    refreshManifest: {
+      schema_version: 2,
+      project_timings: [{ project_id: extension.id, outcome: "unchanged" }],
+    },
+    metadataByProjectId: new Map([
+      [
+        extension.id,
+        {
+          tags: ["extend-sillytavern"],
+          metadata_policy: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+        },
+      ],
+      [
+        roleplayPreset.id,
+        {
+          tags: ["support-roleplay"],
+          metadata_policy: {
+            summary: {
+              mode: "manual",
+              note: "Trusted Tavernary editor selection.",
+            },
+            tags: { mode: "automatic" },
+          },
+        },
+      ],
+      [
+        reasoningPreset.id,
+        {
+          tags: ["guide-reasoning"],
+          metadata_policy: {
+            summary: { mode: "automatic" },
+            tags: {
+              mode: "manual",
+              note: "Verified repository owner selection.",
+            },
+          },
+        },
+      ],
+    ]),
+  });
+
+  expect(plan.counts).toEqual({
+    projects: 3,
+    sources: 1,
+    snapshots: 1,
+    delistedSources: 0,
+  });
+  expect(plan.sources).toEqual([
+    expect.objectContaining({
+      id: "github-42",
+      repository: "owner/megumin-like-suite",
+    }),
+  ]);
+  expect(plan.snapshots).toEqual([
+    expect.objectContaining({ source_id: "github-42" }),
+  ]);
+  expect(plan.projects).toEqual([
+    expect.objectContaining({
+      id: extension.id,
+      source_id: "github-42",
+      tags: ["extend-sillytavern"],
+    }),
+    expect.objectContaining({
+      id: roleplayPreset.id,
+      source_id: "github-42",
+      tags: ["support-roleplay"],
+      metadata_policy: expect.objectContaining({
+        summary: {
+          mode: "manual",
+          note: "Trusted Tavernary editor selection.",
+        },
+      }),
+    }),
+    expect.objectContaining({
+      id: reasoningPreset.id,
+      source_id: "github-42",
+      tags: ["guide-reasoning"],
+      metadata_policy: expect.objectContaining({
+        tags: {
+          mode: "manual",
+          note: "Verified repository owner selection.",
+        },
+      }),
+    }),
+  ]);
+});
+
+test("moves Codeberg snapshots within the Codeberg snapshot directory", () => {
+  const codebergProject = {
+    ...project("codeberg-card", 1_699_613, "published"),
+    source: {
+      type: "codeberg" as const,
+      repository: "owner/codeberg-card",
+      repository_id: 1_699_613,
+    },
+  };
+  const codebergSnapshot = {
+    ...snapshot(codebergProject.id, 1_699_613),
+    provider: "codeberg" as const,
+    repository: {
+      id: 1_699_613,
+      owner: "owner",
+      name: "codeberg-card",
+      url: "https://codeberg.org/owner/codeberg-card",
+    },
+  };
+
+  const plan = planSourceRegistryMigration({
+    projects: [codebergProject],
+    snapshots: [codebergSnapshot],
+    refreshManifest: {
+      schema_version: 2,
+      project_timings: [],
+    },
+    metadataByProjectId: {
+      [codebergProject.id]: automaticMetadata,
+    },
+  });
+
+  expect(plan.operations).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        kind: "create",
+        path: "data/snapshots/codeberg/codeberg-1699613.json",
+      }),
+      expect.objectContaining({
+        kind: "delete",
+        path: "data/snapshots/codeberg/codeberg-card.json",
+      }),
+    ]),
+  );
+  expect(
+    plan.operations.some(({ path }) =>
+      path.startsWith("data/snapshots/github/codeberg-"),
+    ),
+  ).toBe(false);
+});
+
 test("rejects duplicate legacy project IDs before planning paths", () => {
   const duplicate = project("card-a", 42, "published");
 
@@ -259,6 +434,125 @@ test("reports every path without writing during a dry run", async () => {
     written: false,
     paths: plan.operations.map(({ path }) => path),
   });
+});
+
+test("runs one dry-run CLI plan that composes tag metadata and reports catalog invariants", async () => {
+  const projects = [
+    project("active-card", 42, "published"),
+    project("removed-card", 84, "disabled"),
+  ];
+  const logger = { log: vi.fn() };
+  const planTags = vi.fn(() => ({
+    metadataByProjectId: new Map([
+      ["active-card", automaticMetadata],
+      ["removed-card", automaticMetadata],
+    ]),
+    report: {
+      schema_version: 1,
+      vocabulary_hash: "a".repeat(64),
+      project_count: 2,
+      projects: [],
+    },
+  }));
+  const writeMigration = vi.fn(async (plan: SourceMigrationPlan) => ({
+    written: false,
+    paths: plan.operations.map(({ path }) => path),
+  }));
+
+  const result = await runSourceRegistryMigrationCli([], {
+    root: "C:\\fixture",
+    loadInput: async () => ({
+      projects,
+      sources: [],
+      snapshots: [snapshot("active-card", 42), snapshot("removed-card", 84)],
+      refreshManifest: {
+        schema_version: 2,
+        project_timings: [],
+      },
+      vocabulary: { schema_version: 1, tags: [] },
+      classifierResults: [],
+      kits: [{ project_ids: ["active-card", "removed-card"] }],
+    }),
+    planTags,
+    validatePlan: async () => {},
+    writeMigration,
+    logger,
+  });
+
+  expect(planTags).toHaveBeenCalledOnce();
+  expect(writeMigration).toHaveBeenCalledWith(
+    expect.objectContaining({
+      operations: expect.arrayContaining([
+        expect.objectContaining({
+          path: "data/reports/tag-migration-report.json",
+        }),
+      ]),
+    }),
+    expect.objectContaining({ root: "C:\\fixture", write: false }),
+  );
+  expect(result.counts).toEqual({
+    projects: 2,
+    sources: 2,
+    repositorySnapshots: 2,
+    delistedSources: 1,
+    kits: 1,
+    kitProjectReferences: 2,
+    writes: 0,
+  });
+  expect(logger.log).toHaveBeenCalledWith(
+    "projects=2 sources=2 repository_snapshots=2 delisted_sources=1 kits=1 kit_project_references=2 writes=0",
+  );
+});
+
+test("reports a validated version-six registry as an idempotent no-op without local classifier results", async () => {
+  const planTags = vi.fn();
+  const validatePlan = vi.fn();
+  const writeMigration = vi.fn(async (plan: SourceMigrationPlan) => ({
+    written: false,
+    paths: plan.operations.map(({ path }) => path),
+  }));
+
+  const result = await runSourceRegistryMigrationCli([], {
+    root: "C:\\fixture",
+    loadInput: async () => ({
+      projects: [
+        {
+          schema_version: 6,
+          id: "active-card",
+          source_id: "github-42",
+        },
+      ],
+      sources: [
+        {
+          schema_version: 1,
+          id: "github-42",
+          type: "github",
+          repository: "owner/active-card",
+          repository_id: 42,
+          status: "active",
+          status_reason: null,
+          refresh_policy: "automatic",
+        },
+      ],
+      snapshots: [{ schema_version: 4, source_id: "github-42" }],
+      refreshManifest: { schema_version: 3 },
+      vocabulary: { schema_version: 1, tags: [] },
+      classifierResults: null,
+      kits: [],
+    }),
+    planTags,
+    validatePlan,
+    writeMigration,
+    logger: { log: vi.fn() },
+  });
+
+  expect(planTags).not.toHaveBeenCalled();
+  expect(validatePlan).toHaveBeenCalledOnce();
+  expect(writeMigration).toHaveBeenCalledWith(
+    expect.objectContaining({ operations: [] }),
+    expect.objectContaining({ write: false }),
+  );
+  expect(result.counts.writes).toBe(0);
 });
 
 test("writes a contained source-first migration and retires old snapshot paths last", async () => {

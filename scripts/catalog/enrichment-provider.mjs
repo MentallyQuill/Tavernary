@@ -285,7 +285,7 @@ export function createEnrichmentProvider(options) {
   const transport = createStructuredProviderTransport(options);
   return {
     async generate(input) {
-      return transport.request({
+      const response = await transport.request({
         model: transport.configuration.model,
         temperature: input.repair ? 0 : 0.2,
         messages: [
@@ -301,6 +301,21 @@ export function createEnrichmentProvider(options) {
           },
         },
       });
+      let normalizedOutput = response.output;
+      if (
+        response.output?.policy_signal === null &&
+        ["accepted-unchanged", "accepted-with-light-edits"].includes(
+          response.output?.result,
+        )
+      ) {
+        normalizedOutput = {
+          ...normalizedOutput,
+          policy_signal: "none",
+        };
+      }
+      return normalizedOutput === response.output
+        ? response
+        : { ...response, output: normalizedOutput };
     },
   };
 }

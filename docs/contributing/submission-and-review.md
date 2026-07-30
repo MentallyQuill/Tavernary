@@ -42,11 +42,28 @@ An admitted owner request generates or safely updates
 PR remains the CI and audit transaction, while valid requests publish
 automatically after exact-SHA validation. A rerun is safe only while
 marker-owned generated paths remain unchanged; a divergent branch is preserved
-and automation pauses that transaction. Summary or capability edits switch to manual
-enrichment so automation cannot overwrite approved editorial content. A
-primary-function-only edit preserves the current enrichment policy. This is
-separate from `refresh_policy`, which only governs automatic source-evidence
-refreshes.
+and automation pauses that transaction.
+
+Catalog cards and repository sources have separate identities. A source owns
+the repository location, immutable provider identity, refresh policy, snapshot,
+and permanent delist state. Each card points to that source and owns its title,
+kind, summary, structured metadata, tags, and listing state. A repository rename
+or transfer therefore updates the source location without changing its source
+ID or any sibling card IDs.
+
+The owner editor supports six maintenance operations: edit one card; **Add cards
+from this source**; update the repository location; retire or restore a card;
+and permanently delist a source. Add-card requests contain one to ten cards in
+one atomic batch, with one unresolved add-card request per source. Every draft
+is editable and reviewed together; one invalid draft prevents a partial
+publication. Adding cards always requires maintainer approval, including for a
+verified repository owner.
+
+Retiring a card is ordinary reversible maintenance. It hides only that card and
+leaves its source and siblings intact. Permanent delist is repository-wide:
+permanent delist removes every associated card from the public catalog, pauses
+source refresh, and blocks that immutable repository identity from returning
+through self-service intake.
 
 ## Open issue limit
 
@@ -140,7 +157,9 @@ Verified-owner delisting is owner-facing permanent for that repository.
 Internally supported exceptional restoration is available only through manual Tavernary staff maintenance;
 it is not a self-service resubmission path.
 
-Tavernary automatically publishes valid create, edit, source-move, and delist transactions.
+Tavernary automatically publishes valid create, card-edit, source-move,
+retire, restore, and permanent-source-delist transactions. Add-card batches
+remain manually approved.
 The generated PR remains the CI and audit transaction.
 
 Frontends and Extensions require a public GitHub or Codeberg repository.
@@ -202,12 +221,12 @@ For full Kit maintainer constraints and safety paths, see
 [Kit submission and moderation](kits.md) and
 [`Kit maintenance`](../maintenance/kits.md).
 
-- Maintainers set effective record state via `visibility`, `visibility_reason`, and
-  `metadata_status` in canonical registry files.
-- If a record requires temporary hold, they can set `refresh_policy: paused` or hide
-  entries via visibility changes and document the reason.
-- For repeated source identity failures, the source block is fixed or moved to
-  quarantine before public metadata review resumes.
+- Maintainers set card state with `listing_status` and
+  `listing_status_reason`; `metadata_status` remains card-owned.
+- Maintainers set source refresh and repository-wide lifecycle state in
+  `data/registry/sources/*.json`.
+- Repeated identity failures are resolved on the source record rather than
+  copied into every sibling card.
 
 See maintainer operating flow for exact sequencing in
 [`../maintenance/operations-runbook.md`](../maintenance/operations-runbook.md).

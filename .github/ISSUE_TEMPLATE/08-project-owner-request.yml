@@ -1,5 +1,5 @@
 name: Manage a project listing
-description: Request an owner-authored card edit, same-repository source move, or delisting.
+description: Edit, add, retire, restore, move, or permanently delist cards and GitHub sources.
 title: "[Project owner request]"
 labels:
   - project-owner-request
@@ -14,17 +14,24 @@ body:
     id: request-type
     attributes:
       label: Request type
-      description: "Use one: Edit card details; Update repository location; Delist this project."
+      description: "Use one: Edit card details; Add cards from this source; Retire this card; Restore this card; Update repository location; Permanently delist this source."
       placeholder: Edit card details
+    validations:
+      required: true
+  - type: input
+    id: source-id
+    attributes:
+      label: Source ID
+      description: The stable Tavernary source ID shared by every card from this GitHub repository.
     validations:
       required: true
   - type: input
     id: project-id
     attributes:
       label: Project ID
-      description: The stable Tavernary project ID.
+      description: The stable Tavernary card ID. Leave this empty only when adding cards or permanently delisting the whole source.
     validations:
-      required: true
+      required: false
   - type: input
     id: repository
     attributes:
@@ -69,10 +76,24 @@ body:
     validations:
       required: false
   - type: textarea
-    id: capabilities
+    id: tags
     attributes:
-      label: Capabilities
-      description: Used only for a card-details edit. Enter one controlled capability ID per line.
+      label: Tags
+      description: Used only for a card-details edit. Enter up to six controlled Tavernary tag IDs, one per line.
+    validations:
+      required: false
+  - type: input
+    id: summary-metadata-mode
+    attributes:
+      label: Summary metadata mode
+      description: Used only for a card-details edit. Enter automatic or manual.
+    validations:
+      required: false
+  - type: input
+    id: tag-metadata-mode
+    attributes:
+      label: Tag metadata mode
+      description: Used only for a card-details edit. Enter automatic or manual.
     validations:
       required: false
   - type: textarea
@@ -109,15 +130,16 @@ body:
     attributes:
       label: Delist confirmation
       description: >-
-        For delisting, enter the current complete project display name. The
-        comparison is case-insensitive, but the complete name is required.
+        For permanent source delisting, enter the complete owner/repository
+        identity. This hides every sibling card and permanently reserves the
+        immutable repository identity.
     validations:
       required: false
   - type: textarea
     id: owner-request-manifest
     attributes:
       label: Owner request manifest
-      description: The Tavernary owner form prefills this machine-readable review payload. Leave it unchanged.
+      description: The Tavernary owner form prefills this complete machine-readable review payload. It is required for add-card batches because GitHub cannot represent up to ten dynamic card editors. Leave it unchanged.
       render: json
     validations:
       required: false

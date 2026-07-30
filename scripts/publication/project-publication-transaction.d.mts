@@ -25,7 +25,7 @@ export interface ProjectPublicationTransaction {
     canonical: string;
     repository_id: number | null;
   } | null;
-  actor: { id: number; login: string; type: "User" };
+  actor: { id: number; login: string; type: "User" | "Bot" };
   authority_type: ProjectPublicationAuthority;
   input_digest: string;
   input_fingerprints: {

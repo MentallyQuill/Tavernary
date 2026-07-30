@@ -83,3 +83,35 @@ test("documents the runtime owner failure codes without invented aliases", () =>
   expect(operationsRunbook).not.toContain("owner-request-unsupported-source");
   expect(operationsRunbook).not.toContain("owner-request-invalid-operation");
 });
+
+test("documents source-backed card maintenance and the transaction-v2 cutover", () => {
+  const contributorGuide = readFileSync(
+    resolve(process.cwd(), "docs/contributing/submission-and-review.md"),
+    "utf8",
+  );
+  const operationsRunbook = readFileSync(
+    resolve(process.cwd(), "docs/maintenance/operations-runbook.md"),
+    "utf8",
+  );
+  const actionGuide = readFileSync(
+    resolve(process.cwd(), "docs/maintenance/github-actions-user-guides.md"),
+    "utf8",
+  );
+  const corpus = `${contributorGuide}\n${operationsRunbook}\n${actionGuide}`;
+
+  for (const phrase of [
+    "Add cards from this source",
+    "one to ten cards",
+    "one unresolved add-card request per source",
+    "retire or restore a card",
+    "permanently delist a source",
+    "schema version 2",
+    "migrate-source-registry-v1.mjs --write",
+  ]) {
+    expect(corpus).toContain(phrase);
+  }
+  expect(corpus).toMatch(/rename or transfer.*source ID/is);
+  expect(corpus).toMatch(/transaction version 1.*regenerat/is);
+  expect(corpus).toMatch(/permanent delist.*every.*card/is);
+  expect(corpus).toMatch(/dry run.*rollback/is);
+});

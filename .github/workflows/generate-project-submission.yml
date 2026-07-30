@@ -119,7 +119,7 @@ jobs:
             while IFS= read -r generated_path; do
               [[ -z "$generated_path" ]] && continue
               case "$generated_path" in
-                data/registry/projects/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json) ;;
+                data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json) ;;
                 *)
                   echo "::error::Refusing unsafe generated path: $generated_path"
                   exit 1
@@ -237,6 +237,7 @@ jobs:
         run: |
           set -euo pipefail
           project_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).project_id")"
+          source_id="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).source_id")"
           source_provider="$(node -p "JSON.parse(require('fs').readFileSync(process.env.RUNNER_TEMP + '/admission-report.json','utf8')).source_provider || ''")"
           case "$source_provider" in
             github|codeberg|"") ;;
@@ -245,9 +246,12 @@ jobs:
               exit 1
               ;;
           esac
-          generated_paths=("data/registry/projects/${project_id}.json")
-          if [[ -n "$source_provider" && -f "data/snapshots/${source_provider}/${project_id}.json" ]]; then
-            generated_paths+=("data/snapshots/${source_provider}/${project_id}.json")
+          generated_paths=(
+            "data/registry/projects/${project_id}.json"
+            "data/registry/sources/${source_id}.json"
+          )
+          if [[ -n "$source_provider" && -f "data/snapshots/${source_provider}/${source_id}.json" ]]; then
+            generated_paths+=("data/snapshots/${source_provider}/${source_id}.json")
           fi
           if [[ -n "$(git status --porcelain -- data/vocabularies/frontends.json)" ]]; then
             generated_paths+=("data/vocabularies/frontends.json")
@@ -255,7 +259,7 @@ jobs:
           while IFS= read -r previous_path; do
             [[ -z "$previous_path" ]] && continue
             case "$previous_path" in
-              data/registry/projects/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json)
+              data/registry/projects/*.json|data/registry/sources/*.json|data/snapshots/github/*.json|data/snapshots/codeberg/*.json|data/vocabularies/frontends.json)
                 generated_paths+=("$previous_path")
                 ;;
               *)
@@ -347,15 +351,18 @@ jobs:
             const copyMode =
               authorityType === 'community-submitter' ? 'synthesize' : 'preserve';
             const transaction = createProjectPublicationTransaction({
+              schema_version: 2,
               operation: 'create',
               producer: 'project-submission',
+              publication_mode: 'automatic',
               issue_number: Number(process.env.ISSUE_NUMBER),
-              project_id: report.project_id,
+              project_ids: [report.project_id],
+              source_id: report.source_id,
               source_identity: report.source_identity,
               actor: report.actor,
               authority_type: authorityType,
               input_digest: report.input_digest,
-              record_fingerprint: null,
+              input_fingerprints: { projects: {}, source: null },
               base_sha: execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim(),
               generated_head_sha: process.env.HEAD_SHA || process.env.REMOTE_SHA,
               generated_paths: paths,

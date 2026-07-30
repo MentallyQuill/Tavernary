@@ -234,6 +234,81 @@ test("keeps a manual summary while refreshing automatic tags", async () => {
   });
 });
 
+test("selects an automatic URL-backed record without a repository snapshot", () => {
+  const reddit = {
+    ...record,
+    id: "reddit-1v64r6z",
+    kind: "preset",
+    source_id: "url-reddit-1v64r6z",
+  };
+  const redditSource = {
+    id: reddit.source_id,
+    type: "url",
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+  };
+
+  expect(
+    selectEnrichmentRecords([reddit], {
+      [redditSource.id]: redditSource,
+    }).map(({ id }) => id),
+  ).toEqual(["reddit-1v64r6z"]);
+});
+
+test("enriches a URL-backed source without a repository snapshot", async () => {
+  const reddit = {
+    ...record,
+    id: "reddit-1v64r6z",
+    name: "Writer's Block 5",
+    kind: "preset",
+    source_id: "url-reddit-1v64r6z",
+  };
+  const redditSource = {
+    id: reddit.source_id,
+    type: "url",
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v64r6z/update/",
+  };
+  const generate = vi.fn(async (input) => ({
+    output: outputFor(input),
+    metadata: providerMetadata,
+  }));
+
+  const result = await runEnrichmentBatch({
+    projectIds: [reddit.id],
+    recordsById: { [reddit.id]: reddit },
+    sourcesById: { [redditSource.id]: redditSource },
+    snapshotsBySourceId: {},
+    phase: "primary",
+    vocabularies,
+    provider: { generate },
+    validateSnapshot: () => true,
+    loadSource: async () => ({
+      status: "ready" as const,
+      sourceKind: "reddit-body" as const,
+      sourceIdentity: "reddit:1v64r6z",
+      redditPostId: "1v64r6z",
+      text: "Writer's Block 5 post body.",
+    }),
+    writeRecord: async () => {},
+  });
+
+  expect(generate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      requestedFields: ["summary", "tags"],
+      source: {
+        kind: "reddit-body",
+        identity: "reddit:1v64r6z",
+        text: "Writer's Block 5 post body.",
+      },
+    }),
+  );
+  expect(result[0]).toMatchObject({
+    outcome: "enriched",
+    sourceKind: "reddit-body",
+    sourceIdentity: "reddit:1v64r6z",
+    redditPostId: "1v64r6z",
+  });
+});
+
 test("loads shared source evidence once while classifying sibling cards independently", async () => {
   const siblings = [
     { ...record, id: "suite-extension", name: "Suite Extension" },
