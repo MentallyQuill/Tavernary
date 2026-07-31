@@ -66,17 +66,18 @@
   },
   "community": {
     "stars_count": 8,
-    "forks_count": 1,
+    "forks_count": 2,
     "watchers_count": 1,
-    "aggregate": 10
+    "aggregate": 11
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE.md"
   },
-  "refreshed_at": "2026-07-30T09:45:32.765Z",
+  "refreshed_at": "2026-07-31T10:00:47.215Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "prolix-oc", "type": "User", "provider": "github" },
@@ -85,8 +86,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-30T09:45:32.765Z",
+    "refreshed_at": "2026-07-31T10:00:47.215Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

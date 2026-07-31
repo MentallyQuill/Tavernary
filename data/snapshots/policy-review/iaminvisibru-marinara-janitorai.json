@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "iaminvisibru-marinara-janitorai",
+  "source_id": "github-1203245557",
+  "source_identity": "github:iaminvisibru/marinarajanitorai",
+  "evidence_fingerprint": "189a6913547be4af359692887c909df0e42a5c65dfb453bcd25b4ac9878febf5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:10:16.236Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:10:16.236Z"
+  },
+  "maintenance_issue_number": null
+}

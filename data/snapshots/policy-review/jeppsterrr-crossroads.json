@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "jeppsterrr-crossroads",
+  "source_id": "github-1310212816",
+  "source_identity": "github:jeppsterrr/crossroads",
+  "evidence_fingerprint": "3c95f6182bc16e43d3ffe03fc144e35eca3a951c64337d13095448306c0726a1",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:12:46.608Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:12:46.608Z"
+  },
+  "maintenance_issue_number": null
+}

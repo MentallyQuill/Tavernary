@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "loggo-presets-sillytavern-spellbook",
+  "source_id": "github-1130046949",
+  "source_identity": "github:loggo-presets/sillytavern-spellbook",
+  "evidence_fingerprint": "dddc36f792d78f84dd924a6343ffaded5717b1690e526155b29b41ebd6d37a31",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:09:12.543Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:09:12.543Z"
+  },
+  "maintenance_issue_number": null
+}

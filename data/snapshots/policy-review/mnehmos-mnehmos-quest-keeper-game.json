@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mnehmos-mnehmos-quest-keeper-game",
+  "source_id": "github-1101728981",
+  "source_identity": "github:mnehmos/mnehmos.quest-keeper.game",
+  "evidence_fingerprint": "4cccbdad8772e5bcab87d0e5467b1c59c3357737d764147a5b573f93c4d886af",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:08:29.002Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:08:29.002Z"
+  },
+  "maintenance_issue_number": null
+}

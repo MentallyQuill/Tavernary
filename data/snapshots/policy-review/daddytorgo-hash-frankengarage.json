@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "daddytorgo-hash-frankengarage",
+  "source_id": "github-1297772483",
+  "source_identity": "github:daddytorgo-hash/frankengarage",
+  "evidence_fingerprint": "82a87db754fc042dffd3e9c2af4535c7f9e4897c7f17b8dce85618780c333d59",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:12:17.028Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:12:17.028Z"
+  },
+  "maintenance_issue_number": null
+}

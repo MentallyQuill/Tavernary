@@ -9,21 +9,21 @@
     "url": "https://github.com/DangerDaza/Dooms-Enhancement-Suite",
     "description": "An immersive RPG enhancement extension for SillyTavern — character tracking, lore library, TTS highlighting, portrait bar, scene headers, chat bubbles, weather effects, and more.",
     "default_branch": "main",
-    "head_sha": "503cad53b6fd9cd24e631e739a14de757657e7c5",
-    "head_committed_at": "2026-07-29T01:24:20.000Z",
+    "head_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be",
+    "head_committed_at": "2026-07-30T21:14:50.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-21T20:05:42.000Z",
-    "size_kb": 2657
+    "size_kb": 2661
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-29T01:24:20.000Z",
+    "latest_source_activity_at": "2026-07-30T21:14:50.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-29T01:24:20.000Z",
+        "latest_at": "2026-07-30T21:14:50.000Z",
         "precision": "exact"
       },
       {
@@ -57,20 +57,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-29T10:00:10.862Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "503cad53b6fd9cd24e631e739a14de757657e7c5"
+    "evidence_head_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be"
   },
   "community": {
-    "stars_count": 48,
+    "stars_count": 49,
     "forks_count": 9,
     "watchers_count": 3,
-    "aggregate": 60
+    "aggregate": 61
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-30T09:45:32.765Z",
+  "refreshed_at": "2026-07-31T10:00:47.215Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -85,7 +85,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-30T09:45:32.765Z",
+    "refreshed_at": "2026-07-31T10:00:47.215Z",
     "stale_since": null
   }
 }
