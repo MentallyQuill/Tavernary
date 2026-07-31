@@ -114,5 +114,7 @@ export function draftProjectRecord(input: {
   copyResult?: ProjectDraftResult["copyResult"];
   copyMode?: "preserve" | "synthesize";
   copyRequired?: boolean;
+  provisionalSummary?: string;
+  provisionalWarning?: string;
   now: string;
 }): Promise<ProjectDraftResult>;

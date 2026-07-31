@@ -7,8 +7,81 @@ import { expect, test, vi } from "vitest";
 import {
   parseGenerateProjectSubmissionCli,
   prepareProjectSubmissionDraft,
+  RedditSourceRetryScheduledError,
   runGenerateProjectSubmissionCli,
 } from "../../scripts/submissions/generate-project-submission.mjs";
+import { renderRedditRetryState } from "../../scripts/submissions/project-submission-retry-state.mjs";
+
+function redditRateLimitFailure() {
+  return {
+    status: "failed" as const,
+    reasonCode: "reddit-rate-limited",
+    message: "The Reddit source request was rate limited.",
+    sourceIdentity: "reddit:1v9u18m",
+    redditPostId: "1v9u18m",
+  };
+}
+
+function redditSubmissionFixture(overrides: Record<string, unknown> = {}) {
+  return {
+    issue: {
+      number: 165,
+      state: "open",
+      labels: [
+        { name: "issue-admitted" },
+        { name: "project-submission" },
+        { name: "needs-maintainer-review" },
+      ],
+      user: { id: 73, login: "CommunityMember", type: "User" },
+      author_association: "NONE",
+      body: [
+        "### Project manifest",
+        "",
+        "```json",
+        JSON.stringify({
+          schema_version: 4,
+          project_type: "preset",
+          primary_function: "preset",
+          source_url:
+            "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
+          frontends: { known_ids: ["sillytavern"], other: [] },
+          frontend_independent: false,
+          additional_context: null,
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+          preset_compatibility: {
+            model_families: { known_ids: ["claude"], other: [] },
+            completion_formats: ["chat-completion"],
+          },
+        }),
+        "```",
+      ].join("\n"),
+    },
+    now: "2026-07-30T18:00:00.000Z",
+    sourceClients: {
+      request: async () => {
+        throw new Error("Canonical Reddit intake should not call GitHub.");
+      },
+      catalogData: {
+        vocabulary: {
+          frontends: [
+            {
+              id: "sillytavern",
+              label: "SillyTavern",
+              description: "Works with the SillyTavern roleplay frontend.",
+            },
+          ],
+        },
+        projects: [],
+        sources: [],
+      },
+      issueComments: [],
+      ...overrides,
+    },
+  };
+}
 
 function repositorySubmissionFixture({
   user,
@@ -153,6 +226,24 @@ test("parses the generation CLI boundary", () => {
     issueNumber: 123,
     outputDirectory: "repo",
     reportPath: "artifacts/admission-report.json",
+  });
+});
+
+test("parses an optional Reddit retry-state artifact path", () => {
+  expect(
+    parseGenerateProjectSubmissionCli([
+      "--issue-number",
+      "165",
+      "--output-directory",
+      "repo",
+      "--report-path",
+      "artifacts/admission-report.json",
+      "--retry-state-path",
+      "artifacts/reddit-retry-state.json",
+    ]),
+  ).toMatchObject({
+    issueNumber: 165,
+    retryStatePath: "artifacts/reddit-retry-state.json",
   });
 });
 
@@ -781,4 +872,288 @@ test("rejects a generic external Frontend before source probing", async () => {
   ).rejects.toThrow(
     "Frontends and Extensions require a public GitHub or Codeberg repository.",
   );
+});
+
+test("generates Reddit metadata from the submitted post body", async () => {
+  const loadEnrichmentSource = vi.fn(async () => ({
+    status: "ready" as const,
+    sourceKind: "reddit-body",
+    text: "Freaky Frankenstein is a roleplay preset with documented controls.",
+    sourceIdentity: "reddit:1v9u18m",
+    redditPostId: "1v9u18m",
+  }));
+  const enrich = vi.fn(async () => ({
+    status: "curated",
+    summary:
+      "Freaky Frankenstein is a roleplay preset with documented controls and structured prompting behavior for compatible SillyTavern configurations.",
+    tags: [],
+    classification_review: null,
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+
+  const draft = await prepareProjectSubmissionDraft(
+    redditSubmissionFixture({ loadEnrichmentSource, enrich }),
+  );
+
+  expect(loadEnrichmentSource).toHaveBeenCalled();
+  expect(enrich).toHaveBeenCalledWith(
+    expect.objectContaining({
+      requestedFields: ["summary", "tags"],
+      maxProviderAttempts: 5,
+      enrichmentSource: expect.objectContaining({
+        sourceKind: "reddit-body",
+      }),
+    }),
+  );
+  expect(draft.record).toMatchObject({
+    id: "reddit-1v9u18m",
+    metadata_status: "curated",
+    summary: expect.stringContaining("Freaky Frankenstein"),
+  });
+});
+
+test("returns durable retry state after the first exhausted Reddit wave", async () => {
+  await expect(
+    prepareProjectSubmissionDraft(
+      redditSubmissionFixture({
+        loadEnrichmentSource: async () => redditRateLimitFailure(),
+        sleep: async () => undefined,
+        issueComments: [],
+      }),
+    ),
+  ).rejects.toMatchObject({
+    code: "reddit-source-retry-scheduled",
+    retryState: {
+      completed_waves: 1,
+      next_eligible_retry_at: "2026-07-30T19:00:00.000Z",
+    },
+    attempts: 3,
+  });
+});
+
+test("does not consume a Reddit source wave before the retry is due", async () => {
+  const loadEnrichmentSource = vi.fn(async () => redditRateLimitFailure());
+  const retryState = {
+    schema_version: 1 as const,
+    issue_number: 165,
+    source_identity: "reddit:1v9u18m" as const,
+    completed_waves: 1,
+    next_eligible_retry_at: "2026-07-30T19:00:00.000Z",
+    last_reason_code: "reddit-rate-limited",
+    updated_at: "2026-07-30T18:00:00.000Z",
+    outcome: "pending" as const,
+  };
+
+  await expect(
+    prepareProjectSubmissionDraft(
+      redditSubmissionFixture({
+        loadEnrichmentSource,
+        issueComments: [
+          {
+            id: 44,
+            body: [
+              "<!-- tavernary-project-generation-failure:project-submission -->",
+              renderRedditRetryState(retryState),
+            ].join("\n"),
+          },
+        ],
+      }),
+    ),
+  ).rejects.toMatchObject({
+    code: "reddit-source-retry-scheduled",
+    attempts: 0,
+  });
+  expect(loadEnrichmentSource).not.toHaveBeenCalled();
+});
+
+test("fails closed on a malformed persisted Reddit retry marker", async () => {
+  await expect(
+    prepareProjectSubmissionDraft(
+      redditSubmissionFixture({
+        loadEnrichmentSource: async () => redditRateLimitFailure(),
+        issueComments: [
+          {
+            id: 44,
+            body: [
+              "<!-- tavernary-project-generation-failure:project-submission -->",
+              "<!-- tavernary-reddit-submission-retry",
+              '{"schema_version":1,"unexpected":"field"}',
+              "-->",
+            ].join("\n"),
+          },
+        ],
+      }),
+    ),
+  ).rejects.toThrow("Reddit retry state is invalid.");
+});
+
+test("uses the newer durable state when another wave finishes concurrently", async () => {
+  const issue = redditSubmissionFixture().issue;
+  const first = {
+    schema_version: 1 as const,
+    issue_number: 165,
+    source_identity: "reddit:1v9u18m" as const,
+    completed_waves: 1,
+    next_eligible_retry_at: "2026-07-30T18:00:00.000Z",
+    last_reason_code: "reddit-rate-limited",
+    updated_at: "2026-07-30T17:00:00.000Z",
+    outcome: "pending" as const,
+  };
+  const newer = {
+    ...first,
+    completed_waves: 2,
+    next_eligible_retry_at: "2026-07-30T20:00:00.000Z",
+    updated_at: "2026-07-30T18:05:00.000Z",
+  };
+  const context = vi
+    .fn()
+    .mockResolvedValueOnce({
+      issue,
+      comments: [
+        {
+          id: 44,
+          body: [
+            "<!-- tavernary-project-generation-failure:project-submission -->",
+            renderRedditRetryState(first),
+          ].join("\n"),
+        },
+      ],
+    })
+    .mockResolvedValueOnce({
+      issue,
+      comments: [
+        {
+          id: 44,
+          body: [
+            "<!-- tavernary-project-generation-failure:project-submission -->",
+            renderRedditRetryState(newer),
+          ].join("\n"),
+        },
+      ],
+    });
+
+  await expect(
+    prepareProjectSubmissionDraft(
+      redditSubmissionFixture({
+        issueComments: undefined,
+        loadRetryContext: context,
+        loadEnrichmentSource: async () => redditRateLimitFailure(),
+        sleep: async () => undefined,
+      }),
+    ),
+  ).rejects.toMatchObject({
+    code: "reddit-source-retry-scheduled",
+    retryState: { completed_waves: 2 },
+  });
+  expect(context).toHaveBeenCalledTimes(2);
+});
+
+test("publishes a provisional placeholder after the third exhausted Reddit wave", async () => {
+  const retryState = {
+    schema_version: 1 as const,
+    issue_number: 165,
+    source_identity: "reddit:1v9u18m" as const,
+    completed_waves: 2,
+    next_eligible_retry_at: "2026-07-30T18:00:00.000Z",
+    last_reason_code: "reddit-rate-limited",
+    updated_at: "2026-07-30T17:00:00.000Z",
+    outcome: "pending" as const,
+  };
+  const draft = await prepareProjectSubmissionDraft(
+    redditSubmissionFixture({
+      loadEnrichmentSource: async () => redditRateLimitFailure(),
+      sleep: async () => undefined,
+      issueComments: [
+        {
+          id: 44,
+          body: [
+            "<!-- tavernary-project-generation-failure:project-submission -->",
+            renderRedditRetryState(retryState),
+          ].join("\n"),
+        },
+      ],
+    }),
+  );
+
+  expect(draft.record.metadata_status).toBe("provisional");
+  expect(draft.record.summary).toContain("shared through Reddit");
+  expect(draft.copyResult).toBeNull();
+  expect(draft.redditRetry).toMatchObject({
+    outcome: "placeholder",
+    completed_waves: 3,
+    attempts: 3,
+  });
+});
+
+test("blocks a Reddit source response for a different post", async () => {
+  await expect(
+    prepareProjectSubmissionDraft(
+      redditSubmissionFixture({
+        loadEnrichmentSource: async () => ({
+          ...redditRateLimitFailure(),
+          reasonCode: "reddit-identity-mismatch",
+        }),
+        sleep: async () => undefined,
+      }),
+    ),
+  ).rejects.toMatchObject({ code: "reddit-identity-mismatch" });
+});
+
+test("writes only sanitized retry state when Reddit generation is rescheduled", async () => {
+  const temporary = await mkdtemp(join(tmpdir(), "tavernary-reddit-retry-"));
+  const state = {
+    schema_version: 1 as const,
+    issue_number: 165,
+    source_identity: "reddit:1v9u18m" as const,
+    completed_waves: 1,
+    next_eligible_retry_at: "2026-07-30T19:00:00.000Z",
+    last_reason_code: "reddit-rate-limited",
+    updated_at: "2026-07-30T18:00:00.000Z",
+    outcome: "pending" as const,
+  };
+  const retryStatePath = resolve(
+    temporary,
+    "artifacts/reddit-retry-state.json",
+  );
+  try {
+    await expect(
+      runGenerateProjectSubmissionCli({
+        issueNumber: 165,
+        outputDirectory: resolve(temporary, "repository"),
+        reportPath: resolve(temporary, "artifacts/admission-report.json"),
+        retryStatePath,
+        fetchIssue: async () => ({
+          number: 165,
+          state: "open",
+          labels: [{ name: "submission-retryable" }],
+          body: "fixture",
+        }),
+        sourceClients: {
+          prepareDraft: async () => {
+            const error = new RedditSourceRetryScheduledError({
+              state,
+              attempts: 3,
+            });
+            Object.assign(error, {
+              rawRedditText: "Reddit post body",
+              providerOutput: { secret: true },
+            });
+            throw error;
+          },
+        },
+        clock: () => "2026-07-30T18:00:00.000Z",
+      }),
+    ).rejects.toMatchObject({
+      code: "reddit-source-retry-scheduled",
+    });
+
+    expect(JSON.parse(await readFile(retryStatePath, "utf8"))).toEqual(state);
+    const serialized = await readFile(retryStatePath, "utf8");
+    expect(serialized).not.toContain("Reddit post body");
+    expect(serialized).not.toContain("secret");
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
 });

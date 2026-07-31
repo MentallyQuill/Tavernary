@@ -83,6 +83,7 @@ function metadataRequest(input) {
 function fallbackSummary(input, request) {
   return boundedSummary(
     (request.summary.mode === "manual" ? request.summary.value : "") ||
+      input.provisionalSummary?.trim() ||
       input.observation?.repository?.description?.trim() ||
       "No README file found.",
   );
@@ -296,6 +297,9 @@ export async function draftProjectRecord(input) {
     (request.summary.mode === "automatic" || request.tags.mode === "automatic")
   ) {
     warnings.push(enrichmentWarning(input));
+  }
+  if (typeof input.provisionalWarning === "string") {
+    warnings.push(input.provisionalWarning);
   }
   if (classificationReview.warning) warnings.push(classificationReview.warning);
 

@@ -6,6 +6,7 @@ import trustedEditorRegistry from "../../data/maintenance/trusted-tavernary-edit
 import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
 import { createEnrichmentProvider } from "../catalog/enrichment-provider.mjs";
+import { loadEnrichmentSource } from "../catalog/enrichment-source.mjs";
 import { formatJson } from "../catalog/json-format.mjs";
 import { EXTENSION_PRIMARY_FUNCTION_IDS } from "../../src/features/catalog/primary-function-contract.mjs";
 import {
@@ -17,8 +18,17 @@ import { evaluateProjectSubmission } from "./admission.mjs";
 import { draftProjectRecord } from "./draft-project-record.mjs";
 import { reconcileFrontends } from "./frontend-reconciliation.mjs";
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
+import {
+  loadRedditRetryState,
+  normalizeRedditRetryState,
+  planRedditRetryTransition,
+} from "./project-submission-retry-state.mjs";
+import { loadRedditSubmissionSourceWave } from "./reddit-submission-source-wave.mjs";
 import { safeProbe } from "./safe-source-fetch.mjs";
-import { isRepositoryIdentity } from "./source-identity.mjs";
+import {
+  isRepositoryIdentity,
+  parseSourceIdentity,
+} from "./source-identity.mjs";
 import {
   classifySubmissionMetadataAuthority,
   resolveSubmissionMetadataRequest,
@@ -116,6 +126,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
             }
           : null,
       classificationReview: draft.classificationReview ?? null,
+      reddit_retry: draft.redditRetry ?? null,
       warnings: draft.warnings,
     },
   };
@@ -165,9 +176,12 @@ export function parseGenerateProjectSubmissionCli(argv) {
     const name = argv[index];
     const value = argv[index + 1];
     if (
-      !["--issue-number", "--output-directory", "--report-path"].includes(
-        name,
-      ) ||
+      ![
+        "--issue-number",
+        "--output-directory",
+        "--report-path",
+        "--retry-state-path",
+      ].includes(name) ||
       value === undefined
     ) {
       throw new Error(`Unknown or incomplete option: ${name ?? "missing"}.`);
@@ -182,6 +196,9 @@ export function parseGenerateProjectSubmissionCli(argv) {
     issueNumber,
     outputDirectory: requiredOption(options, "--output-directory"),
     reportPath: requiredOption(options, "--report-path"),
+    ...(options.has("--retry-state-path")
+      ? { retryStatePath: options.get("--retry-state-path") }
+      : {}),
   };
 }
 
@@ -259,6 +276,85 @@ function assertProjectIdAvailable(record, projects) {
   const collision = projects.find((project) => project.id === record.id);
   if (!collision) return;
   throw new Error(`Project ID ${record.id} is already in use.`);
+}
+
+export class RedditSourceRetryScheduledError extends Error {
+  constructor({ state, attempts }) {
+    super(
+      attempts === 0
+        ? `Reddit source retry is not eligible until ${state.next_eligible_retry_at}.`
+        : `Reddit source remains unavailable after ${attempts} attempts; the next retry is eligible after ${state.next_eligible_retry_at}.`,
+    );
+    this.name = "RedditSourceRetryScheduledError";
+    this.code = "reddit-source-retry-scheduled";
+    this.retryState = state;
+    this.attempts = attempts;
+  }
+}
+
+export function redditPlaceholderSummary(kind) {
+  if (!["frontend", "extension", "preset"].includes(kind)) {
+    throw new Error("Reddit placeholder project kind is invalid.");
+  }
+  return `A ${kind} shared through Reddit. Tavernary could not retrieve the post description after repeated attempts, so source details remain temporarily unavailable.`;
+}
+
+async function loadProjectSubmissionRetryContext({
+  repository,
+  issueNumber,
+  request,
+}) {
+  if (!repository) {
+    throw new Error("GITHUB_REPOSITORY is required for Reddit retry state.");
+  }
+  const issue = await request(`/repos/${repository}/issues/${issueNumber}`);
+  const comments = [];
+  for (let page = 1; ; page += 1) {
+    const suffix = page === 1 ? "" : `&page=${page}`;
+    const current = await request(
+      `/repos/${repository}/issues/${issueNumber}/comments?per_page=100${suffix}`,
+    );
+    comments.push(...current);
+    if (current.length < 100) break;
+  }
+  return { issue, comments };
+}
+
+function assertCurrentRedditRetryContext(
+  issue,
+  { issueNumber, sourceIdentity },
+) {
+  const labels = issueLabels(issue);
+  if (
+    issue?.number !== issueNumber ||
+    issue?.state !== "open" ||
+    !labels.includes("issue-admitted") ||
+    !labels.includes("project-submission") ||
+    labels.includes("needs-information") ||
+    labels.includes("submission-declined") ||
+    !labels.some((label) =>
+      [
+        "needs-maintainer-review",
+        "submission-retryable",
+        "submission-pr-open",
+      ].includes(label),
+    )
+  ) {
+    throw new Error("Submission issue is no longer admitted.");
+  }
+  const parsed = parseProjectSubmissionIssue(issue.body ?? "", {
+    allowLegacyV3: true,
+  });
+  if (!parsed.valid) throw new Error(parsed.errors.join(" "));
+  const identity = parseSourceIdentity(parsed.manifest.source_url);
+  if (
+    identity.kind !== "reddit" ||
+    `reddit:${identity.postId.toLowerCase()}` !== sourceIdentity
+  ) {
+    const error = new Error("Reddit retry source identity changed.");
+    error.code = "reddit-identity-mismatch";
+    throw error;
+  }
 }
 
 function protectedTermsForSubmission({
@@ -415,7 +511,7 @@ export async function prepareProjectSubmissionDraft({
       : null;
 
   if (!isRepositoryIdentity(decision.identity)) {
-    const draft = await draftProjectRecord({
+    const preliminary = await draftProjectRecord({
       admitted: decision,
       observation: null,
       snapshot: null,
@@ -434,8 +530,257 @@ export async function prepareProjectSubmissionDraft({
         : {}),
       now,
     });
-    assertProjectIdAvailable(draft.record, data.projects);
-    return withPublicationMetadata(draft, decision);
+    assertProjectIdAvailable(preliminary.record, data.projects);
+    if (decision.identity.kind !== "reddit") {
+      return withPublicationMetadata(preliminary, decision);
+    }
+
+    const requestedFields = metadataFieldsToGenerate(preliminary.record);
+    if (requestedFields.length === 0) {
+      return withPublicationMetadata(preliminary, decision);
+    }
+    const sourceIdentity = `reddit:${decision.identity.postId.toLowerCase()}`;
+    const expectedRetryIdentity = {
+      issueNumber: issue.number,
+      sourceIdentity,
+    };
+    const loadRetryContext =
+      sourceClients.loadRetryContext ??
+      (() =>
+        loadProjectSubmissionRetryContext({
+          repository: process.env.GITHUB_REPOSITORY,
+          issueNumber: issue.number,
+          request,
+        }));
+    const injectedComments =
+      Object.hasOwn(sourceClients, "issueComments") &&
+      sourceClients.issueComments !== undefined;
+    const initialRetryContext = injectedComments
+      ? { issue, comments: sourceClients.issueComments }
+      : await loadRetryContext();
+    assertCurrentRedditRetryContext(
+      initialRetryContext.issue,
+      expectedRetryIdentity,
+    );
+    const currentRetryState = loadRedditRetryState(
+      initialRetryContext.comments,
+      expectedRetryIdentity,
+    );
+    if (
+      !currentRetryState &&
+      initialRetryContext.comments.some((comment) =>
+        String(comment?.body ?? "").includes(
+          "<!-- tavernary-reddit-submission-retry",
+        ),
+      )
+    ) {
+      throw new Error("Reddit retry state is invalid.");
+    }
+    if (
+      currentRetryState?.outcome === "pending" &&
+      new Date(now).getTime() <
+        new Date(currentRetryState.next_eligible_retry_at).getTime()
+    ) {
+      throw new RedditSourceRetryScheduledError({
+        state: currentRetryState,
+        attempts: 0,
+      });
+    }
+
+    const wave = await loadRedditSubmissionSourceWave({
+      project: preliminary.record,
+      source: preliminary.source,
+      snapshot: null,
+      loadSource: sourceClients.loadEnrichmentSource ?? loadEnrichmentSource,
+      sleep: sourceClients.sleep,
+    });
+    if (wave.status === "blocked") {
+      const error = new Error(wave.failure.message);
+      error.code = wave.failure.reasonCode;
+      throw error;
+    }
+    if (wave.status === "exhausted") {
+      const freshRetryContext = injectedComments
+        ? { issue, comments: sourceClients.issueComments }
+        : await loadRetryContext();
+      assertCurrentRedditRetryContext(
+        freshRetryContext.issue,
+        expectedRetryIdentity,
+      );
+      const freshRetryState = loadRedditRetryState(
+        freshRetryContext.comments,
+        expectedRetryIdentity,
+      );
+      if (
+        JSON.stringify(freshRetryState) !== JSON.stringify(currentRetryState)
+      ) {
+        if (freshRetryState?.outcome === "pending") {
+          throw new RedditSourceRetryScheduledError({
+            state: freshRetryState,
+            attempts: wave.attempts,
+          });
+        }
+        throw new Error("Reddit retry state changed during the source wave.");
+      }
+      const transition = planRedditRetryTransition({
+        current: freshRetryState,
+        issueNumber: issue.number,
+        sourceIdentity,
+        reasonCode: wave.failure.reasonCode,
+        now,
+      });
+      if (transition.action === "schedule") {
+        throw new RedditSourceRetryScheduledError({
+          state: transition.state,
+          attempts: wave.attempts,
+        });
+      }
+      return withPublicationMetadata(
+        {
+          ...(await draftProjectRecord({
+            admitted: decision,
+            observation: null,
+            snapshot: null,
+            enrichment: null,
+            frontendVocabulary: data.vocabulary,
+            frontendProjects: data.projects,
+            metadataAuthority,
+            metadataRequest,
+            ...(manualSummaryCopy
+              ? {
+                  publishedSummary: manualSummaryCopy.publishedSummary,
+                  copyResult: manualSummaryCopy.copyResult,
+                  copyMode: manualSummaryCopy.mode,
+                }
+              : {}),
+            provisionalSummary: redditPlaceholderSummary(
+              decision.manifest.project_type,
+            ),
+            provisionalWarning:
+              "Reddit source remained unavailable after three retry waves.",
+            copyRequired: manualSummaryCopy !== null,
+            now,
+          })),
+          redditRetry: {
+            outcome: "placeholder",
+            wave_number: 3,
+            max_waves: 3,
+            completed_waves: transition.state.completed_waves,
+            attempts: wave.attempts,
+            next_eligible_retry_at: null,
+            reason_code: wave.failure.reasonCode,
+          },
+        },
+        decision,
+      );
+    }
+    if (wave.source.sourceIdentity !== sourceIdentity) {
+      const error = new Error(
+        "The Reddit response does not match the catalog source.",
+      );
+      error.code = "reddit-identity-mismatch";
+      throw error;
+    }
+
+    const vocabularies = await loadEnrichmentVocabularies();
+    const protectedTerms = protectedTermsForSubmission({
+      record: preliminary.record,
+      decision,
+      data,
+      submittedDescription: "",
+    });
+    const maxProviderAttempts = 5;
+    let enrichment = null;
+    try {
+      if (sourceClients.enrich) {
+        enrichment = requestedEnrichmentResult(
+          await sourceClients.enrich({
+            record: preliminary.record,
+            source: preliminary.source,
+            snapshot: null,
+            enrichmentSource: wave.source,
+            metadataAuthority,
+            metadataRequest,
+            requestedFields,
+            maxProviderAttempts,
+            protectedTerms,
+          }),
+          requestedFields,
+        );
+      } else {
+        const enrichmentProvider = createEnrichmentProvider({
+          apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+          apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+          model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+        });
+        const output = await enrichRecord(
+          preliminary.record,
+          preliminary.source,
+          null,
+          enrichmentProvider,
+          {
+            vocabularies,
+            maxProviderAttempts,
+            protectedTerms,
+            loadSource: async () => wave.source,
+          },
+        );
+        enrichment = output
+          ? {
+              status: "curated",
+              ...(output.summary ? { summary: output.summary.value } : {}),
+              ...(Array.isArray(output.tags)
+                ? { tags: output.tags.map(({ id }) => id) }
+                : {}),
+              classification_review: null,
+              result: output.result,
+              change_reasons: [...output.change_reasons],
+              policy_signal: output.policy_signal,
+            }
+          : null;
+      }
+    } catch (error) {
+      enrichment = {
+        status: "failed",
+        code: error.code ?? "enrichment-failed",
+        message: error.message,
+      };
+    }
+
+    return withPublicationMetadata(
+      {
+        ...(await draftProjectRecord({
+          admitted: decision,
+          observation: null,
+          snapshot: null,
+          enrichment,
+          frontendVocabulary: data.vocabulary,
+          frontendProjects: data.projects,
+          metadataAuthority,
+          metadataRequest,
+          ...(manualSummaryCopy
+            ? {
+                publishedSummary: manualSummaryCopy.publishedSummary,
+                copyResult: manualSummaryCopy.copyResult,
+                copyMode: manualSummaryCopy.mode,
+              }
+            : {}),
+          copyRequired:
+            manualSummaryCopy !== null || requestedFields.includes("summary"),
+          now,
+        })),
+        redditRetry: {
+          outcome: "source-ready",
+          wave_number: (currentRetryState?.completed_waves ?? 0) + 1,
+          max_waves: 3,
+          completed_waves: currentRetryState?.completed_waves ?? 0,
+          attempts: wave.attempts,
+          next_eligible_retry_at: null,
+          reason_code: null,
+        },
+      },
+      decision,
+    );
   }
 
   const provider = repositoryProvider(
@@ -656,7 +1001,26 @@ export async function runGenerateProjectSubmissionCli(options) {
         ...input,
         sourceClients: options.sourceClients,
       }));
-  const draft = await prepareDraft({ issue, now });
+  let draft;
+  try {
+    draft = await prepareDraft({ issue, now });
+  } catch (error) {
+    if (
+      error?.code === "reddit-source-retry-scheduled" &&
+      options.retryStatePath
+    ) {
+      const state = normalizeRedditRetryState(error.retryState, {
+        issueNumber: options.issueNumber,
+        sourceIdentity: error.retryState?.source_identity,
+      });
+      if (state) {
+        const retryStatePath = resolve(options.retryStatePath);
+        await mkdir(dirname(retryStatePath), { recursive: true });
+        await writeFile(retryStatePath, await formatJson(state), "utf8");
+      }
+    }
+    throw error;
+  }
   const generated = await generateProjectSubmission({
     issueNumber: options.issueNumber,
     draft,
