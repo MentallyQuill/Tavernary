@@ -21,7 +21,15 @@ Runtime behavior is entirely client-side:
 
 - Next.js serves a static export in `out/`.
 - Browser loads `src/generated/catalog.json`.
-- Client-side filtering, search, and sorting are pure in-memory logic.
+- Tavernary builds MiniSearch indexes from the catalog's structured Project
+  and Kit search fields.
+- Client-side filtering, search, relevance ranking, and sorting are pure
+  in-memory logic. No search query leaves the browser.
+
+MiniSearch is an implementation dependency behind Tavernary's own search
+boundary. Tavernary owns normalization, conservative prefix and typo policy,
+all-meaningful-term matching, field boosts, deterministic ranking, evidence,
+corrections, and exact-token fallback behavior.
 
 ## Source-of-truth boundaries
 

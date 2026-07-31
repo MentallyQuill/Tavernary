@@ -1,4 +1,10 @@
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 
@@ -20,6 +26,9 @@ const homepageMetadata = [
 ].join("");
 const heading = (count: number) =>
   `${homepageMetadata}<h1>${count} projects</h1>`;
+const repositoryRoot = resolve(import.meta.dirname, "../..");
+const readRepositoryFile = (path: string) =>
+  readFileSync(resolve(repositoryRoot, path), "utf8");
 
 const temporaryExports: string[] = [];
 
@@ -60,6 +69,33 @@ function helpExport({
 }
 
 describe("verifyStaticExport", () => {
+  test("documents and exposes the catalog search certification contract", () => {
+    const packageJson = JSON.parse(readRepositoryFile("package.json")) as {
+      scripts: Record<string, string>;
+    };
+    const usingCatalogGuide = readRepositoryFile(
+      "docs/guides/using-the-catalog.md",
+    );
+    const catalogDataModel = readRepositoryFile(
+      "docs/architecture/catalog-data-model.md",
+    );
+    const systemOverview = readRepositoryFile(
+      "docs/architecture/system-overview.md",
+    );
+    const productionHandoff = readRepositoryFile(
+      "docs/architecture/production-development-handoff.md",
+    );
+
+    expect(packageJson.scripts["search:benchmark"]).toBe(
+      "vitest run tests/benchmarks/catalog-search-benchmark.test.ts --reporter=verbose",
+    );
+    expect(usingCatalogGuide).toContain("all meaningful words");
+    expect(usingCatalogGuide).toContain("Relevance");
+    expect(catalogDataModel).toContain("structured search fields");
+    expect(systemOverview).toContain("MiniSearch");
+    expect(productionHandoff).not.toContain(["searchable", "Text"].join(""));
+  });
+
   test("accepts a catalog heading split by React server-rendering comments", () => {
     expect(() =>
       verifyStaticExport(
