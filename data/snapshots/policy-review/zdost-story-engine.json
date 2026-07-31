@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zdost-story-engine",
+  "source_id": "github-1225640741",
+  "source_identity": "github:zdost/story-engine",
+  "evidence_fingerprint": "e122afc14f8c5cd24891c6a70e492b5c45b38cd6d94fe4f961a195499f251ad5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:10:54.922Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:10:54.922Z"
+  },
+  "maintenance_issue_number": null
+}
