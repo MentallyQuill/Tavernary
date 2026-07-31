@@ -251,7 +251,9 @@ function normalizeEditable(
   if (/[\u0000-\u001f\u007f]/u.test(name)) {
     errors.push("Owner display name must be single-line plain text.");
   }
-  if (!summary) errors.push("Owner summary is required.");
+  if (!summary && (original || metadata.summary.mode === "manual")) {
+    errors.push("Owner summary is required.");
+  }
   if (summary.length > 220) {
     errors.push("Owner summary must be 220 characters or fewer.");
   }

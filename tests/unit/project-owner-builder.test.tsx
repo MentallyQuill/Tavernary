@@ -393,6 +393,53 @@ test("blocks the whole batch for duplicate generated IDs or one invalid card", a
   await user.clear(screen.getByLabelText("Card 2 display name"));
   await user.type(screen.getByLabelText("Card 2 display name"), "Beta");
   await user.clear(screen.getByLabelText("Card 2 summary"));
+  await user.selectOptions(
+    screen.getByLabelText("Card 2 summary policy"),
+    "manual",
+  );
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "Owner summary is required.",
+  );
+});
+
+test("reviews a blank automatic add-card summary as generated copy", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(
+    screen.getByRole("radio", { name: "Add cards from this source" }),
+  );
+  await user.clear(screen.getByLabelText("Card 1 display name"));
+  await user.type(screen.getByLabelText("Card 1 display name"), "V9 Mirage");
+  await user.clear(screen.getByLabelText("Card 1 summary"));
+  await user.click(screen.getByRole("button", { name: "Review request" }));
+
+  expect(
+    screen.getByRole("heading", { name: "Review your public request" }),
+  ).toBeVisible();
+  expect(screen.getByText("Summary: Generated automatically")).toBeVisible();
+});
+
+test("explains automatic summary optionality and keeps manual summaries required", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  expect(
+    screen.getByText(
+      "Optional: leave this blank and Tavernary will write the catalog summary from the source.",
+    ),
+  ).toBeVisible();
+
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
+  expect(
+    screen.queryByText(
+      "Optional: leave this blank and Tavernary will write the catalog summary from the source.",
+    ),
+  ).not.toBeInTheDocument();
+  await user.clear(screen.getByRole("textbox", { name: /^Summary$/u }));
   await user.click(screen.getByRole("button", { name: "Review request" }));
   expect(screen.getByRole("alert")).toHaveTextContent(
     "Owner summary is required.",

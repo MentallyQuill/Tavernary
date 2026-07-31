@@ -317,6 +317,42 @@ describe("owner add-card batches", () => {
 });
 
 describe("owner card edits and lifecycle", () => {
+  test("accepts a blank automatic summary proposal", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        editFixture({
+          summary: "   ",
+          metadata: {
+            summary: { mode: "automatic" },
+            tags: { mode: "automatic" },
+          },
+        }),
+        vocabularies,
+      ),
+    ).toMatchObject({
+      valid: true,
+      manifest: { proposed: { summary: "" } },
+    });
+  });
+
+  test("rejects a blank manual summary proposal", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        editFixture({
+          summary: "",
+          metadata: {
+            summary: { mode: "manual" },
+            tags: { mode: "automatic" },
+          },
+        }),
+        vocabularies,
+      ),
+    ).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining(["Owner summary is required."]),
+    });
+  });
+
   test("accepts a non-GitHub source identity for staff maintenance", () => {
     expect(
       normalizeProjectOwnerManifest(

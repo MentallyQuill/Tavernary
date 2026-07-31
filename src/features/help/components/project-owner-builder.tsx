@@ -149,7 +149,7 @@ function batchPreflight(cards: OwnerCardDraft[]) {
     const label = `Card ${index + 1} (${card.name.trim() || "Untitled"})`;
     if (!card.name.trim())
       errors.push(`${label}: Owner display name is required.`);
-    if (!card.summary.trim())
+    if (!card.summary.trim() && card.metadata.summary.mode === "manual")
       errors.push(`${label}: Owner summary is required.`);
     const priorId = ids.get(card.project_id);
     if (priorId !== undefined) {
@@ -176,6 +176,10 @@ function reviewValue(values: string[]) {
   return values.join(", ") || "None";
 }
 
+function summaryReviewValue(summary: string, mode: "automatic" | "manual") {
+  return summary || (mode === "automatic" ? "Generated automatically" : "");
+}
+
 function reviewRows(
   manifest: ProjectOwnerManifest,
   project: OwnerProjectOption,
@@ -189,7 +193,10 @@ function reviewRows(
           <div className="owner-card-review">
             <code>{card.project_id}</code>
             <span>Type: {card.kind}</span>
-            <span>Summary: {card.summary}</span>
+            <span>
+              Summary:{" "}
+              {summaryReviewValue(card.summary, card.metadata.summary.mode)}
+            </span>
             <span>Frontends: {reviewValue(card.frontends)}</span>
             <span>Primary function: {card.primary_function}</span>
             <span>Goals and traits: {reviewValue(card.tags)}</span>
@@ -214,7 +221,13 @@ function reviewRows(
       { label: "Before: display name", value: manifest.original.name },
       { label: "After: display name", value: manifest.proposed.name },
       { label: "Before: summary", value: manifest.original.summary },
-      { label: "After: summary", value: manifest.proposed.summary },
+      {
+        label: "After: summary",
+        value: summaryReviewValue(
+          manifest.proposed.summary,
+          manifest.proposed.metadata.summary.mode,
+        ),
+      },
       {
         label: "Before: goals and traits",
         value: reviewValue(manifest.original.tags),

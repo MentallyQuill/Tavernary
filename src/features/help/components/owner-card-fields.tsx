@@ -162,6 +162,12 @@ export function OwnerCardFields({
           });
         }}
       />
+      {card.metadata.summary.mode === "automatic" ? (
+        <p className="help-hint">
+          Optional: leave this blank and Tavernary will write the catalog
+          summary from the source.
+        </p>
+      ) : null}
       <HelpSelectField
         id={`${idPrefix}-summary-policy`}
         label={fieldLabel(index, compact, "summary policy")}
