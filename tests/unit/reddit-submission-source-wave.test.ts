@@ -75,7 +75,7 @@ test.each([
   async (reasonCode) => {
     const integrityFailure = { ...failure, reasonCode };
     const loadSource = vi.fn(async () => integrityFailure);
-  const sleep = vi.fn(async (_milliseconds: number) => undefined);
+    const sleep = vi.fn(async (_milliseconds: number) => undefined);
 
     await expect(
       loadRedditSubmissionSourceWave({
