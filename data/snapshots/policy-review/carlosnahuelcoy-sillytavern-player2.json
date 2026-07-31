@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "carlosnahuelcoy-sillytavern-player2",
+  "source_id": "github-1179141243",
+  "source_identity": "github:carlosnahuelcoy/sillytavern-player2",
+  "evidence_fingerprint": "9c7a8fdf760e7bb6fc4a51467dc4a69b71d72a469ca3204ce140cf168aec0bba",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:09:43.919Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:09:43.919Z"
+  },
+  "maintenance_issue_number": null
+}
