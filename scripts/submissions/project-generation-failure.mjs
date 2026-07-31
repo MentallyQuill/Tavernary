@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 import {
@@ -8,6 +9,10 @@ import {
   parseSubmissionPullRequestMarker,
   submissionBranch,
 } from "./project-submission-pr.mjs";
+import {
+  normalizeRedditRetryState,
+  renderRedditRetryState,
+} from "./project-submission-retry-state.mjs";
 
 const PRODUCERS = new Set(["project-submission", "project-owner-request"]);
 const QUEUE_LABELS = new Set([
@@ -64,9 +69,14 @@ export function planProjectGenerationFailure(input) {
     "",
     `[View the failed GitHub Actions run](${input.runUrl})`,
     "",
-    desired === "submission-pr-open"
-      ? "An owned review pull request already exists, so review continues there."
-      : "This request is retryable after the generation problem is corrected.",
+    input.redditRetryState
+      ? `Tavernary will retry automatically after ${input.redditRetryState.next_eligible_retry_at}.`
+      : desired === "submission-pr-open"
+        ? "An owned review pull request already exists, so review continues there."
+        : "This request is retryable after the generation problem is corrected.",
+    ...(input.producer === "project-submission" && input.redditRetryState
+      ? ["", renderRedditRetryState(input.redditRetryState)]
+      : []),
   ].join("\n");
   return {
     action: "reconcile",
@@ -133,6 +143,7 @@ export async function reconcileProjectGenerationFailure(input) {
     ownedPull,
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
+    redditRetryState: input.redditRetryState,
   });
   if (plan.action === "noop") return plan;
 
@@ -150,6 +161,7 @@ export async function reconcileProjectGenerationFailure(input) {
     ownedPull,
     runUrl: input.runUrl,
     reasonCode: input.reasonCode,
+    redditRetryState: input.redditRetryState,
   });
   if (plan.action === "noop") return plan;
 
@@ -207,7 +219,29 @@ async function main() {
   const repository = process.env.GITHUB_REPOSITORY;
   const producer = process.env.GENERATION_PRODUCER;
   const runUrl = process.env.GENERATION_RUN_URL;
-  const reasonCode = process.env.GENERATION_REASON_CODE ?? "generation-failed";
+  const retryStatePath = process.env.REDDIT_RETRY_STATE_PATH;
+  let redditRetryState = null;
+  if (retryStatePath) {
+    let serialized = null;
+    try {
+      serialized = await readFile(retryStatePath, "utf8");
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+    if (serialized !== null) {
+      const value = JSON.parse(serialized);
+      redditRetryState = normalizeRedditRetryState(value, {
+        issueNumber,
+        sourceIdentity: value?.source_identity,
+      });
+      if (!redditRetryState || redditRetryState.outcome !== "pending") {
+        throw new Error("Reddit retry state artifact is invalid.");
+      }
+    }
+  }
+  const reasonCode = redditRetryState
+    ? "reddit-source-retry-scheduled"
+    : (process.env.GENERATION_REASON_CODE ?? "generation-failed");
   if (
     !Number.isSafeInteger(issueNumber) ||
     issueNumber < 1 ||
@@ -223,6 +257,7 @@ async function main() {
     producer,
     runUrl,
     reasonCode,
+    redditRetryState,
     request: github,
   });
 }

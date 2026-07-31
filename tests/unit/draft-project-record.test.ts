@@ -544,42 +544,44 @@ test("drafts external presets with manual source policy", async () => {
   expect(result.snapshot).toBeUndefined();
 });
 
+const admittedRedditPreset = {
+  status: "admitted" as const,
+  manifest: {
+    schema_version: 4 as const,
+    project_type: "preset" as const,
+    primary_function: "preset",
+    source_url:
+      "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
+    frontends: { known_ids: ["sillytavern"], other: [] },
+    frontend_independent: false,
+    additional_context: null,
+    metadata: {
+      summary: { mode: "automatic" as const },
+      tags: { mode: "automatic" as const },
+    },
+    preset_compatibility: {
+      model_families: {
+        known_ids: ["claude"],
+        other: [],
+      },
+      completion_formats: ["chat-completion"],
+    },
+  },
+  identity: {
+    kind: "reddit" as const,
+    canonicalUrl:
+      "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
+    postId: "1v9u18m",
+    subreddit: "SillyTavernAI",
+    slug: "preset_introducing_freaky_frankenstein_50",
+  },
+  frontendIds: ["sillytavern"],
+  warnings: [],
+};
+
 test("drafts Reddit presets with a readable name from the permalink slug", async () => {
   const result = await draftProjectRecord({
-    admitted: {
-      status: "admitted",
-      manifest: {
-        schema_version: 4,
-        project_type: "preset",
-        primary_function: "preset",
-        source_url:
-          "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
-        frontends: { known_ids: ["sillytavern"], other: [] },
-        frontend_independent: false,
-        additional_context: null,
-        metadata: {
-          summary: { mode: "automatic" },
-          tags: { mode: "automatic" },
-        },
-        preset_compatibility: {
-          model_families: {
-            known_ids: ["claude"],
-            other: [],
-          },
-          completion_formats: ["chat-completion"],
-        },
-      },
-      identity: {
-        kind: "reddit",
-        canonicalUrl:
-          "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/preset_introducing_freaky_frankenstein_50/",
-        postId: "1v9u18m",
-        subreddit: "SillyTavernAI",
-        slug: "preset_introducing_freaky_frankenstein_50",
-      },
-      frontendIds: ["sillytavern"],
-      warnings: [],
-    },
+    admitted: admittedRedditPreset,
     observation: null,
     snapshot: null,
     enrichment: null,
@@ -591,6 +593,33 @@ test("drafts Reddit presets with a readable name from the permalink slug", async
     name: "Preset Introducing Freaky Frankenstein 50",
     source_id: "url-reddit-1v9u18m",
   });
+});
+
+test("uses an explicit provisional Reddit placeholder without claiming curated copy", async () => {
+  const result = await draftProjectRecord({
+    admitted: admittedRedditPreset,
+    observation: null,
+    snapshot: null,
+    enrichment: null,
+    provisionalSummary:
+      "A preset shared through Reddit. Tavernary could not retrieve the post description after repeated attempts, so source details remain temporarily unavailable.",
+    provisionalWarning:
+      "Reddit source remained unavailable after three retry waves.",
+    now: "2026-07-30T13:50:33.000Z",
+  });
+
+  expect(result.record).toMatchObject({
+    summary: expect.stringContaining("shared through Reddit"),
+    metadata_status: "provisional",
+    metadata_policy: {
+      summary: { mode: "automatic" },
+      tags: { mode: "automatic" },
+    },
+  });
+  expect(result.copyResult).toBeNull();
+  expect(result.warnings).toContain(
+    "Reddit source remained unavailable after three retry waves.",
+  );
 });
 
 test("drafts a frontend and its vocabulary proposal together", async () => {

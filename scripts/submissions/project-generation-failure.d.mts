@@ -15,6 +15,8 @@ export function planProjectGenerationFailure(input: {
   ownedPull: { state: string } | null;
   runUrl: string;
   reasonCode: string;
+  redditRetryState?:
+    import("./project-submission-retry-state.mjs").RedditRetryState | null;
 }): ProjectGenerationFailurePlan;
 
 export function reconcileProjectGenerationFailure(input: {
@@ -23,5 +25,7 @@ export function reconcileProjectGenerationFailure(input: {
   producer: "project-submission" | "project-owner-request";
   runUrl: string;
   reasonCode: string;
+  redditRetryState?:
+    import("./project-submission-retry-state.mjs").RedditRetryState | null;
   request: (path: string, options?: Record<string, unknown>) => Promise<any>;
 }): Promise<ProjectGenerationFailurePlan>;

@@ -29,7 +29,18 @@ export interface GeneratedSubmissionReport {
   } | null;
   actor: { id: number; login: string; type: "User" | "Bot" } | null;
   classificationReview: GeneratedClassificationReview | null;
+  reddit_retry?: RedditRetryReport | null;
   warnings: string[];
+}
+
+export interface RedditRetryReport {
+  outcome: "source-ready" | "placeholder";
+  wave_number: number;
+  max_waves: 3;
+  completed_waves: number;
+  attempts: number;
+  next_eligible_retry_at: null;
+  reason_code: string | null;
 }
 
 export interface GeneratedSubmission {
@@ -53,6 +64,7 @@ export interface GeneratedSubmissionDraft {
   inputDigest?: string;
   sourceIdentity?: NonNullable<GeneratedSubmissionReport["source_identity"]>;
   classificationReview?: GeneratedClassificationReview | null;
+  redditRetry?: RedditRetryReport;
   warnings: string[];
 }
 
@@ -65,6 +77,7 @@ export interface GenerateProjectSubmissionCliOptions {
   issueNumber: number;
   outputDirectory: string;
   reportPath: string;
+  retryStatePath?: string;
 }
 
 export interface GenerationIssue {
@@ -91,6 +104,21 @@ export interface ProjectSubmissionSourceClients {
 export function parseGenerateProjectSubmissionCli(
   argv: string[],
 ): GenerateProjectSubmissionCliOptions;
+
+export class RedditSourceRetryScheduledError extends Error {
+  name: "RedditSourceRetryScheduledError";
+  code: "reddit-source-retry-scheduled";
+  retryState: import("./project-submission-retry-state.mjs").RedditRetryState;
+  attempts: number;
+  constructor(input: {
+    state: import("./project-submission-retry-state.mjs").RedditRetryState;
+    attempts: number;
+  });
+}
+
+export function redditPlaceholderSummary(
+  kind: "frontend" | "extension" | "preset",
+): string;
 
 export function writeGeneratedSubmission(
   generated: GeneratedSubmission,

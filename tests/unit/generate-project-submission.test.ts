@@ -231,6 +231,50 @@ test("preserves a generated GitHub bot actor in the audit report", async () => {
   });
 });
 
+test("includes only sanitized Reddit retry telemetry in the report", async () => {
+  const redditRetry = {
+    outcome: "placeholder" as const,
+    wave_number: 3,
+    max_waves: 3 as const,
+    completed_waves: 3,
+    attempts: 3,
+    next_eligible_retry_at: null,
+    reason_code: "reddit-rate-limited",
+  };
+  const generated = await generateProjectSubmission({
+    issueNumber: 165,
+    draft: {
+      record: {
+        ...record,
+        id: "reddit-1v9u18m",
+        source_id: "url-reddit-1v9u18m",
+      },
+      source: {
+        schema_version: 1,
+        id: "url-reddit-1v9u18m",
+        type: "url",
+        url: "https://www.reddit.com/comments/1v9u18m/",
+        published_at: null,
+        version: null,
+        artifact_size_bytes: null,
+        license_status: "pending",
+        license_spdx_id: null,
+        status: "active",
+        status_reason: null,
+        refresh_policy: "paused",
+      },
+      submitted: {},
+      observed: {},
+      inferred: {},
+      redditRetry,
+      warnings: [],
+    },
+  });
+
+  expect(generated.report.reddit_retry).toEqual(redditRetry);
+  expect(JSON.stringify(generated.report)).not.toContain("raw_provider_output");
+});
+
 test("includes a sorted vocabulary update only for a frontend proposal", async () => {
   const generated = await generateProjectSubmission({
     issueNumber: 124,

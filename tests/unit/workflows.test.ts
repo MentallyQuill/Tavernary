@@ -43,6 +43,8 @@ test("uses category-prefixed workflow display names", async () => {
       "Project owner requests: Process review result",
     "retry-frontend-dependencies":
       "Project submissions: Retry frontend dependencies",
+    "retry-project-submission-enrichment":
+      "Project submissions: Retry Reddit enrichment",
     "triage-kit-submission": "Kit submissions: Validate submission",
     "triage-help-request": "Help requests: Triage report",
     "apply-kit-submission": "Kit submissions: Publish approved Kit",
@@ -72,6 +74,10 @@ test("identifies the object and action in every workflow run name", async () => 
     "retry-frontend-dependencies": [
       "Project submissions:",
       "Retry merged frontend dependencies",
+    ],
+    "retry-project-submission-enrichment": [
+      "Project submissions:",
+      "Retry due Reddit enrichment",
     ],
     "triage-kit-submission": ["Kit #", "Validate submission"],
     "triage-help-request": ["Help request #", "Triage report"],
@@ -107,6 +113,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "generate-project-owner-request",
     "project-owner-request-lifecycle",
     "retry-frontend-dependencies",
+    "retry-project-submission-enrichment",
     "triage-kit-submission",
     "triage-help-request",
     "apply-kit-submission",
@@ -867,6 +874,13 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   ).toBeGreaterThanOrEqual(4);
   expect(source).toContain("Refresh and revalidate issue before PR mutation");
   expect(source).toContain("Refresh and revalidate issue before labeling");
+  expect(source).toContain(
+    '--retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json"',
+  );
+  expect(source).toContain(
+    "REDDIT_RETRY_STATE_PATH: ${{ runner.temp }}/project-submission-retry-state.json",
+  );
+  expect(source).toContain("Reconcile Reddit retry success");
   expect(
     source.match(/issue is no longer admitted/g)?.length,
   ).toBeGreaterThanOrEqual(3);
@@ -877,6 +891,29 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).not.toMatch(
     /(?:npm|pnpm|yarn|bun|node)\s+(?:--prefix\s+)?(?:https?:\/\/|\.\/submitted)/,
   );
+});
+
+test("retries due Reddit submissions every fifteen minutes", async () => {
+  const retry = await workflow("retry-project-submission-enrichment");
+
+  expect(retry.on.schedule).toEqual([{ cron: "*/15 * * * *" }]);
+  expect(retry.on.workflow_dispatch).toBeNull();
+  expect(retry.permissions).toEqual({
+    contents: "read",
+    issues: "read",
+    actions: "write",
+  });
+  expect(retry.concurrency).toEqual({
+    group: "retry-project-submission-enrichment",
+    "cancel-in-progress": false,
+  });
+  expect(
+    allSteps(retry).some((step) =>
+      step.run?.includes(
+        "node scripts/submissions/retry-project-submission-enrichment.mjs",
+      ),
+    ),
+  ).toBe(true);
 });
 
 test("handles submission closure from default-branch code only", async () => {
