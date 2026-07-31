@@ -306,7 +306,6 @@ export function createEnrichmentProvider(options) {
     async generate(input) {
       const response = await transport.request({
         model: transport.configuration.model,
-        temperature: input.repair ? 0 : 0.2,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(input) },

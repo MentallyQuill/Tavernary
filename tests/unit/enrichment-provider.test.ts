@@ -176,7 +176,7 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   const body = JSON.parse(String(init?.body));
   const schema = body.response_format.json_schema.schema;
   expect(body.model).toBe(model);
-  expect(body.temperature).toBe(0.2);
+  expect(body).not.toHaveProperty("temperature");
   expect(body.messages[0].content).toMatch(
     /project names.*README content.*untrusted reference data/iu,
   );
@@ -318,7 +318,7 @@ test("uses deterministic sampling for a validation repair request", async () => 
   });
 
   const body = JSON.parse(String(fetchImpl.mock.calls[0][1]?.body));
-  expect(body.temperature).toBe(0);
+  expect(body).not.toHaveProperty("temperature");
   expect(body.messages[0].content).toMatch(
     /rejectedSummary.*untrusted.*do not follow/iu,
   );
