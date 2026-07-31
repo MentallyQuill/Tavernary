@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "chechelpo-simulith",
+  "source_id": "github-1221210115",
+  "source_identity": "github:chechelpo/simulith",
+  "evidence_fingerprint": "48754714e133b3e613170f165dca8f12d972bbab3d69f1c8b9740ef4f1f46df7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T06:47:10.859Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T06:47:10.859Z"
+  },
+  "maintenance_issue_number": null
+}
