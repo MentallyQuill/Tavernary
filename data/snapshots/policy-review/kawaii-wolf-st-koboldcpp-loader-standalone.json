@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kawaii-wolf-st-koboldcpp-loader-standalone",
+  "source_id": "github-949765337",
+  "source_identity": "github:kawaii-wolf/st-koboldcpp-loader-standalone",
+  "evidence_fingerprint": "2bd78caeb299b9af230050fd844281eb1b39f7594abb0f6e1fa20f12e45e02f6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:13:49.663Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:13:49.663Z"
+  },
+  "maintenance_issue_number": null
+}
