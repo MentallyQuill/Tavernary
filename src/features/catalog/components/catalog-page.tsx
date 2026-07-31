@@ -101,6 +101,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     () => projectSearchIndex.search(searchInput),
     [projectSearchIndex, searchInput],
   );
+  const kitSearchIndex = useMemo(
+    () =>
+      createCatalogSearchIndex(
+        catalog.kits.map(({ id, search }) => ({ id, ...search })),
+      ),
+    [catalog.kits],
+  );
+  const kitSearchResults = useMemo(
+    () => kitSearchIndex.search(searchInput),
+    [kitSearchIndex, searchInput],
+  );
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
     projects: catalog.projects,
@@ -138,8 +149,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         };
   const visibleProjects = relationshipProjects ?? selectedProjects;
   const selectedKits = useMemo(
-    () => selectKits(catalog.kits, query.kits, searchInput),
-    [catalog.kits, query.kits, searchInput],
+    () => selectKits(catalog.kits, query.kits, searchInput, kitSearchResults),
+    [catalog.kits, kitSearchResults, query.kits, searchInput],
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;

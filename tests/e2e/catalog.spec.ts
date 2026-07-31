@@ -5,9 +5,11 @@ import {
   frontendExpansionLabel,
   frontendOptions,
   generatedCatalog as catalog,
+  generatedKitCount,
   generatedProjectCount,
   generatedProjectSearchCount,
   initiallyVisibleFrontendOptions,
+  kitCountLabel,
   metadataFilterChipCount,
   projectCountLabel,
   tagOptionsByFacet,
@@ -639,6 +641,30 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   await expect(
     page.getByRole("searchbox", { name: "Search projects" }),
   ).toHaveValue("");
+});
+
+test("searches Kits by noncontiguous structured fields", async ({ page }) => {
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(generatedKitCount) }),
+  ).toBeVisible();
+
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  await search.pressSequentially("aiko loadout");
+
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(1) }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Aiko's Loadout", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".kit-card")).toHaveCount(1);
+
+  await search.fill("");
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(generatedKitCount) }),
+  ).toBeVisible();
+  await expect(page.locator(".kit-card")).toHaveCount(generatedKitCount);
 });
 
 test("searches by repository owner and discloses creator attribution", async ({

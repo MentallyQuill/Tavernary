@@ -76,5 +76,32 @@
     "required": [],
     "forbidden": [],
     "expectEmpty": true
+  },
+  {
+    "mode": "kits",
+    "query": "aiko loadout",
+    "top": ["aiko-s-loadout-30"],
+    "required": ["aiko-s-loadout-30"],
+    "forbidden": ["ultimate-harry-potter-18"]
+  },
+  {
+    "mode": "kits",
+    "query": "memorybooks loadout",
+    "top": ["aiko-s-loadout-30"],
+    "required": ["aiko-s-loadout-30"],
+    "forbidden": ["ultimate-harry-potter-18"]
+  },
+  {
+    "mode": "kits",
+    "query": "mentally quill harry",
+    "required": ["ultimate-harry-potter-18"],
+    "forbidden": ["aiko-s-loadout-30"]
+  },
+  {
+    "mode": "kits",
+    "query": "super awesome",
+    "top": ["super-awesome-test-kit-109"],
+    "required": ["super-awesome-test-kit-109"],
+    "forbidden": ["test-135"]
   }
 ]

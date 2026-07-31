@@ -1,6 +1,9 @@
 import type { KitQuery, KitSort } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { matchesModelFamilies } from "@/features/catalog/preset-compatibility";
+import { exactAllTermSearch } from "@/features/search/catalog-search";
+import { searchMeaning } from "@/features/search/search-normalization";
+import type { CatalogSearchResults } from "@/features/search/search-types";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
@@ -59,10 +62,21 @@ export function selectKits(
   kits: CatalogKit[],
   query: KitQuery,
   search = "",
+  searchResults?: CatalogSearchResults,
 ): CatalogKit[] {
-  const normalized = search.trim().toLowerCase();
+  const normalized = searchMeaning(search);
+  const effectiveSearchResults =
+    searchResults?.normalizedQuery === normalized
+      ? searchResults
+      : exactAllTermSearch(
+          kits.map(({ id, search: fields }) => ({ id, ...fields })),
+          search,
+        );
+  const matchingKitIds = new Set(
+    effectiveSearchResults.matches.map(({ id }) => id),
+  );
   return kits
-    .filter((kit) => !normalized || kit.searchableText.includes(normalized))
+    .filter((kit) => !normalized || matchingKitIds.has(kit.id))
     .filter((kit) =>
       matchesAny(
         query.frontends,

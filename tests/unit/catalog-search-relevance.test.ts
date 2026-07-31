@@ -16,18 +16,23 @@ interface RelevanceScenario {
 
 const scenarios = scenariosJson as RelevanceScenario[];
 let projectIndex: CatalogSearchIndex;
+let kitIndex: CatalogSearchIndex;
 
 beforeAll(async () => {
   const catalog = await buildCatalog({ write: false });
   projectIndex = createCatalogSearchIndex(
     catalog.projects.map(({ id, search }) => ({ id, ...search })),
   );
+  kitIndex = createCatalogSearchIndex(
+    catalog.kits.map(({ id, search }) => ({ id, ...search })),
+  );
 });
 
-describe("Project relevance corpus", () => {
-  for (const scenario of scenarios.filter(({ mode }) => mode === "projects")) {
+describe("catalog relevance corpus", () => {
+  for (const scenario of scenarios) {
     test(scenario.query, () => {
-      const resultIds = projectIndex
+      const index = scenario.mode === "projects" ? projectIndex : kitIndex;
+      const resultIds = index
         .search(scenario.query)
         .matches.map(({ id }) => id);
       const diagnostic = `${scenario.query}: ${resultIds.join(", ")}`;

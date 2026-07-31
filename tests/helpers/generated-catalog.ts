@@ -34,6 +34,12 @@ interface GeneratedCatalogProject {
   } | null;
 }
 
+interface GeneratedCatalogKit {
+  id: string;
+  title: string;
+  search: CatalogSearchFields;
+}
+
 export const generatedCatalog = JSON.parse(
   readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
 ) as {
@@ -46,9 +52,11 @@ export const generatedCatalog = JSON.parse(
     aliases: string[];
   }>;
   projects: GeneratedCatalogProject[];
+  kits: GeneratedCatalogKit[];
 };
 
 export const generatedProjectCount = generatedCatalog.projects.length;
+export const generatedKitCount = generatedCatalog.kits.length;
 
 const generatedProjectSearchIndex = createCatalogSearchIndex(
   generatedCatalog.projects.map(({ id, search }) => ({ id, ...search })),
@@ -60,6 +68,10 @@ export function generatedProjectSearchCount(query: string) {
 
 export function projectCountLabel(count: number) {
   return `${count} ${count === 1 ? "project" : "projects"}`;
+}
+
+export function kitCountLabel(count: number) {
+  return `${count} ${count === 1 ? "Kit" : "Kits"}`;
 }
 
 function vocabularyLength(path: string, property: string) {
