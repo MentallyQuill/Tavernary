@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+
 import { parseProjectSubmissionIssue } from "./parse-project-submission.mjs";
 import { parseSourceIdentity } from "./source-identity.mjs";
 
@@ -176,10 +179,25 @@ export async function upsertRedditRetryComment(input) {
   );
   if (!existing) return { action: "noop" };
 
-  const body = String(existing.body).replace(
-    /<!-- tavernary-reddit-submission-retry\r?\n[\s\S]*?\r?\n-->/u,
-    renderRedditRetryState(state),
-  );
+  const body =
+    state.outcome === "pending"
+      ? String(existing.body).replace(
+          /<!-- tavernary-reddit-submission-retry\r?\n[\s\S]*?\r?\n-->/u,
+          renderRedditRetryState(state),
+        )
+      : [
+          FAILURE_MARKER,
+          state.outcome === "source-ready"
+            ? "Reddit source recovery succeeded and generation continued to review."
+            : "Reddit source retries were exhausted and generation continued with provisional metadata.",
+          "",
+          `Retry outcome: \`${state.outcome}\``,
+          ...(input.runUrl
+            ? ["", `[View the completed GitHub Actions run](${input.runUrl})`]
+            : []),
+          "",
+          renderRedditRetryState(state),
+        ].join("\n");
   await input.request(
     `/repos/${input.repository}/issues/comments/${existing.id}`,
     {
@@ -188,6 +206,77 @@ export async function upsertRedditRetryComment(input) {
     },
   );
   return { action: "update", commentId: existing.id };
+}
+
+function githubHeaders() {
+  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+  return {
+    Accept: "application/vnd.github+json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    "Content-Type": "application/json",
+    "User-Agent": "Tavernary-project-submission-retry-state",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+async function github(path, options = {}) {
+  const response = await fetch(`https://api.github.com${path}`, {
+    ...options,
+    headers: { ...githubHeaders(), ...options.headers },
+  });
+  if (!response.ok) {
+    throw new Error(
+      `GitHub ${response.status} while reconciling Reddit retry state.`,
+    );
+  }
+  return response.status === 204 ? null : response.json();
+}
+
+export async function reconcileRedditRetryReport({
+  report,
+  repository,
+  runUrl,
+  now,
+  request,
+}) {
+  const retry = report?.reddit_retry;
+  const issueNumber = report?.issue_number;
+  const sourceIdentity = report?.source_identity?.canonical;
+  if (
+    !retry ||
+    !["source-ready", "placeholder"].includes(retry.outcome) ||
+    retry.max_waves !== 3 ||
+    retry.next_eligible_retry_at !== null ||
+    !Number.isSafeInteger(issueNumber) ||
+    !/^reddit:[a-z0-9]+$/u.test(sourceIdentity ?? "") ||
+    (retry.outcome === "source-ready" && retry.completed_waves === 0)
+  ) {
+    return { action: "noop" };
+  }
+  const state = normalizeRedditRetryState(
+    {
+      schema_version: 1,
+      issue_number: issueNumber,
+      source_identity: sourceIdentity,
+      completed_waves: retry.completed_waves,
+      next_eligible_retry_at: null,
+      last_reason_code: retry.reason_code ?? "source-ready",
+      updated_at: new Date(now).toISOString(),
+      outcome: retry.outcome,
+    },
+    { issueNumber, sourceIdentity },
+  );
+  if (!state) {
+    throw new Error("Admission report Reddit retry state is invalid.");
+  }
+  return upsertRedditRetryComment({
+    repository,
+    issueNumber,
+    sourceIdentity,
+    state,
+    runUrl,
+    request,
+  });
 }
 
 export function planRedditRetryTransition({
@@ -224,4 +313,28 @@ export function planRedditRetryTransition({
     outcome: terminal ? "placeholder" : "pending",
   };
   return { action: terminal ? "placeholder" : "schedule", state };
+}
+
+async function main() {
+  const reportPath = process.env.ADMISSION_REPORT_PATH;
+  const repository = process.env.GITHUB_REPOSITORY;
+  const runUrl = process.env.GENERATION_RUN_URL;
+  if (!reportPath || !repository || !runUrl) {
+    throw new Error("Reddit retry reconciliation environment is invalid.");
+  }
+  const report = JSON.parse(await readFile(reportPath, "utf8"));
+  await reconcileRedditRetryReport({
+    report,
+    repository,
+    runUrl,
+    now: new Date().toISOString(),
+    request: github,
+  });
+}
+
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  await main();
 }

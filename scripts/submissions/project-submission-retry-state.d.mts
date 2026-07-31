@@ -51,5 +51,14 @@ export function upsertRedditRetryComment(input: {
   issueNumber: number;
   sourceIdentity: `reddit:${string}`;
   state: RedditRetryState;
+  runUrl?: string;
+  request: (path: string, options?: Record<string, unknown>) => Promise<any>;
+}): Promise<{ action: "noop" } | { action: "update"; commentId: number }>;
+
+export function reconcileRedditRetryReport(input: {
+  report: Record<string, any>;
+  repository: string;
+  runUrl: string;
+  now: string;
   request: (path: string, options?: Record<string, unknown>) => Promise<any>;
 }): Promise<{ action: "noop" } | { action: "update"; commentId: number }>;

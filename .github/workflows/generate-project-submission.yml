@@ -139,7 +139,8 @@ jobs:
           node scripts/submissions/generate-project-submission.mjs \
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
-            --report-path "${RUNNER_TEMP}/admission-report.json"
+            --report-path "${RUNNER_TEMP}/admission-report.json" \
+            --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json"
       - name: Validate proposed catalog and card
         run: |
           npm run catalog:validate
@@ -446,6 +447,13 @@ jobs:
           gh api --method POST \
             "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/labels" \
             --input "${RUNNER_TEMP}/project-submission-labels.json"
+      - name: Reconcile Reddit retry success
+        if: steps.commit.outputs.changed == 'true' || steps.state.outputs.pr_number != ''
+        env:
+          ADMISSION_REPORT_PATH: ${{ runner.temp }}/admission-report.json
+          GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/submissions/project-submission-retry-state.mjs
       - name: Upload admission report
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -464,5 +472,6 @@ jobs:
           GENERATION_PRODUCER: project-submission
           GENERATION_REASON_CODE: generation-failed
           GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REDDIT_RETRY_STATE_PATH: ${{ runner.temp }}/project-submission-retry-state.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/submissions/project-generation-failure.mjs

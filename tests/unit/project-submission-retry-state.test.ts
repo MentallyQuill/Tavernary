@@ -5,6 +5,7 @@ import {
   normalizeRedditRetryState,
   parseRedditRetryState,
   planRedditRetryTransition,
+  reconcileRedditRetryReport,
   REDDIT_RETRY_MARKER,
   renderRedditRetryState,
   upsertRedditRetryComment,
@@ -259,6 +260,9 @@ test("updates the existing owned retry marker after source recovery", async () =
   expect(JSON.parse(String(patch?.options?.body)).body).toContain(
     JSON.stringify(terminalState()),
   );
+  expect(JSON.parse(String(patch?.options?.body)).body).toContain(
+    "Reddit source recovery succeeded",
+  );
 });
 
 test.each([
@@ -355,4 +359,62 @@ test("allows terminal cleanup after the PR-open label is applied", async () => {
   expect(calls).toContain(
     "PATCH /repos/MentallyQuill/Tavernary/issues/comments/55",
   );
+});
+
+test("reconciles a placeholder admission report into terminal retry state", async () => {
+  let patchedBody = "";
+  const request = async (path: string, options?: Record<string, unknown>) => {
+    if (path.endsWith("/issues/165")) {
+      return redditIssue([
+        "issue-admitted",
+        "project-submission",
+        "submission-pr-open",
+      ]);
+    }
+    if (path.endsWith("/issues/165/comments?per_page=100")) {
+      return [
+        {
+          id: 55,
+          body: [
+            "<!-- tavernary-project-generation-failure:project-submission -->",
+            renderRedditRetryState(pendingState({ completed_waves: 2 })),
+          ].join("\n"),
+        },
+      ];
+    }
+    if (path.endsWith("/issues/comments/55") && options?.method === "PATCH") {
+      patchedBody = JSON.parse(String(options.body)).body;
+      return {};
+    }
+    return {};
+  };
+
+  await expect(
+    reconcileRedditRetryReport({
+      repository: "MentallyQuill/Tavernary",
+      runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/9",
+      now: "2026-07-30T20:10:00.000Z",
+      report: {
+        issue_number: 165,
+        source_identity: {
+          type: "reddit",
+          canonical: "reddit:1v9u18m",
+          repository_id: null,
+        },
+        reddit_retry: {
+          outcome: "placeholder",
+          wave_number: 3,
+          max_waves: 3,
+          completed_waves: 3,
+          attempts: 3,
+          next_eligible_retry_at: null,
+          reason_code: "reddit-rate-limited",
+        },
+      },
+      request,
+    }),
+  ).resolves.toEqual({ action: "update", commentId: 55 });
+  expect(patchedBody).toContain("Retry outcome: `placeholder`");
+  expect(patchedBody).toContain("/actions/runs/9");
+  expect(patchedBody).toContain('"completed_waves":3');
 });

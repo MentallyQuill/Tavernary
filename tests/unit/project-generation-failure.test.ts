@@ -4,6 +4,7 @@ import {
   planProjectGenerationFailure,
   reconcileProjectGenerationFailure,
 } from "../../scripts/submissions/project-generation-failure.mjs";
+import { renderRedditRetryState } from "../../scripts/submissions/project-submission-retry-state.mjs";
 
 function issue(labels: string[], state = "open") {
   return {
@@ -42,6 +43,61 @@ test("moves an admitted failed generation without a PR to retryable", () => {
       "Generation stopped before publication",
     ),
   });
+});
+
+test("embeds sanitized Reddit retry state in the existing failure comment", () => {
+  const redditRetryState = {
+    schema_version: 1 as const,
+    issue_number: 166,
+    source_identity: "reddit:1v9u18m" as const,
+    completed_waves: 1,
+    next_eligible_retry_at: "2026-07-30T19:00:00.000Z",
+    last_reason_code: "reddit-rate-limited",
+    updated_at: "2026-07-30T18:00:00.000Z",
+    outcome: "pending" as const,
+  };
+  const plan = planProjectGenerationFailure({
+    issue: issue([
+      "issue-admitted",
+      "project-submission",
+      "needs-maintainer-review",
+    ]),
+    producer: "project-submission",
+    ownedPull: null,
+    runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/7",
+    reasonCode: "reddit-source-retry-scheduled",
+    redditRetryState,
+  });
+
+  expect(plan.commentBody).toContain(renderRedditRetryState(redditRetryState));
+  expect(plan.commentBody).toContain(
+    "Tavernary will retry automatically after 2026-07-30T19:00:00.000Z.",
+  );
+  expect(plan.commentBody).not.toContain("Reddit post body");
+});
+
+test("does not attach Reddit retry state to an owner-request failure", () => {
+  const plan = planProjectGenerationFailure({
+    issue: issue(["issue-admitted", "project-owner-request"]),
+    producer: "project-owner-request",
+    ownedPull: null,
+    runUrl: "https://github.com/MentallyQuill/Tavernary/actions/runs/8",
+    reasonCode: "generation-failed",
+    redditRetryState: {
+      schema_version: 1,
+      issue_number: 166,
+      source_identity: "reddit:1v9u18m",
+      completed_waves: 1,
+      next_eligible_retry_at: "2026-07-30T19:00:00.000Z",
+      last_reason_code: "reddit-rate-limited",
+      updated_at: "2026-07-30T18:00:00.000Z",
+      outcome: "pending",
+    },
+  });
+
+  expect(plan.commentBody).not.toContain(
+    "<!-- tavernary-reddit-submission-retry",
+  );
 });
 
 test("preserves review state when an owned PR exists", () => {
