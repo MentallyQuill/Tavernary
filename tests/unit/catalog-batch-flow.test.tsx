@@ -110,7 +110,12 @@ const submissionCatalog: Catalog = {
       canonicalUrl: "https://example.com/frontend",
       searchableText: "frontend",
     },
-    project(),
+    {
+      ...project(),
+      search: catalogSearchFields("Memory", {
+        maintainers: ["MentallyQuill"],
+      }),
+    },
     {
       ...project(),
       id: "preset",
@@ -305,6 +310,92 @@ describe("catalog Kit batch flow", () => {
     );
     expect(search).toHaveValue("");
     expect(sort).toHaveValue("popularity");
+  });
+
+  test("shows useful evidence without repeating an obvious title match", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "MentallyQuill");
+    const memoryCard = screen
+      .getByRole("link", { name: "Memory" })
+      .closest(".project-card");
+    expect(memoryCard).not.toBeNull();
+    expect(
+      within(memoryCard as HTMLElement).getByText("Matched maintainer:"),
+    ).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, "freaky");
+    const freakyCard = screen
+      .getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      })
+      .closest(".project-card");
+    expect(freakyCard).not.toBeNull();
+    expect(
+      within(freakyCard as HTMLElement).queryByText(/Matched/u),
+    ).not.toBeInTheDocument();
+  });
+
+  test("explains filter-hidden matches and clears filters without losing search", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "preset freaky");
+    const categories = screen.getByRole("navigation", {
+      name: "Catalog categories",
+    });
+    await user.click(
+      within(categories).getByRole("button", { name: "Frontends" }),
+    );
+
+    expect(
+      screen.getByText("1 search match is hidden by filters"),
+    ).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(search).toHaveValue("preset freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
+  });
+
+  test("applies a correction only after explicit activation", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "frankenstien");
+    expect(search).toHaveValue("frankenstien");
+    const correction = screen.getByRole("button", {
+      name: "Search for frankenstein",
+    });
+    expect(correction).toBeVisible();
+    expect(new URLSearchParams(window.location.search).get("q")).toBe(
+      "frankenstien",
+    );
+
+    await user.click(correction);
+    expect(search).toHaveValue("frankenstein");
+    expect(new URLSearchParams(window.location.search).get("q")).toBe(
+      "frankenstein",
+    );
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
+    );
   });
 
   test("reveals Frontend cards through the visible shared filter", () => {
@@ -508,9 +599,11 @@ describe("catalog Kit batch flow", () => {
       }),
     );
 
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "1 saved project is no longer available and was removed from this draft.",
-    );
+    expect(
+      screen.getByText(
+        "1 saved project is no longer available and was removed from this draft.",
+      ),
+    ).toHaveAttribute("role", "status");
   });
 
   test("retains a saved draft through review and successful submission handoff", async () => {

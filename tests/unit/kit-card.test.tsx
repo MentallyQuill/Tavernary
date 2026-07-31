@@ -83,6 +83,57 @@ function renderCard(value: CatalogKit = kit()) {
 }
 
 describe("Kit card", () => {
+  test("renders only useful search evidence visually and accessibly", () => {
+    const evidence = [
+      {
+        field: "relationships" as const,
+        value: "MemoryBooks",
+        kind: "exact" as const,
+        queryTerm: "memorybooks",
+        matchedTerm: "memorybooks",
+      },
+    ];
+    const { rerender } = render(
+      <KitCard
+        kit={kit()}
+        now="2026-07-24T00:00:00.000Z"
+        selected={false}
+        searchEvidence={evidence}
+        onSelect={() => undefined}
+        onCopyLink={() => undefined}
+        onReport={() => undefined}
+      />,
+    );
+    const open = screen.getByRole("button", {
+      name: "Open Long-Form Storyteller",
+    });
+
+    expect(screen.getByText("Matched related project:")).toBeVisible();
+    expect(open).toHaveAccessibleDescription(
+      /Matched related project: MemoryBooks/u,
+    );
+
+    rerender(
+      <KitCard
+        kit={kit()}
+        now="2026-07-24T00:00:00.000Z"
+        selected={false}
+        searchEvidence={[
+          {
+            ...evidence[0],
+            field: "summary",
+            value: "A durable narrative stack.",
+          },
+        ]}
+        onSelect={() => undefined}
+        onCopyLink={() => undefined}
+        onReport={() => undefined}
+      />,
+    );
+    expect(screen.queryByText(/Matched/u)).not.toBeInTheDocument();
+    expect(open).not.toHaveAccessibleDescription(/Matched/u);
+  });
+
   test("renders compact metadata and sibling actions", async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();

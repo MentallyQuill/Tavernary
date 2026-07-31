@@ -87,6 +87,49 @@ describe("project card", () => {
     });
   });
 
+  test("renders only useful search evidence visually and accessibly", () => {
+    const evidence = [
+      {
+        field: "maintainers" as const,
+        value: "MentallyQuill",
+        kind: "exact" as const,
+        queryTerm: "mentallyquill",
+        matchedTerm: "mentallyquill",
+      },
+    ];
+    const { rerender } = render(
+      <ProjectCard
+        project={project("directive", { name: "Directive" })}
+        now="2026-07-24T00:00:00Z"
+        searchEvidence={evidence}
+      />,
+    );
+    const card = screen.getByRole("link", { name: "Directive" });
+
+    expect(screen.getByText("Matched maintainer:")).toBeVisible();
+    expect(card).toHaveAccessibleDescription(
+      /Matched maintainer: MentallyQuill/u,
+    );
+
+    rerender(
+      <ProjectCard
+        project={project("directive", { name: "Directive" })}
+        now="2026-07-24T00:00:00Z"
+        searchEvidence={[
+          {
+            ...evidence[0],
+            field: "title",
+            value: "Directive",
+            queryTerm: "directive",
+            matchedTerm: "directive",
+          },
+        ]}
+      />,
+    );
+    expect(screen.queryByText(/Matched/u)).not.toBeInTheDocument();
+    expect(card).not.toHaveAccessibleDescription(/Matched/u);
+  });
+
   test("renders a published upstream as a sibling relationship action", () => {
     const onViewRelationship = vi.fn();
     const child = project("vectfox", {

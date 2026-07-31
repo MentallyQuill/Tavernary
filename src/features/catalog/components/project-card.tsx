@@ -2,6 +2,11 @@ import type { CSSProperties } from "react";
 
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
+import {
+  SearchEvidence,
+  searchEvidenceText,
+} from "@/features/search/components/search-evidence";
+import type { SearchEvidence as SearchEvidenceItem } from "@/features/search/search-types";
 import type { CatalogProject } from "../catalog-types";
 import { CATEGORY_OPTIONS } from "../catalog-query";
 import { commitFreshnessPercent, daysSince } from "../commit-freshness";
@@ -160,10 +165,12 @@ export function ProjectCard({
   project,
   now,
   licensePlacement = "card",
+  searchEvidence = [],
 }: {
   project: CatalogProject;
   now: string;
   licensePlacement?: "card" | "relationship";
+  searchEvidence?: SearchEvidenceItem[];
 }) {
   const functionIcon = project.primaryFunction as Parameters<
     typeof CategoryIcon
@@ -222,6 +229,7 @@ export function ProjectCard({
     activitySummary && evidenceStatus === "degraded"
       ? `${activitySummary}; activity evidence is incomplete`
       : activitySummary;
+  const searchEvidenceDescription = searchEvidenceText(searchEvidence);
   const cardDescription = [
     `${kindLabels[project.kind]} project. Primary category: ${primaryFunction}.`,
     ...details.map((detail) => `${detail}.`),
@@ -249,6 +257,7 @@ export function ProjectCard({
       ? `Supported completion formats: ${project.preset.completionFormats.map(({ label }) => label).join(", ")}.`
       : null,
     project.attribution ? attributionAccessibleText(project.attribution) : null,
+    searchEvidenceDescription ? `${searchEvidenceDescription}.` : null,
     `License: ${project.license.label}.`,
   ]
     .filter(Boolean)
@@ -407,6 +416,7 @@ export function ProjectCard({
         </ul>
       ) : null}
       <p className="card-summary">{project.summary}</p>
+      <SearchEvidence evidence={searchEvidence} />
 
       <div className="card-bottom">
         <span className="card-chips">

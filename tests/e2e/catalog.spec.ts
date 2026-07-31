@@ -628,6 +628,13 @@ test("searches, changes density, and accepts legacy view URLs", async ({
       exact: true,
     }),
   ).toBeVisible();
+  const freakyCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
+    }),
+  });
+  await expect(freakyCard.locator(".search-match-evidence")).toHaveCount(0);
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
   await expect(
@@ -689,6 +696,9 @@ test("searches by repository owner and discloses creator attribution", async ({
   const attribution = directive.locator(".card-attribution");
   await expect(directive).toBeVisible();
   await expect(attribution).toHaveText("by MentallyQuill");
+  await expect(directive.locator(".search-match-evidence")).toHaveText(
+    "Matched maintainer: MentallyQuill",
+  );
 
   await attribution.hover();
   await expect(
@@ -699,6 +709,38 @@ test("searches by repository owner and discloses creator attribution", async ({
 
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(attribution).toBeHidden();
+});
+
+test("explains filtered search matches, corrections, and settled result counts", async ({
+  page,
+}) => {
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  const status = page.locator('.catalog-main > [role="status"]');
+  await search.pressSequentially("preset freaky");
+  await expect(status).toHaveText(/\d+ projects? shown/u);
+
+  await page.getByRole("button", { name: "Frontends", exact: true }).click();
+  await expect(
+    page.getByText(/search matches? (?:is|are) hidden by filters/u),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(search).toHaveValue("preset freaky");
+  await expect(
+    page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await search.fill("frankenstien");
+  const correction = page.getByRole("button", {
+    name: "Search for frankenstein",
+  });
+  await expect(correction).toBeVisible();
+  await expect(search).toHaveValue("frankenstien");
+  await correction.click();
+  await expect(search).toHaveValue("frankenstein");
+  await expect(page).toHaveURL(/q=frankenstein/u);
 });
 
 test("supports keyboard focus, composed filters, chip removal, and clear all", async ({

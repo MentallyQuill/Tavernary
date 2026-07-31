@@ -33,6 +33,7 @@ import {
   nextSearchSort,
   rememberedBrowseSort,
 } from "@/features/search/search-sort-transition";
+import { useSearchAnnouncement } from "@/features/search/use-search-announcement";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
@@ -130,6 +131,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     () => projectSearchIndex.search(searchInput),
     [projectSearchIndex, searchInput],
   );
+  const projectEvidenceById = useMemo(
+    () =>
+      new Map(
+        projectSearchResults.matches.map(({ id, evidence }) => [id, evidence]),
+      ),
+    [projectSearchResults],
+  );
   const kitSearchIndex = useMemo(
     () =>
       createCatalogSearchIndex(
@@ -140,6 +148,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const kitSearchResults = useMemo(
     () => kitSearchIndex.search(searchInput),
     [kitSearchIndex, searchInput],
+  );
+  const kitEvidenceById = useMemo(
+    () =>
+      new Map(
+        kitSearchResults.matches.map(({ id, evidence }) => [id, evidence]),
+      ),
+    [kitSearchResults],
   );
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
@@ -180,6 +195,19 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const selectedKits = useMemo(
     () => selectKits(catalog.kits, query.kits, searchInput, kitSearchResults),
     [catalog.kits, kitSearchResults, query.kits, searchInput],
+  );
+  const visibleResultCount =
+    query.mode === "kits" ? selectedKits.length : visibleProjects.length;
+  const visibleResultNoun =
+    query.mode === "kits"
+      ? visibleResultCount === 1
+        ? "Kit"
+        : "Kits"
+      : visibleResultCount === 1
+        ? "project"
+        : "projects";
+  const resultAnnouncement = useSearchAnnouncement(
+    `${visibleResultCount} ${visibleResultNoun} shown`,
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
@@ -438,6 +466,26 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
           };
     });
   };
+  const clearSearchFilters = () =>
+    setQuery((current) =>
+      current.mode === "kits"
+        ? {
+            ...current,
+            search: searchDraft.value,
+            selectedKitId: "",
+            kits: {
+              ...DEFAULT_KIT_QUERY,
+              sort: current.kits.sort,
+            },
+          }
+        : {
+            ...DEFAULT_QUERY,
+            search: searchDraft.value,
+            sort: current.sort,
+            density: current.density,
+            kits: current.kits,
+          },
+    );
 
   const filterCount =
     query.mode === "kits"
@@ -458,6 +506,12 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         query.development.length +
         query.licenses.length +
         Number(Boolean(relationshipProjects));
+  const activeSearchFilterCount =
+    query.mode === "kits"
+      ? filterCount
+      : filterCount +
+        Number(Boolean(query.category)) +
+        Number(query.view !== "all");
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -563,6 +617,14 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             onCreateKit={workspace.startCreate}
             filterButtonRef={filterButtonRef}
           />
+          <span
+            className="visually-hidden"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {resultAnnouncement}
+          </span>
           <ActiveQuery
             query={query}
             projects={catalog.projects}
@@ -581,6 +643,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               onSelect={workspace.selectKit}
               onCopyLink={kitShare.copy}
               onReport={reportKit}
+              searchEvidenceById={kitEvidenceById}
+              searchFeedback={{
+                query: searchInput,
+                textMatchCount: kitSearchResults.matches.length,
+                activeFilterCount: activeSearchFilterCount,
+                correction: kitSearchResults.correction,
+                onUseCorrection: updateSearch,
+                onClearFilters: clearSearchFilters,
+              }}
             />
           ) : (
             <ProjectGrid
@@ -597,6 +668,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               }
               selection={{
                 bindingsFor: batchSelection.bindingsFor,
+              }}
+              searchEvidenceById={projectEvidenceById}
+              searchFeedback={{
+                query: searchInput,
+                textMatchCount: projectSearchResults.matches.length,
+                activeFilterCount: activeSearchFilterCount,
+                correction: projectSearchResults.correction,
+                onUseCorrection: updateSearch,
+                onClearFilters: clearSearchFilters,
               }}
             />
           )}

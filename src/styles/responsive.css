@@ -618,6 +618,22 @@
   .card-summary {
     font-size: 11px;
   }
+
+  .search-correction,
+  .search-correction button,
+  .search-empty-state > button {
+    max-width: 100%;
+  }
+
+  .search-correction button,
+  .search-empty-state > button {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .search-empty-state {
+    padding-inline: 14px;
+  }
 }
 @media (pointer: coarse) {
   .dual-range-track {
