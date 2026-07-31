@@ -67,6 +67,13 @@ const delistedForkChild =
     ({ fork }) =>
       fork?.status === "not-listed" && fork.parentProjectId === null,
   );
+const freakySearchProject = catalog.projects.find(
+  ({ id }) => id === "reddit-1v9u18m",
+);
+if (!freakySearchProject) {
+  throw new Error("Missing reddit-1v9u18m search relevance fixture");
+}
+const freakySearchProjectName = displayedProjectName(freakySearchProject.name);
 
 function displayedProjectName(name: string) {
   const withoutPrefix = name.replace(/^sillytavern[\s_-]+/i, "");
@@ -624,17 +631,19 @@ test("searches, changes density, and accepts legacy view URLs", async ({
     .fill("preset freaky");
   await expect(
     page.getByRole("heading", {
-      name: "Preset Introducing Freaky Frankenstein 50",
+      name: freakySearchProjectName,
       exact: true,
     }),
   ).toBeVisible();
   const freakyCard = page.locator(".project-card").filter({
     has: page.getByRole("heading", {
-      name: "Preset Introducing Freaky Frankenstein 50",
+      name: freakySearchProjectName,
       exact: true,
     }),
   });
-  await expect(freakyCard.locator(".search-match-evidence")).toHaveCount(0);
+  await expect(freakyCard.locator(".search-match-evidence")).toHaveText(
+    /^Matched source:/u,
+  );
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
   await expect(
@@ -727,7 +736,7 @@ test("explains filtered search matches, corrections, and settled result counts",
   await expect(search).toHaveValue("preset freaky");
   await expect(
     page.getByRole("heading", {
-      name: "Preset Introducing Freaky Frankenstein 50",
+      name: freakySearchProjectName,
       exact: true,
     }),
   ).toBeVisible();
@@ -943,9 +952,7 @@ test("keeps search sort and order coherent through reload and history", async ({
 
   await expect(search).toHaveValue("preset freaky");
   await expect(sort).toHaveValue("relevance");
-  await expect(cardTitles.first()).toHaveText(
-    "Preset Introducing Freaky Frankenstein 50",
-  );
+  await expect(cardTitles.first()).toHaveText(freakySearchProjectName);
   const relevanceOrder = await cardTitles.allTextContents();
 
   await page.goto(`${searchUrl}&sort=popularity`);

@@ -7,8 +7,8 @@ projects shown on the page.
 ## Search and filters
 
 - Search requires all meaningful words, but the words may appear in any order.
-  For example, `preset freaky` and `freaky preset` both find **Preset
-  Introducing Freaky Frankenstein 50**.
+  For example, `preset freaky` and `freaky preset` both find **Freaky
+  Frankenstein 5.0**.
 - Project and Kit titles, aliases, source identities, descriptions, kinds,
   primary functions, tags, frontends, compatibility, maintainers, and
   relationships are searchable.
