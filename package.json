@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "search:benchmark": "vitest run tests/benchmarks/catalog-search-benchmark.test.ts --reporter=verbose",
     "test:content": "vitest run tests/unit/validate-catalog.test.ts tests/unit/build-catalog.test.ts tests/unit/full-catalog-data.test.ts tests/unit/validate-kits.test.ts tests/unit/static-export-verification.test.ts",
     "test:e2e": "node scripts/run-playwright.mjs tests/e2e",
     "test:content-e2e": "node scripts/run-playwright.mjs tests/e2e/static-export.spec.ts",
@@ -45,6 +46,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
     "ajv": "^8.20.0",
+    "minisearch": "^7.2.0",
     "next": "^16.2.12",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

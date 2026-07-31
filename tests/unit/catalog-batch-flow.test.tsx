@@ -5,6 +5,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -33,6 +34,7 @@ vi.mock("@/features/kits/submission-transport", () => ({
 
 import { CatalogPage } from "@/features/catalog/components/catalog-page";
 import type { Catalog, CatalogProject } from "@/features/catalog/catalog-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 import { openKitSubmission } from "@/features/kits/submission-transport";
 
 const originalMatchMedia = window.matchMedia;
@@ -67,7 +69,7 @@ function project(): CatalogProject {
     catalogCohort: "standard",
     frontends: [],
     tags: [],
-    searchableText: "memory",
+    search: catalogSearchFields("Memory"),
     fork: null,
     attribution: null,
     activity: {
@@ -88,7 +90,7 @@ function project(): CatalogProject {
 }
 
 const catalog: Catalog = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00.000Z",
   projects: [project()],
@@ -105,9 +107,13 @@ const submissionCatalog: Catalog = {
       kind: "frontend",
       primaryFunction: "frontend",
       canonicalUrl: "https://example.com/frontend",
-      searchableText: "frontend",
     },
-    project(),
+    {
+      ...project(),
+      search: catalogSearchFields("Memory", {
+        maintainers: ["MentallyQuill"],
+      }),
+    },
     {
       ...project(),
       id: "preset",
@@ -115,7 +121,18 @@ const submissionCatalog: Catalog = {
       kind: "preset",
       primaryFunction: "generation-reasoning",
       canonicalUrl: "https://example.com/preset",
-      searchableText: "preset",
+    },
+    {
+      ...project(),
+      id: "freaky",
+      name: "Preset Introducing Freaky Frankenstein 50",
+      kind: "preset",
+      primaryFunction: "preset",
+      canonicalUrl: "https://example.com/freaky",
+      search: catalogSearchFields("Preset Introducing Freaky Frankenstein 50", {
+        compatibility: ["Claude", "Chat Completion"],
+        kind: ["preset", "System Preset"],
+      }),
     },
   ],
 };
@@ -146,6 +163,234 @@ describe("catalog Kit batch flow", () => {
     expect(search).toHaveValue("memory tool");
     expect(new URLSearchParams(window.location.search).get("q")).toBe(
       "memory tool",
+    );
+  });
+
+  test("finds noncontiguous and prefix title terms through the search index", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "pres freaky");
+
+    expect(search).toHaveValue("pres freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, "preset freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
+  });
+
+  test("defaults search edits to Relevance and restores the browse sort", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    const sort = screen.getByRole("combobox", { name: "Sort projects" });
+    await user.selectOptions(sort, "popularity");
+    await user.type(search, "preset freaky");
+    expect(sort).toHaveValue("relevance");
+
+    await user.selectOptions(sort, "alphabetical");
+    await user.type(search, " claude");
+    expect(sort).toHaveValue("relevance");
+
+    await user.selectOptions(sort, "alphabetical");
+    fireEvent.change(search, { target: { value: " PRESET FREAKY CLAUDE " } });
+    expect(sort).toHaveValue("alphabetical");
+
+    await user.clear(search);
+    expect(sort).toHaveValue("popularity");
+    expect(
+      screen.queryByRole("option", { name: "Relevance" }),
+    ).not.toBeInTheDocument();
+  });
+
+  test("resets both mode sorts while remembering their browse preferences", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const categories = screen.getByRole("navigation", {
+      name: "Catalog categories",
+    });
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Sort projects" }),
+      "popularity",
+    );
+    await user.type(search, "preset freaky");
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
+    );
+
+    await user.click(within(categories).getByRole("button", { name: "Kits" }));
+    const kitSort = screen.getByRole("combobox", { name: "Sort Kits" });
+    expect(kitSort).toHaveValue("relevance");
+    await user.selectOptions(kitSort, "alphabetical");
+
+    await user.click(
+      within(categories).getByRole("button", { name: "All Projects" }),
+    );
+    fireEvent.change(search, {
+      target: { value: "preset freaky claude" },
+    });
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
+    );
+
+    await user.click(within(categories).getByRole("button", { name: "Kits" }));
+    expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveValue(
+      "relevance",
+    );
+    await user.clear(search);
+    expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveValue(
+      "trending",
+    );
+
+    await user.click(
+      within(categories).getByRole("button", { name: "All Projects" }),
+    );
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "popularity",
+    );
+  });
+
+  test("restores the browse sort through search chips and Clear all", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    const sort = screen.getByRole("combobox", { name: "Sort projects" });
+    await user.selectOptions(sort, "popularity");
+    await user.type(search, "preset freaky");
+    await user.selectOptions(sort, "alphabetical");
+    await user.click(
+      screen.getByRole("button", {
+        name: "Remove Search: preset freaky",
+      }),
+    );
+    expect(search).toHaveValue("");
+    expect(sort).toHaveValue("popularity");
+
+    await user.type(search, "preset freaky");
+    await user.selectOptions(sort, "alphabetical");
+    const searchChip = screen.getByRole("button", {
+      name: "Remove Search: preset freaky",
+    });
+    const activeFilters = searchChip.closest(".active-query");
+    expect(activeFilters).not.toBeNull();
+    await user.click(
+      within(activeFilters as HTMLElement).getByRole("button", {
+        name: "Clear all",
+      }),
+    );
+    expect(search).toHaveValue("");
+    expect(sort).toHaveValue("popularity");
+  });
+
+  test("shows useful evidence without repeating an obvious title match", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "MentallyQuill");
+    const memoryCard = screen
+      .getByRole("link", { name: "Memory" })
+      .closest(".project-card");
+    expect(memoryCard).not.toBeNull();
+    expect(
+      within(memoryCard as HTMLElement).getByText("Matched maintainer:"),
+    ).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, "freaky");
+    const freakyCard = screen
+      .getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      })
+      .closest(".project-card");
+    expect(freakyCard).not.toBeNull();
+    expect(
+      within(freakyCard as HTMLElement).queryByText(/Matched/u),
+    ).not.toBeInTheDocument();
+  });
+
+  test("explains filter-hidden matches and clears filters without losing search", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "preset freaky");
+    const categories = screen.getByRole("navigation", {
+      name: "Catalog categories",
+    });
+    await user.click(
+      within(categories).getByRole("button", { name: "Frontends" }),
+    );
+
+    expect(
+      screen.getByText("1 search match is hidden by filters"),
+    ).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(search).toHaveValue("preset freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
+  });
+
+  test("applies a correction only after explicit activation", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "frankenstien");
+    expect(search).toHaveValue("frankenstien");
+    const correction = screen.getByRole("button", {
+      name: "Search for frankenstein",
+    });
+    expect(correction).toBeVisible();
+    expect(new URLSearchParams(window.location.search).get("q")).toBe(
+      "frankenstien",
+    );
+
+    await user.click(correction);
+    expect(search).toHaveValue("frankenstein");
+    expect(new URLSearchParams(window.location.search).get("q")).toBe(
+      "frankenstein",
+    );
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
     );
   });
 
@@ -350,9 +595,11 @@ describe("catalog Kit batch flow", () => {
       }),
     );
 
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "1 saved project is no longer available and was removed from this draft.",
-    );
+    expect(
+      screen.getByText(
+        "1 saved project is no longer available and was removed from this draft.",
+      ),
+    ).toHaveAttribute("role", "status");
   });
 
   test("retains a saved draft through review and successful submission handoff", async () => {

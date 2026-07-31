@@ -5,8 +5,11 @@ import {
   frontendExpansionLabel,
   frontendOptions,
   generatedCatalog as catalog,
+  generatedKitCount,
   generatedProjectCount,
+  generatedProjectSearchCount,
   initiallyVisibleFrontendOptions,
+  kitCountLabel,
   metadataFilterChipCount,
   projectCountLabel,
   tagOptionsByFacet,
@@ -19,9 +22,7 @@ const claudePresetCount = catalog.projects.filter(
     kind === "preset" &&
     (preset?.modelFamilies.some(({ id }) => id === "claude") ?? false),
 ).length;
-const recursionSearchCount = catalog.projects.filter(({ searchableText }) =>
-  searchableText.includes("recursion"),
-).length;
+const recursionSearchCount = generatedProjectSearchCount("recursion");
 const newViewCount = catalog.projects.filter(
   ({ catalogedAt, catalogCohort }) => {
     const age =
@@ -618,6 +619,22 @@ test("searches, changes density, and accepts legacy view URLs", async ({
       name: projectCountLabel(recursionSearchCount),
     }),
   ).toBeVisible();
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("preset freaky");
+  await expect(
+    page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
+    }),
+  ).toBeVisible();
+  const freakyCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
+    }),
+  });
+  await expect(freakyCard.locator(".search-match-evidence")).toHaveCount(0);
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(page.locator("body")).toHaveClass(/compact-cards/);
   await expect(
@@ -633,6 +650,39 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   ).toHaveValue("");
 });
 
+test("searches Kits by noncontiguous structured fields", async ({ page }) => {
+  await page.getByRole("button", { name: "Kits", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(generatedKitCount) }),
+  ).toBeVisible();
+
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  await search.pressSequentially("aiko loadout");
+
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(1) }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Aiko's Loadout", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".kit-card")).toHaveCount(1);
+  const kitSort = page.getByRole("combobox", { name: "Sort Kits" });
+  await expect(kitSort).toHaveValue("relevance");
+  await kitSort.selectOption("newest");
+  await search.pressSequentially(" memorybooks");
+  await expect(kitSort).toHaveValue("relevance");
+
+  await search.fill("");
+  await expect(kitSort).toHaveValue("trending");
+  await expect(kitSort.getByRole("option", { name: "Relevance" })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole("heading", { name: kitCountLabel(generatedKitCount) }),
+  ).toBeVisible();
+  await expect(page.locator(".kit-card")).toHaveCount(generatedKitCount);
+});
+
 test("searches by repository owner and discloses creator attribution", async ({
   page,
 }) => {
@@ -646,6 +696,9 @@ test("searches by repository owner and discloses creator attribution", async ({
   const attribution = directive.locator(".card-attribution");
   await expect(directive).toBeVisible();
   await expect(attribution).toHaveText("by MentallyQuill");
+  await expect(directive.locator(".search-match-evidence")).toHaveText(
+    "Matched maintainer: MentallyQuill",
+  );
 
   await attribution.hover();
   await expect(
@@ -656,6 +709,38 @@ test("searches by repository owner and discloses creator attribution", async ({
 
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(attribution).toBeHidden();
+});
+
+test("explains filtered search matches, corrections, and settled result counts", async ({
+  page,
+}) => {
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  const status = page.locator('.catalog-main > [role="status"]');
+  await search.pressSequentially("preset freaky");
+  await expect(status).toHaveText(/\d+ projects? shown/u);
+
+  await page.getByRole("button", { name: "Frontends", exact: true }).click();
+  await expect(
+    page.getByText(/search matches? (?:is|are) hidden by filters/u),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(search).toHaveValue("preset freaky");
+  await expect(
+    page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await search.fill("frankenstien");
+  const correction = page.getByRole("button", {
+    name: "Search for frankenstein",
+  });
+  await expect(correction).toBeVisible();
+  await expect(search).toHaveValue("frankenstien");
+  await correction.click();
+  await expect(search).toHaveValue("frankenstein");
+  await expect(page).toHaveURL(/q=frankenstein/u);
 });
 
 test("supports keyboard focus, composed filters, chip removal, and clear all", async ({
@@ -825,6 +910,7 @@ test("supports every sort and restores query state after reload", async ({
   page,
 }) => {
   const sort = page.getByRole("combobox", { name: "Sort projects" });
+  await expect(sort.getByRole("option", { name: "Relevance" })).toHaveCount(0);
   for (const value of ["recent", "sustained", "popularity", "alphabetical"]) {
     await sort.selectOption(value);
     await expect(sort).toHaveValue(value);
@@ -833,6 +919,7 @@ test("supports every sort and restores query state after reload", async ({
   await page
     .getByRole("searchbox", { name: "Search projects" })
     .fill("Recursion");
+  await expect(sort).toHaveValue("relevance");
   await page.reload();
   await expect(
     page.getByRole("searchbox", { name: "Search projects" }),
@@ -842,6 +929,48 @@ test("supports every sort and restores query state after reload", async ({
       name: projectCountLabel(recursionSearchCount),
     }),
   ).toBeVisible();
+  await expect(sort).toHaveValue("relevance");
+});
+
+test("keeps search sort and order coherent through reload and history", async ({
+  page,
+}) => {
+  const searchUrl = `${sitePath()}?q=preset+freaky`;
+  await page.goto(searchUrl);
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  const sort = page.getByRole("combobox", { name: "Sort projects" });
+  const cardTitles = page.locator(".project-card h2");
+
+  await expect(search).toHaveValue("preset freaky");
+  await expect(sort).toHaveValue("relevance");
+  await expect(cardTitles.first()).toHaveText(
+    "Preset Introducing Freaky Frankenstein 50",
+  );
+  const relevanceOrder = await cardTitles.allTextContents();
+
+  await page.goto(`${searchUrl}&sort=popularity`);
+  await expect(sort).toHaveValue("popularity");
+  const popularityOrder = await cardTitles.allTextContents();
+  await page.reload();
+  await expect(search).toHaveValue("preset freaky");
+  await expect(sort).toHaveValue("popularity");
+  await expect(cardTitles).toHaveText(popularityOrder);
+
+  await search.fill("preset freaky claude");
+  await expect(sort).toHaveValue("relevance");
+  await expect(page).not.toHaveURL(/sort=/u);
+  const editedOrder = await cardTitles.allTextContents();
+
+  await page.goBack();
+  await expect(page).toHaveURL(new RegExp("q=preset(?:\\+|%20)freaky$", "u"));
+  await expect(search).toHaveValue("preset freaky");
+  await expect(sort).toHaveValue("relevance");
+  await expect(cardTitles).toHaveText(relevanceOrder);
+
+  await page.goForward();
+  await expect(search).toHaveValue("preset freaky claude");
+  await expect(sort).toHaveValue("relevance");
+  await expect(cardTitles).toHaveText(editedOrder);
 });
 
 test("shows the full launch catalog without default-query hidden records", async ({

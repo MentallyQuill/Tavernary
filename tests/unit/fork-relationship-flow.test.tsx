@@ -27,6 +27,7 @@ vi.mock("next/navigation", () => ({
 
 import { CatalogPage } from "@/features/catalog/components/catalog-page";
 import type { Catalog, CatalogProject } from "@/features/catalog/catalog-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -54,7 +55,7 @@ function project(
       },
     ],
     tags: [],
-    searchableText: `${name.toLowerCase()} relationship`,
+    search: catalogSearchFields(name),
     fork: null,
     attribution: null,
     activity: {
@@ -106,7 +107,7 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],

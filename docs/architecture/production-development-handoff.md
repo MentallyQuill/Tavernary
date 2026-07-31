@@ -619,7 +619,9 @@ The browser-ready card record has already-computed display facts, including:
 - `metadataStatus`; and
 - source state derived as healthy, stale, pending, or manual.
 
-Use this stable boundary between the build pipeline and React:
+Use this stable boundary between the build pipeline and React.
+`CatalogSearchFields` is the eleven-array contract documented in the
+[catalog data model](catalog-data-model.md):
 
 ```ts
 interface CatalogProject {
@@ -639,7 +641,7 @@ interface CatalogProject {
     description: string;
     facet: "goal" | "trait";
   }>;
-  searchableText: string;
+  search: CatalogSearchFields;
   sourceStatus: "healthy" | "stale" | "pending" | "manual";
   activity: {
     latestMeaningfulCommitAt: string | null;

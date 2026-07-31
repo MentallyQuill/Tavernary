@@ -4,8 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  DEFAULT_CATALOG_BROWSE_SORT,
   DEFAULT_QUERY,
+  type CatalogBrowseSort,
   type CatalogQuery,
+  type CatalogSort,
 } from "@/features/catalog/catalog-query";
 import {
   selectForkRelationship,
@@ -15,9 +18,22 @@ import { useCatalogQuery } from "@/features/catalog/use-catalog-query";
 import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { KitGrid } from "@/features/kits/components/kit-grid";
 import { ProjectSelectionDock } from "@/features/kits/components/project-selection-dock";
-import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
+import {
+  DEFAULT_KIT_BROWSE_SORT,
+  DEFAULT_KIT_QUERY,
+  type KitBrowseSort,
+  type KitQuery,
+  type KitSort,
+} from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { openKitSubmission } from "@/features/kits/submission-transport";
+import { createCatalogSearchIndex } from "@/features/search/catalog-search";
+import { searchMeaning } from "@/features/search/search-normalization";
+import {
+  nextSearchSort,
+  rememberedBrowseSort,
+} from "@/features/search/search-sort-transition";
+import { useSearchAnnouncement } from "@/features/search/use-search-announcement";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
@@ -62,6 +78,12 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery(
     catalog.tagVocabulary,
   );
+  const projectBrowseSortRef = useRef<CatalogBrowseSort>(
+    rememberedBrowseSort(query.sort, DEFAULT_CATALOG_BROWSE_SORT),
+  );
+  const kitBrowseSortRef = useRef<KitBrowseSort>(
+    rememberedBrowseSort(query.kits.sort, DEFAULT_KIT_BROWSE_SORT),
+  );
   const [searchDraft, setSearchDraft] = useState(() => ({
     value: query.search,
     canonical: query.search,
@@ -82,12 +104,57 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const addedStatusTimerRef = useRef<number | null>(null);
   const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
   const [selectionAnnouncement, setSelectionAnnouncement] = useState("");
+  useEffect(() => {
+    const browsing = !searchMeaning(query.search);
+    if (browsing && query.mode === "projects" && query.sort !== "relevance") {
+      projectBrowseSortRef.current = query.sort;
+    }
+    if (browsing && query.mode === "kits" && query.kits.sort !== "relevance") {
+      kitBrowseSortRef.current = query.kits.sort;
+    }
+  }, [query.kits.sort, query.mode, query.search, query.sort]);
   const context = useMemo(
     () => ({
       now: catalog.generatedAt,
       tagVocabulary: catalog.tagVocabulary,
     }),
     [catalog.generatedAt, catalog.tagVocabulary],
+  );
+  const projectSearchIndex = useMemo(
+    () =>
+      createCatalogSearchIndex(
+        catalog.projects.map(({ id, search }) => ({ id, ...search })),
+      ),
+    [catalog.projects],
+  );
+  const projectSearchResults = useMemo(
+    () => projectSearchIndex.search(searchInput),
+    [projectSearchIndex, searchInput],
+  );
+  const projectEvidenceById = useMemo(
+    () =>
+      new Map(
+        projectSearchResults.matches.map(({ id, evidence }) => [id, evidence]),
+      ),
+    [projectSearchResults],
+  );
+  const kitSearchIndex = useMemo(
+    () =>
+      createCatalogSearchIndex(
+        catalog.kits.map(({ id, search }) => ({ id, ...search })),
+      ),
+    [catalog.kits],
+  );
+  const kitSearchResults = useMemo(
+    () => kitSearchIndex.search(searchInput),
+    [kitSearchIndex, searchInput],
+  );
+  const kitEvidenceById = useMemo(
+    () =>
+      new Map(
+        kitSearchResults.matches.map(({ id, evidence }) => [id, evidence]),
+      ),
+    [kitSearchResults],
   );
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
@@ -105,8 +172,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         catalog.projects,
         { ...query, search: searchInput },
         context,
+        projectSearchResults,
       ),
-    [catalog.projects, context, query, searchInput],
+    [catalog.projects, context, projectSearchResults, query, searchInput],
   );
   const relationshipProjects = useMemo(
     () =>
@@ -125,8 +193,21 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         };
   const visibleProjects = relationshipProjects ?? selectedProjects;
   const selectedKits = useMemo(
-    () => selectKits(catalog.kits, query.kits, searchInput),
-    [catalog.kits, query.kits, searchInput],
+    () => selectKits(catalog.kits, query.kits, searchInput, kitSearchResults),
+    [catalog.kits, kitSearchResults, query.kits, searchInput],
+  );
+  const visibleResultCount =
+    query.mode === "kits" ? selectedKits.length : visibleProjects.length;
+  const visibleResultNoun =
+    query.mode === "kits"
+      ? visibleResultCount === 1
+        ? "Kit"
+        : "Kits"
+      : visibleResultCount === 1
+        ? "project"
+        : "projects";
+  const resultAnnouncement = useSearchAnnouncement(
+    `${visibleResultCount} ${visibleResultNoun} shown`,
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
@@ -228,12 +309,49 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     key: Key,
     value: CatalogQuery[Key],
   ) => setQuery((current) => ({ ...current, [key]: value }));
+  const withSearchTransition = (
+    current: CatalogQuery,
+    previousSearch: string,
+    nextSearch: string,
+  ): CatalogQuery => ({
+    ...current,
+    search: nextSearch,
+    sort: nextSearchSort({
+      previousSearch,
+      nextSearch,
+      currentSort: current.sort,
+      browseSort: projectBrowseSortRef.current,
+    }),
+    kits: {
+      ...current.kits,
+      sort: nextSearchSort({
+        previousSearch,
+        nextSearch,
+        currentSort: current.kits.sort,
+        browseSort: kitBrowseSortRef.current,
+      }),
+    },
+  });
   const updateSearch = (value: string) => {
     setSearchDraft({ value, canonical: value.trim() });
-    update("search", value);
+    setQuery((current) =>
+      withSearchTransition(current, searchDraft.value, value),
+    );
   };
   const updateKits = (kits: KitQuery) =>
     setQuery((current) => ({ ...current, kits }));
+  const updateProjectSort = (sort: CatalogSort) => {
+    if (sort !== "relevance" && !searchMeaning(searchInput)) {
+      projectBrowseSortRef.current = sort;
+    }
+    update("sort", sort);
+  };
+  const updateKitSort = (sort: KitSort) => {
+    if (sort !== "relevance" && !searchMeaning(searchInput)) {
+      kitBrowseSortRef.current = sort;
+    }
+    updateKits({ ...query.kits, sort });
+  };
   const revealFrontendCards = () =>
     setQuery((current) => {
       if (current.mode === "projects" && current.kinds.includes("frontend")) {
@@ -262,8 +380,14 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   };
 
   const removeFilter = (key: keyof CatalogQuery, value?: string) => {
+    if (key === "search") {
+      const previousSearch = searchDraft.value;
+      setSearchDraft({ value: "", canonical: "" });
+      setQuery((current) => withSearchTransition(current, previousSearch, ""));
+      return;
+    }
     setQuery((current) => {
-      if (key === "search" || key === "category") {
+      if (key === "category") {
         return { ...current, [key]: "" };
       }
       const values = current[key];
@@ -317,19 +441,49 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     });
   };
 
-  const clearFilters = () =>
+  const clearFilters = () => {
+    const previousSearch = searchDraft.value;
+    setSearchDraft({ value: "", canonical: "" });
+    setQuery((current) => {
+      const transitioned = withSearchTransition(current, previousSearch, "");
+      return current.mode === "kits"
+        ? {
+            ...transitioned,
+            selectedKitId: "",
+            kits: {
+              ...DEFAULT_KIT_QUERY,
+              sort: transitioned.kits.sort,
+            },
+          }
+        : {
+            ...DEFAULT_QUERY,
+            sort: transitioned.sort,
+            density: current.density,
+            kits: {
+              ...DEFAULT_KIT_QUERY,
+              sort: transitioned.kits.sort,
+            },
+          };
+    });
+  };
+  const clearSearchFilters = () =>
     setQuery((current) =>
       current.mode === "kits"
         ? {
             ...current,
-            search: "",
+            search: searchDraft.value,
             selectedKitId: "",
-            kits: { ...DEFAULT_KIT_QUERY, sort: current.kits.sort },
+            kits: {
+              ...DEFAULT_KIT_QUERY,
+              sort: current.kits.sort,
+            },
           }
         : {
             ...DEFAULT_QUERY,
+            search: searchDraft.value,
             sort: current.sort,
             density: current.density,
+            kits: current.kits,
           },
     );
 
@@ -352,6 +506,12 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         query.development.length +
         query.licenses.length +
         Number(Boolean(relationshipProjects));
+  const activeSearchFilterCount =
+    query.mode === "kits"
+      ? filterCount
+      : filterCount +
+        Number(Boolean(query.category)) +
+        Number(query.view !== "all");
   const lastRefresh =
     catalog.projects
       .map(({ refreshedAt }) => refreshedAt)
@@ -373,15 +533,27 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       mode: "projects",
       selectedKitId: "",
       category,
-      kits: DEFAULT_KIT_QUERY,
+      sort: searchMeaning(current.search)
+        ? current.sort
+        : projectBrowseSortRef.current,
+      kits: {
+        ...DEFAULT_KIT_QUERY,
+        sort: current.kits.sort,
+      },
     }));
   const selectKitMode = () =>
     setQuery((current) => ({
       ...DEFAULT_QUERY,
       mode: "kits",
       search: current.search,
+      sort: current.sort,
       density: current.density,
-      kits: current.kits,
+      kits: {
+        ...current.kits,
+        sort: searchMeaning(current.search)
+          ? current.kits.sort
+          : kitBrowseSortRef.current,
+      },
     }));
   const reportKit = (kitId: string) => {
     router.push(`/help/report-kit/?kit=${encodeURIComponent(kitId)}`);
@@ -433,8 +605,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query}
             refreshedLabel={relativeRefresh(lastRefresh, catalog.generatedAt)}
             filterCount={filterCount}
-            onSort={(sort) => update("sort", sort)}
-            onKitSort={(sort) => updateKits({ ...query.kits, sort })}
+            onSort={updateProjectSort}
+            onKitSort={updateKitSort}
             onDensity={() =>
               update(
                 "density",
@@ -445,6 +617,14 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             onCreateKit={workspace.startCreate}
             filterButtonRef={filterButtonRef}
           />
+          <span
+            className="visually-hidden"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {resultAnnouncement}
+          </span>
           <ActiveQuery
             query={query}
             projects={catalog.projects}
@@ -463,6 +643,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               onSelect={workspace.selectKit}
               onCopyLink={kitShare.copy}
               onReport={reportKit}
+              searchEvidenceById={kitEvidenceById}
+              searchFeedback={{
+                query: searchInput,
+                textMatchCount: kitSearchResults.matches.length,
+                activeFilterCount: activeSearchFilterCount,
+                correction: kitSearchResults.correction,
+                onUseCorrection: updateSearch,
+                onClearFilters: clearSearchFilters,
+              }}
             />
           ) : (
             <ProjectGrid
@@ -479,6 +668,15 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
               }
               selection={{
                 bindingsFor: batchSelection.bindingsFor,
+              }}
+              searchEvidenceById={projectEvidenceById}
+              searchFeedback={{
+                query: searchInput,
+                textMatchCount: projectSearchResults.matches.length,
+                activeFilterCount: activeSearchFilterCount,
+                correction: projectSearchResults.correction,
+                onUseCorrection: updateSearch,
+                onClearFilters: clearSearchFilters,
               }}
             />
           )}

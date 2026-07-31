@@ -412,7 +412,11 @@ describe("full catalog data", () => {
     }>("data/registry/kits");
     const catalog = await buildCatalog({ write: false });
 
-    expect(catalog.schemaVersion).toBe(4);
+    expect(catalog.schemaVersion).toBe(5);
+    expect(catalog.projects[0]).not.toHaveProperty(
+      ["searchable", "Text"].join(""),
+    );
+    expect(catalog.kits[0]).not.toHaveProperty(["searchable", "Text"].join(""));
     expect(catalog.projects.length).toBeGreaterThanOrEqual(307);
     expect(catalog.tagVocabulary).toHaveLength(55);
     expect(catalog.kits.map(({ id }) => id)).toEqual(
@@ -421,6 +425,26 @@ describe("full catalog data", () => {
         .map(({ id }) => id)
         .sort(),
     );
+  });
+
+  test("publishes valid structured search fields for every card", async () => {
+    const catalog = await buildCatalog({ write: false });
+
+    for (const item of [...catalog.projects, ...catalog.kits]) {
+      expect(item.search.title, item.id).toHaveLength(1);
+      for (const values of Object.values(item.search)) {
+        expect(
+          values.every((value) => typeof value === "string"),
+          item.id,
+        ).toBe(true);
+        expect(values, item.id).not.toContain("[object Object]");
+      }
+    }
+
+    expect(
+      catalog.projects.find(({ id }) => id === "tavern-rpg-suite")?.search
+        .primaryFunction,
+    ).toContain("RPG systems and suites");
   });
 
   test("keeps every summary within the card presentation contract", async () => {

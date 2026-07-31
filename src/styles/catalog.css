@@ -1282,6 +1282,63 @@
   -webkit-line-clamp: 4;
 }
 
+.search-match-evidence {
+  min-width: 0;
+  margin: -4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.search-match-evidence b {
+  color: var(--color-text-secondary);
+  font-weight: 650;
+}
+
+.search-correction {
+  display: flex;
+  min-width: 0;
+  margin: 0 0 12px;
+}
+
+.search-correction button,
+.search-empty-state > button {
+  border: 1px solid var(--color-control-border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--color-functional);
+  background: var(--color-control-bg);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+}
+
+.search-correction button:hover,
+.search-empty-state > button:hover {
+  border-color: var(--color-control-border-hover);
+  background: var(--color-control-bg-hover);
+}
+
+.search-correction button:focus-visible,
+.search-empty-state > button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.search-empty-state {
+  gap: 8px;
+  padding: 24px;
+}
+
+.search-empty-state strong {
+  margin-bottom: 0;
+}
+
+.search-empty-state .search-correction {
+  justify-content: center;
+  margin: 4px 0 0;
+}
+
 .card-bottom {
   display: flex;
   min-width: 0;
@@ -1547,6 +1604,14 @@
   min-height: 0;
   margin: 4px 0 0;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compact-cards .search-match-evidence {
+  display: block;
+  overflow: hidden;
+  padding-right: 44px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

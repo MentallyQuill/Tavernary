@@ -5,6 +5,7 @@ import { ProjectCard } from "@/features/catalog/components/project-card";
 import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -38,7 +39,7 @@ function project(
         facet: "goal",
       },
     ],
-    searchableText: `${id} extension automation`,
+    search: catalogSearchFields(id),
     fork: null,
     attribution: null,
     activity: {
@@ -83,6 +84,49 @@ describe("project card", () => {
       configurable: true,
       value: originalMatchMedia,
     });
+  });
+
+  test("renders only useful search evidence visually and accessibly", () => {
+    const evidence = [
+      {
+        field: "maintainers" as const,
+        value: "MentallyQuill",
+        kind: "exact" as const,
+        queryTerm: "mentallyquill",
+        matchedTerm: "mentallyquill",
+      },
+    ];
+    const { rerender } = render(
+      <ProjectCard
+        project={project("directive", { name: "Directive" })}
+        now="2026-07-24T00:00:00Z"
+        searchEvidence={evidence}
+      />,
+    );
+    const card = screen.getByRole("link", { name: "Directive" });
+
+    expect(screen.getByText("Matched maintainer:")).toBeVisible();
+    expect(card).toHaveAccessibleDescription(
+      /Matched maintainer: MentallyQuill/u,
+    );
+
+    rerender(
+      <ProjectCard
+        project={project("directive", { name: "Directive" })}
+        now="2026-07-24T00:00:00Z"
+        searchEvidence={[
+          {
+            ...evidence[0],
+            field: "title",
+            value: "Directive",
+            queryTerm: "directive",
+            matchedTerm: "directive",
+          },
+        ]}
+      />,
+    );
+    expect(screen.queryByText(/Matched/u)).not.toBeInTheDocument();
+    expect(card).not.toHaveAccessibleDescription(/Matched/u);
   });
 
   test("renders a published upstream as a sibling relationship action", () => {

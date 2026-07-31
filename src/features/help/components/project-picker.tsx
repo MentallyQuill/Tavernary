@@ -11,14 +11,16 @@ interface ProjectPickerProps {
   invalid?: boolean;
 }
 
-function searchableText(project: OwnerProjectOption) {
+function projectSearchText(project: OwnerProjectOption) {
   return `${project.name} ${project.repository ?? ""} ${project.id}`.toLocaleLowerCase();
 }
 
 function matchingProjects(projects: OwnerProjectOption[], query: string) {
   const normalized = query.trim().toLocaleLowerCase();
   return normalized
-    ? projects.filter((project) => searchableText(project).includes(normalized))
+    ? projects.filter((project) =>
+        projectSearchText(project).includes(normalized),
+      )
     : projects;
 }
 

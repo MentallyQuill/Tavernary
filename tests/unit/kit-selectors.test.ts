@@ -3,6 +3,8 @@ import { describe, expect, test } from "vitest";
 import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
 import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import type { CatalogSearchResults } from "@/features/search/search-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
 
@@ -46,7 +48,7 @@ function kit(id: string, overrides: Partial<CatalogKit> = {}): CatalogKit {
     supportRefreshedAt: "2026-07-24T00:00:00.000Z",
     supportStale: false,
     flaggedProjectCount: 0,
-    searchableText: `${id} ${id}-author frontend generation-reasoning`,
+    search: catalogSearchFields(id),
     ...overrides,
   };
 }
@@ -58,8 +60,13 @@ const multiFrontendMemoryKit = kit("memory", {
   publishedAt: "2026-07-20T00:00:00.000Z",
   updatedAt: "2026-07-23T00:00:00.000Z",
   trendingScore: 5,
-  searchableText:
-    "shared durable memory memory-author memory-project sillytavern lumiverse memory-retrieval",
+  search: catalogSearchFields("Shared", {
+    aliases: ["memory-project"],
+    summary: ["durable memory"],
+    primaryFunction: ["memory-retrieval"],
+    frontends: ["sillytavern", "lumiverse"],
+    maintainers: ["memory-author"],
+  }),
 });
 const alphabeticalTie = kit("alpha-id", {
   title: "Shared",
@@ -73,6 +80,90 @@ const unavailable = kit("unavailable", {
 const kits = [unavailable, alphabeticalTie, multiFrontendMemoryKit];
 
 describe("Kit selectors", () => {
+  test("uses Tavernary scores only for Relevance and deterministic update ties", () => {
+    const highScore = kit("high", {
+      title: "Zeta",
+      updatedAt: "2026-07-01T00:00:00.000Z",
+    });
+    const recentlyUpdated = kit("recent", {
+      title: "Alpha",
+      updatedAt: "2026-07-24T00:00:00.000Z",
+    });
+    const scoredResults: CatalogSearchResults = {
+      normalizedQuery: "shared",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: highScore.id, score: 40, evidence: [] },
+        { id: recentlyUpdated.id, score: 5, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectKits(
+        [recentlyUpdated, highScore],
+        { ...DEFAULT_KIT_QUERY, sort: "relevance" },
+        "shared",
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["high", "recent"]);
+    expect(
+      selectKits(
+        [highScore, recentlyUpdated],
+        { ...DEFAULT_KIT_QUERY, sort: "alphabetical" },
+        "shared",
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["recent", "high"]);
+
+    const tiedResults = {
+      ...scoredResults,
+      matches: scoredResults.matches.map((match) => ({
+        ...match,
+        score: 10,
+      })),
+    };
+    expect(
+      selectKits(
+        [highScore, recentlyUpdated],
+        { ...DEFAULT_KIT_QUERY, sort: "relevance" },
+        "shared",
+        tiedResults,
+      ).map(({ id }) => id),
+    ).toEqual(["recent", "high"]);
+  });
+
+  test("uses structured all-term results as search eligibility before filters", () => {
+    const exactKit = kit("exact", {
+      title: "Super Awesome Test Kit",
+      search: catalogSearchFields("Super Awesome Test Kit"),
+    });
+    const secondaryKit = kit("secondary", {
+      title: "Secondary Kit",
+      search: catalogSearchFields("Secondary Kit", {
+        summary: ["A super awesome collection."],
+      }),
+    });
+    const searchResults: CatalogSearchResults = {
+      normalizedQuery: "super awesome",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: exactKit.id, score: 40, evidence: [] },
+        { id: secondaryKit.id, score: 5, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectKits(
+        [secondaryKit, exactKit],
+        DEFAULT_KIT_QUERY,
+        "super awesome",
+        searchResults,
+      ).map(({ id }) => id),
+    ).toEqual(expect.arrayContaining([exactKit.id, secondaryKit.id]));
+  });
+
   test("uses OR within groups and AND across groups", () => {
     expect(
       selectKits(kits, {

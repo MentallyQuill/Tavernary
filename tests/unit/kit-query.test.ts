@@ -27,6 +27,36 @@ test("round-trips the retained Kit filters in stable order", () => {
   expect(parseCatalogQuery(`?${serializeCatalogQuery(query)}`)).toEqual(query);
 });
 
+test("makes Kit Relevance conditional and omits only the implicit sort", () => {
+  expect(parseCatalogQuery("?mode=kits&q=aiko+loadout").kits.sort).toBe(
+    "relevance",
+  );
+  expect(
+    parseCatalogQuery("?mode=kits&q=aiko+loadout&sort=updated").kits.sort,
+  ).toBe("updated");
+  expect(parseCatalogQuery("?mode=kits&sort=relevance").kits.sort).toBe(
+    "trending",
+  );
+  expect(
+    serializeCatalogQuery({
+      ...DEFAULT_QUERY,
+      mode: "kits",
+      search: "aiko loadout",
+      sort: "relevance",
+      kits: { ...DEFAULT_QUERY.kits, sort: "relevance" },
+    }),
+  ).toBe("q=aiko+loadout&mode=kits");
+  expect(
+    serializeCatalogQuery({
+      ...DEFAULT_QUERY,
+      mode: "kits",
+      search: "aiko loadout",
+      sort: "relevance",
+      kits: { ...DEFAULT_QUERY.kits, sort: "updated" },
+    }),
+  ).toBe("q=aiko+loadout&mode=kits&sort=updated");
+});
+
 test("round-trips project model-family and completion-format filters", () => {
   const query = parseCatalogQuery(
     "?category=preset&model=claude&model=gemini&completion=chat-completion&completion=text-completion",
@@ -90,6 +120,6 @@ test("serializes only active-mode filters while retaining shared search and dens
   });
 
   expect(serialized).toBe(
-    "q=story&density=compact&mode=kits&purpose=memory-retrieval",
+    "q=story&density=compact&mode=kits&purpose=memory-retrieval&sort=trending",
   );
 });

@@ -54,9 +54,31 @@ empty contributor set.
 `src/generated/catalog.json` is the browser artifact loaded by the Next.js app.
 
 - Schema shape: `Catalog` in `src/features/catalog/catalog-types.ts`
+- Generated catalog schema version: `5`
 - Includes: curated fields + snapshot-derived computed values + `generatedAt`
 - Generated deterministically by `npm run catalog:build`
 - Never edited manually.
+
+### Structured search fields
+
+Every generated Project and Kit carries eleven structured search fields. Each
+field is an array of validated, non-empty strings:
+
+- `title`: the public Project or Kit title;
+- `aliases`: curated aliases, or component names for Kits;
+- `source`: stable IDs, repository/source identity, and canonical URLs;
+- `summary`: the public description;
+- `kind`: Project kind or `kit`;
+- `primaryFunction`: function labels and vocabulary aliases;
+- `tags`: controlled labels and aliases;
+- `frontends`: compatible frontend labels and aliases;
+- `compatibility`: model families and completion formats;
+- `maintainers`: source owners, contributors, or the Kit author; and
+- `relationships`: fork parents or Kit component identities.
+
+These arrays are the only generated search authority. The build validates them
+before publication, and the browser converts them to MiniSearch documents
+without maintaining a second flattened index.
 
 ## Source status model
 
@@ -129,8 +151,16 @@ The UI supports:
 
 - search: `q`
 - views: `all`, `active`, `new`, `released`
-- sort: `recent`, `sustained`, `popularity`, `alphabetical`
+- Project browse sort: `recent`, `sustained`, `popularity`, `alphabetical`
+- Kit browse sort: `trending`, `newest`, `updated`, `alphabetical`
+- conditional search sort: `relevance`
 - category, frontends, kind, Goals, Traits, development, license
 - density and kit mode query set
+
+`relevance` is valid only when `q` contains meaningful search terms. It is the
+implicit default during search and is therefore omitted from the canonical
+URL. An explicit browse sort is serialized while searching. Without a
+meaningful query, `relevance` is discarded and the applicable browse default
+is restored.
 
 See `src/features/catalog/catalog-query.ts` for exact canonical params.

@@ -6,7 +6,23 @@ projects shown on the page.
 
 ## Search and filters
 
-- Search matches project names and indexed text exposed by the catalog.
+- Search requires all meaningful words, but the words may appear in any order.
+  For example, `preset freaky` and `freaky preset` both find **Preset
+  Introducing Freaky Frankenstein 50**.
+- Project and Kit titles, aliases, source identities, descriptions, kinds,
+  primary functions, tags, frontends, compatibility, maintainers, and
+  relationships are searchable.
+- Prefix and typo matching is deliberately conservative, especially for short
+  words, so broad accidental matches do not overwhelm precise results.
+- **Relevance** appears only while the search contains meaningful text and is
+  selected automatically when a search begins or its meaning changes.
+- You can choose another sort while reviewing the current results. That manual
+  sort persists until the query meaning changes; spacing, punctuation, and
+  capitalization-only edits leave it alone.
+- Clearing search restores the browsing sort that was active before the
+  search.
+- A suggested correction never rewrites the query automatically. Activate the
+  suggestion explicitly to search for it.
 - Project-kind filters separate Frontends, Extensions, and System Presets.
 - Frontend compatibility filters use OR logic within the frontend group.
 - Metadata filters use OR logic within their group.

@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
+import { createCatalogSearchIndex } from "@/features/search/catalog-search";
+import type { CatalogSearchFields } from "@/features/search/search-types";
+
 interface GeneratedCatalogProject {
   id: string;
   name: string;
@@ -19,7 +22,7 @@ interface GeneratedCatalogProject {
     facet: "goal" | "trait";
     description: string;
   }>;
-  searchableText: string;
+  search: CatalogSearchFields;
   fork: {
     parentName: string;
     parentProjectId: string | null;
@@ -28,6 +31,12 @@ interface GeneratedCatalogProject {
   preset: {
     modelFamilies: Array<{ id: string; label: string }>;
   } | null;
+}
+
+interface GeneratedCatalogKit {
+  id: string;
+  title: string;
+  search: CatalogSearchFields;
 }
 
 export const generatedCatalog = JSON.parse(
@@ -42,12 +51,26 @@ export const generatedCatalog = JSON.parse(
     aliases: string[];
   }>;
   projects: GeneratedCatalogProject[];
+  kits: GeneratedCatalogKit[];
 };
 
 export const generatedProjectCount = generatedCatalog.projects.length;
+export const generatedKitCount = generatedCatalog.kits.length;
+
+const generatedProjectSearchIndex = createCatalogSearchIndex(
+  generatedCatalog.projects.map(({ id, search }) => ({ id, ...search })),
+);
+
+export function generatedProjectSearchCount(query: string) {
+  return generatedProjectSearchIndex.search(query).matches.length;
+}
 
 export function projectCountLabel(count: number) {
   return `${count} ${count === 1 ? "project" : "projects"}`;
+}
+
+export function kitCountLabel(count: number) {
+  return `${count} ${count === 1 ? "Kit" : "Kits"}`;
 }
 
 function vocabularyLength(path: string, property: string) {

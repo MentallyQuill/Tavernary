@@ -13,6 +13,8 @@ import {
   selectProjects,
 } from "@/features/catalog/catalog-selectors";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import type { CatalogSearchResults } from "@/features/search/search-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
 const publicTagVocabulary = tagVocabulary.tags.map(
@@ -54,7 +56,7 @@ function project(
         facet: "goal",
       },
     ],
-    searchableText: `${id} extension automation`,
+    search: catalogSearchFields(id),
     fork: null,
     attribution: null,
     activity: {
@@ -111,7 +113,7 @@ const multiFrontendProject = project("image-gen", {
   ],
 });
 const projects = [
-  project("recursion", { name: "Recursion", searchableText: "recursion" }),
+  project("recursion", { name: "Recursion" }),
   multiFrontendProject,
   project("frontend", {
     kind: "frontend",
@@ -198,6 +200,102 @@ const recommendedPreset = project("recommended-preset", {
 const context = { now: "2026-07-23T00:00:00Z" };
 
 describe("catalog selectors", () => {
+  test("uses Tavernary scores only for Relevance and deterministic activity ties", () => {
+    const highScore = project("alpha", { name: "Alpha" });
+    const recentlyUpdated = project("zeta", {
+      name: "Zeta",
+      latestReleaseAt: "2026-07-24T00:00:00Z",
+    });
+    const scoredResults: CatalogSearchResults = {
+      normalizedQuery: "shared",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: highScore.id, score: 40, evidence: [] },
+        { id: recentlyUpdated.id, score: 5, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectProjects(
+        [recentlyUpdated, highScore],
+        { ...DEFAULT_QUERY, search: "shared", sort: "relevance" },
+        context,
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["alpha", "zeta"]);
+    expect(
+      selectProjects(
+        [recentlyUpdated, highScore],
+        { ...DEFAULT_QUERY, search: "shared", sort: "alphabetical" },
+        context,
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["alpha", "zeta"]);
+
+    const tiedResults = {
+      ...scoredResults,
+      matches: scoredResults.matches.map((match) => ({
+        ...match,
+        score: 10,
+      })),
+    };
+    expect(
+      selectProjects(
+        [highScore, recentlyUpdated],
+        { ...DEFAULT_QUERY, search: "shared", sort: "relevance" },
+        context,
+        tiedResults,
+      ).map(({ id }) => id),
+    ).toEqual(["zeta", "alpha"]);
+  });
+
+  test("uses structured all-term results as search eligibility before filters", () => {
+    const freaky = project("freaky", {
+      kind: "preset",
+      name: "Preset Introducing Freaky Frankenstein 50",
+      search: catalogSearchFields("Preset Introducing Freaky Frankenstein 50"),
+    });
+    const supporting = project("supporting", {
+      search: catalogSearchFields("Supporting Project", {
+        summary: ["Preset support for Freaky Frankenstein."],
+      }),
+    });
+    const unrelated = project("unrelated");
+    const searchResults: CatalogSearchResults = {
+      normalizedQuery: "preset freaky",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: freaky.id, score: 50, evidence: [] },
+        { id: supporting.id, score: 10, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectProjects(
+        [unrelated, supporting, freaky],
+        { ...DEFAULT_QUERY, search: "preset freaky" },
+        context,
+        searchResults,
+      )
+        .map(({ id }) => id)
+        .sort(),
+    ).toEqual(["freaky", "supporting"]);
+    expect(
+      selectProjects(
+        [unrelated, supporting, freaky],
+        {
+          ...DEFAULT_QUERY,
+          search: "preset freaky",
+          kinds: ["preset"],
+        },
+        context,
+        searchResults,
+      ).map(({ id }) => id),
+    ).toEqual(["freaky"]);
+  });
+
   test("selects only the immediate published parent and child in relationship order", () => {
     const grandparent = project("grandparent", { name: "Grandparent" });
     const parent = project("parent", {
@@ -228,9 +326,8 @@ describe("catalog selectors", () => {
   });
 
   test("relationship selection ignores ordinary filters and rejects broken links", () => {
-    const parent = project("parent", { searchableText: "upstream" });
+    const parent = project("parent");
     const child = project("child", {
-      searchableText: "downstream",
       fork: {
         parentName: "Parent",
         parentProjectId: "parent",
@@ -283,7 +380,9 @@ describe("catalog selectors", () => {
 
   test("matches repository owners, human contributors, and bot contributors", () => {
     const attributed = project("directive", {
-      searchableText: "directive mentallyquill alice claude dependabot[bot]",
+      search: catalogSearchFields("directive", {
+        maintainers: ["MentallyQuill", "alice", "claude", "dependabot[bot]"],
+      }),
       attribution: {
         owner: { provider: "github", login: "MentallyQuill" },
         contributors: [
@@ -617,6 +716,32 @@ describe("catalog selectors", () => {
 });
 
 describe("catalog query URLs", () => {
+  test("makes Relevance conditional on a meaningful search", () => {
+    expect(parseCatalogQuery("?q=preset+freaky").sort).toBe("relevance");
+    expect(parseCatalogQuery("?q=preset+freaky&sort=popularity").sort).toBe(
+      "popularity",
+    );
+    expect(parseCatalogQuery("?sort=relevance").sort).toBe("recent");
+    expect(parseCatalogQuery("?q=---").sort).toBe("recent");
+  });
+
+  test("omits implicit Relevance but serializes an explicit browse override", () => {
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        search: "preset freaky",
+        sort: "relevance",
+      }),
+    ).toBe("q=preset+freaky");
+    expect(
+      serializeCatalogQuery({
+        ...DEFAULT_QUERY,
+        search: "preset freaky",
+        sort: "popularity",
+      }),
+    ).toBe("q=preset+freaky&sort=popularity");
+  });
+
   test("round-trips canonical tags and maps only exact legacy capability aliases", () => {
     const serialized = serializeCatalogQuery({
       ...DEFAULT_QUERY,
@@ -661,6 +786,10 @@ describe("catalog query URLs", () => {
       ...DEFAULT_QUERY,
       search: "memory",
       sort: "sustained",
+      kits: {
+        ...DEFAULT_QUERY.kits,
+        sort: "relevance",
+      },
       frontends: ["marinara-engine", "sillytavern"],
       kinds: ["extension", "preset"],
     });
@@ -670,6 +799,7 @@ describe("catalog query URLs", () => {
     const serialized = serializeCatalogQuery({
       ...DEFAULT_QUERY,
       search: "memory",
+      sort: "relevance",
       frontends: ["sillytavern"],
       relationship: "vectfox",
     });
@@ -680,6 +810,11 @@ describe("catalog query URLs", () => {
     expect(parseCatalogQuery(`?${serialized}`)).toEqual({
       ...DEFAULT_QUERY,
       search: "memory",
+      sort: "relevance",
+      kits: {
+        ...DEFAULT_QUERY.kits,
+        sort: "relevance",
+      },
       frontends: ["sillytavern"],
       relationship: "vectfox",
     });

@@ -3,6 +3,11 @@ import { useId } from "react";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import {
+  SearchEvidence,
+  searchEvidenceText,
+} from "@/features/search/components/search-evidence";
+import type { SearchEvidence as SearchEvidenceItem } from "@/features/search/search-types";
 import { KitUpvoteControl } from "./kit-upvote-control";
 
 function relativeTime(timestamp: string, now: string) {
@@ -24,6 +29,7 @@ export function KitCard({
   onSelect,
   onCopyLink,
   onReport,
+  searchEvidence = [],
 }: {
   kit: CatalogKit;
   now: string;
@@ -31,19 +37,30 @@ export function KitCard({
   onSelect: (kitId: string) => void;
   onCopyLink: (kitId: string) => void | Promise<void>;
   onReport: (kitId: string) => void;
+  searchEvidence?: SearchEvidenceItem[];
 }) {
   const tooltipId = useId();
   const wasUpdated = kit.updatedAt !== kit.publishedAt;
   const projectCount = kit.components.length;
+  const evidenceDescription = searchEvidenceText(searchEvidence);
+  const evidenceDescriptionId = `${kit.id}-search-evidence`;
   return (
     <article
       className={`kit-card${selected ? " selected" : ""}`}
       aria-labelledby={`${kit.id}-title`}
     >
+      {evidenceDescription ? (
+        <span className="visually-hidden" id={evidenceDescriptionId}>
+          {evidenceDescription}.
+        </span>
+      ) : null}
       <button
         type="button"
         className="kit-card-select"
         aria-label={`Open ${kit.title}`}
+        aria-describedby={
+          evidenceDescription ? evidenceDescriptionId : undefined
+        }
         aria-controls="kit-builder-panel"
         aria-expanded={selected}
         onClick={() => onSelect(kit.id)}
@@ -59,6 +76,7 @@ export function KitCard({
           </b>
         </span>
         <p className="kit-card-description">{kit.description}</p>
+        <SearchEvidence evidence={searchEvidence} />
       </button>
       <div className="kit-card-metadata">
         <span>Published {relativeTime(kit.publishedAt, now)}</span>

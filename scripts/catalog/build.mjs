@@ -9,6 +9,7 @@ import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { resolveForkRelationship } from "./fork-relationship.mjs";
 import { indexRegistry } from "./registry-context.mjs";
+import { kitSearchFields, projectSearchFields } from "./search-document.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -151,26 +152,6 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
     owner,
     snapshot?.contributors,
   );
-  const searchableText = [
-    record.name,
-    record.kind,
-    record.summary,
-    primaryFunction.label,
-    ...frontends.map(({ label }) => label),
-    ...tags.map(({ label }) => label),
-    ...compatibility.modelFamilies.map(({ label }) => label),
-    ...compatibility.completionFormats.map(({ label }) => label),
-    ...vocabularyAliases(
-      record.model_families ?? [],
-      vocabularies.modelFamilies,
-    ),
-    ...vocabularyAliases(record.tags, vocabularies.tags),
-    attribution.owner.login,
-    attribution.owner.provider,
-    ...attribution.contributors.map(({ login }) => login),
-  ]
-    .join(" ")
-    .toLowerCase();
 
   const derivedActivity = snapshot
     ? derivePublicActivity(snapshot.activity, now)
@@ -199,7 +180,6 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
-    searchableText,
     attribution,
     activity: snapshot
       ? {
@@ -266,23 +246,6 @@ function urlProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
-    searchableText: [
-      record.name,
-      record.kind,
-      record.summary,
-      primaryFunction.label,
-      ...frontends.map(({ label }) => label),
-      ...tags.map(({ label }) => label),
-      ...compatibility.modelFamilies.map(({ label }) => label),
-      ...compatibility.completionFormats.map(({ label }) => label),
-      ...vocabularyAliases(
-        record.model_families ?? [],
-        vocabularies.modelFamilies,
-      ),
-      ...vocabularyAliases(record.tags, vocabularies.tags),
-    ]
-      .join(" ")
-      .toLowerCase(),
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -309,7 +272,7 @@ function manualProject(record, source, vocabularies) {
   const primaryFunction = {
     id: record.primary_function,
     label:
-      vocabularies.primaryFunctions.get(record.primary_function) ??
+      vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
 
@@ -326,17 +289,6 @@ function manualProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
-    searchableText: [
-      record.name,
-      record.kind,
-      record.summary,
-      primaryFunction.label,
-      ...frontends.map(({ label }) => label),
-      ...tags.map(({ label }) => label),
-      ...vocabularyAliases(record.tags, vocabularies.tags),
-    ]
-      .join(" ")
-      .toLowerCase(),
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -474,16 +426,41 @@ export async function buildCatalog(options = {}) {
       { id: project.id, name: project.name },
     ]);
   }
-  projects = projects.map((project) => ({
-    ...project,
-    fork: resolveForkRelationship({
-      snapshot:
-        snapshotsBySource.get(recordsByProject.get(project.id)?.source_id) ??
-        null,
+  projects = projects.map((project) => {
+    const record = recordsByProject.get(project.id);
+    const source = registry.sourcesById.get(record?.source_id);
+    const fork = resolveForkRelationship({
+      snapshot: snapshotsBySource.get(record?.source_id) ?? null,
       sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
       publicProjectsBySourceId,
-    }),
-  }));
+    });
+    const completedProject = { ...project, fork };
+    return {
+      ...completedProject,
+      search: projectSearchFields({
+        completionFormats: (record?.completion_formats ?? []).map(
+          (id) => vocabularies.completionFormats.get(id) ?? { label: id },
+        ),
+        frontends: (record?.frontends ?? []).map(
+          (id) => vocabularies.frontends.get(id) ?? { label: id },
+        ),
+        modelFamilies: (record?.model_families ?? []).map(
+          (id) => vocabularies.modelFamilies.get(id) ?? { label: id },
+        ),
+        primaryFunction: vocabularies.primaryFunctions.get(
+          record?.primary_function,
+        ) ?? {
+          label: record?.primary_function,
+        },
+        project: completedProject,
+        record,
+        source,
+        tags: (record?.tags ?? []).map(
+          (id) => vocabularies.tags.get(id) ?? { label: id },
+        ),
+      }),
+    };
+  });
   const publicProjectsById = new Map(
     projects.map((project) => [project.id, project]),
   );
@@ -577,19 +554,8 @@ export async function buildCatalog(options = {}) {
       const flaggedProjectCount = components.filter(
         ({ availability }) => availability === "flagged",
       ).length;
-      const searchableText = [
-        kit.title,
-        kit.description,
-        kit.author.login,
-        ...components.map(({ name }) => name),
-        ...frontends.map(({ label }) => label),
-        ...purposes.map(({ label }) => label),
-        ...modelFamilies.map(({ label }) => label),
-      ]
-        .join(" ")
-        .toLowerCase();
 
-      return {
+      const publicKit = {
         id: kit.id,
         title: kit.title,
         description: kit.description,
@@ -612,12 +578,27 @@ export async function buildCatalog(options = {}) {
         supportRefreshedAt: support?.refreshed_at ?? null,
         supportStale: Boolean(support?.stale_since),
         flaggedProjectCount,
-        searchableText,
+      };
+      return {
+        ...publicKit,
+        search: kitSearchFields({
+          frontends: frontends.map(
+            ({ id, label }) => vocabularies.frontends.get(id) ?? { label },
+          ),
+          kit: publicKit,
+          modelFamilies: modelFamilies.map(
+            ({ id, label }) => vocabularies.modelFamilies.get(id) ?? { label },
+          ),
+          purposes: purposes.map(
+            ({ id, label }) =>
+              vocabularies.primaryFunctions.get(id) ?? { label },
+          ),
+        }),
       };
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 4,
+    schemaVersion: 5,
     generatedAt: generatedAtIso,
     tagVocabulary: publicTagVocabulary,
     projects,

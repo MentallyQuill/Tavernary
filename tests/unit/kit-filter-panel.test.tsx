@@ -5,6 +5,7 @@ import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 afterEach(cleanup);
 
@@ -22,7 +23,7 @@ const project: CatalogProject = {
   catalogCohort: "standard",
   frontends: [label("sillytavern")],
   tags: [{ ...label("route-tasks-across-models"), facet: "goal" }],
-  searchableText: "routing",
+  search: catalogSearchFields("Routing Extension"),
   fork: null,
   attribution: null,
   activity: {
@@ -89,7 +90,7 @@ const kit: CatalogKit = {
   supportRefreshedAt: "2026-07-24T00:00:00.000Z",
   supportStale: false,
   flaggedProjectCount: 0,
-  searchableText: "routing",
+  search: catalogSearchFields("Routing Kit"),
 };
 
 describe("KitFilterPanel", () => {

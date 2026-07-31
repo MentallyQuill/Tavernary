@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CategoryIcon } from "@/components/icons/category-icon";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { KitSort } from "@/features/kits/kit-query";
+import { searchMeaning } from "@/features/search/search-normalization";
 import type { CatalogQuery } from "../catalog-query";
 
 export function CatalogToolbar({
@@ -29,6 +30,7 @@ export function CatalogToolbar({
   onCreateKit?: () => void;
   filterButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
+  const searchActive = Boolean(searchMeaning(query.search));
   const densityAction =
     query.density === "standard" ? "Use compact cards" : "Use standard cards";
 
@@ -60,6 +62,9 @@ export function CatalogToolbar({
               value={query.kits.sort}
               onChange={(event) => onKitSort(event.target.value as KitSort)}
             >
+              {searchActive ? (
+                <option value="relevance">Relevance</option>
+              ) : null}
               <option value="trending">Trending</option>
               <option value="newest">Newest</option>
               <option value="updated">Updated</option>
@@ -90,6 +95,9 @@ export function CatalogToolbar({
                   onSort(event.target.value as CatalogQuery["sort"])
                 }
               >
+                {searchActive ? (
+                  <option value="relevance">Relevance</option>
+                ) : null}
                 <option value="recent">Recent Activity</option>
                 <option value="sustained">Sustained Activity</option>
                 <option value="popularity">Popularity</option>

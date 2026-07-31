@@ -6,13 +6,17 @@ import {
   ProjectReportForm,
   type HelpProjectOption,
 } from "@/features/help/components/project-report-form";
+import {
+  flattenSearchFields,
+  type CatalogSearchFields,
+} from "@/features/search/search-types";
 import { loadCatalog } from "@/lib/catalog/load-catalog";
 
 interface CatalogProjectForHelpOption {
   id: string;
   name: string;
   canonicalUrl: unknown;
-  searchableText: string;
+  search: CatalogSearchFields;
   attribution: { owner: { login: string } } | null;
 }
 
@@ -47,7 +51,7 @@ export function mapHelpProjectOptions(
         name: project.name,
         creator: project.attribution?.owner.login ?? source.hostname,
         canonicalUrl: source.canonicalUrl,
-        searchableText: project.searchableText,
+        searchText: flattenSearchFields(project.search).toLocaleLowerCase(),
       },
     ];
   });

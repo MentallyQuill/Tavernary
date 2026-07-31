@@ -1,6 +1,9 @@
 import type { KitQuery, KitSort } from "@/features/kits/kit-query";
 import type { CatalogKit } from "@/features/kits/kit-types";
 import { matchesModelFamilies } from "@/features/catalog/preset-compatibility";
+import { exactAllTermSearch } from "@/features/search/catalog-search";
+import { searchMeaning } from "@/features/search/search-normalization";
+import type { CatalogSearchResults } from "@/features/search/search-types";
 
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
@@ -26,8 +29,18 @@ function comparePublished(left: CatalogKit, right: CatalogKit) {
   );
 }
 
-function kitComparator(sort: KitSort) {
+function kitComparator(sort: KitSort, searchResults?: CatalogSearchResults) {
+  const scores = new Map(
+    searchResults?.matches.map(({ id, score }) => [id, score]) ?? [],
+  );
   return (left: CatalogKit, right: CatalogKit) => {
+    if (sort === "relevance") {
+      return (
+        (scores.get(right.id) ?? 0) - (scores.get(left.id) ?? 0) ||
+        Date.parse(right.updatedAt) - Date.parse(left.updatedAt) ||
+        compareTitleAndId(left, right)
+      );
+    }
     if (sort === "alphabetical") {
       return compareTitleAndId(left, right);
     }
@@ -59,10 +72,21 @@ export function selectKits(
   kits: CatalogKit[],
   query: KitQuery,
   search = "",
+  searchResults?: CatalogSearchResults,
 ): CatalogKit[] {
-  const normalized = search.trim().toLowerCase();
+  const normalized = searchMeaning(search);
+  const effectiveSearchResults =
+    searchResults?.normalizedQuery === normalized
+      ? searchResults
+      : exactAllTermSearch(
+          kits.map(({ id, search: fields }) => ({ id, ...fields })),
+          search,
+        );
+  const matchingKitIds = new Set(
+    effectiveSearchResults.matches.map(({ id }) => id),
+  );
   return kits
-    .filter((kit) => !normalized || kit.searchableText.includes(normalized))
+    .filter((kit) => !normalized || matchingKitIds.has(kit.id))
     .filter((kit) =>
       matchesAny(
         query.frontends,
@@ -96,7 +120,7 @@ export function selectKits(
     .filter(
       (kit) => !query.allComponentsAvailable || kit.flaggedProjectCount === 0,
     )
-    .sort(kitComparator(query.sort));
+    .sort(kitComparator(query.sort, effectiveSearchResults));
 }
 
 export function countKitsForFilter(

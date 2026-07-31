@@ -1,4 +1,7 @@
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
+import { exactAllTermSearch } from "@/features/search/catalog-search";
+import { searchMeaning } from "@/features/search/search-normalization";
+import type { CatalogSearchResults } from "@/features/search/search-types";
 import type { CatalogQuery } from "./catalog-query";
 import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
@@ -120,8 +123,35 @@ function activityRecency(project: CatalogProject) {
   return Number.isFinite(recency) ? recency : null;
 }
 
-function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
+function sortProjects(
+  projects: CatalogProject[],
+  sort: CatalogQuery["sort"],
+  searchResults?: CatalogSearchResults,
+) {
+  const scores = new Map(
+    searchResults?.matches.map(({ id, score }) => [id, score]) ?? [],
+  );
   return projects.sort((left, right) => {
+    if (sort === "relevance") {
+      const scoreOrder =
+        (scores.get(right.id) ?? 0) - (scores.get(left.id) ?? 0);
+      if (scoreOrder !== 0) return scoreOrder;
+      const leftRecency = activityRecency(left);
+      const rightRecency = activityRecency(right);
+      if (leftRecency === null && rightRecency !== null) return 1;
+      if (leftRecency !== null && rightRecency === null) return -1;
+      if (
+        leftRecency !== null &&
+        rightRecency !== null &&
+        leftRecency !== rightRecency
+      ) {
+        return rightRecency - leftRecency;
+      }
+      return (
+        collator.compare(left.name, right.name) ||
+        collator.compare(left.id, right.id)
+      );
+    }
     if (sort === "alphabetical") {
       return (
         collator.compare(left.name, right.name) ||
@@ -178,8 +208,19 @@ export function selectProjects(
   projects: CatalogProject[],
   query: CatalogQuery,
   context: { now: string; tagVocabulary?: PublicTagDefinition[] },
+  searchResults?: CatalogSearchResults,
 ): CatalogProject[] {
-  const search = query.search.trim().toLowerCase();
+  const search = searchMeaning(query.search);
+  const effectiveSearchResults =
+    searchResults?.normalizedQuery === search
+      ? searchResults
+      : exactAllTermSearch(
+          projects.map(({ id, search: fields }) => ({ id, ...fields })),
+          query.search,
+        );
+  const matchingProjectIds = new Set(
+    effectiveSearchResults.matches.map(({ id }) => id),
+  );
   const tagVocabulary = context.tagVocabulary ?? [
     ...new Map(
       projects.flatMap(({ tags }) =>
@@ -192,7 +233,7 @@ export function selectProjects(
   ];
   const selected = projects.filter(
     (project) =>
-      (!search || project.searchableText.includes(search)) &&
+      (!search || matchingProjectIds.has(project.id)) &&
       (!query.category ||
         (query.category === "frontend" || query.category === "preset"
           ? project.kind === query.category
@@ -220,5 +261,5 @@ export function selectProjects(
       matchesView(project, query.view, context.now),
   );
 
-  return sortProjects(selected, query.sort);
+  return sortProjects(selected, query.sort, effectiveSearchResults);
 }

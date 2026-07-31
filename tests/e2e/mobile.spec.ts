@@ -285,6 +285,42 @@ test("keeps the project submission builder inside a 320px viewport", async ({
   ).toBeLessThanOrEqual(0);
 });
 
+test("keeps search evidence and corrections inside a 320px viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(sitePath());
+  const search = page.getByRole("searchbox", { name: "Search projects" });
+  await search.fill("MentallyQuill");
+  const directive = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Directive", exact: true }),
+  });
+  await expect(directive.locator(".search-match-evidence")).toHaveText(
+    "Matched maintainer: MentallyQuill",
+  );
+
+  await search.fill("frankenstien");
+  const correction = page.getByRole("button", {
+    name: "Search for frankenstein",
+  });
+  await expect(correction).toBeVisible();
+  const bounds = await correction.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      left: rect.left,
+      right: rect.right,
+      viewport: document.documentElement.clientWidth,
+    };
+  });
+  expect(bounds.left).toBeGreaterThanOrEqual(0);
+  expect(bounds.right).toBeLessThanOrEqual(bounds.viewport);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+});
+
 test("keeps Help controls and private reporting inside a 320px viewport", async ({
   page,
 }) => {

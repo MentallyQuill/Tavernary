@@ -158,6 +158,21 @@ function validateCatalog(options?: Parameters<typeof validateCatalogRaw>[0]) {
 }
 
 describe("catalog validation", () => {
+  test("accepts optional curated project aliases", async () => {
+    const result = await validateCatalog({
+      records: [
+        {
+          ...validRecordV6,
+          aliases: ["Memory Companion", "Durable Memory"],
+        },
+      ],
+      sources: [validSourceV1],
+      snapshots: [validSnapshotV4],
+    });
+
+    expect(result.errors).toEqual([]);
+  });
+
   test("rejects an invalid Goals-and-Traits vocabulary", async () => {
     const result = await validateCatalog({
       records: [],

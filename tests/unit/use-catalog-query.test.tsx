@@ -11,6 +11,19 @@ afterEach(() => {
 });
 
 describe("catalog query history", () => {
+  test.each([
+    ["/?q=preset+freaky", "relevance"],
+    ["/?q=preset+freaky&sort=popularity", "popularity"],
+    ["/?sort=relevance", "recent"],
+    ["/?q=---", "recent"],
+  ] as const)("derives the effective sort from %s", (url, sort) => {
+    window.history.replaceState(null, "", url);
+
+    const { result } = renderHook(() => useCatalogQuery());
+
+    expect(result.current.query.sort).toBe(sort);
+  });
+
   test("treats a stale Uncategorized URL as the default category", () => {
     window.history.replaceState(null, "", "/?category=uncategorized");
 
@@ -81,6 +94,11 @@ describe("catalog query history", () => {
     expect(result.current.query).toEqual({
       ...DEFAULT_QUERY,
       search: "memory",
+      sort: "relevance",
+      kits: {
+        ...DEFAULT_QUERY.kits,
+        sort: "relevance",
+      },
       kinds: ["extension"],
     });
   });
