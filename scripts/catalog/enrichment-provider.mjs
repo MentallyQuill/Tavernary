@@ -306,6 +306,9 @@ export function createEnrichmentProvider(options) {
     async generate(input) {
       const response = await transport.request({
         model: transport.configuration.model,
+        ...(/^gpt-5\.6(?:-|$)/u.test(transport.configuration.model)
+          ? { reasoning_effort: "none" }
+          : {}),
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(input) },

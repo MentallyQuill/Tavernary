@@ -177,6 +177,7 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   const schema = body.response_format.json_schema.schema;
   expect(body.model).toBe(model);
   expect(body).not.toHaveProperty("temperature");
+  expect(body).not.toHaveProperty("reasoning_effort");
   expect(body.messages[0].content).toMatch(
     /project names.*README content.*untrusted reference data/iu,
   );
@@ -233,6 +234,26 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   expect(init?.headers).toMatchObject({
     authorization: "Bearer do-not-log",
   });
+});
+
+test("uses the no-reasoning latency baseline for GPT-5.6 enrichment", async () => {
+  const lunaModel = "gpt-5.6-luna";
+  const fetchImpl = vi.fn(
+    async (_url: string | URL | Request, _init?: RequestInit) =>
+      success({ model: lunaModel }),
+  );
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.openai.com/v1/chat/completions",
+    apiKey: "do-not-log",
+    model: lunaModel,
+    fetchImpl,
+  });
+
+  await provider.generate(input);
+
+  const [, init] = fetchImpl.mock.calls[0];
+  const body = JSON.parse(String(init?.body));
+  expect(body.reasoning_effort).toBe("none");
 });
 
 test("builds a tags-only schema without summary or copy diagnostics", async () => {
