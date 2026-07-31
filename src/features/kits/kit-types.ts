@@ -40,7 +40,6 @@ export interface CatalogKit {
   supportStale: boolean;
   flaggedProjectCount: number;
   search: CatalogSearchFields;
-  searchableText: string;
 }
 
 export interface KitDraft {

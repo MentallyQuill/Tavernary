@@ -31,7 +31,6 @@ const project: CatalogProject = {
     },
   ],
   search: catalogSearchFields("Routing"),
-  searchableText: "routing",
   fork: null,
   attribution: null,
   activity: {
@@ -79,7 +78,6 @@ const kit: CatalogKit = {
   supportStale: false,
   flaggedProjectCount: 0,
   search: catalogSearchFields("Kit"),
-  searchableText: "kit routing",
 };
 
 test("renders removable tokens for retained Kit filters", () => {

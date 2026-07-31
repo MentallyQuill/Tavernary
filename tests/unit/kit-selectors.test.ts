@@ -49,7 +49,6 @@ function kit(id: string, overrides: Partial<CatalogKit> = {}): CatalogKit {
     supportStale: false,
     flaggedProjectCount: 0,
     search: catalogSearchFields(id),
-    searchableText: `${id} ${id}-author frontend generation-reasoning`,
     ...overrides,
   };
 }
@@ -68,8 +67,6 @@ const multiFrontendMemoryKit = kit("memory", {
     frontends: ["sillytavern", "lumiverse"],
     maintainers: ["memory-author"],
   }),
-  searchableText:
-    "shared durable memory memory-author memory-project sillytavern lumiverse memory-retrieval",
 });
 const alphabeticalTie = kit("alpha-id", {
   title: "Shared",
@@ -140,14 +137,12 @@ describe("Kit selectors", () => {
     const exactKit = kit("exact", {
       title: "Super Awesome Test Kit",
       search: catalogSearchFields("Super Awesome Test Kit"),
-      searchableText: "",
     });
     const secondaryKit = kit("secondary", {
       title: "Secondary Kit",
       search: catalogSearchFields("Secondary Kit", {
         summary: ["A super awesome collection."],
       }),
-      searchableText: "",
     });
     const searchResults: CatalogSearchResults = {
       normalizedQuery: "super awesome",

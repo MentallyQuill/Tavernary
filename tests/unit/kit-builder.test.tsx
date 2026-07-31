@@ -69,7 +69,6 @@ function project(
     frontends: [],
     tags: [],
     search: catalogSearchFields(id),
-    searchableText: id,
     fork: null,
     attribution: null,
     activity: {
@@ -124,7 +123,6 @@ const kit: CatalogKit = {
   supportStale: false,
   flaggedProjectCount: 0,
   search: catalogSearchFields("Story Kit"),
-  searchableText: "story kit",
 };
 
 afterEach(() => {

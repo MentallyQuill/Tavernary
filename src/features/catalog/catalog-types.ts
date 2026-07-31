@@ -73,7 +73,6 @@ export interface CatalogProject {
   frontends: CatalogLabel[];
   tags: CatalogTag[];
   search: CatalogSearchFields;
-  searchableText: string;
   fork: CatalogForkRelationship | null;
   attribution: CatalogAttribution | null;
   activity: {
@@ -108,7 +107,7 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 4;
+  schemaVersion: 5;
   generatedAt: string;
   tagVocabulary: CatalogTagDefinition[];
   projects: CatalogProject[];

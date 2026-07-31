@@ -412,7 +412,11 @@ describe("full catalog data", () => {
     }>("data/registry/kits");
     const catalog = await buildCatalog({ write: false });
 
-    expect(catalog.schemaVersion).toBe(4);
+    expect(catalog.schemaVersion).toBe(5);
+    expect(catalog.projects[0]).not.toHaveProperty(
+      ["searchable", "Text"].join(""),
+    );
+    expect(catalog.kits[0]).not.toHaveProperty(["searchable", "Text"].join(""));
     expect(catalog.projects.length).toBeGreaterThanOrEqual(307);
     expect(catalog.tagVocabulary).toHaveLength(55);
     expect(catalog.kits.map(({ id }) => id)).toEqual(

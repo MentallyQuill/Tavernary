@@ -24,7 +24,6 @@ const project: CatalogProject = {
   frontends: [label("sillytavern")],
   tags: [{ ...label("route-tasks-across-models"), facet: "goal" }],
   search: catalogSearchFields("Routing Extension"),
-  searchableText: "routing",
   fork: null,
   attribution: null,
   activity: {
@@ -92,7 +91,6 @@ const kit: CatalogKit = {
   supportStale: false,
   flaggedProjectCount: 0,
   search: catalogSearchFields("Routing Kit"),
-  searchableText: "routing",
 };
 
 describe("KitFilterPanel", () => {

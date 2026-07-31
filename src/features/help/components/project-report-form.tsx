@@ -24,7 +24,7 @@ export interface HelpProjectOption {
   name: string;
   creator: string;
   canonicalUrl: string;
-  searchableText: string;
+  searchText: string;
 }
 
 const categoryLabels: Record<ProjectReportCategory, string> = {
@@ -100,7 +100,7 @@ export function ProjectReportForm({
   const selected = projects.find((project) => project.id === projectId);
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const visibleProjects = projects.filter((project) =>
-    `${project.name} ${project.creator} ${project.canonicalUrl} ${project.searchableText}`
+    `${project.name} ${project.creator} ${project.canonicalUrl} ${project.searchText}`
       .toLocaleLowerCase()
       .includes(normalizedSearch),
   );

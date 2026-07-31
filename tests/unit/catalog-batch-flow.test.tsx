@@ -70,7 +70,6 @@ function project(): CatalogProject {
     frontends: [],
     tags: [],
     search: catalogSearchFields("Memory"),
-    searchableText: "memory",
     fork: null,
     attribution: null,
     activity: {
@@ -91,7 +90,7 @@ function project(): CatalogProject {
 }
 
 const catalog: Catalog = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00.000Z",
   projects: [project()],
@@ -108,7 +107,6 @@ const submissionCatalog: Catalog = {
       kind: "frontend",
       primaryFunction: "frontend",
       canonicalUrl: "https://example.com/frontend",
-      searchableText: "frontend",
     },
     {
       ...project(),
@@ -123,7 +121,6 @@ const submissionCatalog: Catalog = {
       kind: "preset",
       primaryFunction: "generation-reasoning",
       canonicalUrl: "https://example.com/preset",
-      searchableText: "preset",
     },
     {
       ...project(),
@@ -136,7 +133,6 @@ const submissionCatalog: Catalog = {
         compatibility: ["Claude", "Chat Completion"],
         kind: ["preset", "System Preset"],
       }),
-      searchableText: "",
     },
   ],
 };

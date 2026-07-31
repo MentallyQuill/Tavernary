@@ -17,6 +17,10 @@ export type SearchMatchKind = "exact" | "prefix" | "fuzzy";
 
 export type CatalogSearchFields = Record<SearchFieldName, string[]>;
 
+export function flattenSearchFields(fields: CatalogSearchFields) {
+  return SEARCH_FIELD_NAMES.flatMap((field) => fields[field]).join(" ");
+}
+
 export interface CatalogSearchDocument extends CatalogSearchFields {
   id: string;
 }

@@ -96,7 +96,6 @@ function fixtureProject({
     frontends: [],
     tags: [],
     search: catalogSearchFields(name),
-    searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {
       owner: { provider: "github", login: "example-owner" },
@@ -223,7 +222,6 @@ function fixtureKit(): CatalogKit {
     supportStale: false,
     flaggedProjectCount: 1,
     search: catalogSearchFields("Story Kit"),
-    searchableText: "story kit author",
   };
 }
 

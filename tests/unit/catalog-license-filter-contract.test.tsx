@@ -39,7 +39,6 @@ function project(
       },
     ],
     search: catalogSearchFields(id),
-    searchableText: `${id} extension automation`,
     fork: null,
     attribution: null,
     activity: {

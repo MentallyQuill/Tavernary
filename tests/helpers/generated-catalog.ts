@@ -23,7 +23,6 @@ interface GeneratedCatalogProject {
     description: string;
   }>;
   search: CatalogSearchFields;
-  searchableText: string;
   fork: {
     parentName: string;
     parentProjectId: string | null;

@@ -35,7 +35,6 @@ function frontendCard(
     ],
     tags: [],
     search: catalogSearchFields(name),
-    searchableText: name,
     fork: null,
     attribution: null,
     activity: {

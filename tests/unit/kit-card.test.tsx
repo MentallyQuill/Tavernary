@@ -54,7 +54,6 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
     supportStale: false,
     flaggedProjectCount: 0,
     search: catalogSearchFields("Long-Form Storyteller"),
-    searchableText: "long form storyteller example author",
     ...overrides,
   };
 }

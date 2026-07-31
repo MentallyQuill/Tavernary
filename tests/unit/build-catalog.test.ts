@@ -298,7 +298,9 @@ test("builds sibling extension and preset cards from one source snapshot", async
     }),
   ]);
   expect(catalog.projects[0]).not.toHaveProperty("capabilities");
-  expect(catalog.projects[0].searchableText).toContain("persistent memory");
+  expect(catalog.projects[0]).not.toHaveProperty(
+    ["searchable", "Text"].join(""),
+  );
   expect(catalog.projects[0].search).toMatchObject({
     title: ["megumin-extension"],
     aliases: ["Memory Companion"],
@@ -319,7 +321,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
   expect(JSON.stringify(catalog.projects[0].search)).not.toContain(
     "[object Object]",
   );
-  expect(catalog.schemaVersion).toBe(4);
+  expect(catalog.schemaVersion).toBe(5);
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
   ).not.toHaveProperty("inclusion_guidance");
@@ -573,8 +575,8 @@ test("builds searchable owner and contributor attribution from GitHub facts", as
     humanContributorCount: 1,
     status: "current",
   });
-  expect(catalog.projects[0].searchableText).toContain(
-    "example github alice claude dependabot[bot]",
+  expect(catalog.projects[0].search.maintainers).toEqual(
+    expect.arrayContaining(["example", "Alice", "Claude", "dependabot[bot]"]),
   );
 });
 
@@ -623,7 +625,7 @@ test("builds partial fork attribution only from observed merged PR authors", asy
     humanContributorCount: 1,
     status: "partial",
   });
-  expect(catalog.projects[0].searchableText).not.toContain("cohee1207");
+  expect(JSON.stringify(catalog.projects[0].search)).not.toContain("cohee1207");
 });
 
 test("resolves a published immediate fork parent into browser-safe data", async () => {
@@ -872,7 +874,7 @@ test("publishes provider-qualified Codeberg evidence", async () => {
     snapshots: [snapshot],
   });
 
-  expect(catalog.schemaVersion).toBe(4);
+  expect(catalog.schemaVersion).toBe(5);
   expect(catalog.projects[0]).toMatchObject({
     canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     attribution: {
@@ -1099,7 +1101,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(4);
+  expect(catalog.schemaVersion).toBe(5);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -1219,7 +1221,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 4,
+    schemaVersion: 5,
     kits: [
       {
         id: "flagged-kit-42",
@@ -1258,6 +1260,7 @@ test("builds Kits from complete project records and nullable support", async () 
     projectId: "frontend",
     availability: "available",
   });
+  expect(catalog.kits[0]).not.toHaveProperty(["searchable", "Text"].join(""));
   expect(catalog.kits[1]).not.toHaveProperty("tavernaryPick");
   expect(catalog.projects.map(({ id }) => id)).not.toContain("flagged");
   expect(catalog.kits.map(({ id }) => id)).not.toContain("withdrawn-kit-43");

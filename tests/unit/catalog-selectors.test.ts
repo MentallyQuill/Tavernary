@@ -57,7 +57,6 @@ function project(
       },
     ],
     search: catalogSearchFields(id),
-    searchableText: `${id} extension automation`,
     fork: null,
     attribution: null,
     activity: {
@@ -114,7 +113,7 @@ const multiFrontendProject = project("image-gen", {
   ],
 });
 const projects = [
-  project("recursion", { name: "Recursion", searchableText: "recursion" }),
+  project("recursion", { name: "Recursion" }),
   multiFrontendProject,
   project("frontend", {
     kind: "frontend",
@@ -256,17 +255,13 @@ describe("catalog selectors", () => {
       kind: "preset",
       name: "Preset Introducing Freaky Frankenstein 50",
       search: catalogSearchFields("Preset Introducing Freaky Frankenstein 50"),
-      searchableText: "",
     });
     const supporting = project("supporting", {
       search: catalogSearchFields("Supporting Project", {
         summary: ["Preset support for Freaky Frankenstein."],
       }),
-      searchableText: "",
     });
-    const unrelated = project("unrelated", {
-      searchableText: "preset freaky",
-    });
+    const unrelated = project("unrelated");
     const searchResults: CatalogSearchResults = {
       normalizedQuery: "preset freaky",
       correction: null,
@@ -331,9 +326,8 @@ describe("catalog selectors", () => {
   });
 
   test("relationship selection ignores ordinary filters and rejects broken links", () => {
-    const parent = project("parent", { searchableText: "upstream" });
+    const parent = project("parent");
     const child = project("child", {
-      searchableText: "downstream",
       fork: {
         parentName: "Parent",
         parentProjectId: "parent",
@@ -389,7 +383,6 @@ describe("catalog selectors", () => {
       search: catalogSearchFields("directive", {
         maintainers: ["MentallyQuill", "alice", "claude", "dependabot[bot]"],
       }),
-      searchableText: "directive mentallyquill alice claude dependabot[bot]",
       attribution: {
         owner: { provider: "github", login: "MentallyQuill" },
         contributors: [

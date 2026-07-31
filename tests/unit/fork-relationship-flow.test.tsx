@@ -56,7 +56,6 @@ function project(
     ],
     tags: [],
     search: catalogSearchFields(name),
-    searchableText: `${name.toLowerCase()} relationship`,
     fork: null,
     attribution: null,
     activity: {
@@ -108,7 +107,7 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],

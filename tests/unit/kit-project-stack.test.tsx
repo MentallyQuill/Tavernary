@@ -28,7 +28,6 @@ function project({
     frontends: [],
     tags: [],
     search: catalogSearchFields(name),
-    searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {
       owner: { provider: "github", login: "example-owner" },

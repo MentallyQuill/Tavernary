@@ -19,14 +19,14 @@ const projects: HelpProjectOption[] = [
     name: "Wandlight",
     creator: "Keptin",
     canonicalUrl: "https://github.com/example/wandlight",
-    searchableText: "wandlight continuity narration",
+    searchText: "wandlight continuity narration",
   },
   {
     id: "saga",
     name: "Saga",
     creator: "example.org",
     canonicalUrl: "https://example.org/saga",
-    searchableText: "saga lorebook creator",
+    searchText: "saga lorebook creator",
   },
 ];
 
