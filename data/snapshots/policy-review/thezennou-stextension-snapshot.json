@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "thezennou-stextension-snapshot",
+  "source_id": "github-801866918",
+  "source_identity": "github:thezennou/stextension-snapshot",
+  "evidence_fingerprint": "3a1f379a3af8a10aa38b901fec2f3b4fa460a050e0bcfb7d42d3832276a47b54",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:13:21.770Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:13:21.770Z"
+  },
+  "maintenance_issue_number": null
+}
