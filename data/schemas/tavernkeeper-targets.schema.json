@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tavernary.org/schemas/tavernkeeper-targets.schema.json",
+  "title": "TavernKeeper scan target manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "repositories"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "provider",
+          "repository_id",
+          "repository",
+          "target_sha",
+          "canonical_url"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "pattern": "^github-[1-9][0-9]*$" },
+          "provider": { "const": "github" },
+          "repository_id": { "type": "integer", "minimum": 1 },
+          "repository": { "type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$" },
+          "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "canonical_url": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/" }
+        }
+      }
+    }
+  }
+}

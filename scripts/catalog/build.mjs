@@ -11,6 +11,10 @@ import { resolveForkRelationship } from "./fork-relationship.mjs";
 import { indexRegistry } from "./registry-context.mjs";
 import { kitSearchFields, projectSearchFields } from "./search-document.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
+import {
+  buildTavernKeeperTargets,
+  writeTavernKeeperTargets,
+} from "../security/tavernkeeper-targets.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const outputPath = resolve(rootDirectory, "src/generated/catalog.json");
@@ -610,6 +614,13 @@ export async function buildCatalog(options = {}) {
     const temporaryPath = `${outputPath}.tmp`;
     await writeFile(temporaryPath, `${JSON.stringify(catalog, null, 2)}\n`);
     await rename(temporaryPath, outputPath);
+    await writeTavernKeeperTargets(
+      buildTavernKeeperTargets({
+        sources,
+        snapshots,
+        generatedAt: generatedAtIso,
+      }),
+    );
   }
 
   return catalog;
