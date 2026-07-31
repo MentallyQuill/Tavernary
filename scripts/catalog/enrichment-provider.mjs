@@ -32,6 +32,12 @@ const safeProviderMessages = {
 
 function safeProviderMessage(code, details = {}) {
   if (
+    code === "provider-request-failed" &&
+    typeof details.diagnosticCode === "string"
+  ) {
+    return `The enrichment provider rejected the request (${details.diagnosticCode}).`;
+  }
+  if (
     code === "provider-timeout" &&
     Number.isFinite(details.timeoutMs) &&
     details.timeoutMs > 0
@@ -43,7 +49,7 @@ function safeProviderMessage(code, details = {}) {
 
 export class EnrichmentProviderError extends Error {
   constructor(code, diagnosticCode = null, details = {}) {
-    super(safeProviderMessage(code, details));
+    super(safeProviderMessage(code, { ...details, diagnosticCode }));
     this.name = "EnrichmentProviderError";
     this.code = code;
     this.diagnosticCode = diagnosticCode;
@@ -191,7 +197,15 @@ function responseSchema(input) {
   };
 }
 
-function statusError(status) {
+function safeDiagnosticToken(value) {
+  return typeof value === "string" &&
+    /^[a-z0-9][a-z0-9_.-]{0,79}$/iu.test(value)
+    ? value
+    : null;
+}
+
+async function statusError(response) {
+  const { status } = response;
   if (status === 429)
     return new EnrichmentProviderError("provider-rate-limited");
   if (status === 401 || status === 403) {
@@ -200,7 +214,16 @@ function statusError(status) {
   if (status >= 500) {
     return new EnrichmentProviderError("provider-server-error");
   }
-  return new EnrichmentProviderError("provider-request-failed");
+  let diagnosticCode = null;
+  try {
+    const payload = await response.json();
+    const code = safeDiagnosticToken(payload?.error?.code);
+    const parameter = safeDiagnosticToken(payload?.error?.param);
+    diagnosticCode = [code, parameter].filter(Boolean).join(":") || null;
+  } catch {
+    // Keep unrecognized provider error bodies private.
+  }
+  return new EnrichmentProviderError("provider-request-failed", diagnosticCode);
 }
 
 export function createStructuredProviderTransport(options) {
@@ -240,7 +263,7 @@ export function createStructuredProviderTransport(options) {
           );
         }
 
-        if (!response.ok) throw statusError(response.status);
+        if (!response.ok) throw await statusError(response);
 
         let payload;
         try {

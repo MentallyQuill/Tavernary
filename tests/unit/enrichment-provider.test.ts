@@ -409,6 +409,35 @@ test.each([
   },
 );
 
+test("reports allowlisted upstream request diagnostics without leaking the message", async () => {
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test",
+    apiKey: "do-not-leak",
+    model,
+    fetchImpl: async () =>
+      new Response(
+        JSON.stringify({
+          error: {
+            code: "unsupported_value",
+            param: "temperature",
+            message: "secret upstream explanation",
+          },
+        }),
+        {
+          status: 400,
+          headers: { "content-type": "application/json" },
+        },
+      ),
+  });
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-request-failed",
+    diagnosticCode: "unsupported_value:temperature",
+    message:
+      "The enrichment provider rejected the request (unsupported_value:temperature).",
+  });
+});
+
 test("includes elapsed time on controlled provider failures", async () => {
   const times = [1_000, 1_250];
   const provider = createEnrichmentProvider({
