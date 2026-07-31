@@ -123,8 +123,35 @@ function activityRecency(project: CatalogProject) {
   return Number.isFinite(recency) ? recency : null;
 }
 
-function sortProjects(projects: CatalogProject[], sort: CatalogQuery["sort"]) {
+function sortProjects(
+  projects: CatalogProject[],
+  sort: CatalogQuery["sort"],
+  searchResults?: CatalogSearchResults,
+) {
+  const scores = new Map(
+    searchResults?.matches.map(({ id, score }) => [id, score]) ?? [],
+  );
   return projects.sort((left, right) => {
+    if (sort === "relevance") {
+      const scoreOrder =
+        (scores.get(right.id) ?? 0) - (scores.get(left.id) ?? 0);
+      if (scoreOrder !== 0) return scoreOrder;
+      const leftRecency = activityRecency(left);
+      const rightRecency = activityRecency(right);
+      if (leftRecency === null && rightRecency !== null) return 1;
+      if (leftRecency !== null && rightRecency === null) return -1;
+      if (
+        leftRecency !== null &&
+        rightRecency !== null &&
+        leftRecency !== rightRecency
+      ) {
+        return rightRecency - leftRecency;
+      }
+      return (
+        collator.compare(left.name, right.name) ||
+        collator.compare(left.id, right.id)
+      );
+    }
     if (sort === "alphabetical") {
       return (
         collator.compare(left.name, right.name) ||
@@ -234,5 +261,5 @@ export function selectProjects(
       matchesView(project, query.view, context.now),
   );
 
-  return sortProjects(selected, query.sort);
+  return sortProjects(selected, query.sort, effectiveSearchResults);
 }

@@ -5,6 +5,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -188,6 +189,122 @@ describe("catalog Kit batch flow", () => {
         name: "Preset Introducing Freaky Frankenstein 50",
       }),
     ).toBeVisible();
+  });
+
+  test("defaults search edits to Relevance and restores the browse sort", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    const sort = screen.getByRole("combobox", { name: "Sort projects" });
+    await user.selectOptions(sort, "popularity");
+    await user.type(search, "preset freaky");
+    expect(sort).toHaveValue("relevance");
+
+    await user.selectOptions(sort, "alphabetical");
+    await user.type(search, " claude");
+    expect(sort).toHaveValue("relevance");
+
+    await user.selectOptions(sort, "alphabetical");
+    fireEvent.change(search, { target: { value: " PRESET FREAKY CLAUDE " } });
+    expect(sort).toHaveValue("alphabetical");
+
+    await user.clear(search);
+    expect(sort).toHaveValue("popularity");
+    expect(
+      screen.queryByRole("option", { name: "Relevance" }),
+    ).not.toBeInTheDocument();
+  });
+
+  test("resets both mode sorts while remembering their browse preferences", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const categories = screen.getByRole("navigation", {
+      name: "Catalog categories",
+    });
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Sort projects" }),
+      "popularity",
+    );
+    await user.type(search, "preset freaky");
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
+    );
+
+    await user.click(within(categories).getByRole("button", { name: "Kits" }));
+    const kitSort = screen.getByRole("combobox", { name: "Sort Kits" });
+    expect(kitSort).toHaveValue("relevance");
+    await user.selectOptions(kitSort, "alphabetical");
+
+    await user.click(
+      within(categories).getByRole("button", { name: "All Projects" }),
+    );
+    fireEvent.change(search, {
+      target: { value: "preset freaky claude" },
+    });
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "relevance",
+    );
+
+    await user.click(within(categories).getByRole("button", { name: "Kits" }));
+    expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveValue(
+      "relevance",
+    );
+    await user.clear(search);
+    expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveValue(
+      "trending",
+    );
+
+    await user.click(
+      within(categories).getByRole("button", { name: "All Projects" }),
+    );
+    expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+      "popularity",
+    );
+  });
+
+  test("restores the browse sort through search chips and Clear all", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    const sort = screen.getByRole("combobox", { name: "Sort projects" });
+    await user.selectOptions(sort, "popularity");
+    await user.type(search, "preset freaky");
+    await user.selectOptions(sort, "alphabetical");
+    await user.click(
+      screen.getByRole("button", {
+        name: "Remove Search: preset freaky",
+      }),
+    );
+    expect(search).toHaveValue("");
+    expect(sort).toHaveValue("popularity");
+
+    await user.type(search, "preset freaky");
+    await user.selectOptions(sort, "alphabetical");
+    const searchChip = screen.getByRole("button", {
+      name: "Remove Search: preset freaky",
+    });
+    const activeFilters = searchChip.closest(".active-query");
+    expect(activeFilters).not.toBeNull();
+    await user.click(
+      within(activeFilters as HTMLElement).getByRole("button", {
+        name: "Clear all",
+      }),
+    );
+    expect(search).toHaveValue("");
+    expect(sort).toHaveValue("popularity");
   });
 
   test("reveals Frontend cards through the visible shared filter", () => {

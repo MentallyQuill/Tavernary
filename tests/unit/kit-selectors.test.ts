@@ -83,6 +83,59 @@ const unavailable = kit("unavailable", {
 const kits = [unavailable, alphabeticalTie, multiFrontendMemoryKit];
 
 describe("Kit selectors", () => {
+  test("uses Tavernary scores only for Relevance and deterministic update ties", () => {
+    const highScore = kit("high", {
+      title: "Zeta",
+      updatedAt: "2026-07-01T00:00:00.000Z",
+    });
+    const recentlyUpdated = kit("recent", {
+      title: "Alpha",
+      updatedAt: "2026-07-24T00:00:00.000Z",
+    });
+    const scoredResults: CatalogSearchResults = {
+      normalizedQuery: "shared",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: highScore.id, score: 40, evidence: [] },
+        { id: recentlyUpdated.id, score: 5, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectKits(
+        [recentlyUpdated, highScore],
+        { ...DEFAULT_KIT_QUERY, sort: "relevance" },
+        "shared",
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["high", "recent"]);
+    expect(
+      selectKits(
+        [highScore, recentlyUpdated],
+        { ...DEFAULT_KIT_QUERY, sort: "alphabetical" },
+        "shared",
+        scoredResults,
+      ).map(({ id }) => id),
+    ).toEqual(["recent", "high"]);
+
+    const tiedResults = {
+      ...scoredResults,
+      matches: scoredResults.matches.map((match) => ({
+        ...match,
+        score: 10,
+      })),
+    };
+    expect(
+      selectKits(
+        [highScore, recentlyUpdated],
+        { ...DEFAULT_KIT_QUERY, sort: "relevance" },
+        "shared",
+        tiedResults,
+      ).map(({ id }) => id),
+    ).toEqual(["recent", "high"]);
+  });
+
   test("uses structured all-term results as search eligibility before filters", () => {
     const exactKit = kit("exact", {
       title: "Super Awesome Test Kit",

@@ -1,15 +1,35 @@
 import frontendVocabulary from "../../../data/vocabularies/frontends.json";
+import {
+  DEFAULT_KIT_BROWSE_SORT,
+  DEFAULT_KIT_QUERY,
+  KIT_BROWSE_SORTS,
+  type KitQuery,
+} from "@/features/kits/kit-query";
+import { searchMeaning } from "@/features/search/search-normalization";
 import { legacyCapabilityTagIds } from "./catalog-tag-filter";
 import type { PublicTagDefinition } from "./tag-vocabulary";
 
 export type CatalogView = "all" | "active" | "new" | "released";
-export type CatalogSort =
+export type CatalogBrowseSort =
   "recent" | "sustained" | "popularity" | "alphabetical";
+export type CatalogSort = CatalogBrowseSort | "relevance";
 export type CatalogDensity = "standard" | "compact";
 export type CatalogKind = "frontend" | "extension" | "preset";
 export type DevelopmentFilter = "active-month" | "new-release" | "dormant";
 export type LicenseFilter =
   "open-source" | "proprietary" | "missing" | "pending";
+
+export const DEFAULT_CATALOG_BROWSE_SORT: CatalogBrowseSort = "recent";
+export const CATALOG_BROWSE_SORTS = new Set<CatalogBrowseSort>([
+  "recent",
+  "sustained",
+  "popularity",
+  "alphabetical",
+]);
+export const CATALOG_SORTS = new Set<CatalogSort>([
+  ...CATALOG_BROWSE_SORTS,
+  "relevance",
+]);
 
 export interface CatalogQuery {
   mode: CatalogMode;
@@ -37,7 +57,7 @@ export const DEFAULT_QUERY: CatalogQuery = {
   search: "",
   category: "",
   view: "all",
-  sort: "recent",
+  sort: DEFAULT_CATALOG_BROWSE_SORT,
   density: "standard",
   frontends: [],
   kinds: [],
@@ -127,12 +147,6 @@ const validModelFamilies = new Set([
 ]);
 const validCompletionFormats = new Set(["chat-completion", "text-completion"]);
 const validViews = new Set<CatalogView>(["all", "active", "new", "released"]);
-const validSorts = new Set<CatalogSort>([
-  "recent",
-  "sustained",
-  "popularity",
-  "alphabetical",
-]);
 const validDensities = new Set<CatalogDensity>(["standard", "compact"]);
 const validKinds = new Set<CatalogKind>(["frontend", "extension", "preset"]);
 const validDevelopment = new Set<DevelopmentFilter>([
@@ -167,6 +181,19 @@ function manyOf<T extends string>(values: string[], valid: Set<T>): T[] {
   ].sort();
 }
 
+function effectiveSearchSort<BrowseSort extends string>(
+  value: string | null,
+  browseSorts: Set<BrowseSort>,
+  fallback: BrowseSort,
+  hasSearch: boolean,
+): BrowseSort | "relevance" {
+  if (value === "relevance") return hasSearch ? "relevance" : fallback;
+  if (value !== null && browseSorts.has(value as BrowseSort)) {
+    return value as BrowseSort;
+  }
+  return hasSearch ? "relevance" : fallback;
+}
+
 export function parseCatalogQuery(
   search: string,
   tagVocabulary: PublicTagDefinition[] = [],
@@ -177,6 +204,31 @@ export function parseCatalogQuery(
   const selectedKitId = parameters.get("kit")?.trim() ?? "";
   const mode =
     parameters.get("mode") === "kits" || selectedKitId ? "kits" : "projects";
+  const querySearch = parameters.get("q")?.trim() ?? "";
+  const hasSearch = Boolean(searchMeaning(querySearch));
+  const sortParameter = parameters.get("sort");
+  const projectSort =
+    mode === "projects"
+      ? effectiveSearchSort(
+          sortParameter,
+          CATALOG_BROWSE_SORTS,
+          DEFAULT_CATALOG_BROWSE_SORT,
+          hasSearch,
+        )
+      : hasSearch
+        ? "relevance"
+        : DEFAULT_CATALOG_BROWSE_SORT;
+  const kitSort =
+    mode === "kits"
+      ? effectiveSearchSort(
+          sortParameter,
+          KIT_BROWSE_SORTS,
+          DEFAULT_KIT_BROWSE_SORT,
+          hasSearch,
+        )
+      : hasSearch
+        ? "relevance"
+        : DEFAULT_KIT_BROWSE_SORT;
   const parseRange = (name: string, fallback: number) => {
     const value = Number(parameters.get(name));
     return Number.isInteger(value) && value >= 3 && value <= 50
@@ -193,25 +245,18 @@ export function parseCatalogQuery(
     minProjects,
     maxProjects,
     allComponentsAvailable: parameters.get("available") === "1",
-    sort: oneOf(
-      parameters.get("sort"),
-      KIT_SORTS,
-      DEFAULT_KIT_QUERY.sort,
-    ) as KitSort,
+    sort: kitSort,
   };
   return {
     mode,
     selectedKitId,
     relationship:
       mode === "projects" ? projectId(parameters.get("relationship")) : "",
-    search: parameters.get("q")?.trim() ?? "",
+    search: querySearch,
     category:
       category !== null && validCategories.has(category) ? category : "",
     view: oneOf(parameters.get("view"), validViews, DEFAULT_QUERY.view),
-    sort:
-      mode === "projects"
-        ? oneOf(parameters.get("sort"), validSorts, DEFAULT_QUERY.sort)
-        : DEFAULT_QUERY.sort,
+    sort: projectSort,
     density: oneOf(
       parameters.get("density"),
       validDensities,
@@ -255,7 +300,7 @@ export function parseCatalogQuery(
     kits:
       mode === "kits" && minProjects <= maxProjects
         ? parsedKitQuery
-        : { ...DEFAULT_KIT_QUERY },
+        : { ...DEFAULT_KIT_QUERY, sort: kitSort },
   };
 }
 
@@ -271,6 +316,7 @@ function appendMany(
 
 export function serializeCatalogQuery(query: CatalogQuery): string {
   const parameters = new URLSearchParams();
+  const hasSearch = Boolean(searchMeaning(query.search));
   if (query.search.trim()) {
     parameters.set("q", query.search.trim());
   }
@@ -297,7 +343,12 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     if (query.kits.allComponentsAvailable) {
       parameters.set("available", "1");
     }
-    if (query.kits.sort !== DEFAULT_KIT_QUERY.sort) {
+    if (
+      (hasSearch && query.kits.sort !== "relevance") ||
+      (!hasSearch &&
+        query.kits.sort !== "relevance" &&
+        query.kits.sort !== DEFAULT_KIT_BROWSE_SORT)
+    ) {
       parameters.set("sort", query.kits.sort);
     }
   } else {
@@ -311,7 +362,12 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
     if (query.view !== DEFAULT_QUERY.view) {
       parameters.set("view", query.view);
     }
-    if (query.sort !== DEFAULT_QUERY.sort) {
+    if (
+      (hasSearch && query.sort !== "relevance") ||
+      (!hasSearch &&
+        query.sort !== "relevance" &&
+        query.sort !== DEFAULT_CATALOG_BROWSE_SORT)
+    ) {
       parameters.set("sort", query.sort);
     }
     appendMany(parameters, "frontend", query.frontends);
@@ -324,11 +380,5 @@ export function serializeCatalogQuery(query: CatalogQuery): string {
   }
   return parameters.toString();
 }
-import {
-  DEFAULT_KIT_QUERY,
-  KIT_SORTS,
-  type KitQuery,
-  type KitSort,
-} from "@/features/kits/kit-query";
 
 export type CatalogMode = "projects" | "kits";

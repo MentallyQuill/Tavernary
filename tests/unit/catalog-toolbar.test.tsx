@@ -15,6 +15,52 @@ afterEach(() => {
   });
 });
 
+test("offers Relevance only while a meaningful search is active", () => {
+  const props = {
+    count: 8,
+    refreshedLabel: "just now",
+    filterCount: 0,
+    onSort: () => undefined,
+    onKitSort: () => undefined,
+    onDensity: () => undefined,
+    onOpenFilters: () => undefined,
+  };
+  const { rerender } = render(
+    <CatalogToolbar {...props} query={DEFAULT_QUERY} />,
+  );
+
+  expect(
+    screen.queryByRole("option", { name: "Relevance" }),
+  ).not.toBeInTheDocument();
+
+  rerender(
+    <CatalogToolbar
+      {...props}
+      query={{ ...DEFAULT_QUERY, search: "memory", sort: "relevance" }}
+    />,
+  );
+  expect(screen.getByRole("option", { name: "Relevance" })).toBeVisible();
+  expect(screen.getByRole("combobox", { name: "Sort projects" })).toHaveValue(
+    "relevance",
+  );
+
+  rerender(
+    <CatalogToolbar
+      {...props}
+      query={{
+        ...DEFAULT_QUERY,
+        mode: "kits",
+        search: "memory",
+        kits: { ...DEFAULT_QUERY.kits, sort: "relevance" },
+      }}
+    />,
+  );
+  expect(screen.getByRole("option", { name: "Relevance" })).toBeVisible();
+  expect(screen.getByRole("combobox", { name: "Sort Kits" })).toHaveValue(
+    "relevance",
+  );
+});
+
 test("offers Kit creation from the Kits toolbar only", async () => {
   const user = userEvent.setup();
   const onCreateKit = vi.fn();

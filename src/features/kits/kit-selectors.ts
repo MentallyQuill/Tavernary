@@ -29,8 +29,18 @@ function comparePublished(left: CatalogKit, right: CatalogKit) {
   );
 }
 
-function kitComparator(sort: KitSort) {
+function kitComparator(sort: KitSort, searchResults?: CatalogSearchResults) {
+  const scores = new Map(
+    searchResults?.matches.map(({ id, score }) => [id, score]) ?? [],
+  );
   return (left: CatalogKit, right: CatalogKit) => {
+    if (sort === "relevance") {
+      return (
+        (scores.get(right.id) ?? 0) - (scores.get(left.id) ?? 0) ||
+        Date.parse(right.updatedAt) - Date.parse(left.updatedAt) ||
+        compareTitleAndId(left, right)
+      );
+    }
     if (sort === "alphabetical") {
       return compareTitleAndId(left, right);
     }
@@ -110,7 +120,7 @@ export function selectKits(
     .filter(
       (kit) => !query.allComponentsAvailable || kit.flaggedProjectCount === 0,
     )
-    .sort(kitComparator(query.sort));
+    .sort(kitComparator(query.sort, effectiveSearchResults));
 }
 
 export function countKitsForFilter(
