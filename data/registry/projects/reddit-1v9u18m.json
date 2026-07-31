@@ -12,7 +12,6 @@
     "track-characters-and-world-state",
     "modular-and-extensible",
     "model-agnostic",
-    "manage-context-limits",
     "guide-model-responses"
   ],
   "model_families": ["claude", "glm", "kimi", "minimax", "qwen"],
