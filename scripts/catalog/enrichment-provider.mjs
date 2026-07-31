@@ -4,11 +4,6 @@ import {
   CATALOG_COPY_RESULT_VALUES,
   catalogCopyInstructions,
 } from "./catalog-copy-contract.mjs";
-import {
-  GENERATED_SUMMARY_MAX_LENGTH,
-  GENERATED_SUMMARY_MIN_LENGTH,
-} from "./generated-summary-contract.mjs";
-
 export const ENRICHMENT_TIMEOUT_MS = 120_000;
 
 const systemPrompt = `${catalogCopyInstructions()}
@@ -135,8 +130,7 @@ function responseSchema(input) {
     type: "array",
     minItems: 1,
     maxItems: 8,
-    uniqueItems: true,
-    items: { type: "string", minLength: 1, maxLength: 160 },
+    items: { type: "string" },
   };
   const required = [
     ...requestedFields,
@@ -150,11 +144,7 @@ function responseSchema(input) {
       additionalProperties: false,
       required: ["value", "evidence"],
       properties: {
-        value: {
-          type: "string",
-          minLength: GENERATED_SUMMARY_MIN_LENGTH,
-          maxLength: GENERATED_SUMMARY_MAX_LENGTH,
-        },
+        value: { type: "string" },
         evidence: evidenceSchema,
       },
     };
@@ -164,7 +154,6 @@ function responseSchema(input) {
     };
     properties.change_reasons = {
       type: "array",
-      uniqueItems: true,
       items: {
         type: "string",
         enum: CATALOG_COPY_CHANGE_REASON_VALUES,
@@ -179,7 +168,6 @@ function responseSchema(input) {
     properties.tags = {
       type: "array",
       maxItems: 6,
-      uniqueItems: true,
       items: {
         type: "object",
         additionalProperties: false,

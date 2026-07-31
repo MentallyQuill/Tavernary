@@ -197,10 +197,16 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
     type: "object",
     additionalProperties: false,
     properties: {
-      value: { type: "string", minLength: 120, maxLength: 220 },
       evidence: { type: "array", minItems: 1 },
     },
   });
+  expect(schema.properties.summary.properties.value).toEqual({
+    type: "string",
+  });
+  expect(schema.properties.summary.properties.evidence.items).toEqual({
+    type: "string",
+  });
+  expect(JSON.stringify(schema)).not.toContain('"uniqueItems"');
   expect(schema.properties.tags.items.properties.id.enum).toEqual([
     "automate-roleplay-workflows",
   ]);
