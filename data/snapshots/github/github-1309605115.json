@@ -9,21 +9,21 @@
     "url": "https://github.com/MentallyQuill/Tavernary",
     "description": "A GitHub-native catalog for AI roleplaying tools, extensions, and systems.",
     "default_branch": "main",
-    "head_sha": "6bc912d5ba4f4f46dfe8a870995956aa0364ee57",
-    "head_committed_at": "2026-07-30T13:25:46.000Z",
+    "head_sha": "86d6f48d74e4b0f6aab592079234a9722aae82e8",
+    "head_committed_at": "2026-07-31T08:21:04.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-23T06:31:00.000Z",
-    "size_kb": 49452
+    "size_kb": 51424
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-30T13:03:45.000Z",
+    "latest_source_activity_at": "2026-07-31T08:21:04.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-30T13:03:45.000Z",
+        "latest_at": "2026-07-31T08:21:04.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-30T13:39:36.368Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "6bc912d5ba4f4f46dfe8a870995956aa0364ee57"
+    "evidence_head_sha": "86d6f48d74e4b0f6aab592079234a9722aae82e8"
   },
   "community": {
     "stars_count": 3,
@@ -50,8 +50,9 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-30T13:39:36.368Z",
+  "refreshed_at": "2026-07-31T10:00:47.215Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "MentallyQuill", "type": "User", "provider": "github" },
@@ -61,8 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-30T13:39:36.368Z",
+    "refreshed_at": "2026-07-31T10:00:47.215Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
