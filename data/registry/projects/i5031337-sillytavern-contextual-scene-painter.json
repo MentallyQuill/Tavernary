@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "i5031337-sillytavern-contextual-scene-painter",
+  "name": "sillytavern-contextual-scene-painter",
+  "kind": "extension",
+  "summary": "Contextual Scene Painter analyzes SillyTavern chat history and optional character, persona, or World Info details to synthesize context-aware AI image prompts on the fly.",
+  "metadata_status": "curated",
+  "source_id": "github-1317590696",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["generate-images", "retrieve-relevant-context"],
+  "cataloged_at": "2026-07-31T06:37:18.761Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
