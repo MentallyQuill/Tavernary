@@ -15,6 +15,7 @@ import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitBuilder as ProductionKitBuilder } from "@/features/kits/components/kit-builder";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -67,6 +68,7 @@ function project(
     catalogCohort: "standard",
     frontends: [],
     tags: [],
+    search: catalogSearchFields(id),
     searchableText: id,
     fork: null,
     attribution: null,
@@ -121,6 +123,7 @@ const kit: CatalogKit = {
   supportRefreshedAt: null,
   supportStale: false,
   flaggedProjectCount: 0,
+  search: catalogSearchFields("Story Kit"),
   searchableText: "story kit",
 };
 

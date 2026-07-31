@@ -4,6 +4,7 @@ import { afterEach, expect, test } from "vitest";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitProjectStack } from "@/features/kits/components/kit-project-stack";
 import type { CatalogKitComponent } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 afterEach(cleanup);
 
@@ -26,6 +27,7 @@ function project({
     catalogCohort: "standard",
     frontends: [],
     tags: [],
+    search: catalogSearchFields(name),
     searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {

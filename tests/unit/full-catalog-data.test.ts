@@ -423,6 +423,26 @@ describe("full catalog data", () => {
     );
   });
 
+  test("publishes valid structured search fields for every card", async () => {
+    const catalog = await buildCatalog({ write: false });
+
+    for (const item of [...catalog.projects, ...catalog.kits]) {
+      expect(item.search.title, item.id).toHaveLength(1);
+      for (const values of Object.values(item.search)) {
+        expect(
+          values.every((value) => typeof value === "string"),
+          item.id,
+        ).toBe(true);
+        expect(values, item.id).not.toContain("[object Object]");
+      }
+    }
+
+    expect(
+      catalog.projects.find(({ id }) => id === "tavern-rpg-suite")?.search
+        .primaryFunction,
+    ).toContain("RPG systems and suites");
+  });
+
   test("keeps every summary within the card presentation contract", async () => {
     const { projects } = await loadProductionData();
     for (const project of projects) {

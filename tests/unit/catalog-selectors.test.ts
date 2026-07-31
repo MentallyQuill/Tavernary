@@ -13,6 +13,7 @@ import {
   selectProjects,
 } from "@/features/catalog/catalog-selectors";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
 const publicTagVocabulary = tagVocabulary.tags.map(
@@ -54,6 +55,7 @@ function project(
         facet: "goal",
       },
     ],
+    search: catalogSearchFields(id),
     searchableText: `${id} extension automation`,
     fork: null,
     attribution: null,

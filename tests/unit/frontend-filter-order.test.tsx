@@ -6,6 +6,7 @@ import { FilterPanel } from "@/features/catalog/components/filter-panel";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import { KitFilterPanel } from "@/features/kits/components/kit-filter-panel";
 import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 afterEach(cleanup);
 
@@ -33,6 +34,7 @@ function frontendCard(
       },
     ],
     tags: [],
+    search: catalogSearchFields(name),
     searchableText: name,
     fork: null,
     attribution: null,

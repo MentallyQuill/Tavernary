@@ -9,6 +9,7 @@ import { catalogAttribution } from "../../src/lib/github/contributors.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { resolveForkRelationship } from "./fork-relationship.mjs";
 import { indexRegistry } from "./registry-context.mjs";
+import { kitSearchFields, projectSearchFields } from "./search-document.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -309,7 +310,7 @@ function manualProject(record, source, vocabularies) {
   const primaryFunction = {
     id: record.primary_function,
     label:
-      vocabularies.primaryFunctions.get(record.primary_function) ??
+      vocabularies.primaryFunctions.get(record.primary_function)?.label ??
       record.primary_function,
   };
 
@@ -474,16 +475,41 @@ export async function buildCatalog(options = {}) {
       { id: project.id, name: project.name },
     ]);
   }
-  projects = projects.map((project) => ({
-    ...project,
-    fork: resolveForkRelationship({
-      snapshot:
-        snapshotsBySource.get(recordsByProject.get(project.id)?.source_id) ??
-        null,
+  projects = projects.map((project) => {
+    const record = recordsByProject.get(project.id);
+    const source = registry.sourcesById.get(record?.source_id);
+    const fork = resolveForkRelationship({
+      snapshot: snapshotsBySource.get(record?.source_id) ?? null,
       sourcesByRepositoryKey: registry.sourcesByRepositoryKey,
       publicProjectsBySourceId,
-    }),
-  }));
+    });
+    const completedProject = { ...project, fork };
+    return {
+      ...completedProject,
+      search: projectSearchFields({
+        completionFormats: (record?.completion_formats ?? []).map(
+          (id) => vocabularies.completionFormats.get(id) ?? { label: id },
+        ),
+        frontends: (record?.frontends ?? []).map(
+          (id) => vocabularies.frontends.get(id) ?? { label: id },
+        ),
+        modelFamilies: (record?.model_families ?? []).map(
+          (id) => vocabularies.modelFamilies.get(id) ?? { label: id },
+        ),
+        primaryFunction: vocabularies.primaryFunctions.get(
+          record?.primary_function,
+        ) ?? {
+          label: record?.primary_function,
+        },
+        project: completedProject,
+        record,
+        source,
+        tags: (record?.tags ?? []).map(
+          (id) => vocabularies.tags.get(id) ?? { label: id },
+        ),
+      }),
+    };
+  });
   const publicProjectsById = new Map(
     projects.map((project) => [project.id, project]),
   );
@@ -589,7 +615,7 @@ export async function buildCatalog(options = {}) {
         .join(" ")
         .toLowerCase();
 
-      return {
+      const publicKit = {
         id: kit.id,
         title: kit.title,
         description: kit.description,
@@ -613,6 +639,22 @@ export async function buildCatalog(options = {}) {
         supportStale: Boolean(support?.stale_since),
         flaggedProjectCount,
         searchableText,
+      };
+      return {
+        ...publicKit,
+        search: kitSearchFields({
+          frontends: frontends.map(
+            ({ id, label }) => vocabularies.frontends.get(id) ?? { label },
+          ),
+          kit: publicKit,
+          modelFamilies: modelFamilies.map(
+            ({ id, label }) => vocabularies.modelFamilies.get(id) ?? { label },
+          ),
+          purposes: purposes.map(
+            ({ id, label }) =>
+              vocabularies.primaryFunctions.get(id) ?? { label },
+          ),
+        }),
       };
     })
     .sort((left, right) => left.id.localeCompare(right.id));

@@ -5,6 +5,7 @@ import { ActiveQuery } from "@/features/catalog/components/active-query";
 import { DEFAULT_QUERY } from "@/features/catalog/catalog-query";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string, text = id) => ({
   id,
@@ -29,6 +30,7 @@ const project: CatalogProject = {
       facet: "goal",
     },
   ],
+  search: catalogSearchFields("Routing"),
   searchableText: "routing",
   fork: null,
   attribution: null,
@@ -76,6 +78,7 @@ const kit: CatalogKit = {
   supportRefreshedAt: null,
   supportStale: false,
   flaggedProjectCount: 0,
+  search: catalogSearchFields("Kit"),
   searchableText: "kit routing",
 };
 

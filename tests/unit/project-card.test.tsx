@@ -5,6 +5,7 @@ import { ProjectCard } from "@/features/catalog/components/project-card";
 import { ProjectGrid } from "@/features/catalog/components/project-grid";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { ProjectSelectionBindings } from "@/features/kits/use-project-batch-selection";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -38,6 +39,7 @@ function project(
         facet: "goal",
       },
     ],
+    search: catalogSearchFields(id),
     searchableText: `${id} extension automation`,
     fork: null,
     attribution: null,

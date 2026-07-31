@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { DEFAULT_KIT_QUERY } from "@/features/kits/kit-query";
 import { countKitsForFilter, selectKits } from "@/features/kits/kit-selectors";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
 
@@ -46,6 +47,7 @@ function kit(id: string, overrides: Partial<CatalogKit> = {}): CatalogKit {
     supportRefreshedAt: "2026-07-24T00:00:00.000Z",
     supportStale: false,
     flaggedProjectCount: 0,
+    search: catalogSearchFields(id),
     searchableText: `${id} ${id}-author frontend generation-reasoning`,
     ...overrides,
   };

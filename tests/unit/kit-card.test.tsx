@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { KitCard } from "@/features/kits/components/kit-card";
 import type { CatalogKit } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
 const originalMatchMedia = window.matchMedia;
@@ -52,6 +53,7 @@ function kit(overrides: Partial<CatalogKit> = {}): CatalogKit {
     supportRefreshedAt: "2026-07-24T00:00:00.000Z",
     supportStale: false,
     flaggedProjectCount: 0,
+    search: catalogSearchFields("Long-Form Storyteller"),
     searchableText: "long form storyteller example author",
     ...overrides,
   };

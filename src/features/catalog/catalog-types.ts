@@ -1,3 +1,5 @@
+import type { CatalogSearchFields } from "@/features/search/search-types";
+
 export type ProjectKind = "frontend" | "extension" | "preset";
 export type MetadataStatus = "provisional" | "curated";
 export type SourceStatus = "pending" | "healthy" | "stale" | "manual";
@@ -70,6 +72,7 @@ export interface CatalogProject {
   catalogCohort: "seed" | "standard";
   frontends: CatalogLabel[];
   tags: CatalogTag[];
+  search: CatalogSearchFields;
   searchableText: string;
   fork: CatalogForkRelationship | null;
   attribution: CatalogAttribution | null;

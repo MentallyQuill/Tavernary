@@ -6,6 +6,7 @@ import { selectProjects } from "@/features/catalog/catalog-selectors";
 import { ActiveQuery } from "@/features/catalog/components/active-query";
 import { FilterPanel } from "@/features/catalog/components/filter-panel";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 function project(
   id: string,
@@ -37,6 +38,7 @@ function project(
         facet: "goal",
       },
     ],
+    search: catalogSearchFields(id),
     searchableText: `${id} extension automation`,
     fork: null,
     attribution: null,

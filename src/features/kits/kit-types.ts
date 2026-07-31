@@ -3,6 +3,7 @@ import type {
   CatalogProject,
   ProjectKind,
 } from "@/features/catalog/catalog-types";
+import type { CatalogSearchFields } from "@/features/search/search-types";
 
 export interface KitAuthor {
   githubUserId: number;
@@ -38,6 +39,7 @@ export interface CatalogKit {
   supportRefreshedAt: string | null;
   supportStale: boolean;
   flaggedProjectCount: number;
+  search: CatalogSearchFields;
   searchableText: string;
 }
 

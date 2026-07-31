@@ -235,6 +235,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
     id,
     source_id: source.id,
     name: id,
+    aliases: kind === "extension" ? ["Memory Companion"] : [],
     kind,
     summary: `${id} summary.`,
     metadata_status: "curated",
@@ -298,6 +299,26 @@ test("builds sibling extension and preset cards from one source snapshot", async
   ]);
   expect(catalog.projects[0]).not.toHaveProperty("capabilities");
   expect(catalog.projects[0].searchableText).toContain("persistent memory");
+  expect(catalog.projects[0].search).toMatchObject({
+    title: ["megumin-extension"],
+    aliases: ["Memory Companion"],
+    source: expect.arrayContaining([
+      "megumin-extension",
+      "github-42",
+      "Arif-salah/Megumin-Suite",
+    ]),
+    kind: ["extension"],
+    primaryFunction: expect.arrayContaining(["Interface and workflow"]),
+    tags: expect.arrayContaining([
+      "Maintain long-term memory",
+      "persistent memory",
+    ]),
+    frontends: expect.arrayContaining(["SillyTavern"]),
+    maintainers: expect.arrayContaining(["Arif-salah"]),
+  });
+  expect(JSON.stringify(catalog.projects[0].search)).not.toContain(
+    "[object Object]",
+  );
   expect(catalog.schemaVersion).toBe(4);
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),

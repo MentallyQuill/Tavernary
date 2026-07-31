@@ -17,6 +17,7 @@ import {
 import { copyKitLink } from "@/features/kits/share-kit";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
 import type { CatalogKit, KitDraft } from "@/features/kits/kit-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const originalMatchMedia = window.matchMedia;
 
@@ -94,6 +95,7 @@ function fixtureProject({
     catalogCohort: "standard",
     frontends: [],
     tags: [],
+    search: catalogSearchFields(name),
     searchableText: name.toLocaleLowerCase(),
     fork: null,
     attribution: {
@@ -220,6 +222,7 @@ function fixtureKit(): CatalogKit {
     supportRefreshedAt: null,
     supportStale: false,
     flaggedProjectCount: 1,
+    search: catalogSearchFields("Story Kit"),
     searchableText: "story kit author",
   };
 }

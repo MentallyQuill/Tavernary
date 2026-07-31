@@ -33,6 +33,7 @@ vi.mock("@/features/kits/submission-transport", () => ({
 
 import { CatalogPage } from "@/features/catalog/components/catalog-page";
 import type { Catalog, CatalogProject } from "@/features/catalog/catalog-types";
+import { catalogSearchFields } from "../helpers/catalog-search-fields";
 import { openKitSubmission } from "@/features/kits/submission-transport";
 
 const originalMatchMedia = window.matchMedia;
@@ -67,6 +68,7 @@ function project(): CatalogProject {
     catalogCohort: "standard",
     frontends: [],
     tags: [],
+    search: catalogSearchFields("Memory"),
     searchableText: "memory",
     fork: null,
     attribution: null,
