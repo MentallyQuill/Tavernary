@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
+import { createCatalogSearchIndex } from "@/features/search/catalog-search";
+import type { CatalogSearchFields } from "@/features/search/search-types";
+
 interface GeneratedCatalogProject {
   id: string;
   name: string;
@@ -19,6 +22,7 @@ interface GeneratedCatalogProject {
     facet: "goal" | "trait";
     description: string;
   }>;
+  search: CatalogSearchFields;
   searchableText: string;
   fork: {
     parentName: string;
@@ -45,6 +49,14 @@ export const generatedCatalog = JSON.parse(
 };
 
 export const generatedProjectCount = generatedCatalog.projects.length;
+
+const generatedProjectSearchIndex = createCatalogSearchIndex(
+  generatedCatalog.projects.map(({ id, search }) => ({ id, ...search })),
+);
+
+export function generatedProjectSearchCount(query: string) {
+  return generatedProjectSearchIndex.search(query).matches.length;
+}
 
 export function projectCountLabel(count: number) {
   return `${count} ${count === 1 ? "project" : "projects"}`;

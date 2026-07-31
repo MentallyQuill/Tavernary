@@ -3,6 +3,7 @@ import MiniSearch, { type SearchResult } from "minisearch";
 import {
   allowedEditDistance,
   normalizeSearchText,
+  searchDocumentTerms,
   searchMeaning,
   searchTerms,
 } from "./search-normalization";
@@ -56,7 +57,7 @@ function documentText(document: CatalogSearchDocument) {
 }
 
 function tokenSet(value: string) {
-  return new Set(normalizeSearchText(value).split(" ").filter(Boolean));
+  return new Set(searchDocumentTerms(value));
 }
 
 function uniqueTerms(value: string) {
@@ -222,16 +223,6 @@ function matchScore(
   );
 }
 
-function normalizedDocument(document: CatalogSearchDocument) {
-  return Object.fromEntries([
-    ["id", document.id],
-    ...SEARCH_FIELD_NAMES.map((field) => [
-      field,
-      document[field].map(normalizeSearchText),
-    ]),
-  ]) as unknown as CatalogSearchDocument;
-}
-
 function reportSearchFailure(message: string, error: unknown) {
   if (process.env.NODE_ENV !== "production") {
     console.error(message, error);
@@ -341,8 +332,7 @@ export function createCatalogSearchIndex(
         const value = document[fieldName as keyof CatalogSearchDocument];
         return Array.isArray(value) ? value.join(" ") : String(value ?? "");
       },
-      tokenize: (value) =>
-        normalizeSearchText(value).split(" ").filter(Boolean),
+      tokenize: searchDocumentTerms,
       processTerm: (term) => term,
       searchOptions: {
         boost: FIELD_BOOST,
@@ -352,7 +342,7 @@ export function createCatalogSearchIndex(
         prefix: prefixForTerm,
       },
     });
-    miniSearch.addAll(documents.map(normalizedDocument));
+    miniSearch.addAll(documents);
   } catch (error) {
     reportSearchFailure(
       "Catalog search initialization failed; using exact-token fallback.",

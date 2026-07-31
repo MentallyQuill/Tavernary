@@ -6,6 +6,7 @@ import {
   frontendOptions,
   generatedCatalog as catalog,
   generatedProjectCount,
+  generatedProjectSearchCount,
   initiallyVisibleFrontendOptions,
   metadataFilterChipCount,
   projectCountLabel,
@@ -19,9 +20,7 @@ const claudePresetCount = catalog.projects.filter(
     kind === "preset" &&
     (preset?.modelFamilies.some(({ id }) => id === "claude") ?? false),
 ).length;
-const recursionSearchCount = catalog.projects.filter(({ searchableText }) =>
-  searchableText.includes("recursion"),
-).length;
+const recursionSearchCount = generatedProjectSearchCount("recursion");
 const newViewCount = catalog.projects.filter(
   ({ catalogedAt, catalogCohort }) => {
     const age =
@@ -616,6 +615,15 @@ test("searches, changes density, and accepts legacy view URLs", async ({
   await expect(
     page.getByRole("heading", {
       name: projectCountLabel(recursionSearchCount),
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("searchbox", { name: "Search projects" })
+    .fill("preset freaky");
+  await expect(
+    page.getByRole("heading", {
+      name: "Preset Introducing Freaky Frankenstein 50",
+      exact: true,
     }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Use compact cards" }).click();

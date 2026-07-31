@@ -29,6 +29,17 @@ export function searchTerms(value: string) {
   return meaningful.length > 0 ? meaningful : terms;
 }
 
+export function searchDocumentTerms(value: string) {
+  const normalizedTerms = normalizeSearchText(value).split(" ").filter(Boolean);
+  const compactTerms = value
+    .normalize("NFKD")
+    .replace(/\p{M}+/gu, "")
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}]+/gu)
+    .filter(Boolean);
+  return [...new Set([...normalizedTerms, ...compactTerms])];
+}
+
 export function searchMeaning(value: string) {
   return searchTerms(value).join(" ");
 }

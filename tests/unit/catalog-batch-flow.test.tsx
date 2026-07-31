@@ -119,6 +119,19 @@ const submissionCatalog: Catalog = {
       canonicalUrl: "https://example.com/preset",
       searchableText: "preset",
     },
+    {
+      ...project(),
+      id: "freaky",
+      name: "Preset Introducing Freaky Frankenstein 50",
+      kind: "preset",
+      primaryFunction: "preset",
+      canonicalUrl: "https://example.com/freaky",
+      search: catalogSearchFields("Preset Introducing Freaky Frankenstein 50", {
+        compatibility: ["Claude", "Chat Completion"],
+        kind: ["preset", "System Preset"],
+      }),
+      searchableText: "",
+    },
   ],
 };
 
@@ -149,6 +162,32 @@ describe("catalog Kit batch flow", () => {
     expect(new URLSearchParams(window.location.search).get("q")).toBe(
       "memory tool",
     );
+  });
+
+  test("finds noncontiguous and prefix title terms through the search index", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "pres freaky");
+
+    expect(search).toHaveValue("pres freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
+
+    await user.clear(search);
+    await user.type(search, "preset freaky");
+    expect(
+      screen.getByRole("link", {
+        name: "Preset Introducing Freaky Frankenstein 50",
+      }),
+    ).toBeVisible();
   });
 
   test("reveals Frontend cards through the visible shared filter", () => {

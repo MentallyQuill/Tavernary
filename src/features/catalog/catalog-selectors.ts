@@ -1,4 +1,7 @@
 import { isWithinDays, releaseTimestamp } from "@/features/catalog/activity";
+import { exactAllTermSearch } from "@/features/search/catalog-search";
+import { searchMeaning } from "@/features/search/search-normalization";
+import type { CatalogSearchResults } from "@/features/search/search-types";
 import type { CatalogQuery } from "./catalog-query";
 import { licenseFilter } from "./catalog-license";
 import type { CatalogProject } from "./catalog-types";
@@ -178,8 +181,19 @@ export function selectProjects(
   projects: CatalogProject[],
   query: CatalogQuery,
   context: { now: string; tagVocabulary?: PublicTagDefinition[] },
+  searchResults?: CatalogSearchResults,
 ): CatalogProject[] {
-  const search = query.search.trim().toLowerCase();
+  const search = searchMeaning(query.search);
+  const effectiveSearchResults =
+    searchResults?.normalizedQuery === search
+      ? searchResults
+      : exactAllTermSearch(
+          projects.map(({ id, search: fields }) => ({ id, ...fields })),
+          query.search,
+        );
+  const matchingProjectIds = new Set(
+    effectiveSearchResults.matches.map(({ id }) => id),
+  );
   const tagVocabulary = context.tagVocabulary ?? [
     ...new Map(
       projects.flatMap(({ tags }) =>
@@ -192,7 +206,7 @@ export function selectProjects(
   ];
   const selected = projects.filter(
     (project) =>
-      (!search || project.searchableText.includes(search)) &&
+      (!search || matchingProjectIds.has(project.id)) &&
       (!query.category ||
         (query.category === "frontend" || query.category === "preset"
           ? project.kind === query.category

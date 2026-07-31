@@ -18,6 +18,7 @@ import { ProjectSelectionDock } from "@/features/kits/components/project-selecti
 import { DEFAULT_KIT_QUERY, type KitQuery } from "@/features/kits/kit-query";
 import { selectKits } from "@/features/kits/kit-selectors";
 import { openKitSubmission } from "@/features/kits/submission-transport";
+import { createCatalogSearchIndex } from "@/features/search/catalog-search";
 import { KitBuilderPanel } from "@/features/kits/components/kit-builder-panel";
 import { KitShareNotice } from "@/features/kits/components/kit-share-notice";
 import { useKitBuilder } from "@/features/kits/use-kit-builder";
@@ -89,6 +90,17 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     }),
     [catalog.generatedAt, catalog.tagVocabulary],
   );
+  const projectSearchIndex = useMemo(
+    () =>
+      createCatalogSearchIndex(
+        catalog.projects.map(({ id, search }) => ({ id, ...search })),
+      ),
+    [catalog.projects],
+  );
+  const projectSearchResults = useMemo(
+    () => projectSearchIndex.search(searchInput),
+    [projectSearchIndex, searchInput],
+  );
   const workspace = useKitBuilder({
     selectedKitId: query.selectedKitId,
     projects: catalog.projects,
@@ -105,8 +117,9 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         catalog.projects,
         { ...query, search: searchInput },
         context,
+        projectSearchResults,
       ),
-    [catalog.projects, context, query, searchInput],
+    [catalog.projects, context, projectSearchResults, query, searchInput],
   );
   const relationshipProjects = useMemo(
     () =>

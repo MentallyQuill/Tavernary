@@ -1,0 +1,80 @@
+[
+  {
+    "mode": "projects",
+    "query": "preset freaky",
+    "top": ["reddit-1v9u18m"],
+    "required": ["reddit-1v9u18m"],
+    "forbidden": ["mentallyquill-recursion"]
+  },
+  {
+    "mode": "projects",
+    "query": "freaky preset",
+    "top": ["reddit-1v9u18m"],
+    "required": ["reddit-1v9u18m"],
+    "forbidden": ["mentallyquill-recursion"]
+  },
+  {
+    "mode": "projects",
+    "query": "frankenstien",
+    "required": ["reddit-1v9u18m"],
+    "forbidden": ["mentallyquill-directive"]
+  },
+  {
+    "mode": "projects",
+    "query": "mentallyquill directive",
+    "top": ["mentallyquill-directive"],
+    "required": ["mentallyquill-directive"],
+    "forbidden": ["mentallyquill-recursion"]
+  },
+  {
+    "mode": "projects",
+    "query": "recursion",
+    "top": ["mentallyquill-recursion"],
+    "required": ["mentallyquill-recursion"],
+    "forbidden": ["mentallyquill-directive"]
+  },
+  {
+    "mode": "projects",
+    "query": "wandlight",
+    "required": ["mentallyquill-st-wandlight", "mentallyquill-wandlight"],
+    "forbidden": ["mentallyquill-saga"]
+  },
+  {
+    "mode": "projects",
+    "query": "memory silly tavern",
+    "required": ["aikohanasaki-sillytavern-memorybooks"],
+    "forbidden": ["reddit-1v9u18m"]
+  },
+  {
+    "mode": "projects",
+    "query": "aikohanasaki/sillytavern-memorybooks",
+    "top": ["aikohanasaki-sillytavern-memorybooks"],
+    "required": ["aikohanasaki-sillytavern-memorybooks"],
+    "forbidden": ["mentallyquill-recursion"]
+  },
+  {
+    "mode": "projects",
+    "query": "persistent memory",
+    "required": ["aikohanasaki-sillytavern-memorybooks"],
+    "forbidden": ["reddit-1v9u18m"]
+  },
+  {
+    "mode": "projects",
+    "query": "freaky claude chat",
+    "required": ["reddit-1v9u18m"],
+    "forbidden": ["mentallyquill-directive"]
+  },
+  {
+    "mode": "projects",
+    "query": "rpg maps inventory",
+    "required": ["tavern-rpg-suite"],
+    "forbidden": ["mentallyquill-recursion"]
+  },
+  {
+    "mode": "projects",
+    "query": "gln",
+    "required": [],
+    "forbidden": [],
+    "expectEmpty": true
+  }
+]

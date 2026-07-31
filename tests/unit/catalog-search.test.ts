@@ -8,6 +8,7 @@ import {
 import {
   allowedEditDistance,
   normalizeSearchText,
+  searchDocumentTerms,
   searchMeaning,
   searchTerms,
 } from "@/features/search/search-normalization";
@@ -59,6 +60,17 @@ describe("search normalization", () => {
   test("uses normalized terms as query meaning", () => {
     expect(searchMeaning(" Preset   Freaky ")).toBe("preset freaky");
     expect(searchMeaning("PRESET FREAKY")).toBe("preset freaky");
+  });
+
+  test("preserves compact identity tokens alongside camel-case words", () => {
+    expect(searchDocumentTerms("MentallyQuill/SillyTavern")).toEqual([
+      "mentally",
+      "quill",
+      "silly",
+      "tavern",
+      "mentallyquill",
+      "sillytavern",
+    ]);
   });
 
   test.each([

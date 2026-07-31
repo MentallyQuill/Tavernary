@@ -13,6 +13,7 @@ import {
   selectProjects,
 } from "@/features/catalog/catalog-selectors";
 import type { CatalogProject } from "@/features/catalog/catalog-types";
+import type { CatalogSearchResults } from "@/features/search/search-types";
 import { catalogSearchFields } from "../helpers/catalog-search-fields";
 
 const label = (id: string) => ({ id, label: id, description: id });
@@ -200,6 +201,56 @@ const recommendedPreset = project("recommended-preset", {
 const context = { now: "2026-07-23T00:00:00Z" };
 
 describe("catalog selectors", () => {
+  test("uses structured all-term results as search eligibility before filters", () => {
+    const freaky = project("freaky", {
+      kind: "preset",
+      name: "Preset Introducing Freaky Frankenstein 50",
+      search: catalogSearchFields("Preset Introducing Freaky Frankenstein 50"),
+      searchableText: "",
+    });
+    const supporting = project("supporting", {
+      search: catalogSearchFields("Supporting Project", {
+        summary: ["Preset support for Freaky Frankenstein."],
+      }),
+      searchableText: "",
+    });
+    const unrelated = project("unrelated", {
+      searchableText: "preset freaky",
+    });
+    const searchResults: CatalogSearchResults = {
+      normalizedQuery: "preset freaky",
+      correction: null,
+      degraded: false,
+      matches: [
+        { id: freaky.id, score: 50, evidence: [] },
+        { id: supporting.id, score: 10, evidence: [] },
+      ],
+    };
+
+    expect(
+      selectProjects(
+        [unrelated, supporting, freaky],
+        { ...DEFAULT_QUERY, search: "preset freaky" },
+        context,
+        searchResults,
+      )
+        .map(({ id }) => id)
+        .sort(),
+    ).toEqual(["freaky", "supporting"]);
+    expect(
+      selectProjects(
+        [unrelated, supporting, freaky],
+        {
+          ...DEFAULT_QUERY,
+          search: "preset freaky",
+          kinds: ["preset"],
+        },
+        context,
+        searchResults,
+      ).map(({ id }) => id),
+    ).toEqual(["freaky"]);
+  });
+
   test("selects only the immediate published parent and child in relationship order", () => {
     const grandparent = project("grandparent", { name: "Grandparent" });
     const parent = project("parent", {
@@ -285,6 +336,9 @@ describe("catalog selectors", () => {
 
   test("matches repository owners, human contributors, and bot contributors", () => {
     const attributed = project("directive", {
+      search: catalogSearchFields("directive", {
+        maintainers: ["MentallyQuill", "alice", "claude", "dependabot[bot]"],
+      }),
       searchableText: "directive mentallyquill alice claude dependabot[bot]",
       attribution: {
         owner: { provider: "github", login: "MentallyQuill" },
