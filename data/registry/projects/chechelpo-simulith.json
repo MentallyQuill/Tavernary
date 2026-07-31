@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "chechelpo-simulith",
+  "name": "Simulith",
+  "kind": "frontend",
+  "summary": "Simulith is an LLM web app for long-term world-focused sessions, letting you build hierarchical regions, linked locations, characters, and lorebooks.",
+  "metadata_status": "curated",
+  "source_id": "github-1221210115",
+  "frontends": ["simulith"],
+  "primary_function": "frontend",
+  "tags": [
+    "build-worlds-and-lore",
+    "maintain-long-term-memory",
+    "manage-lorebooks",
+    "manage-maps-and-locations",
+    "modular-and-extensible",
+    "move-and-back-up-data"
+  ],
+  "cataloged_at": "2026-07-31T06:44:23.175Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

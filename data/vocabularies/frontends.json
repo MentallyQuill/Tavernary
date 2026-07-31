@@ -66,6 +66,11 @@
       "description": "Works with the SillyTavern roleplay frontend."
     },
     {
+      "id": "simulith",
+      "label": "Simulith",
+      "description": "Works with the Simulith roleplay frontend."
+    },
+    {
       "id": "sonder-engine",
       "label": "Sonder Engine",
       "description": "Works with the Sonder Engine roleplay frontend."
