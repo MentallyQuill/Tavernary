@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "nattaphat010447-nutho-autocloser",
+  "source_id": "github-1275541730",
+  "source_identity": "github:nattaphat010447/nutho_autocloser",
+  "evidence_fingerprint": "7e47915a9e693c33941afd17528f5407e110ce560eb371b4642917bee523937e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:11:52.712Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:11:52.712Z"
+  },
+  "maintenance_issue_number": null
+}
