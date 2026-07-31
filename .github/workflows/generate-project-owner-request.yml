@@ -265,6 +265,12 @@ jobs:
             `${process.env.RUNNER_TEMP}/validated-project-owner-report.json`,
           );
           fs.writeFileSync(
+            `${process.env.RUNNER_TEMP}/validated-project-owner-report.sha256`,
+            createHash("sha256")
+              .update(fs.readFileSync(reportPath))
+              .digest("hex"),
+          );
+          fs.writeFileSync(
             `${process.env.RUNNER_TEMP}/validated-project-owner-hashes.json`,
             JSON.stringify(hashes),
           );
@@ -313,10 +319,29 @@ jobs:
               rm -f -- "$generated_path"
             fi
           done
+          node --input-type=module <<'NODE'
+          import { createHash } from "node:crypto";
+          import fs from "node:fs";
+          const reportPath =
+            `${process.env.RUNNER_TEMP}/validated-project-owner-report.json`;
+          const expected = fs.readFileSync(
+            `${process.env.RUNNER_TEMP}/validated-project-owner-report.sha256`,
+            "utf8",
+          );
+          const actual = createHash("sha256")
+            .update(fs.readFileSync(reportPath))
+            .digest("hex");
+          if (actual !== expected) {
+            throw new Error(
+              "Validated owner report changed after content validation.",
+            );
+          }
+          NODE
           node scripts/help/generate-project-owner-request.mjs \
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
-            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json"
+            --report-path "${RUNNER_TEMP}/project-owner-generation-report.json" \
+            --validated-report-path "${RUNNER_TEMP}/validated-project-owner-report.json"
           node --input-type=module <<'NODE'
           import { createHash } from "node:crypto";
           import fs from "node:fs";

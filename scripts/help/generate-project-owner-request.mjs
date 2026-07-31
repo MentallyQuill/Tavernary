@@ -9,6 +9,7 @@ import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
+import { fingerprintSourceRecord } from "../../src/features/help/project-owner-record.mjs";
 import { preserveCatalogSummary } from "../catalog/catalog-copy-preservation.mjs";
 import { validateEnrichmentOutput } from "../catalog/enrichment-contract.mjs";
 import { enrichRecord } from "../catalog/enrich-readmes.mjs";
@@ -37,6 +38,10 @@ const VOCABULARY_FILES = [
 
 function parseJson(text) {
   return JSON.parse(String(text).replace(/^\uFEFF/u, ""));
+}
+
+function isRecord(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 export function fingerprintProjectOwnerManifest(manifest) {
@@ -655,6 +660,127 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
   };
 }
 
+function ownerGenerationProjectIds(final) {
+  if (CARD_OPERATIONS.has(final.decision.operation)) {
+    return [final.decision.projectId];
+  }
+  if (final.decision.operation === "add-cards") {
+    return final.decision.manifest.proposed_cards
+      .map((card) => card.project_id)
+      .sort((left, right) => left.localeCompare(right));
+  }
+  return final.projects
+    .filter((project) => project.source_id === final.source.id)
+    .map((project) => project.id)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function validatedReportError(code, message) {
+  const error = new Error(message);
+  error.code = code;
+  return error;
+}
+
+function replayOwnerMetadata(validatedReport, final, candidates) {
+  if (!isRecord(validatedReport)) {
+    throw validatedReportError(
+      "validated-owner-report-invalid",
+      "Validated owner generation report is missing or malformed.",
+    );
+  }
+  const expectedProjectIds = ownerGenerationProjectIds(final);
+  const expectedIdentity = {
+    schema_version: 2,
+    issue_number: final.decision.issueNumber,
+    project_id:
+      expectedProjectIds.length === 1 &&
+      CARD_OPERATIONS.has(final.decision.operation)
+        ? expectedProjectIds[0]
+        : null,
+    project_ids: expectedProjectIds,
+    source_id: final.source.id,
+    operation: final.decision.operation,
+    repository_id: final.decision.manifest.repository_id,
+    authority_type: final.decision.authorityType,
+    actor_id: final.issue.user?.id,
+    actor_login: final.decision.actorLogin,
+    actor_type: "User",
+    request_fingerprint: fingerprintProjectOwnerManifest(
+      final.decision.manifest,
+    ),
+    input_fingerprints: inputFingerprints(final.decision),
+    source_identity: sourceIdentity(final.source),
+    source_fingerprint: fingerprintSourceRecord(final.source),
+    policy_version: CATALOG_POLICY_VERSION,
+  };
+  const actualIdentity = Object.fromEntries(
+    Object.keys(expectedIdentity).map((key) => [key, validatedReport[key]]),
+  );
+  if (JSON.stringify(actualIdentity) !== JSON.stringify(expectedIdentity)) {
+    throw validatedReportError(
+      "validated-owner-report-stale",
+      "Validated owner generation report does not match current trusted inputs.",
+    );
+  }
+
+  const candidateIds = candidates
+    .map((record) => record.id)
+    .sort((left, right) => left.localeCompare(right));
+  const resolution = validatedReport.resolved_metadata;
+  if (
+    !isRecord(resolution) ||
+    JSON.stringify(Object.keys(resolution).sort()) !==
+      JSON.stringify(candidateIds)
+  ) {
+    throw validatedReportError(
+      "validated-owner-report-invalid",
+      "Validated owner metadata resolution does not match current candidates.",
+    );
+  }
+  const resolvedMetadataByProjectId = {};
+  for (const projectId of candidateIds) {
+    const value = resolution[projectId];
+    if (
+      !isRecord(value) ||
+      typeof value.summary !== "string" ||
+      !Array.isArray(value.tags)
+    ) {
+      throw validatedReportError(
+        "validated-owner-report-invalid",
+        `Validated owner metadata resolution is invalid for ${projectId}.`,
+      );
+    }
+    resolvedMetadataByProjectId[projectId] = {
+      summary: value.summary,
+      tags: structuredClone(value.tags),
+    };
+  }
+
+  const candidateIdSet = new Set(candidateIds);
+  const validAuditEntries = (value) =>
+    Array.isArray(value) &&
+    value.every(
+      (entry) =>
+        isRecord(entry) &&
+        typeof entry.project_id === "string" &&
+        candidateIdSet.has(entry.project_id),
+    );
+  if (
+    !validAuditEntries(validatedReport.copy_results) ||
+    !validAuditEntries(validatedReport.metadata_results)
+  ) {
+    throw validatedReportError(
+      "validated-owner-report-invalid",
+      "Validated owner metadata audit entries are malformed.",
+    );
+  }
+  return {
+    resolvedMetadataByProjectId,
+    copyResults: structuredClone(validatedReport.copy_results),
+    metadataResults: structuredClone(validatedReport.metadata_results),
+  };
+}
+
 async function writeOwnerGenerationTransaction({
   root,
   reportPath,
@@ -798,7 +924,9 @@ export async function generateProjectOwnerRequest(input) {
     readdir,
   );
   const final = await triagePhase(input, issueApiPath, root, readFile, readdir);
-  const catalogedAt = generatedAt(input.now);
+  const catalogedAt = generatedAt(
+    input.validatedReport?.generated_at ?? input.now,
+  );
 
   let snapshotRecord = null;
   if (final.decision.operation === "move-source") {
@@ -810,16 +938,19 @@ export async function generateProjectOwnerRequest(input) {
     (record) => metadataFieldsToGenerate(record).length > 0,
   );
   const metadataSnapshotRecord =
+    !input.validatedReport &&
     needsAutomaticMetadata &&
     (final.source.type === "github" || final.source.type === "codeberg")
       ? await loadSnapshot(root, final.source.id, readFile)
       : null;
-  const metadata = await resolveOwnerMetadata(
-    input,
-    final,
-    metadataSnapshotRecord?.value ?? null,
-    catalogedAt,
-  );
+  const metadata = input.validatedReport
+    ? replayOwnerMetadata(input.validatedReport, final, metadataCandidates)
+    : await resolveOwnerMetadata(
+        input,
+        final,
+        metadataSnapshotRecord?.value ?? null,
+        catalogedAt,
+      );
   const mutation = applyProjectOwnerRequest({
     issueNumber: final.decision.issueNumber,
     authorityType: final.decision.authorityType,
@@ -877,8 +1008,10 @@ export async function generateProjectOwnerRequest(input) {
     ),
     input_fingerprints: inputFingerprints(final.decision),
     source_identity: sourceIdentity(final.source),
+    source_fingerprint: fingerprintSourceRecord(final.source),
     policy_version: CATALOG_POLICY_VERSION,
     generated_at: catalogedAt,
+    resolved_metadata: structuredClone(metadata.resolvedMetadataByProjectId),
     copy_results: metadata.copyResults,
     metadata_results: metadata.metadataResults,
     ...(primaryCopy
@@ -943,9 +1076,12 @@ export function parseGenerateProjectOwnerCli(argv) {
     const name = argv[index];
     const value = argv[index + 1];
     if (
-      !["--issue-number", "--output-directory", "--report-path"].includes(
-        name,
-      ) ||
+      ![
+        "--issue-number",
+        "--output-directory",
+        "--report-path",
+        "--validated-report-path",
+      ].includes(name) ||
       value === undefined
     ) {
       throw new Error(`Unknown or incomplete option: ${name ?? "missing"}.`);
@@ -960,7 +1096,29 @@ export function parseGenerateProjectOwnerCli(argv) {
     issueNumber,
     root: requiredOption(options, "--output-directory"),
     reportPath: requiredOption(options, "--report-path"),
+    validatedReportPath: options.get("--validated-report-path") ?? null,
   };
+}
+
+export async function readValidatedOwnerReport(
+  reportPath,
+  readFile = defaultReadFile,
+) {
+  try {
+    const report = parseJson(await readFile(reportPath, "utf8"));
+    if (!isRecord(report)) {
+      throw new Error("report root must be an object");
+    }
+    return report;
+  } catch (cause) {
+    throw Object.assign(
+      validatedReportError(
+        "validated-owner-report-invalid",
+        `Validated owner generation report could not be read: ${reportPath}.`,
+      ),
+      { cause },
+    );
+  }
 }
 
 function githubHeaders() {
@@ -993,6 +1151,9 @@ async function main() {
   const cli = parseGenerateProjectOwnerCli(process.argv.slice(2));
   const repository = process.env.GITHUB_REPOSITORY;
   if (!repository) throw new Error("GITHUB_REPOSITORY is required.");
+  const validatedReport = cli.validatedReportPath
+    ? await readValidatedOwnerReport(cli.validatedReportPath)
+    : undefined;
   await generateProjectOwnerRequest({
     issue: { number: cli.issueNumber },
     hostRepository: repository,
@@ -1000,6 +1161,7 @@ async function main() {
     reportPath: cli.reportPath,
     request: github,
     now: new Date(),
+    validatedReport,
   });
 }
 

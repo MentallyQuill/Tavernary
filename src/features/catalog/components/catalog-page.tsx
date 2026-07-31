@@ -62,6 +62,14 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const { query, setQuery, pushQuery, removeRelationship } = useCatalogQuery(
     catalog.tagVocabulary,
   );
+  const [searchDraft, setSearchDraft] = useState(() => ({
+    value: query.search,
+    canonical: query.search,
+  }));
+  if (searchDraft.canonical !== query.search) {
+    setSearchDraft({ value: query.search, canonical: query.search });
+  }
+  const searchInput = searchDraft.value;
   const kitShare = useKitShareFeedback();
   const { phone } = useResponsiveCapabilities();
   const [openFilterMode, setOpenFilterMode] = useState<
@@ -92,8 +100,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
       })),
   });
   const selectedProjects = useMemo(
-    () => selectProjects(catalog.projects, query, context),
-    [catalog.projects, context, query],
+    () =>
+      selectProjects(
+        catalog.projects,
+        { ...query, search: searchInput },
+        context,
+      ),
+    [catalog.projects, context, query, searchInput],
   );
   const relationshipProjects = useMemo(
     () =>
@@ -112,8 +125,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
         };
   const visibleProjects = relationshipProjects ?? selectedProjects;
   const selectedKits = useMemo(
-    () => selectKits(catalog.kits, query.kits, query.search),
-    [catalog.kits, query.kits, query.search],
+    () => selectKits(catalog.kits, query.kits, searchInput),
+    [catalog.kits, query.kits, searchInput],
   );
   const inspectedKitId =
     workspace.state.mode === "inspect" ? workspace.state.kitId : null;
@@ -215,6 +228,10 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
     key: Key,
     value: CatalogQuery[Key],
   ) => setQuery((current) => ({ ...current, [key]: value }));
+  const updateSearch = (value: string) => {
+    setSearchDraft({ value, canonical: value.trim() });
+    update("search", value);
+  };
   const updateKits = (kits: KitQuery) =>
     setQuery((current) => ({ ...current, kits }));
   const revealFrontendCards = () =>
@@ -373,8 +390,8 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   return (
     <div className="catalog-shell">
       <SiteHeader
-        search={query.search}
-        onSearch={(value) => update("search", value)}
+        search={searchInput}
+        onSearch={updateSearch}
         searchRef={searchRef}
       />
       <CategoryNavigation
@@ -392,7 +409,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query.kits}
             kits={catalog.kits}
             projects={catalog.projects}
-            search={query.search}
+            search={searchInput}
             onChange={updateKits}
             onClear={clearFilters}
           />
@@ -528,7 +545,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
             query={query.kits}
             kits={catalog.kits}
             projects={catalog.projects}
-            search={query.search}
+            search={searchInput}
             onChange={updateKits}
             onClear={clearFilters}
             onClose={closeFilters}

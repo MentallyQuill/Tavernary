@@ -11,6 +11,8 @@ import type { TagVocabulary } from "../../scripts/catalog/tag-vocabulary.mjs";
 import {
   fingerprintProjectOwnerManifest,
   generateProjectOwnerRequest,
+  parseGenerateProjectOwnerCli,
+  readValidatedOwnerReport,
   sameProjectOwnerGenerationReport,
 } from "../../scripts/help/generate-project-owner-request.mjs";
 import { PROJECT_PUBLICATION_TRANSACTION_MARKER } from "../../scripts/publication/project-publication-transaction.mjs";
@@ -294,6 +296,8 @@ function harness(
     failWritePath?: string;
     mutateProjectOnFinalRead?: boolean;
     staff?: boolean;
+    project?: Record<string, unknown>;
+    source?: Record<string, unknown>;
   } = {},
 ) {
   const latest = issue(manifest);
@@ -301,9 +305,17 @@ function harness(
     latest.user = { id: 2_625_904, login: "MentallyQuill" };
     latest.author_association = "OWNER";
   }
+  const currentProject = options.project ?? project();
+  const currentSource = options.source ?? source();
   const storage = vocabularyFiles();
-  storage.set(projectPath, JSON.stringify(project()));
-  storage.set(sourcePath, JSON.stringify(source()));
+  storage.set(
+    `${normalizedRoot}/data/registry/projects/${currentProject.id}.json`,
+    JSON.stringify(currentProject),
+  );
+  storage.set(
+    `${normalizedRoot}/data/registry/sources/${currentSource.id}.json`,
+    JSON.stringify(currentSource),
+  );
   storage.set(snapshotPath, JSON.stringify(snapshot()));
   let projectReads = 0;
   const reads: string[] = [];
@@ -466,6 +478,162 @@ test("compares reports with sorted project arrays while preserving exact source 
       source_identity: { ...base.source_identity, repository_id: 84 },
     }),
   ).toBe(false);
+});
+
+test("replays one validated automatic metadata result without calling the provider again", async () => {
+  const manifest = editManifest();
+  manifest.original = {
+    kind: "extension",
+    ...editable("Original summary.", {
+      summaryMode: "automatic",
+      tagMode: "automatic",
+    }),
+  };
+  manifest.proposed = {
+    ...editable("Original summary.", {
+      summaryMode: "automatic",
+      tagMode: "automatic",
+    }),
+    name: "Alpha Renamed",
+  };
+  const firstFixture = harness(manifest);
+  const firstProvider = vi.fn(async () => ({
+    summary: {
+      value:
+        "Alpha provides a source-grounded workflow for repository automation and keeps catalog metadata aligned with its documented behavior.",
+      evidence: ["readme:4-10"],
+    },
+    tags: [{ id: "automation", evidence: ["readme:12-18"] }],
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+  const first = await generate(firstFixture, {
+    enrichMetadata: firstProvider,
+  });
+
+  const replayFixture = harness(manifest);
+  const replayProvider = vi.fn(async () => {
+    throw new Error("provider must not run during validated replay");
+  });
+  const replayed = await generate(replayFixture, {
+    enrichMetadata: replayProvider,
+    validatedReport: first.report,
+  });
+
+  expect(firstProvider).toHaveBeenCalledOnce();
+  expect(replayProvider).not.toHaveBeenCalled();
+  expect(first.report.resolved_metadata).toEqual({
+    "owner-alpha": {
+      summary:
+        "Alpha provides a source-grounded workflow for repository automation and keeps catalog metadata aligned with its documented behavior.",
+      tags: ["automation"],
+    },
+  });
+  expect(sameProjectOwnerGenerationReport(first.report, replayed.report)).toBe(
+    true,
+  );
+  expect(replayFixture.storage.get(projectPath)).toBe(
+    firstFixture.storage.get(projectPath),
+  );
+});
+
+test("rejects validated metadata replay when trusted request identity changed", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Owner-authored summary.", {
+    summaryMode: "manual",
+    tagMode: "manual",
+  });
+  const firstFixture = harness(manifest);
+  const first = await generate(firstFixture);
+  const staleReport = structuredClone(first.report);
+  staleReport.request_fingerprint = "f".repeat(64);
+  const replayFixture = harness(manifest);
+  const replayProvider = vi.fn();
+
+  await expect(
+    generate(replayFixture, {
+      enrichMetadata: replayProvider,
+      validatedReport: staleReport,
+    }),
+  ).rejects.toMatchObject({
+    code: "validated-owner-report-stale",
+  });
+  expect(replayProvider).not.toHaveBeenCalled();
+  expect(replayFixture.writes).toEqual([]);
+});
+
+test("rejects validated replay when the source record changed", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Owner-authored summary.", {
+    summaryMode: "manual",
+    tagMode: "manual",
+  });
+  const first = await generate(harness(manifest));
+  const replayFixture = harness(manifest, {
+    source: source({ refresh_policy: "paused" }),
+  });
+
+  await expect(
+    generate(replayFixture, { validatedReport: first.report }),
+  ).rejects.toMatchObject({
+    code: "validated-owner-report-stale",
+  });
+  expect(replayFixture.writes).toEqual([]);
+});
+
+test("rejects malformed resolved metadata before replay writes", async () => {
+  const manifest = editManifest();
+  manifest.proposed = editable("Owner-authored summary.", {
+    summaryMode: "manual",
+    tagMode: "manual",
+  });
+  const first = await generate(harness(manifest));
+  const invalidReport = structuredClone(first.report);
+  invalidReport.resolved_metadata = {};
+  const replayFixture = harness(manifest);
+
+  await expect(
+    generate(replayFixture, { validatedReport: invalidReport }),
+  ).rejects.toMatchObject({
+    code: "validated-owner-report-invalid",
+  });
+  expect(replayFixture.writes).toEqual([]);
+});
+
+test("parses an optional validated report path for guarded replay", () => {
+  expect(
+    parseGenerateProjectOwnerCli([
+      "--issue-number",
+      "175",
+      "--output-directory",
+      "F:/git/Tavernary",
+      "--report-path",
+      "C:/tmp/generated.json",
+      "--validated-report-path",
+      "C:/tmp/validated.json",
+    ]),
+  ).toEqual({
+    issueNumber: 175,
+    root: "F:/git/Tavernary",
+    reportPath: "C:/tmp/generated.json",
+    validatedReportPath: "C:/tmp/validated.json",
+  });
+});
+
+test("normalizes unreadable validated reports as invalid replay input", async () => {
+  await expect(
+    readValidatedOwnerReport("C:/tmp/missing.json", async () => {
+      throw Object.assign(new Error("missing"), { code: "ENOENT" });
+    }),
+  ).rejects.toMatchObject({
+    code: "validated-owner-report-invalid",
+  });
+  await expect(
+    readValidatedOwnerReport("C:/tmp/malformed.json", async () => "{not-json"),
+  ).rejects.toMatchObject({
+    code: "validated-owner-report-invalid",
+  });
 });
 
 test("revalidates and writes one card edit with a card-scoped input fingerprint", async () => {
@@ -1027,6 +1195,61 @@ test("records trusted staff provenance for manual summary and tags", async () =>
     },
   });
   expect(generated.report.authority_type).toBe("tavernary-staff");
+});
+
+test("lets trusted staff generate an edit for a non-GitHub listing", async () => {
+  const currentSource = source({
+    id: "url-reddit-1v9u18m",
+    type: "url",
+    repository: undefined,
+    repository_id: undefined,
+    url: "https://www.reddit.com/r/SillyTavernAI/comments/1v9u18m/example/",
+    refresh_policy: "paused",
+  });
+  const currentProject = project({
+    id: "reddit-card",
+    source_id: currentSource.id,
+  });
+  const manifest = {
+    ...editManifest(currentProject),
+    source_id: currentSource.id,
+    project_id: currentProject.id,
+    repository_id: null,
+    project_fingerprint: fingerprintProjectRecord(currentProject),
+    proposed: {
+      ...editable("Staff-authored summary.", {
+        summaryMode: "manual",
+        tagMode: "manual",
+      }),
+      name: "Reddit Card Renamed",
+    },
+  };
+  const fixture = harness(manifest, {
+    staff: true,
+    project: currentProject,
+    source: currentSource,
+  });
+
+  const generated = await generate(fixture);
+
+  expect(generated.report).toMatchObject({
+    authority_type: "tavernary-staff",
+    repository_id: null,
+    source_identity: null,
+  });
+  expect(
+    JSON.parse(
+      fixture.storage.get(
+        `${normalizedRoot}/data/registry/projects/reddit-card.json`,
+      ) ?? "",
+    ),
+  ).toMatchObject({
+    name: "Reddit Card Renamed",
+    summary: "Staff-authored summary.",
+  });
+  expect(
+    fixture.request.mock.calls.some(([path]) => path === "/repositories/42"),
+  ).toBe(false);
 });
 
 test("rejects a stale tag vocabulary before generation writes", async () => {

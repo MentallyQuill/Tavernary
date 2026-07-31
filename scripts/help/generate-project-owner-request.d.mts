@@ -45,7 +45,7 @@ export interface OwnerGenerationReport {
     | "move-source"
     | "delist-source";
   publication_mode: "automatic" | "manual";
-  repository_id: number;
+  repository_id: number | null;
   authority_type: "repository-owner" | "tavernary-staff";
   actor_id: number;
   actor_login: string;
@@ -60,8 +60,16 @@ export interface OwnerGenerationReport {
     canonical: string;
     repository_id: number;
   } | null;
+  source_fingerprint: string;
   policy_version: string;
   generated_at: string;
+  resolved_metadata: Record<
+    string,
+    {
+      summary: string;
+      tags: string[];
+    }
+  >;
   copy_results: OwnerCopyResult[];
   metadata_results: OwnerMetadataResult[];
   submitted_summary?: string | null;
@@ -115,6 +123,7 @@ export function generateProjectOwnerRequest(input: {
   ) => Promise<EnrichmentOutput>;
   enrichmentProvider?: unknown;
   loadEnrichmentSource?: (...args: any[]) => Promise<any>;
+  validatedReport?: OwnerGenerationReport;
 }): Promise<OwnerGenerationResult>;
 
 export function fingerprintProjectOwnerManifest(
@@ -122,12 +131,18 @@ export function fingerprintProjectOwnerManifest(
 ): string;
 
 export function sameProjectOwnerGenerationReport(
-  left: Record<string, unknown>,
-  right: Record<string, unknown>,
+  left: object,
+  right: object,
 ): boolean;
 
 export function parseGenerateProjectOwnerCli(argv: string[]): {
   issueNumber: number;
   root: string;
   reportPath: string;
+  validatedReportPath: string | null;
 };
+
+export function readValidatedOwnerReport(
+  reportPath: string,
+  readFile?: (path: string, encoding: "utf8") => Promise<string>,
+): Promise<OwnerGenerationReport>;

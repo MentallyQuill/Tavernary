@@ -1022,6 +1022,19 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(
     source.match(/node scripts\/help\/generate-project-owner-request\.mjs/gu),
   ).toHaveLength(2);
+  expect(source.match(/--validated-report-path/gu)).toHaveLength(1);
+  expect(source).toContain(
+    '--validated-report-path "${RUNNER_TEMP}/validated-project-owner-report.json"',
+  );
+  expect(source.indexOf("--validated-report-path")).toBeGreaterThan(
+    source.indexOf("Regenerate final owner state before branch mutation"),
+  );
+  expect(source.match(/validated-project-owner-report\.sha256/gu)).toHaveLength(
+    2,
+  );
+  expect(source).toContain(
+    "Validated owner report changed after content validation.",
+  );
   expect(source).toContain("sameProjectOwnerGenerationReport");
   expect(source).toContain(
     "Owner request changed after validation; refusing stale generation.",

@@ -6,6 +6,7 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
@@ -132,6 +133,22 @@ afterEach(() => {
 });
 
 describe("catalog Kit batch flow", () => {
+  test("preserves spaces while typing a multi-word catalog search", async () => {
+    mockDesktopMatchMedia();
+    const user = userEvent.setup();
+    render(<CatalogPage catalog={submissionCatalog} />);
+
+    const search = screen.getByRole("searchbox", {
+      name: "Search projects",
+    });
+    await user.type(search, "memory tool");
+
+    expect(search).toHaveValue("memory tool");
+    expect(new URLSearchParams(window.location.search).get("q")).toBe(
+      "memory tool",
+    );
+  });
+
   test("reveals Frontend cards through the visible shared filter", () => {
     mockDesktopMatchMedia();
     render(<CatalogPage catalog={submissionCatalog} />);
