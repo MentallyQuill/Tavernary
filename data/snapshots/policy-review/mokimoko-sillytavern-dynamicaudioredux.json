@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mokimoko-sillytavern-dynamicaudioredux",
+  "source_id": "github-1249921512",
+  "source_identity": "github:mokimoko/sillytavern-dynamicaudioredux",
+  "evidence_fingerprint": "aa4c1c43804e850c7e8276315a0620f7413eee4206533f8109230fe86452063c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:11:23.269Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:11:23.269Z"
+  },
+  "maintenance_issue_number": null
+}
