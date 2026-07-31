@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-ccpromptmanager",
+  "source_id": "github-1064216308",
+  "source_identity": "github:aikohanasaki/sillytavern-ccpromptmanager",
+  "evidence_fingerprint": "be6970522a6adc39a98a0e668a05477335ff644fca39eab271972dd442969e77",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-07-31T10:07:54.164Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-07-31T10:07:54.164Z"
+  },
+  "maintenance_issue_number": null
+}
