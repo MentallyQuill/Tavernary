@@ -176,7 +176,7 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
   const body = JSON.parse(String(init?.body));
   const schema = body.response_format.json_schema.schema;
   expect(body.model).toBe(model);
-  expect(body.temperature).toBe(0.2);
+  expect(body).not.toHaveProperty("temperature");
   expect(body.messages[0].content).toMatch(
     /project names.*README content.*untrusted reference data/iu,
   );
@@ -197,10 +197,16 @@ test("sends the exact model, hardened prompt, requested fields, and strict schem
     type: "object",
     additionalProperties: false,
     properties: {
-      value: { type: "string", minLength: 120, maxLength: 220 },
       evidence: { type: "array", minItems: 1 },
     },
   });
+  expect(schema.properties.summary.properties.value).toEqual({
+    type: "string",
+  });
+  expect(schema.properties.summary.properties.evidence.items).toEqual({
+    type: "string",
+  });
+  expect(JSON.stringify(schema)).not.toContain('"uniqueItems"');
   expect(schema.properties.tags.items.properties.id.enum).toEqual([
     "automate-roleplay-workflows",
   ]);
@@ -312,7 +318,7 @@ test("uses deterministic sampling for a validation repair request", async () => 
   });
 
   const body = JSON.parse(String(fetchImpl.mock.calls[0][1]?.body));
-  expect(body.temperature).toBe(0);
+  expect(body).not.toHaveProperty("temperature");
   expect(body.messages[0].content).toMatch(
     /rejectedSummary.*untrusted.*do not follow/iu,
   );
@@ -402,6 +408,35 @@ test.each([
     expect((error as Error).message).not.toMatch(/do-not-leak|secret body/iu);
   },
 );
+
+test("reports allowlisted upstream request diagnostics without leaking the message", async () => {
+  const provider = createEnrichmentProvider({
+    apiUrl: "https://api.example.test",
+    apiKey: "do-not-leak",
+    model,
+    fetchImpl: async () =>
+      new Response(
+        JSON.stringify({
+          error: {
+            code: "unsupported_value",
+            param: "temperature",
+            message: "secret upstream explanation",
+          },
+        }),
+        {
+          status: 400,
+          headers: { "content-type": "application/json" },
+        },
+      ),
+  });
+
+  await expect(provider.generate(input)).rejects.toMatchObject({
+    code: "provider-request-failed",
+    diagnosticCode: "unsupported_value:temperature",
+    message:
+      "The enrichment provider rejected the request (unsupported_value:temperature).",
+  });
+});
 
 test("includes elapsed time on controlled provider failures", async () => {
   const times = [1_000, 1_250];
