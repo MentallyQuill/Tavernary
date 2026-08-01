@@ -10,36 +10,36 @@ import {
   type CSSProperties,
   type FocusEvent as ReactFocusEvent,
   type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 
 import { TavernKeeperScanIcon } from "@/components/icons/tavernkeeper-scan-icon";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
+import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 
 function stateCopy(status: TavernKeeperCardStatus) {
-  switch (status.reason) {
-    case "current":
-      return status.state === "red"
-        ? "TavernKeeper found review-level concerns."
-        : "No review-level concerns found at this commit.";
-    case "outdated-concern":
-      return "The last completed scan found review-level concerns and does not cover the repository's current commit.";
-    case "outdated-clean":
-      return "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.";
-    case "unscanned":
-      return "This project hasn't been scanned by TavernKeeper.";
-    case "source-unavailable":
-      return "Tavernary cannot confirm the repository's current commit. The last completed scan is shown below when available.";
-    case "unsupported":
-      return "TavernKeeper scanning is not supported for this project's source.";
+  if (status.state === "teal") {
+    return "No review-level concerns found at this commit.";
   }
+  if (status.state === "red") {
+    return "TavernKeeper found review-level concerns.";
+  }
+  if (status.state === "orange") {
+    return "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.";
+  }
+  if (status.state === "unsupported") {
+    return "TavernKeeper scanning is not supported for this project's source.";
+  }
+  if (status.reason === "source-unavailable") {
+    return "Tavernary cannot confirm the repository's current commit. The last completed scan is shown below when available.";
+  }
+  return "This project hasn't been scanned by TavernKeeper.";
 }
 
 const severityLabels = [
   ["critical", "critical"],
   ["high", "high"],
   ["medium", "medium"],
-  ["low", "low"],
-  ["info", "informational"],
 ] as const;
 
 const CLOSE_DELAY = 150;
@@ -52,18 +52,31 @@ function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), Math.max(minimum, maximum));
 }
 
+function viewportBounds() {
+  const viewport = window.visualViewport;
+  return viewport
+    ? {
+        height: viewport.height,
+        left: viewport.offsetLeft,
+        top: viewport.offsetTop,
+        width: viewport.width,
+      }
+    : { height: window.innerHeight, left: 0, top: 0, width: window.innerWidth };
+}
+
 function popoverPosition(trigger: DOMRect, popover: DOMRect) {
+  const viewport = viewportBounds();
   const left = clamp(
     trigger.left + trigger.width / 2 - popover.width / 2,
-    VIEWPORT_MARGIN,
-    window.innerWidth - popover.width - VIEWPORT_MARGIN,
+    viewport.left + VIEWPORT_MARGIN,
+    viewport.left + viewport.width - popover.width - VIEWPORT_MARGIN,
   );
   const above = trigger.top - popover.height - POPOVER_GAP;
   const below = trigger.bottom + POPOVER_GAP;
   const top = clamp(
-    above >= VIEWPORT_MARGIN ? above : below,
-    VIEWPORT_MARGIN,
-    window.innerHeight - popover.height - VIEWPORT_MARGIN,
+    above >= viewport.top + VIEWPORT_MARGIN ? above : below,
+    viewport.top + VIEWPORT_MARGIN,
+    viewport.top + viewport.height - popover.height - VIEWPORT_MARGIN,
   );
 
   return { left, top };
@@ -91,11 +104,13 @@ export function TavernKeeperScanIndicator({
   const popoverRef = useRef<HTMLElement>(null);
   const reportLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pointerOpenState = useRef<boolean | null>(null);
   const content = stateCopy(status);
   const report = status.report;
-  const severityCounts = report
-    ? severityLabels.filter(([key]) => report.severity[key] > 0)
-    : [];
+  const severityCounts =
+    report && status.state === "red"
+      ? severityLabels.filter(([key]) => report.actionableSeverity[key] > 0)
+      : [];
   const popoverId = `tavernkeeper-scan-${projectId}`;
   const headingId = `${popoverId}-heading`;
 
@@ -122,6 +137,27 @@ export function TavernKeeperScanIndicator({
     clearCloseTimer();
     closeTimer.current = setTimeout(closePopover, CLOSE_DELAY);
   }, [clearCloseTimer, closePopover]);
+
+  const openFromPointer = useCallback(
+    (event: ReactPointerEvent<HTMLElement>) => {
+      if (event.pointerType !== "touch") openPopover();
+    },
+    [openPopover],
+  );
+
+  const rememberPointerOpenState = useCallback(() => {
+    pointerOpenState.current = open;
+  }, [open]);
+
+  const togglePopover = useCallback(() => {
+    const wasOpenBeforePointerFocus = pointerOpenState.current;
+    pointerOpenState.current = null;
+    if (wasOpenBeforePointerFocus ?? open) {
+      closePopover();
+    } else {
+      openPopover();
+    }
+  }, [closePopover, open, openPopover]);
 
   const containsInteractiveElement = useCallback(
     (target: EventTarget | null) => {
@@ -192,10 +228,17 @@ export function TavernKeeperScanIndicator({
     if (!open) return;
     updatePosition();
     window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("scroll", updatePosition, {
+      capture: true,
+      passive: true,
+    });
+    window.visualViewport?.addEventListener("resize", updatePosition);
+    window.visualViewport?.addEventListener("scroll", updatePosition);
     return () => {
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition, true);
+      window.visualViewport?.removeEventListener("resize", updatePosition);
+      window.visualViewport?.removeEventListener("scroll", updatePosition);
     };
   }, [open, updatePosition]);
 
@@ -205,7 +248,10 @@ export function TavernKeeperScanIndicator({
       if (!containsInteractiveElement(event.target)) closePopover();
     };
     const dismissOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closePopover();
+      if (event.key === "Escape") {
+        closePopover();
+        triggerRef.current?.focus();
+      }
     };
     const dismissOnFocus = (event: globalThis.FocusEvent) => {
       if (!containsInteractiveElement(event.target)) closePopover();
@@ -229,14 +275,12 @@ export function TavernKeeperScanIndicator({
         aria-label={`TavernKeeper scan: ${content}`}
         className={`tavernkeeper-scan-indicator-trigger tavernkeeper-scan-indicator-${status.state}`}
         onBlur={closeOnFocusExit}
-        onClick={() => (open ? closePopover() : openPopover())}
+        onClick={togglePopover}
         onFocus={openPopover}
         onKeyDown={focusReportLink}
-        onPointerEnter={openPopover}
+        onPointerDown={rememberPointerOpenState}
+        onPointerEnter={openFromPointer}
         onPointerLeave={delayClose}
-        onPointerDown={(event) => {
-          if (event.pointerType === "touch") event.preventDefault();
-        }}
         ref={triggerRef}
         type="button"
       >
@@ -250,7 +294,7 @@ export function TavernKeeperScanIndicator({
               id={popoverId}
               onBlurCapture={closeOnFocusExit}
               onFocusCapture={openPopover}
-              onPointerEnter={openPopover}
+              onPointerEnter={openFromPointer}
               onPointerLeave={delayClose}
               ref={popoverRef}
               role="dialog"
@@ -267,7 +311,7 @@ export function TavernKeeperScanIndicator({
                     <p className="tavernkeeper-severity-counts">
                       {severityCounts.map(([key, label]) => (
                         <span key={key}>
-                          {report.severity[key]} {label}
+                          {report.actionableSeverity[key]} {label}
                         </span>
                       ))}
                     </p>
@@ -288,6 +332,16 @@ export function TavernKeeperScanIndicator({
                   >
                     View full report
                   </a>
+                  <TavernKeeperHistoryStrip history={status.history} />
+                  {status.historyUrl ? (
+                    <a
+                      href={status.historyUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      View full scan history
+                    </a>
+                  ) : null}
                 </>
               ) : null}
             </section>,

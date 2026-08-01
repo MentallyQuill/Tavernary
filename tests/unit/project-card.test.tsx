@@ -148,12 +148,10 @@ describe("project card", () => {
               scannerPolicyVersion: "1",
               reportUrl: "https://example.com/tavernkeeper/report-1",
               historyUrl: "https://example.com/tavernkeeper/history",
-              severity: {
+              actionableSeverity: {
                 critical: 0,
                 high: 0,
                 medium: 0,
-                low: 0,
-                info: 0,
               },
             },
             history: [],

@@ -66,6 +66,7 @@ for (const scenario of [
   { name: "desktop", width: 1440, height: 1000, compact: false },
   { name: "compact", width: 1440, height: 1000, compact: true },
   { name: "phone", width: 390, height: 844, compact: false },
+  { name: "landscape", width: 844, height: 390, compact: false },
 ] as const) {
   for (const title of [
     { name: "short", value: "Scan Title" },
@@ -149,6 +150,19 @@ for (const scenario of [
       expect(metrics.cardRight - metrics.triggerRight).toBeGreaterThanOrEqual(
         8,
       );
+      const triggerBox = await trigger.boundingBox();
+      const kitControlBox = await card
+        .locator("xpath=..")
+        .locator(".project-kit-control-hit")
+        .boundingBox();
+      expect(triggerBox).not.toBeNull();
+      expect(kitControlBox).not.toBeNull();
+      const overlapsKitControl =
+        triggerBox!.x + triggerBox!.width > kitControlBox!.x &&
+        triggerBox!.x < kitControlBox!.x + kitControlBox!.width &&
+        triggerBox!.y + triggerBox!.height > kitControlBox!.y &&
+        triggerBox!.y < kitControlBox!.y + kitControlBox!.height;
+      expect(overlapsKitControl).toBe(false);
       if (title.name === "ellipsized")
         expect(metrics.titleTextWidth).toBeGreaterThan(
           metrics.titleClientWidth,
@@ -168,6 +182,59 @@ for (const scenario of [
     });
   }
 }
+
+test("scan indicator unsupported state remains perceptible on the desktop card", async ({
+  page,
+}) => {
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  const trigger = page
+    .getByRole("button", {
+      name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+    })
+    .first();
+  const card = trigger.locator("xpath=ancestor::article");
+  await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
+  await expect(card).toHaveScreenshot(
+    "scan-indicator-unsupported-desktop.png",
+    {
+      animations: "disabled",
+      maxDiffPixels: 10,
+    },
+  );
+});
+
+test("scan indicator history strip preserves dense teal and red progression", async ({
+  page,
+}) => {
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await page
+    .getByRole("button", {
+      name: "TavernKeeper scan: No review-level concerns found at this commit.",
+    })
+    .first()
+    .click();
+  const popover = page.getByRole("dialog", {
+    name: "TavernKeeper Scan Results",
+  });
+  await expect(popover.locator(".tavernkeeper-history-strip i")).toHaveCount(
+    12,
+  );
+  await expect(popover.locator(".tavernkeeper-history-red")).toHaveCount(1);
+  await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
+    animations: "disabled",
+    maxDiffPixels: 10,
+  });
+});
 
 for (const viewport of [
   { name: "desktop", width: 1440, height: 1000 },

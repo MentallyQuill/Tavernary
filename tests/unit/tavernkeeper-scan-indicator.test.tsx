@@ -13,13 +13,15 @@ import postcss, { type AtRule, type Rule } from "postcss";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { TavernKeeperScanIndicator } from "@/features/catalog/components/tavernkeeper-scan-indicator";
-import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
+import type {
+  TavernKeeperCardStatus,
+  TavernKeeperReportSummary,
+} from "@/features/catalog/tavernkeeper-status";
 
-const redStatus: TavernKeeperCardStatus = {
-  state: "red",
-  reason: "current",
-  currentSha: "abc1234def5678abc1234def5678abc1234def5678",
-  report: {
+function scanReport(
+  overrides: Partial<TavernKeeperReportSummary> = {},
+): TavernKeeperReportSummary {
+  return {
     reportId: "report-1",
     result: "red",
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
@@ -28,26 +30,45 @@ const redStatus: TavernKeeperCardStatus = {
     scannerPolicyVersion: "1",
     reportUrl: "https://example.test/reports/directive",
     historyUrl: "https://example.test/reports/directive/history",
-    severity: { critical: 0, high: 1, medium: 0, low: 0, info: 0 },
-  },
-  history: [],
+    actionableSeverity: { critical: 1, high: 1, medium: 2 },
+    ...overrides,
+  };
+}
+
+const redReport = scanReport();
+const redStatus: TavernKeeperCardStatus = {
+  state: "red",
+  reason: "current",
+  currentSha: "abc1234def5678abc1234def5678abc1234def5678",
+  report: redReport,
+  history: [redReport],
   historyUrl: "https://example.test/reports/directive/history",
 };
 
+const tealReport = scanReport({
+  result: "teal",
+  actionableSeverity: { critical: 0, high: 0, medium: 0 },
+});
 const tealStatus: TavernKeeperCardStatus = {
   ...redStatus,
   state: "teal",
-  report: {
-    ...redStatus.report!,
-    result: "teal",
-    severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
-  },
+  report: tealReport,
+  history: [tealReport],
 };
 
 const pendingStatus: TavernKeeperCardStatus = {
   state: "gray",
   reason: "unscanned",
   currentSha: "abc1234def5678abc1234def5678abc1234def5678",
+  report: null,
+  history: [],
+  historyUrl: null,
+};
+
+const unsupportedStatus: TavernKeeperCardStatus = {
+  state: "unsupported",
+  reason: "unsupported",
+  currentSha: null,
   report: null,
   history: [],
   historyUrl: null,
@@ -91,17 +112,85 @@ describe("TavernKeeperScanIndicator", () => {
     expect(panel).toHaveTextContent(
       "TavernKeeper found review-level concerns.",
     );
+    expect(panel).toHaveTextContent("1 critical");
     expect(panel).toHaveTextContent("1 high");
+    expect(panel).toHaveTextContent("2 medium");
+    expect(panel).not.toHaveTextContent(/3 low|4 informational/u);
     expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
     expect(
       within(panel).getByRole("link", { name: "View full report" }),
     ).toHaveAttribute("href", redStatus.report?.reportUrl);
+    expect(
+      within(panel).getByRole("link", { name: "View full scan history" }),
+    ).toHaveAttribute("href", redStatus.historyUrl);
     expect(panel).not.toHaveTextContent(
       /Gitleaks|OpenGrep|policy|coverage|excluded/u,
     );
     expect(
       container.querySelector('svg[data-icon="scan-fill"]'),
     ).toBeInTheDocument();
+  });
+
+  test.each([
+    [tealStatus, "No review-level concerns found at this commit."],
+    [
+      {
+        ...tealStatus,
+        state: "orange",
+        reason: "outdated-clean",
+      } satisfies TavernKeeperCardStatus,
+      "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
+    ],
+    [pendingStatus, "This project hasn't been scanned by TavernKeeper."],
+    [
+      unsupportedStatus,
+      "TavernKeeper scanning is not supported for this project's source.",
+    ],
+  ])(
+    "uses approved concise copy without certification language",
+    (status, copy) => {
+      render(
+        <TavernKeeperScanIndicator projectId="copy-check" status={status} />,
+      );
+      fireEvent.click(screen.getByRole("button"));
+
+      const panel = screen.getByRole("dialog");
+      expect(panel).toHaveTextContent(copy);
+      expect(panel).not.toHaveTextContent(
+        /\b(?:safe|trusted|verified|protected|certified)\b/iu,
+      );
+    },
+  );
+
+  test("renders the newest twelve history conclusions oldest-left with accessible identity", () => {
+    const history = Array.from({ length: 13 }, (_, index) =>
+      scanReport({
+        reportId: `report-${index + 1}`,
+        result: index === 1 ? "red" : "teal",
+        scannedSha: (index + 1).toString(16).padStart(40, "0"),
+        scannedAt: `2026-07-${String(index + 1).padStart(2, "0")}T12:00:00.000Z`,
+        scannerPolicyVersion: "policy-1",
+      }),
+    );
+    render(
+      <TavernKeeperScanIndicator
+        projectId="history"
+        status={{ ...tealStatus, report: history.at(-1)!, history }}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button"));
+
+    const blocks = screen.getAllByRole("img", {
+      name: /TavernKeeper scan history:/u,
+    });
+    expect(blocks).toHaveLength(12);
+    expect(blocks[0]).toHaveAccessibleName(
+      "TavernKeeper scan history: red result on July 2, 2026 at commit 0000000 under policy policy-1",
+    );
+    expect(blocks.at(-1)).toHaveAccessibleName(
+      "TavernKeeper scan history: teal result on July 13, 2026 at commit 0000000 under policy policy-1",
+    );
+    expect(blocks[0]).toHaveClass("tavernkeeper-history-red");
   });
 
   test("omits the severity count container when a retained report has no findings", () => {
@@ -139,6 +228,21 @@ describe("TavernKeeperScanIndicator", () => {
     fireEvent.pointerEnter(screen.getByRole("dialog"));
     vi.advanceTimersByTime(150);
 
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  test("opens for mouse hover but ignores touch pointer entry", () => {
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
+    );
+
+    const trigger = screen.getByRole("button", {
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+    });
+    fireEvent.pointerEnter(trigger, { pointerType: "touch" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    fireEvent.pointerEnter(trigger, { pointerType: "mouse" });
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
@@ -215,7 +319,7 @@ describe("TavernKeeperScanIndicator", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  test("uses a non-modal Tab route to the report link without trapping panels without links", async () => {
+  test("uses a non-modal Tab route through both report links without trapping linkless panels", async () => {
     const user = userEvent.setup();
     const { rerender } = render(
       <>
@@ -235,6 +339,16 @@ describe("TavernKeeperScanIndicator", () => {
       screen.getByRole("link", { name: "View full report" }),
     ).toHaveFocus();
 
+    await user.tab();
+    expect(
+      screen.getByRole("link", { name: "View full scan history" }),
+    ).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole("link", { name: "View full report" }),
+    ).toHaveFocus();
+
     await user.tab({ shift: true });
     expect(trigger).toHaveFocus();
 
@@ -248,6 +362,40 @@ describe("TavernKeeperScanIndicator", () => {
     expect(
       screen.getByRole("button", { name: "Outside app control" }),
     ).toHaveFocus();
+  });
+
+  test("adds no closed-state document listeners, portals, tooltips, or history bodies per card", () => {
+    const addDocumentListener = vi.spyOn(document, "addEventListener");
+    const { container } = render(
+      <>
+        {Array.from({ length: 100 }, (_, index) => (
+          <TavernKeeperScanIndicator
+            key={index}
+            projectId={`closed-${index}`}
+            status={redStatus}
+          />
+        ))}
+      </>,
+    );
+
+    expect(container.querySelectorAll(".tavernkeeper-popover")).toHaveLength(0);
+    expect(
+      container.querySelectorAll(".tavernkeeper-history-strip"),
+    ).toHaveLength(0);
+    expect(container.querySelectorAll(".tooltip-anchor")).toHaveLength(0);
+    expect(
+      container.querySelectorAll('svg[data-icon="scan-fill"]'),
+    ).toHaveLength(100);
+    for (const trigger of container.querySelectorAll(
+      ".tavernkeeper-scan-indicator-trigger",
+    )) {
+      expect(trigger.querySelectorAll("*").length).toBeLessThanOrEqual(2);
+    }
+    expect(
+      addDocumentListener.mock.calls.filter(([type]) =>
+        ["focusin", "keydown", "pointerdown"].includes(String(type)),
+      ),
+    ).toHaveLength(0);
   });
 
   test("closes on Escape and an outside pointer press", () => {
@@ -279,6 +427,7 @@ describe("TavernKeeperScanIndicator", () => {
       name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.pointerDown(firstTrigger, { pointerType: "touch" });
+    fireEvent.focus(firstTrigger);
     fireEvent.click(firstTrigger);
     expect(firstTrigger).toHaveAttribute("aria-expanded", "true");
 
@@ -318,6 +467,46 @@ describe("TavernKeeperScanIndicator", () => {
           declaration.type === "decl" &&
           declaration.prop === "transition" &&
           declaration.value === "none",
+      ),
+    ).toBe(true);
+  });
+
+  test("keeps decorative hover fine-pointer-only and exposes a 44px coarse hit target", () => {
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
+    const fineHover = stylesheet.nodes.find(
+      (rule): rule is AtRule =>
+        rule.type === "atrule" &&
+        rule.name === "media" &&
+        rule.params === "(hover: hover) and (pointer: fine)",
+    );
+    expect(
+      fineHover?.nodes?.some(
+        (rule) =>
+          rule.type === "rule" &&
+          rule.selector.includes(".tavernkeeper-scan-indicator-trigger:hover"),
+      ),
+    ).toBe(true);
+
+    const coarsePointer = stylesheet.nodes.find(
+      (rule): rule is AtRule =>
+        rule.type === "atrule" &&
+        rule.name === "media" &&
+        rule.params === "(pointer: coarse)",
+    );
+    const hitTarget = coarsePointer?.nodes?.find(
+      (rule): rule is Rule =>
+        rule.type === "rule" &&
+        rule.selector.includes(".tavernkeeper-scan-indicator-trigger::before"),
+    );
+    expect(hitTarget).toBeDefined();
+    expect(
+      hitTarget?.nodes?.some(
+        (declaration) =>
+          declaration.type === "decl" &&
+          declaration.prop === "inset" &&
+          declaration.value === "-14px",
       ),
     ).toBe(true);
   });

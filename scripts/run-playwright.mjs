@@ -95,8 +95,8 @@ try {
       await fetchBounded(healthUrl, { signal: fixtureAbortController.signal })
     ).text();
     if (
-      !fixtureHtml.includes("tavernkeeper-scan-indicator-green") ||
-      !fixtureHtml.includes("tavernkeeper-scan-indicator-yellow")
+      !fixtureHtml.includes("tavernkeeper-scan-indicator-teal") ||
+      !fixtureHtml.includes("tavernkeeper-scan-indicator-red")
     ) {
       throw new Error("TavernKeeper browser fixture was not exported");
     }

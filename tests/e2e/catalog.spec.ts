@@ -1013,8 +1013,7 @@ test("shows the full launch catalog without default-query hidden records", async
   ).toHaveCount(sourcePendingCount);
 });
 
-test("hydrates pending and unsupported scan states without nesting card controls", async ({
-  browser,
+test("hydrates unscanned and unsupported scan states without nesting card controls", async ({
   page,
 }) => {
   test.skip(
@@ -1023,7 +1022,7 @@ test("hydrates pending and unsupported scan states without nesting card controls
   );
   const indicator = page
     .getByRole("button", {
-      name: "TavernKeeper scan: current scan pending",
+      name: "TavernKeeper scan: This project hasn't been scanned by TavernKeeper.",
     })
     .first();
   const pendingCard = indicator.locator(
@@ -1032,7 +1031,7 @@ test("hydrates pending and unsupported scan states without nesting card controls
 
   await expect(indicator).toBeVisible();
   await expect(indicator).toHaveCSS("color", "rgb(130, 144, 153)");
-  await indicator.hover();
+  await indicator.click();
   const panel = page.getByRole("dialog", {
     name: "TavernKeeper Scan Results",
   });
@@ -1040,7 +1039,9 @@ test("hydrates pending and unsupported scan states without nesting card controls
     panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
   ).toHaveText("TavernKeeper Scan Results");
   await expect(panel.locator("p")).toHaveCount(1);
-  await expect(panel.locator("p").first()).toHaveText("Current scan pending");
+  await expect(panel.locator("p").first()).toHaveText(
+    "This project hasn't been scanned by TavernKeeper.",
+  );
   await expect(
     panel.getByRole("link", { name: "View full report" }),
   ).toHaveCount(0);
@@ -1049,40 +1050,13 @@ test("hydrates pending and unsupported scan states without nesting card controls
   await page.keyboard.press("Escape");
   await expect(panel).toHaveCount(0);
 
-  let reachedIndicatorWithTab = false;
-  for (let tabCount = 0; tabCount < 80; tabCount += 1) {
-    await page.keyboard.press("Tab");
-    if (
-      await indicator.evaluate((element) => document.activeElement === element)
-    ) {
-      reachedIndicatorWithTab = true;
-      break;
-    }
-  }
-  expect(reachedIndicatorWithTab).toBe(true);
+  const pendingPrimaryLink = pendingCard.locator(".project-card-primary-link");
+  await pendingPrimaryLink.focus();
+  await page.keyboard.press("Tab");
+  await expect(indicator).toBeFocused();
   await expect(panel).toBeVisible();
   await page.locator("h1").click();
   await expect(panel).toHaveCount(0);
-
-  const touchContext = await browser.newContext({ hasTouch: true });
-  try {
-    const touchPage = await touchContext.newPage();
-    await touchPage.goto(sitePath());
-    const touchIndicator = touchPage
-      .getByRole("button", {
-        name: "TavernKeeper scan: current scan pending",
-      })
-      .first();
-    const touchPanel = touchPage.getByRole("dialog", {
-      name: "TavernKeeper Scan Results",
-    });
-    await touchIndicator.tap();
-    await expect(touchPanel).toBeVisible();
-    await touchIndicator.tap();
-    await expect(touchPanel).toHaveCount(0);
-  } finally {
-    await touchContext.close();
-  }
 
   const unsupportedCard = page.locator(".project-card-shell").filter({
     has: page.getByRole("heading", {
@@ -1090,9 +1064,19 @@ test("hydrates pending and unsupported scan states without nesting card controls
       exact: true,
     }),
   });
-  await expect(
-    unsupportedCard.locator(".tavernkeeper-scan-indicator-trigger"),
-  ).toHaveCount(0);
+  const unsupportedIndicator = unsupportedCard.locator(
+    ".tavernkeeper-scan-indicator-trigger",
+  );
+  await expect(unsupportedIndicator).toHaveAttribute(
+    "aria-label",
+    "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+  );
+  await expect(unsupportedIndicator).toHaveCSS("color", "rgb(40, 99, 94)");
+  await unsupportedIndicator.click();
+  await expect(panel.locator("p").first()).toHaveText(
+    "TavernKeeper scanning is not supported for this project's source.",
+  );
+  await page.keyboard.press("Escape");
   await expect(page.locator("a button, button a")).toHaveCount(0);
   await expect(
     pendingCard.locator(".project-card-primary-link"),
@@ -1125,7 +1109,7 @@ test("hydrates pending and unsupported scan states without nesting card controls
   await expect(page.locator(".relationship-pair")).toBeVisible();
 });
 
-test("hydrates current green and yellow scan reports with their external links", async ({
+test("hydrates current teal, stale orange, and current red scan reports with history links", async ({
   page,
 }) => {
   test.skip(
@@ -1133,8 +1117,13 @@ test("hydrates current green and yellow scan reports with their external links",
     "Requires the dedicated TavernKeeper scan fixture",
   );
   for (const [state, stateCopy, severity] of [
-    ["green", "No review-level findings", null],
-    ["yellow", "Review suggested", "1 high"],
+    ["teal", "No review-level concerns found at this commit.", null],
+    [
+      "orange",
+      "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
+      null,
+    ],
+    ["red", "TavernKeeper found review-level concerns.", "1 high"],
   ] as const) {
     const indicator = page
       .getByRole("button", {
@@ -1144,7 +1133,11 @@ test("hydrates current green and yellow scan reports with their external links",
 
     await expect(indicator).toHaveCSS(
       "color",
-      state === "green" ? "rgb(126, 231, 135)" : "rgb(227, 179, 65)",
+      {
+        teal: "rgb(45, 212, 191)",
+        orange: "rgb(225, 138, 36)",
+        red: "rgb(248, 81, 73)",
+      }[state],
     );
     await indicator.hover();
     const panel = page.getByRole("dialog", {
@@ -1166,17 +1159,24 @@ test("hydrates current green and yellow scan reports with their external links",
       await expect(panel.locator("p")).toHaveCount(2);
     }
     await expect(panel.locator("p").last()).toHaveText(
-      /^Scanned [0-9a-f]{7} on July 31, 2026$/u,
+      /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026$/u,
     );
     const reportLink = panel.getByRole("link", { name: "View full report" });
     await expect(reportLink).toHaveAttribute(
       "href",
-      `https://mentallyquill.github.io/TavernKeeper/reports/browser-fixture-${
-        state === "green" ? 1 : 2
-      }/`,
+      /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/1\/standard\/1\/$/u,
     );
     await expect(reportLink).toHaveAttribute("target", "_blank");
     await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
+    await expect(
+      panel.getByRole("link", { name: "View full scan history" }),
+    ).toHaveAttribute(
+      "href",
+      /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/history\/$/u,
+    );
+    expect(
+      await panel.locator(".tavernkeeper-history-strip i").count(),
+    ).toBeGreaterThan(0);
     await expect(indicator).toHaveClass(
       new RegExp(`tavernkeeper-scan-indicator-${state}`),
     );

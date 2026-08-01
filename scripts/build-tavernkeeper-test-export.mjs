@@ -12,6 +12,7 @@ import { resolve } from "node:path";
 
 const rootDirectory = resolve(import.meta.dirname, "..");
 const fixtureEntries = [
+  "config",
   "data",
   "public",
   "scripts",
@@ -86,33 +87,87 @@ async function fixtureReports() {
         snapshot.repository?.id === source.repository_id &&
         /^[0-9a-f]{40}$/u.test(snapshot.repository?.head_sha ?? ""),
     )
-    .slice(0, 2);
-  if (targets.length !== 2) {
+    .slice(0, 3);
+  if (targets.length !== 3) {
     throw new Error(
-      "TavernKeeper browser fixture needs two healthy GitHub sources",
+      "TavernKeeper browser fixture needs three healthy GitHub sources",
     );
   }
-  return {
-    schema_version: 1,
-    generated_at: "2026-07-31T12:00:00.000Z",
-    reports: targets.map(({ source, snapshot }, index) => ({
-      report_id: `browser-fixture-${index + 1}`,
+  function report({ source, snapshot }, ordinal, result, current = false) {
+    const targetSha = current
+      ? snapshot.repository.head_sha
+      : ordinal.toString(16).padStart(40, "0");
+    const red = result === "red";
+    return {
+      report_id: ordinal.toString(16).padStart(64, "0"),
+      report_version: 1,
+      supersedes_report_id: null,
+      scanner_version: "browser-fixture-v2",
+      scanner_policy_version: "1",
+      prompt_policy_version: "browser-fixture-v2",
       source_id: source.id,
       provider: "github",
       repository_id: source.repository_id,
       repository: source.repository,
-      target_sha: snapshot.repository.head_sha,
-      scanner_policy_version: "1",
-      completed_at: "2026-07-31T12:00:00.000Z",
-      result: index === 0 ? "green" : "yellow",
+      target_sha: targetSha,
+      completed_at: `2026-07-${String(ordinal).padStart(2, "0")}T12:00:00.000Z`,
+      mode: "standard",
+      result,
       finding_counts: {
-        severity:
-          index === 0
-            ? { critical: 0, high: 0, medium: 0, low: 0, info: 0 }
-            : { critical: 0, high: 1, medium: 2, low: 0, info: 0 },
+        total: red ? 3 : 0,
+        actionable: red ? 3 : 0,
+        actionable_severity: {
+          critical: 0,
+          high: red ? 1 : 0,
+          medium: red ? 2 : 0,
+        },
+        severity: {
+          critical: 0,
+          high: red ? 1 : 0,
+          medium: red ? 2 : 0,
+          low: 0,
+          info: 0,
+        },
+        confidence: { high: red ? 3 : 0, medium: 0, low: 0 },
+        disposition: {
+          confirmed: red ? 3 : 0,
+          not_supported: 0,
+          inconclusive: 0,
+        },
+        categories: red ? [{ category: "credential-theft", count: 3 }] : [],
       },
-      report_url: `https://mentallyquill.github.io/TavernKeeper/reports/browser-fixture-${index + 1}/`,
-    })),
+      coverage: {
+        history_commits: 20,
+        inventory_files: 12,
+        inventory_bytes: 4096,
+        tools_completed: 6,
+        tools_not_applicable: 0,
+        model_chunks: 2,
+      },
+      report_url:
+        `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
+        `${source.repository_id}/${targetSha}/1/standard/1/`,
+      history_url:
+        `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
+        `${source.repository_id}/history/`,
+    };
+  }
+
+  return {
+    schema_version: 2,
+    generated_at: "2026-07-31T12:00:00.000Z",
+    reports: [
+      ...Array.from({ length: 13 }, (_, index) =>
+        report(
+          targets[0],
+          index + 1,
+          index === 1 ? "red" : "teal",
+          index === 12,
+        ),
+      ),
+      report(targets[1], 31, "red", true),
+      report(targets[2], 30, "teal"),
+    ],
   };
 }
 

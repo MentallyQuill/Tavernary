@@ -20,12 +20,10 @@ export interface TavernKeeperReportSummary {
   scannerPolicyVersion: string;
   reportUrl: string;
   historyUrl: string;
-  severity: {
+  actionableSeverity: {
     critical: number;
     high: number;
     medium: number;
-    low: number;
-    info: number;
   };
 }
 
@@ -67,7 +65,14 @@ export interface TavernKeeperPreferredReport {
   mode: "standard" | "deep";
   result: "teal" | "red";
   finding_counts: {
-    severity: TavernKeeperReportSummary["severity"];
+    actionable_severity: TavernKeeperReportSummary["actionableSeverity"];
+    severity: {
+      critical: number;
+      high: number;
+      medium: number;
+      low: number;
+      info: number;
+    };
   };
   report_url: string;
   history_url: string;
@@ -139,7 +144,7 @@ function summarize(
     scannerPolicyVersion: report.scanner_policy_version,
     reportUrl: report.report_url,
     historyUrl: report.history_url,
-    severity: report.finding_counts.severity,
+    actionableSeverity: report.finding_counts.actionable_severity,
   };
 }
 

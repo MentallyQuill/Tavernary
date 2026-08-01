@@ -296,6 +296,7 @@ test("builds sibling extension and preset cards from one source snapshot", async
           mode: "standard",
           result: "teal",
           finding_counts: {
+            actionable_severity: { critical: 0, high: 0, medium: 0 },
             severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
           },
           report_url:
