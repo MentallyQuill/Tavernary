@@ -7,6 +7,9 @@ static, asynchronous integration: no runtime server, API route, webhook
 receiver, database, public scan request, Codeberg scan, or automatic listing
 moderation is involved.
 
+Production behavior follows the mandatory automation boundary in
+[`development-rules.md`](development-rules.md).
+
 ## What the indicator means
 
 TavernKeeper reports what it observed at one immutable commit. A current report
@@ -14,35 +17,39 @@ is not a guarantee that a repository is safe, and an outdated report says
 nothing about later commits. A scan belongs to a GitHub repository ID, so cards
 that share that repository display the same imported report state.
 
-- Green means the defined scan policy completed at the displayed SHA with no
-  active medium-or-higher finding at medium-or-higher confidence.
-- Yellow means at least one active medium-or-higher finding at
-  medium-or-higher confidence.
-- Gray is Tavernary's state when no current completed report can support a
-  color: the first scan is pending, the report is outdated, the current source
-  is unavailable, or an operation failed and published nothing.
+- Teal means the defined scan policy completed at the displayed SHA with no
+  confirmed medium-or-higher finding at medium-or-higher confidence.
+- Red means at least one confirmed medium-or-higher finding at
+  medium-or-higher confidence. An older red result remains red until a newer
+  complete scan publishes.
+- Orange means the latest complete result was teal but covers an older SHA; an
+  updated scan is pending.
+- Gray means an eligible GitHub source is unscanned or its current source state
+  is unavailable without a red result to preserve.
+- Dark teal identifies a source type TavernKeeper does not support.
 
 Low-confidence, low-severity, and informational observations do not turn an
-indicator yellow. Results never hide, delist, quarantine, rank, certify, or
+indicator red. Results never hide, delist, quarantine, rank, certify, or
 otherwise moderate a Tavernary listing. Tavernary does not notify project
 owners automatically.
 
 ## Public versioned contracts
 
-Tavernary publishes its schema-version-1 target manifest at
+Tavernary publishes its schema-version-2 target manifest at
 `https://tavernary.org/security/tavernkeeper-targets.json`.
 Its checked-in schema is
-[`data/schemas/tavernkeeper-targets.schema.json`](../data/schemas/tavernkeeper-targets.schema.json).
+[`data/schemas/tavernkeeper-targets.v2.schema.json`](../data/schemas/tavernkeeper-targets.v2.schema.json).
 It contains only active, healthy public GitHub sources with a positive immutable
 repository ID and a lowercase 40-character snapshot SHA. Each entry has the
 Tavernary source ID, GitHub repository ID and full name, exact `target_sha`, and
-Tavernary-derived canonical GitHub URL; it contains no commands, clone URLs,
-branch names, scan modes, budgets, or requester-provided values.
+Tavernary-derived canonical GitHub URL, project kinds, and catalog priority
+metadata; it contains no commands, clone URLs, branch names, scan modes,
+budgets, or requester-provided values.
 
-Tavernary imports TavernKeeper's schema-version-1 preferred report index from
+Tavernary imports TavernKeeper's schema-version-2 preferred report index from
 `https://mentallyquill.github.io/TavernKeeper/reports/index.json`. Its pinned
 consumer schema is
-[`data/schemas/tavernkeeper-report-index.schema.json`](../data/schemas/tavernkeeper-report-index.schema.json).
+[`data/schemas/tavernkeeper-report-index.v2.schema.json`](../data/schemas/tavernkeeper-report-index.v2.schema.json).
 The importer accepts only the configured HTTPS origin and report path, bounded
 public DNS responses and payloads, valid schema and aggregate counts, one
 preferred identity per repository/SHA/policy, the matching active Tavernary
@@ -50,9 +57,10 @@ source identity, the active scanner-policy version, and an immutable report URL
 under `https://mentallyquill.github.io/TavernKeeper/reports/`.
 
 The report identity is provider plus repository ID, exact target SHA,
-scanner-policy version, scan mode, and report version. Tavernary retains
-validated older-SHA summaries so it can describe an outdated result, but only
-an identity-and-SHA match can produce green or yellow on a current card.
+scanner-policy version, scan mode, and report version. Tavernary retains the
+newest twelve preferred historical conclusions for the compact card strip and
+links to TavernKeeper's immutable full-history page. Only an identity-and-SHA
+match can produce a current teal or red state.
 
 ## Handshake and recovery
 
@@ -74,6 +82,12 @@ edit or overwrite the prior tracked summary: correct the public producer or
 local validation problem, then rerun the input-free import workflow after the
 contract is healthy.
 
+Tavernary staff may also run the protected targeted-scan Action with one exact
+GitHub repository URL already backing a published card. Tavernary refreshes
+that source, deploys and verifies the resulting manifest, then sends only the
+repository ID as a non-authoritative hint. TavernKeeper refetches the public
+manifest and runs the same automatic production scanner and publisher.
+
 ## GitHub Apps and secrets
 
 The two wake-up directions use different one-way GitHub Apps. Tavernary stores
@@ -84,7 +98,8 @@ plus mandatory metadata read. TavernKeeper stores
 App, installed only on Tavernary with the same destination-only permission.
 Neither App receives contents-write permission, and neither repository receives
 the other repository's contents token. The normal `GITHUB_TOKEN` remains
-repository-local.
+repository-local. Workflows treat every installation token as an opaque masked
+string and never parse, log, cache, artifact, or persist its format.
 
 If App-token creation or dispatch fails after the manifest is publicly
 verified, Pages remains valid and the scheduled reconciliation is the recovery
@@ -98,10 +113,10 @@ containers, macros, binaries, and interpreters are never executed. Reports are
 sanitized and immutable; raw model and tool output, source excerpts, payloads,
 and secrets are not public report content.
 
-TavernKeeper staff alone may pause, resume, retry, deep-scan, rescan policy,
-approve oversized work, inspect diagnostics, or adjudicate. A project owner
-may appeal a false positive by identifying an immutable report and finding
-fingerprint to TavernKeeper staff. An appeal neither triggers a scan nor
-changes Tavernary or suppresses a finding automatically. An accepted appeal
-produces a new immutable superseding report; Tavernary only imports the
-validated preferred result.
+TavernKeeper staff alone may pause, resume, retry, deep-scan, rescan policy, or
+inspect diagnostics. A project owner may appeal a false positive by identifying
+an immutable report and finding fingerprint to TavernKeeper staff. An appeal
+neither triggers a scan nor changes Tavernary or suppresses a finding. If the
+appeal exposes a scanner defect, staff change global versioned policy through
+ordinary code review and TavernKeeper automatically rescans affected targets.
+Staff never edit, dismiss, recolor, or supersede one report manually.
