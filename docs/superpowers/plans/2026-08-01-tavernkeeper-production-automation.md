@@ -758,12 +758,18 @@ feat(catalog): derive TavernKeeper scan history
 - Modify: `F:/git/Tavernary/src/features/catalog/components/tavernkeeper-scan-indicator.tsx`
 - Create: `F:/git/Tavernary/src/features/catalog/components/tavernkeeper-history-strip.tsx`
 - Modify: `F:/git/Tavernary/src/features/catalog/components/project-card.tsx`
+- Modify: `F:/git/Tavernary/src/features/catalog/components/project-grid.tsx`
 - Modify: `F:/git/Tavernary/src/styles/catalog.css`
 - Modify: `F:/git/Tavernary/src/styles/tokens.css`
+- Modify: `F:/git/Tavernary/playwright.config.ts`
+- Modify: `F:/git/Tavernary/package.json`
+- Modify: `F:/git/Tavernary/.github/workflows/ci.yml`
 - Modify: `F:/git/Tavernary/tests/unit/tavernkeeper-scan-indicator.test.tsx`
 - Modify: `F:/git/Tavernary/tests/unit/project-card.test.tsx`
 - Modify: `F:/git/Tavernary/tests/e2e/catalog.spec.ts`
+- Create: `F:/git/Tavernary/tests/e2e/catalog-mobile-performance.spec.ts`
 - Modify: `F:/git/Tavernary/tests/visual/catalog.visual.spec.ts`
+- Create: `F:/git/Tavernary/docs/tavernkeeper-mobile-safari-acceptance.md`
 - Replace: `F:/git/Tavernary/tests/visual/catalog.visual.spec.ts-snapshots/scan-indicator-desktop-short-win32.png`
 - Replace: `F:/git/Tavernary/tests/visual/catalog.visual.spec.ts-snapshots/scan-indicator-desktop-ellipsized-win32.png`
 - Replace: `F:/git/Tavernary/tests/visual/catalog.visual.spec.ts-snapshots/scan-indicator-compact-short-win32.png`
@@ -781,6 +787,7 @@ feat(catalog): derive TavernKeeper scan history
 
 - Consumes: `TavernKeeperCardStatus` from Task 8.
 - Produces: inline `scan-fill` button immediately after the title's final visible character and an accessible non-modal popover headed `TavernKeeper Scan Results`.
+- Performance boundary: the panel must not multiply already-large catalog DOM, SVG, tooltip, observer, listener, or portal costs across hundreds of cards. Playwright WebKit is regression coverage, not proof of branded Safari behavior.
 
 - [ ] **Step 1: Write failing copy and content tests**
 
@@ -800,34 +807,58 @@ const copy = {
 
 The heading is exactly `TavernKeeper Scan Results`. Only red shows nonzero confirmed critical/high/medium counts. Never render `safe`, `trusted`, `verified`, `protected`, or `certified`.
 
-- [ ] **Step 2: Write failing history and interaction tests**
+- [ ] **Step 2: Write failing history, interaction, and pointer-capability tests**
 
-Assert at most twelve blocks, accessible labels with result/date/short SHA/policy, oldest-left/newest-right, red history preserved, and both `View full report` and `View full scan history` links. Prove hover, focus, touch, Escape, outside click, focus transfer through both links, one-open-at-a-time behavior, viewport collision, and reduced motion.
+Assert at most twelve blocks, accessible labels with result/date/short SHA/policy, oldest-left/newest-right, red history preserved, and both `View full report` and `View full scan history` links. Prove fine-pointer hover, focus, touch, Escape, outside click, focus transfer through both links, one-open-at-a-time behavior, viewport collision, and reduced motion. Assert decorative hover CSS is inside `@media (hover: hover) and (pointer: fine)`, while focus-visible, pressed, selected, expanded, and loading states do not depend on hover. Coarse-pointer controls are at least 44 by 44 CSS pixels.
 
 - [ ] **Step 3: Write failing placement tests**
 
 Assert `data-icon="scan-fill"`, the title ellipsizes before the icon, the icon follows the final visible title character, and whole-card repository navigation contains no nested button/link.
 
-- [ ] **Step 4: Run focused component/browser tests and verify RED**
+- [ ] **Step 4: Write failing multiplicative-cost and containment tests**
+
+On a synthetic full catalog, assert the closed feature adds no per-card observer, document/window listener, tooltip anchor, portal, mounted popover body, or history block. Budget at most four closed-state DOM elements and one scan glyph per rendered card, with at most one lazily mounted popover body for the whole catalog. Add measurements for rendered cards, DOM elements, SVGs, tooltip anchors, observers/listeners, long tasks, and scroll/event latency.
+
+Test `content-visibility: auto` plus a measured responsive `contain-intrinsic-size` first. Prove keyboard focus, browser find behavior used by the product, scroll anchoring, panel positioning, and exact search behavior remain correct. If a fixture demonstrates containment is insufficient, add progressive batches or windowing tests that keep the full catalog data in filtering/relevance logic and preserve the exact URL query string and existing multi-word search semantics.
+
+- [ ] **Step 5: Configure cross-engine and mobile smoke coverage**
+
+Define explicit Playwright Chromium and WebKit projects plus representative mobile-device projects. CI installs and runs both engines. Smoke cases cover touch open/close, 44 CSS pixel hit targets, `100dvh`, safe-area insets, browser chrome changes, keyboard/focus return, orientation changes, and `prefers-reduced-motion`. Test and documentation must say that Playwright WebKit is not branded Safari proof.
+
+- [ ] **Step 6: Run focused component/browser tests and verify RED**
 
 ```powershell
 npm --prefix F:\git\Tavernary test -- tests/unit/tavernkeeper-scan-indicator.test.tsx tests/unit/project-card.test.tsx
 npm --prefix F:\git\Tavernary run test:scan-e2e
 ```
 
-- [ ] **Step 5: Implement the five visual states**
+- [ ] **Step 7: Implement bounded rendering and interaction infrastructure**
+
+Use capability and feature detection, never a Safari user-agent branch. Mount one shared popover only while open. Add no eager per-card observers/listeners or catalog-wide scroll work. Make scroll handlers passive where applicable; avoid `preventDefault` and restrictive `touch-action` outside a separately justified custom gesture. Prefer transform/opacity motion and remove it under reduced motion.
+
+Apply measured `content-visibility: auto` and `contain-intrinsic-size` to offscreen card/panel rows. Measure the full catalog before choosing any fallback. If real traces still show scale-dependent stalls, implement progressive batches or windowing without changing the complete searchable data set, exact query text, result relevance, or empty-state semantics.
+
+- [ ] **Step 8: Implement the five visual states**
 
 Use Tavernary theme tokens: teal for current clean, orange for outdated clean, red for concern, gray for eligible unscanned/unavailable, and a perceptible super-dark teal for unsupported. Color is never the only signal; every trigger has `aria-label="TavernKeeper scan: ..."`.
 
-- [ ] **Step 6: Implement the compact history strip**
+- [ ] **Step 9: Implement the compact history strip**
 
 Each block represents one scan, not one week. Historical blocks use teal/red only. Reuse the twelve-week activity strip's compact geometry without reusing week-bucket semantics.
 
-- [ ] **Step 7: Update visual baselines after direct inspection**
+- [ ] **Step 10: Update visual baselines after direct inspection**
 
-Run desktop, compact, and phone cases for short and ellipsized titles. Inspect each image before accepting it; verify icon alignment, popover collision, legibility of dark-teal unsupported state, and history-strip density.
+Run desktop, compact, phone portrait, and phone/tablet landscape cases for short and ellipsized titles. Inspect each image before accepting it; verify icon alignment, popover collision, legibility of dark-teal unsupported state, history-strip density, coarse-pointer sizing, safe-area spacing, dynamic-viewport fit, and reduced-motion state.
 
-- [ ] **Step 8: Run focused/full checks and commit**
+- [ ] **Step 11: Run automated performance A/B diagnostics**
+
+At 390 by 844, record the full unfiltered catalog and `?q=Recursion` after hydration. Compare the feature-off baseline and feature-on build for card count, DOM, SVG, tooltip anchors, observers/listeners, long tasks, and five repeated scroll sequences after an idle pause. The panel fails if it introduces a repeated task, event delay, or frame gap of 200 milliseconds or more, a visible multi-hundred-millisecond scroll stall, or any catalog-size growth in listeners, observers, or portals. A full-only stall strongly implicates rendering or style-invalidation scale but is not documented as a proven Safari root cause.
+
+- [ ] **Step 12: Validate real current and previous-major Safari**
+
+On physical iPhone and iPad devices, test current-major and previous-major Safari against the deployed full unfiltered catalog after an idle pause and repeated inertial scrolling, then repeat against `?q=Recursion`. Capture Safari Web Inspector Timelines and Layers evidence for scripting, style recalculation, layout, paint, compositing, event latency, and layers. Record devices, OS/Safari majors, build SHA, counts, traces, orientation cases, and verdict in `docs/tavernkeeper-mobile-safari-acceptance.md`. Do not substitute Playwright WebKit for this gate and do not state an exact root cause unless the traces prove it.
+
+- [ ] **Step 13: Run focused/full checks and commit**
 
 ```text
 feat(catalog): show TavernKeeper scan progression
