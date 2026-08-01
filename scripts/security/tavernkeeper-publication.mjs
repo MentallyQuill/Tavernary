@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { lookup as defaultDnsLookup } from "node:dns/promises";
 import { readFileSync } from "node:fs";
 import { request as httpsRequest } from "node:https";
+import { isIP } from "node:net";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
@@ -86,21 +87,11 @@ function assertPublicManifestUrl(url) {
 }
 
 function isPublicAddress(address) {
-  if (address.includes(":")) {
-    const normalized = address.toLowerCase();
-    return !(
-      !/^[0-9a-f:]+$/u.test(normalized) ||
-      normalized === "::" ||
-      normalized === "::1" ||
-      normalized.startsWith("fe80:") ||
-      normalized.startsWith("fc") ||
-      normalized.startsWith("fd") ||
-      normalized.startsWith("2001:db8:") ||
-      normalized.startsWith("::ffff:127.") ||
-      normalized.startsWith("::ffff:10.") ||
-      normalized.startsWith("::ffff:192.168.") ||
-      /^::ffff:172\.(?:1[6-9]|2\d|3[01])\./u.test(normalized)
-    );
+  if (typeof address !== "string") {
+    return false;
+  }
+  if (isIP(address) === 6) {
+    return isPublicIpv6Address(address);
   }
 
   const octets = address.split(".").map(Number);
@@ -126,6 +117,93 @@ function isPublicAddress(address) {
     (first === 198 && second === 51 && octets[2] === 100) ||
     (first === 203 && second === 0 && octets[2] === 113)
   );
+}
+
+function expandIpv4Group(group) {
+  if (!group.includes(".")) {
+    return [group];
+  }
+  const octets = group.split(".").map(Number);
+  return [
+    ((octets[0] << 8) | octets[1]).toString(16),
+    ((octets[2] << 8) | octets[3]).toString(16),
+  ];
+}
+
+function parseIpv6Address(address) {
+  const [leftText, rightText] = address.toLowerCase().split("::");
+  const left = leftText ? leftText.split(":").flatMap(expandIpv4Group) : [];
+  const right = rightText ? rightText.split(":").flatMap(expandIpv4Group) : [];
+  const hasCompression = address.includes("::");
+  const missing = 8 - left.length - right.length;
+  const groups = hasCompression
+    ? [...left, ...Array(missing).fill("0"), ...right]
+    : [...left, ...right];
+  if (groups.length !== 8 || missing < 0) {
+    return null;
+  }
+  return groups.flatMap((group) => {
+    const value = Number.parseInt(group, 16);
+    return [value >> 8, value & 0xff];
+  });
+}
+
+function isPublicIpv6Address(address) {
+  const bytes = parseIpv6Address(address);
+  if (!bytes) {
+    return false;
+  }
+  const isUnspecified = bytes.every((byte) => byte === 0);
+  const isLoopback =
+    bytes.slice(0, -1).every((byte) => byte === 0) && bytes.at(-1) === 1;
+  const isIpv4Mapped =
+    bytes.slice(0, 10).every((byte) => byte === 0) &&
+    bytes[10] === 0xff &&
+    bytes[11] === 0xff;
+  const isLinkLocal = bytes[0] === 0xfe && (bytes[1] & 0xc0) === 0x80;
+  const isMulticast = bytes[0] === 0xff;
+  const isSiteLocal = bytes[0] === 0xfe && (bytes[1] & 0xc0) === 0xc0;
+  const isUniqueLocal = (bytes[0] & 0xfe) === 0xfc;
+  const isDocumentation =
+    bytes[0] === 0x20 &&
+    bytes[1] === 0x01 &&
+    bytes[2] === 0x0d &&
+    bytes[3] === 0xb8;
+  return !(
+    isUnspecified ||
+    isLoopback ||
+    isIpv4Mapped ||
+    isLinkLocal ||
+    isMulticast ||
+    isSiteLocal ||
+    isUniqueLocal ||
+    isDocumentation
+  );
+}
+
+function requestTimeoutError() {
+  return new Error("TavernKeeper public manifest request timed out");
+}
+
+function beforeDeadline(promise, signal) {
+  return new Promise((resolve, reject) => {
+    const abort = () => reject(requestTimeoutError());
+    if (signal.aborted) {
+      abort();
+      return;
+    }
+    signal.addEventListener("abort", abort, { once: true });
+    Promise.resolve(promise).then(
+      (value) => {
+        signal.removeEventListener("abort", abort);
+        resolve(value);
+      },
+      (error) => {
+        signal.removeEventListener("abort", abort);
+        reject(error);
+      },
+    );
+  });
 }
 
 async function resolvePublicDns(url, dnsLookup) {
@@ -221,7 +299,7 @@ function contentLength(response) {
   }
 }
 
-async function readBoundedResponse(response) {
+async function readBoundedResponse(response, signal) {
   contentLength(response);
   if (!response.body) {
     return "";
@@ -231,13 +309,20 @@ async function readBoundedResponse(response) {
   let size = 0;
   let body = "";
   while (true) {
-    const { done, value } = await reader.read();
+    let result;
+    try {
+      result = await beforeDeadline(reader.read(), signal);
+    } catch (error) {
+      void reader.cancel().catch(() => {});
+      throw error;
+    }
+    const { done, value } = result;
     if (done) {
       break;
     }
     size += value.byteLength;
     if (size > MAX_RESPONSE_BYTES) {
-      await reader.cancel();
+      void reader.cancel().catch(() => {});
       throw new Error(
         "TavernKeeper public manifest response exceeds the size limit",
       );
@@ -270,14 +355,25 @@ export async function readPublicManifest(url, options = {}) {
   let current = new URL(url);
   assertPublicManifestUrl(current);
   let redirects = 0;
+  const timeoutMs = options.timeoutMs ?? REQUEST_TIMEOUT_MS;
+  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) {
+    throw new Error("TavernKeeper public manifest timeout is invalid");
+  }
 
   while (true) {
-    const addresses = await resolvePublicDns(current, dnsLookup);
-    const response = await requestImpl(current.toString(), {
-      headers: { accept: "application/json" },
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      lookup: createBoundLookup(current.hostname, addresses),
-    });
+    const signal = AbortSignal.timeout(timeoutMs);
+    const addresses = await beforeDeadline(
+      resolvePublicDns(current, dnsLookup),
+      signal,
+    );
+    const response = await beforeDeadline(
+      requestImpl(current.toString(), {
+        headers: { accept: "application/json" },
+        signal,
+        lookup: createBoundLookup(current.hostname, addresses),
+      }),
+      signal,
+    );
 
     if (redirectStatuses.has(response.status)) {
       if (redirects >= 2) {
@@ -306,7 +402,7 @@ export async function readPublicManifest(url, options = {}) {
       throw new Error("TavernKeeper public manifest response is not JSON");
     }
     try {
-      const manifest = JSON.parse(await readBoundedResponse(response));
+      const manifest = JSON.parse(await readBoundedResponse(response, signal));
       manifestDigest(manifest);
       return manifest;
     } catch (error) {
