@@ -35,6 +35,7 @@
     "catalog:backfill-identities": "node scripts/catalog/backfill-repository-identities.mjs",
     "catalog:taxonomy:discover": "node scripts/catalog/discover-tag-taxonomy.mjs",
     "catalog:tags:backfill": "node scripts/catalog/backfill-project-tags.mjs",
+    "security:import-reports": "node scripts/security/import-tavernkeeper-reports.mjs",
     "submissions:backfill-forks": "node scripts/submissions/backfill-fork-dependencies.mjs",
     "submissions:reconcile-kits": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary",
     "submissions:reconcile-kits:apply": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary --apply",

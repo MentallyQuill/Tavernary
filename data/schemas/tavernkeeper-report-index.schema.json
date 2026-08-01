@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mentallyquill.github.io/TavernKeeper/schemas/report-index.v1.schema.json",
+  "title": "TavernKeeper preferred report index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "reports"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "report_id",
+          "report_version",
+          "supersedes_report_id",
+          "scanner_version",
+          "scanner_policy_version",
+          "prompt_policy_version",
+          "source_id",
+          "provider",
+          "repository_id",
+          "repository",
+          "target_sha",
+          "completed_at",
+          "mode",
+          "result",
+          "finding_counts",
+          "coverage",
+          "report_url"
+        ],
+        "properties": {
+          "report_id": { "$ref": "#/definitions/report_id" },
+          "report_version": { "type": "integer", "minimum": 1 },
+          "supersedes_report_id": {
+            "anyOf": [{ "$ref": "#/definitions/report_id" }, { "type": "null" }]
+          },
+          "scanner_version": { "$ref": "#/definitions/version" },
+          "scanner_policy_version": { "$ref": "#/definitions/version" },
+          "prompt_policy_version": { "$ref": "#/definitions/version" },
+          "source_id": { "type": "string", "pattern": "^github-[1-9][0-9]*$" },
+          "provider": { "const": "github" },
+          "repository_id": { "type": "integer", "minimum": 1 },
+          "repository": { "type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$" },
+          "target_sha": { "$ref": "#/definitions/sha" },
+          "completed_at": { "type": "string", "format": "date-time" },
+          "mode": { "enum": ["standard", "deep"] },
+          "result": { "enum": ["green", "yellow"] },
+          "finding_counts": { "$ref": "#/definitions/finding_counts" },
+          "coverage": { "$ref": "#/definitions/coverage" },
+          "report_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://mentallyquill\\.github\\.io/TavernKeeper/reports/"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nonnegative_integer": { "type": "integer", "minimum": 0 },
+    "severity_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "high", "medium", "low", "info"],
+      "properties": {
+        "critical": { "$ref": "#/definitions/nonnegative_integer" },
+        "high": { "$ref": "#/definitions/nonnegative_integer" },
+        "medium": { "$ref": "#/definitions/nonnegative_integer" },
+        "low": { "$ref": "#/definitions/nonnegative_integer" },
+        "info": { "$ref": "#/definitions/nonnegative_integer" }
+      }
+    },
+    "confidence_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["high", "medium", "low"],
+      "properties": {
+        "high": { "$ref": "#/definitions/nonnegative_integer" },
+        "medium": { "$ref": "#/definitions/nonnegative_integer" },
+        "low": { "$ref": "#/definitions/nonnegative_integer" }
+      }
+    },
+    "disposition_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "dismissed"],
+      "properties": {
+        "active": { "$ref": "#/definitions/nonnegative_integer" },
+        "dismissed": { "$ref": "#/definitions/nonnegative_integer" }
+      }
+    },
+    "finding_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "actionable",
+        "severity",
+        "confidence",
+        "disposition",
+        "categories"
+      ],
+      "properties": {
+        "total": { "$ref": "#/definitions/nonnegative_integer" },
+        "actionable": { "$ref": "#/definitions/nonnegative_integer" },
+        "severity": { "$ref": "#/definitions/severity_counts" },
+        "confidence": { "$ref": "#/definitions/confidence_counts" },
+        "disposition": { "$ref": "#/definitions/disposition_counts" },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "count"],
+            "properties": {
+              "category": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,79}$"
+              },
+              "count": { "$ref": "#/definitions/nonnegative_integer" }
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "history_commits",
+        "inventory_files",
+        "inventory_bytes",
+        "tools_completed",
+        "tools_not_applicable",
+        "model_chunks"
+      ],
+      "properties": {
+        "history_commits": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "inventory_files": { "$ref": "#/definitions/nonnegative_integer" },
+        "inventory_bytes": { "$ref": "#/definitions/nonnegative_integer" },
+        "tools_completed": { "$ref": "#/definitions/nonnegative_integer" },
+        "tools_not_applicable": { "$ref": "#/definitions/nonnegative_integer" },
+        "model_chunks": { "$ref": "#/definitions/nonnegative_integer" }
+      }
+    }
+  }
+}
