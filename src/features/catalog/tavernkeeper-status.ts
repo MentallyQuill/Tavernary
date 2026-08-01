@@ -127,20 +127,57 @@ function summarize(
   };
 }
 
-function rfc3339Epoch(timestamp: string) {
-  const leapSecond = /:60(?=(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$)/iu.test(
-    timestamp,
+const rfc3339OrderingPattern =
+  /^(?<prefix>\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:)(?<second>\d{2})(?:\.(?<fraction>\d+))?(?<zone>[Zz]|[+-]\d{2}:\d{2})$/u;
+
+function rfc3339OrderKey(timestamp: string) {
+  const match = rfc3339OrderingPattern.exec(timestamp);
+  if (!match?.groups) {
+    throw new Error(`Invalid RFC3339 timestamp: ${timestamp}`);
+  }
+
+  const leapSecond = match.groups.second === "60";
+  const normalizedWholeSecond = `${match.groups.prefix}${
+    leapSecond ? "59" : match.groups.second
+  }${match.groups.zone}`
+    .replace("t", "T")
+    .replace(/z$/u, "Z");
+  const parsedEpoch = Date.parse(normalizedWholeSecond);
+  if (!Number.isFinite(parsedEpoch)) {
+    throw new Error(`Invalid RFC3339 timestamp: ${timestamp}`);
+  }
+
+  return {
+    epochSecond: parsedEpoch / 1_000 + (leapSecond ? 1 : 0),
+    fraction: match.groups.fraction ?? "",
+    phase: leapSecond ? 0 : 1,
+  };
+}
+
+function compareFractions(left: string, right: string) {
+  const width = Math.max(left.length, right.length);
+  const normalizedLeft = left.padEnd(width, "0");
+  const normalizedRight = right.padEnd(width, "0");
+  if (normalizedLeft === normalizedRight) {
+    return 0;
+  }
+  return normalizedLeft < normalizedRight ? -1 : 1;
+}
+
+function compareRfc3339(left: string, right: string) {
+  const leftKey = rfc3339OrderKey(left);
+  const rightKey = rfc3339OrderKey(right);
+  return (
+    leftKey.epochSecond - rightKey.epochSecond ||
+    leftKey.phase - rightKey.phase ||
+    compareFractions(leftKey.fraction, rightKey.fraction)
   );
-  const normalized = leapSecond
-    ? timestamp.replace(/:60(?=(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$)/iu, ":59")
-    : timestamp;
-  return Date.parse(normalized) + (leapSecond ? 1_000 : 0);
 }
 
 function newestReport(reports: TavernKeeperPreferredReport[]) {
   return [...reports].sort(
     (left, right) =>
-      rfc3339Epoch(right.completed_at) - rfc3339Epoch(left.completed_at) ||
+      compareRfc3339(right.completed_at, left.completed_at) ||
       right.report_id.localeCompare(left.report_id),
   )[0];
 }

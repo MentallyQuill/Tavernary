@@ -180,6 +180,41 @@ describe("deriveTavernKeeperCardStatus", () => {
     });
   });
 
+  test("orders whole and fractional leap seconds before the following minute", () => {
+    for (const [leapTimestamp, followingTimestamp] of [
+      ["2016-12-31T23:59:60Z", "2017-01-01T00:00:00Z"],
+      ["2016-12-31T23:59:60.500Z", "2017-01-01T00:00:00.100Z"],
+    ]) {
+      const followingReportId = "a".repeat(64);
+      const followingSha = "e".repeat(40);
+      expect(
+        deriveTavernKeeperCardStatus({
+          source,
+          snapshot,
+          preferredReports: [
+            report({
+              report_id: "f".repeat(64),
+              target_sha: "d".repeat(40),
+              completed_at: leapTimestamp,
+            }),
+            report({
+              report_id: followingReportId,
+              target_sha: followingSha,
+              completed_at: followingTimestamp,
+            }),
+          ],
+        }),
+      ).toMatchObject({
+        state: "gray",
+        reason: "outdated",
+        report: {
+          reportId: followingReportId,
+          scannedSha: followingSha,
+        },
+      });
+    }
+  });
+
   test("marks a confirmed SHA without a report as pending", () => {
     expect(
       deriveTavernKeeperCardStatus({
