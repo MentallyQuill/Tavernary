@@ -714,7 +714,7 @@ test("routes unavailable verified-owner copy review to manual publication", asyn
     }),
   );
 
-  expect(draft.record.summary).toBe(submittedSummary);
+  expect(draft.record.summary).toBe(submittedSummary.replace(/\s+/gu, " "));
   expect(draft.copyResult).toBeNull();
   expect(draft.copyReviewStatus).toBe("unavailable");
   expect(draft.copyReviewReasonCode).toBe("copy-review-unavailable");

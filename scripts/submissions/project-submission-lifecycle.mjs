@@ -3,7 +3,11 @@ import {
   submissionBranch,
 } from "./project-submission-pr.mjs";
 
-const removableLabels = ["needs-maintainer-review", "submission-pr-open"];
+const removableLabels = [
+  "needs-maintainer-review",
+  "submission-pr-open",
+  "submission-retryable",
+];
 
 export function planProjectSubmissionClosure(input) {
   const marker = parseSubmissionPullRequestMarker(input.body ?? "");

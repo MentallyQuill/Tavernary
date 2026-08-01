@@ -244,7 +244,7 @@ export async function draftProjectRecord(input) {
     input.enrichment?.status === "curated" ? input.enrichment : null;
   const summary =
     request.summary.mode === "manual"
-      ? (input.publishedSummary ?? request.summary.value)
+      ? boundedSummary(input.publishedSummary ?? request.summary.value)
       : typeof curated?.summary === "string"
         ? curated.summary
         : fallbackSummary(input, request);

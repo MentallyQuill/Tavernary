@@ -157,6 +157,7 @@ test("renders unavailable verified-owner copy as a manual review transaction", (
   });
 
   expect(body).toContain("Contextual catalog-copy review was unavailable");
+  expect(body).toContain("catalog-required whitespace normalization");
   expect(body).toContain(
     "A maintainer must inspect the owner wording before merging",
   );

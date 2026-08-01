@@ -234,6 +234,44 @@ test("protects a preserved repository-owner summary from scheduled enrichment", 
   expect(result.copyResult).toBeNull();
 });
 
+test("normalizes catalog-forbidden whitespace in a preserved owner summary", async () => {
+  const result = await draftProjectRecord({
+    admitted: {
+      ...admittedGithubExtension,
+      manifest: {
+        ...admittedGithubExtension.manifest,
+        metadata: {
+          summary: {
+            mode: "manual" as const,
+            value: "First sentence.\n\nSecond sentence.",
+          },
+          tags: { mode: "automatic" as const },
+        },
+      },
+    },
+    observation,
+    snapshot,
+    enrichment: null,
+    metadataAuthority: {
+      authorityType: "repository-owner",
+      actorId: 11,
+      actorLogin: "Owner",
+    },
+    metadataRequest: {
+      summary: {
+        mode: "manual",
+        value: "First sentence.\n\nSecond sentence.",
+      },
+      tags: { mode: "automatic" },
+    },
+    publishedSummary: "First sentence.\n\nSecond sentence.",
+    copyRequired: false,
+    now: "2026-07-25T18:00:00.000Z",
+  });
+
+  expect(result.record.summary).toBe("First sentence. Second sentence.");
+});
+
 test("keeps synthesized owner intake eligible for automatic enrichment", async () => {
   const result = await draftProjectRecord({
     admitted: admittedGithubExtension,

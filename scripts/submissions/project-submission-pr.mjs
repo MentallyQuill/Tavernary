@@ -123,7 +123,7 @@ export function renderSubmissionPullRequest(input) {
         "",
         "## Catalog-copy review",
         "",
-        "Contextual catalog-copy review was unavailable, so the submitted owner summary was preserved exactly.",
+        "Contextual catalog-copy review was unavailable, so the submitted owner wording was preserved with only catalog-required whitespace normalization.",
         "",
         "A maintainer must inspect the owner wording before merging this manual publication transaction.",
       ]
