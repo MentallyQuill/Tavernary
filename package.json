@@ -16,7 +16,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "search:benchmark": "vitest run tests/benchmarks/catalog-search-benchmark.test.ts --reporter=verbose",
-    "test:content": "vitest run tests/unit/validate-catalog.test.ts tests/unit/build-catalog.test.ts tests/unit/full-catalog-data.test.ts tests/unit/validate-kits.test.ts tests/unit/static-export-verification.test.ts",
+    "test:content": "vitest run tests/unit/validate-catalog.test.ts tests/unit/build-catalog.test.ts tests/unit/full-catalog-data.test.ts tests/unit/validate-kits.test.ts tests/unit/static-export-verification.test.ts tests/unit/playwright-runner.test.ts",
     "test:e2e": "node scripts/run-playwright.mjs tests/e2e",
     "test:scan": "node scripts/run-playwright.mjs --scan-fixture tests/e2e/catalog.spec.ts tests/visual/catalog.visual.spec.ts --grep \"hydrates (pending|current)|scan indicator\"",
     "test:scan-e2e": "node scripts/run-playwright.mjs --scan-fixture tests/e2e/catalog.spec.ts --grep \"hydrates (pending|current)\"",

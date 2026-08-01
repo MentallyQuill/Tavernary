@@ -276,6 +276,8 @@ export function TavernKeeperScanIndicator({
                     href={report.reportUrl}
                     onKeyDown={focusTrigger}
                     ref={reportLinkRef}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     View full report
                   </a>

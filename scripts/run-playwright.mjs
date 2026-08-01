@@ -2,6 +2,11 @@ import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 
 import { buildTavernKeeperTestExport } from "./build-tavernkeeper-test-export.mjs";
+import {
+  cleanupFixture,
+  fetchBounded,
+  serverResponds,
+} from "./playwright-runner.mjs";
 import { configuredBasePath } from "./verify-static-export.mjs";
 
 const port = process.env.PORT ?? "3000";
@@ -13,28 +18,25 @@ const scanFixtureIndex = playwrightArguments.indexOf("--scan-fixture");
 const useScanFixture = scanFixtureIndex !== -1;
 if (useScanFixture) playwrightArguments.splice(scanFixtureIndex, 1);
 
-async function serverIsListening() {
-  try {
-    await fetch(healthUrl);
-    return true;
-  } catch {
-    return false;
-  }
+async function serverIsListening(signal) {
+  return serverResponds(healthUrl, { signal });
 }
 
-async function assertPortIsFree() {
-  if (await serverIsListening()) {
+async function assertPortIsFree(signal) {
+  if (await serverIsListening(signal)) {
     throw new Error(`${healthUrl} is already in use`);
   }
 }
 
-async function waitForServer(server) {
+async function waitForServer(server, signal) {
   const deadline = Date.now() + 15_000;
   while (Date.now() < deadline) {
     if (server.exitCode !== null) {
       throw new Error(`Static export server exited with ${server.exitCode}`);
     }
-    if (await serverIsListening()) return;
+    if (signal?.aborted)
+      throw new Error("Static export server wait interrupted");
+    if (await serverIsListening(signal)) return;
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   throw new Error("Timed out waiting for the static export server");
@@ -46,8 +48,6 @@ function waitForExit(child) {
     child.once("exit", (code) => resolveExit(code ?? 1));
   });
 }
-
-await assertPortIsFree();
 
 let exitCode = 1;
 let server = null;
@@ -66,6 +66,7 @@ process.once("SIGINT", () => onSignal("SIGINT"));
 process.once("SIGTERM", () => onSignal("SIGTERM"));
 
 try {
+  await assertPortIsFree(fixtureAbortController.signal);
   if (useScanFixture) {
     fixture = await buildTavernKeeperTestExport({
       signal: fixtureAbortController.signal,
@@ -74,7 +75,7 @@ try {
       throw new Error(`TavernKeeper browser run received ${receivedSignal}`);
     }
     // The build can take long enough for another process to claim the port.
-    await assertPortIsFree();
+    await assertPortIsFree(fixtureAbortController.signal);
   }
   if (receivedSignal) {
     throw new Error(`TavernKeeper browser run received ${receivedSignal}`);
@@ -88,9 +89,11 @@ try {
     },
     stdio: ["ignore", "inherit", "inherit"],
   });
-  await waitForServer(server);
+  await waitForServer(server, fixtureAbortController.signal);
   if (fixture) {
-    const fixtureHtml = await (await fetch(healthUrl)).text();
+    const fixtureHtml = await (
+      await fetchBounded(healthUrl, { signal: fixtureAbortController.signal })
+    ).text();
     if (
       !fixtureHtml.includes("tavernkeeper-scan-indicator-green") ||
       !fixtureHtml.includes("tavernkeeper-scan-indicator-yellow")
@@ -110,21 +113,15 @@ try {
     },
   );
   exitCode = await waitForExit(playwright);
+  if (exitCode !== 0)
+    runError = new Error(`Playwright exited with ${exitCode}`);
 } catch (error) {
   runError = error;
   throw error;
 } finally {
   if (server?.exitCode === null) server.kill("SIGTERM");
   if (server) await waitForExit(server);
-  if (fixture) {
-    try {
-      await fixture.cleanup();
-    } catch (cleanupError) {
-      if (runError)
-        console.error("Failed to remove TavernKeeper fixture", cleanupError);
-      else throw cleanupError;
-    }
-  }
+  await cleanupFixture(fixture, { hasPrimaryFailure: Boolean(runError) });
   if (receivedSignal) exitCode = 130;
 }
 

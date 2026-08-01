@@ -1158,12 +1158,15 @@ test("hydrates current green and yellow scan reports with their external links",
     await expect(panel.locator("p").last()).toHaveText(
       /^Scanned [0-9a-f]{7} on July 31, 2026$/u,
     );
-    await expect(
-      panel.getByRole("link", { name: "View full report" }),
-    ).toHaveAttribute(
+    const reportLink = panel.getByRole("link", { name: "View full report" });
+    await expect(reportLink).toHaveAttribute(
       "href",
-      new RegExp(`browser-fixture-${state === "green" ? 1 : 2}/$`, "u"),
+      `https://mentallyquill.github.io/TavernKeeper/reports/browser-fixture-${
+        state === "green" ? 1 : 2
+      }/`,
     );
+    await expect(reportLink).toHaveAttribute("target", "_blank");
+    await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
     await expect(indicator).toHaveClass(
       new RegExp(`tavernkeeper-scan-indicator-${state}`),
     );

@@ -117,13 +117,15 @@ async function fixtureReports() {
 }
 
 async function copyFixtureWorkspace(workspaceDirectory) {
-  await Promise.all(
-    fixtureEntries.map((entry) =>
-      cp(resolve(rootDirectory, entry), resolve(workspaceDirectory, entry), {
+  for (const entry of fixtureEntries) {
+    await cp(
+      resolve(rootDirectory, entry),
+      resolve(workspaceDirectory, entry),
+      {
         recursive: true,
-      }),
-    ),
-  );
+      },
+    );
+  }
 }
 
 /** Builds colored test data without writing to the checked-out worktree. */

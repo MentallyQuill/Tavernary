@@ -22,3 +22,15 @@ The scan E2E contract covers exact heading/result content; green, yellow, gray, 
 - The CI visual job remains `windows-latest`; it invokes `npm run test:scan` once before the existing catalog visual suite, retaining the Windows-only snapshot convention.
 
 The ordinary full `catalog.spec.ts` baseline was also run without `--scan-fixture`: 26 passed, 3 fixture-only scan tests skipped, 6 failed. The failures are Wandlight model-family filtering, Directive owner search, two missing `aria-describedby` tooltip expectations, Recursion compact-card lookup, and SillyTavern tooltip lookup. A bounded `d18d3afd..HEAD` diff shows Task 6 production behavior changed only `tavernkeeper-scan-indicator.tsx` (the touch-only pointer-down handler); the listed paths are unrelated. They are retained for the release-gate task rather than being attributed to fixture work.
+
+## Fix round 2
+
+The runner now bounds every health/port request at two seconds and joins those requests to the fixture abort signal, so an accepting-but-silent listener cannot hold signal cleanup. It preserves a nonzero Playwright exit as the primary result if fixture cleanup also fails, logging that cleanup error separately. Fixture workspace input copies are sequential, preventing an early `Promise.all` rejection from racing cleanup against in-flight copies.
+
+Static-verifier coverage independently proves invalid repository values and unexpected properties. The scan-report link is asserted and implemented as the complete approved TavernKeeper HTTPS report path with `_blank` plus `noopener noreferrer`.
+
+Verification for this round:
+
+- `npm.cmd run test:content` — passed, 100 tests.
+- `npm.cmd run test:scan-e2e` — passed, 2 focused hydration/report-link tests.
+- `npm.cmd run test:scan` — passed, 8 focused browser/visual cases from one disposable fixture build.
