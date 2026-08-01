@@ -4,9 +4,9 @@
 
 **Goal:** Build TavernKeeper into an exact-SHA, fail-closed, hybrid repository scanner that publishes immutable sanitized reports for Tavernary.
 
-**Architecture:** TavernKeeper reconciles Tavernary's public target manifest into batches of at most five repositories and scans at most two repositories concurrently on disposable GitHub-hosted runners. Each isolated job performs safe inventory, all applicable deterministic scanners, and required chunked MiniMax M3 review; a separate serialized publisher validates sanitized candidates, commits immutable reports and operational state to `main`, deploys GitHub Pages, and wakes Tavernary.
+**Architecture:** TavernKeeper reconciles Tavernary's public target manifest into batches of at most five repositories and scans at most two repositories concurrently on disposable GitHub-hosted runners. Each isolated job performs safe inventory, all applicable deterministic scanners, and required chunked review through a runtime-configured OpenAI-compatible model; a separate serialized publisher validates sanitized candidates, commits immutable reports and operational state to `main`, deploys GitHub Pages, and wakes Tavernary.
 
-**Tech Stack:** Node.js 24, TypeScript 6 strict mode, Zod 4, Vitest 4, GitHub Actions, GitHub Pages, MiniMax M3, Gitleaks 8.30.1, OpenGrep 1.26.0, OSV-Scanner 2.4.0, zizmor 1.28.0, malcontent 1.25.7
+**Tech Stack:** Node.js 24, TypeScript 6 strict mode, Zod 4, Vitest 4, GitHub Actions, GitHub Pages, OpenAI-compatible Chat Completions (release configuration: NanoGPT `deepseek/deepseek-v4-flash`), Gitleaks 8.30.1, OpenGrep 1.26.0, OSV-Scanner 2.4.0, zizmor 1.28.0, malcontent 1.25.7
 
 ## Global Constraints
 
@@ -16,7 +16,7 @@
 - Scan GitHub repositories only. Codeberg, URL-only, organization-level, and private sources are outside V1.
 - Never execute target hooks, Actions, packages, scripts, tests, builds, macros, binaries, interpreters, containers, submodules, or Git LFS content.
 - Every published scan is bound to one positive GitHub repository ID, one canonical repository name, and one full lowercase 40-character SHA.
-- Every applicable deterministic scanner and MiniMax M3 must complete; otherwise publish no report.
+- Every applicable deterministic scanner and every required configured-model call must complete; otherwise publish no report.
 - Do not add a fallback model, fixed per-repository aggregate token cap, whole-job token estimate, or degraded report mode.
 - Use deterministic byte-bounded model chunks; every eligible file required by the selected scan mode must receive a valid provider response.
 - A report result is `green` or `yellow`; incomplete and failed operations are operational state and never public reports.
@@ -42,7 +42,7 @@
 - `src/inventory/inventory-handler.ts`: link-safe inventory and file classification.
 - `src/scanners/static-rules.ts`: TavernKeeper-owned lightweight structural detectors and redaction.
 - `src/scanners/external-tools.ts`: split into focused scanner adapters; retain only shared orchestration/types here.
-- `src/model/minimax-review.ts`: replace aggregate caps and disabled mode with required chunk orchestration.
+- `src/model/minimax-review.ts`: legacy provider-specific file to rename and replace with required model-agnostic chunk orchestration.
 - `src/orchestrator/scan-handler.ts`: atomic complete-or-error scan orchestration.
 
 ### New policy, contracts, and rules
@@ -67,7 +67,7 @@
 - `src/model/redaction.ts`: stable secret-like literal replacement.
 - `src/model/corpus.ts`: standard/deep eligible corpus selection.
 - `src/model/chunker.ts`: deterministic byte-bounded chunks and semantic splits.
-- `src/model/minimax-client.ts`: one strict provider request with usage extraction.
+- `src/model/openai-compatible-client.ts`: one strict provider request with usage extraction.
 - `src/model/chunk-cache.ts`: sanitized content-addressed chunk-result cache.
 - `src/model/synthesis.ts`: final normalized-finding synthesis.
 - `src/queue/backlog.ts`: target reconciliation, coalescing, priority, age boost, and five-target batches.
@@ -197,7 +197,9 @@ test("loads the V1 policy with five-target and two-runner limits", async () => {
   expect(policy.version).toBe("1");
   expect(policy.queue).toEqual({ batchSize: 5, maxParallel: 2 });
   expect(policy.history.maxCommits).toBe(20);
-  expect(policy.model.id).toBe("MiniMax-M3");
+  expect(policy.model.protocol).toBe("openai-compatible-chat-completions");
+  expect(policy.model).not.toHaveProperty("provider");
+  expect(policy.model).not.toHaveProperty("id");
   expect("aggregateRepositoryTokenCap" in policy.model).toBe(false);
 });
 ```
@@ -225,8 +227,7 @@ Expected: FAIL because policy files and loader do not exist.
   },
   "commands": { "timeoutMs": 2700000, "maxOutputBytes": 104857600 },
   "model": {
-    "provider": "minimax",
-    "id": "MiniMax-M3",
+    "protocol": "openai-compatible-chat-completions",
     "chunkBytes": 524288,
     "chunkOverlapBytes": 8192,
     "maxOutputTokensPerChunk": 8192,
@@ -594,20 +595,21 @@ git add src/model/redaction.ts src/model/corpus.ts src/model/chunker.ts tests/mo
 git commit -m "feat(model): stream complete repository corpus"
 ```
 
-### Task 9: Implement Required MiniMax M3 Review, Cache Resume, and Final Synthesis
+### Task 9: Implement Required Configured-Model Review, Cache Resume, and Final Synthesis
 
 **Files:**
-- Create: `src/model/minimax-client.ts`
+- Create: `src/model/openai-compatible-client.ts`
 - Create: `src/model/chunk-cache.ts`
 - Create: `src/model/synthesis.ts`
-- Replace: `src/model/minimax-review.ts`
-- Modify: `tests/minimax-review.test.ts`
+- Rename: `src/model/minimax-review.ts` to `src/model/model-review.ts`
+- Rename: `tests/minimax-review.test.ts` to `tests/model-review.test.ts`
 - Create: `tests/model-cache.test.ts`
 - Create: `tests/model-synthesis.test.ts`
 
 **Interfaces:**
-- Produces: `reviewWithMiniMax(spec): Promise<ModelReviewResult>` where success includes one validated result per chunk, final findings, and summed actual usage.
-- Cache key: content hashes + `MiniMax-M3` + prompt-policy version + scanner-policy version.
+- Produces: `reviewWithConfiguredModel(spec): Promise<ModelReviewResult>` where success includes one validated result per chunk, final findings, and summed actual usage.
+- Runtime configuration: exact full HTTPS endpoint + API key + model identifier from `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`.
+- Cache key: content hashes + endpoint origin + configured model identifier + prompt-policy version + scanner-policy version.
 
 - [ ] **Step 1: Replace disabled/truncated tests with required all-chunk and resume tests**
 
@@ -615,19 +617,19 @@ git commit -m "feat(model): stream complete repository corpus"
 expect(provider).toHaveBeenCalledTimes(chunks.length + 1);
 expect(result.completedChunkIds).toEqual(chunks.map(({ id }) => id));
 expect(result.usage).toEqual({ inputTokens: 1200, outputTokens: 300, cacheReadTokens: 400, reasoningTokens: 90 });
-await expect(reviewWithMiniMax({ ...spec, apiKey: null })).rejects.toMatchObject({ code: "MODEL_CONFIGURATION", scope: "system" });
+await expect(reviewWithConfiguredModel({ ...spec, apiKey: null })).rejects.toMatchObject({ code: "MODEL_CONFIGURATION", scope: "system" });
 expect(secondRunProvider).toHaveBeenCalledTimes(uncachedChunks.length + 1);
 ```
 
 - [ ] **Step 2: Run model tests and verify failure**
 
-Run: `npm test -- tests/minimax-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts`
+Run: `npm test -- tests/model-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts`
 
 Expected: FAIL because the frozen code permits disabled/skipped model states and makes one capped request.
 
 - [ ] **Step 3: Implement one strict chunk request**
 
-POST to the configured MiniMax `/chat/completions` endpoint with model exactly `MiniMax-M3`, temperature zero, the per-chunk output ceiling, the hostile-data system instruction, normalized deterministic context, and redacted path/range segments. Parse the JSON object only after stripping bounded reasoning wrappers; validate every returned path and line against the submitted segment ranges. Extract actual input/output and provider-returned cache/reasoning token categories after each response.
+POST to the configured endpoint exactly as supplied; do not append `/chat/completions`. Require HTTPS without user info, query, fragment, loopback/private destinations, or cross-origin redirects. Send the configured model identifier, temperature zero, the per-chunk output ceiling, JSON-object response mode, the hostile-data system instruction, normalized deterministic context, and redacted path/range segments. Parse only the assistant content field, never provider reasoning fields. Validate every returned path and line against the submitted segment ranges. Extract actual input/output and provider-returned cache/reasoning token categories after each response.
 
 - [ ] **Step 4: Implement sanitized content-addressed cache records**
 
@@ -639,11 +641,11 @@ The final call receives normalized deterministic/model findings and relationship
 
 - [ ] **Step 6: Run tests and commit**
 
-Run: `npm test -- tests/minimax-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts && npm run typecheck`
+Run: `npm test -- tests/model-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts && npm run typecheck`
 
 ```bash
-git add src/model tests/minimax-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts
-git commit -m "feat(model): require complete MiniMax review"
+git add src/model tests/model-review.test.ts tests/model-cache.test.ts tests/model-synthesis.test.ts
+git commit -m "feat(model): require complete model review"
 ```
 
 ### Task 10: Make Repository Scans Atomic and Complete
@@ -679,11 +681,11 @@ Expected: FAIL because the frozen handler returns public incomplete reports and 
 
 - [ ] **Step 3: Implement the ordered atomic pipeline**
 
-Execute inventory, history planning, deterministic scanning, corpus selection, MiniMax review, synthesis, finding normalization, coverage aggregation, result derivation, and candidate sanitation. Return immediately on any required failure. Put checkout/raw-output cleanup in `finally` and never include an incomplete report in a result union.
+Execute inventory, history planning, deterministic scanning, corpus selection, configured-model review, synthesis, finding normalization, coverage aggregation, result derivation, and candidate sanitation. Return immediately on any required failure. Put checkout/raw-output cleanup in `finally` and never include an incomplete report in a result union.
 
 - [ ] **Step 4: Classify repository versus system failures**
 
-Repository scope includes unavailable SHA, repository security ceiling, repository-specific parser input, and repeatedly invalid model output for one target. System scope includes missing/broken required tool, MiniMax authentication/quota/provider outage, contract mismatch, publisher defect, and Pages failure.
+Repository scope includes unavailable SHA, repository security ceiling, repository-specific parser input, and repeatedly invalid model output for one target. System scope includes a missing/broken required tool, configured-model authentication/quota/provider outage, contract mismatch, publisher defect, and Pages failure.
 
 - [ ] **Step 5: Run tests and commit**
 
@@ -743,7 +745,7 @@ Schedule attempts at initial time plus one, two, and three hours. Intermediate a
 
 - [ ] **Step 6: Implement secret-free telemetry and allowance warnings**
 
-Record desired/pending/active/completed/retrying/blocked/superseded counts, oldest pending age, batch throughput, per-scanner applicability/runtime, actual MiniMax input/output/cache-read/reasoning usage, cache hits/misses, retry class/attempt, report commit, Pages verification, wake timestamps, and contract/scanner/prompt/policy versions. Emit 50%, 75%, and 90% allowance warnings only when reliable usage/allowance data exists; never impose a lower cutoff. Exclude target source, raw errors, provider bodies, credentials, and secret-shaped values.
+Record desired/pending/active/completed/retrying/blocked/superseded counts, oldest pending age, batch throughput, per-scanner applicability/runtime, actual configured-model input/output/cache-read/reasoning usage, cache hits/misses, retry class/attempt, report commit, Pages verification, wake timestamps, and contract/scanner/prompt/policy versions. Emit 50%, 75%, and 90% allowance warnings only when reliable usage/allowance data exists; never impose a lower cutoff. Exclude target source, raw errors, provider bodies, credentials, and secret-shaped values.
 
 - [ ] **Step 7: Run tests and commit**
 
@@ -880,7 +882,7 @@ git commit -m "feat(reports): add immutable staff adjudication"
 
 **Interfaces:**
 - Reconcile writes a JSON matrix with at most five targets; Actions sets `strategy.max-parallel: 2`.
-- Each scan job uses prepare, model-review, and finalize steps; only the model-review step receives `MINIMAX_API_KEY`.
+- Each scan job uses prepare, model-review, and finalize steps; only the model-review step receives `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`.
 - Scan jobs upload sanitized candidate/state-transition artifacts only.
 - Publisher alone receives `contents: write`; scan jobs receive no repository write token.
 
@@ -905,7 +907,7 @@ Expected: FAIL because CLIs and workflows do not exist.
 
 - [ ] **Step 3: Implement JSON-only CLIs**
 
-Every CLI validates file/env input, writes machine output to stdout, diagnostics to stderr without source/error bodies, and exits nonzero only for terminal/exhausted failure. `prepare-target` performs checkout, inventory, history, deterministic scanners, corpus selection, and chunk planning with no provider key. `review-target` refetches Tavernary's public manifest immediately before MiniMax; if the queued SHA is obsolete it emits an obsolete transition and spends no model tokens, otherwise it processes the planned chunks and receives the provider key only in that step. `finalize-target` receives no provider key, verifies complete chunk coverage, synthesizes/normalizes, sanitizes the candidate, and deletes the ephemeral session in `finally`.
+Every CLI validates file/env input, writes machine output to stdout, diagnostics to stderr without source/error bodies, and exits nonzero only for terminal/exhausted failure. `prepare-target` performs checkout, inventory, history, deterministic scanners, corpus selection, and chunk planning with no provider credentials. `review-target` refetches Tavernary's public manifest immediately before configured-model work; if the queued SHA is obsolete it emits an obsolete transition and spends no model tokens, otherwise it processes the planned chunks and receives the three `TAVERNKEEPER_*` model settings only in that step. `finalize-target` receives no provider credentials, verifies complete chunk coverage, synthesizes/normalizes, sanitizes the candidate, and deletes the ephemeral session in `finally`.
 
 - [ ] **Step 4: Implement `reconcile.yml`**
 
@@ -930,7 +932,7 @@ actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
 
 `retry.yml` runs hourly and dispatches only due automatic retries. Deep, policy, and adjudication workflows use input validation, `environment: tavernkeeper-staff`, no public event trigger, and the same global scan concurrency. Manual retry/pause/resume are input choices on a staff workflow and cannot accept a clone URL, token budget, model, or arbitrary command.
 
-Automatic scan jobs use `environment: tavernkeeper-scanner`, restricted to protected `main` without required reviewers. Manual deep/policy/oversized scans use `environment: tavernkeeper-staff` with required reviewers. Store `MINIMAX_API_KEY` separately in both environments and expose it only on the MiniMax request step; scanner subprocess steps receive no provider key.
+Automatic scan jobs use `environment: tavernkeeper-scanner`, restricted to protected `main` without required reviewers. Manual deep/policy/oversized scans use `environment: tavernkeeper-staff` with required reviewers. Configure `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL` for both paths and expose them only on the configured-model request step; scanner subprocess steps receive no provider credentials. The release values are NanoGPT's appropriate full Chat Completions endpoint and `deepseek/deepseek-v4-flash`, but workflows never hard-code either value.
 
 - [ ] **Step 6: Implement reusable exact-SHA Pages deployment and Tavernary wake**
 
@@ -986,7 +988,7 @@ Run exact checkout/inventory/scanners/model doubles/publisher against each fixtu
 
 - [ ] **Step 4: Write operator and public documentation**
 
-Document advisory semantics, scanner coverage, exact-SHA identity, green/yellow meaning, no-execution boundary, public-report limitations, appeals, staff pause/retry/resume/deep/policy/adjudication procedures, MiniMax quota recovery, oversized repository procedure, credentials, two GitHub Apps, Pages recovery, and AGPL/third-party licensing. Document that reports are retained indefinitely and immutable; a legal or credential-exposure removal is a separately approved, audited incident that must address both Pages and Git history rather than a normal publisher feature.
+Document advisory semantics, scanner coverage, exact-SHA identity, green/yellow meaning, no-execution boundary, public-report limitations, appeals, staff pause/retry/resume/deep/policy/adjudication procedures, configured-model quota recovery, oversized repository procedure, credentials, two GitHub Apps, Pages recovery, and AGPL/third-party licensing. Document that reports are retained indefinitely and immutable; a legal or credential-exposure removal is a separately approved, audited incident that must address both Pages and Git history rather than a normal publisher feature.
 
 - [ ] **Step 5: Add the complete check script and run every local gate**
 
@@ -1022,7 +1024,7 @@ Before handing TavernKeeper to the cross-repository rollout plan, capture:
 3. `npm run test:e2e` passes with the booby-trapped fixture proving zero execution.
 4. `npm run build` passes.
 5. Workflow policy confirms five-target batches, maximum parallel two, exact Action SHAs, job-local permissions, and no public scan trigger.
-6. A failed required scanner or MiniMax call produces no report candidate.
+6. A failed required scanner or configured-model call produces no report candidate.
 7. A successful fixture report validates against both JSON Schemas, contains no seeded secret/source excerpt, and renders as script-free HTML.
 8. `operations/state.json` contains no source, raw error, provider body, or credential material.
 9. The branch contains no generated report branch, server, database, fallback model, aggregate token cap, or Codeberg scanning path.

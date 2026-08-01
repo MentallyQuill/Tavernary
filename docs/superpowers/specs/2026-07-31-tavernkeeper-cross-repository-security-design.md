@@ -9,9 +9,9 @@
 
 TavernKeeper is a separate, public, AGPL-3.0 repository that performs advisory security scans of GitHub repositories listed by Tavernary. Tavernary remains the authority over which repositories are eligible. TavernKeeper remains the authority over scanner policy and immutable scan reports.
 
-The two repositories communicate asynchronously through public, versioned JSON contracts and authenticated GitHub Actions wake-up events. Tavernary publishes an exact-SHA target manifest. TavernKeeper scans those targets in disposable GitHub-hosted runners, commits sanitized reports to its normal `main` branch, and publishes them through GitHub Pages. Tavernary imports validated summaries and displays an inline colored shield beside each project title.
+The two repositories communicate asynchronously through public, versioned JSON contracts and authenticated GitHub Actions wake-up events. Tavernary publishes an exact-SHA target manifest. TavernKeeper scans those targets in disposable GitHub-hosted runners, commits sanitized reports to its normal `main` branch, and publishes them through GitHub Pages. Tavernary imports validated summaries and displays an inline colored scan indicator beside each project title.
 
-No target code is executed. No scan result hides, quarantines, ranks, or certifies a Tavernary listing. A green shield means only that TavernKeeper completed the defined scan policy at the displayed commit without actionable findings. It never means safe, verified, or trusted.
+No target code is executed. No scan result hides, quarantines, ranks, or certifies a Tavernary listing. A green scan indicator means only that TavernKeeper completed the defined scan policy at the displayed commit without actionable findings. It never means safe, verified, or trusted.
 
 This design requires no persistent backend, database, webhook receiver, scanning daemon, or additional report repository. GitHub Actions performs the work; GitHub Pages serves the contracts and reports.
 
@@ -21,7 +21,7 @@ TavernKeeper must:
 
 1. Detect evidence of malware, credential theft, suspicious network transmission, dangerous installation behavior, malicious or vulnerable dependencies, unsafe GitHub automation, obfuscation, and other code requiring review.
 2. Bind every result to one immutable GitHub repository identity and exact commit SHA.
-3. Combine reproducible deterministic scanners with required MiniMax M3 review.
+3. Combine reproducible deterministic scanners with required, runtime-configured OpenAI-compatible model review.
 4. Inspect the complete current tree deterministically and bounded recent history where the scanner supports it.
 5. Offer a staff-only deep mode that sends every eligible first-party text file through model review.
 6. Publish useful public evidence without publishing secrets, raw payloads, or source excerpts.
@@ -66,7 +66,7 @@ A V1 target requires:
 - A healthy Tavernary repository snapshot
 - A full lowercase 40-character head SHA
 
-Codeberg, URL-only, and organization-level entries are excluded and display no shield.
+Codeberg, URL-only, and organization-level entries are excluded and display no scan indicator.
 
 ### 4.4 Public result vocabulary
 
@@ -75,9 +75,9 @@ Only complete scans produce reports. A successful public report has one of two r
 - `green`: no active medium-or-higher finding with medium-or-higher confidence
 - `yellow`: at least one active medium-or-higher finding with medium-or-higher confidence
 
-Gray is a Tavernary presentation state, not a TavernKeeper report result. It means Tavernary has no completed report that can support a current colored shield. Causes include a pending first scan, an outdated report, an unavailable current source snapshot, or an operation that failed and therefore published nothing.
+Gray is a Tavernary presentation state, not a TavernKeeper report result. It means Tavernary has no completed report that can support a current colored scan indicator. Causes include a pending first scan, an outdated report, an unavailable current source snapshot, or an operation that failed and therefore published nothing.
 
-Low-confidence observations and low or informational findings remain visible but do not turn a shield yellow.
+Low-confidence observations and low or informational findings remain visible but do not turn a scan indicator yellow.
 
 ## 5. Responsibility and Trust Boundaries
 
@@ -89,7 +89,7 @@ Low-confidence observations and low or informational findings remain visible but
 - The public target manifest and its schema
 - Local report-summary validation and storage
 - Freshness calculation
-- Card shield and popover presentation
+- Card scan indicator and popover presentation
 - Tavernary deployment
 
 ### 5.2 TavernKeeper owns
@@ -124,7 +124,7 @@ The built-in `GITHUB_TOKEN` remains repository-local. TavernKeeper never receive
 
 ## 6. Architecture and Handshake
 
-The operating loop begins when Tavernary refreshes repository state and publishes its exact-SHA target manifest. Tavernary wakes TavernKeeper, whose reconciler computes and scans the missing work in isolation. TavernKeeper then publishes its report index and wakes Tavernary. Tavernary validates and imports the summaries before rebuilding its static catalog and card shields.
+The operating loop begins when Tavernary refreshes repository state and publishes its exact-SHA target manifest. Tavernary wakes TavernKeeper, whose reconciler computes and scans the missing work in isolation. TavernKeeper then publishes its report index and wakes Tavernary. Tavernary validates and imports the summaries before rebuilding its static catalog and card scan indicators.
 
 The wake-up events are deliberately non-authoritative. A payload cannot select a repository, SHA, scan mode, token budget, priority, or report URL. It says only that the receiver should reconcile its public input contract.
 
@@ -274,7 +274,7 @@ Priority order:
 
 Staff-only deep scans use a separate priority lane. Age-based priority prevents starvation.
 
-A frequently updated repository occupies one queue position. If it advances through multiple SHAs before its scan starts, TavernKeeper scans only the latest published target. Immediately before invoking MiniMax, TavernKeeper refetches the manifest; an obsolete queued SHA is abandoned before model spend and replaced by the current SHA.
+A frequently updated repository occupies one queue position. If it advances through multiple SHAs before its scan starts, TavernKeeper scans only the latest published target. Immediately before invoking the configured model, TavernKeeper refetches the manifest; an obsolete queued SHA is abandoned before model spend and replaced by the current SHA.
 
 If the SHA changes after model review begins, the historical report may complete and publish, but Tavernary will render it gray/outdated until the newer target completes.
 
@@ -367,28 +367,30 @@ For model review, an eligible file is a regular, safely inventoried, first-party
 - Deterministic scanners inspect the complete current tree.
 - Gitleaks inspects bounded recent history.
 - The change range starts at the newest previously scanned ancestor.
-- MiniMax receives normalized deterministic findings and every eligible file changed in that range.
+- The configured model receives normalized deterministic findings and every eligible file changed in that range.
 - If no previously scanned ancestor is reachable, the change range covers up to the newest 20 commits.
 
 ### 11.2 Staff-only deep scan
 
 - Repeats every deterministic stage.
-- Sends every eligible first-party text file through MiniMax review.
+- Sends every eligible first-party text file through the configured model review.
 - Excludes raw binaries, archives, dependency lockfiles, vendored dependencies, generated bundles, and heavily minified files from model input.
 - Reports excluded-category file and byte counts.
 - Produces a new immutable preferred report without deleting the standard report.
 - Requires TavernKeeper write permission and approval through the protected staff operations environment.
 
-## 12. Streaming MiniMax M3 Review
+## 12. Streaming Model Review
 
-MiniMax M3 is required. TavernKeeper never substitutes another model automatically.
+Model review is required, but TavernKeeper is provider- and model-agnostic. It speaks the OpenAI-compatible Chat Completions protocol and reads the full HTTPS endpoint, API key, and model identifier at runtime from `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`. Scanner policy pins the protocol and safety ceilings, not a vendor or model. TavernKeeper posts to the configured endpoint exactly; it does not append a route, follow cross-origin redirects, or silently substitute a different endpoint or model.
+
+Changing the endpoint origin, configured model identifier, prompt-policy version, or scanner-policy version creates a distinct cache and report identity. Every published report records the actual provider origin and model identifier used. The planned release configuration is NanoGPT with `deepseek/deepseek-v4-flash`; that choice is operational configuration, not architecture. NanoGPT's subscription route is used only when the configured model is covered by the subscription.
 
 There is no fixed per-repository aggregate token limit and no predicted whole-job token budget. Repository size determines the number of model calls.
 
 Processing rules:
 
 1. Inventory selects the complete eligible corpus for the chosen mode.
-2. Files are grouped into deterministic byte-bounded chunks that remain comfortably below M3's per-request context limit.
+2. Files are grouped into deterministic byte-bounded chunks that remain comfortably below the configured model's per-request context limit.
 3. Small repositories naturally produce one chunk; large repositories produce more.
 4. Related files, directory context, entry points, manifests, imports, and deterministic findings remain together where possible.
 5. Oversized eligible source files are split on stable semantic boundaries with bounded overlap.
@@ -405,7 +407,7 @@ Model output is strictly validated. A model finding must reference a submitted r
 Successful sanitized chunk results may be cached privately by:
 
 ```text
-content hashes + model ID + prompt-policy version + scanner-policy version
+content hashes + endpoint origin + model ID + prompt-policy version + scanner-policy version
 ```
 
 The cache never contains raw source chunks, prompts, credentials, or raw model responses. Cache loss changes cost and runtime only. Incomplete cached work is never public.
@@ -423,7 +425,7 @@ Provider quota exhaustion is a system-wide hard failure. No partial report is pu
 Each normalized finding contains:
 
 - Stable fingerprint
-- Originating scanner or `model:minimax`
+- Originating scanner or a normalized `model:<provider>` identity
 - Rule ID and category
 - `critical`, `high`, `medium`, `low`, or `info` severity
 - `high`, `medium`, or `low` confidence
@@ -490,41 +492,43 @@ Reports remain indefinitely unless a legal or credential-exposure emergency requ
 
 Report HTML is static and script-free. It escapes all repository-controlled text, applies a restrictive content-security policy, loads no remote images, and links only to the canonical GitHub repository, immutable commit, public TavernKeeper rule documentation, and Tavernary.
 
-## 15. Tavernary Shield and Popover
+## 15. Tavernary Scan Indicator and Popover
 
 ### 15.1 Placement
 
-The shield appears directly after the project title's final visible character on the same line. A short title leaves ordinary empty card space after the shield. A constrained long title truncates before the shield rather than pushing the shield to a card corner.
+The scan indicator appears directly after the project title's final visible character on the same line. A short title leaves ordinary empty card space after the scan indicator. A constrained long title truncates before the scan indicator rather than pushing the scan indicator to a card corner.
 
-The title and shield use an inline flex row:
+The title and scan indicator use an inline flex row:
 
 - The title uses only its required width until constrained.
-- The shield follows with a small fixed gap.
-- The shield never shrinks or ellipsizes.
-- A long title ellipsizes earlier to reserve shield space.
-- The ellipsis never overlaps or consumes the shield.
+- The scan indicator follows with a small fixed gap.
+- The scan indicator never shrinks or ellipsizes.
+- A long title ellipsizes earlier to reserve scan indicator space.
+- The ellipsis never overlaps or consumes the scan indicator.
 
-The shield is an independent button. Tavernary's card markup must preserve whole-card repository navigation without nesting that button inside a link. The card becomes a semantic container with a stretched primary repository link and higher-layer independent controls for TavernKeeper, Kit actions, and relationship actions.
+The scan indicator is an independent button. Tavernary's card markup must preserve whole-card repository navigation without nesting that button inside a link. The card becomes a semantic container with a stretched primary repository link and higher-layer independent controls for TavernKeeper, Kit actions, and relationship actions.
+
+The glyph is the supplied Remix Icon `scan-2-fill` shape in a `0 0 24 24` view box. Tavernary stores it locally, renders it with `currentColor`, and does not use it as TavernKeeper branding or a safety certification. The individual icon remains governed by the Remix Icon License v1.0 and is identified separately from Tavernary's AGPL application code.
 
 ### 15.2 Visual states
 
-- Green shield: current complete green report
-- Yellow shield: current complete yellow report
-- Gray shield: pending, outdated, or current-source state unavailable because no complete report supports a confirmed current SHA
-- No shield: unsupported source type
+- Green scan indicator: current complete green report
+- Yellow scan indicator: current complete yellow report
+- Gray scan indicator: pending, outdated, or current-source state unavailable because no complete report supports a confirmed current SHA
+- No scan indicator: unsupported source type
 
-Color is never the only signal. Accessible labels name the state.
+Color is never the only signal. Accessible labels name the state as `TavernKeeper scan: ...` and never use `safe`, `trusted`, `verified`, `protected`, or similar certification language. The scan glyph communicates only that TavernKeeper has scan state to show.
 
 ### 15.3 Interaction
 
-The shield opens a non-modal anchored popover:
+The scan indicator opens a non-modal anchored popover:
 
 - Desktop pointer hover
 - Keyboard focus
 - Touch tap
-- Remains open while pointer or focus is within the shield or panel
+- Remains open while pointer or focus is within the scan indicator or panel
 - Closes after a short anti-flicker pointer-exit delay
-- Closes on Escape, outside click, focus leaving, or another shield opening
+- Closes on Escape, outside click, focus leaving, or another scan indicator opening
 - Repositions to avoid viewport collision
 - Is not clipped by card or catalog containers
 - Removes transition motion when reduced motion is requested
@@ -612,7 +616,7 @@ Behavior:
 Examples:
 
 - Required scanner missing or broken
-- MiniMax authentication, quota, or provider-wide failure
+- Configured-model authentication, quota, or provider-wide failure
 - Public contract incompatibility
 - Candidate report validation failure suggesting a publisher defect
 - Report commit or Pages publication failure
@@ -669,14 +673,14 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
 
 - Target scripts, hooks, Actions, packages, tests, builds, containers, macros, binaries, and interpreters are never executed.
 - Trusted scanners use argument arrays with shell execution disabled.
-- Scanner subprocesses receive a restricted environment without GitHub write tokens, MiniMax keys, or unrelated secrets.
+- Scanner subprocesses receive a restricted environment without GitHub write tokens, model-provider credentials, or unrelated secrets.
 - Scanner versions and downloaded artifacts are pinned and checksum-verified.
 - Runtime, memory, output, file, and archive work are bounded.
 
 ### 18.3 Credential separation
 
 - Scan jobs have read-only access to TavernKeeper source and public targets.
-- Only the MiniMax request step receives the MiniMax key.
+- Only the configured model request step receives `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`.
 - Only the serialized publication job receives TavernKeeper contents write permission.
 - Only deployment jobs receive Pages and identity-token permission.
 - Bridge Apps receive destination Actions write permission only.
@@ -695,7 +699,7 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
 - Tavernary's manifest is the only automatic authority.
 - One repository occupies one queue slot and obsolete SHAs coalesce.
 - Exact-SHA, content-hash, model, prompt-policy, and scanner-policy keys prevent duplicate spend.
-- A manifest freshness check occurs before MiniMax calls.
+- A manifest freshness check occurs before configured-model calls.
 - Staff controls are permission-gated.
 
 ## 19. Workflows
@@ -730,7 +734,7 @@ Every run reports secret-free operational counts:
 - Oldest pending age
 - Batch throughput
 - Per-scanner applicability and runtime
-- Actual MiniMax input, cache-read, reasoning, and output usage
+- Actual configured-model input, cache-read, reasoning, and output usage
 - Chunk cache hit and miss counts
 - Retry classification and attempt number
 - Report commit, Pages verification, and wake-up timestamps
@@ -770,9 +774,9 @@ The public report includes approved per-report usage totals. Operational failure
 - Target deduplication by immutable GitHub repository ID
 - Unsupported-source exclusion
 - Report origin, size, schema, identity, and URL validation
-- Current, outdated, pending, stale-source, and unsupported shield states
+- Current, outdated, pending, stale-source, and unsupported scan indicator states
 - One report shared across multiple cards from one source
-- Inline title/shield layout and long-title ellipsis
+- Inline title/scan indicator layout and long-title ellipsis
 - Whole-card navigation without nested controls
 - Hover, focus, touch, Escape, outside click, viewport collision, and reduced motion
 - Static-export presence of the target manifest
@@ -786,16 +790,16 @@ The public report includes approved per-report usage totals. Operational failure
 - Required-tool and model failures publish nothing.
 - Wake-up and scheduled recovery both succeed in each direction.
 - Tavernary never derives green or yellow from an unmatched or unhealthy SHA.
-- Responsive and keyboard tests pass for inline shields and popovers.
+- Responsive and keyboard tests pass for inline scan indicators and popovers.
 - TavernKeeper staff rehearse pause, retry, incident, resume, deep scan, oversized scan, policy campaign, and appeal adjudication.
 
 ## 22. Rollout
 
 1. Implement contracts and hostile fixtures without live publication.
 2. Scan controlled benign and intentionally malicious fixture repositories.
-3. Scan Tavernary staff-owned canaries and manually inspect reports.
-4. Enable automatic publication for a mixed five-repository catalog batch while observing Tavernary import.
-5. Drain the initial catalog backlog in five-repository batches with two concurrent scans.
+3. Scan only the approved `MentallyQuill/Wandlight` and `MentallyQuill/Recursion` canaries and manually inspect reports. `MentallyQuill/Saga` remains optional and requires a separate staff decision.
+4. Prove five-repository batching, two-runner concurrency, coalescing, and continuation against synthetic manifests and fixtures without scanning any repository outside `MentallyQuill`.
+5. Keep live operations restricted to the approved canary allowlist during implementation acceptance.
 6. Enable normal bidirectional wake-ups and scheduled reconciliation.
 7. Enable staff-only deep scans after standard scanning is stable.
 8. Monitor retry rates, false-positive appeals, model usage, and oldest backlog age before changing concurrency or scanner policy.
@@ -822,13 +826,13 @@ The system is complete only when:
 
 1. Tavernary publishes a valid exact-SHA GitHub target manifest.
 2. Tavernary successfully wakes TavernKeeper through the one-way App.
-3. TavernKeeper derives and drains a five-repository backlog with maximum concurrency two.
+3. TavernKeeper proves five-repository backlog behavior with maximum concurrency two while live acceptance scans only the approved Wandlight and Recursion repositories.
 4. TavernKeeper scans without executing target content.
-5. Every applicable required scanner and MiniMax completes before publication.
+5. Every applicable required scanner and configured-model call completes before publication.
 6. TavernKeeper publishes immutable sanitized reports and verifies Pages.
 7. TavernKeeper successfully wakes Tavernary through the opposite one-way App.
 8. Tavernary imports only identity- and SHA-valid summaries.
-9. Cards display an inline green, yellow, or gray shield with the approved concise popover.
+9. Cards display an inline green, yellow, or gray scan indicator with the approved concise popover.
 10. Failed operations publish nothing and follow the approved delayed retry policy.
 11. Staff can perform every privileged operation and appeal adjudication.
 12. Cross-repository, hostile-fixture, accessibility, static-export, and workflow-permission gates pass.
@@ -843,4 +847,6 @@ The system is complete only when:
 - [OSV-Scanner](https://github.com/google/osv-scanner)
 - [zizmor](https://docs.zizmor.sh/)
 - [malcontent](https://github.com/chainguard-dev/malcontent)
-- [MiniMax M3](https://www.minimax.io/models/text/m3)
+- [NanoGPT Chat Completions API](https://docs.nano-gpt.com/api-reference/endpoint/chat-completion)
+- [DeepSeek V4 Flash on NanoGPT](https://nano-gpt.com/models/text/deepseek/deepseek-v4-flash)
+- [Remix Icon](https://github.com/Remix-Design/RemixIcon)

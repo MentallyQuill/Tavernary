@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make Tavernary publish exact-SHA scan targets, import and validate TavernKeeper's immutable report summaries, and render the approved inline shield/popover on every supported project card.
+**Goal:** Make Tavernary publish exact-SHA scan targets, import and validate TavernKeeper's immutable report summaries, and render the approved inline scan indicator/popover on every supported project card.
 
 **Architecture:** Tavernary remains the target and freshness authority. Its static catalog build emits one healthy GitHub target per repository ID and derives each card's local green/yellow/gray state from a tracked, atomically imported TavernKeeper report index; GitHub Pages publishes the target manifest, and two input-free workflows provide immediate wake-ups plus six-hour reconciliation.
 
@@ -13,16 +13,16 @@
 - Preserve the frozen Tavernary commit `174bf44f` as reviewable starting material; reuse its valid exact-SHA/schema work but replace anything that differs from the approved written design.
 - Tavernary is the only automatic target authority. A public form, issue, comment, URL parameter, or TavernKeeper payload cannot request a scan.
 - Publish targets for active, public, healthy GitHub repository sources only, deduplicated by immutable positive GitHub repository ID and bound to a full lowercase 40-character head SHA.
-- Do not publish targets or shields for Codeberg, URL-only, or GitHub-organization sources.
+- Do not publish targets or scan indicators for Codeberg, URL-only, or GitHub-organization sources.
 - Derive canonical GitHub URLs from Tavernary's validated source record, not a remote notification or imported report.
 - Treat TavernKeeper wake payloads as non-authoritative; always fetch the configured public report index independently.
 - Reject cross-origin redirects, unknown fields/schema versions, invalid identities/SHAs/dates/results/counts, duplicate preferred identities, unsafe URLs, oversized responses, and mismatches against Tavernary's source registry.
 - Preserve the previous valid local report summary file when a fetch or validation fails.
 - Derive current/outdated state locally from Tavernary's healthy snapshot SHA; never trust TavernKeeper to label a report current or choose a card color.
-- A complete exact-SHA report displays green or yellow. Pending, outdated, unavailable-current-source, and failed-without-current-report display gray. Unsupported sources display no shield.
+- A complete exact-SHA report displays green or yellow. Pending, outdated, unavailable-current-source, and failed-without-current-report display gray. Unsupported sources display no scan indicator.
 - Green means only that the completed policy found no active medium-confidence review-level finding; never write safe, verified, trusted, approved, or certified.
-- Place the fixed-size shield directly after the title's final visible character, not in a card corner. Long titles ellipsize earlier to reserve its space.
-- The shield is an independent button and must never be nested inside the project link. Preserve whole-card repository navigation with a semantic card container and stretched primary link.
+- Place the fixed-size scan indicator directly after the title's final visible character, not in a card corner. Long titles ellipsize earlier to reserve its space.
+- The scan indicator is an independent button and must never be nested inside the project link. Preserve whole-card repository navigation with a semantic card container and stretched primary link.
 - The popover contains only `TavernKeeper Scan Results`, plain state, nonzero severity counts, scanned SHA/date, and a full-report link when one exists.
 - Support pointer hover, keyboard focus, touch tap, Escape, outside click, focus exit, viewport collision, anti-flicker pointer delay, and reduced motion.
 - Wake TavernKeeper only after the new target manifest is live on Pages. Wake failures do not invalidate publication; six-hour reconciliation repairs them.
@@ -51,10 +51,11 @@
 - `scripts/catalog/build.mjs`: loads imported summaries, emits card status, target manifest, and catalog schema version 6.
 - `src/features/catalog/catalog-types.ts`: discriminated `TavernKeeperCardStatus` contract.
 
-### Shield, card, and static export
+### Scan indicator, card, and static export
 
-- `src/features/catalog/components/tavernkeeper-shield.tsx`: shield icon, state copy, portal popover, and interaction.
-- `src/features/catalog/components/project-card.tsx`: semantic container, stretched primary link, inline title row, shield.
+- `src/components/icons/tavernkeeper-scan-icon.tsx`: supplied Remix Icon `scan-2-fill` path rendered with `currentColor`.
+- `src/features/catalog/components/tavernkeeper-scan-indicator.tsx`: scan indicator icon, state copy, portal popover, and interaction.
+- `src/features/catalog/components/project-card.tsx`: semantic container, stretched primary link, inline title row, scan indicator.
 - `src/styles/catalog.css`: inline title reservation, state colors, popover positioning, z-index, and reduced motion.
 - `scripts/security/tavernkeeper-publication.mjs` and `.d.mts`: semantic digest comparison and public post-deploy verification.
 - `scripts/verify-static-export.mjs`: verifies exported target manifest and security-bearing catalog.
@@ -65,12 +66,12 @@
 - `.github/workflows/deploy-pages.yml`: compare target manifest, deploy, verify public bytes, wake TavernKeeper.
 - `tests/unit/tavernkeeper-reports.test.ts`: importer security and atomicity.
 - `tests/unit/tavernkeeper-status.test.ts`: exact freshness/color derivation.
-- `tests/unit/tavernkeeper-shield.test.tsx`: concise content and interaction.
+- `tests/unit/tavernkeeper-scan-indicator.test.tsx`: concise content and interaction.
 - `tests/unit/project-card.test.tsx`: nonnested controls and title placement.
 - `tests/unit/build-catalog.test.ts`: source-to-report/card mapping.
 - `tests/unit/workflows.test.ts`: triggers, Apps, permissions, schedules, and non-authoritative dispatch.
 - `tests/e2e/catalog.spec.ts`: hydrated pointer/keyboard/touch behavior.
-- `tests/visual/catalog.visual.spec.ts`: long-title desktop/mobile shield layout.
+- `tests/visual/catalog.visual.spec.ts`: long-title desktop/mobile scan indicator layout.
 
 ---
 
@@ -281,24 +282,27 @@ Expected: PASS; no unmatched or unhealthy SHA produces green/yellow.
 
 ```bash
 git add src/features/catalog/tavernkeeper-status.ts src/features/catalog/catalog-types.ts scripts/catalog/build.mjs tests/unit/tavernkeeper-status.test.ts tests/unit/build-catalog.test.ts tests/unit/full-catalog-data.test.ts tests/helpers/generated-catalog.ts tests/fixtures/visual-catalog.json tests/e2e/static-export.spec.ts
-git commit -m "feat(catalog): derive current scan shield state"
+git commit -m "feat(catalog): derive current scan state"
 ```
 
-### Task 4: Build the Concise Accessible Shield and Popover
+### Task 4: Build the Concise Accessible Scan Indicator and Popover
 
 **Files:**
-- Create: `src/features/catalog/components/tavernkeeper-shield.tsx`
-- Create: `tests/unit/tavernkeeper-shield.test.tsx`
+- Create: `src/components/icons/tavernkeeper-scan-icon.tsx`
+- Create: `src/features/catalog/components/tavernkeeper-scan-indicator.tsx`
+- Create: `tests/unit/tavernkeeper-scan-indicator.test.tsx`
 - Modify: `src/styles/catalog.css`
+- Modify: `LICENSING.md`
+- Create: `LICENSES/Remix-Icon-License-v1.0.txt`
 
 **Interfaces:**
-- Produces: `<TavernKeeperShield projectId status />`.
+- Produces: `<TavernKeeperScanIndicator projectId status />`.
 - Trigger is a button with `aria-expanded`, `aria-controls`, and state-specific accessible label.
 
 - [ ] **Step 1: Write failing content tests that forbid extra scanner details**
 
 ```tsx
-render(<TavernKeeperShield projectId="directive" status={yellowStatus} />);
+const { container } = render(<TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />);
 fireEvent.click(screen.getByRole("button", { name: /TavernKeeper scan: review suggested/u }));
 const panel = screen.getByRole("dialog", { name: "TavernKeeper Scan Results" });
 expect(panel).toHaveTextContent("Review suggested");
@@ -306,21 +310,22 @@ expect(panel).toHaveTextContent("1 high");
 expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
 expect(within(panel).getByRole("link", { name: "View full report" })).toHaveAttribute("href", yellowStatus.report.reportUrl);
 expect(panel).not.toHaveTextContent(/Gitleaks|OpenGrep|policy|coverage|excluded/u);
+expect(container.querySelector('svg[data-icon="scan-2-fill"]')).toBeInTheDocument();
 ```
 
 - [ ] **Step 2: Write failing interaction tests**
 
-Use fake timers to prove pointer hover opens, trigger-to-panel movement cancels the close delay, pointer exit closes after 150 ms, focus opens, focus within the panel stays open, Escape/outside pointer/focus exit closes, touch click toggles, a second shield closes the first, and reduced-motion media removes transitions.
+Use fake timers to prove pointer hover opens, trigger-to-panel movement cancels the close delay, pointer exit closes after 150 ms, focus opens, focus within the panel stays open, Escape/outside pointer/focus exit closes, touch click toggles, a second scan indicator closes the first, and reduced-motion media removes transitions.
 
-- [ ] **Step 3: Run the shield tests and verify failure**
+- [ ] **Step 3: Run the scan indicator tests and verify failure**
 
-Run: `npm test -- tests/unit/tavernkeeper-shield.test.tsx`
+Run: `npm test -- tests/unit/tavernkeeper-scan-indicator.test.tsx`
 
 Expected: FAIL because the component does not exist.
 
 - [ ] **Step 4: Implement the state icon and minimal copy**
 
-Render one inline SVG shield with `aria-hidden`. Use text labels:
+Render the supplied Remix Icon `scan-2-fill` path as one local inline SVG with `viewBox="0 0 24 24"`, `fill="currentColor"`, `aria-hidden`, and `data-icon="scan-2-fill"`. Keep the asset under its Remix Icon License v1.0 and record that exception in `LICENSING.md`; never present the glyph as a logo, protection mark, or certification. Use text labels:
 
 ```ts
 const stateCopy = {
@@ -340,18 +345,18 @@ Use refs for trigger/panel, a 150 ms pointer-exit timer, document `pointerdown` 
 
 - [ ] **Step 6: Add focused state styles**
 
-Create `.tavernkeeper-shield-{green,yellow,gray}`, `.tavernkeeper-popover`, and `.tavernkeeper-severity-counts`. Color is supplemental; accessible labels and text carry state. Use a 16 px shield glyph, an 18 px layout box, and a transparent `::before` hit area expanded to at least 32 px so accessibility does not push the visible shield away from the title.
+Create `.tavernkeeper-scan-indicator-{green,yellow,gray}`, `.tavernkeeper-popover`, and `.tavernkeeper-severity-counts`. Color is supplemental; accessible labels and text carry state. Use a 16 px scan indicator glyph, an 18 px layout box, and a transparent `::before` hit area expanded to at least 32 px so accessibility does not push the visible scan indicator away from the title.
 
 - [ ] **Step 7: Run tests and commit**
 
-Run: `npm test -- tests/unit/tavernkeeper-shield.test.tsx && npm run typecheck && npm run format:check`
+Run: `npm test -- tests/unit/tavernkeeper-scan-indicator.test.tsx && npm run typecheck && npm run format:check`
 
 ```bash
-git add src/features/catalog/components/tavernkeeper-shield.tsx src/styles/catalog.css tests/unit/tavernkeeper-shield.test.tsx
-git commit -m "feat(catalog): add scan result shield popover"
+git add src/components/icons/tavernkeeper-scan-icon.tsx src/features/catalog/components/tavernkeeper-scan-indicator.tsx src/styles/catalog.css tests/unit/tavernkeeper-scan-indicator.test.tsx LICENSING.md LICENSES/Remix-Icon-License-v1.0.txt
+git commit -m "feat(catalog): add scan result popover"
 ```
 
-### Task 5: Refactor Project Cards to a Semantic Container and Inline Shield
+### Task 5: Refactor Project Cards to a Semantic Container and Inline Scan Indicator
 
 **Files:**
 - Modify: `src/features/catalog/components/project-card.tsx`
@@ -370,11 +375,11 @@ git commit -m "feat(catalog): add scan result shield popover"
 ```tsx
 const card = container.querySelector("article.project-card");
 const link = screen.getByRole("link", { name: "A Very Long Project Name" });
-const shield = screen.getByRole("button", { name: /TavernKeeper scan/u });
+const indicator = screen.getByRole("button", { name: /TavernKeeper scan/u });
 expect(card).toContainElement(link);
-expect(card).toContainElement(shield);
-expect(link).not.toContainElement(shield);
-expect([...(card?.querySelector("h2.card-title-row")?.children ?? [])]).toEqual([link, shield]);
+expect(card).toContainElement(indicator);
+expect(link).not.toContainElement(indicator);
+expect([...(card?.querySelector("h2.card-title-row")?.children ?? [])]).toEqual([link, indicator]);
 expect(link.querySelector(".card-title")).toHaveTextContent("A Very Long Project Name");
 ```
 
@@ -382,11 +387,11 @@ expect(link.querySelector(".card-title")).toHaveTextContent("A Very Long Project
 
 Run: `npm test -- tests/unit/project-card.test.tsx tests/unit/kit-project-stack.test.tsx tests/unit/catalog-batch-flow.test.tsx`
 
-Expected: FAIL because `.project-card` is currently the repository anchor and cannot contain an independent shield button.
+Expected: FAIL because `.project-card` is currently the repository anchor and cannot contain an independent scan indicator button.
 
 - [ ] **Step 3: Refactor markup without changing card information**
 
-Return `<article className="project-card">`. Place the title link and shield as direct children of `<h2 className="card-title-row">`; keep hidden accessible description linked from the primary link. Keep all existing top metrics, attribution, state notes, summary, search evidence, chips, and license as siblings in the card container. Update tests that previously queried metadata as descendants of the link to query the containing article.
+Return `<article className="project-card">`. Place the title link and scan indicator as direct children of `<h2 className="card-title-row">`; keep hidden accessible description linked from the primary link. Keep all existing top metrics, attribution, state notes, summary, search evidence, chips, and license as siblings in the card container. Update tests that previously queried metadata as descendants of the link to query the containing article.
 
 - [ ] **Step 4: Implement stretched-link and independent-control layering**
 
@@ -400,7 +405,7 @@ Return `<article className="project-card">`. Place the title link and shield as 
 
 .card-title-row,
 .project-card .tooltip-anchor,
-.tavernkeeper-shield-trigger {
+.tavernkeeper-scan-indicator-trigger {
   position: relative;
   z-index: 2;
 }
@@ -410,7 +415,7 @@ Keep existing Kit and relationship controls at their established higher layers. 
 
 - [ ] **Step 5: Implement exact inline title sizing**
 
-`.card-title-row` is `display:flex; min-width:0; align-items:center; gap:4px`. The primary link and `.card-title` use `min-width:0; width:max-content; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap`. The shield uses `flex:none`. It never shrinks or moves to the right edge; short titles leave unused space after the shield.
+`.card-title-row` is `display:flex; min-width:0; align-items:center; gap:4px`. The primary link and `.card-title` use `min-width:0; width:max-content; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap`. The scan indicator uses `flex:none`. It never shrinks or moves to the right edge; short titles leave unused space after the scan indicator.
 
 - [ ] **Step 6: Run card/Kit tests and commit**
 
@@ -429,7 +434,7 @@ git commit -m "refactor(catalog): keep card controls outside links"
 - Modify: `tests/unit/static-export-verification.test.ts`
 - Modify: `tests/e2e/catalog.spec.ts`
 - Modify: `tests/visual/catalog.visual.spec.ts`
-- Add: approved shield snapshots under `tests/visual/catalog.visual.spec.ts-snapshots/`
+- Add: approved scan indicator snapshots under `tests/visual/catalog.visual.spec.ts-snapshots/`
 
 **Interfaces:**
 - Static verifier proves `out/security/tavernkeeper-targets.json` exists and validates.
@@ -451,19 +456,19 @@ Test green, yellow, gray, and unsupported cards; exact concise panel contents; h
 
 - [ ] **Step 3: Add deterministic long-title visual cases**
 
-At desktop, compact-card, and phone widths, use a short title and a title long enough to ellipsize. Assert the shield's left edge follows the rendered title rather than the card's right padding, the shield remains fully visible, and the popover stays in the viewport without card clipping.
+At desktop, compact-card, and phone widths, use a short title and a title long enough to ellipsize. Assert the scan indicator's left edge follows the rendered title rather than the card's right padding, the scan indicator remains fully visible, and the popover stays in the viewport without card clipping.
 
 - [ ] **Step 4: Run focused browser and visual gates**
 
 Run: `npm run build && npm run verify:export && npm run test:e2e -- tests/e2e/catalog.spec.ts && npm run test:visual -- tests/visual/catalog.visual.spec.ts`
 
-Expected: PASS with reviewed snapshot changes limited to the new shield/card semantics.
+Expected: PASS with reviewed snapshot changes limited to the new scan indicator/card semantics.
 
 - [ ] **Step 5: Commit export and browser coverage**
 
 ```bash
 git add scripts/verify-static-export.mjs scripts/verify-static-export.d.mts tests/unit/static-export-verification.test.ts tests/e2e/catalog.spec.ts tests/visual/catalog.visual.spec.ts tests/visual/catalog.visual.spec.ts-snapshots
-git commit -m "test(catalog): verify scan shields end to end"
+git commit -m "test(catalog): verify scan indicators end to end"
 ```
 
 ### Task 7: Add Report Reconciliation and TavernKeeper Wake Workflows
@@ -554,7 +559,7 @@ for (const path of [
   "scripts/security/tavernkeeper-reports.mjs",
   "data/schemas/tavernkeeper-report-index.schema.json",
   ".github/workflows/import-tavernkeeper-reports.yml",
-  "src/features/catalog/components/tavernkeeper-shield.tsx",
+  "src/features/catalog/components/tavernkeeper-scan-indicator.tsx",
 ]) {
   expect(classify([path])).toBe("full");
 }
@@ -580,7 +585,7 @@ Expected: PASS across formatting, lint, palette audit, catalog validation/build,
 
 Run: `npm run test:e2e && npm run test:visual && npm run build:test-kits && npm run test:kits-e2e && npm run test:kits-visual`
 
-Expected: PASS with shield behavior present in ordinary and Kit-rendered project cards.
+Expected: PASS with scan indicator behavior present in ordinary and Kit-rendered project cards.
 
 - [ ] **Step 6: Commit Tavernary documentation and release routing**
 
@@ -601,8 +606,8 @@ Before starting cross-repository rollout, capture:
 4. `out/security/tavernkeeper-targets.json` validates and contains only public healthy GitHub exact-SHA targets.
 5. Multiple cards sharing one GitHub repository ID share one imported report state.
 6. An unmatched, stale, unavailable, malformed, or absent report never creates green/yellow.
-7. Unsupported source types contain `tavernKeeper: null` and render no shield.
-8. The shield is immediately after title text, remains visible beside an ellipsized long title, and is not nested in the repository link.
+7. Unsupported source types contain `tavernKeeper: null` and render no scan indicator.
+8. The scan indicator is immediately after title text, remains visible beside an ellipsized long title, and is not nested in the repository link.
 9. The popover contains only the approved concise fields and satisfies pointer, keyboard, touch, Escape, outside-click, focus, collision, and reduced-motion tests.
 10. A failed report import preserves the previous tracked summary bytes.
 11. Wake workflows send no target/SHA/mode/budget/report URL payload and use destination-only Apps with Actions write permission.

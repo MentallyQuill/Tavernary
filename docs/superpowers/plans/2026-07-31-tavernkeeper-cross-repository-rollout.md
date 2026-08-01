@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Connect the completed TavernKeeper and Tavernary implementations, prove their public contracts and wake-ups against live GitHub Pages, and roll scanning out through fixtures, staff canaries, one five-repository batch, and the catalog backlog.
+**Goal:** Connect the completed TavernKeeper and Tavernary implementations, prove their public contracts and wake-ups against live GitHub Pages, and release through hostile fixtures plus the approved `MentallyQuill/Wandlight` and `MentallyQuill/Recursion` live canaries.
 
 **Architecture:** Each repository is built and tested independently before credentials are connected. Public Pages JSON remains authoritative in both directions; destination-only GitHub Apps merely dispatch input-free reconciliation workflows, and every rollout phase has a stop/go evidence gate that prevents incomplete or degraded reports from becoming public.
 
-**Tech Stack:** Git, GitHub CLI, GitHub Actions, GitHub Apps, GitHub Pages, Tavernary, TavernKeeper, MiniMax M3
+**Tech Stack:** Git, GitHub CLI, GitHub Actions, GitHub Apps, GitHub Pages, Tavernary, TavernKeeper, OpenAI-compatible Chat Completions (release configuration: NanoGPT `deepseek/deepseek-v4-flash`)
 
 ## Global Constraints
 
@@ -14,9 +14,10 @@
 - Execute the Tavernary integration plan before enabling live import/UI: `docs/superpowers/plans/2026-07-31-tavernary-tavernkeeper-integration.md`.
 - Treat the written design as authoritative: `docs/superpowers/specs/2026-07-31-tavernkeeper-cross-repository-security-design.md`.
 - Do not delete or conceal the frozen premature implementation. Reconcile it explicitly on implementation branches and retain normal Git history.
-- Do not publish a report until all applicable scanners and MiniMax complete and the sanitizer accepts it.
+- Do not publish a report until all applicable scanners and every configured-model call complete and the sanitizer accepts it.
 - Do not lower coverage, change models, skip eligible files, or convert an error into green/yellow during rollout.
 - Use no more than five repositories in a batch and no more than two concurrent repository scan jobs.
+- During rollout, live scans are restricted to `MentallyQuill/Wandlight` and `MentallyQuill/Recursion`. `MentallyQuill/Saga` is optional only after an explicit staff decision. Never scan a repository outside `MentallyQuill` during implementation or acceptance.
 - Only TavernKeeper staff may initiate manual retry, deep scan, policy rescan, pause/resume, oversized scan, or adjudication.
 - Do not notify external repository owners of operational failures.
 - Preserve report immutability and exact-SHA identity through every canary and recovery exercise.
@@ -32,7 +33,7 @@
 4. Exchange and certify V1 schemas/fixtures.
 5. Complete TavernKeeper Tasks 13-15 and Tavernary Tasks 4-8.
 6. Create/configure the public TavernKeeper GitHub repository, Apps, environments, labels, Pages, and secrets.
-7. Deploy contracts only, then fixtures, staff canaries, one mixed five-repository batch, and the initial backlog.
+7. Deploy contracts only, then fixtures and the approved Wandlight/Recursion canaries; prove five-repository backlog behavior with synthetic manifests while the live allowlist remains engaged.
 8. Enable normal wake-ups, then staff-only deep scanning.
 
 ---
@@ -198,14 +199,18 @@ gh secret set TAVERNARY_WAKE_APP_ID --repo MentallyQuill/TavernKeeper
 gh secret set TAVERNARY_WAKE_APP_PRIVATE_KEY --repo MentallyQuill/TavernKeeper
 ```
 
-- [ ] **Step 5: Store MiniMax in the two purpose-specific protected environments**
+- [ ] **Step 5: Configure the model transport for the two purpose-specific protected paths**
 
 ```powershell
-gh secret set MINIMAX_API_KEY --repo MentallyQuill/TavernKeeper --env tavernkeeper-scanner
-gh secret set MINIMAX_API_KEY --repo MentallyQuill/TavernKeeper --env tavernkeeper-staff
+gh secret set TAVERNKEEPER_API_KEY --repo MentallyQuill/TavernKeeper --env tavernkeeper-scanner
+gh secret set TAVERNKEEPER_API_KEY --repo MentallyQuill/TavernKeeper --env tavernkeeper-staff
+gh secret set TAVERNKEEPER_API_ENDPOINT --repo MentallyQuill/TavernKeeper --env tavernkeeper-scanner
+gh secret set TAVERNKEEPER_API_ENDPOINT --repo MentallyQuill/TavernKeeper --env tavernkeeper-staff
+gh secret set TAVERNKEEPER_MODEL --repo MentallyQuill/TavernKeeper --env tavernkeeper-scanner
+gh secret set TAVERNKEEPER_MODEL --repo MentallyQuill/TavernKeeper --env tavernkeeper-staff
 ```
 
-The automatic environment has no required reviewer and accepts only protected `main`; the staff environment requires TavernKeeper staff approval for deep, policy, oversized, and adjudication workflows. The MiniMax secret never exists in Tavernary and appears only on the provider-request step.
+Repository-level secrets with these names may be retained when the environment-scoped job gate and step-local injection provide the same access boundary. The automatic environment has no required reviewer and accepts only protected `main`; the staff environment requires TavernKeeper staff approval for deep, policy, oversized, and adjudication workflows. These values never exist in Tavernary and appear only on the model-provider request step. For NanoGPT, use the full documented Chat Completions endpoint; use the subscription route only when the configured model is subscription-covered. Workflows never append a path or hard-code the provider/model.
 
 - [ ] **Step 6: Verify installation scope through GitHub API**
 
@@ -267,13 +272,13 @@ Use the protected staff workflow to resume, while a temporary staff policy campa
 
 - [ ] **Step 5: Inspect every canary artifact before expanding**
 
-Verify checkout SHA, all applicable scanner coverage, MiniMax chunk completeness, actual usage totals, redaction, result threshold, immutable path, static HTML, report-index preference, Pages bytes, TavernKeeper wake, Tavernary import, and exact card shield/popover.
+Verify checkout SHA, all applicable scanner coverage, configured-model chunk completeness, actual usage totals, redaction, result threshold, immutable path, static HTML, report-index preference, Pages bytes, TavernKeeper wake, Tavernary import, and exact card scan indicator/popover.
 
 - [ ] **Step 6: Exercise one transient failure**
 
 Use a provider/scanner test double or staff canary mode that fails without consuming a real target. Confirm attempts at `T+1`, `T+2`, and success before `T+3` produce no staff issue or external-owner notification, clear silently, and resume backlog draining.
 
-### Task 7: Run the Approved Mixed Five-Repository Batch
+### Task 7: Run the Approved Two-Repository Live Batch
 
 **Files:**
 - Live Tavernary target manifest
@@ -281,52 +286,52 @@ Use a provider/scanner test double or staff canary mode that fails without consu
 - Live Tavernary catalog import
 
 **Interfaces:**
-- Exactly five selected repositories; at most two scan jobs active concurrently.
+- Exactly `MentallyQuill/Wandlight` and `MentallyQuill/Recursion`; at most two scan jobs active concurrently.
 
-- [ ] **Step 1: Select five staff-reviewed targets of varied size and content**
+- [ ] **Step 1: Resolve the two approved targets**
 
-Choose one small source-only project, one dependency-heavy project, one GitHub-Actions-heavy project, one archive/binary-bearing project, and one larger text-heavy project. Record exact repository IDs and SHAs from the public Tavernary manifest.
+Resolve the Wandlight extension repository, not any preset with a similar name, plus Recursion. Record their exact repository IDs and SHAs from the public Tavernary manifest. Reject the batch if either identity is ambiguous or any third repository is selected.
 
 - [ ] **Step 2: Run one reconciliation batch and watch all jobs**
 
-Use `gh run watch` and `gh run view --json jobs` to verify the planner selected no more than five and the matrix never had more than two in progress. Confirm no target SHA changed between plan and pre-model freshness check.
+Use `gh run watch` and `gh run view --json jobs` to verify the planner selected exactly those two repositories and the matrix never had more than two in progress. Confirm no target SHA changed between plan and pre-model freshness check.
 
 - [ ] **Step 3: Verify repository-specific isolation**
 
 If a controlled repository-specific failure is included, confirm its report is absent while unrelated complete candidates publish. If no controlled failure is used in the live batch, retain the hostile-fixture proof as the release evidence.
 
-- [ ] **Step 4: Verify Pages and Tavernary UI for all five**
+- [ ] **Step 4: Verify Pages and Tavernary UI for both projects**
 
-Fresh-fetch each immutable report URL and the report index. Confirm Tavernary imports only matching identities/SHAs and displays green/yellow or gray exactly as appropriate. Confirm no shield appears on an unsupported source card.
+Fresh-fetch each immutable report URL and the report index. Confirm Tavernary imports only matching identities/SHAs and displays green/yellow or gray exactly as appropriate. Confirm no scan indicator appears on an unsupported source card.
 
 - [ ] **Step 5: Record go/no-go evidence**
 
-Required go evidence: five-or-fewer target selection, two-or-fewer concurrency, complete scanner/model coverage, no source execution, no secret/source excerpts, correct preferred index, successful wake/import, inline title shields, concise popovers, and no operational issue.
+Required go evidence: exact approved target selection, two-or-fewer concurrency, complete scanner/model coverage, no source execution, no secret/source excerpts, correct preferred index, successful wake/import, inline title scan indicators, concise popovers, and no operational issue.
 
-### Task 8: Drain the Initial Catalog Backlog Safely
+### Task 8: Prove Backlog Behavior Without Expanding Live Scope
 
 **Files:**
 - TavernKeeper operational state and reports
 - Tavernary imported summaries
 
 **Interfaces:**
-- Self-continuing five-repository batches until desired current targets minus reports is empty.
+- Self-continuing five-repository batches are proven with synthetic contracts and fixtures; live operations remain restricted to the approved MentallyQuill allowlist.
 
-- [ ] **Step 1: Remove the five-target campaign restriction**
+- [ ] **Step 1: Keep the live allowlist restriction engaged**
 
-Keep the permanent batch size five and maximum parallel two. Allow new projects first, changed projects second, due retries third, and staff policy campaigns fourth, with age boost.
+Keep the permanent batch size five and maximum parallel two as product capability, but do not release the live catalog-wide target restriction during this rollout. Exercise new-project, changed-project, due-retry, staff-policy, and age-boost ordering against synthetic target manifests.
 
 - [ ] **Step 2: Observe at least two continuation batches**
 
-Confirm the publisher recomputes the backlog from public manifest/index, dispatches an input-free continuation only when work remains, and coalesces repositories that changed SHA before their turn.
+With test Pages/contracts or fixtures, confirm the publisher recomputes the backlog from manifest/index, dispatches an input-free continuation only when work remains, and coalesces repositories that changed SHA before their turn. Assert that no live scan job is created for a repository outside `MentallyQuill`.
 
 - [ ] **Step 3: Verify large-repository behavior**
 
-Confirm a larger repository generates additional MiniMax chunks rather than an aggregate cap or preflight token-budget failure. If it exceeds a security ceiling, confirm it publishes nothing and enters the staff-only oversized path without blocking unrelated repositories.
+Confirm a larger fixture repository generates additional configured-model chunks rather than an aggregate cap or preflight token-budget failure. If it exceeds a security ceiling, confirm it publishes nothing and enters the staff-only oversized path without blocking unrelated repositories. Do not use Saga for this proof unless staff explicitly opts into the additional live test.
 
 - [ ] **Step 4: Confirm empty-backlog stability**
 
-When caught up, a wake and scheduled reconciliation produce an empty plan, zero MiniMax calls, zero report commit, and zero Tavernary wake.
+When caught up, a wake and scheduled reconciliation produce an empty plan, zero configured-model calls, zero report commit, and zero Tavernary wake.
 
 ### Task 9: Enable and Prove Normal Bidirectional Wake-Ups
 
@@ -374,7 +379,7 @@ Submit the Issue Form with a canary immutable report and fingerprint. Confirm no
 
 - [ ] **Step 4: Run one staff-only deep scan**
 
-Use a canary with multiple first-party text files. Confirm every eligible file is represented in valid MiniMax chunks, excluded categories are counted, no aggregate token cap appears, the deep report becomes preferred, and the standard report remains immutable/addressable.
+Use one approved canary with multiple first-party text files. Confirm every eligible file is represented in valid configured-model chunks, excluded categories are counted, no aggregate token cap appears, the deep report becomes preferred, and the standard report remains immutable/addressable.
 
 ### Task 11: Final Cross-Repository Acceptance and Handoff
 
