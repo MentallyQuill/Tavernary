@@ -163,24 +163,57 @@ function hasIpv6Prefix(bytes, prefix, prefixLength) {
   return (bytes[wholeBytes] & mask) === (prefix[wholeBytes] & mask);
 }
 
+// IANA IPv6 Global Unicast Address Space registry, last updated 2025-10-10:
+// https://www.iana.org/assignments/ipv6-unicast-address-assignments/
+// Checked 2026-08-01. These are the current ALLOCATED RIR prefixes only;
+// the IANA special-purpose and 6to4 rows are deliberately omitted.
+const allocatedGlobalUnicastPrefixes = [
+  [[0x20, 0x01, 0x02], 23],
+  [[0x20, 0x01, 0x04], 23],
+  [[0x20, 0x01, 0x06], 23],
+  [[0x20, 0x01, 0x08], 22],
+  [[0x20, 0x01, 0x0c], 23],
+  [[0x20, 0x01, 0x0e], 23],
+  [[0x20, 0x01, 0x12], 23],
+  [[0x20, 0x01, 0x14], 22],
+  [[0x20, 0x01, 0x18], 23],
+  [[0x20, 0x01, 0x1a], 23],
+  [[0x20, 0x01, 0x1c], 22],
+  [[0x20, 0x01, 0x20], 19],
+  [[0x20, 0x01, 0x40], 23],
+  [[0x20, 0x01, 0x42], 23],
+  [[0x20, 0x01, 0x44], 23],
+  [[0x20, 0x01, 0x46], 23],
+  [[0x20, 0x01, 0x48], 23],
+  [[0x20, 0x01, 0x4a], 23],
+  [[0x20, 0x01, 0x4c], 23],
+  [[0x20, 0x01, 0x50], 20],
+  [[0x20, 0x01, 0x80], 19],
+  [[0x20, 0x01, 0xa0], 20],
+  [[0x20, 0x01, 0xb0], 20],
+  [[0x20, 0x03, 0x00], 18],
+  [[0x24, 0x00], 12],
+  [[0x24, 0x10], 12],
+  [[0x26, 0x00], 12],
+  [[0x26, 0x10], 23],
+  [[0x26, 0x20], 23],
+  [[0x26, 0x30], 12],
+  [[0x28, 0x00], 12],
+  [[0x2a, 0x00], 12],
+  [[0x2a, 0x10], 12],
+  [[0x2c, 0x00], 12],
+];
+
 function isPublicIpv6Address(address) {
   const bytes = parseIpv6Address(address);
   if (!bytes) {
     return false;
   }
 
-  // IANA IPv6 Special-Purpose Address Registry, last updated 2025-10-09:
-  // https://www.iana.org/assignments/iana-ipv6-special-registry/
-  // Checked 2026-08-01. This fixed GitHub Pages fetcher allows only ordinary
-  // global-unicast space and conservatively excludes every listed carve-out.
-  if ((bytes[0] & 0xe0) !== 0x20) {
-    return false;
-  }
-  return !(
-    hasIpv6Prefix(bytes, [0x20, 0x01], 23) ||
-    hasIpv6Prefix(bytes, [0x20, 0x01, 0x0d, 0xb8], 32) ||
-    hasIpv6Prefix(bytes, [0x20, 0x02], 16) ||
-    hasIpv6Prefix(bytes, [0x3f, 0xff, 0x00], 20)
+  return (
+    allocatedGlobalUnicastPrefixes.some(([prefix, prefixLength]) =>
+      hasIpv6Prefix(bytes, prefix, prefixLength),
+    ) && !hasIpv6Prefix(bytes, [0x20, 0x01, 0x0d, 0xb8], 32)
   );
 }
 

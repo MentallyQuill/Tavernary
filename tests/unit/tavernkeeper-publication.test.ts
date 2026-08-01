@@ -260,20 +260,23 @@ describe("TavernKeeper target publication", () => {
     ).rejects.toThrow(/timed out/u);
   });
 
-  test("allows a normal global-unicast IPv6 answer to reach the transport", async () => {
-    let requests = 0;
+  test.each(["2606:4700:4700::1111", "2001:200::1"])(
+    "allows allocated global-unicast IPv6 answer %s to reach the transport",
+    async (address) => {
+      let requests = 0;
 
-    await expect(
-      readPublicManifest(publicManifestUrl, {
-        dnsLookup: async () => [{ address: "2606:4700:4700::1111", family: 6 }],
-        fetchImpl: async () => {
-          requests += 1;
-          return manifestResponse();
-        },
-      }),
-    ).resolves.toMatchObject({ schema_version: 1 });
-    expect(requests).toBe(1);
-  });
+      await expect(
+        readPublicManifest(publicManifestUrl, {
+          dnsLookup: async () => [{ address, family: 6 }],
+          fetchImpl: async () => {
+            requests += 1;
+            return manifestResponse();
+          },
+        }),
+      ).resolves.toMatchObject({ schema_version: 1 });
+      expect(requests).toBe(1);
+    },
+  );
 
   test.each([
     "::",
@@ -295,6 +298,10 @@ describe("TavernKeeper target publication", () => {
     "2001::1",
     "2001:db8::1",
     "2002::1",
+    "2d00::1",
+    "2e00::1",
+    "3000::1",
+    "3ffe::1",
     "3fff::1",
     "10.0.0.1",
     "169.254.1.1",
