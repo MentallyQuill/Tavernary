@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "hibanan-css-default-scoped",
+  "source_id": "github-1289162242",
+  "source_identity": "github:hibanan/css-default-scoped",
+  "evidence_fingerprint": "16f119d753f978faf4797476ae2d933ab9d499e3e34ba6a16bc3fe94bf0dc49b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:35:24.595Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:35:24.595Z"
+  },
+  "maintenance_issue_number": null
+}
