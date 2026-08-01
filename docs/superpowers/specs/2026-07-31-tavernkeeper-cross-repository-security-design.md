@@ -104,7 +104,7 @@ Low-confidence observations and low or informational findings remain visible but
 - Staff incidents, manual retries, deep scans, policy rescans, and adjudications
 - TavernKeeper deployment
 
-### 5.3 One-way credentials
+### 5.3 Scoped GitHub App credentials
 
 Two separate GitHub Apps provide wake-up capability:
 
@@ -120,7 +120,11 @@ Two separate GitHub Apps provide wake-up capability:
 
 Neither bridge app receives repository contents write permission. Installation tokens are short-lived and restricted to the one destination repository.
 
-The built-in `GITHUB_TOKEN` remains repository-local. TavernKeeper never receives a Tavernary contents token, and Tavernary never receives a TavernKeeper contents token.
+A third GitHub App, `TavernKeeper Publisher`, is installed only on TavernKeeper. It receives repository metadata read and contents write, but no Actions permission and no access to Tavernary. Its credentials are available only through the protected `tavernkeeper-scanner` and `tavernkeeper-staff` environments. Every TavernKeeper workflow that commits reports, adjudications, policy-campaign state, or operational state creates a short-lived installation token, disables persisted checkout credentials, and uses that installation token for the push. Publisher authentication failure stops publication; workflows never fall back to the built-in `GITHUB_TOKEN` for contents writes.
+
+TavernKeeper protects `main` with a repository ruleset that requires pull requests and CI for ordinary actors, blocks deletion and non-fast-forward updates, and grants an always bypass only to the dedicated Publisher App. The Publisher App is therefore the sole direct-write identity for validated generated reports and operational state. It cannot dispatch workflows; any required input-free continuation dispatch remains a separate step authorized by the repository-local `GITHUB_TOKEN` with Actions write only.
+
+The built-in `GITHUB_TOKEN` remains repository-local and read-only for contents in TavernKeeper workflows. TavernKeeper never receives a Tavernary contents token, and Tavernary never receives a TavernKeeper contents token.
 
 ## 6. Architecture and Handshake
 
@@ -484,7 +488,7 @@ Publication is serialized:
 4. It rejects identity mismatches, unsafe text, forbidden URLs, secret-shaped evidence, and existing immutable paths.
 5. It writes JSON and escaped static HTML.
 6. It deterministically rebuilds `reports/index.json`.
-7. It commits generated files directly to TavernKeeper `main` using the repository-local token.
+7. It commits generated files directly to TavernKeeper `main` using a short-lived token from the dedicated Publisher App.
 8. It deploys the report site explicitly through the same trusted workflow.
 9. It verifies the public index before waking Tavernary.
 
@@ -681,9 +685,10 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
 
 - Scan jobs have read-only access to TavernKeeper source and public targets.
 - Only the configured model request step receives `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`.
-- Only the serialized publication job receives TavernKeeper contents write permission.
+- Only mutation jobs can create a short-lived TavernKeeper Publisher App token; the workflow-local token remains contents-read.
 - Only deployment jobs receive Pages and identity-token permission.
 - Bridge Apps receive destination Actions write permission only.
+- The Publisher App receives TavernKeeper contents write only, is installed only on TavernKeeper, and cannot dispatch Actions.
 
 ### 18.4 Data isolation
 
