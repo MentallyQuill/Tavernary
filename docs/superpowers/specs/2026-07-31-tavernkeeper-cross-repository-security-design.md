@@ -1,7 +1,7 @@
 # TavernKeeper Cross-Repository Security Scanning Design
 
-- **Status:** Approved in design dialogue; awaiting written-spec review
-- **Date:** 2026-07-31
+- **Status:** Revised from approved design dialogue; awaiting written-spec review
+- **Date:** 2026-08-01
 - **Canonical location:** Tavernary
 - **Repositories:** `MentallyQuill/Tavernary` and `MentallyQuill/TavernKeeper`
 
@@ -11,7 +11,15 @@ TavernKeeper is a separate, public, AGPL-3.0 repository that performs advisory s
 
 The two repositories communicate asynchronously through public, versioned JSON contracts and authenticated GitHub Actions wake-up events. Tavernary publishes an exact-SHA target manifest. TavernKeeper scans those targets in disposable GitHub-hosted runners, commits sanitized reports to its normal `main` branch, and publishes them through GitHub Pages. Tavernary imports validated summaries and displays an inline colored scan indicator beside each project title.
 
-No target code is executed. No scan result hides, quarantines, ranks, or certifies a Tavernary listing. A green scan indicator means only that TavernKeeper completed the defined scan policy at the displayed commit without actionable findings. It never means safe, verified, or trusted.
+No target code is executed. No scan result hides, quarantines, ranks, or
+certifies a Tavernary listing. A teal scan indicator means only that
+TavernKeeper completed the defined scan policy at the displayed commit without
+a confirmed review-level concern. It never means safe, verified, or trusted.
+
+Production is automation-first. No ordinary scan, rescan, finding disposition,
+report publication, Tavernary import, or card update depends on human approval.
+Development-only canary inspection and publication controls may be used while
+proving the system, but they must not survive as production dependencies.
 
 This design requires no persistent backend, database, webhook receiver, scanning daemon, or additional report repository. GitHub Actions performs the work; GitHub Pages serves the contracts and reports.
 
@@ -29,6 +37,11 @@ TavernKeeper must:
 8. Remain inexpensive and operable for a small staff while handling very small and very large repositories.
 9. Fail closed: an incomplete operation publishes no report.
 10. Recover from missed notifications through scheduled reconciliation.
+11. Let Tavernary staff start a targeted production scan from one exact GitHub
+    repository URL without creating a public scan-request surface.
+12. Publish every complete machine-validated production report automatically.
+13. Preserve immutable scan history and expose a compact recent progression on
+    each applicable project card.
 
 ## 3. Non-Goals
 
@@ -42,7 +55,8 @@ V1 does not provide:
 - Automatic external repository-owner notification
 - Runtime sandbox execution or behavioral malware detonation
 - Package installation, builds, tests, macros, containers, or target Actions execution
-- Automatic substitution of another model
+- Automatic substitution of another model when the configured model fails
+- Per-report human approval, rejection, or finding dismissal in production
 - A database, server, dynamic application API, webhook service, or resident scanner
 - ClamAV or full binary reverse engineering before catalog evidence justifies them
 
@@ -66,18 +80,40 @@ A V1 target requires:
 - A healthy Tavernary repository snapshot
 - A full lowercase 40-character head SHA
 
-Codeberg, URL-only, and organization-level entries are excluded and display no scan indicator.
+GitHub-backed frontends, extensions, and System Presets are eligible. Presets
+use the same whole-repository deterministic coverage plus preset-aware checks
+for imported endpoints, headers, request bodies, prompt manipulation, embedded
+regex behavior, obfuscation, external downloads, and bundled executable
+content.
+
+Codeberg, URL-only, Reddit, Google Drive, arbitrary websites, and
+organization-level entries are not scanned in V1. Tavernary still renders a
+low-emphasis scan indicator for these entries so the popover can state that the
+source type is unsupported.
 
 ### 4.4 Public result vocabulary
 
-Only complete scans produce reports. A successful public report has one of two results:
+Only complete scans produce reports. A successful public report has one of two
+machine-derived results:
 
-- `green`: no active medium-or-higher finding with medium-or-higher confidence
-- `yellow`: at least one active medium-or-higher finding with medium-or-higher confidence
+- `teal`: no confirmed active medium-or-higher finding with medium-or-higher
+  confidence
+- `red`: at least one confirmed active medium-or-higher finding with
+  medium-or-higher confidence
 
-Gray is a Tavernary presentation state, not a TavernKeeper report result. It means Tavernary has no completed report that can support a current colored scan indicator. Causes include a pending first scan, an outdated report, an unavailable current source snapshot, or an operation that failed and therefore published nothing.
+Orange, gray, and dark teal are Tavernary presentation states rather than
+TavernKeeper report results:
 
-Low-confidence observations and low or informational findings remain visible but do not turn a scan indicator yellow.
+- Orange means the latest published result was teal but does not cover the
+  repository's current confirmed SHA; an updated scan is pending.
+- Gray means an eligible GitHub source has no published report yet, or
+  Tavernary cannot confirm its current source state.
+- Dark teal means TavernKeeper does not support that source type.
+
+An older red result remains red even when its SHA is outdated. It changes only
+after a newer complete report publishes. Low-confidence observations and low
+or informational findings remain visible in the full report but do not produce
+a red result.
 
 ## 5. Responsibility and Trust Boundaries
 
@@ -100,8 +136,10 @@ Low-confidence observations and low or informational findings remain visible but
 - Target checkout and isolation
 - Deterministic and model scanning
 - Finding normalization, confidence, redaction, and result derivation
+- Automated analyzer, challenger, arbiter, and evidence validation
 - Immutable reports and report index
-- Staff incidents, manual retries, deep scans, policy rescans, and adjudications
+- Staff incidents, manual scan initiation, retries, deep scans, and policy
+  rescans
 - TavernKeeper deployment
 
 ### 5.3 Scoped GitHub App credentials
@@ -118,9 +156,14 @@ Two separate GitHub Apps provide wake-up capability:
    - App installed only on Tavernary
    - Tavernary repository permission: `Actions: write`
 
-Neither bridge app receives repository contents write permission. Installation tokens are short-lived and restricted to the one destination repository.
+Neither bridge app receives repository contents write permission. Installation
+tokens are short-lived and restricted to the one destination repository.
+Workflows treat installation tokens and `GITHUB_TOKEN` as opaque strings with
+no fixed length, prefix parser, JWT introspection, or format-specific storage
+assumption. They remain masked workflow secrets and never enter repository
+state, caches, logs, or artifacts.
 
-A third GitHub App, `TavernKeeper Publisher`, is installed only on TavernKeeper. It receives repository metadata read and contents write, but no Actions permission and no access to Tavernary. Its credentials are available only through the protected `tavernkeeper-scanner` and `tavernkeeper-staff` environments. Every TavernKeeper workflow that commits reports, adjudications, policy-campaign state, or operational state creates a short-lived installation token, disables persisted checkout credentials, and uses that installation token for the push. Publisher authentication failure stops publication; workflows never fall back to the built-in `GITHUB_TOKEN` for contents writes.
+A third GitHub App, `TavernKeeper Publisher`, is installed only on TavernKeeper. It receives repository metadata read and contents write, but no Actions permission and no access to Tavernary. Its credentials are available only through the protected `tavernkeeper-scanner` and `tavernkeeper-staff` environments. Every TavernKeeper workflow that commits reports, policy-campaign state, or operational state creates a short-lived installation token, disables persisted checkout credentials, and uses that installation token for the push. Publisher authentication failure stops publication; workflows never fall back to the built-in `GITHUB_TOKEN` for contents writes.
 
 TavernKeeper protects `main` with a repository ruleset that requires pull requests and CI for ordinary actors, blocks deletion and non-fast-forward updates, and grants an always bypass only to the dedicated Publisher App. The Publisher App is therefore the sole direct-write identity for validated generated reports and operational state. It cannot dispatch workflows; any required input-free continuation dispatch remains a separate step authorized by the repository-local `GITHUB_TOKEN` with Actions write only.
 
@@ -134,6 +177,11 @@ The wake-up events are deliberately non-authoritative. A payload cannot select a
 
 Both repositories also reconcile every six hours. A failed wake-up does not invalidate a successful publication; scheduled reconciliation repairs the missed event.
 
+Production publication is automatic once every required scanner, configured
+model role, schema check, and public verification succeeds. Staff may start a
+privileged workflow or repair an operational failure, but no staff approval is
+part of the production result path.
+
 ### 6.1 Tavernary-to-TavernKeeper sequence
 
 1. Tavernary refreshes repository snapshots.
@@ -142,7 +190,35 @@ Both repositories also reconcile every six hours. A failed wake-up does not inva
 4. If the manifest changed, Tavernary uses its one-way GitHub App to dispatch TavernKeeper's reconcile workflow.
 5. TavernKeeper fetches the public manifest and computes work independently.
 
-### 6.2 TavernKeeper-to-Tavernary sequence
+### 6.2 Tavernary staff-targeted scan sequence
+
+1. An actor with Tavernary Actions write permission and membership in a tracked
+   immutable-ID scan-operator allowlist dispatches a workflow with one canonical
+   GitHub repository URL and no scan-mode, model, budget, branch, SHA, or report
+   inputs.
+2. Tavernary canonicalizes the URL and requires an exact match to an active
+   GitHub source that currently backs at least one published card.
+3. Tavernary performs a targeted refresh of that source, resolves its immutable
+   repository ID and latest default-branch SHA, updates its repository snapshot,
+   rebuilds the target manifest, deploys it, and verifies the public digest.
+4. Tavernary creates a destination-only wake App token and dispatches
+   TavernKeeper's targeted standard-scan workflow with the repository ID as a
+   non-authoritative routing hint.
+5. TavernKeeper refetches the public manifest, resolves the repository by
+   immutable ID, and independently validates the full name and SHA before work.
+6. Duplicate requests for the same repository and SHA coalesce. Targeted work
+   runs outside the ordinary backlog but uses the same production scanner,
+   automated validation, retry, publication, Pages, wake, import, and card UI.
+7. A complete production report publishes automatically. A development canary
+   may be inspected before the production workflow is enabled, but the
+   production workflow contains no approval job.
+
+If the repository advances after the targeted SHA is captured, TavernKeeper
+still completes and publishes the report for the exact scanned SHA. Tavernary
+then renders a clean historical result as orange, or preserves a concerning
+result as red, until a newer report publishes.
+
+### 6.3 TavernKeeper-to-Tavernary sequence
 
 1. TavernKeeper completes one or more scans.
 2. A serialized publisher validates and commits sanitized reports to TavernKeeper `main`.
@@ -168,7 +244,8 @@ Tavernary owns `security/tavernkeeper-targets.json` and its JSON Schema.
       "repository_id": 123456,
       "repository": "owner/project",
       "target_sha": "0123456789abcdef0123456789abcdef01234567",
-      "canonical_url": "https://github.com/owner/project"
+      "canonical_url": "https://github.com/owner/project",
+      "project_kinds": ["preset"]
     }
   ]
 }
@@ -180,6 +257,8 @@ Rules:
 - Stable ordering by repository ID
 - Exact SHA from Tavernary's healthy repository snapshot
 - Canonical URL derived by Tavernary, never accepted from a scan requester
+- Sorted unique project kinds derived from every published card backed by the
+  repository
 - No commands, budgets, scan modes, branch names, or arbitrary clone URLs
 - Strict schema with unknown fields rejected
 
@@ -197,7 +276,10 @@ A stable report ID is derived from those canonical fields. The immutable path is
 reports/github/{repository-id}/{sha}/{policy-version}/{mode}/{report-version}/
 ```
 
-The report version distinguishes a later adjudication or corrected result under otherwise identical identity fields. A report points to the report it supersedes when applicable.
+The report version distinguishes a later complete scan or corrected report
+under otherwise identical identity fields. A report points to the report it
+supersedes when applicable. Production never creates a superseding report by
+editing or manually adjudicating an existing report.
 
 ### 7.3 Report index
 
@@ -211,13 +293,20 @@ TavernKeeper owns `reports/index.json` and its JSON Schema. Each preferred-repor
 - Scanner and scanner-policy versions
 - Standard or deep mode
 - Completion timestamp
-- Green or yellow result
+- Teal or red result
 - Severity and confidence totals
 - Concise coverage totals
 - Immutable report URL
+- Immutable repository scan-history URL
 - Superseded-report ID when applicable
 
-The index may retain preferred entries for older SHAs so Tavernary can explain an outdated result. For one repository ID, SHA, and active scanner-policy version, exactly one complete report is preferred: the newest staff adjudication, otherwise the newest completed deep scan, otherwise the standard scan. Superseded reports remain addressable at their immutable URLs but are never selected as preferred.
+The index retains preferred entries for older SHAs so Tavernary can explain an
+outdated result and render recent history. For one repository ID, SHA, and
+scanner-policy version, exactly one complete report is preferred: the newest
+completed deep scan when one exists, otherwise the newest completed standard
+scan. Superseded reports remain addressable at immutable URLs but are never
+selected as preferred. The repository history page lists every immutable
+report, including superseded reports and older policy versions.
 
 ### 7.4 Tavernary import validation
 
@@ -232,6 +321,8 @@ Tavernary must:
 - Then require source ID and canonical repository full name to agree
 - Import summaries only for currently known sources
 - Keep a valid older report so it can be shown as outdated
+- Import the newest twelve preferred historical conclusions per repository for
+  the card progression strip
 - Derive freshness locally from Tavernary's current healthy snapshot SHA
 - Never trust a remote `current`, `fresh`, or card-color claim
 - Replace the local summary atomically only after the entire index validates
@@ -263,24 +354,35 @@ On every wake-up, continuation, or scheduled reconciliation, TavernKeeper:
 4. Removes SHAs superseded by newer manifest entries.
 5. Removes targets active in the current serialized drain workflow.
 6. Sorts remaining work by priority and age.
-7. Selects at most five repositories.
+7. Selects at most five repositories for one batch.
 8. Runs at most two repository scan jobs concurrently.
 9. Publishes successful repository-specific results together.
 10. Recomputes the backlog from the authoritative documents.
 11. Dispatches another batch immediately if work remains.
 
-Priority order:
+The ordinary automatic backlog remains paused during targeted development
+acceptance. Recursion and Wandlight are selected through the general
+staff-targeted GitHub-URL action; neither repository is hardcoded into scanner
+policy, workflow logic, or a tracked allowlist. After the targeted pipeline is
+proven and production backlog processing is enabled, every eligible Tavernary
+GitHub source may be selected.
 
-1. Newly listed repositories with no prior report
-2. Existing repositories whose current SHA is unscanned
-3. Automatic retries whose scheduled time has arrived
-4. Staff-started policy-rescan campaigns
+Targeted staff requests use a separate immediate lane. The automatic backlog
+uses three ordered coverage lanes:
 
-Staff-only deep scans use a separate priority lane. Age-based priority prevents starvation.
+1. Unscanned or advanced repositories in Tavernary's current popularity Top 30
+2. Newly published submissions
+3. The oldest remaining unscanned or advanced projects
+
+Due retries return to their original lane when eligible. Age boosting within
+and across lanes prevents starvation. Staff-started policy campaigns and deep
+scans are separately initiated but use the same automatic result publication.
 
 A frequently updated repository occupies one queue position. If it advances through multiple SHAs before its scan starts, TavernKeeper scans only the latest published target. Immediately before invoking the configured model, TavernKeeper refetches the manifest; an obsolete queued SHA is abandoned before model spend and replaced by the current SHA.
 
-If the SHA changes after model review begins, the historical report may complete and publish, but Tavernary will render it gray/outdated until the newer target completes.
+If the SHA changes after model review begins, the historical report completes
+and publishes. Tavernary renders a teal historical result as orange until the
+newer target completes. A historical red result remains red.
 
 ## 9. Exact-SHA Checkout and Inventory
 
@@ -305,7 +407,9 @@ Inventory behavior:
 - Count files and bytes before expensive work.
 - Classify text, binary, archive, generated, minified, lock, workflow, executable, and unusual-Unicode files.
 - Apply high security ceilings for repository bytes, file count, file size, archive depth, expanded bytes, and compression ratio.
-- A legitimate repository above an ordinary operational threshold may be routed to a staff-approved specially isolated scan. Security ceilings cannot be overridden by target content.
+- Security ceilings cannot be overridden by target content. A legitimate
+  repository that exceeds a ceiling fails closed until a reviewed global policy
+  change raises that ceiling; staff cannot approve a one-report bypass.
 
 The checkout is deleted when the job ends. It is never committed to TavernKeeper, uploaded as an artifact, or copied to Tavernary.
 
@@ -360,7 +464,7 @@ ClamAV and deeper binary reverse engineering remain deferred. Evidence from real
 
 ### 10.8 Applicability versus failure
 
-`not-applicable` is a successful coverage state. `unavailable`, timeout, crash, malformed output, or parse failure is an operation failure. TavernKeeper never converts missing required coverage into a green or yellow report.
+`not-applicable` is a successful coverage state. `unavailable`, timeout, crash, malformed output, or parse failure is an operation failure. TavernKeeper never converts missing required coverage into a teal or red report.
 
 ## 11. Standard and Deep Scans
 
@@ -374,22 +478,44 @@ For model review, an eligible file is a regular, safely inventoried, first-party
 - The configured model receives normalized deterministic findings and every eligible file changed in that range.
 - If no previously scanned ancestor is reachable, the change range covers up to the newest 20 commits.
 
-### 11.2 Staff-only deep scan
+### 11.2 Staff-initiated deep scan
 
 - Repeats every deterministic stage.
 - Sends every eligible first-party text file through the configured model review.
 - Excludes raw binaries, archives, dependency lockfiles, vendored dependencies, generated bundles, and heavily minified files from model input.
 - Reports excluded-category file and byte counts.
 - Produces a new immutable preferred report without deleting the standard report.
-- Requires TavernKeeper write permission and approval through the protected staff operations environment.
+- Requires TavernKeeper staff permission to initiate, but its complete result
+  publishes automatically without a per-report approval.
 
-## 12. Streaming Model Review
+## 12. Automated Model Review and Verification
 
 Model review is required, but TavernKeeper is provider- and model-agnostic. It speaks the OpenAI-compatible Chat Completions protocol and reads the full HTTPS endpoint, API key, and model identifier at runtime from `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`. Scanner policy pins the protocol and safety ceilings, not a vendor or model. TavernKeeper posts to the configured endpoint exactly; it does not append a route, follow cross-origin redirects, or silently substitute a different endpoint or model.
 
 Changing the endpoint origin, configured model identifier, prompt-policy version, or scanner-policy version creates a distinct cache and report identity. Every published report records the actual provider origin and model identifier used. The planned release configuration is NanoGPT with `deepseek/deepseek-v4-flash`; that choice is operational configuration, not architecture. NanoGPT's subscription route is used only when the configured model is covered by the subscription.
 
 There is no fixed per-repository aggregate token limit and no predicted whole-job token budget. Repository size determines the number of model calls.
+
+The configured model fills three independent roles through separate calls. The
+roles use different system prompts and bounded inputs but the same configured
+endpoint and model unless a future policy version explicitly adds optional role
+overrides:
+
+1. The **analyzer** reviews every required chunk plus normalized deterministic
+   findings and proposes evidence-bound candidate findings.
+2. The **challenger** receives each candidate and the smallest sufficient
+   surrounding repository context. It attempts to disprove reachability,
+   malicious capability, intent, severity, and confidence, and must identify
+   benign explanations such as documentation, tests, inert examples, or
+   unreachable fixtures.
+3. The **arbiter** receives the normalized scanner evidence, analyzer claim,
+   challenger response, and exact submitted context. It returns only
+   `confirmed`, `not-supported`, or `inconclusive` for each candidate.
+
+No role may approve scanner coverage, invent repository evidence, or cite a
+path or line it was not given. An arbiter decision is accepted only when a
+deterministic validator confirms the cited path, line range, content mapping,
+finding fingerprint, and scanned SHA.
 
 Processing rules:
 
@@ -399,12 +525,36 @@ Processing rules:
 4. Related files, directory context, entry points, manifests, imports, and deterministic findings remain together where possible.
 5. Oversized eligible source files are split on stable semantic boundaries with bounded overlap.
 6. Every eligible file must be represented in a successful model response before publication.
-7. After all chunks complete, a final bounded synthesis receives normalized findings and relationship metadata, not the entire source corpus again.
-8. Actual input and output token counts are recorded after every provider response, together with cache-read, reasoning, or other usage categories when the provider returns them.
+7. The analyzer must explicitly account for every deterministic review-level
+   finding. Any omitted deterministic finding makes the scan incomplete.
+8. After all analyzer chunks complete, the challenger and arbiter process every
+   proposed review-level concern and every deterministic review-level finding.
+9. A deterministic report builder produces the concise result from validated
+   findings and relationship metadata; it does not make another model call.
+10. Actual input and output token counts are recorded after every provider
+   response, together with cache-read, reasoning, or other usage categories
+   when the provider returns them.
 
 Before a chunk leaves the runner, secret-like literal values are replaced with stable redaction markers while path and line mapping are preserved. The system prompt treats repository text as untrusted data, forbids following source instructions, forbids safety claims, forbids quoting secrets, and requires the public finding schema.
 
-Model output is strictly validated. A model finding must reference a submitted repository path and allowed line range. The model may add or explain findings. It cannot erase a deterministic finding, reduce deterministic severity, declare scanner coverage complete, or claim that a repository is safe.
+Model output is strictly validated. A candidate must reference a submitted
+repository path and allowed line range. Deterministic findings remain preserved
+as scanner observations, but the automated roles determine whether the evidence
+supports an active public concern. They never mutate raw scanner identity or
+claim that a repository is safe.
+
+Result derivation is mechanical:
+
+- Any `confirmed` medium-or-higher finding with medium-or-higher confidence
+  produces a red report.
+- No confirmed review-level concern produces a teal report.
+- Any unresolved review-level `inconclusive` decision, missing role response,
+  disagreement that the arbiter cannot resolve, or evidence-validation failure
+  makes the scan incomplete. It publishes nothing and enters the ordinary retry
+  policy.
+
+There is no production staff decision between a valid final result and
+publication.
 
 ### 12.1 Chunk cache
 
@@ -413,6 +563,8 @@ Successful sanitized chunk results may be cached privately by:
 ```text
 content hashes + endpoint origin + model ID + prompt-policy version + scanner-policy version
 ```
+
+The role name and role-prompt digest are also part of each model cache key.
 
 The cache never contains raw source chunks, prompts, credentials, or raw model responses. Cache loss changes cost and runtime only. Incomplete cached work is never public.
 
@@ -440,7 +592,8 @@ Each normalized finding contains:
 - Redacted explanation
 - Optional remediation guidance
 - Optional public rule-documentation reference
-- Active or staff-dismissed disposition in a superseding adjudication
+- Automated disposition: `confirmed`, `not-supported`, or `inconclusive`
+- Analyzer, challenger, and arbiter policy identifiers
 
 Each immutable report contains:
 
@@ -454,6 +607,7 @@ Each immutable report contains:
 - Inventory and excluded-category totals
 - Finding totals by severity, confidence, category, and disposition
 - Sanitized normalized findings
+- Deterministic evidence-validation result
 
 Reports never contain:
 
@@ -482,8 +636,10 @@ docs/                        architecture, rules, and operations
 
 Publication is serialized:
 
-1. Isolated scan jobs produce sanitized candidate reports.
-2. The publisher downloads sanitized candidates only.
+1. Isolated scan jobs produce sanitized, automatically adjudicated candidate
+   reports.
+2. The publisher downloads sanitized candidates only. Production candidates do
+   not wait for staff review.
 3. It validates each candidate against TavernKeeper's schema.
 4. It rejects identity mismatches, unsafe text, forbidden URLs, secret-shaped evidence, and existing immutable paths.
 5. It writes JSON and escaped static HTML.
@@ -491,6 +647,15 @@ Publication is serialized:
 7. It commits generated files directly to TavernKeeper `main` using a short-lived token from the dedicated Publisher App.
 8. It deploys the report site explicitly through the same trusted workflow.
 9. It verifies the public index before waking Tavernary.
+
+Development canary preflights may expose a sanitized candidate for temporary
+staff inspection before the production targeted workflow is enabled. When a
+public-repository Actions artifact carries that candidate, TavernKeeper
+encrypts it before upload, retains it for one day, never logs or uploads the
+plaintext, and keeps the review key outside the repository. That preflight is a
+rollout tool, not a production job dependency. Once production is enabled,
+every schema-valid complete result advances directly through the serialized
+publisher without creating a review artifact.
 
 Reports remain indefinitely unless a legal or credential-exposure emergency requires removal. A removal is an audited exceptional operation.
 
@@ -512,14 +677,40 @@ The title and scan indicator use an inline flex row:
 
 The scan indicator is an independent button. Tavernary's card markup must preserve whole-card repository navigation without nesting that button inside a link. The card becomes a semantic container with a stretched primary repository link and higher-layer independent controls for TavernKeeper, Kit actions, and relationship actions.
 
-The glyph is the supplied Remix Icon `scan-2-fill` shape in a `0 0 24 24` view box. Tavernary stores it locally, renders it with `currentColor`, and does not use it as TavernKeeper branding or a safety certification. The individual icon remains governed by the Remix Icon License v1.0 and is identified separately from Tavernary's AGPL application code.
+The glyph is the user-supplied Remix Icon `scan-fill` shape in a `0 0 24 24`
+view box. Tavernary stores that exact supplied path locally, renders it with
+`currentColor`, and does not use it as TavernKeeper branding or a safety
+certification. The individual icon remains governed by the Remix Icon License
+v1.0 and is identified separately from Tavernary's AGPL application code.
 
 ### 15.2 Visual states
 
-- Green scan indicator: current complete green report
-- Yellow scan indicator: current complete yellow report
-- Gray scan indicator: pending, outdated, or current-source state unavailable because no complete report supports a confirmed current SHA
-- No scan indicator: unsupported source type
+- Teal scan indicator: the current confirmed SHA has a complete teal report.
+- Orange scan indicator: the latest complete report was teal, but it does not
+  cover the current confirmed SHA and an updated scan is pending.
+- Red scan indicator: the latest complete report is red. Red persists when the
+  repository advances and changes only after a newer complete report publishes.
+- Gray scan indicator: an eligible GitHub source has not received its first
+  complete report, or Tavernary cannot confirm the current source state and no
+  red result must be preserved.
+- Super-dark-teal scan indicator: TavernKeeper does not support this source
+  type. The token uses the site's deep-teal family but remains perceptible
+  against the card surface and becomes clearer on hover or keyboard focus; it
+  must not use the literal card-background value when that would disappear.
+
+Tavernary derives one state in this order:
+
+1. Unsupported source type: dark teal.
+2. Healthy source with a preferred report for the current SHA: that report's
+   teal or red result.
+3. Healthy source without a current report but with a newest older red report:
+   red.
+4. Healthy source without a current report but with a newest older teal report:
+   orange.
+5. Healthy source with no report: gray unscanned.
+6. Unavailable current source state with a newest prior red report: red.
+7. Any other unavailable current source state: gray source-unavailable, while
+   retaining any prior report and history links in the popover.
 
 Color is never the only signal. Accessible labels name the state as `TavernKeeper scan: ...` and never use `safe`, `trusted`, `verified`, `protected`, or similar certification language. The scan glyph communicates only that TavernKeeper has scan state to show.
 
@@ -543,42 +734,85 @@ The popover contains only:
 
 1. Title: `TavernKeeper Scan Results`
 2. Plain-language state
-3. Nonzero severity counts
+3. Nonzero confirmed active severity counts for a red report
 4. Visible short scanned SHA with the full SHA available accessibly
 5. Scan date
 6. `View full report` link when a report exists
+7. Compact recent scan-history strip when history exists
+8. `View full scan history` link when any report exists
 
-Green example:
+Teal example:
 
 ```text
 TavernKeeper Scan Results
-No review-level findings
-2 low - 1 informational
+No review-level concerns found at this commit.
 Scanned abc1234 on July 31, 2026
+[recent scan history]
 View full report
+View full scan history
 ```
 
-Yellow example:
+Red example:
 
 ```text
 TavernKeeper Scan Results
-Review suggested
+TavernKeeper found review-level concerns.
 1 high - 2 medium
 Scanned abc1234 on July 31, 2026
+[recent scan history]
 View full report
+View full scan history
 ```
 
-Gray example:
+Orange example:
 
 ```text
 TavernKeeper Scan Results
-Current scan pending
-The previous result does not cover this commit.
+The last completed scan found no review-level concerns, but it does not cover
+the repository's current commit. An updated scan is pending.
+Scanned abc1234 on July 31, 2026
+[recent scan history]
+View full report
+View full scan history
 ```
 
-Detailed coverage, policy versions, excluded files, scanner names, and technical disclaimers remain in the full TavernKeeper report.
+Gray unscanned example:
 
-The green wording never says safe, verified, trusted, or certified.
+```text
+TavernKeeper Scan Results
+This project hasn't been scanned by TavernKeeper.
+```
+
+Unsupported example:
+
+```text
+TavernKeeper Scan Results
+TavernKeeper scanning is not supported for this project's source.
+```
+
+Detailed coverage, policy versions, excluded files, scanner names, automated
+role decisions, and technical disclaimers remain in the full TavernKeeper
+report.
+
+The teal wording never says safe, verified, trusted, or certified.
+
+### 15.5 Scan history
+
+The popover reuses the compact visual language of Tavernary's twelve-week
+activity strip without reusing its time-bucket semantics:
+
+- One block represents one preferred completed scan conclusion, not one week.
+- The strip contains at most the newest twelve conclusions, ordered oldest on
+  the left and newest on the right.
+- Historical blocks are teal or red according to the immutable report result.
+  Orange is never a historical result because it is a current freshness state.
+- Deep scans replace standard scans for the same repository, SHA, and policy in
+  the compact preferred history; every underlying immutable report remains on
+  the full history page.
+- Each block has an accessible label containing result, date, short SHA, and
+  policy version. Color is not the only history signal.
+- The full-history link opens TavernKeeper's static repository history page,
+  which lists every immutable report and exact scanned SHA.
 
 ## 16. Failure, Retry, and Circuit-Breaker Policy
 
@@ -612,7 +846,8 @@ Behavior:
 - Publish no report for that target.
 - Preserve earlier immutable reports.
 - Continue unrelated targets.
-- Tavernary remains gray when no earlier report matches the current SHA.
+- Tavernary remains red when the latest complete result was red, orange when a
+  prior teal report is merely outdated, or gray when no complete report exists.
 - After retry exhaustion, open or update the deduplicated TavernKeeper staff issue.
 
 ### 16.3 System-wide failures
@@ -636,31 +871,39 @@ Behavior:
 
 Operational incidents notify TavernKeeper staff only. External repository owners are not contacted automatically.
 
-## 17. Staff Controls and Appeals
+## 17. Staff Controls, Policy Corrections, and Appeals
 
 Only TavernKeeper staff can:
 
 - Pause or resume operations
 - Retry one repository and exact SHA
-- Approve specially isolated scanning for a legitimate oversized repository
 - Run a deep scan
 - Start a scanner-policy rescan campaign
 - Inspect private diagnostics
-- Adjudicate a finding
 - Close an operational incident
 
-Privileged workflows use a protected TavernKeeper staff environment with required reviewer approval where GitHub supports it.
+Privileged workflow initiation uses TavernKeeper write permission and protected
+environments where appropriate. Approval may control who can start a privileged
+operation; it never controls whether that operation's complete report publishes.
 
 Project maintainers may submit a false-positive appeal identifying an immutable report and finding fingerprint. An appeal:
 
 - Does not trigger a scan
 - Does not modify Tavernary
 - Does not suppress a finding automatically
-- Is reviewed by TavernKeeper staff
+- Is evidence for a global scanner-rule, prompt-policy, or evidence-validator
+  correction
 
-An accepted appeal creates a new immutable superseding adjudication/report version. Reusable dismissals become TavernKeeper-owned reviewed policy rules. Target-provided ignore files or scanner configuration never control TavernKeeper policy.
+Staff do not manually edit, dismiss, recolor, or supersede an individual report.
+If an appeal reveals a scanner defect, TavernKeeper changes its versioned global
+policy through ordinary code review and automatically rescans affected targets.
+The resulting complete report publishes automatically; earlier reports remain
+immutable. Target-provided ignore files or scanner configuration never control
+TavernKeeper policy.
 
-Complete reports publish automatically without mandatory staff review.
+This separation is a development rule for both repositories: temporary canary
+inspection is allowed during implementation, but production scan evaluation and
+publication must remain fully automated.
 
 ## 18. Threat Model and Isolation
 
@@ -701,6 +944,8 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
 ### 18.5 Spend abuse
 
 - No public scan endpoint exists.
+- The targeted Tavernary action requires both repository write permission and a
+  tracked immutable GitHub user ID authorized for scan operations.
 - Tavernary's manifest is the only automatic authority.
 - One repository occupies one queue slot and obsolete SHAs coalesce.
 - Exact-SHA, content-hash, model, prompt-policy, and scanner-policy keys prevent duplicate spend.
@@ -715,6 +960,9 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
 2. Pages deployment and conditional TavernKeeper wake-up
 3. Report-index reconciliation every six hours and on authenticated wake-up
 4. Sanitized summary commit, catalog rebuild, and Pages deployment
+5. Staff-only targeted scan dispatch accepting one canonical GitHub repository
+   URL, performing a targeted source refresh, publishing the manifest, and
+   waking TavernKeeper
 
 A wake-up failure does not roll back a valid deployment. Reconciliation is the recovery mechanism.
 
@@ -727,7 +975,8 @@ A wake-up failure does not roll back a valid deployment. Reconciliation is the r
 5. Hourly due-retry reconciliation
 6. Serialized report commit and Pages deployment
 7. Conditional Tavernary wake-up after public verification
-8. Staff-only retry, deep scan, policy campaign, pause, resume, and adjudication
+8. Staff-initiated targeted standard scan by validated repository-ID hint
+9. Staff-only retry, deep scan, policy campaign, pause, and resume
 
 All first-party GitHub Actions are pinned to full commit SHAs. Workflow permissions are declared per job at the narrowest level.
 
@@ -745,7 +994,7 @@ Every run reports secret-free operational counts:
 - Report commit, Pages verification, and wake-up timestamps
 - Contract, scanner, prompt-policy, and scanner-policy versions
 
-The public report includes approved per-report usage totals. Operational failure details remain in staff-visible workflow logs and deduplicated issues.
+The public report includes sanitized per-report usage totals. Operational failure details remain in staff-visible workflow logs and deduplicated issues.
 
 ## 21. Testing and Acceptance
 
@@ -767,24 +1016,34 @@ The public report includes approved per-report usage totals. Operational failure
 - OSV, zizmor, and malcontent applicability
 - Scanner crash and malformed-output classification
 - Streaming model chunks, cache resume, prompt injection, and strict response parsing
+- Analyzer, challenger, and arbiter role isolation
+- Automated false-positive challenges, evidence validation, deterministic result
+  derivation, and inconclusive fail-closed behavior
 - Deterministic fingerprints and report derivation
 - Secret and unsafe-HTML publication rejection
 - Immutable paths and deterministic index generation
 - Initial attempt plus three delayed retries
 - Repository-specific continuation and system-wide circuit breaking
 - Workflow permissions and action pinning
+- Installation-token compatibility with both forced stateless and classic
+  formats, without logging or persisting either token
 
 ### 21.3 Tavernary tests
 
 - Target deduplication by immutable GitHub repository ID
-- Unsupported-source exclusion
+- GitHub-backed preset eligibility and preset-aware target metadata
+- Gray eligible-unscanned and dark-teal unsupported-source presentation
 - Report origin, size, schema, identity, and URL validation
 - Current, outdated, pending, stale-source, and unsupported scan indicator states
+- Red persistence across SHA drift and teal-to-orange freshness transitions
+- Twelve-result preferred history selection and full-history links
 - One report shared across multiple cards from one source
 - Inline title/scan indicator layout and long-title ellipsis
 - Whole-card navigation without nested controls
 - Hover, focus, touch, Escape, outside click, viewport collision, and reduced motion
 - Static-export presence of the target manifest
+- Staff-targeted GitHub-URL validation, targeted refresh, exact public manifest
+  verification, and non-authoritative repository-ID dispatch
 - Both wake-up workflows and both scheduled fallbacks
 
 ### 21.4 Release gates
@@ -794,20 +1053,42 @@ The public report includes approved per-report usage totals. Operational failure
 - Both repositories accept the same contract fixtures.
 - Required-tool and model failures publish nothing.
 - Wake-up and scheduled recovery both succeed in each direction.
-- Tavernary never derives green or yellow from an unmatched or unhealthy SHA.
+- Tavernary never derives teal from an unmatched or unhealthy SHA.
 - Responsive and keyboard tests pass for inline scan indicators and popovers.
-- TavernKeeper staff rehearse pause, retry, incident, resume, deep scan, oversized scan, policy campaign, and appeal adjudication.
+- Development canary reports are inspected before the first live targeted
+  publications.
+- The production targeted and backlog paths publish complete reports without
+  any environment reviewer or staff approval job.
+- TavernKeeper staff rehearse pause, retry, incident, resume, deep scan, and
+  policy campaign initiation without adjudicating individual reports.
+- Both `X-GitHub-Stateless-S2S-Token: enabled` and `disabled` are exercised
+  end-to-end for wake and Publisher App consumers. The temporary override header
+  is absent from production after compatibility is proven.
 
 ## 22. Rollout
 
 1. Implement contracts and hostile fixtures without live publication.
 2. Scan controlled benign and intentionally malicious fixture repositories.
-3. Scan only the approved `MentallyQuill/Wandlight` and `MentallyQuill/Recursion` canaries and manually inspect reports. `MentallyQuill/Saga` remains optional and requires a separate staff decision.
-4. Prove five-repository batching, two-runner concurrency, coalescing, and continuation against synthetic manifests and fixtures without scanning any repository outside `MentallyQuill`.
-5. Keep live operations restricted to the approved canary allowlist during implementation acceptance.
-6. Enable normal bidirectional wake-ups and scheduled reconciliation.
-7. Enable staff-only deep scans after standard scanning is stable.
-8. Monitor retry rates, false-positive appeals, model usage, and oldest backlog age before changing concurrency or scanner policy.
+3. Keep the ordinary automatic backlog paused. Use the general Tavernary
+   staff-targeted GitHub-URL action to preflight Recursion and inspect the
+   sanitized candidate during development.
+4. Enable the production targeted pipeline and prove the complete automatic
+   Recursion path: targeted refresh, public target manifest, TavernKeeper scan,
+   automatic publication, Tavernary import, Tavernary.org deployment, scan
+   indicator, concise popover, history strip, and full-history link.
+5. Repeat the same production path for Wandlight. Neither canary is hardcoded or
+   selected by a repository allowlist.
+6. Prove five-repository batching, two-runner concurrency, coalescing, and
+   continuation against synthetic manifests and fixtures before enabling the
+   ordinary live backlog.
+7. Prove both GitHub App installation-token formats and remove the temporary
+   override header.
+8. Enable automatic backlog coverage for every eligible GitHub source using the
+   Top 30, new submissions, and oldest-project lanes.
+9. Enable normal bidirectional wake-ups, scheduled reconciliation, and
+   staff-initiated deep scans.
+10. Monitor retry rates, model usage, oldest backlog age, red-result frequency,
+    and owner appeals before changing concurrency or scanner policy.
 
 ## 23. Technology and Repository Governance
 
@@ -831,22 +1112,32 @@ The system is complete only when:
 
 1. Tavernary publishes a valid exact-SHA GitHub target manifest.
 2. Tavernary successfully wakes TavernKeeper through the one-way App.
-3. TavernKeeper proves five-repository backlog behavior with maximum concurrency two while live acceptance scans only the approved Wandlight and Recursion repositories.
+3. Tavernary's general staff-targeted action proves Recursion and Wandlight
+   without hardcoded repository restrictions, then TavernKeeper proves
+   five-repository backlog behavior with maximum concurrency two.
 4. TavernKeeper scans without executing target content.
 5. Every applicable required scanner and configured-model call completes before publication.
 6. TavernKeeper publishes immutable sanitized reports and verifies Pages.
 7. TavernKeeper successfully wakes Tavernary through the opposite one-way App.
 8. Tavernary imports only identity- and SHA-valid summaries.
-9. Cards display an inline green, yellow, or gray scan indicator with the approved concise popover.
+9. Cards display the approved teal, orange, red, gray, or dark-teal scan
+   indicator, concise popover, twelve-result history strip, and full-history
+   link.
 10. Failed operations publish nothing and follow the approved delayed retry policy.
-11. Staff can perform every privileged operation and appeal adjudication.
-12. Cross-repository, hostile-fixture, accessibility, static-export, and workflow-permission gates pass.
+11. Complete production scans publish and propagate without staff review, while
+    staff can initiate and repair privileged operations without editing an
+    individual result.
+12. Both classic and stateless GitHub App installation tokens work end-to-end,
+    and production treats every GitHub token as opaque.
+13. Cross-repository, hostile-fixture, accessibility, static-export, and
+    workflow-permission gates pass.
 
 ## 25. References
 
 - [GitHub `GITHUB_TOKEN` scope](https://docs.github.com/en/actions/concepts/security/github_token)
 - [GitHub workflow dispatch REST API](https://docs.github.com/en/rest/actions/workflows)
 - [GitHub App authentication from Actions](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow)
+- [GitHub App installation-token per-request format override](https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header/)
 - [Gitleaks](https://github.com/gitleaks/gitleaks)
 - [OpenGrep](https://github.com/opengrep/opengrep)
 - [OSV-Scanner](https://github.com/google/osv-scanner)
