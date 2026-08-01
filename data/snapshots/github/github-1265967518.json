@@ -1,0 +1,72 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1265967518",
+  "repository": {
+    "id": 1265967518,
+    "owner": "remixcamera",
+    "name": "remix-camera-sillytavern-companion-images",
+    "url": "https://github.com/remixcamera/remix-camera-sillytavern-companion-images",
+    "description": "SillyTavern extension and local bridge for Remix.Camera companion images",
+    "default_branch": "main",
+    "head_sha": "6b28853514325c48ef536303f1013a9eaf4c0f38",
+    "head_committed_at": "2026-08-01T09:01:06.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-11T08:11:11.000Z",
+    "size_kb": 9754
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-21T18:47:07.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-21T18:47:07.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-18T03:07:55.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-13T12:59:25.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-01T19:42:50.497Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "6b28853514325c48ef536303f1013a9eaf4c0f38"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-01T19:42:50.497Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "adamhalper2", "type": "User", "provider": "github" },
+      { "login": "remixcamera", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-01T19:42:50.497Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

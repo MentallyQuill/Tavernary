@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "remixcamera-remix-camera-sillytavern-companion-images",
+  "name": "remix-camera-sillytavern-companion-images",
+  "kind": "extension",
+  "summary": "Connects a SillyTavern character to the AI Companion Image Toolset through a local bridge, keeping the service credential out of the browser.",
+  "metadata_status": "curated",
+  "source_id": "github-1265967518",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["connect-external-services", "generate-images", "privacy-focused"],
+  "cataloged_at": "2026-08-01T19:42:50.497Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
