@@ -8,6 +8,7 @@ import type {
 export interface ValidatedPreservedCatalogSummary {
   mode: "preserve";
   reviewStatus: "validated";
+  diagnostic: null;
   submittedSummary: string;
   publishedSummary: string;
   copyResult: {
@@ -20,6 +21,7 @@ export interface ValidatedPreservedCatalogSummary {
 export interface UnavailablePreservedCatalogSummary {
   mode: "preserve";
   reviewStatus: "unavailable";
+  diagnostic: import("./catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
   reasonCode: "copy-review-unavailable";
   submittedSummary: string;
   publishedSummary: string;

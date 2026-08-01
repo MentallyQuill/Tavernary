@@ -28,6 +28,8 @@ export function providerCopyReviewDiagnostic(
   attemptCount: 1 | 2,
 ): CopyReviewDiagnostic;
 
+export function invalidOutputCopyReviewDiagnostic(): CopyReviewDiagnostic;
+
 export function normalizeCopyReviewDiagnostic(
   value: unknown,
 ): CopyReviewDiagnostic | null;

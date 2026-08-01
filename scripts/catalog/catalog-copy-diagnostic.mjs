@@ -67,6 +67,16 @@ export function providerCopyReviewDiagnostic(
   };
 }
 
+export function invalidOutputCopyReviewDiagnostic() {
+  return {
+    failure_phase: "repaired-output-validation",
+    failure_code: "copy-output-invalid",
+    diagnostic_code: null,
+    attempt_count: 2,
+    latency_ms: null,
+  };
+}
+
 export function normalizeCopyReviewDiagnostic(value) {
   if (
     !value ||
