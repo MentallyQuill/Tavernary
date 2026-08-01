@@ -1026,7 +1026,6 @@
   color: var(--color-text-primary);
   background: var(--color-bg-surface);
   box-shadow: var(--shadow-card);
-  text-decoration: none;
   transition:
     border-color var(--kit-motion-card) var(--kit-motion-ease),
     background var(--kit-motion-card) var(--kit-motion-ease),
@@ -1041,7 +1040,7 @@
   --kind-color: var(--color-preset);
 }
 
-.project-card:focus-visible {
+.project-card:has(.project-card-primary-link:focus-visible) {
   z-index: auto;
   overflow: hidden;
   border-color: var(--color-accent-teal);
@@ -1049,7 +1048,7 @@
   outline-offset: 2px;
 }
 
-.project-card:hover {
+.project-card:has(.project-card-primary-link:hover) {
   border-color: var(--color-border-hover);
   background: var(--color-bg-surface-hover);
 }
@@ -1224,15 +1223,51 @@
 
 .project-card h2 {
   margin: 10px 0 8px;
-  overflow: hidden;
   color: var(--color-text-primary);
   font-family: inherit;
   font-size: 17px;
   font-weight: 720;
   letter-spacing: -0.02em;
   line-height: 1.3;
+}
+
+.kit-project-card-unavailable h2 {
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.card-title-row {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.project-card-primary-link,
+.card-title {
+  display: block;
+  min-width: 0;
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-card-primary-link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+}
+
+.project-card .tooltip-anchor,
+.tavernkeeper-scan-indicator-trigger {
+  position: relative;
+  z-index: 2;
 }
 
 .card-attribution {
@@ -1368,11 +1403,12 @@
   align-items: center;
 }
 
-.tavernkeeper-scan-anchor {
+.tavernkeeper-scan-indicator-trigger {
   position: relative;
   display: inline-grid;
   width: 18px;
   height: 18px;
+  flex: none;
   place-items: center;
 }
 
@@ -1383,6 +1419,7 @@
   display: grid;
   width: 18px;
   height: 18px;
+  flex: none;
   border: 0;
   padding: 0;
   background: transparent;
@@ -1742,13 +1779,6 @@
 .compact-cards .project-card h2,
 .compact-cards .card-summary {
   padding-right: 44px;
-}
-
-.compact-cards .card-title {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .kit-grid {
@@ -3255,7 +3285,7 @@
   transition-duration: var(--kit-motion-press);
 }
 
-.project-card-shell:has(.project-card:active),
+.project-card-shell:has(.project-card-primary-link:active),
 .project-card-shell:has(.project-kit-control:active) {
   transform: scale(0.98);
   transition-duration: var(--kit-motion-press);

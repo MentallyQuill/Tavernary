@@ -130,6 +130,52 @@ describe("project card", () => {
     expect(card).not.toHaveAccessibleDescription(/Matched/u);
   });
 
+  test("keeps the scan indicator beside the repository title outside its link", () => {
+    const { container } = render(
+      <ProjectCard
+        project={project("scan-indicator-card", {
+          name: "A Very Long Project Name",
+          tavernKeeper: {
+            state: "green",
+            reason: "current",
+            currentSha: "a".repeat(40),
+            report: {
+              reportId: "report-1",
+              result: "green",
+              scannedSha: "a".repeat(40),
+              scannedAt: "2026-07-31T00:00:00Z",
+              reportUrl: "https://example.com/tavernkeeper/report-1",
+              severity: {
+                critical: 0,
+                high: 0,
+                medium: 0,
+                low: 0,
+                info: 0,
+              },
+            },
+          },
+        })}
+        now="2026-07-23T00:00:00Z"
+      />,
+    );
+
+    const card = container.querySelector("article.project-card");
+    const link = screen.getByRole("link", { name: "A Very Long Project Name" });
+    const indicator = screen.getByRole("button", {
+      name: /TavernKeeper scan/u,
+    });
+
+    expect(card).toContainElement(link);
+    expect(card).toContainElement(indicator);
+    expect(link).not.toContainElement(indicator);
+    expect([
+      ...(card?.querySelector("h2.card-title-row")?.children ?? []),
+    ]).toEqual([link, indicator]);
+    expect(link.querySelector(".card-title")).toHaveTextContent(
+      "A Very Long Project Name",
+    );
+  });
+
   test("renders a published upstream as a sibling relationship action", () => {
     const onViewRelationship = vi.fn();
     const child = project("vectfox", {
@@ -317,8 +363,9 @@ describe("project card", () => {
       />,
     );
 
-    const card = screen.getByRole("link", { name: "Directive" });
-    const attribution = card.querySelector(".card-attribution");
+    const link = screen.getByRole("link", { name: "Directive" });
+    const card = link.closest("article.project-card");
+    const attribution = card?.querySelector(".card-attribution");
     expect(attribution).toHaveTextContent(
       "by MentallyQuill, plus 1 contributor",
     );
@@ -332,7 +379,7 @@ describe("project card", () => {
       }),
     ).toBeVisible();
 
-    const descriptionId = card.getAttribute("aria-describedby");
+    const descriptionId = link.getAttribute("aria-describedby");
     expect(document.getElementById(descriptionId!)).toHaveTextContent(
       "GitHub repository owner: MentallyQuill. Contributors: Alice. Bots and AI contributors: Claude.",
     );
@@ -851,16 +898,17 @@ describe("project card", () => {
       />,
     );
 
-    const card = screen.getByRole("link", {
+    const link = screen.getByRole("link", {
       name: "Pura's Director v15.0",
     });
-    const descriptionId = card.getAttribute("aria-describedby");
+    const card = link.closest("article.project-card");
+    const descriptionId = link.getAttribute("aria-describedby");
     const description = document.getElementById(descriptionId!);
 
-    expect(card.querySelector(".preset-version")).toHaveTextContent("v15.0");
-    expect(card.querySelector(".preset-publication")).toBeNull();
-    expect(card.querySelector(".preset-size")).toBeNull();
-    expect(card.querySelector(".card-state-list")).toBeNull();
+    expect(card?.querySelector(".preset-version")).toHaveTextContent("v15.0");
+    expect(card?.querySelector(".preset-publication")).toBeNull();
+    expect(card?.querySelector(".preset-size")).toBeNull();
+    expect(card?.querySelector(".card-state-list")).toBeNull();
     expect(card).toHaveTextContent("Missing");
 
     for (const label of [

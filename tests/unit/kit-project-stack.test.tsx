@@ -106,7 +106,10 @@ test("renders available projects as ordinary compact project cards in order", ()
     "Frontend",
     "Memory",
   ]);
-  expect(links[0]).toHaveClass("project-card", "kind-extension");
+  expect(links[0].closest("article")).toHaveClass(
+    "project-card",
+    "kind-extension",
+  );
   expect(links[0]).toHaveAttribute("href", "https://example.com/kits/frontend");
   expect(links[0]).toHaveAttribute("target", "_blank");
   expect(links[0]).toHaveAttribute("rel", "noopener noreferrer");

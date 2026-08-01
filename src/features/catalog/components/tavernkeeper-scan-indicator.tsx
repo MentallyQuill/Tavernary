@@ -215,12 +215,12 @@ export function TavernKeeperScanIndicator({
   }, [closePopover, containsInteractiveElement, open]);
 
   return (
-    <span className="tavernkeeper-scan-anchor">
+    <>
       <button
         aria-controls={popoverId}
         aria-expanded={open}
         aria-label={`TavernKeeper scan: ${accessibleContent}`}
-        className={`tavernkeeper-scan-indicator-${status.state}`}
+        className={`tavernkeeper-scan-indicator-trigger tavernkeeper-scan-indicator-${status.state}`}
         onBlur={closeOnFocusExit}
         onClick={() => (open ? closePopover() : openPopover())}
         onFocus={openPopover}
@@ -282,6 +282,6 @@ export function TavernKeeperScanIndicator({
             document.body,
           )
         : null}
-    </span>
+    </>
   );
 }

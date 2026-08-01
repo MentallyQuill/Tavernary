@@ -16,6 +16,7 @@ import {
   attributionTooltip,
 } from "../project-attribution";
 import { ActivitySparkline } from "./activity-sparkline";
+import { TavernKeeperScanIndicator } from "./tavernkeeper-scan-indicator";
 
 const kindLabels = {
   frontend: "Frontend",
@@ -264,14 +265,7 @@ export function ProjectCard({
     .join(" ");
 
   return (
-    <a
-      className={`project-card kind-${project.kind}`}
-      href={project.canonicalUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={displayName}
-      aria-describedby={cardDescriptionId}
-    >
+    <article className={`project-card kind-${project.kind}`}>
       <span className="visually-hidden" id={cardDescriptionId}>
         {cardDescription}
       </span>
@@ -387,15 +381,30 @@ export function ProjectCard({
         )}
       </div>
 
-      <h2>
-        <Tooltip
-          id={titleId}
-          label={project.summary}
-          className="card-title"
-          showOnAncestorFocus
+      <h2 className="card-title-row">
+        <a
+          className="project-card-primary-link"
+          href={project.canonicalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={displayName}
+          aria-describedby={cardDescriptionId}
         >
-          {displayName}
-        </Tooltip>
+          <Tooltip
+            id={titleId}
+            label={project.summary}
+            className="card-title"
+            showOnAncestorFocus
+          >
+            {displayName}
+          </Tooltip>
+        </a>
+        {project.tavernKeeper ? (
+          <TavernKeeperScanIndicator
+            projectId={project.id}
+            status={project.tavernKeeper}
+          />
+        ) : null}
       </h2>
       {project.attribution ? (
         <Tooltip
@@ -467,6 +476,6 @@ export function ProjectCard({
           ) : null}
         </div>
       </div>
-    </a>
+    </article>
   );
 }
