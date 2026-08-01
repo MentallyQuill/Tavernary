@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mechamarmot-sillytavern-pyrunner",
+  "source_id": "github-1114642314",
+  "source_identity": "github:mechamarmot/sillytavern-pyrunner",
+  "evidence_fingerprint": "3bb45bbdfd7fb1cbf3c3bd58c575dc7ff1e4b855b69750240ac2ca4f7ae25730",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:32:16.230Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:32:16.230Z"
+  },
+  "maintenance_issue_number": null
+}
