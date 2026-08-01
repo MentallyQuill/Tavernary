@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import {
   act,
   cleanup,
@@ -6,6 +8,8 @@ import {
   screen,
   within,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import postcss, { type AtRule, type Rule } from "postcss";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { TavernKeeperScanIndicator } from "@/features/catalog/components/tavernkeeper-scan-indicator";
@@ -35,9 +39,31 @@ const greenStatus: TavernKeeperCardStatus = {
   },
 };
 
+const pendingStatus: TavernKeeperCardStatus = {
+  state: "gray",
+  reason: "pending",
+  currentSha: "abc1234def5678abc1234def5678abc1234def5678",
+  report: null,
+};
+
+function rectangle(left: number, top: number, width: number, height: number) {
+  return {
+    bottom: top + height,
+    height,
+    left,
+    right: left + width,
+    toJSON: () => ({}),
+    top,
+    width,
+    x: left,
+    y: top,
+  } as DOMRect;
+}
+
 describe("TavernKeeperScanIndicator", () => {
   afterEach(() => {
     cleanup();
+    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
@@ -125,6 +151,40 @@ describe("TavernKeeperScanIndicator", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  test("clamps the popover within the viewport margin and repositions on resize and scroll", () => {
+    let triggerRect = rectangle(0, 0, 18, 18);
+    let panelRect = rectangle(0, 0, 390, 100);
+    vi.spyOn(window, "innerWidth", "get").mockReturnValue(400);
+    vi.spyOn(window, "innerHeight", "get").mockReturnValue(700);
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
+      function (this: HTMLElement) {
+        return this.classList.contains("tavernkeeper-popover")
+          ? panelRect
+          : triggerRect;
+      },
+    );
+
+    render(
+      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+    );
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /TavernKeeper scan: review suggested/u,
+      }),
+    );
+    const panel = screen.getByRole("dialog");
+    expect(panel).toHaveStyle({ left: "8px", top: "26px" });
+
+    panelRect = rectangle(0, 0, 200, 100);
+    triggerRect = rectangle(200, 500, 20, 20);
+    fireEvent.resize(window);
+    expect(panel).toHaveStyle({ left: "110px", top: "392px" });
+
+    triggerRect = rectangle(300, 600, 20, 20);
+    fireEvent.scroll(window);
+    expect(panel).toHaveStyle({ left: "192px", top: "492px" });
+  });
+
   test("keeps the popover open while focus moves within it and closes on focus exit", () => {
     render(
       <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
@@ -144,6 +204,44 @@ describe("TavernKeeperScanIndicator", () => {
 
     fireEvent.blur(reportLink, { relatedTarget: document.body });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  test("uses a non-modal Tab route to the report link without trapping panels without links", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <>
+        <TavernKeeperScanIndicator
+          projectId="directive"
+          status={yellowStatus}
+        />
+        <button type="button">Outside app control</button>
+      </>,
+    );
+
+    const trigger = screen.getByRole("button", {
+      name: /TavernKeeper scan: review suggested/u,
+    });
+    await user.tab();
+    expect(trigger).toHaveFocus();
+
+    await user.tab();
+    expect(
+      screen.getByRole("link", { name: "View full report" }),
+    ).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(trigger).toHaveFocus();
+
+    rerender(
+      <>
+        <TavernKeeperScanIndicator projectId="pending" status={pendingStatus} />
+        <button type="button">Outside app control</button>
+      </>,
+    );
+    await user.tab();
+    expect(
+      screen.getByRole("button", { name: "Outside app control" }),
+    ).toHaveFocus();
   });
 
   test("closes on Escape and an outside pointer press", () => {
@@ -191,5 +289,36 @@ describe("TavernKeeperScanIndicator", () => {
     fireEvent.pointerDown(secondTrigger, { pointerType: "touch" });
     fireEvent.click(secondTrigger);
     expect(secondTrigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("removes scan-indicator transitions for reduced motion", () => {
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
+    const reducedMotionRule = stylesheet.nodes.find(
+      (rule): rule is AtRule =>
+        rule.type === "atrule" &&
+        rule.name === "media" &&
+        rule.params === "(prefers-reduced-motion: reduce)",
+    );
+
+    expect(reducedMotionRule).toBeDefined();
+    if (!reducedMotionRule)
+      throw new Error("Reduced-motion media rule missing.");
+    const transitionRule = reducedMotionRule.nodes?.find(
+      (rule): rule is Rule =>
+        rule.type === "rule" && rule.selector.includes(".tavernkeeper-popover"),
+    );
+    expect(transitionRule).toBeDefined();
+    if (!transitionRule)
+      throw new Error("Reduced-motion transition rule missing.");
+    expect(
+      transitionRule.nodes?.some(
+        (declaration) =>
+          declaration.type === "decl" &&
+          declaration.prop === "transition" &&
+          declaration.value === "none",
+      ),
+    ).toBe(true);
   });
 });

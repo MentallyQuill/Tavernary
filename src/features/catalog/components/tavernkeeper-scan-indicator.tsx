@@ -9,6 +9,7 @@ import {
   useState,
   type CSSProperties,
   type FocusEvent as ReactFocusEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 
 import { TavernKeeperScanIcon } from "@/components/icons/tavernkeeper-scan-icon";
@@ -77,6 +78,7 @@ export function TavernKeeperScanIndicator({
   const [position, setPosition] = useState<CSSProperties | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
+  const reportLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const content =
     status.reason === "current"
@@ -130,6 +132,31 @@ export function TavernKeeperScanIndicator({
       if (!containsInteractiveElement(event.relatedTarget)) closePopover();
     },
     [closePopover, containsInteractiveElement],
+  );
+
+  const focusReportLink = useCallback(
+    (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      if (
+        event.key !== "Tab" ||
+        event.shiftKey ||
+        !open ||
+        !reportLinkRef.current
+      ) {
+        return;
+      }
+      event.preventDefault();
+      reportLinkRef.current.focus();
+    },
+    [open],
+  );
+
+  const focusTrigger = useCallback(
+    (event: ReactKeyboardEvent<HTMLAnchorElement>) => {
+      if (event.key !== "Tab" || !event.shiftKey) return;
+      event.preventDefault();
+      triggerRef.current?.focus();
+    },
+    [],
   );
 
   const updatePosition = useCallback(() => {
@@ -197,6 +224,7 @@ export function TavernKeeperScanIndicator({
         onBlur={closeOnFocusExit}
         onClick={() => (open ? closePopover() : openPopover())}
         onFocus={openPopover}
+        onKeyDown={focusReportLink}
         onPointerEnter={openPopover}
         onPointerLeave={delayClose}
         ref={triggerRef}
@@ -241,7 +269,13 @@ export function TavernKeeperScanIndicator({
                     </span>{" "}
                     on {formatDate(report.scannedAt)}
                   </p>
-                  <a href={report.reportUrl}>View full report</a>
+                  <a
+                    href={report.reportUrl}
+                    onKeyDown={focusTrigger}
+                    ref={reportLinkRef}
+                  >
+                    View full report
+                  </a>
                 </>
               ) : null}
             </section>,
