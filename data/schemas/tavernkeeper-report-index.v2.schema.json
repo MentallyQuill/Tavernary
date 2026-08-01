@@ -4,10 +4,7 @@
   "title": "TavernKeeper V2 preferred report index",
   "type": "object",
   "properties": {
-    "schema_version": {
-      "type": "number",
-      "const": 2
-    },
+    "schema_version": { "type": "number", "const": 2 },
     "generated_at": {
       "type": "string",
       "format": "date-time",
@@ -18,10 +15,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "report_id": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{64}$"
-          },
+          "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
           "report_version": {
             "type": "integer",
             "exclusiveMinimum": 0,
@@ -29,13 +23,8 @@
           },
           "supersedes_report_id": {
             "anyOf": [
-              {
-                "type": "string",
-                "pattern": "^[0-9a-f]{64}$"
-              },
-              {
-                "type": "null"
-              }
+              { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              { "type": "null" }
             ]
           },
           "scanner_version": {
@@ -50,14 +39,8 @@
             "type": "string",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
           },
-          "source_id": {
-            "type": "string",
-            "pattern": "^github-[1-9][0-9]*$"
-          },
-          "provider": {
-            "type": "string",
-            "const": "github"
-          },
+          "source_id": { "type": "string", "pattern": "^github-[1-9][0-9]*$" },
+          "provider": { "type": "string", "const": "github" },
           "repository_id": {
             "type": "integer",
             "exclusiveMinimum": 0,
@@ -67,29 +50,14 @@
             "type": "string",
             "pattern": "^[^/\\s]+\\/[^/\\s]+$"
           },
-          "target_sha": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{40}$"
-          },
+          "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
           "completed_at": {
             "type": "string",
             "format": "date-time",
             "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
           },
-          "mode": {
-            "type": "string",
-            "enum": [
-              "standard",
-              "deep"
-            ]
-          },
-          "result": {
-            "type": "string",
-            "enum": [
-              "teal",
-              "red"
-            ]
-          },
+          "mode": { "type": "string", "enum": ["standard", "deep"] },
+          "result": { "type": "string", "enum": ["teal", "red"] },
           "finding_counts": {
             "type": "object",
             "properties": {
@@ -132,13 +100,7 @@
                     "maximum": 9007199254740991
                   }
                 },
-                "required": [
-                  "critical",
-                  "high",
-                  "medium",
-                  "low",
-                  "info"
-                ],
+                "required": ["critical", "high", "medium", "low", "info"],
                 "additionalProperties": false
               },
               "confidence": {
@@ -160,11 +122,7 @@
                     "maximum": 9007199254740991
                   }
                 },
-                "required": [
-                  "high",
-                  "medium",
-                  "low"
-                ],
+                "required": ["high", "medium", "low"],
                 "additionalProperties": false
               },
               "categories": {
@@ -182,10 +140,7 @@
                       "maximum": 9007199254740991
                     }
                   },
-                  "required": [
-                    "category",
-                    "count"
-                  ],
+                  "required": ["category", "count"],
                   "additionalProperties": false
                 }
               },
@@ -208,11 +163,7 @@
                     "maximum": 9007199254740991
                   }
                 },
-                "required": [
-                  "confirmed",
-                  "not_supported",
-                  "inconclusive"
-                ],
+                "required": ["confirmed", "not_supported", "inconclusive"],
                 "additionalProperties": false
               }
             },
@@ -305,10 +256,6 @@
       }
     }
   },
-  "required": [
-    "schema_version",
-    "generated_at",
-    "reports"
-  ],
+  "required": ["schema_version", "generated_at", "reports"],
   "additionalProperties": false
 }
