@@ -56,6 +56,7 @@ test("uses category-prefixed workflow display names", async () => {
       "Catalog maintenance: Backfill repository IDs",
     ci: "Site: Validate changes",
     "deploy-pages": "Site: Deploy to GitHub Pages",
+    "targeted-tavernkeeper-scan": "Security: Run targeted TavernKeeper scan",
   } as const;
 
   for (const [file, expectedName] of Object.entries(expectedNames)) {
@@ -89,6 +90,7 @@ test("identifies the object and action in every workflow run name", async () => 
     "backfill-repository-identities": ["Catalog:", "Backfill repository IDs"],
     ci: ["Site:", "Validate"],
     "deploy-pages": ["Site:", "Deploy"],
+    "targeted-tavernkeeper-scan": ["Security:", "Scan"],
   } as const;
 
   for (const [file, expectedParts] of Object.entries(expectedRunNameParts)) {
@@ -120,6 +122,7 @@ test("pins every first-party action to its resolved commit", async () => {
     "triage-help-request",
     "apply-kit-submission",
     "apply-kit-withdrawal",
+    "targeted-tavernkeeper-scan",
   ]) {
     for (const step of allSteps(await workflow(name))) {
       if (!step.uses?.startsWith("actions/")) continue;
@@ -128,6 +131,49 @@ test("pins every first-party action to its resolved commit", async () => {
       expect(sha).toMatch(/^[a-f0-9]{40}$/);
     }
   }
+});
+
+test("targeted TavernKeeper scans are actor-gated and accept only an exact repository URL", async () => {
+  const targeted = await workflow("targeted-tavernkeeper-scan");
+  const source = await readFile(
+    resolve(workflowDirectory, "targeted-tavernkeeper-scan.yml"),
+    "utf8",
+  );
+
+  expect(Object.keys(targeted.on)).toEqual(["workflow_dispatch"]);
+  expect(Object.keys(targeted.on.workflow_dispatch.inputs)).toEqual([
+    "repository_url",
+  ]);
+  expect(targeted.permissions).toEqual({
+    contents: "read",
+    actions: "write",
+  });
+  expect(source).toContain("github.actor_id");
+  expect(source).toContain("tavernkeeper-scan-operators.json");
+  expect(source).toContain("mode=project");
+  expect(source).toContain("tavernkeeper-targets.json");
+  expect(source).toContain("TAVERNKEEPER_WAKE_APP_ID");
+  expect(source).toContain("targeted-scan.yml");
+  expect(source).toMatch(/inputs.+repository_id/isu);
+  expect(source).not.toMatch(
+    /inputs\.(?:repository_id|source_id|target_sha|branch|mode|model|priority|token_budget|clone_url)/u,
+  );
+  expect(source).not.toMatch(
+    /pull_request|issues:|issue_comment|repository_dispatch/u,
+  );
+  const dispatch = targeted.jobs.request.steps.find(
+    (step: { name?: string }) =>
+      step.name ===
+      "Dispatch TavernKeeper targeted scan with repository ID only",
+  );
+  expect(dispatch.env).toEqual({
+    GH_TOKEN: "${{ steps.tavernkeeper-token.outputs.token }}",
+    REPOSITORY_ID: "${{ steps.resolve.outputs.repository_id }}",
+  });
+  expect(dispatch.run).toContain("inputs:{repository_id:$repository_id}");
+  expect(dispatch.run).not.toMatch(
+    /repository_url|source_id|target_sha|branch|mode|model|priority|token_budget|clone_url/iu,
+  );
 });
 
 test("publishes Kits only by manual dispatch and serializes registry writes", async () => {

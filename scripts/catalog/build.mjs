@@ -14,6 +14,7 @@ import { kitSearchFields, projectSearchFields } from "./search-document.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 import {
   buildTavernKeeperTargets,
+  popularityTopProjectIds,
   writeTavernKeeperTargets,
 } from "../security/tavernkeeper-targets.mjs";
 
@@ -332,6 +333,7 @@ export async function buildCatalog(options = {}) {
     modelFamilyVocabulary,
     completionFormatVocabulary,
     tavernKeeperReports,
+    tavernKeeperContract,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
     options.sources ??
@@ -362,6 +364,8 @@ export async function buildCatalog(options = {}) {
       (options.records
         ? { schema_version: 1, generated_at: null, reports: [] }
         : readJson("data/security/tavernkeeper-report-summaries.json")),
+    options.tavernKeeperContract ??
+      readJson("config/tavernkeeper-contract.json"),
   ]);
   const vocabularies = {
     frontends: entriesById(frontendVocabulary, "frontends"),
@@ -654,8 +658,13 @@ export async function buildCatalog(options = {}) {
     await rename(temporaryPath, outputPath);
     await writeTavernKeeperTargets(
       buildTavernKeeperTargets({
+        contractVersion: tavernKeeperContract.target_manifest_schema_version,
         sources,
         snapshots,
+        projects: projects
+          .map((project) => recordsByProject.get(project.id))
+          .filter(Boolean),
+        topProjectIds: popularityTopProjectIds(projects),
         publishedSourceIds: new Set(publicProjectsBySourceId.keys()),
         generatedAt: generatedAtIso,
       }),

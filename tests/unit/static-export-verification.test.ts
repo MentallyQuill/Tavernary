@@ -196,7 +196,7 @@ describe("verifyStaticExport", () => {
     await expect(
       verifyTavernKeeperStaticExport(
         tavernKeeperExport({
-          schema_version: 1,
+          schema_version: 2,
           generated_at: "2026-07-31T12:00:00.000Z",
           repositories: [
             {
@@ -206,6 +206,11 @@ describe("verifyStaticExport", () => {
               repository: "fixture/catalog",
               target_sha: "a".repeat(40),
               canonical_url: "https://github.com/fixture/catalog",
+              project_kinds: ["extension"],
+              catalog_priority: {
+                top_30: false,
+                first_cataloged_at: "2026-07-01T00:00:00.000Z",
+              },
             },
           ],
         }),
@@ -214,14 +219,14 @@ describe("verifyStaticExport", () => {
 
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({ schema_version: 1, repositories: [] }),
+        tavernKeeperExport({ schema_version: 2, repositories: [] }),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });
 
   test("rejects an invalid TavernKeeper repository", async () => {
     const manifest = {
-      schema_version: 1,
+      schema_version: 2,
       generated_at: "2026-07-31T12:00:00.000Z",
       repositories: [
         {
@@ -231,6 +236,11 @@ describe("verifyStaticExport", () => {
           repository: "not a repository",
           target_sha: "a".repeat(40),
           canonical_url: "https://github.com/fixture/catalog",
+          project_kinds: ["extension"],
+          catalog_priority: {
+            top_30: false,
+            first_cataloged_at: "2026-07-01T00:00:00.000Z",
+          },
         },
       ],
     };
@@ -243,7 +253,7 @@ describe("verifyStaticExport", () => {
     await expect(
       verifyTavernKeeperStaticExport(
         tavernKeeperExport({
-          schema_version: 1,
+          schema_version: 2,
           generated_at: "2026-07-31T12:00:00.000Z",
           repositories: [
             {
@@ -253,6 +263,11 @@ describe("verifyStaticExport", () => {
               repository: "fixture/catalog",
               target_sha: "a".repeat(40),
               canonical_url: "https://github.com/fixture/catalog",
+              project_kinds: ["extension"],
+              catalog_priority: {
+                top_30: false,
+                first_cataloged_at: "2026-07-01T00:00:00.000Z",
+              },
               unexpected: true,
             },
           ],
@@ -269,11 +284,16 @@ describe("verifyStaticExport", () => {
       repository: "fixture/catalog",
       target_sha: "a".repeat(40),
       canonical_url: "https://github.com/fixture/catalog",
+      project_kinds: ["extension"],
+      catalog_priority: {
+        top_30: false,
+        first_cataloged_at: "2026-07-01T00:00:00.000Z",
+      },
     };
     await expect(
       verifyTavernKeeperStaticExport(
         tavernKeeperExport({
-          schema_version: 1,
+          schema_version: 2,
           generated_at: "not-a-date",
           repositories: [validRepository],
         }),
@@ -282,7 +302,7 @@ describe("verifyStaticExport", () => {
     await expect(
       verifyTavernKeeperStaticExport(
         tavernKeeperExport({
-          schema_version: 1,
+          schema_version: 2,
           generated_at: "2026-07-31T12:00:00.000Z",
           repositories: [{ ...validRepository, canonical_url: "not-a-uri" }],
         }),

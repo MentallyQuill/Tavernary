@@ -1,0 +1,154 @@
+name: "Security: Run targeted TavernKeeper scan"
+
+run-name: "Security: Scan ${{ inputs.repository_url }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository_url:
+        description: Exact canonical GitHub repository URL from a published Tavernary card
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: tavernkeeper-targeted-scan
+  cancel-in-progress: false
+
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out trusted Tavernary main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate actor and exact published repository URL
+        id: resolve
+        env:
+          TAVERNARY_SCAN_REPOSITORY_URL: ${{ inputs.repository_url }}
+          TAVERNARY_SCAN_ACTOR_ID: ${{ github.actor_id }}
+          TAVERNARY_SCAN_OPERATOR_CONFIG: config/tavernkeeper-scan-operators.json
+        shell: bash
+        run: |
+          request="$(node scripts/security/resolve-tavernkeeper-scan-request.mjs)"
+          echo "source_id=$(jq -r '.sourceId' <<< "$request")" >> "$GITHUB_OUTPUT"
+          echo "repository_id=$(jq -r '.repositoryId' <<< "$request")" >> "$GITHUB_OUTPUT"
+      - name: Dispatch project refresh
+        id: refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_ID: ${{ steps.resolve.outputs.source_id }}
+        shell: bash
+        run: |
+          requested_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          gh workflow run refresh-catalog.yml --ref main \
+            -f mode=project \
+            -f batch_size=1 \
+            -f source_id="$SOURCE_ID"
+          run_id=""
+          for attempt in $(seq 1 40); do
+            runs="$(gh run list --workflow refresh-catalog.yml --event workflow_dispatch --limit 30 --json databaseId,createdAt,displayTitle)"
+            run_id="$(jq -r \
+              --arg source_id "$SOURCE_ID" \
+              --arg requested_at "$requested_at" \
+              '[.[] | select(.createdAt >= $requested_at and (.displayTitle | contains($source_id)))] | sort_by(.createdAt) | .[0].databaseId // empty' \
+              <<< "$runs")"
+            if [[ -n "$run_id" ]]; then
+              break
+            fi
+            sleep 5
+          done
+          test -n "$run_id"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+      - name: Wait for targeted refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ steps.refresh.outputs.run_id }}
+        run: gh run watch "$RUN_ID" --exit-status
+      - name: Resolve refreshed exact target from current main
+        id: target
+        env:
+          SOURCE_ID: ${{ steps.resolve.outputs.source_id }}
+          EXPECTED_REPOSITORY_ID: ${{ steps.resolve.outputs.repository_id }}
+        shell: bash
+        run: |
+          git fetch --no-tags origin main
+          git checkout --detach origin/main
+          source_path="data/registry/sources/$SOURCE_ID.json"
+          snapshot_path="data/snapshots/github/$SOURCE_ID.json"
+          test -f "$source_path"
+          test -f "$snapshot_path"
+          jq -e \
+            --arg source_id "$SOURCE_ID" \
+            --argjson repository_id "$EXPECTED_REPOSITORY_ID" \
+            '.id == $source_id and .type == "github" and .status == "active" and .repository_id == $repository_id' \
+            "$source_path" >/dev/null
+          repository="$(jq -r '.repository' "$source_path")"
+          target_sha="$(jq -r '.repository.head_sha' "$snapshot_path")"
+          jq -e \
+            --arg source_id "$SOURCE_ID" \
+            --arg repository "$repository" \
+            --arg target_sha "$target_sha" \
+            --argjson repository_id "$EXPECTED_REPOSITORY_ID" \
+            '.source_id == $source_id and .provider == "github" and .source_health == "healthy" and .stale_since == null and .repository.id == $repository_id and ((.repository.owner + "/" + .repository.name) == $repository) and .repository.head_sha == $target_sha' \
+            "$snapshot_path" >/dev/null
+          [[ "$target_sha" =~ ^[0-9a-f]{40}$ ]]
+          echo "repository=$repository" >> "$GITHUB_OUTPUT"
+          echo "target_sha=$target_sha" >> "$GITHUB_OUTPUT"
+      - name: Wait for matching public V2 TavernKeeper target
+        env:
+          REPOSITORY_ID: ${{ steps.resolve.outputs.repository_id }}
+          REPOSITORY: ${{ steps.target.outputs.repository }}
+          TARGET_SHA: ${{ steps.target.outputs.target_sha }}
+        shell: bash
+        run: |
+          for attempt in $(seq 1 80); do
+            if curl --fail --silent --show-error --location --max-redirs 0 \
+              --output "$RUNNER_TEMP/tavernkeeper-targets.json" \
+              https://tavernary.org/security/tavernkeeper-targets.json && \
+              jq -e \
+                --argjson repository_id "$REPOSITORY_ID" \
+                --arg repository "$REPOSITORY" \
+                --arg target_sha "$TARGET_SHA" \
+                '.schema_version == 2 and any(.repositories[]; .repository_id == $repository_id and .repository == $repository and .target_sha == $target_sha)' \
+                "$RUNNER_TEMP/tavernkeeper-targets.json" >/dev/null; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "The refreshed repository never appeared in Tavernary's public V2 target manifest." >&2
+          exit 1
+      - name: Create destination-only TavernKeeper token
+        id: tavernkeeper-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ secrets.TAVERNKEEPER_WAKE_APP_ID }}
+          private-key: ${{ secrets.TAVERNKEEPER_WAKE_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: TavernKeeper
+          permission-actions: write
+      - name: Dispatch TavernKeeper targeted scan with repository ID only
+        env:
+          GH_TOKEN: ${{ steps.tavernkeeper-token.outputs.token }}
+          REPOSITORY_ID: ${{ steps.resolve.outputs.repository_id }}
+        shell: bash
+        run: |
+          jq -nc \
+            --arg repository_id "$REPOSITORY_ID" \
+            '{ref:"main",inputs:{repository_id:$repository_id}}' | \
+            gh api --method POST \
+              repos/MentallyQuill/TavernKeeper/actions/workflows/targeted-scan.yml/dispatches \
+              --input -
