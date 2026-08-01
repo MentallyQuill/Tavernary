@@ -92,13 +92,7 @@ describe("TavernKeeper target manifest", () => {
           source("github-3", 3, "owner/malformed"),
         ],
         snapshots: [
-          snapshot(
-            "github-1",
-            1,
-            "owner/stale",
-            "a".repeat(40),
-            "unavailable",
-          ),
+          snapshot("github-1", 1, "owner/stale", "a".repeat(40), "unavailable"),
           snapshot("github-3", 3, "owner/malformed", "main"),
         ],
       }).repositories,

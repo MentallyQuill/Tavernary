@@ -86,6 +86,15 @@ describe("pull request CI path classification", () => {
     });
   });
 
+  test.each([
+    "scripts/security/tavernkeeper-reports.mjs",
+    "data/schemas/tavernkeeper-report-index.schema.json",
+    ".github/workflows/import-tavernkeeper-reports.yml",
+    "src/features/catalog/components/tavernkeeper-scan-indicator.tsx",
+  ])("routes TavernKeeper implementation path %s through full CI", (path) => {
+    expect(classifyPullRequestPaths([path]).route).toBe("full");
+  });
+
   test("routes mixed content and code through full CI", () => {
     expect(
       classifyPullRequestPaths([

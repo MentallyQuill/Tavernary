@@ -17,6 +17,15 @@ records, with 307 cards currently published in the browser catalog. Repository
 enrichment and editorial review may improve summaries and Goals and traits
 tags without changing a card's primary function.
 
+## TavernKeeper advisory scans
+
+Tavernary can show a repository-level TavernKeeper scan indicator beside an
+eligible GitHub project title. It is advisory evidence for one exact commit,
+not a safety guarantee, certification, or moderation decision: scan results
+never hide, quarantine, reorder, or otherwise change a listing. See the
+[TavernKeeper integration](docs/tavernkeeper-integration.md) for the public
+contracts, trust boundary, recovery procedure, and owner appeal boundary.
+
 ## Local development
 
 Use Node.js 24 and install from the committed lockfile:

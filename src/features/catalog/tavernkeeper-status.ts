@@ -110,12 +110,13 @@ function isPreferredReportForSource(
     report.source_id === source.id &&
     report.repository_id === source.repository_id &&
     report.repository === source.repository &&
-    report.scanner_policy_version ===
-      ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
+    report.scanner_policy_version === ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
   );
 }
 
-function summarize(report: TavernKeeperPreferredReport): TavernKeeperReportSummary {
+function summarize(
+  report: TavernKeeperPreferredReport,
+): TavernKeeperReportSummary {
   return {
     reportId: report.report_id,
     result: report.result,
@@ -160,7 +161,9 @@ export function deriveTavernKeeperCardStatus({
   const reports = preferredReports.filter((report) =>
     isPreferredReportForSource(report, source),
   );
-  const currentReport = reports.find((report) => report.target_sha === currentSha);
+  const currentReport = reports.find(
+    (report) => report.target_sha === currentSha,
+  );
   if (currentReport) {
     return {
       state: currentReport.result,

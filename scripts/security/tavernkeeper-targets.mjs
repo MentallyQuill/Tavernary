@@ -9,11 +9,7 @@ const defaultOutputPath = resolve(
 );
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 
-export function buildTavernKeeperTargets({
-  sources,
-  snapshots,
-  generatedAt,
-}) {
+export function buildTavernKeeperTargets({ sources, snapshots, generatedAt }) {
   const snapshotsBySource = new Map(
     snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );

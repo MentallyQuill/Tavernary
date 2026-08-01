@@ -295,7 +295,8 @@ test("builds sibling extension and preset cards from one source snapshot", async
           finding_counts: {
             severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
           },
-          report_url: "https://mentallyquill.github.io/TavernKeeper/reports/example/",
+          report_url:
+            "https://mentallyquill.github.io/TavernKeeper/reports/example/",
         },
       ],
     },

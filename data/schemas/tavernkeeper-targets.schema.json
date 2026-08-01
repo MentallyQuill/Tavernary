@@ -27,7 +27,11 @@
           "repository_id": { "type": "integer", "minimum": 1 },
           "repository": { "type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$" },
           "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
-          "canonical_url": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/" }
+          "canonical_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://github\\.com/"
+          }
         }
       }
     }
