@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "virgilianshailer-autobackgound",
+  "source_id": "github-1213247381",
+  "source_identity": "github:virgilianshailer/autobackgound",
+  "evidence_fingerprint": "1765419c4b5dbf556650c9a59491a9898ba1033742f0ce2fddb988238677139f",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:33:49.790Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:33:49.790Z"
+  },
+  "maintenance_issue_number": null
+}
