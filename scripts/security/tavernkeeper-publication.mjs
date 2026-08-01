@@ -148,36 +148,39 @@ function parseIpv6Address(address) {
   });
 }
 
+function hasIpv6Prefix(bytes, prefix, prefixLength) {
+  const wholeBytes = Math.floor(prefixLength / 8);
+  const remainingBits = prefixLength % 8;
+  if (
+    bytes.slice(0, wholeBytes).some((byte, index) => byte !== prefix[index])
+  ) {
+    return false;
+  }
+  if (remainingBits === 0) {
+    return true;
+  }
+  const mask = (0xff << (8 - remainingBits)) & 0xff;
+  return (bytes[wholeBytes] & mask) === (prefix[wholeBytes] & mask);
+}
+
 function isPublicIpv6Address(address) {
   const bytes = parseIpv6Address(address);
   if (!bytes) {
     return false;
   }
-  const isUnspecified = bytes.every((byte) => byte === 0);
-  const isLoopback =
-    bytes.slice(0, -1).every((byte) => byte === 0) && bytes.at(-1) === 1;
-  const isIpv4Mapped =
-    bytes.slice(0, 10).every((byte) => byte === 0) &&
-    bytes[10] === 0xff &&
-    bytes[11] === 0xff;
-  const isLinkLocal = bytes[0] === 0xfe && (bytes[1] & 0xc0) === 0x80;
-  const isMulticast = bytes[0] === 0xff;
-  const isSiteLocal = bytes[0] === 0xfe && (bytes[1] & 0xc0) === 0xc0;
-  const isUniqueLocal = (bytes[0] & 0xfe) === 0xfc;
-  const isDocumentation =
-    bytes[0] === 0x20 &&
-    bytes[1] === 0x01 &&
-    bytes[2] === 0x0d &&
-    bytes[3] === 0xb8;
+
+  // IANA IPv6 Special-Purpose Address Registry, last updated 2025-10-09:
+  // https://www.iana.org/assignments/iana-ipv6-special-registry/
+  // Checked 2026-08-01. This fixed GitHub Pages fetcher allows only ordinary
+  // global-unicast space and conservatively excludes every listed carve-out.
+  if ((bytes[0] & 0xe0) !== 0x20) {
+    return false;
+  }
   return !(
-    isUnspecified ||
-    isLoopback ||
-    isIpv4Mapped ||
-    isLinkLocal ||
-    isMulticast ||
-    isSiteLocal ||
-    isUniqueLocal ||
-    isDocumentation
+    hasIpv6Prefix(bytes, [0x20, 0x01], 23) ||
+    hasIpv6Prefix(bytes, [0x20, 0x01, 0x0d, 0xb8], 32) ||
+    hasIpv6Prefix(bytes, [0x20, 0x02], 16) ||
+    hasIpv6Prefix(bytes, [0x3f, 0xff, 0x00], 20)
   );
 }
 
