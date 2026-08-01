@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-weather",
+  "source_id": "github-819108745",
+  "source_identity": "github:sillytavern/extension-weather",
+  "evidence_fingerprint": "ecb3e96ac0f06bf820ed5ad38ebc78893fd478fdc817eb6379ed6e6f57b6e935",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:36:27.217Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:36:27.217Z"
+  },
+  "maintenance_issue_number": null
+}
