@@ -33,6 +33,7 @@ export interface TavernKeeperReportV2 extends TavernKeeperReportBase {
   finding_counts: {
     total: number;
     actionable: number;
+    actionable_severity: Record<"critical" | "high" | "medium", number>;
     severity: Record<"critical" | "high" | "medium" | "low" | "info", number>;
     confidence: Record<"high" | "medium" | "low", number>;
     disposition: Record<"confirmed" | "not_supported" | "inconclusive", number>;

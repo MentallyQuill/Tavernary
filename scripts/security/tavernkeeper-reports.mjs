@@ -151,6 +151,15 @@ function assertReportCounts(report) {
   const categoryTotal = sum(
     counts.categories.map((category) => category.count),
   );
+  const actionableSeverityTotal = counts.actionable_severity
+    ? sum(Object.values(counts.actionable_severity))
+    : null;
+  const actionableSeverityConsistent = counts.actionable_severity
+    ? actionableSeverityTotal === counts.actionable &&
+      counts.actionable_severity.critical <= counts.severity.critical &&
+      counts.actionable_severity.high <= counts.severity.high &&
+      counts.actionable_severity.medium <= counts.severity.medium
+    : report.result === "green" || report.result === "yellow";
 
   const dispositionConsistent =
     report.result === "green" || report.result === "yellow"
@@ -163,6 +172,7 @@ function assertReportCounts(report) {
     counts.total !== confidenceTotal ||
     counts.total !== dispositionTotal ||
     counts.total !== categoryTotal ||
+    !actionableSeverityConsistent ||
     !dispositionConsistent
   ) {
     throw new Error("TavernKeeper report finding totals do not match");

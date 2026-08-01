@@ -144,6 +144,28 @@
                   "additionalProperties": false
                 }
               },
+              "actionable_severity": {
+                "type": "object",
+                "properties": {
+                  "critical": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "high": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "medium": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["critical", "high", "medium"],
+                "additionalProperties": false
+              },
               "disposition": {
                 "type": "object",
                 "properties": {
@@ -173,6 +195,7 @@
               "severity",
               "confidence",
               "categories",
+              "actionable_severity",
               "disposition"
             ],
             "additionalProperties": false

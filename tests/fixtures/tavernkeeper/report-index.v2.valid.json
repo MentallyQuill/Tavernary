@@ -20,6 +20,7 @@
       "finding_counts": {
         "total": 1,
         "actionable": 1,
+        "actionable_severity": { "critical": 0, "high": 1, "medium": 0 },
         "severity": {
           "critical": 0,
           "high": 1,

@@ -128,6 +128,15 @@ describe("TavernKeeper report-index importer", () => {
     expect(validateReportIndex(index, registry)).toEqual(index);
   });
 
+  test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
+    const index = await fixture();
+    index.reports[0].finding_counts.actionable_severity.high = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
   test("rejects legacy result and disposition fields from V2", async () => {
     const index = await fixture();
     index.reports[0].result = "yellow";
