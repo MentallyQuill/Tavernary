@@ -30,7 +30,7 @@ owners automatically.
 ## Public versioned contracts
 
 Tavernary publishes its schema-version-1 target manifest at
-`https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json`.
+`https://tavernary.org/security/tavernkeeper-targets.json`.
 Its checked-in schema is
 [`data/schemas/tavernkeeper-targets.schema.json`](../data/schemas/tavernkeeper-targets.schema.json).
 It contains only active, healthy public GitHub sources with a positive immutable

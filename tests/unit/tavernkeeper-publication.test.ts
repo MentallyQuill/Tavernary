@@ -7,7 +7,7 @@ import {
 } from "../../scripts/security/tavernkeeper-publication.mjs";
 
 const publicManifestUrl =
-  "https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json";
+  "https://tavernary.org/security/tavernkeeper-targets.json";
 
 function publicDnsLookup() {
   return Promise.resolve([{ address: "8.8.8.8", family: 4 }]);
@@ -87,12 +87,13 @@ describe("TavernKeeper target publication", () => {
   });
 
   test.each([
-    "http://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json",
+    "http://tavernary.org/security/tavernkeeper-targets.json",
     "https://example.test/Tavernary/security/tavernkeeper-targets.json",
-    "https://mentallyquill.github.io/Tavernary/security/other.json",
-    "https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json?cache=bust",
-    "https://user:password@mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json",
-    "https://mentallyquill.github.io:8443/Tavernary/security/tavernkeeper-targets.json",
+    "https://tavernary.org/security/other.json",
+    "https://tavernary.org/security/tavernkeeper-targets.json?cache=bust",
+    "https://user:password@tavernary.org/security/tavernkeeper-targets.json",
+    "https://tavernary.org:8443/security/tavernkeeper-targets.json",
+    "https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json",
   ])("rejects an unsafe public-manifest URL: %s", async (url) => {
     await expect(
       readPublicManifest(url, {

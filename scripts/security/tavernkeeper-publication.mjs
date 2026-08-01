@@ -4,9 +4,9 @@ import { fileURLToPath } from "node:url";
 
 import { fetchHardenedJson } from "./hardened-json-fetch.mjs";
 
-export const TAVERNARY_ORIGIN = "https://mentallyquill.github.io";
+export const TAVERNARY_ORIGIN = "https://tavernary.org";
 export const TAVERNARY_TARGET_MANIFEST_URL =
-  "https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json";
+  "https://tavernary.org/security/tavernkeeper-targets.json";
 
 function canonicalize(value) {
   if (
@@ -72,7 +72,7 @@ function assertPublicManifestUrl(url) {
     url.username ||
     url.password ||
     url.port ||
-    url.pathname !== "/Tavernary/security/tavernkeeper-targets.json" ||
+    url.pathname !== "/security/tavernkeeper-targets.json" ||
     url.search ||
     url.hash
   ) {

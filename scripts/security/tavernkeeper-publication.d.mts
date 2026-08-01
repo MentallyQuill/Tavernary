@@ -1,5 +1,5 @@
-export const TAVERNARY_ORIGIN: "https://mentallyquill.github.io";
-export const TAVERNARY_TARGET_MANIFEST_URL: "https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json";
+export const TAVERNARY_ORIGIN: "https://tavernary.org";
+export const TAVERNARY_TARGET_MANIFEST_URL: "https://tavernary.org/security/tavernkeeper-targets.json";
 
 export interface PublicManifestFetchOptions {
   timeoutMs?: number;
