@@ -1,0 +1,30 @@
+{
+  "schema_version": 6,
+  "id": "testerbender-intercede",
+  "name": "Intercede",
+  "kind": "extension",
+  "summary": "You pick a sentence or paragraph boundary, write your reply there, and Intercede regenerates what follows as a real \"Assistant → User → Assistant\" exchange. The original remainder is kept as non-canonical reference.",
+  "metadata_status": "curated",
+  "source_id": "github-1316944655",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "automate-roleplay-workflows",
+    "edit-and-refine-messages",
+    "model-agnostic",
+    "non-destructive",
+    "preserve-story-continuity",
+    "recover-failed-generations"
+  ],
+  "cataloged_at": "2026-08-01T19:58:24.317Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
