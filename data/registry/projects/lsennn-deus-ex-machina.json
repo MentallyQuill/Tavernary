@@ -1,0 +1,29 @@
+{
+  "schema_version": 6,
+  "id": "lsennn-deus-ex-machina",
+  "name": "Deus-ex-machina",
+  "kind": "preset",
+  "summary": "DEUS EX MACHINA is a feature-rich, beginner-friendly, contextually dynamic, truly modular SillyTavern preset focused on collaborative story writing.",
+  "metadata_status": "curated",
+  "source_id": "github-1294619050",
+  "frontends": ["sillytavern"],
+  "primary_function": "preset",
+  "tags": [
+    "guide-model-responses",
+    "improve-writing-and-prose",
+    "model-agnostic"
+  ],
+  "model_families": ["model-agnostic"],
+  "completion_formats": ["chat-completion"],
+  "cataloged_at": "2026-08-01T20:02:07.089Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
+    "tags": { "mode": "automatic" }
+  }
+}
