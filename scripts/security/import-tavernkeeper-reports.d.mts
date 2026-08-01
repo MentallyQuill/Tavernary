@@ -8,6 +8,9 @@ export function importTavernKeeperReports(options?: {
   outputPath?: string;
   registry?: TavernKeeperSourceRegistryEntry[];
   fetchImpl?: typeof fetch;
+  requestImpl?: Parameters<
+    typeof import("./tavernkeeper-reports.mjs").fetchAndValidateTavernKeeperIndex
+  >[0]["requestImpl"];
   dnsLookup?: (
     hostname: string,
     options: { all: true },

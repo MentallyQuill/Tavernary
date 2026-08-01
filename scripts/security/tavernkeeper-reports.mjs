@@ -1,6 +1,8 @@
 import { lookup as defaultDnsLookup } from "node:dns/promises";
 import { mkdir, open, rename, unlink } from "node:fs/promises";
+import { request as httpsRequest } from "node:https";
 import { dirname } from "node:path";
+import { Readable } from "node:stream";
 
 import Ajv from "ajv";
 
@@ -18,17 +20,42 @@ const redirectStatuses = new Set([301, 302, 303, 307, 308]);
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const reportIdPattern = /^[0-9a-f]{64}$/u;
 
+const rfc3339DateTime =
+  /^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12]\d|3[01])(?:T|t)(?<hour>[01]\d|2[0-3]):(?<minute>[0-5]\d):(?<second>[0-5]\d|60)(?:\.\d+)?(?:Z|z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/u;
+
+function isLeapYear(year) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+}
+
+function isRfc3339DateTime(value) {
+  const match = rfc3339DateTime.exec(value);
+  if (!match?.groups) {
+    return false;
+  }
+  const year = Number(match.groups.year);
+  const month = Number(match.groups.month);
+  const day = Number(match.groups.day);
+  const daysInMonth = [
+    31,
+    isLeapYear(year) ? 29 : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ];
+  return day <= daysInMonth[month - 1];
+}
+
 const ajv = new Ajv({ allErrors: true, strict: false });
 ajv.addFormat("date-time", {
   type: "string",
-  validate(value) {
-    const parsed = new Date(value);
-    return (
-      Number.isFinite(parsed.getTime()) &&
-      parsed.toISOString() === value &&
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/u.test(value)
-    );
-  },
+  validate: isRfc3339DateTime,
 });
 ajv.addFormat("uri", {
   type: "string",
@@ -165,6 +192,11 @@ function activeGithubSourcesByRepositoryId(registry) {
       typeof source.id === "string" &&
       typeof source.repository === "string"
     ) {
+      if (sources.has(source.repository_id)) {
+        throw new Error(
+          "TavernKeeper report registry has duplicate active GitHub repository id",
+        );
+      }
       sources.set(source.repository_id, source);
     }
   }
@@ -199,6 +231,12 @@ export function validateReportIndex(index, registry) {
         throw new Error(
           "TavernKeeper report identity does not match Tavernary",
         );
+      }
+      if (
+        report.scanner_policy_version !==
+        ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
+      ) {
+        return [];
       }
       return [report];
     })
@@ -288,7 +326,7 @@ function isPublicAddress(address) {
   );
 }
 
-async function assertPublicDns(url, dnsLookup) {
+async function resolvePublicDns(url, dnsLookup) {
   const records = await dnsLookup(url.hostname, { all: true });
   const addresses = Array.isArray(records) ? records : [records];
   if (
@@ -297,6 +335,73 @@ async function assertPublicDns(url, dnsLookup) {
   ) {
     throw new Error("TavernKeeper report host does not resolve publicly");
   }
+  return addresses;
+}
+
+function createBoundLookup(hostname, addresses) {
+  return (requestedHostname, options, callback) => {
+    if (requestedHostname.toLowerCase() !== hostname.toLowerCase()) {
+      callback(
+        new Error("TavernKeeper transport requested an unexpected host"),
+      );
+      return;
+    }
+    if (options?.all) {
+      callback(
+        null,
+        addresses.map(({ address, family }) => ({ address, family })),
+      );
+      return;
+    }
+    const [first] = addresses;
+    callback(null, first.address, first.family);
+  };
+}
+
+function responseHeaders(headers) {
+  const result = new Headers();
+  for (const [name, value] of Object.entries(headers)) {
+    if (Array.isArray(value)) {
+      for (const entry of value) {
+        result.append(name, entry);
+      }
+    } else if (value !== undefined) {
+      result.set(name, value);
+    }
+  }
+  return result;
+}
+
+function requestBoundHttps(url, options) {
+  return new Promise((resolve, reject) => {
+    const request = httpsRequest(
+      url,
+      {
+        agent: false,
+        headers: options.headers,
+        lookup: options.lookup,
+        method: "GET",
+        signal: options.signal,
+      },
+      (response) => {
+        resolve({
+          body: Readable.toWeb(response),
+          headers: responseHeaders(response.headers),
+          status: response.statusCode ?? 0,
+        });
+      },
+    );
+    request.once("error", reject);
+    request.end();
+  });
+}
+
+function requestInjectedFetch(fetchImpl, url, options) {
+  return fetchImpl(url, {
+    headers: options.headers,
+    redirect: "manual",
+    signal: options.signal,
+  });
 }
 
 function contentLength(response) {
@@ -345,18 +450,23 @@ function jsonContentType(response) {
 }
 
 export async function fetchAndValidateTavernKeeperIndex(options = {}) {
-  const fetchImpl = options.fetchImpl ?? fetch;
   const dnsLookup = options.dnsLookup ?? defaultDnsLookup;
+  const requestImpl =
+    options.requestImpl ??
+    (options.fetchImpl
+      ? (url, requestOptions) =>
+          requestInjectedFetch(options.fetchImpl, url, requestOptions)
+      : requestBoundHttps);
   let current = new URL(options.url ?? TAVERNKEEPER_REPORT_INDEX_URL);
   assertInitialIndexUrl(current);
   let redirects = 0;
 
   while (true) {
-    await assertPublicDns(current, dnsLookup);
-    const response = await fetchImpl(current.toString(), {
+    const addresses = await resolvePublicDns(current, dnsLookup);
+    const response = await requestImpl(current.toString(), {
       headers: { accept: "application/json" },
-      redirect: "manual",
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      lookup: createBoundLookup(current.hostname, addresses),
     });
 
     if (redirectStatuses.has(response.status)) {

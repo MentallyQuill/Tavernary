@@ -54,6 +54,22 @@ export function validateReportIndex(
 export function fetchAndValidateTavernKeeperIndex(options?: {
   url?: string;
   fetchImpl?: typeof fetch;
+  requestImpl?: (
+    url: string,
+    options: {
+      headers: Record<string, string>;
+      signal: AbortSignal;
+      lookup: (
+        hostname: string,
+        options: { all?: boolean },
+        callback: (
+          error: Error | null,
+          address?: string | Array<{ address: string; family: number }>,
+          family?: number,
+        ) => void,
+      ) => void;
+    },
+  ) => Promise<Response>;
   dnsLookup?: (
     hostname: string,
     options: { all: true },

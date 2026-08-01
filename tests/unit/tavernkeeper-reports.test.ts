@@ -42,6 +42,12 @@ function publicDnsLookup() {
   return Promise.resolve([{ address: "8.8.8.8", family: 4 }]);
 }
 
+function response(index: unknown) {
+  return new Response(JSON.stringify(index), {
+    headers: { "content-type": "application/json" },
+  });
+}
+
 describe("TavernKeeper report-index importer", () => {
   test.skipIf(
     !existsSync(producerSchemaPath) || !existsSync(producerFixturePath),
@@ -65,12 +71,19 @@ describe("TavernKeeper report-index importer", () => {
     await expect(
       fetchAndValidateTavernKeeperIndex({
         dnsLookup: publicDnsLookup,
-        fetchImpl: async () =>
-          new Response(JSON.stringify(index), {
-            headers: { "content-type": "application/json" },
-          }),
+        fetchImpl: async () => response(index),
       }),
     ).resolves.toEqual(index);
+  });
+
+  test("accepts RFC3339 UTC-offset timestamps required by the V1 schema", async () => {
+    const index = await fixture();
+    index.generated_at = "2026-07-31T12:10:00+00:00";
+    index.reports[0].completed_at = "2026-07-31T06:05:00-06:00";
+
+    expect(validateReportIndex(index, registry)).toMatchObject({
+      generated_at: "2026-07-31T12:10:00+00:00",
+    });
   });
 
   test("rejects cross-origin redirects", async () => {
@@ -84,6 +97,81 @@ describe("TavernKeeper report-index importer", () => {
           }),
       }),
     ).rejects.toThrow(/origin/u);
+  });
+
+  test("follows a same-origin reports redirect through the vetted lookup boundary", async () => {
+    const index = await fixture();
+    const requests: string[] = [];
+    const lookupAddresses: string[] = [];
+    let responseNumber = 0;
+
+    await expect(
+      fetchAndValidateTavernKeeperIndex({
+        dnsLookup: publicDnsLookup,
+        fetchImpl: async () => {
+          throw new Error("unbound fetch transport was used");
+        },
+        requestImpl: async (url, options) => {
+          requests.push(url);
+          await new Promise<void>((resolveLookup, rejectLookup) => {
+            options.lookup("mentallyquill.github.io", {}, (error, address) => {
+              if (error) {
+                rejectLookup(error);
+                return;
+              }
+              if (typeof address !== "string") {
+                rejectLookup(
+                  new Error("bound lookup did not return one address"),
+                );
+                return;
+              }
+              lookupAddresses.push(address);
+              resolveLookup();
+            });
+          });
+          responseNumber += 1;
+          return responseNumber === 1
+            ? new Response(null, {
+                headers: { location: "/TavernKeeper/reports/index-v1.json" },
+                status: 302,
+              })
+            : response(index);
+        },
+      }),
+    ).resolves.toEqual(index);
+    expect(requests).toEqual([
+      TAVERNKEEPER_REPORT_INDEX_URL,
+      "https://mentallyquill.github.io/TavernKeeper/reports/index-v1.json",
+    ]);
+    expect(lookupAddresses).toEqual(["8.8.8.8", "8.8.8.8"]);
+  });
+
+  test("rejects a third same-origin redirect", async () => {
+    let redirects = 0;
+    await expect(
+      fetchAndValidateTavernKeeperIndex({
+        dnsLookup: publicDnsLookup,
+        fetchImpl: async () => {
+          redirects += 1;
+          return new Response(null, {
+            headers: { location: "/TavernKeeper/reports/next.json" },
+            status: 302,
+          });
+        },
+      }),
+    ).rejects.toThrow(/redirect limit/u);
+    expect(redirects).toBe(3);
+  });
+
+  test("rejects private DNS answers before the request transport runs", async () => {
+    await expect(
+      fetchAndValidateTavernKeeperIndex({
+        dnsLookup: async () => [{ address: "127.0.0.1", family: 4 }],
+        fetchImpl: async () => {
+          throw new Error("request transport should not run");
+        },
+      }),
+    ).rejects.toThrow(/resolve publicly/u);
   });
 
   test("rejects content-length values over the response limit", async () => {
@@ -162,6 +250,25 @@ describe("TavernKeeper report-index importer", () => {
     index.reports[0].source_id = "github-99";
 
     expect(validateReportIndex(index, registry).reports).toEqual([]);
+  });
+
+  test("excludes reports from inactive scanner policies", async () => {
+    const index = await fixture();
+    index.reports[0].scanner_policy_version = "0";
+
+    expect(validateReportIndex(index, registry).reports).toEqual([]);
+  });
+
+  test("rejects duplicate active source records for one repository ID", async () => {
+    const index = await fixture();
+    const duplicateRegistry = [
+      ...registry,
+      { ...registry[0], id: "github-42-duplicate" },
+    ];
+
+    expect(() => validateReportIndex(index, duplicateRegistry)).toThrow(
+      /registry.*duplicate/u,
+    );
   });
 
   test("preserves existing summaries when import validation fails", async () => {
