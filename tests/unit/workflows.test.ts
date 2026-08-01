@@ -12,6 +12,7 @@ const pinnedActions = {
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128",
   "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+  "actions/create-github-app-token": "fee1f7d63c2ff003460e3d139729b119787bc349",
 };
 
 async function workflow(name: string) {
@@ -102,6 +103,7 @@ test("pins every first-party action to its resolved commit", async () => {
   for (const name of [
     "ci",
     "deploy-pages",
+    "import-tavernkeeper-reports",
     "refresh-catalog",
     "enrich-catalog",
     "backfill-repository-identities",
@@ -521,6 +523,55 @@ test("deploys only a verified static export to the Pages environment", async () 
   expect(deploySource).not.toContain(
     "ref: ${{ inputs.source_sha || github.sha }}",
   );
+});
+
+test("reconciles reports on a bounded schedule and wakes TavernKeeper only after a changed public deployment", async () => {
+  const reportImport = await workflow("import-tavernkeeper-reports");
+  const deploy = await workflow("deploy-pages");
+  const deploySource = await readFile(
+    resolve(workflowDirectory, "deploy-pages.yml"),
+    "utf8",
+  );
+  const importSource = await readFile(
+    resolve(workflowDirectory, "import-tavernkeeper-reports.yml"),
+    "utf8",
+  );
+  const wakeSteps = deploy.jobs["wake-tavernkeeper"].steps as Array<{
+    name?: string;
+    if?: string;
+    run?: string;
+  }>;
+  const wake = wakeSteps.find(
+    (step) => step.name === "Wake TavernKeeper reconciliation (best effort)",
+  );
+  const token = wakeSteps.find(
+    (step) => step.name === "Create destination-only TavernKeeper token",
+  ) as { "continue-on-error"?: boolean } | undefined;
+
+  expect(reportImport.on.schedule).toEqual([{ cron: "41 */6 * * *" }]);
+  expect(reportImport.on.workflow_dispatch).toBeNull();
+  expect(reportImport.permissions).toEqual({
+    actions: "write",
+    contents: "write",
+  });
+  expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
+  expect(deploy.jobs["wake-tavernkeeper"].permissions).toEqual({
+    contents: "read",
+  });
+  expect(importSource).toContain("npm run security:import-reports");
+  expect(importSource).toContain("for attempt in 1 2 3");
+  expect(importSource).toContain("-f source_sha=");
+  expect(importSource).not.toContain("reconcile.yml");
+  expect(deploySource).toContain(
+    "repos/MentallyQuill/TavernKeeper/actions/workflows/reconcile.yml/dispatches",
+  );
+  expect(wake?.run).toContain("-f ref=main");
+  expect(wake?.run).not.toContain("inputs");
+  expect(wake?.run).not.toMatch(/-f (?:project|sha|mode|budget|report)/u);
+  expect(token?.["continue-on-error"]).toBe(true);
+  expect(wake?.if).toContain("steps.tavernkeeper-token.outcome == 'success'");
+  expect(JSON.stringify(deploy)).not.toContain("contents: write");
+  expect(JSON.stringify(deploy)).not.toContain("actions: write");
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {

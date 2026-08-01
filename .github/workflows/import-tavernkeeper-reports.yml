@@ -1,0 +1,80 @@
+name: "Security: Reconcile TavernKeeper reports"
+
+run-name: >-
+  ${{ github.event_name == 'schedule'
+    && 'Security: Reconcile scheduled TavernKeeper reports'
+    || 'Security: Reconcile TavernKeeper reports' }}
+
+on:
+  schedule:
+    - cron: "41 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: tavernkeeper-report-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Import validated public TavernKeeper reports
+        run: npm run security:import-reports
+      - name: Validate imported summaries
+        run: npm run check
+      - name: Commit and publish changed summaries
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- data/security/tavernkeeper-report-summaries.json
+          if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(security): import TavernKeeper reports"
+
+          for attempt in 1 2 3; do
+            if git fetch --no-tags origin main &&
+              git rebase origin/main &&
+              npm run check &&
+              git push origin HEAD:main; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            git rebase --abort || true
+            if (( attempt == 3 )); then
+              echo "Failed to publish TavernKeeper report summaries after three attempts." >&2
+              exit 1
+            fi
+          done
+      - name: Deploy the exact imported summary commit
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_SHA: ${{ steps.commit.outputs.sha }}
+        run: >-
+          gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main
+          -f source_sha="$SOURCE_SHA"

@@ -29,7 +29,12 @@ jobs:
   build:
     env:
       TAVERNARY_BASE_PATH: ""
+      TAVERNARY_TARGET_MANIFEST_URL: https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json
     runs-on: ubuntu-latest
+    outputs:
+      prior_target_digest: ${{ steps.target-manifest.outputs.prior_digest }}
+      built_target_digest: ${{ steps.target-manifest.outputs.built_digest }}
+      targets_changed: ${{ steps.target-manifest.outputs.changed }}
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -59,6 +64,32 @@ jobs:
         run: npm ci
       - name: Validate, test, and build
         run: npm run check
+      - name: Compare public and built TavernKeeper targets
+        id: target-manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          built_digest="$(node scripts/security/tavernkeeper-publication.mjs digest out/security/tavernkeeper-targets.json)"
+          prior_digest=""
+
+          set +e
+          prior_digest="$(node scripts/security/tavernkeeper-publication.mjs read "$TAVERNARY_TARGET_MANIFEST_URL")"
+          read_status=$?
+          set -e
+          if (( read_status == 2 )); then
+            echo "No previous public TavernKeeper target manifest; treating this deployment as changed."
+            prior_digest=""
+          elif (( read_status != 0 )); then
+            exit "$read_status"
+          fi
+
+          changed=false
+          if [[ -z "$prior_digest" || "$prior_digest" != "$built_digest" ]]; then
+            changed=true
+          fi
+          echo "prior_digest=$prior_digest" >> "$GITHUB_OUTPUT"
+          echo "built_digest=$built_digest" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
       - name: Verify static export
         run: npm run verify:export
       - name: Configure GitHub Pages
@@ -78,3 +109,61 @@ jobs:
       - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
+
+  wake-tavernkeeper:
+    needs:
+      - build
+      - deploy
+    if: needs.build.outputs.targets_changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TAVERNARY_TARGET_MANIFEST_URL: https://mentallyquill.github.io/Tavernary/security/tavernkeeper-targets.json
+      BUILT_TARGET_DIGEST: ${{ needs.build.outputs.built_target_digest }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Wait for the exact public TavernKeeper targets
+        id: public-target
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in {1..20}; do
+            if node scripts/security/tavernkeeper-publication.mjs verify \
+              "$TAVERNARY_TARGET_MANIFEST_URL" "$BUILT_TARGET_DIGEST"; then
+              echo "verified=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "The deployed TavernKeeper target manifest never matched the built digest." >&2
+          exit 1
+      - name: Create destination-only TavernKeeper token
+        id: tavernkeeper-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ secrets.TAVERNKEEPER_WAKE_APP_ID }}
+          private-key: ${{ secrets.TAVERNKEEPER_WAKE_APP_PRIVATE_KEY }}
+          owner: MentallyQuill
+          repositories: TavernKeeper
+          permission-actions: write
+      - name: Warn when TavernKeeper token creation fails
+        if: steps.tavernkeeper-token.outcome != 'success'
+        run: >-
+          echo "::warning::TavernKeeper wake token creation failed after a verified deployment;
+          scheduled reconciliation remains active."
+      - name: Wake TavernKeeper reconciliation (best effort)
+        if: >-
+          steps.public-target.outputs.verified == 'true' &&
+          steps.tavernkeeper-token.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ steps.tavernkeeper-token.outputs.token }}
+        shell: bash
+        run: |
+          if ! gh api --method POST \
+            repos/MentallyQuill/TavernKeeper/actions/workflows/reconcile.yml/dispatches \
+            -f ref=main; then
+            echo "::warning::TavernKeeper wake failed after a verified deployment; scheduled reconciliation remains active."
+          fi
