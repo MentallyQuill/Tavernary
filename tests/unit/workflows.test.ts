@@ -161,6 +161,7 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
   expect(source).not.toMatch(
     /pull_request|issues:|issue_comment|repository_dispatch/u,
   );
+  expect(source).not.toMatch(/X-GitHub-Stateless-S2S-Token|\bghs_/iu);
   const dispatch = targeted.jobs.request.steps.find(
     (step: { name?: string }) =>
       step.name ===
