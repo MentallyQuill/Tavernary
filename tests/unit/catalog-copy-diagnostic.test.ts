@@ -69,3 +69,21 @@ test("retains explicitly allowlisted provider diagnostics", () => {
     ),
   ).toMatchObject({ diagnostic_code: "json-invalid", latency_ms: 20 });
 });
+
+test("does not render malformed diagnostic fields or extra secrets", () => {
+  const summary = renderCopyReviewDiagnosticSummary([
+    {
+      failure_phase: "secret-phase",
+      failure_code: "secret-code",
+      diagnostic_code: "secret-diagnostic",
+      attempt_count: 99,
+      latency_ms: 8_675_309,
+      message: "secret provider output",
+    },
+  ]);
+
+  expect(summary).toContain("Copy review unavailable");
+  expect(summary).not.toMatch(
+    /secret-phase|secret-code|secret-diagnostic|8,675,309|provider output/iu,
+  );
+});
