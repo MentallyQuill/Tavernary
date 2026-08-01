@@ -71,6 +71,37 @@ describe("deriveTavernKeeperCardStatus", () => {
     });
   });
 
+  test("retains the newest older active-policy report with a deterministic tie-break", () => {
+    const latestReportId = "e".repeat(64);
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot,
+        preferredReports: [
+          report({
+            report_id: "d".repeat(64),
+            target_sha: "c".repeat(40),
+            completed_at: "2026-07-30T12:05:00.000Z",
+          }),
+          report({
+            report_id: "b".repeat(64),
+            target_sha: "d".repeat(40),
+            completed_at: "2026-07-31T12:05:00.000Z",
+          }),
+          report({
+            report_id: latestReportId,
+            target_sha: "e".repeat(40),
+            completed_at: "2026-07-31T12:05:00.000Z",
+          }),
+        ],
+      }),
+    ).toMatchObject({
+      state: "gray",
+      reason: "outdated",
+      report: { reportId: latestReportId, scannedSha: "e".repeat(40) },
+    });
+  });
+
   test("marks a confirmed SHA without a report as pending", () => {
     expect(
       deriveTavernKeeperCardStatus({
@@ -107,6 +138,21 @@ describe("deriveTavernKeeperCardStatus", () => {
         source,
         snapshot: { ...snapshot, source_health: "unavailable" },
         preferredReports: [report()],
+      }),
+    ).toEqual({
+      state: "gray",
+      reason: "source-unavailable",
+      currentSha: null,
+      report: null,
+    });
+  });
+
+  test("does not trust a healthy snapshot retained after refresh became stale", () => {
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot: { ...snapshot, stale_since: "2026-08-01T00:00:00.000Z" },
+        preferredReports: [report({ result: "green" })],
       }),
     ).toEqual({
       state: "gray",

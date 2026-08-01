@@ -40,6 +40,7 @@ interface TavernKeeperSource {
 interface TavernKeeperSnapshot {
   provider?: string;
   source_health?: string;
+  stale_since?: string | null;
   repository?: { id?: number; head_sha?: string | null };
 }
 
@@ -90,6 +91,7 @@ function currentShaFor(
   if (
     snapshot?.provider !== "github" ||
     snapshot.source_health !== "healthy" ||
+    snapshot.stale_since != null ||
     snapshot.repository?.id !== source.repository_id ||
     typeof currentSha !== "string" ||
     !fullShaPattern.test(currentSha)
