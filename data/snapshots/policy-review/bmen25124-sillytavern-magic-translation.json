@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-magic-translation",
+  "source_id": "github-938386740",
+  "source_identity": "github:bmen25124/sillytavern-magic-translation",
+  "evidence_fingerprint": "0387ef3269e30418aca6323d6a52f90969ba8050498ac462260c669434265b6d",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:36:56.145Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:36:56.145Z"
+  },
+  "maintenance_issue_number": null
+}
