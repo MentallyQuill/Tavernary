@@ -73,6 +73,26 @@ const freakySearchProject = catalog.projects.find(
 if (!freakySearchProject) {
   throw new Error("Missing reddit-1v9u18m search relevance fixture");
 }
+const pendingScanProject = catalog.projects.find(
+  ({ tavernKeeper }) => tavernKeeper?.state === "gray",
+);
+const greenScanProject = catalog.projects.find(
+  ({ tavernKeeper }) => tavernKeeper?.state === "green",
+);
+const yellowScanProject = catalog.projects.find(
+  ({ tavernKeeper }) => tavernKeeper?.state === "yellow",
+);
+const unsupportedScanProject = catalog.projects.find(
+  ({ tavernKeeper }) => tavernKeeper === null,
+);
+if (
+  !pendingScanProject ||
+  !greenScanProject ||
+  !yellowScanProject ||
+  !unsupportedScanProject
+) {
+  throw new Error("Missing scan-state catalog fixtures");
+}
 const freakySearchProjectName = displayedProjectName(freakySearchProject.name);
 
 function displayedProjectName(name: string) {
@@ -987,15 +1007,123 @@ test("shows the full launch catalog without default-query hidden records", async
   await expect(page.locator(".project-card")).toHaveCount(
     generatedProjectCount,
   );
-  await expect(page.locator('.project-card[href^="https://"]')).toHaveCount(
-    generatedProjectCount,
-  );
+  await expect(
+    page.locator('.project-card .project-card-primary-link[href^="https://"]'),
+  ).toHaveCount(generatedProjectCount);
   await expect(
     page.locator(".project-card").filter({ hasText: "Provisional details" }),
   ).toHaveCount(provisionalCount);
   await expect(
     page.locator(".project-card").filter({ hasText: "Source pending" }),
   ).toHaveCount(sourcePendingCount);
+});
+
+test("hydrates pending and unsupported scan states without nesting card controls", async ({
+  browser,
+  page,
+}) => {
+  const indicator = page
+    .getByRole("button", {
+      name: "TavernKeeper scan: current scan pending",
+    })
+    .first();
+  const pendingCard = indicator.locator(
+    "xpath=ancestor::div[contains(@class, 'project-card-shell')]",
+  );
+
+  await expect(indicator).toBeVisible();
+  await indicator.hover();
+  const panel = page.getByRole("dialog", {
+    name: "TavernKeeper Scan Results",
+  });
+  await expect(panel).toContainText("Current scan pending");
+  await expect(
+    panel.getByRole("link", { name: "View full report" }),
+  ).toHaveCount(0);
+  await panel.hover();
+  await expect(panel).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(panel).toHaveCount(0);
+
+  await indicator.focus();
+  await expect(panel).toBeVisible();
+  await page.locator("h1").click();
+  await expect(panel).toHaveCount(0);
+
+  const touchContext = await browser.newContext({ hasTouch: true });
+  try {
+    const touchPage = await touchContext.newPage();
+    await touchPage.goto(sitePath());
+    const touchIndicator = touchPage
+      .getByRole("button", {
+        name: "TavernKeeper scan: current scan pending",
+      })
+      .first();
+    const touchPanel = touchPage.getByRole("dialog", {
+      name: "TavernKeeper Scan Results",
+    });
+    await touchIndicator.tap();
+    await expect(touchPanel).toBeVisible();
+    await touchIndicator.tap();
+    await expect(touchPanel).toHaveCount(0);
+  } finally {
+    await touchContext.close();
+  }
+
+  const unsupportedCard = page.locator(".project-card-shell").filter({
+    has: page.getByRole("heading", {
+      name: displayedProjectName(unsupportedScanProject.name),
+      exact: true,
+    }),
+  });
+  await expect(
+    unsupportedCard.locator(".tavernkeeper-scan-indicator-trigger"),
+  ).toHaveCount(0);
+  await expect(pendingCard.locator("a button, button a")).toHaveCount(0);
+  await expect(
+    pendingCard.locator(".project-card-primary-link"),
+  ).toHaveAttribute("href", /^https:\/\//u);
+  await expect(
+    pendingCard.locator(".project-card-primary-link"),
+  ).toHaveAttribute("target", "_blank");
+
+  const kitControl = pendingCard.locator(".project-kit-control");
+  await kitControl.click();
+  await expect(kitControl).toHaveAttribute("aria-pressed", "true");
+});
+
+test("hydrates current green and yellow scan reports with their external links", async ({
+  page,
+}) => {
+  for (const [project, state, stateCopy, severity] of [
+    [greenScanProject, "green", "No review-level findings", null],
+    [yellowScanProject, "yellow", "Review suggested", "1 high"],
+  ] as const) {
+    const indicator = page
+      .getByRole("button", {
+        name: new RegExp(`TavernKeeper scan: ${stateCopy}`, "i"),
+      })
+      .first();
+
+    await indicator.hover();
+    const panel = page.getByRole("dialog", {
+      name: "TavernKeeper Scan Results",
+    });
+    await expect(panel).toContainText(stateCopy);
+    if (severity) await expect(panel).toContainText(severity);
+    else
+      await expect(panel.locator(".tavernkeeper-severity-counts")).toHaveCount(
+        0,
+      );
+    await expect(panel).toContainText("Scanned");
+    await expect(
+      panel.getByRole("link", { name: "View full report" }),
+    ).toHaveAttribute("href", project.tavernKeeper?.report?.reportUrl ?? "");
+    await expect(indicator).toHaveClass(
+      new RegExp(`tavernkeeper-scan-indicator-${state}`),
+    );
+    await page.keyboard.press("Escape");
+  }
 });
 
 test("uses canonical external URLs for project cards", async ({ page }) => {

@@ -13,6 +13,7 @@ import { afterEach, describe, expect, test } from "vitest";
 import {
   verifyHelpStaticRoutes,
   verifyStaticExport,
+  verifyTavernKeeperStaticExport,
 } from "../../scripts/verify-static-export.mjs";
 
 const homepageTitle = "Tavernary · SillyTavern Tool Library";
@@ -65,6 +66,20 @@ function helpExport({
   const securityDirectory = resolve(outputDirectory, "help/security");
   mkdirSync(securityDirectory, { recursive: true });
   writeFileSync(resolve(securityDirectory, "index.html"), securityHtml);
+  return outputDirectory;
+}
+
+function tavernKeeperExport(manifest: unknown) {
+  const outputDirectory = mkdtempSync(
+    resolve(tmpdir(), "tavernary-tavernkeeper-export-"),
+  );
+  temporaryExports.push(outputDirectory);
+  const securityDirectory = resolve(outputDirectory, "security");
+  mkdirSync(securityDirectory, { recursive: true });
+  writeFileSync(
+    resolve(securityDirectory, "tavernkeeper-targets.json"),
+    JSON.stringify(manifest),
+  );
   return outputDirectory;
 }
 
@@ -175,6 +190,33 @@ describe("verifyStaticExport", () => {
         helpExport({ securityHtml: '<a href="/issues/new">Public issue</a>' }),
       ),
     ).rejects.toThrow("public issue form");
+  });
+
+  test("requires the exported TavernKeeper target manifest to exist and validate", async () => {
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport({
+          schema_version: 1,
+          generated_at: "2026-07-31T12:00:00.000Z",
+          repositories: [
+            {
+              source_id: "github-42",
+              provider: "github",
+              repository_id: 42,
+              repository: "fixture/catalog",
+              target_sha: "a".repeat(40),
+              canonical_url: "https://github.com/fixture/catalog",
+            },
+          ],
+        }),
+      ),
+    ).resolves.toBeUndefined();
+
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport({ schema_version: 1, repositories: [] }),
+      ),
+    ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });
 
   test("rejects stale or incomplete homepage metadata", () => {

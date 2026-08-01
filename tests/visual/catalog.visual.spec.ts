@@ -8,6 +8,13 @@ const forkRelationshipChild =
   catalog.projects.find(
     ({ fork }) => fork?.status === "published" && fork.parentProjectId,
   );
+const pendingScanProject = catalog.projects.find(
+  ({ tavernKeeper }) => tavernKeeper?.state === "gray",
+);
+
+if (!pendingScanProject) {
+  throw new Error("Missing pending scan indicator fixture");
+}
 
 async function stabilizeRefreshLabel(page: Page) {
   await page
@@ -44,6 +51,97 @@ async function expectWithinViewport(page: Page, locator: Locator) {
   expect(viewport).not.toBeNull();
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x + box!.width).toBeLessThanOrEqual(viewport!.width + 1);
+}
+
+for (const scenario of [
+  { name: "desktop", width: 1440, height: 1000, compact: false },
+  { name: "compact", width: 1440, height: 1000, compact: true },
+  { name: "phone", width: 390, height: 844, compact: false },
+] as const) {
+  for (const title of [
+    { name: "short", value: "Scan Title" },
+    {
+      name: "ellipsized",
+      value:
+        "An intentionally long catalog project title that must ellipsize before its scan indicator",
+    },
+  ] as const) {
+    test(`scan indicator ${title.name} title stays inline and visible on ${scenario.name}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(scenario);
+      await page.goto(
+        `${sitePath()}?q=${encodeURIComponent(pendingScanProject.name)}${
+          scenario.compact ? "&density=compact" : ""
+        }`,
+      );
+      await stabilizeRefreshLabel(page);
+
+      const card = page.locator(".project-card").first();
+      const titleText = card.locator(".card-title");
+      const trigger = card.locator(".tavernkeeper-scan-indicator-trigger");
+      await expect(card).toBeVisible();
+      await page.waitForTimeout(300);
+      await titleText.evaluate((element, nextTitle) => {
+        element.textContent = nextTitle;
+      }, title.value);
+      if (title.name === "ellipsized") {
+        await card.locator(".project-card-primary-link").evaluate((element) => {
+          element.style.width = "120px";
+        });
+        await titleText.evaluate((element) => {
+          element.style.width = "80px";
+        });
+      }
+
+      const metrics = await card.evaluate((element) => {
+        const titleElement = element.querySelector<HTMLElement>(".card-title");
+        const triggerElement = element.querySelector<HTMLElement>(
+          ".tavernkeeper-scan-indicator-trigger",
+        );
+        if (!titleElement || !triggerElement) {
+          throw new Error("Missing scan title layout elements");
+        }
+        const cardBox = element.getBoundingClientRect();
+        const titleBox = titleElement.getBoundingClientRect();
+        const triggerBox = triggerElement.getBoundingClientRect();
+        return {
+          cardRight: cardBox.right,
+          titleClientWidth: titleElement.clientWidth,
+          titleScrollWidth: titleElement.scrollWidth,
+          triggerLeft: triggerBox.left,
+          triggerRight: triggerBox.right,
+          titleRight: titleBox.right,
+        };
+      });
+
+      expect(metrics.triggerLeft).toBeGreaterThanOrEqual(metrics.titleRight);
+      expect(metrics.triggerRight).toBeLessThanOrEqual(metrics.cardRight);
+      expect(metrics.cardRight - metrics.triggerRight).toBeGreaterThan(24);
+      if (title.name === "ellipsized") {
+        expect(metrics.titleScrollWidth).toBeGreaterThan(
+          metrics.titleClientWidth,
+        );
+      } else {
+        expect(metrics.titleScrollWidth).toBe(metrics.titleClientWidth);
+      }
+
+      await expect(card).toHaveScreenshot(
+        `scan-indicator-${scenario.name}-${title.name}.png`,
+        { animations: "disabled", maxDiffPixels: 10 },
+      );
+      await trigger.hover();
+      const popover = page.getByRole("dialog", {
+        name: "TavernKeeper Scan Results",
+      });
+      await expect(popover).toBeVisible();
+      await expectWithinViewport(page, popover);
+      await expect(popover).toHaveScreenshot(
+        `scan-popover-${scenario.name}-${title.name}.png`,
+        { animations: "disabled", maxDiffPixels: 10 },
+      );
+    });
+  }
 }
 
 for (const viewport of [

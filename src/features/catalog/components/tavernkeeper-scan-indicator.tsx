@@ -227,6 +227,9 @@ export function TavernKeeperScanIndicator({
         onKeyDown={focusReportLink}
         onPointerEnter={openPopover}
         onPointerLeave={delayClose}
+        onPointerDown={(event) => {
+          if (event.pointerType === "touch") event.preventDefault();
+        }}
         ref={triggerRef}
         type="button"
       >

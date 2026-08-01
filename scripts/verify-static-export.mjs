@@ -1,6 +1,10 @@
 import { access, readFile } from "node:fs/promises";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import Ajv from "ajv";
+
+const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const homepageTitle = "Tavernary · SillyTavern Tool Library";
 const homepageDescription =
@@ -98,11 +102,38 @@ export async function verifyHelpStaticRoutes(outputDirectory = "out") {
   }
 }
 
+export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
+  const [manifest, schema] = await Promise.all([
+    readFile(
+      resolve(outputDirectory, "security/tavernkeeper-targets.json"),
+      "utf8",
+    ).then((contents) => JSON.parse(contents)),
+    readFile(
+      resolve(rootDirectory, "data/schemas/tavernkeeper-targets.schema.json"),
+      "utf8",
+    ).then((contents) => JSON.parse(contents)),
+  ]);
+  const validate = new Ajv({ allErrors: true, validateFormats: false }).compile(
+    schema,
+  );
+
+  if (!validate(manifest)) {
+    throw new Error(
+      `TavernKeeper target manifest is invalid: ${validate.errors
+        ?.map(
+          ({ instancePath, message }) => `${instancePath || "/"} ${message}`,
+        )
+        .join(", ")}`,
+    );
+  }
+}
+
 async function main() {
   await access("out/index.html");
   const html = await readFile("out/index.html", "utf8");
   verifyStaticExport(html, configuredBasePath());
   await verifyHelpStaticRoutes();
+  await verifyTavernKeeperStaticExport();
   console.log("Static export verified");
 }
 

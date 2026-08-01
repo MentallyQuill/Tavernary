@@ -2,6 +2,10 @@ import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 
 import { configuredBasePath } from "./verify-static-export.mjs";
+import {
+  buildTavernKeeperTestExport,
+  restoreProductionExport,
+} from "./build-tavernkeeper-test-export.mjs";
 
 const port = process.env.PORT ?? "3000";
 const serverUrl = `http://127.0.0.1:${port}`;
@@ -44,24 +48,43 @@ if (await serverIsListening()) {
   throw new Error(`${healthUrl} is already in use`);
 }
 
-const server = spawn(process.execPath, ["scripts/serve-static-export.mjs"], {
-  stdio: ["ignore", "inherit", "inherit"],
-});
-
 let exitCode = 1;
+let server = null;
+let runError = null;
 try {
+  await buildTavernKeeperTestExport();
+  server = spawn(process.execPath, ["scripts/serve-static-export.mjs"], {
+    stdio: ["ignore", "inherit", "inherit"],
+  });
   await waitForServer(server);
+  const fixtureHtml = await (await fetch(healthUrl)).text();
+  if (
+    !fixtureHtml.includes("tavernkeeper-scan-indicator-green") ||
+    !fixtureHtml.includes("tavernkeeper-scan-indicator-yellow")
+  ) {
+    throw new Error("TavernKeeper browser fixture was not exported");
+  }
   const playwright = spawn(
     process.execPath,
     [playwrightCli, "test", ...process.argv.slice(2)],
     { stdio: "inherit" },
   );
   exitCode = await waitForExit(playwright);
+} catch (error) {
+  runError = error;
+  throw error;
 } finally {
-  if (server.exitCode === null) {
+  if (server?.exitCode === null) {
     server.kill("SIGTERM");
   }
-  await waitForExit(server);
+  if (server) await waitForExit(server);
+  try {
+    await restoreProductionExport();
+  } catch (restoreError) {
+    if (runError)
+      console.error("Failed to restore the production export", restoreError);
+    else throw restoreError;
+  }
 }
 
 process.exitCode = exitCode;

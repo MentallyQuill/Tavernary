@@ -13,6 +13,7 @@ test-results/
 !/tests/visual/catalog.visual.spec.ts-snapshots/
 /tests/visual/catalog.visual.spec.ts-snapshots/*
 !/tests/visual/catalog.visual.spec.ts-snapshots/fork-relationship-*.png
+!/tests/visual/catalog.visual.spec.ts-snapshots/scan-*.png
 *.tsbuildinfo
 /src/generated/catalog.json
 /public/security/tavernkeeper-targets.json
