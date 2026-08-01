@@ -1,12 +1,11 @@
-import { lookup as defaultDnsLookup } from "node:dns/promises";
 import { mkdir, open, rename, unlink } from "node:fs/promises";
-import { request as httpsRequest } from "node:https";
 import { dirname } from "node:path";
-import { Readable } from "node:stream";
+import { isDeepStrictEqual } from "node:util";
 
 import Ajv from "ajv";
 
 import reportIndexSchema from "../../data/schemas/tavernkeeper-report-index.schema.json" with { type: "json" };
+import { fetchHardenedJson } from "./hardened-json-fetch.mjs";
 
 export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX = "/TavernKeeper/reports/";
@@ -14,9 +13,6 @@ export const TAVERNKEEPER_REPORT_INDEX_URL =
   "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
 export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "1";
 
-const MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
-const REQUEST_TIMEOUT_MS = 10_000;
-const redirectStatuses = new Set([301, 302, 303, 307, 308]);
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const reportIdPattern = /^[0-9a-f]{64}$/u;
 
@@ -89,7 +85,12 @@ function sum(values) {
   return values.reduce((total, value) => total + value, 0);
 }
 
-function assertSafeReportUrl(reportUrl) {
+function canonicalReportPath(report) {
+  return `${TAVERNKEEPER_REPORTS_PATH_PREFIX}github/${report.repository_id}/${report.target_sha}/${report.scanner_policy_version}/${report.mode}/${report.report_version}/`;
+}
+
+function assertSafeReportUrl(report) {
+  const reportUrl = report.report_url;
   let parsed;
   try {
     parsed = new URL(reportUrl);
@@ -97,13 +98,17 @@ function assertSafeReportUrl(reportUrl) {
     throw new Error("TavernKeeper report URL is invalid");
   }
 
+  const canonicalPath = canonicalReportPath(report);
+  const canonicalUrl = `${TAVERNKEEPER_ORIGIN}${canonicalPath}`;
   if (
+    reportUrl !== canonicalUrl ||
+    parsed.href !== canonicalUrl ||
     parsed.protocol !== "https:" ||
     parsed.origin !== TAVERNKEEPER_ORIGIN ||
     parsed.username ||
     parsed.password ||
     parsed.port ||
-    !parsed.pathname.startsWith(TAVERNKEEPER_REPORTS_PATH_PREFIX) ||
+    parsed.pathname !== canonicalPath ||
     parsed.search ||
     parsed.hash
   ) {
@@ -147,7 +152,7 @@ function assertReportSemantics(index) {
     if (report.result !== "green" && report.result !== "yellow") {
       throw new Error("TavernKeeper report result is invalid");
     }
-    assertSafeReportUrl(report.report_url);
+    assertSafeReportUrl(report);
     assertReportCounts(report);
 
     if (reportIds.has(report.report_id)) {
@@ -249,6 +254,16 @@ export function validateReportIndex(index, registry) {
   };
 }
 
+export function validateStoredReportIndex(index, registry) {
+  const validated = validateReportIndex(index, registry);
+  if (!isDeepStrictEqual(index, validated)) {
+    throw new Error(
+      "Tracked TavernKeeper report summaries would be dropped or changed by validation",
+    );
+  }
+  return validated;
+}
+
 function assertInitialIndexUrl(url) {
   if (
     url.protocol !== "https:" ||
@@ -283,227 +298,20 @@ function assertRedirectUrl(url) {
   }
 }
 
-function isPublicAddress(address) {
-  if (address.includes(":")) {
-    const normalized = address.toLowerCase();
-    return !(
-      !/^[0-9a-f:]+$/u.test(normalized) ||
-      normalized === "::" ||
-      normalized === "::1" ||
-      normalized.startsWith("fe80:") ||
-      normalized.startsWith("fc") ||
-      normalized.startsWith("fd") ||
-      normalized.startsWith("2001:db8:") ||
-      normalized.startsWith("::ffff:127.") ||
-      normalized.startsWith("::ffff:10.") ||
-      normalized.startsWith("::ffff:192.168.") ||
-      /^::ffff:172\.(?:1[6-9]|2\d|3[01])\./u.test(normalized)
-    );
-  }
-
-  const octets = address.split(".").map(Number);
-  if (
-    octets.length !== 4 ||
-    octets.some((octet) => !Number.isInteger(octet) || octet < 0 || octet > 255)
-  ) {
-    return false;
-  }
-  const [first, second] = octets;
-  return !(
-    first === 0 ||
-    first === 10 ||
-    first === 127 ||
-    first >= 224 ||
-    (first === 100 && second >= 64 && second <= 127) ||
-    (first === 169 && second === 254) ||
-    (first === 172 && second >= 16 && second <= 31) ||
-    (first === 192 && second === 0) ||
-    (first === 192 && second === 168) ||
-    (first === 192 && second === 88 && octets[2] === 99) ||
-    (first === 198 && (second === 18 || second === 19)) ||
-    (first === 198 && second === 51 && octets[2] === 100) ||
-    (first === 203 && second === 0 && octets[2] === 113)
-  );
-}
-
-async function resolvePublicDns(url, dnsLookup) {
-  const records = await dnsLookup(url.hostname, { all: true });
-  const addresses = Array.isArray(records) ? records : [records];
-  if (
-    addresses.length === 0 ||
-    addresses.some((record) => !record || !isPublicAddress(record.address))
-  ) {
-    throw new Error("TavernKeeper report host does not resolve publicly");
-  }
-  return addresses;
-}
-
-function createBoundLookup(hostname, addresses) {
-  return (requestedHostname, options, callback) => {
-    if (requestedHostname.toLowerCase() !== hostname.toLowerCase()) {
-      callback(
-        new Error("TavernKeeper transport requested an unexpected host"),
-      );
-      return;
-    }
-    if (options?.all) {
-      callback(
-        null,
-        addresses.map(({ address, family }) => ({ address, family })),
-      );
-      return;
-    }
-    const [first] = addresses;
-    callback(null, first.address, first.family);
-  };
-}
-
-function responseHeaders(headers) {
-  const result = new Headers();
-  for (const [name, value] of Object.entries(headers)) {
-    if (Array.isArray(value)) {
-      for (const entry of value) {
-        result.append(name, entry);
-      }
-    } else if (value !== undefined) {
-      result.set(name, value);
-    }
-  }
-  return result;
-}
-
-function requestBoundHttps(url, options) {
-  return new Promise((resolve, reject) => {
-    const request = httpsRequest(
-      url,
-      {
-        agent: false,
-        headers: options.headers,
-        lookup: options.lookup,
-        method: "GET",
-        signal: options.signal,
-      },
-      (response) => {
-        resolve({
-          body: Readable.toWeb(response),
-          headers: responseHeaders(response.headers),
-          status: response.statusCode ?? 0,
-        });
-      },
-    );
-    request.once("error", reject);
-    request.end();
-  });
-}
-
-function requestInjectedFetch(fetchImpl, url, options) {
-  return fetchImpl(url, {
-    headers: options.headers,
-    redirect: "manual",
-    signal: options.signal,
-  });
-}
-
-function contentLength(response) {
-  const value = response.headers.get("content-length");
-  if (value === null) {
-    return null;
-  }
-  if (!/^\d+$/u.test(value)) {
-    throw new Error("TavernKeeper report response size is invalid");
-  }
-  const length = Number(value);
-  if (!Number.isSafeInteger(length) || length > MAX_RESPONSE_BYTES) {
-    throw new Error("TavernKeeper report response exceeds the size limit");
-  }
-  return length;
-}
-
-async function readBoundedResponse(response) {
-  contentLength(response);
-  if (!response.body) {
-    return "";
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let size = 0;
-  let body = "";
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) {
-      break;
-    }
-    size += value.byteLength;
-    if (size > MAX_RESPONSE_BYTES) {
-      await reader.cancel();
-      throw new Error("TavernKeeper report response exceeds the size limit");
-    }
-    body += decoder.decode(value, { stream: true });
-  }
-  return body + decoder.decode();
-}
-
-function jsonContentType(response) {
-  const contentType = response.headers.get("content-type") ?? "";
-  return /^application\/json(?:\s*;|$)/iu.test(contentType);
-}
-
 export async function fetchAndValidateTavernKeeperIndex(options = {}) {
-  const dnsLookup = options.dnsLookup ?? defaultDnsLookup;
-  const requestImpl =
-    options.requestImpl ??
-    (options.fetchImpl
-      ? (url, requestOptions) =>
-          requestInjectedFetch(options.fetchImpl, url, requestOptions)
-      : requestBoundHttps);
-  let current = new URL(options.url ?? TAVERNKEEPER_REPORT_INDEX_URL);
-  assertInitialIndexUrl(current);
-  let redirects = 0;
-
-  while (true) {
-    const addresses = await resolvePublicDns(current, dnsLookup);
-    const response = await requestImpl(current.toString(), {
-      headers: { accept: "application/json" },
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      lookup: createBoundLookup(current.hostname, addresses),
-    });
-
-    if (redirectStatuses.has(response.status)) {
-      if (redirects >= 2) {
-        throw new Error("TavernKeeper report redirect limit exceeded");
-      }
-      const location = response.headers.get("location");
-      if (!location) {
-        throw new Error("TavernKeeper report redirect has no location");
-      }
-      current = new URL(location, current);
-      assertRedirectUrl(current);
-      redirects += 1;
-      continue;
-    }
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(
-        `TavernKeeper report index request returned HTTP ${response.status}`,
-      );
-    }
-    if (!jsonContentType(response)) {
-      throw new Error("TavernKeeper report index response is not JSON");
-    }
-
-    let index;
-    try {
-      index = JSON.parse(await readBoundedResponse(response));
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        throw new Error("TavernKeeper report index response is not valid JSON");
-      }
-      throw error;
-    }
-    assertSchema(index);
-    assertReportSemantics(index);
-    return index;
-  }
+  const index = await fetchHardenedJson({
+    url: options.url ?? TAVERNKEEPER_REPORT_INDEX_URL,
+    resourceLabel: "TavernKeeper report index",
+    assertInitialUrl: assertInitialIndexUrl,
+    assertRedirectUrl,
+    timeoutMs: options.timeoutMs,
+    dnsLookup: options.dnsLookup,
+    requestImpl: options.requestImpl,
+    fetchImpl: options.fetchImpl,
+  });
+  assertSchema(index);
+  assertReportSemantics(index);
+  return index;
 }
 
 export async function writeReportSummaries(index, outputPath) {

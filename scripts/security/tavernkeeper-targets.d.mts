@@ -16,6 +16,7 @@ export interface TavernKeeperTargetManifest {
 export function buildTavernKeeperTargets(options: {
   sources: Array<Record<string, unknown>>;
   snapshots: Array<Record<string, unknown>>;
+  publishedSourceIds: ReadonlySet<string>;
   generatedAt: string;
 }): TavernKeeperTargetManifest;
 

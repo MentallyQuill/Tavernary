@@ -1,16 +1,18 @@
 import { existsSync } from "node:fs";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 
 import { describe, expect, test } from "vitest";
 
+import * as reportValidation from "../../scripts/security/tavernkeeper-reports.mjs";
 import {
   TAVERNKEEPER_REPORT_INDEX_URL,
   fetchAndValidateTavernKeeperIndex,
   validateReportIndex,
 } from "../../scripts/security/tavernkeeper-reports.mjs";
 import { importTavernKeeperReports } from "../../scripts/security/import-tavernkeeper-reports.mjs";
+import { validateStoredTavernKeeperReports } from "../../scripts/security/validate-tavernkeeper-reports.mjs";
 
 const fixturePath = resolve(
   "tests/fixtures/tavernkeeper/report-index.valid.json",
@@ -46,6 +48,47 @@ function response(index: unknown) {
   return new Response(JSON.stringify(index), {
     headers: { "content-type": "application/json" },
   });
+}
+
+async function withinTestDeadline<T>(promise: Promise<T>, timeoutMs = 250) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(
+          () => reject(new Error("test deadline exceeded")),
+          timeoutMs,
+        );
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+async function storedSummaryRoot(
+  index: unknown,
+  sources: Array<Record<string, unknown>>,
+) {
+  const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-stored-"));
+  await Promise.all([
+    mkdir(resolve(root, "data/registry/sources"), { recursive: true }),
+    mkdir(resolve(root, "data/security"), { recursive: true }),
+  ]);
+  await Promise.all([
+    ...sources.map((entry, index) =>
+      writeFile(
+        resolve(root, "data/registry/sources", `${index}.json`),
+        `${JSON.stringify(entry, null, 2)}\n`,
+      ),
+    ),
+    writeFile(
+      resolve(root, "data/security/tavernkeeper-report-summaries.json"),
+      `${JSON.stringify(index, null, 2)}\n`,
+    ),
+  ]);
+  return root;
 }
 
 describe("TavernKeeper report-index importer", () => {
@@ -174,6 +217,125 @@ describe("TavernKeeper report-index importer", () => {
     ).rejects.toThrow(/resolve publicly/u);
   });
 
+  test.each(["2606:4700:4700::1111", "2001:200::1"])(
+    "allows allocated global-unicast IPv6 answer %s to reach the report transport",
+    async (address) => {
+      const index = await fixture();
+      let requests = 0;
+
+      await expect(
+        fetchAndValidateTavernKeeperIndex({
+          dnsLookup: async () => [{ address, family: 6 }],
+          fetchImpl: async () => {
+            requests += 1;
+            return response(index);
+          },
+        }),
+      ).resolves.toEqual(index);
+      expect(requests).toBe(1);
+    },
+  );
+
+  test.each([
+    "0:0:0:0:0:0:0:1",
+    "fe90::1",
+    "febf::1",
+    "ff02::1",
+    "fec0::1",
+    "feff::1",
+    "::ffff:7f00:1",
+    "::ffff:8.8.8.8",
+    "::c0a8:101",
+    "100::1",
+    "64:ff9b:1::1",
+    "2001::1",
+    "2002::1",
+    "2d00::1",
+    "3000::1",
+    "3fff::1",
+    "10.0.0.1",
+    "169.254.1.1",
+    "192.168.1.1",
+    "198.51.100.1",
+  ])("rejects non-public report-index DNS address %s", async (address) => {
+    await expect(
+      fetchAndValidateTavernKeeperIndex({
+        dnsLookup: async () => [
+          { address, family: address.includes(":") ? 6 : 4 },
+        ],
+        fetchImpl: async () => {
+          throw new Error("request transport should not run");
+        },
+      }),
+    ).rejects.toThrow(/resolve publicly/u);
+  });
+
+  test("bounds report-index DNS under the per-hop deadline", async () => {
+    await expect(
+      withinTestDeadline(
+        fetchAndValidateTavernKeeperIndex({
+          dnsLookup: async () => new Promise(() => {}),
+          timeoutMs: 10,
+        }),
+      ),
+    ).rejects.toThrow(/timed out/u);
+  });
+
+  test("bounds a report-index request that ignores the abort signal", async () => {
+    await expect(
+      withinTestDeadline(
+        fetchAndValidateTavernKeeperIndex({
+          dnsLookup: publicDnsLookup,
+          requestImpl: async () => new Promise(() => {}),
+          timeoutMs: 10,
+        }),
+      ),
+    ).rejects.toThrow(/timed out/u);
+  });
+
+  test("bounds a report-index body that never yields", async () => {
+    await expect(
+      withinTestDeadline(
+        fetchAndValidateTavernKeeperIndex({
+          dnsLookup: publicDnsLookup,
+          fetchImpl: async () =>
+            new Response(
+              new ReadableStream({
+                pull() {
+                  return new Promise(() => {});
+                },
+              }),
+              { headers: { "content-type": "application/json" } },
+            ),
+          timeoutMs: 10,
+        }),
+      ),
+    ).rejects.toThrow(/timed out/u);
+  });
+
+  test("does not await cancellation after rejecting an oversized report stream", async () => {
+    await expect(
+      withinTestDeadline(
+        fetchAndValidateTavernKeeperIndex({
+          dnsLookup: publicDnsLookup,
+          fetchImpl: async () =>
+            new Response(
+              new ReadableStream({
+                start(controller) {
+                  controller.enqueue(new Uint8Array(2 * 1024 * 1024 + 1));
+                },
+                cancel() {
+                  return new Promise(() => {});
+                },
+              }),
+              { headers: { "content-type": "application/json" } },
+            ),
+          timeoutMs: 10,
+        }),
+      ),
+    ).rejects.toThrow(/size/u);
+  });
+
   test("rejects content-length values over the response limit", async () => {
     await expect(
       fetchAndValidateTavernKeeperIndex({
@@ -221,12 +383,50 @@ describe("TavernKeeper report-index importer", () => {
     expect(() => validateReportIndex(index, registry)).toThrow(/identity/u);
   });
 
+  test.each([
+    [
+      "repository ID",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/",
+    ],
+    [
+      "target SHA",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/1/standard/1/",
+    ],
+    [
+      "scanner policy",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/standard/1/",
+    ],
+    [
+      "mode",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/deep/1/",
+    ],
+    [
+      "report version",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/2/",
+    ],
+    [
+      "extra suffix",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/index.html",
+    ],
+    [
+      "missing trailing slash",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1",
+    ],
+  ])("rejects a report URL with a cross-linked %s", async (_part, url) => {
+    const index = await fixture();
+    index.reports[0].report_url = url;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/URL/u);
+  });
+
   test("rejects duplicate preferred report identities", async () => {
     const index = await fixture();
     index.reports.push({
       ...structuredClone(index.reports[0]),
       report_id: "d".repeat(64),
       mode: "deep",
+      report_url:
+        "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/deep/1/",
     });
 
     expect(() => validateReportIndex(index, registry)).toThrow(/duplicate/u);
@@ -248,6 +448,8 @@ describe("TavernKeeper report-index importer", () => {
     const index = await fixture();
     index.reports[0].repository_id = 99;
     index.reports[0].source_id = "github-99";
+    index.reports[0].report_url =
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/";
 
     expect(validateReportIndex(index, registry).reports).toEqual([]);
   });
@@ -255,6 +457,8 @@ describe("TavernKeeper report-index importer", () => {
   test("excludes reports from inactive scanner policies", async () => {
     const index = await fixture();
     index.reports[0].scanner_policy_version = "0";
+    index.reports[0].report_url =
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/standard/1/";
 
     expect(validateReportIndex(index, registry).reports).toEqual([]);
   });
@@ -270,6 +474,56 @@ describe("TavernKeeper report-index importer", () => {
       /registry.*duplicate/u,
     );
   });
+
+  test("rejects tracked summaries after a concurrent registry rename", async () => {
+    const index = await fixture();
+    const renamedRegistry = [{ ...registry[0], repository: "owner/renamed" }];
+
+    expect(() =>
+      reportValidation.validateStoredReportIndex(index, renamedRegistry),
+    ).toThrow(/identity/u);
+  });
+
+  test("rejects tracked summaries dropped by a concurrent source deactivation", async () => {
+    const index = await fixture();
+    const deactivatedRegistry = [{ ...registry[0], status: "inactive" }];
+
+    expect(() =>
+      reportValidation.validateStoredReportIndex(index, deactivatedRegistry),
+    ).toThrow(/dropped or changed/u);
+  });
+
+  test("reads and accepts canonical tracked summary bytes", async () => {
+    const root = await storedSummaryRoot(await fixture(), registry);
+    try {
+      await expect(
+        validateStoredTavernKeeperReports({ root }),
+      ).resolves.toMatchObject({ reports: [{ repository_id: 42 }] });
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  test.each([
+    ["rename", { ...registry[0], repository: "owner/renamed" }, /identity/u],
+    [
+      "deactivation",
+      { ...registry[0], status: "inactive" },
+      /dropped or changed/u,
+    ],
+  ])(
+    "rejects tracked bytes after concurrent registry %s",
+    async (_change, changedSource, expectedError) => {
+      const root = await storedSummaryRoot(await fixture(), [changedSource]);
+      try {
+        await expect(
+          validateStoredTavernKeeperReports({ root }),
+        ).rejects.toThrow(expectedError);
+      } finally {
+        await rm(root, { recursive: true, force: true });
+      }
+    },
+  );
 
   test("preserves existing summaries when import validation fails", async () => {
     const directory = await mkdtemp(resolve(tmpdir(), "tavernkeeper-reports-"));

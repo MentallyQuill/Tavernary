@@ -51,8 +51,16 @@ export function validateReportIndex(
     | { sources: TavernKeeperSourceRegistryEntry[] },
 ): TavernKeeperReportIndex;
 
+export function validateStoredReportIndex(
+  index: unknown,
+  registry:
+    | TavernKeeperSourceRegistryEntry[]
+    | { sources: TavernKeeperSourceRegistryEntry[] },
+): TavernKeeperReportIndex;
+
 export function fetchAndValidateTavernKeeperIndex(options?: {
   url?: string;
+  timeoutMs?: number;
   fetchImpl?: typeof fetch;
   requestImpl?: (
     url: string,

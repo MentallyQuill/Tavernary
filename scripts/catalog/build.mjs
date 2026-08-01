@@ -656,6 +656,7 @@ export async function buildCatalog(options = {}) {
       buildTavernKeeperTargets({
         sources,
         snapshots,
+        publishedSourceIds: new Set(publicProjectsBySourceId.keys()),
         generatedAt: generatedAtIso,
       }),
     );

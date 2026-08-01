@@ -1031,6 +1031,7 @@ test("hydrates pending and unsupported scan states without nesting card controls
   );
 
   await expect(indicator).toBeVisible();
+  await expect(indicator).toHaveCSS("color", "rgb(130, 144, 153)");
   await indicator.hover();
   const panel = page.getByRole("dialog", {
     name: "TavernKeeper Scan Results",
@@ -1141,6 +1142,10 @@ test("hydrates current green and yellow scan reports with their external links",
       })
       .first();
 
+    await expect(indicator).toHaveCSS(
+      "color",
+      state === "green" ? "rgb(126, 231, 135)" : "rgb(227, 179, 65)",
+    );
     await indicator.hover();
     const panel = page.getByRole("dialog", {
       name: "TavernKeeper Scan Results",

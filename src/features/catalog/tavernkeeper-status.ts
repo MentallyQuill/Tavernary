@@ -127,10 +127,20 @@ function summarize(
   };
 }
 
+function rfc3339Epoch(timestamp: string) {
+  const leapSecond = /:60(?=(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$)/iu.test(
+    timestamp,
+  );
+  const normalized = leapSecond
+    ? timestamp.replace(/:60(?=(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$)/iu, ":59")
+    : timestamp;
+  return Date.parse(normalized) + (leapSecond ? 1_000 : 0);
+}
+
 function newestReport(reports: TavernKeeperPreferredReport[]) {
   return [...reports].sort(
     (left, right) =>
-      right.completed_at.localeCompare(left.completed_at) ||
+      rfc3339Epoch(right.completed_at) - rfc3339Epoch(left.completed_at) ||
       right.report_id.localeCompare(left.report_id),
   )[0];
 }

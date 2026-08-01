@@ -574,6 +574,56 @@ test("reconciles reports on a bounded schedule and wakes TavernKeeper only after
   expect(JSON.stringify(deploy)).not.toContain("actions: write");
 });
 
+test("recovers a failed report Pages dispatch by redispatching and verifying the next no-diff run", async () => {
+  const reportImport = await workflow("import-tavernkeeper-reports");
+  const steps = reportImport.jobs.import.steps as Array<{
+    name?: string;
+    id?: string;
+    if?: string;
+    run?: string;
+    env?: Record<string, string>;
+    "continue-on-error"?: boolean;
+  }>;
+  const commit = steps.find(
+    (step) => step.name === "Commit and publish changed summaries",
+  );
+  const deploy = steps.find(
+    (step) => step.name === "Deploy the exact reconciled summary commit",
+  );
+  const commitSource = commit?.run ?? "";
+  const noDiffStart = commitSource.indexOf(
+    "if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json",
+  );
+  const noDiffEnd = commitSource.indexOf("\nfi", noDiffStart);
+  const noDiffSource = commitSource.slice(noDiffStart, noDiffEnd);
+  const rebase = commitSource.indexOf("git rebase origin/main");
+  const validate = commitSource.indexOf("npm run check", rebase);
+  const push = commitSource.indexOf("git push origin HEAD:main", validate);
+
+  expect(noDiffStart).toBeGreaterThanOrEqual(0);
+  expect(noDiffSource).toContain("git fetch --no-tags origin main");
+  expect(noDiffSource).toContain("git merge --ff-only origin/main");
+  expect(noDiffSource).toContain("npm run check");
+  expect(noDiffSource).toContain('echo "sha=$(git rev-parse HEAD)"');
+  expect(commitSource).toContain("for attempt in 1 2 3");
+  expect(rebase).toBeGreaterThanOrEqual(0);
+  expect(rebase).toBeLessThan(validate);
+  expect(validate).toBeLessThan(push);
+
+  expect(deploy?.if).toBeUndefined();
+  expect(deploy?.env?.SOURCE_SHA).toBe("${{ steps.commit.outputs.sha }}");
+  expect(deploy?.run).toContain(
+    'gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main',
+  );
+  expect(deploy?.run).toContain('-f source_sha="$SOURCE_SHA"');
+  expect(deploy?.run).toContain(
+    '.displayTitle == \\"Site: Deploy $SOURCE_SHA\\"',
+  );
+  expect(deploy?.run).toContain("gh run watch");
+  expect(deploy?.run).toContain("--exit-status");
+  expect(deploy?.["continue-on-error"]).not.toBe(true);
+});
+
 test("refreshes snapshots daily without granting production-record writes", async () => {
   const refresh = (await workflow("refresh-catalog")) as {
     "run-name": string;

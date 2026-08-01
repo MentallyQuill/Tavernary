@@ -39,12 +39,13 @@
     "catalog:taxonomy:discover": "node scripts/catalog/discover-tag-taxonomy.mjs",
     "catalog:tags:backfill": "node scripts/catalog/backfill-project-tags.mjs",
     "security:import-reports": "node scripts/security/import-tavernkeeper-reports.mjs",
+    "security:validate-reports": "node scripts/security/validate-tavernkeeper-reports.mjs",
     "submissions:backfill-forks": "node scripts/submissions/backfill-fork-dependencies.mjs",
     "submissions:reconcile-kits": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary",
     "submissions:reconcile-kits:apply": "node scripts/submissions/kit-submission-reconciliation.mjs --repo MentallyQuill/Tavernary --apply",
     "catalog:build": "node scripts/catalog/build.mjs",
     "verify:export": "node scripts/verify-static-export.mjs",
-    "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export",
+    "check": "npm run format:check && npm run lint && npm run palette:audit && npm run catalog:validate && npm run security:validate-reports && npm run catalog:build && npm run typecheck && npm test && npm run build && npm run verify:export",
     "check:content": "npm run format:check && npm run catalog:validate && npm run catalog:build && npm run test:content && npm run build && npm run verify:export"
   },
   "dependencies": {

@@ -6,6 +6,7 @@ import type {
 export function importTavernKeeperReports(options?: {
   root?: string;
   outputPath?: string;
+  timeoutMs?: number;
   registry?: TavernKeeperSourceRegistryEntry[];
   fetchImpl?: typeof fetch;
   requestImpl?: Parameters<

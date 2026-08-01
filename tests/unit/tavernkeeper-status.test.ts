@@ -102,6 +102,84 @@ describe("deriveTavernKeeperCardStatus", () => {
     });
   });
 
+  test("orders RFC3339 offsets by epoch instead of lexical timestamp text", () => {
+    const actualNewestId = "e".repeat(64);
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot,
+        preferredReports: [
+          report({
+            report_id: "d".repeat(64),
+            target_sha: "c".repeat(40),
+            completed_at: "2026-07-31T17:00:00.000Z",
+          }),
+          report({
+            report_id: actualNewestId,
+            target_sha: "d".repeat(40),
+            completed_at: "2026-07-31T12:05:00-06:00",
+          }),
+        ],
+      }),
+    ).toMatchObject({
+      state: "gray",
+      reason: "outdated",
+      report: { reportId: actualNewestId, scannedSha: "d".repeat(40) },
+    });
+  });
+
+  test("uses report ID to break ties between equivalent offset timestamps", () => {
+    const tieBreakWinnerId = "e".repeat(64);
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot,
+        preferredReports: [
+          report({
+            report_id: "b".repeat(64),
+            target_sha: "c".repeat(40),
+            completed_at: "2026-07-31T18:00:00.000Z",
+          }),
+          report({
+            report_id: tieBreakWinnerId,
+            target_sha: "d".repeat(40),
+            completed_at: "2026-07-31T12:00:00-06:00",
+          }),
+        ],
+      }),
+    ).toMatchObject({
+      state: "gray",
+      reason: "outdated",
+      report: { reportId: tieBreakWinnerId, scannedSha: "d".repeat(40) },
+    });
+  });
+
+  test("orders an RFC3339 leap second after the preceding second", () => {
+    const leapSecondId = "d".repeat(64);
+    expect(
+      deriveTavernKeeperCardStatus({
+        source,
+        snapshot,
+        preferredReports: [
+          report({
+            report_id: "e".repeat(64),
+            target_sha: "c".repeat(40),
+            completed_at: "2016-12-31T23:59:59.999Z",
+          }),
+          report({
+            report_id: leapSecondId,
+            target_sha: "d".repeat(40),
+            completed_at: "2016-12-31T23:59:60Z",
+          }),
+        ],
+      }),
+    ).toMatchObject({
+      state: "gray",
+      reason: "outdated",
+      report: { reportId: leapSecondId, scannedSha: "d".repeat(40) },
+    });
+  });
+
   test("marks a confirmed SHA without a report as pending", () => {
     expect(
       deriveTavernKeeperCardStatus({
