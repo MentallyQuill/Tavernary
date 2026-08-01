@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "izanagi771-stack-story-editor",
+  "source_id": "github-1319215459",
+  "source_identity": "github:izanagi771-stack/story-editor",
+  "evidence_fingerprint": "eeef0bca7ddbd07d0cf51957b7bc1768f824b6575d0b7ab6b08c48f35cbdfaaf",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T12:37:53.091Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T12:37:53.091Z"
+  },
+  "maintenance_issue_number": null
+}
