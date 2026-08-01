@@ -284,6 +284,8 @@ test("builds sibling extension and preset cards from one source snapshot", async
       reports: [
         {
           report_id: "c".repeat(64),
+          report_version: 1,
+          supersedes_report_id: null,
           source_id: source.id,
           provider: "github",
           repository_id: source.repository_id,
@@ -291,12 +293,15 @@ test("builds sibling extension and preset cards from one source snapshot", async
           target_sha: snapshot.repository.head_sha,
           scanner_policy_version: "1",
           completed_at: "2026-07-31T12:05:00.000Z",
-          result: "green",
+          mode: "standard",
+          result: "teal",
           finding_counts: {
             severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
           },
           report_url:
-            "https://mentallyquill.github.io/TavernKeeper/reports/example/",
+            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/",
+          history_url:
+            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/",
         },
       ],
     },
@@ -345,8 +350,14 @@ test("builds sibling extension and preset cards from one source snapshot", async
     catalog.projects[1].tavernKeeper,
   );
   expect(catalog.projects[0].tavernKeeper).toMatchObject({
-    state: "green",
+    state: "teal",
     reason: "current",
+    history: [
+      expect.objectContaining({
+        result: "teal",
+        scannerPolicyVersion: "1",
+      }),
+    ],
   });
   expect(catalog.schemaVersion).toBe(6);
   expect(

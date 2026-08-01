@@ -15,13 +15,24 @@ import {
 import { TavernKeeperScanIcon } from "@/components/icons/tavernkeeper-scan-icon";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 
-const stateCopy = {
-  green: "No review-level findings",
-  yellow: "Review suggested",
-  pending: "Current scan pending",
-  outdated: "Previous result does not cover this commit",
-  "source-unavailable": "Current source state unavailable",
-} as const;
+function stateCopy(status: TavernKeeperCardStatus) {
+  switch (status.reason) {
+    case "current":
+      return status.state === "red"
+        ? "TavernKeeper found review-level concerns."
+        : "No review-level concerns found at this commit.";
+    case "outdated-concern":
+      return "The last completed scan found review-level concerns and does not cover the repository's current commit.";
+    case "outdated-clean":
+      return "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.";
+    case "unscanned":
+      return "This project hasn't been scanned by TavernKeeper.";
+    case "source-unavailable":
+      return "Tavernary cannot confirm the repository's current commit. The last completed scan is shown below when available.";
+    case "unsupported":
+      return "TavernKeeper scanning is not supported for this project's source.";
+  }
+}
 
 const severityLabels = [
   ["critical", "critical"],
@@ -80,11 +91,7 @@ export function TavernKeeperScanIndicator({
   const popoverRef = useRef<HTMLElement>(null);
   const reportLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const content =
-    status.reason === "current"
-      ? stateCopy[status.state]
-      : stateCopy[status.reason];
-  const accessibleContent = `${content.slice(0, 1).toLowerCase()}${content.slice(1)}`;
+  const content = stateCopy(status);
   const report = status.report;
   const severityCounts = report
     ? severityLabels.filter(([key]) => report.severity[key] > 0)
@@ -219,7 +226,7 @@ export function TavernKeeperScanIndicator({
       <button
         aria-controls={popoverId}
         aria-expanded={open}
-        aria-label={`TavernKeeper scan: ${accessibleContent}`}
+        aria-label={`TavernKeeper scan: ${content}`}
         className={`tavernkeeper-scan-indicator-trigger tavernkeeper-scan-indicator-${status.state}`}
         onBlur={closeOnFocusExit}
         onClick={() => (open ? closePopover() : openPopover())}

@@ -231,7 +231,7 @@ function repositoryProject(
   };
 }
 
-function urlProject(record, source, vocabularies) {
+function urlProject(record, source, vocabularies, tavernKeeper) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const tags = tagged(record.tags, vocabularies.tags);
   const compatibility = presetCompatibility(record, vocabularies);
@@ -260,7 +260,7 @@ function urlProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
-    tavernKeeper: null,
+    tavernKeeper,
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -281,7 +281,7 @@ function urlProject(record, source, vocabularies) {
   };
 }
 
-function manualProject(record, source, vocabularies) {
+function manualProject(record, source, vocabularies, tavernKeeper) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const tags = tagged(record.tags, vocabularies.tags);
   const primaryFunction = {
@@ -304,7 +304,7 @@ function manualProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
-    tavernKeeper: null,
+    tavernKeeper,
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -428,12 +428,12 @@ export async function buildCatalog(options = {}) {
     }
     if (source.type === "url") {
       if (record.kind === "preset" || record.kind === "frontend") {
-        projects.push(urlProject(record, source, vocabularies));
+        projects.push(urlProject(record, source, vocabularies, tavernKeeper));
       }
       continue;
     }
     if (source.type === "github-organization") {
-      projects.push(manualProject(record, source, vocabularies));
+      projects.push(manualProject(record, source, vocabularies, tavernKeeper));
       continue;
     }
 

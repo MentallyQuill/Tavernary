@@ -15,35 +15,42 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { TavernKeeperScanIndicator } from "@/features/catalog/components/tavernkeeper-scan-indicator";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 
-const yellowStatus: TavernKeeperCardStatus = {
-  state: "yellow",
+const redStatus: TavernKeeperCardStatus = {
+  state: "red",
   reason: "current",
   currentSha: "abc1234def5678abc1234def5678abc1234def5678",
   report: {
     reportId: "report-1",
-    result: "yellow",
+    result: "red",
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
+    mode: "standard",
+    scannerPolicyVersion: "1",
     reportUrl: "https://example.test/reports/directive",
+    historyUrl: "https://example.test/reports/directive/history",
     severity: { critical: 0, high: 1, medium: 0, low: 0, info: 0 },
   },
+  history: [],
+  historyUrl: "https://example.test/reports/directive/history",
 };
 
-const greenStatus: TavernKeeperCardStatus = {
-  ...yellowStatus,
-  state: "green",
+const tealStatus: TavernKeeperCardStatus = {
+  ...redStatus,
+  state: "teal",
   report: {
-    ...yellowStatus.report,
-    result: "green",
+    ...redStatus.report!,
+    result: "teal",
     severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
   },
 };
 
 const pendingStatus: TavernKeeperCardStatus = {
   state: "gray",
-  reason: "pending",
+  reason: "unscanned",
   currentSha: "abc1234def5678abc1234def5678abc1234def5678",
   report: null,
+  history: [],
+  historyUrl: null,
 };
 
 function rectangle(left: number, top: number, width: number, height: number) {
@@ -69,24 +76,26 @@ describe("TavernKeeperScanIndicator", () => {
 
   test("shows only the concise retained scan result", () => {
     const { container } = render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: review suggested/u,
+        name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
       }),
     );
 
     const panel = screen.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    expect(panel).toHaveTextContent("Review suggested");
+    expect(panel).toHaveTextContent(
+      "TavernKeeper found review-level concerns.",
+    );
     expect(panel).toHaveTextContent("1 high");
     expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
     expect(
       within(panel).getByRole("link", { name: "View full report" }),
-    ).toHaveAttribute("href", yellowStatus.report.reportUrl);
+    ).toHaveAttribute("href", redStatus.report?.reportUrl);
     expect(panel).not.toHaveTextContent(
       /Gitleaks|OpenGrep|policy|coverage|excluded/u,
     );
@@ -97,17 +106,17 @@ describe("TavernKeeperScanIndicator", () => {
 
   test("omits the severity count container when a retained report has no findings", () => {
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={greenStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={tealStatus} />,
     );
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: no review-level findings/u,
+        name: /TavernKeeper scan: No review-level concerns found/u,
       }),
     );
 
     expect(screen.getByRole("dialog")).toHaveTextContent(
-      "No review-level findings",
+      "No review-level concerns found at this commit.",
     );
     expect(
       document.querySelector(".tavernkeeper-severity-counts"),
@@ -117,11 +126,11 @@ describe("TavernKeeperScanIndicator", () => {
   test("keeps the popover open while the pointer moves from trigger to panel", () => {
     vi.useFakeTimers();
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.pointerEnter(trigger);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -136,11 +145,11 @@ describe("TavernKeeperScanIndicator", () => {
   test("closes 150 milliseconds after the pointer exits", () => {
     vi.useFakeTimers();
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.pointerEnter(trigger);
     fireEvent.pointerLeave(trigger);
@@ -165,11 +174,11 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: review suggested/u,
+        name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
       }),
     );
     const panel = screen.getByRole("dialog");
@@ -187,11 +196,11 @@ describe("TavernKeeperScanIndicator", () => {
 
   test("keeps the popover open while focus moves within it and closes on focus exit", () => {
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.focus(trigger);
     const panel = screen.getByRole("dialog");
@@ -210,16 +219,13 @@ describe("TavernKeeperScanIndicator", () => {
     const user = userEvent.setup();
     const { rerender } = render(
       <>
-        <TavernKeeperScanIndicator
-          projectId="directive"
-          status={yellowStatus}
-        />
+        <TavernKeeperScanIndicator projectId="directive" status={redStatus} />
         <button type="button">Outside app control</button>
       </>,
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     await user.tab();
     expect(trigger).toHaveFocus();
@@ -246,11 +252,11 @@ describe("TavernKeeperScanIndicator", () => {
 
   test("closes on Escape and an outside pointer press", () => {
     render(
-      <TavernKeeperScanIndicator projectId="directive" status={yellowStatus} />,
+      <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
@@ -264,19 +270,13 @@ describe("TavernKeeperScanIndicator", () => {
   test("toggles from a touch click and closes another open scan indicator", () => {
     render(
       <>
-        <TavernKeeperScanIndicator
-          projectId="directive"
-          status={yellowStatus}
-        />
-        <TavernKeeperScanIndicator
-          projectId="recursion"
-          status={yellowStatus}
-        />
+        <TavernKeeperScanIndicator projectId="directive" status={redStatus} />
+        <TavernKeeperScanIndicator projectId="recursion" status={redStatus} />
       </>,
     );
 
     const [firstTrigger, secondTrigger] = screen.getAllByRole("button", {
-      name: /TavernKeeper scan: review suggested/u,
+      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
     });
     fireEvent.pointerDown(firstTrigger, { pointerType: "touch" });
     fireEvent.click(firstTrigger);
