@@ -12,10 +12,12 @@ resolve a valid, non-empty summary before applying the request.
 Make Reddit project intake use Tavernary's existing bounded,
 identity-checked Reddit enrichment adapter. Each intake wave receives three
 source-load attempts spread across approximately 60–120 seconds. If the first
-wave cannot obtain usable Reddit evidence, Tavernary retries automatically
-after one hour and again after another hour. After the third failed wave,
-ordinary source-availability failures publish a deterministic provisional
-placeholder. Invalid URLs and Reddit identity mismatches remain blocked.
+wave cannot obtain usable Reddit evidence, Tavernary makes the next wave
+eligible after one hour and the third wave eligible one hour after the second.
+The daily dispatcher picks up eligible retries on its next sweep. After the
+third failed wave, ordinary source-availability failures publish a
+deterministic provisional placeholder. Invalid URLs and Reddit identity
+mismatches remain blocked.
 
 ## Relationship to Existing Designs
 
@@ -73,8 +75,8 @@ A failed issue can therefore remain retryable indefinitely.
 - Make review state clearly distinguish generated copy from submitted copy.
 - Generate Reddit descriptions from the submitted Reddit post during intake.
 - Give each Reddit retry wave three bounded source-load attempts.
-- Retry failed waves automatically after one hour and after one additional
-  hour.
+- Make failed waves eligible automatically after one hour and after one
+  additional hour, then dispatch them on the next daily sweep.
 - Publish a safe provisional placeholder after the third exhausted wave for
   ordinary Reddit availability failures.
 - Keep invalid URL and source-identity failures fail-closed.
@@ -221,8 +223,8 @@ dispatched runs from advancing the same issue twice.
 
 ### Scheduled dispatcher
 
-Add a lightweight scheduled workflow that runs every 15 minutes and can also
-be dispatched manually for recovery. It:
+Add a lightweight scheduled workflow that runs once daily at 07:37 UTC and can
+also be dispatched manually for recovery. It:
 
 1. lists open admitted project-submission issues in retryable state;
 2. reads their marker-based Reddit retry state;
@@ -231,8 +233,10 @@ be dispatched manually for recovery. It:
 5. leaves not-yet-due, malformed, closed, superseded, or non-Reddit issues
    untouched.
 
-A 15-minute sweep means an hourly retry is normally dispatched 60–75 minutes
-after the preceding failed wave without keeping a runner asleep.
+The daily sweep bounds idle polling to one run per day. A retry becomes
+eligible one hour after the preceding failed wave and is dispatched by the
+first daily sweep after that timestamp, subject to GitHub Actions scheduling
+delay, without keeping a runner asleep.
 
 The dispatcher does not decide whether to publish a placeholder. The generator
 owns that decision after revalidating the manifest, identity, current issue
@@ -374,7 +378,8 @@ Implementation follows one-test-at-a-time red-green-refactor.
 
 ### Workflow contracts
 
-- The scheduled dispatcher runs every 15 minutes and supports manual recovery.
+- The scheduled dispatcher runs once daily at 07:37 UTC and supports manual
+  recovery.
 - Only due Reddit retry issues dispatch generation.
 - Existing generation failure reconciliation preserves the durable retry
   state.
@@ -397,8 +402,8 @@ complete `npm.cmd run check` gate.
   copy.
 - Each wave performs no more than three source-load attempts over approximately
   60–120 seconds.
-- Failed waves retry automatically after one hour and after one additional
-  hour.
+- Failed waves become eligible automatically after one hour and after one
+  additional hour, then retry on the next daily sweep.
 - Ordinary availability exhaustion after wave three publishes the approved
   provisional placeholder.
 - Invalid URLs and Reddit identity mismatches remain fail-closed.
