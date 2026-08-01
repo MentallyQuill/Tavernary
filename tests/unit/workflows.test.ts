@@ -893,10 +893,10 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   );
 });
 
-test("retries due Reddit submissions every fifteen minutes", async () => {
+test("checks for due Reddit submissions once daily", async () => {
   const retry = await workflow("retry-project-submission-enrichment");
 
-  expect(retry.on.schedule).toEqual([{ cron: "*/15 * * * *" }]);
+  expect(retry.on.schedule).toEqual([{ cron: "37 7 * * *" }]);
   expect(retry.on.workflow_dispatch).toBeNull();
   expect(retry.permissions).toEqual({
     contents: "read",

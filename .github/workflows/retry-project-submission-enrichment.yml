@@ -3,7 +3,7 @@ run-name: "Project submissions: Retry due Reddit enrichment"
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "37 7 * * *"
   workflow_dispatch:
 
 permissions:
