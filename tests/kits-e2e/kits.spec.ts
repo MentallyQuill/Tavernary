@@ -863,7 +863,7 @@ test("desktop Kit inspection keeps fixed actions reachable with a 600-character 
   ).toBeInViewport();
 });
 
-test("compact cards reserve the right edge for the Kit action", async ({
+test("compact cards keep title, scan, and Kit actions independently usable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1024, height: 800 });
@@ -871,7 +871,10 @@ test("compact cards reserve the right edge for the Kit action", async ({
 
   const shell = page.locator(".project-card-shell").first();
   const license = shell.locator(".license");
-  const control = shell.locator(".project-kit-control-hit");
+  const controlHit = shell.locator(".project-kit-control-hit");
+  const control = controlHit.locator(".project-kit-control");
+  const title = shell.locator(".card-title");
+  const scanTrigger = shell.locator(".tavernkeeper-scan-indicator-trigger");
   const standardLicenseBox = await license.boundingBox();
   const standardControlBox = await control.boundingBox();
   expect(standardLicenseBox).not.toBeNull();
@@ -880,22 +883,42 @@ test("compact cards reserve the right edge for the Kit action", async ({
 
   await page.getByRole("button", { name: "Use compact cards" }).click();
   await expect(license).toBeHidden();
+  await title.evaluate((element) => {
+    element.textContent =
+      "A deliberately long compact title must truncate before its scan control";
+  });
+  await expect(title).toHaveText(
+    "A deliberately long compact title must truncate before its scan control",
+  );
+  await expect(scanTrigger).toHaveAttribute("aria-expanded", "false");
 
-  const compactStyles = await shell.evaluate((element) => {
-    const title = element.querySelector("h2");
+  const compactGeometry = await shell.evaluate((element) => {
+    const title = element.querySelector<HTMLElement>(".card-title");
     const summary = element.querySelector(".card-summary");
-    const controlHit = element.querySelector(".project-kit-control-hit");
+    const scanTrigger = element.querySelector<HTMLElement>(
+      ".tavernkeeper-scan-indicator-trigger",
+    );
+    const controlHit = element.querySelector<HTMLElement>(
+      ".project-kit-control-hit",
+    );
     const card = element.querySelector(".project-card");
-    if (!title || !summary || !controlHit || !card) {
+    if (!title || !summary || !scanTrigger || !controlHit || !card) {
       throw new Error("Compact card anatomy is incomplete");
     }
-    const titleStyle = getComputedStyle(title);
     const summaryStyle = getComputedStyle(summary);
     const cardStyle = getComputedStyle(card);
     const shellBounds = element.getBoundingClientRect();
+    const cardBounds = card.getBoundingClientRect();
+    const titleBounds = title.getBoundingClientRect();
+    const scanBounds = scanTrigger.getBoundingClientRect();
     const controlBounds = controlHit.getBoundingClientRect();
     return {
-      titlePaddingRight: titleStyle.paddingRight,
+      titleClientWidth: title.clientWidth,
+      titleScrollWidth: title.scrollWidth,
+      titleRight: titleBounds.right,
+      scanLeft: scanBounds.left,
+      scanRight: scanBounds.right,
+      cardRight: cardBounds.right,
       summaryPaddingRight: summaryStyle.paddingRight,
       summaryOverflow: summaryStyle.overflow,
       summaryTextOverflow: summaryStyle.textOverflow,
@@ -904,14 +927,53 @@ test("compact cards reserve the right edge for the Kit action", async ({
     };
   });
 
-  expect(compactStyles).toEqual({
-    titlePaddingRight: "44px",
+  expect(compactGeometry.titleScrollWidth).toBeGreaterThan(
+    compactGeometry.titleClientWidth,
+  );
+  expect(compactGeometry.titleRight).toBeLessThanOrEqual(
+    compactGeometry.scanLeft,
+  );
+  expect(
+    compactGeometry.scanLeft - compactGeometry.titleRight,
+  ).toBeLessThanOrEqual(8);
+  expect(compactGeometry.scanRight).toBeLessThanOrEqual(
+    compactGeometry.cardRight - 8,
+  );
+  expect(compactGeometry).toMatchObject({
     summaryPaddingRight: "44px",
     summaryOverflow: "hidden",
     summaryTextOverflow: "ellipsis",
     cardPaddingBottom: "11px",
     controlRightGap: 4,
   });
+
+  await expect(
+    shell.evaluate((element) => {
+      const trigger = element.querySelector<HTMLElement>(
+        ".tavernkeeper-scan-indicator-trigger",
+      );
+      if (!trigger) throw new Error("Missing compact scan trigger");
+      const bounds = trigger.getBoundingClientRect();
+      return document.elementFromPoint(
+        bounds.left + bounds.width / 2,
+        bounds.top + bounds.height / 2,
+      )?.className;
+    }),
+  ).resolves.toContain("tavernkeeper-scan-indicator-trigger");
+
+  await scanTrigger.focus();
+  await expect(scanTrigger).toHaveAttribute("aria-expanded", "true");
+  await expect(
+    page.getByRole("dialog", { name: "TavernKeeper Scan Results" }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("dialog", { name: "TavernKeeper Scan Results" }),
+  ).toHaveCount(0);
+  await page.mouse.move(0, 0);
+
+  await control.click();
+  await expect(control).toHaveAttribute("aria-pressed", "true");
 });
 
 test("applies every Kit filter and clears them", async ({ page }) => {
