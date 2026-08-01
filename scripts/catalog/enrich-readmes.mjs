@@ -391,7 +391,7 @@ function validateOutput(output, record, vocabularies, providerInput) {
       if (
         error === "summary value must not contain URLs or domain-style links"
       ) {
-        return "Summary must not contain URLs or domain-style links.";
+        return "Summary must not contain URLs or domain-style links. If a dotted brand or project name resembles a domain, refer to the project generically instead.";
       }
       if (error.includes("evidence")) {
         return "Include compact source evidence references.";

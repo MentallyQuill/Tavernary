@@ -187,6 +187,45 @@ test("returns only deterministic canonical submission files and its report", asy
   expect(JSON.stringify(generated)).not.toContain("raw_provider_output");
 });
 
+test("reports unavailable verified-owner copy review as a manual transaction", async () => {
+  const generated = await generateProjectSubmission({
+    issueNumber: 193,
+    draft: {
+      record: {
+        ...record,
+        summary: "Owner-authored summary.",
+        metadata_policy: {
+          summary: { mode: "manual" },
+          tags: { mode: "manual" },
+        },
+      },
+      source,
+      snapshot,
+      submitted: {},
+      observed: {},
+      inferred: {},
+      metadataAuthority: {
+        authorityType: "repository-owner",
+        actorId: 11,
+        actorLogin: "Owner",
+      },
+      copyResult: null,
+      copyMode: null,
+      copyReviewStatus: "unavailable",
+      copyReviewReasonCode: "copy-review-unavailable",
+      publicationMode: "manual",
+      warnings: [],
+    },
+  });
+
+  expect(generated.report).toMatchObject({
+    publication_mode: "manual",
+    copy_review_status: "unavailable",
+    copy_review_reason_code: "copy-review-unavailable",
+    copy_result: null,
+  });
+});
+
 test("fails closed when a snapshot belongs to a different source", async () => {
   await expect(
     generateProjectSubmission({

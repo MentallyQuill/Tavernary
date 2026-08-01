@@ -61,6 +61,35 @@ test("accepts a source/card/snapshot create transaction with exact paths", () =>
   );
 });
 
+test("accepts verified-owner manual create fallback without fabricated copy", () => {
+  const transaction = createProjectPublicationTransaction(
+    createInput({
+      publication_mode: "manual",
+      authority_type: "repository-owner",
+      copy_result: null,
+    }),
+  );
+
+  expect(transaction).toMatchObject({
+    operation: "create",
+    producer: "project-submission",
+    publication_mode: "manual",
+    authority_type: "repository-owner",
+    copy_result: null,
+  });
+});
+
+test("rejects manual create fallback from a community submitter", () => {
+  expect(() =>
+    createProjectPublicationTransaction(
+      createInput({
+        publication_mode: "manual",
+        copy_result: null,
+      }),
+    ),
+  ).toThrow("Invalid project publication transaction");
+});
+
 test("accepts one atomic manual add-card batch", () => {
   const transaction = createProjectPublicationTransaction(
     createInput({

@@ -622,6 +622,105 @@ test("preserves a trusted staff summary while leaving manual tags untouched", as
   expect(draft.copyMode).toBe("preserve");
 });
 
+test("keeps automatic tags when a verified owner supplies a manual summary", async () => {
+  const copySummary = vi.fn(async () => ({
+    summary: "Owner-authored summary.",
+    result: "accepted-unchanged" as const,
+    change_reasons: [],
+    policy_signal: "none" as const,
+  }));
+  const fixture = repositorySubmissionFixture({
+    user: { id: 11, login: "Owner" },
+    ownerId: 11,
+    metadata: {
+      summary: { mode: "manual", value: "Owner-authored summary." },
+      tags: { mode: "automatic" },
+    },
+    enrich: async () => {
+      throw new Error("The injected provider path should own enrichment.");
+    },
+    copySummary,
+  });
+  const sourceClients = fixture.sourceClients as Record<string, unknown>;
+  delete sourceClients.enrich;
+  sourceClients.enrichmentProvider = {
+    generate: async () => ({
+      output: {
+        tags: [
+          {
+            id: "add-structured-reasoning",
+            evidence: ["readme:1-3"],
+          },
+        ],
+      },
+      metadata: {
+        requestedModel: "fixture-model",
+        returnedModel: "fixture-model",
+        latencyMs: 1,
+      },
+    }),
+  };
+  sourceClients.loadEnrichmentSource = async () => ({
+    status: "ready",
+    sourceKind: "readme",
+    sourceIdentity: "github:Owner/Repo",
+    text: "The extension adds structured reasoning to roleplay workflows.",
+    repositoryDescription: "Repository description.",
+    readmeText:
+      "The extension adds structured reasoning to roleplay workflows.",
+    readmePath: "README.md",
+    readmeRef: "b".repeat(40),
+    readmeIdentity: `github:Owner/Repo@${"b".repeat(40)}:README.md`,
+    repositoryId: 42,
+    headSha: "b".repeat(40),
+  });
+
+  const draft = await prepareProjectSubmissionDraft(fixture);
+
+  expect(draft.record).toMatchObject({
+    summary: "Owner-authored summary.",
+    tags: ["add-structured-reasoning"],
+  });
+});
+
+test("routes unavailable verified-owner copy review to manual publication", async () => {
+  const submittedSummary = [
+    "You pick a sentence boundary and write your reply there.",
+    "The original remainder stays available as non-canonical reference.",
+  ].join("\n\n");
+  const copySummary = vi.fn(async () => ({
+    summary: submittedSummary,
+    result: "accepted-unchanged",
+    change_reasons: [],
+    policy_signal: "none",
+  }));
+  const enrich = vi.fn(async () => {
+    throw new Error("Manual metadata must not enter enrichment.");
+  });
+
+  const draft = await prepareProjectSubmissionDraft(
+    repositorySubmissionFixture({
+      user: { id: 11, login: "Owner" },
+      ownerId: 11,
+      metadata: {
+        summary: { mode: "manual", value: submittedSummary },
+        tags: {
+          mode: "manual",
+          values: ["add-structured-reasoning"],
+        },
+      },
+      enrich,
+      copySummary,
+    }),
+  );
+
+  expect(draft.record.summary).toBe(submittedSummary);
+  expect(draft.copyResult).toBeNull();
+  expect(draft.copyReviewStatus).toBe("unavailable");
+  expect(draft.copyReviewReasonCode).toBe("copy-review-unavailable");
+  expect(draft.publicationMode).toBe("manual");
+});
+
 test("discards community manual metadata before synthesized enrichment", async () => {
   const enrich = vi.fn(async () => ({
     status: "curated",

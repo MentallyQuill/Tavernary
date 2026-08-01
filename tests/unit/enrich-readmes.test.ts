@@ -626,6 +626,43 @@ test("restates structured field shapes when repairing primitive output", async (
   );
 });
 
+test("gives a usable repair when a dotted brand looks like a link", async () => {
+  const validOutput = outputFor({
+    requestedFields: ["summary", "tags"],
+    allowedTags: vocabularies.tags,
+  });
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output:
+      generate.mock.calls.length === 1
+        ? {
+            ...validOutput,
+            summary: {
+              value:
+                "Remix.Camera connects SillyTavern character context to companion image tools while keeping credentials in a local bridge and image actions reviewable before generation.",
+              evidence: ["readme:1-8"],
+            },
+          }
+        : validOutput,
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      loadSource: async () => readySource(),
+      maxProviderAttempts: 2,
+    },
+  );
+
+  expect(generate.mock.calls[1]?.[0].repair?.message).toContain(
+    "refer to the project generically",
+  );
+});
+
 test("stops after the first validation repair succeeds", async () => {
   const validOutput = outputFor({
     requestedFields: ["summary", "tags"],

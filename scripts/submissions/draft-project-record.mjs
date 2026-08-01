@@ -382,6 +382,15 @@ export async function draftProjectRecord(input) {
       ? (input.copyMode ??
         (request.summary.mode === "manual" ? "preserve" : "synthesize"))
       : null,
+    ...(input.copyReviewStatus
+      ? { copyReviewStatus: input.copyReviewStatus }
+      : {}),
+    ...(input.copyReviewReasonCode
+      ? { copyReviewReasonCode: input.copyReviewReasonCode }
+      : {}),
+    ...(input.publicationMode
+      ? { publicationMode: input.publicationMode }
+      : {}),
     classificationReview: classificationReview.review,
     warnings: [...new Set(warnings)],
   };

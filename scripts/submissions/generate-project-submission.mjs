@@ -105,6 +105,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
       observed: draft.observed,
       inferred: draft.inferred,
       metadata_authority: draft.metadataAuthority ?? null,
+      publication_mode: draft.publicationMode ?? "automatic",
       copy_mode: draft.copyResult
         ? (draft.copyMode ??
           (draft.record.metadata_policy?.summary?.mode === "manual"
@@ -112,6 +113,8 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
             : "synthesize"))
         : null,
       copy_result: draft.copyResult ?? null,
+      copy_review_status: draft.copyReviewStatus ?? null,
+      copy_review_reason_code: draft.copyReviewReasonCode ?? null,
       input_digest: draft.inputDigest ?? null,
       source_identity: draft.sourceIdentity ?? null,
       actor:
@@ -418,6 +421,25 @@ function requestedEnrichmentResult(result, requestedFields) {
   };
 }
 
+function manualSummaryCopyDraftOptions(copy) {
+  if (!copy) return {};
+  return {
+    publishedSummary: copy.publishedSummary,
+    copyResult: copy.copyResult,
+    copyMode: copy.mode,
+    copyReviewStatus: copy.reviewStatus,
+    ...(copy.reviewStatus === "unavailable"
+      ? { copyReviewReasonCode: copy.reasonCode }
+      : {}),
+    publicationMode:
+      copy.reviewStatus === "unavailable" ? "manual" : "automatic",
+  };
+}
+
+function manualSummaryCopyRequired(copy) {
+  return copy?.reviewStatus === "validated";
+}
+
 export async function prepareProjectSubmissionDraft({
   issue,
   now,
@@ -520,14 +542,8 @@ export async function prepareProjectSubmissionDraft({
       frontendProjects: data.projects,
       metadataAuthority,
       metadataRequest,
-      ...(manualSummaryCopy
-        ? {
-            publishedSummary: manualSummaryCopy.publishedSummary,
-            copyResult: manualSummaryCopy.copyResult,
-            copyMode: manualSummaryCopy.mode,
-            copyRequired: true,
-          }
-        : {}),
+      ...manualSummaryCopyDraftOptions(manualSummaryCopy),
+      copyRequired: manualSummaryCopyRequired(manualSummaryCopy),
       now,
     });
     assertProjectIdAvailable(preliminary.record, data.projects);
@@ -646,19 +662,13 @@ export async function prepareProjectSubmissionDraft({
             frontendProjects: data.projects,
             metadataAuthority,
             metadataRequest,
-            ...(manualSummaryCopy
-              ? {
-                  publishedSummary: manualSummaryCopy.publishedSummary,
-                  copyResult: manualSummaryCopy.copyResult,
-                  copyMode: manualSummaryCopy.mode,
-                }
-              : {}),
+            ...manualSummaryCopyDraftOptions(manualSummaryCopy),
             provisionalSummary: redditPlaceholderSummary(
               decision.manifest.project_type,
             ),
             provisionalWarning:
               "Reddit source remained unavailable after three retry waves.",
-            copyRequired: manualSummaryCopy !== null,
+            copyRequired: manualSummaryCopyRequired(manualSummaryCopy),
             now,
           })),
           redditRetry: {
@@ -708,11 +718,13 @@ export async function prepareProjectSubmissionDraft({
           requestedFields,
         );
       } else {
-        const enrichmentProvider = createEnrichmentProvider({
-          apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-          apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-          model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-        });
+        const enrichmentProvider =
+          sourceClients.enrichmentProvider ??
+          createEnrichmentProvider({
+            apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+            apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+            model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+          });
         const output = await enrichRecord(
           preliminary.record,
           preliminary.source,
@@ -733,9 +745,13 @@ export async function prepareProjectSubmissionDraft({
                 ? { tags: output.tags.map(({ id }) => id) }
                 : {}),
               classification_review: null,
-              result: output.result,
-              change_reasons: [...output.change_reasons],
-              policy_signal: output.policy_signal,
+              ...(requestedFields.includes("summary")
+                ? {
+                    result: output.result,
+                    change_reasons: [...output.change_reasons],
+                    policy_signal: output.policy_signal,
+                  }
+                : {}),
             }
           : null;
       }
@@ -758,15 +774,10 @@ export async function prepareProjectSubmissionDraft({
           frontendProjects: data.projects,
           metadataAuthority,
           metadataRequest,
-          ...(manualSummaryCopy
-            ? {
-                publishedSummary: manualSummaryCopy.publishedSummary,
-                copyResult: manualSummaryCopy.copyResult,
-                copyMode: manualSummaryCopy.mode,
-              }
-            : {}),
+          ...manualSummaryCopyDraftOptions(manualSummaryCopy),
           copyRequired:
-            manualSummaryCopy !== null || requestedFields.includes("summary"),
+            manualSummaryCopyRequired(manualSummaryCopy) ||
+            requestedFields.includes("summary"),
           now,
         })),
         redditRetry: {
@@ -888,11 +899,13 @@ export async function prepareProjectSubmissionDraft({
         requestedFields,
       );
     } else {
-      const provider = createEnrichmentProvider({
-        apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
-        apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
-        model: process.env.TAVERNARY_ENRICHMENT_MODEL,
-      });
+      const provider =
+        sourceClients.enrichmentProvider ??
+        createEnrichmentProvider({
+          apiUrl: process.env.TAVERNARY_ENRICHMENT_API_URL,
+          apiKey: process.env.TAVERNARY_ENRICHMENT_API_KEY,
+          model: process.env.TAVERNARY_ENRICHMENT_MODEL,
+        });
       const output = await enrichRecord(
         preliminary.record,
         preliminary.source,
@@ -918,9 +931,13 @@ export async function prepareProjectSubmissionDraft({
               ? { tags: output.tags.map(({ id }) => id) }
               : {}),
             classification_review: null,
-            result: output.result,
-            change_reasons: [...output.change_reasons],
-            policy_signal: output.policy_signal,
+            ...(requestedFields.includes("summary")
+              ? {
+                  result: output.result,
+                  change_reasons: [...output.change_reasons],
+                  policy_signal: output.policy_signal,
+                }
+              : {}),
           }
         : null;
     }
@@ -942,15 +959,10 @@ export async function prepareProjectSubmissionDraft({
       frontendProjects: data.projects,
       metadataAuthority,
       metadataRequest,
-      ...(manualSummaryCopy
-        ? {
-            publishedSummary: manualSummaryCopy.publishedSummary,
-            copyResult: manualSummaryCopy.copyResult,
-            copyMode: manualSummaryCopy.mode,
-          }
-        : {}),
+      ...manualSummaryCopyDraftOptions(manualSummaryCopy),
       copyRequired:
-        manualSummaryCopy !== null || requestedFields.includes("summary"),
+        manualSummaryCopyRequired(manualSummaryCopy) ||
+        requestedFields.includes("summary"),
       now,
     }),
     decision,

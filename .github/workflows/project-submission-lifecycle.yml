@@ -69,6 +69,7 @@ jobs:
             fs.appendFileSync(process.env.GITHUB_OUTPUT, [
               'action=' + plan.action,
               'issue_number=' + (plan.issueNumber ?? ''),
+              'close_reason=' + (plan.closeReason ?? ''),
               'branch=' + (plan.deleteBranch ?? ''),
               'head_sha=' + pull.head.sha,
               'pr_number=' + pull.number,
@@ -80,6 +81,7 @@ jobs:
         shell: bash
         env:
           ACTION: ${{ steps.plan.outputs.action }}
+          CLOSE_REASON: ${{ steps.plan.outputs.close_reason }}
           ISSUE_NUMBER: ${{ steps.plan.outputs.issue_number }}
           PR_NUMBER: ${{ steps.plan.outputs.pr_number }}
           PR_URL: ${{ steps.plan.outputs.pr_url }}
@@ -116,10 +118,12 @@ jobs:
                 "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
                 --input "$comment_path"
             fi
+          fi
+          if [[ -n "$CLOSE_REASON" ]]; then
             gh api --method PATCH \
               "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
               -f state=closed \
-              -f state_reason=not_planned
+              -f state_reason="$CLOSE_REASON"
           fi
       - name: Retry fork dependents
         if: steps.plan.outputs.action != 'ignore'

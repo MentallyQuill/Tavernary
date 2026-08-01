@@ -15,12 +15,15 @@ export interface GeneratedSubmissionReport {
   metadata_authority:
     | import("./submission-summary-authority.mjs").SubmissionMetadataAuthority
     | null;
+  publication_mode: "automatic" | "manual";
   copy_mode: "preserve" | "synthesize" | null;
   copy_result: {
     result: import("../catalog/catalog-copy-contract.mjs").CatalogCopyResultStatus;
     change_reasons: import("../catalog/catalog-copy-contract.mjs").CatalogCopyChangeReason[];
     policy_signal: import("../catalog/catalog-copy-contract.mjs").CatalogCopyPolicySignal;
   } | null;
+  copy_review_status: "validated" | "unavailable" | null;
+  copy_review_reason_code: "copy-review-unavailable" | null;
   input_digest: string | null;
   source_identity: {
     type: "github" | "codeberg" | "reddit" | "external";
@@ -61,6 +64,13 @@ export interface GeneratedSubmissionDraft {
   metadataAuthority?: import("./submission-summary-authority.mjs").SubmissionMetadataAuthority;
   copyResult?: GeneratedSubmissionReport["copy_result"];
   copyMode?: GeneratedSubmissionReport["copy_mode"];
+  copyReviewStatus?: NonNullable<
+    GeneratedSubmissionReport["copy_review_status"]
+  >;
+  copyReviewReasonCode?: NonNullable<
+    GeneratedSubmissionReport["copy_review_reason_code"]
+  >;
+  publicationMode?: GeneratedSubmissionReport["publication_mode"];
   inputDigest?: string;
   sourceIdentity?: NonNullable<GeneratedSubmissionReport["source_identity"]>;
   classificationReview?: GeneratedClassificationReview | null;

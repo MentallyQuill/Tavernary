@@ -26,7 +26,7 @@ export function planProjectSubmissionClosure(input) {
       action: "merged",
       ...common,
       addLabels: [],
-      closeReason: null,
+      closeReason: "completed",
     };
   }
   return {

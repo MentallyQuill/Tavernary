@@ -88,10 +88,21 @@ export function submissionBranch(issueNumber) {
 
 export function renderSubmissionPullRequest(input) {
   const transaction = createProjectPublicationTransaction(input.marker);
+  const manualCopyFallback =
+    input.report.publication_mode === "manual" &&
+    input.report.copy_review_status === "unavailable" &&
+    input.report.copy_review_reason_code === "copy-review-unavailable" &&
+    input.report.copy_result === null &&
+    ["repository-owner", "tavernary-staff"].includes(
+      input.report.metadata_authority?.authorityType,
+    );
   if (
     transaction.producer !== "project-submission" ||
     transaction.operation !== "create" ||
-    transaction.publication_mode !== "automatic" ||
+    transaction.publication_mode !== input.report.publication_mode ||
+    (transaction.publication_mode === "manual" && !manualCopyFallback) ||
+    (transaction.publication_mode === "automatic" &&
+      input.report.copy_review_status === "unavailable") ||
     transaction.issue_number !== input.issueNumber ||
     transaction.project_ids.length !== 1 ||
     transaction.project_ids[0] !== input.report.project_id ||
@@ -106,6 +117,19 @@ export function renderSubmissionPullRequest(input) {
           .map((warning) => `- ${safeText(warning)}`)
           .join("\n")
       : "- None.";
+  const publicationNotice = manualCopyFallback
+    ? [
+        "This pull request is the validation and audit transaction for the generated catalog proposal. It requires maintainer approval and will not publish automatically.",
+        "",
+        "## Catalog-copy review",
+        "",
+        "Contextual catalog-copy review was unavailable, so the submitted owner summary was preserved exactly.",
+        "",
+        "A maintainer must inspect the owner wording before merging this manual publication transaction.",
+      ]
+    : [
+        "This pull request is the validation and audit transaction for the generated catalog proposal. Eligible transactions publish automatically after required checks pass.",
+      ];
   return [
     PROJECT_PUBLICATION_TRANSACTION_MARKER,
     JSON.stringify(transaction),
@@ -114,7 +138,7 @@ export function renderSubmissionPullRequest(input) {
     "",
     `Closes #${input.issueNumber}`,
     "",
-    "This pull request is the validation and audit transaction for the generated catalog proposal. Eligible transactions publish automatically after required checks pass.",
+    ...publicationNotice,
     "",
     "## Submitted",
     "",

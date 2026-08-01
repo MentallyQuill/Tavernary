@@ -357,7 +357,7 @@ jobs:
               schema_version: 2,
               operation: 'create',
               producer: 'project-submission',
-              publication_mode: 'automatic',
+              publication_mode: report.publication_mode,
               issue_number: Number(process.env.ISSUE_NUMBER),
               project_ids: [report.project_id],
               source_id: report.source_id,

@@ -958,7 +958,7 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
   expect(source).toContain("generated-paths.txt");
   expect(source).toContain("project_ids: [report.project_id]");
   expect(source).toContain("source_id: report.source_id");
-  expect(source).toContain("publication_mode: 'automatic'");
+  expect(source).toContain("publication_mode: report.publication_mode");
   expect(source).toContain(
     "input_fingerprints: { projects: {}, source: null }",
   );
@@ -1026,6 +1026,13 @@ test("handles submission closure from default-branch code only", async () => {
   const checkout = allSteps(lifecycle).find((step) =>
     step.uses?.startsWith("actions/checkout@"),
   ) as { with?: { ref?: string } } | undefined;
+  const synchronize = (
+    lifecycle.jobs.close.steps as Array<{
+      name?: string;
+      env?: Record<string, string>;
+      run?: string;
+    }>
+  ).find(({ name }) => name === "Synchronize issue lifecycle");
 
   expect(lifecycle.on.pull_request.types).toEqual(["closed"]);
   expect(lifecycle.permissions).toEqual({
@@ -1046,6 +1053,10 @@ test("handles submission closure from default-branch code only", async () => {
   expect(source).toContain("github.event.pull_request.head.sha");
   expect(source).toContain("submission-declined");
   expect(source).toContain("state_reason");
+  expect(synchronize?.env?.CLOSE_REASON).toBe(
+    "${{ steps.plan.outputs.close_reason }}",
+  );
+  expect(synchronize?.run).toContain('if [[ -n "$CLOSE_REASON" ]]');
   expect(source).toContain("gh api --method PUT");
   expect(source).not.toMatch(
     /gh api --method POST\s+\\\s+"repos\/\$\{GITHUB_REPOSITORY\}\/issues\/\$\{ISSUE_NUMBER\}\/labels"/,

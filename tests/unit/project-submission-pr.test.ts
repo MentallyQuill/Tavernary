@@ -62,8 +62,11 @@ const reviewFixture = {
       tags: ["add-structured-reasoning"],
     },
     metadata_authority: null,
+    publication_mode: "automatic" as const,
     copy_mode: null,
     copy_result: null,
+    copy_review_status: null,
+    copy_review_reason_code: null,
     input_digest: "d".repeat(64),
     source_identity: marker.source_identity,
     actor: marker.actor,
@@ -129,6 +132,37 @@ test("renders the issue link, evidence groups, warnings, checklist, and marker",
     "- **Canonical url:** [https://example.com/a\\_\\(b\\)?x=1&y=2](<https://example.com/a_(b)?x=1&y=2>)",
   );
   expect(parseSubmissionPullRequestMarker(body)).toEqual(marker);
+});
+
+test("renders unavailable verified-owner copy as a manual review transaction", () => {
+  const manualMarker = {
+    ...marker,
+    publication_mode: "manual" as const,
+    authority_type: "repository-owner" as const,
+  };
+  const body = renderSubmissionPullRequest({
+    ...reviewFixture,
+    report: {
+      ...reviewFixture.report,
+      metadata_authority: {
+        authorityType: "repository-owner" as const,
+        actorId: 11,
+        actorLogin: "Submitter",
+      },
+      publication_mode: "manual" as const,
+      copy_review_status: "unavailable" as const,
+      copy_review_reason_code: "copy-review-unavailable" as const,
+    },
+    marker: manualMarker,
+  });
+
+  expect(body).toContain("Contextual catalog-copy review was unavailable");
+  expect(body).toContain(
+    "A maintainer must inspect the owner wording before merging",
+  );
+  expect(body).not.toContain(
+    "Eligible transactions publish automatically after required checks pass.",
+  );
 });
 
 test("renders a dedicated non-mutating classification mismatch warning", () => {

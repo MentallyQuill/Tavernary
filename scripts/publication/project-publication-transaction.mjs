@@ -319,7 +319,10 @@ function validateTransaction(value) {
   }
   if (
     (value.operation === "add-cards" && value.publication_mode !== "manual") ||
-    (value.operation === "create" && value.publication_mode !== "automatic")
+    (value.operation === "create" &&
+      value.publication_mode === "manual" &&
+      (value.authority_type === "community-submitter" ||
+        value.copy_result !== null))
   ) {
     return false;
   }

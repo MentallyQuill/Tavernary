@@ -76,7 +76,7 @@ test("cleans labels and branch after a merged generated PR", () => {
     issueNumber: 123,
     addLabels: [],
     removeLabels: ["needs-maintainer-review", "submission-pr-open"],
-    closeReason: null,
+    closeReason: "completed",
     deleteBranch: "automation/project-submission-123",
     retryForkDependents: true,
   });
