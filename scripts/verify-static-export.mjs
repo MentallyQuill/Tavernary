@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -113,9 +114,9 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
       "utf8",
     ).then((contents) => JSON.parse(contents)),
   ]);
-  const validate = new Ajv({ allErrors: true, validateFormats: false }).compile(
-    schema,
-  );
+  const ajv = new Ajv({ allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
 
   if (!validate(manifest)) {
     throw new Error(

@@ -104,6 +104,8 @@ jobs:
         run: npm run build
       - name: Install Chromium
         run: npx playwright install chromium
+      - name: Run colored TavernKeeper scan browser and visual coverage
+        run: npm run test:scan
       - name: Run catalog layout regression tests
         run: npm run test:visual
       - name: Build deterministic Kit fixture export

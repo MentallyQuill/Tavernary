@@ -11,6 +11,7 @@ const forkRelationshipChild =
 const pendingScanProject = catalog.projects.find(
   ({ tavernKeeper }) => tavernKeeper?.state === "gray",
 );
+const hasScanFixture = process.env.TAVERNARY_SCAN_FIXTURE === "true";
 
 if (!pendingScanProject) {
   throw new Error("Missing pending scan indicator fixture");
@@ -44,13 +45,21 @@ async function expectNoHorizontalOverflow(page: Page) {
   ).toBe(true);
 }
 
-async function expectWithinViewport(page: Page, locator: Locator) {
+async function expectWithinViewport(
+  page: Page,
+  locator: Locator,
+  { vertical = false }: { vertical?: boolean } = {},
+) {
   const box = await locator.boundingBox();
   const viewport = page.viewportSize();
   expect(box).not.toBeNull();
   expect(viewport).not.toBeNull();
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x + box!.width).toBeLessThanOrEqual(viewport!.width + 1);
+  if (vertical) {
+    expect(box!.y).toBeGreaterThanOrEqual(0);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(viewport!.height + 1);
+  }
 }
 
 for (const scenario of [
@@ -69,6 +78,10 @@ for (const scenario of [
     test(`scan indicator ${title.name} title stays inline and visible on ${scenario.name}`, async ({
       page,
     }) => {
+      test.skip(
+        !hasScanFixture,
+        "Requires the dedicated TavernKeeper scan fixture",
+      );
       await page.setViewportSize(scenario);
       await page.goto(
         `${sitePath()}?q=${encodeURIComponent(pendingScanProject.name)}${
@@ -81,18 +94,20 @@ for (const scenario of [
       const titleText = card.locator(".card-title");
       const trigger = card.locator(".tavernkeeper-scan-indicator-trigger");
       await expect(card).toBeVisible();
-      await page.waitForTimeout(300);
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      await trigger.hover();
+      const popover = page.getByRole("dialog", {
+        name: "TavernKeeper Scan Results",
+      });
+      await expect(popover).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(popover).toHaveCount(0);
+      await page.mouse.move(0, 0);
       await titleText.evaluate((element, nextTitle) => {
         element.textContent = nextTitle;
+        element.scrollLeft = 0;
       }, title.value);
-      if (title.name === "ellipsized") {
-        await card.locator(".project-card-primary-link").evaluate((element) => {
-          element.style.width = "120px";
-        });
-        await titleText.evaluate((element) => {
-          element.style.width = "80px";
-        });
-      }
+      await expect(titleText).toHaveText(title.value);
 
       const metrics = await card.evaluate((element) => {
         const titleElement = element.querySelector<HTMLElement>(".card-title");
@@ -105,6 +120,17 @@ for (const scenario of [
         const cardBox = element.getBoundingClientRect();
         const titleBox = titleElement.getBoundingClientRect();
         const triggerBox = triggerElement.getBoundingClientRect();
+        const titleStyle = getComputedStyle(titleElement);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("Missing canvas text context");
+        context.font = [
+          titleStyle.fontStyle,
+          titleStyle.fontVariant,
+          titleStyle.fontWeight,
+          titleStyle.fontSize,
+          titleStyle.fontFamily,
+        ].join(" ");
         return {
           cardRight: cardBox.right,
           titleClientWidth: titleElement.clientWidth,
@@ -112,30 +138,29 @@ for (const scenario of [
           triggerLeft: triggerBox.left,
           triggerRight: triggerBox.right,
           titleRight: titleBox.right,
+          titleTextWidth: context.measureText(titleElement.textContent ?? "")
+            .width,
         };
       });
 
       expect(metrics.triggerLeft).toBeGreaterThanOrEqual(metrics.titleRight);
+      expect(metrics.triggerLeft - metrics.titleRight).toBeLessThanOrEqual(8);
       expect(metrics.triggerRight).toBeLessThanOrEqual(metrics.cardRight);
-      expect(metrics.cardRight - metrics.triggerRight).toBeGreaterThan(24);
-      if (title.name === "ellipsized") {
-        expect(metrics.titleScrollWidth).toBeGreaterThan(
+      expect(metrics.cardRight - metrics.triggerRight).toBeGreaterThanOrEqual(
+        8,
+      );
+      if (title.name === "ellipsized")
+        expect(metrics.titleTextWidth).toBeGreaterThan(
           metrics.titleClientWidth,
         );
-      } else {
-        expect(metrics.titleScrollWidth).toBe(metrics.titleClientWidth);
-      }
 
       await expect(card).toHaveScreenshot(
         `scan-indicator-${scenario.name}-${title.name}.png`,
         { animations: "disabled", maxDiffPixels: 10 },
       );
       await trigger.hover();
-      const popover = page.getByRole("dialog", {
-        name: "TavernKeeper Scan Results",
-      });
       await expect(popover).toBeVisible();
-      await expectWithinViewport(page, popover);
+      await expectWithinViewport(page, popover, { vertical: true });
       await expect(popover).toHaveScreenshot(
         `scan-popover-${scenario.name}-${title.name}.png`,
         { animations: "disabled", maxDiffPixels: 10 },

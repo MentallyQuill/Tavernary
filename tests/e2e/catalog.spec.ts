@@ -76,21 +76,11 @@ if (!freakySearchProject) {
 const pendingScanProject = catalog.projects.find(
   ({ tavernKeeper }) => tavernKeeper?.state === "gray",
 );
-const greenScanProject = catalog.projects.find(
-  ({ tavernKeeper }) => tavernKeeper?.state === "green",
-);
-const yellowScanProject = catalog.projects.find(
-  ({ tavernKeeper }) => tavernKeeper?.state === "yellow",
-);
 const unsupportedScanProject = catalog.projects.find(
   ({ tavernKeeper }) => tavernKeeper === null,
 );
-if (
-  !pendingScanProject ||
-  !greenScanProject ||
-  !yellowScanProject ||
-  !unsupportedScanProject
-) {
+const hasScanFixture = process.env.TAVERNARY_SCAN_FIXTURE === "true";
+if (!pendingScanProject || !unsupportedScanProject) {
   throw new Error("Missing scan-state catalog fixtures");
 }
 const freakySearchProjectName = displayedProjectName(freakySearchProject.name);
@@ -1022,6 +1012,10 @@ test("hydrates pending and unsupported scan states without nesting card controls
   browser,
   page,
 }) => {
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
   const indicator = page
     .getByRole("button", {
       name: "TavernKeeper scan: current scan pending",
@@ -1036,7 +1030,11 @@ test("hydrates pending and unsupported scan states without nesting card controls
   const panel = page.getByRole("dialog", {
     name: "TavernKeeper Scan Results",
   });
-  await expect(panel).toContainText("Current scan pending");
+  await expect(
+    panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
+  ).toHaveText("TavernKeeper Scan Results");
+  await expect(panel.locator("p")).toHaveCount(1);
+  await expect(panel.locator("p").first()).toHaveText("Current scan pending");
   await expect(
     panel.getByRole("link", { name: "View full report" }),
   ).toHaveCount(0);
@@ -1045,7 +1043,17 @@ test("hydrates pending and unsupported scan states without nesting card controls
   await page.keyboard.press("Escape");
   await expect(panel).toHaveCount(0);
 
-  await indicator.focus();
+  let reachedIndicatorWithTab = false;
+  for (let tabCount = 0; tabCount < 80; tabCount += 1) {
+    await page.keyboard.press("Tab");
+    if (
+      await indicator.evaluate((element) => document.activeElement === element)
+    ) {
+      reachedIndicatorWithTab = true;
+      break;
+    }
+  }
+  expect(reachedIndicatorWithTab).toBe(true);
   await expect(panel).toBeVisible();
   await page.locator("h1").click();
   await expect(panel).toHaveCount(0);
@@ -1079,7 +1087,7 @@ test("hydrates pending and unsupported scan states without nesting card controls
   await expect(
     unsupportedCard.locator(".tavernkeeper-scan-indicator-trigger"),
   ).toHaveCount(0);
-  await expect(pendingCard.locator("a button, button a")).toHaveCount(0);
+  await expect(page.locator("a button, button a")).toHaveCount(0);
   await expect(
     pendingCard.locator(".project-card-primary-link"),
   ).toHaveAttribute("href", /^https:\/\//u);
@@ -1087,17 +1095,40 @@ test("hydrates pending and unsupported scan states without nesting card controls
     pendingCard.locator(".project-card-primary-link"),
   ).toHaveAttribute("target", "_blank");
 
+  const primaryLink = pendingCard.locator(".project-card-primary-link");
+  const primaryHref = await primaryLink.getAttribute("href");
+  if (!primaryHref) throw new Error("Missing primary project URL");
+  await page
+    .context()
+    .route(primaryHref, (route) => route.fulfill({ body: "External project" }));
+  const newPage = page.context().waitForEvent("page");
+  await primaryLink.click();
+  const openedPage = await newPage;
+  await expect(openedPage).toHaveURL(primaryHref);
+  await openedPage.close();
+
   const kitControl = pendingCard.locator(".project-kit-control");
   await kitControl.click();
   await expect(kitControl).toHaveAttribute("aria-pressed", "true");
+
+  const relationship = page
+    .locator(".project-relationship-control button")
+    .first();
+  await expect(relationship).toBeVisible();
+  await relationship.click();
+  await expect(page.locator(".relationship-pair")).toBeVisible();
 });
 
 test("hydrates current green and yellow scan reports with their external links", async ({
   page,
 }) => {
-  for (const [project, state, stateCopy, severity] of [
-    [greenScanProject, "green", "No review-level findings", null],
-    [yellowScanProject, "yellow", "Review suggested", "1 high"],
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
+  for (const [state, stateCopy, severity] of [
+    ["green", "No review-level findings", null],
+    ["yellow", "Review suggested", "1 high"],
   ] as const) {
     const indicator = page
       .getByRole("button", {
@@ -1109,16 +1140,30 @@ test("hydrates current green and yellow scan reports with their external links",
     const panel = page.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    await expect(panel).toContainText(stateCopy);
-    if (severity) await expect(panel).toContainText(severity);
-    else
+    await expect(
+      panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
+    ).toHaveText("TavernKeeper Scan Results");
+    await expect(panel.locator("p").first()).toHaveText(stateCopy);
+    if (severity) {
+      await expect(
+        panel.locator(".tavernkeeper-severity-counts span"),
+      ).toHaveText(["1 high", "2 medium"]);
+      await expect(panel.locator("p")).toHaveCount(3);
+    } else {
       await expect(panel.locator(".tavernkeeper-severity-counts")).toHaveCount(
         0,
       );
-    await expect(panel).toContainText("Scanned");
+      await expect(panel.locator("p")).toHaveCount(2);
+    }
+    await expect(panel.locator("p").last()).toHaveText(
+      /^Scanned [0-9a-f]{7} on July 31, 2026$/u,
+    );
     await expect(
       panel.getByRole("link", { name: "View full report" }),
-    ).toHaveAttribute("href", project.tavernKeeper?.report?.reportUrl ?? "");
+    ).toHaveAttribute(
+      "href",
+      new RegExp(`browser-fixture-${state === "green" ? 1 : 2}/$`, "u"),
+    );
     await expect(indicator).toHaveClass(
       new RegExp(`tavernkeeper-scan-indicator-${state}`),
     );

@@ -1,28 +1,54 @@
-import { readdir, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  cp,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 
 const rootDirectory = resolve(import.meta.dirname, "..");
-const summariesPath = resolve(
-  rootDirectory,
-  "data/security/tavernkeeper-report-summaries.json",
-);
-const nextConfigPath = resolve(rootDirectory, "next.config.ts");
-const nextBuildDirectory = resolve(rootDirectory, ".next");
+const fixtureEntries = [
+  "data",
+  "public",
+  "scripts",
+  "src",
+  "next-env.d.ts",
+  "next.config.ts",
+  "node_modules",
+  "package-lock.json",
+  "package.json",
+  "tsconfig.json",
+];
 
-function runNpm(arguments_) {
+function aborted() {
+  return new Error("TavernKeeper browser fixture build was interrupted");
+}
+
+function runNpm(arguments_, cwd, signal) {
   return new Promise((resolveRun, rejectRun) => {
     const process_ =
       process.platform === "win32"
         ? spawn(
             process.env.ComSpec ?? "cmd.exe",
             ["/d", "/s", "/c", `npm.cmd ${arguments_.join(" ")}`],
-            { cwd: rootDirectory, stdio: "inherit" },
+            { cwd, stdio: "inherit" },
           )
-        : spawn("npm", arguments_, { cwd: rootDirectory, stdio: "inherit" });
-    process_.once("error", rejectRun);
+        : spawn("npm", arguments_, { cwd, stdio: "inherit" });
+    const stop = () => process_.kill("SIGTERM");
+    if (signal?.aborted) stop();
+    signal?.addEventListener("abort", stop, { once: true });
+    process_.once("error", (error) => {
+      signal?.removeEventListener("abort", stop);
+      rejectRun(error);
+    });
     process_.once("exit", (code) => {
-      if (code === 0) resolveRun();
+      signal?.removeEventListener("abort", stop);
+      if (signal?.aborted) rejectRun(aborted());
+      else if (code === 0) resolveRun();
       else
         rejectRun(new Error(`npm ${arguments_.join(" ")} exited with ${code}`));
     });
@@ -90,35 +116,44 @@ async function fixtureReports() {
   };
 }
 
-export async function buildTavernKeeperTestExport() {
-  const [originalSummaries, originalNextConfig] = await Promise.all([
-    readFile(summariesPath),
-    readFile(nextConfigPath, "utf8"),
-  ]);
-  const fixtureNextConfig = originalNextConfig.replace(
-    'allowedDevOrigins: ["127.0.0.1"],',
-    'allowedDevOrigins: ["127.0.0.1"],\n  turbopack: { root: process.cwd() },',
+async function copyFixtureWorkspace(workspaceDirectory) {
+  await Promise.all(
+    fixtureEntries.map((entry) =>
+      cp(resolve(rootDirectory, entry), resolve(workspaceDirectory, entry), {
+        recursive: true,
+      }),
+    ),
   );
-  if (fixtureNextConfig === originalNextConfig) {
-    throw new Error("TavernKeeper browser fixture could not scope Turbopack");
-  }
-  await writeFile(
-    summariesPath,
-    `${JSON.stringify(await fixtureReports(), null, 2)}\n`,
-  );
-  await writeFile(nextConfigPath, fixtureNextConfig);
-  try {
-    await rm(nextBuildDirectory, { recursive: true, force: true });
-    await runNpm(["run", "build"]);
-  } finally {
-    await Promise.all([
-      writeFile(summariesPath, originalSummaries),
-      writeFile(nextConfigPath, originalNextConfig),
-    ]);
-  }
 }
 
-export async function restoreProductionExport() {
-  await rm(nextBuildDirectory, { recursive: true, force: true });
-  await runNpm(["run", "build"]);
+/** Builds colored test data without writing to the checked-out worktree. */
+export async function buildTavernKeeperTestExport({ signal } = {}) {
+  const temporaryDirectory = await mkdtemp(
+    resolve(tmpdir(), "tavernary-tavernkeeper-scan-"),
+  );
+  const workspaceDirectory = resolve(temporaryDirectory, "workspace");
+  const cleanup = () =>
+    rm(temporaryDirectory, { recursive: true, force: true });
+
+  try {
+    await copyFixtureWorkspace(workspaceDirectory);
+    if (signal?.aborted) throw aborted();
+    await writeFile(
+      resolve(
+        workspaceDirectory,
+        "data/security/tavernkeeper-report-summaries.json",
+      ),
+      `${JSON.stringify(await fixtureReports(), null, 2)}\n`,
+    );
+    await runNpm(["run", "build"], workspaceDirectory, signal);
+    if (signal?.aborted) throw aborted();
+    return { cleanup, outputDirectory: resolve(workspaceDirectory, "out") };
+  } catch (error) {
+    try {
+      await cleanup();
+    } catch (cleanupError) {
+      console.error("Failed to remove TavernKeeper fixture", cleanupError);
+    }
+    throw error;
+  }
 }

@@ -219,6 +219,69 @@ describe("verifyStaticExport", () => {
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });
 
+  test("rejects invalid TavernKeeper manifest formats and unexpected fields", async () => {
+    const manifest = {
+      schema_version: 1,
+      generated_at: "not-a-date",
+      repositories: [
+        {
+          source_id: "github-42",
+          provider: "github",
+          repository_id: 42,
+          repository: "not a repository",
+          target_sha: "a".repeat(40),
+          canonical_url: "not-a-uri",
+          unexpected: true,
+        },
+      ],
+    };
+    await expect(
+      verifyTavernKeeperStaticExport(tavernKeeperExport(manifest)),
+    ).rejects.toThrow("TavernKeeper target manifest is invalid");
+  });
+
+  test("rejects invalid TavernKeeper date-time and URI formats", async () => {
+    const validRepository = {
+      source_id: "github-42",
+      provider: "github",
+      repository_id: 42,
+      repository: "fixture/catalog",
+      target_sha: "a".repeat(40),
+      canonical_url: "https://github.com/fixture/catalog",
+    };
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport({
+          schema_version: 1,
+          generated_at: "not-a-date",
+          repositories: [validRepository],
+        }),
+      ),
+    ).rejects.toThrow("TavernKeeper target manifest is invalid");
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport({
+          schema_version: 1,
+          generated_at: "2026-07-31T12:00:00.000Z",
+          repositories: [{ ...validRepository, canonical_url: "not-a-uri" }],
+        }),
+      ),
+    ).rejects.toThrow("TavernKeeper target manifest is invalid");
+  });
+
+  test("rejects a missing or malformed exported TavernKeeper manifest", async () => {
+    const missing = mkdtempSync(resolve(tmpdir(), "tavernary-missing-export-"));
+    temporaryExports.push(missing);
+    await expect(verifyTavernKeeperStaticExport(missing)).rejects.toThrow();
+
+    const malformed = tavernKeeperExport({});
+    writeFileSync(
+      resolve(malformed, "security", "tavernkeeper-targets.json"),
+      "{ definitely not json",
+    );
+    await expect(verifyTavernKeeperStaticExport(malformed)).rejects.toThrow();
+  });
+
   test("rejects stale or incomplete homepage metadata", () => {
     const rootAsset = '<script src="/_next/static/app.js"></script>';
 

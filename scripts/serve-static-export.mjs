@@ -4,7 +4,9 @@ import { relative, resolve } from "node:path";
 
 import { configuredBasePath } from "./verify-static-export.mjs";
 
-const outputDirectory = resolve("out");
+const outputDirectory = resolve(
+  process.env.TAVERNARY_STATIC_EXPORT_DIR ?? "out",
+);
 const basePath = configuredBasePath();
 
 const contentTypes = {
