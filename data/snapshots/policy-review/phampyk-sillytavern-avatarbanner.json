@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "phampyk-sillytavern-avatarbanner",
+  "source_id": "github-1135979547",
+  "source_identity": "github:phampyk/sillytavern-avatarbanner",
+  "evidence_fingerprint": "bd22a99d5f63726048a169ed1e151e1f0bb9be3d7f18a4bc5ca46a2809a86016",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:32:45.741Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:32:45.741Z"
+  },
+  "maintenance_issue_number": null
+}
