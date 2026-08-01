@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "prolix-oc-lumiverse-simtracker",
+  "source_id": "github-1175839267",
+  "source_identity": "github:prolix-oc/lumiverse-simtracker",
+  "evidence_fingerprint": "c7393bfcd538d826ed0471c9a8d2bd778eb5fb6129ff2415512d3a4bb4cecf1e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:33:17.443Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:33:17.443Z"
+  },
+  "maintenance_issue_number": null
+}
