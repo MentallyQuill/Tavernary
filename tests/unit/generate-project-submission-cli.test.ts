@@ -4,6 +4,7 @@ import { join, resolve } from "node:path";
 
 import { expect, test, vi } from "vitest";
 
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import {
   parseGenerateProjectSubmissionCli,
   prepareProjectSubmissionDraft,
@@ -688,12 +689,11 @@ test("routes unavailable verified-owner copy review to manual publication", asyn
     "You pick a sentence boundary and write your reply there.",
     "The original remainder stays available as non-canonical reference.",
   ].join("\n\n");
-  const copySummary = vi.fn(async () => ({
-    summary: submittedSummary,
-    result: "accepted-unchanged",
-    change_reasons: [],
-    policy_signal: "none",
-  }));
+  const copySummary = vi.fn(async () => {
+    throw new EnrichmentProviderError("provider-timeout", null, {
+      latencyMs: 900,
+    });
+  });
   const enrich = vi.fn(async () => {
     throw new Error("Manual metadata must not enter enrichment.");
   });
@@ -718,6 +718,13 @@ test("routes unavailable verified-owner copy review to manual publication", asyn
   expect(draft.copyResult).toBeNull();
   expect(draft.copyReviewStatus).toBe("unavailable");
   expect(draft.copyReviewReasonCode).toBe("copy-review-unavailable");
+  expect(draft.copyReviewDiagnostic).toEqual({
+    failure_phase: "initial-provider",
+    failure_code: "provider-timeout",
+    diagnostic_code: null,
+    attempt_count: 1,
+    latency_ms: 900,
+  });
   expect(draft.publicationMode).toBe("manual");
 });
 
