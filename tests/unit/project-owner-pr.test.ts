@@ -245,6 +245,13 @@ test("renders unavailable manual owner copy as required maintainer review", () =
           mode: "preserve",
           review_status: "unavailable",
           reason_code: "copy-review-unavailable",
+          diagnostic: {
+            failure_phase: "initial-provider",
+            failure_code: "provider-response-invalid",
+            diagnostic_code: "json-invalid",
+            attempt_count: 1,
+            latency_ms: 300,
+          },
           submitted_summary: "Exact owner wording.",
           published_summary: "Exact owner wording.",
           copy_result: null,
@@ -257,6 +264,8 @@ test("renders unavailable manual owner copy as required maintainer review", () =
   expect(body).toContain("Publication: `manual`");
   expect(body).toContain("Contextual catalog-copy review was unavailable");
   expect(body).toContain("maintainer must inspect the owner wording");
+  expect(body).not.toContain("provider-response-invalid");
+  expect(body).not.toContain("json-invalid");
   expect(parseOwnerRequestPullRequestMarker(body)).toEqual(manualMarker);
 });
 

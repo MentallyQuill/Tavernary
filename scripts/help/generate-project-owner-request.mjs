@@ -582,6 +582,7 @@ async function resolveOwnerMetadata(input, final, snapshot, catalogedAt) {
           ...(copied.reviewStatus === "unavailable"
             ? { reason_code: copied.reasonCode }
             : {}),
+          ...(copied.diagnostic ? { diagnostic: copied.diagnostic } : {}),
           submitted_summary: copied.submittedSummary,
           published_summary: copied.publishedSummary,
           copy_result: copied.copyResult,
