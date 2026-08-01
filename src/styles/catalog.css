@@ -1276,6 +1276,10 @@
   z-index: 2;
 }
 
+.tavernkeeper-scan-indicator-trigger {
+  z-index: 5;
+}
+
 .card-attribution {
   display: block;
   width: max-content;
@@ -1790,7 +1794,6 @@
   margin: 0;
 }
 
-.compact-cards .project-card h2,
 .compact-cards .card-summary {
   padding-right: 44px;
 }

@@ -49,10 +49,10 @@ preferred identity per repository/SHA/policy, the matching active Tavernary
 source identity, the active scanner-policy version, and an immutable report URL
 under `https://mentallyquill.github.io/TavernKeeper/reports/`.
 
-The report identity is repository ID plus exact target SHA, scanner-policy
-version, mode, and report version. Tavernary retains validated older-SHA
-summaries so it can describe an outdated result, but only an identity-and-SHA
-match can produce green or yellow on a current card.
+The report identity is provider plus repository ID, exact target SHA,
+scanner-policy version, scan mode, and report version. Tavernary retains
+validated older-SHA summaries so it can describe an outdated result, but only
+an identity-and-SHA match can produce green or yellow on a current card.
 
 ## Handshake and recovery
 
@@ -65,24 +65,26 @@ TavernKeeper reports** workflow. That workflow imports validated summaries,
 checks the full site, commits only a changed sanitized summary file, and
 deploys the exact commit.
 
-Both directions reconcile every six hours (Tavernary's import schedule is
-`41 */6 * * *`). A wake is non-authoritative: it carries no target, SHA, mode,
-budget, priority, or report URL. A missed wake does not roll back a valid
-publication; the next scheduled reconciliation repairs it. If import or
-validation fails, do not edit or overwrite the prior tracked summary: correct
-the public producer or local validation problem, then rerun the input-free
-import workflow after the contract is healthy.
+Both directions reconcile every six hours: Tavernary imports on
+`41 */6 * * *`, and TavernKeeper reconciles targets on `13 */6 * * *`. A wake
+is non-authoritative: it carries no target, SHA, mode, budget, priority, or
+report URL. A missed wake does not roll back a valid publication; the next
+scheduled reconciliation repairs it. If import or validation fails, do not
+edit or overwrite the prior tracked summary: correct the public producer or
+local validation problem, then rerun the input-free import workflow after the
+contract is healthy.
 
 ## GitHub Apps and secrets
 
 The two wake-up directions use different one-way GitHub Apps. Tavernary stores
 only `TAVERNKEEPER_WAKE_APP_ID` and `TAVERNKEEPER_WAKE_APP_PRIVATE_KEY`; that
 App is installed only on `MentallyQuill/TavernKeeper` and has `Actions: write`
-plus mandatory metadata read. TavernKeeper stores the opposite App's private
-credentials, installed only on Tavernary with the same destination-only
-permission. Neither App receives contents-write permission, and neither
-repository receives the other repository's contents token. The normal
-`GITHUB_TOKEN` remains repository-local.
+plus mandatory metadata read. TavernKeeper stores
+`TAVERNARY_WAKE_APP_ID` and `TAVERNARY_WAKE_APP_PRIVATE_KEY` for the opposite
+App, installed only on Tavernary with the same destination-only permission.
+Neither App receives contents-write permission, and neither repository receives
+the other repository's contents token. The normal `GITHUB_TOKEN` remains
+repository-local.
 
 If App-token creation or dispatch fails after the manifest is publicly
 verified, Pages remains valid and the scheduled reconciliation is the recovery

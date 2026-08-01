@@ -406,8 +406,11 @@ describe("catalog visual alignment", () => {
     expect(css).toMatch(
       /\.project-card-shell\.has-kit-control \.card-utility\s*\{[^}]*padding-right:\s*40px/s,
     );
-    expect(css).toMatch(
+    expect(css).not.toMatch(
       /\.compact-cards \.project-card h2,[\s\S]*?\.compact-cards \.card-summary\s*\{[^}]*padding-right:\s*44px/s,
+    );
+    expect(css).toMatch(
+      /\.compact-cards \.card-summary\s*\{[^}]*padding-right:\s*44px/s,
     );
   });
 
