@@ -1,0 +1,61 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1319215459",
+  "repository": {
+    "id": 1319215459,
+    "owner": "izanagi771-stack",
+    "name": "Story-Editor",
+    "url": "https://github.com/izanagi771-stack/Story-Editor",
+    "description": "Human-supervised continuity and review extension for long-form AI-assisted storytelling in SillyTavern.",
+    "default_branch": "main",
+    "head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73",
+    "head_committed_at": "2026-08-01T11:03:15.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-08-01T11:04:08.000Z",
+    "size_kb": 167
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-01T11:03:15.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T11:03:15.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-08-01T11:20:36.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-01T12:35:05.018Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73"
+  },
+  "community": {
+    "stars_count": 0,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 0
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-01T12:35:05.018Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "izanagi771-stack", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-01T12:35:05.018Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

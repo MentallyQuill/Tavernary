@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "izanagi771-stack-story-editor",
+  "name": "Story-Editor",
+  "kind": "extension",
+  "summary": "Human-supervised continuity workspace for long-form fiction and roleplay, using a separate editor model to review new material and propose structured-memory updates for your approval.",
+  "metadata_status": "curated",
+  "source_id": "github-1319215459",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "multi-stage-generation",
+    "non-destructive",
+    "preserve-story-continuity",
+    "secondary-model"
+  ],
+  "cataloged_at": "2026-08-01T12:35:05.018Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
