@@ -9,8 +9,8 @@
     "url": "https://github.com/KritBlade/VectFox",
     "description": "Vector database driven Sillytavern Memory System",
     "default_branch": "main",
-    "head_sha": "c17eb26f895f49636555e70d01e2d6d5f560fab8",
-    "head_committed_at": "2026-07-31T08:55:13.000Z",
+    "head_sha": "915cca5d609c615eafc489317a875d15ae7c36e3",
+    "head_committed_at": "2026-07-31T10:16:31.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,15 +20,15 @@
       "url": "https://github.com/Coneja-Chibi/VectHare"
     },
     "created_at": "2026-05-01T09:26:16.000Z",
-    "size_kb": 9068
+    "size_kb": 9082
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-31T08:55:13.000Z",
+    "latest_source_activity_at": "2026-07-31T10:16:31.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-31T08:55:13.000Z",
+        "latest_at": "2026-07-31T10:16:31.000Z",
         "precision": "exact"
       },
       {
@@ -92,20 +92,20 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-31T10:00:47.215Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "c17eb26f895f49636555e70d01e2d6d5f560fab8"
+    "evidence_head_sha": "915cca5d609c615eafc489317a875d15ae7c36e3"
   },
   "community": {
-    "stars_count": 47,
+    "stars_count": 48,
     "forks_count": 4,
     "watchers_count": 2,
-    "aggregate": 53
+    "aggregate": 54
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-31T10:00:47.215Z",
+  "refreshed_at": "2026-08-01T09:25:09.365Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T16:20:49.192Z",
     "scan": null,
-    "refreshed_at": "2026-07-31T10:00:47.215Z",
+    "refreshed_at": "2026-08-01T09:25:09.365Z",
     "stale_since": null
   }
 }

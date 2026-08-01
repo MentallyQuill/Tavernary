@@ -34,17 +34,17 @@
     "baseline_attempts": 0
   },
   "community": {
-    "stars_count": 162,
+    "stars_count": 163,
     "forks_count": 22,
     "watchers_count": 4,
-    "aggregate": 188
+    "aggregate": 189
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-31T10:00:47.215Z",
+  "refreshed_at": "2026-08-01T09:25:09.365Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -55,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-31T10:00:47.215Z",
+    "refreshed_at": "2026-08-01T09:25:09.365Z",
     "stale_since": null
   }
 }

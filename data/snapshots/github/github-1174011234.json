@@ -9,21 +9,21 @@
     "url": "https://github.com/Coneja-Chibi/TunnelVision",
     "description": "Fully autonomous and agentic lorebook, tracker, and summary retrieval for SillyTavern!",
     "default_branch": "main",
-    "head_sha": "76d3ede243c4fb40c351e5e76f4501c21cba270d",
-    "head_committed_at": "2026-07-31T00:24:53.000Z",
+    "head_sha": "faa5ae021ae21d0609d268be7cbe9c83b09c32b0",
+    "head_committed_at": "2026-07-31T20:24:16.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-06T01:22:24.000Z",
-    "size_kb": 536
+    "size_kb": 690
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-31T00:24:53.000Z",
+    "latest_source_activity_at": "2026-07-31T20:24:16.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-31T00:24:53.000Z",
+        "latest_at": "2026-07-31T20:24:16.000Z",
         "precision": "exact"
       },
       {
@@ -42,7 +42,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-27T16:42:09.486Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "76d3ede243c4fb40c351e5e76f4501c21cba270d"
+    "evidence_head_sha": "faa5ae021ae21d0609d268be7cbe9c83b09c32b0"
   },
   "community": {
     "stars_count": 115,
@@ -55,7 +55,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-31T10:00:47.215Z",
+  "refreshed_at": "2026-08-01T09:25:09.365Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -70,7 +70,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-31T10:00:47.215Z",
+    "refreshed_at": "2026-08-01T09:25:09.365Z",
     "stale_since": null
   }
 }

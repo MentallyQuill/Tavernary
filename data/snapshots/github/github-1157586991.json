@@ -9,21 +9,21 @@
     "url": "https://github.com/bal-spec/sillytavern-character-memory",
     "description": "SillyTavern extension that automatically extracts structured character memories from chat and stores them in the Data Bank for vector-based retrieval at generation time",
     "default_branch": "master",
-    "head_sha": "fd4f44a6fa4238ac6d95ea29969dbb3ea72e8c8a",
-    "head_committed_at": "2026-07-31T05:11:14.000Z",
+    "head_sha": "37b21025e120acfbe1dcdeaa8becb05efe7188b4",
+    "head_committed_at": "2026-08-01T07:05:50.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-02-14T02:08:33.000Z",
-    "size_kb": 16398
+    "size_kb": 16579
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-30T15:26:35.000Z",
+    "latest_source_activity_at": "2026-08-01T07:05:50.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-30T15:26:35.000Z",
+        "latest_at": "2026-08-01T07:05:50.000Z",
         "precision": "exact"
       },
       {
@@ -33,21 +33,22 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-03-31T04:43:48.000Z",
+    "latest_release_at": "2026-08-01T07:08:08.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-07-31T10:00:47.215Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "fd4f44a6fa4238ac6d95ea29969dbb3ea72e8c8a"
+    "evidence_head_sha": "37b21025e120acfbe1dcdeaa8becb05efe7188b4"
   },
   "community": {
-    "stars_count": 67,
+    "stars_count": 69,
     "forks_count": 6,
     "watchers_count": 1,
-    "aggregate": 74
+    "aggregate": 76
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-07-31T10:00:47.215Z",
+  "refreshed_at": "2026-08-01T09:25:09.365Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "bal-spec", "type": "User", "provider": "github" },
@@ -56,8 +57,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-31T10:00:47.215Z",
+    "refreshed_at": "2026-08-01T09:25:09.365Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

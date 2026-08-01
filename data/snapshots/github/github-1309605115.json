@@ -9,21 +9,21 @@
     "url": "https://github.com/MentallyQuill/Tavernary",
     "description": "A GitHub-native catalog for AI roleplaying tools, extensions, and systems.",
     "default_branch": "main",
-    "head_sha": "86d6f48d74e4b0f6aab592079234a9722aae82e8",
-    "head_committed_at": "2026-07-31T08:21:04.000Z",
+    "head_sha": "fcb58fcecb726fb1c8a966d853b44f89cf65b9ea",
+    "head_committed_at": "2026-08-01T07:51:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-23T06:31:00.000Z",
-    "size_kb": 51424
+    "size_kb": 51346
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-31T08:21:04.000Z",
+    "latest_source_activity_at": "2026-08-01T07:51:44.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-31T08:21:04.000Z",
+        "latest_at": "2026-08-01T07:51:44.000Z",
         "precision": "exact"
       },
       {
@@ -35,9 +35,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-30T13:39:36.368Z",
+    "baseline_completed_at": "2026-08-01T09:25:09.365Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "86d6f48d74e4b0f6aab592079234a9722aae82e8"
+    "evidence_head_sha": "fcb58fcecb726fb1c8a966d853b44f89cf65b9ea"
   },
   "community": {
     "stars_count": 3,
@@ -50,7 +50,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-07-31T10:00:47.215Z",
+  "refreshed_at": "2026-08-01T09:25:09.365Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -62,7 +62,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-07-31T10:00:47.215Z",
+    "refreshed_at": "2026-08-01T09:25:09.365Z",
     "stale_since": null
   }
 }
