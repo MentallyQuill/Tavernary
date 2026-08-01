@@ -1,5 +1,7 @@
 # TavernKeeper Scanner Implementation Plan
 
+> **Superseded:** Use `2026-08-01-tavernkeeper-production-automation.md` for remaining work. This document is retained as implementation history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build TavernKeeper into an exact-SHA, fail-closed, hybrid repository scanner that publishes immutable sanitized reports for Tavernary.

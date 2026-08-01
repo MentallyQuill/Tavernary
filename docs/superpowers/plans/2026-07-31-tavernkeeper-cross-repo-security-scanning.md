@@ -1,5 +1,7 @@
 # TavernKeeper Cross-Repository Security Scanning Implementation Plan
 
+> **Superseded:** Use `2026-08-01-tavernkeeper-production-automation.md` for remaining work. This document is retained as early planning history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build an isolated TavernKeeper scanner that publishes exact-commit advisory reports and integrate those reports into Tavernary's generated catalog and project cards.

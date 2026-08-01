@@ -1,6 +1,6 @@
 # TavernKeeper Cross-Repository Security Scanning Design
 
-- **Status:** Revised from approved design dialogue; awaiting written-spec review
+- **Status:** Approved; implementation planning in progress
 - **Date:** 2026-08-01
 - **Canonical location:** Tavernary
 - **Repositories:** `MentallyQuill/Tavernary` and `MentallyQuill/TavernKeeper`
@@ -235,7 +235,7 @@ Tavernary owns `security/tavernkeeper-targets.json` and its JSON Schema.
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "generated_at": "2026-07-31T18:00:00Z",
   "repositories": [
     {
@@ -245,7 +245,11 @@ Tavernary owns `security/tavernkeeper-targets.json` and its JSON Schema.
       "repository": "owner/project",
       "target_sha": "0123456789abcdef0123456789abcdef01234567",
       "canonical_url": "https://github.com/owner/project",
-      "project_kinds": ["preset"]
+      "project_kinds": ["preset"],
+      "catalog_priority": {
+        "top_30": false,
+        "first_cataloged_at": "2026-07-31T18:00:00Z"
+      }
     }
   ]
 }
@@ -259,6 +263,10 @@ Rules:
 - Canonical URL derived by Tavernary, never accepted from a scan requester
 - Sorted unique project kinds derived from every published card backed by the
   repository
+- `top_30` is true when any published card backed by the repository appears in
+  Tavernary's current popularity Top 30
+- `first_cataloged_at` is the oldest catalog timestamp among published cards
+  backed by the repository
 - No commands, budgets, scan modes, branch names, or arbitrary clone URLs
 - Strict schema with unknown fields rejected
 
@@ -283,7 +291,9 @@ editing or manually adjudicating an existing report.
 
 ### 7.3 Report index
 
-TavernKeeper owns `reports/index.json` and its JSON Schema. Each preferred-report entry contains only:
+TavernKeeper owns `reports/index.json` and its JSON Schema. The automated
+publication contract uses schema version 2. Each preferred-report entry
+contains only:
 
 - Schema and report IDs
 - GitHub repository ID
@@ -332,6 +342,12 @@ Tavernary must:
 
 Schemas are strict. An additive field that an existing consumer would reject requires a new schema version.
 
+The already deployed green/yellow V1 contracts remain frozen compatibility
+artifacts. Tavernary target manifests, TavernKeeper reports, and TavernKeeper
+report indexes move together to V2 for the new target metadata, teal/red result
+vocabulary, automated dispositions, and history URL. Producers do not publish
+V2 until their consumers accept it.
+
 For target-manifest changes, TavernKeeper adds support before Tavernary publishes the new version. For report-index changes, Tavernary adds support before TavernKeeper publishes the new version. Each producer continues publishing the older supported version until its consumer is deployed.
 
 Previously published report bodies and URLs remain immutable.
@@ -373,6 +389,13 @@ uses three ordered coverage lanes:
 1. Unscanned or advanced repositories in Tavernary's current popularity Top 30
 2. Newly published submissions
 3. The oldest remaining unscanned or advanced projects
+
+When the ordinary backlog is first enabled, TavernKeeper records one immutable
+`coverage_started_at` timestamp in operational state. Outside the Top 30, a
+repository whose `first_cataloged_at` is on or after that timestamp enters the
+new-submission lane; earlier catalog entries enter the old-project lane. Old
+projects sort by `first_cataloged_at` ascending. New submissions sort by
+`first_cataloged_at` ascending within their lane so every arrival advances.
 
 Due retries return to their original lane when eligible. Age boosting within
 and across lanes prevents starvation. Staff-started policy campaigns and deep

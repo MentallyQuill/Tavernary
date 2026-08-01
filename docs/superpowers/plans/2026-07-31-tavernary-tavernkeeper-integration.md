@@ -1,5 +1,7 @@
 # Tavernary TavernKeeper Integration Implementation Plan
 
+> **Superseded:** Use `2026-08-01-tavernkeeper-production-automation.md` for remaining work. This document is retained as Tavernary integration history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make Tavernary publish exact-SHA scan targets, import and validate TavernKeeper's immutable report summaries, and render the approved inline scan indicator/popover on every supported project card.
@@ -53,7 +55,7 @@
 
 ### Scan indicator, card, and static export
 
-- `src/components/icons/tavernkeeper-scan-icon.tsx`: supplied Remix Icon `scan-2-fill` path rendered with `currentColor`.
+- `src/components/icons/tavernkeeper-scan-icon.tsx`: user-supplied Remix Icon `scan-fill` path rendered with `currentColor`.
 - `src/features/catalog/components/tavernkeeper-scan-indicator.tsx`: scan indicator icon, state copy, portal popover, and interaction.
 - `src/features/catalog/components/project-card.tsx`: semantic container, stretched primary link, inline title row, scan indicator.
 - `src/styles/catalog.css`: inline title reservation, state colors, popover positioning, z-index, and reduced motion.
@@ -310,7 +312,7 @@ expect(panel).toHaveTextContent("1 high");
 expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
 expect(within(panel).getByRole("link", { name: "View full report" })).toHaveAttribute("href", yellowStatus.report.reportUrl);
 expect(panel).not.toHaveTextContent(/Gitleaks|OpenGrep|policy|coverage|excluded/u);
-expect(container.querySelector('svg[data-icon="scan-2-fill"]')).toBeInTheDocument();
+expect(container.querySelector('svg[data-icon="scan-fill"]')).toBeInTheDocument();
 ```
 
 - [ ] **Step 2: Write failing interaction tests**
@@ -325,7 +327,11 @@ Expected: FAIL because the component does not exist.
 
 - [ ] **Step 4: Implement the state icon and minimal copy**
 
-Render the supplied Remix Icon `scan-2-fill` path as one local inline SVG with `viewBox="0 0 24 24"`, `fill="currentColor"`, `aria-hidden`, and `data-icon="scan-2-fill"`. Keep the asset under its Remix Icon License v1.0 and record that exception in `LICENSING.md`; never present the glyph as a logo, protection mark, or certification. Use text labels:
+Render the user-supplied Remix Icon `scan-fill` path as one local inline SVG
+with `viewBox="0 0 24 24"`, `fill="currentColor"`, `aria-hidden`, and
+`data-icon="scan-fill"`. Keep the asset under its Remix Icon License v1.0 and
+record that exception in `LICENSING.md`; never present the glyph as a logo,
+protection mark, or certification. Use text labels:
 
 ```ts
 const stateCopy = {

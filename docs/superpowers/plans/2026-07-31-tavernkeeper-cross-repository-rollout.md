@@ -1,5 +1,7 @@
 # TavernKeeper Cross-Repository Rollout Implementation Plan
 
+> **Superseded:** Use `2026-08-01-tavernkeeper-production-automation.md` for remaining work. This document is retained as rollout history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Connect the completed TavernKeeper and Tavernary implementations, prove their public contracts and wake-ups against live GitHub Pages, and release through hostile fixtures plus the approved `MentallyQuill/Wandlight` and `MentallyQuill/Recursion` live canaries.
