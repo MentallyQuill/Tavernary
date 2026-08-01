@@ -1096,7 +1096,14 @@ test("inspects stacks, preserves caution rows, and builds contribution URLs", as
     "https://github.com/fixture/fixture-tool-02",
   );
   await expect(frontend).toHaveAttribute("target", "_blank");
-  await expect(inspector.locator("[aria-expanded]")).toHaveCount(0);
+  await expect(
+    inspector.locator(
+      "[aria-expanded]:not(.tavernkeeper-scan-indicator-trigger)",
+    ),
+  ).toHaveCount(0);
+  await expect(
+    inspector.locator(".tavernkeeper-scan-indicator-trigger[aria-expanded]"),
+  ).toHaveCount(3);
   await expect(inspector.locator(".project-kit-control")).toHaveCount(0);
 
   await tool.evaluate((element) => {

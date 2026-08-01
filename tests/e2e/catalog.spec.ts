@@ -401,8 +401,13 @@ test("filters Presets and Kits by model family with shareable state", async ({
     name: "Wandlight",
     exact: true,
   });
+  const wandlightProjectCard = page.locator(".project-card").filter({
+    has: page.getByRole("heading", { name: "Wandlight", exact: true }),
+  });
   for (const label of ["Model-Agnostic", "Claude", "GPT", "GLM", "DeepSeek"]) {
-    await expect(wandlightCard.getByText(label, { exact: true })).toBeVisible();
+    await expect(
+      wandlightProjectCard.getByText(label, { exact: true }),
+    ).toBeVisible();
   }
   await expect(wandlightCard).toHaveAccessibleDescription(
     /Supported model families: Model-Agnostic, Claude, GPT, GLM, DeepSeek\./u,
@@ -1415,7 +1420,7 @@ test("explains every card fact with hover help", async ({ page }) => {
     }),
   ).toBeHidden();
   await page.mouse.move(0, 0);
-  await repositoryCard.focus();
+  await repositoryCard.locator(".project-card-primary-link").focus();
   await expect(
     page.getByRole("tooltip", {
       name: summaryText!,

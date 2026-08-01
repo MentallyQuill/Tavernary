@@ -644,7 +644,7 @@ test("desktop selection and focus treatments use the teal family", async ({
   );
 
   const projectCard = page.locator(".project-card").first();
-  await projectCard.focus();
+  await projectCard.locator(".project-card-primary-link").focus();
   await expectStyle(projectCard, "outline-color", graphiteTeal.tealBackground);
 
   const projectShell = page.locator(".project-card-shell").first();

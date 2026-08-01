@@ -265,7 +265,10 @@ export function ProjectCard({
     .join(" ");
 
   return (
-    <article className={`project-card kind-${project.kind}`}>
+    <article
+      aria-describedby={cardDescriptionId}
+      className={`project-card kind-${project.kind}`}
+    >
       <span className="visually-hidden" id={cardDescriptionId}>
         {cardDescription}
       </span>
@@ -381,31 +384,33 @@ export function ProjectCard({
         )}
       </div>
 
-      <h2 className="card-title-row">
-        <a
-          className="project-card-primary-link"
-          href={project.canonicalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={displayName}
-          aria-describedby={cardDescriptionId}
-        >
-          <Tooltip
-            id={titleId}
-            label={project.summary}
-            className="card-title"
-            showOnAncestorFocus
+      <div className="card-title-row">
+        <h2>
+          <a
+            className="project-card-primary-link"
+            href={project.canonicalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={displayName}
+            aria-describedby={cardDescriptionId}
           >
-            {displayName}
-          </Tooltip>
-        </a>
+            <Tooltip
+              id={titleId}
+              label={project.summary}
+              className="card-title"
+              showOnAncestorFocus
+            >
+              {displayName}
+            </Tooltip>
+          </a>
+        </h2>
         {project.tavernKeeper ? (
           <TavernKeeperScanIndicator
             projectId={project.id}
             status={project.tavernKeeper}
           />
         ) : null}
-      </h2>
+      </div>
       {project.attribution ? (
         <Tooltip
           id={attributionId}

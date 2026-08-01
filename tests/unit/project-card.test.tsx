@@ -160,6 +160,9 @@ describe("project card", () => {
     );
 
     const card = container.querySelector("article.project-card");
+    const title = screen.getByRole("heading", {
+      name: "A Very Long Project Name",
+    });
     const link = screen.getByRole("link", { name: "A Very Long Project Name" });
     const indicator = screen.getByRole("button", {
       name: /TavernKeeper scan/u,
@@ -167,10 +170,12 @@ describe("project card", () => {
 
     expect(card).toContainElement(link);
     expect(card).toContainElement(indicator);
+    expect(card).toHaveAttribute("aria-describedby", expect.any(String));
     expect(link).not.toContainElement(indicator);
     expect([
-      ...(card?.querySelector("h2.card-title-row")?.children ?? []),
-    ]).toEqual([link, indicator]);
+      ...(card?.querySelector(".card-title-row")?.children ?? []),
+    ]).toEqual([title, indicator]);
+    expect(title).toContainElement(link);
     expect(link.querySelector(".card-title")).toHaveTextContent(
       "A Very Long Project Name",
     );
