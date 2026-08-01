@@ -3,7 +3,7 @@
   "id": "testerbender-intercede",
   "name": "Intercede",
   "kind": "extension",
-  "summary": "You pick a sentence or paragraph boundary, write your reply there, and Intercede regenerates what follows as a real \"Assistant → User → Assistant\" exchange.\n\nThe original remainder is kept as non-canonical reference.",
+  "summary": "You pick a sentence or paragraph boundary, write your reply there, and Intercede regenerates what follows as a real \"Assistant → User → Assistant\" exchange. The original remainder is kept as non-canonical reference.",
   "metadata_status": "curated",
   "source_id": "github-1316944655",
   "frontends": ["sillytavern"],
@@ -16,7 +16,7 @@
     "preserve-story-continuity",
     "recover-failed-generations"
   ],
-  "cataloged_at": "2026-08-01T19:44:23.989Z",
+  "cataloged_at": "2026-08-01T19:58:24.317Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,

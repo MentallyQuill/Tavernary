@@ -30,7 +30,7 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-08-01T11:50:44.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-01T19:44:23.989Z",
+    "baseline_completed_at": "2026-08-01T19:58:24.317Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "25e077d609f8ab82967a80db7de5eb47125ed6b4"
   },
@@ -45,7 +45,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-01T19:44:23.989Z",
+  "refreshed_at": "2026-08-01T19:58:24.317Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -55,7 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T19:44:23.989Z",
+    "refreshed_at": "2026-08-01T19:58:24.317Z",
     "stale_since": null
   },
   "activity_scan": null
