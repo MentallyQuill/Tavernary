@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "devemberteam-ops-pyre",
+  "source_id": "github-1257302750",
+  "source_identity": "github:devemberteam-ops/pyre",
+  "evidence_fingerprint": "a854c97980454124fa95cda7f25d2e09d5a21893c2aecf5f9bfecd8ffa1d2b78",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-01T09:34:53.581Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-01T09:34:53.581Z"
+  },
+  "maintenance_issue_number": null
+}
