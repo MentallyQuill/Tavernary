@@ -1029,6 +1029,9 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     "REDDIT_RETRY_STATE_PATH: ${{ runner.temp }}/project-submission-retry-state.json",
   );
   expect(source).toContain("Reconcile Reddit retry success");
+  expect(source).toContain("renderCopyReviewDiagnosticSummary");
+  expect(source).toContain("report.copy_review_diagnostic");
+  expect(source).toContain("GITHUB_STEP_SUMMARY");
   expect(
     source.match(/issue is no longer admitted/g)?.length,
   ).toBeGreaterThanOrEqual(3);
@@ -1280,6 +1283,9 @@ test("generates owner review PRs with operation-scoped guarded writes", async ()
   expect(source).not.toContain("git add src/generated/catalog.json");
   expect(source).not.toMatch(/git add[^;\n]*(?:\.github\/workflows|scripts\/)/);
   expect(source).not.toContain("gh pr merge");
+  expect(source).toContain("renderCopyReviewDiagnosticSummary");
+  expect(source).toContain('entry.review_status === "unavailable"');
+  expect(source).toContain("entry.diagnostic");
 });
 
 test.each([

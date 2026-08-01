@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 
 import { expect, test, vi } from "vitest";
 
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import {
   fingerprintProjectRecord,
   fingerprintSourceRecord,
@@ -699,10 +700,13 @@ test("keeps verified owner copy for manual review when copy review is unavailabl
   const manifest = editManifest();
   manifest.proposed.summary = "Owner-authored summary stays exact";
   const fixture = harness(manifest);
-  const copySummary = vi.fn(async () => ({
-    status: "accepted",
-    summary: "",
-  }));
+  const copySummary = vi.fn(async () => {
+    throw new EnrichmentProviderError(
+      "provider-response-invalid",
+      "json-invalid",
+      { latencyMs: 300 },
+    );
+  });
 
   const generated = await generate(fixture, {
     copySummary,
@@ -711,7 +715,7 @@ test("keeps verified owner copy for manual review when copy review is unavailabl
     }),
   });
 
-  expect(copySummary).toHaveBeenCalledTimes(2);
+  expect(copySummary).toHaveBeenCalledOnce();
   expect(JSON.parse(fixture.storage.get(projectPath) ?? "")).toMatchObject({
     summary: "Owner-authored summary stays exact",
     metadata_policy: {
@@ -733,6 +737,13 @@ test("keeps verified owner copy for manual review when copy review is unavailabl
         mode: "preserve",
         review_status: "unavailable",
         reason_code: "copy-review-unavailable",
+        diagnostic: {
+          failure_phase: "initial-provider",
+          failure_code: "provider-response-invalid",
+          diagnostic_code: "json-invalid",
+          attempt_count: 1,
+          latency_ms: 300,
+        },
         submitted_summary: "Owner-authored summary stays exact",
         published_summary: "Owner-authored summary stays exact",
         copy_result: null,

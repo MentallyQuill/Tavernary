@@ -141,6 +141,24 @@ jobs:
             --output-directory "$GITHUB_WORKSPACE" \
             --report-path "${RUNNER_TEMP}/admission-report.json" \
             --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json"
+      - name: Summarize copy review diagnostic
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { renderCopyReviewDiagnosticSummary } from "./scripts/catalog/catalog-copy-diagnostic.mjs";
+          const report = JSON.parse(
+            fs.readFileSync(`${process.env.RUNNER_TEMP}/admission-report.json`, "utf8"),
+          );
+          const values =
+            report.copy_review_status === "unavailable"
+              ? [report.copy_review_diagnostic]
+              : [];
+          const summary = renderCopyReviewDiagnosticSummary(values);
+          if (summary) {
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`);
+          }
+          NODE
       - name: Validate proposed catalog and card
         run: |
           npm run catalog:validate

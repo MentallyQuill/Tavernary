@@ -23,6 +23,9 @@ export interface GeneratedSubmissionReport {
     policy_signal: import("../catalog/catalog-copy-contract.mjs").CatalogCopyPolicySignal;
   } | null;
   copy_review_status: "validated" | "unavailable" | null;
+  copy_review_diagnostic?:
+    | import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic
+    | null;
   copy_review_reason_code: "copy-review-unavailable" | null;
   input_digest: string | null;
   source_identity: {
@@ -67,6 +70,7 @@ export interface GeneratedSubmissionDraft {
   copyReviewStatus?: NonNullable<
     GeneratedSubmissionReport["copy_review_status"]
   >;
+  copyReviewDiagnostic?: import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
   copyReviewReasonCode?: NonNullable<
     GeneratedSubmissionReport["copy_review_reason_code"]
   >;

@@ -114,6 +114,7 @@ export async function generateProjectSubmission({ issueNumber, draft }) {
         : null,
       copy_result: draft.copyResult ?? null,
       copy_review_status: draft.copyReviewStatus ?? null,
+      copy_review_diagnostic: draft.copyReviewDiagnostic ?? null,
       copy_review_reason_code: draft.copyReviewReasonCode ?? null,
       input_digest: draft.inputDigest ?? null,
       source_identity: draft.sourceIdentity ?? null,
@@ -428,6 +429,7 @@ function manualSummaryCopyDraftOptions(copy) {
     copyResult: copy.copyResult,
     copyMode: copy.mode,
     copyReviewStatus: copy.reviewStatus,
+    copyReviewDiagnostic: copy.diagnostic,
     ...(copy.reviewStatus === "unavailable"
       ? { copyReviewReasonCode: copy.reasonCode }
       : {}),

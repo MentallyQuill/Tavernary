@@ -152,6 +152,13 @@ test("renders unavailable verified-owner copy as a manual review transaction", (
       publication_mode: "manual" as const,
       copy_review_status: "unavailable" as const,
       copy_review_reason_code: "copy-review-unavailable" as const,
+      copy_review_diagnostic: {
+        failure_phase: "initial-provider" as const,
+        failure_code: "provider-timeout" as const,
+        diagnostic_code: null,
+        attempt_count: 1 as const,
+        latency_ms: 900,
+      },
     },
     marker: manualMarker,
   });
@@ -164,6 +171,8 @@ test("renders unavailable verified-owner copy as a manual review transaction", (
   expect(body).not.toContain(
     "Eligible transactions publish automatically after required checks pass.",
   );
+  expect(body).not.toContain("provider-timeout");
+  expect(body).not.toContain("initial-provider");
 });
 
 test("renders a dedicated non-mutating classification mismatch warning", () => {

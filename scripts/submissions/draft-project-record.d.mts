@@ -97,6 +97,7 @@ export interface ProjectDraftResult {
     policy_signal: CatalogCopyPolicySignal;
   } | null;
   copyMode: "preserve" | "synthesize" | null;
+  copyReviewDiagnostic?: import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
   classificationReview: GeneratedClassificationReview | null;
   warnings: string[];
 }
@@ -113,6 +114,7 @@ export function draftProjectRecord(input: {
   publishedSummary?: string;
   copyResult?: ProjectDraftResult["copyResult"];
   copyMode?: "preserve" | "synthesize";
+  copyReviewDiagnostic?: import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
   copyRequired?: boolean;
   provisionalSummary?: string;
   provisionalWarning?: string;

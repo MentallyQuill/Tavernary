@@ -171,6 +171,7 @@ test("returns only deterministic canonical submission files and its report", asy
       actorId: 11,
       actorLogin: "Owner",
     },
+    copy_review_diagnostic: null,
     copy_result: {
       result: "accepted-with-light-edits",
       change_reasons: ["punctuation-corrected"],
@@ -212,6 +213,13 @@ test("reports unavailable verified-owner copy review as a manual transaction", a
       copyResult: null,
       copyMode: null,
       copyReviewStatus: "unavailable",
+      copyReviewDiagnostic: {
+        failure_phase: "initial-provider",
+        failure_code: "provider-timeout",
+        diagnostic_code: null,
+        attempt_count: 1,
+        latency_ms: 900,
+      },
       copyReviewReasonCode: "copy-review-unavailable",
       publicationMode: "manual",
       warnings: [],
@@ -222,6 +230,13 @@ test("reports unavailable verified-owner copy review as a manual transaction", a
     publication_mode: "manual",
     copy_review_status: "unavailable",
     copy_review_reason_code: "copy-review-unavailable",
+    copy_review_diagnostic: {
+      failure_phase: "initial-provider",
+      failure_code: "provider-timeout",
+      diagnostic_code: null,
+      attempt_count: 1,
+      latency_ms: 900,
+    },
     copy_result: null,
   });
 });

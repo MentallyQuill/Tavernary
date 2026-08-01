@@ -154,6 +154,26 @@ jobs:
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
             --report-path "${RUNNER_TEMP}/project-owner-generation-report.json"
+      - name: Summarize copy review diagnostics
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          import { renderCopyReviewDiagnosticSummary } from "./scripts/catalog/catalog-copy-diagnostic.mjs";
+          const report = JSON.parse(
+            fs.readFileSync(
+              `${process.env.RUNNER_TEMP}/project-owner-generation-report.json`,
+              "utf8",
+            ),
+          );
+          const values = report.copy_results
+            .filter((entry) => entry.review_status === "unavailable")
+            .map((entry) => entry.diagnostic);
+          const summary = renderCopyReviewDiagnosticSummary(values);
+          if (summary) {
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`);
+          }
+          NODE
       - name: Prepare and verify exact operation paths
         id: paths
         shell: bash

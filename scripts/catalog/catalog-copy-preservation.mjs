@@ -1,10 +1,14 @@
 import { CATALOG_POLICY_VERSION } from "../../src/features/catalog/catalog-policy.mjs";
 import { validateCatalogCopyResult } from "./catalog-copy-contract.mjs";
+import {
+  invalidOutputCopyReviewDiagnostic,
+  providerCopyReviewDiagnostic,
+} from "./catalog-copy-diagnostic.mjs";
 import { createCatalogCopyProvider } from "./catalog-copy-provider.mjs";
 
 const trustedAuthorities = new Set(["repository-owner", "tavernary-staff"]);
 
-function unavailableCopyReview(submittedSummary) {
+function unavailableCopyReview(submittedSummary, diagnostic) {
   return {
     mode: "preserve",
     reviewStatus: "unavailable",
@@ -12,6 +16,7 @@ function unavailableCopyReview(submittedSummary) {
     submittedSummary,
     publishedSummary: submittedSummary,
     copyResult: null,
+    diagnostic,
   };
 }
 
@@ -71,8 +76,11 @@ export async function preserveCatalogSummary(input) {
   let output;
   try {
     output = await copySummary(request);
-  } catch {
-    return unavailableCopyReview(request.submittedSummary);
+  } catch (error) {
+    return unavailableCopyReview(
+      request.submittedSummary,
+      providerCopyReviewDiagnostic(error, "initial-provider", 1),
+    );
   }
   let validation = validateCatalogCopyResult(output, {
     mode: "preserve",
@@ -88,8 +96,11 @@ export async function preserveCatalogSummary(input) {
           message: validation.repairHint,
         },
       });
-    } catch {
-      return unavailableCopyReview(request.submittedSummary);
+    } catch (error) {
+      return unavailableCopyReview(
+        request.submittedSummary,
+        providerCopyReviewDiagnostic(error, "repair-provider", 2),
+      );
     }
     validation = validateCatalogCopyResult(output, {
       mode: "preserve",
@@ -98,11 +109,15 @@ export async function preserveCatalogSummary(input) {
     });
   }
   if (!validation.valid) {
-    return unavailableCopyReview(request.submittedSummary);
+    return unavailableCopyReview(
+      request.submittedSummary,
+      invalidOutputCopyReviewDiagnostic(),
+    );
   }
   return {
     mode: "preserve",
     reviewStatus: "validated",
+    diagnostic: null,
     submittedSummary: request.submittedSummary,
     publishedSummary: output.summary,
     copyResult: {

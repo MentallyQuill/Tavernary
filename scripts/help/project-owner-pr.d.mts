@@ -58,6 +58,7 @@ export function renderOwnerRequestPullRequest(input: {
       mode: "preserve" | "synthesize";
       review_status?: "validated" | "unavailable";
       reason_code?: "copy-review-unavailable";
+      diagnostic?: import("../catalog/catalog-copy-diagnostic.mjs").CopyReviewDiagnostic;
       submitted_summary: string | null;
       published_summary: string;
       copy_result: {

@@ -385,6 +385,9 @@ export async function draftProjectRecord(input) {
     ...(input.copyReviewStatus
       ? { copyReviewStatus: input.copyReviewStatus }
       : {}),
+    ...(input.copyReviewDiagnostic
+      ? { copyReviewDiagnostic: input.copyReviewDiagnostic }
+      : {}),
     ...(input.copyReviewReasonCode
       ? { copyReviewReasonCode: input.copyReviewReasonCode }
       : {}),
