@@ -31,6 +31,7 @@ const project: CatalogProject = {
     },
   ],
   search: catalogSearchFields("Routing"),
+  tavernKeeper: null,
   fork: null,
   attribution: null,
   activity: {

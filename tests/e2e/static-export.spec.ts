@@ -17,6 +17,24 @@ const frontendVocabulary = JSON.parse(
     "utf8",
   ),
 ) as { frontends: Array<{ label: string }> };
+const generatedCatalog = JSON.parse(
+  readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
+) as {
+  schemaVersion: number;
+  projects: Array<{
+    sourceStatus: string;
+    tavernKeeper: { state: string; reason: string } | null;
+  }>;
+};
+
+test("exports the catalog schema-v6 scan-state contract", () => {
+  expect(generatedCatalog.schemaVersion).toBe(6);
+  expect(
+    generatedCatalog.projects
+      .filter(({ sourceStatus }) => sourceStatus === "manual")
+      .every(({ tavernKeeper }) => tavernKeeper === null),
+  ).toBe(true);
+});
 
 test("serves the catalog from the configured base path", async ({ page }) => {
   await page.goto(sitePath());

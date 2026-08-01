@@ -280,6 +280,25 @@ test("builds sibling extension and preset cards from one source snapshot", async
     ],
     sources: [source],
     snapshots: [snapshot],
+    tavernKeeperReports: {
+      reports: [
+        {
+          report_id: "c".repeat(64),
+          source_id: source.id,
+          provider: "github",
+          repository_id: source.repository_id,
+          repository: source.repository,
+          target_sha: snapshot.repository.head_sha,
+          scanner_policy_version: "1",
+          completed_at: "2026-07-31T12:05:00.000Z",
+          result: "green",
+          finding_counts: {
+            severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
+          },
+          report_url: "https://mentallyquill.github.io/TavernKeeper/reports/example/",
+        },
+      ],
+    },
   });
 
   expect(catalog.projects.map(({ id }) => id)).toEqual([
@@ -321,7 +340,14 @@ test("builds sibling extension and preset cards from one source snapshot", async
   expect(JSON.stringify(catalog.projects[0].search)).not.toContain(
     "[object Object]",
   );
-  expect(catalog.schemaVersion).toBe(5);
+  expect(catalog.projects[0].tavernKeeper).toEqual(
+    catalog.projects[1].tavernKeeper,
+  );
+  expect(catalog.projects[0].tavernKeeper).toMatchObject({
+    state: "green",
+    reason: "current",
+  });
+  expect(catalog.schemaVersion).toBe(6);
   expect(
     catalog.tagVocabulary.find(({ id }) => id === "maintain-long-term-memory"),
   ).not.toHaveProperty("inclusion_guidance");
@@ -874,7 +900,7 @@ test("publishes provider-qualified Codeberg evidence", async () => {
     snapshots: [snapshot],
   });
 
-  expect(catalog.schemaVersion).toBe(5);
+  expect(catalog.schemaVersion).toBe(6);
   expect(catalog.projects[0]).toMatchObject({
     canonicalUrl: "https://codeberg.org/targren/Lumiverse-SwipeScrubber",
     attribution: {
@@ -1101,7 +1127,7 @@ test("builds every eligible public card with consolidated manual sources", async
   const recursion = catalog.projects.find(
     ({ id }) => id === "mentallyquill-recursion",
   );
-  expect(catalog.schemaVersion).toBe(5);
+  expect(catalog.schemaVersion).toBe(6);
   expect(recursion?.activity.weeklyActivity).toHaveLength(12);
   expect(recursion?.activity.weeklyActivity?.filter(Boolean)).toHaveLength(
     recursion?.activity.activeWeeks12 ?? 0,
@@ -1221,7 +1247,7 @@ test("builds Kits from complete project records and nullable support", async () 
   });
 
   expect(catalog).toMatchObject({
-    schemaVersion: 5,
+    schemaVersion: 6,
     kits: [
       {
         id: "flagged-kit-42",

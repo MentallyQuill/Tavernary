@@ -86,11 +86,12 @@ function project(): CatalogProject {
     preset: null,
     refreshedAt: null,
     staleSince: null,
+    tavernKeeper: null,
   };
 }
 
 const catalog: Catalog = {
-  schemaVersion: 5,
+  schemaVersion: 6,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00.000Z",
   projects: [project()],

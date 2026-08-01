@@ -24,6 +24,7 @@ const project: CatalogProject = {
   frontends: [label("sillytavern")],
   tags: [{ ...label("route-tasks-across-models"), facet: "goal" }],
   search: catalogSearchFields("Routing Extension"),
+  tavernKeeper: null,
   fork: null,
   attribution: null,
   activity: {

@@ -6,6 +6,7 @@ import { classificationError } from "../../src/features/catalog/primary-function
 import { effectiveListingState } from "../../src/features/catalog/listing-state.mjs";
 import { canonicalSourceUrl } from "../../src/features/catalog/source-record.mjs";
 import { catalogAttribution } from "../../src/lib/github/contributors.ts";
+import { deriveTavernKeeperCardStatus } from "../../src/features/catalog/tavernkeeper-status.ts";
 import { derivePublicActivity } from "./activity-evidence.mjs";
 import { resolveForkRelationship } from "./fork-relationship.mjs";
 import { indexRegistry } from "./registry-context.mjs";
@@ -140,7 +141,14 @@ function licenseDisplay(status, spdxId, sourceType = "github") {
   };
 }
 
-function repositoryProject(record, source, snapshot, vocabularies, now) {
+function repositoryProject(
+  record,
+  source,
+  snapshot,
+  vocabularies,
+  now,
+  tavernKeeper,
+) {
   const frontends = labeled(record.frontends, vocabularies.frontends);
   const tags = tagged(record.tags, vocabularies.tags);
   const compatibility = presetCompatibility(record, vocabularies);
@@ -184,6 +192,7 @@ function repositoryProject(record, source, snapshot, vocabularies, now) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
+    tavernKeeper,
     attribution,
     activity: snapshot
       ? {
@@ -250,6 +259,7 @@ function urlProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
+    tavernKeeper: null,
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -293,6 +303,7 @@ function manualProject(record, source, vocabularies) {
     catalogCohort: record.catalog_cohort,
     frontends,
     tags,
+    tavernKeeper: null,
     activity: emptyActivity(),
     latestReleaseAt: null,
     community: null,
@@ -320,6 +331,7 @@ export async function buildCatalog(options = {}) {
     tagVocabulary,
     modelFamilyVocabulary,
     completionFormatVocabulary,
+    tavernKeeperReports,
   ] = await Promise.all([
     options.records ?? readJsonDirectory("data/registry/projects"),
     options.sources ??
@@ -346,6 +358,10 @@ export async function buildCatalog(options = {}) {
     readJson("data/vocabularies/tags.json"),
     readJson("data/vocabularies/model-families.json"),
     readJson("data/vocabularies/completion-formats.json"),
+    options.tavernKeeperReports ??
+      (options.records
+        ? { schema_version: 1, generated_at: null, reports: [] }
+        : readJson("data/security/tavernkeeper-report-summaries.json")),
   ]);
   const vocabularies = {
     frontends: entriesById(frontendVocabulary, "frontends"),
@@ -373,6 +389,9 @@ export async function buildCatalog(options = {}) {
   const snapshotsBySource = new Map(
     snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
+  const preferredTavernKeeperReports = Array.isArray(tavernKeeperReports)
+    ? tavernKeeperReports
+    : (tavernKeeperReports.reports ?? []);
   const generatedAt = options.now ?? refreshManifest.completed_at;
   const generatedAtIso = new Date(generatedAt).toISOString();
   const recordsByProject = new Map(
@@ -395,6 +414,11 @@ export async function buildCatalog(options = {}) {
     }
     const source = registry.sourcesById.get(record.source_id);
     const snapshot = snapshotsBySource.get(record.source_id);
+    const tavernKeeper = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: preferredTavernKeeperReports,
+    });
     if (!effectiveListingState({ project: record, source, snapshot }).public) {
       continue;
     }
@@ -411,12 +435,26 @@ export async function buildCatalog(options = {}) {
 
     if (!snapshot) {
       projects.push(
-        repositoryProject(record, source, null, vocabularies, generatedAtIso),
+        repositoryProject(
+          record,
+          source,
+          null,
+          vocabularies,
+          generatedAtIso,
+          tavernKeeper,
+        ),
       );
       continue;
     }
     projects.push(
-      repositoryProject(record, source, snapshot, vocabularies, generatedAtIso),
+      repositoryProject(
+        record,
+        source,
+        snapshot,
+        vocabularies,
+        generatedAtIso,
+        tavernKeeper,
+      ),
     );
   }
 
@@ -602,7 +640,7 @@ export async function buildCatalog(options = {}) {
     })
     .sort((left, right) => left.id.localeCompare(right.id));
   const catalog = {
-    schemaVersion: 5,
+    schemaVersion: 6,
     generatedAt: generatedAtIso,
     tagVocabulary: publicTagVocabulary,
     projects,

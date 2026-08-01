@@ -1,5 +1,5 @@
 {
-  "description": "The visual baseline uses production catalog records, including a published immediate fork relationship and a name-only delisted upstream.",
+  "description": "The visual baseline uses production catalog records, including a published immediate fork relationship, a name-only delisted upstream, and an unsupported URL source.",
   "project_ids": [
     "coneja-chibi-vecthare",
     "kritblade-vectfox",
@@ -9,5 +9,8 @@
     "purrfect-logic-4-max-mini",
     "sillytavern-sillytavern",
     "zorgonatis-stabs-edh"
-  ]
+  ],
+  "tavernKeeper": {
+    "purrfect-logic-4-max-mini": null
+  }
 }

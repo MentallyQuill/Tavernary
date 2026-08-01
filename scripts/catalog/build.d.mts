@@ -11,6 +11,7 @@ export interface BuildCatalogOptions {
   kitSnapshots?: unknown[];
   blockedUsers?: unknown;
   siteConfig?: { github_repository: string };
+  tavernKeeperReports?: unknown;
 }
 
 export function buildCatalog(options?: BuildCatalogOptions): Promise<Catalog>;

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { createCatalogSearchIndex } from "@/features/search/catalog-search";
+import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 import type { CatalogSearchFields } from "@/features/search/search-types";
 
 interface GeneratedCatalogProject {
@@ -23,6 +24,7 @@ interface GeneratedCatalogProject {
     description: string;
   }>;
   search: CatalogSearchFields;
+  tavernKeeper: TavernKeeperCardStatus | null;
   fork: {
     parentName: string;
     parentProjectId: string | null;
@@ -42,6 +44,7 @@ interface GeneratedCatalogKit {
 export const generatedCatalog = JSON.parse(
   readFileSync(resolve(process.cwd(), "src/generated/catalog.json"), "utf8"),
 ) as {
+  schemaVersion: 6;
   generatedAt: string;
   tagVocabulary: Array<{
     id: string;

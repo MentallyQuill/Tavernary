@@ -85,6 +85,7 @@ function project(
     preset: null,
     refreshedAt: null,
     staleSince: null,
+    tavernKeeper: null,
   };
 }
 

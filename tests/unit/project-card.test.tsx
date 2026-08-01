@@ -74,6 +74,7 @@ function project(
     refreshedAt: "2026-07-23T00:00:00Z",
     staleSince: null,
     ...overrides,
+    tavernKeeper: overrides.tavernKeeper ?? null,
   };
 }
 

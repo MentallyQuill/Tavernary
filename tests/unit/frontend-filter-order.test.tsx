@@ -55,6 +55,7 @@ function frontendCard(
     preset: null,
     refreshedAt: "2026-07-26T00:00:00Z",
     staleSince: null,
+    tavernKeeper: null,
   };
 }
 

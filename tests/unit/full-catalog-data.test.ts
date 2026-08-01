@@ -61,9 +61,14 @@ async function readJsonDirectory<T>(relativePath: string): Promise<T[]> {
 }
 
 async function loadProductionData() {
-  const [projects, sources, vocabulary] = await Promise.all([
+  const [projects, sources, snapshots, vocabulary] = await Promise.all([
     readJsonDirectory<CatalogRecord>("data/registry/projects"),
     readJsonDirectory<SourceRecord>("data/registry/sources"),
+    readJsonDirectory<{
+      source_id: string;
+      source_health: string;
+      repository: { head_sha: string };
+    }>("data/snapshots/github"),
     readFile(
       resolve(rootDirectory, "data/vocabularies/tags.json"),
       "utf8",
@@ -81,6 +86,9 @@ async function loadProductionData() {
     vocabulary,
     projectsById: new Map(projects.map((project) => [project.id, project])),
     sourcesById: new Map(sources.map((source) => [source.id, source])),
+    snapshotsBySource: new Map(
+      snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
+    ),
   };
 }
 
@@ -406,13 +414,39 @@ describe("full catalog data", () => {
   });
 
   test("builds every effectively public project and published Kit", async () => {
+    const { projectsById, sourcesById, snapshotsBySource } =
+      await loadProductionData();
     const kitRecords = await readJsonDirectory<{
       id: string;
       status: string;
     }>("data/registry/kits");
     const catalog = await buildCatalog({ write: false });
 
-    expect(catalog.schemaVersion).toBe(5);
+    expect(catalog.schemaVersion).toBe(6);
+    for (const project of catalog.projects) {
+      const record = projectsById.get(project.id);
+      const source = record ? sourcesById.get(record.source_id) : undefined;
+      const snapshot = snapshotsBySource.get(record?.source_id ?? "");
+
+      if (source?.type !== "github") {
+        expect(project.tavernKeeper, project.id).toBeNull();
+        continue;
+      }
+      if (
+        project.tavernKeeper?.state === "green" ||
+        project.tavernKeeper?.state === "yellow"
+      ) {
+        expect(source.status, project.id).toBe("active");
+        expect(snapshot?.source_health, project.id).toBe("healthy");
+        expect(project.tavernKeeper.reason, project.id).toBe("current");
+        expect(project.tavernKeeper.currentSha, project.id).toBe(
+          snapshot?.repository.head_sha,
+        );
+        expect(project.tavernKeeper.report.scannedSha, project.id).toBe(
+          snapshot?.repository.head_sha,
+        );
+      }
+    }
     expect(catalog.projects[0]).not.toHaveProperty(
       ["searchable", "Text"].join(""),
     );

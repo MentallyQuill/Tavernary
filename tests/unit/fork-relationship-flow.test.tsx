@@ -86,6 +86,7 @@ function project(
     refreshedAt: "2026-07-23T00:00:00Z",
     staleSince: null,
     ...overrides,
+    tavernKeeper: overrides.tavernKeeper ?? null,
   };
 }
 
@@ -107,7 +108,7 @@ const child = project("child", "Child", {
   },
 });
 const catalog: Catalog = {
-  schemaVersion: 5,
+  schemaVersion: 6,
   tagVocabulary: [],
   generatedAt: "2026-07-24T00:00:00Z",
   projects: [grandparent, parent, child],

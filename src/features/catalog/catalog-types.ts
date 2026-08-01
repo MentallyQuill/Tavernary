@@ -1,4 +1,5 @@
 import type { CatalogSearchFields } from "@/features/search/search-types";
+import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 
 export type ProjectKind = "frontend" | "extension" | "preset";
 export type MetadataStatus = "provisional" | "curated";
@@ -73,6 +74,7 @@ export interface CatalogProject {
   frontends: CatalogLabel[];
   tags: CatalogTag[];
   search: CatalogSearchFields;
+  tavernKeeper: TavernKeeperCardStatus | null;
   fork: CatalogForkRelationship | null;
   attribution: CatalogAttribution | null;
   activity: {
@@ -107,7 +109,7 @@ export interface CatalogProject {
 }
 
 export interface Catalog {
-  schemaVersion: 5;
+  schemaVersion: 6;
   generatedAt: string;
   tagVocabulary: CatalogTagDefinition[];
   projects: CatalogProject[];
