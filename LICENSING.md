@@ -42,3 +42,9 @@ specific asset states otherwise. See [`TRADEMARKS.md`](TRADEMARKS.md).
 
 Third-party names, marks, repository content, and project files remain the
 property of their respective owners.
+
+The `scan-fill` interface icon in
+`src/components/icons/tavernkeeper-scan-icon.tsx` is adapted from Remix Icon
+and is used as a functional interface element. It is licensed under the Remix
+Icon License v1.0, whose complete terms are in
+[`LICENSES/Remix-Icon-License-v1.0.txt`](LICENSES/Remix-Icon-License-v1.0.txt).

@@ -1368,6 +1368,123 @@
   align-items: center;
 }
 
+.tavernkeeper-scan-anchor {
+  position: relative;
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+}
+
+.tavernkeeper-scan-indicator-green,
+.tavernkeeper-scan-indicator-yellow,
+.tavernkeeper-scan-indicator-gray {
+  position: relative;
+  display: grid;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  place-items: center;
+  transition: color var(--kit-motion-state) var(--kit-motion-ease);
+}
+
+.tavernkeeper-scan-indicator-green {
+  color: var(--color-success-text);
+}
+
+.tavernkeeper-scan-indicator-yellow {
+  color: var(--color-warning-text);
+}
+
+.tavernkeeper-scan-indicator-gray {
+  color: var(--color-text-muted);
+}
+
+.tavernkeeper-scan-indicator-green::before,
+.tavernkeeper-scan-indicator-yellow::before,
+.tavernkeeper-scan-indicator-gray::before {
+  position: absolute;
+  inset: -7px;
+  content: "";
+}
+
+.tavernkeeper-scan-indicator-green svg,
+.tavernkeeper-scan-indicator-yellow svg,
+.tavernkeeper-scan-indicator-gray svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.tavernkeeper-scan-indicator-green:focus-visible,
+.tavernkeeper-scan-indicator-yellow:focus-visible,
+.tavernkeeper-scan-indicator-gray:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 4px;
+}
+
+.tavernkeeper-popover {
+  position: fixed;
+  z-index: 120;
+  display: grid;
+  width: min(280px, calc(100vw - 16px));
+  gap: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-raised);
+  box-shadow: var(--shadow-overlay);
+  font-size: 11px;
+  line-height: 1.4;
+  transition:
+    opacity 150ms var(--kit-motion-ease),
+    transform 150ms var(--kit-motion-ease);
+}
+
+.tavernkeeper-popover h2,
+.tavernkeeper-popover p {
+  margin: 0;
+}
+
+.tavernkeeper-popover h2 {
+  color: var(--color-heading);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.tavernkeeper-popover a {
+  width: fit-content;
+  color: var(--color-link);
+  font-weight: 650;
+}
+
+.tavernkeeper-popover a:is(:hover, :focus-visible) {
+  color: var(--color-link-hover);
+}
+
+.tavernkeeper-severity-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tavernkeeper-scan-indicator-green,
+  .tavernkeeper-scan-indicator-yellow,
+  .tavernkeeper-scan-indicator-gray,
+  .tavernkeeper-popover {
+    transition: none;
+  }
+}
+
 .chip,
 .license {
   display: inline-flex;
