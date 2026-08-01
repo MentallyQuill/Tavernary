@@ -586,7 +586,7 @@
   .project-card-shell,
   .project-card-shell:hover,
   .project-card-shell:focus-within,
-  .project-card-shell:has(.project-card:active),
+  .project-card-shell:has(.project-card-primary-link:active),
   .project-card-shell:has(.project-kit-control:active) {
     transform: none;
   }

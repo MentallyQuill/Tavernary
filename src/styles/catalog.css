@@ -1781,6 +1781,16 @@
   padding-right: 44px;
 }
 
+.compact-cards .card-title {
+  display: block;
+  min-width: 0;
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .kit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
