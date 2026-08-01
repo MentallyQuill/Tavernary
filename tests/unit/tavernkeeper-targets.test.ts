@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+
+import Ajv from "ajv";
 import { describe, expect, test } from "vitest";
 
 import { buildTavernKeeperTargets } from "../../scripts/security/tavernkeeper-targets.mjs";
@@ -44,6 +47,45 @@ function snapshot(
 }
 
 describe("TavernKeeper target manifest", () => {
+  test("vendors a strict V2 target contract and canonical fixture", async () => {
+    const [schema, fixture] = await Promise.all(
+      [
+        "data/schemas/tavernkeeper-targets.v2.schema.json",
+        "tests/fixtures/tavernkeeper/targets.v2.valid.json",
+      ].map(async (path) => JSON.parse(await readFile(path, "utf8"))),
+    );
+    const validate = new Ajv({
+      allErrors: true,
+      formats: { "date-time": true, uri: true },
+      strict: true,
+    }).compile(schema);
+
+    expect(validate(fixture)).toBe(true);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => {
+            const withoutProjectKinds = { ...repository };
+            delete withoutProjectKinds.project_kinds;
+            return withoutProjectKinds;
+          },
+        ),
+      }),
+    ).toBe(false);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => ({
+            ...repository,
+            unexpected: true,
+          }),
+        ),
+      }),
+    ).toBe(false);
+  });
+
   test("publishes healthy GitHub sources at exact SHAs in stable identity order", () => {
     const manifest = buildTavernKeeperTargets({
       generatedAt,

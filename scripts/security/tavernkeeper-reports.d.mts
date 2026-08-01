@@ -1,4 +1,4 @@
-export interface TavernKeeperReport {
+interface TavernKeeperReportBase {
   report_id: string;
   report_version: number;
   supersedes_report_id: string | null;
@@ -12,6 +12,11 @@ export interface TavernKeeperReport {
   target_sha: string;
   completed_at: string;
   mode: "standard" | "deep";
+  coverage: Record<string, number>;
+  report_url: string;
+}
+
+export interface TavernKeeperReportV1 extends TavernKeeperReportBase {
   result: "green" | "yellow";
   finding_counts: {
     total: number;
@@ -21,15 +26,37 @@ export interface TavernKeeperReport {
     disposition: Record<"active" | "dismissed", number>;
     categories: Array<{ category: string; count: number }>;
   };
-  coverage: Record<string, number>;
-  report_url: string;
 }
 
-export interface TavernKeeperReportIndex {
+export interface TavernKeeperReportV2 extends TavernKeeperReportBase {
+  result: "teal" | "red";
+  finding_counts: {
+    total: number;
+    actionable: number;
+    severity: Record<"critical" | "high" | "medium" | "low" | "info", number>;
+    confidence: Record<"high" | "medium" | "low", number>;
+    disposition: Record<"confirmed" | "not_supported" | "inconclusive", number>;
+    categories: Array<{ category: string; count: number }>;
+  };
+  history_url: string;
+}
+
+export type TavernKeeperReport = TavernKeeperReportV1 | TavernKeeperReportV2;
+
+export interface TavernKeeperReportIndexV1 {
   schema_version: 1;
   generated_at: string;
-  reports: TavernKeeperReport[];
+  reports: TavernKeeperReportV1[];
 }
+
+export interface TavernKeeperReportIndexV2 {
+  schema_version: 2;
+  generated_at: string;
+  reports: TavernKeeperReportV2[];
+}
+
+export type TavernKeeperReportIndex =
+  TavernKeeperReportIndexV1 | TavernKeeperReportIndexV2;
 
 export interface TavernKeeperSourceRegistryEntry {
   id: string;

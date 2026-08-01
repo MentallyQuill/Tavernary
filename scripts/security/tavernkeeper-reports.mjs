@@ -4,7 +4,8 @@ import { isDeepStrictEqual } from "node:util";
 
 import Ajv from "ajv";
 
-import reportIndexSchema from "../../data/schemas/tavernkeeper-report-index.schema.json" with { type: "json" };
+import reportIndexV1Schema from "../../data/schemas/tavernkeeper-report-index.schema.json" with { type: "json" };
+import reportIndexV2Schema from "../../data/schemas/tavernkeeper-report-index.v2.schema.json" with { type: "json" };
 import { fetchHardenedJson } from "./hardened-json-fetch.mjs";
 
 export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
@@ -64,9 +65,10 @@ ajv.addFormat("uri", {
     }
   },
 });
-const validateSchema = ajv.compile(reportIndexSchema);
+const validateV1Schema = ajv.compile(reportIndexV1Schema);
+const validateV2Schema = ajv.compile(reportIndexV2Schema);
 
-function schemaError() {
+function schemaError(validateSchema) {
   const details = (validateSchema.errors ?? [])
     .map((error) => `${error.instancePath || "/"} ${error.message}`)
     .join("; ");
@@ -76,8 +78,24 @@ function schemaError() {
 }
 
 function assertSchema(index) {
+  const validateSchema =
+    index?.schema_version === 1
+      ? validateV1Schema
+      : index?.schema_version === 2
+        ? validateV2Schema
+        : null;
+  if (!validateSchema) {
+    throw new Error(
+      "TavernKeeper report index schema validation failed: unsupported schema version",
+    );
+  }
   if (!validateSchema(index)) {
-    throw schemaError();
+    throw schemaError(validateSchema);
+  }
+  if (index.schema_version === 1 && index.reports.length !== 0) {
+    throw new Error(
+      "TavernKeeper V1 report entries are not accepted during migration",
+    );
   }
 }
 
@@ -114,6 +132,15 @@ function assertSafeReportUrl(report) {
   ) {
     throw new Error("TavernKeeper report URL is unsafe");
   }
+
+  if (report.history_url !== undefined) {
+    const canonicalHistoryUrl =
+      `${TAVERNKEEPER_ORIGIN}${TAVERNKEEPER_REPORTS_PATH_PREFIX}` +
+      `github/${report.repository_id}/history/`;
+    if (report.history_url !== canonicalHistoryUrl) {
+      throw new Error("TavernKeeper report history URL is unsafe");
+    }
+  }
 }
 
 function assertReportCounts(report) {
@@ -125,12 +152,18 @@ function assertReportCounts(report) {
     counts.categories.map((category) => category.count),
   );
 
+  const dispositionConsistent =
+    report.result === "green" || report.result === "yellow"
+      ? counts.actionable === counts.disposition.active
+      : counts.actionable <= counts.disposition.confirmed &&
+        report.result === (counts.actionable > 0 ? "red" : "teal");
+
   if (
     counts.total !== expectedTotal ||
     counts.total !== confidenceTotal ||
     counts.total !== dispositionTotal ||
     counts.total !== categoryTotal ||
-    counts.actionable !== counts.disposition.active
+    !dispositionConsistent
   ) {
     throw new Error("TavernKeeper report finding totals do not match");
   }
@@ -149,7 +182,12 @@ function assertReportSemantics(index) {
         "TavernKeeper report has an invalid immutable identifier",
       );
     }
-    if (report.result !== "green" && report.result !== "yellow") {
+    if (
+      report.result !== "green" &&
+      report.result !== "yellow" &&
+      report.result !== "teal" &&
+      report.result !== "red"
+    ) {
       throw new Error("TavernKeeper report result is invalid");
     }
     assertSafeReportUrl(report);
