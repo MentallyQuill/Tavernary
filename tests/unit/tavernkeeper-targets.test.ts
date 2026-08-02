@@ -1,8 +1,20 @@
+import { readFile } from "node:fs/promises";
+
+import Ajv from "ajv";
 import { describe, expect, test } from "vitest";
 
-import { buildTavernKeeperTargets } from "../../scripts/security/tavernkeeper-targets.mjs";
+import { buildTavernKeeperTargets as buildTargets } from "../../scripts/security/tavernkeeper-targets.mjs";
 
 const generatedAt = "2026-07-31T12:00:00.000Z";
+
+function buildTavernKeeperTargets(options: Record<string, unknown>) {
+  return buildTargets({
+    contractVersion: 1,
+    projects: [],
+    topProjectIds: new Set(),
+    ...options,
+  } as unknown as Parameters<typeof buildTargets>[0]);
+}
 
 function source(
   id: string,
@@ -44,6 +56,114 @@ function snapshot(
 }
 
 describe("TavernKeeper target manifest", () => {
+  test("vendors a strict V2 target contract and canonical fixture", async () => {
+    const [schema, fixture] = await Promise.all(
+      [
+        "data/schemas/tavernkeeper-targets.v2.schema.json",
+        "tests/fixtures/tavernkeeper/targets.v2.valid.json",
+      ].map(async (path) => JSON.parse(await readFile(path, "utf8"))),
+    );
+    const validate = new Ajv({
+      allErrors: true,
+      formats: { "date-time": true, uri: true },
+      strict: true,
+    }).compile(schema);
+
+    expect(validate(fixture)).toBe(true);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => {
+            const withoutProjectKinds = { ...repository };
+            delete withoutProjectKinds.project_kinds;
+            return withoutProjectKinds;
+          },
+        ),
+      }),
+    ).toBe(false);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => ({
+            ...repository,
+            unexpected: true,
+          }),
+        ),
+      }),
+    ).toBe(false);
+  });
+
+  test("publishes V2 metadata from every public card sharing a GitHub source", () => {
+    const manifest = buildTargets({
+      contractVersion: 2,
+      generatedAt,
+      publishedSourceIds: new Set(["github-42"]),
+      sources: [source("github-42", 42, "owner/repo")],
+      snapshots: [snapshot("github-42", 42, "owner/repo", "a".repeat(40))],
+      projects: [
+        {
+          id: "extension-card",
+          source_id: "github-42",
+          kind: "extension",
+          cataloged_at: "2026-07-02T00:00:00.000Z",
+        },
+        {
+          id: "preset-card",
+          source_id: "github-42",
+          kind: "preset",
+          cataloged_at: "2026-07-01T00:00:00.000Z",
+        },
+      ],
+      topProjectIds: new Set(["extension-card"]),
+    });
+
+    expect(manifest).toEqual({
+      schema_version: 2,
+      generated_at: generatedAt,
+      repositories: [
+        {
+          source_id: "github-42",
+          provider: "github",
+          repository_id: 42,
+          repository: "owner/repo",
+          target_sha: "a".repeat(40),
+          canonical_url: "https://github.com/owner/repo",
+          project_kinds: ["extension", "preset"],
+          catalog_priority: {
+            top_30: true,
+            first_cataloged_at: "2026-07-01T00:00:00.000Z",
+          },
+        },
+      ],
+    });
+  });
+
+  test("requires an explicit supported contract version", () => {
+    expect(() =>
+      (buildTargets as (options: Record<string, unknown>) => unknown)({
+        generatedAt,
+        publishedSourceIds: new Set(),
+        sources: [],
+        snapshots: [],
+        projects: [],
+        topProjectIds: new Set(),
+      }),
+    ).toThrow(/contract version/iu);
+    expect(() =>
+      (buildTargets as (options: Record<string, unknown>) => unknown)({
+        contractVersion: 3,
+        generatedAt,
+        publishedSourceIds: new Set(),
+        sources: [],
+        snapshots: [],
+        projects: [],
+        topProjectIds: new Set(),
+      }),
+    ).toThrow(/contract version/iu);
+  });
+
   test("publishes healthy GitHub sources at exact SHAs in stable identity order", () => {
     const manifest = buildTavernKeeperTargets({
       generatedAt,

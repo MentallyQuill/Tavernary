@@ -17,6 +17,13 @@ if (!pendingScanProject) {
   throw new Error("Missing pending scan indicator fixture");
 }
 
+async function waitForCatalogHydration(page: Page) {
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+  );
+}
+
 async function stabilizeRefreshLabel(page: Page) {
   await page
     .locator(".catalog-toolbar p")
@@ -66,6 +73,7 @@ for (const scenario of [
   { name: "desktop", width: 1440, height: 1000, compact: false },
   { name: "compact", width: 1440, height: 1000, compact: true },
   { name: "phone", width: 390, height: 844, compact: false },
+  { name: "landscape", width: 844, height: 390, compact: false },
 ] as const) {
   for (const title of [
     { name: "short", value: "Scan Title" },
@@ -88,6 +96,7 @@ for (const scenario of [
           scenario.compact ? "&density=compact" : ""
         }`,
       );
+      await waitForCatalogHydration(page);
       await stabilizeRefreshLabel(page);
 
       const card = page.locator(".project-card").first();
@@ -95,7 +104,9 @@ for (const scenario of [
       const trigger = card.locator(".tavernkeeper-scan-indicator-trigger");
       await expect(card).toBeVisible();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      await page.mouse.move(0, 0);
       await trigger.hover();
+      await expect(trigger).toHaveAttribute("aria-expanded", "true");
       const popover = page.getByRole("dialog", {
         name: "TavernKeeper Scan Results",
       });
@@ -149,6 +160,19 @@ for (const scenario of [
       expect(metrics.cardRight - metrics.triggerRight).toBeGreaterThanOrEqual(
         8,
       );
+      const triggerBox = await trigger.boundingBox();
+      const kitControlBox = await card
+        .locator("xpath=..")
+        .locator(".project-kit-control-hit")
+        .boundingBox();
+      expect(triggerBox).not.toBeNull();
+      expect(kitControlBox).not.toBeNull();
+      const overlapsKitControl =
+        triggerBox!.x + triggerBox!.width > kitControlBox!.x &&
+        triggerBox!.x < kitControlBox!.x + kitControlBox!.width &&
+        triggerBox!.y + triggerBox!.height > kitControlBox!.y &&
+        triggerBox!.y < kitControlBox!.y + kitControlBox!.height;
+      expect(overlapsKitControl).toBe(false);
       if (title.name === "ellipsized")
         expect(metrics.titleTextWidth).toBeGreaterThan(
           metrics.titleClientWidth,
@@ -169,6 +193,61 @@ for (const scenario of [
   }
 }
 
+test("scan indicator unsupported state remains perceptible on the desktop card", async ({
+  page,
+}) => {
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await waitForCatalogHydration(page);
+  const trigger = page
+    .getByRole("button", {
+      name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+    })
+    .first();
+  const card = trigger.locator("xpath=ancestor::article");
+  await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
+  await expect(card).toHaveScreenshot(
+    "scan-indicator-unsupported-desktop.png",
+    {
+      animations: "disabled",
+      maxDiffPixels: 10,
+    },
+  );
+});
+
+test("scan indicator history strip preserves dense teal and red progression", async ({
+  page,
+}) => {
+  test.skip(
+    !hasScanFixture,
+    "Requires the dedicated TavernKeeper scan fixture",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(sitePath());
+  await waitForCatalogHydration(page);
+  await page
+    .getByRole("button", {
+      name: "TavernKeeper scan: No review-level concerns found at this commit.",
+    })
+    .first()
+    .click();
+  const popover = page.getByRole("dialog", {
+    name: "TavernKeeper Scan Results",
+  });
+  await expect(popover.locator(".tavernkeeper-history-strip i")).toHaveCount(
+    12,
+  );
+  await expect(popover.locator(".tavernkeeper-history-red")).toHaveCount(1);
+  await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
+    animations: "disabled",
+    maxDiffPixels: 10,
+  });
+});
+
 for (const viewport of [
   { name: "desktop", width: 1440, height: 1000 },
   { name: "tablet", width: 1024, height: 900 },
@@ -179,6 +258,7 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto(sitePath());
+    await waitForCatalogHydration(page);
     await stabilizeRefreshLabel(page);
 
     const grid = page.locator(".project-grid");
@@ -194,6 +274,7 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto(sitePath());
+    await waitForCatalogHydration(page);
     await stabilizeRefreshLabel(page);
 
     await expect(page.locator(".catalog-toolbar")).toBeVisible();
@@ -207,6 +288,7 @@ for (const viewport of [
     }) => {
       await page.setViewportSize(viewport);
       await page.goto(sitePath());
+      await waitForCatalogHydration(page);
       await stabilizeRefreshLabel(page);
 
       const firstCard = page.locator(".project-card").first();
@@ -250,6 +332,7 @@ for (const scenario of [
       ...(scenario.compact ? { density: "compact" } : {}),
     });
     await page.goto(`${sitePath()}?${parameters}`);
+    await waitForCatalogHydration(page);
     if (scenario.compact) {
       await expect(page.locator("body")).toHaveClass(/compact-cards/);
       await expect(
@@ -282,6 +365,7 @@ test("fork relationship stays in the aligned license utility row", async ({
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
 
   const pair = page.locator(".relationship-pair");
@@ -330,6 +414,7 @@ test("fork relationship long names avoid control collisions", async ({
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
   await page.locator(".relationship-pair").evaluate((pair) => {
     const headings = pair.querySelectorAll(".card-title");

@@ -91,6 +91,11 @@
   --color-activity-current: #2DD4BF;
   --color-activity-recent: #829099;
   --color-activity-dormant: #5F6B72;
+  --color-tavernkeeper-teal: var(--color-accent-teal);
+  --color-tavernkeeper-orange: var(--color-functional);
+  --color-tavernkeeper-red: var(--color-danger);
+  --color-tavernkeeper-gray: var(--color-text-muted);
+  --color-tavernkeeper-unsupported: var(--color-accent-teal-border);
   --color-progress-track: #26363D;
   --color-progress-fill: #57C5A3;
   --color-license-open: #57C5A3;

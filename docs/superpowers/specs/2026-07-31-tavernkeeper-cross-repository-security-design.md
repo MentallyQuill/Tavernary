@@ -718,8 +718,9 @@ v1.0 and is identified separately from Tavernary's AGPL application code.
   red result must be preserved.
 - Super-dark-teal scan indicator: TavernKeeper does not support this source
   type. The token uses the site's deep-teal family but remains perceptible
-  against the card surface and becomes clearer on hover or keyboard focus; it
-  must not use the literal card-background value when that would disappear.
+  against the card surface and becomes clearer on fine-pointer hover or
+  keyboard focus; it must not use the literal card-background value when that
+  would disappear.
 
 Tavernary derives one state in this order:
 
@@ -741,7 +742,7 @@ Color is never the only signal. Accessible labels name the state as `TavernKeepe
 
 The scan indicator opens a non-modal anchored popover:
 
-- Desktop pointer hover
+- Desktop pointer hover only inside `@media (hover: hover) and (pointer: fine)`
 - Keyboard focus
 - Touch tap
 - Remains open while pointer or focus is within the scan indicator or panel
@@ -750,6 +751,12 @@ The scan indicator opens a non-modal anchored popover:
 - Repositions to avoid viewport collision
 - Is not clipped by card or catalog containers
 - Removes transition motion when reduced motion is requested
+
+Hover is never the only way to discover or operate the control. Focus-visible,
+pressed, selected, expanded, and loading states remain independently visible
+and usable when hover is unavailable or suppressed. Coarse-pointer controls
+provide a target of at least 44 by 44 CSS pixels without forcing the glyph
+itself to appear oversized.
 
 ### 15.4 Concise contents
 
@@ -836,6 +843,129 @@ activity strip without reusing its time-bucket semantics:
   policy version. Color is not the only history signal.
 - The full-history link opens TavernKeeper's static repository history page,
   which lists every immutable report and exact scanned SHA.
+
+### 15.6 Mobile Safari performance investigation
+
+This section records an investigation result and a design guardrail. It does
+not claim that the reported Tavernary freeze is fixed, and it does not claim an
+exact Safari root cause.
+
+#### Measured facts
+
+The August 1, 2026 measurement snapshot of the deployed Tavernary catalog used
+a 390 by 844 mobile viewport:
+
+- The unfiltered hydrated catalog rendered 317 project cards, 18,954 DOM
+  elements, 1,252 SVGs, 4,024 tooltip anchors, and an approximately 96,122 CSS
+  pixel document while only about two cards were visible.
+- The hydrated `https://tavernary.org/?q=Recursion` result rendered two cards,
+  562 DOM elements, 22 SVGs, 31 tooltip anchors, and an approximately 1,019 CSS
+  pixel document.
+- Five scripted Chromium scrolls at mobile width completed in approximately 18
+  to 24 milliseconds and did not reproduce the reported one-to-three-second
+  freeze. This does not constitute iOS Safari evidence.
+- The visible card highlight is CSS-driven. Commit `6624c683` introduced the
+  ungated relational selector
+  `.project-card:has(.project-card-primary-link:hover)` near
+  `src/styles/catalog.css:1051`, changing border and background. The separate
+  card-lift hover treatment near `src/styles/catalog.css:3336` is already gated
+  by `@media (hover: hover) and (pointer: fine)`.
+- `src/features/catalog/components/project-grid.tsx` eagerly renders every
+  result through `projects.map` near line 64.
+- At widths of 760 CSS pixels or less,
+  `src/components/ui/tooltip.tsx` refuses to open tooltips near line 66. Its
+  scroll listener exists only while a tooltip is open.
+- The current Playwright configuration defines no browser projects, and CI
+  installs Chromium only.
+
+These measurements contradict the unsupported claim that the symptom has
+already been shown to be simply excessive JavaScript. They do demonstrate a
+very large eager rendering and style surface on the unfiltered mobile catalog.
+
+#### Strong but unproven mechanism
+
+The leading hypothesis is an interaction among the extremely large eager card
+DOM, iOS Safari touch or sticky-hover target changes, relational
+`:has(...:hover)` style invalidation, and repaint or compositing work. A
+highlight appearing or changing after the thaw is consistent with Safari
+finally painting after a broader main-thread or rendering stall. It does not,
+by itself, prove that hover or any one selector is the sole cause. Only a real
+Safari trace can establish the operative mechanism.
+
+### 15.7 Panel performance and mobile implementation constraints
+
+The scan indicator and popover must satisfy all of these constraints:
+
+- Decorative hover styling is gated by
+  `@media (hover: hover) and (pointer: fine)`. Capability and feature detection,
+  including `@supports` where appropriate, is used instead of Safari
+  user-agent branching.
+- The closed-card state adds no eager per-card observer, document listener,
+  tooltip anchor, portal, popover body, history row, or SVG decoration beyond
+  the single required scan glyph. Tavernary uses one lazily mounted popover
+  surface and open-state coordination rather than one mounted panel per card.
+- Offscreen card or panel rows first use `content-visibility: auto` with a
+  viewport-specific `contain-intrinsic-size` measured from representative
+  cards. The implementation verifies focus navigation, find/search behavior,
+  scroll anchoring, and popover geometry under containment.
+- If containment is insufficient on real Safari, project-card rendering uses
+  progressive batches or windowing. The complete catalog data remains
+  available to filtering and relevance logic; rendering optimization must not
+  trim, rewrite, debounce away, or otherwise change the exact query string or
+  existing search semantics.
+- Scroll listeners are passive where applicable and exist only while a panel
+  is open or a bounded progressive renderer genuinely needs them. No catalog-
+  wide document scroll work, `preventDefault`, or restrictive `touch-action`
+  is added unless a separately justified custom gesture surface requires it.
+- Motion uses transform and opacity where motion is necessary, avoids layout-
+  driven animation, and is removed under `prefers-reduced-motion`.
+- The open surface accounts for `100dvh`, safe-area insets, on-screen browser
+  chrome, coarse-pointer use, and orientation changes. Keyboard focus order,
+  Escape, outside activation, focus return, and both report links remain
+  operable without hover.
+
+The panel has an explicit multiplicative-cost budget. Against the same catalog
+data and viewport, measurements are recorded before and after the feature for
+rendered card count, total DOM elements, SVGs, tooltip anchors, observers,
+document/window listeners, long tasks, and scroll/event latency:
+
+- A closed scan indicator may add at most four DOM elements and one scan glyph
+  per rendered card. It adds zero tooltip anchors, observers, portals, mounted
+  panel bodies, history blocks, or document/window listeners per card.
+- At most one scan popover body and its at-most-twelve history blocks are
+  mounted for the entire catalog at one time.
+- Listener and observer counts remain constant with catalog size. Any
+  positioning listener is installed only while the panel is open, is passive
+  when applicable, and is removed on close.
+- The full unfiltered catalog must show no visible multi-hundred-millisecond
+  scroll stall attributable to the panel. A repeated task, event delay, or
+  frame gap of 200 milliseconds or more during the acceptance scroll sequence
+  fails the panel gate and requires trace-guided correction.
+
+### 15.8 Browser and device acceptance
+
+Automated coverage includes Chromium, Playwright WebKit, and mobile-device
+smoke cases for touch opening, 44 CSS pixel targets, dynamic viewport and safe
+area behavior, orientation changes, keyboard/focus behavior, and reduced
+motion. Playwright WebKit is a useful regression engine; it is not branded
+Safari proof and must never be reported as such.
+
+Before release, the full deployed unfiltered catalog is tested after an idle
+pause with repeated inertial scrolling on physical iPhone and iPad devices in
+both current-major Safari and previous-major Safari. Safari Web Inspector
+Timelines and Layers evidence is captured for scripting, style recalculation,
+layout, paint, compositing, event latency, and layer behavior. The same
+sequence is run as an A/B diagnostic against `?q=Recursion`. If only the full
+catalog stalls, that strongly implicates rendering or style-invalidation scale
+but still does not, without trace evidence, prove one exact root cause.
+
+Acceptance requires no visible multi-hundred-millisecond scroll stalls, no
+hover-only affordance, coarse-pointer controls of at least 44 CSS pixels,
+correct safe-area and dynamic-viewport behavior, complete keyboard/focus
+support, correct orientation-change recovery, and reduced-motion behavior.
+Both current and previous-major iPhone and iPad Safari evidence are required;
+an implementation that passes only desktop Chromium or Playwright WebKit is
+not release-ready.
 
 ## 16. Failure, Retry, and Circuit-Breaker Policy
 
@@ -1063,7 +1193,17 @@ The public report includes sanitized per-report usage totals. Operational failur
 - One report shared across multiple cards from one source
 - Inline title/scan indicator layout and long-title ellipsis
 - Whole-card navigation without nested controls
-- Hover, focus, touch, Escape, outside click, viewport collision, and reduced motion
+- Fine-pointer-gated hover plus independent focus-visible, pressed, selected,
+  expanded, loading, touch, Escape, outside-click, viewport-collision, and
+  reduced-motion behavior
+- Coarse-pointer 44 CSS pixel targets, safe areas, dynamic viewports, and
+  orientation changes
+- Constant-size listener/observer/portal behavior and the closed-card DOM/SVG
+  multiplicative-cost budget on a full synthetic catalog
+- Explicit Chromium, Playwright WebKit, and mobile-device smoke projects, with
+  WebKit results labeled as regression evidence rather than branded Safari proof
+- Full-catalog versus `?q=Recursion` idle-scroll A/B measurements without query
+  mutation or search-semantic drift
 - Static-export presence of the target manifest
 - Staff-targeted GitHub-URL validation, targeted refresh, exact public manifest
   verification, and non-authoritative repository-ID dispatch
@@ -1077,7 +1217,12 @@ The public report includes sanitized per-report usage totals. Operational failur
 - Required-tool and model failures publish nothing.
 - Wake-up and scheduled recovery both succeed in each direction.
 - Tavernary never derives teal from an unmatched or unhealthy SHA.
-- Responsive and keyboard tests pass for inline scan indicators and popovers.
+- Responsive, keyboard, pointer-capability, reduced-motion, containment, and
+  multiplicative-cost tests pass for inline scan indicators and popovers.
+- Physical iPhone and iPad current-major and previous-major Safari validation
+  passes on the full unfiltered catalog and `?q=Recursion`, with Safari Web
+  Inspector Timelines and Layers evidence and no visible multi-hundred-
+  millisecond scroll stall. Playwright WebKit alone does not satisfy this gate.
 - Development canary reports are inspected before the first live targeted
   publications.
 - The production targeted and backlog paths publish complete reports without
@@ -1154,6 +1299,10 @@ The system is complete only when:
     and production treats every GitHub token as opaque.
 13. Cross-repository, hostile-fixture, accessibility, static-export, and
     workflow-permission gates pass.
+14. The scan indicator and popover meet their per-card DOM/SVG and constant-
+    listener budgets, add no hover-only affordance, and pass current-major and
+    previous-major physical iPhone and iPad Safari acceptance without a visible
+    multi-hundred-millisecond scroll stall.
 
 ## 25. References
 

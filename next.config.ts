@@ -7,6 +7,7 @@ const projectPage =
   !repositoryName.endsWith(".github.io");
 const basePath =
   process.env.TAVERNARY_BASE_PATH ?? (projectPage ? `/${repositoryName}` : "");
+const turbopackRoot = process.env.TAVERNARY_TURBOPACK_ROOT;
 
 const config: NextConfig = {
   output: "export",
@@ -15,6 +16,7 @@ const config: NextConfig = {
   assetPrefix: basePath || undefined,
   images: { unoptimized: true },
   allowedDevOrigins: ["127.0.0.1"],
+  ...(turbopackRoot ? { turbopack: { root: turbopackRoot } } : {}),
 };
 
 export default config;

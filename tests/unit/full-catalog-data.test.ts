@@ -429,12 +429,16 @@ describe("full catalog data", () => {
       const snapshot = snapshotsBySource.get(record?.source_id ?? "");
 
       if (source?.type !== "github") {
-        expect(project.tavernKeeper, project.id).toBeNull();
+        expect(project.tavernKeeper, project.id).toMatchObject({
+          state: "unsupported",
+          reason: "unsupported",
+        });
         continue;
       }
       if (
-        project.tavernKeeper?.state === "green" ||
-        project.tavernKeeper?.state === "yellow"
+        project.tavernKeeper?.state === "teal" ||
+        (project.tavernKeeper?.state === "red" &&
+          project.tavernKeeper.reason === "current")
       ) {
         expect(source.status, project.id).toBe("active");
         expect(snapshot?.source_health, project.id).toBe("healthy");
@@ -442,7 +446,7 @@ describe("full catalog data", () => {
         expect(project.tavernKeeper.currentSha, project.id).toBe(
           snapshot?.repository.head_sha,
         );
-        expect(project.tavernKeeper.report.scannedSha, project.id).toBe(
+        expect(project.tavernKeeper.report?.scannedSha, project.id).toBe(
           snapshot?.repository.head_sha,
         );
       }

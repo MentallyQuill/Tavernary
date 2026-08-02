@@ -104,16 +104,30 @@ export async function verifyHelpStaticRoutes(outputDirectory = "out") {
 }
 
 export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
-  const [manifest, schema] = await Promise.all([
+  const [manifest, contract] = await Promise.all([
     readFile(
       resolve(outputDirectory, "security/tavernkeeper-targets.json"),
       "utf8",
     ).then((contents) => JSON.parse(contents)),
     readFile(
-      resolve(rootDirectory, "data/schemas/tavernkeeper-targets.schema.json"),
+      resolve(rootDirectory, "config/tavernkeeper-contract.json"),
       "utf8",
     ).then((contents) => JSON.parse(contents)),
   ]);
+  const version = contract.target_manifest_schema_version;
+  if (version !== 1 && version !== 2)
+    throw new Error("Tracked TavernKeeper target contract version is invalid");
+  const schema = JSON.parse(
+    await readFile(
+      resolve(
+        rootDirectory,
+        version === 1
+          ? "data/schemas/tavernkeeper-targets.schema.json"
+          : "data/schemas/tavernkeeper-targets.v2.schema.json",
+      ),
+      "utf8",
+    ),
+  );
   const ajv = new Ajv({ allErrors: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);

@@ -1,33 +1,40 @@
 import { ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION } from "../../../scripts/security/tavernkeeper-reports.mjs";
 
+export type TavernKeeperVisualState =
+  "teal" | "orange" | "red" | "gray" | "unsupported";
+
+export type TavernKeeperStatusReason =
+  | "unsupported"
+  | "current"
+  | "outdated-concern"
+  | "outdated-clean"
+  | "unscanned"
+  | "source-unavailable";
+
 export interface TavernKeeperReportSummary {
   reportId: string;
-  result: "green" | "yellow";
+  result: "teal" | "red";
   scannedSha: string;
   scannedAt: string;
+  mode: "standard" | "deep";
+  scannerPolicyVersion: string;
   reportUrl: string;
-  severity: {
+  historyUrl: string;
+  actionableSeverity: {
     critical: number;
     high: number;
     medium: number;
-    low: number;
-    info: number;
   };
 }
 
-export type TavernKeeperCardStatus =
-  | {
-      state: "green" | "yellow";
-      reason: "current";
-      currentSha: string;
-      report: TavernKeeperReportSummary;
-    }
-  | {
-      state: "gray";
-      reason: "pending" | "outdated" | "source-unavailable";
-      currentSha: string | null;
-      report: TavernKeeperReportSummary | null;
-    };
+export interface TavernKeeperCardStatus {
+  state: TavernKeeperVisualState;
+  reason: TavernKeeperStatusReason;
+  currentSha: string | null;
+  report: TavernKeeperReportSummary | null;
+  history: TavernKeeperReportSummary[];
+  historyUrl: string | null;
+}
 
 interface TavernKeeperSource {
   id?: string;
@@ -46,6 +53,8 @@ interface TavernKeeperSnapshot {
 
 export interface TavernKeeperPreferredReport {
   report_id: string;
+  report_version: number;
+  supersedes_report_id: string | null;
   source_id: string;
   provider: string;
   repository_id: number;
@@ -53,11 +62,20 @@ export interface TavernKeeperPreferredReport {
   target_sha: string;
   scanner_policy_version: string;
   completed_at: string;
-  result: "green" | "yellow";
+  mode: "standard" | "deep";
+  result: "teal" | "red";
   finding_counts: {
-    severity: TavernKeeperReportSummary["severity"];
+    actionable_severity: TavernKeeperReportSummary["actionableSeverity"];
+    severity: {
+      critical: number;
+      high: number;
+      medium: number;
+      low: number;
+      info: number;
+    };
   };
   report_url: string;
+  history_url: string;
 }
 
 const fullShaPattern = /^[0-9a-f]{40}$/u;
@@ -103,13 +121,13 @@ function currentShaFor(
 
 function isPreferredReportForSource(
   report: TavernKeeperPreferredReport,
-  source: TavernKeeperSource,
+  source: ActiveGithubSource,
 ) {
   return (
-    report.provider === "github" &&
-    report.source_id === source.id &&
     report.repository_id === source.repository_id &&
+    report.source_id === source.id &&
     report.repository === source.repository &&
+    report.provider === "github" &&
     report.scanner_policy_version === ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
   );
 }
@@ -122,8 +140,11 @@ function summarize(
     result: report.result,
     scannedSha: report.target_sha,
     scannedAt: report.completed_at,
+    mode: report.mode,
+    scannerPolicyVersion: report.scanner_policy_version,
     reportUrl: report.report_url,
-    severity: report.finding_counts.severity,
+    historyUrl: report.history_url,
+    actionableSeverity: report.finding_counts.actionable_severity,
   };
 }
 
@@ -174,12 +195,54 @@ function compareRfc3339(left: string, right: string) {
   );
 }
 
+function compareReports(
+  left: TavernKeeperPreferredReport,
+  right: TavernKeeperPreferredReport,
+) {
+  return (
+    compareRfc3339(left.completed_at, right.completed_at) ||
+    left.report_id.localeCompare(right.report_id)
+  );
+}
+
 function newestReport(reports: TavernKeeperPreferredReport[]) {
-  return [...reports].sort(
-    (left, right) =>
-      compareRfc3339(right.completed_at, left.completed_at) ||
-      right.report_id.localeCompare(left.report_id),
-  )[0];
+  return [...reports].sort(compareReports).at(-1);
+}
+
+function compactHistory(reports: TavernKeeperPreferredReport[]) {
+  return [...reports].sort(compareReports).slice(-12).map(summarize);
+}
+
+function preferredConclusions(reports: TavernKeeperPreferredReport[]) {
+  const preferred = new Map<string, TavernKeeperPreferredReport>();
+  for (const report of reports) {
+    const identity = [report.target_sha, report.scanner_policy_version].join(
+      "\u0000",
+    );
+    const current = preferred.get(identity);
+    if (
+      !current ||
+      (report.mode === "deep" && current.mode !== "deep") ||
+      (report.mode === current.mode &&
+        (report.report_version > current.report_version ||
+          (report.report_version === current.report_version &&
+            compareReports(report, current) > 0)))
+    ) {
+      preferred.set(identity, report);
+    }
+  }
+  return [...preferred.values()];
+}
+
+function unsupportedStatus(): TavernKeeperCardStatus {
+  return {
+    state: "unsupported",
+    reason: "unsupported",
+    currentSha: null,
+    report: null,
+    history: [],
+    historyUrl: null,
+  };
 }
 
 export function deriveTavernKeeperCardStatus({
@@ -190,26 +253,34 @@ export function deriveTavernKeeperCardStatus({
   source: TavernKeeperSource | null | undefined;
   snapshot: TavernKeeperSnapshot | null | undefined;
   preferredReports: readonly TavernKeeperPreferredReport[];
-}): TavernKeeperCardStatus | null {
+}): TavernKeeperCardStatus {
   if (!isActiveGithubSource(source)) {
-    return null;
+    return unsupportedStatus();
   }
 
+  const reports = preferredConclusions(
+    preferredReports.filter((report) =>
+      isPreferredReportForSource(report, source),
+    ),
+  );
+  const newest = newestReport(reports);
+  const history = compactHistory(reports);
+  const historyUrl = newest?.history_url ?? null;
   const currentSha = currentShaFor(source, snapshot);
+
   if (!currentSha) {
     return {
-      state: "gray",
+      state: newest?.result === "red" ? "red" : "gray",
       reason: "source-unavailable",
       currentSha: null,
-      report: null,
+      report: newest ? summarize(newest) : null,
+      history,
+      historyUrl,
     };
   }
 
-  const reports = preferredReports.filter((report) =>
-    isPreferredReportForSource(report, source),
-  );
-  const currentReport = reports.find(
-    (report) => report.target_sha === currentSha,
+  const currentReport = newestReport(
+    reports.filter((report) => report.target_sha === currentSha),
   );
   if (currentReport) {
     return {
@@ -217,23 +288,28 @@ export function deriveTavernKeeperCardStatus({
       reason: "current",
       currentSha,
       report: summarize(currentReport),
+      history,
+      historyUrl,
     };
   }
 
-  const olderReport = newestReport(reports);
-  if (olderReport) {
+  if (newest) {
     return {
-      state: "gray",
-      reason: "outdated",
+      state: newest.result === "red" ? "red" : "orange",
+      reason: newest.result === "red" ? "outdated-concern" : "outdated-clean",
       currentSha,
-      report: summarize(olderReport),
+      report: summarize(newest),
+      history,
+      historyUrl,
     };
   }
 
   return {
     state: "gray",
-    reason: "pending",
+    reason: "unscanned",
     currentSha,
     report: null,
+    history: [],
+    historyUrl: null,
   };
 }

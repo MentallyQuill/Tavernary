@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,8 +15,11 @@ import {
 import { importTavernKeeperReports } from "../../scripts/security/import-tavernkeeper-reports.mjs";
 import { validateStoredTavernKeeperReports } from "../../scripts/security/validate-tavernkeeper-reports.mjs";
 
-const fixturePath = resolve(
+const legacyFixturePath = resolve(
   "tests/fixtures/tavernkeeper/report-index.valid.json",
+);
+const fixturePath = resolve(
+  "tests/fixtures/tavernkeeper/report-index.v2.valid.json",
 );
 const producerRoot = "F:/git/TavernKeeper/.worktrees/tavernkeeper-v1";
 const producerSchemaPath = resolve(
@@ -92,6 +96,20 @@ async function storedSummaryRoot(
 }
 
 describe("TavernKeeper report-index importer", () => {
+  test("pins the vendored V2 schema and fixture to reviewed producer digests", async () => {
+    const [schema, index] = await Promise.all([
+      readFile("data/schemas/tavernkeeper-report-index.v2.schema.json"),
+      readFile(fixturePath),
+    ]);
+
+    expect(createHash("sha256").update(schema).digest("hex")).toBe(
+      "4b4696e1775bd9b41ff645f603bb0639acabc79c813f30d67fcbc8a748488e5f",
+    );
+    expect(createHash("sha256").update(index).digest("hex")).toBe(
+      "8bacda5dc4a8ae7c6c3ab6577e7e9c30bb89045b0a09d7c82d6c2c02a31e4503",
+    );
+  });
+
   test.skipIf(
     !existsSync(producerSchemaPath) || !existsSync(producerFixturePath),
   )(
@@ -100,7 +118,7 @@ describe("TavernKeeper report-index importer", () => {
       const [schema, producerSchema, index, producerIndex] = await Promise.all([
         readFile("data/schemas/tavernkeeper-report-index.schema.json", "utf8"),
         readFile(producerSchemaPath, "utf8"),
-        readFile(fixturePath, "utf8"),
+        readFile(legacyFixturePath, "utf8"),
         readFile(producerFixturePath, "utf8"),
       ]);
 
@@ -119,14 +137,76 @@ describe("TavernKeeper report-index importer", () => {
     ).resolves.toEqual(index);
   });
 
-  test("accepts RFC3339 UTC-offset timestamps required by the V1 schema", async () => {
+  test("accepts a strict V2 automated report index", async () => {
+    const index = await fixture();
+
+    expect(validateReportIndex(index, registry)).toEqual(index);
+  });
+
+  test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
+    const index = await fixture();
+    index.reports[0].finding_counts.actionable_severity.high = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects impossible teal totals whose marginals require an actionable finding", async () => {
+    const index = await fixture();
+    index.reports[0].result = "teal";
+    index.reports[0].finding_counts.actionable = 0;
+    index.reports[0].finding_counts.actionable_severity.high = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects impossible red totals with no review-confidence finding", async () => {
+    const index = await fixture();
+    index.reports[0].finding_counts.confidence = {
+      high: 0,
+      medium: 0,
+      low: 1,
+    };
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects legacy result and disposition fields from V2", async () => {
+    const index = await fixture();
+    index.reports[0].result = "yellow";
+    index.reports[0].finding_counts.disposition = {
+      active: 1,
+      dismissed: 0,
+    };
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
+  });
+
+  test("accepts only the frozen empty V1 index during migration", async () => {
+    const emptyV1 = {
+      schema_version: 1,
+      generated_at: "2026-07-31T12:10:00.000Z",
+      reports: [],
+    };
+    const populatedV1 = JSON.parse(await readFile(legacyFixturePath, "utf8"));
+
+    expect(validateReportIndex(emptyV1, registry)).toEqual(emptyV1);
+    expect(() => validateReportIndex(populatedV1, registry)).toThrow(
+      /migration/u,
+    );
+  });
+
+  test("requires canonical UTC timestamps in V2", async () => {
     const index = await fixture();
     index.generated_at = "2026-07-31T12:10:00+00:00";
     index.reports[0].completed_at = "2026-07-31T06:05:00-06:00";
 
-    expect(validateReportIndex(index, registry)).toMatchObject({
-      generated_at: "2026-07-31T12:10:00+00:00",
-    });
+    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
   });
 
   test("rejects cross-origin redirects", async () => {
@@ -450,6 +530,8 @@ describe("TavernKeeper report-index importer", () => {
     index.reports[0].source_id = "github-99";
     index.reports[0].report_url =
       "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/";
+    index.reports[0].history_url =
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/history/";
 
     expect(validateReportIndex(index, registry).reports).toEqual([]);
   });

@@ -32,7 +32,11 @@ test("exports the catalog schema-v6 scan-state contract", () => {
   expect(
     generatedCatalog.projects
       .filter(({ sourceStatus }) => sourceStatus === "manual")
-      .every(({ tavernKeeper }) => tavernKeeper === null),
+      .every(
+        ({ tavernKeeper }) =>
+          tavernKeeper?.state === "unsupported" &&
+          tavernKeeper.reason === "unsupported",
+      ),
   ).toBe(true);
 });
 

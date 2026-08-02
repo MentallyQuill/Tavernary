@@ -1419,59 +1419,50 @@
   width: 18px;
   height: 18px;
   flex: none;
-  place-items: center;
-}
-
-.tavernkeeper-scan-indicator-green,
-.tavernkeeper-scan-indicator-yellow,
-.tavernkeeper-scan-indicator-gray {
-  position: relative;
-  display: grid;
-  width: 18px;
-  height: 18px;
-  flex: none;
   border: 0;
+  border-radius: 2px;
   padding: 0;
   background: transparent;
   cursor: pointer;
   place-items: center;
-  transition: color var(--kit-motion-state) var(--kit-motion-ease);
+  transition:
+    color var(--kit-motion-state) var(--kit-motion-ease),
+    transform var(--kit-motion-state) var(--kit-motion-ease);
 }
 
-.tavernkeeper-scan-indicator-green {
-  color: var(--color-success-text);
+.tavernkeeper-scan-indicator-teal {
+  color: var(--color-tavernkeeper-teal);
 }
 
-.tavernkeeper-scan-indicator-yellow {
-  color: var(--color-warning-text);
+.tavernkeeper-scan-indicator-orange {
+  color: var(--color-tavernkeeper-orange);
+}
+
+.tavernkeeper-scan-indicator-red {
+  color: var(--color-tavernkeeper-red);
 }
 
 .tavernkeeper-scan-indicator-gray {
-  color: var(--color-text-muted);
+  color: var(--color-tavernkeeper-gray);
 }
 
-.tavernkeeper-scan-indicator-green::before,
-.tavernkeeper-scan-indicator-yellow::before,
-.tavernkeeper-scan-indicator-gray::before {
-  position: absolute;
-  inset: -7px;
-  content: "";
+.tavernkeeper-scan-indicator-unsupported {
+  color: var(--color-tavernkeeper-unsupported);
 }
 
-.tavernkeeper-scan-indicator-green svg,
-.tavernkeeper-scan-indicator-yellow svg,
-.tavernkeeper-scan-indicator-gray svg {
+.tavernkeeper-scan-indicator-trigger svg {
   display: block;
   width: 16px;
   height: 16px;
 }
 
-.tavernkeeper-scan-indicator-green:focus-visible,
-.tavernkeeper-scan-indicator-yellow:focus-visible,
-.tavernkeeper-scan-indicator-gray:focus-visible {
-  border-radius: 2px;
+.tavernkeeper-scan-indicator-trigger:focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 4px;
+}
+
+.tavernkeeper-scan-indicator-trigger:is(:active, [aria-expanded="true"]) {
+  transform: scale(0.94);
 }
 
 .tavernkeeper-popover {
@@ -1479,11 +1470,16 @@
   z-index: 120;
   display: grid;
   width: min(280px, calc(100vw - 16px));
+  max-height: calc(
+    100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+  );
   gap: 8px;
   box-sizing: border-box;
   border: 1px solid var(--color-border-strong);
   border-radius: 8px;
   padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   color: var(--color-text-primary);
   background: var(--color-bg-surface-raised);
   box-shadow: var(--shadow-overlay);
@@ -1511,8 +1507,10 @@
   font-weight: 650;
 }
 
-.tavernkeeper-popover a:is(:hover, :focus-visible) {
+.tavernkeeper-popover a:focus-visible {
   color: var(--color-link-hover);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
 .tavernkeeper-severity-counts {
@@ -1523,10 +1521,49 @@
   font-variant-numeric: tabular-nums;
 }
 
+.tavernkeeper-history-strip {
+  display: grid;
+  width: min(100%, 94px);
+  height: 9px;
+  grid-template-columns: repeat(12, minmax(3px, 1fr));
+  align-items: center;
+  gap: 2px;
+}
+
+.tavernkeeper-history-strip i {
+  width: 100%;
+  height: 8px;
+  border-radius: 1px;
+}
+
+.tavernkeeper-history-teal {
+  background: var(--color-tavernkeeper-teal);
+}
+
+.tavernkeeper-history-red {
+  background: var(--color-tavernkeeper-red);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tavernkeeper-scan-indicator-trigger:hover {
+    transform: scale(1.08);
+  }
+
+  .tavernkeeper-popover a:hover {
+    color: var(--color-link-hover);
+  }
+}
+
+@media (pointer: coarse) {
+  .tavernkeeper-scan-indicator-trigger::before {
+    position: absolute;
+    inset: -14px;
+    content: "";
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tavernkeeper-scan-indicator-green,
-  .tavernkeeper-scan-indicator-yellow,
-  .tavernkeeper-scan-indicator-gray,
+  .tavernkeeper-scan-indicator-trigger,
   .tavernkeeper-popover {
     transition: none;
   }
@@ -1787,7 +1824,9 @@
 }
 
 .compact-cards .card-title-row {
+  box-sizing: border-box;
   margin: 8px 0 0;
+  padding-right: 40px;
 }
 
 .compact-cards .project-card .card-title-row h2 {
@@ -2659,6 +2698,8 @@
   position: relative;
   display: grid;
   min-width: 0;
+  contain-intrinsic-size: auto 280px;
+  content-visibility: auto;
   transition: transform var(--kit-motion-card) var(--kit-motion-ease);
 }
 

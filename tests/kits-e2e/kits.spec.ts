@@ -868,6 +868,10 @@ test("compact cards keep title, scan, and Kit actions independently usable", asy
 }) => {
   await page.setViewportSize({ width: 1024, height: 800 });
   await page.goto(sitePath());
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+  );
 
   const shell = page.locator(".project-card-shell").first();
   const license = shell.locator(".license");
@@ -947,19 +951,19 @@ test("compact cards keep title, scan, and Kit actions independently usable", asy
     controlRightGap: 4,
   });
 
-  await expect(
-    shell.evaluate((element) => {
-      const trigger = element.querySelector<HTMLElement>(
-        ".tavernkeeper-scan-indicator-trigger",
-      );
-      if (!trigger) throw new Error("Missing compact scan trigger");
-      const bounds = trigger.getBoundingClientRect();
-      return document.elementFromPoint(
-        bounds.left + bounds.width / 2,
-        bounds.top + bounds.height / 2,
-      )?.className;
-    }),
-  ).resolves.toContain("tavernkeeper-scan-indicator-trigger");
+  const scanHitTargetsTrigger = await shell.evaluate((element) => {
+    const trigger = element.querySelector<HTMLElement>(
+      ".tavernkeeper-scan-indicator-trigger",
+    );
+    if (!trigger) throw new Error("Missing compact scan trigger");
+    const bounds = trigger.getBoundingClientRect();
+    const hitTarget = document.elementFromPoint(
+      bounds.left + bounds.width / 2,
+      bounds.top + bounds.height / 2,
+    );
+    return hitTarget === trigger || trigger.contains(hitTarget);
+  });
+  expect(scanHitTargetsTrigger).toBe(true);
 
   await scanTrigger.focus();
   await expect(scanTrigger).toHaveAttribute("aria-expanded", "true");

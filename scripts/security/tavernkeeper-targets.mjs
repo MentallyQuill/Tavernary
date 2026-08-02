@@ -10,16 +10,89 @@ const defaultOutputPath = resolve(
   "public/security/tavernkeeper-targets.json",
 );
 const fullShaPattern = /^[0-9a-f]{40}$/u;
+const projectKinds = new Set(["extension", "frontend", "preset"]);
+const collator = new Intl.Collator("en", { sensitivity: "base" });
+
+function validateContractVersion(value) {
+  if (value !== 1 && value !== 2)
+    throw new Error("TavernKeeper target contract version must be 1 or 2.");
+  return value;
+}
+
+export function popularityTopProjectIds(projects, limit = 30) {
+  if (!Number.isSafeInteger(limit) || limit < 1)
+    throw new Error("TavernKeeper popularity limit must be positive.");
+  return new Set(
+    [...projects]
+      .sort((left, right) => {
+        const leftScore = left.community?.aggregate ?? null;
+        const rightScore = right.community?.aggregate ?? null;
+        if (leftScore === null && rightScore !== null) return 1;
+        if (leftScore !== null && rightScore === null) return -1;
+        if (
+          leftScore !== null &&
+          rightScore !== null &&
+          leftScore !== rightScore
+        )
+          return rightScore - leftScore;
+        return (
+          collator.compare(left.name, right.name) ||
+          collator.compare(left.id, right.id)
+        );
+      })
+      .slice(0, limit)
+      .map(({ id }) => id),
+  );
+}
+
+function metadataBySource(projects, publishedSourceIds, topProjectIds) {
+  const metadata = new Map();
+  for (const project of projects) {
+    if (!publishedSourceIds.has(project.source_id)) continue;
+    if (
+      typeof project.id !== "string" ||
+      typeof project.source_id !== "string" ||
+      !projectKinds.has(project.kind)
+    )
+      throw new Error("Published TavernKeeper project metadata is invalid.");
+    const catalogedAt = new Date(project.cataloged_at);
+    if (!Number.isFinite(catalogedAt.getTime()))
+      throw new Error("Published TavernKeeper catalog date is invalid.");
+    const current = metadata.get(project.source_id) ?? {
+      kinds: new Set(),
+      firstCatalogedAt: null,
+      top30: false,
+    };
+    current.kinds.add(project.kind);
+    const canonicalDate = catalogedAt.toISOString();
+    if (
+      current.firstCatalogedAt === null ||
+      canonicalDate < current.firstCatalogedAt
+    )
+      current.firstCatalogedAt = canonicalDate;
+    if (topProjectIds.has(project.id)) current.top30 = true;
+    metadata.set(project.source_id, current);
+  }
+  return metadata;
+}
 
 export function buildTavernKeeperTargets({
+  contractVersion,
   sources,
   snapshots,
+  projects,
+  topProjectIds,
   publishedSourceIds,
   generatedAt,
 }) {
+  const version = validateContractVersion(contractVersion);
   const snapshotsBySource = new Map(
     snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
+  const projectMetadata =
+    version === 2
+      ? metadataBySource(projects, publishedSourceIds, topProjectIds)
+      : new Map();
   const candidates = sources
     .flatMap((source) => {
       const snapshot = snapshotsBySource.get(source.id);
@@ -45,15 +118,28 @@ export function buildTavernKeeperTargets({
       ) {
         return [];
       }
-
+      const identity = {
+        source_id: source.id,
+        provider: "github",
+        repository_id: source.repository_id,
+        repository: source.repository,
+        target_sha: snapshotRepository.head_sha,
+        canonical_url: canonicalSourceUrl(source),
+      };
+      if (version === 1) return [identity];
+      const metadata = projectMetadata.get(source.id);
+      if (metadata === undefined || metadata.firstCatalogedAt === null)
+        throw new Error(
+          "V2 TavernKeeper target is missing published project metadata.",
+        );
       return [
         {
-          source_id: source.id,
-          provider: "github",
-          repository_id: source.repository_id,
-          repository: source.repository,
-          target_sha: snapshotRepository.head_sha,
-          canonical_url: canonicalSourceUrl(source),
+          ...identity,
+          project_kinds: [...metadata.kinds].sort(),
+          catalog_priority: {
+            top_30: metadata.top30,
+            first_cataloged_at: metadata.firstCatalogedAt,
+          },
         },
       ];
     })
@@ -71,12 +157,7 @@ export function buildTavernKeeperTargets({
       repositories.push(candidate);
       continue;
     }
-    if (
-      existing.source_id !== candidate.source_id ||
-      existing.repository !== candidate.repository ||
-      existing.target_sha !== candidate.target_sha ||
-      existing.canonical_url !== candidate.canonical_url
-    ) {
+    if (JSON.stringify(existing) !== JSON.stringify(candidate)) {
       throw new Error(
         "TavernKeeper targets contain a conflicting duplicate repository id",
       );
@@ -84,7 +165,7 @@ export function buildTavernKeeperTargets({
   }
 
   return {
-    schema_version: 1,
+    schema_version: version,
     generated_at: new Date(generatedAt).toISOString(),
     repositories,
   };

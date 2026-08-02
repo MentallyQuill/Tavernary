@@ -30,6 +30,11 @@ const heading = (count: number) =>
 const repositoryRoot = resolve(import.meta.dirname, "../..");
 const readRepositoryFile = (path: string) =>
   readFileSync(resolve(repositoryRoot, path), "utf8");
+const tavernKeeperTargetVersion = (
+  JSON.parse(readRepositoryFile("config/tavernkeeper-contract.json")) as {
+    target_manifest_schema_version: 1 | 2;
+  }
+).target_manifest_schema_version;
 
 const temporaryExports: string[] = [];
 
@@ -81,6 +86,38 @@ function tavernKeeperExport(manifest: unknown) {
     JSON.stringify(manifest),
   );
   return outputDirectory;
+}
+
+function validTavernKeeperRepository(overrides: Record<string, unknown> = {}) {
+  const repository = {
+    source_id: "github-42",
+    provider: "github",
+    repository_id: 42,
+    repository: "fixture/catalog",
+    target_sha: "a".repeat(40),
+    canonical_url: "https://github.com/fixture/catalog",
+    ...overrides,
+  };
+  return tavernKeeperTargetVersion === 2
+    ? {
+        ...repository,
+        project_kinds: ["extension"],
+        catalog_priority: {
+          top_30: false,
+          first_cataloged_at: "2026-07-01T00:00:00.000Z",
+        },
+        ...overrides,
+      }
+    : repository;
+}
+
+function validTavernKeeperManifest(overrides: Record<string, unknown> = {}) {
+  return {
+    schema_version: tavernKeeperTargetVersion,
+    generated_at: "2026-07-31T12:00:00.000Z",
+    repositories: [validTavernKeeperRepository()],
+    ...overrides,
+  };
 }
 
 describe("verifyStaticExport", () => {
@@ -195,45 +232,26 @@ describe("verifyStaticExport", () => {
   test("requires the exported TavernKeeper target manifest to exist and validate", async () => {
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({
-          schema_version: 1,
-          generated_at: "2026-07-31T12:00:00.000Z",
-          repositories: [
-            {
-              source_id: "github-42",
-              provider: "github",
-              repository_id: 42,
-              repository: "fixture/catalog",
-              target_sha: "a".repeat(40),
-              canonical_url: "https://github.com/fixture/catalog",
-            },
-          ],
-        }),
+        tavernKeeperExport(validTavernKeeperManifest()),
       ),
     ).resolves.toBeUndefined();
 
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({ schema_version: 1, repositories: [] }),
+        tavernKeeperExport({
+          schema_version: tavernKeeperTargetVersion,
+          repositories: [],
+        }),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });
 
   test("rejects an invalid TavernKeeper repository", async () => {
-    const manifest = {
-      schema_version: 1,
-      generated_at: "2026-07-31T12:00:00.000Z",
+    const manifest = validTavernKeeperManifest({
       repositories: [
-        {
-          source_id: "github-42",
-          provider: "github",
-          repository_id: 42,
-          repository: "not a repository",
-          target_sha: "a".repeat(40),
-          canonical_url: "https://github.com/fixture/catalog",
-        },
+        validTavernKeeperRepository({ repository: "not a repository" }),
       ],
-    };
+    });
     await expect(
       verifyTavernKeeperStaticExport(tavernKeeperExport(manifest)),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
@@ -242,50 +260,31 @@ describe("verifyStaticExport", () => {
   test("rejects unexpected TavernKeeper manifest properties", async () => {
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({
-          schema_version: 1,
-          generated_at: "2026-07-31T12:00:00.000Z",
-          repositories: [
-            {
-              source_id: "github-42",
-              provider: "github",
-              repository_id: 42,
-              repository: "fixture/catalog",
-              target_sha: "a".repeat(40),
-              canonical_url: "https://github.com/fixture/catalog",
-              unexpected: true,
-            },
-          ],
-        }),
+        tavernKeeperExport(
+          validTavernKeeperManifest({
+            repositories: [validTavernKeeperRepository({ unexpected: true })],
+          }),
+        ),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });
 
   test("rejects invalid TavernKeeper date-time and URI formats", async () => {
-    const validRepository = {
-      source_id: "github-42",
-      provider: "github",
-      repository_id: 42,
-      repository: "fixture/catalog",
-      target_sha: "a".repeat(40),
-      canonical_url: "https://github.com/fixture/catalog",
-    };
+    const validRepository = validTavernKeeperRepository();
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({
-          schema_version: 1,
-          generated_at: "not-a-date",
-          repositories: [validRepository],
-        }),
+        tavernKeeperExport(
+          validTavernKeeperManifest({ generated_at: "not-a-date" }),
+        ),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
     await expect(
       verifyTavernKeeperStaticExport(
-        tavernKeeperExport({
-          schema_version: 1,
-          generated_at: "2026-07-31T12:00:00.000Z",
-          repositories: [{ ...validRepository, canonical_url: "not-a-uri" }],
-        }),
+        tavernKeeperExport(
+          validTavernKeeperManifest({
+            repositories: [{ ...validRepository, canonical_url: "not-a-uri" }],
+          }),
+        ),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
   });

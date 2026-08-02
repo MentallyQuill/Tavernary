@@ -136,23 +136,26 @@ describe("project card", () => {
         project={project("scan-indicator-card", {
           name: "A Very Long Project Name",
           tavernKeeper: {
-            state: "green",
+            state: "teal",
             reason: "current",
             currentSha: "a".repeat(40),
             report: {
               reportId: "report-1",
-              result: "green",
+              result: "teal",
               scannedSha: "a".repeat(40),
               scannedAt: "2026-07-31T00:00:00Z",
+              mode: "standard",
+              scannerPolicyVersion: "1",
               reportUrl: "https://example.com/tavernkeeper/report-1",
-              severity: {
+              historyUrl: "https://example.com/tavernkeeper/history",
+              actionableSeverity: {
                 critical: 0,
                 high: 0,
                 medium: 0,
-                low: 0,
-                info: 0,
               },
             },
+            history: [],
+            historyUrl: "https://example.com/tavernkeeper/history",
           },
         })}
         now="2026-07-23T00:00:00Z"

@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-07-31T12:00:00.000Z",
+  "repositories": [
+    {
+      "source_id": "github-42",
+      "provider": "github",
+      "repository_id": 42,
+      "repository": "owner/repo",
+      "target_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "canonical_url": "https://github.com/owner/repo",
+      "project_kinds": ["extension", "preset"],
+      "catalog_priority": {
+        "top_30": false,
+        "first_cataloged_at": "2026-07-01T00:00:00.000Z"
+      }
+    }
+  ]
+}
