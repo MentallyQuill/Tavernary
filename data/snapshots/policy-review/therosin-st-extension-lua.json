@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "therosin-st-extension-lua",
+  "source_id": "github-826008663",
+  "source_identity": "github:therosin/st-extension-lua",
+  "evidence_fingerprint": "d8360ee25270dbf27287520ca011c2e4358b6e5fa210c573c331f06335d1cfa6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:37:33.501Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:37:33.501Z"
+  },
+  "maintenance_issue_number": null
+}
