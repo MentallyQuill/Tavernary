@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "kurohomeless-sillytavern-token-and-cost-statistics",
+  "source_id": "github-1247868572",
+  "source_identity": "github:kurohomeless/sillytavern-token-and-cost-statistics",
+  "evidence_fingerprint": "595d25d7b9485b8317ca9350dc0b9a72b45fc946d4803483c4467694ca0491b5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:35:45.996Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:35:45.996Z"
+  },
+  "maintenance_issue_number": null
+}
