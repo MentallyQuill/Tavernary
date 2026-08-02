@@ -44,6 +44,22 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   });
 }
 
+async function stabilizeProjectActivityAge(card: Locator) {
+  const age = card.locator(".commit-age");
+  await expect(age).toHaveCount(1);
+  await age.evaluate((label) => {
+    label.textContent = "10d ago";
+  });
+}
+
+async function stabilizeScanMetadata(popover: Locator) {
+  const metadata = popover.locator("p").filter({ hasText: /^Scanned /u });
+  await expect(metadata).toHaveCount(1);
+  await metadata.evaluate((line) => {
+    line.textContent = "Scanned 5d28bb1 on July 13, 2026";
+  });
+}
+
 async function expectNoHorizontalOverflow(page: Page) {
   expect(
     await page.evaluate(
@@ -210,6 +226,8 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
     .first();
   const card = trigger.locator("xpath=ancestor::article");
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
+  await stabilizeProjectActivityAge(card);
+  await page.mouse.move(0, 0);
   await expect(card).toHaveScreenshot(
     "scan-indicator-unsupported-desktop.png",
     {
@@ -242,6 +260,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
     12,
   );
   await expect(popover.locator(".tavernkeeper-history-red")).toHaveCount(1);
+  await stabilizeScanMetadata(popover);
   await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
     animations: "disabled",
     maxDiffPixels: 10,
