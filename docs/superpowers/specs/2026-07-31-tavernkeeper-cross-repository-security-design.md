@@ -1,7 +1,8 @@
 # TavernKeeper Cross-Repository Security Scanning Design
 
-- **Status:** Approved; implementation planning in progress
+- **Status:** Approved baseline; simplified model-review amendment pending written-spec review
 - **Date:** 2026-08-01
+- **Last amended:** 2026-08-02
 - **Canonical location:** Tavernary
 - **Repositories:** `MentallyQuill/Tavernary` and `MentallyQuill/TavernKeeper`
 
@@ -11,12 +12,20 @@ TavernKeeper is a separate, public, AGPL-3.0 repository that performs advisory s
 
 The two repositories communicate asynchronously through public, versioned JSON contracts and authenticated GitHub Actions wake-up events. Tavernary publishes an exact-SHA target manifest. TavernKeeper scans those targets in disposable GitHub-hosted runners, commits sanitized reports to its normal `main` branch, and publishes them through GitHub Pages. Tavernary imports validated summaries and displays an inline colored scan indicator beside each project title.
 
+TavernKeeper owns the complete security conclusion. Deterministic scanners own
+their individual tool outcomes. One runtime-configured model reviews every
+eligible current-tree file in bounded chunks, then the same model performs one
+repository-wide synthesis over the completed tool results and chunk reviews.
+The synthesis returns a small validated assessment and recap. Tavernary does
+not run a second security model or adjudicate the report; it derives only
+freshness and presentation state from TavernKeeper's immutable conclusion.
+
 No target code is executed. No scan result hides, quarantines, ranks, or
 certifies a Tavernary listing. A teal scan indicator means only that
 TavernKeeper completed the defined scan policy at the displayed commit without
 a confirmed review-level concern. It never means safe, verified, or trusted.
 
-Production is automation-first. No ordinary scan, rescan, finding disposition,
+Production is automation-first. No ordinary scan, rescan, security assessment,
 report publication, Tavernary import, or card update depends on human approval.
 Development-only canary inspection and publication controls may be used while
 proving the system, but they must not survive as production dependencies.
@@ -29,9 +38,13 @@ TavernKeeper must:
 
 1. Detect evidence of malware, credential theft, suspicious network transmission, dangerous installation behavior, malicious or vulnerable dependencies, unsafe GitHub automation, obfuscation, and other code requiring review.
 2. Bind every result to one immutable GitHub repository identity and exact commit SHA.
-3. Combine reproducible deterministic scanners with required, runtime-configured OpenAI-compatible model review.
+3. Combine reproducible deterministic scanner reports with a required,
+   runtime-configured OpenAI-compatible whole-repository review and concise
+   final synthesis.
 4. Inspect the complete current tree deterministically and bounded recent history where the scanner supports it.
-5. Offer a staff-only deep mode that sends every eligible first-party text file through model review.
+5. Send every eligible first-party current-tree text file through model review
+   in both ordinary and staff-initiated scans; repository size changes the
+   number of calls rather than the coverage requirement.
 6. Publish useful public evidence without publishing secrets, raw payloads, or source excerpts.
 7. Integrate into Tavernary without giving TavernKeeper a Tavernary write credential.
 8. Remain inexpensive and operable for a small staff while handling very small and very large repositories.
@@ -56,6 +69,9 @@ V1 does not provide:
 - Runtime sandbox execution or behavioral malware detonation
 - Package installation, builds, tests, macros, containers, or target Actions execution
 - Automatic substitution of another model when the configured model fails
+- A second production adjudication model or a Tavernary-side security-model
+  decision in the initial release
+- Analyzer, challenger, or arbiter role chains
 - Per-report human approval, rejection, or finding dismissal in production
 - A database, server, dynamic application API, webhook service, or resident scanner
 - ClamAV or full binary reverse engineering before catalog evidence justifies them
@@ -96,10 +112,10 @@ source type is unsupported.
 Only complete scans produce reports. A successful public report has one of two
 machine-derived results:
 
-- `teal`: no confirmed active medium-or-higher finding with medium-or-higher
-  confidence
-- `red`: at least one confirmed active medium-or-higher finding with
-  medium-or-higher confidence
+- `teal`: the complete repository-wide model assessment is
+  `no_concerning_evidence`
+- `red`: the complete repository-wide model assessment is `concerning` and
+  contains at least one validated review-level concern
 
 Orange, gray, and dark teal are Tavernary presentation states rather than
 TavernKeeper report results:
@@ -113,7 +129,9 @@ TavernKeeper report results:
 An older red result remains red even when its SHA is outdated. It changes only
 after a newer complete report publishes. Low-confidence observations and low
 or informational findings remain visible in the full report but do not produce
-a red result.
+a red result. Every deterministic scanner signal remains visible in its own
+full-report section even when the repository-wide assessment contextualizes it
+as non-concerning.
 
 ## 5. Responsibility and Trust Boundaries
 
@@ -135,8 +153,9 @@ a red result.
 - Scan queue and retry state
 - Target checkout and isolation
 - Deterministic and model scanning
-- Finding normalization, confidence, redaction, and result derivation
-- Automated analyzer, challenger, arbiter, and evidence validation
+- Scanner-signal normalization, model-observation validation, redaction, and
+  result derivation
+- Complete chunk coverage and one repository-wide model synthesis
 - Immutable reports and report index
 - Staff incidents, manual scan initiation, retries, deep scans, and policy
   rescans
@@ -177,8 +196,8 @@ The wake-up events are deliberately non-authoritative. A payload cannot select a
 
 Both repositories also reconcile every six hours. A failed wake-up does not invalidate a successful publication; scheduled reconciliation repairs the missed event.
 
-Production publication is automatic once every required scanner, configured
-model role, schema check, and public verification succeeds. Staff may start a
+Production publication is automatic once every required scanner, model-review
+chunk, final synthesis, schema check, and public verification succeeds. Staff may start a
 privileged workflow or repair an operational failure, but no staff approval is
 part of the production result path.
 
@@ -304,7 +323,8 @@ contains only:
 - Standard or deep mode
 - Completion timestamp
 - Teal or red result
-- Severity and confidence totals
+- Assessment, severity, and confidence totals for validated final model
+  concerns
 - Concise coverage totals
 - Immutable report URL
 - Immutable repository scan-history URL
@@ -317,6 +337,14 @@ completed deep scan when one exists, otherwise the newest completed standard
 scan. Superseded reports remain addressable at immutable URLs but are never
 selected as preferred. The repository history page lists every immutable
 report, including superseded reports and older policy versions.
+
+The V2 `finding_counts` object is an assessment projection, not a replacement
+for the full report's per-tool results. Its totals cover validated final model
+concerns, its actionable totals cover only medium-or-higher concerns at
+medium-or-higher confidence, and its legacy disposition projection sets
+`confirmed` to the model-concern total and both `not_supported` and
+`inconclusive` to zero. An inconclusive synthesis cannot publish. Raw scanner
+signal totals and listings remain in the immutable full report.
 
 ### 7.4 Tavernary import validation
 
@@ -343,10 +371,11 @@ Tavernary must:
 Schemas are strict. An additive field that an existing consumer would reject requires a new schema version.
 
 The already deployed green/yellow V1 contracts remain frozen compatibility
-artifacts. Tavernary target manifests, TavernKeeper reports, and TavernKeeper
-report indexes move together to V2 for the new target metadata, teal/red result
-vocabulary, automated dispositions, and history URL. Producers do not publish
-V2 until their consumers accept it.
+artifacts. The deployed V2 target-manifest and report-index contracts retain
+their teal/red vocabulary, aggregate counts, and history URL. The simplified
+model-review pipeline does not require Tavernary to run a model or change its
+V2 consumer contract. TavernKeeper changes its report-body and scanner-policy
+versions while preserving the existing validated V2 index projection.
 
 For target-manifest changes, TavernKeeper adds support before Tavernary publishes the new version. For report-index changes, Tavernary adds support before TavernKeeper publishes the new version. Each producer continues publishing the older supported version until its consumer is deployed.
 
@@ -497,14 +526,18 @@ For model review, an eligible file is a regular, safely inventoried, first-party
 
 - Deterministic scanners inspect the complete current tree.
 - Gitleaks inspects bounded recent history.
-- The change range starts at the newest previously scanned ancestor.
-- The configured model receives normalized deterministic findings and every eligible file changed in that range.
-- If no previously scanned ancestor is reachable, the change range covers up to the newest 20 commits.
+- The configured model receives every eligible current-tree file plus normalized
+  deterministic signals relevant to each chunk.
+- A prior scan may satisfy a chunk only when its content hashes, configured
+  endpoint and model, chunk-review prompt policy, and scanner-policy version all
+  match. TavernKeeper still proves complete current-tree coverage before
+  publication.
 
 ### 11.2 Staff-initiated deep scan
 
 - Repeats every deterministic stage.
-- Sends every eligible first-party text file through the configured model review.
+- Sends every eligible first-party current-tree text file through the same
+  configured model-review and synthesis contract.
 - Excludes raw binaries, archives, dependency lockfiles, vendored dependencies, generated bundles, and heavily minified files from model input.
 - Reports excluded-category file and byte counts.
 - Produces a new immutable preferred report without deleting the standard report.
@@ -513,81 +546,132 @@ For model review, an eligible file is a regular, safely inventoried, first-party
 
 ## 12. Automated Model Review and Verification
 
-Model review is required, but TavernKeeper is provider- and model-agnostic. It speaks the OpenAI-compatible Chat Completions protocol and reads the full HTTPS endpoint, API key, and model identifier at runtime from `TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`. Scanner policy pins the protocol and safety ceilings, not a vendor or model. TavernKeeper posts to the configured endpoint exactly; it does not append a route, follow cross-origin redirects, or silently substitute a different endpoint or model.
+Model review is required, but TavernKeeper is provider- and model-agnostic. It
+speaks the OpenAI-compatible Chat Completions protocol and reads the full HTTPS
+endpoint, API key, and model identifier at runtime from
+`TAVERNKEEPER_API_ENDPOINT`, `TAVERNKEEPER_API_KEY`, and `TAVERNKEEPER_MODEL`.
+Scanner policy pins the protocol and safety ceilings, not a vendor or model.
+TavernKeeper posts to the configured endpoint exactly; it does not append a
+route, follow cross-origin redirects, or silently substitute a different
+endpoint or model.
 
-Changing the endpoint origin, configured model identifier, prompt-policy version, or scanner-policy version creates a distinct cache and report identity. Every published report records the actual provider origin and model identifier used. The planned release configuration is NanoGPT with `deepseek/deepseek-v4-flash`; that choice is operational configuration, not architecture. NanoGPT's subscription route is used only when the configured model is covered by the subscription.
+Changing the endpoint origin, configured model identifier, chunk-review policy
+version, synthesis-policy version, or scanner-policy version creates a distinct
+cache and report identity. Every published report records the actual provider
+origin and model identifier used. The initial release configuration is NanoGPT
+with `deepseek/deepseek-v4-flash-0731:thinking`; that choice is operational
+configuration, not architecture. NanoGPT's subscription route is used only
+when the configured model is covered by the subscription.
 
-There is no fixed per-repository aggregate token limit and no predicted whole-job token budget. Repository size determines the number of model calls.
+There is no fixed per-repository aggregate token limit and no predicted
+whole-job token budget. Repository size determines the number of model calls.
+TavernKeeper does not omit eligible files to fit an estimate.
 
-The configured model fills three independent roles through separate calls. The
-roles use different system prompts and bounded inputs but the same configured
-endpoint and model unless a future policy version explicitly adds optional role
-overrides:
+The configured model has two straightforward responsibilities:
 
-1. The **analyzer** reviews every required chunk plus normalized deterministic
-   findings and proposes evidence-bound candidate findings.
-2. The **challenger** receives each candidate and the smallest sufficient
-   surrounding repository context. It attempts to disprove reachability,
-   malicious capability, intent, severity, and confidence, and must identify
-   benign explanations such as documentation, tests, inert examples, or
-   unreachable fixtures.
-3. The **arbiter** receives the normalized scanner evidence, analyzer claim,
-   challenger response, and exact submitted context. It returns only
-   `confirmed`, `not-supported`, or `inconclusive` for each candidate.
+1. **Chunk review:** inspect every supplied source segment as untrusted data,
+   report evidence-bound observations of credential theft, data exfiltration,
+   hidden execution, unsafe downloads, persistence, host manipulation,
+   obfuscation, or other behavior requiring review, and provide a concise chunk
+   recap.
+2. **Repository synthesis:** after every scanner and chunk review succeeds,
+   consider the complete sanitized tool results and all validated chunk recaps
+   and observations, then provide one repository-wide assessment and concise
+   recap.
 
-No role may approve scanner coverage, invent repository evidence, or cite a
-path or line it was not given. An arbiter decision is accepted only when a
-deterministic validator confirms the cited path, line range, content mapping,
-finding fingerprint, and scanned SHA.
+Deterministic tools own their outputs. The model is not required to reproduce,
+dispose, challenge, or arbitrate every scanner signal. Scanner signals remain
+independently visible in the full report. The synthesis may explain that an
+apparent signal is contextual and non-concerning, but it does not delete or
+rewrite the tool result.
 
 Processing rules:
 
-1. Inventory selects the complete eligible corpus for the chosen mode.
-2. Files are grouped into deterministic byte-bounded chunks that remain comfortably below the configured model's per-request context limit.
-3. Small repositories naturally produce one chunk; large repositories produce more.
-4. Related files, directory context, entry points, manifests, imports, and deterministic findings remain together where possible.
-5. Oversized eligible source files are split on stable semantic boundaries with bounded overlap.
-6. Every eligible file must be represented in a successful model response before publication.
-7. The analyzer must explicitly account for every deterministic review-level
-   finding. Any omitted deterministic finding makes the scan incomplete.
-8. After all analyzer chunks complete, the challenger and arbiter process every
-   proposed review-level concern and every deterministic review-level finding.
-9. A deterministic report builder produces the concise result from validated
-   findings and relationship metadata; it does not make another model call.
-10. Actual input and output token counts are recorded after every provider
+1. Inventory selects the complete eligible current-tree corpus.
+2. TavernKeeper assigns stable request-local evidence IDs to submitted source
+   segments and normalized scanner signals. The model cites these short IDs;
+   TavernKeeper, not the model, binds them to immutable paths, line ranges,
+   hashes, and the scanned SHA.
+3. Files are grouped into deterministic byte-bounded chunks that remain below
+   the configured model's per-request context limit.
+4. Small repositories naturally produce one chunk; large repositories produce
+   more. Chunk size is not a repository-size or coverage limit.
+5. Related files, directory context, entry points, manifests, imports, and
+   relevant deterministic signals remain together where possible.
+6. Oversized eligible source files are split on stable semantic boundaries with
+   bounded overlap.
+7. Every eligible file and segment must be represented in a successful,
+   nonempty, size-bounded, sanitized chunk review before synthesis.
+8. The final synthesis receives sanitized per-tool completion and signal
+   summaries plus every validated chunk recap and model observation.
+9. Actual input and output token counts are recorded after every provider
    response, together with cache-read, reasoning, or other usage categories
    when the provider returns them.
 
-Before a chunk leaves the runner, secret-like literal values are replaced with stable redaction markers while path and line mapping are preserved. The system prompt treats repository text as untrusted data, forbids following source instructions, forbids safety claims, forbids quoting secrets, and requires the public finding schema.
+Before a chunk leaves the runner, secret-like literal values are replaced with
+stable redaction markers while evidence mapping is preserved. Prompts treat
+repository text and tool text as untrusted evidence, forbid following embedded
+instructions, forbid safety claims, and forbid quoting secrets or reusable
+payloads.
 
-Model output is strictly validated. A candidate must reference a submitted
-repository path and allowed line range. Deterministic findings remain preserved
-as scanner observations, but the automated roles determine whether the evidence
-supports an active public concern. They never mutate raw scanner identity or
-claim that a repository is safe.
+Chunk review returns bounded internal plain text rather than public report JSON.
+It describes relevant behavior, benign context, and potential concerns while
+citing request-local evidence IDs. TavernKeeper requires a nonempty response,
+sanitizes it, enforces an output ceiling, and retains it only as private
+synthesis input or a content-addressed private cache entry. Chunk prose is not
+published and does not directly determine color.
+
+Repository synthesis uses only this strict object:
+
+```json
+{
+  "assessment": "no_concerning_evidence",
+  "recap": "All required scanners and model-review chunks completed. The observed behavior is consistent with the project's documented purpose, and no additional review-level concern was identified.",
+  "concerns": []
+}
+```
+
+`assessment` is one of `concerning`, `no_concerning_evidence`, or
+`inconclusive`. `concerns` contains zero or more concise objects with title,
+controlled category, severity, confidence, explanation, and submitted evidence
+IDs. A `concerning` response must contain at least one medium-or-higher,
+medium-or-higher-confidence concern whose evidence IDs map to submitted source
+segments or scanner signals. A `no_concerning_evidence` response must contain
+no review-level concern. When tool signals exist, the prompt asks the recap to
+contextualize why the combined evidence does or does not support a review-level
+concern; TavernKeeper does not reintroduce per-signal model bookkeeping to
+enforce that prose semantically. `inconclusive`, contradictory assessment and
+concern fields, malformed JSON, an unknown evidence ID, missing chunk coverage,
+or unsafe public text makes the scan incomplete.
 
 Result derivation is mechanical:
 
-- Any `confirmed` medium-or-higher finding with medium-or-higher confidence
-  produces a red report.
-- No confirmed review-level concern produces a teal report.
-- Any unresolved review-level `inconclusive` decision, missing role response,
-  disagreement that the arbiter cannot resolve, or evidence-validation failure
-  makes the scan incomplete. It publishes nothing and enters the ordinary retry
-  policy.
+- Valid `concerning` synthesis produces a red report.
+- Valid `no_concerning_evidence` synthesis produces a teal report.
+- Invalid or `inconclusive` synthesis publishes nothing and enters the ordinary
+  retry policy.
 
 There is no production staff decision between a valid final result and
-publication.
+publication. Tavernary does not perform another security-model call.
+
+The initial release does not call Luna. If the exact DeepSeek configuration
+continues to fail this reduced synthesis schema on representative real
+repositories after the existing retry policy, scanning remains fail-closed.
+Adding Luna as a final synthesis model requires an explicit versioned
+prompt/scanner-policy amendment and tests; it is never an automatic provider
+fallback. DeepSeek may remain the chunk-review model under that later design.
 
 ### 12.1 Chunk cache
 
 Successful sanitized chunk results may be cached privately by:
 
 ```text
-content hashes + endpoint origin + model ID + prompt-policy version + scanner-policy version
+content hashes + endpoint origin + model ID + chunk-review policy version + scanner-policy version
 ```
 
-The role name and role-prompt digest are also part of each model cache key.
+The stage name and prompt digest are also part of each model cache key. Final
+synthesis is cached only against the complete ordered set of validated scanner
+and chunk-review result digests.
 
 The cache never contains raw source chunks, prompts, credentials, or raw model responses. Cache loss changes cost and runtime only. Incomplete cached work is never public.
 
@@ -599,24 +683,26 @@ The operating allowance is approximately 60 million tokens per month. TavernKeep
 
 Provider quota exhaustion is a system-wide hard failure. No partial report is published.
 
-## 13. Finding and Report Model
+## 13. Scanner Signals, Model Concerns, and Report Model
 
-Each normalized finding contains:
+Scanner signals and model concerns are separate public concepts. A scanner
+signal records what one deterministic tool emitted; it is not silently promoted
+to or removed from the repository-wide model assessment. A model concern
+records review-level behavior selected by the final repository synthesis. Each
+receives a stable TavernKeeper-issued ID and contains:
 
-- Stable fingerprint
-- Originating scanner or a normalized `model:<provider>` identity
-- Rule ID and category
+- Originating scanner or normalized `model:<provider>` identity
+- Rule ID when supplied by a deterministic tool, plus a controlled category
 - `critical`, `high`, `medium`, `low`, or `info` severity
 - `high`, `medium`, or `low` confidence
-- Repository-relative path
-- Positive line or bounded line range when available
-- Evidence commit SHA when a finding originates in bounded history rather than the current tree
-- Concise title
-- Redacted explanation
-- Optional remediation guidance
-- Optional public rule-documentation reference
-- Automated disposition: `confirmed`, `not-supported`, or `inconclusive`
-- Analyzer, challenger, and arbiter policy identifiers
+- Repository-relative path and positive bounded line range when available
+- Evidence commit SHA when the signal originates in bounded history
+- Concise title and redacted explanation
+- Optional remediation guidance or public rule-documentation reference
+
+The repository-wide synthesis contains the validated assessment, public recap,
+and evidence-bound concerns supporting a concerning result. It does not contain
+hidden reasoning or model-supplied path and hash identity.
 
 Each immutable report contains:
 
@@ -628,9 +714,12 @@ Each immutable report contains:
 - Per-tool version, applicability, and completion
 - Model provider, model, and actual usage totals
 - Inventory and excluded-category totals
-- Finding totals by severity, confidence, category, and disposition
-- Sanitized normalized findings
-- Deterministic evidence-validation result
+- Per-tool sanitized signal totals and listings
+- Sanitized final model concerns
+- Repository-wide assessment and recap
+- Assessment totals by severity, confidence, and category for Tavernary's
+  existing teal/red summary contract
+- Complete-corpus and deterministic evidence-validation results
 
 Reports never contain:
 
@@ -764,7 +853,7 @@ The popover contains only:
 
 1. Title: `TavernKeeper Scan Results`
 2. Plain-language state
-3. Nonzero confirmed active severity counts for a red report
+3. Nonzero final model-concern severity counts for a red report
 4. Visible short scanned SHA with the full SHA available accessibly
 5. Scan date
 6. `View full report` link when a report exists
@@ -820,9 +909,9 @@ TavernKeeper Scan Results
 TavernKeeper scanning is not supported for this project's source.
 ```
 
-Detailed coverage, policy versions, excluded files, scanner names, automated
-role decisions, and technical disclaimers remain in the full TavernKeeper
-report.
+Detailed coverage, policy versions, excluded files, per-tool outcomes, model
+observations, repository-wide synthesis, and technical disclaimers remain in
+the full TavernKeeper report.
 
 The teal wording never says safe, verified, trusted, or certified.
 
@@ -1044,7 +1133,7 @@ Project maintainers may submit a false-positive appeal identifying an immutable 
 - Does not trigger a scan
 - Does not modify Tavernary
 - Does not suppress a finding automatically
-- Is evidence for a global scanner-rule, prompt-policy, or evidence-validator
+- Is evidence for a global scanner-rule, model-review-policy, or evidence-validator
   correction
 
 Staff do not manually edit, dismiss, recolor, or supersede an individual report.
@@ -1101,7 +1190,8 @@ TavernKeeper assumes a target repository may intentionally attack the scanner.
   tracked immutable GitHub user ID authorized for scan operations.
 - Tavernary's manifest is the only automatic authority.
 - One repository occupies one queue slot and obsolete SHAs coalesce.
-- Exact-SHA, content-hash, model, prompt-policy, and scanner-policy keys prevent duplicate spend.
+- Exact-SHA, content-hash, model, chunk-review-policy, synthesis-policy, and
+  scanner-policy keys prevent duplicate spend.
 - A manifest freshness check occurs before configured-model calls.
 - Staff controls are permission-gated.
 
@@ -1145,7 +1235,8 @@ Every run reports secret-free operational counts:
 - Chunk cache hit and miss counts
 - Retry classification and attempt number
 - Report commit, Pages verification, and wake-up timestamps
-- Contract, scanner, prompt-policy, and scanner-policy versions
+- Contract, scanner, chunk-review-policy, synthesis-policy, and scanner-policy
+  versions
 
 The public report includes sanitized per-report usage totals. Operational failure details remain in staff-visible workflow logs and deduplicated issues.
 
@@ -1168,9 +1259,10 @@ The public report includes sanitized per-report usage totals. Operational failur
 - TavernKeeper OpenGrep rules
 - OSV, zizmor, and malcontent applicability
 - Scanner crash and malformed-output classification
-- Streaming model chunks, cache resume, prompt injection, and strict response parsing
-- Analyzer, challenger, and arbiter role isolation
-- Automated false-positive challenges, evidence validation, deterministic result
+- Streaming model chunks, complete-corpus accounting, cache resume, prompt
+  injection, and strict response parsing
+- Bounded plain-text chunk review and minimal repository-synthesis schema
+- Tool-result preservation, evidence-ID validation, mechanical result
   derivation, and inconclusive fail-closed behavior
 - Deterministic fingerprints and report derivation
 - Secret and unsafe-HTML publication rejection
@@ -1284,7 +1376,8 @@ The system is complete only when:
    without hardcoded repository restrictions, then TavernKeeper proves
    five-repository backlog behavior with maximum concurrency two.
 4. TavernKeeper scans without executing target content.
-5. Every applicable required scanner and configured-model call completes before publication.
+5. Every applicable required scanner, complete-corpus model-review chunk, and
+   final repository synthesis completes before publication.
 6. TavernKeeper publishes immutable sanitized reports and verifies Pages.
 7. TavernKeeper successfully wakes Tavernary through the opposite one-way App.
 8. Tavernary imports only identity- and SHA-valid summaries.
