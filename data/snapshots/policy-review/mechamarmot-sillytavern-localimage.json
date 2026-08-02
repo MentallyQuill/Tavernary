@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mechamarmot-sillytavern-localimage",
+  "source_id": "github-1114617526",
+  "source_identity": "github:mechamarmot/sillytavern-localimage",
+  "evidence_fingerprint": "9269f22ff15b06c652ae911b5c2fd174d18665f22f979c29cf658fd2c8f6f61e",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:33:24.223Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:33:24.223Z"
+  },
+  "maintenance_issue_number": null
+}
