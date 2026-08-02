@@ -9,18 +9,23 @@
     "url": "https://github.com/MentallyQuill/Directive",
     "description": "A SillyTavern Star Trek RPG Experience",
     "default_branch": "main",
-    "head_sha": "c262bc50031d7df13f524a7828b29b3086fea4a2",
-    "head_committed_at": "2026-07-23T07:02:13.000Z",
+    "head_sha": "24b685e781710826ac9699fa614787a442b16b0c",
+    "head_committed_at": "2026-08-01T19:23:39.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-18T08:09:47.000Z",
-    "size_kb": 109006
+    "size_kb": 109304
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-23T07:02:13.000Z",
+    "latest_source_activity_at": "2026-08-01T19:23:39.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T19:23:39.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-20",
         "latest_at": "2026-07-23T07:02:13.000Z",
@@ -50,9 +55,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T14:40:11.455Z",
+    "baseline_completed_at": "2026-08-02T09:25:09.247Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "c262bc50031d7df13f524a7828b29b3086fea4a2"
+    "evidence_head_sha": "24b685e781710826ac9699fa614787a442b16b0c"
   },
   "community": {
     "stars_count": 1,
@@ -65,7 +70,7 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-01T09:25:09.365Z",
+  "refreshed_at": "2026-08-02T09:25:09.247Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -75,7 +80,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T09:25:09.365Z",
+    "refreshed_at": "2026-08-02T09:25:09.247Z",
     "stale_since": null
   }
 }

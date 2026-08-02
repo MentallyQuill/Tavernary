@@ -9,26 +9,26 @@
     "url": "https://github.com/Pasta-Devs/Marinara-Engine",
     "description": "AI frontend",
     "default_branch": "main",
-    "head_sha": "dc0b39282f837f56adc417bf2b5138a814bfafd1",
-    "head_committed_at": "2026-07-29T17:11:35.000Z",
+    "head_sha": "c82291d6c032e566144fde1fd2eee7c7c12466df",
+    "head_committed_at": "2026-08-01T22:36:35.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-04T15:37:29.000Z",
-    "size_kb": 238553
+    "size_kb": 236127
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-29T17:03:57.000Z",
+    "latest_source_activity_at": "2026-08-01T22:24:47.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-29T17:03:57.000Z",
+        "latest_at": "2026-08-01T22:24:47.000Z",
         "precision": "exact"
       },
       {
         "week_start": "2026-07-20",
-        "latest_at": "2026-07-22T23:41:29.000Z",
+        "latest_at": "2026-07-26T23:51:53.000Z",
         "precision": "exact"
       },
       {
@@ -82,37 +82,65 @@
         "precision": "exact"
       }
     ],
-    "provisional_weeks": null,
-    "latest_release_at": "2026-07-23T00:13:35.000Z",
-    "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-30T09:45:32.765Z",
+    "provisional_weeks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "latest_release_at": "2026-08-01T22:46:44.000Z",
+    "evidence_status": "provisional",
+    "baseline_completed_at": null,
     "baseline_attempts": 3,
     "evidence_head_sha": "dc0b39282f837f56adc417bf2b5138a814bfafd1"
   },
   "community": {
-    "stars_count": 541,
+    "stars_count": 545,
     "forks_count": 141,
     "watchers_count": 8,
-    "aggregate": 690
+    "aggregate": 694
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-01T09:25:09.365Z",
+  "refreshed_at": "2026-08-02T09:25:09.247Z",
   "stale_since": null,
-  "activity_scan": null,
+  "activity_scan": {
+    "head_sha": "c82291d6c032e566144fde1fd2eee7c7c12466df",
+    "cutoff_at": "2026-04-24T09:25:09.247Z",
+    "next_page": 26,
+    "next_index": 0,
+    "resolved_weeks": [
+      "2026-06-15",
+      "2026-06-22",
+      "2026-06-29",
+      "2026-07-06",
+      "2026-07-13",
+      "2026-07-20",
+      "2026-07-27"
+    ],
+    "pending_commit": null
+  },
   "contributors": {
     "accounts": [
       { "login": "SpicyMarinara", "type": "User", "provider": "github" },
       { "login": "cha1latte", "type": "User", "provider": "github" },
-      { "login": "kolacheee", "type": "User", "provider": "github" },
-      { "login": "Romuromylus", "type": "User", "provider": "github" },
       { "login": "thetopham", "type": "User", "provider": "github" },
+      { "login": "kolacheee", "type": "User", "provider": "github" },
       { "login": "Gunterlie", "type": "User", "provider": "github" },
-      { "login": "LukaTheHero", "type": "User", "provider": "github" },
+      { "login": "Romuromylus", "type": "User", "provider": "github" },
       { "login": "Xelvanis", "type": "User", "provider": "github" },
+      { "login": "LukaTheHero", "type": "User", "provider": "github" },
       { "login": "TheLonelyDevil9", "type": "User", "provider": "github" },
       { "login": "Promansis", "type": "User", "provider": "github" },
       { "login": "coxde", "type": "User", "provider": "github" },
@@ -127,14 +155,15 @@
       { "login": "NeoKazuya", "type": "User", "provider": "github" },
       { "login": "felorhik", "type": "User", "provider": "github" },
       { "login": "bignast", "type": "User", "provider": "github" },
-      { "login": "jake9000", "type": "User", "provider": "github" },
-      { "login": "JurijPietrowicz", "type": "User", "provider": "github" },
-      { "login": "mm14141", "type": "User", "provider": "github" },
       { "login": "amauragis", "type": "User", "provider": "github" },
+      { "login": "mm14141", "type": "User", "provider": "github" },
+      { "login": "JurijPietrowicz", "type": "User", "provider": "github" },
+      { "login": "jake9000", "type": "User", "provider": "github" },
       { "login": "marysia", "type": "User", "provider": "github" },
-      { "login": "myaiexp", "type": "User", "provider": "github" },
-      { "login": "kh0p", "type": "User", "provider": "github" },
       { "login": "LightD31", "type": "User", "provider": "github" },
+      { "login": "kh0p", "type": "User", "provider": "github" },
+      { "login": "mallang0723", "type": "User", "provider": "github" },
+      { "login": "myaiexp", "type": "User", "provider": "github" },
       { "login": "Lochalan", "type": "User", "provider": "github" },
       { "login": "Lamboozled", "type": "User", "provider": "github" },
       { "login": "ailthrim", "type": "User", "provider": "github" },
@@ -152,6 +181,7 @@
       { "login": "Yasyasyasvil", "type": "User", "provider": "github" },
       { "login": "vanta-jack", "type": "User", "provider": "github" },
       { "login": "pwildani", "type": "User", "provider": "github" },
+      { "login": "olegpro171", "type": "User", "provider": "github" },
       { "login": "Lemon-will", "type": "User", "provider": "github" },
       { "login": "kevin-ho", "type": "User", "provider": "github" },
       { "login": "KeKKERUUU", "type": "User", "provider": "github" },
@@ -163,7 +193,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T09:25:09.365Z",
+    "refreshed_at": "2026-08-02T09:25:09.247Z",
     "stale_since": null
   }
 }

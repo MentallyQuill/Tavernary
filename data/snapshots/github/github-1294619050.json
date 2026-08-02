@@ -40,25 +40,25 @@
     "evidence_head_sha": "f6f1683128eff9c4cb9f98e9812814a5f205697a"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 4,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 4
   },
   "license": {
     "status": "proprietary",
     "spdx_id": null,
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-01T20:02:07.089Z",
+  "refreshed_at": "2026-08-02T09:25:09.247Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "lsennn", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T20:02:07.089Z",
+    "refreshed_at": "2026-08-02T09:25:09.247Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

@@ -35,18 +35,19 @@
     "evidence_head_sha": "77d0588f0fdf6812aa83f4cb5663564008a5fe73"
   },
   "community": {
-    "stars_count": 0,
+    "stars_count": 4,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 0
+    "aggregate": 4
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-01T12:35:05.018Z",
+  "refreshed_at": "2026-08-02T09:25:09.247Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "izanagi771-stack", "type": "User", "provider": "github" }
@@ -54,8 +55,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T12:35:05.018Z",
+    "refreshed_at": "2026-08-02T09:25:09.247Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

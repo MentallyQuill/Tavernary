@@ -9,18 +9,23 @@
     "url": "https://github.com/IkarusV/IkarusAutoImage",
     "description": "SillyTavern extension for automatic AI image generation with tag replacements, character prompts, and folder management",
     "default_branch": "main",
-    "head_sha": "fdca3f70f84856d32babb0a1111068a5cb796b09",
-    "head_committed_at": "2026-07-15T01:09:20.000Z",
+    "head_sha": "19fd397305bb603a84c8d29146ed3f6b0e7da79a",
+    "head_committed_at": "2026-08-02T02:52:17.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-25T19:16:55.000Z",
-    "size_kb": 106
+    "size_kb": 129
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-15T01:09:20.000Z",
+    "latest_source_activity_at": "2026-08-02T02:52:17.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-02T02:52:17.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-13",
         "latest_at": "2026-07-15T01:09:20.000Z",
@@ -28,7 +33,7 @@
       },
       {
         "week_start": "2026-07-06",
-        "latest_at": "2026-07-06T23:10:08.000Z",
+        "latest_at": "2026-07-09T19:18:05.000Z",
         "precision": "exact"
       },
       {
@@ -40,8 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:56:16.026Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-02T09:25:09.247Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "19fd397305bb603a84c8d29146ed3f6b0e7da79a"
   },
   "community": {
     "stars_count": 0,
@@ -50,14 +56,15 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-01T09:25:09.365Z",
+  "refreshed_at": "2026-08-02T09:25:09.247Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "IkarusV", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-01T09:25:09.365Z",
+    "refreshed_at": "2026-08-02T09:25:09.247Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }
