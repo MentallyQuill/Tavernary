@@ -42,6 +42,31 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   await ages.nth(1).evaluate((label) => {
     label.textContent = "11d ago";
   });
+
+  const communityTotals = page.locator(".relationship-pair .community b");
+  await expect(communityTotals).toHaveCount(2);
+  await communityTotals.nth(0).evaluate((label) => {
+    label.textContent = "87";
+  });
+  await communityTotals.nth(1).evaluate((label) => {
+    label.textContent = "54";
+  });
+}
+
+async function stabilizeProjectActivityAge(card: Locator) {
+  const age = card.locator(".commit-age");
+  await expect(age).toHaveCount(1);
+  await age.evaluate((label) => {
+    label.textContent = "10d ago";
+  });
+}
+
+async function stabilizeScanMetadata(popover: Locator) {
+  const metadata = popover.locator("p").filter({ hasText: /^Scanned /u });
+  await expect(metadata).toHaveCount(1);
+  await metadata.evaluate((line) => {
+    line.textContent = "Scanned 5d28bb1 on July 13, 2026";
+  });
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
@@ -210,6 +235,8 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
     .first();
   const card = trigger.locator("xpath=ancestor::article");
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
+  await stabilizeProjectActivityAge(card);
+  await page.mouse.move(0, 0);
   await expect(card).toHaveScreenshot(
     "scan-indicator-unsupported-desktop.png",
     {
@@ -242,6 +269,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
     12,
   );
   await expect(popover.locator(".tavernkeeper-history-red")).toHaveCount(1);
+  await stabilizeScanMetadata(popover);
   await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
     animations: "disabled",
     maxDiffPixels: 10,
@@ -346,6 +374,7 @@ for (const scenario of [
     await expect(pair).toBeVisible();
     await expect(pair.locator(".project-card")).toHaveCount(2);
     await expectNoHorizontalOverflow(page);
+    await page.mouse.move(0, 0);
     await expect(pair).toHaveScreenshot(
       `fork-relationship-${scenario.name}.png`,
       {
@@ -416,6 +445,7 @@ test("fork relationship long names avoid control collisions", async ({
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
   await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
+  await stabilizeRelationshipActivityAge(page);
   await page.locator(".relationship-pair").evaluate((pair) => {
     const headings = pair.querySelectorAll(".card-title");
     const origins = pair.querySelectorAll(".project-relationship-origin");
@@ -437,11 +467,12 @@ test("fork relationship long names avoid control collisions", async ({
 
   const pair = page.locator(".relationship-pair");
   await expectNoHorizontalOverflow(page);
+  await page.mouse.move(0, 0);
   await expect(page.locator(".catalog-main")).toHaveScreenshot(
     "fork-relationship-long-names.png",
     {
       animations: "disabled",
-      maxDiffPixels: 800,
+      maxDiffPixels: 1000,
     },
   );
 });

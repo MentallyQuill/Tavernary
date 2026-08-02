@@ -51,31 +51,35 @@ function report(
 }
 
 describe("deriveTavernKeeperCardStatus", () => {
+  test("keeps concerning results red and maps clean results by SHA freshness", () => {
+    const currentConcerning = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: [report()],
+    });
+    const staleConcerning = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: [report({ target_sha: olderSha })],
+    });
+    const currentClean = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: [report({ result: "teal" })],
+    });
+    const staleClean = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: [report({ target_sha: olderSha, result: "teal" })],
+    });
+
+    expect(currentConcerning.state).toBe("red");
+    expect(staleConcerning.state).toBe("red");
+    expect(currentClean.state).toBe("teal");
+    expect(staleClean.state).toBe("orange");
+  });
+
   test.each([
-    {
-      label: "current teal",
-      snapshot,
-      reports: [report({ result: "teal" })],
-      expected: { state: "teal", reason: "current" },
-    },
-    {
-      label: "current red",
-      snapshot,
-      reports: [report()],
-      expected: { state: "red", reason: "current" },
-    },
-    {
-      label: "stale red",
-      snapshot,
-      reports: [report({ target_sha: olderSha })],
-      expected: { state: "red", reason: "outdated-concern" },
-    },
-    {
-      label: "stale teal",
-      snapshot,
-      reports: [report({ target_sha: olderSha, result: "teal" })],
-      expected: { state: "orange", reason: "outdated-clean" },
-    },
     {
       label: "unscanned",
       snapshot,

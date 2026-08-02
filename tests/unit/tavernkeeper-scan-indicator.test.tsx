@@ -95,7 +95,7 @@ describe("TavernKeeperScanIndicator", () => {
     vi.useRealTimers();
   });
 
-  test("shows only the concise retained scan result", () => {
+  test("preserves the advisory popover title, report, and history links", () => {
     const { container } = render(
       <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
@@ -125,6 +125,9 @@ describe("TavernKeeperScanIndicator", () => {
     ).toHaveAttribute("href", redStatus.historyUrl);
     expect(panel).not.toHaveTextContent(
       /Gitleaks|OpenGrep|policy|coverage|excluded/u,
+    );
+    expect(panel).not.toHaveTextContent(
+      /\b(?:safe|trusted|verified|protected|certified)\b/iu,
     );
     expect(
       container.querySelector('svg[data-icon="scan-fill"]'),

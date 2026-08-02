@@ -143,6 +143,29 @@ describe("TavernKeeper report-index importer", () => {
     expect(validateReportIndex(index, registry)).toEqual(index);
   });
 
+  test("accepts the simplified producer's repository-review-v2 clean result", async () => {
+    const index = await fixture();
+    const newProducerReport = index.reports[0];
+    newProducerReport.prompt_policy_version = "repository-review-v2";
+    newProducerReport.result = "teal";
+    newProducerReport.finding_counts = {
+      total: 0,
+      actionable: 0,
+      actionable_severity: { critical: 0, high: 0, medium: 0 },
+      severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
+      confidence: { high: 0, medium: 0, low: 0 },
+      disposition: {
+        confirmed: 0,
+        not_supported: 0,
+        inconclusive: 0,
+      },
+      categories: [],
+    };
+
+    expect(newProducerReport.scanner_policy_version).toBe("1");
+    expect(validateReportIndex(index, registry)).toEqual(index);
+  });
+
   test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
     const index = await fixture();
     index.reports[0].finding_counts.actionable_severity.high = 0;

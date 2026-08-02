@@ -17,11 +17,10 @@ is not a guarantee that a repository is safe, and an outdated report says
 nothing about later commits. A scan belongs to a GitHub repository ID, so cards
 that share that repository display the same imported report state.
 
-- Teal means the defined scan policy completed at the displayed SHA with no
-  confirmed medium-or-higher finding at medium-or-higher confidence.
-- Red means at least one confirmed medium-or-higher finding at
-  medium-or-higher confidence. An older red result remains red until a newer
-  complete scan publishes.
+- Teal means the defined scan policy completed at the displayed SHA and
+  TavernKeeper published a teal result.
+- Red means TavernKeeper published a red result. An older red result remains
+  red until a newer complete scan publishes.
 - Orange means the latest complete result was teal but covers an older SHA; an
   updated scan is pending.
 - Gray means an eligible GitHub source is unscanned or its current source state
@@ -61,6 +60,20 @@ scanner-policy version, scan mode, and report version. Tavernary retains the
 newest twelve preferred historical conclusions for the compact card strip and
 links to TavernKeeper's immutable full-history page. Only an identity-and-SHA
 match can produce a current teal or red state.
+
+## Review pipeline and Tavernary boundary
+
+For the initial release, TavernKeeper records per-tool factual outcomes, runs a
+complete DeepSeek chunk review across every planned repository chunk, and then
+performs one final repository synthesis. It does not use an
+analyzer/challenger/arbiter model chain or a second security model.
+
+Tavernary is only the deterministic consumer of that published result. It
+matches repository identity, target SHA, and scanner policy, then maps a
+current teal result to teal, an older teal result to orange, and any current or
+older red result to red. Eligible repositories without a report remain gray,
+and unsupported source types remain dark teal. Tavernary does not call Luna or
+any other security model in the initial release.
 
 ## Handshake and recovery
 
