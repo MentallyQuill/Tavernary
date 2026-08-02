@@ -20,6 +20,7 @@ concurrency:
 
 jobs:
   request:
+    if: ${{ github.run_attempt == 1 }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out trusted Tavernary main

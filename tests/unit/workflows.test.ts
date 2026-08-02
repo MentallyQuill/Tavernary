@@ -148,6 +148,7 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
     contents: "read",
     actions: "write",
   });
+  expect(targeted.jobs.request.if).toBe("${{ github.run_attempt == 1 }}");
   expect(source).toContain("github.actor_id");
   expect(source).toContain("tavernkeeper-scan-operators.json");
   expect(source).toContain("mode=project");

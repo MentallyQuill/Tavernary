@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -95,6 +96,20 @@ async function storedSummaryRoot(
 }
 
 describe("TavernKeeper report-index importer", () => {
+  test("pins the vendored V2 schema and fixture to reviewed producer digests", async () => {
+    const [schema, index] = await Promise.all([
+      readFile("data/schemas/tavernkeeper-report-index.v2.schema.json"),
+      readFile(fixturePath),
+    ]);
+
+    expect(createHash("sha256").update(schema).digest("hex")).toBe(
+      "4b4696e1775bd9b41ff645f603bb0639acabc79c813f30d67fcbc8a748488e5f",
+    );
+    expect(createHash("sha256").update(index).digest("hex")).toBe(
+      "8bacda5dc4a8ae7c6c3ab6577e7e9c30bb89045b0a09d7c82d6c2c02a31e4503",
+    );
+  });
+
   test.skipIf(
     !existsSync(producerSchemaPath) || !existsSync(producerFixturePath),
   )(
@@ -131,6 +146,30 @@ describe("TavernKeeper report-index importer", () => {
   test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
     const index = await fixture();
     index.reports[0].finding_counts.actionable_severity.high = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects impossible teal totals whose marginals require an actionable finding", async () => {
+    const index = await fixture();
+    index.reports[0].result = "teal";
+    index.reports[0].finding_counts.actionable = 0;
+    index.reports[0].finding_counts.actionable_severity.high = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects impossible red totals with no review-confidence finding", async () => {
+    const index = await fixture();
+    index.reports[0].finding_counts.confidence = {
+      high: 0,
+      medium: 0,
+      low: 1,
+    };
 
     expect(() => validateReportIndex(index, registry)).toThrow(
       /finding totals/u,

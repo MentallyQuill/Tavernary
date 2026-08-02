@@ -160,6 +160,23 @@ function assertReportCounts(report) {
       counts.actionable_severity.high <= counts.severity.high &&
       counts.actionable_severity.medium <= counts.severity.medium
     : report.result === "green" || report.result === "yellow";
+  const reviewSeverityTotal =
+    counts.severity.critical + counts.severity.high + counts.severity.medium;
+  const reviewConfidenceTotal =
+    counts.confidence.high + counts.confidence.medium;
+  const confirmedTotal = counts.disposition.confirmed;
+  const actionableIntersectionConsistent = counts.actionable_severity
+    ? counts.actionable >=
+        Math.max(
+          0,
+          confirmedTotal +
+            reviewSeverityTotal +
+            reviewConfidenceTotal -
+            2 * counts.total,
+        ) &&
+      counts.actionable <=
+        Math.min(confirmedTotal, reviewSeverityTotal, reviewConfidenceTotal)
+    : true;
 
   const dispositionConsistent =
     report.result === "green" || report.result === "yellow"
@@ -173,6 +190,7 @@ function assertReportCounts(report) {
     counts.total !== dispositionTotal ||
     counts.total !== categoryTotal ||
     !actionableSeverityConsistent ||
+    !actionableIntersectionConsistent ||
     !dispositionConsistent
   ) {
     throw new Error("TavernKeeper report finding totals do not match");
