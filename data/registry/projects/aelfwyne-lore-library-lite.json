@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "aelfwyne-lore-library-lite",
+  "name": "Lore-Library-Lite",
+  "kind": "extension",
+  "summary": "Lore Library Lite enhances SillyTavern lorebook management with desktop and mobile layouts, streamlined organization, bulk actions, and deep World Info entry editing.",
+  "metadata_status": "curated",
+  "source_id": "github-1313172635",
+  "frontends": ["sillytavern"],
+  "primary_function": "character-worldbuilding",
+  "tags": ["customize-the-interface", "manage-lorebooks", "mobile-friendly"],
+  "cataloged_at": "2026-08-02T05:32:38.442Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
