@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "q-atastrophe-lore-atlas",
+  "source_id": "github-1275010865",
+  "source_identity": "github:q-atastrophe/lore-atlas",
+  "evidence_fingerprint": "e6993cb32aad14cc9d330ced4c3d48531f52c575b848a08b22e42d342e345d66",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:36:12.407Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:36:12.407Z"
+  },
+  "maintenance_issue_number": null
+}
