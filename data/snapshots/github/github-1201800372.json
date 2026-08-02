@@ -55,7 +55,7 @@
     "provisional_weeks": null,
     "latest_release_at": "2026-06-15T14:47:45.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-02T02:45:51.943Z",
+    "baseline_completed_at": "2026-08-02T02:49:06.399Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "feb98fdc665f7d5f1841b14bbc43bd6363a18071"
   },
@@ -70,7 +70,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-02T02:45:51.943Z",
+  "refreshed_at": "2026-08-02T02:49:06.399Z",
   "stale_since": null,
   "contributors": {
     "accounts": [
@@ -437,7 +437,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-02T02:45:51.943Z",
+    "refreshed_at": "2026-08-02T02:49:06.399Z",
     "stale_since": null
   },
   "activity_scan": null
