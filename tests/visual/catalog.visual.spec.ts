@@ -89,6 +89,10 @@ for (const scenario of [
           scenario.compact ? "&density=compact" : ""
         }`,
       );
+      await expect(page.locator(".catalog-shell")).toHaveAttribute(
+        "data-hydrated",
+        "true",
+      );
       await stabilizeRefreshLabel(page);
 
       const card = page.locator(".project-card").first();
@@ -96,7 +100,9 @@ for (const scenario of [
       const trigger = card.locator(".tavernkeeper-scan-indicator-trigger");
       await expect(card).toBeVisible();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      await page.mouse.move(0, 0);
       await trigger.hover();
+      await expect(trigger).toHaveAttribute("aria-expanded", "true");
       const popover = page.getByRole("dialog", {
         name: "TavernKeeper Scan Results",
       });
