@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mentallyquill-recursion",
+  "source_id": "github-1285208664",
+  "source_identity": "github:mentallyquill/recursion",
+  "evidence_fingerprint": "a362d3e9cb1c058f9b11e031c2a43283fc4dba76bdb988d1a0d438724f9e0082",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T19:28:50.704Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T19:28:50.704Z"
+  },
+  "maintenance_issue_number": null
+}
