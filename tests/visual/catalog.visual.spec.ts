@@ -42,6 +42,15 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   await ages.nth(1).evaluate((label) => {
     label.textContent = "11d ago";
   });
+
+  const communityTotals = page.locator(".relationship-pair .community b");
+  await expect(communityTotals).toHaveCount(2);
+  await communityTotals.nth(0).evaluate((label) => {
+    label.textContent = "87";
+  });
+  await communityTotals.nth(1).evaluate((label) => {
+    label.textContent = "54";
+  });
 }
 
 async function stabilizeProjectActivityAge(card: Locator) {
@@ -365,6 +374,7 @@ for (const scenario of [
     await expect(pair).toBeVisible();
     await expect(pair.locator(".project-card")).toHaveCount(2);
     await expectNoHorizontalOverflow(page);
+    await page.mouse.move(0, 0);
     await expect(pair).toHaveScreenshot(
       `fork-relationship-${scenario.name}.png`,
       {
@@ -435,6 +445,7 @@ test("fork relationship long names avoid control collisions", async ({
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
   await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
+  await stabilizeRelationshipActivityAge(page);
   await page.locator(".relationship-pair").evaluate((pair) => {
     const headings = pair.querySelectorAll(".card-title");
     const origins = pair.querySelectorAll(".project-relationship-origin");
@@ -456,6 +467,7 @@ test("fork relationship long names avoid control collisions", async ({
 
   const pair = page.locator(".relationship-pair");
   await expectNoHorizontalOverflow(page);
+  await page.mouse.move(0, 0);
   await expect(page.locator(".catalog-main")).toHaveScreenshot(
     "fork-relationship-long-names.png",
     {
