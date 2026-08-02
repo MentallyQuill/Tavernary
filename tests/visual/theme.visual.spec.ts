@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import {
   installGitHubReviewRecorder,
@@ -66,6 +66,13 @@ const graphiteTeal = {
 
 async function expectStyle(locator: Locator, property: string, value: string) {
   await expect(locator).toHaveCSS(property, value);
+}
+
+async function waitForCatalogHydration(page: Page) {
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+  );
 }
 
 test("desktop catalog applies graphite surfaces and teal interaction roles", async ({
@@ -702,6 +709,7 @@ test("cards, Kits, metadata, and statuses retain their semantic color families",
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
+  await waitForCatalogHydration(page);
 
   const card = page.locator(".project-card").first();
   await expectStyle(card, "background-color", graphiteTeal.surface);
@@ -735,6 +743,8 @@ test("cards, Kits, metadata, and statuses retain their semantic color families",
   await page.evaluate(() => {
     const fixture = document.createElement("section");
     fixture.dataset.themeTest = "task-three-semantics";
+    fixture.style.cssText =
+      "position: fixed; top: 80px; left: 16px; z-index: 1000";
     fixture.innerHTML = `
       <span class="activity-weeks"><i class="active"></i><i class="recent"></i><i></i></span>
       <div class="dual-range-track" style="--range-start: 20%; --range-end: 80%"><input type="range" /></div>
@@ -899,6 +909,7 @@ test("desktop primary and secondary controls expose their complete state familie
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
+  await waitForCatalogHydration(page);
 
   const submit = page.locator(".submit-link");
   await submit.evaluate((link) =>
@@ -920,6 +931,8 @@ test("desktop primary and secondary controls expose their complete state familie
     const secondary = document.createElement("button");
     secondary.className = "control-secondary";
     secondary.dataset.themeTest = "secondary";
+    secondary.style.cssText =
+      "position: fixed; top: 80px; left: 16px; z-index: 1000";
     document.body.append(secondary);
   });
   const secondary = page.locator('[data-theme-test="secondary"]');

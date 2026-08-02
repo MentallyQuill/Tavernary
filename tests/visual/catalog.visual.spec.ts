@@ -17,6 +17,13 @@ if (!pendingScanProject) {
   throw new Error("Missing pending scan indicator fixture");
 }
 
+async function waitForCatalogHydration(page: Page) {
+  await expect(page.locator(".catalog-shell")).toHaveAttribute(
+    "data-hydrated",
+    "true",
+  );
+}
+
 async function stabilizeRefreshLabel(page: Page) {
   await page
     .locator(".catalog-toolbar p")
@@ -89,10 +96,7 @@ for (const scenario of [
           scenario.compact ? "&density=compact" : ""
         }`,
       );
-      await expect(page.locator(".catalog-shell")).toHaveAttribute(
-        "data-hydrated",
-        "true",
-      );
+      await waitForCatalogHydration(page);
       await stabilizeRefreshLabel(page);
 
       const card = page.locator(".project-card").first();
@@ -198,6 +202,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
+  await waitForCatalogHydration(page);
   const trigger = page
     .getByRole("button", {
       name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
@@ -223,6 +228,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
+  await waitForCatalogHydration(page);
   await page
     .getByRole("button", {
       name: "TavernKeeper scan: No review-level concerns found at this commit.",
@@ -252,6 +258,7 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto(sitePath());
+    await waitForCatalogHydration(page);
     await stabilizeRefreshLabel(page);
 
     const grid = page.locator(".project-grid");
@@ -267,6 +274,7 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto(sitePath());
+    await waitForCatalogHydration(page);
     await stabilizeRefreshLabel(page);
 
     await expect(page.locator(".catalog-toolbar")).toBeVisible();
@@ -280,6 +288,7 @@ for (const viewport of [
     }) => {
       await page.setViewportSize(viewport);
       await page.goto(sitePath());
+      await waitForCatalogHydration(page);
       await stabilizeRefreshLabel(page);
 
       const firstCard = page.locator(".project-card").first();
@@ -323,6 +332,7 @@ for (const scenario of [
       ...(scenario.compact ? { density: "compact" } : {}),
     });
     await page.goto(`${sitePath()}?${parameters}`);
+    await waitForCatalogHydration(page);
     if (scenario.compact) {
       await expect(page.locator("body")).toHaveClass(/compact-cards/);
       await expect(
@@ -355,6 +365,7 @@ test("fork relationship stays in the aligned license utility row", async ({
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
 
   const pair = page.locator(".relationship-pair");
@@ -403,6 +414,7 @@ test("fork relationship long names avoid control collisions", async ({
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${sitePath()}?relationship=${forkRelationshipChild!.id}`);
+  await waitForCatalogHydration(page);
   await stabilizeRefreshLabel(page);
   await page.locator(".relationship-pair").evaluate((pair) => {
     const headings = pair.querySelectorAll(".card-title");
