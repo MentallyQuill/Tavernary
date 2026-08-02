@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-flowchart",
+  "source_id": "github-1073040696",
+  "source_identity": "github:bmen25124/sillytavern-flowchart",
+  "evidence_fingerprint": "4049ccbbaf6fb346b9591784bc9137283d30344c840dd28c1fc17a87b8a67877",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:33:00.702Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:33:00.702Z"
+  },
+  "maintenance_issue_number": null
+}
