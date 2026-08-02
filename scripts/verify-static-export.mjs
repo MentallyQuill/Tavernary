@@ -121,7 +121,9 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
     await readFile(
       resolve(
         rootDirectory,
-        `data/schemas/tavernkeeper-targets.v${version}.schema.json`,
+        version === 1
+          ? "data/schemas/tavernkeeper-targets.schema.json"
+          : "data/schemas/tavernkeeper-targets.v2.schema.json",
       ),
       "utf8",
     ),
