@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "mode": "project",
-  "started_at": "2026-08-02T11:36:24.281Z",
-  "completed_at": "2026-08-02T11:36:25.035Z",
+  "started_at": "2026-08-02T11:46:46.856Z",
+  "completed_at": "2026-08-02T11:46:47.844Z",
   "counts": {
     "total": 1,
     "checked": 1,
@@ -19,7 +19,7 @@
   "api": {
     "graphql_requests": 1,
     "graphql_points": 1,
-    "graphql_remaining": 4996,
+    "graphql_remaining": 4994,
     "rest_requests": 1
   },
   "providers": {
@@ -28,7 +28,7 @@
       "changed": 1,
       "failed": 0,
       "requests": 2,
-      "remaining": 4996
+      "remaining": 4994
     },
     "codeberg": {
       "checked": 0,
@@ -38,7 +38,7 @@
       "remaining": null
     }
   },
-  "duration_ms": 754,
+  "duration_ms": 988,
   "source_timings": [
     {
       "source_id": "github-1254077407",
