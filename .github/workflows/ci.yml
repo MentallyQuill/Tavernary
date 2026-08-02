@@ -85,6 +85,9 @@ jobs:
       - name: Run complete browser tests
         if: steps.route.outputs.route == 'full'
         run: npm run test:e2e
+      - name: Run cross-browser TavernKeeper scan tests
+        if: steps.route.outputs.route == 'full'
+        run: npm run test:scan-e2e
 
   visual:
     needs: verify

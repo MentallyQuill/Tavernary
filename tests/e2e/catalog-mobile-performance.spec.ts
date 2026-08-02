@@ -140,102 +140,114 @@ async function catalogCostSnapshot(
   );
 }
 
-test("TavernKeeper mobile touch, orientation, viewport, and reduced-motion smoke", async ({
-  page,
-}, testInfo) => {
-  test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
-  test.skip(
-    !testInfo.project.name.startsWith("mobile-"),
-    "Representative mobile projects own this smoke case",
-  );
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto(sitePath());
+test(
+  "TavernKeeper mobile touch, orientation, viewport, and reduced-motion smoke",
+  { tag: "@tavernkeeper" },
+  async ({ page }, testInfo) => {
+    test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
+    test.skip(
+      !testInfo.project.name.startsWith("mobile-"),
+      "Representative mobile projects own this smoke case",
+    );
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(sitePath());
 
-  const trigger = page.locator(".tavernkeeper-scan-indicator-trigger").first();
-  const hitTarget = await trigger.evaluate((element) => {
-    const box = element.getBoundingClientRect();
-    const pseudo = getComputedStyle(element, "::before");
-    const inset = Math.abs(Number.parseFloat(pseudo.inset));
-    return { height: box.height + inset * 2, width: box.width + inset * 2 };
-  });
-  expect(hitTarget.width).toBeGreaterThanOrEqual(44);
-  expect(hitTarget.height).toBeGreaterThanOrEqual(44);
+    const trigger = page
+      .locator(".tavernkeeper-scan-indicator-trigger")
+      .first();
+    const hitTarget = await trigger.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      const pseudo = getComputedStyle(element, "::before");
+      const inset = Math.abs(Number.parseFloat(pseudo.inset));
+      return { height: box.height + inset * 2, width: box.width + inset * 2 };
+    });
+    expect(hitTarget.width).toBeGreaterThanOrEqual(44);
+    expect(hitTarget.height).toBeGreaterThanOrEqual(44);
 
-  await trigger.tap();
-  const panel = page.getByRole("dialog", { name: "TavernKeeper Scan Results" });
-  await expect(panel).toBeVisible();
-  const transitionSeconds = await panel.evaluate((element) =>
-    Number.parseFloat(getComputedStyle(element).transitionDuration),
-  );
-  expect(transitionSeconds).toBeLessThanOrEqual(0.000_01);
-  const portraitBox = await panel.boundingBox();
-  const portraitViewport = page.viewportSize();
-  expect(portraitBox).not.toBeNull();
-  expect(portraitViewport).not.toBeNull();
-  expect(portraitBox!.y + portraitBox!.height).toBeLessThanOrEqual(
-    portraitViewport!.height + 1,
-  );
+    await trigger.tap();
+    const panel = page.getByRole("dialog", {
+      name: "TavernKeeper Scan Results",
+    });
+    await expect(panel).toBeVisible();
+    const transitionSeconds = await panel.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).transitionDuration),
+    );
+    expect(transitionSeconds).toBeLessThanOrEqual(0.000_01);
+    const portraitBox = await panel.boundingBox();
+    const portraitViewport = page.viewportSize();
+    expect(portraitBox).not.toBeNull();
+    expect(portraitViewport).not.toBeNull();
+    expect(portraitBox!.y + portraitBox!.height).toBeLessThanOrEqual(
+      portraitViewport!.height + 1,
+    );
 
-  await page.setViewportSize({ width: 844, height: 390 });
-  const landscapeBox = await panel.boundingBox();
-  expect(landscapeBox).not.toBeNull();
-  expect(landscapeBox!.x + landscapeBox!.width).toBeLessThanOrEqual(845);
-  expect(landscapeBox!.y + landscapeBox!.height).toBeLessThanOrEqual(391);
-  await page.keyboard.press("Escape");
-  await expect(trigger).toBeFocused();
-});
+    await page.setViewportSize({ width: 844, height: 390 });
+    const landscapeBox = await panel.boundingBox();
+    expect(landscapeBox).not.toBeNull();
+    expect(landscapeBox!.x + landscapeBox!.width).toBeLessThanOrEqual(845);
+    expect(landscapeBox!.y + landscapeBox!.height).toBeLessThanOrEqual(391);
+    await page.keyboard.press("Escape");
+    await expect(trigger).toBeFocused();
+  },
+);
 
-test("TavernKeeper catalog cost stays bounded between full and filtered views", async ({
-  page,
-}, testInfo) => {
-  test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
-  test.skip(
-    testInfo.project.name !== "chromium",
-    "Chromium owns the deterministic full-catalog cost comparison",
-  );
-  await instrumentCatalogCosts(page);
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(sitePath());
-  const featureOff = await catalogCostSnapshot(page, {
-    removeScanIndicators: true,
-  });
+test(
+  "TavernKeeper catalog cost stays bounded between full and filtered views",
+  { tag: "@tavernkeeper" },
+  async ({ page }, testInfo) => {
+    test.skip(!hasScanFixture, "Requires the TavernKeeper scan fixture");
+    test.skip(
+      testInfo.project.name !== "chromium",
+      "Chromium owns the deterministic full-catalog cost comparison",
+    );
+    await instrumentCatalogCosts(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(sitePath());
+    const featureOff = await catalogCostSnapshot(page, {
+      removeScanIndicators: true,
+    });
 
-  await page.goto(sitePath());
-  const full = await catalogCostSnapshot(page);
+    await page.goto(sitePath());
+    const full = await catalogCostSnapshot(page);
 
-  await page.goto(`${sitePath()}?q=Recursion`);
-  await expect(
-    page.getByRole("searchbox", { name: "Search projects" }),
-  ).toHaveValue("Recursion");
-  await expect(page).toHaveURL(/\?q=Recursion$/u);
-  const filtered = await catalogCostSnapshot(page);
+    await page.goto(`${sitePath()}?q=Recursion`);
+    await expect(
+      page.getByRole("searchbox", { name: "Search projects" }),
+    ).toHaveValue("Recursion");
+    await expect(page).toHaveURL(/\?q=Recursion$/u);
+    const filtered = await catalogCostSnapshot(page);
 
-  await testInfo.attach("tavernkeeper-catalog-costs.json", {
-    body: Buffer.from(JSON.stringify({ featureOff, full, filtered }, null, 2)),
-    contentType: "application/json",
-  });
-  console.info(
-    "TavernKeeper catalog costs:",
-    JSON.stringify({ featureOff, full, filtered }),
-  );
+    await testInfo.attach("tavernkeeper-catalog-costs.json", {
+      body: Buffer.from(
+        JSON.stringify({ featureOff, full, filtered }, null, 2),
+      ),
+      contentType: "application/json",
+    });
+    console.info(
+      "TavernKeeper catalog costs:",
+      JSON.stringify({ featureOff, full, filtered }),
+    );
 
-  expect(featureOff.cards).toBe(full.cards);
-  expect(featureOff.scanGlyphs).toBe(0);
-  expect(full.cards).toBeGreaterThan(filtered.cards);
-  expect(full.scanGlyphs).toBe(full.cards);
-  expect(
-    full.documentElements - featureOff.documentElements,
-  ).toBeLessThanOrEqual(full.cards * 4);
-  expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(full.cards);
-  expect(full.openPopovers).toBe(0);
-  expect(full.historyBlocks).toBe(0);
-  expect(full.tooltipAnchors).toBe(0);
-  expect(full.listeners).toEqual(filtered.listeners);
-  expect(full.listeners).toEqual(featureOff.listeners);
-  expect(full.observerCount).toBeLessThanOrEqual(filtered.observerCount + 1);
-  expect(full.observerCount).toBeLessThanOrEqual(featureOff.observerCount + 1);
-  for (const snapshot of [featureOff, full, filtered]) {
-    expect(snapshot.longTaskMax ?? 0).toBeLessThan(200);
-    expect(snapshot.worstFrameGap).toBeLessThan(200);
-  }
-});
+    expect(featureOff.cards).toBe(full.cards);
+    expect(featureOff.scanGlyphs).toBe(0);
+    expect(full.cards).toBeGreaterThan(filtered.cards);
+    expect(full.scanGlyphs).toBe(full.cards);
+    expect(
+      full.documentElements - featureOff.documentElements,
+    ).toBeLessThanOrEqual(full.cards * 4);
+    expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(full.cards);
+    expect(full.openPopovers).toBe(0);
+    expect(full.historyBlocks).toBe(0);
+    expect(full.tooltipAnchors).toBe(0);
+    expect(full.listeners).toEqual(filtered.listeners);
+    expect(full.listeners).toEqual(featureOff.listeners);
+    expect(full.observerCount).toBeLessThanOrEqual(filtered.observerCount + 1);
+    expect(full.observerCount).toBeLessThanOrEqual(
+      featureOff.observerCount + 1,
+    );
+    for (const snapshot of [featureOff, full, filtered]) {
+      expect(snapshot.longTaskMax ?? 0).toBeLessThan(200);
+      expect(snapshot.worstFrameGap).toBeLessThan(200);
+    }
+  },
+);

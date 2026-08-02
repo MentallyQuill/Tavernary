@@ -525,6 +525,7 @@ test("runs Windows-specific visual baselines on a Windows runner", async () => {
 
   expect(jobs.verify["runs-on"]).toBe("ubuntu-latest");
   expect(verifyCommands).not.toContain("npm run test:visual");
+  expect(verifyCommands).toContain("npm run test:scan-e2e");
   expect(jobs.visual?.["runs-on"]).toBe("windows-latest");
   expect(visualCommands).toContain("npm run test:visual");
 });

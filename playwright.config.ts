@@ -11,15 +11,18 @@ export default defineConfig({
     },
     {
       name: "webkit",
+      grep: /@tavernkeeper/u,
       use: { ...devices["Desktop Safari"] },
     },
     {
       name: "mobile-chromium",
+      grep: /@tavernkeeper/u,
       testMatch: /catalog-mobile-performance\.spec\.ts/u,
       use: { ...devices["Pixel 7"] },
     },
     {
       name: "mobile-webkit",
+      grep: /@tavernkeeper/u,
       testMatch: /catalog-mobile-performance\.spec\.ts/u,
       use: { ...devices["iPhone 14"] },
     },

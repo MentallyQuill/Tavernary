@@ -77,12 +77,9 @@ const pendingScanProject = catalog.projects.find(
   ({ tavernKeeper }) => tavernKeeper?.state === "gray",
 );
 const unsupportedScanProject = catalog.projects.find(
-  ({ tavernKeeper }) => tavernKeeper === null,
+  ({ tavernKeeper }) => tavernKeeper?.state === "unsupported",
 );
 const hasScanFixture = process.env.TAVERNARY_SCAN_FIXTURE === "true";
-if (!pendingScanProject || !unsupportedScanProject) {
-  throw new Error("Missing scan-state catalog fixtures");
-}
 const freakySearchProjectName = displayedProjectName(freakySearchProject.name);
 
 function displayedProjectName(name: string) {
@@ -1013,176 +1010,187 @@ test("shows the full launch catalog without default-query hidden records", async
   ).toHaveCount(sourcePendingCount);
 });
 
-test("hydrates unscanned and unsupported scan states without nesting card controls", async ({
-  page,
-}) => {
-  test.skip(
-    !hasScanFixture,
-    "Requires the dedicated TavernKeeper scan fixture",
-  );
-  const indicator = page
-    .getByRole("button", {
-      name: "TavernKeeper scan: This project hasn't been scanned by TavernKeeper.",
-    })
-    .first();
-  const pendingCard = indicator.locator(
-    "xpath=ancestor::div[contains(@class, 'project-card-shell')]",
-  );
-
-  await expect(indicator).toBeVisible();
-  await expect(indicator).toHaveCSS("color", "rgb(130, 144, 153)");
-  await indicator.click();
-  const panel = page.getByRole("dialog", {
-    name: "TavernKeeper Scan Results",
-  });
-  await expect(
-    panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
-  ).toHaveText("TavernKeeper Scan Results");
-  await expect(panel.locator("p")).toHaveCount(1);
-  await expect(panel.locator("p").first()).toHaveText(
-    "This project hasn't been scanned by TavernKeeper.",
-  );
-  await expect(
-    panel.getByRole("link", { name: "View full report" }),
-  ).toHaveCount(0);
-  await panel.hover();
-  await expect(panel).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(panel).toHaveCount(0);
-
-  const pendingPrimaryLink = pendingCard.locator(".project-card-primary-link");
-  await pendingPrimaryLink.focus();
-  await page.keyboard.press("Tab");
-  await expect(indicator).toBeFocused();
-  await expect(panel).toBeVisible();
-  await page.locator("h1").click();
-  await expect(panel).toHaveCount(0);
-
-  const unsupportedCard = page.locator(".project-card-shell").filter({
-    has: page.getByRole("heading", {
-      name: displayedProjectName(unsupportedScanProject.name),
-      exact: true,
-    }),
-  });
-  const unsupportedIndicator = unsupportedCard.locator(
-    ".tavernkeeper-scan-indicator-trigger",
-  );
-  await expect(unsupportedIndicator).toHaveAttribute(
-    "aria-label",
-    "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
-  );
-  await expect(unsupportedIndicator).toHaveCSS("color", "rgb(40, 99, 94)");
-  await unsupportedIndicator.click();
-  await expect(panel.locator("p").first()).toHaveText(
-    "TavernKeeper scanning is not supported for this project's source.",
-  );
-  await page.keyboard.press("Escape");
-  await expect(page.locator("a button, button a")).toHaveCount(0);
-  await expect(
-    pendingCard.locator(".project-card-primary-link"),
-  ).toHaveAttribute("href", /^https:\/\//u);
-  await expect(
-    pendingCard.locator(".project-card-primary-link"),
-  ).toHaveAttribute("target", "_blank");
-
-  const primaryLink = pendingCard.locator(".project-card-primary-link");
-  const primaryHref = await primaryLink.getAttribute("href");
-  if (!primaryHref) throw new Error("Missing primary project URL");
-  await page
-    .context()
-    .route(primaryHref, (route) => route.fulfill({ body: "External project" }));
-  const newPage = page.context().waitForEvent("page");
-  await primaryLink.click();
-  const openedPage = await newPage;
-  await expect(openedPage).toHaveURL(primaryHref);
-  await openedPage.close();
-
-  const kitControl = pendingCard.locator(".project-kit-control");
-  await kitControl.click();
-  await expect(kitControl).toHaveAttribute("aria-pressed", "true");
-
-  const relationship = page
-    .locator(".project-relationship-control button")
-    .first();
-  await expect(relationship).toBeVisible();
-  await relationship.click();
-  await expect(page.locator(".relationship-pair")).toBeVisible();
-});
-
-test("hydrates current teal, stale orange, and current red scan reports with history links", async ({
-  page,
-}) => {
-  test.skip(
-    !hasScanFixture,
-    "Requires the dedicated TavernKeeper scan fixture",
-  );
-  for (const [state, stateCopy, severity] of [
-    ["teal", "No review-level concerns found at this commit.", null],
-    [
-      "orange",
-      "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
-      null,
-    ],
-    ["red", "TavernKeeper found review-level concerns.", "1 high"],
-  ] as const) {
+test(
+  "hydrates unscanned and unsupported scan states without nesting card controls",
+  { tag: "@tavernkeeper" },
+  async ({ page }) => {
+    test.skip(
+      !hasScanFixture,
+      "Requires the dedicated TavernKeeper scan fixture",
+    );
+    if (!pendingScanProject || !unsupportedScanProject) {
+      throw new Error("Missing scan-state catalog fixtures");
+    }
     const indicator = page
       .getByRole("button", {
-        name: new RegExp(`TavernKeeper scan: ${stateCopy}`, "i"),
+        name: "TavernKeeper scan: This project hasn't been scanned by TavernKeeper.",
       })
       .first();
-
-    await expect(indicator).toHaveCSS(
-      "color",
-      {
-        teal: "rgb(45, 212, 191)",
-        orange: "rgb(225, 138, 36)",
-        red: "rgb(248, 81, 73)",
-      }[state],
+    const pendingCard = indicator.locator(
+      "xpath=ancestor::div[contains(@class, 'project-card-shell')]",
     );
-    await indicator.hover();
+
+    await expect(indicator).toBeVisible();
+    await expect(indicator).toHaveCSS("color", "rgb(130, 144, 153)");
+    await indicator.click();
     const panel = page.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
     await expect(
       panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
     ).toHaveText("TavernKeeper Scan Results");
-    await expect(panel.locator("p").first()).toHaveText(stateCopy);
-    if (severity) {
-      await expect(
-        panel.locator(".tavernkeeper-severity-counts span"),
-      ).toHaveText(["1 high", "2 medium"]);
-      await expect(panel.locator("p")).toHaveCount(3);
-    } else {
-      await expect(panel.locator(".tavernkeeper-severity-counts")).toHaveCount(
-        0,
-      );
-      await expect(panel.locator("p")).toHaveCount(2);
-    }
-    await expect(panel.locator("p").last()).toHaveText(
-      /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026$/u,
+    await expect(panel.locator("p")).toHaveCount(1);
+    await expect(panel.locator("p").first()).toHaveText(
+      "This project hasn't been scanned by TavernKeeper.",
     );
-    const reportLink = panel.getByRole("link", { name: "View full report" });
-    await expect(reportLink).toHaveAttribute(
-      "href",
-      /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/1\/standard\/1\/$/u,
-    );
-    await expect(reportLink).toHaveAttribute("target", "_blank");
-    await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
     await expect(
-      panel.getByRole("link", { name: "View full scan history" }),
-    ).toHaveAttribute(
-      "href",
-      /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/history\/$/u,
+      panel.getByRole("link", { name: "View full report" }),
+    ).toHaveCount(0);
+    await panel.hover();
+    await expect(panel).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(panel).toHaveCount(0);
+
+    const pendingPrimaryLink = pendingCard.locator(
+      ".project-card-primary-link",
     );
-    expect(
-      await panel.locator(".tavernkeeper-history-strip i").count(),
-    ).toBeGreaterThan(0);
-    await expect(indicator).toHaveClass(
-      new RegExp(`tavernkeeper-scan-indicator-${state}`),
+    await pendingPrimaryLink.focus();
+    await page.keyboard.press("Tab");
+    await expect(indicator).toBeFocused();
+    await expect(panel).toBeVisible();
+    await page.locator("h1").click();
+    await expect(panel).toHaveCount(0);
+
+    const unsupportedCard = page.locator(".project-card-shell").filter({
+      has: page.getByRole("heading", {
+        name: displayedProjectName(unsupportedScanProject.name),
+        exact: true,
+      }),
+    });
+    const unsupportedIndicator = unsupportedCard.locator(
+      ".tavernkeeper-scan-indicator-trigger",
+    );
+    await expect(unsupportedIndicator).toHaveAttribute(
+      "aria-label",
+      "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+    );
+    await expect(unsupportedIndicator).toHaveCSS("color", "rgb(40, 99, 94)");
+    await unsupportedIndicator.click();
+    await expect(panel.locator("p").first()).toHaveText(
+      "TavernKeeper scanning is not supported for this project's source.",
     );
     await page.keyboard.press("Escape");
-  }
-});
+    await expect(page.locator("a button, button a")).toHaveCount(0);
+    await expect(
+      pendingCard.locator(".project-card-primary-link"),
+    ).toHaveAttribute("href", /^https:\/\//u);
+    await expect(
+      pendingCard.locator(".project-card-primary-link"),
+    ).toHaveAttribute("target", "_blank");
+
+    const primaryLink = pendingCard.locator(".project-card-primary-link");
+    const primaryHref = await primaryLink.getAttribute("href");
+    if (!primaryHref) throw new Error("Missing primary project URL");
+    await page
+      .context()
+      .route(primaryHref, (route) =>
+        route.fulfill({ body: "External project" }),
+      );
+    const newPage = page.context().waitForEvent("page");
+    await primaryLink.click();
+    const openedPage = await newPage;
+    await expect(openedPage).toHaveURL(primaryHref);
+    await openedPage.close();
+
+    const kitControl = pendingCard.locator(".project-kit-control");
+    await kitControl.click();
+    await expect(kitControl).toHaveAttribute("aria-pressed", "true");
+
+    const relationship = page
+      .locator(".project-relationship-control button")
+      .first();
+    await expect(relationship).toBeVisible();
+    await relationship.click();
+    await expect(page.locator(".relationship-pair")).toBeVisible();
+  },
+);
+
+test(
+  "hydrates current teal, stale orange, and current red scan reports with history links",
+  { tag: "@tavernkeeper" },
+  async ({ page }) => {
+    test.skip(
+      !hasScanFixture,
+      "Requires the dedicated TavernKeeper scan fixture",
+    );
+    for (const [state, stateCopy, severity] of [
+      ["teal", "No review-level concerns found at this commit.", null],
+      [
+        "orange",
+        "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
+        null,
+      ],
+      ["red", "TavernKeeper found review-level concerns.", "1 high"],
+    ] as const) {
+      const indicator = page
+        .getByRole("button", {
+          name: new RegExp(`TavernKeeper scan: ${stateCopy}`, "i"),
+        })
+        .first();
+
+      await expect(indicator).toHaveCSS(
+        "color",
+        {
+          teal: "rgb(45, 212, 191)",
+          orange: "rgb(225, 138, 36)",
+          red: "rgb(248, 81, 73)",
+        }[state],
+      );
+      await indicator.hover();
+      const panel = page.getByRole("dialog", {
+        name: "TavernKeeper Scan Results",
+      });
+      await expect(
+        panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
+      ).toHaveText("TavernKeeper Scan Results");
+      await expect(panel.locator("p").first()).toHaveText(stateCopy);
+      if (severity) {
+        await expect(
+          panel.locator(".tavernkeeper-severity-counts span"),
+        ).toHaveText(["1 high", "2 medium"]);
+        await expect(panel.locator("p")).toHaveCount(3);
+      } else {
+        await expect(
+          panel.locator(".tavernkeeper-severity-counts"),
+        ).toHaveCount(0);
+        await expect(panel.locator("p")).toHaveCount(2);
+      }
+      await expect(panel.locator("p").last()).toHaveText(
+        /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026$/u,
+      );
+      const reportLink = panel.getByRole("link", { name: "View full report" });
+      await expect(reportLink).toHaveAttribute(
+        "href",
+        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/1\/standard\/1\/$/u,
+      );
+      await expect(reportLink).toHaveAttribute("target", "_blank");
+      await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
+      await expect(
+        panel.getByRole("link", { name: "View full scan history" }),
+      ).toHaveAttribute(
+        "href",
+        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/history\/$/u,
+      );
+      expect(
+        await panel.locator(".tavernkeeper-history-strip i").count(),
+      ).toBeGreaterThan(0);
+      await expect(indicator).toHaveClass(
+        new RegExp(`tavernkeeper-scan-indicator-${state}`),
+      );
+      await page.keyboard.press("Escape");
+    }
+  },
+);
 
 test("uses canonical external URLs for project cards", async ({ page }) => {
   const recursion = page.getByRole("link", { name: "Recursion", exact: true });
