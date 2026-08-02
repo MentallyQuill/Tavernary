@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mentallyquill-wandlight",
+  "source_id": "github-1254077407",
+  "source_identity": "github:mentallyquill/wandlight",
+  "evidence_fingerprint": "c23458cccbcdd67169e7066d0ceaa5afcc7d5a60dcc5e9b38db1bb753a35ac4b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T02:45:50.309Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T02:45:50.309Z"
+  },
+  "maintenance_issue_number": null
+}
