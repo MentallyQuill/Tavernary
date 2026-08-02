@@ -1018,6 +1018,10 @@ test(
       !hasScanFixture,
       "Requires the dedicated TavernKeeper scan fixture",
     );
+    await expect(page.locator(".catalog-shell")).toHaveAttribute(
+      "data-hydrated",
+      "true",
+    );
     if (!pendingScanProject || !unsupportedScanProject) {
       throw new Error("Missing scan-state catalog fixtures");
     }
@@ -1123,6 +1127,10 @@ test(
       !hasScanFixture,
       "Requires the dedicated TavernKeeper scan fixture",
     );
+    await expect(page.locator(".catalog-shell")).toHaveAttribute(
+      "data-hydrated",
+      "true",
+    );
     for (const [state, stateCopy, severity] of [
       ["teal", "No review-level concerns found at this commit.", null],
       [
@@ -1146,7 +1154,9 @@ test(
           red: "rgb(248, 81, 73)",
         }[state],
       );
+      await page.mouse.move(0, 0);
       await indicator.hover();
+      await expect(indicator).toHaveAttribute("aria-expanded", "true");
       const panel = page.getByRole("dialog", {
         name: "TavernKeeper Scan Results",
       });

@@ -101,9 +101,13 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   const filterPresence = useTransitionPresence(filtersOpen, 220);
   const searchRef = useRef<HTMLInputElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const catalogShellRef = useRef<HTMLDivElement>(null);
   const addedStatusTimerRef = useRef<number | null>(null);
   const [addedStatus, setAddedStatus] = useState<AddedStatus | null>(null);
   const [selectionAnnouncement, setSelectionAnnouncement] = useState("");
+  useEffect(() => {
+    catalogShellRef.current?.setAttribute("data-hydrated", "true");
+  }, []);
   useEffect(() => {
     const browsing = !searchMeaning(query.search);
     if (browsing && query.mode === "projects" && query.sort !== "relevance") {
@@ -560,7 +564,7 @@ export function CatalogPage({ catalog }: { catalog: Catalog }) {
   };
 
   return (
-    <div className="catalog-shell">
+    <div className="catalog-shell" data-hydrated="false" ref={catalogShellRef}>
       <SiteHeader
         search={searchInput}
         onSearch={updateSearch}

@@ -145,19 +145,22 @@ export function TavernKeeperScanIndicator({
     [openPopover],
   );
 
-  const rememberPointerOpenState = useCallback(() => {
-    pointerOpenState.current = open;
-  }, [open]);
+  const rememberPointerOpenState = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      pointerOpenState.current = event.pointerType === "touch" ? open : null;
+    },
+    [open],
+  );
 
   const togglePopover = useCallback(() => {
     const wasOpenBeforePointerFocus = pointerOpenState.current;
     pointerOpenState.current = null;
-    if (wasOpenBeforePointerFocus ?? open) {
+    if (wasOpenBeforePointerFocus === true) {
       closePopover();
     } else {
       openPopover();
     }
-  }, [closePopover, open, openPopover]);
+  }, [closePopover, openPopover]);
 
   const containsInteractiveElement = useCallback(
     (target: EventTarget | null) => {
@@ -278,6 +281,8 @@ export function TavernKeeperScanIndicator({
         onClick={togglePopover}
         onFocus={openPopover}
         onKeyDown={focusReportLink}
+        onMouseEnter={openPopover}
+        onMouseLeave={delayClose}
         onPointerDown={rememberPointerOpenState}
         onPointerEnter={openFromPointer}
         onPointerLeave={delayClose}
@@ -294,6 +299,8 @@ export function TavernKeeperScanIndicator({
               id={popoverId}
               onBlurCapture={closeOnFocusExit}
               onFocusCapture={openPopover}
+              onMouseEnter={openPopover}
+              onMouseLeave={delayClose}
               onPointerEnter={openFromPointer}
               onPointerLeave={delayClose}
               ref={popoverRef}

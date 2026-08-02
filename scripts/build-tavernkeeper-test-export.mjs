@@ -1,12 +1,13 @@
 import {
   cp,
   mkdtemp,
+  mkdir,
   readdir,
   readFile,
   rm,
+  symlink,
   writeFile,
 } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 
@@ -19,7 +20,6 @@ const fixtureEntries = [
   "src",
   "next-env.d.ts",
   "next.config.ts",
-  "node_modules",
   "package-lock.json",
   "package.json",
   "tsconfig.json",
@@ -31,14 +31,22 @@ function aborted() {
 
 function runNpm(arguments_, cwd, signal) {
   return new Promise((resolveRun, rejectRun) => {
+    const environment = {
+      ...process.env,
+      TAVERNARY_TURBOPACK_ROOT: rootDirectory,
+    };
     const process_ =
       process.platform === "win32"
         ? spawn(
             process.env.ComSpec ?? "cmd.exe",
             ["/d", "/s", "/c", `npm.cmd ${arguments_.join(" ")}`],
-            { cwd, stdio: "inherit" },
+            { cwd, env: environment, stdio: "inherit" },
           )
-        : spawn("npm", arguments_, { cwd, stdio: "inherit" });
+        : spawn("npm", arguments_, {
+            cwd,
+            env: environment,
+            stdio: "inherit",
+          });
     const stop = () => process_.kill("SIGTERM");
     if (signal?.aborted) stop();
     signal?.addEventListener("abort", stop, { once: true });
@@ -181,12 +189,18 @@ async function copyFixtureWorkspace(workspaceDirectory) {
       },
     );
   }
+  await symlink(
+    resolve(rootDirectory, "node_modules"),
+    resolve(workspaceDirectory, "node_modules"),
+    process.platform === "win32" ? "junction" : "dir",
+  );
 }
 
 /** Builds colored test data without writing to the checked-out worktree. */
 export async function buildTavernKeeperTestExport({ signal } = {}) {
+  await mkdir(resolve(rootDirectory, ".tmp"), { recursive: true });
   const temporaryDirectory = await mkdtemp(
-    resolve(tmpdir(), "tavernary-tavernkeeper-scan-"),
+    resolve(rootDirectory, ".tmp/tavernary-tavernkeeper-scan-"),
   );
   const workspaceDirectory = resolve(temporaryDirectory, "workspace");
   const cleanup = () =>
