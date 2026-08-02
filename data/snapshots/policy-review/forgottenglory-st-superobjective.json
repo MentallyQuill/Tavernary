@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "forgottenglory-st-superobjective",
+  "source_id": "github-949189091",
+  "source_identity": "github:forgottenglory/st-superobjective",
+  "evidence_fingerprint": "4ac8d09c201fa4040e5b8c8e3a74523825edd1ef91f2496323f496371db186de",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:37:58.448Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:37:58.448Z"
+  },
+  "maintenance_issue_number": null
+}
