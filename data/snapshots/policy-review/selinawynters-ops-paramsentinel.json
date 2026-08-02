@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "selinawynters-ops-paramsentinel",
+  "source_id": "github-1311856766",
+  "source_identity": "github:selinawynters-ops/paramsentinel",
+  "evidence_fingerprint": "dd42090b03c26c1153ed02416e3b80f5ddad6b419e4863002b9a467409edea56",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-02T09:37:04.399Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-02T09:37:04.399Z"
+  },
+  "maintenance_issue_number": null
+}
