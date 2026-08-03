@@ -173,6 +173,13 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
     REPOSITORY_ID: "${{ steps.resolve.outputs.repository_id }}",
   });
   expect(dispatch.run).toContain("inputs:{repository_id:$repository_id}");
+  expect(dispatch.run).toContain(
+    'run_title="Tavernary targeted scan #$REPOSITORY_ID"',
+  );
+  expect(dispatch.run).toContain("for dispatch_attempt in 1 2 3");
+  expect(dispatch.run).toContain('"$status" == "in_progress"');
+  expect(dispatch.run).toContain('"$conclusion" == "cancelled"');
+  expect(dispatch.run).toContain("actions/workflows/targeted-scan.yml/runs");
   expect(dispatch.run).not.toMatch(
     /repository_url|source_id|target_sha|branch|mode|model|priority|token_budget|clone_url/iu,
   );
