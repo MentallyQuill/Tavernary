@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-reviewer",
+  "source_id": "github-1207588937",
+  "source_identity": "github:enerccio/sillytavern-reviewer",
+  "evidence_fingerprint": "49e2c8bc9829f015bbf87836575ed7bdec02010b13c95c7afd5f69a61f360358",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T08:14:31.738Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T08:14:31.738Z"
+  },
+  "maintenance_issue_number": null
+}
