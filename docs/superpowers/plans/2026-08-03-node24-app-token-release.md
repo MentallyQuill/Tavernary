@@ -95,6 +95,7 @@ git commit -m "fix(actions): use Node 24 App tokens"
 **Files:**
 - Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\tests\workflows.test.ts`
 - Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\tests\token-policy.test.ts`
+- Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\scripts\check-workflow-policy.mjs`
 - Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\.github\workflows\deploy-pages.yml`
 - Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\.github\workflows\policy-rescan.yml`
 - Modify: `F:\git\TavernKeeper\.worktrees\node24-action-pin\.github\workflows\scan-and-publish.yml`
@@ -132,7 +133,21 @@ uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 #
 
 Do not change any App secret, environment, permission, condition, token consumer, report, operation, or scan command.
 
-- [ ] **Step 4: Run the focused tests and workflow policy and verify GREEN**
+- [ ] **Step 4: Run the focused tests and verify the policy contract remains RED**
+
+Run:
+
+```powershell
+npm.cmd test -- tests/workflows.test.ts tests/token-policy.test.ts
+```
+
+Expected: the action and opaque-token assertions pass, while `the reviewed workflow policy passes` fails because `scripts/check-workflow-policy.mjs` still allowlists the old Publisher action.
+
+- [ ] **Step 5: Update the reviewed workflow-policy source of truth**
+
+Replace only the `publisherAction` SHA in `scripts/check-workflow-policy.mjs` with `f8d387b68d61c58ab83c6c016672934102569859`. Preserve all Publisher secret, environment, permission, consumer-count, and push-boundary assertions.
+
+- [ ] **Step 6: Run the focused tests and workflow policy and verify GREEN**
 
 Run:
 
@@ -143,22 +158,22 @@ npm.cmd run workflows:check
 
 Expected: 17 focused tests pass and the policy reports `Workflow policy passed for 9 workflows`.
 
-- [ ] **Step 5: Prove the TavernKeeper scope is control-plane-only**
+- [ ] **Step 7: Prove the TavernKeeper scope is control-plane-only**
 
 Run:
 
 ```powershell
 git diff --name-only
-rg -n "fee1f7d63c2ff003460e3d139729b119787bc349" .github tests
-rg -n "f8d387b68d61c58ab83c6c016672934102569859" .github tests
+rg -n "fee1f7d63c2ff003460e3d139729b119787bc349" .github tests scripts
+rg -n "f8d387b68d61c58ab83c6c016672934102569859" .github tests scripts
 ```
 
-Expected: only four workflow files and two tests are modified; the old SHA has no active workflow/test matches; the new SHA appears in exactly six active locations. No file under `src`, `config`, `rules`, `schemas`, `operations`, or `reports` changes, so Wandlight and Recursion remain untouched.
+Expected: only four workflow files, two tests, and the workflow-policy script are modified; the old SHA has no active workflow/test/policy matches; the new SHA appears in exactly seven active locations. No file under `src`, `config`, `rules`, `schemas`, `operations`, or `reports` changes, so Wandlight and Recursion remain untouched.
 
-- [ ] **Step 6: Commit TavernKeeper's tested change**
+- [ ] **Step 8: Commit TavernKeeper's tested change**
 
 ```powershell
-git add tests/workflows.test.ts tests/token-policy.test.ts .github/workflows/deploy-pages.yml .github/workflows/policy-rescan.yml .github/workflows/scan-and-publish.yml .github/workflows/staff-operations.yml
+git add tests/workflows.test.ts tests/token-policy.test.ts scripts/check-workflow-policy.mjs .github/workflows/deploy-pages.yml .github/workflows/policy-rescan.yml .github/workflows/scan-and-publish.yml .github/workflows/staff-operations.yml
 git commit -m "fix(actions): use Node 24 App tokens"
 ```
 
@@ -190,7 +205,7 @@ Expected: both commands exit 0; Tavernary passes its full site/export/test gate 
 
 - [ ] **Step 2: Recheck the no-reset guard before integration**
 
-Run `git diff main...HEAD --name-only` in each worktree. Expected: Tavernary contains only its plan, two tests, and two workflows; TavernKeeper contains only two tests and four workflows. If any scan behavior/output path appears, stop and reset Wandlight and Recursion before any push or resume.
+Run `git diff main...HEAD --name-only` in each worktree. Expected: Tavernary contains only its plan, two tests, and two workflows; TavernKeeper contains only two tests, the workflow-policy script, and four workflows. If any scan behavior/output path appears, stop and reset Wandlight and Recursion before any push or resume.
 
 - [ ] **Step 3: Fast-forward each primary main and push it**
 
