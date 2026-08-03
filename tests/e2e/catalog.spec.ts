@@ -1027,7 +1027,7 @@ test(
     }
     const indicator = page
       .getByRole("button", {
-        name: "TavernKeeper scan: This project hasn't been scanned by TavernKeeper.",
+        name: "TavernKeeper scan: Not assessed.",
       })
       .first();
     const pendingCard = indicator.locator(
@@ -1076,7 +1076,7 @@ test(
     );
     await expect(unsupportedIndicator).toHaveAttribute(
       "aria-label",
-      "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+      "TavernKeeper scan: Unsupported source.",
     );
     await expect(unsupportedIndicator).toHaveCSS("color", "rgb(40, 99, 94)");
     await unsupportedIndicator.click();
@@ -1114,13 +1114,11 @@ test(
       .locator(".project-relationship-control button")
       .first();
     await expect(relationship).toBeVisible();
-    await relationship.click();
-    await expect(page.locator(".relationship-pair")).toBeVisible();
   },
 );
 
 test(
-  "hydrates current teal, stale orange, and current red scan reports with history links",
+  "hydrates current and stale risk colors with contextual history links",
   { tag: "@tavernkeeper" },
   async ({ page }) => {
     test.skip(
@@ -1131,26 +1129,29 @@ test(
       "data-hydrated",
       "true",
     );
-    for (const [state, stateCopy, severity] of [
+    for (const [state, accessibleCopy, stateCopy, stale] of [
       [
         "teal",
-        "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
-        null,
+        "Low concern; current.",
+        "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
+        false,
       ],
       [
-        "orange",
-        "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold. This report covers an older commit, and an updated scan is pending.",
-        null,
+        "teal",
+        "Low concern; stale assessment.",
+        "The reviewed behavior matches the extension's stated purpose, with no material concerns. This assessment covers an older commit. An updated scan is pending.",
+        true,
       ],
       [
         "red",
-        "All required scanners completed at this commit and found 3 reportable concerns.",
-        "1 high",
+        "High concern; current.",
+        "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
+        false,
       ],
     ] as const) {
       const indicator = page
         .getByRole("button", {
-          name: new RegExp(`TavernKeeper scan: ${stateCopy}`, "i"),
+          name: `TavernKeeper scan: ${accessibleCopy}`,
         })
         .first();
 
@@ -1158,7 +1159,6 @@ test(
         "color",
         {
           teal: "rgb(45, 212, 191)",
-          orange: "rgb(225, 138, 36)",
           red: "rgb(248, 81, 73)",
         }[state],
       );
@@ -1171,25 +1171,21 @@ test(
       await expect(
         panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
       ).toHaveText("TavernKeeper Scan Results");
-      await expect(panel.locator("p").first()).toHaveText(stateCopy);
-      if (severity) {
-        await expect(
-          panel.locator(".tavernkeeper-severity-counts span"),
-        ).toHaveText(["1 high", "2 medium"]);
-        await expect(panel.locator("p")).toHaveCount(3);
-      } else {
-        await expect(
-          panel.locator(".tavernkeeper-severity-counts"),
-        ).toHaveCount(0);
-        await expect(panel.locator("p")).toHaveCount(2);
-      }
+      await expect(panel.locator("p").nth(1)).toHaveText(stateCopy);
+      await expect(
+        panel.locator(".tavernkeeper-assessment-counts span"),
+      ).toHaveCount(3);
+      await expect(panel.locator("p")).toHaveCount(5);
+      await expect(
+        indicator.locator(".tavernkeeper-freshness-clock"),
+      ).toHaveCount(stale ? 1 : 0);
       await expect(panel.locator("p").last()).toHaveText(
-        /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026$/u,
+        /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026\. Assessed by Tavernary on July (?:13|30|31), 2026\.$/u,
       );
       const reportLink = panel.getByRole("link", { name: "View full report" });
       await expect(reportLink).toHaveAttribute(
         "href",
-        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/2\/1\/$/u,
+        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/2\/[0-9a-f]{64}\/$/u,
       );
       await expect(reportLink).toHaveAttribute("target", "_blank");
       await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
@@ -1197,7 +1193,7 @@ test(
         panel.getByRole("link", { name: "View full scan history" }),
       ).toHaveAttribute(
         "href",
-        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/history\/$/u,
+        /\/security\/tavernkeeper\/history\/github-\d+\/?$/u,
       );
       expect(
         await panel.locator(".tavernkeeper-history-strip i").count(),

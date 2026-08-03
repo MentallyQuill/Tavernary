@@ -101,72 +101,43 @@ async function fixtureReports() {
       "TavernKeeper browser fixture needs three healthy GitHub sources",
     );
   }
-  function report({ source, snapshot }, ordinal, result, current = false) {
+  function report({ source, snapshot }, ordinal, riskLevel, current = false) {
     const targetSha = current
       ? snapshot.repository.head_sha
       : ordinal.toString(16).padStart(40, "0");
-    const red = result === "red";
+    const high = riskLevel === "high";
+    const reportId = ordinal.toString(16).padStart(64, "0");
     return {
-      report_id: ordinal.toString(16).padStart(64, "0"),
-      report_version: 1,
-      supersedes_report_id: null,
-      scanner_version: "browser-fixture-v4",
+      report_id: reportId,
       scanner_policy_version: "2",
-      rule_catalog_version: "browser-fixture-v1",
-      package_schema_version: 1,
+      contextual_review_policy_version: "1",
       source_id: source.id,
       provider: "github",
       repository_id: source.repository_id,
       repository: source.repository,
       target_sha: targetSha,
       completed_at: `2026-07-${String(ordinal).padStart(2, "0")}T12:00:00.000Z`,
-      assessment_method: "deterministic-static-analysis",
-      result,
-      summary: red
-        ? {
-            headline: "Reportable concerns detected",
-            detail:
-              "All required scanners completed at this commit and found 3 reportable concerns.",
-          }
-        : {
-            headline: "No reportable concerns detected",
-            detail:
-              "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
-          },
-      finding_counts: {
-        total: red ? 3 : 0,
-        reportable: red ? 3 : 0,
-        informational: 0,
-        reportable_severity: {
-          critical: 0,
-          high: red ? 1 : 0,
-          medium: red ? 2 : 0,
-        },
-        severity: {
-          critical: 0,
-          high: red ? 1 : 0,
-          medium: red ? 2 : 0,
-          low: 0,
-          info: 0,
-        },
-        confidence: { high: red ? 3 : 0, medium: 0, low: 0 },
-        policy_status: {
-          reportable: red ? 3 : 0,
-          informational: 0,
-        },
-        categories: red ? [{ category: "credential-theft", count: 3 }] : [],
-      },
-      coverage: {
-        history_commits: 20,
-        inventory_files: 12,
-        inventory_bytes: 4096,
-        tools_completed: 6,
-        tools_not_applicable: 0,
-        evidence_validated: red ? 3 : 0,
+      assessed_at: `2026-07-${String(ordinal).padStart(2, "0")}T12:05:00.000Z`,
+      synthesis_policy_version: "1",
+      synthesis_model: "gpt-5.6-luna",
+      assessment: {
+        risk_level: riskLevel,
+        headline: high ? "High concern" : "Low concern",
+        summary: high
+          ? "The combined reviewed behavior could expose credentials to an untrusted endpoint."
+          : "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
+        minor_cautions: high ? 1 : 0,
+        material_concerns: high ? 1 : 0,
+        high_danger: high ? 1 : 0,
+        malicious_evidence: high
+          ? "The review found evidence consistent with credential theft."
+          : "No evidence of malicious behavior was identified.",
+        cited_finding_ids: high ? ["a".repeat(64)] : [],
+        interaction_chains: [],
       },
       report_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
-        `${source.repository_id}/${targetSha}/2/1/`,
+        `${source.repository_id}/${targetSha}/2/${reportId}/`,
       history_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
         `${source.repository_id}/history/`,
@@ -174,19 +145,24 @@ async function fixtureReports() {
   }
 
   return {
-    schema_version: 4,
+    schema_version: 5,
     generated_at: "2026-07-31T12:00:00.000Z",
+    preferred_report_ids: [
+      (13).toString(16).padStart(64, "0"),
+      (31).toString(16).padStart(64, "0"),
+      (30).toString(16).padStart(64, "0"),
+    ],
     reports: [
       ...Array.from({ length: 13 }, (_, index) =>
         report(
           targets[0],
           index + 1,
-          index === 1 ? "red" : "teal",
+          index === 1 ? "high" : "low",
           index === 12,
         ),
       ),
-      report(targets[1], 31, "red", true),
-      report(targets[2], 30, "teal"),
+      report(targets[1], 31, "high", true),
+      report(targets[2], 30, "low"),
     ],
   };
 }

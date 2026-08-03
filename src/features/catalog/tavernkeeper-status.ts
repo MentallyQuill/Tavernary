@@ -1,38 +1,70 @@
 import { ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION } from "../../../scripts/security/tavernkeeper-reports.mjs";
 
+export type TavernKeeperRiskLevel = "low" | "material" | "high";
 export type TavernKeeperVisualState =
   "teal" | "orange" | "red" | "gray" | "unsupported";
+export type TavernKeeperFreshness =
+  "current" | "stale" | "unavailable" | "unassessed" | "unsupported";
 
-export type TavernKeeperStatusReason =
-  | "unsupported"
-  | "current"
-  | "outdated-concerning"
-  | "outdated-clean"
-  | "unscanned"
-  | "source-unavailable";
+export interface TavernKeeperFinalAssessment {
+  risk_level: TavernKeeperRiskLevel;
+  headline: string;
+  summary: string;
+  minor_cautions: number;
+  material_concerns: number;
+  high_danger: number;
+  malicious_evidence: string;
+  cited_finding_ids: string[];
+  interaction_chains: Array<{
+    finding_ids: string[];
+    resulting_risk: "material" | "high";
+    explanation: string;
+  }>;
+}
+
+export interface TavernKeeperAssessedReport {
+  report_id: string;
+  source_id: string;
+  provider: string;
+  repository_id: number;
+  repository: string;
+  target_sha: string;
+  scanner_policy_version: string;
+  contextual_review_policy_version: string;
+  completed_at: string;
+  assessed_at: string;
+  synthesis_policy_version: string;
+  synthesis_model: string;
+  report_url: string;
+  history_url?: string;
+  assessment: TavernKeeperFinalAssessment;
+}
 
 export interface TavernKeeperReportSummary {
   reportId: string;
-  result: "teal" | "red";
+  riskLevel: TavernKeeperRiskLevel;
+  headline: string;
+  summary: string;
+  minorCautions: number;
+  materialConcerns: number;
+  highDanger: number;
+  maliciousEvidence: string;
+  citedFindingIds: string[];
   scannedSha: string;
   scannedAt: string;
-  summary: {
-    headline: string;
-    detail: string;
-  };
+  assessedAt: string;
   scannerPolicyVersion: string;
+  contextualReviewPolicyVersion: string;
+  synthesisPolicyVersion: string;
+  synthesisModel: string;
   reportUrl: string;
-  historyUrl: string;
-  reportableSeverity: {
-    critical: number;
-    high: number;
-    medium: number;
-  };
+  technicalHistoryUrl: string | null;
 }
 
 export interface TavernKeeperCardStatus {
   state: TavernKeeperVisualState;
-  reason: TavernKeeperStatusReason;
+  riskLevel: TavernKeeperRiskLevel | null;
+  freshness: TavernKeeperFreshness;
   currentSha: string | null;
   report: TavernKeeperReportSummary | null;
   history: TavernKeeperReportSummary[];
@@ -54,35 +86,6 @@ interface TavernKeeperSnapshot {
   repository?: { id?: number; head_sha?: string | null };
 }
 
-export interface TavernKeeperPreferredReport {
-  report_id: string;
-  report_version: number;
-  supersedes_report_id: string | null;
-  source_id: string;
-  provider: string;
-  repository_id: number;
-  repository: string;
-  target_sha: string;
-  scanner_policy_version: string;
-  completed_at: string;
-  result: "teal" | "red";
-  summary: TavernKeeperReportSummary["summary"];
-  finding_counts: {
-    reportable_severity: TavernKeeperReportSummary["reportableSeverity"];
-    severity: {
-      critical: number;
-      high: number;
-      medium: number;
-      low: number;
-      info: number;
-    };
-  };
-  report_url: string;
-  history_url: string;
-}
-
-const fullShaPattern = /^[0-9a-f]{40}$/u;
-
 interface ActiveGithubSource extends TavernKeeperSource {
   id: string;
   type: "github";
@@ -90,6 +93,13 @@ interface ActiveGithubSource extends TavernKeeperSource {
   repository: string;
   repository_id: number;
 }
+
+const fullShaPattern = /^[0-9a-f]{40}$/u;
+const riskColors: Record<TavernKeeperRiskLevel, TavernKeeperVisualState> = {
+  low: "teal",
+  material: "orange",
+  high: "red",
+};
 
 function isActiveGithubSource(
   source: TavernKeeperSource | null | undefined,
@@ -122,8 +132,8 @@ function currentShaFor(
   return currentSha;
 }
 
-function isPreferredReportForSource(
-  report: TavernKeeperPreferredReport,
+function reportMatchesSource(
+  report: TavernKeeperAssessedReport,
   source: ActiveGithubSource,
 ) {
   return (
@@ -135,110 +145,50 @@ function isPreferredReportForSource(
   );
 }
 
-function summarize(
-  report: TavernKeeperPreferredReport,
-): TavernKeeperReportSummary {
-  return {
-    reportId: report.report_id,
-    result: report.result,
-    scannedSha: report.target_sha,
-    scannedAt: report.completed_at,
-    summary: report.summary,
-    scannerPolicyVersion: report.scanner_policy_version,
-    reportUrl: report.report_url,
-    historyUrl: report.history_url,
-    reportableSeverity: report.finding_counts.reportable_severity,
-  };
-}
-
-const rfc3339OrderingPattern =
-  /^(?<prefix>\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:)(?<second>\d{2})(?:\.(?<fraction>\d+))?(?<zone>[Zz]|[+-]\d{2}:\d{2})$/u;
-
-function rfc3339OrderKey(timestamp: string) {
-  const match = rfc3339OrderingPattern.exec(timestamp);
-  if (!match?.groups) {
-    throw new Error(`Invalid RFC3339 timestamp: ${timestamp}`);
-  }
-
-  const leapSecond = match.groups.second === "60";
-  const normalizedWholeSecond = `${match.groups.prefix}${
-    leapSecond ? "59" : match.groups.second
-  }${match.groups.zone}`
-    .replace("t", "T")
-    .replace(/z$/u, "Z");
-  const parsedEpoch = Date.parse(normalizedWholeSecond);
-  if (!Number.isFinite(parsedEpoch)) {
-    throw new Error(`Invalid RFC3339 timestamp: ${timestamp}`);
-  }
-
-  return {
-    epochSecond: parsedEpoch / 1_000 + (leapSecond ? 1 : 0),
-    fraction: match.groups.fraction ?? "",
-    phase: leapSecond ? 0 : 1,
-  };
-}
-
-function compareFractions(left: string, right: string) {
-  const width = Math.max(left.length, right.length);
-  const normalizedLeft = left.padEnd(width, "0");
-  const normalizedRight = right.padEnd(width, "0");
-  if (normalizedLeft === normalizedRight) {
-    return 0;
-  }
-  return normalizedLeft < normalizedRight ? -1 : 1;
-}
-
-function compareRfc3339(left: string, right: string) {
-  const leftKey = rfc3339OrderKey(left);
-  const rightKey = rfc3339OrderKey(right);
-  return (
-    leftKey.epochSecond - rightKey.epochSecond ||
-    leftKey.phase - rightKey.phase ||
-    compareFractions(leftKey.fraction, rightKey.fraction)
-  );
-}
-
 function compareReports(
-  left: TavernKeeperPreferredReport,
-  right: TavernKeeperPreferredReport,
+  left: TavernKeeperAssessedReport,
+  right: TavernKeeperAssessedReport,
 ) {
   return (
-    compareRfc3339(left.completed_at, right.completed_at) ||
+    Date.parse(left.assessed_at) - Date.parse(right.assessed_at) ||
     left.report_id.localeCompare(right.report_id)
   );
 }
 
-function newestReport(reports: TavernKeeperPreferredReport[]) {
+function newest(reports: TavernKeeperAssessedReport[]) {
   return [...reports].sort(compareReports).at(-1);
 }
 
-function compactHistory(reports: TavernKeeperPreferredReport[]) {
-  return [...reports].sort(compareReports).slice(-12).map(summarize);
-}
-
-function preferredConclusions(reports: TavernKeeperPreferredReport[]) {
-  const preferred = new Map<string, TavernKeeperPreferredReport>();
-  for (const report of reports) {
-    const identity = [report.target_sha, report.scanner_policy_version].join(
-      "\u0000",
-    );
-    const current = preferred.get(identity);
-    if (
-      !current ||
-      report.report_version > current.report_version ||
-      (report.report_version === current.report_version &&
-        compareReports(report, current) > 0)
-    ) {
-      preferred.set(identity, report);
-    }
-  }
-  return [...preferred.values()];
+function summarize(
+  report: TavernKeeperAssessedReport,
+): TavernKeeperReportSummary {
+  return {
+    reportId: report.report_id,
+    riskLevel: report.assessment.risk_level,
+    headline: report.assessment.headline,
+    summary: report.assessment.summary,
+    minorCautions: report.assessment.minor_cautions,
+    materialConcerns: report.assessment.material_concerns,
+    highDanger: report.assessment.high_danger,
+    maliciousEvidence: report.assessment.malicious_evidence,
+    citedFindingIds: report.assessment.cited_finding_ids,
+    scannedSha: report.target_sha,
+    scannedAt: report.completed_at,
+    assessedAt: report.assessed_at,
+    scannerPolicyVersion: report.scanner_policy_version,
+    contextualReviewPolicyVersion: report.contextual_review_policy_version,
+    synthesisPolicyVersion: report.synthesis_policy_version,
+    synthesisModel: report.synthesis_model,
+    reportUrl: report.report_url,
+    technicalHistoryUrl: report.history_url ?? null,
+  };
 }
 
 function unsupportedStatus(): TavernKeeperCardStatus {
   return {
     state: "unsupported",
-    reason: "unsupported",
+    riskLevel: null,
+    freshness: "unsupported",
     currentSha: null,
     report: null,
     history: [],
@@ -250,70 +200,59 @@ export function deriveTavernKeeperCardStatus({
   projectKind,
   source,
   snapshot,
-  preferredReports,
+  assessedReports,
+  preferredReportIds,
 }: {
   projectKind?: string;
   source: TavernKeeperSource | null | undefined;
   snapshot: TavernKeeperSnapshot | null | undefined;
-  preferredReports: readonly TavernKeeperPreferredReport[];
+  assessedReports: readonly TavernKeeperAssessedReport[];
+  preferredReportIds: readonly string[];
 }): TavernKeeperCardStatus {
   if (projectKind === "preset" || !isActiveGithubSource(source)) {
     return unsupportedStatus();
   }
 
-  const reports = preferredConclusions(
-    preferredReports.filter((report) =>
-      isPreferredReportForSource(report, source),
-    ),
+  const reports = assessedReports
+    .filter((report) => reportMatchesSource(report, source))
+    .sort(compareReports);
+  const preferredIds = new Set(preferredReportIds);
+  const preferred = newest(
+    reports.filter((report) => preferredIds.has(report.report_id)),
   );
-  const newest = newestReport(reports);
-  const history = compactHistory(reports);
-  const historyUrl = newest?.history_url ?? null;
+  const selected = preferred ?? newest(reports);
   const currentSha = currentShaFor(source, snapshot);
+  const history = reports.slice(-12).map(summarize);
+  const historyUrl =
+    reports.length > 0
+      ? `/security/tavernkeeper/history/${encodeURIComponent(source.id)}/`
+      : null;
 
-  if (!currentSha) {
+  if (!selected) {
     return {
-      state: newest?.result === "red" ? "red" : "gray",
-      reason: "source-unavailable",
-      currentSha: null,
-      report: newest ? summarize(newest) : null,
-      history,
-      historyUrl,
-    };
-  }
-
-  const currentReport = newestReport(
-    reports.filter((report) => report.target_sha === currentSha),
-  );
-  if (currentReport) {
-    return {
-      state: currentReport.result,
-      reason: "current",
+      state: "gray",
+      riskLevel: null,
+      freshness: currentSha ? "unassessed" : "unavailable",
       currentSha,
-      report: summarize(currentReport),
+      report: null,
       history,
       historyUrl,
     };
   }
 
-  if (newest) {
-    return {
-      state: newest.result === "red" ? "red" : "orange",
-      reason:
-        newest.result === "red" ? "outdated-concerning" : "outdated-clean",
-      currentSha,
-      report: summarize(newest),
-      history,
-      historyUrl,
-    };
-  }
-
+  const riskLevel = selected.assessment.risk_level;
+  const freshness: TavernKeeperFreshness = currentSha
+    ? preferred && selected.target_sha === currentSha
+      ? "current"
+      : "stale"
+    : "unavailable";
   return {
-    state: "gray",
-    reason: "unscanned",
+    state: riskColors[riskLevel],
+    riskLevel,
+    freshness,
     currentSha,
-    report: null,
-    history: [],
-    historyUrl: null,
+    report: summarize(selected),
+    history,
+    historyUrl,
   };
 }

@@ -23,18 +23,25 @@ function scanReport(
 ): TavernKeeperReportSummary {
   return {
     reportId: "report-1",
-    result: "red",
+    riskLevel: "high",
+    headline: "High concern",
+    summary:
+      "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
+    minorCautions: 1,
+    materialConcerns: 2,
+    highDanger: 1,
+    maliciousEvidence:
+      "The review found evidence consistent with credential theft.",
+    citedFindingIds: ["a".repeat(64)],
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
-    summary: {
-      headline: "Reportable concerns detected",
-      detail:
-        "All required scanners completed at this commit and found 4 reportable concerns.",
-    },
+    assessedAt: "2026-07-31T12:05:00.000Z",
     scannerPolicyVersion: "2",
+    contextualReviewPolicyVersion: "1",
+    synthesisPolicyVersion: "1",
+    synthesisModel: "gpt-5.6-luna",
     reportUrl: "https://example.test/reports/directive",
-    historyUrl: "https://example.test/reports/directive/history",
-    reportableSeverity: { critical: 1, high: 1, medium: 2 },
+    technicalHistoryUrl: "https://example.test/reports/directive/history",
     ...overrides,
   };
 }
@@ -42,32 +49,37 @@ function scanReport(
 const redReport = scanReport();
 const redStatus: TavernKeeperCardStatus = {
   state: "red",
-  reason: "current",
+  riskLevel: "high",
+  freshness: "current",
   currentSha: "abc1234def5678abc1234def5678abc1234def5678",
   report: redReport,
   history: [redReport],
-  historyUrl: "https://example.test/reports/directive/history",
+  historyUrl: "/security/tavernkeeper/history/github-42/",
 };
 
 const tealReport = scanReport({
-  result: "teal",
-  summary: {
-    headline: "No reportable concerns detected",
-    detail:
-      "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
-  },
-  reportableSeverity: { critical: 0, high: 0, medium: 0 },
+  riskLevel: "low",
+  headline: "Low concern",
+  summary:
+    "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
+  minorCautions: 0,
+  materialConcerns: 0,
+  highDanger: 0,
+  maliciousEvidence: "No evidence of malicious behavior was identified.",
+  citedFindingIds: [],
 });
 const tealStatus: TavernKeeperCardStatus = {
   ...redStatus,
   state: "teal",
+  riskLevel: "low",
   report: tealReport,
   history: [tealReport],
 };
 
 const pendingStatus: TavernKeeperCardStatus = {
   state: "gray",
-  reason: "unscanned",
+  riskLevel: null,
+  freshness: "unassessed",
   currentSha: "abc1234def5678abc1234def5678abc1234def5678",
   report: null,
   history: [],
@@ -76,7 +88,8 @@ const pendingStatus: TavernKeeperCardStatus = {
 
 const unsupportedStatus: TavernKeeperCardStatus = {
   state: "unsupported",
-  reason: "unsupported",
+  riskLevel: null,
+  freshness: "unsupported",
   currentSha: null,
   report: null,
   history: [],
@@ -111,25 +124,26 @@ describe("TavernKeeperScanIndicator", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: All required scanners completed/u,
+        name: /TavernKeeper scan: High concern; current/u,
       }),
     );
 
     const panel = screen.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    expect(panel).toHaveTextContent(redReport.summary.detail);
-    expect(panel).toHaveTextContent("1 critical");
-    expect(panel).toHaveTextContent("1 high");
-    expect(panel).toHaveTextContent("2 medium");
-    expect(panel).not.toHaveTextContent(/3 low|4 informational/u);
+    expect(panel).toHaveTextContent("Grade: High concern");
+    expect(panel).toHaveTextContent(redReport.summary);
+    expect(panel).toHaveTextContent("1 minor caution");
+    expect(panel).toHaveTextContent("2 material concerns");
+    expect(panel).toHaveTextContent("1 high-danger finding");
+    expect(panel).toHaveTextContent(redReport.maliciousEvidence);
     expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
     expect(
       within(panel).getByRole("link", { name: "View full report" }),
     ).toHaveAttribute("href", redStatus.report?.reportUrl);
     expect(
       within(panel).getByRole("link", { name: "View full scan history" }),
-    ).toHaveAttribute("href", redStatus.historyUrl);
+    ).toHaveAttribute("href", redStatus.historyUrl?.replace(/\/$/u, ""));
     expect(panel).not.toHaveTextContent(
       /Gitleaks|OpenGrep|policy|coverage|excluded/u,
     );
@@ -142,14 +156,13 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test.each([
-    [tealStatus, tealReport.summary.detail],
+    [tealStatus, tealReport.summary],
     [
       {
         ...tealStatus,
-        state: "orange",
-        reason: "outdated-clean",
+        freshness: "stale",
       } satisfies TavernKeeperCardStatus,
-      `${tealReport.summary.detail} This report covers an older commit, and an updated scan is pending.`,
+      `${tealReport.summary} This assessment covers an older commit. An updated scan is pending.`,
     ],
     [pendingStatus, "This project hasn't been scanned by TavernKeeper."],
     [
@@ -172,13 +185,31 @@ describe("TavernKeeperScanIndicator", () => {
     },
   );
 
+  test("keeps stale risk color and adds an independent accessible clock marker", () => {
+    render(
+      <TavernKeeperScanIndicator
+        projectId="stale-low"
+        status={{ ...tealStatus, freshness: "stale" }}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", {
+      name: "TavernKeeper scan: Low concern; stale assessment.",
+    });
+    expect(trigger).toHaveClass("tavernkeeper-scan-indicator-teal");
+    expect(
+      trigger.querySelector(".tavernkeeper-freshness-clock"),
+    ).toBeInTheDocument();
+  });
+
   test("renders the newest twelve history conclusions oldest-left with accessible identity", () => {
     const history = Array.from({ length: 13 }, (_, index) =>
       scanReport({
         reportId: `report-${index + 1}`,
-        result: index === 1 ? "red" : "teal",
+        riskLevel: index === 1 ? "high" : "low",
         scannedSha: (index + 1).toString(16).padStart(40, "0"),
         scannedAt: `2026-07-${String(index + 1).padStart(2, "0")}T12:00:00.000Z`,
+        assessedAt: `2026-07-${String(index + 1).padStart(2, "0")}T12:05:00.000Z`,
         scannerPolicyVersion: "policy-1",
       }),
     );
@@ -195,31 +226,34 @@ describe("TavernKeeperScanIndicator", () => {
     });
     expect(blocks).toHaveLength(12);
     expect(blocks[0]).toHaveAccessibleName(
-      "TavernKeeper scan history: red result on July 2, 2026 at commit 0000000 under policy policy-1",
+      "TavernKeeper scan history: high concern on July 2, 2026 at commit 0000000 under policy policy-1",
     );
     expect(blocks.at(-1)).toHaveAccessibleName(
-      "TavernKeeper scan history: teal result on July 13, 2026 at commit 0000000 under policy policy-1",
+      "TavernKeeper scan history: low concern on July 13, 2026 at commit 0000000 under policy policy-1",
     );
-    expect(blocks[0]).toHaveClass("tavernkeeper-history-red");
+    expect(blocks[0]).toHaveClass("tavernkeeper-history-high");
+    expect(
+      screen.getAllByRole("link", {
+        name: /Open TavernKeeper report for/u,
+      }),
+    ).toHaveLength(12);
   });
 
-  test("omits the severity count container when a retained report has no findings", () => {
+  test("shows zero concern counts without technical scanner rows", () => {
     render(
       <TavernKeeperScanIndicator projectId="directive" status={tealStatus} />,
     );
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: All required scanners completed/u,
+        name: /TavernKeeper scan: Low concern; current/u,
       }),
     );
 
-    expect(screen.getByRole("dialog")).toHaveTextContent(
-      tealReport.summary.detail,
-    );
+    expect(screen.getByRole("dialog")).toHaveTextContent(tealReport.summary);
     expect(
-      document.querySelector(".tavernkeeper-severity-counts"),
-    ).not.toBeInTheDocument();
+      document.querySelector(".tavernkeeper-assessment-counts"),
+    ).toHaveTextContent("0 minor cautions");
   });
 
   test("keeps the popover open while the pointer moves from trigger to panel", () => {
@@ -229,7 +263,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.pointerEnter(trigger);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -247,7 +281,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.pointerEnter(trigger, { pointerType: "touch" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -263,7 +297,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.pointerEnter(trigger);
     fireEvent.pointerLeave(trigger);
@@ -292,7 +326,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: All required scanners completed/u,
+        name: /TavernKeeper scan: High concern; current/u,
       }),
     );
     const panel = screen.getByRole("dialog");
@@ -314,7 +348,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.focus(trigger);
     const panel = screen.getByRole("dialog");
@@ -339,7 +373,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     await user.tab();
     expect(trigger).toHaveFocus();
@@ -351,7 +385,17 @@ describe("TavernKeeperScanIndicator", () => {
 
     await user.tab();
     expect(
+      screen.getByRole("link", { name: /Open TavernKeeper report for/u }),
+    ).toHaveFocus();
+
+    await user.tab();
+    expect(
       screen.getByRole("link", { name: "View full scan history" }),
+    ).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole("link", { name: /Open TavernKeeper report for/u }),
     ).toHaveFocus();
 
     await user.tab({ shift: true });
@@ -414,7 +458,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
@@ -434,7 +478,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const [firstTrigger, secondTrigger] = screen.getAllByRole("button", {
-      name: /TavernKeeper scan: All required scanners completed/u,
+      name: /TavernKeeper scan: High concern; current/u,
     });
     fireEvent.pointerDown(firstTrigger, { pointerType: "touch" });
     fireEvent.focus(firstTrigger);

@@ -1456,6 +1456,35 @@
   height: 16px;
 }
 
+.tavernkeeper-freshness-clock {
+  position: absolute;
+  right: -2px;
+  bottom: -1px;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: var(--color-tavernkeeper-stale-clock-bg);
+}
+
+.tavernkeeper-freshness-clock::before,
+.tavernkeeper-freshness-clock::after {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  width: 1px;
+  height: 3px;
+  background: currentColor;
+  content: "";
+  transform-origin: 50% 100%;
+}
+
+.tavernkeeper-freshness-clock::after {
+  height: 2px;
+  transform: rotate(120deg);
+}
+
 .tavernkeeper-scan-indicator-trigger:focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 4px;
@@ -1513,12 +1542,22 @@
   outline-offset: 2px;
 }
 
-.tavernkeeper-severity-counts {
+.tavernkeeper-assessment-counts {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 8px;
   color: var(--color-text-secondary);
   font-variant-numeric: tabular-nums;
+}
+
+.tavernkeeper-grade strong {
+  color: var(--color-text-secondary);
+}
+
+.tavernkeeper-malicious-evidence {
+  border-left: 2px solid currentColor;
+  padding-left: 8px;
+  color: var(--color-text-secondary);
 }
 
 .tavernkeeper-history-strip {
@@ -1531,17 +1570,108 @@
 }
 
 .tavernkeeper-history-strip i {
+  display: block;
   width: 100%;
   height: 8px;
   border-radius: 1px;
 }
 
-.tavernkeeper-history-teal {
+.tavernkeeper-history-strip a {
+  display: block;
+  width: 100%;
+  height: 8px;
+}
+
+.tavernkeeper-history-low {
   background: var(--color-tavernkeeper-teal);
 }
 
-.tavernkeeper-history-red {
+.tavernkeeper-history-material {
+  background: var(--color-tavernkeeper-orange);
+}
+
+.tavernkeeper-history-high {
   background: var(--color-tavernkeeper-red);
+}
+
+.tavernkeeper-history-list {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tavernkeeper-history-entry {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--color-border-strong);
+  border-left: 3px solid currentColor;
+  border-radius: var(--radius);
+  padding: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+}
+
+.tavernkeeper-history-entry-low {
+  color: var(--color-tavernkeeper-teal);
+}
+
+.tavernkeeper-history-entry-material {
+  color: var(--color-tavernkeeper-orange);
+}
+
+.tavernkeeper-history-entry-high {
+  color: var(--color-tavernkeeper-red);
+}
+
+.tavernkeeper-history-entry header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+}
+
+.tavernkeeper-history-entry h2,
+.tavernkeeper-history-entry p,
+.tavernkeeper-history-entry dl,
+.tavernkeeper-history-entry dd {
+  margin: 0;
+}
+
+.tavernkeeper-history-entry h2 {
+  color: currentColor;
+  font-size: 16px;
+}
+
+.tavernkeeper-history-entry time,
+.tavernkeeper-history-entry p,
+.tavernkeeper-history-entry dl {
+  color: var(--color-text-secondary);
+}
+
+.tavernkeeper-history-entry dl {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.tavernkeeper-history-entry dl div {
+  display: grid;
+  grid-template-columns: minmax(92px, auto) 1fr;
+  gap: 10px;
+}
+
+.tavernkeeper-history-entry dt {
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.tavernkeeper-history-entry a {
+  width: fit-content;
+  color: var(--color-link);
+  font-weight: 650;
 }
 
 @media (hover: hover) and (pointer: fine) {

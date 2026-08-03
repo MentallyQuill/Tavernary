@@ -229,7 +229,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   await page.goto(sitePath());
   await waitForCatalogHydration(page);
   const unsupportedTrigger = page.getByRole("button", {
-    name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+    name: "TavernKeeper scan: Unsupported source.",
   });
   const card = page
     .locator("article.project-card")
@@ -237,7 +237,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
     .filter({ has: page.locator(".commit-age") })
     .first();
   const trigger = card.getByRole("button", {
-    name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+    name: "TavernKeeper scan: Unsupported source.",
   });
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
   await stabilizeProjectActivityAge(card);
@@ -251,7 +251,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   );
 });
 
-test("scan indicator history strip preserves dense teal and red progression", async ({
+test("scan indicator history strip preserves dense low and high progression", async ({
   page,
 }) => {
   test.skip(
@@ -263,7 +263,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
   await waitForCatalogHydration(page);
   await page
     .getByRole("button", {
-      name: "TavernKeeper scan: All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+      name: "TavernKeeper scan: Low concern; current.",
     })
     .first()
     .click();
@@ -273,7 +273,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
   await expect(popover.locator(".tavernkeeper-history-strip i")).toHaveCount(
     12,
   );
-  await expect(popover.locator(".tavernkeeper-history-red")).toHaveCount(1);
+  await expect(popover.locator(".tavernkeeper-history-high")).toHaveCount(1);
   await stabilizeScanMetadata(popover);
   await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
     animations: "disabled",

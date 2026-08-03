@@ -431,18 +431,13 @@ describe("full catalog data", () => {
       if (source?.type !== "github") {
         expect(project.tavernKeeper, project.id).toMatchObject({
           state: "unsupported",
-          reason: "unsupported",
+          freshness: "unsupported",
         });
         continue;
       }
-      if (
-        project.tavernKeeper?.state === "teal" ||
-        (project.tavernKeeper?.state === "red" &&
-          project.tavernKeeper.reason === "current")
-      ) {
+      if (project.tavernKeeper?.freshness === "current") {
         expect(source.status, project.id).toBe("active");
         expect(snapshot?.source_health, project.id).toBe("healthy");
-        expect(project.tavernKeeper.reason, project.id).toBe("current");
         expect(project.tavernKeeper.currentSha, project.id).toBe(
           snapshot?.repository.head_sha,
         );

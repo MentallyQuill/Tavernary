@@ -1,0 +1,351 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mentallyquill.github.io/TavernKeeper/schemas/report-index.v5.schema.json",
+  "title": "TavernKeeper V5 contextual preferred report index",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "number", "const": 5 },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+    },
+    "reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "report_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "report_version": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "supersedes_report_id": {
+            "anyOf": [
+              { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              { "type": "null" }
+            ]
+          },
+          "scanner_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "scanner_policy_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "rule_catalog_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "package_schema_version": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "contextual_review_policy_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "ecosystem_context_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "prompt_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "assessment_schema_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "source_id": { "type": "string", "pattern": "^github-[1-9][0-9]*$" },
+          "provider": { "type": "string", "const": "github" },
+          "repository_id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "repository": {
+            "type": "string",
+            "pattern": "^[^/\\s]+\\/[^/\\s]+$"
+          },
+          "canonical_url": { "not": {} },
+          "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "assessment_method": {
+            "type": "string",
+            "const": "deterministic-evidence-contextual-review"
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "candidates": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "assessments": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "observations": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "disposition": {
+                "type": "object",
+                "properties": {
+                  "expected_behavior": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "minor_weakness": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "material_vulnerability": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "credible_malicious_behavior": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "expected_behavior",
+                  "minor_weakness",
+                  "material_vulnerability",
+                  "credible_malicious_behavior"
+                ],
+                "additionalProperties": false
+              },
+              "impact": {
+                "type": "object",
+                "properties": {
+                  "none": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "low": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "medium": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "high": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "critical": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["none", "low", "medium", "high", "critical"],
+                "additionalProperties": false
+              },
+              "exploitability": {
+                "type": "object",
+                "properties": {
+                  "unlikely": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "plausible": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "readily_exploitable": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["unlikely", "plausible", "readily_exploitable"],
+                "additionalProperties": false
+              },
+              "confidence": {
+                "type": "object",
+                "properties": {
+                  "low": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "medium": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "high": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["low", "medium", "high"],
+                "additionalProperties": false
+              },
+              "recommended_risk": {
+                "type": "object",
+                "properties": {
+                  "low": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "material": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "high": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["low", "material", "high"],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "candidates",
+              "assessments",
+              "observations",
+              "items",
+              "disposition",
+              "impact",
+              "exploitability",
+              "confidence",
+              "recommended_risk"
+            ],
+            "additionalProperties": false
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "history_commits": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "inventory_files": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "inventory_bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "tools_completed": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "tools_not_applicable": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "evidence_validated": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "review_required": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "review_completed": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "history_commits",
+              "inventory_files",
+              "inventory_bytes",
+              "tools_completed",
+              "tools_not_applicable",
+              "evidence_validated",
+              "review_required",
+              "review_completed"
+            ],
+            "additionalProperties": false
+          },
+          "report_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https:\\/\\/mentallyquill\\.github\\.io\\/TavernKeeper\\/reports\\/.*"
+          },
+          "history_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https:\\/\\/mentallyquill\\.github\\.io\\/TavernKeeper\\/reports\\/.*"
+          }
+        },
+        "required": [
+          "report_id",
+          "report_digest",
+          "report_version",
+          "supersedes_report_id",
+          "scanner_version",
+          "scanner_policy_version",
+          "rule_catalog_version",
+          "package_schema_version",
+          "contextual_review_policy_version",
+          "ecosystem_context_version",
+          "prompt_version",
+          "assessment_schema_version",
+          "source_id",
+          "provider",
+          "repository_id",
+          "repository",
+          "target_sha",
+          "completed_at",
+          "assessment_method",
+          "counts",
+          "coverage",
+          "report_url",
+          "history_url"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schema_version", "generated_at", "reports"],
+  "additionalProperties": false
+}

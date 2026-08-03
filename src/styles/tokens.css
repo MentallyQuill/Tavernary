@@ -96,6 +96,7 @@
   --color-tavernkeeper-red: var(--color-danger);
   --color-tavernkeeper-gray: var(--color-text-muted);
   --color-tavernkeeper-unsupported: var(--color-accent-teal-border);
+  --color-tavernkeeper-stale-clock-bg: var(--color-bg-canvas);
   --color-progress-track: #26363D;
   --color-progress-fill: #57C5A3;
   --color-license-open: #57C5A3;

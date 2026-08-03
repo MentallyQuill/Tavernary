@@ -1,6 +1,7 @@
 "use client";
 
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -20,28 +21,49 @@ import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 function stateCopy(status: TavernKeeperCardStatus) {
   if (status.report) {
     const freshness =
-      status.reason === "outdated-clean" ||
-      status.reason === "outdated-concerning"
-        ? " This report covers an older commit, and an updated scan is pending."
-        : status.reason === "source-unavailable"
-          ? " Tavernary cannot confirm the repository's current commit."
+      status.freshness === "stale"
+        ? " This assessment covers an older commit. An updated scan is pending."
+        : status.freshness === "unavailable"
+          ? " Tavernary cannot confirm the repository's current commit, so freshness is unavailable."
           : "";
-    return `${status.report.summary.detail}${freshness}`;
+    return `${status.report.summary}${freshness}`;
   }
   if (status.state === "unsupported") {
     return "TavernKeeper scanning is not supported for this project's source.";
   }
-  if (status.reason === "source-unavailable") {
-    return "Tavernary cannot confirm the repository's current commit. The last completed scan is shown below when available.";
+  if (status.freshness === "unavailable") {
+    return "Tavernary cannot confirm the repository's current commit, and no completed assessment is available.";
   }
   return "This project hasn't been scanned by TavernKeeper.";
 }
 
-const severityLabels = [
-  ["critical", "critical"],
-  ["high", "high"],
-  ["medium", "medium"],
-] as const;
+const freshnessLabels = {
+  current: "current",
+  stale: "stale assessment",
+  unavailable: "freshness unavailable",
+  unassessed: "not assessed",
+  unsupported: "unsupported source",
+};
+const riskGradeLabels = {
+  low: "Low concern",
+  material: "Material concern",
+  high: "High concern",
+};
+
+function countLabel(count: number, singular: string, plural = `${singular}s`) {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
+function accessibleStatus(status: TavernKeeperCardStatus) {
+  if (!status.report) {
+    if (status.freshness === "unsupported") return "Unsupported source.";
+    if (status.freshness === "unavailable") {
+      return "Not assessed; freshness unavailable.";
+    }
+    return "Not assessed.";
+  }
+  return `${riskGradeLabels[status.report.riskLevel]}; ${freshnessLabels[status.freshness]}.`;
+}
 
 const CLOSE_DELAY = 150;
 const VIEWPORT_MARGIN = 8;
@@ -108,10 +130,6 @@ export function TavernKeeperScanIndicator({
   const pointerOpenState = useRef<boolean | null>(null);
   const content = stateCopy(status);
   const report = status.report;
-  const severityCounts =
-    report && status.state === "red"
-      ? severityLabels.filter(([key]) => report.reportableSeverity[key] > 0)
-      : [];
   const popoverId = `tavernkeeper-scan-${projectId}`;
   const headingId = `${popoverId}-heading`;
 
@@ -276,7 +294,7 @@ export function TavernKeeperScanIndicator({
       <button
         aria-controls={popoverId}
         aria-expanded={open}
-        aria-label={`TavernKeeper scan: ${content}`}
+        aria-label={`TavernKeeper scan: ${accessibleStatus(status)}`}
         className={`tavernkeeper-scan-indicator-trigger tavernkeeper-scan-indicator-${status.state}`}
         onBlur={closeOnFocusExit}
         onClick={togglePopover}
@@ -291,6 +309,9 @@ export function TavernKeeperScanIndicator({
         type="button"
       >
         <TavernKeeperScanIcon />
+        {status.freshness === "stale" ? (
+          <span aria-hidden="true" className="tavernkeeper-freshness-clock" />
+        ) : null}
       </button>
       {open && typeof document !== "undefined"
         ? createPortal(
@@ -312,24 +333,33 @@ export function TavernKeeperScanIndicator({
               }}
             >
               <h2 id={headingId}>TavernKeeper Scan Results</h2>
-              <p>{content}</p>
               {report ? (
                 <>
-                  {severityCounts.length ? (
-                    <p className="tavernkeeper-severity-counts">
-                      {severityCounts.map(([key, label]) => (
-                        <span key={key}>
-                          {report.reportableSeverity[key]} {label}
-                        </span>
-                      ))}
-                    </p>
-                  ) : null}
+                  <p className="tavernkeeper-grade">
+                    <strong>Grade:</strong> {riskGradeLabels[report.riskLevel]}
+                  </p>
+                  <p>{content}</p>
+                  <p className="tavernkeeper-assessment-counts">
+                    <span>
+                      {countLabel(report.minorCautions, "minor caution")}
+                    </span>
+                    <span>
+                      {countLabel(report.materialConcerns, "material concern")}
+                    </span>
+                    <span>
+                      {countLabel(report.highDanger, "high-danger finding")}
+                    </span>
+                  </p>
+                  <p className="tavernkeeper-malicious-evidence">
+                    {report.maliciousEvidence}
+                  </p>
                   <p>
                     Scanned{" "}
                     <span aria-label={`Full commit SHA: ${report.scannedSha}`}>
                       {report.scannedSha.slice(0, 7)}
                     </span>{" "}
-                    on {formatDate(report.scannedAt)}
+                    on {formatDate(report.scannedAt)}. Assessed by Tavernary on{" "}
+                    {formatDate(report.assessedAt)}.
                   </p>
                   <a
                     href={report.reportUrl}
@@ -342,16 +372,12 @@ export function TavernKeeperScanIndicator({
                   </a>
                   <TavernKeeperHistoryStrip history={status.history} />
                   {status.historyUrl ? (
-                    <a
-                      href={status.historyUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      View full scan history
-                    </a>
+                    <Link href={status.historyUrl}>View full scan history</Link>
                   ) : null}
                 </>
-              ) : null}
+              ) : (
+                <p>{content}</p>
+              )}
             </section>,
             document.body,
           )

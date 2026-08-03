@@ -1,0 +1,875 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mentallyquill.github.io/TavernKeeper/schemas/scan-report.v5.schema.json",
+  "title": "TavernKeeper V5 contextual scan report",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "number", "const": 5 },
+    "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "report_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "report_version": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "supersedes_report_id": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "scanner_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "scanner_policy_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "rule_catalog_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "package_schema_version": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "contextual_review_policy_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "ecosystem_context_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "prompt_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "assessment_schema_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+    },
+    "source_id": { "type": "string", "pattern": "^github-[1-9][0-9]*$" },
+    "provider": { "type": "string", "const": "github" },
+    "repository_id": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "repository": { "type": "string", "pattern": "^[^/\\s]+\\/[^/\\s]+$" },
+    "canonical_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https:\\/\\/github\\.com\\/.*"
+    },
+    "target_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+    },
+    "assessment_method": {
+      "type": "string",
+      "const": "deterministic-evidence-contextual-review"
+    },
+    "contextual_reviewer": {
+      "type": "object",
+      "properties": {
+        "provider": { "type": "string", "pattern": "^[A-Za-z0-9.-]{1,253}$" },
+        "model": { "type": "string", "minLength": 1, "maxLength": 200 }
+      },
+      "required": ["provider", "model"],
+      "additionalProperties": false
+    },
+    "review_usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "cache_read_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "reasoning_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "cache_read_tokens",
+        "reasoning_tokens"
+      ],
+      "additionalProperties": false
+    },
+    "history": {
+      "type": "object",
+      "properties": {
+        "base_sha": {
+          "anyOf": [
+            { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            { "type": "null" }
+          ]
+        },
+        "commits": { "type": "integer", "minimum": 1, "maximum": 20 }
+      },
+      "required": ["base_sha", "commits"],
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "inventory": {
+          "type": "object",
+          "properties": {
+            "files": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "first_party_text_files": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "first_party_text_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "excluded": {
+              "type": "object",
+              "properties": {
+                "dependency_lockfiles": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "vendored_dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "generated_bundles": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "minified_files": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "binaries": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "archives": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "oversized_files": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                },
+                "unsafe_entries": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["files", "bytes"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "dependency_lockfiles",
+                "vendored_dependencies",
+                "generated_bundles",
+                "minified_files",
+                "binaries",
+                "archives",
+                "oversized_files",
+                "unsafe_entries"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "files",
+            "bytes",
+            "first_party_text_files",
+            "first_party_text_bytes",
+            "excluded"
+          ],
+          "additionalProperties": false
+        },
+        "tools": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,79}$"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["completed", "not-applicable"]
+              }
+            },
+            "required": ["name", "version", "status"],
+            "additionalProperties": false
+          }
+        },
+        "evidence_validation": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "const": "completed" },
+            "validated_candidates": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["status", "validated_candidates"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["inventory", "tools", "evidence_validation"],
+      "additionalProperties": false
+    },
+    "review_coverage": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "completed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": ["required", "completed"],
+      "additionalProperties": false
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "evidence_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "origin": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9:_-]{0,79}$"
+          },
+          "scanner_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$"
+          },
+          "rule_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,119}$"
+          },
+          "category": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,79}$"
+          },
+          "scanner_severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low", "info"]
+          },
+          "scanner_confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "path": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "line_start": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              { "type": "null" }
+            ]
+          },
+          "line_end": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              { "type": "null" }
+            ]
+          },
+          "evidence_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "file_role": {
+            "type": "string",
+            "enum": [
+              "production",
+              "test",
+              "fixture",
+              "documentation",
+              "tooling",
+              "generated",
+              "vendored",
+              "unknown"
+            ]
+          },
+          "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "remediation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "reference_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https:\\/\\/mentallyquill\\.github\\.io\\/TavernKeeper\\/rules\\/.*"
+          }
+        },
+        "required": [
+          "candidate_id",
+          "evidence_id",
+          "origin",
+          "scanner_version",
+          "rule_id",
+          "category",
+          "scanner_severity",
+          "scanner_confidence",
+          "path",
+          "line_start",
+          "line_end",
+          "evidence_sha",
+          "file_role",
+          "title",
+          "explanation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "assessments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "candidate_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "evidence_ids": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "expected_behavior",
+              "minor_weakness",
+              "material_vulnerability",
+              "credible_malicious_behavior"
+            ]
+          },
+          "impact": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "exploitability": {
+            "type": "string",
+            "enum": ["unlikely", "plausible", "readily_exploitable"]
+          },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "recommended_risk": {
+            "type": "string",
+            "enum": ["low", "material", "high"]
+          },
+          "technical_explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "layman_explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "developer_action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "locations": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "line_start": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "line_end": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["path", "line_start", "line_end"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "candidate_id",
+          "evidence_ids",
+          "disposition",
+          "impact",
+          "exploitability",
+          "confidence",
+          "recommended_risk",
+          "technical_explanation",
+          "layman_explanation",
+          "developer_action",
+          "locations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "observation_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "related_candidate_ids": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          },
+          "evidence_ids": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "expected_behavior",
+              "minor_weakness",
+              "material_vulnerability",
+              "credible_malicious_behavior"
+            ]
+          },
+          "impact": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "exploitability": {
+            "type": "string",
+            "enum": ["unlikely", "plausible", "readily_exploitable"]
+          },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "recommended_risk": {
+            "type": "string",
+            "enum": ["low", "material", "high"]
+          },
+          "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "technical_explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "layman_explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "developer_action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "locations": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "line_start": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "line_end": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["path", "line_start", "line_end"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "observation_id",
+          "related_candidate_ids",
+          "evidence_ids",
+          "disposition",
+          "impact",
+          "exploitability",
+          "confidence",
+          "recommended_risk",
+          "title",
+          "technical_explanation",
+          "layman_explanation",
+          "developer_action",
+          "locations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "candidates": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "assessments": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "observations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "disposition": {
+          "type": "object",
+          "properties": {
+            "expected_behavior": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "minor_weakness": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "material_vulnerability": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "credible_malicious_behavior": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "expected_behavior",
+            "minor_weakness",
+            "material_vulnerability",
+            "credible_malicious_behavior"
+          ],
+          "additionalProperties": false
+        },
+        "impact": {
+          "type": "object",
+          "properties": {
+            "none": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "low": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "medium": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "high": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "critical": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["none", "low", "medium", "high", "critical"],
+          "additionalProperties": false
+        },
+        "exploitability": {
+          "type": "object",
+          "properties": {
+            "unlikely": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "plausible": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "readily_exploitable": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["unlikely", "plausible", "readily_exploitable"],
+          "additionalProperties": false
+        },
+        "confidence": {
+          "type": "object",
+          "properties": {
+            "low": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "medium": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "high": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["low", "medium", "high"],
+          "additionalProperties": false
+        },
+        "recommended_risk": {
+          "type": "object",
+          "properties": {
+            "low": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "material": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "high": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["low", "material", "high"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "candidates",
+        "assessments",
+        "observations",
+        "items",
+        "disposition",
+        "impact",
+        "exploitability",
+        "confidence",
+        "recommended_risk"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "minItems": 1,
+      "maxItems": 20,
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 600 }
+    }
+  },
+  "required": [
+    "schema_version",
+    "report_id",
+    "report_digest",
+    "report_version",
+    "supersedes_report_id",
+    "scanner_version",
+    "scanner_policy_version",
+    "rule_catalog_version",
+    "package_schema_version",
+    "contextual_review_policy_version",
+    "ecosystem_context_version",
+    "prompt_version",
+    "assessment_schema_version",
+    "source_id",
+    "provider",
+    "repository_id",
+    "repository",
+    "canonical_url",
+    "target_sha",
+    "completed_at",
+    "assessment_method",
+    "contextual_reviewer",
+    "review_usage",
+    "history",
+    "coverage",
+    "review_coverage",
+    "candidates",
+    "assessments",
+    "observations",
+    "counts",
+    "limitations"
+  ],
+  "additionalProperties": false
+}
