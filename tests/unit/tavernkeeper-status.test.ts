@@ -35,16 +35,20 @@ function report(
     repository_id: source.repository_id,
     repository: source.repository,
     target_sha: currentSha,
-    scanner_policy_version: "1",
+    scanner_policy_version: "2",
     completed_at: "2026-07-31T12:05:00.000Z",
-    mode: "standard",
     result: "red",
+    summary: {
+      headline: "Reportable concerns detected",
+      detail:
+        "All required scanners completed at this commit and found 1 reportable high-severity concern.",
+    },
     finding_counts: {
-      actionable_severity: { critical: 0, high: 1, medium: 0 },
+      reportable_severity: { critical: 0, high: 1, medium: 0 },
       severity: { critical: 0, high: 1, medium: 0, low: 0, info: 0 },
     },
     report_url:
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/",
     history_url: historyUrl,
     ...overrides,
   };
@@ -74,7 +78,10 @@ describe("deriveTavernKeeperCardStatus", () => {
     });
 
     expect(currentConcerning.state).toBe("red");
-    expect(staleConcerning.state).toBe("red");
+    expect(staleConcerning).toMatchObject({
+      state: "red",
+      reason: "outdated-concerning",
+    });
     expect(currentClean.state).toBe("teal");
     expect(staleClean.state).toBe("orange");
   });
@@ -191,35 +198,43 @@ describe("deriveTavernKeeperCardStatus", () => {
     expect(status?.historyUrl).toBe(historyUrl);
   });
 
-  test("keeps only the preferred deep correction for one SHA in compact history", () => {
+  test("keeps only the newest superseding report for one SHA in compact history", () => {
     const sharedSha = "d".repeat(40);
-    const standard = report({
+    const original = report({
       report_id: "d".repeat(64),
       target_sha: sharedSha,
       result: "red",
     });
-    const deep = report({
+    const correction = report({
       report_id: "e".repeat(64),
       report_version: 2,
-      supersedes_report_id: standard.report_id,
+      supersedes_report_id: original.report_id,
       target_sha: sharedSha,
       completed_at: "2026-07-31T13:00:00.000Z",
-      mode: "deep",
       result: "teal",
+      summary: {
+        headline: "No reportable concerns detected",
+        detail:
+          "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+      },
+      finding_counts: {
+        reportable_severity: { critical: 0, high: 0, medium: 0 },
+        severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
+      },
     });
     const status = deriveTavernKeeperCardStatus({
       source,
       snapshot,
-      preferredReports: [standard, deep],
+      preferredReports: [original, correction],
     });
 
     expect(status.history).toEqual([
       expect.objectContaining({
-        reportId: deep.report_id,
-        mode: "deep",
+        reportId: correction.report_id,
         result: "teal",
       }),
     ]);
+    expect(status.history[0]).not.toHaveProperty("mode");
   });
 
   test("uses report ID to break ties between equivalent RFC3339 instants", () => {
@@ -254,8 +269,26 @@ describe("deriveTavernKeeperCardStatus", () => {
       deriveTavernKeeperCardStatus({
         source,
         snapshot,
-        preferredReports: [report({ scanner_policy_version: "0" })],
+        preferredReports: [report({ scanner_policy_version: "1" })],
       }),
     ).toMatchObject({ state: "gray", reason: "unscanned" });
+  });
+
+  test("projects the deterministic summary without mode or model metadata", () => {
+    const status = deriveTavernKeeperCardStatus({
+      source,
+      snapshot,
+      preferredReports: [report()],
+    });
+
+    expect(status.report?.summary.detail).toContain(
+      "1 reportable high-severity concern",
+    );
+    expect(status.report?.reportableSeverity).toEqual({
+      critical: 0,
+      high: 1,
+      medium: 0,
+    });
+    expect(status.report).not.toHaveProperty("mode");
   });
 });

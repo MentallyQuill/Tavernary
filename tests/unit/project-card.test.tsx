@@ -144,11 +144,15 @@ describe("project card", () => {
               result: "teal",
               scannedSha: "a".repeat(40),
               scannedAt: "2026-07-31T00:00:00Z",
-              mode: "standard",
-              scannerPolicyVersion: "1",
+              summary: {
+                headline: "No reportable concerns detected",
+                detail:
+                  "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+              },
+              scannerPolicyVersion: "2",
               reportUrl: "https://example.com/tavernkeeper/report-1",
               historyUrl: "https://example.com/tavernkeeper/history",
-              actionableSeverity: {
+              reportableSeverity: {
                 critical: 0,
                 high: 0,
                 medium: 0,

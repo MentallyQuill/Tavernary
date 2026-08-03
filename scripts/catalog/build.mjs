@@ -419,6 +419,7 @@ export async function buildCatalog(options = {}) {
     const source = registry.sourcesById.get(record.source_id);
     const snapshot = snapshotsBySource.get(record.source_id);
     const tavernKeeper = deriveTavernKeeperCardStatus({
+      projectKind: record.kind,
       source,
       snapshot,
       preferredReports: preferredTavernKeeperReports,

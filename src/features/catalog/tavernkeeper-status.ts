@@ -6,7 +6,7 @@ export type TavernKeeperVisualState =
 export type TavernKeeperStatusReason =
   | "unsupported"
   | "current"
-  | "outdated-concern"
+  | "outdated-concerning"
   | "outdated-clean"
   | "unscanned"
   | "source-unavailable";
@@ -16,11 +16,14 @@ export interface TavernKeeperReportSummary {
   result: "teal" | "red";
   scannedSha: string;
   scannedAt: string;
-  mode: "standard" | "deep";
+  summary: {
+    headline: string;
+    detail: string;
+  };
   scannerPolicyVersion: string;
   reportUrl: string;
   historyUrl: string;
-  actionableSeverity: {
+  reportableSeverity: {
     critical: number;
     high: number;
     medium: number;
@@ -62,10 +65,10 @@ export interface TavernKeeperPreferredReport {
   target_sha: string;
   scanner_policy_version: string;
   completed_at: string;
-  mode: "standard" | "deep";
   result: "teal" | "red";
+  summary: TavernKeeperReportSummary["summary"];
   finding_counts: {
-    actionable_severity: TavernKeeperReportSummary["actionableSeverity"];
+    reportable_severity: TavernKeeperReportSummary["reportableSeverity"];
     severity: {
       critical: number;
       high: number;
@@ -140,11 +143,11 @@ function summarize(
     result: report.result,
     scannedSha: report.target_sha,
     scannedAt: report.completed_at,
-    mode: report.mode,
+    summary: report.summary,
     scannerPolicyVersion: report.scanner_policy_version,
     reportUrl: report.report_url,
     historyUrl: report.history_url,
-    actionableSeverity: report.finding_counts.actionable_severity,
+    reportableSeverity: report.finding_counts.reportable_severity,
   };
 }
 
@@ -222,11 +225,9 @@ function preferredConclusions(reports: TavernKeeperPreferredReport[]) {
     const current = preferred.get(identity);
     if (
       !current ||
-      (report.mode === "deep" && current.mode !== "deep") ||
-      (report.mode === current.mode &&
-        (report.report_version > current.report_version ||
-          (report.report_version === current.report_version &&
-            compareReports(report, current) > 0)))
+      report.report_version > current.report_version ||
+      (report.report_version === current.report_version &&
+        compareReports(report, current) > 0)
     ) {
       preferred.set(identity, report);
     }
@@ -246,15 +247,17 @@ function unsupportedStatus(): TavernKeeperCardStatus {
 }
 
 export function deriveTavernKeeperCardStatus({
+  projectKind,
   source,
   snapshot,
   preferredReports,
 }: {
+  projectKind?: string;
   source: TavernKeeperSource | null | undefined;
   snapshot: TavernKeeperSnapshot | null | undefined;
   preferredReports: readonly TavernKeeperPreferredReport[];
 }): TavernKeeperCardStatus {
-  if (!isActiveGithubSource(source)) {
+  if (projectKind === "preset" || !isActiveGithubSource(source)) {
     return unsupportedStatus();
   }
 
@@ -296,7 +299,8 @@ export function deriveTavernKeeperCardStatus({
   if (newest) {
     return {
       state: newest.result === "red" ? "red" : "orange",
-      reason: newest.result === "red" ? "outdated-concern" : "outdated-clean",
+      reason:
+        newest.result === "red" ? "outdated-concerning" : "outdated-clean",
       currentSha,
       report: summarize(newest),
       history,
