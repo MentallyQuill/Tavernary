@@ -15,6 +15,7 @@ import {
 } from "react";
 
 import { TavernKeeperScanIcon } from "@/components/icons/tavernkeeper-scan-icon";
+import { TavernKeeperFreshnessClockIcon } from "@/components/icons/tavernkeeper-freshness-clock-icon";
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 
@@ -310,7 +311,7 @@ export function TavernKeeperScanIndicator({
       >
         <TavernKeeperScanIcon />
         {status.freshness === "stale" ? (
-          <span aria-hidden="true" className="tavernkeeper-freshness-clock" />
+          <TavernKeeperFreshnessClockIcon />
         ) : null}
       </button>
       {open && typeof document !== "undefined"

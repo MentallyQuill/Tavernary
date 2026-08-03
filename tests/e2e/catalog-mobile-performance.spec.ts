@@ -112,6 +112,9 @@ async function catalogCostSnapshot(
       return {
         cards: document.querySelectorAll(".project-card").length,
         documentElements: document.querySelectorAll("*").length,
+        freshnessClocks: document.querySelectorAll(
+          'svg.tavernkeeper-freshness-clock[data-icon="clock"]',
+        ).length,
         historyBlocks: document.querySelectorAll(
           ".tavernkeeper-history-strip i",
         ).length,
@@ -232,10 +235,13 @@ test(
     expect(featureOff.scanGlyphs).toBe(0);
     expect(full.cards).toBeGreaterThan(filtered.cards);
     expect(full.scanGlyphs).toBe(full.cards);
+    expect(full.freshnessClocks).toBe(1);
     expect(
       full.documentElements - featureOff.documentElements,
     ).toBeLessThanOrEqual(full.cards * 4);
-    expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(full.cards);
+    expect(full.svgs - featureOff.svgs).toBeLessThanOrEqual(
+      full.cards + full.freshnessClocks,
+    );
     expect(full.openPopovers).toBe(0);
     expect(full.historyBlocks).toBe(0);
     expect(full.tooltipAnchors).toBe(0);
