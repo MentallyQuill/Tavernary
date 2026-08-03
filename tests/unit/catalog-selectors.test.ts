@@ -520,6 +520,35 @@ describe("catalog selectors", () => {
     ).toEqual(["strong", "manual", "weak"]);
   });
 
+  test("sorts by date added newest-first with stable ties", () => {
+    const sortable = [
+      project("older-active", {
+        name: "Zulu",
+        catalogedAt: "2026-07-01T00:00:00Z",
+        activity: {
+          ...project("base").activity,
+          latestSourceActivityAt: "2026-07-30T00:00:00Z",
+        },
+      }),
+      project("newer", {
+        name: "Beta",
+        catalogedAt: "2026-07-03T00:00:00Z",
+      }),
+      project("same-date-alpha", {
+        name: "alpha",
+        catalogedAt: "2026-07-03T00:00:00Z",
+      }),
+    ];
+
+    expect(
+      selectProjects(
+        sortable,
+        { ...DEFAULT_QUERY, sort: "date-added" },
+        context,
+      ).map(({ id }) => id),
+    ).toEqual(["same-date-alpha", "newer", "older-active"]);
+  });
+
   test("recent activity uses the newer source or release timestamp", () => {
     const sortable = [
       project("released", {
@@ -717,6 +746,13 @@ describe("catalog selectors", () => {
 });
 
 describe("catalog query URLs", () => {
+  test("round-trips the Date Added browse sort", () => {
+    expect(parseCatalogQuery("?sort=date-added").sort).toBe("date-added");
+    expect(
+      serializeCatalogQuery({ ...DEFAULT_QUERY, sort: "date-added" }),
+    ).toBe("sort=date-added");
+  });
+
   test("makes Relevance conditional on a meaningful search", () => {
     expect(parseCatalogQuery("?q=preset+freaky").sort).toBe("relevance");
     expect(parseCatalogQuery("?q=preset+freaky&sort=popularity").sort).toBe(

@@ -11,7 +11,7 @@ import type { PublicTagDefinition } from "./tag-vocabulary";
 
 export type CatalogView = "all" | "active" | "new" | "released";
 export type CatalogBrowseSort =
-  "recent" | "sustained" | "popularity" | "alphabetical";
+  "recent" | "date-added" | "sustained" | "popularity" | "alphabetical";
 export type CatalogSort = CatalogBrowseSort | "relevance";
 export type CatalogDensity = "standard" | "compact";
 export type CatalogKind = "frontend" | "extension" | "preset";
@@ -22,6 +22,7 @@ export type LicenseFilter =
 export const DEFAULT_CATALOG_BROWSE_SORT: CatalogBrowseSort = "recent";
 export const CATALOG_BROWSE_SORTS = new Set<CatalogBrowseSort>([
   "recent",
+  "date-added",
   "sustained",
   "popularity",
   "alphabetical",

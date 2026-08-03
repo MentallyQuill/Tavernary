@@ -4,6 +4,7 @@ import {
   nextSearchSort,
   rememberedBrowseSort,
 } from "@/features/search/search-sort-transition";
+import type { CatalogBrowseSort } from "@/features/catalog/catalog-query";
 
 test("enters relevance for a new meaningful search", () => {
   expect(
@@ -47,6 +48,19 @@ test("restores the remembered browse sort when cleared", () => {
       browseSort: "popularity",
     }),
   ).toBe("popularity");
+});
+
+test("restores Date Added after search is cleared", () => {
+  const dateAdded: CatalogBrowseSort = "date-added";
+
+  expect(
+    nextSearchSort({
+      previousSearch: "preset freaky",
+      nextSearch: "",
+      currentSort: "relevance",
+      browseSort: dateAdded,
+    }),
+  ).toBe("date-added");
 });
 
 test("does not mistake relevance for a remembered browsing preference", () => {

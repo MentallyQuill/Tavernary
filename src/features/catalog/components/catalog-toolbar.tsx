@@ -99,6 +99,7 @@ export function CatalogToolbar({
                   <option value="relevance">Relevance</option>
                 ) : null}
                 <option value="recent">Recent Activity</option>
+                <option value="date-added">Date Added</option>
                 <option value="sustained">Sustained Activity</option>
                 <option value="popularity">Popularity</option>
                 <option value="alphabetical">Alphabetical</option>

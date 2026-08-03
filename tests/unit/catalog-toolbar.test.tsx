@@ -61,6 +61,38 @@ test("offers Relevance only while a meaningful search is active", () => {
   );
 });
 
+test("offers and selects the Date Added project sort", async () => {
+  const user = userEvent.setup();
+  const onSort = vi.fn();
+  const props = {
+    count: 8,
+    refreshedLabel: "just now",
+    filterCount: 0,
+    onSort,
+    onKitSort: () => undefined,
+    onDensity: () => undefined,
+    onOpenFilters: () => undefined,
+  };
+  const { rerender } = render(
+    <CatalogToolbar {...props} query={DEFAULT_QUERY} />,
+  );
+  const sort = screen.getByRole("combobox", { name: "Sort projects" });
+
+  expect(screen.getByRole("option", { name: "Date Added" })).toHaveValue(
+    "date-added",
+  );
+  await user.selectOptions(sort, "date-added");
+  expect(onSort).toHaveBeenCalledWith("date-added");
+
+  rerender(
+    <CatalogToolbar
+      {...props}
+      query={{ ...DEFAULT_QUERY, sort: "date-added" }}
+    />,
+  );
+  expect(sort).toHaveValue("date-added");
+});
+
 test("offers Kit creation from the Kits toolbar only", async () => {
   const user = userEvent.setup();
   const onCreateKit = vi.fn();

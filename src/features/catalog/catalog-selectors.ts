@@ -158,6 +158,9 @@ function sortProjects(
         collator.compare(left.id, right.id)
       );
     }
+    if (sort === "date-added") {
+      return fallbackOrder(left, right);
+    }
     if (sort === "sustained") {
       const leftWeeks = left.activity.activeWeeks12;
       const rightWeeks = right.activity.activeWeeks12;
