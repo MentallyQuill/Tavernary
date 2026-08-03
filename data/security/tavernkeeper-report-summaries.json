@@ -1,8 +1,9 @@
 {
   "schema_version": 5,
-  "generated_at": "2026-08-03T19:50:47.501Z",
+  "generated_at": "2026-08-03T20:10:10.037Z",
   "preferred_report_ids": [
-    "751db3fe59fd4d6f494b46f651bc157f303561fc290d35dd8b6e51319001fa20"
+    "751db3fe59fd4d6f494b46f651bc157f303561fc290d35dd8b6e51319001fa20",
+    "899653f165302ff518e7f43c8eac2031f89aab7ac65be6114b5996dda228a5e5"
   ],
   "reports": [
     {
@@ -84,6 +85,87 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "TavernKeeper reported no candidates, assessments, observations, or reviewed items for this project. Based on the available validated evidence, Wandlight presents low risk."
+      }
+    },
+    {
+      "report_id": "899653f165302ff518e7f43c8eac2031f89aab7ac65be6114b5996dda228a5e5",
+      "report_digest": "899653f165302ff518e7f43c8eac2031f89aab7ac65be6114b5996dda228a5e5",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1285208664",
+      "provider": "github",
+      "repository_id": 1285208664,
+      "repository": "MentallyQuill/Recursion",
+      "target_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720",
+      "completed_at": "2026-08-03T20:09:54.050Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 4,
+        "assessments": 4,
+        "observations": 1,
+        "items": 5,
+        "disposition": {
+          "expected_behavior": 5,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 5,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 5,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 5
+        },
+        "recommended_risk": {
+          "low": 5,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 444,
+        "inventory_bytes": 15679502,
+        "tools_completed": 6,
+        "tools_not_applicable": 1,
+        "evidence_validated": 4,
+        "review_required": 4,
+        "review_completed": 4
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285208664/1bce1fa73fe6c0fe8e767c773a832b94bb336720/3/899653f165302ff518e7f43c8eac2031f89aab7ac65be6114b5996dda228a5e5/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285208664/history/",
+      "assessed_at": "2026-08-03T20:13:18.257Z",
+      "synthesis_policy_version": "1",
+      "synthesis_model": "gpt-5.6-luna",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior was identified. All four scanner findings were high-confidence matches on fake private-key text in tooling tests, validated as intentional redaction-test data rather than real credentials or harmful behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed findings are expected test behavior: the project uses fake key-like text to verify that secret-looking values are removed before data is sent to an AI provider. No real secret exposure, vulnerability, or malicious behavior was validated. As with any review, this does not prove that unknown behavior is absent."
       }
     }
   ]
