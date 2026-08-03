@@ -704,46 +704,6 @@ test("drafts a frontend and its vocabulary proposal together", async () => {
   });
 });
 
-test("reuses an existing frontend identity when redrafting the same source", async () => {
-  const result = await draftProjectRecord({
-    admitted: {
-      ...admittedGithubExtension,
-      manifest: {
-        ...admittedGithubExtension.manifest,
-        project_type: "frontend",
-        primary_function: "frontend",
-        frontends: { known_ids: [], other: [] },
-      },
-      frontendIds: [],
-    },
-    observation,
-    snapshot,
-    enrichment: null,
-    frontendVocabulary: {
-      frontends: [
-        {
-          id: "repo-owner",
-          label: "Repo",
-          description: "Works with the Repo roleplay frontend.",
-        },
-      ],
-    },
-    frontendProjects: [
-      {
-        id: "owner-repo",
-        name: "Repo",
-        kind: "frontend",
-        source_id: "github-42",
-        frontends: ["repo-owner"],
-      },
-    ],
-    now: "2026-07-25T18:00:00.000Z",
-  });
-
-  expect(result.record.frontends).toEqual(["repo-owner"]);
-  expect(result.frontendVocabulary).toBeUndefined();
-});
-
 test("drafts an external Frontend with manual source policy", async () => {
   const result = await draftProjectRecord({
     admitted: {

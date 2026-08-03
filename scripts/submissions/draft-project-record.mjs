@@ -278,33 +278,19 @@ export async function draftProjectRecord(input) {
   const warnings = [...admitted.warnings];
 
   if (admitted.manifest.project_type === "frontend") {
-    const existingFrontendId = (input.frontendProjects ?? [])
-      .filter(
-        (project) =>
-          project.kind === "frontend" && project.source_id === source.id,
-      )
-      .flatMap((project) => project.frontends ?? [])
-      .find((id) =>
-        input.frontendVocabulary.frontends.some((entry) => entry.id === id),
-      );
-
-    if (existingFrontendId) {
-      frontendIds = [existingFrontendId];
-    } else {
-      const proposal = proposeFrontendVocabularyEntry({
-        displayName: name,
-        sourceIdentity: identity,
-        vocabulary: input.frontendVocabulary,
-        frontendProjects: input.frontendProjects ?? [],
-      });
-      frontendIds = [proposal.entry.id];
-      frontendVocabulary = {
-        frontends: [...input.frontendVocabulary.frontends, proposal.entry].sort(
-          (left, right) => left.id.localeCompare(right.id),
-        ),
-      };
-      if (proposal.warning) warnings.push(proposal.warning);
-    }
+    const proposal = proposeFrontendVocabularyEntry({
+      displayName: name,
+      sourceIdentity: identity,
+      vocabulary: input.frontendVocabulary,
+      frontendProjects: input.frontendProjects ?? [],
+    });
+    frontendIds = [proposal.entry.id];
+    frontendVocabulary = {
+      frontends: [...input.frontendVocabulary.frontends, proposal.entry].sort(
+        (left, right) => left.id.localeCompare(right.id),
+      ),
+    };
+    if (proposal.warning) warnings.push(proposal.warning);
   }
   if (
     !curated &&
