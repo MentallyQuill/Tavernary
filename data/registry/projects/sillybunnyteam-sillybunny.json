@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "sillybunnyteam-sillybunny",
+  "name": "SillyBunny",
+  "kind": "frontend",
+  "summary": "SillyBunny is a SillyTavern fork with a cleaner graphical shell UI, Bun backend, built-in tutorials, presets, extensions, and an agentic quick-start dashboard.",
+  "metadata_status": "curated",
+  "source_id": "github-1201800372",
+  "frontends": ["sillybunny-sillybunnyteam"],
+  "primary_function": "frontend",
+  "tags": [
+    "agentic-tool-use",
+    "customize-the-interface",
+    "manage-prompts-and-presets",
+    "mobile-friendly",
+    "modular-and-extensible"
+  ],
+  "cataloged_at": "2026-08-02T02:49:06.399Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
