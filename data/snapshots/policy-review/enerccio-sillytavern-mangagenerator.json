@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-mangagenerator",
+  "source_id": "github-1258163299",
+  "source_identity": "github:enerccio/sillytavern-mangagenerator",
+  "evidence_fingerprint": "dd8805f1393ba1ea9576a31d39a4e7a60ed33b6e48a6807418d01d5b7163e5e9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T08:40:55.716Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T08:40:55.716Z"
+  },
+  "maintenance_issue_number": null
+}
