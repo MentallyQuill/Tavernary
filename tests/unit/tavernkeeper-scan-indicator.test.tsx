@@ -202,7 +202,7 @@ describe("TavernKeeperScanIndicator", () => {
     },
   );
 
-  test("keeps stale risk color and adds an independent accessible clock marker", () => {
+  test("keeps stale risk color and uses the supplied clock SVG", () => {
     render(
       <TavernKeeperScanIndicator
         projectId="stale-low"
@@ -214,9 +214,14 @@ describe("TavernKeeperScanIndicator", () => {
       name: "TavernKeeper scan: Low concern; stale assessment.",
     });
     expect(trigger).toHaveClass("tavernkeeper-scan-indicator-teal");
-    expect(
-      trigger.querySelector(".tavernkeeper-freshness-clock"),
-    ).toBeInTheDocument();
+    const clock = trigger.querySelector(
+      'svg.tavernkeeper-freshness-clock[data-icon="clock"]',
+    );
+    expect(clock).toBeInTheDocument();
+    expect(clock?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M12 7V12L14.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z",
+    );
   });
 
   test("shows labeled history only when it communicates a trend", () => {
