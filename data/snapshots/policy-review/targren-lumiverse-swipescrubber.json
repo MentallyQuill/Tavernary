@@ -3,14 +3,14 @@
   "project_id": "targren-lumiverse-swipescrubber",
   "source_id": "codeberg-1699613",
   "source_identity": "codeberg:targren/lumiverse-swipescrubber",
-  "evidence_fingerprint": "d9f13484594beb50c0d02c3c65ff9090fcabe6796d2a093062c7ca0d6831702a",
+  "evidence_fingerprint": "2cd90cfaf3985bbfa33a6634d89fa256c9165458b60efcbda814a400571edadd",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-08-02T09:32:34.006Z",
+  "reviewed_at": "2026-08-03T11:00:40.688Z",
   "retry": {
-    "attempts": 5,
-    "last_failure_at": "2026-08-02T09:32:34.006Z"
+    "attempts": 6,
+    "last_failure_at": "2026-08-03T11:00:40.688Z"
   },
   "maintenance_issue_number": null
 }
