@@ -12,7 +12,7 @@ const pinnedActions = {
   "actions/upload-pages-artifact": "fc324d3547104276b827a68afc52ff2a11cc49c9",
   "actions/deploy-pages": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128",
   "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-  "actions/create-github-app-token": "fee1f7d63c2ff003460e3d139729b119787bc349",
+  "actions/create-github-app-token": "f8d387b68d61c58ab83c6c016672934102569859",
 };
 
 async function workflow(name: string) {
