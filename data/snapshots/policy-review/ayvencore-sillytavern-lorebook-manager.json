@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "ayvencore-sillytavern-lorebook-manager",
+  "source_id": "github-1179684706",
+  "source_identity": "github:ayvencore/sillytavern-lorebook-manager",
+  "evidence_fingerprint": "d00ac4c462ff1b1fb6ae0682e4948511f57db60dc9954605e108e1b1e3569192",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:03:19.632Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:03:19.632Z"
+  },
+  "maintenance_issue_number": null
+}

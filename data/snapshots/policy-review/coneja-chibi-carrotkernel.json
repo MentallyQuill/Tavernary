@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "coneja-chibi-carrotkernel",
+  "source_id": "github-1054966103",
+  "source_identity": "github:coneja-chibi/carrotkernel",
+  "evidence_fingerprint": "f1c54a915c962e3ece4c7792334bc6f90c2141257acb61999d3b30bad1f16d48",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:01:14.873Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:01:14.873Z"
+  },
+  "maintenance_issue_number": null
+}

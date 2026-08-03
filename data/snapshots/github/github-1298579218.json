@@ -9,8 +9,8 @@
     "url": "https://github.com/owler-tavern/context-image-generation",
     "description": null,
     "default_branch": "main",
-    "head_sha": "47e1bbf66df88cff8c4f33c04c2551e5d23edbe0",
-    "head_committed_at": "2026-07-30T14:31:14.000Z",
+    "head_sha": "477549fa8d4ec73e8947278e59a18ab7f04cd603",
+    "head_committed_at": "2026-08-03T03:49:20.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,7 +20,7 @@
       "url": "https://github.com/elouannd/context-image-generation"
     },
     "created_at": "2026-07-12T19:50:05.000Z",
-    "size_kb": 145
+    "size_kb": 151
   },
   "source_health": "healthy",
   "activity": {
@@ -45,9 +45,9 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-30T04:53:54.074Z",
+    "baseline_completed_at": "2026-08-03T10:52:31.892Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "47e1bbf66df88cff8c4f33c04c2551e5d23edbe0"
+    "evidence_head_sha": "477549fa8d4ec73e8947278e59a18ab7f04cd603"
   },
   "community": {
     "stars_count": 3,
@@ -60,7 +60,7 @@
     "spdx_id": "Unlicense",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-02T09:25:09.247Z",
+  "refreshed_at": "2026-08-03T10:52:31.892Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -70,7 +70,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-30T04:53:54.074Z",
     "scan": null,
-    "refreshed_at": "2026-08-02T09:25:09.247Z",
+    "refreshed_at": "2026-08-03T10:52:31.892Z",
     "stale_since": null
   }
 }

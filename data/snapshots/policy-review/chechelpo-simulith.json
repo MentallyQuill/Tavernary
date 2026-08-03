@@ -3,14 +3,14 @@
   "project_id": "chechelpo-simulith",
   "source_id": "github-1221210115",
   "source_identity": "github:chechelpo/simulith",
-  "evidence_fingerprint": "48754714e133b3e613170f165dca8f12d972bbab3d69f1c8b9740ef4f1f46df7",
+  "evidence_fingerprint": "1fc773dfe8c41f7d18699126771b899818b90221f5af9a580361356baf0287bb",
   "policy_version": "2026-07-29",
   "status": "review-unavailable",
   "category": null,
-  "reviewed_at": "2026-07-31T06:47:10.859Z",
+  "reviewed_at": "2026-08-03T11:04:21.759Z",
   "retry": {
-    "attempts": 1,
-    "last_failure_at": "2026-07-31T06:47:10.859Z"
+    "attempts": 2,
+    "last_failure_at": "2026-08-03T11:04:21.759Z"
   },
   "maintenance_issue_number": null
 }

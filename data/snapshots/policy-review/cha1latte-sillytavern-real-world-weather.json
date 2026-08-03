@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "cha1latte-sillytavern-real-world-weather",
+  "source_id": "github-1088452012",
+  "source_identity": "github:cha1latte/sillytavern-real-world-weather",
+  "evidence_fingerprint": "e84ac473b6b74d1553636b37d8a4c71aa756d431f1f4775320c9236395b098e3",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:01:48.829Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:01:48.829Z"
+  },
+  "maintenance_issue_number": null
+}

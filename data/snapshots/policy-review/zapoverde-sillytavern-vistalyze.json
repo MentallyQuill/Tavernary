@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zapoverde-sillytavern-vistalyze",
+  "source_id": "github-1195030528",
+  "source_identity": "github:zapoverde/sillytavern-vistalyze",
+  "evidence_fingerprint": "694396f3d3f28e720cf902df9cbc9d3647fcc9ba96729cef81ce1df72c6bce87",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:03:55.851Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:03:55.851Z"
+  },
+  "maintenance_issue_number": null
+}

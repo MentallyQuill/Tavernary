@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "tyranomaster-expressions-plus",
+  "source_id": "github-1140294800",
+  "source_identity": "github:tyranomaster/expressions-plus",
+  "evidence_fingerprint": "8d323abd4ca9d6a30fdbdeeb7f9858730267bd720b04319ecfc4d1011eea67ed",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:02:52.579Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:02:52.579Z"
+  },
+  "maintenance_issue_number": null
+}
