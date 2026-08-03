@@ -592,4 +592,20 @@ describe("TavernKeeper report-index importer", () => {
       "https://mentallyquill.github.io/TavernKeeper/reports/index.json",
     );
   });
+
+  test("tracked summaries exclude invalid development canaries", async () => {
+    const tracked = await readFile(
+      resolve("data/security/tavernkeeper-report-summaries.json"),
+      "utf8",
+    );
+
+    for (const invalidIdentity of [
+      "1254077407",
+      "1285208664",
+      "2d4f818c2ad5855b0faff387d88c3f64479865c6",
+      "1bce1fa73fe6c0fe8e767c773a832b94bb336720",
+    ]) {
+      expect(tracked).not.toContain(invalidIdentity);
+    }
+  });
 });
