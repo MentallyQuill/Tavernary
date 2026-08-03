@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "enerccio-sillytavern-autosummary",
+  "name": "SillyTavern-AutoSummary",
+  "kind": "extension",
+  "summary": "SillyTavern-AutoSummary automatically chunks, summarizes, and compresses long-term chat history in the background, preserving lore, character state, and story continuity.",
+  "metadata_status": "curated",
+  "source_id": "github-1268541624",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "background-operation",
+    "maintain-long-term-memory",
+    "manage-context-limits",
+    "preserve-story-continuity"
+  ],
+  "cataloged_at": "2026-08-03T08:16:12.910Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
