@@ -3,7 +3,7 @@
   "id": "enerccio-sillytavern-loreentryvcs",
   "name": "SillyTavern-LoreEntryVCS",
   "kind": "extension",
-  "summary": "SillyTavern-LoreEntryVCS tracks and snapshots Lorebook entry revisions in SillyTavern, with timeline navigation, desynchronization recovery, and JSON history backups.",
+  "summary": "SillyTavern-LoreEntryVCS adds inline version control for SillyTavern Lorebook entries, snapshotting revisions and enabling timeline navigation, recovery nodes, and JSON history backups.",
   "metadata_status": "curated",
   "source_id": "github-1273118567",
   "frontends": ["sillytavern"],
@@ -12,10 +12,10 @@
     "manage-lorebooks",
     "move-and-back-up-data",
     "non-destructive",
-    "persistent-state",
-    "preserve-story-continuity"
+    "preserve-story-continuity",
+    "recover-failed-generations"
   ],
-  "cataloged_at": "2026-08-03T08:20:40.850Z",
+  "cataloged_at": "2026-08-03T08:26:21.094Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
