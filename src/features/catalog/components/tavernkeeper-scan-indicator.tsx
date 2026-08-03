@@ -125,7 +125,7 @@ export function TavernKeeperScanIndicator({
   const [position, setPosition] = useState<CSSProperties | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
-  const reportLinkRef = useRef<HTMLAnchorElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pointerOpenState = useRef<boolean | null>(null);
   const content = stateCopy(status);
@@ -199,18 +199,18 @@ export function TavernKeeperScanIndicator({
     [closePopover, containsInteractiveElement],
   );
 
-  const focusReportLink = useCallback(
+  const focusFirstLink = useCallback(
     (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (
         event.key !== "Tab" ||
         event.shiftKey ||
         !open ||
-        !reportLinkRef.current
+        !firstLinkRef.current
       ) {
         return;
       }
       event.preventDefault();
-      reportLinkRef.current.focus();
+      firstLinkRef.current.focus();
     },
     [open],
   );
@@ -299,7 +299,7 @@ export function TavernKeeperScanIndicator({
         onBlur={closeOnFocusExit}
         onClick={togglePopover}
         onFocus={openPopover}
-        onKeyDown={focusReportLink}
+        onKeyDown={focusFirstLink}
         onMouseEnter={openPopover}
         onMouseLeave={delayClose}
         onPointerDown={rememberPointerOpenState}
@@ -332,14 +332,24 @@ export function TavernKeeperScanIndicator({
                 visibility: position ? "visible" : "hidden",
               }}
             >
-              <h2 id={headingId}>TavernKeeper Scan Results</h2>
+              <header className="tavernkeeper-popover-header">
+                <h2 id={headingId}>TavernKeeper Scan Results</h2>
+                {report ? (
+                  <span
+                    className={`tavernkeeper-popover-status tavernkeeper-popover-status-${status.state}`}
+                  >
+                    <strong>{riskGradeLabels[report.riskLevel]}</strong>
+                    <span>{freshnessLabels[status.freshness]}</span>
+                  </span>
+                ) : null}
+              </header>
               {report ? (
                 <>
-                  <p className="tavernkeeper-grade">
-                    <strong>Grade:</strong> {riskGradeLabels[report.riskLevel]}
-                  </p>
-                  <p>{content}</p>
-                  <p className="tavernkeeper-assessment-counts">
+                  <p className="tavernkeeper-summary">{content}</p>
+                  <p
+                    aria-label="Assessment finding counts"
+                    className="tavernkeeper-assessment-counts"
+                  >
                     <span>
                       {countLabel(report.minorCautions, "minor caution")}
                     </span>
@@ -350,33 +360,60 @@ export function TavernKeeperScanIndicator({
                       {countLabel(report.highDanger, "high-danger finding")}
                     </span>
                   </p>
-                  <p className="tavernkeeper-malicious-evidence">
-                    {report.maliciousEvidence}
-                  </p>
-                  <p>
-                    Scanned{" "}
-                    <span aria-label={`Full commit SHA: ${report.scannedSha}`}>
-                      {report.scannedSha.slice(0, 7)}
-                    </span>{" "}
-                    on {formatDate(report.scannedAt)}. Assessed by Tavernary on{" "}
-                    {formatDate(report.assessedAt)}.
-                  </p>
-                  <a
-                    href={report.reportUrl}
-                    onKeyDown={focusTrigger}
-                    ref={reportLinkRef}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    View full report
-                  </a>
-                  <TavernKeeperHistoryStrip history={status.history} />
-                  {status.historyUrl ? (
-                    <Link href={status.historyUrl}>View full scan history</Link>
+                  <dl className="tavernkeeper-scan-details">
+                    <div>
+                      <dt>Scanned</dt>
+                      <dd>
+                        <time dateTime={report.scannedAt}>
+                          {formatDate(report.scannedAt)}
+                        </time>
+                        <span aria-hidden="true"> · </span>
+                        <a
+                          aria-label={`View scanned commit ${report.scannedSha} on GitHub`}
+                          href={report.commitUrl}
+                          onKeyDown={focusTrigger}
+                          ref={firstLinkRef}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {report.scannedSha.slice(0, 7)}
+                          <span aria-hidden="true"> ↗</span>
+                        </a>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Assessed</dt>
+                      <dd>
+                        <time dateTime={report.assessedAt}>
+                          {formatDate(report.assessedAt)}
+                        </time>
+                        {" by Tavernary"}
+                      </dd>
+                    </div>
+                  </dl>
+                  {status.history.length >= 2 ? (
+                    <div className="tavernkeeper-recent-history">
+                      <span>Recent scans</span>
+                      <TavernKeeperHistoryStrip history={status.history} />
+                    </div>
                   ) : null}
+                  <footer className="tavernkeeper-popover-actions">
+                    <a
+                      href={report.reportUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      View full report<span aria-hidden="true"> ↗</span>
+                    </a>
+                    {status.historyUrl ? (
+                      <Link href={status.historyUrl}>
+                        View scan history<span aria-hidden="true"> →</span>
+                      </Link>
+                    ) : null}
+                  </footer>
                 </>
               ) : (
-                <p>{content}</p>
+                <p className="tavernkeeper-summary">{content}</p>
               )}
             </section>,
             document.body,

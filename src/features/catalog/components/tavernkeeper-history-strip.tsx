@@ -21,7 +21,7 @@ export function TavernKeeperHistoryStrip({
   history: readonly TavernKeeperReportSummary[];
 }) {
   const conclusions = history.slice(-12);
-  if (conclusions.length === 0) return null;
+  if (conclusions.length < 2) return null;
 
   return (
     <span

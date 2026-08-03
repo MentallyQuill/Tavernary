@@ -34,6 +34,8 @@ function scanReport(
       "The review found evidence consistent with credential theft.",
     citedFindingIds: ["a".repeat(64)],
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
+    commitUrl:
+      "https://github.com/owner/repository/commit/abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
     assessedAt: "2026-07-31T12:05:00.000Z",
     scannerPolicyVersion: "2",
@@ -117,7 +119,7 @@ describe("TavernKeeperScanIndicator", () => {
     vi.useRealTimers();
   });
 
-  test("preserves the advisory popover title, report, and history links", () => {
+  test("renders the compact advisory card with an exact commit link", () => {
     const { container } = render(
       <TavernKeeperScanIndicator projectId="directive" status={redStatus} />,
     );
@@ -131,19 +133,34 @@ describe("TavernKeeperScanIndicator", () => {
     const panel = screen.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    expect(panel).toHaveTextContent("Grade: High concern");
+    expect(panel).toHaveTextContent("High concern");
+    expect(panel).toHaveTextContent("current");
     expect(panel).toHaveTextContent(redReport.summary);
     expect(panel).toHaveTextContent("1 minor caution");
     expect(panel).toHaveTextContent("2 material concerns");
     expect(panel).toHaveTextContent("1 high-danger finding");
-    expect(panel).toHaveTextContent(redReport.maliciousEvidence);
-    expect(panel).toHaveTextContent("Scanned abc1234 on July 31, 2026");
+    expect(panel).not.toHaveTextContent(redReport.maliciousEvidence);
+    const commitLink = within(panel).getByRole("link", {
+      name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+    });
+    expect(commitLink).toHaveTextContent(redReport.scannedSha.slice(0, 7));
+    expect(commitLink).toHaveAttribute("href", redReport.commitUrl);
+    expect(commitLink).toHaveAttribute("target", "_blank");
+    expect(commitLink).toHaveAttribute(
+      "rel",
+      expect.stringContaining("noopener"),
+    );
     expect(
       within(panel).getByRole("link", { name: "View full report" }),
     ).toHaveAttribute("href", redStatus.report?.reportUrl);
     expect(
-      within(panel).getByRole("link", { name: "View full scan history" }),
+      within(panel).getByRole("link", { name: "View scan history" }),
     ).toHaveAttribute("href", redStatus.historyUrl?.replace(/\/$/u, ""));
+    expect(
+      within(panel).queryByRole("group", {
+        name: "Recent TavernKeeper scan history",
+      }),
+    ).not.toBeInTheDocument();
     expect(panel).not.toHaveTextContent(
       /Gitleaks|OpenGrep|policy|coverage|excluded/u,
     );
@@ -200,6 +217,29 @@ describe("TavernKeeperScanIndicator", () => {
     expect(
       trigger.querySelector(".tavernkeeper-freshness-clock"),
     ).toBeInTheDocument();
+  });
+
+  test("shows labeled history only when it communicates a trend", () => {
+    const prior = scanReport({
+      reportId: "report-prior",
+      riskLevel: "material",
+      reportUrl: "https://example.test/reports/prior",
+      assessedAt: "2026-07-30T12:05:00.000Z",
+    });
+    render(
+      <TavernKeeperScanIndicator
+        projectId="history-threshold"
+        status={{ ...tealStatus, history: [prior, tealReport] }}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(screen.getByText("Recent scans")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("img", {
+        name: /TavernKeeper scan history:/u,
+      }),
+    ).toHaveLength(2);
   });
 
   test("renders the newest twelve history conclusions oldest-left with accessible identity", () => {
@@ -363,7 +403,7 @@ describe("TavernKeeperScanIndicator", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  test("uses a non-modal Tab route through both report links without trapping linkless panels", async () => {
+  test("uses a non-modal Tab route through card links without trapping linkless panels", async () => {
     const user = userEvent.setup();
     const { rerender } = render(
       <>
@@ -380,27 +420,31 @@ describe("TavernKeeperScanIndicator", () => {
 
     await user.tab();
     expect(
+      screen.getByRole("link", {
+        name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+      }),
+    ).toHaveFocus();
+
+    await user.tab();
+    expect(
       screen.getByRole("link", { name: "View full report" }),
     ).toHaveFocus();
 
     await user.tab();
     expect(
-      screen.getByRole("link", { name: /Open TavernKeeper report for/u }),
-    ).toHaveFocus();
-
-    await user.tab();
-    expect(
-      screen.getByRole("link", { name: "View full scan history" }),
-    ).toHaveFocus();
-
-    await user.tab({ shift: true });
-    expect(
-      screen.getByRole("link", { name: /Open TavernKeeper report for/u }),
+      screen.getByRole("link", { name: "View scan history" }),
     ).toHaveFocus();
 
     await user.tab({ shift: true });
     expect(
       screen.getByRole("link", { name: "View full report" }),
+    ).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole("link", {
+        name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+      }),
     ).toHaveFocus();
 
     await user.tab({ shift: true });
