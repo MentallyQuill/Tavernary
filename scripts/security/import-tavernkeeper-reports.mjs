@@ -85,6 +85,11 @@ export async function importTavernKeeperReports(options = {}) {
     registry,
   );
   const previous = await readPrevious(outputPath, registry);
+  if (Date.parse(index.generated_at) < Date.parse(previous.generated_at)) {
+    throw new Error(
+      "TavernKeeper report index is older than the tracked assessment snapshot",
+    );
+  }
   const existing = new Map(
     previous.reports.map((entry) => [entry.report_id, entry]),
   );
@@ -106,11 +111,14 @@ export async function importTavernKeeperReports(options = {}) {
     additions.push(trackedEntry(entry, await synthesize(report)));
   }
 
-  const reports = [...previous.reports, ...additions].sort(
-    (left, right) =>
-      Date.parse(left.completed_at) - Date.parse(right.completed_at) ||
-      left.report_id.localeCompare(right.report_id),
-  );
+  const reports =
+    index.reports.length === 0
+      ? []
+      : [...previous.reports, ...additions].sort(
+          (left, right) =>
+            Date.parse(left.completed_at) - Date.parse(right.completed_at) ||
+            left.report_id.localeCompare(right.report_id),
+        );
   const snapshot = validateStoredReportIndex(
     {
       schema_version: 5,
