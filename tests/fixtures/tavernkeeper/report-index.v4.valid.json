@@ -1,0 +1,67 @@
+{
+  "schema_version": 4,
+  "generated_at": "2026-08-02T12:00:00.000Z",
+  "reports": [
+    {
+      "report_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "1.0.0",
+      "scanner_policy_version": "2",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "source_id": "github-42",
+      "provider": "github",
+      "repository_id": 42,
+      "repository": "owner/repo",
+      "target_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "completed_at": "2026-08-02T11:55:00.000Z",
+      "assessment_method": "deterministic-static-analysis",
+      "result": "red",
+      "summary": {
+        "headline": "Reportable concerns detected",
+        "detail": "All required scanners completed at this commit and found 1 reportable high-severity concern."
+      },
+      "finding_counts": {
+        "total": 2,
+        "reportable": 1,
+        "informational": 1,
+        "reportable_severity": {
+          "critical": 0,
+          "high": 1,
+          "medium": 0
+        },
+        "severity": {
+          "critical": 0,
+          "high": 1,
+          "medium": 0,
+          "low": 1,
+          "info": 0
+        },
+        "confidence": {
+          "high": 1,
+          "medium": 1,
+          "low": 0
+        },
+        "policy_status": {
+          "reportable": 1,
+          "informational": 1
+        },
+        "categories": [
+          { "category": "credential-theft", "count": 1 },
+          { "category": "dependency-vulnerability", "count": 1 }
+        ]
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 42,
+        "inventory_bytes": 9001,
+        "tools_completed": 6,
+        "tools_not_applicable": 1,
+        "evidence_validated": 2
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/"
+    }
+  ]
+}

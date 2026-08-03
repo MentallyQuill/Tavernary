@@ -6,13 +6,14 @@ import Ajv from "ajv";
 
 import reportIndexV1Schema from "../../data/schemas/tavernkeeper-report-index.schema.json" with { type: "json" };
 import reportIndexV2Schema from "../../data/schemas/tavernkeeper-report-index.v2.schema.json" with { type: "json" };
+import reportIndexV4Schema from "../../data/schemas/tavernkeeper-report-index.v4.schema.json" with { type: "json" };
 import { fetchHardenedJson } from "./hardened-json-fetch.mjs";
 
 export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX = "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL =
   "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "1";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "2";
 
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const reportIdPattern = /^[0-9a-f]{64}$/u;
@@ -67,6 +68,7 @@ ajv.addFormat("uri", {
 });
 const validateV1Schema = ajv.compile(reportIndexV1Schema);
 const validateV2Schema = ajv.compile(reportIndexV2Schema);
+const validateV4Schema = ajv.compile(reportIndexV4Schema);
 
 function schemaError(validateSchema) {
   const details = (validateSchema.errors ?? [])
@@ -83,7 +85,9 @@ function assertSchema(index) {
       ? validateV1Schema
       : index?.schema_version === 2
         ? validateV2Schema
-        : null;
+        : index?.schema_version === 4
+          ? validateV4Schema
+          : null;
   if (!validateSchema) {
     throw new Error(
       "TavernKeeper report index schema validation failed: unsupported schema version",
@@ -103,11 +107,14 @@ function sum(values) {
   return values.reduce((total, value) => total + value, 0);
 }
 
-function canonicalReportPath(report) {
-  return `${TAVERNKEEPER_REPORTS_PATH_PREFIX}github/${report.repository_id}/${report.target_sha}/${report.scanner_policy_version}/${report.mode}/${report.report_version}/`;
+function canonicalReportPath(report, schemaVersion) {
+  const identity = `${TAVERNKEEPER_REPORTS_PATH_PREFIX}github/${report.repository_id}/${report.target_sha}/${report.scanner_policy_version}`;
+  return schemaVersion === 4
+    ? `${identity}/${report.report_version}/`
+    : `${identity}/${report.mode}/${report.report_version}/`;
 }
 
-function assertSafeReportUrl(report) {
+function assertSafeReportUrl(report, schemaVersion) {
   const reportUrl = report.report_url;
   let parsed;
   try {
@@ -116,7 +123,7 @@ function assertSafeReportUrl(report) {
     throw new Error("TavernKeeper report URL is invalid");
   }
 
-  const canonicalPath = canonicalReportPath(report);
+  const canonicalPath = canonicalReportPath(report, schemaVersion);
   const canonicalUrl = `${TAVERNKEEPER_ORIGIN}${canonicalPath}`;
   if (
     reportUrl !== canonicalUrl ||
@@ -143,7 +150,63 @@ function assertSafeReportUrl(report) {
   }
 }
 
-function assertReportCounts(report) {
+function assertSafeSummary(report) {
+  const values = [report.summary.headline, report.summary.detail];
+  const unsafe = values.some(
+    (value) =>
+      value !== value.trim() ||
+      /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/u.test(value),
+  );
+  if (unsafe) throw new Error("TavernKeeper report summary is unsafe");
+}
+
+function assertV4ReportCounts(report) {
+  const counts = report.finding_counts;
+  const severityTotal = sum(Object.values(counts.severity));
+  const confidenceTotal = sum(Object.values(counts.confidence));
+  const policyStatusTotal = sum(Object.values(counts.policy_status));
+  const categoryTotal = sum(
+    counts.categories.map((category) => category.count),
+  );
+  const reportableSeverityTotal = sum(
+    Object.values(counts.reportable_severity),
+  );
+  const reviewConfidenceTotal =
+    counts.confidence.high + counts.confidence.medium;
+  const reviewSeverityTotal =
+    counts.severity.critical + counts.severity.high + counts.severity.medium;
+  const reportableSeverityWithinTotals = Object.entries(
+    counts.reportable_severity,
+  ).every(([severity, count]) => count <= counts.severity[severity]);
+  const categoriesAreUniqueAndSorted = counts.categories.every(
+    (category, index) =>
+      index === 0 || counts.categories[index - 1].category < category.category,
+  );
+  if (
+    counts.total !== counts.reportable + counts.informational ||
+    counts.total !== severityTotal ||
+    counts.total !== confidenceTotal ||
+    counts.total !== policyStatusTotal ||
+    counts.total !== categoryTotal ||
+    counts.reportable !== counts.policy_status.reportable ||
+    counts.informational !== counts.policy_status.informational ||
+    counts.reportable !== reportableSeverityTotal ||
+    counts.reportable > reviewConfidenceTotal ||
+    counts.reportable > reviewSeverityTotal ||
+    !reportableSeverityWithinTotals ||
+    !categoriesAreUniqueAndSorted ||
+    report.coverage.evidence_validated !== counts.total ||
+    report.result !== (counts.reportable > 0 ? "red" : "teal")
+  ) {
+    throw new Error("TavernKeeper report finding totals do not match");
+  }
+}
+
+function assertReportCounts(report, schemaVersion) {
+  if (schemaVersion === 4) {
+    assertV4ReportCounts(report);
+    return;
+  }
   const counts = report.finding_counts;
   const expectedTotal = sum(Object.values(counts.severity));
   const confidenceTotal = sum(Object.values(counts.confidence));
@@ -218,8 +281,9 @@ function assertReportSemantics(index) {
     ) {
       throw new Error("TavernKeeper report result is invalid");
     }
-    assertSafeReportUrl(report);
-    assertReportCounts(report);
+    assertSafeReportUrl(report, index.schema_version);
+    assertReportCounts(report, index.schema_version);
+    if (index.schema_version === 4) assertSafeSummary(report);
 
     if (reportIds.has(report.report_id)) {
       throw new Error(
@@ -279,7 +343,7 @@ function compareReports(left, right) {
     left.repository_id - right.repository_id ||
     left.target_sha.localeCompare(right.target_sha) ||
     left.scanner_policy_version.localeCompare(right.scanner_policy_version) ||
-    left.mode.localeCompare(right.mode) ||
+    (left.mode ?? "").localeCompare(right.mode ?? "") ||
     left.report_version - right.report_version
   );
 }
