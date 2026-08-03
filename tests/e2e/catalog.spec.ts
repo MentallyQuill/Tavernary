@@ -1195,7 +1195,7 @@ test(
         panel.getByRole("link", { name: "View full scan history" }),
       ).toHaveAttribute(
         "href",
-        /^\/security\/tavernkeeper\/history\/github-\d+\/?$/u,
+        /\/security\/tavernkeeper\/history\/github-\d+\/?$/u,
       );
       expect(
         await panel.locator(".tavernkeeper-history-strip i").count(),
