@@ -1,0 +1,79 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1207588937",
+  "repository": {
+    "id": 1207588937,
+    "owner": "Enerccio",
+    "name": "SillyTavern-Reviewer",
+    "url": "https://github.com/Enerccio/SillyTavern-Reviewer",
+    "description": null,
+    "default_branch": "master",
+    "head_sha": "97b9d23d7ef491cda4fed468adfb528b788029dd",
+    "head_committed_at": "2026-07-29T12:56:03.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-04-11T06:00:58.000Z",
+    "size_kb": 123
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-29T12:56:03.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-29T12:56:03.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T05:26:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-27T14:54:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-18T06:02:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-04T15:18:38.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-03T08:09:42.818Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "97b9d23d7ef491cda4fed468adfb528b788029dd"
+  },
+  "community": {
+    "stars_count": 1,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 1
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-03T08:09:42.818Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Enerccio", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-03T08:09:42.818Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

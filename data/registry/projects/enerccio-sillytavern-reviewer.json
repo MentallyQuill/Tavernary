@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "enerccio-sillytavern-reviewer",
+  "name": "SillyTavern-Reviewer",
+  "kind": "extension",
+  "summary": "SillyTavern-Reviewer generates AI-powered reviews or critiques for specific chat messages, with a dedicated workspace to store and edit feedback on stories or character responses.",
+  "metadata_status": "curated",
+  "source_id": "github-1207588937",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages", "inspect-prompts-and-generations"],
+  "cataloged_at": "2026-08-03T08:09:42.818Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
