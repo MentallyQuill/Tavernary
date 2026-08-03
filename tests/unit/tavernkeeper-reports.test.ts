@@ -1,5 +1,3 @@
-import { createHash } from "node:crypto";
-import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
@@ -15,23 +13,8 @@ import {
 import { importTavernKeeperReports } from "../../scripts/security/import-tavernkeeper-reports.mjs";
 import { validateStoredTavernKeeperReports } from "../../scripts/security/validate-tavernkeeper-reports.mjs";
 
-const legacyFixturePath = resolve(
-  "tests/fixtures/tavernkeeper/report-index.valid.json",
-);
 const fixturePath = resolve(
-  "tests/fixtures/tavernkeeper/report-index.v2.valid.json",
-);
-const deterministicFixturePath = resolve(
   "tests/fixtures/tavernkeeper/report-index.v4.valid.json",
-);
-const producerRoot = "F:/git/TavernKeeper/.worktrees/tavernkeeper-v1";
-const producerSchemaPath = resolve(
-  producerRoot,
-  "schemas/report-index.v1.schema.json",
-);
-const producerFixturePath = resolve(
-  producerRoot,
-  "tests/fixtures/contracts/index.valid.json",
 );
 const registry = [
   {
@@ -45,10 +28,6 @@ const registry = [
 
 async function fixture() {
   return JSON.parse(await readFile(fixturePath, "utf8"));
-}
-
-async function deterministicFixture() {
-  return JSON.parse(await readFile(deterministicFixturePath, "utf8"));
 }
 
 function publicDnsLookup() {
@@ -103,37 +82,6 @@ async function storedSummaryRoot(
 }
 
 describe("TavernKeeper report-index importer", () => {
-  test("pins the vendored V2 schema and fixture to reviewed producer digests", async () => {
-    const [schema, index] = await Promise.all([
-      readFile("data/schemas/tavernkeeper-report-index.v2.schema.json"),
-      readFile(fixturePath),
-    ]);
-
-    expect(createHash("sha256").update(schema).digest("hex")).toBe(
-      "4b4696e1775bd9b41ff645f603bb0639acabc79c813f30d67fcbc8a748488e5f",
-    );
-    expect(createHash("sha256").update(index).digest("hex")).toBe(
-      "8bacda5dc4a8ae7c6c3ab6577e7e9c30bb89045b0a09d7c82d6c2c02a31e4503",
-    );
-  });
-
-  test.skipIf(
-    !existsSync(producerSchemaPath) || !existsSync(producerFixturePath),
-  )(
-    "vendors the reviewed producer schema and fixture as parsed parity copies",
-    async () => {
-      const [schema, producerSchema, index, producerIndex] = await Promise.all([
-        readFile("data/schemas/tavernkeeper-report-index.schema.json", "utf8"),
-        readFile(producerSchemaPath, "utf8"),
-        readFile(legacyFixturePath, "utf8"),
-        readFile(producerFixturePath, "utf8"),
-      ]);
-
-      expect(JSON.parse(schema)).toEqual(JSON.parse(producerSchema));
-      expect(JSON.parse(index)).toEqual(JSON.parse(producerIndex));
-    },
-  );
-
   test("fetches the configured index through a public same-origin JSON response", async () => {
     const index = await fixture();
     await expect(
@@ -144,23 +92,14 @@ describe("TavernKeeper report-index importer", () => {
     ).resolves.toEqual(index);
   });
 
-  test("validates V2 but excludes its inactive scanner policy", async () => {
-    const index = await fixture();
-
-    expect(validateReportIndex(index, registry)).toEqual({
-      ...index,
-      reports: [],
-    });
-  });
-
   test("accepts a strict V4 deterministic report index", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
 
     expect(validateReportIndex(index, registry)).toEqual(index);
   });
 
   test("rejects model-era fields from V4", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].model = {
       provider: "example",
       input_tokens: 1,
@@ -170,7 +109,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("rejects a mode segment from V4", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].mode = "standard";
     index.reports[0].report_url =
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/standard/1/";
@@ -179,7 +118,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("rejects V4 finding totals that conflict with the deterministic result", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].finding_counts.reportable = 0;
 
     expect(() => validateReportIndex(index, registry)).toThrow(
@@ -188,7 +127,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("rejects unsafe V4 summary text", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].summary.detail = "<script>alert(1)</script>";
 
     expect(() => validateReportIndex(index, registry)).toThrow(
@@ -197,7 +136,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("requires canonical UTC timestamps in V4", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.generated_at = "2026-08-02T12:00:00+00:00";
     index.reports[0].completed_at = "2026-08-02T05:55:00-06:00";
 
@@ -205,7 +144,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("rejects unsorted V4 category totals", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].finding_counts.categories.reverse();
 
     expect(() => validateReportIndex(index, registry)).toThrow(
@@ -214,104 +153,23 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("requires the V4 report URL to omit legacy mode", async () => {
-    const index = await deterministicFixture();
+    const index = await fixture();
     index.reports[0].report_url =
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/standard/1/";
 
     expect(() => validateReportIndex(index, registry)).toThrow(/URL/u);
   });
 
-  test("validates the simplified V2 result but excludes its inactive policy", async () => {
-    const index = await fixture();
-    const newProducerReport = index.reports[0];
-    newProducerReport.prompt_policy_version = "repository-review-v2";
-    newProducerReport.result = "teal";
-    newProducerReport.finding_counts = {
-      total: 0,
-      actionable: 0,
-      actionable_severity: { critical: 0, high: 0, medium: 0 },
-      severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
-      confidence: { high: 0, medium: 0, low: 0 },
-      disposition: {
-        confirmed: 0,
-        not_supported: 0,
-        inconclusive: 0,
-      },
-      categories: [],
-    };
-
-    expect(newProducerReport.scanner_policy_version).toBe("1");
-    expect(validateReportIndex(index, registry)).toEqual({
-      ...index,
-      reports: [],
-    });
-  });
-
-  test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
-    const index = await fixture();
-    index.reports[0].finding_counts.actionable_severity.high = 0;
-
-    expect(() => validateReportIndex(index, registry)).toThrow(
-      /finding totals/u,
-    );
-  });
-
-  test("rejects impossible teal totals whose marginals require an actionable finding", async () => {
-    const index = await fixture();
-    index.reports[0].result = "teal";
-    index.reports[0].finding_counts.actionable = 0;
-    index.reports[0].finding_counts.actionable_severity.high = 0;
-
-    expect(() => validateReportIndex(index, registry)).toThrow(
-      /finding totals/u,
-    );
-  });
-
-  test("rejects impossible red totals with no review-confidence finding", async () => {
-    const index = await fixture();
-    index.reports[0].finding_counts.confidence = {
-      high: 0,
-      medium: 0,
-      low: 1,
-    };
-
-    expect(() => validateReportIndex(index, registry)).toThrow(
-      /finding totals/u,
-    );
-  });
-
-  test("rejects legacy result and disposition fields from V2", async () => {
-    const index = await fixture();
-    index.reports[0].result = "yellow";
-    index.reports[0].finding_counts.disposition = {
-      active: 1,
-      dismissed: 0,
-    };
-
-    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
-  });
-
-  test("accepts only the frozen empty V1 index during migration", async () => {
-    const emptyV1 = {
-      schema_version: 1,
-      generated_at: "2026-07-31T12:10:00.000Z",
-      reports: [],
-    };
-    const populatedV1 = JSON.parse(await readFile(legacyFixturePath, "utf8"));
-
-    expect(validateReportIndex(emptyV1, registry)).toEqual(emptyV1);
-    expect(() => validateReportIndex(populatedV1, registry)).toThrow(
-      /migration/u,
-    );
-  });
-
-  test("requires canonical UTC timestamps in V2", async () => {
-    const index = await fixture();
-    index.generated_at = "2026-07-31T12:10:00+00:00";
-    index.reports[0].completed_at = "2026-07-31T06:05:00-06:00";
-
-    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
-  });
+  test.each([1, 2, 3])(
+    "rejects unpublished report-index schema V%s",
+    async (schemaVersion) => {
+      const index = await fixture();
+      index.schema_version = schemaVersion;
+      expect(() => validateReportIndex(index, registry)).toThrow(
+        /unsupported schema version/u,
+      );
+    },
+  );
 
   test("rejects cross-origin redirects", async () => {
     await expect(
@@ -570,31 +428,31 @@ describe("TavernKeeper report-index importer", () => {
   test.each([
     [
       "repository ID",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/",
     ],
     [
       "target SHA",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/1/standard/1/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/2/1/",
     ],
     [
       "scanner policy",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/standard/1/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/1/",
     ],
     [
       "mode",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/deep/1/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/deep/1/",
     ],
     [
       "report version",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/2/",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/2/",
     ],
     [
       "extra suffix",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/index.html",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/index.html",
     ],
     [
       "missing trailing slash",
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1",
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1",
     ],
   ])("rejects a report URL with a cross-linked %s", async (_part, url) => {
     const index = await fixture();
@@ -608,9 +466,6 @@ describe("TavernKeeper report-index importer", () => {
     index.reports.push({
       ...structuredClone(index.reports[0]),
       report_id: "d".repeat(64),
-      mode: "deep",
-      report_url:
-        "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/deep/1/",
     });
 
     expect(() => validateReportIndex(index, registry)).toThrow(/duplicate/u);
@@ -622,7 +477,7 @@ describe("TavernKeeper report-index importer", () => {
       ...structuredClone(index.reports[0]),
       target_sha: "b".repeat(40),
       report_url:
-        "https://mentallyquill.github.io/TavernKeeper/reports/github/42/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/1/standard/1/",
+        "https://mentallyquill.github.io/TavernKeeper/reports/github/42/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/2/1/",
     });
 
     expect(() => validateReportIndex(index, registry)).toThrow(/duplicate/u);
@@ -633,7 +488,7 @@ describe("TavernKeeper report-index importer", () => {
     index.reports[0].repository_id = 99;
     index.reports[0].source_id = "github-99";
     index.reports[0].report_url =
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/";
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/99/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/";
     index.reports[0].history_url =
       "https://mentallyquill.github.io/TavernKeeper/reports/github/99/history/";
 
@@ -644,7 +499,7 @@ describe("TavernKeeper report-index importer", () => {
     const index = await fixture();
     index.reports[0].scanner_policy_version = "0";
     index.reports[0].report_url =
-      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/standard/1/";
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/1/";
 
     expect(validateReportIndex(index, registry).reports).toEqual([]);
   });
@@ -680,10 +535,7 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("reads and accepts canonical tracked summary bytes", async () => {
-    const root = await storedSummaryRoot(
-      await deterministicFixture(),
-      registry,
-    );
+    const root = await storedSummaryRoot(await fixture(), registry);
     try {
       await expect(
         validateStoredTavernKeeperReports({ root }),
@@ -718,7 +570,7 @@ describe("TavernKeeper report-index importer", () => {
     const directory = await mkdtemp(resolve(tmpdir(), "tavernkeeper-reports-"));
     const outputPath = resolve(directory, "summaries.json");
     const previousValidBytes =
-      '{\n  "schema_version": 1,\n  "generated_at": "1970-01-01T00:00:00.000Z",\n  "reports": []\n}\n';
+      '{\n  "schema_version": 4,\n  "generated_at": "1970-01-01T00:00:00.000Z",\n  "reports": []\n}\n';
     await writeFile(outputPath, previousValidBytes);
 
     await expect(

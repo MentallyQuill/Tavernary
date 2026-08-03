@@ -1,47 +1,3 @@
-interface TavernKeeperReportBase {
-  report_id: string;
-  report_version: number;
-  supersedes_report_id: string | null;
-  scanner_version: string;
-  scanner_policy_version: string;
-  prompt_policy_version: string;
-  source_id: string;
-  provider: "github";
-  repository_id: number;
-  repository: string;
-  target_sha: string;
-  completed_at: string;
-  mode: "standard" | "deep";
-  coverage: Record<string, number>;
-  report_url: string;
-}
-
-export interface TavernKeeperReportV1 extends TavernKeeperReportBase {
-  result: "green" | "yellow";
-  finding_counts: {
-    total: number;
-    actionable: number;
-    severity: Record<"critical" | "high" | "medium" | "low" | "info", number>;
-    confidence: Record<"high" | "medium" | "low", number>;
-    disposition: Record<"active" | "dismissed", number>;
-    categories: Array<{ category: string; count: number }>;
-  };
-}
-
-export interface TavernKeeperReportV2 extends TavernKeeperReportBase {
-  result: "teal" | "red";
-  finding_counts: {
-    total: number;
-    actionable: number;
-    actionable_severity: Record<"critical" | "high" | "medium", number>;
-    severity: Record<"critical" | "high" | "medium" | "low" | "info", number>;
-    confidence: Record<"high" | "medium" | "low", number>;
-    disposition: Record<"confirmed" | "not_supported" | "inconclusive", number>;
-    categories: Array<{ category: string; count: number }>;
-  };
-  history_url: string;
-}
-
 export interface TavernKeeperReportV4 {
   report_id: string;
   report_version: number;
@@ -81,31 +37,11 @@ export interface TavernKeeperReportV4 {
   history_url: string;
 }
 
-export type TavernKeeperReport =
-  TavernKeeperReportV1 | TavernKeeperReportV2 | TavernKeeperReportV4;
-
-export interface TavernKeeperReportIndexV1 {
-  schema_version: 1;
-  generated_at: string;
-  reports: TavernKeeperReportV1[];
-}
-
-export interface TavernKeeperReportIndexV2 {
-  schema_version: 2;
-  generated_at: string;
-  reports: TavernKeeperReportV2[];
-}
-
 export interface TavernKeeperReportIndexV4 {
   schema_version: 4;
   generated_at: string;
   reports: TavernKeeperReportV4[];
 }
-
-export type TavernKeeperReportIndex =
-  | TavernKeeperReportIndexV1
-  | TavernKeeperReportIndexV2
-  | TavernKeeperReportIndexV4;
 
 export interface TavernKeeperSourceRegistryEntry {
   id: string;
@@ -125,14 +61,14 @@ export function validateReportIndex(
   registry:
     | TavernKeeperSourceRegistryEntry[]
     | { sources: TavernKeeperSourceRegistryEntry[] },
-): TavernKeeperReportIndex;
+): TavernKeeperReportIndexV4;
 
 export function validateStoredReportIndex(
   index: unknown,
   registry:
     | TavernKeeperSourceRegistryEntry[]
     | { sources: TavernKeeperSourceRegistryEntry[] },
-): TavernKeeperReportIndex;
+): TavernKeeperReportIndexV4;
 
 export function fetchAndValidateTavernKeeperIndex(options?: {
   url?: string;
@@ -158,9 +94,9 @@ export function fetchAndValidateTavernKeeperIndex(options?: {
     hostname: string,
     options: { all: true },
   ) => Promise<Array<{ address: string; family: number }>>;
-}): Promise<TavernKeeperReportIndex>;
+}): Promise<TavernKeeperReportIndexV4>;
 
 export function writeReportSummaries(
-  index: TavernKeeperReportIndex,
+  index: TavernKeeperReportIndexV4,
   outputPath: string,
 ): Promise<void>;

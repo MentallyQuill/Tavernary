@@ -362,7 +362,11 @@ export async function buildCatalog(options = {}) {
     readJson("data/vocabularies/completion-formats.json"),
     options.tavernKeeperReports ??
       (options.records
-        ? { schema_version: 1, generated_at: null, reports: [] }
+        ? {
+            schema_version: 4,
+            generated_at: "1970-01-01T00:00:00.000Z",
+            reports: [],
+          }
         : readJson("data/security/tavernkeeper-report-summaries.json")),
     options.tavernKeeperContract ??
       readJson("config/tavernkeeper-contract.json"),

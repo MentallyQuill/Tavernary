@@ -4,8 +4,6 @@ import { isDeepStrictEqual } from "node:util";
 
 import Ajv from "ajv";
 
-import reportIndexV1Schema from "../../data/schemas/tavernkeeper-report-index.schema.json" with { type: "json" };
-import reportIndexV2Schema from "../../data/schemas/tavernkeeper-report-index.v2.schema.json" with { type: "json" };
 import reportIndexV4Schema from "../../data/schemas/tavernkeeper-report-index.v4.schema.json" with { type: "json" };
 import { fetchHardenedJson } from "./hardened-json-fetch.mjs";
 
@@ -66,8 +64,6 @@ ajv.addFormat("uri", {
     }
   },
 });
-const validateV1Schema = ajv.compile(reportIndexV1Schema);
-const validateV2Schema = ajv.compile(reportIndexV2Schema);
 const validateV4Schema = ajv.compile(reportIndexV4Schema);
 
 function schemaError(validateSchema) {
@@ -80,41 +76,24 @@ function schemaError(validateSchema) {
 }
 
 function assertSchema(index) {
-  const validateSchema =
-    index?.schema_version === 1
-      ? validateV1Schema
-      : index?.schema_version === 2
-        ? validateV2Schema
-        : index?.schema_version === 4
-          ? validateV4Schema
-          : null;
-  if (!validateSchema) {
+  if (index?.schema_version !== 4) {
     throw new Error(
       "TavernKeeper report index schema validation failed: unsupported schema version",
     );
   }
-  if (!validateSchema(index)) {
-    throw schemaError(validateSchema);
-  }
-  if (index.schema_version === 1 && index.reports.length !== 0) {
-    throw new Error(
-      "TavernKeeper V1 report entries are not accepted during migration",
-    );
-  }
+  if (!validateV4Schema(index)) throw schemaError(validateV4Schema);
 }
 
 function sum(values) {
   return values.reduce((total, value) => total + value, 0);
 }
 
-function canonicalReportPath(report, schemaVersion) {
+function canonicalReportPath(report) {
   const identity = `${TAVERNKEEPER_REPORTS_PATH_PREFIX}github/${report.repository_id}/${report.target_sha}/${report.scanner_policy_version}`;
-  return schemaVersion === 4
-    ? `${identity}/${report.report_version}/`
-    : `${identity}/${report.mode}/${report.report_version}/`;
+  return `${identity}/${report.report_version}/`;
 }
 
-function assertSafeReportUrl(report, schemaVersion) {
+function assertSafeReportUrl(report) {
   const reportUrl = report.report_url;
   let parsed;
   try {
@@ -123,7 +102,7 @@ function assertSafeReportUrl(report, schemaVersion) {
     throw new Error("TavernKeeper report URL is invalid");
   }
 
-  const canonicalPath = canonicalReportPath(report, schemaVersion);
+  const canonicalPath = canonicalReportPath(report);
   const canonicalUrl = `${TAVERNKEEPER_ORIGIN}${canonicalPath}`;
   if (
     reportUrl !== canonicalUrl ||
@@ -160,7 +139,7 @@ function assertSafeSummary(report) {
   if (unsafe) throw new Error("TavernKeeper report summary is unsafe");
 }
 
-function assertV4ReportCounts(report) {
+function assertReportCounts(report) {
   const counts = report.finding_counts;
   const severityTotal = sum(Object.values(counts.severity));
   const confidenceTotal = sum(Object.values(counts.confidence));
@@ -202,64 +181,6 @@ function assertV4ReportCounts(report) {
   }
 }
 
-function assertReportCounts(report, schemaVersion) {
-  if (schemaVersion === 4) {
-    assertV4ReportCounts(report);
-    return;
-  }
-  const counts = report.finding_counts;
-  const expectedTotal = sum(Object.values(counts.severity));
-  const confidenceTotal = sum(Object.values(counts.confidence));
-  const dispositionTotal = sum(Object.values(counts.disposition));
-  const categoryTotal = sum(
-    counts.categories.map((category) => category.count),
-  );
-  const actionableSeverityTotal = counts.actionable_severity
-    ? sum(Object.values(counts.actionable_severity))
-    : null;
-  const actionableSeverityConsistent = counts.actionable_severity
-    ? actionableSeverityTotal === counts.actionable &&
-      counts.actionable_severity.critical <= counts.severity.critical &&
-      counts.actionable_severity.high <= counts.severity.high &&
-      counts.actionable_severity.medium <= counts.severity.medium
-    : report.result === "green" || report.result === "yellow";
-  const reviewSeverityTotal =
-    counts.severity.critical + counts.severity.high + counts.severity.medium;
-  const reviewConfidenceTotal =
-    counts.confidence.high + counts.confidence.medium;
-  const confirmedTotal = counts.disposition.confirmed;
-  const actionableIntersectionConsistent = counts.actionable_severity
-    ? counts.actionable >=
-        Math.max(
-          0,
-          confirmedTotal +
-            reviewSeverityTotal +
-            reviewConfidenceTotal -
-            2 * counts.total,
-        ) &&
-      counts.actionable <=
-        Math.min(confirmedTotal, reviewSeverityTotal, reviewConfidenceTotal)
-    : true;
-
-  const dispositionConsistent =
-    report.result === "green" || report.result === "yellow"
-      ? counts.actionable === counts.disposition.active
-      : counts.actionable <= counts.disposition.confirmed &&
-        report.result === (counts.actionable > 0 ? "red" : "teal");
-
-  if (
-    counts.total !== expectedTotal ||
-    counts.total !== confidenceTotal ||
-    counts.total !== dispositionTotal ||
-    counts.total !== categoryTotal ||
-    !actionableSeverityConsistent ||
-    !actionableIntersectionConsistent ||
-    !dispositionConsistent
-  ) {
-    throw new Error("TavernKeeper report finding totals do not match");
-  }
-}
-
 function assertReportSemantics(index) {
   const reportIds = new Set();
   const preferredIdentities = new Set();
@@ -273,17 +194,12 @@ function assertReportSemantics(index) {
         "TavernKeeper report has an invalid immutable identifier",
       );
     }
-    if (
-      report.result !== "green" &&
-      report.result !== "yellow" &&
-      report.result !== "teal" &&
-      report.result !== "red"
-    ) {
+    if (report.result !== "teal" && report.result !== "red") {
       throw new Error("TavernKeeper report result is invalid");
     }
-    assertSafeReportUrl(report, index.schema_version);
-    assertReportCounts(report, index.schema_version);
-    if (index.schema_version === 4) assertSafeSummary(report);
+    assertSafeReportUrl(report);
+    assertReportCounts(report);
+    assertSafeSummary(report);
 
     if (reportIds.has(report.report_id)) {
       throw new Error(
@@ -343,7 +259,6 @@ function compareReports(left, right) {
     left.repository_id - right.repository_id ||
     left.target_sha.localeCompare(right.target_sha) ||
     left.scanner_policy_version.localeCompare(right.scanner_policy_version) ||
-    (left.mode ?? "").localeCompare(right.mode ?? "") ||
     left.report_version - right.report_version
   );
 }
