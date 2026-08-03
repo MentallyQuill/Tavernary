@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "enerccio-sillytavern-directcommand",
+  "name": "SillyTavern-DirectCommand",
+  "kind": "extension",
+  "summary": "SillyTavern extension for localized prompt control, letting you inject one-shot commands, edit per-message payloads, and preserve them through reloads and history rollback.",
+  "metadata_status": "curated",
+  "source_id": "github-1268540573",
+  "frontends": ["sillytavern"],
+  "primary_function": "generation-reasoning",
+  "tags": [
+    "guide-model-responses",
+    "inspect-prompts-and-generations",
+    "non-destructive",
+    "persistent-state"
+  ],
+  "cataloged_at": "2026-08-03T08:16:26.123Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
