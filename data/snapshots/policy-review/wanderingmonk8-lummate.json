@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "wanderingmonk8-lummate",
+  "source_id": "github-1264708255",
+  "source_identity": "github:wanderingmonk8/lummate",
+  "evidence_fingerprint": "b132aee0ea434d50cec2925f9a9d8d978953ac7ed5cda4a424292a10216a8dc7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:05:35.751Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:05:35.751Z"
+  },
+  "maintenance_issue_number": null
+}
