@@ -1,8 +1,9 @@
 # TavernKeeper advisory-scan integration
 
 TavernKeeper is a separate public service for advisory scans of eligible
-Tavernary GitHub repositories. Tavernary decides which listed repositories are
-eligible; TavernKeeper owns scanner policy and immutable reports. This is a
+Tavernary GitHub repositories. Active GitHub-backed projects are eligible;
+presets and unsupported source types are not scanned. TavernKeeper owns scanner
+policy and immutable reports. This is a
 static, asynchronous integration: no runtime server, API route, webhook
 receiver, database, public scan request, Codeberg scan, or automatic listing
 moderation is involved.
@@ -15,7 +16,8 @@ Production behavior follows the mandatory automation boundary in
 TavernKeeper reports what it observed at one immutable commit. A current report
 is not a guarantee that a repository is safe, and an outdated report says
 nothing about later commits. A scan belongs to a GitHub repository ID, so cards
-that share that repository display the same imported report state.
+that share that repository display the same imported report state unless the
+card is a preset.
 
 - Teal means the defined scan policy completed at the displayed SHA and
   TavernKeeper published a teal result.
@@ -45,35 +47,42 @@ Tavernary-derived canonical GitHub URL, project kinds, and catalog priority
 metadata; it contains no commands, clone URLs, branch names, scan modes,
 budgets, or requester-provided values.
 
-Tavernary imports TavernKeeper's schema-version-2 preferred report index from
+Tavernary imports TavernKeeper's schema-version-4 preferred report index from
 `https://mentallyquill.github.io/TavernKeeper/reports/index.json`. Its pinned
 consumer schema is
-[`data/schemas/tavernkeeper-report-index.v2.schema.json`](../data/schemas/tavernkeeper-report-index.v2.schema.json).
+[`data/schemas/tavernkeeper-report-index.v4.schema.json`](../data/schemas/tavernkeeper-report-index.v4.schema.json).
 The importer accepts only the configured HTTPS origin and report path, bounded
 public DNS responses and payloads, valid schema and aggregate counts, one
 preferred identity per repository/SHA/policy, the matching active Tavernary
-source identity, the active scanner-policy version, and an immutable report URL
+source identity, scanner-policy version `2`, and an immutable report URL
 under `https://mentallyquill.github.io/TavernKeeper/reports/`.
 
 The report identity is provider plus repository ID, exact target SHA,
-scanner-policy version, scan mode, and report version. Tavernary retains the
+scanner-policy version, and report version. Tavernary retains the
 newest twelve preferred historical conclusions for the compact card strip and
 links to TavernKeeper's immutable full-history page. Only an identity-and-SHA
 match can produce a current teal or red state.
 
+V1, V2, and model-based V3 report contracts remain immutable historical
+formats. Tavernary can validate their historical data, but only policy-V2 V4
+reports are active card conclusions. The target manifest deliberately remains
+schema V2; the report/index contract advances independently to V4.
+
 ## Review pipeline and Tavernary boundary
 
-For the initial release, TavernKeeper records per-tool factual outcomes, runs a
-complete DeepSeek chunk review across every planned repository chunk, and then
-performs one final repository synthesis. It does not use an
-analyzer/challenger/arbiter model chain or a second security model.
+TavernKeeper inventories an exact-SHA checkout and runs the required
+deterministic scanner policy. It validates tool completion, normalizes findings,
+applies versioned severity and confidence thresholds, and builds the concise
+layman's summary from fixed templates and validated counts. No model reviews,
+provider calls, source chunking, prompt contracts, token budgets, or model
+caches participate in a production scan.
 
-Tavernary is only the deterministic consumer of that published result. It
-matches repository identity, target SHA, and scanner policy, then maps a
+Tavernary is only the deterministic consumer of the published conclusion. It
+does not decide the security result or rewrite the report summary. It matches
+repository identity, target SHA, and scanner policy, then maps a
 current teal result to teal, an older teal result to orange, and any current or
 older red result to red. Eligible repositories without a report remain gray,
-and unsupported source types remain dark teal. Tavernary does not call Luna or
-any other security model in the initial release.
+while presets and unsupported source types remain dark teal.
 
 ## Handshake and recovery
 
@@ -123,10 +132,10 @@ path. Do not add payload parameters or broaden App permissions to compensate.
 TavernKeeper scans in isolated disposable runners. Target repositories are
 untrusted data: their scripts, hooks, Actions, packages, tests, builds,
 containers, macros, binaries, and interpreters are never executed. Reports are
-sanitized and immutable; raw model and tool output, source excerpts, payloads,
+sanitized and immutable; raw tool output, source excerpts, payloads,
 and secrets are not public report content.
 
-TavernKeeper staff alone may pause, resume, retry, deep-scan, rescan policy, or
+TavernKeeper staff alone may pause, resume, retry, rescan policy, or
 inspect diagnostics. A project owner may appeal a false positive by identifying
 an immutable report and finding fingerprint to TavernKeeper staff. An appeal
 neither triggers a scan nor changes Tavernary or suppresses a finding. If the

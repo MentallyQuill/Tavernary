@@ -1132,13 +1132,21 @@ test(
       "true",
     );
     for (const [state, stateCopy, severity] of [
-      ["teal", "No review-level concerns found at this commit.", null],
       [
-        "orange",
-        "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
+        "teal",
+        "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
         null,
       ],
-      ["red", "TavernKeeper found review-level concerns.", "1 high"],
+      [
+        "orange",
+        "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold. This report covers an older commit, and an updated scan is pending.",
+        null,
+      ],
+      [
+        "red",
+        "All required scanners completed at this commit and found 3 reportable concerns.",
+        "1 high",
+      ],
     ] as const) {
       const indicator = page
         .getByRole("button", {
@@ -1181,7 +1189,7 @@ test(
       const reportLink = panel.getByRole("link", { name: "View full report" });
       await expect(reportLink).toHaveAttribute(
         "href",
-        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/1\/standard\/1\/$/u,
+        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/2\/1\/$/u,
       );
       await expect(reportLink).toHaveAttribute("target", "_blank");
       await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);

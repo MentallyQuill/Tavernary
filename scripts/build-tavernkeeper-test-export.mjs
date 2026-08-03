@@ -110,21 +110,34 @@ async function fixtureReports() {
       report_id: ordinal.toString(16).padStart(64, "0"),
       report_version: 1,
       supersedes_report_id: null,
-      scanner_version: "browser-fixture-v2",
-      scanner_policy_version: "1",
-      prompt_policy_version: "browser-fixture-v2",
+      scanner_version: "browser-fixture-v4",
+      scanner_policy_version: "2",
+      rule_catalog_version: "browser-fixture-v1",
+      package_schema_version: 1,
       source_id: source.id,
       provider: "github",
       repository_id: source.repository_id,
       repository: source.repository,
       target_sha: targetSha,
       completed_at: `2026-07-${String(ordinal).padStart(2, "0")}T12:00:00.000Z`,
-      mode: "standard",
+      assessment_method: "deterministic-static-analysis",
       result,
+      summary: red
+        ? {
+            headline: "Reportable concerns detected",
+            detail:
+              "All required scanners completed at this commit and found 3 reportable concerns.",
+          }
+        : {
+            headline: "No reportable concerns detected",
+            detail:
+              "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+          },
       finding_counts: {
         total: red ? 3 : 0,
-        actionable: red ? 3 : 0,
-        actionable_severity: {
+        reportable: red ? 3 : 0,
+        informational: 0,
+        reportable_severity: {
           critical: 0,
           high: red ? 1 : 0,
           medium: red ? 2 : 0,
@@ -137,10 +150,9 @@ async function fixtureReports() {
           info: 0,
         },
         confidence: { high: red ? 3 : 0, medium: 0, low: 0 },
-        disposition: {
-          confirmed: red ? 3 : 0,
-          not_supported: 0,
-          inconclusive: 0,
+        policy_status: {
+          reportable: red ? 3 : 0,
+          informational: 0,
         },
         categories: red ? [{ category: "credential-theft", count: 3 }] : [],
       },
@@ -150,11 +162,11 @@ async function fixtureReports() {
         inventory_bytes: 4096,
         tools_completed: 6,
         tools_not_applicable: 0,
-        model_chunks: 2,
+        evidence_validated: red ? 3 : 0,
       },
       report_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
-        `${source.repository_id}/${targetSha}/1/standard/1/`,
+        `${source.repository_id}/${targetSha}/2/1/`,
       history_url:
         `https://mentallyquill.github.io/TavernKeeper/reports/github/` +
         `${source.repository_id}/history/`,
@@ -162,7 +174,7 @@ async function fixtureReports() {
   }
 
   return {
-    schema_version: 2,
+    schema_version: 4,
     generated_at: "2026-07-31T12:00:00.000Z",
     reports: [
       ...Array.from({ length: 13 }, (_, index) =>
