@@ -54,8 +54,11 @@ degraded report was published.
 Fresh production browser checks confirmed that each supported project renders
 the scan icon directly beside its title as **Low concern; current**. Opening
 the icon exposes the **TavernKeeper Scan Results** panel with the plain-language
-grade and summary, exact scanned SHA and dates, finding counts, immutable full
-report link, compact one-entry history strip, and full scan history link.
+grade and summary, finding counts, scan and assessment dates, the exact scanned
+SHA as a source-tree link, and the immutable full-report link. At this acceptance
+point, each canary had one retained assessment, so the panel rendered neither a
+history strip nor a scan-history link; both appear from the second assessment
+onward.
 
 Recursion's panel explains why all four secret-like scanner matches are benign
 test fixtures. Wandlight's panel explains that the complete scan produced no

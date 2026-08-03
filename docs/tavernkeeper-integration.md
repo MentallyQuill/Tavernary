@@ -37,11 +37,15 @@ is pending. If Tavernary cannot confirm the current source SHA, a prior final
 assessment remains visible with unavailable freshness; without a prior
 assessment the icon remains gray.
 
-The concise card panel shows only Tavernary's grade, plain-language summary,
-caution counts, malicious-evidence statement, exact SHA/date, freshness,
-compact grade history, and links. It does not hydrate technical finding rows.
-`/security/tavernkeeper/history/{source_id}/` retains every valid Tavernary
-final assessment and binds each one to its exact TavernKeeper technical report.
+The concise card panel shows Tavernary's grade, plain-language summary, finding
+counts, scan and assessment dates, freshness, the exact SHA as a source-tree
+link, and the full-report link. It does not hydrate technical finding rows or
+render the longer `malicious_evidence` statement, which remains part of the
+synthesis and data contract. A compact grade-history strip appears only when at
+least two assessments exist, alongside the `View scan history` link; a
+one-entry history renders neither.
+`/security/tavernkeeper/history/{source_id}/` retains every valid Tavernary final
+assessment and binds each one to its exact TavernKeeper technical report.
 
 Results never hide, delist, quarantine, rank, or otherwise moderate a listing.
 

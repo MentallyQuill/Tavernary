@@ -675,10 +675,14 @@ For an assessed project, the panel contains:
 - `Low concern`, `Material concern`, or `High danger`
 - Tavernary's one- or two-sentence layman's summary
 - A qualifier such as `3 minor cautions` or `No material concerns`
-- A concise statement about whether malicious behavior was identified
-- Exact scanned SHA link, completion date, and current/stale wording
-- Compact final-assessment history strip
-- `View full report` and `View full scan history` links
+- Exact scanned SHA source-tree link, completion date, assessment date, and
+  current/stale wording
+- `View full report`
+- A compact final-assessment history strip and `View scan history` link only
+  when at least two assessments exist
+
+The `malicious_evidence` field remains part of Tavernary's synthesis and data
+contract, but the concise card panel does not render that longer statement.
 
 The panel does not list every technical scanner match. Eligible unassessed
 projects state that TavernKeeper has not scanned the project. Unsupported
@@ -709,10 +713,12 @@ The report identifies the assessment as automated and explains its limitations.
 
 TavernKeeper retains immutable technical-report history. Tavernary retains
 immutable final-assessment history, and the compact card strip represents only
-Tavernary's final contextual risk levels. Every history point links to its exact
-TavernKeeper report and scanned SHA.
+Tavernary's final contextual risk levels. The panel omits both the strip and its
+history link when only one assessment exists, then shows them from the second
+assessment onward. Every history point links to its exact TavernKeeper report
+and scanned SHA.
 
-`View full scan history` links to Tavernary's final-assessment history page at
+`View scan history` links to Tavernary's final-assessment history page at
 `/security/tavernkeeper/history/{source_id}/`. That page lists the final grade,
 plain-language summary, assessment time, exact scanned SHA, policy/model
 identity, and TavernKeeper report link for each completed assessment. The

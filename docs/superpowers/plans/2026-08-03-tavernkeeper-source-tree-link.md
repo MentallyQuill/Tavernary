@@ -170,7 +170,7 @@ await expect(sourceTreeLink).toHaveAttribute("rel", /\bnoopener\b/u);
 Run:
 
 ```powershell
-rg -n "commitUrl|View scanned commit|github\.com/.*/commit/" src tests
+rg -n "commitUrl:|report\.commitUrl|View scanned commit|github\.com/.*/commit/" src tests
 ```
 
 Expected: exit code 1 with no matches.
@@ -235,7 +235,7 @@ Record that the accepted card exposes the exact scanned SHA as a source-tree lin
 Run:
 
 ```powershell
-rg -n "malicious-evidence statement|compact one-entry history strip|Compact final-assessment history strip" docs/superpowers/specs/2026-07-31-tavernkeeper-cross-repository-security-design.md docs/tavernkeeper-integration.md docs/tavernkeeper-live-acceptance.md
+rg -n "A concise statement about whether malicious behavior was identified|caution counts, malicious-evidence statement|compact one-entry history strip" docs/superpowers/specs/2026-07-31-tavernkeeper-cross-repository-security-design.md docs/tavernkeeper-integration.md docs/tavernkeeper-live-acceptance.md
 ```
 
 Expected: exit code 1 with no matches.
