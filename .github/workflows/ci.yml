@@ -109,14 +109,6 @@ jobs:
         run: npx playwright install chromium
       - name: Run colored TavernKeeper scan browser and visual coverage
         run: npm run test:scan
-      - name: Upload TavernKeeper visual diagnostics
-        if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
-        with:
-          name: tavernkeeper-visual-diagnostics-${{ github.run_attempt }}
-          path: test-results
-          if-no-files-found: error
-          retention-days: 1
       - name: Run catalog layout regression tests
         run: npm run test:visual
       - name: Build deterministic Kit fixture export

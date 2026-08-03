@@ -180,7 +180,8 @@ git commit -m "fix(actions): use Node 24 App tokens"
 ### Task 3: Verify, publish, certify, and resume production scanning
 
 **Files:**
-- Verify only: both isolated worktrees and both primary `main` checkouts.
+- Modify: `F:\git\Tavernary\.worktrees\node24-action-pin\tests\visual\catalog.visual.spec.ts`
+- Verify: both isolated worktrees and both primary `main` checkouts.
 - External state: Tavernary and TavernKeeper `main`, GitHub Actions, TavernKeeper Pages, and `operations/state.json`.
 
 **Interfaces:**
@@ -205,7 +206,9 @@ Expected: both commands exit 0; Tavernary passes its full site/export/test gate 
 
 - [ ] **Step 2: Recheck the no-reset guard before integration**
 
-Run `git diff main...HEAD --name-only` in each worktree. Expected: Tavernary contains only its plan, two tests, and two workflows; TavernKeeper contains only two tests, the workflow-policy script, and four workflows. If any scan behavior/output path appears, stop and reset Wandlight and Recursion before any push or resume.
+Run `git diff main...HEAD --name-only` in each worktree. Expected: Tavernary contains only its plan, two policy tests, one visual tolerance, and two workflows; TavernKeeper contains only two tests, the workflow-policy script, and four workflows. If any scan behavior/output path appears, stop and reset Wandlight and Recursion before any push or resume.
+
+The hosted Windows visual gate may rasterize the three underlined link/glyph regions differently from the checked-in Windows baseline. If the exact local `npm.cmd run test:scan` command passes but two hosted attempts fail on the same 342 pixels, capture the hosted expected/actual/diff images with a temporary failure-only artifact step. Only when those images prove that dimensions, content, spacing, and the history strip are unchanged, set this snapshot's `maxDiffPixels` to `400`, remove the temporary artifact step, and rerun the complete required checks.
 
 - [ ] **Step 3: Fast-forward each primary main and push it**
 
