@@ -195,7 +195,7 @@ test("shows the project safety disclosure near the catalog controls", () => {
   const disclosure = screen.getByRole("link", { name: /Safety:/i });
   expect(disclosure).toHaveAttribute("href", "/about#safety-security");
   expect(disclosure).toHaveTextContent(
-    "Tavernary does not security-review or guarantee listed third-party projects",
+    "TavernKeeper scans are advisory, not a guarantee",
   );
 });
 

@@ -39,9 +39,8 @@ export function CatalogToolbar({
       <div className="catalog-heading">
         <p className="catalog-safety-disclosure">
           <Link href="/about#safety-security">
-            Safety: Tavernary does not security-review or guarantee listed
-            third-party projects. Review a project carefully before installing
-            it or providing credentials.
+            Safety: TavernKeeper scans are advisory, not a guarantee. Review a
+            project carefully before installing it or providing credentials.
           </Link>
         </p>
         <div className="catalog-primary-controls">
