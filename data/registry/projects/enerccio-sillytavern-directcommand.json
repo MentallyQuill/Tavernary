@@ -3,7 +3,7 @@
   "id": "enerccio-sillytavern-directcommand",
   "name": "SillyTavern-DirectCommand",
   "kind": "extension",
-  "summary": "SillyTavern extension for localized prompt control, letting you inject one-shot commands, edit per-message payloads, and preserve them through reloads and history rollback.",
+  "summary": "SillyTavern-DirectCommand gives precise, localized control over text generation turns by adding one-shot instructions to prompts without polluting long-term chat history.",
   "metadata_status": "curated",
   "source_id": "github-1268540573",
   "frontends": ["sillytavern"],
@@ -14,7 +14,7 @@
     "non-destructive",
     "persistent-state"
   ],
-  "cataloged_at": "2026-08-03T08:16:26.123Z",
+  "cataloged_at": "2026-08-03T08:22:48.088Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,

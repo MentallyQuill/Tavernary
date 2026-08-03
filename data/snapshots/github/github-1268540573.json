@@ -35,7 +35,7 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-03T08:16:26.123Z",
+    "baseline_completed_at": "2026-08-03T08:22:48.088Z",
     "baseline_attempts": 0,
     "evidence_head_sha": "3c547c1120a3cd56af9006a80854ea845270838c"
   },
@@ -50,14 +50,14 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-03T08:16:26.123Z",
+  "refreshed_at": "2026-08-03T08:22:48.088Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Enerccio", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-03T08:16:26.123Z",
+    "refreshed_at": "2026-08-03T08:22:48.088Z",
     "stale_since": null
   },
   "activity_scan": null
