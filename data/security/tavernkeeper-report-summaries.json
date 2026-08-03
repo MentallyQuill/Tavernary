@@ -1,5 +1,81 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-08-03T02:59:40.431Z",
-  "reports": []
+  "generated_at": "2026-08-03T03:25:14.570Z",
+  "reports": [
+    {
+      "report_id": "7053d5db805d0853b3f5c30b7b1a0f4bad50b64a70fd1b3de474f91d0447237b",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "2",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "source_id": "github-1285208664",
+      "provider": "github",
+      "repository_id": 1285208664,
+      "repository": "MentallyQuill/Recursion",
+      "target_sha": "1bce1fa73fe6c0fe8e767c773a832b94bb336720",
+      "completed_at": "2026-08-03T03:24:56.026Z",
+      "assessment_method": "deterministic-static-analysis",
+      "result": "red",
+      "summary": {
+        "headline": "Reportable concerns detected",
+        "detail": "31 reportable concerns met TavernKeeper's severity and confidence threshold. Review the finding details before installing this project."
+      },
+      "finding_counts": {
+        "total": 31,
+        "reportable": 31,
+        "informational": 0,
+        "reportable_severity": {
+          "critical": 0,
+          "high": 6,
+          "medium": 25
+        },
+        "severity": {
+          "critical": 0,
+          "high": 6,
+          "medium": 25,
+          "low": 0,
+          "info": 0
+        },
+        "confidence": {
+          "high": 6,
+          "medium": 25,
+          "low": 0
+        },
+        "policy_status": {
+          "reportable": 31,
+          "informational": 0
+        },
+        "categories": [
+          {
+            "category": "credential-exposure",
+            "count": 4
+          },
+          {
+            "category": "credential-theft",
+            "count": 2
+          },
+          {
+            "category": "dynamic-execution",
+            "count": 5
+          },
+          {
+            "category": "persistence",
+            "count": 20
+          }
+        ]
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 444,
+        "inventory_bytes": 15679502,
+        "tools_completed": 6,
+        "tools_not_applicable": 1,
+        "evidence_validated": 31
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285208664/1bce1fa73fe6c0fe8e767c773a832b94bb336720/2/1/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1285208664/history/"
+    }
+  ]
 }
