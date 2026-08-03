@@ -183,12 +183,12 @@ Tavernary V2 target manifest
   -> at most two disposable exact-SHA scan jobs
   -> inventory and all applicable deterministic scanners
   -> normalized evidence and deterministic Scan Package V1
-  -> evidence validation, policy classification, summary, and V3 report
+  -> evidence validation, policy classification, summary, and V4 report
   -> encrypted one-day candidate artifact
   -> serialized validation and Publisher App commit to TavernKeeper main
   -> verified TavernKeeper Pages deployment
   -> input-free Tavernary wake
-  -> Tavernary validates/imports V3 summaries and rebuilds cards
+  -> Tavernary validates/imports V4 summaries and rebuilds cards
 ```
 
 Both directions also reconcile every six hours so a missed notification cannot
@@ -363,14 +363,15 @@ Identical package and policy inputs must produce identical assessment fields,
 findings, conclusion, and summary. Completion time, workflow identity, and
 supersession metadata may differ between forced rescans.
 
-## 15. Public V3 contracts
+## 15. Public V4 contracts
 
-### 15.1 Report V3
+### 15.1 Report V4
 
-V3 is a new contract rather than a reinterpretation of model-based V2. It
+V4 is a new contract rather than a reinterpretation of model-based V2 and V3.
+It
 contains:
 
-- `schema_version: 3`, report ID/version, and optional superseded report ID
+- `schema_version: 4`, report ID/version, and optional superseded report ID
 - Scanner, scanner-policy, rule-catalog, and package-schema versions
 - Source ID, provider, repository ID/name, canonical URL, and exact SHA
 - Completion time and deterministic assessment method
@@ -378,7 +379,7 @@ contains:
 - Tool completion/applicability and evidence-validation state
 - Result, bounded concise summary, finding counts, and normalized findings
 
-V3 has no model, provider endpoint, prompt-policy, token, chunk, or automated
+V4 has no model, provider endpoint, prompt-policy, token, chunk, or automated
 review-role fields. It does not use model-derived `confirmed` terminology.
 
 The report ID is a SHA-256 digest of canonical report identity and content.
@@ -390,24 +391,24 @@ Public JSON and script-free HTML use immutable paths under:
 
 Each repository also has an immutable ordered history page and JSON document.
 
-### 15.2 Preferred index V3
+### 15.2 Preferred index V4
 
 The preferred index contains the minimal card/import projection: immutable
 identity, exact SHA, policy versions, result, summary, finding counts, coverage
 totals, report URL, and history URL. Only one preferred entry may exist for a
 repository/SHA/policy identity.
 
-Tavernary accepts V3 only after local schema validation, semantic count checks,
+Tavernary accepts V4 only after local schema validation, semantic count checks,
 safe canonical URLs, exact repository identity matching, active policy
 matching, and duplicate rejection. Invalid remote data does not replace the
 last valid tracked snapshot.
 
 ### 15.3 Evolution and rollout order
 
-V1 and V2 schemas remain immutable historical contracts. Tavernary first
-deploys a V3-capable importer while retaining safe historical parsing.
-TavernKeeper then deploys the V3 publisher. The preferred public index changes
-to V3 only after the reader is live. Contract changes thereafter require a new
+V1, V2, and model-based V3 schemas remain immutable historical contracts.
+Tavernary first deploys a V4-capable importer while retaining safe historical
+parsing. TavernKeeper then deploys the V4 publisher. The preferred public index
+changes to V4 only after the reader is live. Contract changes thereafter require a new
 schema version and coordinated reader-before-writer rollout.
 
 ## 16. Publication
@@ -539,7 +540,7 @@ hallucination, and provider availability from the scan trust boundary.
 2. Send an input-free wake when eligible sources change.
 3. Resolve a staff-entered exact GitHub URL to an eligible repository ID and
    send the same wake.
-4. Import and validate the V3 preferred index after a wake or schedule.
+4. Import and validate the V4 preferred index after a wake or schedule.
 5. Commit the validated summary snapshot through Tavernary's existing trusted
    publication path and rebuild/deploy the site.
 
@@ -549,7 +550,7 @@ hallucination, and provider availability from the scan trust boundary.
 2. Resolve at most five requests and scan at most two concurrently.
 3. Prepare exact checkout, inventory, and applicable scanner inputs.
 4. Run required deterministic scanners.
-5. Build and validate Scan Package V1 and Report V3.
+5. Build and validate Scan Package V1 and Report V4.
 6. Encrypt candidate artifacts.
 7. Serialize publication, update history/index, and push with Publisher App.
 8. Deploy and verify Pages.
@@ -585,7 +586,7 @@ candidate plaintext never enter logs or telemetry.
 - Hostile fixtures cover traversal, collisions, symlinks, binaries, archives,
   oversized content, bidirectional controls, ANSI, HTML, secret-like values,
   malformed scanner output, and unknown rules.
-- Contract tests cover Scan Package V1, Report V3, Index V3, histories,
+- Contract tests cover Scan Package V1, Report V4, Index V4, histories,
   immutable paths, and atomic publication.
 - Workflow-policy tests prove target code cannot execute, write credentials are
   isolated, and no model credential or provider request exists in TavernKeeper
@@ -597,7 +598,7 @@ candidate plaintext never enter logs or telemetry.
 
 ### 23.2 Tavernary
 
-- V3 schema, semantic counts, identity, policy, canonical URL, duplicate,
+- V4 schema, semantic counts, identity, policy, canonical URL, duplicate,
   redirect, size, timeout, and atomic-write tests.
 - Red, teal, stale-orange, gray, unsupported, and stale-red state tests.
 - Scan-icon placement, title clipping, panel contents, history strip, exact-SHA
@@ -614,8 +615,8 @@ The model-free pipeline is not accepted until staff-targeted production scans
 of Wandlight and Recursion:
 
 1. Complete with every applicable deterministic scanner.
-2. Publish immutable V3 JSON/HTML reports and histories on TavernKeeper Pages.
-3. Import through Tavernary's production V3 reader.
+2. Publish immutable V4 JSON/HTML reports and histories on TavernKeeper Pages.
+3. Import through Tavernary's production V4 reader.
 4. Hydrate on the live Tavernary cards with the correct icon, result, exact
    SHA, summary, history strip, and links.
 5. Show no model-provider contact or model-token usage in workflows.
@@ -625,8 +626,8 @@ The ordinary backlog remains paused until both canaries pass.
 ## 24. Rollout
 
 1. Commit this canonical revised design.
-2. Implement and deploy Tavernary's V3 reader and card projection first.
-3. Implement TavernKeeper's model-free package, policy, V3 report, and V3 index.
+2. Implement and deploy Tavernary's V4 reader and card projection first.
+3. Implement TavernKeeper's model-free package, policy, V4 report, and V4 index.
 4. Remove source chunking, model review/synthesis, caches, provider check,
    provider secrets, deep mode, model telemetry, and superseded documentation.
 5. Run local and CI gates in both repositories.
@@ -649,7 +650,7 @@ This design is complete when:
    eligible repository by exact GitHub URL.
 2. TavernKeeper safely acquires exact SHAs and runs every applicable required
    deterministic scanner without target execution.
-3. Scan Package V1 and Report/Index V3 enforce complete coverage, sanitized
+3. Scan Package V1 and Report/Index V4 enforce complete coverage, sanitized
    evidence, deterministic findings, conclusion, and summary.
 4. No TavernKeeper scan-pipeline or Tavernary TavernKeeper-integration code,
    workflow, configuration, secret, cache, telemetry, or operational dependency
