@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-loreentryvcs",
+  "source_id": "github-1273118567",
+  "source_identity": "github:enerccio/sillytavern-loreentryvcs",
+  "evidence_fingerprint": "aab4062038fd929078f066d9c478b247d1e4e244c3eac78c3cd4ac7713103ffd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T08:49:32.749Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T08:49:32.749Z"
+  },
+  "maintenance_issue_number": null
+}
