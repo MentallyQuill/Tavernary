@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "enerccio-sillytavern-languagelearninghelper",
+  "name": "SillyTavern-LanguageLearningHelper",
+  "kind": "extension",
+  "summary": "Context-aware SillyTavern extension for language-learning roleplay, streaming interactive translations and grammar footnotes with configurable profiles and spoiler reveals.",
+  "metadata_status": "curated",
+  "source_id": "github-1247779874",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["multilingual", "streaming-aware", "translate-roleplay-content"],
+  "cataloged_at": "2026-08-03T08:23:05.352Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
