@@ -62,10 +62,13 @@ async function stabilizeProjectActivityAge(card: Locator) {
 }
 
 async function stabilizeScanMetadata(popover: Locator) {
-  const metadata = popover.locator("p").filter({ hasText: /^Scanned /u });
+  const metadata = popover.locator(".tavernkeeper-scan-details div").first();
   await expect(metadata).toHaveCount(1);
-  await metadata.evaluate((line) => {
-    line.textContent = "Scanned 5d28bb1 on July 13, 2026";
+  await metadata.locator("time").evaluate((time) => {
+    time.textContent = "July 13, 2026";
+  });
+  await metadata.locator("a").evaluate((link) => {
+    link.textContent = "5d28bb1 ↗";
   });
 }
 

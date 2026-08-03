@@ -1129,24 +1129,27 @@ test(
       "data-hydrated",
       "true",
     );
-    for (const [state, accessibleCopy, stateCopy, stale] of [
+    for (const [state, accessibleCopy, stateCopy, stale, historyBlocks] of [
       [
         "teal",
         "Low concern; current.",
         "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
         false,
+        12,
       ],
       [
         "teal",
         "Low concern; stale assessment.",
         "The reviewed behavior matches the extension's stated purpose, with no material concerns. This assessment covers an older commit. An updated scan is pending.",
         true,
+        0,
       ],
       [
         "red",
         "High concern; current.",
         "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
         false,
+        0,
       ],
     ] as const) {
       const indicator = page
@@ -1168,20 +1171,40 @@ test(
       const panel = page.getByRole("dialog", {
         name: "TavernKeeper Scan Results",
       });
+      await panel.hover();
       await expect(
         panel.getByRole("heading", { name: "TavernKeeper Scan Results" }),
       ).toHaveText("TavernKeeper Scan Results");
-      await expect(panel.locator("p").nth(1)).toHaveText(stateCopy);
+      await expect(panel.locator(".tavernkeeper-summary")).toHaveText(
+        stateCopy,
+      );
       await expect(
         panel.locator(".tavernkeeper-assessment-counts span"),
       ).toHaveCount(3);
-      await expect(panel.locator("p")).toHaveCount(5);
+      await expect(panel.locator(".tavernkeeper-scan-details div")).toHaveCount(
+        2,
+      );
+      await expect(
+        panel.locator(".tavernkeeper-malicious-evidence"),
+      ).toHaveCount(0);
       await expect(
         indicator.locator(".tavernkeeper-freshness-clock"),
       ).toHaveCount(stale ? 1 : 0);
-      await expect(panel.locator("p").last()).toHaveText(
-        /^Scanned [0-9a-f]{7} on July (?:13|30|31), 2026\. Assessed by Tavernary on July (?:13|30|31), 2026\.$/u,
+      await expect(panel.locator(".tavernkeeper-scan-details")).toContainText(
+        /ScannedJuly (?:13|30|31), 2026 · [0-9a-f]{7}/u,
       );
+      await expect(panel.locator(".tavernkeeper-scan-details")).toContainText(
+        /AssessedJuly (?:13|30|31), 2026 by Tavernary/u,
+      );
+      const commitLink = panel.getByRole("link", {
+        name: /View scanned commit [0-9a-f]{40} on GitHub/u,
+      });
+      await expect(commitLink).toHaveAttribute(
+        "href",
+        /^https:\/\/github\.com\/[^/]+\/[^/]+\/commit\/[0-9a-f]{40}$/u,
+      );
+      await expect(commitLink).toHaveAttribute("target", "_blank");
+      await expect(commitLink).toHaveAttribute("rel", /\bnoopener\b/u);
       const reportLink = panel.getByRole("link", { name: "View full report" });
       await expect(reportLink).toHaveAttribute(
         "href",
@@ -1190,14 +1213,14 @@ test(
       await expect(reportLink).toHaveAttribute("target", "_blank");
       await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);
       await expect(
-        panel.getByRole("link", { name: "View full scan history" }),
+        panel.getByRole("link", { name: "View scan history" }),
       ).toHaveAttribute(
         "href",
         /\/security\/tavernkeeper\/history\/github-\d+\/?$/u,
       );
-      expect(
-        await panel.locator(".tavernkeeper-history-strip i").count(),
-      ).toBeGreaterThan(0);
+      await expect(panel.locator(".tavernkeeper-history-strip i")).toHaveCount(
+        historyBlocks,
+      );
       await expect(indicator).toHaveClass(
         new RegExp(`tavernkeeper-scan-indicator-${state}`),
       );
