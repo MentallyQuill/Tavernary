@@ -106,11 +106,14 @@ export async function importTavernKeeperReports(options = {}) {
     additions.push(trackedEntry(entry, await synthesize(report)));
   }
 
-  const reports = [...previous.reports, ...additions].sort(
-    (left, right) =>
-      Date.parse(left.completed_at) - Date.parse(right.completed_at) ||
-      left.report_id.localeCompare(right.report_id),
-  );
+  const reports =
+    index.reports.length === 0
+      ? []
+      : [...previous.reports, ...additions].sort(
+          (left, right) =>
+            Date.parse(left.completed_at) - Date.parse(right.completed_at) ||
+            left.report_id.localeCompare(right.report_id),
+        );
   const snapshot = validateStoredReportIndex(
     {
       schema_version: 5,

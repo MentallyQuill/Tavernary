@@ -390,6 +390,65 @@ describe("TavernKeeper V5 report import", () => {
     ).toThrow(/policy/u);
   });
 
+  test("clears retained assessments when the authoritative report index is empty", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-reset-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index] = await fixtures();
+    const retained = {
+      ...index.reports[0],
+      assessed_at: "2026-08-02T12:06:00.000Z",
+      synthesis_policy_version: "1",
+      synthesis_model: "gpt-5.6-luna",
+      assessment: {
+        risk_level: "low",
+        headline: "Low concern",
+        summary: "No contextual concerns were identified in this scan.",
+        minor_cautions: 0,
+        material_concerns: 0,
+        high_danger: 0,
+        malicious_evidence: "No evidence of malicious behavior was identified.",
+        cited_finding_ids: [],
+        interaction_chains: [],
+      },
+    };
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 5,
+        generated_at: index.generated_at,
+        preferred_report_ids: [retained.report_id],
+        reports: [retained],
+      })}\n`,
+    );
+    const emptyIndex = {
+      schema_version: 5,
+      generated_at: "2026-08-03T22:31:00.000Z",
+      reports: [],
+    };
+
+    await expect(
+      importTavernKeeperReports({
+        root,
+        outputPath,
+        registry,
+        dnsLookup: publicDnsLookup,
+        requestImpl: async () => jsonResponse(emptyIndex),
+        synthesizeReport: async () => {
+          throw new Error("empty indexes must not synthesize reports");
+        },
+      }),
+    ).resolves.toEqual({
+      schema_version: 5,
+      generated_at: emptyIndex.generated_at,
+      preferred_report_ids: [],
+      reports: [],
+    });
+  });
+
   test("preserves the previous snapshot when synthesis fails", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-import-"));
     const outputPath = resolve(
