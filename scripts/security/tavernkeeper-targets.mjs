@@ -10,7 +10,8 @@ const defaultOutputPath = resolve(
   "public/security/tavernkeeper-targets.json",
 );
 const fullShaPattern = /^[0-9a-f]{40}$/u;
-const projectKinds = new Set(["extension", "frontend", "preset"]);
+const validProjectKinds = new Set(["extension", "frontend", "preset"]);
+const supportedProjectKinds = new Set(["extension", "frontend"]);
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
 function validateContractVersion(value) {
@@ -52,9 +53,10 @@ function metadataBySource(projects, publishedSourceIds, topProjectIds) {
     if (
       typeof project.id !== "string" ||
       typeof project.source_id !== "string" ||
-      !projectKinds.has(project.kind)
+      !validProjectKinds.has(project.kind)
     )
       throw new Error("Published TavernKeeper project metadata is invalid.");
+    if (!supportedProjectKinds.has(project.kind)) continue;
     const catalogedAt = new Date(project.cataloged_at);
     if (!Number.isFinite(catalogedAt.getTime()))
       throw new Error("Published TavernKeeper catalog date is invalid.");
@@ -129,9 +131,7 @@ export function buildTavernKeeperTargets({
       if (version === 1) return [identity];
       const metadata = projectMetadata.get(source.id);
       if (metadata === undefined || metadata.firstCatalogedAt === null)
-        throw new Error(
-          "V2 TavernKeeper target is missing published project metadata.",
-        );
+        return [];
       return [
         {
           ...identity,

@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { canonicalSourceUrl } from "../../src/features/catalog/source-record.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const supportedProjectKinds = new Set(["extension", "frontend"]);
 
 async function readJson(path) {
   return JSON.parse(await readFile(resolve(rootDirectory, path), "utf8"));
@@ -44,7 +45,11 @@ export function resolveScanRequest({
   const repositoryUrl = canonicalGitHubRepositoryUrl(repositoryUrlInput);
   const publishedSourceIds = new Set(
     projects
-      .filter((project) => project.listing_status === "active")
+      .filter(
+        (project) =>
+          project.listing_status === "active" &&
+          supportedProjectKinds.has(project.kind),
+      )
       .map((project) => project.source_id),
   );
   const source = sources.find(
