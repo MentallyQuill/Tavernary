@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-quickrepliesdrawer",
+  "source_id": "github-919776844",
+  "source_identity": "github:lenanderson/sillytavern-quickrepliesdrawer",
+  "evidence_fingerprint": "1e83e7bc63bd9146c26dff91be34118d414a216546ac49819636fe322533ec57",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:07:40.507Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:07:40.507Z"
+  },
+  "maintenance_issue_number": null
+}
