@@ -281,27 +281,35 @@ test("builds sibling extension and preset cards from one source snapshot", async
     sources: [source],
     snapshots: [snapshot],
     tavernKeeperReports: {
+      schema_version: 5,
+      generated_at: "2026-07-31T12:06:00.000Z",
+      preferred_report_ids: ["c".repeat(64)],
       reports: [
         {
           report_id: "c".repeat(64),
-          report_version: 1,
-          supersedes_report_id: null,
           source_id: source.id,
           provider: "github",
           repository_id: source.repository_id,
           repository: source.repository,
           target_sha: snapshot.repository.head_sha,
           scanner_policy_version: "2",
+          contextual_review_policy_version: "1",
           completed_at: "2026-07-31T12:05:00.000Z",
-          result: "teal",
-          summary: {
-            headline: "No reportable concerns detected",
-            detail:
-              "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
-          },
-          finding_counts: {
-            reportable_severity: { critical: 0, high: 0, medium: 0 },
-            severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
+          assessed_at: "2026-07-31T12:06:00.000Z",
+          synthesis_policy_version: "1",
+          synthesis_model: "gpt-5.6-luna",
+          assessment: {
+            risk_level: "low",
+            headline: "Low concern",
+            summary:
+              "The reviewed behavior matches the extension's stated purpose.",
+            minor_cautions: 0,
+            material_concerns: 0,
+            high_danger: 0,
+            malicious_evidence:
+              "No evidence of malicious behavior was identified.",
+            cited_finding_ids: [],
+            interaction_chains: [],
           },
           report_url:
             "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/",
@@ -353,20 +361,19 @@ test("builds sibling extension and preset cards from one source snapshot", async
   );
   expect(catalog.projects[0].tavernKeeper).toMatchObject({
     state: "teal",
-    reason: "current",
+    riskLevel: "low",
+    freshness: "current",
     history: [
       expect.objectContaining({
-        result: "teal",
+        riskLevel: "low",
         scannerPolicyVersion: "2",
-        summary: expect.objectContaining({
-          headline: "No reportable concerns detected",
-        }),
+        headline: "Low concern",
       }),
     ],
   });
   expect(catalog.projects[1].tavernKeeper).toMatchObject({
     state: "unsupported",
-    reason: "unsupported",
+    freshness: "unsupported",
   });
   expect(catalog.schemaVersion).toBe(6);
   expect(

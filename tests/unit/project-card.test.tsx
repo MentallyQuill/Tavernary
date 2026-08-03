@@ -137,26 +137,30 @@ describe("project card", () => {
           name: "A Very Long Project Name",
           tavernKeeper: {
             state: "teal",
-            reason: "current",
+            riskLevel: "low",
+            freshness: "current",
             currentSha: "a".repeat(40),
             report: {
               reportId: "report-1",
-              result: "teal",
+              riskLevel: "low",
+              headline: "Low concern",
+              summary:
+                "The reviewed behavior matches the extension's stated purpose.",
+              minorCautions: 0,
+              materialConcerns: 0,
+              highDanger: 0,
+              maliciousEvidence:
+                "No evidence of malicious behavior was identified.",
+              citedFindingIds: [],
               scannedSha: "a".repeat(40),
               scannedAt: "2026-07-31T00:00:00Z",
-              summary: {
-                headline: "No reportable concerns detected",
-                detail:
-                  "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
-              },
+              assessedAt: "2026-07-31T00:05:00Z",
               scannerPolicyVersion: "2",
+              contextualReviewPolicyVersion: "1",
+              synthesisPolicyVersion: "1",
+              synthesisModel: "gpt-5.6-luna",
               reportUrl: "https://example.com/tavernkeeper/report-1",
-              historyUrl: "https://example.com/tavernkeeper/history",
-              reportableSeverity: {
-                critical: 0,
-                high: 0,
-                medium: 0,
-              },
+              technicalHistoryUrl: "https://example.com/tavernkeeper/history",
             },
             history: [],
             historyUrl: "https://example.com/tavernkeeper/history",

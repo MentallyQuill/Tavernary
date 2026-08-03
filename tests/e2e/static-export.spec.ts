@@ -23,7 +23,7 @@ const generatedCatalog = JSON.parse(
   schemaVersion: number;
   projects: Array<{
     sourceStatus: string;
-    tavernKeeper: { state: string; reason: string } | null;
+    tavernKeeper: { state: string; freshness: string } | null;
   }>;
 };
 
@@ -35,7 +35,7 @@ test("exports the catalog schema-v6 scan-state contract", () => {
       .every(
         ({ tavernKeeper }) =>
           tavernKeeper?.state === "unsupported" &&
-          tavernKeeper.reason === "unsupported",
+          tavernKeeper.freshness === "unsupported",
       ),
   ).toBe(true);
 });

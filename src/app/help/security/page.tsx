@@ -20,6 +20,17 @@ export default function SecurityHelpPage() {
         </p>
       }
     >
+      <section className="help-security-callout">
+        <h2>About TavernKeeper scan results</h2>
+        <p>
+          TavernKeeper scans one exact GitHub commit, and Tavernary publishes an
+          automated contextual risk assessment. The color describes the reviewed
+          evidence; a separate clock marker shows when that commit is older than
+          Tavernary&apos;s latest repository refresh. Open the scan panel beside
+          a project title for its summary, exact SHA, technical report, and
+          assessment history.
+        </p>
+      </section>
       <section
         className="help-security-actions"
         aria-label="Private security reporting"

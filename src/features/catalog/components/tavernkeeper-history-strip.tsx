@@ -1,12 +1,18 @@
 import type { TavernKeeperReportSummary } from "@/features/catalog/tavernkeeper-status";
 
-function formatHistoryDate(scannedAt: string) {
+const riskLabels = {
+  low: "low concern",
+  material: "material concern",
+  high: "high concern",
+};
+
+function formatHistoryDate(assessedAt: string) {
   return new Intl.DateTimeFormat("en-US", {
     day: "numeric",
     month: "long",
     timeZone: "UTC",
     year: "numeric",
-  }).format(new Date(scannedAt));
+  }).format(new Date(assessedAt));
 }
 
 export function TavernKeeperHistoryStrip({
@@ -23,14 +29,28 @@ export function TavernKeeperHistoryStrip({
       className="tavernkeeper-history-strip"
       role="group"
     >
-      {conclusions.map((conclusion) => (
-        <i
-          aria-label={`TavernKeeper scan history: ${conclusion.result} result on ${formatHistoryDate(conclusion.scannedAt)} at commit ${conclusion.scannedSha.slice(0, 7)} under policy ${conclusion.scannerPolicyVersion}`}
-          className={`tavernkeeper-history-${conclusion.result}`}
-          key={conclusion.reportId}
-          role="img"
-        />
-      ))}
+      {conclusions.map((conclusion) => {
+        const label =
+          `TavernKeeper scan history: ${riskLabels[conclusion.riskLevel]} ` +
+          `on ${formatHistoryDate(conclusion.assessedAt)} at commit ` +
+          `${conclusion.scannedSha.slice(0, 7)} under policy ` +
+          conclusion.scannerPolicyVersion;
+        return (
+          <a
+            aria-label={`Open TavernKeeper report for ${label}`}
+            href={conclusion.reportUrl}
+            key={conclusion.reportId}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              aria-label={label}
+              className={`tavernkeeper-history-${conclusion.riskLevel}`}
+              role="img"
+            />
+          </a>
+        );
+      })}
     </span>
   );
 }

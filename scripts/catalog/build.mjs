@@ -363,8 +363,9 @@ export async function buildCatalog(options = {}) {
     options.tavernKeeperReports ??
       (options.records
         ? {
-            schema_version: 4,
+            schema_version: 5,
             generated_at: "1970-01-01T00:00:00.000Z",
+            preferred_report_ids: [],
             reports: [],
           }
         : readJson("data/security/tavernkeeper-report-summaries.json")),
@@ -397,9 +398,9 @@ export async function buildCatalog(options = {}) {
   const snapshotsBySource = new Map(
     snapshots.map((snapshot) => [snapshot.source_id, snapshot]),
   );
-  const preferredTavernKeeperReports = Array.isArray(tavernKeeperReports)
-    ? tavernKeeperReports
-    : (tavernKeeperReports.reports ?? []);
+  const assessedTavernKeeperReports = tavernKeeperReports.reports ?? [];
+  const preferredTavernKeeperReportIds =
+    tavernKeeperReports.preferred_report_ids ?? [];
   const generatedAt = options.now ?? refreshManifest.completed_at;
   const generatedAtIso = new Date(generatedAt).toISOString();
   const recordsByProject = new Map(
@@ -426,7 +427,8 @@ export async function buildCatalog(options = {}) {
       projectKind: record.kind,
       source,
       snapshot,
-      preferredReports: preferredTavernKeeperReports,
+      assessedReports: assessedTavernKeeperReports,
+      preferredReportIds: preferredTavernKeeperReportIds,
     });
     if (!effectiveListingState({ project: record, source, snapshot }).public) {
       continue;
