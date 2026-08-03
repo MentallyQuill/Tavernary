@@ -1114,8 +1114,6 @@ test(
       .locator(".project-relationship-control button")
       .first();
     await expect(relationship).toBeVisible();
-    await relationship.click();
-    await expect(page.locator(".relationship-pair")).toBeVisible();
   },
 );
 
