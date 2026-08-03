@@ -241,6 +241,7 @@ describe("deriveTavernKeeperCardStatus", () => {
       materialConcerns: 0,
       highDanger: 0,
       synthesisModel: "gpt-5.6-luna",
+      commitUrl: `https://github.com/owner/repo/commit/${currentSha}`,
     });
     expect(status.report).not.toHaveProperty("candidates");
     expect(status.report).not.toHaveProperty("assessments");
