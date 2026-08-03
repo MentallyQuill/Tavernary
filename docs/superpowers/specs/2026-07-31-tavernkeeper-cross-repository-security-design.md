@@ -171,6 +171,8 @@ GitHub repository identity.
 - Strict-JSON Luna repository-level synthesis
 - The final risk level, public summary, malicious-evidence statement, cited
   finding IDs, and assessment history
+- Public final-assessment history pages that bind every grade to its exact
+  TavernKeeper technical report
 - SHA freshness, card mapping, scan-icon state, panel contents, and public UI
 - Catalog refresh and ordinary site deployment
 
@@ -709,6 +711,12 @@ TavernKeeper retains immutable technical-report history. Tavernary retains
 immutable final-assessment history, and the compact card strip represents only
 Tavernary's final contextual risk levels. Every history point links to its exact
 TavernKeeper report and scanned SHA.
+
+`View full scan history` links to Tavernary's final-assessment history page at
+`/security/tavernkeeper/history/{source_id}/`. That page lists the final grade,
+plain-language summary, assessment time, exact scanned SHA, policy/model
+identity, and TavernKeeper report link for each completed assessment. The
+TavernKeeper report separately links its technical-report history.
 
 A forced same-SHA rescan creates a new report and assessment with its policy and
 model versions; it may become preferred without erasing valid prior history.
