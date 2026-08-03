@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-worldinfopresets",
+  "source_id": "github-783765890",
+  "source_identity": "github:lenanderson/sillytavern-worldinfopresets",
+  "evidence_fingerprint": "f84e3a6e519002f4c0777ea6a12d1851c4bd54bc223e49318a4089953dfb1ddf",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:07:12.438Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:07:12.438Z"
+  },
+  "maintenance_issue_number": null
+}
