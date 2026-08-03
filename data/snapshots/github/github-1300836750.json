@@ -9,21 +9,21 @@
     "url": "https://github.com/maxime-fleury/ST-cardEditor",
     "description": null,
     "default_branch": "master",
-    "head_sha": "f51f0e7c85208b4e5b6cabeefd00bb1126416f84",
-    "head_committed_at": "2026-08-02T03:26:17.000Z",
+    "head_sha": "2550e36fc25cf5e2c924d2cae87a4419b97eec51",
+    "head_committed_at": "2026-08-02T15:06:54.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-14T18:36:22.000Z",
-    "size_kb": 3638
+    "size_kb": 3652
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-02T03:26:17.000Z",
+    "latest_source_activity_at": "2026-08-02T15:06:54.000Z",
     "source_weeks": [
       {
         "week_start": "2026-07-27",
-        "latest_at": "2026-08-02T03:26:17.000Z",
+        "latest_at": "2026-08-02T15:06:54.000Z",
         "precision": "exact"
       },
       {
@@ -37,7 +37,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-02T09:25:09.247Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "f51f0e7c85208b4e5b6cabeefd00bb1126416f84"
+    "evidence_head_sha": "2550e36fc25cf5e2c924d2cae87a4419b97eec51"
   },
   "community": {
     "stars_count": 6,
@@ -46,15 +46,18 @@
     "aggregate": 6
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-02T09:25:09.247Z",
+  "refreshed_at": "2026-08-03T10:52:31.892Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
-    "accounts": [{ "login": "Overfake", "type": "User", "provider": "github" }],
+    "accounts": [
+      { "login": "Overfake", "type": "User", "provider": "github" },
+      { "login": "maxime-fleury", "type": "User", "provider": "github" }
+    ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-02T09:25:09.247Z",
+    "refreshed_at": "2026-08-03T10:52:31.892Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

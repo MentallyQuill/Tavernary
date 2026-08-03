@@ -9,13 +9,13 @@
     "url": "https://github.com/IkarusV/IkarusAutoImage",
     "description": "SillyTavern extension for automatic AI image generation with tag replacements, character prompts, and folder management",
     "default_branch": "main",
-    "head_sha": "19fd397305bb603a84c8d29146ed3f6b0e7da79a",
-    "head_committed_at": "2026-08-02T02:52:17.000Z",
+    "head_sha": "bac1962f4eb9c722e8dc608f38f422d21cd0deb1",
+    "head_committed_at": "2026-08-02T23:57:32.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-03-25T19:16:55.000Z",
-    "size_kb": 129
+    "size_kb": 132
   },
   "source_health": "healthy",
   "activity": {
@@ -47,7 +47,7 @@
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-02T09:25:09.247Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "19fd397305bb603a84c8d29146ed3f6b0e7da79a"
+    "evidence_head_sha": "bac1962f4eb9c722e8dc608f38f422d21cd0deb1"
   },
   "community": {
     "stars_count": 0,
@@ -56,15 +56,15 @@
     "aggregate": 0
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-02T09:25:09.247Z",
+  "refreshed_at": "2026-08-03T10:52:31.892Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "IkarusV", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-02T09:25:09.247Z",
+    "refreshed_at": "2026-08-03T10:52:31.892Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

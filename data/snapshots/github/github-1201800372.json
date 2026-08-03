@@ -15,7 +15,7 @@
     "fork": false,
     "parent": null,
     "created_at": "2026-04-05T07:10:53.000Z",
-    "size_kb": 316994
+    "size_kb": 317735
   },
   "source_health": "healthy",
   "activity": {
@@ -60,18 +60,19 @@
     "evidence_head_sha": "feb98fdc665f7d5f1841b14bbc43bd6363a18071"
   },
   "community": {
-    "stars_count": 80,
+    "stars_count": 81,
     "forks_count": 12,
     "watchers_count": 3,
-    "aggregate": 95
+    "aggregate": 96
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-02T02:49:06.399Z",
+  "refreshed_at": "2026-08-03T10:52:31.892Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "Cohee1207", "type": "User", "provider": "github" },
@@ -437,8 +438,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-02T02:49:06.399Z",
+    "refreshed_at": "2026-08-03T10:52:31.892Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }
