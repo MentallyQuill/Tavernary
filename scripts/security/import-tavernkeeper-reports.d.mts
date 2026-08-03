@@ -1,6 +1,8 @@
 import type {
-  TavernKeeperReportIndex,
+  TavernKeeperAssessmentSnapshotV5,
+  TavernKeeperScanReportV5,
   TavernKeeperSourceRegistryEntry,
+  TavernarySynthesisProjection,
 } from "./tavernkeeper-reports.mjs";
 
 export function importTavernKeeperReports(options?: {
@@ -16,4 +18,15 @@ export function importTavernKeeperReports(options?: {
     hostname: string,
     options: { all: true },
   ) => Promise<Array<{ address: string; family: number }>>;
-}): Promise<TavernKeeperReportIndex>;
+  synthesizeReport?: (
+    report: TavernKeeperScanReportV5,
+  ) => Promise<TavernarySynthesisProjection>;
+  apiUrl?: string;
+  apiKey?: string;
+  model?: string;
+  providerFetchImpl?: typeof fetch;
+  providerTimeoutMs?: number;
+  providerNow?: () => number;
+  assessmentNow?: () => Date;
+  synthesisMaxAttempts?: number;
+}): Promise<TavernKeeperAssessmentSnapshotV5>;

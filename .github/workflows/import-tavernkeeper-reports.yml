@@ -35,7 +35,11 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Import validated public TavernKeeper reports
+      - name: Import and synthesize validated TavernKeeper reports
+        env:
+          TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
+          TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
+          TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
         run: npm run security:import-reports
       - name: Validate imported summaries
         run: npm run check

@@ -596,6 +596,14 @@ test("reconciles reports on a bounded schedule and wakes TavernKeeper only after
   const token = wakeSteps.find(
     (step) => step.name === "Create destination-only TavernKeeper token",
   ) as { "continue-on-error"?: boolean } | undefined;
+  const reportImportSteps = reportImport.jobs.import.steps as Array<{
+    name?: string;
+    env?: Record<string, string>;
+  }>;
+  const synthesisStep = reportImportSteps.find(
+    (step) =>
+      step.name === "Import and synthesize validated TavernKeeper reports",
+  );
 
   expect(reportImport.on.schedule).toEqual([{ cron: "41 */6 * * *" }]);
   expect(reportImport.on.workflow_dispatch).toBeNull();
@@ -608,6 +616,20 @@ test("reconciles reports on a bounded schedule and wakes TavernKeeper only after
     contents: "read",
   });
   expect(importSource).toContain("npm run security:import-reports");
+  expect(synthesisStep?.env).toEqual({
+    TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
+    TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
+    TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+  });
+  expect(
+    reportImportSteps
+      .filter((step) => step !== synthesisStep)
+      .some((step) =>
+        Object.keys(step.env ?? {}).some((key) =>
+          key.startsWith("TAVERNARY_ENRICHMENT_"),
+        ),
+      ),
+  ).toBe(false);
   expect(importSource).toContain("for attempt in 1 2 3");
   expect(importSource).toContain("-f source_sha=");
   expect(importSource).not.toContain("reconcile.yml");
