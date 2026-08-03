@@ -3,7 +3,7 @@
   "id": "enerccio-sillytavern-mangagenerator",
   "name": "SillyTavern-MangaGenerator",
   "kind": "extension",
-  "summary": "SillyTavern extension for storyboarding roleplay chats into sequential manga panels and compiling high-fidelity image-generation prompts.",
+  "summary": "SillyTavern-MangaGenerator turns roleplay chat logs into sequential manga panel layouts and compiles high-fidelity image-generation tags through a modular storyboarding workflow.",
   "metadata_status": "curated",
   "source_id": "github-1258163299",
   "frontends": ["sillytavern"],
@@ -11,10 +11,11 @@
   "tags": [
     "add-visual-immersion",
     "generate-images",
+    "manage-prompts-and-presets",
     "modular-and-extensible",
     "plan-stories-and-scenes"
   ],
-  "cataloged_at": "2026-08-03T08:22:52.137Z",
+  "cataloged_at": "2026-08-03T08:31:35.386Z",
   "catalog_cohort": "standard",
   "listing_status": "active",
   "listing_status_reason": null,
