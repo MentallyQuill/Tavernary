@@ -21,6 +21,9 @@ const legacyFixturePath = resolve(
 const fixturePath = resolve(
   "tests/fixtures/tavernkeeper/report-index.v2.valid.json",
 );
+const deterministicFixturePath = resolve(
+  "tests/fixtures/tavernkeeper/report-index.v4.valid.json",
+);
 const producerRoot = "F:/git/TavernKeeper/.worktrees/tavernkeeper-v1";
 const producerSchemaPath = resolve(
   producerRoot,
@@ -42,6 +45,10 @@ const registry = [
 
 async function fixture() {
   return JSON.parse(await readFile(fixturePath, "utf8"));
+}
+
+async function deterministicFixture() {
+  return JSON.parse(await readFile(deterministicFixturePath, "utf8"));
 }
 
 function publicDnsLookup() {
@@ -137,13 +144,84 @@ describe("TavernKeeper report-index importer", () => {
     ).resolves.toEqual(index);
   });
 
-  test("accepts a strict V2 automated report index", async () => {
+  test("validates V2 but excludes its inactive scanner policy", async () => {
     const index = await fixture();
+
+    expect(validateReportIndex(index, registry)).toEqual({
+      ...index,
+      reports: [],
+    });
+  });
+
+  test("accepts a strict V4 deterministic report index", async () => {
+    const index = await deterministicFixture();
 
     expect(validateReportIndex(index, registry)).toEqual(index);
   });
 
-  test("accepts the simplified producer's repository-review-v2 clean result", async () => {
+  test("rejects model-era fields from V4", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].model = {
+      provider: "example",
+      input_tokens: 1,
+    };
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
+  });
+
+  test("rejects a mode segment from V4", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].mode = "standard";
+    index.reports[0].report_url =
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/standard/1/";
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
+  });
+
+  test("rejects V4 finding totals that conflict with the deterministic result", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].finding_counts.reportable = 0;
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("rejects unsafe V4 summary text", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].summary.detail = "<script>alert(1)</script>";
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /summary is unsafe/u,
+    );
+  });
+
+  test("requires canonical UTC timestamps in V4", async () => {
+    const index = await deterministicFixture();
+    index.generated_at = "2026-08-02T12:00:00+00:00";
+    index.reports[0].completed_at = "2026-08-02T05:55:00-06:00";
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/schema/u);
+  });
+
+  test("rejects unsorted V4 category totals", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].finding_counts.categories.reverse();
+
+    expect(() => validateReportIndex(index, registry)).toThrow(
+      /finding totals/u,
+    );
+  });
+
+  test("requires the V4 report URL to omit legacy mode", async () => {
+    const index = await deterministicFixture();
+    index.reports[0].report_url =
+      "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/standard/1/";
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/URL/u);
+  });
+
+  test("validates the simplified V2 result but excludes its inactive policy", async () => {
     const index = await fixture();
     const newProducerReport = index.reports[0];
     newProducerReport.prompt_policy_version = "repository-review-v2";
@@ -163,7 +241,10 @@ describe("TavernKeeper report-index importer", () => {
     };
 
     expect(newProducerReport.scanner_policy_version).toBe("1");
-    expect(validateReportIndex(index, registry)).toEqual(index);
+    expect(validateReportIndex(index, registry)).toEqual({
+      ...index,
+      reports: [],
+    });
   });
 
   test("rejects V2 actionable severity totals that conflict with actionable findings", async () => {
@@ -599,7 +680,10 @@ describe("TavernKeeper report-index importer", () => {
   });
 
   test("reads and accepts canonical tracked summary bytes", async () => {
-    const root = await storedSummaryRoot(await fixture(), registry);
+    const root = await storedSummaryRoot(
+      await deterministicFixture(),
+      registry,
+    );
     try {
       await expect(
         validateStoredTavernKeeperReports({ root }),

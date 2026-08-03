@@ -42,7 +42,47 @@ export interface TavernKeeperReportV2 extends TavernKeeperReportBase {
   history_url: string;
 }
 
-export type TavernKeeperReport = TavernKeeperReportV1 | TavernKeeperReportV2;
+export interface TavernKeeperReportV4 {
+  report_id: string;
+  report_version: number;
+  supersedes_report_id: string | null;
+  scanner_version: string;
+  scanner_policy_version: string;
+  rule_catalog_version: string;
+  package_schema_version: number;
+  source_id: string;
+  provider: "github";
+  repository_id: number;
+  repository: string;
+  target_sha: string;
+  completed_at: string;
+  assessment_method: "deterministic-static-analysis";
+  result: "teal" | "red";
+  summary: { headline: string; detail: string };
+  finding_counts: {
+    total: number;
+    reportable: number;
+    informational: number;
+    reportable_severity: Record<"critical" | "high" | "medium", number>;
+    severity: Record<"critical" | "high" | "medium" | "low" | "info", number>;
+    confidence: Record<"high" | "medium" | "low", number>;
+    policy_status: Record<"reportable" | "informational", number>;
+    categories: Array<{ category: string; count: number }>;
+  };
+  coverage: {
+    history_commits: number;
+    inventory_files: number;
+    inventory_bytes: number;
+    tools_completed: number;
+    tools_not_applicable: number;
+    evidence_validated: number;
+  };
+  report_url: string;
+  history_url: string;
+}
+
+export type TavernKeeperReport =
+  TavernKeeperReportV1 | TavernKeeperReportV2 | TavernKeeperReportV4;
 
 export interface TavernKeeperReportIndexV1 {
   schema_version: 1;
@@ -56,8 +96,16 @@ export interface TavernKeeperReportIndexV2 {
   reports: TavernKeeperReportV2[];
 }
 
+export interface TavernKeeperReportIndexV4 {
+  schema_version: 4;
+  generated_at: string;
+  reports: TavernKeeperReportV4[];
+}
+
 export type TavernKeeperReportIndex =
-  TavernKeeperReportIndexV1 | TavernKeeperReportIndexV2;
+  | TavernKeeperReportIndexV1
+  | TavernKeeperReportIndexV2
+  | TavernKeeperReportIndexV4;
 
 export interface TavernKeeperSourceRegistryEntry {
   id: string;
@@ -70,7 +118,7 @@ export interface TavernKeeperSourceRegistryEntry {
 export const TAVERNKEEPER_ORIGIN: "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX: "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL: "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "1";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "2";
 
 export function validateReportIndex(
   index: unknown,

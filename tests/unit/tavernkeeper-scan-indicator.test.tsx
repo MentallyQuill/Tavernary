@@ -26,11 +26,15 @@ function scanReport(
     result: "red",
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
-    mode: "standard",
-    scannerPolicyVersion: "1",
+    summary: {
+      headline: "Reportable concerns detected",
+      detail:
+        "All required scanners completed at this commit and found 4 reportable concerns.",
+    },
+    scannerPolicyVersion: "2",
     reportUrl: "https://example.test/reports/directive",
     historyUrl: "https://example.test/reports/directive/history",
-    actionableSeverity: { critical: 1, high: 1, medium: 2 },
+    reportableSeverity: { critical: 1, high: 1, medium: 2 },
     ...overrides,
   };
 }
@@ -47,7 +51,12 @@ const redStatus: TavernKeeperCardStatus = {
 
 const tealReport = scanReport({
   result: "teal",
-  actionableSeverity: { critical: 0, high: 0, medium: 0 },
+  summary: {
+    headline: "No reportable concerns detected",
+    detail:
+      "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+  },
+  reportableSeverity: { critical: 0, high: 0, medium: 0 },
 });
 const tealStatus: TavernKeeperCardStatus = {
   ...redStatus,
@@ -102,16 +111,14 @@ describe("TavernKeeperScanIndicator", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+        name: /TavernKeeper scan: All required scanners completed/u,
       }),
     );
 
     const panel = screen.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    expect(panel).toHaveTextContent(
-      "TavernKeeper found review-level concerns.",
-    );
+    expect(panel).toHaveTextContent(redReport.summary.detail);
     expect(panel).toHaveTextContent("1 critical");
     expect(panel).toHaveTextContent("1 high");
     expect(panel).toHaveTextContent("2 medium");
@@ -135,14 +142,14 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test.each([
-    [tealStatus, "No review-level concerns found at this commit."],
+    [tealStatus, tealReport.summary.detail],
     [
       {
         ...tealStatus,
         state: "orange",
         reason: "outdated-clean",
       } satisfies TavernKeeperCardStatus,
-      "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.",
+      `${tealReport.summary.detail} This report covers an older commit, and an updated scan is pending.`,
     ],
     [pendingStatus, "This project hasn't been scanned by TavernKeeper."],
     [
@@ -203,12 +210,12 @@ describe("TavernKeeperScanIndicator", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: No review-level concerns found/u,
+        name: /TavernKeeper scan: All required scanners completed/u,
       }),
     );
 
     expect(screen.getByRole("dialog")).toHaveTextContent(
-      "No review-level concerns found at this commit.",
+      tealReport.summary.detail,
     );
     expect(
       document.querySelector(".tavernkeeper-severity-counts"),
@@ -222,7 +229,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.pointerEnter(trigger);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -240,7 +247,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.pointerEnter(trigger, { pointerType: "touch" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -256,7 +263,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.pointerEnter(trigger);
     fireEvent.pointerLeave(trigger);
@@ -285,7 +292,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+        name: /TavernKeeper scan: All required scanners completed/u,
       }),
     );
     const panel = screen.getByRole("dialog");
@@ -307,7 +314,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.focus(trigger);
     const panel = screen.getByRole("dialog");
@@ -332,7 +339,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     await user.tab();
     expect(trigger).toHaveFocus();
@@ -407,7 +414,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
@@ -427,7 +434,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const [firstTrigger, secondTrigger] = screen.getAllByRole("button", {
-      name: /TavernKeeper scan: TavernKeeper found review-level concerns/u,
+      name: /TavernKeeper scan: All required scanners completed/u,
     });
     fireEvent.pointerDown(firstTrigger, { pointerType: "touch" });
     fireEvent.focus(firstTrigger);

@@ -291,16 +291,20 @@ test("builds sibling extension and preset cards from one source snapshot", async
           repository_id: source.repository_id,
           repository: source.repository,
           target_sha: snapshot.repository.head_sha,
-          scanner_policy_version: "1",
+          scanner_policy_version: "2",
           completed_at: "2026-07-31T12:05:00.000Z",
-          mode: "standard",
           result: "teal",
+          summary: {
+            headline: "No reportable concerns detected",
+            detail:
+              "All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
+          },
           finding_counts: {
-            actionable_severity: { critical: 0, high: 0, medium: 0 },
+            reportable_severity: { critical: 0, high: 0, medium: 0 },
             severity: { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
           },
           report_url:
-            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1/standard/1/",
+            "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/1/",
           history_url:
             "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/",
         },
@@ -347,18 +351,22 @@ test("builds sibling extension and preset cards from one source snapshot", async
   expect(JSON.stringify(catalog.projects[0].search)).not.toContain(
     "[object Object]",
   );
-  expect(catalog.projects[0].tavernKeeper).toEqual(
-    catalog.projects[1].tavernKeeper,
-  );
   expect(catalog.projects[0].tavernKeeper).toMatchObject({
     state: "teal",
     reason: "current",
     history: [
       expect.objectContaining({
         result: "teal",
-        scannerPolicyVersion: "1",
+        scannerPolicyVersion: "2",
+        summary: expect.objectContaining({
+          headline: "No reportable concerns detected",
+        }),
       }),
     ],
+  });
+  expect(catalog.projects[1].tavernKeeper).toMatchObject({
+    state: "unsupported",
+    reason: "unsupported",
   });
   expect(catalog.schemaVersion).toBe(6);
   expect(

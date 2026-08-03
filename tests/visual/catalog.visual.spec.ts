@@ -228,12 +228,17 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(sitePath());
   await waitForCatalogHydration(page);
-  const trigger = page
-    .getByRole("button", {
-      name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
-    })
+  const unsupportedTrigger = page.getByRole("button", {
+    name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+  });
+  const card = page
+    .locator("article.project-card")
+    .filter({ has: unsupportedTrigger })
+    .filter({ has: page.locator(".commit-age") })
     .first();
-  const card = trigger.locator("xpath=ancestor::article");
+  const trigger = card.getByRole("button", {
+    name: "TavernKeeper scan: TavernKeeper scanning is not supported for this project's source.",
+  });
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
   await stabilizeProjectActivityAge(card);
   await page.mouse.move(0, 0);
@@ -258,7 +263,7 @@ test("scan indicator history strip preserves dense teal and red progression", as
   await waitForCatalogHydration(page);
   await page
     .getByRole("button", {
-      name: "TavernKeeper scan: No review-level concerns found at this commit.",
+      name: "TavernKeeper scan: All required scanners completed at this commit, and no finding met TavernKeeper's reportable threshold.",
     })
     .first()
     .click();

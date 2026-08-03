@@ -18,14 +18,15 @@ import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-sta
 import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 
 function stateCopy(status: TavernKeeperCardStatus) {
-  if (status.state === "teal") {
-    return "No review-level concerns found at this commit.";
-  }
-  if (status.state === "red") {
-    return "TavernKeeper found review-level concerns.";
-  }
-  if (status.state === "orange") {
-    return "The last completed scan found no review-level concerns, but it does not cover the repository's current commit. An updated scan is pending.";
+  if (status.report) {
+    const freshness =
+      status.reason === "outdated-clean" ||
+      status.reason === "outdated-concerning"
+        ? " This report covers an older commit, and an updated scan is pending."
+        : status.reason === "source-unavailable"
+          ? " Tavernary cannot confirm the repository's current commit."
+          : "";
+    return `${status.report.summary.detail}${freshness}`;
   }
   if (status.state === "unsupported") {
     return "TavernKeeper scanning is not supported for this project's source.";
@@ -109,7 +110,7 @@ export function TavernKeeperScanIndicator({
   const report = status.report;
   const severityCounts =
     report && status.state === "red"
-      ? severityLabels.filter(([key]) => report.actionableSeverity[key] > 0)
+      ? severityLabels.filter(([key]) => report.reportableSeverity[key] > 0)
       : [];
   const popoverId = `tavernkeeper-scan-${projectId}`;
   const headingId = `${popoverId}-heading`;
@@ -318,7 +319,7 @@ export function TavernKeeperScanIndicator({
                     <p className="tavernkeeper-severity-counts">
                       {severityCounts.map(([key, label]) => (
                         <span key={key}>
-                          {report.actionableSeverity[key]} {label}
+                          {report.reportableSeverity[key]} {label}
                         </span>
                       ))}
                     </p>
