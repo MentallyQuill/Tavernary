@@ -263,7 +263,7 @@ describe("strict Luna synthesis", () => {
 
     await provider.generate({ report });
 
-    expect(requestBody.temperature).toBe(0);
+    expect(requestBody).not.toHaveProperty("temperature");
     expect(requestBody.response_format).toMatchObject({
       type: "json_schema",
       json_schema: {

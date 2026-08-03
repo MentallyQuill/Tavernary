@@ -71,7 +71,6 @@ export function createTavernKeeperSynthesisProvider(options) {
     async generate(input) {
       return transport.request({
         model: transport.configuration.model,
-        temperature: 0,
         messages: [
           { role: "system", content: tavernKeeperSynthesisInstructions() },
           { role: "user", content: JSON.stringify(synthesisInput(input)) },
