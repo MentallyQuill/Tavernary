@@ -1208,7 +1208,7 @@ test(
       const reportLink = panel.getByRole("link", { name: "View full report" });
       await expect(reportLink).toHaveAttribute(
         "href",
-        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/2\/[0-9a-f]{64}\/$/u,
+        /^https:\/\/mentallyquill\.github\.io\/TavernKeeper\/reports\/github\/\d+\/[0-9a-f]{40}\/3\/[0-9a-f]{64}\/$/u,
       );
       await expect(reportLink).toHaveAttribute("target", "_blank");
       await expect(reportLink).toHaveAttribute("rel", /\bnoopener\b/u);

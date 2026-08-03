@@ -6,6 +6,7 @@ import { describe, expect, test } from "vitest";
 
 import { importTavernKeeperReports } from "../../scripts/security/import-tavernkeeper-reports.mjs";
 import {
+  ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION,
   TAVERNKEEPER_REPORT_INDEX_URL,
   computeReportDigest,
   fetchAndValidateTavernKeeperIndex,
@@ -174,6 +175,21 @@ function jsonResponse(value: unknown) {
 }
 
 describe("TavernKeeper V5 report import", () => {
+  test("accepts only scanner policy 3 as active catalog evidence", () => {
+    expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("3");
+  });
+
+  test("rejects an inactive scanner policy from the preferred report index", async () => {
+    const [index] = await fixtures();
+    index.reports[0].scanner_policy_version = "2";
+    index.reports[0].report_url = index.reports[0].report_url.replace(
+      "/3/",
+      "/2/",
+    );
+
+    expect(() => validateReportIndex(index, registry)).toThrow(/policy/u);
+  });
+
   test("accepts a complete V5 preferred index and matching immutable report", async () => {
     const [index, report] = await fixtures();
     const validatedIndex = validateReportIndex(index, registry);
@@ -335,6 +351,43 @@ describe("TavernKeeper V5 report import", () => {
         registry,
       ),
     ).toThrow(/preferred/u);
+  });
+
+  test("retains an inactive-policy assessment only as non-preferred history", async () => {
+    const [index] = await fixtures();
+    const historical = {
+      ...index.reports[0],
+      scanner_policy_version: "2",
+      report_url: index.reports[0].report_url.replace("/3/", "/2/"),
+      assessed_at: "2026-08-02T12:06:00.000Z",
+      synthesis_policy_version: "1",
+      synthesis_model: "gpt-5.6-luna",
+      assessment: {
+        risk_level: "low",
+        headline: "Historical low concern",
+        summary: "This assessment was produced under an inactive policy.",
+        minor_cautions: 0,
+        material_concerns: 0,
+        high_danger: 0,
+        malicious_evidence: "No evidence of malicious behavior was identified.",
+        cited_finding_ids: [],
+        interaction_chains: [],
+      },
+    };
+    const snapshot = {
+      schema_version: 5,
+      generated_at: index.generated_at,
+      preferred_report_ids: [],
+      reports: [historical],
+    };
+
+    expect(validateStoredReportIndex(snapshot, registry)).toEqual(snapshot);
+    expect(() =>
+      validateStoredReportIndex(
+        { ...snapshot, preferred_report_ids: [historical.report_id] },
+        registry,
+      ),
+    ).toThrow(/policy/u);
   });
 
   test("preserves the previous snapshot when synthesis fails", async () => {

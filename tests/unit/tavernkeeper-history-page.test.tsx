@@ -19,7 +19,7 @@ function report(
     repository_id: 42,
     repository: "owner/repo",
     target_sha: "a".repeat(40),
-    scanner_policy_version: "2",
+    scanner_policy_version: "3",
     contextual_review_policy_version: "1",
     completed_at: "2026-08-02T12:00:00.000Z",
     assessed_at: "2026-08-02T12:05:00.000Z",
@@ -91,7 +91,7 @@ describe("TavernKeeper final-assessment history", () => {
     ).toBeInTheDocument();
     expect(entries[0]).toHaveTextContent(newer.assessment.summary);
     expect(entries[0]).toHaveTextContent("gpt-5.6-luna");
-    expect(entries[0]).toHaveTextContent("Scanner policy 2");
+    expect(entries[0]).toHaveTextContent("Scanner policy 3");
     expect(entries[0]).toHaveTextContent("Synthesis policy 1");
     expect(
       within(entries[0]).getByRole("link", { name: /commit bbbbbbb/u }),

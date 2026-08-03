@@ -1,11 +1,11 @@
 {
   "schema_version": 5,
-  "report_id": "14e98017022c123faa9b6dc0409caf61ce7ce6faf0691f87265100bd6cd2ee58",
-  "report_digest": "14e98017022c123faa9b6dc0409caf61ce7ce6faf0691f87265100bd6cd2ee58",
+  "report_id": "e69c370d783a3009c9710c04b1ca2e0aaca369ccf47d7dade621565ce3c43ff2",
+  "report_digest": "e69c370d783a3009c9710c04b1ca2e0aaca369ccf47d7dade621565ce3c43ff2",
   "report_version": 1,
   "supersedes_report_id": null,
   "scanner_version": "1.0.0",
-  "scanner_policy_version": "2",
+  "scanner_policy_version": "3",
   "rule_catalog_version": "1",
   "package_schema_version": 1,
   "contextual_review_policy_version": "1",
@@ -50,7 +50,7 @@
     },
     "tools": [
       { "name": "inventory", "version": "1.0.0", "status": "completed" },
-      { "name": "tavernkeeper-static", "version": "2", "status": "completed" },
+      { "name": "tavernkeeper-static", "version": "3", "status": "completed" },
       { "name": "gitleaks", "version": "8.30.1", "status": "completed" },
       { "name": "opengrep", "version": "1.26.0", "status": "completed" },
       { "name": "osv-scanner", "version": "2.4.0", "status": "not-applicable" },

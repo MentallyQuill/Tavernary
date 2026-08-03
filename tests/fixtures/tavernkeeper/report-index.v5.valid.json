@@ -3,12 +3,12 @@
   "generated_at": "2026-08-02T12:05:00.000Z",
   "reports": [
     {
-      "report_id": "14e98017022c123faa9b6dc0409caf61ce7ce6faf0691f87265100bd6cd2ee58",
-      "report_digest": "14e98017022c123faa9b6dc0409caf61ce7ce6faf0691f87265100bd6cd2ee58",
+      "report_id": "e69c370d783a3009c9710c04b1ca2e0aaca369ccf47d7dade621565ce3c43ff2",
+      "report_digest": "e69c370d783a3009c9710c04b1ca2e0aaca369ccf47d7dade621565ce3c43ff2",
       "report_version": 1,
       "supersedes_report_id": null,
       "scanner_version": "1.0.0",
-      "scanner_policy_version": "2",
+      "scanner_policy_version": "3",
       "rule_catalog_version": "1",
       "package_schema_version": 1,
       "contextual_review_policy_version": "1",
@@ -58,7 +58,7 @@
         "review_required": 0,
         "review_completed": 0
       },
-      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2/14e98017022c123faa9b6dc0409caf61ce7ce6faf0691f87265100bd6cd2ee58/",
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/42/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/3/e69c370d783a3009c9710c04b1ca2e0aaca369ccf47d7dade621565ce3c43ff2/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/42/history/"
     }
   ]

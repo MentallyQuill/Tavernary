@@ -31,7 +31,7 @@ function report(
     repository_id: source.repository_id,
     repository: source.repository,
     target_sha: currentSha,
-    scanner_policy_version: "2",
+    scanner_policy_version: "3",
     contextual_review_policy_version: "1",
     completed_at: "2026-07-31T12:05:00.000Z",
     assessed_at: "2026-07-31T12:06:00.000Z",
@@ -39,7 +39,7 @@ function report(
     synthesis_model: "gpt-5.6-luna",
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/" +
-      `${currentSha}/2/${"c".repeat(64)}/`,
+      `${currentSha}/3/${"c".repeat(64)}/`,
     assessment: {
       risk_level: "low",
       headline: "Low concern",
@@ -170,7 +170,7 @@ describe("deriveTavernKeeperCardStatus", () => {
       report({ repository_id: 99 }),
       report({ source_id: "github-99" }),
       report({ repository: "owner/other" }),
-      report({ scanner_policy_version: "1" }),
+      report({ scanner_policy_version: "2" }),
     ]) {
       expect(
         deriveTavernKeeperCardStatus({
