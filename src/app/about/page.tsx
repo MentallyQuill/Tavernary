@@ -111,10 +111,16 @@ export default function AboutPage() {
           <h2>Safety and security</h2>
           <p>
             Tavernary is an independent directory of third-party projects.
-            Listings are not endorsements, certifications, or safety reviews.
-            Tavernary does not host, install, execute, or security-scan listed
-            projects, and cannot guarantee their code, dependencies, releases,
-            installers, or behavior.
+            Listings are not endorsements, certifications, or guarantees of
+            safety. Eligible GitHub listings may be scanned by{" "}
+            <a href="https://mentallyquill.github.io/TavernKeeper/">
+              TavernKeeper
+            </a>
+            {", "}an advisory security-scanning system, but scan results are not
+            a guarantee that a project is safe or free of harmful behavior.
+            Tavernary does not host, install, or execute listed projects, and
+            cannot guarantee their code, dependencies, releases, installers, or
+            behavior.
           </p>
           <p>
             Review a project&apos;s repository, permissions, dependencies,

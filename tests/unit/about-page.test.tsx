@@ -19,6 +19,15 @@ test("explains safety, reporting, and legal information on About", () => {
   expect(
     screen.getByRole("heading", { name: "Legal information" }),
   ).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "TavernKeeper" })).toHaveAttribute(
+    "href",
+    "https://mentallyquill.github.io/TavernKeeper/",
+  );
+  expect(
+    screen.getByText(
+      /scan results are not a guarantee that a project is safe or free of harmful behavior/i,
+    ),
+  ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Get help" })).toHaveAttribute(
     "href",
     "/help",
