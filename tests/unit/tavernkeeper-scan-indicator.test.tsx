@@ -34,8 +34,8 @@ function scanReport(
       "The review found evidence consistent with credential theft.",
     citedFindingIds: ["a".repeat(64)],
     scannedSha: "abc1234def5678abc1234def5678abc1234def5678",
-    commitUrl:
-      "https://github.com/owner/repository/commit/abc1234def5678abc1234def5678abc1234def5678",
+    treeUrl:
+      "https://github.com/owner/repository/tree/abc1234def5678abc1234def5678abc1234def5678",
     scannedAt: "2026-07-31T12:00:00.000Z",
     assessedAt: "2026-07-31T12:05:00.000Z",
     scannerPolicyVersion: "2",
@@ -140,13 +140,13 @@ describe("TavernKeeperScanIndicator", () => {
     expect(panel).toHaveTextContent("2 material concerns");
     expect(panel).toHaveTextContent("1 high-danger finding");
     expect(panel).not.toHaveTextContent(redReport.maliciousEvidence);
-    const commitLink = within(panel).getByRole("link", {
-      name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+    const sourceTreeLink = within(panel).getByRole("link", {
+      name: `Browse scanned source at commit ${redReport.scannedSha} on GitHub`,
     });
-    expect(commitLink).toHaveTextContent(redReport.scannedSha.slice(0, 7));
-    expect(commitLink).toHaveAttribute("href", redReport.commitUrl);
-    expect(commitLink).toHaveAttribute("target", "_blank");
-    expect(commitLink).toHaveAttribute(
+    expect(sourceTreeLink).toHaveTextContent(redReport.scannedSha.slice(0, 7));
+    expect(sourceTreeLink).toHaveAttribute("href", redReport.treeUrl);
+    expect(sourceTreeLink).toHaveAttribute("target", "_blank");
+    expect(sourceTreeLink).toHaveAttribute(
       "rel",
       expect.stringContaining("noopener"),
     );
@@ -421,7 +421,7 @@ describe("TavernKeeperScanIndicator", () => {
     await user.tab();
     expect(
       screen.getByRole("link", {
-        name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+        name: `Browse scanned source at commit ${redReport.scannedSha} on GitHub`,
       }),
     ).toHaveFocus();
 
@@ -443,7 +443,7 @@ describe("TavernKeeperScanIndicator", () => {
     await user.tab({ shift: true });
     expect(
       screen.getByRole("link", {
-        name: `View scanned commit ${redReport.scannedSha} on GitHub`,
+        name: `Browse scanned source at commit ${redReport.scannedSha} on GitHub`,
       }),
     ).toHaveFocus();
 

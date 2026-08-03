@@ -51,7 +51,7 @@ export interface TavernKeeperReportSummary {
   maliciousEvidence: string;
   citedFindingIds: string[];
   scannedSha: string;
-  commitUrl: string;
+  treeUrl: string;
   scannedAt: string;
   assessedAt: string;
   scannerPolicyVersion: string;
@@ -174,7 +174,7 @@ function summarize(
     maliciousEvidence: report.assessment.malicious_evidence,
     citedFindingIds: report.assessment.cited_finding_ids,
     scannedSha: report.target_sha,
-    commitUrl: `https://github.com/${report.repository}/commit/${report.target_sha}`,
+    treeUrl: `https://github.com/${report.repository}/tree/${report.target_sha}`,
     scannedAt: report.completed_at,
     assessedAt: report.assessed_at,
     scannerPolicyVersion: report.scanner_policy_version,

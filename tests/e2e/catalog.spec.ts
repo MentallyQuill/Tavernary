@@ -1196,15 +1196,15 @@ test(
       await expect(panel.locator(".tavernkeeper-scan-details")).toContainText(
         /AssessedJuly (?:13|30|31), 2026 by Tavernary/u,
       );
-      const commitLink = panel.getByRole("link", {
-        name: /View scanned commit [0-9a-f]{40} on GitHub/u,
+      const sourceTreeLink = panel.getByRole("link", {
+        name: /Browse scanned source at commit [0-9a-f]{40} on GitHub/u,
       });
-      await expect(commitLink).toHaveAttribute(
+      await expect(sourceTreeLink).toHaveAttribute(
         "href",
-        /^https:\/\/github\.com\/[^/]+\/[^/]+\/commit\/[0-9a-f]{40}$/u,
+        /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[0-9a-f]{40}$/u,
       );
-      await expect(commitLink).toHaveAttribute("target", "_blank");
-      await expect(commitLink).toHaveAttribute("rel", /\bnoopener\b/u);
+      await expect(sourceTreeLink).toHaveAttribute("target", "_blank");
+      await expect(sourceTreeLink).toHaveAttribute("rel", /\bnoopener\b/u);
       const reportLink = panel.getByRole("link", { name: "View full report" });
       await expect(reportLink).toHaveAttribute(
         "href",

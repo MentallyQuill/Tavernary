@@ -153,8 +153,8 @@ describe("project card", () => {
                 "No evidence of malicious behavior was identified.",
               citedFindingIds: [],
               scannedSha: "a".repeat(40),
-              commitUrl:
-                "https://github.com/owner/repository/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              treeUrl:
+                "https://github.com/owner/repository/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
               scannedAt: "2026-07-31T00:00:00Z",
               assessedAt: "2026-07-31T00:05:00Z",
               scannerPolicyVersion: "2",

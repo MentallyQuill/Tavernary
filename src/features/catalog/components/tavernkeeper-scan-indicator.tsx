@@ -369,8 +369,8 @@ export function TavernKeeperScanIndicator({
                         </time>
                         <span aria-hidden="true"> · </span>
                         <a
-                          aria-label={`View scanned commit ${report.scannedSha} on GitHub`}
-                          href={report.commitUrl}
+                          aria-label={`Browse scanned source at commit ${report.scannedSha} on GitHub`}
+                          href={report.treeUrl}
                           onKeyDown={focusTrigger}
                           ref={firstLinkRef}
                           rel="noopener noreferrer"
