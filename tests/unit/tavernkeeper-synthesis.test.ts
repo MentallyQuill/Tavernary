@@ -271,6 +271,9 @@ describe("strict Luna synthesis", () => {
         strict: true,
       },
     });
+    expect(JSON.stringify(requestBody.response_format)).not.toContain(
+      "uniqueItems",
+    );
     expect(requestBody.messages[0].content).toContain(
       "synthesizing validated assessments, not rescanning code",
     );

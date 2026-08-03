@@ -29,7 +29,6 @@ export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA = {
     malicious_evidence: { type: "string", minLength: 1, maxLength: 300 },
     cited_finding_ids: {
       type: "array",
-      uniqueItems: true,
       maxItems: 256,
       items: { type: "string", pattern: "^[0-9a-f]{64}$" },
     },
@@ -45,7 +44,6 @@ export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA = {
             type: "array",
             minItems: 2,
             maxItems: 16,
-            uniqueItems: true,
             items: { type: "string", pattern: "^[0-9a-f]{64}$" },
           },
           resulting_risk: {
