@@ -63,10 +63,10 @@ newest twelve preferred historical conclusions for the compact card strip and
 links to TavernKeeper's immutable full-history page. Only an identity-and-SHA
 match can produce a current teal or red state.
 
-V1, V2, and model-based V3 report contracts remain immutable historical
-formats. Tavernary can validate their historical data, but only policy-V2 V4
-reports are active card conclusions. The target manifest deliberately remains
-schema V2; the report/index contract advances independently to V4.
+V4 is the only report and report-index contract. The earlier development-only
+formats were never published and are not accepted. The target manifest
+deliberately remains schema V2; the report/index contract advances
+independently to V4.
 
 ## Review pipeline and Tavernary boundary
 
