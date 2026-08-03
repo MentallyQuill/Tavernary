@@ -1,14 +1,14 @@
 # TavernKeeper Card Popover Redesign
 
 **Date:** August 3, 2026  
-**Status:** Approved for implementation
+**Status:** Implemented; source-tree link amendment approved
 
 ## Objective
 
 Make the TavernKeeper scan popover feel like a compact status card instead of
 a stack of equally weighted text. Preserve the useful assessment facts, remove
 the redundant malicious-evidence quotation, link the scanned SHA to the exact
-project commit, and eliminate the unexplained single history dot.
+project source tree, and eliminate the unexplained single history dot.
 
 This work changes only the catalog card popover. The TavernKeeper report and
 full history page are outside this change because their UI is being developed
@@ -56,20 +56,22 @@ copy and use the same header styling without empty assessment sections.
 - Retain the current raised surface, border, shadow, focus ring, and reduced
   motion behavior unless minor tuning is needed for the wider layout.
 
-## Commit link
+## Source-tree link
 
-The short scanned SHA links to the exact GitHub commit:
+The short scanned SHA links to the exact GitHub source tree:
 
 ```text
-https://github.com/{repository}/commit/{full target SHA}
+https://github.com/{repository}/tree/{full target SHA}
 ```
 
 The URL is derived from the already validated `repository` and `target_sha`
 fields on the matched GitHub assessment, not by parsing display copy or a
 potentially unrelated card URL. The summarized TavernKeeper report model
-exposes this URL to the popover as explicit data. The link opens in a new tab
-with `noopener noreferrer`, and its accessible name identifies it as the
-scanned commit.
+exposes this URL to the popover as explicit `treeUrl` data. The link opens in a
+new tab with `noopener noreferrer`. Its accessible name is
+`Browse scanned source at commit {full SHA} on GitHub`, while its visible text
+remains the seven-character SHA. The tree page lets users inspect and download
+the precise source snapshot without adding another popover action.
 
 ## History behavior
 
@@ -90,7 +92,7 @@ keeps its existing accessible label.
 
 ### `tavernkeeper-status.ts`
 
-`summarize` derives and returns an explicit commit URL alongside the short and
+`summarize` derives and returns an explicit tree URL alongside the short and
 full SHA. This module remains the authority for translating validated report
 data into card-safe presentation data.
 
@@ -98,7 +100,7 @@ data into card-safe presentation data.
 
 The component renders the new semantic regions and linked SHA. Interaction,
 portal positioning, dismissal, keyboard traversal, and focus management remain
-unchanged except for accommodating the additional focusable commit link in the
+unchanged except for accommodating the additional focusable source-tree link in the
 existing navigation order.
 
 ### `tavernkeeper-history-strip.tsx`
@@ -121,7 +123,7 @@ popover to avoid changing the full history or report UI.
 - The panel remains scrollable when viewport height is constrained.
 - Hover, focus, click/tap, Escape, outside click, pointer-exit delay, and
   one-open-at-a-time behavior remain unchanged.
-- Keyboard focus proceeds from the scan trigger through the commit link and
+- Keyboard focus proceeds from the scan trigger through the source-tree link and
   footer actions without a focus trap.
 - Coarse-pointer behavior and minimum touch-target requirements remain intact.
 
@@ -129,8 +131,8 @@ popover to avoid changing the full history or report UI.
 
 - Preserve `role="dialog"`, `aria-labelledby`, and the exact visible heading.
 - Keep every status understandable without color.
-- Give the linked SHA an accessible name containing the full commit identity
-  or an equivalent clear description.
+- Give the linked SHA the accessible name
+  `Browse scanned source at commit {full SHA} on GitHub`.
 - Keep the history group label and individual history-point labels when the
   strip is rendered.
 - Preserve visible focus rings and logical DOM/focus order.
@@ -139,11 +141,11 @@ popover to avoid changing the full history or report UI.
 ## Error and edge handling
 
 - A matched assessed report always has a validated GitHub repository and full
-  SHA; commit-link derivation happens only along that assessed GitHub path.
+  SHA; tree-link derivation happens only along that assessed GitHub path.
 - Missing `historyUrl` omits the history action without leaving an empty footer
   slot.
 - A missing report continues to use the current unassessed or unsupported copy
-  and does not render an invalid commit link or counts.
+  and does not render an invalid tree link or counts.
 - Long summaries and localized dates may wrap but must not overflow the panel.
 - Stale and freshness-unavailable assessments retain their existing explanatory
   summary suffix and explicit freshness text.
@@ -152,7 +154,7 @@ popover to avoid changing the full history or report UI.
 
 Tests will cover:
 
-- commit URL derivation from validated repository and target SHA data;
+- tree URL derivation from validated repository and target SHA data;
 - the short SHA link target, accessible name, and external-link attributes;
 - absence of the malicious-evidence quotation in the popover;
 - preservation of summary, all three counts, dates, grade, and freshness;
