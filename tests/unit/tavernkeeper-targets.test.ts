@@ -95,7 +95,7 @@ describe("TavernKeeper target manifest", () => {
     ).toBe(false);
   });
 
-  test("publishes V2 metadata from every public card sharing a GitHub source", () => {
+  test("publishes V2 metadata only from supported cards sharing a GitHub source", () => {
     const manifest = buildTargets({
       contractVersion: 2,
       generatedAt,
@@ -130,14 +130,35 @@ describe("TavernKeeper target manifest", () => {
           repository: "owner/repo",
           target_sha: "a".repeat(40),
           canonical_url: "https://github.com/owner/repo",
-          project_kinds: ["extension", "preset"],
+          project_kinds: ["extension"],
           catalog_priority: {
             top_30: true,
-            first_cataloged_at: "2026-07-01T00:00:00.000Z",
+            first_cataloged_at: "2026-07-02T00:00:00.000Z",
           },
         },
       ],
     });
+  });
+
+  test("omits sources published only as unsupported presets", () => {
+    const manifest = buildTargets({
+      contractVersion: 2,
+      generatedAt,
+      publishedSourceIds: new Set(["github-42"]),
+      sources: [source("github-42", 42, "owner/preset")],
+      snapshots: [snapshot("github-42", 42, "owner/preset", "a".repeat(40))],
+      projects: [
+        {
+          id: "preset-card",
+          source_id: "github-42",
+          kind: "preset",
+          cataloged_at: "2026-07-01T00:00:00.000Z",
+        },
+      ],
+      topProjectIds: new Set(["preset-card"]),
+    });
+
+    expect(manifest.repositories).toEqual([]);
   });
 
   test("requires an explicit supported contract version", () => {

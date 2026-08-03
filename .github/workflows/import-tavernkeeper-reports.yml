@@ -66,6 +66,10 @@ jobs:
             if git fetch --no-tags origin main &&
               git rebase origin/main &&
               npm run check &&
+              git fetch --no-tags origin main &&
+              git rebase origin/main &&
+              npm run catalog:validate &&
+              npm run security:validate-reports &&
               git push origin HEAD:main; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
               echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"

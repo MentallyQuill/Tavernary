@@ -147,9 +147,57 @@ jobs:
           REPOSITORY_ID: ${{ steps.resolve.outputs.repository_id }}
         shell: bash
         run: |
-          jq -nc \
-            --arg repository_id "$REPOSITORY_ID" \
-            '{ref:"main",inputs:{repository_id:$repository_id}}' | \
-            gh api --method POST \
-              repos/MentallyQuill/TavernKeeper/actions/workflows/targeted-scan.yml/dispatches \
-              --input -
+          run_title="Tavernary targeted scan #$REPOSITORY_ID"
+          workflow_runs_url="repos/MentallyQuill/TavernKeeper/actions/workflows/targeted-scan.yml/runs?event=workflow_dispatch&per_page=30"
+
+          for dispatch_attempt in 1 2 3; do
+            runs="$(gh api "$workflow_runs_url")"
+            previous_run_id="$(jq -r \
+              --arg title "$run_title" \
+              '[.workflow_runs[] | select(.display_title == $title) | .id] | max // 0' \
+              <<< "$runs")"
+
+            jq -nc \
+              --arg repository_id "$REPOSITORY_ID" \
+              '{ref:"main",inputs:{repository_id:$repository_id}}' | \
+              gh api --method POST \
+                repos/MentallyQuill/TavernKeeper/actions/workflows/targeted-scan.yml/dispatches \
+                --input -
+
+            run_id=""
+            for lookup_attempt in $(seq 1 40); do
+              runs="$(gh api "$workflow_runs_url")"
+              run_id="$(jq -r \
+                --arg title "$run_title" \
+                --argjson previous_run_id "$previous_run_id" \
+                '[.workflow_runs[] | select(.display_title == $title and .id > $previous_run_id) | .id] | max // empty' \
+                <<< "$runs")"
+              if [[ -n "$run_id" ]]; then
+                break
+              fi
+              sleep 3
+            done
+            test -n "$run_id"
+
+            while true; do
+              run="$(gh api "repos/MentallyQuill/TavernKeeper/actions/runs/$run_id")"
+              status="$(jq -r '.status' <<< "$run")"
+              conclusion="$(jq -r '.conclusion // ""' <<< "$run")"
+              if [[ "$status" == "in_progress" ]]; then
+                echo "TavernKeeper accepted targeted run $run_id."
+                exit 0
+              fi
+              if [[ "$status" == "completed" ]]; then
+                if [[ "$conclusion" == "cancelled" ]]; then
+                  echo "Pending TavernKeeper run $run_id was replaced; redispatching ($dispatch_attempt/3)."
+                  break
+                fi
+                echo "TavernKeeper completed targeted run $run_id with conclusion $conclusion."
+                exit 0
+              fi
+              sleep 5
+            done
+          done
+
+          echo "TavernKeeper did not accept the targeted scan after three dispatches." >&2
+          exit 1

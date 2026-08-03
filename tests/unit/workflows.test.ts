@@ -173,6 +173,13 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
     REPOSITORY_ID: "${{ steps.resolve.outputs.repository_id }}",
   });
   expect(dispatch.run).toContain("inputs:{repository_id:$repository_id}");
+  expect(dispatch.run).toContain(
+    'run_title="Tavernary targeted scan #$REPOSITORY_ID"',
+  );
+  expect(dispatch.run).toContain("for dispatch_attempt in 1 2 3");
+  expect(dispatch.run).toContain('"$status" == "in_progress"');
+  expect(dispatch.run).toContain('"$conclusion" == "cancelled"');
+  expect(dispatch.run).toContain("actions/workflows/targeted-scan.yml/runs");
   expect(dispatch.run).not.toMatch(
     /repository_url|source_id|target_sha|branch|mode|model|priority|token_budget|clone_url/iu,
   );
@@ -669,7 +676,26 @@ test("recovers a failed report Pages dispatch by redispatching and verifying the
   const noDiffSource = commitSource.slice(noDiffStart, noDiffEnd);
   const rebase = commitSource.indexOf("git rebase origin/main");
   const validate = commitSource.indexOf("npm run check", rebase);
-  const push = commitSource.indexOf("git push origin HEAD:main", validate);
+  const finalFetch = commitSource.indexOf(
+    "git fetch --no-tags origin main",
+    validate,
+  );
+  const finalRebase = commitSource.indexOf(
+    "git rebase origin/main",
+    rebase + "git rebase origin/main".length,
+  );
+  const catalogValidate = commitSource.indexOf(
+    "npm run catalog:validate",
+    finalRebase,
+  );
+  const reportValidate = commitSource.indexOf(
+    "npm run security:validate-reports",
+    catalogValidate,
+  );
+  const push = commitSource.indexOf(
+    "git push origin HEAD:main",
+    reportValidate,
+  );
 
   expect(noDiffStart).toBeGreaterThanOrEqual(0);
   expect(noDiffSource).toContain("git fetch --no-tags origin main");
@@ -679,7 +705,11 @@ test("recovers a failed report Pages dispatch by redispatching and verifying the
   expect(commitSource).toContain("for attempt in 1 2 3");
   expect(rebase).toBeGreaterThanOrEqual(0);
   expect(rebase).toBeLessThan(validate);
-  expect(validate).toBeLessThan(push);
+  expect(validate).toBeLessThan(finalFetch);
+  expect(finalFetch).toBeLessThan(finalRebase);
+  expect(finalRebase).toBeLessThan(catalogValidate);
+  expect(catalogValidate).toBeLessThan(reportValidate);
+  expect(reportValidate).toBeLessThan(push);
 
   expect(deploy?.if).toBeUndefined();
   expect(deploy?.env?.SOURCE_SHA).toBe("${{ steps.commit.outputs.sha }}");

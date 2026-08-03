@@ -16,6 +16,7 @@ const recursionSource = {
 const recursionProject = {
   id: "mentallyquill-recursion",
   source_id: recursionSource.id,
+  kind: "extension",
   listing_status: "active",
 };
 
@@ -70,6 +71,11 @@ describe("staff TavernKeeper scan request resolution", () => {
       resolve({ sources: [{ ...recursionSource, status: "inactive" }] }),
     ).toThrow(/published Tavernary/iu);
     expect(() => resolve({ projects: [] })).toThrow(/published Tavernary/iu);
+    expect(() =>
+      resolve({
+        projects: [{ ...recursionProject, kind: "preset" }],
+      }),
+    ).toThrow(/published Tavernary/iu);
   });
 
   test("tracks only sorted unique positive numeric operator IDs", async () => {

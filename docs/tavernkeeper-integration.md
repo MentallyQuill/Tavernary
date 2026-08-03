@@ -56,6 +56,9 @@ repository ID and a lowercase 40-character target SHA. It contains no command,
 clone URL, branch, scan mode, token budget, or requester-controlled workflow
 parameter.
 
+Eligibility is limited to published extension and frontend cards. Preset-only
+sources are omitted even when their files are hosted on GitHub.
+
 Tavernary accepts only TavernKeeper Preferred Index V5 and Technical Report V5:
 
 - [`data/schemas/tavernkeeper-report-index.v5.schema.json`](../data/schemas/tavernkeeper-report-index.v5.schema.json)
