@@ -731,6 +731,7 @@ test("reuses an existing frontend identity when redrafting the same source", asy
     frontendProjects: [
       {
         id: "owner-repo",
+        name: "Repo",
         kind: "frontend",
         source_id: "github-42",
         frontends: ["repo-owner"],
