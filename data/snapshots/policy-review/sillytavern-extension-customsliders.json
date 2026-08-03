@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-extension-customsliders",
+  "source_id": "github-960096638",
+  "source_identity": "github:sillytavern/extension-customsliders",
+  "evidence_fingerprint": "ca57bc291db3d04db790a24b31b18650614d2168a9738b45011944a190a4df41",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:08:11.496Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:08:11.496Z"
+  },
+  "maintenance_issue_number": null
+}
