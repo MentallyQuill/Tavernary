@@ -174,6 +174,30 @@ function jsonResponse(value: unknown) {
   });
 }
 
+function assessedEntry(
+  indexEntry: Record<string, any>,
+  overrides: Record<string, any> = {},
+): Record<string, any> {
+  return {
+    ...indexEntry,
+    assessed_at: "2026-08-02T12:06:00.000Z",
+    synthesis_policy_version: "1",
+    synthesis_model: "gpt-5.6-luna",
+    assessment: {
+      risk_level: "low",
+      headline: "Low concern",
+      summary: "No contextual concerns were identified in this scan.",
+      minor_cautions: 0,
+      material_concerns: 0,
+      high_danger: 0,
+      malicious_evidence: "No evidence of malicious behavior was identified.",
+      cited_finding_ids: [],
+      interaction_chains: [],
+    },
+    ...overrides,
+  };
+}
+
 describe("TavernKeeper V5 report import", () => {
   test("accepts only scanner policy 3 as active catalog evidence", () => {
     expect(ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION).toBe("3");
@@ -446,6 +470,97 @@ describe("TavernKeeper V5 report import", () => {
       generated_at: emptyIndex.generated_at,
       preferred_report_ids: [],
       reports: [],
+    });
+    await expect(
+      readFile(outputPath, "utf8").then((contents) => JSON.parse(contents)),
+    ).resolves.toEqual({
+      schema_version: 5,
+      generated_at: emptyIndex.generated_at,
+      preferred_report_ids: [],
+      reports: [],
+    });
+  });
+
+  test("rejects an older empty index before it can clear retained assessments", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-replay-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index] = await fixtures();
+    const retained = assessedEntry(index.reports[0]);
+    const previous = `${JSON.stringify({
+      schema_version: 5,
+      generated_at: "2026-08-03T22:31:00.000Z",
+      preferred_report_ids: [retained.report_id],
+      reports: [retained],
+    })}\n`;
+    await writeFile(outputPath, previous);
+    const staleEmptyIndex = {
+      schema_version: 5,
+      generated_at: "2026-08-03T22:30:59.000Z",
+      reports: [],
+    };
+
+    await expect(
+      importTavernKeeperReports({
+        root,
+        outputPath,
+        registry,
+        dnsLookup: publicDnsLookup,
+        requestImpl: async () => jsonResponse(staleEmptyIndex),
+      }),
+    ).rejects.toThrow(/older/u);
+    expect(await readFile(outputPath, "utf8")).toBe(previous);
+  });
+
+  test("retains historical assessments for a non-empty authoritative index", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-history-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index] = await fixtures();
+    const current = assessedEntry(index.reports[0]);
+    const historicalId = "f".repeat(64);
+    const historicalSha = "b".repeat(40);
+    const historical = assessedEntry(
+      {
+        ...index.reports[0],
+        report_id: historicalId,
+        report_digest: historicalId,
+        scanner_policy_version: "2",
+        target_sha: historicalSha,
+        completed_at: "2026-08-01T12:00:00.000Z",
+        report_url:
+          `https://mentallyquill.github.io/TavernKeeper/reports/github/42/` +
+          `${historicalSha}/2/${historicalId}/`,
+      },
+      { assessed_at: "2026-08-01T12:06:00.000Z" },
+    );
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 5,
+        generated_at: index.generated_at,
+        preferred_report_ids: [current.report_id],
+        reports: [historical, current],
+      })}\n`,
+    );
+
+    await expect(
+      importTavernKeeperReports({
+        root,
+        outputPath,
+        registry,
+        dnsLookup: publicDnsLookup,
+        requestImpl: async () => jsonResponse(index),
+      }),
+    ).resolves.toMatchObject({
+      preferred_report_ids: [current.report_id],
+      reports: [historical, current],
     });
   });
 

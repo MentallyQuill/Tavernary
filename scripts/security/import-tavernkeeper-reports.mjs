@@ -85,6 +85,11 @@ export async function importTavernKeeperReports(options = {}) {
     registry,
   );
   const previous = await readPrevious(outputPath, registry);
+  if (Date.parse(index.generated_at) < Date.parse(previous.generated_at)) {
+    throw new Error(
+      "TavernKeeper report index is older than the tracked assessment snapshot",
+    );
+  }
   const existing = new Map(
     previous.reports.map((entry) => [entry.report_id, entry]),
   );
