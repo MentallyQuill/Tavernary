@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "enerccio-sillytavern-directcommand",
+  "source_id": "github-1268540573",
+  "source_identity": "github:enerccio/sillytavern-directcommand",
+  "evidence_fingerprint": "a5171a125752c712c598ef35cb7eec029ae9cfd69195851043f004bb03ab1d4c",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T08:29:08.851Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T08:29:08.851Z"
+  },
+  "maintenance_issue_number": null
+}
