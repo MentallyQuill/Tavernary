@@ -1,11 +1,13 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, test } from "vitest";
 
 import {
   historyStaticParams,
   TavernKeeperAssessmentHistory,
 } from "@/app/security/tavernkeeper/history/[sourceId]/page";
 import type { TavernKeeperAssessedReport } from "@/features/catalog/tavernkeeper-status";
+
+afterEach(() => cleanup());
 
 function report(
   overrides: Partial<TavernKeeperAssessedReport> = {},
