@@ -339,6 +339,7 @@ for (const width of [390, 320]) {
       await expect(action).toHaveCSS("min-height", "44px");
     }
     await expectNoHorizontalOverflow(page);
+    await page.mouse.move(0, 0);
     await expect(sheet).toHaveScreenshot(`alpha-kit-inspector-${width}px.png`, {
       animations: "disabled",
     });
