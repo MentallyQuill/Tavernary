@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "enerccio-sillytavern-mangagenerator",
+  "name": "SillyTavern-MangaGenerator",
+  "kind": "extension",
+  "summary": "SillyTavern-MangaGenerator turns roleplay chat logs into sequential manga panel layouts and compiles high-fidelity prompts for visual asset generation.",
+  "metadata_status": "curated",
+  "source_id": "github-1258163299",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "generate-images",
+    "modular-and-extensible",
+    "plan-stories-and-scenes"
+  ],
+  "cataloged_at": "2026-08-03T08:36:52.845Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
