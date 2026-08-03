@@ -13,7 +13,7 @@ export const TAVERNKEEPER_ORIGIN = "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX = "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL =
   "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "2";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION = "3";
 
 const digestPattern = /^[0-9a-f]{64}$/u;
 const fullShaPattern = /^[0-9a-f]{40}$/u;
@@ -197,6 +197,9 @@ function assertSourceIdentity(entry, sources) {
   ) {
     throw new Error("TavernKeeper report identity does not match Tavernary");
   }
+}
+
+function assertActiveScannerPolicy(entry) {
   if (
     entry.scanner_policy_version !== ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION
   ) {
@@ -211,6 +214,7 @@ function assertIndexSemantics(index, registry) {
   for (const entry of index.reports) {
     assertCanonicalIndexEntry(entry);
     assertSourceIdentity(entry, sources);
+    assertActiveScannerPolicy(entry);
     if (
       reportIds.has(entry.report_id) ||
       repositoryIds.has(entry.repository_id)
@@ -589,6 +593,7 @@ export function validateStoredReportIndex(snapshot, registry) {
     if (!report) {
       throw new Error("Tracked TavernKeeper preferred report ID is unknown");
     }
+    assertActiveScannerPolicy(report);
     if (preferredRepositories.has(report.repository_id)) {
       throw new Error(
         "Tracked TavernKeeper preferred repositories are duplicate",

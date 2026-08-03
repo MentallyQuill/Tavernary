@@ -200,7 +200,7 @@ export interface TavernKeeperFetchOptions {
 export const TAVERNKEEPER_ORIGIN: "https://mentallyquill.github.io";
 export const TAVERNKEEPER_REPORTS_PATH_PREFIX: "/TavernKeeper/reports/";
 export const TAVERNKEEPER_REPORT_INDEX_URL: "https://mentallyquill.github.io/TavernKeeper/reports/index.json";
-export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "2";
+export const ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION: "3";
 
 export function computeReportDigest(reportBody: object): string;
 export function validateReportIndex(
