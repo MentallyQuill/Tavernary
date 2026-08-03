@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aeoness-swipe-sculpt",
+  "source_id": "github-1311748930",
+  "source_identity": "github:aeoness/swipe-sculpt",
+  "evidence_fingerprint": "34fffdb1647d09d817086d99a86cb3a88c3e77eef28373eea305f0345cc8645a",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-03T11:06:47.019Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-03T11:06:47.019Z"
+  },
+  "maintenance_issue_number": null
+}
