@@ -1,6 +1,6 @@
-# TavernKeeper Cross-Repository Security Scanning Design
+# TavernKeeper Cross-Repository Contextual Security Design
 
-- **Status:** Approved deterministic-production design
+- **Status:** Approved design; implementation pending
 - **Original date:** 2026-07-31
 - **Revised:** 2026-08-02
 - **Canonical location:** Tavernary
@@ -8,115 +8,155 @@
 
 ## 1. Executive summary
 
-TavernKeeper is a separate public AGPL-3.0 repository that performs advisory,
-static security scans of eligible GitHub projects listed by Tavernary.
-Tavernary decides which catalog sources are eligible and publishes their exact
-repository identities and current SHAs. TavernKeeper owns scanner policy,
-exact-SHA acquisition, deterministic scanning, result derivation, immutable
-report publication, scan history, retry state, and operational incidents.
+TavernKeeper is a separate public AGPL-3.0 repository that performs advisory
+security scans of eligible GitHub projects listed by Tavernary. Tavernary owns
+catalog eligibility, source identity, final project-level assessment, and the
+public card experience. TavernKeeper owns exact-SHA acquisition, deterministic
+scanning, evidence construction, contextual finding review, technical reports,
+history, retries, and scan operations.
 
-The production pipeline has no language-model dependency. TavernKeeper never
-sends repository source, scanner output, or report data to a model provider.
-Required deterministic scanners produce normalized evidence; a versioned
-TavernKeeper policy decides which findings are reportable and derives the red
-or teal conclusion. A deterministic renderer uses reviewed rule metadata and
-bounded templates to create concise plain-language results.
+Deterministic scanners are candidate locators, not public judges. Their matches
+identify concrete files, lines, data sources, sinks, package advisories, and
+other evidence that merits contextual review. TavernKeeper groups related
+matches by file, constructs bounded source context, and asks its configured
+model to classify each item as expected behavior, a minor weakness, a material
+vulnerability, or credible malicious behavior. The configured model is
+replaceable without changing the cross-repository contract. The intended first
+release model is `deepseek/deepseek-v4-flash-0731:thinking` through NanoGPT.
 
-The repositories communicate asynchronously through public versioned JSON
-contracts and input-free GitHub App wake events. GitHub Actions performs the
-work, TavernKeeper Pages hosts reports, and Tavernary imports validated report
-summaries for the project-card interface. No backend, database, webhook server,
+TavernKeeper publishes the complete sanitized technical record: deterministic
+evidence, contextual assessments, coverage, limitations, and exact-SHA links.
+Tavernary imports that structured record and uses its strict-JSON Luna model to
+synthesize the repository-level grade and concise layman's summary. Tavernary
+enforces deterministic evidence floors around Luna's result, so green items
+cannot cancel yellow or red evidence and the final grade cannot be lowered
+beneath supported high-confidence findings.
+
+Production is fully automated. Humans may trigger, pause, resume, or force a
+rescan, but no production report, finding disposition, project grade, or card
+update waits for manual review. If required scanner coverage, model context,
+schema validation, evidence binding, or publication fails, no degraded result
+is published.
+
+The two repositories communicate asynchronously through public versioned JSON
+contracts and least-privilege GitHub App wake events. GitHub Actions performs
+the work, TavernKeeper Pages hosts technical reports, and Tavernary publishes
+the final card assessment. No runtime backend, database, webhook server,
 scanning daemon, or second report repository is required.
-
-Production is fully automated. A complete result does not wait for staff
-review, dismissal, recoloring, or approval. An incomplete scan publishes
-nothing. Results are advisory and never certify, hide, quarantine, rank, or
-delist a Tavernary project.
 
 ## 2. Goals
 
-TavernKeeper must:
+TavernKeeper and Tavernary must together:
 
-1. Detect deterministic evidence of credential exposure, credential theft,
-   suspicious transmission, dangerous install behavior, vulnerable
-   dependencies, unsafe GitHub automation, obfuscation, and other configured
-   security concerns.
-2. Bind every report to an immutable GitHub repository ID and exact commit SHA.
-3. Inventory the complete current tree and scan the bounded recent history
-   wherever the configured tool supports it.
-4. Run every scanner applicable under one versioned policy without executing
-   target code.
-5. Derive the same assessment fields, findings, conclusion, and summary from
-   identical evidence and policy inputs. Operational timestamps may differ.
-6. Explain findings in concise language without generated prose or untrusted
-   raw scanner text.
-7. Publish sanitized immutable JSON and script-free HTML reports with history.
-8. Integrate with Tavernary without sharing repository write credentials.
-9. Fail closed: missing coverage, malformed evidence, tool failure, schema
-   failure, or publication failure produces no report.
-10. Support staff-targeted scans without exposing a public spend or abuse
-    surface.
-11. Recover from missed wake events through scheduled reconciliation.
-12. Process the catalog fairly in batches of at most five repositories and at
-    most two concurrent scan jobs.
+1. Detect evidence of credential theft, phishing, harmful persistence, trojan
+   packages, hidden execution, bot infection, exploitable vulnerabilities,
+   exposed secrets, unsafe automation, and related security concerns.
+2. Distinguish those threats from powerful but expected SillyTavern extension
+   behavior such as host-state access, UI mutation, model-provider calls,
+   generation interception, and configuration persistence.
+3. Bind every scan, finding, assessment, and public link to an immutable GitHub
+   repository ID and exact commit SHA.
+4. Inventory the complete current tree and scan the bounded recent history
+   wherever a required tool supports it.
+5. Run every applicable deterministic scanner without executing target code.
+6. Preserve every normalized scanner match while treating it only as evidence
+   for contextual classification.
+7. Give the contextual reviewer sufficient project, file, data-flow, and code
+   context to make a proportional judgment.
+8. Produce plain-language explanations that nontechnical Tavernary visitors
+   can understand without hiding the underlying technical evidence.
+9. Publish sanitized immutable technical reports and a separately bound final
+   Tavernary assessment with accessible card and history interfaces.
+10. Keep model providers and models replaceable behind stable contracts.
+11. Integrate without sharing repository write credentials or accepting public
+    scan requests.
+12. Fail closed on incomplete scans or assessments and recover through bounded
+    retry and circuit-breaker behavior.
+13. Process at most five repositories per batch and preserve the approved
+    Top-30, new-submission, and older-project priority lanes.
 
 ## 3. Non-goals
 
-V1 does not provide:
+This design does not provide:
 
-- Safety certification, malware prevention, or guarantees
-- Runtime execution, behavioral detonation, builds, tests, package installs,
-  macros, containers, or target Actions execution
-- Semantic whole-repository language-model review
-- Model-generated summaries, verdicts, or finding dispositions
-- Public or owner-initiated scan requests
-- Private-repository or non-GitHub scanning
-- Preset scanning, including presets whose files happen to be stored on GitHub
-- Automatic owner notification for operational failures
-- Individual finding dismissal or staff recoloring
-- Automatic moderation, hiding, ranking, quarantine, or delisting
-- A special reduced scan for large repositories
-- Separate standard and deep production modes
+- Safety certification, malware prevention, or a guarantee that a project is
+  free of unknown harmful behavior
+- Runtime execution, behavioral detonation, package installation, target
+  builds, target tests, target Actions, macros, or target containers
+- A public or project-owner scan request surface
+- Staff dismissal of individual findings, manual recoloring, or publication
+  approval
+- Automatic hiding, ranking, quarantine, moderation, or delisting
+- Private-repository, Codeberg, Reddit, arbitrary-download, or preset scanning
+- A reduced production scan for large repositories
+- A token-budget guess that silently truncates source or evidence
+- An independent whole-repository model search untethered from deterministic
+  evidence; the model reviews every scanner candidate with surrounding project
+  and source context and may add only directly related cited observations
+- Majority voting in which numerous green findings cancel a serious finding
+- Publication of hidden model reasoning, raw secrets, raw provider responses,
+  or untrusted scanner prose
+- Long-term compatibility readers for development-only report schemas V1-V4
 
 ## 4. Product semantics
 
 ### 4.1 Advisory meaning
 
-TavernKeeper reports what its named scanners and versioned rules found at one
-commit. A teal result means no finding met the reportable threshold under that
-policy. It does not mean safe, trusted, verified, certified, or free of unknown
-malicious behavior.
+TavernKeeper reports what its named scanners and contextual review policy found
+at one commit. Tavernary reports the final automated assessment of that same
+evidence. Neither result means safe, trusted, verified, certified, or free of
+unknown malicious behavior.
 
-Every public surface must use bounded language such as “No reportable concerns
-were detected at this commit.” It must not say “safe,” “clean,” “secure,” or an
-equivalent guarantee.
+Public language may say that no material concern was identified under the
+completed policy. It must not say that a project is safe, clean, or certified.
+The scan icon factually communicates that scanning and assessment occurred.
 
-### 4.2 Public states
+### 4.2 Risk levels and colors
 
-TavernKeeper publishes only:
+Risk and freshness are separate dimensions. The final assessment stores a
+semantic `risk_level` and maps it to Tavernary's theme colors:
 
-- `teal`: every required applicable scanner completed and no normalized finding
-  has both medium-or-higher severity and medium-or-higher confidence.
-- `red`: every required applicable scanner completed and at least one normalized
-  finding meets that threshold.
+- `low` / teal: no material danger was identified. This is a broad range from
+  no concerns through minor sensitivities, weaknesses, or hardening advice.
+- `material` / orange: one or more credible security weaknesses could plausibly
+  harm users and should be considered, but the evidence does not support a
+  high-danger conclusion.
+- `high` / red: credible malicious behavior or a severe, readily exploitable
+  vulnerability was identified.
 
-Tavernary derives presentation-only states:
+Teal is not limited to a perfect repository. A project with ordinary cautions
+remains teal when those cautions do not create meaningful danger. The panel and
+report explain the cautions rather than inventing a fourth risk grade.
 
-- `orange`: the newest complete report is teal but its SHA no longer matches
-  Tavernary's current healthy repository SHA; an updated scan is pending.
-- `gray`: the eligible GitHub project has no complete TavernKeeper report.
-- `unsupported`: the project source or project kind is outside scan policy.
-  Tavernary renders this with its super-dark-teal token.
+Tavernary also presents:
 
-A red report remains red even when stale. A later forced or queued scan may
-replace the preferred report only after the new scan completes and publishes.
+- Gray for an eligible source without a complete final assessment.
+- Super-dark teal for an unsupported source or project kind.
 
-### 4.3 Eligible catalog entries
+Color is always paired with text. Public copy uses `Low concern`,
+`Material concern`, and `High danger` rather than `safe` or `clean`.
 
-Tavernary includes active GitHub-backed projects that its catalog policy marks
-eligible. Codeberg, Reddit, arbitrary download pages, and presets are
-unsupported. TavernKeeper accepts no arbitrary clone URL and derives checkout
-coordinates only from Tavernary's validated GitHub repository identity.
+### 4.3 Freshness
+
+Freshness is computed by Tavernary from the assessed SHA and the repository SHA
+observed during the most recent successful site-wide refresh:
+
+- `current`: the SHAs match.
+- `stale`: the SHAs differ and an updated scan is pending or queued.
+
+The scan icon retains its risk color when stale. A small clock marker and
+accessible label communicate staleness. A stale red assessment remains red; a
+stale teal assessment remains teal. The panel links the scanned SHA so visitors
+can inspect or download the exact assessed revision.
+
+### 4.4 Eligible catalog entries
+
+Active GitHub-backed projects marked eligible by Tavernary may be scanned.
+Presets are unsupported even when stored on GitHub because they do not execute
+as extensions or applications. Codeberg, Reddit, arbitrary download pages, and
+other unsupported sources receive no scan request. TavernKeeper accepts no
+arbitrary clone URL and derives checkout coordinates from Tavernary's validated
+GitHub repository identity.
 
 ## 5. Repository responsibilities
 
@@ -125,547 +165,799 @@ coordinates only from Tavernary's validated GitHub repository identity.
 - Catalog eligibility and project kind
 - Active source identity, immutable GitHub repository ID, canonical owner/name,
   and current healthy head SHA
-- The public target manifest
+- The public exact-SHA target manifest
 - Staff authorization for targeted scans by exact GitHub URL
-- Import validation and the tracked summary snapshot
-- SHA freshness, presentation state, card mapping, and public UI
+- V5 technical-report import and evidence-floor validation
+- Strict-JSON Luna repository-level synthesis
+- The final risk level, public summary, malicious-evidence statement, cited
+  finding IDs, and assessment history
+- Public final-assessment history pages that bind every grade to its exact
+  TavernKeeper technical report
+- SHA freshness, card mapping, scan-icon state, panel contents, and public UI
 - Catalog refresh and ordinary site deployment
 
 ### 5.2 TavernKeeper owns
 
-- Scanner binaries, rules, configuration, and versioned policy
-- Safe exact-SHA checkout and full inventory
+- Scanner binaries, rules, configuration, and versioned scanner policy
+- Safe exact-SHA checkout, current-tree inventory, and bounded history
 - Scanner applicability and coverage requirements
-- Finding normalization, sanitization, evidence validation, confidence,
-  severity, and reportable status
-- Deterministic summaries and red/teal derivation
+- Finding normalization, sanitization, and stable evidence fingerprints
+- File-centered evidence-context construction
+- Versioned ecosystem context and contextual-review prompt policy
+- Model/provider adapter, configured model, output validation, and retries
+- Per-finding contextual dispositions, explanations, and developer actions
+- Technical Report V5, Preferred Index V5, and immutable technical history
 - Queue resolution, retries, circuit breaker, and staff incidents
-- Immutable JSON/HTML reports, preferred index, and repository history
-- The Publisher App and Pages deployment
+- The Publisher App and TavernKeeper Pages deployment
 
-Tavernary never adjudicates TavernKeeper security evidence. TavernKeeper never
-decides catalog eligibility or modifies Tavernary content directly.
+TavernKeeper does not assign the final Tavernary project grade. Tavernary does
+not rewrite the scanner evidence or TavernKeeper's per-finding assessments.
+Neither repository directly edits the other.
+
+### 5.3 Automation authority
+
+Production evaluation and publication are fully automated. Staff may:
+
+- Trigger one eligible repository through Tavernary's protected GitHub-URL
+  action
+- Pause or resume scanning
+- Retry a failed target
+- Start a global versioned policy-rescan campaign
+- Change global scanner, context, prompt, or model policy through ordinary code
+  review
+
+Staff may not dismiss, edit, hide, recolor, or manually supersede an individual
+finding or report. A correction is expressed through globally reviewed policy
+and a new automated scan. Development inspection of canaries is a release test,
+not a production approval gate.
 
 ## 6. Credentials and GitHub Apps
 
 Two Actions-only wake Apps provide destination-scoped dispatch:
 
 1. Tavernary mints a token for an App installed only on TavernKeeper and sends
-   an input-free reconcile wake.
+   a non-authoritative reconcile wake.
 2. TavernKeeper mints a token for an App installed only on Tavernary and sends
-   an input-free import wake after verified publication.
+   an input-free import wake after verified technical-report publication.
 
-Wake Apps receive only Actions write and required metadata read. A wake payload
-cannot select a repository, SHA, priority, scanner mode, or report URL. The
-destination reconciles its own public input.
+Wake Apps receive only Actions write and required metadata read. A wake cannot
+provide a clone URL, report URL, model, prompt, budget, or scanner mode. The
+destination refetches its own public input. A targeted wake may include only a
+validated repository-ID hint; TavernKeeper still refetches Tavernary's manifest
+and derives the authoritative target.
 
-`TavernKeeper Publisher` is installed only on TavernKeeper. It receives
-contents write and required metadata read but no Actions permission. Mutation
-jobs obtain a short-lived installation token from a protected TavernKeeper
-environment, disable persisted checkout credentials, and scope the token to
-the TavernKeeper repository. Publisher authentication failure stops the write;
-there is no `GITHUB_TOKEN` write fallback.
+`TavernKeeper Publisher` is installed only on TavernKeeper with contents write
+and required metadata read but no Actions permission. Protected mutation jobs
+mint a short-lived installation token, disable persisted checkout credentials,
+and scope the token to TavernKeeper. Publisher authentication failure stops the
+write; there is no `GITHUB_TOKEN` write fallback.
 
-Installation tokens are opaque strings with no length or prefix assumptions.
-The built-in `GITHUB_TOKEN` remains contents-read for TavernKeeper scan jobs.
-Neither repository receives a contents-write credential for the other.
+Installation tokens are opaque strings. Code and workflows make no prefix or
+length assumptions, including assumptions invalidated by GitHub's stateless
+`ghs_` token format.
 
-The TavernKeeper scanning system has no model endpoint, model key, model
-identifier, or provider credential. This constraint does not alter unrelated
-Tavernary catalog-automation features.
+The TavernKeeper model-provider credential is available only to the protected
+scan environment. It is never exposed to target code, reports, artifacts, logs,
+Tavernary, or the Publisher job. The endpoint, model identifier, and compatible
+authentication mode are configuration rather than report-contract constants.
 
 ## 7. Architecture and handshake
 
 ```text
-Tavernary V2 target manifest
-  -> input-free wake or six-hour reconciliation
-  -> TavernKeeper resolves at most five pending repositories
-  -> at most two disposable exact-SHA scan jobs
-  -> inventory and all applicable deterministic scanners
-  -> normalized evidence and deterministic Scan Package V1
-  -> evidence validation, policy classification, summary, and V4 report
-  -> encrypted one-day candidate artifact
-  -> serialized validation and Publisher App commit to TavernKeeper main
+Tavernary V2 target manifest (repository ID + exact SHA)
+  -> input-free wake, targeted hint, or scheduled reconciliation
+  -> TavernKeeper selects at most five pending repositories
+  -> disposable exact-SHA scan jobs
+  -> inventory and every applicable deterministic scanner
+  -> normalized candidate evidence
+  -> file-centered evidence-context builder
+  -> configured TavernKeeper contextual review model
+  -> validated per-finding assessments
+  -> Technical Report and Preferred Index V5
   -> verified TavernKeeper Pages deployment
   -> input-free Tavernary wake
-  -> Tavernary validates/imports V4 summaries and rebuilds cards
+  -> Tavernary validates and imports the bound V5 report
+  -> Luna strict-JSON repository-level synthesis
+  -> deterministic evidence-floor and citation validation
+  -> tracked Tavernary assessment snapshot
+  -> exact-commit Tavernary deployment
+  -> final card color, concise panel, report link, and history
 ```
 
-Both directions also reconcile every six hours so a missed notification cannot
-permanently lose work.
+Both repositories also reconcile every six hours so a missed notification
+cannot permanently lose work. Cross-repository wake events are notifications,
+not trusted data planes.
 
 ### 7.1 Targeted staff scan
 
 Tavernary exposes a staff-only workflow accepting one exact GitHub repository
-URL. It validates staff identity, normalizes the URL, resolves it to one active
-eligible source and immutable repository ID, and sends the same input-free
-TavernKeeper wake. TavernKeeper refetches the manifest and derives the target;
-the URL is never passed as a checkout instruction.
+URL. It normalizes the URL, resolves it to an active eligible source and
+immutable repository ID, refreshes the target SHA, publishes the manifest, and
+wakes TavernKeeper. TavernKeeper refetches that manifest and uses the same
+production scanner, contextual reviewer, publisher, and Tavernary importer as
+ordinary work.
 
-Repeated staff requests coalesce when the same SHA has completed since the
-request entered the queue. A request created after a prior report remains an
-intentional forced rescan.
+No repository is hardcoded as a canary or allow-listed scanning target. A
+targeted request receives queue priority and remains an intentional forced
+rescan when created after a prior report.
 
 ### 7.2 SHA churn
 
-Before checkout begins, queued work coalesces to the manifest's newest SHA.
-After exact-SHA acquisition begins, TavernKeeper finishes and publishes that
-immutable SHA even if Tavernary later observes a newer head. Tavernary keeps
-the report linked to the scanned SHA and derives orange/pending for a stale
-teal report. Repository churn never invalidates a complete historical report.
+Before acquisition begins, queued work coalesces to the manifest's newest SHA.
+After exact-SHA acquisition begins, TavernKeeper finishes that immutable SHA
+even if the repository advances. Tavernary may publish the completed result and
+mark it stale; normal churn does not invalidate an otherwise complete report.
+
+### 7.3 Cross-repository identity binding
+
+Every Tavernary assessment binds all of the following:
+
+- Tavernary source ID
+- GitHub provider and immutable repository ID
+- Canonical repository full name
+- Exact target SHA
+- TavernKeeper report ID and report digest
+- Scanner-policy, context-policy, ecosystem-context, and report-schema versions
+- TavernKeeper review model identifier
+- Tavernary synthesis-policy and model identifiers
+
+A mismatch at any layer fails import or synthesis and cannot update the card.
 
 ## 8. Backlog and scheduling
 
-The ordinary queue is derived from Tavernary's live target manifest, the
-preferred TavernKeeper report index, and secret-free operational retry state.
-It is not a second hand-maintained database.
+The ordinary queue is derived from Tavernary's live target manifest,
+TavernKeeper's preferred V5 index, and secret-free retry state. It is not a
+second hand-maintained database.
 
-Each batch selects at most five repositories. The scan matrix runs at most two
-jobs concurrently. Work is prioritized in three lanes:
+Each batch contains at most five repositories. Repository scan jobs use bounded
+concurrency because individual repositories may be large. Work is prioritized:
 
 1. Current Tavernary Top 30 projects
 2. New submissions first cataloged after coverage begins
 3. Older eligible projects
 
-Within a lane, older pending work comes first. A thirty-day age boost prevents
-starvation without erasing lane identity. Due retries return to their source
-lane. Staff-targeted work enters the same non-cancelling queue and publication
-path. A protected staff-targeted request may run during the initial ordinary-
-backlog pause, but it does not bypass an active system circuit breaker or a
-target's scheduled retry protection.
+Within a lane, older pending work comes first. An age boost prevents starvation
+without removing lane identity. Due retries return to their source lane.
+Staff-targeted requests receive priority but do not bypass an active circuit
+breaker or target retry protection.
 
-The initial rollout remains staff-paused. Normal backlog processing begins only
-after Wandlight and Recursion pass the complete live acceptance path.
+There is no arbitrary repository-size admission gate and no guessed per-project
+token cap. Large projects are split into evidence-oriented model requests while
+preserving complete scanner and candidate coverage. If complete assessment
+cannot be achieved, the repository fails cleanly and publishes nothing.
 
-## 9. Exact-SHA checkout and isolation
+The ordinary backlog remains staff-paused through implementation and initial
+canary validation.
 
-Each repository runs in a fresh GitHub-hosted job with a disposable directory.
+## 9. Exact-SHA acquisition and isolation
+
+Each target runs in a fresh GitHub-hosted job and disposable directory.
 TavernKeeper:
 
-- Resolves a validated `owner/repository` from the immutable repository ID.
-- Fetches only the history needed by policy and checks out the exact SHA.
+- Resolves validated `owner/repository` coordinates from the immutable
+  repository ID.
+- Fetches only the history required by policy and checks out the exact SHA.
 - Disables hooks, credential helpers, interactive prompts, Git LFS smudging,
   submodules, recursive cloning, and local filesystem protocols.
 - Never runs target dependencies, scripts, Actions, tests, builds, binaries,
   containers, package managers, or install hooks.
-- Rechecks that `HEAD` equals the requested SHA before scanning.
+- Rechecks that `HEAD` equals the requested SHA before assessment finalization.
 - Removes the checkout when the disposable job ends.
 
-Target content is always untrusted data. File names, scanner fields, and
-repository metadata cannot become commands, workflow expressions, HTML, or
-unvalidated report paths.
+Target content is untrusted data. File names, metadata, source, README text, and
+scanner output cannot become commands, workflow expressions, report paths, or
+HTML.
 
 ## 10. Inventory and coverage
 
 Inventory precedes scanners and records every safe current-tree entry, byte
-count, type, and content digest. It rejects path traversal, absolute paths,
-portable-name collisions, unsafe links, and other entries that cannot be
+count, type, role, and content digest. It rejects path traversal, absolute
+paths, portable-name collisions, unsafe links, and entries that cannot be
 represented safely.
 
 Inventory classifies dependency lockfiles, vendored dependencies, generated
-bundles, minified files, binaries, archives, oversized files, unsafe entries,
-and ordinary first-party text. Exclusions remain visible as counts and bytes.
-Exclusion from one scanner never implies exclusion from inventory or all
-scanners.
+bundles, minified files, binaries, archives, oversized files, tests, fixtures,
+documentation, tooling, and first-party production text. Scanner-specific
+exclusions remain visible as counts and bytes. Exclusion from one scanner never
+implies exclusion from inventory or every scanner.
 
-There is no catalog-size gate and no smaller policy for large repositories.
-Every tool retains protective runtime and output ceilings. Exceeding a ceiling
-fails the scan with no report rather than silently reducing coverage.
+Protective tool runtime and output ceilings remain. Exceeding a ceiling fails
+the scan rather than silently reducing coverage. A report may publish only when
+every required applicable scanner and every contextual assessment completed.
 
-## 11. Required deterministic scanners
+## 11. Deterministic scanner layer
 
-The initial policy requires:
+The required scanner policy initially includes:
 
-1. **TavernKeeper static rules** for network install hooks, credential access
-   paired with transmission, suspicious shell construction, Unicode controls,
-   and other reviewed structural patterns.
-2. **Gitleaks** over the bounded current and recent Git history, up to twenty
-   commits, for exposed secrets and credentials.
-3. **OpenGrep** with TavernKeeper-owned pinned rules for source patterns.
-4. **OSV-Scanner** for supported manifests and lockfiles without resolving or
-   installing dependencies.
-5. **zizmor** for applicable GitHub Actions workflows.
-6. **Malcontent** in its pinned trusted container with networking disabled, a
-   read-only root filesystem, dropped capabilities, no-new-privileges, and the
-   target mounted read-only.
+1. TavernKeeper structural and data-flow candidate rules
+2. Gitleaks over the current tree and up to twenty recent commits
+3. OpenGrep with TavernKeeper-owned pinned rules
+4. OSV-Scanner for supported manifests and lockfiles without installing
+   dependencies
+5. zizmor for applicable GitHub Actions workflows
+6. Malcontent in a digest-pinned, network-disabled, read-only, capability-free
+   trusted container
 
 A scanner may return `not-applicable` only when inventory proves it has no
-valid inputs. Missing executables, malformed output, timeouts, output-limit
-failures, or non-policy exits are failures, not `not-applicable` results.
+valid inputs. Missing tools, malformed output, timeout, output-limit failure, or
+unexpected exit is failure rather than `not-applicable`.
 
-Scanner additions and rule changes require a new scanner-policy version and
-policy rescan; ClamAV and binary reverse engineering remain deferred.
+Scanner severities are evidence attributes, not final risk grades. Scanner
+matches must remain visible even when contextual review concludes that the
+behavior is expected.
 
-## 12. Normalized findings and rule descriptions
+### 11.1 Rule-quality requirements
 
-Every accepted finding contains:
+Candidate rules must be specific enough to point the reviewer at meaningful
+evidence. Known false-positive classes become regression fixtures. In
+particular:
 
-- Originating scanner and rule ID
-- Category, severity, confidence, and policy status
-- Portable path and optional verified line range
-- Optional evidence SHA or advisory reference
-- Trusted title, explanation, and remediation
-- Stable evidence fingerprint
+- Startup-file rules distinguish actual shell startup paths from property names
+  such as `profile.profileId`.
+- Dynamic-execution rules distinguish operating-system process APIs from
+  ordinary methods such as `RegExp.exec()`.
+- Credential-transmission rules identify a plausible sensitive source and
+  network or persistence sink instead of treating any credential keyword and
+  any `fetch()` in the same file as exfiltration.
+- Secret rules retain test/fixture role information so dummy material can be
+  judged in context.
 
-`policy_status` is:
+Contextual review is not an excuse to preserve obviously defective patterns.
+Deterministic rules and model assessment improve independently.
 
-- `reportable` when severity is medium-or-higher and confidence is
-  medium-or-higher.
-- `informational` otherwise.
+## 12. Normalized candidate evidence
 
-Severity and confidence come from TavernKeeper's versioned adapters and rule
-policy, not arbitrary scanner prose. Known TavernKeeper rules use specific
-reviewed descriptions. Dynamic external findings use category templates filled
-only with validated values such as package, installed version, advisory ID,
-affected path, and fixed version. Unknown or malformed output fails validation;
-TavernKeeper never improvises public text.
+Every accepted scanner match becomes a normalized candidate containing:
 
-Raw secrets, source excerpts, target-supplied descriptions, ANSI sequences,
-HTML, bidirectional controls, and arbitrary URLs are not copied into findings.
+- Stable candidate and evidence fingerprints
+- Scanner name, version, rule ID, and scanner-supplied severity/confidence when
+  available
+- Trusted category and rule description
+- Portable path and verified line range
+- File role: production, test, fixture, documentation, tooling, generated,
+  vendored, or unknown
+- Sanitized source/sink, package/advisory, workflow, or history evidence
+- Optional related candidate IDs
 
-## 13. Deterministic Scan Package V1
+Raw secrets are replaced by type, length, and a nonreversible evidence digest.
+Raw target prose, arbitrary URLs, ANSI, HTML, bidirectional controls, and
+unvalidated scanner fields are never copied into public records or trusted
+prompts.
 
-After all applicable scanners complete, TavernKeeper constructs an internal
-typed package containing:
+Deduplication may group equivalent scanner matches but never drops provenance.
+The report preserves every contributing scanner and evidence fingerprint.
 
-- Repository ID, canonical owner/name, source ID, exact SHA, and history range
-- Scanner, policy, rule-catalog, and package-schema versions
-- Complete inventory and exclusion counts
-- Each required tool's version and completed/not-applicable state
-- Sorted normalized findings
-- Evidence-validation inputs and coverage totals
+## 13. Evidence-context builder
 
-The package contains no raw source corpus, raw scanner response, credential, or
-generated text. Canonical sorting and serialization make its digest stable.
-The package is an internal evidence boundary, not an additional public API.
+TavernKeeper groups candidates by file for contextual review. A request includes
+all candidates in that file plus the minimum surrounding evidence needed to
+understand behavior:
 
-The report builder validates every cited path, line, SHA, fingerprint, count,
-and tool state against this package. Any mismatch publishes nothing.
+- Enclosing function, class, or module scope
+- Relevant imports, local constants, configuration, and manifest declarations
+- Direct callers, callees, data sources, transformations, and destinations
+- Production/test/fixture/documentation/tooling classification
+- Project README and manifest purpose in bounded sanitized form
+- Other findings in the same file and directly related cross-file definitions
+- For history findings, the flagged historical evidence SHA and bounded file
+  context from that revision rather than an unrelated current-tree version
+- Repository identity, exact SHA, project kind, and scanner coverage summary
+- The trusted versioned ecosystem context
 
-## 14. Deterministic conclusion and summary
+The model reviews a file group rather than an isolated line or one finding per
+call. This provides context and avoids duplicated calls. If a file group exceeds
+the provider context window, TavernKeeper splits it by coherent code scope while
+repeating the project and file context needed to assess every candidate.
 
-The policy derives:
+No fixed token estimate decides whether a project deserves complete review.
+Every candidate must receive a valid assessment. Unresolved context causes
+bounded expansion and retry; it never becomes a low-risk default.
 
-- `red` when one or more findings have `policy_status: reportable`.
-- `teal` when none do and all coverage requirements succeeded.
+## 14. Ecosystem context
 
-The concise summary is rendered from trusted templates and normalized counts.
-It contains a bounded headline and detail suitable for the Tavernary card. A
-teal detail says no reportable concerns were detected at the exact commit. A
-red detail states the reportable count and highest severities/categories
-without declaring malicious intent as fact.
+`ecosystem_context_version` identifies a TavernKeeper-owned, reviewed context
+document supplied as trusted policy rather than repository content. It tells
+the reviewer:
 
-The full report groups findings by severity and category, explains each rule in
-plain language, lists remediation, names completed tools, shows inventory and
-exclusions, links the exact GitHub SHA, and states limitations.
+- These are open-source AI-roleplay and SillyTavern-adjacent community projects.
+- Many are hobbyist, AI-assisted, or vibe-coded in good faith and may have
+  imperfect security practices.
+- Legitimate extensions may read host state, intercept generations, store
+  configuration, handle model-provider credentials, call external APIs, modify
+  UI, and persist settings.
+- Capability, security weakness, or a suspicious keyword is not by itself
+  evidence of malicious intent.
+- Rare genuine threats have included API-key phishing or theft, credential
+  exfiltration, trojan packages, concealed execution, harmful persistence,
+  bot infection, and malicious update behavior.
+- Popularity, reputation, community affection, and open source availability are
+  not proof of safety.
 
-Identical package and policy inputs must produce identical assessment fields,
-findings, conclusion, and summary. Completion time, workflow identity, and
-supersession metadata may differ between forced rescans.
+The reviewer evaluates whether behavior is proportional to the stated project
+purpose, disclosed to users, directed to expected destinations, executed at an
+expected time, and implemented without suspicious obfuscation or persistence.
 
-## 15. Public V4 contracts
+Repository content is explicitly delimited as untrusted data and cannot change
+the system policy, output schema, assessment vocabulary, or reviewer role.
 
-### 15.1 Report V4
+## 15. TavernKeeper contextual review
 
-V4 is a new contract rather than a reinterpretation of model-based V2 and V3.
-It
-contains:
+### 15.1 Model-agnostic adapter
 
-- `schema_version: 4`, report ID/version, and optional superseded report ID
-- Scanner, scanner-policy, rule-catalog, and package-schema versions
+TavernKeeper uses an OpenAI-compatible chat-completions boundary with
+configurable endpoint, authentication header, model identifier, timeout, and
+transport settings. No provider or model name is hardcoded into report schemas
+or scanner logic.
+
+The expected first release configuration uses NanoGPT and
+`deepseek/deepseek-v4-flash-0731:thinking`. A different compatible model may be
+selected through reviewed configuration without changing evidence or report
+contracts. TavernKeeper does not silently switch models within one report.
+
+The adapter requests a single structured object per file group. It may extract
+one JSON object from a model response, but the result must pass the complete
+local schema and evidence validator. Malformed or incomplete output enters the
+retry path. Hidden reasoning and provider-specific thinking fields are neither
+stored nor published.
+
+### 15.2 Per-finding assessment contract
+
+Every deterministic candidate receives exactly one contextual assessment with:
+
+- Candidate ID and cited evidence IDs
+- `disposition`: `expected_behavior`, `minor_weakness`,
+  `material_vulnerability`, or `credible_malicious_behavior`
+- `impact`: `none`, `low`, `medium`, `high`, or `critical`
+- `exploitability`: `unlikely`, `plausible`, or `readily_exploitable`
+- `confidence`: `low`, `medium`, or `high`
+- Recommended item risk: `low`, `material`, or `high`
+- Concise technical explanation
+- Concise layman's explanation
+- Recommended developer action, including `none` when appropriate
+- Exact supporting file and line references
+
+`needs_more_context` is a control response, not an assessment. TavernKeeper
+expands or restructures the context and retries. If the item remains unresolved,
+the scan is incomplete and no report publishes.
+
+The model may add a directly related contextual observation only when it cites
+an exact supplied file/line range and explains its relationship to a scanner
+candidate. TavernKeeper validates and stores these separately from scanner
+matches; the model cannot invent uncited repository facts.
+
+### 15.3 Item-risk semantics
+
+- `low`: expected behavior or a minor hardening issue without meaningful user
+  danger
+- `material`: a credible, plausibly exploitable weakness that could harm users
+  but probably does not represent malicious intent
+- `high`: credible malicious behavior or a severe, readily exploitable flaw
+
+Intent and technical impact are separate. A severe accidental vulnerability may
+be high risk without being labeled malicious. A suspicious-looking capability
+may be low risk when its data flow and purpose are expected.
+
+## 16. Technical Report and Index V5
+
+### 16.1 Technical Report V5
+
+V5 is the only accepted contextual-report contract. It contains:
+
+- `schema_version: 5`, report ID, report digest, and supersession identity
 - Source ID, provider, repository ID/name, canonical URL, and exact SHA
-- Completion time and deterministic assessment method
-- History and inventory coverage
-- Tool completion/applicability and evidence-validation state
-- Result, bounded concise summary, finding counts, and normalized findings
+- Completion time and current-tree/history coverage
+- Scanner, rule-catalog, inventory, context, ecosystem, prompt, and schema
+  versions
+- Contextual model and provider identifiers without credentials
+- Every required tool's version and completed/not-applicable state
+- All normalized candidates and contributing evidence
+- Every validated per-finding assessment and contextual observation
+- Counts by disposition, impact, exploitability, confidence, and item risk
+- Sanitized limitations and model-independent coverage facts
 
-V4 has no model, provider endpoint, prompt-policy, token, chunk, or automated
-review-role fields. It does not use model-derived `confirmed` terminology.
-
-The report ID is a SHA-256 digest of canonical report identity and content.
-Public JSON and script-free HTML use immutable paths under:
+Report identity is a digest of its canonical identity and content. JSON and
+script-free HTML use immutable paths under:
 
 ```text
-/reports/github/{repository_id}/{target_sha}/{scanner_policy_version}/{report_version}/
+/reports/github/{repository_id}/{target_sha}/{scanner_policy_version}/{report_id}/
 ```
 
-Each repository also has an immutable ordered history page and JSON document.
+The report is the complete technical evidence record. It does not contain a
+Tavernary project grade, hidden chain of thought, raw secret, raw scanner dump,
+or raw model response.
 
-### 15.2 Preferred index V4
+### 16.2 Preferred Index V5
 
-The preferred index contains the minimal card/import projection: immutable
-identity, exact SHA, policy versions, result, summary, finding counts, coverage
-totals, report URL, and history URL. Only one preferred entry may exist for a
-repository/SHA/policy identity.
+The public preferred index contains the minimum discovery projection needed to
+locate and validate a repository's newest technical report: immutable identity,
+exact SHA, policy versions, report ID/digest, counts, report URL, and technical
+history URL.
 
-Tavernary accepts V4 only after local schema validation, semantic count checks,
-safe canonical URLs, exact repository identity matching, active policy
-matching, and duplicate rejection. Invalid remote data does not replace the
-last valid tracked snapshot.
+Tavernary validates the index, then fetches a newly preferred immutable V5
+report for synthesis. Full finding records are not hydrated into the public
+catalog bundle. Tavernary stores only its bounded final card projection and
+assessment history after successful synthesis.
 
-### 15.3 Evolution and rollout order
+### 16.3 Contract evolution
 
-V1, V2, and model-based V3 schemas remain immutable historical contracts.
-Tavernary first deploys a V4-capable importer while retaining safe historical
-parsing. TavernKeeper then deploys the V4 publisher. The preferred public index
-changes to V4 only after the reader is live. Contract changes thereafter require a new
-schema version and coordinated reader-before-writer rollout.
+Report and index V1-V4 were development contracts and are not accepted by the
+new importer. V4 scanner-only reports for Recursion and Wandlight are removed
+from the current public index and Pages output. There is no compatibility matrix
+or reinterpretation of those grades.
 
-## 16. Publication
+The Tavernary target manifest remains V2 because its identity contract is
+independent and unchanged. Future report-contract changes require a new schema
+version and a coordinated reader-before-writer rollout.
 
-Scan jobs sanitize their candidate, encrypt it with AES-256-GCM, upload only the
-ciphertext as a one-day artifact, and delete plaintext handoff files. A single
-publisher job decrypts in ephemeral storage and prevalidates the entire batch.
+## 17. Tavernary repository-level synthesis
 
-The publisher renders JSON and script-free HTML, updates history and the
-preferred index atomically, validates generated files again, obtains a
-short-lived Publisher App token, and pushes to TavernKeeper `main`. Partial
-writes are rolled back before push. Pages deploys only an exact commit proven
-to be on `main`.
+Tavernary gives Luna the validated V5 assessments, counts, project identity,
+exact SHA, and a Tavernary-owned synthesis policy. Luna does not receive target
+credentials, model-provider secrets, raw secret values, hidden reasoning, or an
+unbounded repository corpus. It synthesizes the already reviewed evidence; it
+does not replace TavernKeeper's source-context review.
 
-After Pages content and index digests are verified, TavernKeeper sends an
-input-free Tavernary wake. A failed push, deployment, or public verification
-publishes no preferred result and does not wake Tavernary.
+The strict-JSON output contains:
 
-## 17. Tavernary card interface
+- Final `risk_level`: `low`, `material`, or `high`
+- Plain-language headline and one- or two-sentence concise summary
+- Minor-caution, material-concern, and high-danger counts
+- A concise malicious-evidence statement
+- Finding IDs supporting every material claim
+- Optional interaction chains explaining why multiple findings combine into a
+  higher project-level risk
+- TavernKeeper report ID and exact SHA
 
-### 17.1 Placement and icon
+### 17.1 Evidence floors
+
+Tavernary calculates a minimum permitted grade before accepting Luna's output:
+
+- A high-confidence `credible_malicious_behavior` assessment creates a `high`
+  floor.
+- A high-confidence critical and readily exploitable vulnerability creates a
+  `high` floor even without malicious intent.
+- A medium-or-higher confidence material vulnerability creates a `material`
+  floor.
+- Expected behavior and minor weaknesses remain within the `low` range.
+
+Green findings never cancel yellow or red evidence. Luna may escalate beyond a
+floor only when it cites a supported causal interaction between findings. For
+example, multiple material weaknesses may combine into high danger. Luna may
+not lower the result beneath the computed floor or make an uncited claim.
+
+Schema, citation, count, floor, and identity validation occurs after synthesis.
+Invalid output retries and cannot update the public assessment.
+
+## 18. Publication and atomicity
+
+TavernKeeper scan jobs sanitize their candidate, encrypt it with AES-256-GCM,
+upload only the ciphertext as a short-lived artifact, and delete plaintext
+handoff files. A serialized publisher decrypts in ephemeral storage, validates
+the entire batch, renders V5 JSON and script-free HTML, updates technical
+history and the preferred index atomically, and pushes through the Publisher
+App. Partial writes are rolled back before push.
+
+Pages deploys only an exact commit proven to be on TavernKeeper `main`. After
+the report, index, and deployment digests are verified, TavernKeeper wakes
+Tavernary.
+
+Tavernary imports only reports from the configured TavernKeeper origin and
+valid immutable path. It validates identity, SHA, policy, digest, schemas,
+counts, citations, and URLs before invoking Luna. Only a fully validated final
+assessment updates Tavernary's tracked card projection and deploys. A technical
+report may exist on TavernKeeper while Tavernary synthesis retries, but it is
+not linked from the Tavernary card until the final assessment succeeds.
+
+Cross-repository publication cannot be one transaction, so each boundary is
+idempotent and fail-closed. A failure never overwrites the last valid tracked
+assessment.
+
+## 19. Card, panel, report, and history experience
+
+### 19.1 Scan icon placement
 
 The scan icon appears immediately after the project's last title character,
 inline with the title. The title yields enough space for the icon before
 ellipsis clipping. A shield is not used because the interface does not imply a
 safety guarantee.
 
-### 17.2 Interaction
+### 19.2 Interaction and concise panel
 
-Hover, keyboard focus, and click/tap expose the same accessible anchored panel.
-The panel does not navigate when opened and closes through outside interaction,
-Escape, or its explicit close behavior. Mobile behavior must not depend on
-hover.
-
-The heading is exactly:
+Hover, keyboard focus, and click/tap expose the same anchored panel. The exact
+heading is:
 
 ```text
 TavernKeeper Scan Results
 ```
 
-The panel contains only concise result content required for this feature:
+For an assessed project, the panel contains:
 
-- Deterministic layman's summary
-- Exact scanned SHA link and freshness wording
-- Nonzero reportable severity counts for red
-- Compact recent teal/red history strip
-- `View full scan history` link
-- Link to the complete immutable report
+- `Low concern`, `Material concern`, or `High danger`
+- Tavernary's one- or two-sentence layman's summary
+- A qualifier such as `3 minor cautions` or `No material concerns`
+- A concise statement about whether malicious behavior was identified
+- Exact scanned SHA link, completion date, and current/stale wording
+- Compact final-assessment history strip
+- `View full report` and `View full scan history` links
 
-Unscanned projects state concisely that TavernKeeper has not scanned the
-project. Unsupported entries state that the source or project type is outside
-TavernKeeper coverage.
+The panel does not list every technical scanner match. Eligible unassessed
+projects state that TavernKeeper has not scanned the project. Unsupported
+projects state that TavernKeeper does not support the source or project type.
 
-### 17.3 Performance and accessibility
+### 19.3 Full technical report
 
-Card payloads use the compact preferred index only. Full findings are not
-hydrated into the catalog. History strips are bounded. The control has an
-accessible name containing state and freshness, visible focus, sufficient
-contrast, reduced-motion support, and keyboard parity. Mobile Safari acceptance
-must prove no layout takeover, clipping regression, scroll lock, or material
-input delay.
+The report begins with approachable counts for scanner matches reviewed,
+expected behavior, minor cautions, material concerns, and high danger. Material
+and high-danger findings appear first. Expected or benign matches remain
+available under a collapsed `Reviewed scanner matches - expected behavior`
+section rather than being hidden.
 
-## 18. Failure, retry, and circuit breaker
+Each finding presents, in order:
 
-No degraded or partial report is ever published.
+1. Plain-language conclusion
+2. Why a scanner noticed it
+3. Contextual security assessment
+4. Possible effect on users
+5. Recommended developer action
+6. Exact GitHub file/line link
+7. Deterministic scanner and evidence metadata
 
-Repository-specific failures delay only that target. System-wide failures stop
-ordinary scanning and engage the circuit breaker. The initial failure is
-retried after one hour, again after two hours, and again after three hours,
-measured from the first failure. Intermediate failures notify neither owners
-nor staff.
+Coverage, policy, tool, and model metadata follow the user-facing explanation.
+The report identifies the assessment as automated and explains its limitations.
 
-If the third retry also fails, TavernKeeper creates or updates one deduplicated
-`scanner-operations` issue for TavernKeeper staff and remains stopped until the
-cause is corrected and staff resume operations. External project owners do not
-receive operational error notices.
+### 19.4 History
 
-System failures include unavailable required scanner infrastructure,
-TavernKeeper contract defects, Publisher authentication failure, corrupted
-operational state, and widespread publication failure. A repository-specific
-malformed tree, unsupported manifest, or target-only tool failure does not stop
-unrelated repositories unless evidence indicates a system defect.
+TavernKeeper retains immutable technical-report history. Tavernary retains
+immutable final-assessment history, and the compact card strip represents only
+Tavernary's final contextual risk levels. Every history point links to its exact
+TavernKeeper report and scanned SHA.
 
-Success and terminal failure transitions clear matching active-scan state.
+`View full scan history` links to Tavernary's final-assessment history page at
+`/security/tavernkeeper/history/{source_id}/`. That page lists the final grade,
+plain-language summary, assessment time, exact scanned SHA, policy/model
+identity, and TavernKeeper report link for each completed assessment. The
+TavernKeeper report separately links its technical-report history.
 
-## 19. Staff controls and policy corrections
+A forced same-SHA rescan creates a new report and assessment with its policy and
+model versions; it may become preferred without erasing valid prior history.
+The Recursion and Wandlight V4 development reports are a one-time exception:
+they are removed rather than preserved as public history because they were not
+contextual assessments under this design.
 
-Protected TavernKeeper staff workflows may pause/resume operations, retry a
-target, or start a versioned policy-rescan campaign. Humans initiate a targeted
-repository scan only through Tavernary's exact-GitHub-URL action.
+### 19.5 Performance and accessibility
 
-Public issues and comments cannot trigger scans. There is no individual false-
-positive dismissal or manual recoloring. If an appeal exposes a scanner or
-normalization defect, staff update global versioned policy through ordinary
-code review and automatically rescan affected repositories. Historical reports
-remain immutable and visible.
+Cards hydrate only the compact Tavernary projection. Full V5 evidence is fetched
+by workflows, not browsers. History strips are bounded. The control includes an
+accessible name with risk and freshness, visible focus, sufficient contrast,
+reduced-motion support, keyboard parity, and mobile tap behavior. Mobile Safari
+acceptance proves no layout takeover, clipping regression, scroll lock, or
+material input delay.
 
-## 20. Threat model
+## 20. Failure, retry, and circuit breaker
+
+No degraded or partial report or assessment is published.
+
+Failure includes incomplete scanner coverage, inventory error, unresolved model
+context, provider timeout, token exhaustion, malformed model output, missing
+assessment, invalid evidence citation, schema mismatch, floor violation,
+publisher failure, and Tavernary synthesis or deployment failure.
+
+After an initial failure, transient failures retry at approximately T+1, T+2,
+and T+3 hours. Intermediate failures notify neither project owners nor staff.
+If the third delayed retry fails, TavernKeeper creates or updates one
+deduplicated operational incident for TavernKeeper staff. External project
+owners do not receive operational-failure notices.
+
+Repository-specific failures delay only that target. A systemic provider,
+token, scanner, contract, authentication, state, or publication failure stops
+ordinary scanning and engages the circuit breaker. Scanning remains stopped
+until staff correct the cause and explicitly resume it. A failed targeted scan
+does not bypass the breaker.
+
+If TavernKeeper fails before V5 publication, nothing new is published. If
+Tavernary Luna or import fails, the last valid assessment remains visible and
+stale; a project without a prior valid assessment remains gray and unassessed.
+No deterministic-only or template-only fallback is allowed.
+
+## 21. Threat model and model safety
 
 TavernKeeper assumes a target may contain malicious paths, enormous files,
-archives, symlinks, secrets, prompt-like text, terminal controls, scanner
-exploits, and content crafted to corrupt reports or workflows.
+archives, symlinks, secrets, prompt injection, terminal controls, scanner
+exploits, and content crafted to corrupt reports, models, or workflows.
 
 Controls include:
 
-- Disposable jobs and exact-SHA identity checks
-- No target execution and minimal network exposure
-- Pinned trusted tools and TavernKeeper-owned configuration
-- Malcontent container isolation
-- Portable-path validation and bounded inputs/outputs
-- Restricted subprocess environments without write credentials
-- Sanitized typed adapters instead of raw-output publication
-- Encrypted inter-job candidates
-- Serialized Publisher App writes and protected `main`
-- Hardened Tavernary fetching, schema validation, URL validation, and atomic
-  tracked-summary replacement
-- Staff-only target requests, input-free cross-repository wakes, batching,
-  concurrency limits, coalescing, and retry circuit breaker
+- Disposable exact-SHA jobs and no target execution
+- Minimal network exposure and no repository write credentials in scan jobs
+- Pinned trusted scanner tools and TavernKeeper-owned configuration
+- Portable-path validation and bounded tool inputs/outputs
+- Secret redaction before model calls, logs, artifacts, and reports
+- A trusted system policy with repository text delimited as untrusted data
+- No tools, shell, repository writes, or privileged actions available to the
+  contextual model
+- Strict schemas, enumerations, citation requirements, and evidence binding
+- No execution or publication of model-generated commands, paths, or URLs
+- Sanitized typed adapters rather than raw scanner/model-output publication
+- Encrypted inter-job candidates and serialized Publisher App writes
+- Hardened Tavernary fetching, digest validation, and atomic snapshot updates
+- Staff-only target requests, bounded batching, coalescing, retries, and circuit
+  breaker
 
-Eliminating runtime model calls also eliminates repository-to-model prompt
-injection, provider credential exposure, token-spend abuse, model output
-hallucination, and provider availability from the scan trust boundary.
+Model confidence is not trusted by itself. A result becomes public only through
+the evidence, schema, identity, and floor validators surrounding both model
+stages.
 
-## 21. Workflows
+## 22. Workflow responsibilities
 
-### 21.1 Tavernary
+### 22.1 Tavernary workflows
 
-1. Build and publish the V2 exact-SHA target manifest.
-2. Send an input-free wake when eligible sources change.
-3. Resolve a staff-entered exact GitHub URL to an eligible repository ID and
-   send the same wake.
-4. Import and validate the V4 preferred index after a wake or schedule.
-5. Commit the validated summary snapshot through Tavernary's existing trusted
-   publication path and rebuild/deploy the site.
+1. Build, validate, and publish the V2 exact-SHA target manifest.
+2. Wake TavernKeeper when eligible sources change.
+3. Resolve a protected staff-entered GitHub URL to an eligible repository ID,
+   refresh its manifest entry, and send a targeted hint.
+4. Import and validate the V5 preferred index and newly preferred reports.
+5. Run Luna synthesis for complete unseen report identities.
+6. Enforce evidence floors and validate strict output.
+7. Commit the bounded final assessment snapshot through Tavernary's trusted
+   publication path and deploy the exact commit.
+8. Reconcile on schedule when wakes are missed.
 
-### 21.2 TavernKeeper
+### 22.2 TavernKeeper workflows
 
-1. Reconcile on an input-free wake, schedule, or approved staff operation.
-2. Resolve at most five requests and scan at most two concurrently.
-3. Prepare exact checkout, inventory, and applicable scanner inputs.
-4. Run required deterministic scanners.
-5. Build and validate Scan Package V1 and Report V4.
-6. Encrypt candidate artifacts.
-7. Serialize publication, update history/index, and push with Publisher App.
-8. Deploy and verify Pages.
-9. Wake Tavernary and optionally continue the backlog.
-10. Maintain pause, retry, circuit-breaker, and policy-campaign state.
+1. Reconcile on an input-free wake, schedule, or protected staff operation.
+2. Resolve at most five queued repositories with bounded scan concurrency.
+3. Acquire exact SHAs, inventory trees, and prepare scanner inputs.
+4. Run every required applicable deterministic scanner.
+5. Normalize candidates and build file-centered evidence contexts.
+6. Run and validate contextual model assessments for every candidate.
+7. Build and validate Technical Report and Preferred Index V5.
+8. Encrypt candidate artifacts and serialize publication.
+9. Deploy and verify TavernKeeper Pages.
+10. Wake Tavernary and optionally continue the derived backlog.
+11. Maintain pause, retry, circuit-breaker, and policy-campaign state.
 
-The former provider-check and deep-scan workflows are removed. Model secrets,
-cache actions, model review steps, and model telemetry are absent from all
-production workflows.
+Each repository remains a standard independent repository using ordinary
+short-lived feature branches and pull requests. The architecture does not
+depend on permanent dual branches or a shared monorepo.
 
-## 22. Observability
+## 23. Observability
 
 Secret-free telemetry records:
 
 - Queue lane, wait age, batch size, and scan concurrency
-- Repository ID and exact SHA, without repository source
-- Inventory files/bytes and exclusion totals
-- Per-tool duration, status, version, and normalized finding counts
-- Package/report schema and policy versions
-- Reportable/informational counts and derived result
-- Retry class, attempt number, circuit-breaker state, and oldest backlog age
-- Publisher commit, Pages deployment, and Tavernary import identity
+- Repository ID and exact SHA
+- Inventory files/bytes, roles, and exclusion totals
+- Per-tool duration, status, version, and candidate counts
+- Context groups, retries, unresolved-context state, and validated assessment
+  counts without source text
+- Scanner, report, ecosystem, context, prompt, and synthesis policy versions
+- Model/provider identifiers, duration, and token usage without prompts or raw
+  responses
+- Disposition, impact, confidence, and risk counts
+- Retry class, attempt number, circuit state, and oldest backlog age
+- Publisher commit, Pages deployment, Tavernary import, synthesis, and deployed
+  assessment identity
 
-Raw scanner output, source content, secrets, credentials, and encrypted
-candidate plaintext never enter logs or telemetry.
+Raw source, prompts containing source, raw scanner output, raw model output,
+secrets, credentials, and decrypted candidate artifacts never enter logs or
+telemetry.
 
-## 23. Testing and acceptance
+## 24. Testing and acceptance
 
-### 23.1 TavernKeeper
+### 24.1 Deterministic and contextual fixtures
 
-- Unit tests cover every adapter, normalizer, threshold, rule description,
-  evidence check, summary template, count invariant, and result derivation.
-- Hostile fixtures cover traversal, collisions, symlinks, binaries, archives,
-  oversized content, bidirectional controls, ANSI, HTML, secret-like values,
-  malformed scanner output, and unknown rules.
-- Contract tests cover Scan Package V1, Report V4, Index V4, histories,
-  immutable paths, and atomic publication.
-- Workflow-policy tests prove target code cannot execute, write credentials are
-  isolated, and no model credential or provider request exists in TavernKeeper
-  scan workflows.
-- Reproducibility tests prove identical evidence and policy produce identical
-  assessment fields, findings, result, and summary.
-- Real-tool smoke and release gates run pinned scanners against controlled
-  fixtures.
+Automated fixtures must distinguish:
 
-### 23.2 Tavernary
+- `profile.profileId` from shell startup-file modification
+- `RegExp.exec()` from operating-system command execution
+- Dummy test credentials from deployable secrets
+- Expected model-provider requests from credential exfiltration
+- Minor credential-storage or browser-boundary weaknesses
+- Material vulnerabilities such as unsafe message origins or exploitable
+  injection
+- Secret transmission to unrelated endpoints
+- Concealed payload execution, trojan installers, and bot persistence
+- README or source prompt injection attempting to override reviewer policy
+- Duplicate findings and one behavior reported by several scanners
 
-- V4 schema, semantic counts, identity, policy, canonical URL, duplicate,
-  redirect, size, timeout, and atomic-write tests.
-- Red, teal, stale-orange, gray, unsupported, and stale-red state tests.
-- Scan-icon placement, title clipping, panel contents, history strip, exact-SHA
-  links, keyboard, touch, focus, reduced-motion, and mobile Safari tests.
-- Invalid remote data preserves the last valid tracked snapshot.
+Tests cover inventory, adapters, normalization, role classification, evidence
+context, context splitting, schema parsing, `needs_more_context`, exact
+citations, related observations, count invariants, floor enforcement, summary
+bounds, and report identity.
 
-### 23.3 Release and live canaries
+### 24.2 Failure and contract fixtures
 
-Both repositories run their full check, typecheck, lint, unit, integration,
-build, workflow-policy, and static-export gates. TavernKeeper additionally runs
-the real pinned scanner gate.
+Tests cover missing context, malformed output, unsupported enumerations, uncited
+claims, quota/token exhaustion, provider timeout, retry exhaustion, circuit
+breaking, incomplete scanners, stale SHAs, duplicate reports, same-SHA rescans,
+publisher rollback, invalid origins, redirects, digest mismatch, and atomic
+Tavernary snapshot preservation.
 
-The model-free pipeline is not accepted until staff-targeted production scans
-of Wandlight and Recursion:
+V5 is the only accepted report/index schema. Tests prove V1-V4 cannot update
+Tavernary. Target Manifest V2 remains independently valid.
 
-1. Complete with every applicable deterministic scanner.
-2. Publish immutable V4 JSON/HTML reports and histories on TavernKeeper Pages.
-3. Import through Tavernary's production V4 reader.
-4. Hydrate on the live Tavernary cards with the correct icon, result, exact
-   SHA, summary, history strip, and links.
-5. Show no model-provider contact or model-token usage in workflows.
+### 24.3 Interface fixtures
 
-The ordinary backlog remains paused until both canaries pass.
+Tavernary tests low/teal, material/orange, high/red, gray, unsupported,
+current, and stale states. UI tests cover inline icon placement, title clipping,
+clock marker, exact panel copy, bounded summaries, history strip, SHA/report
+links, keyboard, touch, focus, reduced motion, and mobile Safari.
 
-## 24. Rollout
+### 24.4 Release gates
 
-1. Commit this canonical revised design.
-2. Implement and deploy Tavernary's V4 reader and card projection first.
-3. Implement TavernKeeper's model-free package, policy, V4 report, and V4 index.
-4. Remove source chunking, model review/synthesis, caches, provider check,
-   provider secrets, deep mode, model telemetry, and superseded documentation.
-5. Run local and CI gates in both repositories.
-6. Deploy TavernKeeper writer and Pages changes.
-7. Trigger Wandlight and Recursion through Tavernary's general staff-targeted
-   GitHub-URL action.
-8. Verify both live end to end.
-9. Resume the Top-30/new/old backlog and monitor scanner runtime, failure rates,
-   oldest work age, and red-result frequency.
+Both repositories run their complete lint, typecheck, unit, integration, build,
+workflow-policy, and static-export checks. TavernKeeper also runs pinned real-
+tool smoke tests and verifies that hostile fixtures and secret values do not
+appear in generated output.
 
-There is no repository-size admission gate. Protective scanner ceilings remain
-fail-closed and may be revised globally through versioned policy when real
-evidence justifies it.
+The contextual models are tested through controlled contract fixtures and the
+real configured endpoints. Deterministic doubles may prove error paths, but the
+release pipeline is not accepted solely from mocked model responses.
 
-## 25. Definition of done
+## 25. Migration and initial rollout
+
+The first implementation milestone is a hard public reset of the invalid
+scanner-only canaries:
+
+1. Remove Recursion report SHA
+   `1bce1fa73fe6c0fe8e767c773a832b94bb336720` and Wandlight report SHA
+   `2d4f818c2ad5855b0faff387d88c3f64479865c6` from TavernKeeper's current
+   published index, report output, and public history.
+2. Remove their imported V4 summaries and history from Tavernary.
+3. Deploy Tavernary with both projects visibly gray and `Not assessed`.
+4. Verify that neither old report URL is served or linked by the live sites.
+
+Git commit history and retained GitHub Actions logs are not rewritten; they
+remain development provenance. The results, grades, and report pages disappear
+from the current public product. They do not become neutral legacy points.
+
+After the reset:
+
+1. Implement and deploy Tavernary's V5 reader, Luna synthesis, evidence floors,
+   and updated card projection.
+2. Implement TavernKeeper's evidence-context builder, contextual model review,
+   V5 report, and V5 preferred index.
+3. Run Recursion through Tavernary's general targeted GitHub-URL action and the
+   complete automated production path.
+4. Run Wandlight through the same path.
+5. Verify each technical report, layman's summary, final color, exact SHA,
+   freshness, panel, accessibility, links, and first history entry live.
+6. Resume ordinary Top-30/new/old scanning only after both canaries pass.
+
+The canaries are expected to prove that benign extension behavior can remain in
+the broad teal range while genuine weaknesses stay visible. Acceptance does not
+hardcode a desired color or suppress credible evidence.
+
+## 26. Definition of done
 
 This design is complete when:
 
-1. Tavernary publishes eligible exact-SHA targets and staff can request one
-   eligible repository by exact GitHub URL.
-2. TavernKeeper safely acquires exact SHAs and runs every applicable required
-   deterministic scanner without target execution.
-3. Scan Package V1 and Report/Index V4 enforce complete coverage, sanitized
-   evidence, deterministic findings, conclusion, and summary.
-4. No TavernKeeper scan-pipeline or Tavernary TavernKeeper-integration code,
-   workflow, configuration, secret, cache, telemetry, or operational dependency
-   invokes a language model.
-5. Partial or failed work publishes nothing and follows the approved retries.
-6. Publisher App writes, Pages deployment, wake events, and Tavernary imports
-   work with least privilege and opaque installation tokens.
-7. Tavernary presents the inline scan icon, exact result, freshness, concise
-   layman's summary, compact history, and full links accessibly.
-8. Historical reports remain immutable; false-positive corrections use global
-   versioned policy and rescans rather than dismissal.
-9. Wandlight and Recursion are verified on TavernKeeper Pages and the live
-   Tavernary website before ordinary backlog scanning resumes.
+1. The invalid Recursion and Wandlight V4 reports are absent from both public
+   products and both cards initially show `Not assessed`.
+2. Tavernary publishes eligible exact-SHA targets and staff can prioritize one
+   eligible repository using its exact GitHub URL.
+3. TavernKeeper safely scans the exact SHA with every required deterministic
+   tool without executing target code.
+4. Every candidate receives complete file-centered contextual assessment under
+   the versioned ecosystem policy.
+5. Technical Report and Preferred Index V5 preserve normalized evidence and
+   validated per-finding judgments without raw secrets or hidden reasoning.
+6. Tavernary Luna produces a strict, cited project assessment that passes
+   deterministic evidence floors.
+7. No partial, truncated, unresolved, malformed, or model-free fallback report
+   can update either public surface.
+8. Publisher App writes, Pages deployment, wake events, Tavernary import, and
+   deployment work with least privilege and opaque installation tokens.
+9. Tavernary presents risk and freshness separately through the inline scan
+   icon, concise panel, exact-SHA links, full report, and contextual history.
+10. Production has no manual review or dismissal gate, while staff retain
+    protected trigger, pause, resume, retry, and global policy controls.
+11. Recursion and Wandlight pass the complete live V5 path and establish their
+    first valid contextual history entries.
+12. The ordinary five-repository batches can resume in Top-30, new-submission,
+    and older-project priority order without arbitrary size or token gates.
 
-## 26. References
+## 27. References
 
 - [GitHub Actions security hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 - [GitHub App installation authentication](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation)
