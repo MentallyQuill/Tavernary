@@ -1,7 +1,19 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-04T21:04:12.348Z",
+  "updated_at": "2026-08-04T21:24:44.645Z",
   "quarantines": [
+    {
+      "report_id": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
+      "report_digest": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
+      "repository_id": 1073040696,
+      "repository": "bmen25124/SillyTavern-Flowchart",
+      "target_sha": "b7c091b0ba227df5913453c311bdf264d7c454be",
+      "synthesis_policy_version": "2",
+      "diagnostic": "unsupported_escalation",
+      "first_failed_at": "2026-08-04T21:24:44.645Z",
+      "last_failed_at": "2026-08-04T21:24:44.645Z",
+      "attempts": 1
+    },
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "report_digest": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
