@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "virgilianshailer-direct-ask",
+  "source_id": "github-1213348010",
+  "source_identity": "github:virgilianshailer/direct-ask",
+  "evidence_fingerprint": "d40ef64eb46d6eaede6f90c8a9016d266b0484b0da6c70d9de4c4bf38e0e11a4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T08:59:55.836Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T08:59:55.836Z"
+  },
+  "maintenance_issue_number": null
+}
