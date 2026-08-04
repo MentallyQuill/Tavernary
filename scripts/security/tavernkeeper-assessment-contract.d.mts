@@ -4,14 +4,57 @@ import type {
   TavernaryAssessmentV1,
 } from "./tavernkeeper-reports.mjs";
 
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "1";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "2";
 export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA: Record<string, unknown>;
+export type TavernaryAssessmentDiagnostic =
+  | "response_schema"
+  | "unknown_candidate_ids"
+  | "missing_candidate_ids"
+  | "count_mismatch"
+  | "interaction_chain_ids"
+  | "below_evidence_floor"
+  | "unsupported_escalation";
+export interface TavernaryAssessmentRepair {
+  rejected_candidate_ids?: string[];
+  required_candidate_ids?: string[];
+  allowed_candidate_ids: string[];
+  required_counts: {
+    minor_cautions: number;
+    material_concerns: number;
+    high_danger: number;
+  };
+}
+export class TavernaryAssessmentValidationError extends Error {
+  constructor(
+    diagnostic: TavernaryAssessmentDiagnostic,
+    repair: TavernaryAssessmentRepair,
+  );
+  diagnostic: TavernaryAssessmentDiagnostic;
+  repair: TavernaryAssessmentRepair;
+}
 export function validateStoredAssessmentShape(
   assessment: unknown,
 ): TavernaryAssessmentV1;
 export function deriveEvidenceFloor(
   assessments: readonly TavernKeeperContextualItemV5[],
 ): TavernKeeperRiskLevel;
+export function tavernKeeperAssessmentRequirements(report: {
+  candidates: Array<{ candidate_id: string }>;
+  assessments: TavernKeeperContextualItemV5[];
+  observations: Array<
+    Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
+      related_candidate_ids: string[];
+    }
+  >;
+}): {
+  allowed_candidate_ids: string[];
+  required_candidate_ids: string[];
+  required_counts: {
+    minor_cautions: number;
+    material_concerns: number;
+    high_danger: number;
+  };
+};
 export function validateTavernaryAssessment(
   assessment: unknown,
   report: {

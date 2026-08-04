@@ -3,12 +3,18 @@ import { resolve } from "node:path";
 
 import { describe, expect, test, vi } from "vitest";
 
+import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import {
   deriveEvidenceFloor,
+  TavernaryAssessmentValidationError,
+  tavernKeeperAssessmentRequirements,
   validateTavernaryAssessment,
 } from "../../scripts/security/tavernkeeper-assessment-contract.mjs";
 import { createTavernKeeperSynthesisProvider } from "../../scripts/security/tavernkeeper-synthesis-provider.mjs";
-import { synthesizeTavernKeeperReport } from "../../scripts/security/tavernkeeper-synthesis.mjs";
+import {
+  synthesizeTavernKeeperReport,
+  TavernKeeperSynthesisError,
+} from "../../scripts/security/tavernkeeper-synthesis.mjs";
 import type { TavernKeeperContextualItemV5 } from "../../scripts/security/tavernkeeper-reports.mjs";
 
 const candidateId = "b".repeat(64);
@@ -82,6 +88,15 @@ function lowOutput(overrides: Record<string, unknown> = {}) {
     interaction_chains: [],
     ...overrides,
   };
+}
+
+function validationFailure(run: () => unknown) {
+  try {
+    run();
+  } catch (error) {
+    return error;
+  }
+  throw new Error("Expected Tavernary assessment validation to fail");
 }
 
 describe("TavernKeeper evidence floors", () => {
@@ -158,31 +173,132 @@ describe("Tavernary final assessment contract", () => {
     expect(validateTavernaryAssessment(output, report)).toEqual(output);
   });
 
-  test("rejects unknown finding citations", () => {
-    expect(() =>
+  test("returns bounded repair data for unknown candidate citations", () => {
+    const unknownId = "f".repeat(64);
+    const error = validationFailure(() =>
       validateTavernaryAssessment(
-        lowOutput({ cited_finding_ids: ["f".repeat(64)] }),
-        reportWith([]),
+        lowOutput({ cited_finding_ids: [unknownId] }),
+        reportWith([assessment()]),
       ),
-    ).toThrow(/unknown finding/u);
+    );
+
+    expect(error).toBeInstanceOf(TavernaryAssessmentValidationError);
+    expect(error).toMatchObject({
+      diagnostic: "unknown_candidate_ids",
+      repair: {
+        rejected_candidate_ids: [unknownId],
+        allowed_candidate_ids: [candidateId],
+        required_counts: {
+          minor_cautions: 0,
+          material_concerns: 0,
+          high_danger: 0,
+        },
+      },
+    });
   });
 
   test("rejects unsafe public prose", () => {
-    expect(() =>
-      validateTavernaryAssessment(
-        lowOutput({ summary: "<script>alert(1)</script>" }),
-        reportWith([]),
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({ summary: "<script>alert(1)</script>" }),
+          reportWith([]),
+        ),
       ),
-    ).toThrow(/unsafe/u);
+    ).toMatchObject({ diagnostic: "response_schema" });
   });
 
-  test("rejects caution counts that do not match the V5 items", () => {
-    expect(() =>
+  test("returns exact deterministic counts when model counts differ", () => {
+    const report = reportWith([assessment({ disposition: "minor_weakness" })]);
+    const error = validationFailure(() =>
       validateTavernaryAssessment(
         lowOutput({ cited_finding_ids: [candidateId] }),
-        reportWith([assessment({ disposition: "minor_weakness" })]),
+        report,
       ),
-    ).toThrow(/count/u);
+    );
+
+    expect(error).toMatchObject({
+      diagnostic: "count_mismatch",
+      repair: {
+        allowed_candidate_ids: [candidateId],
+        required_counts: {
+          minor_cautions: 1,
+          material_concerns: 0,
+          high_danger: 0,
+        },
+      },
+    });
+  });
+
+  test("types every contextual validation boundary", () => {
+    const minorReport = reportWith([
+      assessment({ disposition: "minor_weakness" }),
+    ]);
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({ minor_cautions: 1 }),
+          minorReport,
+        ),
+      ),
+    ).toMatchObject({
+      diagnostic: "missing_candidate_ids",
+      repair: { required_candidate_ids: [candidateId] },
+    });
+
+    const secondId = "e".repeat(64);
+    const thirdId = "f".repeat(64);
+    const chainReport = reportWith([
+      assessment(),
+      assessment({ candidate_id: secondId }),
+      assessment({ candidate_id: thirdId }),
+    ]);
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({
+            risk_level: "material",
+            cited_finding_ids: [candidateId, secondId],
+            interaction_chains: [
+              {
+                finding_ids: [candidateId, thirdId],
+                resulting_risk: "material",
+                explanation: "Two validated findings interact.",
+              },
+            ],
+          }),
+          chainReport,
+        ),
+      ),
+    ).toMatchObject({ diagnostic: "interaction_chain_ids" });
+
+    const materialReport = reportWith([
+      assessment({
+        disposition: "material_vulnerability",
+        confidence: "medium",
+        recommended_risk: "material",
+      }),
+    ]);
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({
+            material_concerns: 1,
+            cited_finding_ids: [candidateId],
+          }),
+          materialReport,
+        ),
+      ),
+    ).toMatchObject({ diagnostic: "below_evidence_floor" });
+
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({ risk_level: "material" }),
+          reportWith([]),
+        ),
+      ),
+    ).toMatchObject({ diagnostic: "unsupported_escalation" });
   });
 
   test("rejects a grade below the deterministic evidence floor", () => {
@@ -206,12 +322,14 @@ describe("Tavernary final assessment contract", () => {
   });
 
   test("rejects escalation beyond the floor without a cited interaction chain", () => {
-    expect(() =>
-      validateTavernaryAssessment(
-        lowOutput({ risk_level: "material" }),
-        reportWith([]),
+    expect(
+      validationFailure(() =>
+        validateTavernaryAssessment(
+          lowOutput({ risk_level: "material" }),
+          reportWith([]),
+        ),
       ),
-    ).toThrow(/interaction chain/u);
+    ).toMatchObject({ diagnostic: "unsupported_escalation" });
   });
 
   test("accepts a supported causal interaction that escalates risk", () => {
@@ -244,6 +362,22 @@ describe("Tavernary final assessment contract", () => {
 describe("strict Luna synthesis", () => {
   test("uses the shared provider transport with Tavernary's strict schema", async () => {
     const report = await fixture();
+    report.candidates = [{ candidate_id: candidateId }];
+    report.assessments = [assessment({ disposition: "minor_weakness" })];
+    report.observations = [
+      {
+        observation_id: "e".repeat(64),
+        related_candidate_ids: [candidateId],
+        disposition: "minor_weakness",
+        impact: "low",
+        exploitability: "unlikely",
+        confidence: "medium",
+        recommended_risk: "low",
+        title: "Related observation",
+        layman_explanation: "A related boundary deserves caution.",
+        developer_action: "Keep the boundary documented.",
+      },
+    ];
     let requestBody: any;
     const provider = createTavernKeeperSynthesisProvider({
       apiUrl: "https://provider.example/v1/chat/completions",
@@ -261,7 +395,16 @@ describe("strict Luna synthesis", () => {
       },
     });
 
-    await provider.generate({ report });
+    const repair = {
+      diagnostic: "count_mismatch",
+      allowed_candidate_ids: [candidateId],
+      required_counts: {
+        minor_cautions: 2,
+        material_concerns: 0,
+        high_danger: 0,
+      },
+    };
+    await provider.generate({ report, repair });
 
     expect(requestBody).not.toHaveProperty("temperature");
     expect(requestBody.response_format).toMatchObject({
@@ -277,8 +420,18 @@ describe("strict Luna synthesis", () => {
     expect(requestBody.messages[0].content).toContain(
       "synthesizing validated assessments, not rescanning code",
     );
-    expect(requestBody.messages[0].content).toContain("cite V5 finding IDs");
-    expect(requestBody.messages[1].content).not.toContain("secret");
+    expect(requestBody.messages[0].content).toContain(
+      "Observation IDs are never valid citations",
+    );
+    const projected = JSON.parse(requestBody.messages[1].content);
+    expect(projected).toMatchObject({
+      allowed_candidate_ids: [candidateId],
+      required_counts:
+        tavernKeeperAssessmentRequirements(report).required_counts,
+      repair,
+    });
+    expect(projected.observations[0]).not.toHaveProperty("observation_id");
+    expect(JSON.stringify(projected)).not.toContain("secret");
   });
 
   test("retries invalid structured output and returns a bound final projection", async () => {
@@ -300,7 +453,11 @@ describe("strict Luna synthesis", () => {
     });
 
     expect(generate).toHaveBeenCalledTimes(2);
-    expect(generate.mock.calls[1][0].repair).toMatch(/unknown finding/u);
+    expect(generate.mock.calls[1][0].repair).toMatchObject({
+      diagnostic: "unknown_candidate_ids",
+      rejected_candidate_ids: ["f".repeat(64)],
+      allowed_candidate_ids: [],
+    });
     expect(result).toMatchObject({
       report_id: report.report_id,
       target_sha: report.target_sha,
@@ -310,7 +467,7 @@ describe("strict Luna synthesis", () => {
     });
   });
 
-  test("fails without a degraded projection after three invalid responses", async () => {
+  test("stops before sending an identical validation repair", async () => {
     const report = await fixture();
     const generate = vi.fn().mockResolvedValue({
       output: lowOutput({ cited_finding_ids: ["f".repeat(64)] }),
@@ -322,7 +479,61 @@ describe("strict Luna synthesis", () => {
         provider: { generate },
         now: () => new Date("2026-08-02T12:06:00.000Z"),
       }),
-    ).rejects.toThrow(/three attempts/u);
+    ).rejects.toMatchObject({ kind: "invalid-output" });
+    expect(generate).toHaveBeenCalledTimes(2);
+  });
+
+  test("preserves a typed terminal invalid-output failure", async () => {
+    const report = await fixture();
+    const generatedSecret = "REJECTED GENERATED PROSE";
+    const generate = vi
+      .fn()
+      .mockResolvedValueOnce({
+        output: lowOutput({ cited_finding_ids: ["f".repeat(64)] }),
+        metadata: { requestedModel: "gpt-5.6-luna" },
+      })
+      .mockResolvedValueOnce({
+        output: lowOutput({ minor_cautions: 1 }),
+        metadata: { requestedModel: "gpt-5.6-luna" },
+      })
+      .mockResolvedValueOnce({
+        output: lowOutput({ summary: `<${generatedSecret}>` }),
+        metadata: { requestedModel: "gpt-5.6-luna" },
+      });
+
+    const error = await synthesizeTavernKeeperReport(report, {
+      provider: { generate },
+    }).catch((value: unknown) => value);
+
+    expect(error).toBeInstanceOf(TavernKeeperSynthesisError);
+    expect(error).toMatchObject({
+      kind: "invalid-output",
+      diagnostic: "response_schema",
+    });
+    expect(JSON.stringify(error)).not.toContain(generatedSecret);
     expect(generate).toHaveBeenCalledTimes(3);
   });
+
+  test.each([
+    ["provider-timeout", "provider-transient"],
+    ["provider-rate-limited", "provider-transient"],
+    ["provider-server-error", "provider-transient"],
+    ["provider-network-error", "provider-transient"],
+    ["provider-authentication-failed", "provider-security"],
+    ["provider-request-failed", "provider-security"],
+    ["provider-model-mismatch", "provider-security"],
+  ] as const)(
+    "classifies %s as %s without report-local retry",
+    async (code, kind) => {
+      const report = await fixture();
+      const generate = vi
+        .fn()
+        .mockRejectedValue(new EnrichmentProviderError(code));
+
+      await expect(
+        synthesizeTavernKeeperReport(report, { provider: { generate } }),
+      ).rejects.toMatchObject({ kind, diagnostic: code });
+      expect(generate).toHaveBeenCalledTimes(1);
+    },
+  );
 });
