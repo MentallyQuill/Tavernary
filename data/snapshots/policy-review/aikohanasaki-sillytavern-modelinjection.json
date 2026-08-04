@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-modelinjection",
+  "source_id": "github-1081424481",
+  "source_identity": "github:aikohanasaki/sillytavern-modelinjection",
+  "evidence_fingerprint": "f0b4f47edb7bee7e02ffaabab86084f0e8afde459ce09fbbe7ed8528429121dd",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:10:30.120Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:10:30.120Z"
+  },
+  "maintenance_issue_number": null
+}
