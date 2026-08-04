@@ -112,6 +112,10 @@ export function SourceCardBatchEditor({
               card={card}
               index={index}
               vocabularies={vocabularies}
+              automaticValues={{
+                summary: sourceCard.editable.summary,
+                tags: sourceCard.editable.tags,
+              }}
               allowKindChange
               onChange={(next) => updateCard(index, next)}
             />

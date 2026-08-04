@@ -16,6 +16,7 @@ export function TagBrowser({
   counts = {},
   searchLabel,
   limitLabel,
+  disabled = false,
 }: {
   tags: readonly PublicTagDefinition[];
   selected: readonly string[];
@@ -25,6 +26,7 @@ export function TagBrowser({
   counts?: Readonly<Record<string, number>>;
   searchLabel: string;
   limitLabel?: string;
+  disabled?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [expandedFacets, setExpandedFacets] = useState({
@@ -63,6 +65,7 @@ export function TagBrowser({
         className="filter-search tag-browser-search"
         type="search"
         value={query}
+        disabled={disabled}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search tags…"
         aria-label={searchLabel}
@@ -84,6 +87,7 @@ export function TagBrowser({
             <button
               className="filter-selected-chip"
               type="button"
+              disabled={disabled}
               aria-label={`Remove ${tag.label}`}
               onClick={() => onToggle(tag.id)}
               key={tag.id}
@@ -111,7 +115,7 @@ export function TagBrowser({
               <div className="tag-browser-options">
                 {visibleGroupTags.map((tag) => {
                   const isSelected = selectedSet.has(tag.id);
-                  const isDisabled = !isSelected && atLimit;
+                  const isDisabled = disabled || (!isSelected && atLimit);
                   return (
                     <FilterChoiceChip
                       className="tag-browser-option"
@@ -130,6 +134,7 @@ export function TagBrowser({
                 <button
                   className="more-frontends tag-browser-disclosure"
                   type="button"
+                  disabled={disabled}
                   aria-expanded={expanded}
                   onClick={() =>
                     setExpandedFacets((current) => ({

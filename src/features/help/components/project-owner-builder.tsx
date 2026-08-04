@@ -177,7 +177,7 @@ function reviewValue(values: string[]) {
 }
 
 function summaryReviewValue(summary: string, mode: "automatic" | "manual") {
-  return summary || (mode === "automatic" ? "Generated automatically" : "");
+  return mode === "automatic" ? "Generated automatically" : summary;
 }
 
 function reviewRows(
@@ -609,6 +609,10 @@ export function ProjectOwnerBuilder({
             card={editCard}
             index={0}
             vocabularies={vocabularies}
+            automaticValues={{
+              summary: selected.editable.summary,
+              tags: selected.editable.tags,
+            }}
             allowKindChange={false}
             compact
             onChange={setEditCard}
