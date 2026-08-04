@@ -4,7 +4,10 @@ import type {
   TavernKeeperSourceRegistryEntry,
   TavernarySynthesisProjection,
 } from "./tavernkeeper-reports.mjs";
-import type { TavernKeeperImportState } from "./tavernkeeper-import-state.mjs";
+import type {
+  TavernKeeperImportState,
+  TavernaryAssessmentDiagnostic,
+} from "./tavernkeeper-import-state.mjs";
 
 export interface TavernKeeperImportOptions {
   root?: string;
@@ -33,17 +36,31 @@ export interface TavernKeeperImportOptions {
   synthesisMaxAttempts?: number;
   batchSize?: number;
   now?: () => Date;
+  retryReportDigest?: string;
+}
+
+export interface TavernKeeperImportIncident {
+  incident_key: string;
+  report_id: string;
+  report_digest: string;
+  repository_id: number;
+  repository: string;
+  target_sha: string;
+  synthesis_policy_version: string;
+  diagnostic: TavernaryAssessmentDiagnostic;
+  attempts: number;
 }
 
 export interface TavernKeeperImportOutcome {
   snapshot: TavernKeeperAssessmentSnapshotV5;
   import_state: TavernKeeperImportState;
   imported: number;
-  failed: number;
-  pending_due: number;
-  pending_delayed: number;
-  next_wake_at: string | null;
-  chronic_failures: number;
+  retained: number;
+  quarantined: number;
+  skipped_quarantines: number;
+  remaining: number;
+  created_or_updated: TavernKeeperImportIncident[];
+  resolved: TavernKeeperImportIncident[];
 }
 
 export function reconcileTavernKeeperReports(

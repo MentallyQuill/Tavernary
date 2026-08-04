@@ -9,10 +9,16 @@ on:
   schedule:
     - cron: "41 */6 * * *"
   workflow_dispatch:
+    inputs:
+      retry_report_digest:
+        description: "Optional exact quarantined report digest to retry"
+        required: false
+        type: string
 
 permissions:
   actions: write
   contents: write
+  issues: write
 
 concurrency:
   group: tavernkeeper-report-import
@@ -26,11 +32,8 @@ jobs:
       changed: ${{ steps.commit.outputs.changed }}
       sha: ${{ steps.commit.outputs.sha }}
       imported: ${{ steps.import.outputs.imported }}
-      failed: ${{ steps.import.outputs.failed }}
-      pending_due: ${{ steps.import.outputs.pending_due }}
-      pending_delayed: ${{ steps.import.outputs.pending_delayed }}
-      next_wake_at: ${{ steps.import.outputs.next_wake_at }}
-      chronic_failures: ${{ steps.import.outputs.chronic_failures }}
+      quarantined: ${{ steps.import.outputs.quarantined }}
+      remaining: ${{ steps.import.outputs.remaining }}
     steps:
       - name: Check out main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -50,22 +53,31 @@ jobs:
           TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
           TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
           TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
+          TAVERNARY_RETRY_REPORT_DIGEST: ${{ inputs.retry_report_digest || '' }}
         shell: bash
         run: |
+          if [[ -n "$TAVERNARY_RETRY_REPORT_DIGEST" && ! "$TAVERNARY_RETRY_REPORT_DIGEST" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "retry_report_digest must be one lowercase 64-character hexadecimal digest." >&2
+            exit 1
+          fi
           result="$(npm run --silent security:import-reports)"
           printf '%s\n' "$result"
           imported="$(jq -er '.imported | select(type == "number")' <<< "$result")"
-          failed="$(jq -er '.failed | select(type == "number")' <<< "$result")"
-          pending_due="$(jq -er '.pending_due | select(type == "number")' <<< "$result")"
-          pending_delayed="$(jq -er '.pending_delayed | select(type == "number")' <<< "$result")"
-          next_wake_at="$(jq -r '.next_wake_at // ""' <<< "$result")"
-          chronic_failures="$(jq -er '.chronic_failures | select(type == "number")' <<< "$result")"
-          echo "imported=$imported" >> "$GITHUB_OUTPUT"
-          echo "failed=$failed" >> "$GITHUB_OUTPUT"
-          echo "pending_due=$pending_due" >> "$GITHUB_OUTPUT"
-          echo "pending_delayed=$pending_delayed" >> "$GITHUB_OUTPUT"
-          echo "next_wake_at=$next_wake_at" >> "$GITHUB_OUTPUT"
-          echo "chronic_failures=$chronic_failures" >> "$GITHUB_OUTPUT"
+          retained="$(jq -er '.retained | select(type == "number")' <<< "$result")"
+          quarantined="$(jq -er '.quarantined | select(type == "number")' <<< "$result")"
+          skipped_quarantines="$(jq -er '.skipped_quarantines | select(type == "number")' <<< "$result")"
+          remaining="$(jq -er '.remaining | select(type == "number")' <<< "$result")"
+          created_or_updated="$(jq -cer '.created_or_updated | select(type == "array")' <<< "$result")"
+          resolved="$(jq -cer '.resolved | select(type == "array")' <<< "$result")"
+          printf 'imported=%s\n' "$imported" >> "$GITHUB_OUTPUT"
+          printf 'retained=%s\n' "$retained" >> "$GITHUB_OUTPUT"
+          printf 'quarantined=%s\n' "$quarantined" >> "$GITHUB_OUTPUT"
+          printf 'skipped_quarantines=%s\n' "$skipped_quarantines" >> "$GITHUB_OUTPUT"
+          printf 'remaining=%s\n' "$remaining" >> "$GITHUB_OUTPUT"
+          printf 'created_or_updated=%s\n' "$created_or_updated" >> "$GITHUB_OUTPUT"
+          printf 'resolved=%s\n' "$resolved" >> "$GITHUB_OUTPUT"
+          printf '## TavernKeeper report import\n\n- Imported: %s\n- Retained: %s\n- Quarantined: %s\n- Skipped quarantines: %s\n- Remaining: %s\n' \
+            "$imported" "$retained" "$quarantined" "$skipped_quarantines" "$remaining" >> "$GITHUB_STEP_SUMMARY"
       - name: Validate imported summaries
         run: npm run check
       - name: Commit and publish changed summaries
@@ -107,6 +119,56 @@ jobs:
               exit 1
             fi
           done
+      - name: Reconcile report synthesis incidents
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CREATED_OR_UPDATED: ${{ steps.import.outputs.created_or_updated }}
+          RESOLVED: ${{ steps.import.outputs.resolved }}
+        shell: bash
+        run: |
+          gh label create tavernkeeper-import --color B60205 --description "TavernKeeper report import quarantine" --force
+
+          jq -c '.[]' <<< "$CREATED_OR_UPDATED" | while read -r incident; do
+            incident_key="$(jq -r '.incident_key' <<< "$incident")"
+            repository="$(jq -r '.repository' <<< "$incident")"
+            repository_id="$(jq -r '.repository_id' <<< "$incident")"
+            target_sha="$(jq -r '.target_sha' <<< "$incident")"
+            report_digest="$(jq -r '.report_digest' <<< "$incident")"
+            policy="$(jq -r '.synthesis_policy_version' <<< "$incident")"
+            diagnostic="$(jq -r '.diagnostic' <<< "$incident")"
+            attempts="$(jq -r '.attempts' <<< "$incident")"
+            issues="$(gh issue list --state all --label tavernkeeper-import --limit 100 --json number,state,body)"
+            existing="$(jq -r --arg key "$incident_key" '
+              map(select(.body | contains("Report incident key: `" + $key + "`")))
+              | .[0] // empty
+            ' <<< "$issues")"
+            if [[ -z "$existing" ]]; then
+              gh issue create \
+                --label tavernkeeper-import \
+                --title "[tavernkeeper-import] report synthesis quarantined" \
+                --body "Tavernary rejected bounded structured synthesis output for one immutable report.\n\nReport incident key: \`$incident_key\`\nRepository: \`$repository\`\nRepository ID: \`$repository_id\`\nTarget commit: \`$target_sha\`\nReport digest: \`$report_digest\`\nSynthesis policy: \`$policy\`\nDiagnostic: \`$diagnostic\`\nAttempts: \`$attempts\`\nRun: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\n\nOther valid reports continue importing."
+            else
+              number="$(jq -r '.number' <<< "$existing")"
+              state="$(jq -r '.state' <<< "$existing")"
+              if [[ "$state" == "CLOSED" ]]; then
+                gh issue reopen "$number" --comment "The exact report-policy quarantine recurred on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+              else
+                gh issue comment "$number" --body "The explicit retry remained invalid at attempt $attempts on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+              fi
+            fi
+          done
+
+          jq -c '.[]' <<< "$RESOLVED" | while read -r incident; do
+            incident_key="$(jq -r '.incident_key' <<< "$incident")"
+            issues="$(gh issue list --state open --label tavernkeeper-import --limit 100 --json number,body)"
+            number="$(jq -r --arg key "$incident_key" '
+              map(select(.body | contains("Report incident key: `" + $key + "`")))
+              | .[0].number // empty
+            ' <<< "$issues")"
+            if [[ -n "$number" ]]; then
+              gh issue close "$number" --comment "This exact report-policy quarantine is no longer active."
+            fi
+          done
 
   deploy:
     needs: import
@@ -128,7 +190,7 @@ jobs:
 
   continue:
     needs: import
-    if: ${{ always() && needs.import.result == 'success' && needs.import.outputs.pending_due != '0' }}
+    if: ${{ always() && needs.import.result == 'success' && needs.import.outputs.remaining != '0' }}
     runs-on: ubuntu-latest
     permissions:
       actions: write

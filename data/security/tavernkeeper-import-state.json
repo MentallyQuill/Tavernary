@@ -1,32 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "updated_at": "2026-08-04T17:12:22.975Z",
-  "source_generated_at": "2026-08-04T08:32:18.579Z",
-  "next_ticket": 9,
-  "pending": [
+  "quarantines": [
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
+      "report_digest": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "repository_id": 26291683,
+      "repository": "twitter/twemoji",
       "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
-      "ticket": 7,
-      "consecutive_failures": 2,
-      "total_failures": 2,
-      "not_before": "2026-08-04T17:42:22.975Z",
-      "last_error_code": "REPORT_SYNTHESIS_FAILED",
+      "synthesis_policy_version": "1",
+      "diagnostic": "provider_response_invalid",
+      "first_failed_at": "2026-08-04T17:12:22.975Z",
       "last_failed_at": "2026-08-04T17:12:22.975Z",
-      "chronic": false
+      "attempts": 2
     },
     {
       "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
+      "report_digest": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
       "repository_id": 956654271,
+      "repository": "bmen25124/SillyTavern-Character-Creator",
       "target_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
-      "ticket": 8,
-      "consecutive_failures": 2,
-      "total_failures": 2,
-      "not_before": "2026-08-04T17:42:22.975Z",
-      "last_error_code": "REPORT_SYNTHESIS_FAILED",
+      "synthesis_policy_version": "1",
+      "diagnostic": "provider_response_invalid",
+      "first_failed_at": "2026-08-04T17:12:22.975Z",
       "last_failed_at": "2026-08-04T17:12:22.975Z",
-      "chronic": false
+      "attempts": 2
     }
   ]
 }
