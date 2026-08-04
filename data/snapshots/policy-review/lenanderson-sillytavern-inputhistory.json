@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "lenanderson-sillytavern-inputhistory",
+  "source_id": "github-735181166",
+  "source_identity": "github:lenanderson/sillytavern-inputhistory",
+  "evidence_fingerprint": "40e666706f06f83fe32c88eb404535f8aecaff6fd409dcf07b45bd8c827732d4",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:16:07.296Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:16:07.296Z"
+  },
+  "maintenance_issue_number": null
+}
