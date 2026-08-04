@@ -3,7 +3,10 @@ import { readFile } from "node:fs/promises";
 import Ajv from "ajv";
 import { describe, expect, test } from "vitest";
 
-import { buildTavernKeeperTargets as buildTargets } from "../../scripts/security/tavernkeeper-targets.mjs";
+import {
+  buildTavernKeeperTargets as buildTargets,
+  popularityRankedProjectIds,
+} from "../../scripts/security/tavernkeeper-targets.mjs";
 
 const generatedAt = "2026-07-31T12:00:00.000Z";
 
@@ -95,6 +98,166 @@ describe("TavernKeeper target manifest", () => {
     ).toBe(false);
   });
 
+  test("vendors a strict V3 contract with a complete positive rank", async () => {
+    const [schema, fixture] = await Promise.all(
+      [
+        "data/schemas/tavernkeeper-targets.v3.schema.json",
+        "tests/fixtures/tavernkeeper/targets.v3.valid.json",
+      ].map(async (path) => JSON.parse(await readFile(path, "utf8"))),
+    );
+    const validate = new Ajv({
+      allErrors: true,
+      formats: { "date-time": true, uri: true },
+      strict: true,
+    }).compile(schema);
+
+    expect(validate(fixture)).toBe(true);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => ({
+            ...repository,
+            catalog_priority: {
+              ...(repository.catalog_priority as Record<string, unknown>),
+              popularity_rank: 0,
+            },
+          }),
+        ),
+      }),
+    ).toBe(false);
+    expect(
+      validate({
+        ...structuredClone(fixture),
+        repositories: fixture.repositories.map(
+          (repository: Record<string, unknown>) => {
+            const catalogPriority = {
+              ...(repository.catalog_priority as Record<string, unknown>),
+            };
+            delete catalogPriority.popularity_rank;
+            return { ...repository, catalog_priority: catalogPriority };
+          },
+        ),
+      }),
+    ).toBe(false);
+  });
+
+  test("publishes every V3 repository with its exact popularity order", () => {
+    const projects = [
+      {
+        id: "lowest",
+        name: "Lowest",
+        source_id: "github-100",
+        kind: "extension",
+        cataloged_at: "2026-07-01T00:00:00.000Z",
+        community: { aggregate: 10 },
+      },
+      {
+        id: "highest",
+        name: "Highest",
+        source_id: "github-300",
+        kind: "extension",
+        cataloged_at: "2026-07-01T00:00:00.000Z",
+        community: { aggregate: 30 },
+      },
+      {
+        id: "middle",
+        name: "Middle",
+        source_id: "github-200",
+        kind: "frontend",
+        cataloged_at: "2026-07-01T00:00:00.000Z",
+        community: { aggregate: 20 },
+      },
+      {
+        id: "highest-preset",
+        name: "Highest preset",
+        source_id: "github-300",
+        kind: "preset",
+        cataloged_at: "2026-06-01T00:00:00.000Z",
+        community: { aggregate: 40 },
+      },
+    ];
+    const rankedProjectIds = popularityRankedProjectIds(projects);
+    const manifest = buildTargets({
+      contractVersion: 3,
+      generatedAt,
+      publishedSourceIds: new Set(["github-100", "github-200", "github-300"]),
+      sources: [
+        source("github-100", 100, "owner/lowest"),
+        source("github-200", 200, "owner/middle"),
+        source("github-300", 300, "owner/highest"),
+      ],
+      snapshots: [
+        snapshot("github-100", 100, "owner/lowest", "a".repeat(40)),
+        snapshot("github-200", 200, "owner/middle", "b".repeat(40)),
+        snapshot("github-300", 300, "owner/highest", "c".repeat(40)),
+      ],
+      projects,
+      rankedProjectIds,
+      topProjectIds: new Set(rankedProjectIds.slice(0, 30)),
+    });
+
+    expect(manifest).toMatchObject({
+      schema_version: 3,
+      repositories: [
+        { repository_id: 100, catalog_priority: { popularity_rank: 4 } },
+        { repository_id: 200, catalog_priority: { popularity_rank: 3 } },
+        { repository_id: 300, catalog_priority: { popularity_rank: 2 } },
+      ],
+    });
+  });
+
+  test("preserves project-derived rank gaps for repositories with shared cards", () => {
+    const projects = [
+      {
+        id: "shared-first",
+        name: "Shared first",
+        source_id: "github-100",
+        kind: "extension",
+        cataloged_at: "2026-07-01T00:00:00.000Z",
+        community: { aggregate: 30 },
+      },
+      {
+        id: "shared-second",
+        name: "Shared second",
+        source_id: "github-100",
+        kind: "frontend",
+        cataloged_at: "2026-07-02T00:00:00.000Z",
+        community: { aggregate: 20 },
+      },
+      {
+        id: "third",
+        name: "Third",
+        source_id: "github-200",
+        kind: "extension",
+        cataloged_at: "2026-07-03T00:00:00.000Z",
+        community: { aggregate: 10 },
+      },
+    ];
+    const rankedProjectIds = popularityRankedProjectIds(projects);
+    const manifest = buildTargets({
+      contractVersion: 3,
+      generatedAt,
+      publishedSourceIds: new Set(["github-100", "github-200"]),
+      sources: [
+        source("github-100", 100, "owner/shared"),
+        source("github-200", 200, "owner/third"),
+      ],
+      snapshots: [
+        snapshot("github-100", 100, "owner/shared", "a".repeat(40)),
+        snapshot("github-200", 200, "owner/third", "b".repeat(40)),
+      ],
+      projects,
+      rankedProjectIds,
+      topProjectIds: new Set(rankedProjectIds.slice(0, 30)),
+    });
+
+    expect(manifest.repositories).toMatchObject([
+      { catalog_priority: { top_30: true, popularity_rank: 1 } },
+      { catalog_priority: { top_30: true, popularity_rank: 3 } },
+    ]);
+  });
+
   test("publishes V2 metadata only from supported cards sharing a GitHub source", () => {
     const manifest = buildTargets({
       contractVersion: 2,
@@ -174,7 +337,7 @@ describe("TavernKeeper target manifest", () => {
     ).toThrow(/contract version/iu);
     expect(() =>
       (buildTargets as (options: Record<string, unknown>) => unknown)({
-        contractVersion: 3,
+        contractVersion: 4,
         generatedAt,
         publishedSourceIds: new Set(),
         sources: [],

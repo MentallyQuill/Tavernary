@@ -32,7 +32,7 @@ const readRepositoryFile = (path: string) =>
   readFileSync(resolve(repositoryRoot, path), "utf8");
 const tavernKeeperTargetVersion = (
   JSON.parse(readRepositoryFile("config/tavernkeeper-contract.json")) as {
-    target_manifest_schema_version: 1 | 2;
+    target_manifest_schema_version: 1 | 2 | 3;
   }
 ).target_manifest_schema_version;
 
@@ -98,13 +98,14 @@ function validTavernKeeperRepository(overrides: Record<string, unknown> = {}) {
     canonical_url: "https://github.com/fixture/catalog",
     ...overrides,
   };
-  return tavernKeeperTargetVersion === 2
+  return tavernKeeperTargetVersion >= 2
     ? {
         ...repository,
         project_kinds: ["extension"],
         catalog_priority: {
-          top_30: false,
+          top_30: tavernKeeperTargetVersion === 3,
           first_cataloged_at: "2026-07-01T00:00:00.000Z",
+          ...(tavernKeeperTargetVersion === 3 ? { popularity_rank: 1 } : {}),
         },
         ...overrides,
       }
@@ -267,6 +268,72 @@ describe("verifyStaticExport", () => {
         ),
       ),
     ).rejects.toThrow("TavernKeeper target manifest is invalid");
+  });
+
+  test("accepts gapped and rejects duplicate V3 popularity ranks", async () => {
+    if (tavernKeeperTargetVersion !== 3) return;
+    const first = validTavernKeeperRepository();
+    const second = validTavernKeeperRepository({
+      source_id: "github-84",
+      repository_id: 84,
+      repository: "fixture/second",
+      target_sha: "b".repeat(40),
+      canonical_url: "https://github.com/fixture/second",
+      catalog_priority: {
+        top_30: true,
+        first_cataloged_at: "2026-07-02T00:00:00.000Z",
+        popularity_rank: 1,
+      },
+    }) as any;
+
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport(
+          validTavernKeeperManifest({ repositories: [first, second] }),
+        ),
+      ),
+    ).rejects.toThrow("unique");
+
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport(
+          validTavernKeeperManifest({
+            repositories: [
+              first,
+              {
+                ...second,
+                catalog_priority: {
+                  ...second.catalog_priority,
+                  popularity_rank: 3,
+                },
+              },
+            ],
+          }),
+        ),
+      ),
+    ).resolves.toBeUndefined();
+  });
+
+  test("rejects inconsistent V3 top-30 metadata", async () => {
+    if (tavernKeeperTargetVersion !== 3) return;
+    const repository = validTavernKeeperRepository() as any;
+    await expect(
+      verifyTavernKeeperStaticExport(
+        tavernKeeperExport(
+          validTavernKeeperManifest({
+            repositories: [
+              {
+                ...repository,
+                catalog_priority: {
+                  ...repository.catalog_priority,
+                  top_30: false,
+                },
+              },
+            ],
+          }),
+        ),
+      ),
+    ).rejects.toThrow("top_30");
   });
 
   test("rejects invalid TavernKeeper date-time and URI formats", async () => {
