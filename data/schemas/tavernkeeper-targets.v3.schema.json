@@ -49,6 +49,18 @@
               }
             },
             "required": ["top_30", "first_cataloged_at", "popularity_rank"],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "popularity_rank": { "type": "integer", "maximum": 30 }
+                  },
+                  "required": ["popularity_rank"]
+                },
+                "then": { "properties": { "top_30": { "const": true } } },
+                "else": { "properties": { "top_30": { "const": false } } }
+              }
+            ],
             "additionalProperties": false
           }
         },

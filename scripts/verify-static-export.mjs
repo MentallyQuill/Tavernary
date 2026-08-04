@@ -142,12 +142,21 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
     );
   }
   if (version === 3) {
-    const ranks = manifest.repositories
-      .map(({ catalog_priority }) => catalog_priority.popularity_rank)
-      .sort((left, right) => left - right);
-    if (ranks.some((rank, index) => rank !== index + 1))
+    const ranks = manifest.repositories.map(
+      ({ catalog_priority }) => catalog_priority.popularity_rank,
+    );
+    if (new Set(ranks).size !== ranks.length)
       throw new Error(
-        "TavernKeeper target manifest is invalid: popularity ranks must form one complete unique sequence",
+        "TavernKeeper target manifest is invalid: popularity ranks must be unique",
+      );
+    if (
+      manifest.repositories.some(
+        ({ catalog_priority }) =>
+          catalog_priority.top_30 !== catalog_priority.popularity_rank <= 30,
+      )
+    )
+      throw new Error(
+        "TavernKeeper target manifest is invalid: top_30 must agree with popularity_rank",
       );
   }
 }

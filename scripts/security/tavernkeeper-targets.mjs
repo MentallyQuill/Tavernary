@@ -187,33 +187,22 @@ export function buildTavernKeeperTargets({
   }
 
   if (version === 3) {
-    const rankByRepositoryId = new Map(
-      [...repositories]
-        .sort((left, right) => {
-          const leftPosition = projectMetadata.get(
-            left.source_id,
-          )?.popularityPosition;
-          const rightPosition = projectMetadata.get(
-            right.source_id,
-          )?.popularityPosition;
-          if (leftPosition === null || leftPosition === undefined)
-            throw new Error("TavernKeeper target popularity is incomplete.");
-          if (rightPosition === null || rightPosition === undefined)
-            throw new Error("TavernKeeper target popularity is incomplete.");
-          return (
-            leftPosition - rightPosition ||
-            left.repository_id - right.repository_id
-          );
-        })
-        .map((target, index) => [target.repository_id, index + 1]),
-    );
-    repositories = repositories.map((target) => ({
-      ...target,
-      catalog_priority: {
-        ...target.catalog_priority,
-        popularity_rank: rankByRepositoryId.get(target.repository_id),
-      },
-    }));
+    repositories = repositories.map((target) => {
+      const popularityPosition = projectMetadata.get(
+        target.source_id,
+      )?.popularityPosition;
+      if (popularityPosition === null || popularityPosition === undefined)
+        throw new Error("TavernKeeper target popularity is incomplete.");
+      const popularityRank = popularityPosition + 1;
+      return {
+        ...target,
+        catalog_priority: {
+          ...target.catalog_priority,
+          top_30: popularityRank <= 30,
+          popularity_rank: popularityRank,
+        },
+      };
+    });
   }
 
   return {

@@ -200,11 +200,62 @@ describe("TavernKeeper target manifest", () => {
     expect(manifest).toMatchObject({
       schema_version: 3,
       repositories: [
-        { repository_id: 100, catalog_priority: { popularity_rank: 3 } },
-        { repository_id: 200, catalog_priority: { popularity_rank: 2 } },
-        { repository_id: 300, catalog_priority: { popularity_rank: 1 } },
+        { repository_id: 100, catalog_priority: { popularity_rank: 4 } },
+        { repository_id: 200, catalog_priority: { popularity_rank: 3 } },
+        { repository_id: 300, catalog_priority: { popularity_rank: 2 } },
       ],
     });
+  });
+
+  test("preserves project-derived rank gaps for repositories with shared cards", () => {
+    const projects = [
+      {
+        id: "shared-first",
+        name: "Shared first",
+        source_id: "github-100",
+        kind: "extension",
+        cataloged_at: "2026-07-01T00:00:00.000Z",
+        community: { aggregate: 30 },
+      },
+      {
+        id: "shared-second",
+        name: "Shared second",
+        source_id: "github-100",
+        kind: "frontend",
+        cataloged_at: "2026-07-02T00:00:00.000Z",
+        community: { aggregate: 20 },
+      },
+      {
+        id: "third",
+        name: "Third",
+        source_id: "github-200",
+        kind: "extension",
+        cataloged_at: "2026-07-03T00:00:00.000Z",
+        community: { aggregate: 10 },
+      },
+    ];
+    const rankedProjectIds = popularityRankedProjectIds(projects);
+    const manifest = buildTargets({
+      contractVersion: 3,
+      generatedAt,
+      publishedSourceIds: new Set(["github-100", "github-200"]),
+      sources: [
+        source("github-100", 100, "owner/shared"),
+        source("github-200", 200, "owner/third"),
+      ],
+      snapshots: [
+        snapshot("github-100", 100, "owner/shared", "a".repeat(40)),
+        snapshot("github-200", 200, "owner/third", "b".repeat(40)),
+      ],
+      projects,
+      rankedProjectIds,
+      topProjectIds: new Set(rankedProjectIds.slice(0, 30)),
+    });
+
+    expect(manifest.repositories).toMatchObject([
+      { catalog_priority: { top_30: true, popularity_rank: 1 } },
+      { catalog_priority: { top_30: true, popularity_rank: 3 } },
+    ]);
   });
 
   test("publishes V2 metadata only from supported cards sharing a GitHub source", () => {
