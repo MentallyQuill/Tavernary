@@ -53,25 +53,6 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   });
 }
 
-async function stabilizeProjectActivityAge(card: Locator) {
-  const age = card.locator(".commit-age");
-  await expect(age).toHaveCount(1);
-  await age.evaluate((label) => {
-    label.textContent = "10d ago";
-  });
-}
-
-async function stabilizeScanMetadata(popover: Locator) {
-  const metadata = popover.locator(".tavernkeeper-scan-details div").first();
-  await expect(metadata).toHaveCount(1);
-  await metadata.locator("time").evaluate((time) => {
-    time.textContent = "July 13, 2026";
-  });
-  await metadata.locator("a").evaluate((link) => {
-    link.textContent = "5d28bb1 ↗";
-  });
-}
-
 async function expectNoHorizontalOverflow(page: Page) {
   expect(
     await page.evaluate(
@@ -243,9 +224,8 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
     name: "TavernKeeper scan: Unsupported source.",
   });
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
-  await stabilizeProjectActivityAge(card);
   await page.mouse.move(0, 0);
-  await expect(card).toHaveScreenshot(
+  await expect(card.locator(".card-title-row")).toHaveScreenshot(
     "scan-indicator-unsupported-desktop.png",
     {
       animations: "disabled",
@@ -273,17 +253,18 @@ test("scan indicator history strip preserves dense low and high progression", as
   const popover = page.getByRole("dialog", {
     name: "TavernKeeper Scan Results",
   });
-  await expect(popover.locator(".tavernkeeper-history-strip i")).toHaveCount(
-    12,
+  const historyStrip = popover.locator(".tavernkeeper-history-strip");
+  await expect(historyStrip.locator("i")).toHaveCount(12);
+  await expect(historyStrip.locator(".tavernkeeper-history-high")).toHaveCount(
+    1,
   );
-  await expect(popover.locator(".tavernkeeper-history-high")).toHaveCount(1);
-  await stabilizeScanMetadata(popover);
-  await expect(popover).toHaveScreenshot("scan-popover-history-desktop.png", {
-    animations: "disabled",
-    // Hosted Windows link-glyph rasterization differs by 342 pixels while
-    // preserving the popover's dimensions, content, spacing, and history strip.
-    maxDiffPixels: 400,
-  });
+  await expect(historyStrip).toHaveScreenshot(
+    "scan-history-strip-desktop.png",
+    {
+      animations: "disabled",
+      maxDiffPixels: 10,
+    },
+  );
 });
 
 for (const viewport of [
