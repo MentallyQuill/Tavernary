@@ -3,11 +3,16 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { validateStoredReportIndex } from "./tavernkeeper-reports.mjs";
+import { validateTavernKeeperImportState } from "./tavernkeeper-import-state.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultSummaryPath = resolve(
   rootDirectory,
   "data/security/tavernkeeper-report-summaries.json",
+);
+const defaultImportStatePath = resolve(
+  rootDirectory,
+  "data/security/tavernkeeper-import-state.json",
 );
 
 export async function loadTavernKeeperSourceRegistry(root = rootDirectory) {
@@ -35,12 +40,25 @@ export async function validateStoredTavernKeeperReports(options = {}) {
   return validateStoredReportIndex(JSON.parse(contents), registry);
 }
 
+export async function validateStoredTavernKeeperImportState(options = {}) {
+  const root = options.root ?? rootDirectory;
+  const contents = await readFile(
+    options.inputPath ??
+      resolve(root, "data/security/tavernkeeper-import-state.json"),
+    "utf8",
+  );
+  return validateTavernKeeperImportState(JSON.parse(contents));
+}
+
 async function main() {
-  const summaries = await validateStoredTavernKeeperReports({
-    inputPath: defaultSummaryPath,
-  });
+  const [summaries, importState] = await Promise.all([
+    validateStoredTavernKeeperReports({ inputPath: defaultSummaryPath }),
+    validateStoredTavernKeeperImportState({
+      inputPath: defaultImportStatePath,
+    }),
+  ]);
   console.log(
-    `Validated ${summaries.reports.length} tracked TavernKeeper report summaries`,
+    `Validated ${summaries.reports.length} tracked TavernKeeper report summaries and ${importState.pending.length} pending imports`,
   );
 }
 

@@ -22,6 +22,15 @@ jobs:
   import:
     if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      sha: ${{ steps.commit.outputs.sha }}
+      imported: ${{ steps.import.outputs.imported }}
+      failed: ${{ steps.import.outputs.failed }}
+      pending_due: ${{ steps.import.outputs.pending_due }}
+      pending_delayed: ${{ steps.import.outputs.pending_delayed }}
+      next_wake_at: ${{ steps.import.outputs.next_wake_at }}
+      chronic_failures: ${{ steps.import.outputs.chronic_failures }}
     steps:
       - name: Check out main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -36,11 +45,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Import and synthesize validated TavernKeeper reports
+        id: import
         env:
           TAVERNARY_ENRICHMENT_API_URL: ${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}
           TAVERNARY_ENRICHMENT_API_KEY: ${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}
           TAVERNARY_ENRICHMENT_MODEL: ${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}
-        run: npm run security:import-reports
+        shell: bash
+        run: |
+          result="$(npm run --silent security:import-reports)"
+          printf '%s\n' "$result"
+          echo "imported=$(jq -er '.imported | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
+          echo "failed=$(jq -er '.failed | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
+          echo "pending_due=$(jq -er '.pending_due | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
+          echo "pending_delayed=$(jq -er '.pending_delayed | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
+          echo "next_wake_at=$(jq -r '.next_wake_at // \"\"' <<< "$result")" >> "$GITHUB_OUTPUT"
+          echo "chronic_failures=$(jq -er '.chronic_failures | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
       - name: Validate imported summaries
         run: npm run check
       - name: Commit and publish changed summaries
@@ -48,8 +67,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -- data/security/tavernkeeper-report-summaries.json
-          if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json; then
+          git add -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json
+          if git diff --cached --quiet -- data/security/tavernkeeper-report-summaries.json data/security/tavernkeeper-import-state.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             git fetch --no-tags origin main
             git merge --ff-only origin/main
@@ -82,41 +101,34 @@ jobs:
               exit 1
             fi
           done
+
+  deploy:
+    needs: import
+    if: ${{ always() && needs.import.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
       - name: Deploy the exact reconciled summary commit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_SHA: ${{ steps.commit.outputs.sha }}
+          SOURCE_SHA: ${{ needs.import.outputs.sha }}
         shell: bash
         run: |
           set -euo pipefail
-          prior_run_id="$(gh run list \
-            --repo "$GITHUB_REPOSITORY" \
-            --workflow deploy-pages.yml \
-            --event workflow_dispatch \
-            --limit 1 \
-            --json databaseId \
-            --jq '.[0].databaseId // 0')"
-
           gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main \
             -f source_sha="$SOURCE_SHA"
 
-          run_id=""
-          for attempt in {1..20}; do
-            run_id="$(gh run list \
-              --repo "$GITHUB_REPOSITORY" \
-              --workflow deploy-pages.yml \
-              --event workflow_dispatch \
-              --limit 20 \
-              --json databaseId,displayTitle \
-              --jq "map(select(.databaseId > $prior_run_id and .displayTitle == \"Site: Deploy $SOURCE_SHA\")) | sort_by(.databaseId) | .[0].databaseId // empty")"
-            if [[ -n "$run_id" ]]; then
-              break
-            fi
-            sleep 3
-          done
-          if [[ -z "$run_id" ]]; then
-            echo "Timed out locating the exact Tavernary Pages deployment." >&2
-            exit 1
-          fi
-
-          gh run watch "$run_id" --repo "$GITHUB_REPOSITORY" --exit-status --interval 10
+  continue:
+    needs: import
+    if: ${{ always() && needs.import.result == 'success' && needs.import.outputs.pending_due != '0' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Continue due report imports independently of deployment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run import-tavernkeeper-reports.yml --repo "$GITHUB_REPOSITORY" --ref main
