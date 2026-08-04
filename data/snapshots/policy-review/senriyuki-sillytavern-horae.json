@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "senriyuki-sillytavern-horae",
+  "source_id": "github-1158218954",
+  "source_identity": "github:senriyuki/sillytavern-horae",
+  "evidence_fingerprint": "6701ee3f6f72a76887f07a2936798cecaddbc0cd5940efadf48f5d394d581ee5",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T01:27:23.527Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T01:27:23.527Z"
+  },
+  "maintenance_issue_number": null
+}
