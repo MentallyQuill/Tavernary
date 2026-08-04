@@ -606,6 +606,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   const reportImportSteps = reportImport.jobs.import.steps as Array<{
     name?: string;
     env?: Record<string, string>;
+    run?: string;
   }>;
   const synthesisStep = reportImportSteps.find(
     (step) =>
@@ -642,6 +643,20 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
     TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
   });
+  for (const output of [
+    "imported",
+    "failed",
+    "pending_due",
+    "pending_delayed",
+    "chronic_failures",
+  ]) {
+    expect(synthesisStep?.run).toContain(
+      `.${output} | select(type == "number")`,
+    );
+  }
+  expect(synthesisStep?.run).toContain('.next_wake_at // ""');
+  expect(synthesisStep?.run).not.toContain('type == \\"number\\"');
+  expect(synthesisStep?.run).not.toContain('.next_wake_at // \\"\\"');
   expect(
     reportImportSteps
       .filter((step) => step !== synthesisStep)
