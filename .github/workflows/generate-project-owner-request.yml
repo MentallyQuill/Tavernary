@@ -78,7 +78,10 @@ jobs:
           remote_sha="$(git ls-remote --heads origin "refs/heads/$branch" | awk '{print $1}')"
           node --input-type=module -e "
             import fs from 'node:fs';
-            import { parseOwnerRequestPullRequestMarker } from './scripts/help/project-owner-pr.mjs';
+            import {
+              parseOwnerRequestPullRequestMarker,
+              renderOwnerGeneratedPathsFile,
+            } from './scripts/help/project-owner-pr.mjs';
             const pull = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'))[0] ?? null;
             const marker = pull
               ? parseOwnerRequestPullRequestMarker(pull.body ?? '')
@@ -88,7 +91,7 @@ jobs:
             }
             fs.writeFileSync(
               process.env.RUNNER_TEMP + '/previous-owner-paths.txt',
-              (marker?.generated_paths ?? []).join('\n'),
+              renderOwnerGeneratedPathsFile(marker?.generated_paths ?? []),
             );
             fs.appendFileSync(process.env.GITHUB_OUTPUT, [
               'pr_number=' + (pull?.number ?? ''),
