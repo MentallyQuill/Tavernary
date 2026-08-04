@@ -115,7 +115,7 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
     ).then((contents) => JSON.parse(contents)),
   ]);
   const version = contract.target_manifest_schema_version;
-  if (version !== 1 && version !== 2)
+  if (version !== 1 && version !== 2 && version !== 3)
     throw new Error("Tracked TavernKeeper target contract version is invalid");
   const schema = JSON.parse(
     await readFile(
@@ -123,7 +123,7 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
         rootDirectory,
         version === 1
           ? "data/schemas/tavernkeeper-targets.schema.json"
-          : "data/schemas/tavernkeeper-targets.v2.schema.json",
+          : `data/schemas/tavernkeeper-targets.v${version}.schema.json`,
       ),
       "utf8",
     ),
@@ -140,6 +140,15 @@ export async function verifyTavernKeeperStaticExport(outputDirectory = "out") {
         )
         .join(", ")}`,
     );
+  }
+  if (version === 3) {
+    const ranks = manifest.repositories
+      .map(({ catalog_priority }) => catalog_priority.popularity_rank)
+      .sort((left, right) => left - right);
+    if (ranks.some((rank, index) => rank !== index + 1))
+      throw new Error(
+        "TavernKeeper target manifest is invalid: popularity ranks must form one complete unique sequence",
+      );
   }
 }
 

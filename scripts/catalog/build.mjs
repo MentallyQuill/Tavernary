@@ -14,6 +14,7 @@ import { kitSearchFields, projectSearchFields } from "./search-document.mjs";
 import { effectiveVoteAt, trendingScore } from "../kits/trending.mjs";
 import {
   buildTavernKeeperTargets,
+  popularityRankedProjectIds,
   popularityTopProjectIds,
   writeTavernKeeperTargets,
 } from "../security/tavernkeeper-targets.mjs";
@@ -659,6 +660,7 @@ export async function buildCatalog(options = {}) {
   };
 
   if (options.write !== false) {
+    const rankedProjectIds = popularityRankedProjectIds(projects);
     await mkdir(dirname(outputPath), { recursive: true });
     const temporaryPath = `${outputPath}.tmp`;
     await writeFile(temporaryPath, `${JSON.stringify(catalog, null, 2)}\n`);
@@ -672,6 +674,7 @@ export async function buildCatalog(options = {}) {
           .map((project) => recordsByProject.get(project.id))
           .filter(Boolean),
         topProjectIds: popularityTopProjectIds(projects),
+        rankedProjectIds,
         publishedSourceIds: new Set(publicProjectsBySourceId.keys()),
         generatedAt: generatedAtIso,
       }),
