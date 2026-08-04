@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "rurijian-deep-swipe",
+  "source_id": "github-1147155100",
+  "source_identity": "github:rurijian/deep-swipe",
+  "evidence_fingerprint": "67f3b7ceb73cccd858d2527baf7d62db2d00d05dd192811825f6eb7fd0390a71",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T08:46:53.358Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T08:46:53.358Z"
+  },
+  "maintenance_issue_number": null
+}
