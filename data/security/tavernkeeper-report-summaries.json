@@ -1,6 +1,6 @@
 {
   "schema_version": 5,
-  "generated_at": "2026-08-04T23:34:44.918Z",
+  "generated_at": "2026-08-04T23:42:20.765Z",
   "preferred_report_ids": [
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d4bcd22a3017c1f4962071991ae7fb31d0037d853d6fe0c6e1667c3acf32f70c",
@@ -106,6 +106,7 @@
     "939cf9c8a476df0e2f47f9ebe739931c0d56f1f4bf62c16f9d8d21b3b85cb09f",
     "7b806e2019e03f7f85f37ed5e5bcf19696825f949f9bfefdf45a5948f83883fd",
     "2a6f9ddead79af29e0e5200f013b43027ae9f2e05740077e49772a23856a42ee",
+    "665ad37df1fabe7cb9bada35415fae235219901c7147de8186d9b80a9235662c",
     "2f4485994e584f332ea991572cfc17a5e5807795798bf124df56493d6b71b6a7",
     "eeb8007a5911cb7956f355fc9eecd5494245a07304b7ecb87bbaa159aa6034de",
     "742e87c820926dfc6f10d2b4addaeb54551b64683119cc4c59dcb03d428daf23",
@@ -11590,6 +11591,87 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "TavernKeeper assessed all 12 reviewed items as expected behavior with no observed impact and unlikely exploitability. The project appears low risk at this commit, although this review cannot prove the absence of unknown behavior."
+      }
+    },
+    {
+      "report_id": "665ad37df1fabe7cb9bada35415fae235219901c7147de8186d9b80a9235662c",
+      "report_digest": "665ad37df1fabe7cb9bada35415fae235219901c7147de8186d9b80a9235662c",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1179684706",
+      "provider": "github",
+      "repository_id": 1179684706,
+      "repository": "ayvencore/SillyTavern-Lorebook-Manager",
+      "target_sha": "93a08b9ba00559f2f4455f92586bec731b1cafe8",
+      "completed_at": "2026-08-04T23:41:56.528Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 14,
+        "inventory_files": 7,
+        "inventory_bytes": 108491,
+        "tools_completed": 4,
+        "tools_not_applicable": 3,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1179684706/93a08b9ba00559f2f4455f92586bec731b1cafe8/3/665ad37df1fabe7cb9bada35415fae235219901c7147de8186d9b80a9235662c/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1179684706/history/",
+      "assessed_at": "2026-08-04T23:43:23.401Z",
+      "synthesis_policy_version": "2",
+      "synthesis_model": "gpt-5.6-luna",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns identified",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This assessment cannot prove the absence of unknown behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The reviewed commit contains no validated findings requiring caution or escalation. Ordinary project behavior was not treated as malicious."
       }
     }
   ]
