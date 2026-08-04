@@ -97,7 +97,9 @@
     "e0d963e0f9632f0a616e99cb6b40fce360b0d85c52f5ca158f2fec348bcea006",
     "05275b37d1d9bd95f6dea4ab5442552d735b933d2077174538f97193a07a3041",
     "ca9451079591c1f380944270d23e6d68cd833c8e2fd441d9be45955379700864",
-    "d7a323aad372d86803c13e224aa0927c67e4012e7bc887baaeb3ccb70f1177e5"
+    "d7a323aad372d86803c13e224aa0927c67e4012e7bc887baaeb3ccb70f1177e5",
+    "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
+    "f3de4f95acfc4f6ae896b217c42af943282fa8ad6491bb592965bae71661627f"
   ],
   "reports": [
     {
@@ -2959,6 +2961,97 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The reviewed commit appears low risk. The two credential-detection alerts were normal code that checks layout settings; no password, API key, or other secret was found. As with any review, this assessment cannot prove the absence of unknown behavior."
+      }
+    },
+    {
+      "report_id": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
+      "report_digest": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1305919833",
+      "provider": "github",
+      "repository_id": 1305919833,
+      "repository": "N0819/Sonder_Engine",
+      "target_sha": "bfd68cd224f2b8e434ab401d5e295345e227ff59",
+      "completed_at": "2026-08-04T19:02:09.437Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 9,
+        "assessments": 9,
+        "observations": 1,
+        "items": 10,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 10,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 10,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 10,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 3,
+          "high": 7
+        },
+        "recommended_risk": {
+          "low": 10,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 471,
+        "inventory_bytes": 39997117,
+        "tools_completed": 7,
+        "tools_not_applicable": 0,
+        "evidence_validated": 9,
+        "review_required": 9,
+        "review_completed": 9
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305919833/bfd68cd224f2b8e434ab401d5e295345e227ff59/3/2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1305919833/history/",
+      "assessed_at": "2026-08-04T22:41:42.365Z",
+      "synthesis_policy_version": "2",
+      "synthesis_model": "gpt-5.6-luna",
+      "assessment": {
+        "cited_finding_ids": [
+          "000192e612cc3de4282c7ab587838f715e41e6a9fd303f20f2d003cd38648159",
+          "0dee8cf19056cc41d4aa71495ea9ec6522e33683949b5861bf590affc3182c67",
+          "37599e4304f2e03dd2b6bbcc575bd8749b86faf56b47eb332d67f5b6f3238709",
+          "6ae906cd8e8797e5916fd746b92571cd2fc0268c10a0deba531ba11de01069a1",
+          "86d0e8fb032fd1dae19115726e4453b8005345324cbd1ebb93101da92e19dcf5",
+          "8c419a7875a9d205941067dc2383e92c1b4dabf9737f75be9f6a9a68d39ea6dd",
+          "a4d7d658d90cea537d053dba3c7f9e8cbb5c64875de9060314ecd47fbc511c5e",
+          "c572ae9d5b1f995bd04943b3238be8e4397c2350ff7fc39ee874a5748fc00880",
+          "d863dba22b28321095cffc2290bcb5ce67add04773df34202a425c3e7f63a866"
+        ],
+        "headline": "Low risk: routine CI supply-chain hardening opportunities",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior, API-key theft, harmful payload, or trojan delivery was identified in the validated findings.",
+        "material_concerns": 0,
+        "minor_cautions": 10,
+        "risk_level": "low",
+        "summary": "The project is assessed as low risk. The ten findings are minor, overlapping CI configuration issues: several GitHub Actions use movable version labels instead of exact commit snapshots, and one related scanner flag is secondary to that same issue [000192e612cc3de4282c7ab587838f715e41e6a9fd303f20f2d003cd38648159,0dee8cf19056cc41d4aa71495ea9ec6522e33683949b5861bf590affc3182c67,37599e4304f2e03dd2b6bbcc575bd8749b86faf56b47eb332d67f5b6f3238709,6ae906cd8e8797e5916fd746b92571cd2fc0268c10a0deba531ba11入"
       }
     },
     {
@@ -6263,6 +6356,87 @@
         "minor_cautions": 17,
         "risk_level": "low",
         "summary": "The review found 17 minor security-hygiene issues [cited findings], mainly unpinned GitHub Actions, workflow permission and credential-handling improvements, and known vulnerabilities in developer-only dependencies. These are unlikely to affect extension users and do not indicate malicious intent. The flagged credential and download-and-execute matches were contextual false positives, not actual secrets or active payloads."
+      }
+    },
+    {
+      "report_id": "f3de4f95acfc4f6ae896b217c42af943282fa8ad6491bb592965bae71661627f",
+      "report_digest": "f3de4f95acfc4f6ae896b217c42af943282fa8ad6491bb592965bae71661627f",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1307082738",
+      "provider": "github",
+      "repository_id": 1307082738,
+      "repository": "Jeka201216/Silly-Map",
+      "target_sha": "c8e352e3a005ae01d3920021d7ddaafbdc029ced",
+      "completed_at": "2026-08-04T21:51:05.812Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 2,
+        "inventory_files": 18,
+        "inventory_bytes": 5761132,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1307082738/c8e352e3a005ae01d3920021d7ddaafbdc029ced/3/f3de4f95acfc4f6ae896b217c42af943282fa8ad6491bb592965bae71661627f/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1307082738/history/",
+      "assessed_at": "2026-08-04T22:41:44.966Z",
+      "synthesis_policy_version": "2",
+      "synthesis_model": "gpt-5.6-luna",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated malicious evidence was identified in this review.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The validated review found no material vulnerabilities, malicious behavior, or minor security weaknesses. This assessment cannot prove the absence of unknown behavior."
       }
     },
     {
