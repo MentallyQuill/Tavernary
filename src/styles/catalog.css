@@ -1507,6 +1507,10 @@
   margin: 0;
 }
 
+.tavernkeeper-summary {
+  overflow-wrap: anywhere;
+}
+
 .tavernkeeper-popover-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

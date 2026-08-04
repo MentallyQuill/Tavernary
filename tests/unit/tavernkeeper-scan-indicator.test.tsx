@@ -173,6 +173,42 @@ describe("TavernKeeperScanIndicator", () => {
   });
 
   test.each([
+    {
+      expected:
+        "The project is assessed as low risk. Its test workflow could use tighter token handling, narrower permissions, and pinned action versions.",
+      summary:
+        "The project is assessed as low risk. Its test workflow could use tighter token handling, narrower permissions, and pinned action versions (V5 findings 72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3, 7e6ec8fb70e2a68052c34a3d7d7b1a8b011698553c48df62ec39943af8ee0bbd, 817962172966e2e2adae88040c785386dcfaeb3717f1feb8d7b5f1be23d08f6c, and cef063e24672a717652b8ac33af23d6a04d1009c2bd06f733f5d6d8e9e5015cb). A known issue was also found in a development-only helper dependency and does \u200b\u200b",
+    },
+    {
+      expected:
+        "The project has a material vulnerability: when normal JSON parsing fails, it may execute the AI's response as JavaScript. A manipulated or malicious AI response could therefore run code inside the user's SillyTavern session. Users should avoid untrusted AI endpoints or content until this fallback is removed and replaced with safe, non-executing JSON repair.",
+      summary:
+        "The project has a material vulnerability: when normal JSON parsing fails, it may execute the AI's response as JavaScript. A manipulated or malicious AI response could therefore run code inside the user's SillyTavern session. Users should avoid untrusted AI endpoints or content until this fallback is removed and replaced with safe, non-executing JSON repair. \uE200cite\uE202e1f6254c527f8d5fd529e09c3c7959fa59e8afbbbabfa395a3ce291339df0ba6\uE201",
+    },
+  ])(
+    "keeps internal finding references out of concise assessment copy",
+    ({ expected, summary }) => {
+      const report = scanReport({ summary });
+      render(
+        <TavernKeeperScanIndicator
+          projectId="internal-finding-reference"
+          status={{ ...redStatus, report, history: [report] }}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole("button"));
+
+      const conciseSummary = screen
+        .getByRole("dialog")
+        .querySelector(".tavernkeeper-summary");
+      expect(conciseSummary).toHaveTextContent(expected);
+      expect(conciseSummary).not.toHaveTextContent(/[0-9a-f]{64}/iu);
+      expect(conciseSummary).not.toHaveTextContent(/cite/iu);
+      expect(report.summary).toBe(summary);
+    },
+  );
+
+  test.each([
     [tealStatus, tealReport.summary],
     [
       {
@@ -570,6 +606,26 @@ describe("TavernKeeperScanIndicator", () => {
           declaration.type === "decl" &&
           declaration.prop === "transition" &&
           declaration.value === "none",
+      ),
+    ).toBe(true);
+  });
+
+  test("wraps unforeseen long summary tokens within the popover", () => {
+    const stylesheet = postcss.parse(
+      readFileSync("src/styles/catalog.css", "utf8"),
+    );
+    const summaryRule = stylesheet.nodes.find(
+      (rule): rule is Rule =>
+        rule.type === "rule" && rule.selector === ".tavernkeeper-summary",
+    );
+
+    expect(summaryRule).toBeDefined();
+    expect(
+      summaryRule?.nodes.some(
+        (declaration) =>
+          declaration.type === "decl" &&
+          declaration.prop === "overflow-wrap" &&
+          declaration.value === "anywhere",
       ),
     ).toBe(true);
   });
