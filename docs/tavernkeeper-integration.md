@@ -111,9 +111,11 @@ Tavernary then enforces deterministic floors:
 - expected behavior and minor weaknesses remain in the `low` range.
 
 Luna cannot lower a floor. It can escalate only with a validated interaction
-chain citing at least two known findings. The tracked snapshot changes only
-after report validation, synthesis, floor validation, history merge, and atomic
-write all succeed. Otherwise the last valid snapshot remains unchanged.
+chain citing at least two known findings. A report enters the tracked snapshot
+only after its validation, synthesis, floor validation, history merge, and
+atomic write succeed. A failed replacement remains absent while the project's
+last valid preferred assessment is retained and independently valid peers may
+still commit.
 
 ## Handshake and recovery
 
@@ -122,9 +124,27 @@ manifest, then conditionally wakes TavernKeeper's `reconcile.yml`. TavernKeeper
 refetches that public manifest, scans in disposable isolated runners, publishes
 sanitized immutable V5 output through its dedicated Publisher App, and wakes
 Tavernary's **Security: Reconcile TavernKeeper reports** workflow. Tavernary
-imports unseen preferred reports, performs Luna synthesis, commits only the
-bounded V5 assessment snapshot, runs the complete site check, and deploys the
-exact commit.
+imports up to five due unseen preferred reports in durable ticket order,
+performs Luna synthesis, commits the bounded V5 assessment snapshot and import
+ledger, runs the complete site check, and dispatches deployment of the exact
+commit.
+
+Each report import completes independently. A fetch, validation, or synthesis
+failure publishes no assessment for that report, records only a sanitized error
+code, and moves the report behind every import already assigned a ticket. Later
+reports receive still-higher tickets, so they cannot continually displace an
+older failure. Cooldowns are 5 minutes, 30 minutes, 2 hours, and then 6 hours
+capped indefinitely. The fifth consecutive failure is chronic and visible in
+workflow telemetry, but it is never terminal and never blocks successful peers.
+The durable state is tracked in
+`data/security/tavernkeeper-import-state.json`.
+
+The import workflow commits every successful subset plus its updated ledger.
+If more imports are immediately due, it dispatches the next bounded batch.
+Pages deployment and import continuation are sibling actions: a deployment
+failure cannot discard import progress or prevent continuation. A later
+TavernKeeper wake or the six-hour schedule automatically revisits cooled
+failures and also recovers missed wake-ups.
 
 Both directions also reconcile on schedule. Wake calls are non-authoritative:
 they carry no target SHA, mode, token budget, priority, or report URL. A missed

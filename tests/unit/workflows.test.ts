@@ -581,7 +581,7 @@ test("deploys only a verified static export to the Pages environment", async () 
   );
 });
 
-test("reconciles reports on a bounded schedule and wakes TavernKeeper only after a changed public deployment", async () => {
+test("reconciles reports independently and wakes TavernKeeper only after a changed public deployment", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
   const deploy = await workflow("deploy-pages");
   const deploySource = await readFile(
@@ -622,7 +622,21 @@ test("reconciles reports on a bounded schedule and wakes TavernKeeper only after
   expect(deploy.jobs["wake-tavernkeeper"].permissions).toEqual({
     contents: "read",
   });
-  expect(importSource).toContain("npm run security:import-reports");
+  expect(importSource).toContain("security:import-reports");
+  expect(importSource).toContain("tavernkeeper-import-state.json");
+  expect(reportImport.jobs.import.outputs).toMatchObject({
+    pending_due: "${{ steps.import.outputs.pending_due }}",
+    pending_delayed: "${{ steps.import.outputs.pending_delayed }}",
+    chronic_failures: "${{ steps.import.outputs.chronic_failures }}",
+  });
+  expect(reportImport.jobs.deploy.needs).toBe("import");
+  expect(reportImport.jobs.continue.needs).toBe("import");
+  expect(reportImport.jobs.continue.if).toContain(
+    "needs.import.outputs.pending_due != '0'",
+  );
+  expect(JSON.stringify(reportImport.jobs.continue)).not.toContain(
+    "needs.deploy",
+  );
   expect(synthesisStep?.env).toEqual({
     TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
@@ -652,7 +666,7 @@ test("reconciles reports on a bounded schedule and wakes TavernKeeper only after
   expect(JSON.stringify(deploy)).not.toContain("actions: write");
 });
 
-test("recovers a failed report Pages dispatch by redispatching and verifying the next no-diff run", async () => {
+test("redispatches Pages without gating the next due import", async () => {
   const reportImport = await workflow("import-tavernkeeper-reports");
   const steps = reportImport.jobs.import.steps as Array<{
     name?: string;
@@ -665,7 +679,15 @@ test("recovers a failed report Pages dispatch by redispatching and verifying the
   const commit = steps.find(
     (step) => step.name === "Commit and publish changed summaries",
   );
-  const deploy = steps.find(
+  const deploySteps = reportImport.jobs.deploy.steps as Array<{
+    name?: string;
+    id?: string;
+    if?: string;
+    run?: string;
+    env?: Record<string, string>;
+    "continue-on-error"?: boolean;
+  }>;
+  const deploy = deploySteps.find(
     (step) => step.name === "Deploy the exact reconciled summary commit",
   );
   const commitSource = commit?.run ?? "";
@@ -711,18 +733,19 @@ test("recovers a failed report Pages dispatch by redispatching and verifying the
   expect(catalogValidate).toBeLessThan(reportValidate);
   expect(reportValidate).toBeLessThan(push);
 
-  expect(deploy?.if).toBeUndefined();
-  expect(deploy?.env?.SOURCE_SHA).toBe("${{ steps.commit.outputs.sha }}");
+  expect(reportImport.jobs.deploy.if).toContain(
+    "needs.import.result == 'success'",
+  );
+  expect(deploy?.env?.SOURCE_SHA).toBe("${{ needs.import.outputs.sha }}");
   expect(deploy?.run).toContain(
     'gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main',
   );
   expect(deploy?.run).toContain('-f source_sha="$SOURCE_SHA"');
-  expect(deploy?.run).toContain(
-    '.displayTitle == \\"Site: Deploy $SOURCE_SHA\\"',
-  );
-  expect(deploy?.run).toContain("gh run watch");
-  expect(deploy?.run).toContain("--exit-status");
+  expect(deploy?.run).not.toContain("gh run watch");
+  expect(deploy?.run).not.toContain("sleep");
   expect(deploy?.["continue-on-error"]).not.toBe(true);
+  expect(reportImport.jobs.continue.needs).toBe("import");
+  expect(reportImport.jobs.continue.if).not.toContain("needs.deploy");
 });
 
 test("refreshes snapshots daily without granting production-record writes", async () => {

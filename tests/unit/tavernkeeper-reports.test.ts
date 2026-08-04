@@ -4,7 +4,10 @@ import { resolve } from "node:path";
 
 import { describe, expect, test } from "vitest";
 
-import { importTavernKeeperReports } from "../../scripts/security/import-tavernkeeper-reports.mjs";
+import {
+  importTavernKeeperReports,
+  reconcileTavernKeeperReports,
+} from "../../scripts/security/import-tavernkeeper-reports.mjs";
 import {
   ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION,
   TAVERNKEEPER_REPORT_INDEX_URL,
@@ -196,6 +199,31 @@ function assessedEntry(
     },
     ...overrides,
   };
+}
+
+function synthesisFor(indexEntry: Record<string, any>) {
+  const assessed = assessedEntry(indexEntry);
+  return {
+    report_id: assessed.report_id,
+    target_sha: assessed.target_sha,
+    assessed_at: assessed.assessed_at,
+    synthesis_policy_version: assessed.synthesis_policy_version,
+    synthesis_model: assessed.synthesis_model,
+    assessment: assessed.assessment,
+  };
+}
+
+function secondReportFrom(reportInput: Record<string, any>) {
+  const report = clone(reportInput);
+  report.source_id = "github-43";
+  report.repository_id = 43;
+  report.repository = "owner/repo-two";
+  report.canonical_url = "https://github.com/owner/repo-two";
+  report.target_sha = "d".repeat(40);
+  report.completed_at = "2026-08-02T12:01:00.000Z";
+  report.report_version = 1;
+  report.supersedes_report_id = null;
+  return rebindReport(report);
 }
 
 describe("TavernKeeper V5 report import", () => {
@@ -564,7 +592,7 @@ describe("TavernKeeper V5 report import", () => {
     });
   });
 
-  test("preserves the previous snapshot when synthesis fails", async () => {
+  test("persists one failed report while importing its successful peer", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-import-"));
     const outputPath = resolve(
       root,
@@ -574,21 +602,273 @@ describe("TavernKeeper V5 report import", () => {
     const previous =
       '{\n  "schema_version": 5,\n  "generated_at": "1970-01-01T00:00:00.000Z",\n  "preferred_report_ids": [],\n  "reports": []\n}\n';
     await writeFile(outputPath, previous);
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    const [index, report] = await fixtures();
+    const secondReport = secondReportFrom(report);
+    const secondEntry = projectIndexReport(secondReport);
+    index.reports.push(secondEntry);
+    const expandedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry: expandedRegistry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL
+            ? index
+            : url.includes(secondReport.report_id)
+              ? secondReport
+              : report,
+        ),
+      synthesizeReport: async (currentReport: Record<string, any>) => {
+        if (currentReport.repository_id === 42)
+          throw new Error("provider response must never be persisted");
+        return synthesisFor(secondEntry);
+      },
+      now: () => new Date("2026-08-02T12:10:00.000Z"),
+      batchSize: 5,
+    });
+
+    expect(outcome).toMatchObject({
+      imported: 1,
+      failed: 1,
+      pending_due: 0,
+      pending_delayed: 1,
+      next_wake_at: "2026-08-02T12:15:00.000Z",
+      chronic_failures: 0,
+    });
+    expect(outcome.snapshot.preferred_report_ids).toEqual([
+      secondEntry.report_id,
+    ]);
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({ report_id: secondEntry.report_id }),
+    ]);
+    const stateText = await readFile(importStatePath, "utf8");
+    expect(stateText).not.toContain(
+      "provider response must never be persisted",
+    );
+    expect(JSON.parse(stateText)).toMatchObject({
+      schema_version: 1,
+      next_ticket: 4,
+      pending: [
+        {
+          report_id: index.reports[0].report_id,
+          repository_id: 42,
+          ticket: 3,
+          consecutive_failures: 1,
+          total_failures: 1,
+          not_before: "2026-08-02T12:15:00.000Z",
+          last_error_code: "REPORT_SYNTHESIS_FAILED",
+          chronic: false,
+        },
+      ],
+    });
+  });
+
+  test("keeps the last valid preferred assessment while its replacement retries", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-fallback-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index, report] = await fixtures();
+    const prior = assessedEntry(index.reports[0]);
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 5,
+        generated_at: index.generated_at,
+        preferred_report_ids: [prior.report_id],
+        reports: [prior],
+      })}\n`,
+    );
+
+    const replacement = clone(report);
+    replacement.target_sha = "e".repeat(40);
+    replacement.completed_at = "2026-08-02T13:00:00.000Z";
+    replacement.report_version = 1;
+    replacement.supersedes_report_id = null;
+    const rebound = rebindReport(replacement);
+    const replacementEntry = projectIndexReport(rebound);
+    const replacementIndex = {
+      ...index,
+      generated_at: "2026-08-02T13:01:00.000Z",
+      reports: [replacementEntry],
+    };
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL ? replacementIndex : rebound,
+        ),
+      synthesizeReport: async () => {
+        throw new Error("replacement synthesis failed");
+      },
+      now: () => new Date("2026-08-02T13:05:00.000Z"),
+    });
+
+    expect(outcome.snapshot.preferred_report_ids).toEqual([prior.report_id]);
+    expect(outcome.snapshot.reports).toEqual([prior]);
+    expect(outcome.import_state.pending).toEqual([
+      expect.objectContaining({ report_id: replacementEntry.report_id }),
+    ]);
+  });
+
+  test("keeps a failed import ahead of reports discovered later", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-order-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
     const [index, report] = await fixtures();
 
-    await expect(
-      importTavernKeeperReports({
+    await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        throw new Error("first failure");
+      },
+      now: () => new Date("2026-08-02T12:10:00.000Z"),
+    });
+
+    const secondReport = secondReportFrom(report);
+    const secondEntry = projectIndexReport(secondReport);
+    const expandedIndex = {
+      ...index,
+      reports: [...index.reports, secondEntry],
+    };
+    const expandedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry: expandedRegistry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL
+            ? expandedIndex
+            : url.includes(secondReport.report_id)
+              ? secondReport
+              : report,
+        ),
+      synthesizeReport: async () => synthesisFor(secondEntry),
+      now: () => new Date("2026-08-02T12:11:00.000Z"),
+    });
+
+    expect(outcome.import_state.pending).toEqual([
+      expect.objectContaining({ repository_id: 42, ticket: 2 }),
+    ]);
+    expect(outcome.import_state.next_ticket).toBe(4);
+    expect(outcome.snapshot.preferred_report_ids).toEqual([
+      secondEntry.report_id,
+    ]);
+  });
+
+  test("marks a fifth import failure chronic without making it terminal", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-chronic-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
+    const [index, report] = await fixtures();
+    const times = [
+      "2026-08-02T12:00:00.000Z",
+      "2026-08-02T12:05:00.000Z",
+      "2026-08-02T12:35:00.000Z",
+      "2026-08-02T14:35:00.000Z",
+      "2026-08-02T20:35:00.000Z",
+    ];
+    let lastOutcome;
+    for (const at of times) {
+      lastOutcome = await reconcileTavernKeeperReports({
         root,
         outputPath,
+        importStatePath,
         registry,
         dnsLookup: publicDnsLookup,
         requestImpl: async (url: string) =>
           jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
         synthesizeReport: async () => {
-          throw new Error("provider failed");
+          throw new Error("repeat failure");
         },
-      }),
-    ).rejects.toThrow(/provider failed/u);
-    expect(await readFile(outputPath, "utf8")).toBe(previous);
+        now: () => new Date(at),
+      });
+    }
+    const outcome = lastOutcome!;
+
+    expect(outcome).toMatchObject({
+      failed: 1,
+      pending_delayed: 1,
+      chronic_failures: 1,
+      next_wake_at: "2026-08-03T02:35:00.000Z",
+    });
+    expect(outcome.import_state.pending[0]).toMatchObject({
+      consecutive_failures: 5,
+      total_failures: 5,
+      chronic: true,
+      not_before: "2026-08-03T02:35:00.000Z",
+    });
+    expect(JSON.parse(await readFile(outputPath, "utf8"))).toMatchObject({
+      generated_at: index.generated_at,
+      preferred_report_ids: [],
+    });
   });
 });
