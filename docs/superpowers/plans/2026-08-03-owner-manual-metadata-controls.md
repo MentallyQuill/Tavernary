@@ -57,6 +57,8 @@
 
   Add a second test that edits both manual fields, switches each policy back to automatic, and expects the original summary/tags to be restored and disabled. Keep the existing independent-manual-policy handoff test and extend it to assert the edited manual values in the generated manifest.
 
+  Replace `reviews a blank automatic add-card summary as generated copy` with a test that leaves the locked automatic baseline untouched and still expects `Summary: Generated automatically` in review. This catches a review bug where read-only context could be presented as the eventual generated result.
+
 - [ ] **Step 2: Run the focused component test and verify RED**
 
   Run:
@@ -98,6 +100,14 @@
     summary: selected.editable.summary,
     tags: selected.editable.tags,
   }}
+  ```
+
+  Change `summaryReviewValue` so automatic authority always renders `Generated automatically`, while manual authority renders the submitted summary:
+
+  ```ts
+  function summaryReviewValue(summary: string, mode: "automatic" | "manual") {
+    return mode === "automatic" ? "Generated automatically" : summary;
+  }
   ```
 
 - [ ] **Step 5: Run the component test and verify GREEN**
