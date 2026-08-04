@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "vectricity-st-aspect-evolutia",
+  "source_id": "github-1225316984",
+  "source_identity": "github:vectricity/st-aspect-evolutia",
+  "evidence_fingerprint": "7503cb336c0d840da8b65c653368fa03d2b0d583b5410a70d91f8d943c10baab",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:13:23.842Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:13:23.842Z"
+  },
+  "maintenance_issue_number": null
+}
