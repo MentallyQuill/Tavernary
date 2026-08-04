@@ -1,31 +1,43 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-04T17:12:22.975Z",
-  "source_generated_at": "2026-08-04T08:32:18.579Z",
-  "next_ticket": 9,
+  "updated_at": "2026-08-04T18:26:58.051Z",
+  "source_generated_at": "2026-08-04T18:25:41.513Z",
+  "next_ticket": 13,
   "pending": [
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "repository_id": 26291683,
       "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
-      "ticket": 7,
-      "consecutive_failures": 2,
-      "total_failures": 2,
-      "not_before": "2026-08-04T17:42:22.975Z",
+      "ticket": 10,
+      "consecutive_failures": 3,
+      "total_failures": 3,
+      "not_before": "2026-08-04T20:26:58.051Z",
       "last_error_code": "REPORT_SYNTHESIS_FAILED",
-      "last_failed_at": "2026-08-04T17:12:22.975Z",
+      "last_failed_at": "2026-08-04T18:26:58.051Z",
       "chronic": false
     },
     {
       "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
       "repository_id": 956654271,
       "target_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
-      "ticket": 8,
-      "consecutive_failures": 2,
-      "total_failures": 2,
-      "not_before": "2026-08-04T17:42:22.975Z",
+      "ticket": 11,
+      "consecutive_failures": 3,
+      "total_failures": 3,
+      "not_before": "2026-08-04T20:26:58.051Z",
       "last_error_code": "REPORT_SYNTHESIS_FAILED",
-      "last_failed_at": "2026-08-04T17:12:22.975Z",
+      "last_failed_at": "2026-08-04T18:26:58.051Z",
+      "chronic": false
+    },
+    {
+      "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
+      "repository_id": 1126279204,
+      "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
+      "ticket": 12,
+      "consecutive_failures": 1,
+      "total_failures": 1,
+      "not_before": "2026-08-04T18:31:58.051Z",
+      "last_error_code": "REPORT_SYNTHESIS_FAILED",
+      "last_failed_at": "2026-08-04T18:26:58.051Z",
       "chronic": false
     }
   ]
