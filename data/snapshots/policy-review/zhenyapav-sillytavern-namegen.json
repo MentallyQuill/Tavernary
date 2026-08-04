@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "zhenyapav-sillytavern-namegen",
+  "source_id": "github-1049754491",
+  "source_identity": "github:zhenyapav/sillytavern-namegen",
+  "evidence_fingerprint": "cf8dba6af9b6a9d2dc64ef325b563f36bbb3b2e7aeb39af5d45528a5b9688d38",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:09:58.079Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:09:58.079Z"
+  },
+  "maintenance_issue_number": null
+}
