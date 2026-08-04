@@ -3,7 +3,7 @@
   "id": "brasen56-merged-world-tracker",
   "name": "Merged World Tracker",
   "kind": "extension",
-  "summary": "Merged World Tracker unifies world state, session chronicles, NPC knowledge, story planning, and interiority in a modular SillyTavern extension with cross-module RP context.",
+  "summary": "All-in-one RP toolkit with World State, NPC Knowledge Tracker, Story Arc Planner, Session Chronicler and NPC Interiority. Helps AI remember, plan, and act consistently across long stories.",
   "metadata_status": "curated",
   "frontends": ["sillytavern"],
   "primary_function": "rpg-systems",
@@ -21,7 +21,10 @@
   "listing_status": "active",
   "listing_status_reason": null,
   "metadata_policy": {
-    "summary": { "mode": "automatic" },
+    "summary": {
+      "mode": "manual",
+      "note": "Verified repository owner selection."
+    },
     "tags": { "mode": "automatic" }
   }
 }
