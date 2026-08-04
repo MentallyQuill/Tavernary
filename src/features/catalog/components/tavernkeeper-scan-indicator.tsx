@@ -19,6 +19,32 @@ import { TavernKeeperFreshnessClockIcon } from "@/components/icons/tavernkeeper-
 import type { TavernKeeperCardStatus } from "@/features/catalog/tavernkeeper-status";
 import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 
+const encodedCitationPattern = /\s*\uE200cite\uE202[^\uE201]*\uE201/giu;
+const findingReferencePattern =
+  /\s*\((?:V\d+\s+)?findings?\s+[^)]*\b[0-9a-f]{64}\b[^)]*\)/giu;
+const invisibleFormattingPattern = /[\u200B-\u200D\u2060\uFEFF]/gu;
+
+function conciseAssessmentSummary(summary: string) {
+  const withoutArtifacts = summary
+    .replace(encodedCitationPattern, "")
+    .replace(findingReferencePattern, "")
+    .replace(invisibleFormattingPattern, "");
+  let display = withoutArtifacts.replace(/\s+/gu, " ").trim();
+
+  if (withoutArtifacts !== summary && !/[.!?]["')\]]?$/u.test(display)) {
+    const lastCompleteSentence = Math.max(
+      display.lastIndexOf("."),
+      display.lastIndexOf("!"),
+      display.lastIndexOf("?"),
+    );
+    if (lastCompleteSentence >= 0) {
+      display = display.slice(0, lastCompleteSentence + 1);
+    }
+  }
+
+  return display;
+}
+
 function stateCopy(status: TavernKeeperCardStatus) {
   if (status.report) {
     const freshness =
@@ -27,7 +53,7 @@ function stateCopy(status: TavernKeeperCardStatus) {
         : status.freshness === "unavailable"
           ? " Tavernary cannot confirm the repository's current commit, so freshness is unavailable."
           : "";
-    return `${status.report.summary}${freshness}`;
+    return `${conciseAssessmentSummary(status.report.summary)}${freshness}`;
   }
   if (status.state === "unsupported") {
     return "TavernKeeper scanning is not supported for this project's source.";
