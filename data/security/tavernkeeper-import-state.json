@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-04T18:56:22.422Z",
-  "source_generated_at": "2026-08-04T18:55:04.028Z",
-  "next_ticket": 27,
+  "updated_at": "2026-08-04T19:02:30.997Z",
+  "source_generated_at": "2026-08-04T18:58:19.876Z",
+  "next_ticket": 29,
   "pending": [
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
@@ -38,6 +38,18 @@
       "not_before": "2026-08-04T19:06:07.017Z",
       "last_error_code": "REPORT_SYNTHESIS_FAILED",
       "last_failed_at": "2026-08-04T18:36:07.017Z",
+      "chronic": false
+    },
+    {
+      "report_id": "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
+      "repository_id": 1163555391,
+      "target_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be",
+      "ticket": 28,
+      "consecutive_failures": 1,
+      "total_failures": 1,
+      "not_before": "2026-08-04T19:07:30.997Z",
+      "last_error_code": "REPORT_SYNTHESIS_FAILED",
+      "last_failed_at": "2026-08-04T19:02:30.997Z",
       "chronic": false
     }
   ]
