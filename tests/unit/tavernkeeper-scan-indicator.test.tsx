@@ -185,6 +185,12 @@ describe("TavernKeeperScanIndicator", () => {
       summary:
         "The project has a material vulnerability: when normal JSON parsing fails, it may execute the AI's response as JavaScript. A manipulated or malicious AI response could therefore run code inside the user's SillyTavern session. Users should avoid untrusted AI endpoints or content until this fallback is removed and replaced with safe, non-executing JSON repair. \uE200cite\uE202e1f6254c527f8d5fd529e09c3c7959fa59e8afbbbabfa395a3ce291339df0ba6\uE201",
     },
+    {
+      expected:
+        "The project is assessed as low risk for users. Its test workflow could use safer GitHub token handling, narrower permissions, and pinned action versions.",
+      summary:
+        "The project is assessed as low risk for users. Its test workflow could use safer GitHub token handling, narrower permissions, and pinned action versions [72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3] [7e6ec8fb70e2a68052c34a3d7d7b1a8b011698553c48df62ec39943af8ee0bbd] [817962172966e2e2adae88040c785386dcfaeb3717f1feb8d7b5f1be23d08f6c] [cef063e24672a717652b8ac33af23d6a04d1009c2bd06f733f5d6d8e9e5015cb]. A known issue also affects a developer testing/build tool, not the installed S",
+    },
   ])(
     "keeps internal finding references out of concise assessment copy",
     ({ expected, summary }) => {

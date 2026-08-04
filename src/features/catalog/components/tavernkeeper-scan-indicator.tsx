@@ -22,12 +22,14 @@ import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 const encodedCitationPattern = /\s*\uE200cite\uE202[^\uE201]*\uE201/giu;
 const findingReferencePattern =
   /\s*\((?:V\d+\s+)?findings?\s+[^)]*\b[0-9a-f]{64}\b[^)]*\)/giu;
+const bracketedFindingReferencePattern = /\s*\[[0-9a-f]{64}\]/giu;
 const invisibleFormattingPattern = /[\u200B-\u200D\u2060\uFEFF]/gu;
 
 function conciseAssessmentSummary(summary: string) {
   const withoutArtifacts = summary
     .replace(encodedCitationPattern, "")
     .replace(findingReferencePattern, "")
+    .replace(bracketedFindingReferencePattern, "")
     .replace(invisibleFormattingPattern, "");
   let display = withoutArtifacts.replace(/\s+/gu, " ").trim();
 
