@@ -225,7 +225,65 @@
   git commit -m "fix(owner): reject automatic metadata edits"
   ```
 
-### Task 3: Correct and regenerate PR #234
+### Task 3: Restore a single generated path before regeneration
+
+**Files:**
+- Modify: `.github/workflows/generate-project-owner-request.yml`
+- Modify: `scripts/help/project-owner-pr.mjs`
+- Modify: `scripts/help/project-owner-pr.d.mts`
+- Test: `tests/unit/project-owner-pr.test.ts`
+
+**Interfaces:**
+- `renderOwnerGeneratedPathsFile(paths: string[]): string` renders the exact file consumed by the generation step's Bash `while read` loop.
+- The file must end with a newline whenever it contains at least one path so Bash processes a one-path transaction.
+
+- [ ] **Step 1: Write a failing workflow regression test**
+
+  In `tests/unit/project-owner-pr.test.ts`, import the new renderer and assert literal results:
+
+  ```ts
+  expect(renderOwnerGeneratedPathsFile([])).toBe("");
+  expect(
+    renderOwnerGeneratedPathsFile([
+      "data/registry/projects/owner-alpha.json",
+    ]),
+  ).toBe("data/registry/projects/owner-alpha.json\n");
+  ```
+
+  Name the regression for the skipped single-path restoration that caused run `30878818708` to read PR output as current owner state.
+
+- [ ] **Step 2: Run the focused workflow test and verify RED**
+
+  Run:
+
+  ```powershell
+  npm.cmd test -- --run tests/unit/project-owner-pr.test.ts
+  ```
+
+  Expected: FAIL because the current writer emits `join("\n")` with no terminal newline.
+
+- [ ] **Step 3: Write newline-terminated previous paths**
+
+  Add `renderOwnerGeneratedPathsFile` to `scripts/help/project-owner-pr.mjs` and its declaration file. In `.github/workflows/generate-project-owner-request.yml`, import that helper in the existing marker-inspection script and use it to write `previous-owner-paths.txt`. Do not change branch-ownership or path-allowlist behavior.
+
+- [ ] **Step 4: Run workflow and owner-generation tests and verify GREEN**
+
+  Run:
+
+  ```powershell
+  npm.cmd test -- --run tests/unit/workflows.test.ts tests/unit/project-owner-pr.test.ts tests/unit/generate-project-owner-request.test.ts
+  ```
+
+  Expected: all focused workflow and owner-generation tests pass.
+
+- [ ] **Step 5: Commit the workflow repair**
+
+  ```powershell
+  git add .github/workflows/generate-project-owner-request.yml scripts/help/project-owner-pr.mjs scripts/help/project-owner-pr.d.mts tests/unit/project-owner-pr.test.ts docs/superpowers/plans/2026-08-03-owner-manual-metadata-controls.md
+  git commit -m "fix(owner): restore prior generated paths"
+  ```
+
+### Task 4: Correct and regenerate PR #234
 
 **Files:**
 - External update: GitHub issue `MentallyQuill/Tavernary#233`
@@ -283,7 +341,7 @@
 
   Re-read PR #234, its diff, and its marker. Confirm the registry record contains `metadata_policy.summary.mode: manual`, `metadata_policy.tags.mode: automatic`, and the manual summary result. Confirm the PR `After` section agrees and required checks complete successfully.
 
-### Task 4: Full verification and handoff
+### Task 5: Full verification and handoff
 
 **Files:**
 - Verify all changed code, tests, spec, and plan
