@@ -1,0 +1,49 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1147155100",
+  "repository": {
+    "id": 1147155100,
+    "owner": "Rurijian",
+    "name": "deep-swipe",
+    "url": "https://github.com/Rurijian/deep-swipe",
+    "description": "Deep Swipe: A Sillytavern Extension for Swiping deep in context",
+    "default_branch": "master",
+    "head_sha": "cd951d755d0fcdaa591af76117918d4e3744ccca",
+    "head_committed_at": "2026-04-20T19:08:25.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-01T09:38:43.000Z",
+    "size_kb": 6480
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-02-20T01:06:12.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-04T08:43:28.053Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "cd951d755d0fcdaa591af76117918d4e3744ccca"
+  },
+  "community": {
+    "stars_count": 8,
+    "forks_count": 0,
+    "watchers_count": 2,
+    "aggregate": 10
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-04T08:43:28.053Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "Rurijian", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-04T08:43:28.053Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

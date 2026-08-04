@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "rurijian-deep-swipe",
+  "name": "deep-swipe",
+  "kind": "extension",
+  "summary": "Deep Swipe lets SillyTavern users regenerate any message in chat history, browse alternate swipes, and preserve the original conversation through reversible generation.",
+  "metadata_status": "curated",
+  "source_id": "github-1147155100",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["edit-and-refine-messages", "non-destructive"],
+  "cataloged_at": "2026-08-04T08:43:28.053Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
