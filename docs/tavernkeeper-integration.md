@@ -101,7 +101,12 @@ report.
 After importing a complete V5 report, Tavernary's configured Luna provider
 synthesizes only the already validated candidates, assessments, observations,
 counts, identity, and limitations. It does not rescan source. Its strict JSON
-response must cite known finding IDs and match the evidence counts.
+response may cite only the explicit `allowed_candidate_ids` and must copy the
+deterministic `required_counts`. Observation IDs are not exposed and are never
+valid citations. A rejected response receives only a bounded diagnostic,
+allowed or rejected candidate IDs when applicable, and the required counts;
+generated prose is never returned as repair context. An identical repair stops
+early instead of spending a third request on the same correction.
 
 Tavernary then enforces deterministic floors:
 
@@ -113,9 +118,10 @@ Tavernary then enforces deterministic floors:
 Luna cannot lower a floor. It can escalate only with a validated interaction
 chain citing at least two known findings. A report enters the tracked snapshot
 only after its validation, synthesis, floor validation, history merge, and
-atomic write succeed. A failed replacement remains absent while the project's
-last valid preferred assessment is retained and independently valid peers may
-still commit.
+atomic write succeed. A failed replacement remains absent from preferred
+assessments. An older assessment for that repository remains immutable history,
+but is not presented as the current preferred result. Independently valid peers
+may still commit.
 
 ## Handshake and recovery
 
@@ -124,27 +130,34 @@ manifest, then conditionally wakes TavernKeeper's `reconcile.yml`. TavernKeeper
 refetches that public manifest, scans in disposable isolated runners, publishes
 sanitized immutable V5 output through its dedicated Publisher App, and wakes
 Tavernary's **Security: Reconcile TavernKeeper reports** workflow. Tavernary
-imports up to five due unseen preferred reports in durable ticket order,
-performs Luna synthesis, commits the bounded V5 assessment snapshot and import
-ledger, runs the complete site check, and dispatches deployment of the exact
-commit.
+imports up to five eligible unseen preferred reports, performs Luna synthesis,
+commits the bounded V5 assessment snapshot and import ledger, runs the complete
+site check, and dispatches deployment of the exact commit.
 
-Each report import completes independently. A fetch, validation, or synthesis
-failure publishes no assessment for that report, records only a sanitized error
-code, and moves the report behind every import already assigned a ticket. Later
-reports receive still-higher tickets, so they cannot continually displace an
-older failure. Cooldowns are 5 minutes, 30 minutes, 2 hours, and then 6 hours
-capped indefinitely. The fifth consecutive failure is chronic and visible in
-workflow telemetry, but it is never terminal and never blocks successful peers.
-The durable state is tracked in
-`data/security/tavernkeeper-import-state.json`.
+Each report import completes independently. Only bounded terminal
+`invalid-output` synthesis failures become report-local quarantines. The exact
+report digest and synthesis-policy pair is skipped on later scheduled runs, so
+it cannot consume the front of every batch. A changed report digest, a synthesis
+policy change, or the validated `retry_report_digest` workflow-dispatch input
+makes it eligible again. Provider timeout, rate-limit, network, authentication,
+configuration, source fetch, schema, digest, and identity failures remain
+batch-level failures; they never become report-local quarantine records.
+
+The strict schema-V2 ledger at
+`data/security/tavernkeeper-import-state.json` stores only report/repository
+identity, exact SHA, policy version, bounded diagnostic, timestamps, and attempt
+count. Legacy cooldown rows are migrated without generated output or provider
+content. One operational Issue is keyed by SHA-256 of the report digest plus
+synthesis policy. It is updated after an invalid explicit retry and closed when
+that exact quarantine recovers or becomes obsolete. Issue bodies include only
+safe identity fields, the diagnostic, attempt count, and workflow run URL.
 
 The import workflow commits every successful subset plus its updated ledger.
-If more imports are immediately due, it dispatches the next bounded batch.
+If more eligible imports remain, it dispatches the next bounded batch.
 Pages deployment and import continuation are sibling actions: a deployment
 failure cannot discard import progress or prevent continuation. A later
-TavernKeeper wake or the six-hour schedule automatically revisits cooled
-failures and also recovers missed wake-ups.
+TavernKeeper wake or the six-hour schedule discovers new report digests and
+also recovers missed wake-ups without retrying unchanged quarantines.
 
 Both directions also reconcile on schedule. Wake calls are non-authoritative:
 they carry no target SHA, mode, token budget, priority, or report URL. A missed
