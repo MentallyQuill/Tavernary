@@ -54,12 +54,18 @@ jobs:
         run: |
           result="$(npm run --silent security:import-reports)"
           printf '%s\n' "$result"
-          echo "imported=$(jq -er '.imported | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
-          echo "failed=$(jq -er '.failed | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
-          echo "pending_due=$(jq -er '.pending_due | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
-          echo "pending_delayed=$(jq -er '.pending_delayed | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
-          echo "next_wake_at=$(jq -r '.next_wake_at // \"\"' <<< "$result")" >> "$GITHUB_OUTPUT"
-          echo "chronic_failures=$(jq -er '.chronic_failures | select(type == \"number\")' <<< "$result")" >> "$GITHUB_OUTPUT"
+          imported="$(jq -er '.imported | select(type == "number")' <<< "$result")"
+          failed="$(jq -er '.failed | select(type == "number")' <<< "$result")"
+          pending_due="$(jq -er '.pending_due | select(type == "number")' <<< "$result")"
+          pending_delayed="$(jq -er '.pending_delayed | select(type == "number")' <<< "$result")"
+          next_wake_at="$(jq -r '.next_wake_at // ""' <<< "$result")"
+          chronic_failures="$(jq -er '.chronic_failures | select(type == "number")' <<< "$result")"
+          echo "imported=$imported" >> "$GITHUB_OUTPUT"
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
+          echo "pending_due=$pending_due" >> "$GITHUB_OUTPUT"
+          echo "pending_delayed=$pending_delayed" >> "$GITHUB_OUTPUT"
+          echo "next_wake_at=$next_wake_at" >> "$GITHUB_OUTPUT"
+          echo "chronic_failures=$chronic_failures" >> "$GITHUB_OUTPUT"
       - name: Validate imported summaries
         run: npm run check
       - name: Commit and publish changed summaries
