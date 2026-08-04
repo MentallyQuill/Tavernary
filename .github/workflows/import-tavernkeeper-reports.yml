@@ -120,6 +120,7 @@ jobs:
             fi
           done
       - name: Reconcile report synthesis incidents
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           CREATED_OR_UPDATED: ${{ steps.import.outputs.created_or_updated }}

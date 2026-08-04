@@ -220,14 +220,14 @@ export async function reconcileTavernKeeperReports(options = {}) {
     options.synthesizeReport ?? createDefaultSynthesis(options);
   const eligible = index.reports.filter((entry) => {
     if (retryReportDigest === entry.report_digest) return true;
-    if (matchingTrackedEntry(existing.get(entry.report_id), entry))
+    if (currentQuarantine(importState, entry.report_digest) !== undefined) {
       return false;
-    return currentQuarantine(importState, entry.report_digest) === undefined;
+    }
+    return !matchingTrackedEntry(existing.get(entry.report_id), entry);
   });
   const skippedQuarantines = index.reports.filter(
     (entry) =>
       retryReportDigest !== entry.report_digest &&
-      !matchingTrackedEntry(existing.get(entry.report_id), entry) &&
       currentQuarantine(importState, entry.report_digest) !== undefined,
   ).length;
   const additions = [];
@@ -303,6 +303,7 @@ export async function reconcileTavernKeeperReports(options = {}) {
     reports.map((entry) => [entry.report_id, entry]),
   );
   const preferredReportIds = index.reports.flatMap((entry) =>
+    currentQuarantine(importState, entry.report_digest) === undefined &&
     matchingTrackedEntry(retainedById.get(entry.report_id), entry)
       ? [entry.report_id]
       : [],

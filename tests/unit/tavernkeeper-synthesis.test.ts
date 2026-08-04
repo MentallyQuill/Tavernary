@@ -514,6 +514,29 @@ describe("strict Luna synthesis", () => {
     expect(generate).toHaveBeenCalledTimes(3);
   });
 
+  test("treats invalid provider structured content as bounded invalid output", async () => {
+    const report = await fixture();
+    const generate = vi
+      .fn()
+      .mockRejectedValue(
+        new EnrichmentProviderError(
+          "provider-response-invalid",
+          "content-json-invalid",
+        ),
+      );
+
+    await expect(
+      synthesizeTavernKeeperReport(report, { provider: { generate } }),
+    ).rejects.toMatchObject({
+      kind: "invalid-output",
+      diagnostic: "provider_response_invalid",
+    });
+    expect(generate).toHaveBeenCalledTimes(2);
+    expect(generate.mock.calls[1][0].repair).toMatchObject({
+      diagnostic: "provider_response_invalid",
+    });
+  });
+
   test.each([
     ["provider-timeout", "provider-transient"],
     ["provider-rate-limited", "provider-transient"],

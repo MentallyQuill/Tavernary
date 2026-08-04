@@ -607,6 +607,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
     name?: string;
     env?: Record<string, string>;
     run?: string;
+    "continue-on-error"?: boolean;
   }>;
   const synthesisStep = reportImportSteps.find(
     (step) =>
@@ -666,6 +667,7 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(incidentStep?.run).toContain("incident_key");
   expect(incidentStep?.run).toContain("Report incident key:");
   expect(incidentStep?.run).not.toContain("diagnostic in:body");
+  expect(incidentStep?.["continue-on-error"]).toBe(true);
   expect(
     reportImportSteps
       .filter((step) => step !== synthesisStep)

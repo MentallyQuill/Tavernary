@@ -922,6 +922,56 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
+  test("removes a current assessment from preferred when its explicit retry quarantines", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-retry-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index, report] = await fixtures();
+    const prior = assessedEntry(index.reports[0]);
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 5,
+        generated_at: index.generated_at,
+        preferred_report_ids: [prior.report_id],
+        reports: [prior],
+      })}\n`,
+    );
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        throw new TavernKeeperSynthesisError(
+          "invalid-output",
+          "response_schema",
+        );
+      },
+      retryReportDigest: index.reports[0].report_digest,
+      now: () => new Date("2026-08-02T13:05:00.000Z"),
+    });
+
+    expect(outcome.snapshot.reports).toEqual([prior]);
+    expect(outcome.snapshot.preferred_report_ids).toEqual([]);
+    expect(outcome.import_state.quarantines).toEqual([
+      expect.objectContaining({
+        report_digest: index.reports[0].report_digest,
+      }),
+    ]);
+  });
+
   test("treats a changed report digest as new eligible work", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-digest-"));
     const outputPath = resolve(
