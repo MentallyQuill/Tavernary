@@ -604,7 +604,7 @@ export function ProjectOwnerBuilder({
           </HelpChoiceGroup>
         ) : null}
 
-        {operation === "edit-card" && editCard ? (
+        {operation === "edit-card" && editCard && selected ? (
           <OwnerCardFields
             card={editCard}
             index={0}
