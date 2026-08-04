@@ -9,22 +9,27 @@
     "url": "https://github.com/kwaroran/Risuai",
     "description": "Make your own story. User-friendly software for LLM roleplaying",
     "default_branch": "main",
-    "head_sha": "9b2606944538f37b6a1d0089c787465a71197beb",
-    "head_committed_at": "2026-07-30T07:06:18.000Z",
+    "head_sha": "f3f0242fba297d82e0efcc2c31ca1428569b70f2",
+    "head_committed_at": "2026-08-04T06:54:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2023-04-12T13:08:52.000Z",
-    "size_kb": 77230
+    "size_kb": 77252
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-30T07:06:18.000Z",
+    "latest_source_activity_at": "2026-08-04T05:16:49.000Z",
     "source_weeks": [
       {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-04T05:16:49.000Z",
+        "precision": "exact"
+      },
+      {
         "week_start": "2026-07-27",
-        "latest_at": "2026-07-30T07:06:18.000Z",
-        "precision": "interval"
+        "latest_at": "2026-08-02T04:00:12.000Z",
+        "precision": "exact"
       },
       {
         "week_start": "2026-07-20",
@@ -43,7 +48,7 @@
       },
       {
         "week_start": "2026-06-29",
-        "latest_at": "2026-07-01T08:58:09.000Z",
+        "latest_at": "2026-07-01T21:18:48.000Z",
         "precision": "exact"
       },
       {
@@ -58,7 +63,7 @@
       },
       {
         "week_start": "2026-06-08",
-        "latest_at": "2026-06-11T21:08:29.000Z",
+        "latest_at": "2026-06-12T14:40:44.000Z",
         "precision": "exact"
       },
       {
@@ -75,32 +80,27 @@
         "week_start": "2026-05-18",
         "latest_at": "2026-05-24T13:10:39.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-17T06:02:49.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": "2026-07-29T07:31:36.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-28T06:34:29.172Z",
+    "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "9b2606944538f37b6a1d0089c787465a71197beb"
+    "evidence_head_sha": "f3f0242fba297d82e0efcc2c31ca1428569b70f2"
   },
   "community": {
-    "stars_count": 1577,
-    "forks_count": 336,
+    "stars_count": 1579,
+    "forks_count": 339,
     "watchers_count": 23,
-    "aggregate": 1936
+    "aggregate": 1941
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-03T10:52:31.892Z",
+  "refreshed_at": "2026-08-04T10:01:46.256Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -190,7 +190,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-03T10:52:31.892Z",
+    "refreshed_at": "2026-08-04T10:01:46.256Z",
     "stale_since": null
   }
 }

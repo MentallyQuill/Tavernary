@@ -35,15 +35,15 @@
     "aggregate": 10
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-04T08:43:28.053Z",
+  "refreshed_at": "2026-08-04T10:01:46.256Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Rurijian", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-04T08:43:28.053Z",
+    "refreshed_at": "2026-08-04T10:01:46.256Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

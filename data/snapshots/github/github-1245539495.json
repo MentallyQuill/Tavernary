@@ -9,22 +9,27 @@
     "url": "https://github.com/Casus-B/Casus-custom-Chatfill-II",
     "description": "A modified Sillytavern preset",
     "default_branch": "main",
-    "head_sha": "eb8443df5bb2868b5c54457a42b4692d1730eab3",
-    "head_committed_at": "2026-08-02T04:21:56.000Z",
+    "head_sha": "ef341dc6b1e4785430edba4d24beb2c4ff2fbb64",
+    "head_committed_at": "2026-08-04T01:41:55.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-05-21T10:10:50.000Z",
-    "size_kb": 1514
+    "size_kb": 1525
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-02T04:21:56.000Z",
+    "latest_source_activity_at": "2026-08-04T01:41:55.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-04T01:41:55.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-02T04:21:56.000Z",
-        "precision": "interval"
+        "precision": "exact"
       },
       {
         "week_start": "2026-07-20",
@@ -65,18 +70,18 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T16:42:09.486Z",
+    "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "eb8443df5bb2868b5c54457a42b4692d1730eab3"
+    "evidence_head_sha": "ef341dc6b1e4785430edba4d24beb2c4ff2fbb64"
   },
   "community": {
-    "stars_count": 11,
+    "stars_count": 12,
     "forks_count": 1,
     "watchers_count": 1,
-    "aggregate": 13
+    "aggregate": 14
   },
   "license": { "status": "missing", "spdx_id": null, "source_path": null },
-  "refreshed_at": "2026-08-03T10:52:31.892Z",
+  "refreshed_at": "2026-08-04T10:01:46.256Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -84,7 +89,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-03T10:52:31.892Z",
+    "refreshed_at": "2026-08-04T10:01:46.256Z",
     "stale_since": null
   }
 }

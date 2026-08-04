@@ -65,15 +65,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-03T08:23:05.352Z",
+  "refreshed_at": "2026-08-04T10:01:46.256Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "Enerccio", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-03T08:23:05.352Z",
+    "refreshed_at": "2026-08-04T10:01:46.256Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

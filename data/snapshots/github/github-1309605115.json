@@ -9,21 +9,21 @@
     "url": "https://github.com/MentallyQuill/Tavernary",
     "description": "A GitHub-native catalog for AI roleplaying tools, extensions, and systems.",
     "default_branch": "main",
-    "head_sha": "2bedd0e3428bea9776eda808c24d101599807d9c",
-    "head_committed_at": "2026-08-03T10:44:33.000Z",
+    "head_sha": "1b186aff106eb6e54e0057df6e11701ed8038669",
+    "head_committed_at": "2026-08-04T08:59:56.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-23T06:31:00.000Z",
-    "size_kb": 53674
+    "size_kb": 54763
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-03T10:44:33.000Z",
+    "latest_source_activity_at": "2026-08-04T08:59:56.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-03T10:44:33.000Z",
+        "latest_at": "2026-08-04T08:59:56.000Z",
         "precision": "exact"
       },
       {
@@ -40,22 +40,22 @@
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-08-03T10:52:31.892Z",
+    "baseline_completed_at": "2026-08-04T10:01:46.256Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "2bedd0e3428bea9776eda808c24d101599807d9c"
+    "evidence_head_sha": "1b186aff106eb6e54e0057df6e11701ed8038669"
   },
   "community": {
-    "stars_count": 5,
+    "stars_count": 6,
     "forks_count": 0,
     "watchers_count": 0,
-    "aggregate": 5
+    "aggregate": 6
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-03T10:52:31.892Z",
+  "refreshed_at": "2026-08-04T10:01:46.256Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -67,7 +67,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-03T10:52:31.892Z",
+    "refreshed_at": "2026-08-04T10:01:46.256Z",
     "stale_since": null
   }
 }
