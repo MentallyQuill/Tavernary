@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-sillytavern",
+  "source_id": "github-599524116",
+  "source_identity": "github:sillytavern/sillytavern",
+  "evidence_fingerprint": "196dce7db433f52dbc4f025e4092001d74f198f422c2caf61eb66da83638b3d7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T00:09:42.264Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T00:09:42.264Z"
+  },
+  "maintenance_issue_number": null
+}
