@@ -1,7 +1,19 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-04T17:12:22.975Z",
+  "updated_at": "2026-08-04T18:36:07.017Z",
   "quarantines": [
+    {
+      "report_id": "0dfa4c4f80b547e6ac9150ac09fffaec67677ac91fa905d9294ce0117abcb289",
+      "report_digest": "0dfa4c4f80b547e6ac9150ac09fffaec67677ac91fa905d9294ce0117abcb289",
+      "repository_id": 1085333493,
+      "repository": "Coneja-Chibi/VectHare",
+      "target_sha": "3339e64f14e77f0cfb505d53d32de98ca11bc64a",
+      "synthesis_policy_version": "1",
+      "diagnostic": "provider_response_invalid",
+      "first_failed_at": "2026-08-04T18:36:07.017Z",
+      "last_failed_at": "2026-08-04T18:36:07.017Z",
+      "attempts": 1
+    },
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "report_digest": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
@@ -11,8 +23,8 @@
       "synthesis_policy_version": "1",
       "diagnostic": "provider_response_invalid",
       "first_failed_at": "2026-08-04T17:12:22.975Z",
-      "last_failed_at": "2026-08-04T17:12:22.975Z",
-      "attempts": 2
+      "last_failed_at": "2026-08-04T18:26:58.051Z",
+      "attempts": 3
     },
     {
       "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
@@ -23,7 +35,19 @@
       "synthesis_policy_version": "1",
       "diagnostic": "provider_response_invalid",
       "first_failed_at": "2026-08-04T17:12:22.975Z",
-      "last_failed_at": "2026-08-04T17:12:22.975Z",
+      "last_failed_at": "2026-08-04T18:26:58.051Z",
+      "attempts": 3
+    },
+    {
+      "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
+      "report_digest": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
+      "repository_id": 1126279204,
+      "repository": "AventurasTeam/Aventuras",
+      "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
+      "synthesis_policy_version": "1",
+      "diagnostic": "provider_response_invalid",
+      "first_failed_at": "2026-08-04T18:36:07.017Z",
+      "last_failed_at": "2026-08-04T18:36:07.017Z",
       "attempts": 2
     }
   ]
