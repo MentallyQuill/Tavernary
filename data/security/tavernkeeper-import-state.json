@@ -1,78 +1,18 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-04T19:34:21.835Z",
+  "updated_at": "2026-08-04T20:32:13.606Z",
   "quarantines": [
-    {
-      "report_id": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
-      "report_digest": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
-      "repository_id": 1073040696,
-      "repository": "bmen25124/SillyTavern-Flowchart",
-      "target_sha": "b7c091b0ba227df5913453c311bdf264d7c454be",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T19:34:21.835Z",
-      "last_failed_at": "2026-08-04T19:34:21.835Z",
-      "attempts": 1
-    },
-    {
-      "report_id": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
-      "report_digest": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
-      "repository_id": 1305919833,
-      "repository": "N0819/Sonder_Engine",
-      "target_sha": "bfd68cd224f2b8e434ab401d5e295345e227ff59",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T19:16:44.017Z",
-      "last_failed_at": "2026-08-04T19:21:56.086Z",
-      "attempts": 2
-    },
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "report_digest": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "repository_id": 26291683,
       "repository": "twitter/twemoji",
       "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T17:12:22.975Z",
-      "last_failed_at": "2026-08-04T18:26:58.051Z",
-      "attempts": 3
-    },
-    {
-      "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
-      "report_digest": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
-      "repository_id": 956654271,
-      "repository": "bmen25124/SillyTavern-Character-Creator",
-      "target_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T17:12:22.975Z",
-      "last_failed_at": "2026-08-04T18:26:58.051Z",
-      "attempts": 3
-    },
-    {
-      "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
-      "report_digest": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
-      "repository_id": 1126279204,
-      "repository": "AventurasTeam/Aventuras",
-      "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T18:36:07.017Z",
-      "last_failed_at": "2026-08-04T19:09:01.656Z",
-      "attempts": 3
-    },
-    {
-      "report_id": "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
-      "report_digest": "f1da587a1375b75d4566f34f07af71f5941abd5043d3e5163cfedb20c4231ad1",
-      "repository_id": 1163555391,
-      "repository": "DangerDaza/Dooms-Enhancement-Suite",
-      "target_sha": "c534fa0969e449c364b85ab03f1aa00d607b11be",
-      "synthesis_policy_version": "1",
-      "diagnostic": "provider_response_invalid",
-      "first_failed_at": "2026-08-04T19:09:01.656Z",
-      "last_failed_at": "2026-08-04T19:09:01.656Z",
-      "attempts": 2
+      "synthesis_policy_version": "2",
+      "diagnostic": "unsupported_escalation",
+      "first_failed_at": "2026-08-04T20:32:13.606Z",
+      "last_failed_at": "2026-08-04T20:32:13.606Z",
+      "attempts": 1
     }
   ]
 }
