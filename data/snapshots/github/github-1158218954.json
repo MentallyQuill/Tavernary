@@ -1,0 +1,68 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1158218954",
+  "repository": {
+    "id": 1158218954,
+    "owner": "SenriYuki",
+    "name": "SillyTavern-Horae",
+    "url": "https://github.com/SenriYuki/SillyTavern-Horae",
+    "description": "SillyTavern 记忆增强插件 / Memory enhancement extension for SillyTavern",
+    "default_branch": "main",
+    "head_sha": "7a8859897bbfc6f0781ac5eb2451bc607e2bab95",
+    "head_committed_at": "2026-06-07T01:02:05.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-15T01:33:50.000Z",
+    "size_kb": 2204
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-06-07T01:00:56.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T01:00:56.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-28T10:45:45.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T22:09:00.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-04T01:24:19.077Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "7a8859897bbfc6f0781ac5eb2451bc607e2bab95"
+  },
+  "community": {
+    "stars_count": 154,
+    "forks_count": 20,
+    "watchers_count": 0,
+    "aggregate": 174
+  },
+  "license": { "status": "missing", "spdx_id": null, "source_path": null },
+  "refreshed_at": "2026-08-04T01:24:19.077Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "SenriYuki", "type": "User", "provider": "github" },
+      { "login": "baibai-git", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-04T01:24:19.077Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

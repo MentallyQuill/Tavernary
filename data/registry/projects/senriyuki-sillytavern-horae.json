@@ -1,0 +1,24 @@
+{
+  "schema_version": 6,
+  "id": "senriyuki-sillytavern-horae",
+  "name": "SillyTavern-Horae",
+  "kind": "extension",
+  "summary": "Horae is a SillyTavern memory engine that uses structured time anchors to keep long-form roleplay events, costumes, relationships, and items consistent.",
+  "metadata_status": "curated",
+  "source_id": "github-1158218954",
+  "frontends": ["sillytavern"],
+  "primary_function": "memory-retrieval",
+  "tags": [
+    "maintain-long-term-memory",
+    "preserve-story-continuity",
+    "track-characters-and-world-state"
+  ],
+  "cataloged_at": "2026-08-04T01:24:19.077Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
