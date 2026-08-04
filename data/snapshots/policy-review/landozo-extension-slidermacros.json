@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "landozo-extension-slidermacros",
+  "source_id": "github-1140216653",
+  "source_identity": "github:landozo/extension-slidermacros",
+  "evidence_fingerprint": "3c3d445bd461464521c5b89ee9d42bca3a7a7b2e51463d09e2f23bd533424ea7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:11:39.868Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:11:39.868Z"
+  },
+  "maintenance_issue_number": null
+}
