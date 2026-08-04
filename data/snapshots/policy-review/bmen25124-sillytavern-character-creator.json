@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "bmen25124-sillytavern-character-creator",
+  "source_id": "github-956654271",
+  "source_identity": "github:bmen25124/sillytavern-character-creator",
+  "evidence_fingerprint": "33bb5f1384f2b3d3ec17722c576da281c81e11841140a470c03fb96f79e38285",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:17:03.794Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:17:03.794Z"
+  },
+  "maintenance_issue_number": null
+}
