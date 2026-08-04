@@ -327,9 +327,25 @@ function normalizeEdit(value, vocabularies, errors) {
     errors,
   );
   const { kind: _kind, ...originalEditable } = original;
+  const comparableOriginal = comparableEditable(originalEditable);
+  const comparableProposed = comparableEditable(proposed);
   if (
-    JSON.stringify(comparableEditable(originalEditable)) ===
-    JSON.stringify(comparableEditable(proposed))
+    proposed.metadata.summary.mode === "automatic" &&
+    comparableOriginal.summary !== comparableProposed.summary
+  ) {
+    errors.push(
+      "Select manual summary policy before changing the owner summary.",
+    );
+  }
+  if (
+    proposed.metadata.tags.mode === "automatic" &&
+    JSON.stringify(comparableOriginal.tags) !==
+      JSON.stringify(comparableProposed.tags)
+  ) {
+    errors.push("Select manual tag policy before changing owner tags.");
+  }
+  if (
+    JSON.stringify(comparableOriginal) === JSON.stringify(comparableProposed)
   ) {
     errors.push("Owner card edit must change at least one field.");
   }

@@ -977,6 +977,7 @@ test("guided Help states retain the approved graphite and teal treatment", async
     sitePath("/help/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary policy").selectOption("manual");
   const ownerSummary = page.getByRole("textbox", {
     name: "Summary",
     exact: true,
@@ -1037,6 +1038,7 @@ test("captures the complete guided Help surface on Windows", async ({
     sitePath("/help/manage-project/?project=mentallyquill-directive"),
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary policy").selectOption("manual");
   await page
     .getByRole("textbox", { name: "Summary", exact: true })
     .fill("x".repeat(219));

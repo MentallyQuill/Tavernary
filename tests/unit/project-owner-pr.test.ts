@@ -5,6 +5,7 @@ import {
   ownerRequestBranch,
   parseOwnerRequestPullRequestMarker,
   planOwnerPrUpdate,
+  renderOwnerGeneratedPathsFile,
   renderOwnerRequestPullRequest,
 } from "../../scripts/help/project-owner-pr.mjs";
 
@@ -96,6 +97,21 @@ const reviewFixture = {
   },
   marker: transactionMarker,
 };
+
+test("terminates a single generated path for Bash regeneration", () => {
+  expect(renderOwnerGeneratedPathsFile([])).toBe("");
+  expect(
+    renderOwnerGeneratedPathsFile(["data/registry/projects/owner-alpha.json"]),
+  ).toBe("data/registry/projects/owner-alpha.json\n");
+  expect(
+    renderOwnerGeneratedPathsFile([
+      "data/registry/projects/owner-alpha.json",
+      "data/snapshots/github/owner-alpha.json",
+    ]),
+  ).toBe(
+    "data/registry/projects/owner-alpha.json\ndata/snapshots/github/owner-alpha.json\n",
+  );
+});
 
 function ownerPull({
   issueNumber = 122,

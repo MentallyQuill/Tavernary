@@ -31,6 +31,7 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
     "Directive",
   );
   await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary policy").selectOption("manual");
   await page
     .getByRole("textbox", { name: "Summary", exact: true })
     .fill("An owner-authored summary for the Directive listing.");
@@ -69,6 +70,10 @@ test("reviews one owner card edit and hands the complete manifest to GitHub", as
     proposed: {
       name: "Directive",
       summary: "An owner-authored summary for the Directive listing.",
+      metadata: {
+        summary: { mode: "manual" },
+        tags: { mode: "automatic" },
+      },
     },
   });
   expect(manifest.project_fingerprint).toMatch(/^[a-f0-9]{64}$/u);
@@ -79,6 +84,7 @@ test("keeps owner wording while removing emoji and linking the policy", async ({
 }) => {
   await page.goto(sitePath(`/help/manage-project/?project=${projectId}`));
   await page.getByRole("radio", { name: "Edit card details" }).check();
+  await page.getByLabel("Summary policy").selectOption("manual");
 
   const summary = page.getByRole("textbox", {
     name: "Summary",

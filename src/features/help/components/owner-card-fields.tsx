@@ -59,6 +59,7 @@ export function OwnerCardFields({
   card,
   index,
   vocabularies,
+  automaticValues,
   allowKindChange,
   compact = false,
   onChange,
@@ -66,6 +67,7 @@ export function OwnerCardFields({
   card: OwnerCardDraft;
   index: number;
   vocabularies: OwnerCardFieldVocabularies;
+  automaticValues: Pick<OwnerCardDraft, "summary" | "tags">;
   allowKindChange: boolean;
   compact?: boolean;
   onChange: (card: OwnerCardDraft) => void;
@@ -75,6 +77,32 @@ export function OwnerCardFields({
   const applicableTags = vocabularies.tags.filter((tag) =>
     tag.applicable_kinds.includes(card.kind),
   );
+
+  function changeSummaryMode(mode: "automatic" | "manual") {
+    onChange({
+      ...card,
+      summary: mode === "automatic" ? automaticValues.summary : card.summary,
+      metadata: {
+        ...card.metadata,
+        summary: { mode },
+      },
+    });
+  }
+
+  function changeTagMode(mode: "automatic" | "manual") {
+    const applicable = new Set(applicableTags.map((tag) => tag.id));
+    onChange({
+      ...card,
+      tags:
+        mode === "automatic"
+          ? automaticValues.tags.filter((tag) => applicable.has(tag))
+          : card.tags,
+      metadata: {
+        ...card.metadata,
+        tags: { mode },
+      },
+    });
+  }
 
   function changeKind(kind: OwnerProjectKind) {
     const applicable = new Set(
@@ -142,6 +170,7 @@ export function OwnerCardFields({
         id={`${idPrefix}-summary`}
         label={fieldLabel(index, compact, "summary")}
         value={card.summary}
+        disabled={card.metadata.summary.mode === "automatic"}
         maxLength={220}
         rows={4}
         count={`${card.summary.length} / 220`}
@@ -173,15 +202,7 @@ export function OwnerCardFields({
         label={fieldLabel(index, compact, "summary policy")}
         value={card.metadata.summary.mode}
         onChange={(event) =>
-          onChange({
-            ...card,
-            metadata: {
-              ...card.metadata,
-              summary: {
-                mode: event.target.value as "automatic" | "manual",
-              },
-            },
-          })
+          changeSummaryMode(event.target.value as "automatic" | "manual")
         }
       >
         <option value="automatic">
@@ -248,6 +269,7 @@ export function OwnerCardFields({
         <TagBrowser
           tags={applicableTags}
           selected={card.tags}
+          disabled={card.metadata.tags.mode === "automatic"}
           onToggle={(id: string) =>
             onChange({
               ...card,
@@ -267,13 +289,7 @@ export function OwnerCardFields({
         label={fieldLabel(index, compact, "tag policy")}
         value={card.metadata.tags.mode}
         onChange={(event) =>
-          onChange({
-            ...card,
-            metadata: {
-              ...card.metadata,
-              tags: { mode: event.target.value as "automatic" | "manual" },
-            },
-          })
+          changeTagMode(event.target.value as "automatic" | "manual")
         }
       >
         <option value="automatic">

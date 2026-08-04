@@ -348,6 +348,15 @@ test("gives each add-card draft its own six-tag allowance", async () => {
     name: /^Card \d+:/u,
   });
 
+  await user.selectOptions(
+    within(first!).getByLabelText("Card 1 tag policy"),
+    "manual",
+  );
+  await user.selectOptions(
+    within(second!).getByLabelText("Card 2 tag policy"),
+    "manual",
+  );
+
   for (const label of [
     "Creative writing",
     "Trait 1",
@@ -392,18 +401,18 @@ test("blocks the whole batch for duplicate generated IDs or one invalid card", a
 
   await user.clear(screen.getByLabelText("Card 2 display name"));
   await user.type(screen.getByLabelText("Card 2 display name"), "Beta");
-  await user.clear(screen.getByLabelText("Card 2 summary"));
   await user.selectOptions(
     screen.getByLabelText("Card 2 summary policy"),
     "manual",
   );
+  await user.clear(screen.getByLabelText("Card 2 summary"));
   await user.click(screen.getByRole("button", { name: "Review request" }));
   expect(screen.getByRole("alert")).toHaveTextContent(
     "Owner summary is required.",
   );
 });
 
-test("reviews a blank automatic add-card summary as generated copy", async () => {
+test("reviews a locked automatic add-card summary as generated copy", async () => {
   const user = userEvent.setup();
   renderBuilder();
   await selectProject(user);
@@ -412,7 +421,7 @@ test("reviews a blank automatic add-card summary as generated copy", async () =>
   );
   await user.clear(screen.getByLabelText("Card 1 display name"));
   await user.type(screen.getByLabelText("Card 1 display name"), "V9 Mirage");
-  await user.clear(screen.getByLabelText("Card 1 summary"));
+  expect(screen.getByLabelText("Card 1 summary")).toBeDisabled();
   await user.click(screen.getByRole("button", { name: "Review request" }));
 
   expect(
@@ -553,6 +562,11 @@ test("uses independent metadata choices for ordinary edits", async () => {
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
   await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
   await user.selectOptions(screen.getByLabelText("Tag policy"), "automatic");
+  await user.clear(screen.getByRole("textbox", { name: /^Summary$/u }));
+  await user.type(
+    screen.getByRole("textbox", { name: /^Summary$/u }),
+    "Owner-authored replacement summary.",
+  );
   await user.clear(screen.getByLabelText("Display name"));
   await user.type(screen.getByLabelText("Display name"), "Alpha Updated");
   await user.click(screen.getByRole("button", { name: "Review request" }));
@@ -569,6 +583,7 @@ test("uses independent metadata choices for ordinary edits", async () => {
     project_fingerprint: "b".repeat(64),
     proposed: {
       name: "Alpha Updated",
+      summary: "Owner-authored replacement summary.",
       metadata: {
         summary: { mode: "manual" },
         tags: { mode: "automatic" },
@@ -577,9 +592,8 @@ test("uses independent metadata choices for ordinary edits", async () => {
   });
 });
 
-test("keeps automatic metadata policies while editing proposal context", async () => {
+test("locks automatic metadata until each policy switches to manual", async () => {
   const user = userEvent.setup();
-  const open = vi.spyOn(window, "open").mockReturnValue(window);
   renderBuilder();
   await selectProject(user);
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
@@ -588,28 +602,74 @@ test("keeps automatic metadata policies while editing proposal context", async (
   expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
 
   const summary = screen.getByRole("textbox", { name: /^Summary$/u });
+  expect(summary).toBeDisabled();
+  expect(summary).toHaveValue("Current extension summary.");
+  expect(screen.getByLabelText("Tag search")).toBeDisabled();
+  expect(
+    screen.getByRole("checkbox", { name: "Creative writing" }),
+  ).toBeDisabled();
+
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
+  expect(summary).toBeEnabled();
+  expect(summary).toHaveValue("Current extension summary.");
+
+  await user.selectOptions(screen.getByLabelText("Tag policy"), "manual");
+  expect(screen.getByLabelText("Tag search")).toBeEnabled();
+  expect(
+    screen.getByRole("checkbox", { name: "Creative writing" }),
+  ).toBeEnabled();
+});
+
+test("restores automatic metadata values after abandoning manual edits", async () => {
+  const user = userEvent.setup();
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  const summary = screen.getByRole("textbox", { name: /^Summary$/u });
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
   await user.clear(summary);
   await user.type(summary, "An owner-authored replacement summary.");
+  await user.selectOptions(screen.getByLabelText("Tag policy"), "manual");
   await user.click(screen.getByRole("checkbox", { name: "Creative writing" }));
 
-  expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
-  expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
-  await user.type(
-    screen.getByLabelText("Public note (optional)"),
-    "Keep automatic summary generation.",
+  await user.selectOptions(
+    screen.getByLabelText("Summary policy"),
+    "automatic",
   );
-  await user.click(screen.getByRole("button", { name: "Review request" }));
+  await user.selectOptions(screen.getByLabelText("Tag policy"), "automatic");
 
-  expect(screen.getByText("Summary: automatic; tags: automatic")).toBeVisible();
-  await user.click(screen.getByRole("button", { name: "Back and edit" }));
-  expect(screen.getByLabelText("Summary policy")).toHaveValue("automatic");
-  expect(screen.getByLabelText("Tag policy")).toHaveValue("automatic");
+  expect(summary).toBeDisabled();
+  expect(summary).toHaveValue("Current extension summary.");
+  expect(screen.getByLabelText("Tag search")).toBeDisabled();
+  expect(
+    screen.getByRole("checkbox", { name: "Automate workflows" }),
+  ).toBeChecked();
+  expect(
+    screen.getByRole("checkbox", { name: "Creative writing" }),
+  ).not.toBeChecked();
+});
+
+test("hands off unlocked manual summary and tag edits", async () => {
+  const user = userEvent.setup();
+  const open = vi.spyOn(window, "open").mockReturnValue(window);
+  renderBuilder();
+  await selectProject(user);
+  await user.click(screen.getByRole("radio", { name: "Edit card details" }));
+
+  const summary = screen.getByRole("textbox", { name: /^Summary$/u });
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
+  await user.clear(summary);
+  await user.type(summary, "An owner-authored replacement summary.");
+  await user.selectOptions(screen.getByLabelText("Tag policy"), "manual");
+  await user.click(screen.getByRole("checkbox", { name: "Creative writing" }));
   await user.click(screen.getByRole("button", { name: "Review request" }));
   await user.click(screen.getByRole("button", { name: "Continue on GitHub" }));
 
-  const opened = new URL(open.mock.calls[0]?.[0] as string);
   const manifest = JSON.parse(
-    opened.searchParams.get("owner-request-manifest") ?? "",
+    new URL(open.mock.calls[0]?.[0] as string).searchParams.get(
+      "owner-request-manifest",
+    ) ?? "",
   );
   expect(manifest).toMatchObject({
     operation: "edit-card",
@@ -620,18 +680,11 @@ test("keeps automatic metadata policies while editing proposal context", async (
       summary: "An owner-authored replacement summary.",
       tags: ["automate-workflows", "creative-writing"],
       metadata: {
-        summary: { mode: "automatic" },
-        tags: { mode: "automatic" },
+        summary: { mode: "manual" },
+        tags: { mode: "manual" },
       },
     },
   });
-  expect(opened.searchParams.get("request-type")).toBe("Edit card details");
-  expect(opened.searchParams.get("source-id")).toBe("github-42");
-  expect(opened.searchParams.get("project-id")).toBe("owner-alpha");
-  expect(opened.searchParams.get("explanation")).toBe(
-    "Keep automatic summary generation.",
-  );
-  expect(opened.searchParams.has("public-note")).toBe(false);
 });
 
 test("removes emoji from an owner summary and explains the edit", async () => {
@@ -641,6 +694,7 @@ test("removes emoji from an owner summary and explains the edit", async () => {
   await user.click(screen.getByRole("radio", { name: "Edit card details" }));
 
   const summary = screen.getByRole("textbox", { name: /^Summary$/u });
+  await user.selectOptions(screen.getByLabelText("Summary policy"), "manual");
   await user.clear(summary);
   await user.type(summary, "This is damn useful 🧭 for ST-QuickReply.");
 

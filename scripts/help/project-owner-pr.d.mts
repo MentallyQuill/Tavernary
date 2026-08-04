@@ -29,6 +29,7 @@ export type OwnerPrUpdatePlan =
     };
 
 export function ownerRequestBranch(issueNumber: number): string;
+export function renderOwnerGeneratedPathsFile(paths: string[]): string;
 export function renderOwnerRequestPullRequest(input: {
   issueNumber: number;
   projectName: string;

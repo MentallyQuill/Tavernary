@@ -456,6 +456,27 @@ test("requires repository-wide delisting confirmation", async () => {
   });
 });
 
+test("rejects a changed summary submitted under automatic authority", async () => {
+  const manifest = editManifest();
+  manifest.proposed.metadata.summary = { mode: "automatic" };
+
+  await expect(
+    processProjectOwnerTriage({
+      issue: issue(manifest),
+      project: project(),
+      source: source(),
+      repository,
+      vocabularies,
+    }),
+  ).resolves.toMatchObject({
+    status: "needs-information",
+    reasonCode: "owner-request-invalid",
+    message: expect.stringContaining(
+      "Select manual summary policy before changing the owner summary.",
+    ),
+  });
+});
+
 test("rejects complete readable owner fields without loading a target", async () => {
   const currentProject = project();
   const fallbackIssue = {

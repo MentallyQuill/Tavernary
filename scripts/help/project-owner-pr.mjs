@@ -272,6 +272,10 @@ export function ownerRequestBranch(issueNumber) {
   return `automation/project-owner-request-${issueNumber}`;
 }
 
+export function renderOwnerGeneratedPathsFile(paths) {
+  return paths.length > 0 ? `${paths.join("\n")}\n` : "";
+}
+
 export function renderOwnerRequestPullRequest(input) {
   const transaction = createProjectPublicationTransaction(input?.marker);
   const marker = ownerMarkerValues(transaction);
