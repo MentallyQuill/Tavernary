@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "japkozjad-st-action-pickers",
+  "source_id": "github-1118736914",
+  "source_identity": "github:japkozjad/st-action-pickers",
+  "evidence_fingerprint": "491cb558c04a72ee30d3908fdddce89ad4754bbcf915b7f25a675fd5df88f5e6",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:11:05.075Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:11:05.075Z"
+  },
+  "maintenance_issue_number": null
+}
