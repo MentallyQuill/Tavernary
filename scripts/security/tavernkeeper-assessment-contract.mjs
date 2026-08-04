@@ -1,9 +1,18 @@
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "1";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "2";
 
 const riskLevels = ["low", "material", "high"];
 const digestPattern = /^[0-9a-f]{64}$/u;
 const unsafeTextPattern =
   /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/u;
+
+export class TavernaryAssessmentValidationError extends Error {
+  constructor(diagnostic, repair) {
+    super(`Tavernary assessment failed ${diagnostic}`);
+    this.name = "TavernaryAssessmentValidationError";
+    this.diagnostic = diagnostic;
+    this.repair = repair;
+  }
+}
 
 export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA = {
   type: "object",
@@ -218,35 +227,86 @@ function requiredCitations(report) {
   return required;
 }
 
+export function tavernKeeperAssessmentRequirements(report) {
+  const allowedCandidateIds = [...knownCandidateIds(report)].sort();
+  if (!validateIds(allowedCandidateIds)) {
+    throw new Error("TavernKeeper candidate identities are invalid");
+  }
+  const requiredCandidateIds = [...requiredCitations(report)].sort();
+  if (
+    !validateIds(requiredCandidateIds) ||
+    requiredCandidateIds.some((id) => !allowedCandidateIds.includes(id))
+  ) {
+    throw new Error("TavernKeeper required citation identities are invalid");
+  }
+  return {
+    allowed_candidate_ids: allowedCandidateIds,
+    required_candidate_ids: requiredCandidateIds,
+    required_counts: expectedCounts(report),
+  };
+}
+
+function repairFor(requirements, extra = {}) {
+  return {
+    ...extra,
+    allowed_candidate_ids: requirements.allowed_candidate_ids,
+    required_counts: requirements.required_counts,
+  };
+}
+
+function assessmentFailure(diagnostic, requirements, extra) {
+  throw new TavernaryAssessmentValidationError(
+    diagnostic,
+    repairFor(requirements, extra),
+  );
+}
+
 export function validateTavernaryAssessment(assessment, report) {
-  validateStoredAssessmentShape(assessment);
-  const known = knownCandidateIds(report);
+  const requirements = tavernKeeperAssessmentRequirements(report);
+  try {
+    validateStoredAssessmentShape(assessment);
+  } catch {
+    assessmentFailure("response_schema", requirements);
+  }
+  const known = new Set(requirements.allowed_candidate_ids);
   const cited = new Set(assessment.cited_finding_ids);
-  if ([...cited].some((id) => !known.has(id))) {
-    throw new Error("Tavernary assessment cites an unknown finding");
+  const rejectedCandidateIds = [...cited].filter((id) => !known.has(id)).sort();
+  if (rejectedCandidateIds.length > 0) {
+    assessmentFailure("unknown_candidate_ids", requirements, {
+      rejected_candidate_ids: rejectedCandidateIds,
+    });
   }
-  const required = requiredCitations(report);
-  if ([...required].some((id) => !cited.has(id))) {
-    throw new Error("Tavernary assessment omits a finding citation");
+  const missingCandidateIds = requirements.required_candidate_ids.filter(
+    (id) => !cited.has(id),
+  );
+  if (missingCandidateIds.length > 0) {
+    assessmentFailure("missing_candidate_ids", requirements, {
+      required_candidate_ids: missingCandidateIds,
+    });
   }
-  const counts = expectedCounts(report);
+  const counts = requirements.required_counts;
   if (
     assessment.minor_cautions !== counts.minor_cautions ||
     assessment.material_concerns !== counts.material_concerns ||
     assessment.high_danger !== counts.high_danger
   ) {
-    throw new Error("Tavernary assessment count does not match V5 items");
+    assessmentFailure("count_mismatch", requirements);
   }
   for (const chain of assessment.interaction_chains) {
-    if (chain.finding_ids.some((id) => !known.has(id) || !cited.has(id))) {
-      throw new Error("Tavernary interaction chain cites an unknown finding");
+    const rejectedChainIds = chain.finding_ids
+      .filter((id) => !known.has(id) || !cited.has(id))
+      .sort();
+    if (rejectedChainIds.length > 0) {
+      assessmentFailure("interaction_chain_ids", requirements, {
+        rejected_candidate_ids: rejectedChainIds,
+      });
     }
   }
   const floor = deriveEvidenceFloor(reportItems(report));
   const floorRank = riskLevels.indexOf(floor);
   const riskRank = riskLevels.indexOf(assessment.risk_level);
   if (riskRank < floorRank) {
-    throw new Error("Tavernary assessment grade is below the evidence floor");
+    assessmentFailure("below_evidence_floor", requirements);
   }
   if (
     riskRank > floorRank &&
@@ -254,9 +314,7 @@ export function validateTavernaryAssessment(assessment, report) {
       (chain) => chain.resulting_risk === assessment.risk_level,
     )
   ) {
-    throw new Error(
-      "Tavernary assessment escalation requires a cited interaction chain",
-    );
+    assessmentFailure("unsupported_escalation", requirements);
   }
   return assessment;
 }

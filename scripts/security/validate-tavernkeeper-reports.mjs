@@ -58,7 +58,7 @@ async function main() {
     }),
   ]);
   console.log(
-    `Validated ${summaries.reports.length} tracked TavernKeeper report summaries and ${importState.pending.length} pending imports`,
+    `Validated ${summaries.reports.length} tracked TavernKeeper report summaries and ${importState.quarantines.length} quarantined imports`,
   );
 }
 

@@ -1,12 +1,15 @@
 import { createStructuredProviderTransport } from "../catalog/enrichment-provider.mjs";
-import { TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA } from "./tavernkeeper-assessment-contract.mjs";
+import {
+  TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA,
+  tavernKeeperAssessmentRequirements,
+} from "./tavernkeeper-assessment-contract.mjs";
 
 export function tavernKeeperSynthesisInstructions() {
   return `You are synthesizing validated assessments, not rescanning code. TavernKeeper has already run deterministic scanners and a file-centered contextual review over a SillyTavern AI community project at an exact Git commit.
 
 Most projects in this open-source, often vibe-coded community are made in good faith, but rare projects have attempted API-key phishing or theft, trojan delivery, harmful payloads, and bot infection. Judge the validated evidence in that context without treating ordinary SillyTavern extension behavior or scanner keywords as malicious by themselves.
 
-Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty, distinguish malicious evidence from ordinary security weaknesses, and cite V5 finding IDs for every caution or concern. Counts must classify the supplied reviewed items exactly. You may not lower the deterministic evidence floor. You may escalate beyond it only when two or more cited findings form a supported causal interaction, expressed in interaction_chains. Return only the required structured object.`;
+Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Cite only IDs listed in allowed_candidate_ids for every caution or concern. Observation IDs are never valid citations. Copy required_counts exactly. You may not lower the deterministic evidence floor. You may escalate beyond it only when two or more cited findings form a supported causal interaction, expressed in interaction_chains. Return only the required structured object.`;
 }
 
 function synthesisInput(input) {
@@ -20,6 +23,7 @@ function synthesisInput(input) {
     contextual_review_policy_version: report.contextual_review_policy_version,
     ecosystem_context_version: report.ecosystem_context_version,
     counts: report.counts,
+    ...tavernKeeperAssessmentRequirements(report),
     candidates: report.candidates.map((candidate) => ({
       candidate_id: candidate.candidate_id,
       origin: candidate.origin,
@@ -42,7 +46,6 @@ function synthesisInput(input) {
       developer_action: assessment.developer_action,
     })),
     observations: report.observations.map((observation) => ({
-      observation_id: observation.observation_id,
       related_candidate_ids: observation.related_candidate_ids,
       disposition: observation.disposition,
       impact: observation.impact,
@@ -54,13 +57,7 @@ function synthesisInput(input) {
       developer_action: observation.developer_action,
     })),
     limitations: report.limitations,
-    ...(input.repair
-      ? {
-          repair:
-            `The prior structured response was rejected: ${String(input.repair).slice(0, 300)}. ` +
-            "Return a corrected object without repeating rejected prose.",
-        }
-      : {}),
+    ...(input.repair ? { repair: input.repair } : {}),
   };
 }
 

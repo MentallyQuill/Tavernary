@@ -1,13 +1,25 @@
+import { EnrichmentProviderError } from "../catalog/enrichment-provider.mjs";
 import {
   TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+  TavernaryAssessmentValidationError,
+  tavernKeeperAssessmentRequirements,
   validateTavernaryAssessment,
 } from "./tavernkeeper-assessment-contract.mjs";
 
-function safeRepairMessage(error) {
-  const message = error instanceof Error ? error.message : "invalid output";
-  return message
-    .replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/gu, " ")
-    .slice(0, 300);
+const transientProviderCodes = new Set([
+  "provider-timeout",
+  "provider-rate-limited",
+  "provider-server-error",
+  "provider-network-error",
+]);
+
+export class TavernKeeperSynthesisError extends Error {
+  constructor(kind, diagnostic) {
+    super(`TavernKeeper synthesis failed: ${kind} (${diagnostic})`);
+    this.name = "TavernKeeperSynthesisError";
+    this.kind = kind;
+    this.diagnostic = diagnostic;
+  }
 }
 
 function modelFromMetadata(metadata, provider) {
@@ -18,9 +30,44 @@ function modelFromMetadata(metadata, provider) {
     model.length < 1 ||
     model.length > 200
   ) {
-    throw new Error("Tavernary synthesis model identity is invalid");
+    throw new TavernKeeperSynthesisError(
+      "provider-security",
+      "provider-model-mismatch",
+    );
   }
   return model;
+}
+
+function invalidRepair(error, report) {
+  if (error instanceof TavernaryAssessmentValidationError) {
+    return {
+      diagnostic: error.diagnostic,
+      ...error.repair,
+    };
+  }
+  if (
+    error instanceof EnrichmentProviderError &&
+    error.code === "provider-response-invalid"
+  ) {
+    const requirements = tavernKeeperAssessmentRequirements(report);
+    return {
+      diagnostic: "provider_response_invalid",
+      allowed_candidate_ids: requirements.allowed_candidate_ids,
+      required_counts: requirements.required_counts,
+    };
+  }
+  return null;
+}
+
+function providerFailure(error) {
+  if (!(error instanceof EnrichmentProviderError)) return null;
+  if (error.code === "provider-response-invalid") return null;
+  return new TavernKeeperSynthesisError(
+    transientProviderCodes.has(error.code)
+      ? "provider-transient"
+      : "provider-security",
+    error.code,
+  );
 }
 
 export async function synthesizeTavernKeeperReport(report, options) {
@@ -33,14 +80,18 @@ export async function synthesizeTavernKeeperReport(report, options) {
     throw new Error("Tavernary synthesis attempt limit is invalid");
   }
   let repair;
-  let lastError;
+  let suppliedRepair = null;
+  let lastDiagnostic = "response_schema";
   for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
     try {
       const generated = await provider.generate({ report, repair });
       const assessment = validateTavernaryAssessment(generated.output, report);
       const now = options.now?.() ?? new Date();
       if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
-        throw new Error("Tavernary synthesis completion time is invalid");
+        throw new TavernKeeperSynthesisError(
+          "provider-security",
+          "synthesis-clock-invalid",
+        );
       }
       return {
         report_id: report.report_id,
@@ -51,12 +102,24 @@ export async function synthesizeTavernKeeperReport(report, options) {
         assessment,
       };
     } catch (error) {
-      lastError = error;
-      repair = safeRepairMessage(error);
+      if (error instanceof TavernKeeperSynthesisError) throw error;
+      const classifiedProviderFailure = providerFailure(error);
+      if (classifiedProviderFailure) throw classifiedProviderFailure;
+      const nextRepair = invalidRepair(error, report);
+      if (nextRepair === null) {
+        throw new TavernKeeperSynthesisError(
+          "provider-security",
+          "synthesis-boundary-failed",
+        );
+      }
+      lastDiagnostic = nextRepair.diagnostic;
+      const serialized = JSON.stringify(nextRepair);
+      if (attempt === maximumAttempts || serialized === suppliedRepair) {
+        throw new TavernKeeperSynthesisError("invalid-output", lastDiagnostic);
+      }
+      suppliedRepair = serialized;
+      repair = nextRepair;
     }
   }
-  throw new Error(
-    `Tavernary synthesis failed after ${maximumAttempts === 3 ? "three" : maximumAttempts} attempts`,
-    { cause: lastError },
-  );
+  throw new TavernKeeperSynthesisError("invalid-output", lastDiagnostic);
 }

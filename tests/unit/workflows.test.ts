@@ -607,17 +607,24 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
     name?: string;
     env?: Record<string, string>;
     run?: string;
+    "continue-on-error"?: boolean;
   }>;
   const synthesisStep = reportImportSteps.find(
     (step) =>
       step.name === "Import and synthesize validated TavernKeeper reports",
   );
+  const incidentStep = reportImportSteps.find(
+    (step) => step.name === "Reconcile report synthesis incidents",
+  );
 
   expect(reportImport.on.schedule).toEqual([{ cron: "41 */6 * * *" }]);
-  expect(reportImport.on.workflow_dispatch).toBeNull();
+  expect(
+    reportImport.on.workflow_dispatch.inputs.retry_report_digest,
+  ).toMatchObject({ required: false, type: "string" });
   expect(reportImport.permissions).toEqual({
     actions: "write",
     contents: "write",
+    issues: "write",
   });
   expect(deploy.jobs["wake-tavernkeeper"].needs).toEqual(["build", "deploy"]);
   expect(deploy.jobs["wake-tavernkeeper"].permissions).toEqual({
@@ -626,14 +633,13 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(importSource).toContain("security:import-reports");
   expect(importSource).toContain("tavernkeeper-import-state.json");
   expect(reportImport.jobs.import.outputs).toMatchObject({
-    pending_due: "${{ steps.import.outputs.pending_due }}",
-    pending_delayed: "${{ steps.import.outputs.pending_delayed }}",
-    chronic_failures: "${{ steps.import.outputs.chronic_failures }}",
+    remaining: "${{ steps.import.outputs.remaining }}",
+    quarantined: "${{ steps.import.outputs.quarantined }}",
   });
   expect(reportImport.jobs.deploy.needs).toBe("import");
   expect(reportImport.jobs.continue.needs).toBe("import");
   expect(reportImport.jobs.continue.if).toContain(
-    "needs.import.outputs.pending_due != '0'",
+    "needs.import.outputs.remaining != '0'",
   );
   expect(JSON.stringify(reportImport.jobs.continue)).not.toContain(
     "needs.deploy",
@@ -642,21 +648,26 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
     TAVERNARY_ENRICHMENT_API_URL: "${{ secrets.TAVERNARY_ENRICHMENT_API_URL }}",
     TAVERNARY_ENRICHMENT_API_KEY: "${{ secrets.TAVERNARY_ENRICHMENT_API_KEY }}",
     TAVERNARY_ENRICHMENT_MODEL: "${{ secrets.TAVERNARY_ENRICHMENT_MODEL }}",
+    TAVERNARY_RETRY_REPORT_DIGEST: "${{ inputs.retry_report_digest || '' }}",
   });
   for (const output of [
     "imported",
-    "failed",
-    "pending_due",
-    "pending_delayed",
-    "chronic_failures",
+    "retained",
+    "quarantined",
+    "skipped_quarantines",
+    "remaining",
   ]) {
     expect(synthesisStep?.run).toContain(
       `.${output} | select(type == "number")`,
     );
   }
-  expect(synthesisStep?.run).toContain('.next_wake_at // ""');
+  expect(synthesisStep?.run).toContain(".created_or_updated");
+  expect(synthesisStep?.run).toContain(".resolved");
   expect(synthesisStep?.run).not.toContain('type == \\"number\\"');
-  expect(synthesisStep?.run).not.toContain('.next_wake_at // \\"\\"');
+  expect(incidentStep?.run).toContain("incident_key");
+  expect(incidentStep?.run).toContain("Report incident key:");
+  expect(incidentStep?.run).not.toContain("diagnostic in:body");
+  expect(incidentStep?.["continue-on-error"]).toBe(true);
   expect(
     reportImportSteps
       .filter((step) => step !== synthesisStep)

@@ -3,8 +3,15 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 
-import { createTavernKeeperSynthesisProvider } from "./tavernkeeper-synthesis-provider.mjs";
-import { synthesizeTavernKeeperReport } from "./tavernkeeper-synthesis.mjs";
+import { TAVERNKEEPER_SYNTHESIS_POLICY_VERSION } from "./tavernkeeper-assessment-contract.mjs";
+import {
+  migrateTavernKeeperImportState,
+  quarantineTavernKeeperReport,
+  readTavernKeeperImportState,
+  removeTavernKeeperQuarantine,
+  reportSynthesisIncidentKey,
+  validateTavernKeeperImportState,
+} from "./tavernkeeper-import-state.mjs";
 import {
   fetchAndValidateTavernKeeperIndex,
   fetchAndValidateTavernKeeperReport,
@@ -12,13 +19,12 @@ import {
   validateStoredReportIndex,
   writeReportSummaries,
 } from "./tavernkeeper-reports.mjs";
-import { loadTavernKeeperSourceRegistry } from "./validate-tavernkeeper-reports.mjs";
+import { createTavernKeeperSynthesisProvider } from "./tavernkeeper-synthesis-provider.mjs";
 import {
-  blankPendingImport,
-  readTavernKeeperImportState,
-  rotatePendingImport,
-  validateTavernKeeperImportState,
-} from "./tavernkeeper-import-state.mjs";
+  synthesizeTavernKeeperReport,
+  TavernKeeperSynthesisError,
+} from "./tavernkeeper-synthesis.mjs";
+import { loadTavernKeeperSourceRegistry } from "./validate-tavernkeeper-reports.mjs";
 
 const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultOutputPath = resolve(
@@ -29,6 +35,7 @@ const defaultImportStatePath = resolve(
   rootDirectory,
   "data/security/tavernkeeper-import-state.json",
 );
+const digestPattern = /^[0-9a-f]{64}$/u;
 
 function indexProjection(entry) {
   const {
@@ -44,7 +51,8 @@ function indexProjection(entry) {
 function trackedEntry(entry, synthesis) {
   if (
     synthesis.report_id !== entry.report_id ||
-    synthesis.target_sha !== entry.target_sha
+    synthesis.target_sha !== entry.target_sha ||
+    synthesis.synthesis_policy_version !== TAVERNKEEPER_SYNTHESIS_POLICY_VERSION
   ) {
     throw new Error(
       "Tavernary synthesis identity does not match the V5 report",
@@ -86,56 +94,81 @@ function createDefaultSynthesis(options) {
 function matchingTrackedEntry(existing, entry) {
   return (
     existing !== undefined &&
+    existing.synthesis_policy_version ===
+      TAVERNKEEPER_SYNTHESIS_POLICY_VERSION &&
     isDeepStrictEqual(indexProjection(existing), entry)
   );
 }
 
-function synchronizeImportQueue(stateInput, index, existing, at) {
-  const state = validateTavernKeeperImportState(stateInput);
-  const current = new Map(
-    index.reports.map((entry) => [entry.report_id, entry]),
-  );
-  const pending = state.pending.filter((entry) => {
-    const source = current.get(entry.report_id);
-    return (
-      source !== undefined &&
-      !matchingTrackedEntry(existing.get(entry.report_id), source)
-    );
-  });
-  const queuedIds = new Set(pending.map(({ report_id }) => report_id));
-  let nextTicket = state.next_ticket;
-  for (const entry of index.reports) {
-    if (
-      matchingTrackedEntry(existing.get(entry.report_id), entry) ||
-      queuedIds.has(entry.report_id)
-    )
-      continue;
-    if (nextTicket >= Number.MAX_SAFE_INTEGER)
-      throw new Error("TavernKeeper import ticket space is exhausted");
-    pending.push(blankPendingImport(entry, nextTicket));
-    queuedIds.add(entry.report_id);
-    nextTicket += 1;
-  }
-  const changed =
-    state.source_generated_at !== index.generated_at ||
-    nextTicket !== state.next_ticket ||
-    JSON.stringify(pending) !== JSON.stringify(state.pending);
-  return validateTavernKeeperImportState({
-    ...state,
-    updated_at: changed ? at : state.updated_at,
-    source_generated_at: index.generated_at,
-    next_ticket: nextTicket,
-    pending,
-  });
+function incidentProjection(quarantine) {
+  return {
+    incident_key: reportSynthesisIncidentKey(
+      quarantine.report_digest,
+      quarantine.synthesis_policy_version,
+    ),
+    report_id: quarantine.report_id,
+    report_digest: quarantine.report_digest,
+    repository_id: quarantine.repository_id,
+    repository: quarantine.repository,
+    target_sha: quarantine.target_sha,
+    synthesis_policy_version: quarantine.synthesis_policy_version,
+    diagnostic: quarantine.diagnostic,
+    attempts: quarantine.attempts,
+  };
 }
 
-function withoutPending(stateInput, reportId, at) {
+function currentQuarantine(state, reportDigest) {
+  return state.quarantines.find(
+    (entry) =>
+      entry.report_digest === reportDigest &&
+      entry.synthesis_policy_version === TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+  );
+}
+
+function retainCurrentQuarantines(stateInput, index, at) {
   const state = validateTavernKeeperImportState(stateInput);
-  return validateTavernKeeperImportState({
-    ...state,
-    updated_at: at,
-    pending: state.pending.filter((entry) => entry.report_id !== reportId),
+  const current = new Map(
+    index.reports.map((entry) => [entry.report_digest, entry]),
+  );
+  const quarantines = state.quarantines.filter((entry) => {
+    const indexed = current.get(entry.report_digest);
+    return (
+      indexed !== undefined &&
+      indexed.report_id === entry.report_id &&
+      entry.synthesis_policy_version === TAVERNKEEPER_SYNTHESIS_POLICY_VERSION
+    );
   });
+  const retained = new Set(quarantines.map((entry) => entry));
+  const resolved = state.quarantines
+    .filter((entry) => !retained.has(entry))
+    .map(incidentProjection);
+  return {
+    state: validateTavernKeeperImportState({
+      ...state,
+      updated_at:
+        quarantines.length === state.quarantines.length ? state.updated_at : at,
+      quarantines,
+    }),
+    resolved,
+  };
+}
+
+function validateRetryDigest(value, index) {
+  if (value === undefined || value === null || value === "") return null;
+  if (
+    typeof value !== "string" ||
+    !digestPattern.test(value) ||
+    !index.reports.some(({ report_digest }) => report_digest === value)
+  ) {
+    throw new Error("TavernKeeper retry report digest is invalid");
+  }
+  return value;
+}
+
+function uniqueIncidents(items) {
+  return [
+    ...new Map(items.map((item) => [item.incident_key, item])).values(),
+  ].sort((left, right) => left.incident_key.localeCompare(right.incident_key));
 }
 
 export async function reconcileTavernKeeperReports(options = {}) {
@@ -147,9 +180,13 @@ export async function reconcileTavernKeeperReports(options = {}) {
     options.importStatePath ??
     resolve(root, "data/security/tavernkeeper-import-state.json");
   const batchSize = options.batchSize ?? 5;
-  if (!Number.isSafeInteger(batchSize) || batchSize < 1 || batchSize > 20)
+  if (!Number.isSafeInteger(batchSize) || batchSize < 1 || batchSize > 20) {
     throw new Error("TavernKeeper import batch size is invalid");
+  }
   const nowDate = options.now?.() ?? new Date();
+  if (!(nowDate instanceof Date) || !Number.isFinite(nowDate.getTime())) {
+    throw new Error("TavernKeeper import time is invalid");
+  }
   const now = nowDate.toISOString();
   const registry =
     options.registry ?? (await loadTavernKeeperSourceRegistry(root));
@@ -166,77 +203,98 @@ export async function reconcileTavernKeeperReports(options = {}) {
       "TavernKeeper report index is older than the tracked assessment snapshot",
     );
   }
+
+  const migrated = migrateTavernKeeperImportState(priorImportState, index, now);
+  const retainedQuarantines = retainCurrentQuarantines(migrated, index, now);
+  let importState = retainedQuarantines.state;
+  const resolved = [...retainedQuarantines.resolved];
+  const createdOrUpdated = [];
+  const retryReportDigest = validateRetryDigest(
+    options.retryReportDigest,
+    index,
+  );
   const existing = new Map(
     previous.reports.map((entry) => [entry.report_id, entry]),
   );
-  let importState = synchronizeImportQueue(
-    priorImportState,
-    index,
-    existing,
-    now,
-  );
-  const additions = [];
   const synthesize =
     options.synthesizeReport ?? createDefaultSynthesis(options);
+  const eligible = index.reports.filter((entry) => {
+    if (retryReportDigest === entry.report_digest) return true;
+    if (currentQuarantine(importState, entry.report_digest) !== undefined) {
+      return false;
+    }
+    return !matchingTrackedEntry(existing.get(entry.report_id), entry);
+  });
+  const skippedQuarantines = index.reports.filter(
+    (entry) =>
+      retryReportDigest !== entry.report_digest &&
+      currentQuarantine(importState, entry.report_digest) !== undefined,
+  ).length;
+  const additions = [];
   let imported = 0;
-  let failed = 0;
-  const due = importState.pending
-    .filter(
-      ({ not_before }) =>
-        not_before === null || Date.parse(not_before) <= Date.parse(now),
-    )
-    .sort((left, right) => left.ticket - right.ticket)
-    .slice(0, batchSize);
-  const sourceEntries = new Map(
-    index.reports.map((entry) => [entry.report_id, entry]),
-  );
+  let quarantined = 0;
 
-  for (const pending of due) {
-    const entry = sourceEntries.get(pending.report_id);
-    if (!entry) continue;
+  for (const entry of eligible.slice(0, batchSize)) {
     const prior = existing.get(entry.report_id);
-    let tracked;
-    let failureCode = null;
-    if (prior && !matchingTrackedEntry(prior, entry)) {
-      failureCode = "REPORT_IDENTITY_CONFLICT";
-    } else {
-      let report;
-      try {
-        report = await fetchAndValidateTavernKeeperReport(entry, options);
-      } catch {
-        failureCode = "REPORT_FETCH_FAILED";
-      }
-      if (failureCode === null) {
-        let synthesis;
-        try {
-          synthesis = await synthesize(report);
-        } catch {
-          failureCode = "REPORT_SYNTHESIS_FAILED";
-        }
-        if (failureCode === null) {
-          try {
-            tracked = trackedEntry(entry, synthesis);
-          } catch {
-            failureCode = "REPORT_TRACKING_FAILED";
-          }
-        }
-      }
+    if (
+      prior !== undefined &&
+      !isDeepStrictEqual(indexProjection(prior), entry)
+    ) {
+      throw new Error(
+        "Tracked TavernKeeper report identity conflicts with index",
+      );
     }
-    if (failureCode !== null) {
-      importState = rotatePendingImport(importState, pending, failureCode, now);
-      failed += 1;
-      continue;
+    const report = await fetchAndValidateTavernKeeperReport(entry, options);
+    let synthesis;
+    try {
+      synthesis = await synthesize(report);
+    } catch (error) {
+      if (
+        error instanceof TavernKeeperSynthesisError &&
+        error.kind === "invalid-output"
+      ) {
+        importState = quarantineTavernKeeperReport(
+          importState,
+          entry,
+          TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+          error.diagnostic,
+          now,
+        );
+        createdOrUpdated.push(
+          incidentProjection(
+            currentQuarantine(importState, entry.report_digest),
+          ),
+        );
+        quarantined += 1;
+        continue;
+      }
+      throw error;
     }
+    const tracked = trackedEntry(entry, synthesis);
+    const recovered = currentQuarantine(importState, entry.report_digest);
+    if (recovered !== undefined) resolved.push(incidentProjection(recovered));
+    importState = removeTavernKeeperQuarantine(
+      importState,
+      entry.report_digest,
+      TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+      now,
+    );
     additions.push(tracked);
     existing.set(entry.report_id, tracked);
-    importState = withoutPending(importState, entry.report_id, now);
     imported += 1;
   }
 
   const reports =
     index.reports.length === 0
       ? []
-      : [...previous.reports, ...additions].sort(
+      : [
+          ...new Map(
+            [...previous.reports, ...additions].map((entry) => [
+              entry.report_id,
+              entry,
+            ]),
+          ).values(),
+        ].sort(
           (left, right) =>
             Date.parse(left.completed_at) - Date.parse(right.completed_at) ||
             left.report_id.localeCompare(right.report_id),
@@ -244,18 +302,12 @@ export async function reconcileTavernKeeperReports(options = {}) {
   const retainedById = new Map(
     reports.map((entry) => [entry.report_id, entry]),
   );
-  const priorPreferredByRepository = new Map(
-    previous.preferred_report_ids.flatMap((reportId) => {
-      const report = existing.get(reportId);
-      return report === undefined ? [] : [[report.repository_id, report]];
-    }),
+  const preferredReportIds = index.reports.flatMap((entry) =>
+    currentQuarantine(importState, entry.report_digest) === undefined &&
+    matchingTrackedEntry(retainedById.get(entry.report_id), entry)
+      ? [entry.report_id]
+      : [],
   );
-  const preferredReportIds = index.reports.flatMap((entry) => {
-    if (matchingTrackedEntry(retainedById.get(entry.report_id), entry))
-      return [entry.report_id];
-    const fallback = priorPreferredByRepository.get(entry.repository_id);
-    return fallback === undefined ? [] : [fallback.report_id];
-  });
   const snapshot = validateStoredReportIndex(
     {
       schema_version: 5,
@@ -265,30 +317,25 @@ export async function reconcileTavernKeeperReports(options = {}) {
     },
     registry,
   );
+  importState = validateTavernKeeperImportState(importState);
   await writeReportSummaries(snapshot, outputPath);
   await writeReportSummaries(importState, importStatePath);
 
-  const pendingDue = importState.pending.filter(
-    ({ not_before }) =>
-      not_before === null || Date.parse(not_before) <= Date.parse(now),
+  const remaining = index.reports.filter(
+    (entry) =>
+      !matchingTrackedEntry(retainedById.get(entry.report_id), entry) &&
+      currentQuarantine(importState, entry.report_digest) === undefined,
   ).length;
-  const delayed = importState.pending.filter(
-    ({ not_before }) =>
-      not_before !== null && Date.parse(not_before) > Date.parse(now),
-  );
   return {
     snapshot,
     import_state: importState,
     imported,
-    failed,
-    pending_due: pendingDue,
-    pending_delayed: delayed.length,
-    next_wake_at:
-      delayed
-        .map(({ not_before }) => not_before)
-        .sort((left, right) => left.localeCompare(right))[0] ?? null,
-    chronic_failures: importState.pending.filter(({ chronic }) => chronic)
-      .length,
+    retained: snapshot.reports.length,
+    quarantined,
+    skipped_quarantines: skippedQuarantines,
+    remaining,
+    created_or_updated: uniqueIncidents(createdOrUpdated),
+    resolved: uniqueIncidents(resolved),
   };
 }
 
@@ -300,17 +347,17 @@ async function main() {
   const outcome = await reconcileTavernKeeperReports({
     outputPath: defaultOutputPath,
     importStatePath: defaultImportStatePath,
+    retryReportDigest: process.env.TAVERNARY_RETRY_REPORT_DIGEST,
   });
   console.log(
     JSON.stringify({
       imported: outcome.imported,
-      failed: outcome.failed,
-      preferred: outcome.snapshot.preferred_report_ids.length,
-      retained: outcome.snapshot.reports.length,
-      pending_due: outcome.pending_due,
-      pending_delayed: outcome.pending_delayed,
-      next_wake_at: outcome.next_wake_at,
-      chronic_failures: outcome.chronic_failures,
+      retained: outcome.retained,
+      quarantined: outcome.quarantined,
+      skipped_quarantines: outcome.skipped_quarantines,
+      remaining: outcome.remaining,
+      created_or_updated: outcome.created_or_updated,
+      resolved: outcome.resolved,
     }),
   );
 }

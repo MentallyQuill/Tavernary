@@ -1,14 +1,20 @@
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
-const importErrorCodes = new Set([
-  "REPORT_FETCH_FAILED",
-  "REPORT_IDENTITY_CONFLICT",
-  "REPORT_SYNTHESIS_FAILED",
-  "REPORT_TRACKING_FAILED",
+const diagnostics = new Set([
+  "response_schema",
+  "unknown_candidate_ids",
+  "missing_candidate_ids",
+  "count_mismatch",
+  "interaction_chain_ids",
+  "below_evidence_floor",
+  "unsupported_escalation",
+  "provider_response_invalid",
 ]);
-const retryMinutes = [5, 30, 120, 360];
 const digestPattern = /^[0-9a-f]{64}$/u;
 const shaPattern = /^[0-9a-f]{40}$/u;
+const policyPattern = /^[A-Za-z0-9._-]{1,64}$/u;
+const repositoryPattern = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u;
 
 function assertExactKeys(value, keys, label) {
   if (
@@ -17,27 +23,24 @@ function assertExactKeys(value, keys, label) {
     Array.isArray(value) ||
     JSON.stringify(Object.keys(value).sort()) !==
       JSON.stringify([...keys].sort())
-  )
+  ) {
     throw new Error(`${label} has an invalid shape`);
+  }
 }
 
 function isTimestamp(value) {
-  return typeof value === "string" && Number.isFinite(Date.parse(value));
+  return (
+    typeof value === "string" &&
+    Number.isFinite(Date.parse(value)) &&
+    new Date(value).toISOString() === value
+  );
 }
 
-export function initialTavernKeeperImportState(
-  at = "1970-01-01T00:00:00.000Z",
-) {
-  return {
-    schema_version: 1,
-    updated_at: at,
-    source_generated_at: at,
-    next_ticket: 1,
-    pending: [],
-  };
+function quarantineIdentity(entry) {
+  return `${entry.report_digest}\0${entry.synthesis_policy_version}`;
 }
 
-export function validateTavernKeeperImportState(value) {
+function validateLegacyImportState(value) {
   assertExactKeys(
     value,
     [
@@ -47,7 +50,7 @@ export function validateTavernKeeperImportState(value) {
       "next_ticket",
       "pending",
     ],
-    "TavernKeeper import state",
+    "Legacy TavernKeeper import state",
   );
   if (
     value.schema_version !== 1 ||
@@ -56,11 +59,9 @@ export function validateTavernKeeperImportState(value) {
     !Number.isSafeInteger(value.next_ticket) ||
     value.next_ticket < 1 ||
     !Array.isArray(value.pending)
-  )
-    throw new Error("TavernKeeper import state is invalid");
-
-  const reportIds = new Set();
-  const tickets = new Set();
+  ) {
+    throw new Error("Legacy TavernKeeper import state is invalid");
+  }
   for (const entry of value.pending) {
     assertExactKeys(
       entry,
@@ -76,7 +77,7 @@ export function validateTavernKeeperImportState(value) {
         "last_failed_at",
         "chronic",
       ],
-      "TavernKeeper pending import",
+      "Legacy TavernKeeper pending import",
     );
     if (
       !digestPattern.test(entry.report_id) ||
@@ -86,100 +87,228 @@ export function validateTavernKeeperImportState(value) {
       !Number.isSafeInteger(entry.ticket) ||
       entry.ticket < 1 ||
       !Number.isSafeInteger(entry.consecutive_failures) ||
-      entry.consecutive_failures < 0 ||
+      entry.consecutive_failures < 1 ||
       !Number.isSafeInteger(entry.total_failures) ||
       entry.total_failures < entry.consecutive_failures ||
-      (entry.not_before !== null && !isTimestamp(entry.not_before)) ||
-      (entry.last_error_code !== null &&
-        !importErrorCodes.has(entry.last_error_code)) ||
-      (entry.last_failed_at !== null && !isTimestamp(entry.last_failed_at)) ||
-      entry.chronic !== entry.consecutive_failures >= 5 ||
-      entry.ticket >= value.next_ticket ||
-      reportIds.has(entry.report_id) ||
-      tickets.has(entry.ticket)
-    )
-      throw new Error("TavernKeeper pending import is invalid");
-    if (
-      entry.consecutive_failures === 0 &&
-      (entry.not_before !== null ||
-        entry.last_error_code !== null ||
-        entry.last_failed_at !== null)
-    )
-      throw new Error("Fresh TavernKeeper import cannot retain failure state");
-    if (
-      entry.consecutive_failures > 0 &&
-      (entry.not_before === null ||
-        entry.last_error_code === null ||
-        entry.last_failed_at === null)
-    )
-      throw new Error("Failed TavernKeeper import lacks retry state");
-    reportIds.add(entry.report_id);
-    tickets.add(entry.ticket);
+      !isTimestamp(entry.not_before) ||
+      ![
+        "REPORT_FETCH_FAILED",
+        "REPORT_IDENTITY_CONFLICT",
+        "REPORT_SYNTHESIS_FAILED",
+        "REPORT_TRACKING_FAILED",
+      ].includes(entry.last_error_code) ||
+      !isTimestamp(entry.last_failed_at) ||
+      entry.chronic !== entry.consecutive_failures >= 5
+    ) {
+      throw new Error("Legacy TavernKeeper pending import is invalid");
+    }
   }
-  return {
-    ...value,
-    pending: [...value.pending].sort(
-      (left, right) => left.ticket - right.ticket,
-    ),
-  };
+  return value;
+}
+
+export function initialTavernKeeperImportState(
+  at = "1970-01-01T00:00:00.000Z",
+) {
+  return validateTavernKeeperImportState({
+    schema_version: 2,
+    updated_at: at,
+    quarantines: [],
+  });
+}
+
+export function validateTavernKeeperImportState(value) {
+  assertExactKeys(
+    value,
+    ["schema_version", "updated_at", "quarantines"],
+    "TavernKeeper import state",
+  );
+  if (
+    value.schema_version !== 2 ||
+    !isTimestamp(value.updated_at) ||
+    !Array.isArray(value.quarantines)
+  ) {
+    throw new Error("TavernKeeper import state is invalid");
+  }
+
+  let priorIdentity = null;
+  for (const entry of value.quarantines) {
+    assertExactKeys(
+      entry,
+      [
+        "report_id",
+        "report_digest",
+        "repository_id",
+        "repository",
+        "target_sha",
+        "synthesis_policy_version",
+        "diagnostic",
+        "first_failed_at",
+        "last_failed_at",
+        "attempts",
+      ],
+      "TavernKeeper report quarantine",
+    );
+    const identity = quarantineIdentity(entry);
+    if (
+      !digestPattern.test(entry.report_id) ||
+      entry.report_id !== entry.report_digest ||
+      !Number.isSafeInteger(entry.repository_id) ||
+      entry.repository_id < 1 ||
+      typeof entry.repository !== "string" ||
+      !repositoryPattern.test(entry.repository) ||
+      !shaPattern.test(entry.target_sha) ||
+      typeof entry.synthesis_policy_version !== "string" ||
+      !policyPattern.test(entry.synthesis_policy_version) ||
+      !diagnostics.has(entry.diagnostic) ||
+      !isTimestamp(entry.first_failed_at) ||
+      !isTimestamp(entry.last_failed_at) ||
+      Date.parse(entry.first_failed_at) > Date.parse(entry.last_failed_at) ||
+      !Number.isSafeInteger(entry.attempts) ||
+      entry.attempts < 1 ||
+      (priorIdentity !== null && identity <= priorIdentity)
+    ) {
+      throw new Error("TavernKeeper report quarantine is invalid");
+    }
+    priorIdentity = identity;
+  }
+  return value;
 }
 
 export async function readTavernKeeperImportState(path) {
   try {
-    return validateTavernKeeperImportState(
-      JSON.parse(await readFile(path, "utf8")),
-    );
+    const value = JSON.parse(await readFile(path, "utf8"));
+    return value?.schema_version === 1
+      ? validateLegacyImportState(value)
+      : validateTavernKeeperImportState(value);
   } catch (error) {
     if (error?.code === "ENOENT") return initialTavernKeeperImportState();
     throw error;
   }
 }
 
-export function blankPendingImport(entry, ticket) {
-  return {
-    report_id: entry.report_id,
-    repository_id: entry.repository_id,
-    target_sha: entry.target_sha,
-    ticket,
-    consecutive_failures: 0,
-    total_failures: 0,
-    not_before: null,
-    last_error_code: null,
-    last_failed_at: null,
-    chronic: false,
-  };
+export function migrateTavernKeeperImportState(value, index, at) {
+  if (value?.schema_version === 2)
+    return validateTavernKeeperImportState(value);
+  const legacy = validateLegacyImportState(value);
+  if (!isTimestamp(at) || !Array.isArray(index?.reports)) {
+    throw new Error("TavernKeeper import migration input is invalid");
+  }
+  const entries = new Map(
+    index.reports.map((entry) => [entry.report_id, entry]),
+  );
+  const quarantines = legacy.pending
+    .filter(
+      ({ last_error_code }) => last_error_code === "REPORT_SYNTHESIS_FAILED",
+    )
+    .flatMap((pending) => {
+      const entry = entries.get(pending.report_id);
+      if (
+        entry === undefined ||
+        entry.repository_id !== pending.repository_id ||
+        entry.target_sha !== pending.target_sha
+      ) {
+        return [];
+      }
+      return [
+        {
+          report_id: entry.report_id,
+          report_digest: entry.report_digest,
+          repository_id: entry.repository_id,
+          repository: entry.repository,
+          target_sha: entry.target_sha,
+          synthesis_policy_version: "1",
+          diagnostic: "provider_response_invalid",
+          first_failed_at: pending.last_failed_at,
+          last_failed_at: pending.last_failed_at,
+          attempts: pending.total_failures,
+        },
+      ];
+    })
+    .sort((left, right) =>
+      quarantineIdentity(left).localeCompare(quarantineIdentity(right)),
+    );
+  return validateTavernKeeperImportState({
+    schema_version: 2,
+    updated_at: at,
+    quarantines,
+  });
 }
 
-export function rotatePendingImport(stateInput, entryInput, errorCode, at) {
+export function quarantineTavernKeeperReport(
+  stateInput,
+  entry,
+  synthesisPolicyVersion,
+  diagnostic,
+  at,
+) {
   const state = validateTavernKeeperImportState(stateInput);
-  if (!importErrorCodes.has(errorCode) || !isTimestamp(at))
-    throw new Error("TavernKeeper import failure is invalid");
-  const entry = state.pending.find(
-    ({ report_id }) => report_id === entryInput.report_id,
+  const identity = `${entry.report_digest}\0${synthesisPolicyVersion}`;
+  const existing = state.quarantines.find(
+    (quarantine) => quarantineIdentity(quarantine) === identity,
   );
-  if (!entry) throw new Error("TavernKeeper import failure is not queued");
-  if (state.next_ticket >= Number.MAX_SAFE_INTEGER)
-    throw new Error("TavernKeeper import ticket space is exhausted");
-  const consecutiveFailures = entry.consecutive_failures + 1;
-  const delay =
-    retryMinutes[Math.min(consecutiveFailures, retryMinutes.length) - 1];
-  const notBefore = new Date(Date.parse(at) + delay * 60 * 1_000).toISOString();
+  const next = {
+    report_id: entry.report_id,
+    report_digest: entry.report_digest,
+    repository_id: entry.repository_id,
+    repository: entry.repository,
+    target_sha: entry.target_sha,
+    synthesis_policy_version: synthesisPolicyVersion,
+    diagnostic,
+    first_failed_at: existing?.first_failed_at ?? at,
+    last_failed_at: at,
+    attempts: (existing?.attempts ?? 0) + 1,
+  };
+  return validateTavernKeeperImportState({
+    schema_version: 2,
+    updated_at: at,
+    quarantines: [
+      ...state.quarantines.filter(
+        (quarantine) => quarantineIdentity(quarantine) !== identity,
+      ),
+      next,
+    ].sort((left, right) =>
+      quarantineIdentity(left).localeCompare(quarantineIdentity(right)),
+    ),
+  });
+}
+
+export function removeTavernKeeperQuarantine(
+  stateInput,
+  reportDigest,
+  synthesisPolicyVersion,
+  at,
+) {
+  const state = validateTavernKeeperImportState(stateInput);
+  const identity = `${reportDigest}\0${synthesisPolicyVersion}`;
+  const quarantines = state.quarantines.filter(
+    (entry) => quarantineIdentity(entry) !== identity,
+  );
   return validateTavernKeeperImportState({
     ...state,
-    updated_at: at,
-    next_ticket: state.next_ticket + 1,
-    pending: [
-      ...state.pending.filter(({ report_id }) => report_id !== entry.report_id),
-      {
-        ...entry,
-        ticket: state.next_ticket,
-        consecutive_failures: consecutiveFailures,
-        total_failures: entry.total_failures + 1,
-        not_before: notBefore,
-        last_error_code: errorCode,
-        last_failed_at: at,
-        chronic: consecutiveFailures >= 5,
-      },
-    ],
+    updated_at:
+      quarantines.length === state.quarantines.length ? state.updated_at : at,
+    quarantines,
   });
+}
+
+export function reportSynthesisIncidentKey(
+  reportDigest,
+  synthesisPolicyVersion,
+) {
+  if (
+    !digestPattern.test(reportDigest) ||
+    typeof synthesisPolicyVersion !== "string" ||
+    !policyPattern.test(synthesisPolicyVersion)
+  ) {
+    throw new Error("TavernKeeper synthesis incident identity is invalid");
+  }
+  return createHash("sha256")
+    .update(
+      JSON.stringify([
+        "tavernary-synthesis",
+        reportDigest,
+        synthesisPolicyVersion,
+      ]),
+    )
+    .digest("hex");
 }
