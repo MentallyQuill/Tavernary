@@ -119,7 +119,7 @@ function editManifest() {
       summary: "Owner-authored summary.",
       frontends: ["sillytavern", "risuai"],
       primary_function: "generation-reasoning",
-      tags: ["creative-writing"],
+      tags: ["automate-workflows"],
       metadata: {
         summary: { mode: "manual" },
         tags: { mode: "automatic" },
@@ -193,7 +193,14 @@ function input(manifest: object, overrides: Record<string, unknown> = {}) {
 }
 
 test("edits one card with independent trusted metadata policies", () => {
-  const originalInput = input(editManifest());
+  const originalInput = input(editManifest(), {
+    resolvedMetadataByProjectId: {
+      "owner-alpha": {
+        summary: "Owner-authored summary.",
+        tags: ["creative-writing"],
+      },
+    },
+  });
   const before = structuredClone(originalInput);
   const result = applyProjectOwnerRequest(originalInput);
 
@@ -434,6 +441,7 @@ test("permanently delists only the source tombstone", () => {
 
 test("records trusted staff provenance independently for manual summary and tags", () => {
   const manifest = editManifest();
+  manifest.proposed.tags = ["creative-writing"];
   manifest.proposed.metadata = {
     summary: { mode: "manual" },
     tags: { mode: "manual" },
@@ -500,6 +508,6 @@ test("round-trips changed card records through the JSON formatter", async () => 
   const result = applyProjectOwnerRequest(input(editManifest()));
   const serialized = await formatJson(result.projects[0]);
   expect(JSON.parse(serialized)).toEqual(result.projects[0]);
-  expect(serialized).toContain('"tags": ["creative-writing"]');
+  expect(serialized).toContain('"tags": ["automate-workflows"]');
   expect(serialized.endsWith("\n")).toBe(true);
 });

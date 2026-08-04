@@ -900,7 +900,7 @@ test("preserves a manual summary and generates only automatic tags", async () =>
 
 test("generates an automatic summary without changing manual tags", async () => {
   const manifest = editManifest();
-  manifest.proposed = editable("Cloned summary must not be published.", {
+  manifest.proposed = editable("Original summary.", {
     summaryMode: "automatic",
     tagMode: "manual",
     tags: ["automation"],
@@ -1159,7 +1159,7 @@ test("fails closed when tag-only automatic generation fails", async () => {
 
 test("fails the atomic write when automatic summary generation fails", async () => {
   const manifest = editManifest();
-  manifest.proposed = editable("Cloned summary.", {
+  manifest.proposed = editable("Original summary.", {
     summaryMode: "automatic",
     tagMode: "manual",
   });

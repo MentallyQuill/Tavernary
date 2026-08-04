@@ -59,7 +59,10 @@ const proposedEdit = {
   frontends: ["sillytavern"],
   primary_function: "interface-workflow",
   tags: ["automate-workflows"],
-  metadata: automaticMetadata,
+  metadata: {
+    summary: { mode: "manual" as const },
+    tags: { mode: "automatic" as const },
+  },
   model_families: [],
   completion_formats: [],
 };
@@ -317,11 +320,11 @@ describe("owner add-card batches", () => {
 });
 
 describe("owner card edits and lifecycle", () => {
-  test("accepts a blank automatic summary proposal", () => {
+  test("rejects a changed summary under automatic authority", () => {
     expect(
       normalizeProjectOwnerManifest(
         editFixture({
-          summary: "   ",
+          summary: "A changed owner summary.",
           metadata: {
             summary: { mode: "automatic" },
             tags: { mode: "automatic" },
@@ -330,8 +333,50 @@ describe("owner card edits and lifecycle", () => {
         vocabularies,
       ),
     ).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining([
+        "Select manual summary policy before changing the owner summary.",
+      ]),
+    });
+  });
+
+  test("rejects changed tags under automatic authority", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        editFixture({
+          summary: originalEdit.summary,
+          tags: ["creative-writing"],
+          metadata: automaticMetadata,
+        }),
+        vocabularies,
+      ),
+    ).toMatchObject({
+      valid: false,
+      errors: expect.arrayContaining([
+        "Select manual tag policy before changing owner tags.",
+      ]),
+    });
+  });
+
+  test("accepts unchanged automatic summary and tags", () => {
+    expect(
+      normalizeProjectOwnerManifest(
+        editFixture({
+          summary: originalEdit.summary,
+          tags: originalEdit.tags,
+          metadata: automaticMetadata,
+        }),
+        vocabularies,
+      ),
+    ).toMatchObject({
       valid: true,
-      manifest: { proposed: { summary: "" } },
+      manifest: {
+        proposed: {
+          summary: originalEdit.summary,
+          tags: originalEdit.tags,
+          metadata: automaticMetadata,
+        },
+      },
     });
   });
 
