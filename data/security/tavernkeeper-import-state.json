@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-04T19:09:01.656Z",
-  "source_generated_at": "2026-08-04T19:04:31.672Z",
-  "next_ticket": 36,
+  "updated_at": "2026-08-04T19:16:44.017Z",
+  "source_generated_at": "2026-08-04T19:15:17.534Z",
+  "next_ticket": 41,
   "pending": [
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
@@ -29,30 +29,6 @@
       "chronic": false
     },
     {
-      "report_id": "e0d963e0f9632f0a616e99cb6b40fce360b0d85c52f5ca158f2fec348bcea006",
-      "repository_id": 1226349225,
-      "target_sha": "785a3ae18c148dad53abd1294a785b741ea0f71c",
-      "ticket": 32,
-      "consecutive_failures": 0,
-      "total_failures": 0,
-      "not_before": null,
-      "last_error_code": null,
-      "last_failed_at": null,
-      "chronic": false
-    },
-    {
-      "report_id": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
-      "repository_id": 1305919833,
-      "target_sha": "bfd68cd224f2b8e434ab401d5e295345e227ff59",
-      "ticket": 33,
-      "consecutive_failures": 0,
-      "total_failures": 0,
-      "not_before": null,
-      "last_error_code": null,
-      "last_failed_at": null,
-      "chronic": false
-    },
-    {
       "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
       "repository_id": 1126279204,
       "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
@@ -74,6 +50,30 @@
       "not_before": "2026-08-04T19:39:01.656Z",
       "last_error_code": "REPORT_SYNTHESIS_FAILED",
       "last_failed_at": "2026-08-04T19:09:01.656Z",
+      "chronic": false
+    },
+    {
+      "report_id": "dfb989d23902d120eb093d94e4aa7a087d4abdf0170b9cb44444cceca8de59e4",
+      "repository_id": 981213323,
+      "target_sha": "86e13a2aa589c6679a5658e665d9e8edff2b9f94",
+      "ticket": 39,
+      "consecutive_failures": 0,
+      "total_failures": 0,
+      "not_before": null,
+      "last_error_code": null,
+      "last_failed_at": null,
+      "chronic": false
+    },
+    {
+      "report_id": "2c0d313f824ba9f3da709650e417afa5af85705fea5c98bb5bc4ba1d8d6f6b7a",
+      "repository_id": 1305919833,
+      "target_sha": "bfd68cd224f2b8e434ab401d5e295345e227ff59",
+      "ticket": 40,
+      "consecutive_failures": 1,
+      "total_failures": 1,
+      "not_before": "2026-08-04T19:21:44.017Z",
+      "last_error_code": "REPORT_SYNTHESIS_FAILED",
+      "last_failed_at": "2026-08-04T19:16:44.017Z",
       "chronic": false
     }
   ]
