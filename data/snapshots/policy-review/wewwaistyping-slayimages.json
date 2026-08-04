@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "wewwaistyping-slayimages",
+  "source_id": "github-1203226910",
+  "source_identity": "github:wewwaistyping/slayimages",
+  "evidence_fingerprint": "8ddc75aa9ef3bfae395650f19c8fd0cb26b66818c0a3ca7fefe6dcf646c603d9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-04T10:12:55.642Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-04T10:12:55.642Z"
+  },
+  "maintenance_issue_number": null
+}
