@@ -52,9 +52,7 @@ async function stabilizeRelationshipActivityAge(page: Page) {
     label.textContent = "54";
   });
 
-  const repositorySizes = page.locator(
-    ".relationship-pair .repository-size",
-  );
+  const repositorySizes = page.locator(".relationship-pair .repository-size");
   await expect(repositorySizes).toHaveCount(2);
   await repositorySizes.nth(0).evaluate((label) => {
     label.textContent = "1.3 MB repo";
