@@ -153,6 +153,8 @@ test("targeted TavernKeeper scans are actor-gated and accept only an exact repos
   expect(source).toContain("tavernkeeper-scan-operators.json");
   expect(source).toContain("mode=project");
   expect(source).toContain("tavernkeeper-targets.json");
+  expect(source).toContain("(.schema_version == 2 or .schema_version == 3)");
+  expect(source).toContain("public V2 or V3 target manifest");
   expect(source).toContain("TAVERNKEEPER_WAKE_APP_ID");
   expect(source).toContain("targeted-scan.yml");
   expect(source).toMatch(/inputs.+repository_id/isu);
