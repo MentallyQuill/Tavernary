@@ -1,53 +1,17 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-04T21:38:13.846Z",
+  "updated_at": "2026-08-05T00:33:56.841Z",
   "quarantines": [
-    {
-      "report_id": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
-      "report_digest": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
-      "repository_id": 1073040696,
-      "repository": "bmen25124/SillyTavern-Flowchart",
-      "target_sha": "b7c091b0ba227df5913453c311bdf264d7c454be",
-      "synthesis_policy_version": "2",
-      "diagnostic": "unsupported_escalation",
-      "first_failed_at": "2026-08-04T21:24:44.645Z",
-      "last_failed_at": "2026-08-04T21:24:44.645Z",
-      "attempts": 1
-    },
     {
       "report_id": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "report_digest": "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
       "repository_id": 26291683,
       "repository": "twitter/twemoji",
       "target_sha": "bad3bceeafc901ace42a3dfe0421db6388daafb9",
-      "synthesis_policy_version": "2",
+      "synthesis_policy_version": "3",
       "diagnostic": "unsupported_escalation",
-      "first_failed_at": "2026-08-04T20:32:13.606Z",
-      "last_failed_at": "2026-08-04T20:32:13.606Z",
-      "attempts": 1
-    },
-    {
-      "report_id": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
-      "report_digest": "6fb95c8c0f96125ad3cf0d906f15ae13fa8f436190ae80851d4fcfdbdfababe6",
-      "repository_id": 956654271,
-      "repository": "bmen25124/SillyTavern-Character-Creator",
-      "target_sha": "8ddf5ba08188fa8044469518d540c7dded4db701",
-      "synthesis_policy_version": "2",
-      "diagnostic": "unsupported_escalation",
-      "first_failed_at": "2026-08-04T21:04:12.348Z",
-      "last_failed_at": "2026-08-04T21:04:12.348Z",
-      "attempts": 1
-    },
-    {
-      "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
-      "report_digest": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
-      "repository_id": 1126279204,
-      "repository": "AventurasTeam/Aventuras",
-      "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
-      "synthesis_policy_version": "2",
-      "diagnostic": "unknown_candidate_ids",
-      "first_failed_at": "2026-08-04T21:38:13.846Z",
-      "last_failed_at": "2026-08-04T21:38:13.846Z",
+      "first_failed_at": "2026-08-05T00:33:56.841Z",
+      "last_failed_at": "2026-08-05T00:33:56.841Z",
       "attempts": 1
     }
   ]
