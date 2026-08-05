@@ -1,5 +1,6 @@
 export type TavernaryAssessmentDiagnostic =
   | "response_schema"
+  | "public_text_references"
   | "unknown_candidate_ids"
   | "missing_candidate_ids"
   | "count_mismatch"

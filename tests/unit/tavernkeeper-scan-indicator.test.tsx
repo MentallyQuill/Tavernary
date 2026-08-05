@@ -204,9 +204,9 @@ describe("TavernKeeperScanIndicator", () => {
     },
     {
       expected:
-        "The project uses vulnerable production dependencies, including one medium-severity issue.",
+        "The project uses vulnerable production dependencies, including one medium-severity issue and one high-severity issue.",
       summary:
-        "The project uses vulnerable production dependencies, including one medium-severity issue (28ee3138d3d8994ad41b170ee691b8035a20cb6b3f8d6d3272d972131596b848) and one high-severity issue (986f02e9c6e58bd1f45358afa192618ec56d1e1fc097b14effc22a5c2597ab).",
+        "The project uses vulnerable production dependencies, including one medium-severity issue (28ee3138d3d8994ad41b170ee691b8035a20cb6b3f8d6d3272d972131596b848) and one high-severity issue (986f02e9c6e58bd1f45358afa192618ec56d1e1fc097b14effc22a5c2597abcc).",
     },
     {
       expected: "No credible malicious behavior was validated.",

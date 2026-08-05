@@ -24,8 +24,10 @@ const findingReferencePattern =
   /\s*\((?:V\d+\s+)?findings?\s+[^)]*\b[0-9a-f]{64}\b[^)]*\)/giu;
 const bracketedFindingReferencePattern =
   /\s*\[[0-9a-f]{64}(?:,\s*[0-9a-f]{64})*\]/giu;
-const findingReferenceSuffixPattern =
-  /\s*(?:Findings:\s*)?[\[(【]?[0-9a-f]{64}[\s\S]*$/iu;
+const danglingFindingReferencePattern =
+  /\s*\[(?=[0-9a-f]{64}(?:,|$))[\s\S]*$/iu;
+const bareFindingReferencePattern =
+  /(?:Findings:\s*)?[\[(【]?[0-9a-f]{64}\b[\])】]?/giu;
 const invisibleFormattingPattern = /[\u200B-\u200D\u2060\uFEFF]/gu;
 
 function conciseAssessmentSummary(summary: string) {
@@ -33,9 +35,13 @@ function conciseAssessmentSummary(summary: string) {
     .replace(encodedCitationPattern, "")
     .replace(findingReferencePattern, "")
     .replace(bracketedFindingReferencePattern, "")
-    .replace(findingReferenceSuffixPattern, "")
+    .replace(danglingFindingReferencePattern, "")
+    .replace(bareFindingReferencePattern, "")
     .replace(invisibleFormattingPattern, "");
-  let display = withoutArtifacts.replace(/\s+/gu, " ").trim();
+  let display = withoutArtifacts
+    .replace(/\s+([,.;!?])/gu, "$1")
+    .replace(/\s+/gu, " ")
+    .trim();
 
   if (withoutArtifacts !== summary && !/[.!?]["')\]]?$/u.test(display)) {
     const lastCompleteSentence = Math.max(
