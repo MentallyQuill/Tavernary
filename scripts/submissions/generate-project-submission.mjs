@@ -185,6 +185,7 @@ export function parseGenerateProjectSubmissionCli(argv) {
         "--output-directory",
         "--report-path",
         "--retry-state-path",
+        "--failure-diagnostic-path",
       ].includes(name) ||
       value === undefined
     ) {
@@ -202,6 +203,9 @@ export function parseGenerateProjectSubmissionCli(argv) {
     reportPath: requiredOption(options, "--report-path"),
     ...(options.has("--retry-state-path")
       ? { retryStatePath: options.get("--retry-state-path") }
+      : {}),
+    ...(options.has("--failure-diagnostic-path")
+      ? { failureDiagnosticPath: options.get("--failure-diagnostic-path") }
       : {}),
   };
 }
@@ -1019,6 +1023,21 @@ export async function runGenerateProjectSubmissionCli(options) {
   try {
     draft = await prepareDraft({ issue, now });
   } catch (error) {
+    if (options.failureDiagnosticPath) {
+      const failureDiagnosticPath = resolve(options.failureDiagnosticPath);
+      await mkdir(dirname(failureDiagnosticPath), { recursive: true });
+      await writeFile(
+        failureDiagnosticPath,
+        await formatJson({
+          schema_version: 1,
+          reason_code:
+            error?.code === "output-invalid"
+              ? "output-invalid"
+              : "generation-failed",
+        }),
+        "utf8",
+      );
+    }
     if (
       error?.code === "reddit-source-retry-scheduled" &&
       options.retryStatePath

@@ -140,7 +140,8 @@ jobs:
             --issue-number "$ISSUE_NUMBER" \
             --output-directory "$GITHUB_WORKSPACE" \
             --report-path "${RUNNER_TEMP}/admission-report.json" \
-            --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json"
+            --retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json" \
+            --failure-diagnostic-path "${RUNNER_TEMP}/project-submission-generation-failure.json"
       - name: Summarize copy review diagnostic
         shell: bash
         run: |
@@ -491,5 +492,6 @@ jobs:
           GENERATION_REASON_CODE: generation-failed
           GENERATION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           REDDIT_RETRY_STATE_PATH: ${{ runner.temp }}/project-submission-retry-state.json
+          GENERATION_DIAGNOSTIC_PATH: ${{ runner.temp }}/project-submission-generation-failure.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/submissions/project-generation-failure.mjs

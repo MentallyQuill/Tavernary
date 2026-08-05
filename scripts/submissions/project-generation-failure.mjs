@@ -25,6 +25,23 @@ const QUEUE_LABELS = new Set([
   "waiting-on-fork-parent",
 ]);
 const BLOCKING_LABELS = new Set(["needs-information", "submission-declined"]);
+const DIAGNOSTIC_REASON_CODES = new Set(["output-invalid"]);
+
+async function generationDiagnosticReason(path) {
+  if (!path) return null;
+  let serialized;
+  try {
+    serialized = await readFile(path, "utf8");
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  }
+  const diagnostic = JSON.parse(serialized);
+  return diagnostic?.schema_version === 1 &&
+    DIAGNOSTIC_REASON_CODES.has(diagnostic.reason_code)
+    ? diagnostic.reason_code
+    : null;
+}
 
 function labelNames(issue) {
   return Array.isArray(issue?.labels)
@@ -220,6 +237,9 @@ async function main() {
   const producer = process.env.GENERATION_PRODUCER;
   const runUrl = process.env.GENERATION_RUN_URL;
   const retryStatePath = process.env.REDDIT_RETRY_STATE_PATH;
+  const diagnosticReason = await generationDiagnosticReason(
+    process.env.GENERATION_DIAGNOSTIC_PATH,
+  );
   let redditRetryState = null;
   if (retryStatePath) {
     let serialized = null;
@@ -241,7 +261,9 @@ async function main() {
   }
   const reasonCode = redditRetryState
     ? "reddit-source-retry-scheduled"
-    : (process.env.GENERATION_REASON_CODE ?? "generation-failed");
+    : (diagnosticReason ??
+      process.env.GENERATION_REASON_CODE ??
+      "generation-failed");
   if (
     !Number.isSafeInteger(issueNumber) ||
     issueNumber < 1 ||

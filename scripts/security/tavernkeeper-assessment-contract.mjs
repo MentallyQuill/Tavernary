@@ -244,6 +244,7 @@ export function tavernKeeperAssessmentRequirements(report) {
     allowed_candidate_ids: allowedCandidateIds,
     required_candidate_ids: requiredCandidateIds,
     required_counts: expectedCounts(report),
+    evidence_floor: deriveEvidenceFloor(reportItems(report)),
   };
 }
 
@@ -252,6 +253,7 @@ function repairFor(requirements, extra = {}) {
     ...extra,
     allowed_candidate_ids: requirements.allowed_candidate_ids,
     required_counts: requirements.required_counts,
+    evidence_floor: requirements.evidence_floor,
   };
 }
 
@@ -312,7 +314,7 @@ export function validateTavernaryAssessment(assessment, report) {
       });
     }
   }
-  const floor = deriveEvidenceFloor(reportItems(report));
+  const floor = requirements.evidence_floor;
   const floorRank = riskLevels.indexOf(floor);
   const riskRank = riskLevels.indexOf(assessment.risk_level);
   if (riskRank < floorRank) {
@@ -324,7 +326,10 @@ export function validateTavernaryAssessment(assessment, report) {
       (chain) => chain.resulting_risk === assessment.risk_level,
     )
   ) {
-    assessmentFailure("unsupported_escalation", requirements);
+    assessmentFailure("unsupported_escalation", requirements, {
+      rejected_risk_level: assessment.risk_level,
+      required_risk_level: floor,
+    });
   }
   return assessment;
 }

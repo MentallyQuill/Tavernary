@@ -591,6 +591,47 @@ test("uses the latest invalid output for a second validation repair", async () =
   );
 });
 
+test("tells intake synthesis to paraphrase bracketed source markers", async () => {
+  const bracketedSummary =
+    "Generates and preserves ComfyUI images from [[IMG: prompt | AR | SHOT | SEED]] markers in SillyTavern messages with configurable workflows and an image gallery.";
+  const validOutput = outputFor({
+    requestedFields: ["summary", "tags"],
+    allowedTags: vocabularies.tags,
+  });
+  const invalidOutput = {
+    ...validOutput,
+    summary: {
+      value: bracketedSummary,
+      evidence: ["readme:1-4"],
+    },
+  };
+  const generate = vi.fn(async (_input: ProviderInput) => ({
+    output: generate.mock.calls.length === 1 ? invalidOutput : validOutput,
+    metadata: providerMetadata,
+  }));
+
+  await enrichRecord(
+    record,
+    sourceRecord,
+    snapshot,
+    { generate },
+    {
+      vocabularies,
+      loadSource: async () => readySource(),
+      maxProviderAttempts: 2,
+    },
+  );
+
+  expect(generate).toHaveBeenCalledTimes(2);
+  expect(generate.mock.calls[1]?.[0].repair).toMatchObject({
+    reasonCode: "output-invalid",
+    rejectedSummary: bracketedSummary,
+  });
+  expect(generate.mock.calls[1]?.[0].repair?.message).toContain(
+    "Describe bracketed source syntax in ordinary words without reproducing square brackets.",
+  );
+});
+
 test("restates structured field shapes when repairing primitive output", async () => {
   const validOutput = outputFor({
     requestedFields: ["summary", "tags"],
