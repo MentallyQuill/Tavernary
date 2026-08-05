@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "sillytavern-sillytavern-pushnotifications",
+  "source_id": "github-747410816",
+  "source_identity": "github:sillytavern/sillytavern-pushnotifications",
+  "evidence_fingerprint": "c0f2c0c7641721d46b33fb15d711b934d96973f234afa8fb3504a5e3022b26ed",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T11:13:47.527Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T11:13:47.527Z"
+  },
+  "maintenance_issue_number": null
+}
