@@ -191,8 +191,11 @@
     "2422f8f2a00607f85e488f7ef1e9c0ae56d05f72cdbb406acdfbf8790e13d9f0",
     "d86f7bd9c58c4e43af24a4376472e31ccc0c6c2aa1819943e5d2f157a4af917f",
     "b1c35a2fe50356145ae02a701553176749a9cca3d4c00c5fc17a46a85c3ab324",
+    "7d3168528629e2b1b24dd61c8707c341c9bc3f0502502ee23f755e8cf05c41de",
     "a2e255993c85651f37eebfebc553bd959974e03710ddacad94d698c703eb43cb",
     "52d61627aede99c3df80b5ad13b783f2536c3b1058d49ed7df155666409d1bb9",
+    "cbe5b653e0df03e135233f94050f809ff186127bcd3808a4650ec40a29ac4fdc",
+    "4ae776cbdf01fa15ac910661d6b684c72f54517fbc64fd34aea9d4104923041d",
     "734cadb63fb95ef83235c142ebefab51f0dbd450372dcfe9bd0196d77112de7e",
     "9dccf341bad99bccca52f7460351d8f16631524161d4e1a37bfd5ac8474fd17d",
     "c87045731680bb67399dde1cfb4975d9c3429d20a0d58a4395ee9a4d50540b16",
@@ -12870,21 +12873,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1244123455/1908d628e79f42adf1d3378ce656e0400fe10762/3/52d61627aede99c3df80b5ad13b783f2536c3b1058d49ed7df155666409d1bb9/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1244123455/history/",
-      "assessed_at": "2026-08-04T23:49:46.939Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T09:24:25.873Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This assessment cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated TavernKeeper review found no security findings requiring caution or concern for this project at the reviewed commit."
+        "summary": "The validated review found no material vulnerabilities, minor weaknesses, or credible malicious behavior in this project at the reviewed commit. Overall risk is low."
       }
     },
     {
@@ -13542,8 +13545,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1243718543/ecadd96b8dd433fe7ce40584cf518805db98fece/3/a2e255993c85651f37eebfebc553bd959974e03710ddacad94d698c703eb43cb/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1243718543/history/",
-      "assessed_at": "2026-08-05T00:13:09.672Z",
-      "synthesis_policy_version": "2",
+      "assessed_at": "2026-08-05T09:24:23.352Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -13552,11 +13555,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This review cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The validated assessment found no security concerns requiring caution for this project at the reviewed commit."
+        "summary": "The reviewed project has no validated security findings at the specified commit. This assessment cannot prove the absence of unknown behavior."
       }
     },
     {
@@ -14853,6 +14856,148 @@
       }
     },
     {
+      "report_id": "7d3168528629e2b1b24dd61c8707c341c9bc3f0502502ee23f755e8cf05c41de",
+      "report_digest": "7d3168528629e2b1b24dd61c8707c341c9bc3f0502502ee23f755e8cf05c41de",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1239116905",
+      "provider": "github",
+      "repository_id": 1239116905,
+      "repository": "TCLowe1982/Marinara-Extender",
+      "target_sha": "e2ac6706289728b1834f38b9c75471f06e902bc3",
+      "completed_at": "2026-08-05T00:36:08.835Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 34,
+        "assessments": 34,
+        "observations": 4,
+        "items": 38,
+        "disposition": {
+          "expected_behavior": 13,
+          "minor_weakness": 20,
+          "material_vulnerability": 5,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 11,
+          "low": 22,
+          "medium": 5,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 33,
+          "plausible": 5,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 25,
+          "high": 13
+        },
+        "recommended_risk": {
+          "low": 33,
+          "material": 5,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 134,
+        "inventory_bytes": 1637115,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 34,
+        "review_required": 34,
+        "review_completed": 34
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239116905/e2ac6706289728b1834f38b9c75471f06e902bc3/3/7d3168528629e2b1b24dd61c8707c341c9bc3f0502502ee23f755e8cf05c41de/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1239116905/history/",
+      "assessed_at": "2026-08-05T09:24:21.071Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "14fe6947767c4eb5ba42b019d76bc4f9815c4306f90534e5a8348fc95f122e3b",
+          "1e8e6f2635f54584ad62cad2a06796dbd3ed8ec5f3b591b6b3663974873a4106",
+          "2165c4a1b34123dbdfdbe1ae1f0a77e9cf3d928093ad5dba30db4d43749f86ac",
+          "2cababeca47bc15afdf432f4f2b24c345152c42997f38397938a1f161436d1fb",
+          "3b839c620ce08c04df06046b0e6899d09a2fe079ec2d440dd636b6694e91719f",
+          "4297048ab250f047cafb64186d0ea254c4722eb6a379b7650a2005df2fc23501",
+          "464f739f4e2e9db6d2bafcf31465862de457e3557459335f8fa427ae2856ea9f",
+          "5439a179c422b69c5101d08f72c42a4b3c66a37367d5d223e9d2c0c1abcbee69",
+          "6fde0179a2dd70003d5398e42912762dd8ecf7bb4516ae3aa18921ebaf809651",
+          "702e2cd4b7cf2841d19598ecc7b5348a6c2659f2a8ccb8530925a7f315f4f8a8",
+          "713d1d0684bf6b7318f45f29e85fd57e915525c8d66dc9e89606dc3192b9967d",
+          "77e99ec74782bdfd6a109adfca7b57d769801dee4ea4a1ae83e77279b765649d",
+          "8b309b56951e1cc3d992efa4cec29b37168d9f5e088de8a454e02c17da5dcbf5",
+          "924ae7b950d6f378214e795ff718782a21e25c59672dcdc575d4191f43e33ae2",
+          "92c9a23bfe0a19e7b8ad887750e309b305c94304d747339f9f60fc4ec11384a9",
+          "acb3ea3317e1036ac0c5e83eace8622867bd23efbdd2b3eb96a16b52325bda68",
+          "c58ee372c7053a14cbc1437d2e0c9d47193d2f324295e81246421704d8d087f2",
+          "cdbccbf1335ebfced318ebdbf3fe9c02a187eb70731464197c2f1c465353bd16",
+          "e225409f5137fc992b4227b83f343401ef76d29c648c115e10c8768baebc6dcf",
+          "e421c561ca9df82883445193eb261ef3d3be9f082a96812178a663d6fa21662d",
+          "e49d3ed0ea09663b04fbbc657657bc50ca8231f2cd2595ad39ca5f2c82c27996",
+          "ef6ab934dc7b865aba7cb70444c13806a4ea32816e0e1b24f1cf6704378dc1a1",
+          "f5fc5fba4555952398b475f24c80edec9cc9f346b41d5127c7000bc3aa25b5ff",
+          "f67cb03d84ee97f876eec6d8c1cec29e94c1585b3f5ca24229c00ccae6bae637"
+        ],
+        "headline": "Material caution: update the project's dependencies before relying on it",
+        "high_danger": 0,
+        "interaction_chains": [
+          {
+            "explanation": "Several serious dependency vulnerabilities are present together in a locally run tool that handles data and makes web requests. Local-only operation reduces exposure, but the dependencies should be updated to patched versions.",
+            "finding_ids": [
+              "14fe6947767c4eb5ba42b019d76bc4f9815c4306f90534e5a8348fc95f122e3b",
+              "1e8e6f2635f54584ad62cad2a06796dbd3ed8ec5f3b591b6b3663974873a4106",
+              "6fde0179a2dd70003d5398e42912762dd8ecf7bb4516ae3aa18921ebaf809651",
+              "713d1d0684bf6b7318f45f29e85fd57e915525c8d66dc9e89606dc3192b9967d",
+              "8b309b56951e1cc3d992efa4cec29b37168d9f5e088de8a454e02c17da5dcbf5"
+            ],
+            "resulting_risk": "material"
+          },
+          {
+            "explanation": "The project also has multiple lower-severity dependency advisories. Their practical impact is limited by the local setup, but collectively they indicate that a dependency refresh and lockfile regeneration are overdue.",
+            "finding_ids": [
+              "2165c4a1b34123dbdfdbe1ae1f0a77e9cf3d928093ad5dba30db4d43749f86ac",
+              "2cababeca47bc15afdf432f4f2b24c345152c42997f38397938a1f161436d1fb",
+              "3b839c620ce08c04df06046b0e6899d09a2fe079ec2d440dd636b6694e91719f",
+              "4297048ab250f047cafb64186d0ea254c4722eb6a379b7650a2005df2fc23501",
+              "464f739f4e2e9db6d2bafcf31465862de457e3557459335f8fa427ae2856ea9f",
+              "5439a179c422b69c5101d08f72c42a4b3c66a37367d5d223e9d2c0c1abcbee69",
+              "702e2cd4b7cf2841d19598ecc7b5348a6c2659f2a8ccb8530925a7f315f4f8a8",
+              "77e99ec74782bdfd6a109adfca7b57d769801dee4ea4a1ae83e77279b765649d",
+              "924ae7b950d6f378214e795ff718782a21e25c59672dcdc575d4191f43e33ae2",
+              "92c9a23bfe0a19e7b8ad887750e309b305c94304d747339f9f60fc4ec11384a9",
+              "acb3ea3317e1036ac0c5e83eace8622867bd23efbdd2b3eb96a16b52325bda68",
+              "c58ee372c7053a14cbc1437d2e0c9d47193d2f324295e81246421704d8d087f2",
+              "cdbccbf1335ebfced318ebdbf3fe9c02a187eb70731464197c2f1c465353bd16",
+              "e225409f5137fc992b4227b83f343401ef76d29c648c115e10c8768baebc6dcf",
+              "e421c561ca9df82883445193eb261ef3d3be9f082a96812178a663d6fa21662d",
+              "e49d3ed0ea09663b04fbbc657657bc50ca8231f2cd2595ad39ca5f2c82c27996"
+            ],
+            "resulting_risk": "material"
+          }
+        ],
+        "malicious_evidence": "No credible malicious behavior was validated. The reviewed credential-related code serves local files or returns configuration status without exposing secrets, and the auto-start and command execution findings were confirmed as user-controlled, purpose-specific behavior. This review cannot prove the",
+        "material_concerns": 5,
+        "minor_cautions": 20,
+        "risk_level": "material",
+        "summary": "The project appears to be a good-faith local tool, not a key stealer or trojan. However, five dependency findings are material vulnerabilities, with additional lower-severity advisories. Update the affected packages and regenerate the lockfile before treating the project as fully up to date. Ordinary local file serving, fixed version checks, and clearly disclosed optional auto-start behavior are not considered malicious."
+      }
+    },
+    {
       "report_id": "edec52a68ab13b884769335464f92e50a7e1a7121b528d4e5f4efd6a1c0451ba",
       "report_digest": "edec52a68ab13b884769335464f92e50a7e1a7121b528d4e5f4efd6a1c0451ba",
       "report_version": 1,
@@ -15215,6 +15360,89 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The reviewed credential access and network transmission are expected for this type of SillyTavern extension. The validated assessment found no material security concern or unusual key disclosure. As with any software review, unknown behavior cannot be ruled out completely."
+      }
+    },
+    {
+      "report_id": "cbe5b653e0df03e135233f94050f809ff186127bcd3808a4650ec40a29ac4fdc",
+      "report_digest": "cbe5b653e0df03e135233f94050f809ff186127bcd3808a4650ec40a29ac4fdc",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1247779874",
+      "provider": "github",
+      "repository_id": 1247779874,
+      "repository": "Enerccio/SillyTavern-LanguageLearningHelper",
+      "target_sha": "d5f79e63c9041137271666ef67c55f6a7b4e6cbc",
+      "completed_at": "2026-08-05T00:47:41.046Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 15,
+        "inventory_bytes": 377225,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1247779874/d5f79e63c9041137271666ef67c55f6a7b4e6cbc/3/cbe5b653e0df03e135233f94050f809ff186127bcd3808a4650ec40a29ac4fdc/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1247779874/history/",
+      "assessed_at": "2026-08-05T09:24:28.413Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns identified",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or trojan delivery was identified. This review cannot prove the absence of unknown behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The validated review found no candidates or assessed security issues for this commit. The project is currently assessed as low risk."
       }
     },
     {
@@ -16798,6 +17026,89 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "The project’s reviewed login and quota features behave as expected for a Claude integration. Public application identifiers are not secret keys, and the saved Claude token is used with Anthropic’s own service for quota information. No material security concerns or malicious behavior were validated."
+      }
+    },
+    {
+      "report_id": "4ae776cbdf01fa15ac910661d6b684c72f54517fbc64fd34aea9d4104923041d",
+      "report_digest": "4ae776cbdf01fa15ac910661d6b684c72f54517fbc64fd34aea9d4104923041d",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "1",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v1",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1247868572",
+      "provider": "github",
+      "repository_id": 1247868572,
+      "repository": "kurohomeless/SillyTavern-Token-and-Cost-Statistics",
+      "target_sha": "2c6b36a15ef753a80707ab8c1fb39486b471172a",
+      "completed_at": "2026-08-05T03:46:29.998Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 0,
+        "assessments": 0,
+        "observations": 0,
+        "items": 0,
+        "disposition": {
+          "expected_behavior": 0,
+          "minor_weakness": 0,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 0,
+          "low": 0,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 0,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 0,
+          "high": 0
+        },
+        "recommended_risk": {
+          "low": 0,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 19,
+        "inventory_files": 7,
+        "inventory_bytes": 186728,
+        "tools_completed": 5,
+        "tools_not_applicable": 2,
+        "evidence_validated": 0,
+        "review_required": 0,
+        "review_completed": 0
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1247868572/2c6b36a15ef753a80707ab8c1fb39486b471172a/3/4ae776cbdf01fa15ac910661d6b684c72f54517fbc64fd34aea9d4104923041d/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1247868572/history/",
+      "assessed_at": "2026-08-05T09:24:30.890Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [],
+        "headline": "No validated security concerns found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
+        "material_concerns": 0,
+        "minor_cautions": 0,
+        "risk_level": "low",
+        "summary": "The validated review found no security findings requiring action. The project is assessed as low risk based on the available evidence."
       }
     },
     {
