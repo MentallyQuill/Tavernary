@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-05T02:02:44.594Z",
+  "updated_at": "2026-08-05T02:42:39.132Z",
   "quarantines": [
     {
       "report_id": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
@@ -36,6 +36,18 @@
       "diagnostic": "unsupported_escalation",
       "first_failed_at": "2026-08-05T01:17:48.817Z",
       "last_failed_at": "2026-08-05T01:17:48.817Z",
+      "attempts": 1
+    },
+    {
+      "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
+      "report_digest": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
+      "repository_id": 1126279204,
+      "repository": "AventurasTeam/Aventuras",
+      "target_sha": "babb1a0d69288bffafe4ca80fa3ed96847c52229",
+      "synthesis_policy_version": "3",
+      "diagnostic": "unsupported_escalation",
+      "first_failed_at": "2026-08-05T02:42:39.132Z",
+      "last_failed_at": "2026-08-05T02:42:39.132Z",
       "attempts": 1
     }
   ]
