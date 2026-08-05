@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "mentallyquill-directive",
+  "source_id": "github-1273112032",
+  "source_identity": "github:mentallyquill/directive",
+  "evidence_fingerprint": "c355da50960e937e150b2f7f96ea913dd8bfdff842742581add90ef61ddd5ca2",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T11:12:18.198Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T11:12:18.198Z"
+  },
+  "maintenance_issue_number": null
+}
