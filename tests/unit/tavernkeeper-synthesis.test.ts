@@ -5,7 +5,9 @@ import { describe, expect, test, vi } from "vitest";
 
 import { EnrichmentProviderError } from "../../scripts/catalog/enrichment-provider.mjs";
 import {
+  buildDeterministicAssessment,
   deriveEvidenceFloor,
+  deriveProjectAdvisory,
   TavernaryAssessmentValidationError,
   tavernKeeperAssessmentRequirements,
   validateTavernaryAssessment,
@@ -163,7 +165,7 @@ describe("TavernKeeper evidence floors", () => {
     });
   });
 
-  test("keeps expected behavior, minor weaknesses, and low-confidence material evidence low", () => {
+  test("keeps expected behavior and minor weaknesses low", () => {
     expect(
       deriveEvidenceFloor([
         assessment(),
@@ -171,6 +173,13 @@ describe("TavernKeeper evidence floors", () => {
           candidate_id: "e".repeat(64),
           disposition: "minor_weakness",
         }),
+      ]),
+    ).toBe("low");
+  });
+
+  test("keeps low-confidence material evidence visible as material", () => {
+    expect(
+      deriveEvidenceFloor([
         assessment({
           candidate_id: "f".repeat(64),
           disposition: "material_vulnerability",
@@ -178,7 +187,105 @@ describe("TavernKeeper evidence floors", () => {
           recommended_risk: "material",
         }),
       ]),
-    ).toBe("low");
+    ).toBe("material");
+  });
+});
+
+describe("TavernKeeper deterministic project advisory", () => {
+  test("does not turn a critical but merely plausible dependency finding red", () => {
+    expect(
+      deriveProjectAdvisory([
+        assessment({
+          disposition: "material_vulnerability",
+          impact: "critical",
+          exploitability: "plausible",
+          confidence: "high",
+          recommended_risk: "material",
+        }),
+      ]),
+    ).toEqual({ risk_level: "material", danger_basis: "none" });
+  });
+
+  test("identifies high-confidence malicious behavior as immediate danger", () => {
+    expect(
+      deriveProjectAdvisory([
+        assessment({
+          disposition: "credible_malicious_behavior",
+          impact: "critical",
+          exploitability: "readily_exploitable",
+          confidence: "high",
+          recommended_risk: "high",
+        }),
+      ]),
+    ).toEqual({
+      risk_level: "high",
+      danger_basis: "malicious_or_compromised",
+    });
+  });
+
+  test("identifies a critical readily exploitable vulnerability as immediate danger", () => {
+    expect(
+      deriveProjectAdvisory([
+        assessment({
+          disposition: "material_vulnerability",
+          impact: "critical",
+          exploitability: "readily_exploitable",
+          confidence: "high",
+          recommended_risk: "high",
+        }),
+      ]),
+    ).toEqual({
+      risk_level: "high",
+      danger_basis: "critical_exploitable_vulnerability",
+    });
+  });
+
+  test("identifies mixed immediate-danger evidence", () => {
+    expect(
+      deriveProjectAdvisory([
+        assessment({
+          disposition: "credible_malicious_behavior",
+          impact: "critical",
+          exploitability: "readily_exploitable",
+          confidence: "high",
+          recommended_risk: "high",
+        }),
+        assessment({
+          candidate_id: "e".repeat(64),
+          disposition: "material_vulnerability",
+          impact: "critical",
+          exploitability: "readily_exploitable",
+          confidence: "high",
+          recommended_risk: "high",
+        }),
+      ]),
+    ).toEqual({ risk_level: "high", danger_basis: "mixed" });
+  });
+
+  test("builds policy-owned fallback copy and exact counts", () => {
+    const report = reportWith([
+      assessment({
+        disposition: "material_vulnerability",
+        impact: "critical",
+        exploitability: "readily_exploitable",
+        confidence: "high",
+        recommended_risk: "high",
+      }),
+    ]);
+
+    expect(buildDeterministicAssessment(report)).toEqual({
+      risk_level: "high",
+      headline: "Immediate danger identified",
+      summary:
+        "TavernKeeper identified immediate-danger evidence at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
+      minor_cautions: 0,
+      material_concerns: 0,
+      high_danger: 1,
+      malicious_evidence:
+        "No credible malicious behavior was identified; the immediate-danger result is based on a critical, readily exploitable vulnerability.",
+      cited_finding_ids: [candidateId],
+      interaction_chains: [],
+    });
   });
 });
 
@@ -407,7 +514,7 @@ describe("Tavernary final assessment contract", () => {
     });
   });
 
-  test("accepts a supported causal interaction that escalates risk", () => {
+  test("rejects a causal interaction that tries to select the project color", () => {
     const secondId = "e".repeat(64);
     const report = reportWith([
       assessment({ disposition: "minor_weakness" }),
@@ -430,7 +537,9 @@ describe("Tavernary final assessment contract", () => {
       ],
     });
 
-    expect(validateTavernaryAssessment(output, report)).toEqual(output);
+    expect(
+      validationFailure(() => validateTavernaryAssessment(output, report)),
+    ).toMatchObject({ diagnostic: "unsupported_escalation" });
   });
 });
 
@@ -505,10 +614,20 @@ describe("strict Luna synthesis", () => {
     expect(requestBody.messages[0].content).toContain(
       "A nonzero high_danger count does not set the project risk level",
     );
+    expect(requestBody.messages[0].content).toContain(
+      "risk_level must exactly equal required_project_advisory.risk_level",
+    );
+    expect(requestBody.messages[0].content).not.toContain(
+      "You may escalate beyond it",
+    );
     const projected = JSON.parse(requestBody.messages[1].content);
     expect(projected).toMatchObject({
       allowed_candidate_ids: [candidateId],
       evidence_floor: "low",
+      required_project_advisory: {
+        risk_level: "low",
+        danger_basis: "none",
+      },
       required_counts:
         tavernKeeperAssessmentRequirements(report).required_counts,
       repair,

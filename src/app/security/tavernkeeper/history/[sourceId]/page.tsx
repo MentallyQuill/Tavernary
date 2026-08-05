@@ -9,7 +9,13 @@ const snapshot = snapshotData as unknown as {
 const riskLabels = {
   low: "Low concern",
   material: "Material concern",
-  high: "High concern",
+  high: "Immediate danger",
+};
+const dangerBasisLabels = {
+  malicious_or_compromised: "Credible malicious or compromised behavior",
+  critical_exploitable_vulnerability:
+    "Critical, readily exploitable vulnerability",
+  mixed: "Malicious or compromised behavior and an exploitable vulnerability",
 };
 
 function formatDate(timestamp: string) {
@@ -84,6 +90,13 @@ export function TavernKeeperAssessmentHistory({
                   <p>{report.assessment.summary}</p>
                   <p>{report.assessment.malicious_evidence}</p>
                   <dl>
+                    {report.assessment.risk_level === "high" &&
+                    report.danger_basis !== "none" ? (
+                      <div>
+                        <dt>Danger basis</dt>
+                        <dd>{dangerBasisLabels[report.danger_basis]}</dd>
+                      </div>
+                    ) : null}
                     <div>
                       <dt>Commit</dt>
                       <dd>

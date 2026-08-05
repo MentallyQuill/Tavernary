@@ -88,7 +88,13 @@ const freshnessLabels = {
 const riskGradeLabels = {
   low: "Low concern",
   material: "Material concern",
-  high: "High concern",
+  high: "Immediate danger",
+};
+const dangerBasisLabels = {
+  malicious_or_compromised: "Credible malicious or compromised behavior",
+  critical_exploitable_vulnerability:
+    "Critical, readily exploitable vulnerability",
+  mixed: "Malicious or compromised behavior and an exploitable vulnerability",
 };
 
 function countLabel(count: number, singular: string, plural = `${singular}s`) {
@@ -402,6 +408,13 @@ export function TavernKeeperScanIndicator({
                     </span>
                   </p>
                   <dl className="tavernkeeper-scan-details">
+                    {report.riskLevel === "high" &&
+                    report.dangerBasis !== "none" ? (
+                      <div>
+                        <dt>Danger basis</dt>
+                        <dd>{dangerBasisLabels[report.dangerBasis]}</dd>
+                      </div>
+                    ) : null}
                     <div>
                       <dt>Scanned</dt>
                       <dd>

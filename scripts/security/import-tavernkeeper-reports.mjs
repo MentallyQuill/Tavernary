@@ -3,7 +3,11 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 
-import { TAVERNKEEPER_SYNTHESIS_POLICY_VERSION } from "./tavernkeeper-assessment-contract.mjs";
+import {
+  buildDeterministicAssessment,
+  deriveProjectAdvisory,
+  TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+} from "./tavernkeeper-assessment-contract.mjs";
 import {
   migrateTavernKeeperImportState,
   quarantineTavernKeeperReport,
@@ -42,13 +46,15 @@ function indexProjection(entry) {
     assessed_at: _assessedAt,
     synthesis_policy_version: _policy,
     synthesis_model: _model,
+    danger_basis: _dangerBasis,
+    assessment_source: _assessmentSource,
     assessment: _assessment,
     ...indexEntry
   } = entry;
   return indexEntry;
 }
 
-function trackedEntry(entry, synthesis) {
+function trackedEntry(entry, synthesis, dangerBasis, assessmentSource) {
   if (
     synthesis.report_id !== entry.report_id ||
     synthesis.target_sha !== entry.target_sha ||
@@ -63,7 +69,20 @@ function trackedEntry(entry, synthesis) {
     assessed_at: synthesis.assessed_at,
     synthesis_policy_version: synthesis.synthesis_policy_version,
     synthesis_model: synthesis.synthesis_model,
+    danger_basis: dangerBasis,
+    assessment_source: assessmentSource,
     assessment: synthesis.assessment,
+  };
+}
+
+function fallbackSynthesis(report, assessedAt) {
+  return {
+    report_id: report.report_id,
+    target_sha: report.target_sha,
+    assessed_at: assessedAt,
+    synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+    synthesis_model: "deterministic-policy-v4",
+    assessment: buildDeterministicAssessment(report),
   };
 }
 
@@ -91,12 +110,17 @@ function createDefaultSynthesis(options) {
   };
 }
 
-function matchingTrackedEntry(existing, entry) {
+function matchingIndexEntry(existing, entry) {
   return (
     existing !== undefined &&
-    existing.synthesis_policy_version ===
-      TAVERNKEEPER_SYNTHESIS_POLICY_VERSION &&
     isDeepStrictEqual(indexProjection(existing), entry)
+  );
+}
+
+function matchingTrackedEntry(existing, entry) {
+  return (
+    matchingIndexEntry(existing, entry) &&
+    existing.synthesis_policy_version === TAVERNKEEPER_SYNTHESIS_POLICY_VERSION
   );
 }
 
@@ -245,14 +269,16 @@ export async function reconcileTavernKeeperReports(options = {}) {
       );
     }
     const report = await fetchAndValidateTavernKeeperReport(entry, options);
+    const advisory = deriveProjectAdvisory([
+      ...report.assessments,
+      ...report.observations,
+    ]);
     let synthesis;
+    let assessmentSource = "model";
     try {
       synthesis = await synthesize(report);
     } catch (error) {
-      if (
-        error instanceof TavernKeeperSynthesisError &&
-        error.kind === "invalid-output"
-      ) {
+      if (error instanceof TavernKeeperSynthesisError) {
         importState = quarantineTavernKeeperReport(
           importState,
           entry,
@@ -266,19 +292,28 @@ export async function reconcileTavernKeeperReports(options = {}) {
           ),
         );
         quarantined += 1;
-        continue;
+        assessmentSource = "deterministic_fallback";
+        synthesis = fallbackSynthesis(report, now);
+      } else {
+        throw error;
       }
-      throw error;
     }
-    const tracked = trackedEntry(entry, synthesis);
-    const recovered = currentQuarantine(importState, entry.report_digest);
-    if (recovered !== undefined) resolved.push(incidentProjection(recovered));
-    importState = removeTavernKeeperQuarantine(
-      importState,
-      entry.report_digest,
-      TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
-      now,
+    const tracked = trackedEntry(
+      entry,
+      synthesis,
+      advisory.danger_basis,
+      assessmentSource,
     );
+    const recovered = currentQuarantine(importState, entry.report_digest);
+    if (assessmentSource === "model") {
+      if (recovered !== undefined) resolved.push(incidentProjection(recovered));
+      importState = removeTavernKeeperQuarantine(
+        importState,
+        entry.report_digest,
+        TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
+        now,
+      );
+    }
     additions.push(tracked);
     existing.set(entry.report_id, tracked);
     imported += 1;
@@ -303,14 +338,13 @@ export async function reconcileTavernKeeperReports(options = {}) {
     reports.map((entry) => [entry.report_id, entry]),
   );
   const preferredReportIds = index.reports.flatMap((entry) =>
-    currentQuarantine(importState, entry.report_digest) === undefined &&
-    matchingTrackedEntry(retainedById.get(entry.report_id), entry)
+    matchingIndexEntry(retainedById.get(entry.report_id), entry)
       ? [entry.report_id]
       : [],
   );
   const snapshot = validateStoredReportIndex(
     {
-      schema_version: 5,
+      schema_version: 6,
       generated_at: index.generated_at,
       preferred_report_ids: preferredReportIds,
       reports,
@@ -322,9 +356,7 @@ export async function reconcileTavernKeeperReports(options = {}) {
   await writeReportSummaries(importState, importStatePath);
 
   const remaining = index.reports.filter(
-    (entry) =>
-      !matchingTrackedEntry(retainedById.get(entry.report_id), entry) &&
-      currentQuarantine(importState, entry.report_digest) === undefined,
+    (entry) => !matchingTrackedEntry(retainedById.get(entry.report_id), entry),
   ).length;
   return {
     snapshot,

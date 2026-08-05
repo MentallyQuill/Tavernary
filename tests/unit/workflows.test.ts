@@ -666,6 +666,8 @@ test("reconciles reports independently and wakes TavernKeeper only after a chang
   expect(synthesisStep?.run).not.toContain('type == \\"number\\"');
   expect(incidentStep?.run).toContain("incident_key");
   expect(incidentStep?.run).toContain("Report incident key:");
+  expect(incidentStep?.run).toContain("narrative enrichment fallback");
+  expect(incidentStep?.run).not.toContain("report synthesis quarantined");
   expect(incidentStep?.run).not.toContain("diagnostic in:body");
   expect(incidentStep?.["continue-on-error"]).toBe(true);
   expect(

@@ -11,6 +11,15 @@ const diagnostics = new Set([
   "below_evidence_floor",
   "unsupported_escalation",
   "provider_response_invalid",
+  "provider-timeout",
+  "provider-rate-limited",
+  "provider-server-error",
+  "provider-authentication-failed",
+  "provider-request-failed",
+  "provider-network-error",
+  "provider-model-mismatch",
+  "synthesis-clock-invalid",
+  "synthesis-boundary-failed",
 ]);
 const digestPattern = /^[0-9a-f]{64}$/u;
 const shaPattern = /^[0-9a-f]{40}$/u;

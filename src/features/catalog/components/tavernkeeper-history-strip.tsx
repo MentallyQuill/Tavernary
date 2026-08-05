@@ -3,7 +3,7 @@ import type { TavernKeeperReportSummary } from "@/features/catalog/tavernkeeper-
 const riskLabels = {
   low: "low concern",
   material: "material concern",
-  high: "high concern",
+  high: "immediate danger",
 };
 
 function formatHistoryDate(assessedAt: string) {

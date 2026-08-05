@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "generated_at": "2026-08-05T04:39:53.430Z",
   "preferred_report_ids": [
     "4efc45df08f6177f4a0a910e33d8cf1cfeb2ba000fd91ebf161bb6983e378244",
@@ -257,6 +257,8 @@
       "assessed_at": "2026-08-04T22:35:23.338Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -338,6 +340,8 @@
       "assessed_at": "2026-08-04T22:35:25.921Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No significant security concerns identified",
@@ -419,6 +423,8 @@
       "assessed_at": "2026-08-05T00:58:42.937Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -500,6 +506,8 @@
       "assessed_at": "2026-08-05T00:45:25.813Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -581,6 +589,8 @@
       "assessed_at": "2026-08-05T01:05:19.589Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -662,6 +672,8 @@
       "assessed_at": "2026-08-05T01:05:25.934Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -743,6 +755,8 @@
       "assessed_at": "2026-08-05T01:11:22.057Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: no concerning behavior was validated",
@@ -824,6 +838,8 @@
       "assessed_at": "2026-08-05T01:30:45.427Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -905,6 +921,8 @@
       "assessed_at": "2026-08-05T01:43:41.344Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -986,6 +1004,8 @@
       "assessed_at": "2026-08-05T01:24:23.828Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1067,6 +1087,8 @@
       "assessed_at": "2026-08-05T03:09:31.220Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1148,6 +1170,8 @@
       "assessed_at": "2026-08-05T03:37:50.490Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1229,6 +1253,8 @@
       "assessed_at": "2026-08-05T00:58:52.220Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: customization code execution is an expected feature",
@@ -1310,6 +1336,8 @@
       "assessed_at": "2026-08-05T02:56:25.714Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -1391,6 +1419,8 @@
       "assessed_at": "2026-08-05T02:43:21.047Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1472,6 +1502,8 @@
       "assessed_at": "2026-08-05T03:49:59.206Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1553,6 +1585,8 @@
       "assessed_at": "2026-08-05T03:03:35.102Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -1634,6 +1668,8 @@
       "assessed_at": "2026-08-05T03:57:43.811Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "05501171f0f514cddceea5229fc07e4ec526376d9a644453594e87c21d5e5136",
@@ -1740,6 +1776,8 @@
       "assessed_at": "2026-08-05T01:11:36.476Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -1852,6 +1890,8 @@
       "assessed_at": "2026-08-05T01:11:44.722Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -1966,6 +2006,8 @@
       "assessed_at": "2026-08-05T04:05:26.221Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "01782d1baf8020f9ffbec8a5c3e1ce3ca7b669ddea807036d4abf0d1b206dc1f",
@@ -2084,6 +2126,8 @@
       "assessed_at": "2026-08-05T02:09:59.559Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0397056563b1b7873056136a413c67c2a2d3235db1db74ea738dba1d83819202",
@@ -2189,6 +2233,8 @@
       "assessed_at": "2026-08-05T02:36:43.682Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: calculator behavior was reviewed and appears safe",
@@ -2270,6 +2316,8 @@
       "assessed_at": "2026-08-05T03:09:20.151Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "2394af6d0f052a1d5e6f0aed531b4e504e143d94e17bb4e6d8824159946161be",
@@ -2361,6 +2409,8 @@
       "assessed_at": "2026-08-05T03:03:28.833Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0744177ad4162c332c77ad80404ee28ef29fd946aafb89a8781a936025f217fb",
@@ -2452,6 +2502,8 @@
       "assessed_at": "2026-08-05T01:43:44.141Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: customizable template logic behaves as expected",
@@ -2533,6 +2585,8 @@
       "assessed_at": "2026-08-05T01:05:23.443Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -2614,6 +2668,8 @@
       "assessed_at": "2026-08-05T00:34:17.442Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -2695,6 +2751,8 @@
       "assessed_at": "2026-08-05T01:24:35.558Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -2776,6 +2834,8 @@
       "assessed_at": "2026-08-05T03:57:53.506Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3",
@@ -2863,6 +2923,8 @@
       "assessed_at": "2026-08-05T00:51:46.176Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -2944,6 +3006,8 @@
       "assessed_at": "2026-08-05T00:51:43.628Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -3025,6 +3089,8 @@
       "assessed_at": "2026-08-05T00:51:38.818Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -3106,6 +3172,8 @@
       "assessed_at": "2026-08-05T03:09:26.429Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "2aab7bfb162eff8229dd95e8abb8e7c21e45f3348f8acd84856b28d523c599ac",
@@ -3190,6 +3258,8 @@
       "assessed_at": "2026-08-05T01:50:23.094Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -3271,6 +3341,8 @@
       "assessed_at": "2026-08-05T01:56:48.823Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No security concern identified",
@@ -3352,6 +3424,8 @@
       "assessed_at": "2026-08-04T22:41:42.365Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "000192e612cc3de4282c7ab587838f715e41e6a9fd303f20f2d003cd38648159",
@@ -3443,6 +3517,8 @@
       "assessed_at": "2026-08-05T01:05:17.620Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -3524,6 +3600,8 @@
       "assessed_at": "2026-08-05T04:59:56.255Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0397056563b1b7873056136a413c67c2a2d3235db1db74ea738dba1d83819202",
@@ -3629,6 +3707,8 @@
       "assessed_at": "2026-08-05T01:24:32.818Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -3710,6 +3790,8 @@
       "assessed_at": "2026-08-05T00:40:46.775Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -3791,6 +3873,8 @@
       "assessed_at": "2026-08-05T01:17:52.284Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -3872,6 +3956,8 @@
       "assessed_at": "2026-08-05T00:58:49.057Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "1125c7c351b6452dc82bd60edab80d47f285b41e36387ea38be90749ad23d0ae",
@@ -3958,6 +4044,8 @@
       "assessed_at": "2026-08-05T01:30:38.023Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -4039,6 +4127,8 @@
       "assessed_at": "2026-08-05T03:44:10.907Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "608d05f7bbb5bec7376152cfb28270280567a165764a5fa3c9527414e710e1f0",
@@ -4127,6 +4217,8 @@
       "assessed_at": "2026-08-05T01:05:21.539Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -4208,6 +4300,8 @@
       "assessed_at": "2026-08-05T00:40:49.451Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -4289,6 +4383,8 @@
       "assessed_at": "2026-08-05T00:45:15.350Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -4499,6 +4595,8 @@
       "assessed_at": "2026-08-05T00:58:45.497Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -4580,6 +4678,8 @@
       "assessed_at": "2026-08-05T03:37:45.248Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -4661,6 +4761,8 @@
       "assessed_at": "2026-08-05T01:36:55.527Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No meaningful security concerns identified",
@@ -4742,6 +4844,8 @@
       "assessed_at": "2026-08-05T02:36:35.654Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -4823,6 +4927,8 @@
       "assessed_at": "2026-08-05T01:50:27.698Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -4904,6 +5010,8 @@
       "assessed_at": "2026-08-05T02:09:47.205Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -4985,6 +5093,8 @@
       "assessed_at": "2026-08-05T00:40:43.867Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -5066,6 +5176,8 @@
       "assessed_at": "2026-08-05T02:49:43.520Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0cc4b32c220080cd7520532c8a9d2c6777f0cf70410346b1c9d2890889688a97",
@@ -5157,6 +5269,8 @@
       "assessed_at": "2026-08-05T01:36:50.642Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -5238,6 +5352,8 @@
       "assessed_at": "2026-08-05T00:40:54.310Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -5319,6 +5435,8 @@
       "assessed_at": "2026-08-05T02:03:18.632Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -5400,6 +5518,8 @@
       "assessed_at": "2026-08-05T02:16:33.839Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -5481,6 +5601,8 @@
       "assessed_at": "2026-08-05T02:50:01.807Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -5562,6 +5684,8 @@
       "assessed_at": "2026-08-05T00:34:22.819Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -5643,6 +5767,8 @@
       "assessed_at": "2026-08-05T02:50:05.816Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: no security concerns identified",
@@ -5724,6 +5850,8 @@
       "assessed_at": "2026-08-05T01:30:40.179Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -5805,6 +5933,8 @@
       "assessed_at": "2026-08-05T01:11:26.170Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -5886,6 +6016,8 @@
       "assessed_at": "2026-08-05T01:56:53.697Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -5967,6 +6099,8 @@
       "assessed_at": "2026-08-05T00:45:22.983Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6048,6 +6182,8 @@
       "assessed_at": "2026-08-05T02:23:29.760Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6129,6 +6265,8 @@
       "assessed_at": "2026-08-05T01:56:46.145Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -6210,6 +6348,8 @@
       "assessed_at": "2026-08-05T02:56:35.134Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6291,6 +6431,8 @@
       "assessed_at": "2026-08-05T01:43:38.968Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6372,6 +6514,8 @@
       "assessed_at": "2026-08-05T00:34:15.131Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -6453,6 +6597,8 @@
       "assessed_at": "2026-08-05T01:30:35.791Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6534,6 +6680,8 @@
       "assessed_at": "2026-08-05T03:44:02.188Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -6615,6 +6763,8 @@
       "assessed_at": "2026-08-05T01:17:57.777Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -6696,6 +6846,8 @@
       "assessed_at": "2026-08-05T02:56:30.394Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -6777,6 +6929,8 @@
       "assessed_at": "2026-08-04T22:35:32.958Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0f3e794a795b7e5c87ae810d2813f08e11aa0d0ebce30ef298bbe5a5c0eb6f2b",
@@ -6876,6 +7030,8 @@
       "assessed_at": "2026-08-04T22:41:44.966Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -6957,6 +7113,8 @@
       "assessed_at": "2026-08-05T00:51:48.499Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -7038,6 +7196,8 @@
       "assessed_at": "2026-08-05T02:56:28.052Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -7119,6 +7279,8 @@
       "assessed_at": "2026-08-05T00:40:51.969Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -7200,6 +7362,8 @@
       "assessed_at": "2026-08-05T00:45:28.254Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -7281,6 +7445,8 @@
       "assessed_at": "2026-08-05T00:45:20.728Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0b57f46e6a48a2af0fd147370c4d36cad8be2bb73f629c751f7c54b0bb8b04a3",
@@ -7375,6 +7541,8 @@
       "assessed_at": "2026-08-05T01:24:30.758Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -7456,6 +7624,8 @@
       "assessed_at": "2026-08-05T02:36:46.240Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -7537,6 +7707,8 @@
       "assessed_at": "2026-08-05T01:11:28.736Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -7618,6 +7790,8 @@
       "assessed_at": "2026-08-05T02:49:33.289Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -7699,6 +7873,8 @@
       "assessed_at": "2026-08-05T04:05:35.235Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -7780,6 +7956,8 @@
       "assessed_at": "2026-08-05T02:09:52.187Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -7861,6 +8039,8 @@
       "assessed_at": "2026-08-05T02:43:26.542Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -7942,6 +8122,8 @@
       "assessed_at": "2026-08-05T02:02:47.409Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -8023,6 +8205,8 @@
       "assessed_at": "2026-08-05T03:03:38.162Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -8104,6 +8288,8 @@
       "assessed_at": "2026-08-05T02:02:50.176Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -8185,6 +8371,8 @@
       "assessed_at": "2026-08-05T04:43:27.053Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -8266,6 +8454,8 @@
       "assessed_at": "2026-08-05T04:25:10.748Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -8347,6 +8537,8 @@
       "assessed_at": "2026-08-05T00:51:41.047Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -8428,6 +8620,8 @@
       "assessed_at": "2026-08-05T01:24:28.391Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "4710183c6d2e1e2b8b866180e7f50e50edf9f10e892a3dacce12fffb651ef1a4",
@@ -8524,6 +8718,8 @@
       "assessed_at": "2026-08-05T02:16:36.901Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -8605,6 +8801,8 @@
       "assessed_at": "2026-08-05T01:36:48.510Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "1125c7c351b6452dc82bd60edab80d47f285b41e36387ea38be90749ad23d0ae",
@@ -8691,6 +8889,8 @@
       "assessed_at": "2026-08-05T00:34:19.898Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -8772,6 +8972,8 @@
       "assessed_at": "2026-08-05T02:30:14.863Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -8853,6 +9055,8 @@
       "assessed_at": "2026-08-05T03:03:22.108Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -8934,6 +9138,8 @@
       "assessed_at": "2026-08-05T02:43:28.963Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -9015,6 +9221,8 @@
       "assessed_at": "2026-08-04T22:48:15.148Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -9096,6 +9304,8 @@
       "assessed_at": "2026-08-05T03:31:33.364Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -9177,6 +9387,8 @@
       "assessed_at": "2026-08-04T22:53:27.370Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -9258,6 +9470,8 @@
       "assessed_at": "2026-08-05T02:16:31.300Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -9339,6 +9553,8 @@
       "assessed_at": "2026-08-05T02:30:34.334Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -9420,6 +9636,8 @@
       "assessed_at": "2026-08-05T04:13:51.376Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -9501,6 +9719,8 @@
       "assessed_at": "2026-08-05T03:03:19.541Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "47ac09260dcb257fb2e745b6c36e48ae7eaa7e19aad18151cc1e66ab3b4470ad",
@@ -9585,6 +9805,8 @@
       "assessed_at": "2026-08-05T03:31:23.423Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -9666,6 +9888,8 @@
       "assessed_at": "2026-08-05T03:09:28.684Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -9747,6 +9971,8 @@
       "assessed_at": "2026-08-05T03:37:40.935Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -9828,6 +10054,8 @@
       "assessed_at": "2026-08-05T02:30:31.425Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "010d9a8ee67bb15dcce292d009f91ddacfbfb62dda24d9b017f6d794f02fc5dd",
@@ -9948,6 +10176,8 @@
       "assessed_at": "2026-08-05T01:30:42.486Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -10029,6 +10259,8 @@
       "assessed_at": "2026-08-05T01:50:30.066Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10110,6 +10342,8 @@
       "assessed_at": "2026-08-05T02:36:40.690Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -10191,6 +10425,8 @@
       "assessed_at": "2026-08-04T23:04:55.357Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10272,6 +10508,8 @@
       "assessed_at": "2026-08-05T02:16:42.522Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "1cb4e63e88efd74db7aa42a81ab3ff2c708f88d6aede33bc8b16b77029f7114d",
@@ -10356,6 +10594,8 @@
       "assessed_at": "2026-08-05T01:56:44.117Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10437,6 +10677,8 @@
       "assessed_at": "2026-08-05T02:03:21.135Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10518,6 +10760,8 @@
       "assessed_at": "2026-08-05T01:18:00.166Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -10599,6 +10843,8 @@
       "assessed_at": "2026-08-05T00:58:40.140Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -10680,6 +10926,8 @@
       "assessed_at": "2026-08-04T23:17:23.377Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -10761,6 +11009,8 @@
       "assessed_at": "2026-08-05T02:36:37.854Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10842,6 +11092,8 @@
       "assessed_at": "2026-08-04T23:17:25.570Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -10923,6 +11175,8 @@
       "assessed_at": "2026-08-05T03:37:42.976Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -11004,6 +11258,8 @@
       "assessed_at": "2026-08-05T04:59:44.593Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "3ffb97ca2c16dd5255a173f1c529aa683f282e4386c2b3932b4039853b679e55",
@@ -11089,6 +11345,8 @@
       "assessed_at": "2026-08-05T03:44:04.900Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -11170,6 +11428,8 @@
       "assessed_at": "2026-08-05T03:49:56.644Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -11251,6 +11511,8 @@
       "assessed_at": "2026-08-05T01:36:58.137Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -11332,6 +11594,8 @@
       "assessed_at": "2026-08-05T01:17:55.014Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -11413,6 +11677,8 @@
       "assessed_at": "2026-08-05T04:36:56.361Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "28ee3138d3d8994ad41b170ee691b8035a20cb6b3f8d6d3272d972131596b848",
@@ -11498,6 +11764,8 @@
       "assessed_at": "2026-08-05T04:59:39.949Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "01118997b3bed0adec889db0093f3414c87267f93d36164a129d2febacbeb329",
@@ -11585,6 +11853,8 @@
       "assessed_at": "2026-08-04T23:30:21.353Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -11666,6 +11936,8 @@
       "assessed_at": "2026-08-04T23:30:16.989Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "cd8865121e6cdd7a7ba8570b5a1bec9536028900063e0494c731825e64e47e21"
@@ -11749,6 +12021,8 @@
       "assessed_at": "2026-08-04T23:30:19.156Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -11830,6 +12104,8 @@
       "assessed_at": "2026-08-05T03:50:03.618Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "11cc889293f4562ffcfffa043f2010370c2ddbad4e92355f3a422817edd47e0e",
@@ -11920,6 +12196,8 @@
       "assessed_at": "2026-08-04T23:36:12.857Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12001,6 +12279,8 @@
       "assessed_at": "2026-08-05T02:49:58.036Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "08633dadb41ec10441cbc0c27a7a375a6249210cceefc9c3e3444e9def7548a4",
@@ -12093,6 +12373,8 @@
       "assessed_at": "2026-08-05T03:31:25.711Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -12174,6 +12456,8 @@
       "assessed_at": "2026-08-05T02:09:49.799Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -12255,6 +12539,8 @@
       "assessed_at": "2026-08-04T23:49:48.681Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12336,6 +12622,8 @@
       "assessed_at": "2026-08-05T01:50:20.763Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "18d989f265aef2f7b6dacd369934bea8b9edb7ffe2636827c95cabecad33ee6a",
@@ -12421,6 +12709,8 @@
       "assessed_at": "2026-08-04T23:49:44.114Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12502,6 +12792,8 @@
       "assessed_at": "2026-08-04T23:49:46.939Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12583,6 +12875,8 @@
       "assessed_at": "2026-08-04T23:59:43.575Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12664,6 +12958,8 @@
       "assessed_at": "2026-08-05T04:05:30.459Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -12745,6 +13041,8 @@
       "assessed_at": "2026-08-05T02:23:25.440Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -12826,6 +13124,8 @@
       "assessed_at": "2026-08-05T00:05:57.527Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12907,6 +13207,8 @@
       "assessed_at": "2026-08-05T04:59:58.346Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -12988,6 +13290,8 @@
       "assessed_at": "2026-08-05T00:05:55.221Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "07500f7a07de3eed5bb38ae932799ccd2a207de623aa06b6b66608d2a7bfc8b9",
@@ -13073,6 +13377,8 @@
       "assessed_at": "2026-08-05T00:06:01.869Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "6874632f7972d64b5fc19fea546247241213fe5680c7617910b7312303228b07",
@@ -13158,6 +13464,8 @@
       "assessed_at": "2026-08-05T00:13:09.672Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -13239,6 +13547,8 @@
       "assessed_at": "2026-08-05T00:13:11.676Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -13320,6 +13630,8 @@
       "assessed_at": "2026-08-05T01:56:51.368Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -13401,6 +13713,8 @@
       "assessed_at": "2026-08-05T00:13:14.937Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No material security concerns identified",
@@ -13482,6 +13796,8 @@
       "assessed_at": "2026-08-05T02:23:47.598Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -13594,6 +13910,8 @@
       "assessed_at": "2026-08-05T00:19:59.168Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -13675,6 +13993,8 @@
       "assessed_at": "2026-08-05T01:43:46.930Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -13756,6 +14076,8 @@
       "assessed_at": "2026-08-05T02:43:24.178Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -13837,6 +14159,8 @@
       "assessed_at": "2026-08-05T03:31:31.055Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -13918,6 +14242,8 @@
       "assessed_at": "2026-08-05T03:37:48.184Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "Low risk: flagged code is confined to test harnesses",
@@ -13999,6 +14325,8 @@
       "assessed_at": "2026-08-05T04:43:18.567Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -14080,6 +14408,8 @@
       "assessed_at": "2026-08-05T02:56:32.718Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -14161,6 +14491,8 @@
       "assessed_at": "2026-08-05T04:05:32.840Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -14242,6 +14574,8 @@
       "assessed_at": "2026-08-05T00:27:37.507Z",
       "synthesis_policy_version": "2",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0ea66c1b36331b9b578b5e985d55feba956bf976890587aec22044288c31e483",
@@ -14327,6 +14661,8 @@
       "assessed_at": "2026-08-05T03:50:05.893Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -14408,6 +14744,8 @@
       "assessed_at": "2026-08-05T04:30:03.211Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -14489,6 +14827,8 @@
       "assessed_at": "2026-08-05T02:23:37.816Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0a8447d0767a1afb00c05158daed5d8e6638693dc34080464e5c3b5c06bee959",
@@ -14601,6 +14941,8 @@
       "assessed_at": "2026-08-05T01:50:25.272Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -14682,6 +15024,8 @@
       "assessed_at": "2026-08-05T04:30:05.409Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -14763,6 +15107,8 @@
       "assessed_at": "2026-08-05T02:16:45.674Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No security concern identified",
@@ -14844,6 +15190,8 @@
       "assessed_at": "2026-08-05T02:23:27.767Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -14925,6 +15273,8 @@
       "assessed_at": "2026-08-05T04:13:49.088Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -15006,6 +15356,8 @@
       "assessed_at": "2026-08-05T01:36:52.802Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -15087,6 +15439,8 @@
       "assessed_at": "2026-08-05T03:31:28.470Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15168,6 +15522,8 @@
       "assessed_at": "2026-08-05T02:10:02.023Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15249,6 +15605,8 @@
       "assessed_at": "2026-08-05T03:57:49.307Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15330,6 +15688,8 @@
       "assessed_at": "2026-08-05T02:30:20.242Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -15411,6 +15771,8 @@
       "assessed_at": "2026-08-05T01:43:36.781Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "1e6c9b50acf9062c73c9c86c582c3e0a223a68767368c535e994e322975b8f42"
@@ -15494,6 +15856,8 @@
       "assessed_at": "2026-08-05T03:57:55.468Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15575,6 +15939,8 @@
       "assessed_at": "2026-08-05T03:09:14.733Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns were identified",
@@ -15656,6 +16022,8 @@
       "assessed_at": "2026-08-05T02:30:17.700Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15737,6 +16105,8 @@
       "assessed_at": "2026-08-05T03:43:59.019Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15818,6 +16188,8 @@
       "assessed_at": "2026-08-05T04:30:07.601Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -15899,6 +16271,8 @@
       "assessed_at": "2026-08-05T04:36:58.303Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -15980,6 +16354,8 @@
       "assessed_at": "2026-08-05T04:43:20.706Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16061,6 +16437,8 @@
       "assessed_at": "2026-08-05T03:43:56.033Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -16142,6 +16520,8 @@
       "assessed_at": "2026-08-05T03:49:53.221Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -16223,6 +16603,8 @@
       "assessed_at": "2026-08-05T04:43:25.011Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "83a486b9de7f2e4cdbb7718857176a5e003cef9f105f1e3d298840d0d75e4ae3",
@@ -16309,6 +16691,8 @@
       "assessed_at": "2026-08-05T03:57:47.058Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "23b730bfca3c554c75936f8248b3f99739340a1a528e840d363a51b9c6d286c3",
@@ -16393,6 +16777,8 @@
       "assessed_at": "2026-08-05T04:05:28.437Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16474,6 +16860,8 @@
       "assessed_at": "2026-08-05T04:13:12.417Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -16555,6 +16943,8 @@
       "assessed_at": "2026-08-05T04:13:46.887Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16636,6 +17026,8 @@
       "assessed_at": "2026-08-05T04:20:17.920Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16717,6 +17109,8 @@
       "assessed_at": "2026-08-05T04:20:20.255Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16798,6 +17192,8 @@
       "assessed_at": "2026-08-05T04:20:13.690Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -16879,6 +17275,8 @@
       "assessed_at": "2026-08-05T04:20:11.439Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "1125c7c351b6452dc82bd60edab80d47f285b41e36387ea38be90749ad23d0ae",
@@ -16965,6 +17363,8 @@
       "assessed_at": "2026-08-05T04:25:08.616Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -17046,6 +17446,8 @@
       "assessed_at": "2026-08-05T04:20:15.774Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -17127,6 +17529,8 @@
       "assessed_at": "2026-08-05T04:25:04.398Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -17208,6 +17612,8 @@
       "assessed_at": "2026-08-05T04:25:02.252Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -17289,6 +17695,8 @@
       "assessed_at": "2026-08-05T04:25:06.539Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -17370,6 +17778,8 @@
       "assessed_at": "2026-08-05T04:30:00.603Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "e8768e17147cd57ba169ba080f39d3d9a953636882326ddcb80f3f7649b5a54b",
@@ -17454,6 +17864,8 @@
       "assessed_at": "2026-08-05T04:29:57.005Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns found",
@@ -17535,6 +17947,8 @@
       "assessed_at": "2026-08-05T04:36:53.014Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -17616,6 +18030,8 @@
       "assessed_at": "2026-08-05T04:36:24.763Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
         "headline": "No validated security concerns identified",
@@ -17697,6 +18113,8 @@
       "assessed_at": "2026-08-05T04:43:16.446Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "0cd323dc09034feb7b338bf0d623da9ebd7ce923b1bda9fed90630a36965d7aa",

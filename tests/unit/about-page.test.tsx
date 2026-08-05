@@ -28,6 +28,14 @@ test("explains safety, reporting, and legal information on About", () => {
       /scan results are not a guarantee that a project is safe or free of harmful behavior/i,
     ),
   ).toBeInTheDocument();
+  expect(
+    screen.getByText(/red means immediate danger at the exact scanned commit/i),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      /red projects remain listed so the community can see the warning/i,
+    ),
+  ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Get help" })).toHaveAttribute(
     "href",
     "/help",

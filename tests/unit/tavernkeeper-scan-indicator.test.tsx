@@ -24,7 +24,9 @@ function scanReport(
   return {
     reportId: "report-1",
     riskLevel: "high",
-    headline: "High concern",
+    headline: "Immediate danger",
+    dangerBasis: "malicious_or_compromised",
+    assessmentSource: "model",
     summary:
       "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
     minorCautions: 1,
@@ -61,6 +63,7 @@ const redStatus: TavernKeeperCardStatus = {
 
 const tealReport = scanReport({
   riskLevel: "low",
+  dangerBasis: "none",
   headline: "Low concern",
   summary:
     "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
@@ -126,14 +129,18 @@ describe("TavernKeeperScanIndicator", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: High concern; current/u,
+        name: /TavernKeeper scan: Immediate danger; current/u,
       }),
     );
 
     const panel = screen.getByRole("dialog", {
       name: "TavernKeeper Scan Results",
     });
-    expect(panel).toHaveTextContent("High concern");
+    expect(panel).toHaveTextContent("Immediate danger");
+    expect(panel).toHaveTextContent("Danger basis");
+    expect(panel).toHaveTextContent(
+      "Credible malicious or compromised behavior",
+    );
     expect(panel).toHaveTextContent("current");
     expect(panel).toHaveTextContent(redReport.summary);
     expect(panel).toHaveTextContent("1 minor caution");
@@ -170,6 +177,30 @@ describe("TavernKeeperScanIndicator", () => {
     expect(
       container.querySelector('svg[data-icon="scan-fill"]'),
     ).toBeInTheDocument();
+  });
+
+  test("distinguishes vulnerability danger from malicious behavior", () => {
+    const report = scanReport({
+      dangerBasis: "critical_exploitable_vulnerability",
+      maliciousEvidence:
+        "No credible malicious behavior was identified; the danger is an exploitable vulnerability.",
+    });
+    render(
+      <TavernKeeperScanIndicator
+        projectId="vulnerability-danger"
+        status={{ ...redStatus, report, history: [report] }}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+
+    const panel = screen.getByRole("dialog");
+    expect(panel).toHaveTextContent(
+      "Critical, readily exploitable vulnerability",
+    );
+    expect(panel).not.toHaveTextContent(
+      "Credible malicious or compromised behavior",
+    );
   });
 
   test.each([
@@ -335,7 +366,7 @@ describe("TavernKeeperScanIndicator", () => {
     });
     expect(blocks).toHaveLength(12);
     expect(blocks[0]).toHaveAccessibleName(
-      "TavernKeeper scan history: high concern on July 2, 2026 at commit 0000000 under policy policy-1",
+      "TavernKeeper scan history: immediate danger on July 2, 2026 at commit 0000000 under policy policy-1",
     );
     expect(blocks.at(-1)).toHaveAccessibleName(
       "TavernKeeper scan history: low concern on July 13, 2026 at commit 0000000 under policy policy-1",
@@ -372,7 +403,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.pointerEnter(trigger);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -390,7 +421,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.pointerEnter(trigger, { pointerType: "touch" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -406,7 +437,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.pointerEnter(trigger);
     fireEvent.pointerLeave(trigger);
@@ -435,7 +466,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: /TavernKeeper scan: High concern; current/u,
+        name: /TavernKeeper scan: Immediate danger; current/u,
       }),
     );
     const panel = screen.getByRole("dialog");
@@ -457,7 +488,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.focus(trigger);
     const panel = screen.getByRole("dialog");
@@ -482,7 +513,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     await user.tab();
     expect(trigger).toHaveFocus();
@@ -571,7 +602,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
@@ -591,7 +622,7 @@ describe("TavernKeeperScanIndicator", () => {
     );
 
     const [firstTrigger, secondTrigger] = screen.getAllByRole("button", {
-      name: /TavernKeeper scan: High concern; current/u,
+      name: /TavernKeeper scan: Immediate danger; current/u,
     });
     fireEvent.pointerDown(firstTrigger, { pointerType: "touch" });
     fireEvent.focus(firstTrigger);

@@ -1,6 +1,12 @@
 import { ACTIVE_TAVERNKEEPER_SCANNER_POLICY_VERSION } from "../../../scripts/security/tavernkeeper-reports.mjs";
 
 export type TavernKeeperRiskLevel = "low" | "material" | "high";
+export type TavernKeeperDangerBasis =
+  | "none"
+  | "malicious_or_compromised"
+  | "critical_exploitable_vulnerability"
+  | "mixed";
+export type TavernKeeperAssessmentSource = "model" | "deterministic_fallback";
 export type TavernKeeperVisualState =
   "teal" | "orange" | "red" | "gray" | "unsupported";
 export type TavernKeeperFreshness =
@@ -35,6 +41,8 @@ export interface TavernKeeperAssessedReport {
   assessed_at: string;
   synthesis_policy_version: string;
   synthesis_model: string;
+  danger_basis: TavernKeeperDangerBasis;
+  assessment_source: TavernKeeperAssessmentSource;
   report_url: string;
   history_url?: string;
   assessment: TavernKeeperFinalAssessment;
@@ -58,6 +66,8 @@ export interface TavernKeeperReportSummary {
   contextualReviewPolicyVersion: string;
   synthesisPolicyVersion: string;
   synthesisModel: string;
+  dangerBasis: TavernKeeperDangerBasis;
+  assessmentSource: TavernKeeperAssessmentSource;
   reportUrl: string;
   technicalHistoryUrl: string | null;
 }
@@ -181,6 +191,8 @@ function summarize(
     contextualReviewPolicyVersion: report.contextual_review_policy_version,
     synthesisPolicyVersion: report.synthesis_policy_version,
     synthesisModel: report.synthesis_model,
+    dangerBasis: report.danger_basis,
+    assessmentSource: report.assessment_source,
     reportUrl: report.report_url,
     technicalHistoryUrl: report.history_url ?? null,
   };

@@ -1,5 +1,6 @@
 import { createStructuredProviderTransport } from "../catalog/enrichment-provider.mjs";
 import {
+  deriveProjectAdvisory,
   TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA,
   tavernKeeperAssessmentRequirements,
 } from "./tavernkeeper-assessment-contract.mjs";
@@ -9,7 +10,7 @@ export function tavernKeeperSynthesisInstructions() {
 
 Most projects in this open-source, often vibe-coded community are made in good faith, but rare projects have attempted API-key phishing or theft, trojan delivery, harmful payloads, and bot infection. Judge the validated evidence in that context without treating ordinary SillyTavern extension behavior or scanner keywords as malicious by themselves.
 
-Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Put cited IDs only in cited_finding_ids and interaction_chains.finding_ids, using IDs listed in allowed_candidate_ids. Never put finding IDs or citation markers in visitor-facing prose. Observation IDs are never valid citations. Copy required_counts exactly. Set risk_level to evidence_floor unless two or more cited findings form a supported causal interaction expressed in interaction_chains. A nonzero high_danger count does not set the project risk level. You may not lower the deterministic evidence floor. Return only the required structured object.`;
+Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Put cited IDs only in cited_finding_ids and interaction_chains.finding_ids, using IDs listed in allowed_candidate_ids. Never put finding IDs or citation markers in visitor-facing prose. Observation IDs are never valid citations. Copy required_counts exactly. A nonzero high_danger count does not set the project risk level. risk_level must exactly equal required_project_advisory.risk_level; prose and interaction chains cannot select or change the project color. Return only the required structured object.`;
 }
 
 function synthesisInput(input) {
@@ -24,6 +25,10 @@ function synthesisInput(input) {
     ecosystem_context_version: report.ecosystem_context_version,
     counts: report.counts,
     ...tavernKeeperAssessmentRequirements(report),
+    required_project_advisory: deriveProjectAdvisory([
+      ...report.assessments,
+      ...report.observations,
+    ]),
     candidates: report.candidates.map((candidate) => ({
       candidate_id: candidate.candidate_id,
       origin: candidate.origin,

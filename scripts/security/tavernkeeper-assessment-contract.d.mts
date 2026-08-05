@@ -4,7 +4,7 @@ import type {
   TavernaryAssessmentV1,
 } from "./tavernkeeper-reports.mjs";
 
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "3";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "4";
 export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA: Record<string, unknown>;
 export type TavernaryAssessmentDiagnostic =
   | "response_schema"
@@ -42,6 +42,26 @@ export function validateStoredAssessmentShape(
 export function deriveEvidenceFloor(
   assessments: readonly TavernKeeperContextualItemV5[],
 ): TavernKeeperRiskLevel;
+export type TavernKeeperDangerBasis =
+  | "none"
+  | "malicious_or_compromised"
+  | "critical_exploitable_vulnerability"
+  | "mixed";
+export function deriveProjectAdvisory(
+  assessments: readonly TavernKeeperContextualItemV5[],
+): {
+  risk_level: TavernKeeperRiskLevel;
+  danger_basis: TavernKeeperDangerBasis;
+};
+export function buildDeterministicAssessment(report: {
+  candidates: Array<{ candidate_id: string }>;
+  assessments: TavernKeeperContextualItemV5[];
+  observations: Array<
+    Omit<TavernKeeperContextualItemV5, "candidate_id"> & {
+      related_candidate_ids: string[];
+    }
+  >;
+}): TavernaryAssessmentV1;
 export function tavernKeeperAssessmentRequirements(report: {
   candidates: Array<{ candidate_id: string }>;
   assessments: TavernKeeperContextualItemV5[];

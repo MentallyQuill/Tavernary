@@ -76,7 +76,7 @@ jobs:
           printf 'remaining=%s\n' "$remaining" >> "$GITHUB_OUTPUT"
           printf 'created_or_updated=%s\n' "$created_or_updated" >> "$GITHUB_OUTPUT"
           printf 'resolved=%s\n' "$resolved" >> "$GITHUB_OUTPUT"
-          printf '## TavernKeeper report import\n\n- Imported: %s\n- Retained: %s\n- Quarantined: %s\n- Skipped quarantines: %s\n- Remaining: %s\n' \
+          printf '## TavernKeeper report import\n\n- Imported: %s\n- Retained: %s\n- Narrative fallbacks: %s\n- Skipped fallback retries: %s\n- Remaining: %s\n' \
             "$imported" "$retained" "$quarantined" "$skipped_quarantines" "$remaining" >> "$GITHUB_STEP_SUMMARY"
       - name: Validate imported summaries
         run: npm run check
@@ -127,7 +127,7 @@ jobs:
           RESOLVED: ${{ steps.import.outputs.resolved }}
         shell: bash
         run: |
-          gh label create tavernkeeper-import --color B60205 --description "TavernKeeper report import quarantine" --force
+          gh label create tavernkeeper-import --color B60205 --description "TavernKeeper narrative enrichment fallback" --force
 
           jq -c '.[]' <<< "$CREATED_OR_UPDATED" | while read -r incident; do
             incident_key="$(jq -r '.incident_key' <<< "$incident")"
@@ -146,15 +146,15 @@ jobs:
             if [[ -z "$existing" ]]; then
               gh issue create \
                 --label tavernkeeper-import \
-                --title "[tavernkeeper-import] report synthesis quarantined" \
-                --body "Tavernary rejected bounded structured synthesis output for one immutable report.\n\nReport incident key: \`$incident_key\`\nRepository: \`$repository\`\nRepository ID: \`$repository_id\`\nTarget commit: \`$target_sha\`\nReport digest: \`$report_digest\`\nSynthesis policy: \`$policy\`\nDiagnostic: \`$diagnostic\`\nAttempts: \`$attempts\`\nRun: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\n\nOther valid reports continue importing."
+                --title "[tavernkeeper-import] narrative enrichment fallback" \
+                --body "Tavernary published a deterministic assessment because optional narrative enrichment failed for one immutable report.\n\nReport incident key: \`$incident_key\`\nRepository: \`$repository\`\nRepository ID: \`$repository_id\`\nTarget commit: \`$target_sha\`\nReport digest: \`$report_digest\`\nSynthesis policy: \`$policy\`\nDiagnostic: \`$diagnostic\`\nAttempts: \`$attempts\`\nRun: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\n\nThe validated report remains published with policy-owned fallback copy."
             else
               number="$(jq -r '.number' <<< "$existing")"
               state="$(jq -r '.state' <<< "$existing")"
               if [[ "$state" == "CLOSED" ]]; then
-                gh issue reopen "$number" --comment "The exact report-policy quarantine recurred on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+                gh issue reopen "$number" --comment "The exact narrative enrichment fallback recurred on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
               else
-                gh issue comment "$number" --body "The explicit retry remained invalid at attempt $attempts on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+                gh issue comment "$number" --body "The explicit narrative retry still used fallback at attempt $attempts on run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
               fi
             fi
           done
@@ -167,7 +167,7 @@ jobs:
               | .[0].number // empty
             ' <<< "$issues")"
             if [[ -n "$number" ]]; then
-              gh issue close "$number" --comment "This exact report-policy quarantine is no longer active."
+              gh issue close "$number" --comment "This exact narrative enrichment fallback is no longer active."
             fi
           done
 
