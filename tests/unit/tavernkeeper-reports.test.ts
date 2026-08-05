@@ -780,6 +780,56 @@ describe("TavernKeeper V5 report import", () => {
     });
   });
 
+  test("drops retained assessments when their source leaves the authoritative index", async () => {
+    const root = await mkdtemp(
+      resolve(tmpdir(), "tavernkeeper-v5-source-reset-"),
+    );
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index, report] = await fixtures();
+    const current = assessedEntry(index.reports[0]);
+    const removedReport = secondReportFrom(report);
+    const removed = assessedEntry(projectIndexReport(removedReport));
+    const expandedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 5,
+        generated_at: index.generated_at,
+        preferred_report_ids: [current.report_id, removed.report_id],
+        reports: [current, removed],
+      })}\n`,
+    );
+
+    await expect(
+      importTavernKeeperReports({
+        root,
+        outputPath,
+        registry: expandedRegistry,
+        dnsLookup: publicDnsLookup,
+        requestImpl: async () => jsonResponse(index),
+        synthesizeReport: async () => {
+          throw new Error("matching reports must not be synthesized");
+        },
+      }),
+    ).resolves.toMatchObject({
+      preferred_report_ids: [current.report_id],
+      reports: [current],
+    });
+  });
+
   test("quarantines one invalid report while importing its successful peer", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-import-"));
     const outputPath = resolve(
