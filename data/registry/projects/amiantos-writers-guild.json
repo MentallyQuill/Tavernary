@@ -1,0 +1,25 @@
+{
+  "schema_version": 6,
+  "id": "amiantos-writers-guild",
+  "name": "writers-guild",
+  "kind": "frontend",
+  "summary": "AI-powered short story writing with Tavern character cards and SillyTavern lorebooks, supporting interactive multi-character adventures and perspective-controlled generation.",
+  "metadata_status": "curated",
+  "source_id": "github-1091890012",
+  "frontends": ["writers-guild"],
+  "primary_function": "frontend",
+  "tags": [
+    "create-character-cards",
+    "guide-model-responses",
+    "manage-lorebooks",
+    "run-group-roleplay"
+  ],
+  "cataloged_at": "2026-08-05T05:53:36.356Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
