@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aikohanasaki-sillytavern-worldinfoinfo",
+  "source_id": "github-1073960658",
+  "source_identity": "github:aikohanasaki/sillytavern-worldinfoinfo",
+  "evidence_fingerprint": "3e50a994148d58662042079f2162be399560c65b1a175e9fb919a9cc3d439e49",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T11:08:26.109Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T11:08:26.109Z"
+  },
+  "maintenance_issue_number": null
+}
