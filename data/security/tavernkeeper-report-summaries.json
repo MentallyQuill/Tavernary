@@ -1,6 +1,6 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-05T14:50:11.371Z",
+  "generated_at": "2026-08-05T15:05:30.907Z",
   "preferred_report_ids": [
     "a09120867995ba186db654617ffd6ee040c89b272e35e1c6147ad404f9f9c5a8",
     "d4bcd22a3017c1f4962071991ae7fb31d0037d853d6fe0c6e1667c3acf32f70c",
@@ -208,6 +208,7 @@
     "0d7ad57965ae05f7a2a32368fd65e0a13f942f85ee40a8c29608bad730456032",
     "59928311171a151fd97ece43df1db152ea7d7e00fd9a705dd2b1e7ceedf403af",
     "0cdaa8e42f925174b67195a4ebcde3972ae6fbaba973c741541adcf1754cb050",
+    "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
     "cd18a324c7e41d023c195627e9548d7dd587cbe1d1e578f612fc4bb19b3250f5",
     "6ee1ceea484706f990f0f73c05a480b8e39707fd784267f72b7c390c7813b898",
     "583f4a545d00a02dd6e332690db83761bc176a72c4acc5540ad5f9d1d88db9f4",
@@ -22413,6 +22414,98 @@
         "minor_cautions": 0,
         "risk_level": "low",
         "summary": "This project is assessed as low risk. All reviewed findings were expected behavior, including local test-server checks, environment forwarding during tests, and standard third-party library code. As with any review, this cannot prove that unknown behavior is absent."
+      }
+    },
+    {
+      "report_id": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
+      "report_digest": "2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2",
+      "report_version": 1,
+      "supersedes_report_id": null,
+      "scanner_version": "0.1.0",
+      "scanner_policy_version": "3",
+      "rule_catalog_version": "1",
+      "package_schema_version": 1,
+      "contextual_review_policy_version": "2",
+      "ecosystem_context_version": "sillytavern-community-v1",
+      "prompt_version": "contextual-review-v2",
+      "assessment_schema_version": "contextual-assessment-v1",
+      "source_id": "github-1258773435",
+      "provider": "github",
+      "repository_id": 1258773435,
+      "repository": "MentallyQuill/Saga",
+      "target_sha": "2294dd1ec61fee33e49eede297871ec0fcaa99e1",
+      "completed_at": "2026-08-05T15:05:14.654Z",
+      "assessment_method": "deterministic-evidence-contextual-review",
+      "counts": {
+        "candidates": 42,
+        "assessments": 42,
+        "observations": 18,
+        "items": 60,
+        "disposition": {
+          "expected_behavior": 52,
+          "minor_weakness": 8,
+          "material_vulnerability": 0,
+          "credible_malicious_behavior": 0
+        },
+        "impact": {
+          "none": 52,
+          "low": 8,
+          "medium": 0,
+          "high": 0,
+          "critical": 0
+        },
+        "exploitability": {
+          "unlikely": 60,
+          "plausible": 0,
+          "readily_exploitable": 0
+        },
+        "confidence": {
+          "low": 0,
+          "medium": 1,
+          "high": 59
+        },
+        "recommended_risk": {
+          "low": 60,
+          "material": 0,
+          "high": 0
+        }
+      },
+      "coverage": {
+        "history_commits": 20,
+        "inventory_files": 1904,
+        "inventory_bytes": 94059853,
+        "tools_completed": 6,
+        "tools_not_applicable": 1,
+        "evidence_validated": 42,
+        "review_required": 42,
+        "review_completed": 42
+      },
+      "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1258773435/2294dd1ec61fee33e49eede297871ec0fcaa99e1/3/2335f3d2b3bd2e19593c6747a8c141ec9ee69040c84fed880949166be827ccb2/",
+      "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1258773435/history/",
+      "assessed_at": "2026-08-05T15:12:08.348Z",
+      "synthesis_policy_version": "4",
+      "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
+      "assessment": {
+        "cited_finding_ids": [
+          "3e703fd4478cb53e7b6e99be14c7d33414a92ce1fd147563589f9031cf154e80",
+          "51961bb4ee8f1b0544e4e269f7076c04547da2c4e139ffc869da03b97016e295",
+          "62a35569f74abf8fa7d7ff7614c8f2ee24e40131316f9733f4d205d635e290cb",
+          "6817e83801ef1cde2c6e38007da0598164f2ea1d98a8aa412b82549b7aa980b3",
+          "6a716833a51c31de60763f687e960a7ac64ab82ae8b81fd9f6ad8fa526b18ea0",
+          "75bc989fafee43cda615c425cd6ec9089b9521d3e830652ed0e003286dfac540",
+          "f4d8cff8a493f458eda4eea2efb8cbd4a743cd88bfbc34fb6100e67bef6990bf",
+          "f8306b5bfa4a55040f057f8f4b4a639706bbc3ab349b00614b8db549666f1a68"
+        ],
+        "headline": "Low risk: no validated malicious behavior or significant security concern found",
+        "high_danger": 0,
+        "interaction_chains": [],
+        "malicious_evidence": "No credible malicious behavior was validated. The apparent credential alerts were false positives involving fictional timeline labels, test data, or local browser testing; no secrets were shown to be stolen or sent externally.",
+        "material_concerns": 0,
+        "minor_cautions": 8,
+        "risk_level": "low",
+        "summary": "The reviewed commit appears safe for ordinary use. The project has eight minor workflow-hardening issues, such as using movable tool versions, broad workflow permissions, and retaining a temporary access token in the checkout configuration. These are common maintenance weaknesses with unlikely exploitation paths, not evidence of malware, phishing, credential theft, or harmful payloads. Pinning workflow tools and limiting permissions would improve security."
       }
     }
   ]
