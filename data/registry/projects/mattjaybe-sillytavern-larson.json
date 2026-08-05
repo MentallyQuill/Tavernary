@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "mattjaybe-sillytavern-larson",
+  "name": "SillyTavern-Larson",
+  "kind": "extension",
+  "summary": "Animated status bar for SillyTavern with eight styles, independent Generating, Thinking, and Idle animations, custom theme creation, and mobile-optimized UI.",
+  "metadata_status": "curated",
+  "source_id": "github-1163573440",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": ["customize-the-interface", "mobile-friendly"],
+  "cataloged_at": "2026-08-05T01:26:11.879Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

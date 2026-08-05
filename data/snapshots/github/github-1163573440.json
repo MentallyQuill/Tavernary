@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1163573440",
+  "repository": {
+    "id": 1163573440,
+    "owner": "mattjaybe",
+    "name": "SillyTavern-Larson",
+    "url": "https://github.com/mattjaybe/SillyTavern-Larson",
+    "description": "Beautiful animated status bar for SillyTavern with 8 unique styles (Gradient, Breathe, Pulse, Cylon, Segment, Glitch, Liquid, Convergence). Independent animations for Generating/Thinking/Idle states, custom theme creator, mobile-optimized UI, and smart LLM thinking detection.",
+    "default_branch": "main",
+    "head_sha": "142b1e4f20ffb5d609b55cf82bbc9dd76763e1a3",
+    "head_committed_at": "2026-03-04T17:07:28.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-02-21T20:43:01.000Z",
+    "size_kb": 330
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-05T01:26:11.879Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "142b1e4f20ffb5d609b55cf82bbc9dd76763e1a3"
+  },
+  "community": {
+    "stars_count": 26,
+    "forks_count": 0,
+    "watchers_count": 1,
+    "aggregate": 27
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-05T01:26:11.879Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "mattjaybe", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-05T01:26:11.879Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
