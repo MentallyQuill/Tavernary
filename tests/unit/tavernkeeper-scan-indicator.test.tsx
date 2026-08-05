@@ -191,6 +191,28 @@ describe("TavernKeeperScanIndicator", () => {
       summary:
         "The project is assessed as low risk for users. Its test workflow could use safer GitHub token handling, narrower permissions, and pinned action versions [72484c6e8e8d51696e42a5038b454c513da346f79ef557f0c24db3eefd2e68f3] [7e6ec8fb70e2a68052c34a3d7d7b1a8b011698553c48df62ec39943af8ee0bbd] [817962172966e2e2adae88040c785386dcfaeb3717f1feb8d7b5f1be23d08f6c] [cef063e24672a717652b8ac33af23d6a04d1009c2bd06f733f5d6d8e9e5015cb]. A known issue also affects a developer testing/build tool, not the installed S",
     },
+    {
+      expected:
+        "The eight material findings are known vulnerabilities in dependencies used by the project's test tooling, not in the installed VectFox extension, so direct user impact is unlikely.",
+      summary:
+        "The eight material findings are known vulnerabilities in dependencies used by the project's test tooling, not in the installed VectFox extension, so direct user impact is unlikely [0397056563b1b7873056136a413c67c2a2d3235db1db74ea738dba1d83819202,09be780f6d03ede2c2fe1a97bb9f8682f1662fa9883ba73242a46050450c0391,53076ef905302530238a497417d76b71218ce2485bfe8be5990c2fd9f0da774c,66f3348967d97ad1ac6aefe40446c9cf2b2f7304a491c1bc8922a9d6d585b66d,7a9b663e3b6cf212d742ee2e39d66445d38ad46d311be1fb5506c885896",
+    },
+    {
+      expected: "The validated evidence supports a low-risk assessment.",
+      summary:
+        "The validated evidence supports a low-risk assessment. Findings: 0b57f46e6a48a2af0fd147370c4d36cad8be2bb73f629c751f7c54b0bb8b04a3, 14a66334365238113c6ae7edc276bf763ada97c62141b3ea60a7125543bbff4c",
+    },
+    {
+      expected:
+        "The project uses vulnerable production dependencies, including one medium-severity issue.",
+      summary:
+        "The project uses vulnerable production dependencies, including one medium-severity issue (28ee3138d3d8994ad41b170ee691b8035a20cb6b3f8d6d3272d972131596b848) and one high-severity issue (986f02e9c6e58bd1f45358afa192618ec56d1e1fc097b14effc22a5c2597ab).",
+    },
+    {
+      expected: "No credible malicious behavior was validated.",
+      summary:
+        "No credible malicious behavior was validated.【010d9a8ee67bb15dcce292d009f91ddacfb62dda24d9b017f6d794f02fc5dd】【0a5120939b9cfe9a1fd05017621d304bd9ba97d4552b789d95b5f8b15bed413】",
+    },
   ])(
     "keeps internal finding references out of concise assessment copy",
     ({ expected, summary }) => {

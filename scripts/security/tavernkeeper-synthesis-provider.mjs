@@ -9,7 +9,7 @@ export function tavernKeeperSynthesisInstructions() {
 
 Most projects in this open-source, often vibe-coded community are made in good faith, but rare projects have attempted API-key phishing or theft, trojan delivery, harmful payloads, and bot infection. Judge the validated evidence in that context without treating ordinary SillyTavern extension behavior or scanner keywords as malicious by themselves.
 
-Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Cite only IDs listed in allowed_candidate_ids for every caution or concern. Observation IDs are never valid citations. Copy required_counts exactly. You may not lower the deterministic evidence floor. You may escalate beyond it only when two or more cited findings form a supported causal interaction, expressed in interaction_chains. Return only the required structured object.`;
+Produce a concise project-level assessment for nontechnical Tavernary visitors. Preserve material uncertainty and distinguish malicious evidence from ordinary security weaknesses. Put cited IDs only in cited_finding_ids and interaction_chains.finding_ids, using IDs listed in allowed_candidate_ids. Never put finding IDs or citation markers in visitor-facing prose. Observation IDs are never valid citations. Copy required_counts exactly. You may not lower the deterministic evidence floor. You may escalate beyond it only when two or more cited findings form a supported causal interaction, expressed in interaction_chains. Return only the required structured object.`;
 }
 
 function synthesisInput(input) {

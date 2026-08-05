@@ -208,6 +208,47 @@ describe("Tavernary final assessment contract", () => {
     ).toMatchObject({ diagnostic: "response_schema" });
   });
 
+  test.each([
+    ["headline", { headline: `Low concern ${candidateId}` }],
+    ["summary", { summary: `Visible explanation ${candidateId}` }],
+    [
+      "malicious evidence",
+      { malicious_evidence: `No malicious behavior ${candidateId}` },
+    ],
+    [
+      "interaction explanation",
+      {
+        interaction_chains: [
+          {
+            finding_ids: [candidateId, "e".repeat(64)],
+            resulting_risk: "material",
+            explanation: `Combined behavior ${candidateId}`,
+          },
+        ],
+      },
+    ],
+    [
+      "encoded citation",
+      { summary: "Visible explanation \uE200cite\uE202reference\uE201" },
+    ],
+  ])("rejects internal references in public %s prose", (_label, overrides) => {
+    const error = validationFailure(() =>
+      validateTavernaryAssessment(lowOutput(overrides), reportWith([])),
+    );
+
+    expect(error).toMatchObject({
+      diagnostic: "public_text_references",
+      repair: {
+        allowed_candidate_ids: [],
+        required_counts: {
+          minor_cautions: 0,
+          material_concerns: 0,
+          high_danger: 0,
+        },
+      },
+    });
+  });
+
   test("returns exact deterministic counts when model counts differ", () => {
     const report = reportWith([assessment({ disposition: "minor_weakness" })]);
     const error = validationFailure(() =>
@@ -423,6 +464,9 @@ describe("strict Luna synthesis", () => {
     expect(requestBody.messages[0].content).toContain(
       "Observation IDs are never valid citations",
     );
+    expect(requestBody.messages[0].content).toContain(
+      "Never put finding IDs or citation markers in visitor-facing prose",
+    );
     const projected = JSON.parse(requestBody.messages[1].content);
     expect(projected).toMatchObject({
       allowed_candidate_ids: [candidateId],
@@ -465,6 +509,33 @@ describe("strict Luna synthesis", () => {
       assessed_at: "2026-08-02T12:06:00.000Z",
       assessment: { risk_level: "low" },
     });
+  });
+
+  test("repairs public prose that leaks structured finding IDs", async () => {
+    const report = await fixture();
+    const leakedSummary = "The extension is low risk [" + "f".repeat(64) + "].";
+    const generate = vi
+      .fn()
+      .mockResolvedValueOnce({
+        output: lowOutput({ summary: leakedSummary }),
+        metadata: { requestedModel: "gpt-5.6-luna" },
+      })
+      .mockResolvedValueOnce({
+        output: lowOutput({ summary: "The extension is low risk." }),
+        metadata: { requestedModel: "gpt-5.6-luna" },
+      });
+
+    const result = await synthesizeTavernKeeperReport(report, {
+      provider: { generate },
+      now: () => new Date("2026-08-02T12:06:00.000Z"),
+    });
+
+    expect(generate).toHaveBeenCalledTimes(2);
+    expect(generate.mock.calls[1][0].repair).toMatchObject({
+      diagnostic: "public_text_references",
+      allowed_candidate_ids: [],
+    });
+    expect(result.assessment.summary).toBe("The extension is low risk.");
   });
 
   test("stops before sending an identical validation repair", async () => {
