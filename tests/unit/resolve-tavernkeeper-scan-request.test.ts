@@ -40,6 +40,16 @@ describe("staff TavernKeeper scan request resolution", () => {
     });
   });
 
+  test("accepts a published preset repository", () => {
+    expect(
+      resolve({ projects: [{ ...recursionProject, kind: "preset" }] }),
+    ).toEqual({
+      sourceId: recursionSource.id,
+      repositoryId: recursionSource.repository_id,
+      repositoryUrl: "https://github.com/MentallyQuill/Recursion",
+    });
+  });
+
   test.each([
     "https://github.com/MentallyQuill/Recursion/",
     "https://github.com/MentallyQuill/Recursion.git",
@@ -71,11 +81,6 @@ describe("staff TavernKeeper scan request resolution", () => {
       resolve({ sources: [{ ...recursionSource, status: "inactive" }] }),
     ).toThrow(/published Tavernary/iu);
     expect(() => resolve({ projects: [] })).toThrow(/published Tavernary/iu);
-    expect(() =>
-      resolve({
-        projects: [{ ...recursionProject, kind: "preset" }],
-      }),
-    ).toThrow(/published Tavernary/iu);
   });
 
   test("tracks only sorted unique positive numeric operator IDs", async () => {

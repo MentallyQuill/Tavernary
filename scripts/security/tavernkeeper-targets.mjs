@@ -11,7 +11,6 @@ const defaultOutputPath = resolve(
 );
 const fullShaPattern = /^[0-9a-f]{40}$/u;
 const validProjectKinds = new Set(["extension", "frontend", "preset"]);
-const supportedProjectKinds = new Set(["extension", "frontend"]);
 const collator = new Intl.Collator("en", { sensitivity: "base" });
 
 function validateContractVersion(value) {
@@ -61,7 +60,6 @@ function metadataBySource(
       !validProjectKinds.has(project.kind)
     )
       throw new Error("Published TavernKeeper project metadata is invalid.");
-    if (!supportedProjectKinds.has(project.kind)) continue;
     const catalogedAt = new Date(project.cataloged_at);
     if (!Number.isFinite(catalogedAt.getTime()))
       throw new Error("Published TavernKeeper catalog date is invalid.");

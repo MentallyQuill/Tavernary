@@ -199,19 +199,17 @@ function unsupportedStatus(): TavernKeeperCardStatus {
 }
 
 export function deriveTavernKeeperCardStatus({
-  projectKind,
   source,
   snapshot,
   assessedReports,
   preferredReportIds,
 }: {
-  projectKind?: string;
   source: TavernKeeperSource | null | undefined;
   snapshot: TavernKeeperSnapshot | null | undefined;
   assessedReports: readonly TavernKeeperAssessedReport[];
   preferredReportIds: readonly string[];
 }): TavernKeeperCardStatus {
-  if (projectKind === "preset" || !isActiveGithubSource(source)) {
+  if (!isActiveGithubSource(source)) {
     return unsupportedStatus();
   }
 

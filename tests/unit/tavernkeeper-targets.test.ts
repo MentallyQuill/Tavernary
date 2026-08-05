@@ -202,7 +202,7 @@ describe("TavernKeeper target manifest", () => {
       repositories: [
         { repository_id: 100, catalog_priority: { popularity_rank: 4 } },
         { repository_id: 200, catalog_priority: { popularity_rank: 3 } },
-        { repository_id: 300, catalog_priority: { popularity_rank: 2 } },
+        { repository_id: 300, catalog_priority: { popularity_rank: 1 } },
       ],
     });
   });
@@ -258,7 +258,7 @@ describe("TavernKeeper target manifest", () => {
     ]);
   });
 
-  test("publishes V2 metadata only from supported cards sharing a GitHub source", () => {
+  test("publishes V2 metadata from every card sharing a GitHub source", () => {
     const manifest = buildTargets({
       contractVersion: 2,
       generatedAt,
@@ -293,19 +293,19 @@ describe("TavernKeeper target manifest", () => {
           repository: "owner/repo",
           target_sha: "a".repeat(40),
           canonical_url: "https://github.com/owner/repo",
-          project_kinds: ["extension"],
+          project_kinds: ["extension", "preset"],
           catalog_priority: {
             top_30: true,
-            first_cataloged_at: "2026-07-02T00:00:00.000Z",
+            first_cataloged_at: "2026-07-01T00:00:00.000Z",
           },
         },
       ],
     });
   });
 
-  test("omits sources published only as unsupported presets", () => {
+  test("publishes preset-only GitHub sources with their V3 priority", () => {
     const manifest = buildTargets({
-      contractVersion: 2,
+      contractVersion: 3,
       generatedAt,
       publishedSourceIds: new Set(["github-42"]),
       sources: [source("github-42", 42, "owner/preset")],
@@ -318,10 +318,26 @@ describe("TavernKeeper target manifest", () => {
           cataloged_at: "2026-07-01T00:00:00.000Z",
         },
       ],
+      rankedProjectIds: ["preset-card"],
       topProjectIds: new Set(["preset-card"]),
     });
 
-    expect(manifest.repositories).toEqual([]);
+    expect(manifest.repositories).toEqual([
+      {
+        source_id: "github-42",
+        provider: "github",
+        repository_id: 42,
+        repository: "owner/preset",
+        target_sha: "a".repeat(40),
+        canonical_url: "https://github.com/owner/preset",
+        project_kinds: ["preset"],
+        catalog_priority: {
+          top_30: true,
+          first_cataloged_at: "2026-07-01T00:00:00.000Z",
+          popularity_rank: 1,
+        },
+      },
+    ]);
   });
 
   test("requires an explicit supported contract version", () => {
