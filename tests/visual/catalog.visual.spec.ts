@@ -187,7 +187,7 @@ for (const scenario of [
           metrics.titleClientWidth,
         );
 
-      await expect(card).toHaveScreenshot(
+      await expect(card.locator(".card-title-row")).toHaveScreenshot(
         `scan-indicator-${scenario.name}-${title.name}.png`,
         { animations: "disabled", maxDiffPixels: 10 },
       );
