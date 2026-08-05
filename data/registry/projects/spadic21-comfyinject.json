@@ -1,0 +1,26 @@
+{
+  "schema_version": 6,
+  "id": "spadic21-comfyinject",
+  "name": "ComfyInject",
+  "kind": "extension",
+  "summary": "ComfyInject generates images from image markers in SillyTavern bot messages through local ComfyUI, preserving visuals in chat history and across conversations.",
+  "metadata_status": "curated",
+  "source_id": "github-1171030721",
+  "frontends": ["sillytavern"],
+  "primary_function": "interface-workflow",
+  "tags": [
+    "add-visual-immersion",
+    "connect-external-services",
+    "generate-images",
+    "local-first",
+    "persistent-state"
+  ],
+  "cataloged_at": "2026-08-05T05:29:52.642Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
