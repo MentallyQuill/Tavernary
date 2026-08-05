@@ -37,6 +37,8 @@ function report(
     assessed_at: "2026-07-31T12:06:00.000Z",
     synthesis_policy_version: "1",
     synthesis_model: "gpt-5.6-luna",
+    danger_basis: "none",
+    assessment_source: "model",
     report_url:
       "https://mentallyquill.github.io/TavernKeeper/reports/github/42/" +
       `${currentSha}/3/${"c".repeat(64)}/`,
@@ -102,10 +104,11 @@ describe("deriveTavernKeeperCardStatus", () => {
       derive(
         report({
           target_sha: olderSha,
+          danger_basis: "malicious_or_compromised",
           assessment: {
             ...report().assessment,
             risk_level: "high",
-            headline: "High concern",
+            headline: "Immediate danger",
             minor_cautions: 0,
             high_danger: 1,
             malicious_evidence: "The review found credible malicious behavior.",
@@ -116,6 +119,7 @@ describe("deriveTavernKeeperCardStatus", () => {
       state: "red",
       riskLevel: "high",
       freshness: "stale",
+      report: { dangerBasis: "malicious_or_compromised" },
     });
   });
 
@@ -183,6 +187,7 @@ describe("deriveTavernKeeperCardStatus", () => {
       report_id: "d".repeat(64),
       target_sha: olderSha,
       assessed_at: "2026-07-31T12:06:00.000Z",
+      danger_basis: "critical_exploitable_vulnerability",
       assessment: { ...report().assessment, risk_level: "high" },
     });
     const correction = report({
@@ -235,6 +240,8 @@ describe("deriveTavernKeeperCardStatus", () => {
       minorCautions: 1,
       materialConcerns: 0,
       highDanger: 0,
+      dangerBasis: "none",
+      assessmentSource: "model",
       synthesisModel: "gpt-5.6-luna",
       treeUrl: `https://github.com/owner/repo/tree/${currentSha}`,
     });

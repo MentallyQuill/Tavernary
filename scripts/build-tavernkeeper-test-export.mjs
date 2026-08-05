@@ -120,9 +120,11 @@ async function fixtureReports() {
       assessed_at: `2026-07-${String(ordinal).padStart(2, "0")}T12:05:00.000Z`,
       synthesis_policy_version: "1",
       synthesis_model: "gpt-5.6-luna",
+      danger_basis: high ? "malicious_or_compromised" : "none",
+      assessment_source: "model",
       assessment: {
         risk_level: riskLevel,
-        headline: high ? "High concern" : "Low concern",
+        headline: high ? "Immediate danger" : "Low concern",
         summary: high
           ? "The combined reviewed behavior could expose credentials to an untrusted endpoint."
           : "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
@@ -145,7 +147,7 @@ async function fixtureReports() {
   }
 
   return {
-    schema_version: 5,
+    schema_version: 6,
     generated_at: "2026-07-31T12:00:00.000Z",
     preferred_report_ids: [
       (13).toString(16).padStart(64, "0"),

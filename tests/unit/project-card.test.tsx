@@ -143,6 +143,8 @@ describe("project card", () => {
             report: {
               reportId: "report-1",
               riskLevel: "low",
+              dangerBasis: "none",
+              assessmentSource: "model",
               headline: "Low concern",
               summary:
                 "The reviewed behavior matches the extension's stated purpose.",

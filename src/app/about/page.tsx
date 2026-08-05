@@ -128,6 +128,16 @@ export default function AboutPage() {
             it. Never provide API keys, passwords, or other secrets to software
             unless you understand how they are used.
           </p>
+          <p>
+            Scan colors describe the evidence at one exact commit. Teal means
+            low concern, orange means a material concern, and red means
+            immediate danger at the exact scanned commit. A critical dependency
+            advisory alone does not make a project red. Red results identify
+            whether the danger is credible malicious or compromised behavior, a
+            critical readily exploitable vulnerability, or both. Red projects
+            remain listed so the community can see the warning; scan results do
+            not automatically hide or delist a project.
+          </p>
         </section>
 
         <section id="reporting-removal">

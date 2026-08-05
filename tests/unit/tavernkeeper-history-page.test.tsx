@@ -25,6 +25,8 @@ function report(
     assessed_at: "2026-08-02T12:05:00.000Z",
     synthesis_policy_version: "1",
     synthesis_model: "gpt-5.6-luna",
+    danger_basis: "none",
+    assessment_source: "model",
     report_url: "https://example.test/reports/one/",
     history_url: "https://example.test/reports/history/",
     assessment: {
@@ -112,6 +114,33 @@ describe("TavernKeeper final-assessment history", () => {
 
     expect(
       screen.getByText("No completed TavernKeeper assessments are available."),
+    ).toBeInTheDocument();
+  });
+
+  test("labels red history as immediate danger and states its basis", () => {
+    const dangerous = report({
+      danger_basis: "critical_exploitable_vulnerability",
+      assessment: {
+        ...report().assessment,
+        risk_level: "high",
+        headline: "Immediate danger identified",
+        high_danger: 1,
+      },
+    });
+
+    render(
+      <TavernKeeperAssessmentHistory
+        sourceId="github-42"
+        reports={[dangerous]}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Immediate danger" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Danger basis")).toBeInTheDocument();
+    expect(
+      screen.getByText("Critical, readily exploitable vulnerability"),
     ).toBeInTheDocument();
   });
 });

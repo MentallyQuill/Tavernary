@@ -1129,13 +1129,21 @@ test(
       "data-hydrated",
       "true",
     );
-    for (const [state, accessibleCopy, stateCopy, stale, historyBlocks] of [
+    for (const [
+      state,
+      accessibleCopy,
+      stateCopy,
+      stale,
+      historyBlocks,
+      dangerBasis,
+    ] of [
       [
         "teal",
         "Low concern; current.",
         "The reviewed behavior matches the extension's stated purpose, with no material concerns.",
         false,
         12,
+        null,
       ],
       [
         "teal",
@@ -1143,13 +1151,15 @@ test(
         "The reviewed behavior matches the extension's stated purpose, with no material concerns. This assessment covers an older commit. An updated scan is pending.",
         true,
         0,
+        null,
       ],
       [
         "red",
-        "High concern; current.",
+        "Immediate danger; current.",
         "The combined reviewed behavior could expose credentials to an untrusted endpoint.",
         false,
         0,
+        "Credible malicious or compromised behavior",
       ],
     ] as const) {
       const indicator = page
@@ -1182,8 +1192,13 @@ test(
         panel.locator(".tavernkeeper-assessment-counts span"),
       ).toHaveCount(3);
       await expect(panel.locator(".tavernkeeper-scan-details div")).toHaveCount(
-        2,
+        dangerBasis ? 3 : 2,
       );
+      if (dangerBasis) {
+        await expect(panel.locator(".tavernkeeper-scan-details")).toContainText(
+          `Danger basis${dangerBasis}`,
+        );
+      }
       await expect(
         panel.locator(".tavernkeeper-malicious-evidence"),
       ).toHaveCount(0);

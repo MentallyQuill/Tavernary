@@ -26,17 +26,17 @@ release model is `deepseek/deepseek-v4-flash-0731:thinking` through NanoGPT.
 
 TavernKeeper publishes the complete sanitized technical record: deterministic
 evidence, contextual assessments, coverage, limitations, and exact-SHA links.
-Tavernary imports that structured record and uses its strict-JSON Luna model to
-synthesize the repository-level grade and concise layman's summary. Tavernary
-enforces deterministic evidence floors around Luna's result, so green items
-cannot cancel yellow or red evidence and the final grade cannot be lowered
-beneath supported high-confidence findings.
+Tavernary imports that structured record, deterministically derives the
+repository-level grade and danger basis, and uses its strict-JSON Luna model
+only to enrich the concise layman's summary. Prose synthesis cannot raise or
+lower the project grade.
 
 Production is fully automated. Humans may trigger, pause, resume, or force a
 rescan, but no production report, finding disposition, project grade, or card
 update waits for manual review. If required scanner coverage, model context,
-schema validation, evidence binding, or publication fails, no degraded result
-is published.
+schema validation, or evidence binding fails, no result is published. Optional
+Tavernary narrative enrichment may degrade to fixed policy-owned copy without
+hiding an otherwise valid report.
 
 The two repositories communicate asynchronously through public versioned JSON
 contracts and least-privilege GitHub App wake events. GitHub Actions performs
@@ -121,8 +121,10 @@ semantic `risk_level` and maps it to Tavernary's theme colors:
 - `material` / orange: one or more credible security weaknesses could plausibly
   harm users and should be considered, but the evidence does not support a
   high-danger conclusion.
-- `high` / red: credible malicious behavior or a severe, readily exploitable
-  vulnerability was identified.
+- `high` / red: strong evidence shows immediate danger at the exact scanned
+  commit. This requires high-confidence credible malicious or compromised
+  behavior, or a high-confidence critical and readily exploitable vulnerability.
+  Upstream advisory severity alone is insufficient.
 
 Teal is not limited to a perfect repository. A project with ordinary cautions
 remains teal when those cautions do not create meaningful danger. The panel and
@@ -134,7 +136,10 @@ Tavernary also presents:
 - Super-dark teal for an unsupported source or project kind.
 
 Color is always paired with text. Public copy uses `Low concern`,
-`Material concern`, and `High danger` rather than `safe` or `clean`.
+`Material concern`, and `Immediate danger` rather than `safe` or `clean`. Every
+red result separately identifies malicious/compromised behavior, a critical
+readily exploitable vulnerability, or both. Red does not automatically hide or
+delist the project; visibility provides community awareness.
 
 ### 4.3 Freshness
 
@@ -531,7 +536,8 @@ matches; the model cannot invent uncited repository facts.
   danger
 - `material`: a credible, plausibly exploitable weakness that could harm users
   but probably does not represent malicious intent
-- `high`: credible malicious behavior or a severe, readily exploitable flaw
+- `high`: high-confidence credible malicious behavior, or a high-confidence
+  critical flaw that is readily exploitable in the shipped runtime path
 
 Intent and technical impact are separate. A severe accidental vulnerability may
 be high risk without being labeled malicious. A suspicious-looking capability
@@ -574,9 +580,9 @@ exact SHA, policy versions, report ID/digest, counts, report URL, and technical
 history URL.
 
 Tavernary validates the index, then fetches a newly preferred immutable V5
-report for synthesis. Full finding records are not hydrated into the public
-catalog bundle. Tavernary stores only its bounded final card projection and
-assessment history after successful synthesis.
+report for deterministic assessment and optional narrative enrichment. Full
+finding records are not hydrated into the public catalog bundle. Tavernary
+stores only its bounded final card projection and assessment history.
 
 ### 16.3 Contract evolution
 
@@ -589,44 +595,46 @@ The Tavernary target manifest remains V2 because its identity contract is
 independent and unchanged. Future report-contract changes require a new schema
 version and a coordinated reader-before-writer rollout.
 
-## 17. Tavernary repository-level synthesis
+## 17. Tavernary repository-level assessment
 
-Tavernary gives Luna the validated V5 assessments, counts, project identity,
-exact SHA, and a Tavernary-owned synthesis policy. Luna does not receive target
-credentials, model-provider secrets, raw secret values, hidden reasoning, or an
-unbounded repository corpus. It synthesizes the already reviewed evidence; it
-does not replace TavernKeeper's source-context review.
+Tavernary first derives `risk_level` and `danger_basis` from the validated V5
+assessments and observations. It then gives Luna those assessments, counts,
+project identity, exact SHA, and the required deterministic project advisory.
+Luna does not receive target credentials, model-provider secrets, raw secret
+values, hidden reasoning, or an unbounded repository corpus. It enriches the
+already reviewed evidence; it does not replace TavernKeeper's source-context
+review or select the project color.
 
 The strict-JSON output contains:
 
-- Final `risk_level`: `low`, `material`, or `high`
+- Required `risk_level`: `low`, `material`, or `high`, exactly matching the
+  deterministic project advisory
 - Plain-language headline and one- or two-sentence concise summary
 - Minor-caution, material-concern, and high-danger counts
 - A concise malicious-evidence statement
 - Finding IDs supporting every material claim
-- Optional interaction chains explaining why multiple findings combine into a
-  higher project-level risk
+- Optional interaction chains explaining relationships without changing risk
 - TavernKeeper report ID and exact SHA
 
-### 17.1 Evidence floors
+### 17.1 Deterministic project advisory
 
-Tavernary calculates a minimum permitted grade before accepting Luna's output:
+Tavernary calculates the exact grade before accepting Luna's output:
 
 - A high-confidence `credible_malicious_behavior` assessment creates a `high`
   floor.
 - A high-confidence critical and readily exploitable vulnerability creates a
   `high` floor even without malicious intent.
-- A medium-or-higher confidence material vulnerability creates a `material`
-  floor.
+- Any other contextualized material vulnerability creates a `material` result.
 - Expected behavior and minor weaknesses remain within the `low` range.
 
-Green findings never cancel yellow or red evidence. Luna may escalate beyond a
-floor only when it cites a supported causal interaction between findings. For
-example, multiple material weaknesses may combine into high danger. Luna may
-not lower the result beneath the computed floor or make an uncited claim.
+Green findings never cancel orange or red evidence. Luna may not raise or lower
+the result. If combined evidence creates immediate danger, TavernKeeper must
+emit a bound observation that itself meets the immediate-danger predicate.
 
-Schema, citation, count, floor, and identity validation occurs after synthesis.
-Invalid output retries and cannot update the public assessment.
+Schema, citation, count, deterministic-risk, and identity validation occurs
+after synthesis. Invalid output retries; if it remains invalid or the provider
+is unavailable, Tavernary publishes fixed deterministic copy and records a
+nonblocking narrative-enrichment incident.
 
 ## 18. Publication and atomicity
 
@@ -643,10 +651,10 @@ Tavernary.
 
 Tavernary imports only reports from the configured TavernKeeper origin and
 valid immutable path. It validates identity, SHA, policy, digest, schemas,
-counts, citations, and URLs before invoking Luna. Only a fully validated final
-assessment updates Tavernary's tracked card projection and deploys. A technical
-report may exist on TavernKeeper while Tavernary synthesis retries, but it is
-not linked from the Tavernary card until the final assessment succeeds.
+counts, citations, and URLs before optional narrative enrichment. Every valid
+report receives a deterministic tracked assessment and remains eligible for
+the Tavernary card. Synthesis failure never removes a report from the preferred
+set; it publishes policy-owned fallback copy instead.
 
 Cross-repository publication cannot be one transaction, so each boundary is
 idempotent and fail-closed. A failure never overwrites the last valid tracked
@@ -672,7 +680,7 @@ TavernKeeper Scan Results
 
 For an assessed project, the panel contains:
 
-- `Low concern`, `Material concern`, or `High danger`
+- `Low concern`, `Material concern`, or `Immediate danger`
 - Tavernary's one- or two-sentence layman's summary
 - A qualifier such as `3 minor cautions` or `No material concerns`
 - Exact scanned SHA source-tree link, completion date, assessment date, and
