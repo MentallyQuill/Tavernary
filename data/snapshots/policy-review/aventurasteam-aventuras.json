@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "aventurasteam-aventuras",
+  "source_id": "github-1126279204",
+  "source_identity": "github:aventurasteam/aventuras",
+  "evidence_fingerprint": "11ad80804152c57bf17f340d543f3bfbdaba3b347acf4a91949d6eec6cba4e0b",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T06:36:30.734Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T06:36:30.734Z"
+  },
+  "maintenance_issue_number": null
+}
