@@ -164,32 +164,47 @@ export function validateStoredAssessmentShape(assessment) {
   return assessment;
 }
 
-function isHighFloor(item) {
-  return (
-    item.confidence === "high" &&
-    (item.disposition === "credible_malicious_behavior" ||
-      (item.disposition === "material_vulnerability" &&
-        item.impact === "critical" &&
-        item.exploitability === "readily_exploitable"))
-  );
+function isMaterialFloor(item) {
+  return item.disposition === "material_vulnerability";
 }
 
-function isMaterialFloor(item) {
-  return (
-    item.disposition === "material_vulnerability" &&
-    ["medium", "high"].includes(item.confidence)
+export function deriveProjectAdvisory(assessments) {
+  if (!Array.isArray(assessments)) {
+    throw new Error(
+      "TavernKeeper assessments are required for project advisory",
+    );
+  }
+  const malicious = assessments.some(
+    (item) =>
+      item.disposition === "credible_malicious_behavior" &&
+      item.confidence === "high",
   );
+  const exploitable = assessments.some(
+    (item) =>
+      item.disposition === "material_vulnerability" &&
+      item.confidence === "high" &&
+      item.impact === "critical" &&
+      item.exploitability === "readily_exploitable",
+  );
+  if (malicious || exploitable) {
+    return {
+      risk_level: "high",
+      danger_basis:
+        malicious && exploitable
+          ? "mixed"
+          : malicious
+            ? "malicious_or_compromised"
+            : "critical_exploitable_vulnerability",
+    };
+  }
+  if (assessments.some(isMaterialFloor)) {
+    return { risk_level: "material", danger_basis: "none" };
+  }
+  return { risk_level: "low", danger_basis: "none" };
 }
 
 export function deriveEvidenceFloor(assessments) {
-  if (!Array.isArray(assessments)) {
-    throw new Error(
-      "TavernKeeper assessments are required for evidence floors",
-    );
-  }
-  if (assessments.some(isHighFloor)) return "high";
-  if (assessments.some(isMaterialFloor)) return "material";
-  return "low";
+  return deriveProjectAdvisory(assessments).risk_level;
 }
 
 function reportItems(report) {
@@ -246,6 +261,51 @@ export function tavernKeeperAssessmentRequirements(report) {
     required_counts: expectedCounts(report),
     evidence_floor: deriveEvidenceFloor(reportItems(report)),
   };
+}
+
+export function buildDeterministicAssessment(report) {
+  const items = reportItems(report);
+  const advisory = deriveProjectAdvisory(items);
+  const requirements = tavernKeeperAssessmentRequirements(report);
+  const counts = requirements.required_counts;
+  const copy = {
+    low: {
+      headline: "Low concern",
+      summary:
+        "TavernKeeper did not identify a material security concern at the scanned commit. The detailed generated summary was unavailable; review the complete technical report for findings and limitations.",
+      malicious_evidence:
+        "No evidence of malicious behavior was identified in the completed review.",
+    },
+    material: {
+      headline: "Material security concerns identified",
+      summary:
+        "TavernKeeper identified material security concerns at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
+      malicious_evidence:
+        "No high-confidence evidence of malicious or compromised behavior met the immediate-danger threshold.",
+    },
+    high: {
+      headline: "Immediate danger identified",
+      summary:
+        "TavernKeeper identified immediate-danger evidence at the scanned commit. The detailed generated summary was unavailable; review the complete technical report before installing or using this project.",
+      malicious_evidence:
+        advisory.danger_basis === "malicious_or_compromised"
+          ? "The report contains high-confidence evidence of credible malicious or compromised behavior."
+          : advisory.danger_basis === "mixed"
+            ? "The report contains high-confidence evidence of malicious or compromised behavior and a critical, readily exploitable vulnerability."
+            : "No credible malicious behavior was identified; the immediate-danger result is based on a critical, readily exploitable vulnerability.",
+    },
+  }[advisory.risk_level];
+  return validateStoredAssessmentShape({
+    risk_level: advisory.risk_level,
+    headline: copy.headline,
+    summary: copy.summary,
+    minor_cautions: counts.minor_cautions,
+    material_concerns: counts.material_concerns,
+    high_danger: counts.high_danger,
+    malicious_evidence: copy.malicious_evidence,
+    cited_finding_ids: requirements.required_candidate_ids,
+    interaction_chains: [],
+  });
 }
 
 function repairFor(requirements, extra = {}) {
@@ -321,12 +381,7 @@ export function validateTavernaryAssessment(assessment, report) {
   if (riskRank < floorRank) {
     assessmentFailure("below_evidence_floor", requirements);
   }
-  if (
-    riskRank > floorRank &&
-    !assessment.interaction_chains.some(
-      (chain) => chain.resulting_risk === assessment.risk_level,
-    )
-  ) {
+  if (riskRank > floorRank) {
     assessmentFailure("unsupported_escalation", requirements, {
       rejected_risk_level: assessment.risk_level,
       required_risk_level: floor,
