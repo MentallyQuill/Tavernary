@@ -75,15 +75,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-05T05:26:10.866Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
+  "activity_scan": null,
   "contributors": {
     "accounts": [{ "login": "M4Marvin", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-05T05:26:10.866Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
-  },
-  "activity_scan": null
+  }
 }

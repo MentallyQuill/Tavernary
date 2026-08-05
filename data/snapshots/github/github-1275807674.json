@@ -9,18 +9,23 @@
     "url": "https://github.com/Beeopo/Marinara-Rewrite",
     "description": "Highlight-to-rewrite AI extension for Marinara Engine",
     "default_branch": "main",
-    "head_sha": "cfbe260391b4acc0f30961b374d2c7b0baabc911",
-    "head_committed_at": "2026-06-26T19:04:51.000Z",
+    "head_sha": "76a3f7926e6da7b94d8b1279525662c521afaa5f",
+    "head_committed_at": "2026-08-05T08:17:07.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-06-21T06:46:24.000Z",
-    "size_kb": 966
+    "size_kb": 1216
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-06-26T06:44:13.000Z",
+    "latest_source_activity_at": "2026-08-05T08:13:16.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T08:13:16.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-06-22",
         "latest_at": "2026-06-26T06:44:13.000Z",
@@ -33,10 +38,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-06-26T06:50:23.000Z",
+    "latest_release_at": "2026-08-05T08:20:52.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-25T02:15:54.114Z",
-    "baseline_attempts": 0
+    "baseline_completed_at": "2026-08-05T10:00:04.864Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "76a3f7926e6da7b94d8b1279525662c521afaa5f"
   },
   "community": {
     "stars_count": 4,
@@ -49,14 +55,15 @@
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-04T10:01:46.256Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
   "contributors": {
     "accounts": [{ "login": "Beeopo", "type": "User", "provider": "github" }],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-04T10:01:46.256Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
-  }
+  },
+  "activity_scan": null
 }

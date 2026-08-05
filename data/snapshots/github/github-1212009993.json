@@ -7,23 +7,23 @@
     "owner": "MultihogAurelius",
     "name": "SillyTavern-MultihogDnDFramework",
     "url": "https://github.com/MultihogAurelius/SillyTavern-MultihogDnDFramework",
-    "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG framework where you can basically make your own game. Mechanical integrity and simulation depth is key here. This isn't a narrative-first philosophy; it aims for relentless \"simulation autism.\"",
+    "description": "Started off as a humble \"RPG State Tracker\" but has since expanded into a more ambitious game engine, simulation system, and modular RPG platform where you can even make your own RPGs with their own systems and game logic. By default, ships with a \"hardcore\" setup that can best be described as simulation autism. Actions have consequences.",
     "default_branch": "main",
-    "head_sha": "c5c953cdd5492deb612eb26b2bbc1adce9fc8f70",
-    "head_committed_at": "2026-08-04T09:35:43.000Z",
+    "head_sha": "aea8180b39ec32419ace76ea116b7b64c1bca762",
+    "head_committed_at": "2026-08-04T21:46:48.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-04-16T01:18:13.000Z",
-    "size_kb": 8296
+    "size_kb": 9007
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-04T09:35:43.000Z",
+    "latest_source_activity_at": "2026-08-04T21:46:48.000Z",
     "source_weeks": [
       {
         "week_start": "2026-08-03",
-        "latest_at": "2026-08-04T09:35:43.000Z",
+        "latest_at": "2026-08-04T21:46:48.000Z",
         "precision": "exact"
       },
       {
@@ -78,24 +78,24 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-08-03T17:33:39.000Z",
+    "latest_release_at": "2026-08-04T10:18:24.000Z",
     "evidence_status": "complete",
     "baseline_completed_at": "2026-08-03T10:52:31.892Z",
     "baseline_attempts": 3,
-    "evidence_head_sha": "c5c953cdd5492deb612eb26b2bbc1adce9fc8f70"
+    "evidence_head_sha": "aea8180b39ec32419ace76ea116b7b64c1bca762"
   },
   "community": {
-    "stars_count": 61,
+    "stars_count": 62,
     "forks_count": 12,
     "watchers_count": 0,
-    "aggregate": 73
+    "aggregate": 74
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-04T10:01:46.256Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -108,7 +108,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-04T10:01:46.256Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
   }
 }

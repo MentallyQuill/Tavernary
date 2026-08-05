@@ -9,18 +9,23 @@
     "url": "https://github.com/platberlitz/sillytavern-image-gen",
     "description": "SillyTavern extension for AI image generation with multiple backend support",
     "default_branch": "main",
-    "head_sha": "4cc4baa42b16e2cfcfb013416f72993c67a931c6",
-    "head_committed_at": "2026-07-27T03:01:07.000Z",
+    "head_sha": "c956e685a158242c87763f2fb236967d33f406cc",
+    "head_committed_at": "2026-08-04T23:29:31.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-01-12T06:21:59.000Z",
-    "size_kb": 2659
+    "size_kb": 3542
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-27T03:01:07.000Z",
+    "latest_source_activity_at": "2026-08-04T23:15:02.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-04T23:15:02.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-07-27T03:01:07.000Z",
@@ -28,7 +33,7 @@
       },
       {
         "week_start": "2026-07-20",
-        "latest_at": "2026-07-24T09:18:59.000Z",
+        "latest_at": "2026-07-26T17:16:20.000Z",
         "precision": "exact"
       },
       {
@@ -60,45 +65,40 @@
         "week_start": "2026-05-25",
         "latest_at": "2026-05-31T03:32:01.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-16T08:35:57.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "baseline_completed_at": "2026-08-05T10:00:04.864Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "4cc4baa42b16e2cfcfb013416f72993c67a931c6"
+    "evidence_head_sha": "c956e685a158242c87763f2fb236967d33f406cc"
   },
   "community": {
-    "stars_count": 28,
+    "stars_count": 29,
     "forks_count": 5,
     "watchers_count": 1,
-    "aggregate": 34
+    "aggregate": 35
   },
   "license": {
     "status": "osi-approved",
     "spdx_id": "MIT",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-04T10:01:46.256Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
     "accounts": [
       { "login": "web-flow", "type": "User", "provider": "github" },
-      { "login": "TheLonelyDevil9", "type": "User", "provider": "github" },
       { "login": "platberlitz", "type": "User", "provider": "github" },
+      { "login": "TheLonelyDevil9", "type": "User", "provider": "github" },
       { "login": "Yam0214", "type": "User", "provider": "github" }
     ],
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-04T10:01:46.256Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
   }
 }

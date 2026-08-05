@@ -9,8 +9,8 @@
     "url": "https://github.com/aikohanasaki/Aikobots",
     "description": "Aikobots fork of ST",
     "default_branch": "v4",
-    "head_sha": "b2ea75b49ed57449a5023ee4b2d239f4bf9d3cc7",
-    "head_committed_at": "2026-08-01T22:44:16.000Z",
+    "head_sha": "5101281d997c86501ef2d786f28a611682682017",
+    "head_committed_at": "2026-08-05T06:09:22.000Z",
     "archived": false,
     "fork": true,
     "parent": {
@@ -20,12 +20,17 @@
       "url": "https://github.com/SillyTavern/SillyTavern"
     },
     "created_at": "2025-06-09T15:14:49.000Z",
-    "size_kb": 253278
+    "size_kb": 251568
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-08-01T22:44:16.000Z",
+    "latest_source_activity_at": "2026-08-05T06:09:22.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T06:09:22.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-08-01T22:44:16.000Z",
@@ -80,19 +85,14 @@
         "week_start": "2026-05-18",
         "latest_at": "2026-05-21T00:03:23.000Z",
         "precision": "exact"
-      },
-      {
-        "week_start": "2026-05-11",
-        "latest_at": "2026-05-17T22:43:32.000Z",
-        "precision": "exact"
       }
     ],
     "provisional_weeks": null,
     "latest_release_at": null,
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-28T04:19:18.249Z",
+    "baseline_completed_at": "2026-08-05T10:00:04.864Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "b2ea75b49ed57449a5023ee4b2d239f4bf9d3cc7"
+    "evidence_head_sha": "5101281d997c86501ef2d786f28a611682682017"
   },
   "community": {
     "stars_count": 17,
@@ -105,7 +105,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-04T10:01:46.256Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -116,7 +116,7 @@
     "method": "merged-pull-requests",
     "baseline_completed_at": "2026-07-27T05:14:36.020Z",
     "scan": null,
-    "refreshed_at": "2026-08-04T10:01:46.256Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
   }
 }

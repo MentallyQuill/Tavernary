@@ -9,18 +9,23 @@
     "url": "https://github.com/Coneja-Chibi/Hoplight",
     "description": "The local-first studio for AI-roleplay content. Characters, lorebooks, personas, presets; one canonical model, exported to any platform.",
     "default_branch": "Mainstage",
-    "head_sha": "5faa096ab44a67ba17dfcfb8c6aabb104c3e15f3",
-    "head_committed_at": "2026-07-29T00:09:55.000Z",
+    "head_sha": "1d1b820b80ca7564ab6dd26bf5d17a3c826ee132",
+    "head_committed_at": "2026-08-04T23:33:44.000Z",
     "archived": false,
     "fork": false,
     "parent": null,
     "created_at": "2026-07-18T21:26:28.000Z",
-    "size_kb": 37425
+    "size_kb": 34395
   },
   "source_health": "healthy",
   "activity": {
-    "latest_source_activity_at": "2026-07-29T00:09:55.000Z",
+    "latest_source_activity_at": "2026-08-04T23:33:44.000Z",
     "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-04T23:33:44.000Z",
+        "precision": "exact"
+      },
       {
         "week_start": "2026-07-27",
         "latest_at": "2026-07-29T00:09:55.000Z",
@@ -48,11 +53,11 @@
       }
     ],
     "provisional_weeks": null,
-    "latest_release_at": "2026-07-29T00:13:37.000Z",
+    "latest_release_at": "2026-08-04T23:37:33.000Z",
     "evidence_status": "complete",
-    "baseline_completed_at": "2026-07-27T06:46:55.988Z",
+    "baseline_completed_at": "2026-08-05T10:00:04.864Z",
     "baseline_attempts": 0,
-    "evidence_head_sha": "5faa096ab44a67ba17dfcfb8c6aabb104c3e15f3"
+    "evidence_head_sha": "1d1b820b80ca7564ab6dd26bf5d17a3c826ee132"
   },
   "community": {
     "stars_count": 18,
@@ -65,7 +70,7 @@
     "spdx_id": "AGPL-3.0",
     "source_path": "LICENSE"
   },
-  "refreshed_at": "2026-08-04T10:01:46.256Z",
+  "refreshed_at": "2026-08-05T10:00:04.864Z",
   "stale_since": null,
   "activity_scan": null,
   "contributors": {
@@ -78,7 +83,7 @@
     "method": "repository-contributors",
     "baseline_completed_at": null,
     "scan": null,
-    "refreshed_at": "2026-08-04T10:01:46.256Z",
+    "refreshed_at": "2026-08-05T10:00:04.864Z",
     "stale_since": null
   }
 }
