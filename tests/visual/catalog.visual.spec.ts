@@ -225,7 +225,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   });
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
   await page.mouse.move(0, 0);
-  await expect(card.locator(".card-title-row")).toHaveScreenshot(
+  await expect(trigger).toHaveScreenshot(
     "scan-indicator-unsupported-desktop.png",
     {
       animations: "disabled",
