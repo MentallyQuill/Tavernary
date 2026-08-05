@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "vevan-arousalpub",
+  "source_id": "github-1248993662",
+  "source_identity": "github:vevan/arousalpub",
+  "evidence_fingerprint": "222c54b1a8791d3be52ff2bfd883213215b181bcf1671bb0a0732582cc2a86d7",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T11:11:45.552Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T11:11:45.552Z"
+  },
+  "maintenance_issue_number": null
+}
