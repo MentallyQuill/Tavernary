@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "xenofei-sillytavern-scenepulse",
+  "source_id": "github-1184246765",
+  "source_identity": "github:xenofei/sillytavern-scenepulse",
+  "evidence_fingerprint": "a57c6b447d0dfd5a67df2624c9db135ed48e82b6a697838b79f3a4cf1e2615b9",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T03:41:46.593Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T03:41:46.593Z"
+  },
+  "maintenance_issue_number": null
+}
