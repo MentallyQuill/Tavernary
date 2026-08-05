@@ -550,6 +550,25 @@ describe("strict Luna synthesis", () => {
     });
   });
 
+  test("binds policy-required citations before validating model output", async () => {
+    const report = {
+      ...(await fixture()),
+      ...reportWith([assessment({ disposition: "minor_weakness" })]),
+    };
+    const generate = vi.fn().mockResolvedValue({
+      output: lowOutput({ minor_cautions: 1 }),
+      metadata: { requestedModel: "gpt-5.6-luna" },
+    });
+
+    const result = await synthesizeTavernKeeperReport(report, {
+      provider: { generate },
+      now: () => new Date("2026-08-02T12:06:00.000Z"),
+    });
+
+    expect(generate).toHaveBeenCalledTimes(1);
+    expect(result.assessment.cited_finding_ids).toEqual([candidateId]);
+  });
+
   test("repairs public prose that leaks structured finding IDs", async () => {
     const report = await fixture();
     const leakedSummary = "The extension is low risk [" + "f".repeat(64) + "].";
