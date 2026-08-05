@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-08-05T04:13:09.788Z",
+  "updated_at": "2026-08-05T04:36:21.913Z",
   "quarantines": [
     {
       "report_id": "26739aff81e20755a030668422b0905530cf33daa868f00849dca2a0c7d17ff3",
@@ -11,8 +11,8 @@
       "synthesis_policy_version": "3",
       "diagnostic": "missing_candidate_ids",
       "first_failed_at": "2026-08-05T02:02:44.594Z",
-      "last_failed_at": "2026-08-05T04:13:09.788Z",
-      "attempts": 2
+      "last_failed_at": "2026-08-05T04:36:21.913Z",
+      "attempts": 3
     },
     {
       "report_id": "b2e3d941a135807741f81f5598e3fe993c9f6ebc5bd7b513682c8d0a73129f25",
