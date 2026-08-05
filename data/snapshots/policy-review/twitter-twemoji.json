@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "twitter-twemoji",
+  "source_id": "github-26291683",
+  "source_identity": "github:twitter/twemoji",
+  "evidence_fingerprint": "0b0be51bd10a426aa0622a6a4f956980e68365d85e9911f2ce898b7f95c719df",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T06:57:43.224Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T06:57:43.224Z"
+  },
+  "maintenance_issue_number": null
+}
