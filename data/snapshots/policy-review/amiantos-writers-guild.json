@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "amiantos-writers-guild",
+  "source_id": "github-1091890012",
+  "source_identity": "github:amiantos/writers-guild",
+  "evidence_fingerprint": "8385a6c73f6c40f54aa15bca43c86ad95f57ed123deff69d26c98161a9960601",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T05:56:24.209Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T05:56:24.209Z"
+  },
+  "maintenance_issue_number": null
+}
