@@ -142,6 +142,27 @@ describe("TavernKeeper evidence floors", () => {
     ).toBe("material");
   });
 
+  test("exposes the material evidence floor independently from a high-danger count", () => {
+    const report = reportWith([
+      assessment({
+        disposition: "material_vulnerability",
+        impact: "critical",
+        exploitability: "plausible",
+        confidence: "medium",
+        recommended_risk: "high",
+      }),
+    ]);
+
+    expect(tavernKeeperAssessmentRequirements(report)).toMatchObject({
+      evidence_floor: "material",
+      required_counts: {
+        minor_cautions: 0,
+        material_concerns: 0,
+        high_danger: 1,
+      },
+    });
+  });
+
   test("keeps expected behavior, minor weaknesses, and low-confidence material evidence low", () => {
     expect(
       deriveEvidenceFloor([
@@ -370,7 +391,14 @@ describe("Tavernary final assessment contract", () => {
           reportWith([]),
         ),
       ),
-    ).toMatchObject({ diagnostic: "unsupported_escalation" });
+    ).toMatchObject({
+      diagnostic: "unsupported_escalation",
+      repair: {
+        evidence_floor: "low",
+        rejected_risk_level: "material",
+        required_risk_level: "low",
+      },
+    });
   });
 
   test("accepts a supported causal interaction that escalates risk", () => {
@@ -439,6 +467,7 @@ describe("strict Luna synthesis", () => {
     const repair = {
       diagnostic: "count_mismatch",
       allowed_candidate_ids: [candidateId],
+      evidence_floor: "low" as const,
       required_counts: {
         minor_cautions: 2,
         material_concerns: 0,
@@ -467,9 +496,13 @@ describe("strict Luna synthesis", () => {
     expect(requestBody.messages[0].content).toContain(
       "Never put finding IDs or citation markers in visitor-facing prose",
     );
+    expect(requestBody.messages[0].content).toContain(
+      "A nonzero high_danger count does not set the project risk level",
+    );
     const projected = JSON.parse(requestBody.messages[1].content);
     expect(projected).toMatchObject({
       allowed_candidate_ids: [candidateId],
+      evidence_floor: "low",
       required_counts:
         tavernKeeperAssessmentRequirements(report).required_counts,
       repair,

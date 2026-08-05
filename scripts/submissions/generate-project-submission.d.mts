@@ -92,6 +92,7 @@ export interface GenerateProjectSubmissionCliOptions {
   outputDirectory: string;
   reportPath: string;
   retryStatePath?: string;
+  failureDiagnosticPath?: string;
 }
 
 export interface GenerationIssue {

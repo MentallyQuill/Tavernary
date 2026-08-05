@@ -443,10 +443,14 @@ function validationRepairInput(providerInput, validation, output) {
     typeof output?.summary?.value === "string"
       ? output.summary.value.slice(0, 1_000)
       : undefined;
+  const bracketGuidance =
+    rejectedSummary !== undefined && /[\[\]]/u.test(rejectedSummary)
+      ? " Describe bracketed source syntax in ordinary words without reproducing square brackets."
+      : "";
   const summaryGuidance =
     rejectedSummary === undefined
       ? validation.repairHint
-      : `The rejected summary has ${rejectedSummary.length} characters. ${validation.repairHint} Keep the replacement between ${GENERATED_SUMMARY_MIN_LENGTH} and ${GENERATED_SUMMARY_MAX_LENGTH} characters as single-line plain text without Markdown, list syntax, URLs, or domain-style links.`;
+      : `The rejected summary has ${rejectedSummary.length} characters. ${validation.repairHint} Keep the replacement between ${GENERATED_SUMMARY_MIN_LENGTH} and ${GENERATED_SUMMARY_MAX_LENGTH} characters as single-line plain text without Markdown, list syntax, URLs, or domain-style links.${bracketGuidance}`;
   return {
     ...providerInput,
     repair: {

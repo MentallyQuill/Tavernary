@@ -266,10 +266,19 @@ export async function draftProjectRecord(input) {
       typeof input.enrichment.message === "string"
         ? input.enrichment.message.trim()
         : "";
-    throw new Error(
-      `Validated catalog copy is required before this project can be drafted${
-        failureReason ? `: ${failureReason}` : "."
-      }`,
+    throw Object.assign(
+      new Error(
+        `Validated catalog copy is required before this project can be drafted${
+          failureReason ? `: ${failureReason}` : "."
+        }`,
+      ),
+      {
+        code:
+          input.enrichment?.status === "failed" &&
+          typeof input.enrichment.code === "string"
+            ? input.enrichment.code
+            : "catalog-copy-required",
+      },
     );
   }
   const classificationReview = sanitizedClassificationReview(input, request);

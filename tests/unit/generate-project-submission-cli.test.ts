@@ -248,6 +248,24 @@ test("parses an optional Reddit retry-state artifact path", () => {
   });
 });
 
+test("parses an optional sanitized failure-diagnostic artifact path", () => {
+  expect(
+    parseGenerateProjectSubmissionCli([
+      "--issue-number",
+      "255",
+      "--output-directory",
+      "repo",
+      "--report-path",
+      "artifacts/admission-report.json",
+      "--failure-diagnostic-path",
+      "artifacts/generation-failure.json",
+    ]),
+  ).toMatchObject({
+    issueNumber: 255,
+    failureDiagnosticPath: "artifacts/generation-failure.json",
+  });
+});
+
 test("writes only declared repository files and the external report", async () => {
   const temporary = await mkdtemp(join(tmpdir(), "tavernary-submission-"));
   const outputDirectory = resolve(temporary, "repository");
@@ -1258,6 +1276,51 @@ test("writes only sanitized retry state when Reddit generation is rescheduled", 
     expect(JSON.parse(await readFile(retryStatePath, "utf8"))).toEqual(state);
     const serialized = await readFile(retryStatePath, "utf8");
     expect(serialized).not.toContain("Reddit post body");
+    expect(serialized).not.toContain("secret");
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test("writes only a sanitized reason code when required copy generation fails", async () => {
+  const temporary = await mkdtemp(
+    join(tmpdir(), "tavernary-generation-failure-"),
+  );
+  const failureDiagnosticPath = resolve(
+    temporary,
+    "artifacts/generation-failure.json",
+  );
+  try {
+    await expect(
+      runGenerateProjectSubmissionCli({
+        issueNumber: 255,
+        outputDirectory: resolve(temporary, "repository"),
+        reportPath: resolve(temporary, "artifacts/admission-report.json"),
+        failureDiagnosticPath,
+        fetchIssue: async () => ({
+          number: 255,
+          state: "open",
+          labels: [{ name: "submission-retryable" }],
+          body: "fixture",
+        }),
+        sourceClients: {
+          prepareDraft: async () => {
+            throw Object.assign(new Error("REJECTED GENERATED COPY"), {
+              code: "output-invalid",
+              providerOutput: { secret: true },
+            });
+          },
+        },
+        clock: () => "2026-08-04T22:04:25.000Z",
+      }),
+    ).rejects.toMatchObject({ code: "output-invalid" });
+
+    const serialized = await readFile(failureDiagnosticPath, "utf8");
+    expect(JSON.parse(serialized)).toEqual({
+      schema_version: 1,
+      reason_code: "output-invalid",
+    });
+    expect(serialized).not.toContain("REJECTED GENERATED COPY");
     expect(serialized).not.toContain("secret");
   } finally {
     await rm(temporary, { recursive: true, force: true });

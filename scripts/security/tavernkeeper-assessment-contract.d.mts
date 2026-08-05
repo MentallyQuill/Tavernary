@@ -18,7 +18,10 @@ export type TavernaryAssessmentDiagnostic =
 export interface TavernaryAssessmentRepair {
   rejected_candidate_ids?: string[];
   required_candidate_ids?: string[];
+  rejected_risk_level?: TavernKeeperRiskLevel;
+  required_risk_level?: TavernKeeperRiskLevel;
   allowed_candidate_ids: string[];
+  evidence_floor: TavernKeeperRiskLevel;
   required_counts: {
     minor_cautions: number;
     material_concerns: number;
@@ -50,6 +53,7 @@ export function tavernKeeperAssessmentRequirements(report: {
 }): {
   allowed_candidate_ids: string[];
   required_candidate_ids: string[];
+  evidence_floor: TavernKeeperRiskLevel;
   required_counts: {
     minor_cautions: number;
     material_concerns: number;

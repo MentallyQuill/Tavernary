@@ -1129,7 +1129,13 @@ test("generates submission PRs with scoped permissions and manual recovery", asy
     '--retry-state-path "${RUNNER_TEMP}/project-submission-retry-state.json"',
   );
   expect(source).toContain(
+    '--failure-diagnostic-path "${RUNNER_TEMP}/project-submission-generation-failure.json"',
+  );
+  expect(source).toContain(
     "REDDIT_RETRY_STATE_PATH: ${{ runner.temp }}/project-submission-retry-state.json",
+  );
+  expect(source).toContain(
+    "GENERATION_DIAGNOSTIC_PATH: ${{ runner.temp }}/project-submission-generation-failure.json",
   );
   expect(source).toContain("Reconcile Reddit retry success");
   expect(source).toContain("renderCopyReviewDiagnosticSummary");

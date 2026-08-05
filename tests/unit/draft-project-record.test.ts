@@ -501,22 +501,24 @@ test("falls back to repository description when enrichment is unavailable", asyn
 });
 
 test("reports why required catalog copy could not be validated", async () => {
-  await expect(
-    draftProjectRecord({
-      admitted: admittedGithubExtension,
-      observation,
-      snapshot,
-      enrichment: {
-        status: "failed",
-        code: "provider-timeout",
-        message: "The enrichment provider timed out.",
-      },
-      copyRequired: true,
-      now: "2026-07-25T18:00:00.000Z",
-    }),
-  ).rejects.toThrow(
-    "Validated catalog copy is required before this project can be drafted: The enrichment provider timed out.",
-  );
+  const error = await draftProjectRecord({
+    admitted: admittedGithubExtension,
+    observation,
+    snapshot,
+    enrichment: {
+      status: "failed",
+      code: "provider-timeout",
+      message: "The enrichment provider timed out.",
+    },
+    copyRequired: true,
+    now: "2026-07-25T18:00:00.000Z",
+  }).catch((value: unknown) => value);
+
+  expect(error).toMatchObject({
+    code: "provider-timeout",
+    message:
+      "Validated catalog copy is required before this project can be drafted: The enrichment provider timed out.",
+  });
 });
 
 test("drafts external presets with manual source policy", async () => {
