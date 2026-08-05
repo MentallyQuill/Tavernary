@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "keepsanity-sillytavern-custompreset",
+  "source_id": "github-1143287385",
+  "source_identity": "github:keepsanity/sillytavern-custompreset",
+  "evidence_fingerprint": "7650d73fc961c7a943e1d0fb2886f2d0acdfa71afcaea016ce3b7199d8e13519",
+  "policy_version": "2026-07-29",
+  "status": "review-unavailable",
+  "category": null,
+  "reviewed_at": "2026-08-05T15:29:56.316Z",
+  "retry": {
+    "attempts": 1,
+    "last_failure_at": "2026-08-05T15:29:56.316Z"
+  },
+  "maintenance_issue_number": null
+}
