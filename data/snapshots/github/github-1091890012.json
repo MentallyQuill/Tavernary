@@ -1,0 +1,78 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1091890012",
+  "repository": {
+    "id": 1091890012,
+    "owner": "amiantos",
+    "name": "writers-guild",
+    "url": "https://github.com/amiantos/writers-guild",
+    "description": "A SillyTavern alternative focused on short story writing with full support for Tavern cards and Lorebooks",
+    "default_branch": "main",
+    "head_sha": "adaf2b2ed11b3333dd3ce04081c4899b4654df00",
+    "head_committed_at": "2026-07-19T18:54:12.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-11-07T17:10:43.000Z",
+    "size_kb": 5400
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-07-19T18:42:29.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T18:42:29.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-08T15:21:35.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-20T22:34:56.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-30T03:02:48.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-05T05:53:36.356Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "adaf2b2ed11b3333dd3ce04081c4899b4654df00"
+  },
+  "community": {
+    "stars_count": 8,
+    "forks_count": 3,
+    "watchers_count": 0,
+    "aggregate": 11
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "GPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-05T05:53:36.356Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "amiantos", "type": "User", "provider": "github" },
+      { "login": "claude", "type": "User", "provider": "github" },
+      { "login": "jabelardo", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-05T05:53:36.356Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

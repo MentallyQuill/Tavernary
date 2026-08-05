@@ -94,6 +94,11 @@
       "id": "universal-immersion-engine-fugue",
       "label": "Universal-Immersion-Engine-Fugue",
       "description": "Works with the Universal-Immersion-Engine-Fugue roleplay frontend."
+    },
+    {
+      "id": "writers-guild",
+      "label": "writers-guild",
+      "description": "Works with the writers-guild roleplay frontend."
     }
   ]
 }
