@@ -51,6 +51,15 @@ async function stabilizeRelationshipActivityAge(page: Page) {
   await communityTotals.nth(1).evaluate((label) => {
     label.textContent = "54";
   });
+
+  const repositorySizes = page.locator(".relationship-pair .repository-size");
+  await expect(repositorySizes).toHaveCount(2);
+  await repositorySizes.nth(0).evaluate((label) => {
+    label.textContent = "1.3 MB repo";
+  });
+  await repositorySizes.nth(1).evaluate((label) => {
+    label.textContent = "9.1 MB repo";
+  });
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
@@ -225,7 +234,7 @@ test("scan indicator unsupported state remains perceptible on the desktop card",
   });
   await expect(trigger).toHaveCSS("color", "rgb(40, 99, 94)");
   await page.mouse.move(0, 0);
-  await expect(card.locator(".card-title-row")).toHaveScreenshot(
+  await expect(trigger).toHaveScreenshot(
     "scan-indicator-unsupported-desktop.png",
     {
       animations: "disabled",

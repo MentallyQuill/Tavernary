@@ -319,15 +319,20 @@ export async function reconcileTavernKeeperReports(options = {}) {
     imported += 1;
   }
 
+  const indexedSourceIds = new Set(
+    index.reports.map(({ source_id }) => source_id),
+  );
   const reports =
     index.reports.length === 0
       ? []
       : [
           ...new Map(
-            [...previous.reports, ...additions].map((entry) => [
-              entry.report_id,
-              entry,
-            ]),
+            [
+              ...previous.reports.filter(({ source_id }) =>
+                indexedSourceIds.has(source_id),
+              ),
+              ...additions,
+            ].map((entry) => [entry.report_id, entry]),
           ).values(),
         ].sort(
           (left, right) =>
