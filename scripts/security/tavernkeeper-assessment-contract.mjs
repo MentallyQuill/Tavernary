@@ -1,4 +1,4 @@
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "3";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "4";
 
 const riskLevels = ["low", "material", "high"];
 const digestPattern = /^[0-9a-f]{64}$/u;

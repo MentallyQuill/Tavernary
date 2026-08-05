@@ -169,6 +169,43 @@ function addExpectedCandidate(reportInput: Record<string, any>) {
   return rebindReport(report);
 }
 
+function addImmediateDangerCandidate(reportInput: Record<string, any>) {
+  const report = addExpectedCandidate(reportInput);
+  report.assessments[0] = {
+    ...report.assessments[0],
+    disposition: "material_vulnerability",
+    impact: "critical",
+    exploitability: "readily_exploitable",
+    confidence: "high",
+    recommended_risk: "high",
+    technical_explanation:
+      "The shipped vulnerable path is reachable by untrusted input and can cause critical harm.",
+    layman_explanation:
+      "An attacker can readily exploit this flaw when the extension is used.",
+    developer_action: "Remove the vulnerable path before further use.",
+  };
+  report.counts.disposition = {
+    expected_behavior: 0,
+    minor_weakness: 0,
+    material_vulnerability: 1,
+    credible_malicious_behavior: 0,
+  };
+  report.counts.impact = {
+    none: 0,
+    low: 0,
+    medium: 0,
+    high: 0,
+    critical: 1,
+  };
+  report.counts.exploitability = {
+    unlikely: 0,
+    plausible: 0,
+    readily_exploitable: 1,
+  };
+  report.counts.recommended_risk = { low: 0, material: 0, high: 1 };
+  return rebindReport(report);
+}
+
 function publicDnsLookup() {
   return Promise.resolve([{ address: "8.8.8.8", family: 4 }]);
 }
@@ -250,6 +287,139 @@ describe("TavernKeeper V5 report import", () => {
 
     expect(validateScanReport(report, validatedIndex.reports[0])).toEqual(
       report,
+    );
+  });
+
+  test("publishes a deterministic immediate-danger fallback when synthesis is invalid", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-red-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    await writeFile(
+      outputPath,
+      '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
+    );
+    const [fixtureIndex, fixtureReport] = await fixtures();
+    const report = addImmediateDangerCandidate(fixtureReport);
+    const entry = projectIndexReport(report);
+    const index = { ...fixtureIndex, reports: [entry] };
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        throw new TavernKeeperSynthesisError(
+          "invalid-output",
+          "unsupported_escalation",
+        );
+      },
+      now: () => new Date("2026-08-04T20:00:00.000Z"),
+    });
+
+    expect(outcome.snapshot).toMatchObject({
+      schema_version: 6,
+      preferred_report_ids: [entry.report_id],
+      reports: [
+        {
+          report_id: entry.report_id,
+          danger_basis: "critical_exploitable_vulnerability",
+          assessment_source: "deterministic_fallback",
+          synthesis_model: "deterministic-policy-v4",
+          assessment: {
+            risk_level: "high",
+            headline: "Immediate danger identified",
+          },
+        },
+      ],
+    });
+    expect(outcome).toMatchObject({ imported: 1, quarantined: 1 });
+    expect(outcome.import_state.quarantines).toEqual([
+      expect.objectContaining({
+        report_id: entry.report_id,
+        diagnostic: "unsupported_escalation",
+      }),
+    ]);
+  });
+
+  test("keeps prior summaries preferred while policy-4 enrichment advances in batches", async () => {
+    const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v6-rollout-"));
+    const outputPath = resolve(
+      root,
+      "data/security/tavernkeeper-report-summaries.json",
+    );
+    const importStatePath = resolve(
+      root,
+      "data/security/tavernkeeper-import-state.json",
+    );
+    await mkdir(resolve(root, "data/security"), { recursive: true });
+    const [index, report] = await fixtures();
+    const secondReport = secondReportFrom(report);
+    const secondEntry = projectIndexReport(secondReport);
+    index.reports.push(secondEntry);
+    const priorReports = index.reports.map((entry: Record<string, any>) => ({
+      ...assessedEntry(entry, { synthesis_policy_version: "3" }),
+      danger_basis: "none",
+      assessment_source: "model",
+    }));
+    await writeFile(
+      outputPath,
+      `${JSON.stringify({
+        schema_version: 6,
+        generated_at: index.generated_at,
+        preferred_report_ids: priorReports.map(
+          (entry: Record<string, any>) => entry.report_id,
+        ),
+        reports: priorReports,
+      })}\n`,
+    );
+    const expandedRegistry = [
+      ...registry,
+      {
+        id: "github-43",
+        type: "github",
+        status: "active",
+        repository_id: 43,
+        repository: "owner/repo-two",
+      },
+    ];
+
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry: expandedRegistry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(
+          url === TAVERNKEEPER_REPORT_INDEX_URL
+            ? index
+            : url.includes(secondReport.report_id)
+              ? secondReport
+              : report,
+        ),
+      synthesizeReport: async (currentReport: Record<string, any>) =>
+        synthesisFor(
+          currentReport.repository_id === 43 ? secondEntry : index.reports[0],
+        ),
+      batchSize: 1,
+      now: () => new Date("2026-08-04T20:05:00.000Z"),
+    });
+
+    expect(outcome.imported).toBe(1);
+    expect(outcome.remaining).toBe(1);
+    expect(outcome.snapshot.preferred_report_ids).toEqual(
+      index.reports.map((entry: Record<string, any>) => entry.report_id),
     );
   });
 
@@ -398,7 +568,15 @@ describe("TavernKeeper V5 report import", () => {
       reports: [entry],
     };
 
-    expect(validateStoredReportIndex(stored, registry)).toEqual(stored);
+    expect(validateStoredReportIndex(stored, registry)).toMatchObject({
+      schema_version: 6,
+      reports: [
+        expect.objectContaining({
+          danger_basis: "none",
+          assessment_source: "model",
+        }),
+      ],
+    });
     expect(() =>
       validateStoredReportIndex(
         { ...stored, preferred_report_ids: ["f".repeat(64)] },
@@ -435,7 +613,15 @@ describe("TavernKeeper V5 report import", () => {
       reports: [historical],
     };
 
-    expect(validateStoredReportIndex(snapshot, registry)).toEqual(snapshot);
+    expect(validateStoredReportIndex(snapshot, registry)).toMatchObject({
+      schema_version: 6,
+      reports: [
+        expect.objectContaining({
+          danger_basis: "none",
+          assessment_source: "model",
+        }),
+      ],
+    });
     expect(() =>
       validateStoredReportIndex(
         { ...snapshot, preferred_report_ids: [historical.report_id] },
@@ -496,7 +682,7 @@ describe("TavernKeeper V5 report import", () => {
         },
       }),
     ).resolves.toEqual({
-      schema_version: 5,
+      schema_version: 6,
       generated_at: emptyIndex.generated_at,
       preferred_report_ids: [],
       reports: [],
@@ -504,7 +690,7 @@ describe("TavernKeeper V5 report import", () => {
     await expect(
       readFile(outputPath, "utf8").then((contents) => JSON.parse(contents)),
     ).resolves.toEqual({
-      schema_version: 5,
+      schema_version: 6,
       generated_at: emptyIndex.generated_at,
       preferred_report_ids: [],
       reports: [],
@@ -650,16 +836,24 @@ describe("TavernKeeper V5 report import", () => {
     });
 
     expect(outcome).toMatchObject({
-      imported: 1,
+      imported: 2,
       quarantined: 1,
       skipped_quarantines: 0,
       remaining: 0,
     });
     expect(outcome.snapshot.preferred_report_ids).toEqual([
+      index.reports[0].report_id,
       secondEntry.report_id,
     ]);
     expect(outcome.snapshot.reports).toEqual([
-      expect.objectContaining({ report_id: secondEntry.report_id }),
+      expect.objectContaining({
+        report_id: index.reports[0].report_id,
+        assessment_source: "deterministic_fallback",
+      }),
+      expect.objectContaining({
+        report_id: secondEntry.report_id,
+        assessment_source: "model",
+      }),
     ]);
     const stateText = await readFile(importStatePath, "utf8");
     expect(stateText).not.toContain("provider response");
@@ -684,7 +878,7 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
-  test("retains an older assessment as history but not as preferred during quarantine", async () => {
+  test("retains an older assessment while preferring the current deterministic fallback", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-fallback-"));
     const outputPath = resolve(
       root,
@@ -739,8 +933,16 @@ describe("TavernKeeper V5 report import", () => {
       now: () => new Date("2026-08-02T13:05:00.000Z"),
     });
 
-    expect(outcome.snapshot.preferred_report_ids).toEqual([]);
-    expect(outcome.snapshot.reports).toEqual([prior]);
+    expect(outcome.snapshot.preferred_report_ids).toEqual([
+      replacementEntry.report_id,
+    ]);
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({ report_id: prior.report_id }),
+      expect.objectContaining({
+        report_id: replacementEntry.report_id,
+        assessment_source: "deterministic_fallback",
+      }),
+    ]);
     expect(outcome.import_state.quarantines).toEqual([
       expect.objectContaining({ report_id: replacementEntry.report_id }),
     ]);
@@ -824,6 +1026,7 @@ describe("TavernKeeper V5 report import", () => {
     ]);
     expect(outcome.skipped_quarantines).toBe(1);
     expect(outcome.snapshot.preferred_report_ids).toEqual([
+      index.reports[0].report_id,
       secondEntry.report_id,
     ]);
 
@@ -922,7 +1125,7 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
-  test("removes a current assessment from preferred when its explicit retry quarantines", async () => {
+  test("keeps a current report preferred through deterministic fallback on explicit retry", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-retry-"));
     const outputPath = resolve(
       root,
@@ -963,8 +1166,13 @@ describe("TavernKeeper V5 report import", () => {
       now: () => new Date("2026-08-02T13:05:00.000Z"),
     });
 
-    expect(outcome.snapshot.reports).toEqual([prior]);
-    expect(outcome.snapshot.preferred_report_ids).toEqual([]);
+    expect(outcome.snapshot.reports).toEqual([
+      expect.objectContaining({
+        report_id: prior.report_id,
+        assessment_source: "deterministic_fallback",
+      }),
+    ]);
+    expect(outcome.snapshot.preferred_report_ids).toEqual([prior.report_id]);
     expect(outcome.import_state.quarantines).toEqual([
       expect.objectContaining({
         report_digest: index.reports[0].report_digest,
@@ -1050,7 +1258,7 @@ describe("TavernKeeper V5 report import", () => {
     ]);
   });
 
-  test("keeps provider failures batch-level and preserves both tracked files", async () => {
+  test("publishes a deterministic fallback for provider failures", async () => {
     const root = await mkdtemp(resolve(tmpdir(), "tavernkeeper-v5-provider-"));
     const outputPath = resolve(
       root,
@@ -1070,28 +1278,36 @@ describe("TavernKeeper V5 report import", () => {
     await writeFile(importStatePath, initialState);
     const [index, report] = await fixtures();
 
-    await expect(
-      reconcileTavernKeeperReports({
-        root,
-        outputPath,
-        importStatePath,
-        registry,
-        dnsLookup: publicDnsLookup,
-        requestImpl: async (url: string) =>
-          jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
-        synthesizeReport: async () => {
-          throw new TavernKeeperSynthesisError(
-            "provider-transient",
-            "provider-timeout",
-          );
-        },
-        now: () => new Date("2026-08-02T12:00:00.000Z"),
-      }),
-    ).rejects.toMatchObject({ kind: "provider-transient" });
+    const outcome = await reconcileTavernKeeperReports({
+      root,
+      outputPath,
+      importStatePath,
+      registry,
+      dnsLookup: publicDnsLookup,
+      requestImpl: async (url: string) =>
+        jsonResponse(url === TAVERNKEEPER_REPORT_INDEX_URL ? index : report),
+      synthesizeReport: async () => {
+        throw new TavernKeeperSynthesisError(
+          "provider-transient",
+          "provider-timeout",
+        );
+      },
+      now: () => new Date("2026-08-02T12:00:00.000Z"),
+    });
 
-    expect(await readFile(outputPath, "utf8")).toBe(
-      '{"schema_version":5,"generated_at":"1970-01-01T00:00:00.000Z","preferred_report_ids":[],"reports":[]}\n',
-    );
-    expect(await readFile(importStatePath, "utf8")).toBe(initialState);
+    expect(outcome.snapshot).toMatchObject({
+      schema_version: 6,
+      preferred_report_ids: [index.reports[0].report_id],
+      reports: [
+        {
+          report_id: index.reports[0].report_id,
+          assessment_source: "deterministic_fallback",
+          synthesis_model: "deterministic-policy-v4",
+        },
+      ],
+    });
+    expect(outcome.import_state.quarantines).toEqual([
+      expect.objectContaining({ diagnostic: "provider-timeout" }),
+    ]);
   });
 });

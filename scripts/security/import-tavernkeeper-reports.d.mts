@@ -1,5 +1,5 @@
 import type {
-  TavernKeeperAssessmentSnapshotV5,
+  TavernKeeperAssessmentSnapshotV6,
   TavernKeeperScanReportV5,
   TavernKeeperSourceRegistryEntry,
   TavernarySynthesisProjection,
@@ -52,7 +52,7 @@ export interface TavernKeeperImportIncident {
 }
 
 export interface TavernKeeperImportOutcome {
-  snapshot: TavernKeeperAssessmentSnapshotV5;
+  snapshot: TavernKeeperAssessmentSnapshotV6;
   import_state: TavernKeeperImportState;
   imported: number;
   retained: number;
@@ -68,4 +68,4 @@ export function reconcileTavernKeeperReports(
 ): Promise<TavernKeeperImportOutcome>;
 export function importTavernKeeperReports(
   options?: TavernKeeperImportOptions,
-): Promise<TavernKeeperAssessmentSnapshotV5>;
+): Promise<TavernKeeperAssessmentSnapshotV6>;

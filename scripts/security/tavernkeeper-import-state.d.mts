@@ -7,7 +7,16 @@ export type TavernaryAssessmentDiagnostic =
   | "interaction_chain_ids"
   | "below_evidence_floor"
   | "unsupported_escalation"
-  | "provider_response_invalid";
+  | "provider_response_invalid"
+  | "provider-timeout"
+  | "provider-rate-limited"
+  | "provider-server-error"
+  | "provider-authentication-failed"
+  | "provider-request-failed"
+  | "provider-network-error"
+  | "provider-model-mismatch"
+  | "synthesis-clock-invalid"
+  | "synthesis-boundary-failed";
 
 export interface TavernKeeperReportQuarantine {
   report_id: string;

@@ -526,12 +526,53 @@ const storedEntryExtraKeys = [
   "assessed_at",
   "synthesis_policy_version",
   "synthesis_model",
+  "danger_basis",
+  "assessment_source",
+  "assessment",
+];
+const priorStoredEntryExtraKeys = [
+  "assessed_at",
+  "synthesis_policy_version",
+  "synthesis_model",
   "assessment",
 ];
 const indexEntryKeys = reportIndexV5Schema.properties.reports.items.required;
 
-export function validateStoredReportIndex(snapshot, registry) {
-  assertV5(snapshot, "Tracked TavernKeeper assessment snapshot");
+function migrateStoredSnapshot(snapshot) {
+  if (snapshot?.schema_version !== 5) return snapshot;
+  assertExactKeys(
+    snapshot,
+    ["schema_version", "generated_at", "preferred_report_ids", "reports"],
+    "Tracked TavernKeeper assessment snapshot",
+  );
+  if (!Array.isArray(snapshot.reports)) {
+    throw new Error("Tracked TavernKeeper assessment snapshot is invalid");
+  }
+  return {
+    ...snapshot,
+    schema_version: 6,
+    reports: snapshot.reports.map((entry) => {
+      assertExactKeys(
+        entry,
+        [...indexEntryKeys, ...priorStoredEntryExtraKeys],
+        "Tracked TavernKeeper assessment",
+      );
+      return {
+        ...entry,
+        danger_basis: "none",
+        assessment_source: "model",
+      };
+    }),
+  };
+}
+
+export function validateStoredReportIndex(snapshotInput, registry) {
+  const snapshot = migrateStoredSnapshot(snapshotInput);
+  if (snapshot?.schema_version !== 6) {
+    throw new Error(
+      "Tracked TavernKeeper assessment snapshot schema validation failed: unsupported schema version",
+    );
+  }
   assertExactKeys(
     snapshot,
     ["schema_version", "generated_at", "preferred_report_ids", "reports"],
@@ -575,11 +616,24 @@ export function validateStoredReportIndex(snapshot, registry) {
       typeof entry.synthesis_model !== "string" ||
       entry.synthesis_model.trim() !== entry.synthesis_model ||
       entry.synthesis_model.length < 1 ||
-      entry.synthesis_model.length > 200
+      entry.synthesis_model.length > 200 ||
+      ![
+        "none",
+        "malicious_or_compromised",
+        "critical_exploitable_vulnerability",
+        "mixed",
+      ].includes(entry.danger_basis) ||
+      !["model", "deterministic_fallback"].includes(entry.assessment_source)
     ) {
       throw new Error("Tracked TavernKeeper synthesis identity is invalid");
     }
     validateStoredAssessmentShape(entry.assessment);
+    if (
+      (entry.assessment.risk_level === "high") !==
+      (entry.danger_basis !== "none")
+    ) {
+      throw new Error("Tracked TavernKeeper danger basis is invalid");
+    }
   }
   if (
     new Set(snapshot.preferred_report_ids).size !==

@@ -149,18 +149,27 @@ export interface TavernarySynthesisProjection {
   assessment: TavernaryAssessmentV1;
 }
 
-export interface TavernaryAssessedReportV5 extends TavernKeeperReportIndexEntryV5 {
+export type TavernKeeperDangerBasis =
+  | "none"
+  | "malicious_or_compromised"
+  | "critical_exploitable_vulnerability"
+  | "mixed";
+export type TavernKeeperAssessmentSource = "model" | "deterministic_fallback";
+
+export interface TavernaryAssessedReportV6 extends TavernKeeperReportIndexEntryV5 {
   assessed_at: string;
   synthesis_policy_version: string;
   synthesis_model: string;
+  danger_basis: TavernKeeperDangerBasis;
+  assessment_source: TavernKeeperAssessmentSource;
   assessment: TavernaryAssessmentV1;
 }
 
-export interface TavernKeeperAssessmentSnapshotV5 {
-  schema_version: 5;
+export interface TavernKeeperAssessmentSnapshotV6 {
+  schema_version: 6;
   generated_at: string;
   preferred_report_ids: string[];
-  reports: TavernaryAssessedReportV5[];
+  reports: TavernaryAssessedReportV6[];
 }
 
 export interface TavernKeeperSourceRegistryEntry {
@@ -218,7 +227,7 @@ export function validateStoredReportIndex(
   registry:
     | TavernKeeperSourceRegistryEntry[]
     | { sources: TavernKeeperSourceRegistryEntry[] },
-): TavernKeeperAssessmentSnapshotV5;
+): TavernKeeperAssessmentSnapshotV6;
 export function fetchAndValidateTavernKeeperIndex(
   options?: TavernKeeperFetchOptions,
 ): Promise<TavernKeeperReportIndexV5>;
@@ -231,8 +240,8 @@ export function readStoredReportIndex(
   registry:
     | TavernKeeperSourceRegistryEntry[]
     | { sources: TavernKeeperSourceRegistryEntry[] },
-): Promise<TavernKeeperAssessmentSnapshotV5>;
+): Promise<TavernKeeperAssessmentSnapshotV6>;
 export function writeReportSummaries(
-  index: TavernKeeperAssessmentSnapshotV5,
+  index: TavernKeeperAssessmentSnapshotV6,
   outputPath: string,
 ): Promise<void>;

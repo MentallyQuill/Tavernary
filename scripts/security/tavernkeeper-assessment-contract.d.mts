@@ -4,7 +4,7 @@ import type {
   TavernaryAssessmentV1,
 } from "./tavernkeeper-reports.mjs";
 
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "3";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION: "4";
 export const TAVERNKEEPER_ASSESSMENT_JSON_SCHEMA: Record<string, unknown>;
 export type TavernaryAssessmentDiagnostic =
   | "response_schema"
