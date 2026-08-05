@@ -38,9 +38,11 @@ describe("TavernKeeper report import quarantine state", () => {
       validateTavernKeeperImportState({
         schema_version: 2,
         updated_at: at,
-        quarantines: [quarantine()],
+        quarantines: [quarantine({ diagnostic: "public_text_references" })],
       }),
-    ).toMatchObject({ quarantines: [quarantine()] });
+    ).toMatchObject({
+      quarantines: [quarantine({ diagnostic: "public_text_references" })],
+    });
   });
 
   test.each([

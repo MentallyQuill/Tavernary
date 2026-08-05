@@ -641,7 +641,7 @@ describe("TavernKeeper V5 report import", () => {
         if (currentReport.repository_id === 42)
           throw new TavernKeeperSynthesisError(
             "invalid-output",
-            "count_mismatch",
+            "public_text_references",
           );
         return synthesisFor(secondEntry);
       },
@@ -671,7 +671,7 @@ describe("TavernKeeper V5 report import", () => {
           report_digest: index.reports[0].report_digest,
           repository_id: 42,
           synthesis_policy_version: TAVERNKEEPER_SYNTHESIS_POLICY_VERSION,
-          diagnostic: "count_mismatch",
+          diagnostic: "public_text_references",
           attempts: 1,
         },
       ],
@@ -679,7 +679,7 @@ describe("TavernKeeper V5 report import", () => {
     expect(outcome.created_or_updated).toEqual([
       expect.objectContaining({
         report_digest: index.reports[0].report_digest,
-        diagnostic: "count_mismatch",
+        diagnostic: "public_text_references",
       }),
     ]);
   });

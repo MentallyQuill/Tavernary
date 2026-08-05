@@ -1,7 +1,8 @@
-export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "2";
+export const TAVERNKEEPER_SYNTHESIS_POLICY_VERSION = "3";
 
 const riskLevels = ["low", "material", "high"];
 const digestPattern = /^[0-9a-f]{64}$/u;
+const publicReferencePattern = /(?:\b[0-9a-f]{64}\b|\uE200cite\uE202|\uE201)/iu;
 const unsafeTextPattern =
   /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/u;
 
@@ -267,6 +268,15 @@ export function validateTavernaryAssessment(assessment, report) {
     validateStoredAssessmentShape(assessment);
   } catch {
     assessmentFailure("response_schema", requirements);
+  }
+  const publicText = [
+    assessment.headline,
+    assessment.summary,
+    assessment.malicious_evidence,
+    ...assessment.interaction_chains.map((chain) => chain.explanation),
+  ];
+  if (publicText.some((value) => publicReferencePattern.test(value))) {
+    assessmentFailure("public_text_references", requirements);
   }
   const known = new Set(requirements.allowed_candidate_ids);
   const cited = new Set(assessment.cited_finding_ids);

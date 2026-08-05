@@ -22,7 +22,12 @@ import { TavernKeeperHistoryStrip } from "./tavernkeeper-history-strip";
 const encodedCitationPattern = /\s*\uE200cite\uE202[^\uE201]*\uE201/giu;
 const findingReferencePattern =
   /\s*\((?:V\d+\s+)?findings?\s+[^)]*\b[0-9a-f]{64}\b[^)]*\)/giu;
-const bracketedFindingReferencePattern = /\s*\[[0-9a-f]{64}\]/giu;
+const bracketedFindingReferencePattern =
+  /\s*\[[0-9a-f]{64}(?:,\s*[0-9a-f]{64})*\]/giu;
+const danglingFindingReferencePattern =
+  /\s*\[(?=[0-9a-f]{64}(?:,|$))[\s\S]*$/iu;
+const bareFindingReferencePattern =
+  /(?:Findings:\s*)?[\[(【]?[0-9a-f]{64}\b[\])】]?/giu;
 const invisibleFormattingPattern = /[\u200B-\u200D\u2060\uFEFF]/gu;
 
 function conciseAssessmentSummary(summary: string) {
@@ -30,8 +35,13 @@ function conciseAssessmentSummary(summary: string) {
     .replace(encodedCitationPattern, "")
     .replace(findingReferencePattern, "")
     .replace(bracketedFindingReferencePattern, "")
+    .replace(danglingFindingReferencePattern, "")
+    .replace(bareFindingReferencePattern, "")
     .replace(invisibleFormattingPattern, "");
-  let display = withoutArtifacts.replace(/\s+/gu, " ").trim();
+  let display = withoutArtifacts
+    .replace(/\s+([,.;!?])/gu, "$1")
+    .replace(/\s+/gu, " ")
+    .trim();
 
   if (withoutArtifacts !== summary && !/[.!?]["')\]]?$/u.test(display)) {
     const lastCompleteSentence = Math.max(
@@ -41,6 +51,8 @@ function conciseAssessmentSummary(summary: string) {
     );
     if (lastCompleteSentence >= 0) {
       display = display.slice(0, lastCompleteSentence + 1);
+    } else if (display) {
+      display += ".";
     }
   }
 
