@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "hydall-glaze",
+  "name": "Glaze",
+  "kind": "frontend",
+  "summary": "Glaze is a local AI roleplay chat client for mobile devices, connecting to any OpenAI-compatible Chat Completion provider while keeping data on your device.",
+  "metadata_status": "curated",
+  "source_id": "github-1195300925",
+  "frontends": ["glaze"],
+  "primary_function": "frontend",
+  "tags": [
+    "customize-the-interface",
+    "generate-images",
+    "local-first",
+    "mobile-friendly",
+    "privacy-focused",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-08-05T21:02:03.409Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "manual", "note": "Verified repository owner selection." }
+  }
+}
