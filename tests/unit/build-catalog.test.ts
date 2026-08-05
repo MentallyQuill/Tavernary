@@ -372,8 +372,10 @@ test("builds sibling extension and preset cards from one source snapshot", async
     ],
   });
   expect(catalog.projects[1].tavernKeeper).toMatchObject({
-    state: "unsupported",
-    freshness: "unsupported",
+    state: "teal",
+    riskLevel: "low",
+    freshness: "current",
+    report: expect.objectContaining({ scannedSha: "a".repeat(40) }),
   });
   expect(catalog.schemaVersion).toBe(6);
   expect(

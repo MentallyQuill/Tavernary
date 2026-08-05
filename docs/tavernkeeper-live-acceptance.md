@@ -1,5 +1,11 @@
 # TavernKeeper contextual V5 live acceptance
 
+> **Policy supersession (2026-08-04):** This document is a historical record of
+> the first contextual V5 canaries. Its preset exclusion was superseded by the
+> [GitHub preset eligibility design](superpowers/specs/2026-08-04-github-preset-tavernkeeper-eligibility-design.md).
+> Published presets backed by a healthy exact-SHA GitHub repository now use the
+> same full-repository scan pipeline as extensions and frontends.
+
 This record captures the first two complete production canaries for the
 contextual V5 pipeline. Both scans used the ordinary staff-targeted handshake:
 Tavernary refreshed an exact catalog source, TavernKeeper scanned the immutable

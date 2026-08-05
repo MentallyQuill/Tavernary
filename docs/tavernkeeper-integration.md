@@ -28,7 +28,7 @@ Risk and freshness are independent:
 - Red is a `high` final risk: credible malicious behavior or a critical,
   high-confidence, readily exploitable vulnerability.
 - Gray means an eligible source has no complete final V5 assessment.
-- Dark teal identifies presets and source types TavernKeeper does not support.
+- Dark teal identifies source types TavernKeeper does not support.
 
 A stale assessment keeps its risk color and receives a separate clock marker.
 Stale teal remains teal, stale orange remains orange, and stale red remains
@@ -51,17 +51,20 @@ Results never hide, delist, quarantine, rank, or otherwise moderate a listing.
 
 ## Public contracts and evidence binding
 
-Tavernary publishes its unchanged schema-version-2 target manifest at
+Tavernary publishes its schema-version-3 target manifest at
 `https://tavernary.org/security/tavernkeeper-targets.json`. The checked-in
 schema is
-[`data/schemas/tavernkeeper-targets.v2.schema.json`](../data/schemas/tavernkeeper-targets.v2.schema.json).
+[`data/schemas/tavernkeeper-targets.v3.schema.json`](../data/schemas/tavernkeeper-targets.v3.schema.json).
 It contains only active, healthy public GitHub sources with a positive immutable
 repository ID and a lowercase 40-character target SHA. It contains no command,
 clone URL, branch, scan mode, token budget, or requester-controlled workflow
 parameter.
 
-Eligibility is limited to published extension and frontend cards. Preset-only
-sources are omitted even when their files are hosted on GitHub.
+Eligibility includes published extension, frontend, and preset cards backed by
+a single GitHub repository. TavernKeeper scans the entire exact-SHA repository
+for every eligible kind. Non-GitHub URLs, Codeberg sources, and GitHub
+organization pages without one immutable repository identity remain
+unsupported.
 
 Tavernary accepts only TavernKeeper Preferred Index V5 and Technical Report V5:
 

@@ -141,28 +141,23 @@ describe("deriveTavernKeeperCardStatus", () => {
     });
   });
 
-  test("returns the super-dark unsupported state for presets and non-GitHub sources", () => {
-    for (const input of [
-      { projectKind: "preset", source },
-      { source: { ...source, type: "codeberg" } },
-    ]) {
-      expect(
-        deriveTavernKeeperCardStatus({
-          ...input,
-          snapshot,
-          assessedReports: [report()],
-          preferredReportIds: [report().report_id],
-        }),
-      ).toEqual({
-        state: "unsupported",
-        riskLevel: null,
-        freshness: "unsupported",
-        currentSha: null,
-        report: null,
-        history: [],
-        historyUrl: null,
-      });
-    }
+  test("returns the super-dark unsupported state for non-GitHub sources", () => {
+    expect(
+      deriveTavernKeeperCardStatus({
+        source: { ...source, type: "codeberg" },
+        snapshot,
+        assessedReports: [report()],
+        preferredReportIds: [report().report_id],
+      }),
+    ).toEqual({
+      state: "unsupported",
+      riskLevel: null,
+      freshness: "unsupported",
+      currentSha: null,
+      report: null,
+      history: [],
+      historyUrl: null,
+    });
   });
 
   test("matches report identity and the active scanner policy", () => {
