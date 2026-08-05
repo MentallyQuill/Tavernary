@@ -1,0 +1,56 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1171030721",
+  "repository": {
+    "id": 1171030721,
+    "owner": "Spadic21",
+    "name": "ComfyInject",
+    "url": "https://github.com/Spadic21/ComfyInject",
+    "description": null,
+    "default_branch": "main",
+    "head_sha": "a6b34a8cf7ed2a3e45eb9d637fa1c27abaed9d22",
+    "head_committed_at": "2026-03-20T10:05:14.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-03-02T19:52:33.000Z",
+    "size_kb": 151
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": null,
+    "source_weeks": [],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-03-07T05:03:09.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-05T05:29:52.642Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "a6b34a8cf7ed2a3e45eb9d637fa1c27abaed9d22"
+  },
+  "community": {
+    "stars_count": 33,
+    "forks_count": 8,
+    "watchers_count": 0,
+    "aggregate": 41
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-05T05:29:52.642Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Spadic21", "type": "User", "provider": "github" },
+      { "login": "EpharGy", "type": "User", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-05T05:29:52.642Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
