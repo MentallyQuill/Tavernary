@@ -4466,6 +4466,8 @@
       "assessed_at": "2026-08-05T04:59:33.434Z",
       "synthesis_policy_version": "3",
       "synthesis_model": "gpt-5.6-luna",
+      "danger_basis": "none",
+      "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [
           "14a66334365238113c6ae7edc276bf763ada97c62141b3ea60a7125543bbff4c",
