@@ -1,0 +1,129 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-968073441",
+  "repository": {
+    "id": 968073441,
+    "owner": "Darkatse",
+    "name": "TauriTavern",
+    "url": "https://github.com/Darkatse/TauriTavern",
+    "description": "The classic Sillytavern, now has been rewritten in Tauri/Rust.",
+    "default_branch": "main",
+    "head_sha": "7b8f1fa7da142cf7b83c13cf5426736f24266012",
+    "head_committed_at": "2026-08-05T00:32:37.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2025-04-17T13:13:08.000Z",
+    "size_kb": 68644
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-05T00:07:20.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-05T00:07:20.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-07-31T23:01:38.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-26T22:10:19.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-19T00:35:58.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-06",
+        "latest_at": "2026-07-12T22:46:39.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-05T22:36:10.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T22:40:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-19T14:10:41.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-08",
+        "latest_at": "2026-06-14T18:42:00.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-01",
+        "latest_at": "2026-06-07T16:12:30.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-25",
+        "latest_at": "2026-05-31T13:06:31.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-05-18",
+        "latest_at": "2026-05-24T16:35:00.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": "2026-07-30T02:30:36.000Z",
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-05T18:30:39.328Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "7b8f1fa7da142cf7b83c13cf5426736f24266012"
+  },
+  "community": {
+    "stars_count": 1155,
+    "forks_count": 75,
+    "watchers_count": 6,
+    "aggregate": 1236
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "AGPL-3.0",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-05T18:30:39.328Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [
+      { "login": "Darkatse", "type": "User", "provider": "github" },
+      { "login": "yhny1001", "type": "User", "provider": "github" },
+      { "login": "exynos967", "type": "User", "provider": "github" },
+      { "login": "1756141021", "type": "User", "provider": "github" },
+      { "login": "YoKONCy", "type": "User", "provider": "github" },
+      { "login": "makerlinck", "type": "User", "provider": "github" },
+      { "login": "Copilot", "type": "Bot", "provider": "github" },
+      { "login": "gilgamesh1124", "type": "User", "provider": "github" },
+      { "login": "Moeblack", "type": "User", "provider": "github" },
+      { "login": "MatrixNeoKozak", "type": "User", "provider": "github" },
+      { "login": "RAMU324E", "type": "User", "provider": "github" },
+      { "login": "calm-prussian", "type": "User", "provider": "github" },
+      { "login": "gaogao-gao", "type": "User", "provider": "github" },
+      { "login": "github-actions[bot]", "type": "Bot", "provider": "github" }
+    ],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-05T18:30:39.328Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}

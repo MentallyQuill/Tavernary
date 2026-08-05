@@ -1,0 +1,20 @@
+{
+  "schema_version": 6,
+  "id": "darkatse-tauritavern",
+  "name": "TauriTavern",
+  "kind": "frontend",
+  "summary": "TauriTavern is a native SillyTavern app for desktop and mobile, rewritten in Tauri/Rust and designed to work out of the box.",
+  "metadata_status": "curated",
+  "source_id": "github-968073441",
+  "frontends": ["tauritavern"],
+  "primary_function": "frontend",
+  "tags": ["mobile-friendly"],
+  "cataloged_at": "2026-08-05T18:30:39.328Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}
