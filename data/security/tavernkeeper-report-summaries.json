@@ -8434,21 +8434,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225316984/7d7970b4b55e99b81ab63a8edfae0ca707d9d85b/3/4f662aeb60b49eb9aab398029a9638cc55c20abe1bb0239182f4c5fc74c4d1b0/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225316984/history/",
-      "assessed_at": "2026-08-05T04:43:27.053Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T09:04:24.530Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns identified",
+        "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed commit has no validated findings indicating material vulnerabilities or malicious behavior. Unknown behavior cannot be ruled out completely, but the available evidence supports a low-risk assessment."
+        "summary": "The validated review found no security findings or evidence of harmful behavior in this project at the reviewed commit. No material concerns or minor cautions were identified."
       }
     },
     {
@@ -11321,8 +11321,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225767064/39160a667c8331ff1d3acab20fe70a16f99d78f5/3/04f80b8bf61d147864c7eed1b00c68e06c650074c7af0d8fcfd1b9affd895714/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225767064/history/",
-      "assessed_at": "2026-08-05T04:59:44.593Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T09:04:34.579Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -11332,14 +11332,14 @@
           "710e0b92c301f8b1444353feb412c481496f73fa65b9f3b5a82f2fb1d56f1fca",
           "e560e75ce6f89291aaf5dde3b1f07941819348fc04791d259f621a79f892c044"
         ],
-        "headline": "Low risk: no evidence of malicious behavior",
+        "headline": "Low risk: no signs of malicious behavior or exposed credentials",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was validated. Apparent API-key matches were harmless window-position labels, and the dynamic formula evaluation was assessed as ordinary RPG-extension behavior with restrictive input checks.",
+        "malicious_evidence": "No credible evidence of API-key theft, credential exposure, harmful payloads, trojan delivery, or bot infection was found. The apparent API-key matches are harmless local storage labels for window positions.",
         "material_concerns": 0,
         "minor_cautions": 3,
         "risk_level": "low",
-        "summary": "The extension appears low risk for normal use. Review found no exposed credentials, harmful payloads, or evidence of API-key theft. Three minor cautions concern formula calculations using dynamic evaluation: the inputs are restricted to basic arithmetic, so exploitation is unlikely, but strict browser security settings may block the feature. Replacing this approach with the project’s safer arithmetic parser would improve compatibility and consistency."
+        "summary": "The extension appears safe to use based on this review. It evaluates user-authored RPG math formulas only after restricting them to numbers and basic arithmetic, so the flagged dynamic execution is not considered an exploitable security issue. However, this technique may be blocked by strict browser security settings; replacing it with the project's existing arithmetic parser would improve compatibility and consistency. Three minor cautions were identified, and no material vulnerabilities were?"
       }
     },
     {
@@ -11827,8 +11827,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225640741/e4ff86fd682635699c34e3612d8e000f08b91494/3/0a19b308e91b76b21f188777be26a7ccbfa0f2ddd16328cc5494727cf782945a/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1225640741/history/",
-      "assessed_at": "2026-08-05T04:59:39.949Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T09:04:28.910Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -11840,14 +11840,14 @@
           "f917d6c08a0a1ee05ff650fb25622b50e8a2a463b811bb3491ded3a1dee57a5c",
           "febf211e10c345f6be08f43df34bbc7959165ad2c6969424c85337acd3c4dede"
         ],
-        "headline": "Low risk: flagged code is confined to self-tests",
+        "headline": "Low risk: flagged dynamic code is limited to self-contained tests",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious behavior was identified. The dynamic-code findings are expected test usage: project-owned functions are run in controlled isolation without outside input, user data, or sensitive-access behavior.",
+        "malicious_evidence": "No credible malicious behavior was identified. The flagged code runs the project's own functions in controlled tests, without outside or user-controlled input or access to sensitive data.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The review found no security-impacting behavior. All flagged dynamic execution supports automated tests and uses the project's own code with mock data. As with any review, this cannot prove that unknown behavior is absent."
+        "summary": "The review found five uses of dynamic code execution, but all are part of automated tests that isolate and exercise the project's own code with mock data. They do not indicate API-key theft, phishing, harmful payloads, or bot infection. As with any review, this cannot prove that all unknown behavior is absent."
       }
     },
     {
@@ -16443,21 +16443,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1223260183/a7a8616591e6da6c56a6cc0a3f986ae8673dd730/3/ff28edab113bfc8b88d2689d7397ae77701f0ae34b232336ff43810154b97e3b/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1223260183/history/",
-      "assessed_at": "2026-08-05T04:43:20.706Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T09:04:17.642Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns identified",
+        "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This advisory assessment cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed project has no validated findings indicating malicious behavior, material vulnerabilities, or minor security weaknesses. Ordinary project behavior was not treated as suspicious, but unknown issues cannot be ruled out completely."
+        "summary": "The validated TavernKeeper review found no reported candidates, observations, or security concerns for this project at the reviewed commit. The project is assessed as low risk based on the available evidence."
       }
     },
     {
@@ -16692,8 +16692,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1224601278/f1374cd568ba389b53aaf8bcaf111aaaebdc1263/3/3035908c9896c25f2fd53e6d77e6c9d2ddf101162ef5050d024d766fe20b23e9/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1224601278/history/",
-      "assessed_at": "2026-08-05T04:43:25.011Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T09:04:22.005Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -16704,14 +16704,14 @@
           "a1f2ed34624052d1b237d25492a79bd7c568c05521a75e17b1b9a0d8fd6b4c4b",
           "a515b964fb41a07734f46a4a5c7e604ee5d56e07c656a142ec805ce79859d64d"
         ],
-        "headline": "Low risk: the alerts are translated interface text, not exposed API keys.",
+        "headline": "Low risk: API-key alerts are translation text, not exposed secrets",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was found. The scanner alerts are false positives caused by translated labels for showing or hiding an API-key field; they do not contain actual secrets or demonstrate key theft.",
+        "malicious_evidence": "No credible evidence of malicious behavior, credential theft, harmful payloads, or API-key exposure was found. The scanner alerts are false positives caused by translated show/hide API-key button labels.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed findings are ordinary localization strings in French and Italian. They mention API keys because they label a user-interface button, but the review found no real passwords, secrets, harmful behavior, or meaningful security weakness. As with any code review, this does not prove that unknown behavior is impossible."
+        "summary": "The reviewed findings are ordinary localization strings for API-key visibility controls in French and Italian. They contain no real passwords or secrets and do not indicate unsafe behavior. Unknown behavior cannot be ruled out beyond the reviewed evidence."
       }
     },
     {
