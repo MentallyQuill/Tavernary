@@ -1528,21 +1528,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1204673207/c67626ab83ee86ec1be4f55b9b3d1d19adb79999/3/ae2fdeb1370860d9a56033813cd53c9710da58b95c287b295bc6faf5bf6ee7f1/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1204673207/history/",
-      "assessed_at": "2026-08-05T03:49:59.206Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T08:40:17.422Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns identified",
+        "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified in the validated review. This advisory assessment cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated malicious behavior or security findings were identified in the reviewed commit.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed project has no validated findings indicating malicious behavior or material security weaknesses. Ordinary project behavior was not treated as suspicious, and the evidence supports a low project risk."
+        "summary": "The reviewed project has no validated security concerns. This assessment reflects the available deterministic scans and contextual review; it cannot prove that unknown behavior is absent."
       }
     },
     {
@@ -12167,8 +12167,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1205995441/0538b853ad4a388455dc8df55296cee047e4f5c0/3/cc751fea68678f7aecc5c060fedf227b05867533175b78fcaf3acf1d7fae9ddd/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1205995441/history/",
-      "assessed_at": "2026-08-05T03:50:03.618Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T08:40:23.746Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -12183,14 +12183,25 @@
           "f4fc7e9d1ce00ff6f18b9aefca714fccb8bb142451325b77beda031ce4c868e9",
           "f6f349d73f6daa82441d23a1255acf4ee84997db2b56f7a454f6d62b60918eeb"
         ],
-        "headline": "Material risk from outdated development dependencies",
+        "headline": "Material dependency concerns, but no signs of malicious behavior",
         "high_danger": 0,
-        "interaction_chains": [],
-        "malicious_evidence": "No credible evidence of malicious behavior, API-key theft, phishing, trojan delivery, harmful payloads, or bot infection was found.",
+        "interaction_chains": [
+          {
+            "explanation": "Several known vulnerabilities affect development dependencies. They are assessed as unlikely to affect installed users directly, but plausible exploitation could compromise the developer’s build environment if left unpatched.",
+            "finding_ids": [
+              "206c141fb8a91388e2b2fef2c07f9faac93d50df8e04bcda3912228ada9aee0d",
+              "d3bbf36162298230363a090810982ae42fb860a9d02568b65c74ec52ab5f0641",
+              "eec4fae1d00c5b8bbef2e80d2052fcec60ba579839f04954eaded97444fe7c9c",
+              "f4fc7e9d1ce00ff6f18b9aefca714fccb8bb142451325b77beda031ce4c868e9"
+            ],
+            "resulting_risk": "material"
+          }
+        ],
+        "malicious_evidence": "No credible malicious behavior was identified. The validated findings concern known vulnerabilities in development tools, not API-key theft, phishing, trojans, harmful payloads, or bot infection.",
         "material_concerns": 4,
         "minor_cautions": 4,
         "risk_level": "material",
-        "summary": "The project has several known vulnerabilities in development tools and dependencies. Four are assessed as material because exploitation is plausible and could affect the developer's build environment; four are minor and unlikely to affect users. The reviewed issues are expected to be limited to development or build processes rather than the finished extension, but the affected dependencies should be identified and updated, followed by a rebuild."
+        "summary": "The project has four material and four minor dependency weaknesses, all involving development tooling. These issues are not assessed as malicious and are unlikely to affect ordinary users of the finished extension, but the serious items could expose the developer’s build environment. Updating affected dependencies and rebuilding is recommended."
       }
     },
     {
@@ -14737,8 +14748,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/5371791661804c2d90a3b3560f0db72ca1530e97/3/66592cf31c1335aa2f48a3202660ec87625995c84740406e019205df63644f67/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1206930287/history/",
-      "assessed_at": "2026-08-05T03:50:05.893Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T08:40:25.986Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -14747,11 +14758,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious behavior was validated in this review. This assessment cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed commit contained no validated findings or evidence of API-key theft, harmful payloads, trojan delivery, or bot infection. Risk is assessed as low based on the available review evidence."
+        "summary": "The validated review found no security findings or credible indications of API-key theft, harmful payloads, or other malicious activity. The project is assessed as low risk based on the available evidence."
       }
     },
     {
@@ -17441,21 +17452,21 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1207588937/97b9d23d7ef491cda4fed468adfb528b788029dd/3/0680f0070d6470c5513d31c7efe36058bb16d401feae6765f02efa801221eda8/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1207588937/history/",
-      "assessed_at": "2026-08-05T04:25:08.616Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T08:40:28.237Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
         "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "headline": "No validated security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated malicious behavior or security findings were identified in this review. This does not prove that unknown behavior is absent.",
+        "malicious_evidence": "No validated malicious evidence was identified in the reviewed commit.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed project has no validated concerns in the available TavernKeeper assessment. It appears low risk based on the evidence reviewed, while unknown behavior cannot be completely ruled out."
+        "summary": "The validated review found no security findings or evidence of harmful behavior. This assessment cannot prove the absence of unknown behavior."
       }
     },
     {
@@ -17856,8 +17867,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1203245557/f8b167e1366b3e8ad5a3d83aedf342ca2108dfd2/3/5813c55a9ca9ab35200a48c28bec543676282893be1a5fb230ab9614c2034d33/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1203245557/history/",
-      "assessed_at": "2026-08-05T04:30:00.603Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T08:40:15.668Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -17866,14 +17877,14 @@
           "e8768e17147cd57ba169ba080f39d3d9a953636882326ddcb80f3f7649b5a54b",
           "ec9d58335be1c9d21de29f66f1d2e723a973ecf2f29009c4978f3fe37c3b939c"
         ],
-        "headline": "Low risk: flagged app keys appear to be public identifiers",
+        "headline": "No security concerns identified",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible malicious behavior was identified. The flagged values are public JanitorAI application keys, and session tokens are kept in memory rather than saved or sent unexpectedly. Unknown behavior cannot be ruled out completely.",
+        "malicious_evidence": "No credible evidence of malicious behavior, credential theft, or harmful payloads was identified. The flagged values are public JanitorAI app keys used for login, not private user credentials. Session tokens are kept in memory and were not observed being saved or sent somewhere unexpected.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The review found no material security concerns. The detected keys are expected for JanitorAI login functionality and are not private passwords or user tokens. User session tokens are handled in memory only, with no unexpected transmission or file storage identified."
+        "summary": "The review found expected behavior for a JanitorAI integration. The visible app keys are not secrets, and user session tokens are handled in memory only. Unknown behavior cannot be ruled out completely, but no actionable security issue was validated."
       }
     },
     {
