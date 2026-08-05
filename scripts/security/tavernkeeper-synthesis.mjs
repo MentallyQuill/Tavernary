@@ -70,6 +70,24 @@ function providerFailure(error) {
   );
 }
 
+function bindRequiredCitations(output, report) {
+  if (
+    output === null ||
+    typeof output !== "object" ||
+    Array.isArray(output) ||
+    !Array.isArray(output.cited_finding_ids) ||
+    !output.cited_finding_ids.every((id) => typeof id === "string")
+  ) {
+    return output;
+  }
+  const citedFindingIds = [...output.cited_finding_ids];
+  for (const id of tavernKeeperAssessmentRequirements(report)
+    .required_candidate_ids) {
+    if (!citedFindingIds.includes(id)) citedFindingIds.push(id);
+  }
+  return { ...output, cited_finding_ids: citedFindingIds };
+}
+
 export async function synthesizeTavernKeeperReport(report, options) {
   const provider = options?.provider;
   if (!provider || typeof provider.generate !== "function") {
@@ -85,7 +103,10 @@ export async function synthesizeTavernKeeperReport(report, options) {
   for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
     try {
       const generated = await provider.generate({ report, repair });
-      const assessment = validateTavernaryAssessment(generated.output, report);
+      const assessment = validateTavernaryAssessment(
+        bindRequiredCitations(generated.output, report),
+        report,
+      );
       const now = options.now?.() ?? new Date();
       if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
         throw new TavernKeeperSynthesisError(
