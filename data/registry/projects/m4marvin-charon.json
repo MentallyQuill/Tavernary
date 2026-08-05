@@ -1,0 +1,27 @@
+{
+  "schema_version": 6,
+  "id": "m4marvin-charon",
+  "name": "charon",
+  "kind": "frontend",
+  "summary": "Self-hosted AI character roleplay app that imports SillyTavern or Chub cards, branches conversations, and keeps chats local with lorebooks and personas.",
+  "metadata_status": "curated",
+  "source_id": "github-1282991131",
+  "frontends": ["charon"],
+  "primary_function": "frontend",
+  "tags": [
+    "local-first",
+    "manage-character-libraries",
+    "manage-characters-and-personas",
+    "organize-chats-and-messages",
+    "retrieve-relevant-context",
+    "self-hosted"
+  ],
+  "cataloged_at": "2026-08-05T05:26:10.866Z",
+  "catalog_cohort": "standard",
+  "listing_status": "active",
+  "listing_status_reason": null,
+  "metadata_policy": {
+    "summary": { "mode": "automatic" },
+    "tags": { "mode": "automatic" }
+  }
+}

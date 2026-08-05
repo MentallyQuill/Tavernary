@@ -1,0 +1,89 @@
+{
+  "schema_version": 4,
+  "provider": "github",
+  "source_id": "github-1282991131",
+  "repository": {
+    "id": 1282991131,
+    "owner": "M4Marvin",
+    "name": "charon",
+    "url": "https://github.com/M4Marvin/charon",
+    "description": "My take on properly building an AI character chat app — combining features from Chub, SillyTavern, and everything else I always wanted. Self-hosted, branching conversations, character cards V2+V3, lorebooks, personas.",
+    "default_branch": "main",
+    "head_sha": "930fab413427420ed189f71659bbfab164e672c2",
+    "head_committed_at": "2026-08-04T17:18:43.000Z",
+    "archived": false,
+    "fork": false,
+    "parent": null,
+    "created_at": "2026-06-28T12:33:00.000Z",
+    "size_kb": 5214
+  },
+  "source_health": "healthy",
+  "activity": {
+    "latest_source_activity_at": "2026-08-04T17:18:43.000Z",
+    "source_weeks": [
+      {
+        "week_start": "2026-08-03",
+        "latest_at": "2026-08-04T17:18:43.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-27",
+        "latest_at": "2026-08-01T21:25:57.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-20",
+        "latest_at": "2026-07-24T23:09:48.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-07-13",
+        "latest_at": "2026-07-16T23:45:14.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-29",
+        "latest_at": "2026-07-03T22:32:54.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-22",
+        "latest_at": "2026-06-28T22:23:36.000Z",
+        "precision": "exact"
+      },
+      {
+        "week_start": "2026-06-15",
+        "latest_at": "2026-06-21T11:24:31.000Z",
+        "precision": "exact"
+      }
+    ],
+    "provisional_weeks": null,
+    "latest_release_at": null,
+    "evidence_status": "complete",
+    "baseline_completed_at": "2026-08-05T05:26:10.866Z",
+    "baseline_attempts": 0,
+    "evidence_head_sha": "930fab413427420ed189f71659bbfab164e672c2"
+  },
+  "community": {
+    "stars_count": 7,
+    "forks_count": 0,
+    "watchers_count": 0,
+    "aggregate": 7
+  },
+  "license": {
+    "status": "osi-approved",
+    "spdx_id": "MIT",
+    "source_path": "LICENSE"
+  },
+  "refreshed_at": "2026-08-05T05:26:10.866Z",
+  "stale_since": null,
+  "contributors": {
+    "accounts": [{ "login": "M4Marvin", "type": "User", "provider": "github" }],
+    "method": "repository-contributors",
+    "baseline_completed_at": null,
+    "scan": null,
+    "refreshed_at": "2026-08-05T05:26:10.866Z",
+    "stale_since": null
+  },
+  "activity_scan": null
+}
