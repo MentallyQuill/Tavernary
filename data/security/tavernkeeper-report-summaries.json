@@ -858,21 +858,25 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1001051404/3f74062f6f4ecb7b654f763bd332bf9892cfa047/3/6adcbf7f2ecf96500c0b25ad34d668c12c53f98af28360654ea300ad6bd0eba2/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1001051404/history/",
-      "assessed_at": "2026-08-05T01:30:45.427Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T06:26:28.138Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
       "assessment": {
-        "cited_finding_ids": [],
-        "headline": "No validated security concerns found",
+        "cited_finding_ids": [
+          "05866198b3ebc53c8da3570ec46b2afb54fe427504520b80b401c10c51b6de85",
+          "6ca6425384b68fc1c378c6a9304978c625177052c7691b6af3862bfab64d4ac1",
+          "c451d32a8c9cabfeee645ba1ba873fba99436a5d0100d4030970633213fa9a42"
+        ],
+        "headline": "No security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious behavior or exposed credentials were validated. All three scanner matches were confirmed to be ordinary French interface text or documentation headings, not secrets or data-sharing activity.",
+        "malicious_evidence": "No malicious behavior was identified. The scanner alerts were documentation or interface text, not exposed secrets or data theft.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "This project appears low risk based on the reviewed commit. The reported API-key and token matches are false positives in normal settings text and user documentation. As with any code review, this assessment cannot rule out unknown behavior outside the reviewed evidence."
+        "summary": "The reviewed findings are false positives: they refer to a French settings label and documentation headings about tokens. No passwords, API keys, harmful payloads, or suspicious data transfers were found in the validated review. Unknown behavior outside this review cannot be ruled out."
       }
     },
     {
@@ -5331,8 +5335,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1015688972/91cb6afba44748d5ddb5e633f56583db8c7c9adc/3/45de12d5bdb704139c26d957ae74ca482d5a49a811c27bcbe67795d7a1697725/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1015688972/history/",
-      "assessed_at": "2026-08-05T01:36:50.642Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T06:26:34.592Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -5341,11 +5345,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was reported. This review cannot prove the absence of unknown behavior.",
+        "malicious_evidence": "No credible malicious behavior or evidence of API-key theft, phishing, harmful payloads, or bot infection was identified in the validated review. This review cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "TavernKeeper reported no candidates, observations, or assessed findings for this exact commit. No material vulnerabilities, minor weaknesses, or credible malicious behavior were validated."
+        "summary": "The reviewed project is assessed as low risk based on the available validated evidence. No material vulnerabilities, minor weaknesses, or high-danger findings were identified."
       }
     },
     {
@@ -8863,8 +8867,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1005915564/140f57d2df733f284ecdb437a0f23cefd572d77f/3/8dbe642d8e265c7c315e3b6d3808ba2eaa9854bbe57997e297b35a55b143cc82/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1005915564/history/",
-      "assessed_at": "2026-08-05T01:36:48.510Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T06:26:32.314Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -8875,14 +8879,14 @@
           "b04d1bca5969bd3ff14007cb6ebff0bbc5f67f355a6c4ae9a2237a7f8fc76bee",
           "fe6c7e343f01890721bf0213f5f767c603b2894888ccf08721b7883941a2ed26"
         ],
-        "headline": "Low risk: routine workflow security improvements recommended",
+        "headline": "Low risk: routine workflow maintenance concerns",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No credible evidence of malicious behavior, credential theft, harmful payloads, or API-key phishing was found. The review identified only low-impact workflow weaknesses.",
+        "malicious_evidence": "No validated evidence of malicious behavior, API-key theft, harmful payloads, or bot infection. The findings concern GitHub workflow maintenance and credential-handling practices only.",
         "material_concerns": 0,
         "minor_cautions": 5,
         "risk_level": "low",
-        "summary": "The project appears to be in good faith and presents low security risk. Its release workflows use some unpinned tools, an archived release action, and an older checkout configuration that can temporarily write credentials to the build machine. These issues are unlikely to affect visitors or users, but maintainers should update the actions, pin them to exact commits, avoid unnecessary credential files, and use a supported release tool."
+        "summary": "The project appears low risk for visitors. Its automated build and release workflows use some unpinned or outdated tools, and one step unnecessarily writes a temporary credential to the build machine. These issues are unlikely to affect users directly, but the maintainers should update the tools, pin dependencies, and avoid writing credentials to files."
       }
     },
     {
@@ -15833,8 +15837,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1026917461/657b8a89a49a388d5752693d51d2b7713ca26040/3/0ea1d48bcc8ed37ae62e633d665669925c78384df4df57f06daa9eaedaccdd37/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/1026917461/history/",
-      "assessed_at": "2026-08-05T01:43:36.781Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T06:26:39.191Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -15842,14 +15846,14 @@
         "cited_finding_ids": [
           "1e6c9b50acf9062c73c9c86c582c3e0a223a68767368c535e994e322975b8f42"
         ],
-        "headline": "Low risk: customizable tracker behavior",
+        "headline": "Low risk: user-script customization is an expected feature",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No malicious behavior was identified. The reported JavaScript execution is an intentional customization feature for users who provide their own script.",
+        "malicious_evidence": "No credible malicious behavior was identified. The review found that the extension runs JavaScript entered by the user to customize tracker behavior, which is an intentional advanced-user feature. Unknown behavior cannot be ruled out entirely.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The extension lets advanced users enter JavaScript to customize how the tracker works. That script runs with the capabilities available to the user’s browser session, so users should only run code they trust. This is expected behavior rather than a security or malicious-behavior concern."
+        "summary": "The extension lets users provide custom JavaScript, which runs with the permissions available to the browser page. This is normal for a customization feature, but users should only run scripts they understand or trust."
       }
     },
     {
@@ -16922,8 +16926,8 @@
       },
       "report_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/999180993/7d67370c5df889ea46b24c711631d97701fe21e7/3/47bc129c25e47e1d4389b80ebebad5de32f306b93d669c68d8b7a3153b2260fc/",
       "history_url": "https://mentallyquill.github.io/TavernKeeper/reports/github/999180993/history/",
-      "assessed_at": "2026-08-05T04:13:12.417Z",
-      "synthesis_policy_version": "3",
+      "assessed_at": "2026-08-05T06:26:24.563Z",
+      "synthesis_policy_version": "4",
       "synthesis_model": "gpt-5.6-luna",
       "danger_basis": "none",
       "assessment_source": "model",
@@ -16932,11 +16936,11 @@
         "headline": "No validated security concerns found",
         "high_danger": 0,
         "interaction_chains": [],
-        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This does not prove that unknown behavior is absent.",
+        "malicious_evidence": "No validated evidence of malicious behavior was identified in this review. This assessment cannot prove the absence of unknown behavior.",
         "material_concerns": 0,
         "minor_cautions": 0,
         "risk_level": "low",
-        "summary": "The reviewed project has no validated findings indicating material vulnerabilities or harmful behavior. It appears low risk based on the available deterministic and contextual review."
+        "summary": "The reviewed project has no validated findings indicating malicious behavior, material vulnerabilities, or minor security weaknesses. Its assessed risk is low based on the available evidence."
       }
     },
     {
